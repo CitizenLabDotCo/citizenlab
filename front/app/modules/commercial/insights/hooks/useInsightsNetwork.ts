@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  insightsNetworkStream,
   IInsightsNetwork,
+  insightsNetworkStream,
 } from '../services/insightsNetwork';
 
 import { interval } from 'rxjs';
-import { takeWhile, finalize } from 'rxjs/operators';
+import { finalize, takeWhile } from 'rxjs/operators';
 
 import streams from 'utils/streams';
 

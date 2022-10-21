@@ -1,5 +1,5 @@
-import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
+import React, { lazy } from 'react';
 
 const MessagingIndex = lazy(() => import('.'));
 const CustomEmailsIndex = lazy(() => import('./CustomEmails/All'));

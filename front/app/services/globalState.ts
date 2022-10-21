@@ -1,15 +1,15 @@
-import { Observer, Observable } from 'rxjs';
+import { has, isEmpty, isObject } from 'lodash-es';
+import { Observable, Observer } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
-  map,
-  startWith,
-  scan,
-  refCount,
-  publishReplay,
   first,
+  map,
+  publishReplay,
+  refCount,
+  scan,
+  startWith,
 } from 'rxjs/operators';
-import { isObject, isEmpty, has } from 'lodash-es';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';

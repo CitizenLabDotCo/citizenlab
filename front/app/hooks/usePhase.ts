@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { useEffect, useState } from 'react';
 import { Observable, of } from 'rxjs';
 import { IPhase, IPhaseData, phaseStream } from 'services/phases';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type TPhase = IPhaseData | undefined | null | Error;
 

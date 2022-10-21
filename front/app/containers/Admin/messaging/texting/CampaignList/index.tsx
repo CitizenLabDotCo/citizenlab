@@ -4,9 +4,9 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import Button from 'components/UI/Button';
 import TextCampaignListRow from './TextCampaignListRow';
 
 // resources

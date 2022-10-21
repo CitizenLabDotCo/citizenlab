@@ -2,8 +2,8 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,11 +13,11 @@ import messages from '../messages';
 import useTopic from 'hooks/useTopic';
 
 // services
-import { updateTopic, ITopicUpdate } from '../../../../services/topics';
+import { ITopicUpdate, updateTopic } from '../../../../services/topics';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
+import GoBackButton from 'components/UI/GoBackButton';
 import TopicForm from '../TopicForm';
 
 // typings

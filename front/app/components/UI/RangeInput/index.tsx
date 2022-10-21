@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Range, getTrackBackground } from 'react-range';
+import { getTrackBackground, Range } from 'react-range';
 import styled from 'styled-components';
 import { colors, defaultOutline } from 'utils/styleUtils';
 

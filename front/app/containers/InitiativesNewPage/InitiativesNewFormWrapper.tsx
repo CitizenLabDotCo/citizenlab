@@ -8,46 +8,46 @@ import InitiativeForm, {
 } from 'components/InitiativeForm';
 
 // services
-import { Locale, Multiloc, UploadFile } from 'typings';
 import {
   addInitiative,
-  updateInitiative,
-  IInitiativeData,
   IInitiativeAdd,
+  IInitiativeData,
+  updateInitiative,
 } from 'services/initiatives';
 import { ITopicData } from 'services/topics';
+import { Locale, Multiloc, UploadFile } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // style
-import { media } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
 import styled from 'styled-components';
+import clHistory from 'utils/cl-router/history';
+import { media } from 'utils/styleUtils';
 
 // intl
-import { geocode } from 'utils/locationTools';
-import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 import { Point } from 'geojson';
+import { debounce, get, isEmpty, isEqual, omitBy, pick } from 'lodash-es';
+import {
+  addInitiativeFile,
+  deleteInitiativeFile,
+} from 'services/initiativeFiles';
 import {
   addInitiativeImage,
   deleteInitiativeImage,
 } from 'services/initiativeImages';
-import {
-  deleteInitiativeFile,
-  addInitiativeFile,
-} from 'services/initiativeFiles';
+import { geocode } from 'utils/locationTools';
 import { reportError } from 'utils/loggingUtils';
 
 // tracks
-import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;

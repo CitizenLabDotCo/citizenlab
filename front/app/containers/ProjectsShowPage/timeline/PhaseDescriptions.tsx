@@ -1,7 +1,7 @@
-import React from 'react';
 import usePhases from 'hooks/usePhases';
-import { isNilOrError } from 'utils/helperUtils';
+import React from 'react';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 import PhaseDescription from './PhaseDescription';
 
 interface Props {

@@ -1,9 +1,9 @@
 import React from 'react';
 
 // components
-import FileInput from './FileInput';
-import FileDisplay from './FileDisplay';
 import Error from 'components/UI/Error';
+import FileDisplay from './FileDisplay';
+import FileInput from './FileInput';
 
 // typings
 import { CLError, UploadFile } from 'typings';
@@ -13,8 +13,8 @@ import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

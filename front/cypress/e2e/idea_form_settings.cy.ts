@@ -1,4 +1,4 @@
-import { randomString, apiRemoveProject } from '../support/commands';
+import { apiRemoveProject, randomString } from '../support/commands';
 import moment = require('moment');
 
 describe('Idea form settings', () => {

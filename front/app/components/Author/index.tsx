@@ -9,16 +9,16 @@ import UserName from 'components/UI/UserName';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // hooks
-import useUser from 'hooks/useUser';
 import useLocale from 'hooks/useLocale';
+import useUser from 'hooks/useUser';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

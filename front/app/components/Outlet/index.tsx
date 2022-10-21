@@ -1,6 +1,6 @@
-import React, { memo, useContext } from 'react';
-import { OutletsPropertyMap, OutletId } from 'utils/moduleUtils';
 import { OutletsContext } from 'containers/OutletsProvider';
+import React, { memo, useContext } from 'react';
+import { OutletId, OutletsPropertyMap } from 'utils/moduleUtils';
 
 type CustomPropsMap = {
   [P in keyof OutletsPropertyMap]: { id: P } & OutletsPropertyMap[P];

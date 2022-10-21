@@ -1,22 +1,22 @@
 import React from 'react';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import { object } from 'yup';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Components
-import { SectionField } from 'components/admin/Section';
 import { Button } from '@citizenlab/cl2-component-library';
+import { SectionField } from 'components/admin/Section';
 
 // Typings
 import { Multiloc } from 'typings';
@@ -32,8 +32,8 @@ export interface NormalFormValues {
 }
 
 // Style
-import styled from 'styled-components';
 import { MembershipType } from 'services/groups';
+import styled from 'styled-components';
 
 export const Fill = styled.div`
   padding-top: 40px;

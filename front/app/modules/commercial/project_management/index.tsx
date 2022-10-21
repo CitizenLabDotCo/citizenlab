@@ -1,9 +1,9 @@
+import FeatureFlag from 'components/FeatureFlag';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ProjectManagement from './admin/containers/ProjectManagement';
 import Tab from './admin/components/Tab';
-import FeatureFlag from 'components/FeatureFlag';
+import ProjectManagement from './admin/containers/ProjectManagement';
 
 type RenderOnTabHideConditionProps = {
   children: ReactNode;

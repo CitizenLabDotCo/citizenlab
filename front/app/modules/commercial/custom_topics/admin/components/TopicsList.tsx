@@ -2,8 +2,8 @@ import React from 'react';
 
 // components
 import { List } from 'components/admin/ResourceList';
-import DefaultTopicRow from './DefaultTopicRow';
 import CustomTopicRow from './CustomTopicRow';
+import DefaultTopicRow from './DefaultTopicRow';
 
 // typings
 import { ITopicData } from 'services/topics';

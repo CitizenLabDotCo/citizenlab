@@ -1,11 +1,11 @@
+import { IResolution } from 'components/admin/ResolutionControl';
+import { round } from 'lodash-es';
 import moment, { Moment } from 'moment';
 import {
   TimeSeriesResponse,
   TimeSeriesResponseRow,
   TimeSeriesRow,
 } from '../typings';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { round } from 'lodash-es';
 
 export const roundDateToMidnight = (date: Moment) => {
   return moment(date.format('YYYY-MM-DD'));

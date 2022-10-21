@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  userCustomFieldsStream,
   IUserCustomFieldData,
   IUserCustomFieldInputType,
+  userCustomFieldsStream,
 } from '../services/userCustomFields';
 
 interface Props {

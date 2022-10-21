@@ -1,8 +1,8 @@
-import 'whatwg-fetch';
+import { isString } from 'lodash-es';
 import { from } from 'rxjs';
 import { UploadFile } from 'typings';
-import { isString } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
+import 'whatwg-fetch';
 import { isNilOrError } from './helperUtils';
 
 export const imageSizes = {

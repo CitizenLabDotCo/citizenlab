@@ -1,7 +1,7 @@
+import bowser from 'bowser';
+import { isEmpty } from 'lodash-es';
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-import bowser from 'bowser';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -20,17 +20,17 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  defaultCardStyle,
-  defaultCardHoverStyle,
-} from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import styled from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import {
+  colors,
+  defaultCardHoverStyle,
+  defaultCardStyle,
+  fontSizes,
+  media,
+} from 'utils/styleUtils';
+import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);

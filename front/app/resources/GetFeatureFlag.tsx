@@ -1,5 +1,5 @@
-import { PureComponent } from 'react';
 import { get } from 'lodash-es';
+import { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // services

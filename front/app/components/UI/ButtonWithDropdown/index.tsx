@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect, cloneElement } from 'react';
 import bowser from 'bowser';
+import React, { cloneElement, useEffect, useRef, useState } from 'react';
 import { trackEventByName } from 'utils/analytics';
 
 // components

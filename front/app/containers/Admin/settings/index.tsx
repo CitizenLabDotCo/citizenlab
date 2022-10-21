@@ -1,21 +1,21 @@
 import React from 'react';
 
 // router
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
 
 // i18n
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
+import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
-import Outlet from 'components/Outlet';
 
 export interface InputProps {}
 

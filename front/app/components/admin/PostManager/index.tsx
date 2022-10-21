@@ -1,9 +1,9 @@
-import React, { Suspense } from 'react';
 import { isFunction } from 'lodash-es';
+import React, { Suspense } from 'react';
 import { adopt } from 'react-adopt';
-import styled from 'styled-components';
-import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { DndProvider } from 'react-dnd-cjs';
+import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -12,37 +12,37 @@ import {
   IAdminFullWidth,
   IGlobalStateService,
 } from 'services/globalState';
-import { IProjectData } from 'services/projects';
 import { getTopicIds } from 'services/projectAllowedInputTopics';
+import { IProjectData } from 'services/projects';
 
 // resources
+import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetIdeaStatuses, {
   GetIdeaStatusesChildProps,
 } from 'resources/GetIdeaStatuses';
-import GetInitiativeStatuses, {
-  GetInitiativeStatusesChildProps,
-} from 'resources/GetInitiativeStatuses';
-import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetInitiatives, {
   GetInitiativesChildProps,
 } from 'resources/GetInitiatives';
+import GetInitiativeStatuses, {
+  GetInitiativeStatusesChildProps,
+} from 'resources/GetInitiativeStatuses';
 import { GetPhasesChildProps } from 'resources/GetPhases';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // components
-import ActionBar from './components/ActionBar';
-import FilterSidebar from './components/FilterSidebar';
-import PostTable from './components/PostTable';
-import InfoSidebar from './components/InfoSidebar';
-import ExportMenu from './components/ExportMenu';
-import IdeasCount from './components/IdeasCount';
-import InitiativesCount from './components/InitiativesCount';
-import { Input } from 'semantic-ui-react';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
-import LazyPostPreview from './components/LazyPostPreview';
-import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import Outlet from 'components/Outlet';
+import { Input } from 'semantic-ui-react';
+import ActionBar from './components/ActionBar';
+import ExportMenu from './components/ExportMenu';
+import FilterSidebar from './components/FilterSidebar';
+import IdeasCount from './components/IdeasCount';
+import InfoSidebar from './components/InfoSidebar';
+import InitiativesCount from './components/InitiativesCount';
+import LazyPostPreview from './components/LazyPostPreview';
+import PostTable from './components/PostTable';
+import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
+import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 
 const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;

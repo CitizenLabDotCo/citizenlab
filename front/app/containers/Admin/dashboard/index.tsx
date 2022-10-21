@@ -1,11 +1,11 @@
-import React, { memo, useState, useEffect } from 'react';
-import { insertConfiguration } from 'utils/moduleUtils';
+import React, { memo, useEffect, useState } from 'react';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import DashboardTabs from './components/DashboardTabs';
 import Outlet from 'components/Outlet';
+import DashboardTabs from './components/DashboardTabs';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -14,9 +14,9 @@ import useAuthUser from 'hooks/useAuthUser';
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 // i18n
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

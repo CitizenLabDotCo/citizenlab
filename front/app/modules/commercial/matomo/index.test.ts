@@ -1,11 +1,11 @@
+import { trackPage } from 'utils/analytics';
+import eventEmitter from 'utils/eventEmitter';
 import config from '.';
 import { mockRoutes } from './mockRoutes.mock';
-import eventEmitter from 'utils/eventEmitter';
-import { trackPage } from 'utils/analytics';
 
 // mocked inputs
-import { setupMatomo } from './setup';
 import { trackPageChange } from './actions';
+import { setupMatomo } from './setup';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');

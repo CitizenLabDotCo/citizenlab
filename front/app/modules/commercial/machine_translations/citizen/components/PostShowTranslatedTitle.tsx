@@ -4,8 +4,8 @@ import { Title } from 'components/PostShowComponents/Title';
 import GetMachineTranslation, {
   GetMachineTranslationChildProps,
 } from 'modules/commercial/machine_translations/resources/GetMachineTranslation';
-import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 const parseTranslation = (
   translation: GetMachineTranslationChildProps,

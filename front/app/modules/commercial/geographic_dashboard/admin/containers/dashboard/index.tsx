@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import { Subscription } from 'rxjs';
+import styled from 'styled-components';
 
 // Data loading
 import GetGeotaggedIdeas, {
@@ -15,8 +15,8 @@ import { leafletMapSelectedMarker$ } from 'components/UI/LeafletMap/events';
 // Components
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Map from 'components/Map';
-import IdeaPane from './IdeaPane';
 import Warning from 'components/UI/Warning';
+import IdeaPane from './IdeaPane';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,10 +24,10 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-import { colors } from 'utils/styleUtils';
 import ServerError from 'components/admin/ServerError';
+import { trackEventByName } from 'utils/analytics';
+import { colors } from 'utils/styleUtils';
+import tracks from './tracks';
 
 // styles
 const SpinnerContainer = styled.div`

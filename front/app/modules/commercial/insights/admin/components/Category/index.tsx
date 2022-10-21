@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-import useCategory from 'modules/commercial/insights/hooks/useInsightsCategory';
 import Tag, {
   TagProps,
 } from 'modules/commercial/insights/admin/components/Tag';
+import useCategory from 'modules/commercial/insights/hooks/useInsightsCategory';
 import {
-  deleteInsightsInputCategory,
   addInsightsInputCategory,
+  deleteInsightsInputCategory,
 } from 'modules/commercial/insights/services/insightsInputs';
 
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';

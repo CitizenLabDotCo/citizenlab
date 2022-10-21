@@ -1,12 +1,12 @@
-import React from 'react';
-import IdeasList from './IdeasList';
 import IdeasMap from 'components/IdeasMap';
+import React from 'react';
+import { IIdeaData } from 'services/ideas';
 import {
   IdeaDefaultSortMethod,
   ParticipationMethod,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
-import { IIdeaData } from 'services/ideas';
+import IdeasList from './IdeasList';
 
 interface Props {
   showListView: boolean;

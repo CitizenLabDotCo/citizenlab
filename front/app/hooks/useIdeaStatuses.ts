@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { IIdeaStatusData, ideaStatusesStream } from 'services/ideaStatuses';
+import { useEffect, useState } from 'react';
+import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
 import { isNilOrError } from 'utils/helperUtils';
 
 export default function useIdeaStatuses() {

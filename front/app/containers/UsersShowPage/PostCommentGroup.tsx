@@ -1,7 +1,7 @@
-import React, { PureComponent, FormEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
+import React, { FormEvent, PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // resources & typings
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
@@ -11,28 +11,28 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // typings
-import { ICommentData } from 'services/comments';
 import { IOpenPostPageModalEvent } from 'containers/App';
+import { ICommentData } from 'services/comments';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
 // style
-import styled from 'styled-components';
-import { colors, media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
 
 // Components
 import { Icon } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-import CommentHeader from 'components/PostShowComponents/Comments/CommentHeader';
 import CommentBody from 'components/PostShowComponents/Comments/CommentBody';
+import CommentHeader from 'components/PostShowComponents/Comments/CommentHeader';
+import Link from 'utils/cl-router/Link';
 
 // intl
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

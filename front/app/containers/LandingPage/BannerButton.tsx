@@ -1,5 +1,5 @@
-import React, { MouseEvent, KeyboardEvent } from 'react';
 import Button from 'components/UI/Button';
+import React, { KeyboardEvent, MouseEvent } from 'react';
 
 export type BannerButtonStyle = 'primary-inverse' | 'primary';
 

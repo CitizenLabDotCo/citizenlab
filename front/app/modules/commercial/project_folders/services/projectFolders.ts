@@ -1,7 +1,7 @@
-import { Multiloc, ImageSizes, IRelationship } from 'typings';
+import { ImageSizes, IRelationship, Multiloc } from 'typings';
 
-import streams, { IStreamParams } from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
+import streams, { IStreamParams } from 'utils/streams';
 
 import { API_PATH } from 'containers/App/constants';
 import { PublicationStatus } from 'services/projects';

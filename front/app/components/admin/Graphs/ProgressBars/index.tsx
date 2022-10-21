@@ -1,23 +1,23 @@
 import React from 'react';
 
 // components
+import { NoDataContainer } from 'components/admin/GraphWrappers';
 import {
-  BarChart,
   Bar,
-  XAxis,
-  YAxis,
+  BarChart,
   LabelList,
   ResponsiveContainer,
+  XAxis,
+  YAxis,
 } from 'recharts';
-import { NoDataContainer } from 'components/admin/GraphWrappers';
 
 // i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 import { parseData } from './utils';
 
 // typings

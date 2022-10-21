@@ -1,10 +1,10 @@
-import React, { PureComponent, Fragment } from 'react';
-import { pick, clone, omit } from 'lodash-es';
+import Button from 'components/UI/Button';
+import { clone, omit, pick } from 'lodash-es';
+import React, { Fragment, PureComponent } from 'react';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
+import { ruleTypeConstraints, TRule } from './rules';
 import ValueSelector from './ValueSelector';
-import Button from 'components/UI/Button';
-import { TRule, ruleTypeConstraints } from './rules';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -1,5 +1,5 @@
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 
 jest.mock('components/UI/SideModal', () => 'SideModal');
 jest.mock('components/UI/FullPageSpinner', () => 'FullPageSpinner');

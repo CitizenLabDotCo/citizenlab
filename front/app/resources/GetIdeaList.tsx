@@ -1,8 +1,8 @@
-import React from 'react';
 import { isEqual } from 'lodash-es';
-import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import { IIdeaData, ideaByIdStream } from 'services/ideas';
+import React from 'react';
+import { BehaviorSubject, combineLatest, of, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { ideaByIdStream, IIdeaData } from 'services/ideas';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {

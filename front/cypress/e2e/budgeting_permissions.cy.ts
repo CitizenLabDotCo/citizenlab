@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
+import { randomEmail, randomString } from '../support/commands';
 
 describe('Idea budgeting permissions test 1', () => {
   const unverifiedFirstName = randomString();

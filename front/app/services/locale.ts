@@ -30,16 +30,16 @@
 
 // -----------------------------------------------------------------------------
 // imports and definitions
+import { locales } from 'containers/App/constants';
+import { get, includes, isEqual } from 'lodash-es';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
-import { includes, isEqual, get } from 'lodash-es';
+import { distinctUntilChanged, filter, first, map } from 'rxjs/operators';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { updateUser } from 'services/users';
 import { Locale } from 'typings';
-import { locales } from 'containers/App/constants';
-import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 import clHistory from 'utils/cl-router/history';
+import { getCookieLocale, setCookieLocale } from 'utils/localeCookie';
 
 const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
 const $tenantLocales = currentAppConfigurationStream().observable.pipe(

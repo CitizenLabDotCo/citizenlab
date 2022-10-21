@@ -6,12 +6,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
 // resources
-import GetIdeaStatuses, {
-  GetIdeaStatusesChildProps,
-} from 'resources/GetIdeaStatuses';
 import GetIdeasFilterCounts, {
   GetIdeasFilterCountsChildProps,
 } from 'resources/GetIdeasFilterCounts';
+import GetIdeaStatuses, {
+  GetIdeaStatusesChildProps,
+} from 'resources/GetIdeaStatuses';
 
 // styling
 import styled from 'styled-components';

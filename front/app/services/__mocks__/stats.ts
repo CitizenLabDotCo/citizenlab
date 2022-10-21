@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { IUsersByTime, IIdeasCount } from 'services/stats';
+import { IIdeasCount, IUsersByTime } from 'services/stats';
 import { IStreamParams } from 'utils/streams';
 
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>

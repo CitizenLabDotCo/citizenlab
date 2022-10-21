@@ -5,15 +5,15 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
+import { ISignUpInMetaData } from 'components/SignUpIn';
+import { TAuthUser } from 'hooks/useAuthUser';
 import {
-  TSignUpStep,
-  TSignUpConfiguration,
-  TSignUpStepConfigurationObject,
   ILocalState,
   TDataLoadedPerOutlet,
+  TSignUpConfiguration,
+  TSignUpStep,
+  TSignUpStepConfigurationObject,
 } from './';
-import { TAuthUser } from 'hooks/useAuthUser';
-import { ISignUpInMetaData } from 'components/SignUpIn';
 
 export function getDefaultSteps(): TSignUpConfiguration {
   return {

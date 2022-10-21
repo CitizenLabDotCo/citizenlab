@@ -1,11 +1,11 @@
 // i18n
-import messages from './messages';
 import cardMessages from '../../components/VisitorsCard/messages';
+import messages from './messages';
 
 // typings
-import { TimeSeriesResponse } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { WrappedComponentProps } from 'react-intl';
+import { TimeSeriesResponse } from './typings';
 
 export const deduceResolution = (
   timeSeriesResponse: TimeSeriesResponse

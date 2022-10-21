@@ -1,6 +1,6 @@
 // libraries
-import React from 'react';
 import { map, orderBy } from 'lodash-es';
+import React from 'react';
 
 // components
 import SelectableResourceChart from './SelectableResourceChart';
@@ -9,17 +9,17 @@ import SelectableResourceChart from './SelectableResourceChart';
 import useLocalize from 'hooks/useLocalize';
 
 // typings
+import { IResolution } from 'components/admin/ResolutionControl';
 import {
-  IIdeasByTopic,
-  ideasByTopicStream,
-  ICommentsByTopic,
   commentsByTopicStream,
+  ICommentsByTopic,
+  ideasByTopicStream,
+  IIdeasByTopic,
   IVotesByTopic,
   votesByTopicStream,
 } from 'services/stats';
-import { IResource } from '..';
-import { IResolution } from 'components/admin/ResolutionControl';
 import { IOption } from 'typings';
+import { IResource } from '..';
 
 interface QueryProps {
   startAt: string | null | undefined;

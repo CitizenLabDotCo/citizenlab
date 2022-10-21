@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import clHistory from 'utils/cl-router/history';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import ProjectFolderGoBackButton from '.';
 

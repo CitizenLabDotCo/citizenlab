@@ -2,7 +2,7 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors, isRtl } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 // components
 import Button from 'components/UI/Button';

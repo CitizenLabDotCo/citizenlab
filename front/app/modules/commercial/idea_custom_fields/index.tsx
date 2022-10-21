@@ -1,11 +1,11 @@
+import { some } from 'lodash-es';
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import Tab from './admin/components/Tab';
 import {
   getAllParticipationMethods,
   getMethodConfig,
 } from 'utils/participationMethodUtils';
-import { some } from 'lodash-es';
+import Tab from './admin/components/Tab';
 
 const AdminProjectIdeaEditFormComponent = React.lazy(
   () => import('./admin/containers/projects/edit/ideaform')

@@ -1,14 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
-import { addIdeaStatus } from 'services/ideaStatuses';
-import clHistory from 'utils/cl-router/history';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import React from 'react';
+import { addIdeaStatus } from 'services/ideaStatuses';
+import styled from 'styled-components';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
-import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';

@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import Table from './Table';
 import Button from 'components/UI/Button';
+import Table from './Table';
 import TableModal from './TableModal';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
 
 // i18n
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // typings
 import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';

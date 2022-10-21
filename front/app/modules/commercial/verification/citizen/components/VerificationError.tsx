@@ -8,9 +8,9 @@ import messages from './messages';
 import { Icon, Title } from '@citizenlab/cl2-component-library';
 
 // style
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 import { IVerificationError } from 'components/Verification/verificationModalEvents';
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // Types
 const Container = styled.div`

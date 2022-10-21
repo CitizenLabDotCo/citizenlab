@@ -1,13 +1,13 @@
-import React from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from 'styled-components';
-import { getTheme } from 'utils/styleUtils';
 import GlobalStyle from 'global-styles';
-import { IntlProvider } from 'react-intl';
 import messages from 'i18n/en';
+import React from 'react';
+import { IntlProvider } from 'react-intl';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import history from 'utils/browserHistory';
+import { getTheme } from 'utils/styleUtils';
 
 window.confirm = jest.fn(() => true);
 window.scrollTo = jest.fn();
@@ -57,7 +57,6 @@ const customRender: any = (ui: React.ReactElement, options?: RenderOptions) =>
 
 // re-export everything
 export * from '@testing-library/react';
-
 // override render method
 export { customRender as render };
 export { userEvent };

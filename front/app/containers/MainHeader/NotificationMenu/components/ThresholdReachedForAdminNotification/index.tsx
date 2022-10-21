@@ -1,10 +1,10 @@
+import T from 'components/T';
 import React, { memo } from 'react';
-import { stopPropagation } from 'utils/helperUtils';
 import { IThresholdReachedForAdminNotificationData } from 'services/notifications';
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import T from 'components/T';
+import { stopPropagation } from 'utils/helperUtils';
+import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {

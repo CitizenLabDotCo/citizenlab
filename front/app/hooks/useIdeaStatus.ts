@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { IIdeaStatusData, ideaStatusStream } from 'services/ideaStatuses';
+import { useEffect, useState } from 'react';
+import { ideaStatusStream, IIdeaStatusData } from 'services/ideaStatuses';
 
 export default function useIdeaStatus({ statusId }) {
   const [ideaStatus, setIdeaStatus] = useState<IIdeaStatusData | Error | null>(

@@ -1,9 +1,9 @@
+import { LatLng, Map as LeafletMap, popup } from 'leaflet';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { popup, LatLng, Map as LeafletMap } from 'leaflet';
+import { Subscription } from 'rxjs';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-import { Subscription } from 'rxjs';
 
 // Utils
 import { trackEventByName } from 'utils/analytics';
@@ -16,20 +16,20 @@ import InitiativePreview from './InitiativePreview';
 
 // Events
 import {
-  leafletMapSelectedMarker$,
   leafletMapClicked$,
+  leafletMapSelectedMarker$,
 } from 'components/UI/LeafletMap/events';
 
 // Resources
 import GetInitiativeMarkers, {
   GetInitiativeMarkersChildProps,
 } from 'resources/GetInitiativeMarkers';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -39,8 +39,8 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // Typing
-import { IGeotaggedInitiativeData } from 'services/initiatives';
 import InitiativeButton from 'components/InitiativeButton';
+import { IGeotaggedInitiativeData } from 'services/initiatives';
 
 const Container = styled.div`
   > .create-initiative-wrapper {

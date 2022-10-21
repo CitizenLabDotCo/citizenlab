@@ -4,9 +4,9 @@ import React from 'react';
 import { InputTerm } from 'services/participationContexts';
 
 // intl
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './../messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // components
 import Button from 'components/UI/Button';

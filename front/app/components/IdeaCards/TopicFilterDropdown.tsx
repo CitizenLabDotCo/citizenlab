@@ -7,8 +7,8 @@ import FilterSelector from 'components/FilterSelector';
 import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // hooks

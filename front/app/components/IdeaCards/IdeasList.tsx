@@ -1,14 +1,14 @@
-import React from 'react';
-import styled, { useTheme } from 'styled-components';
-import { Box, media, Button, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Button, media, Spinner } from '@citizenlab/cl2-component-library';
 import IdeaCard from 'components/IdeaCard';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { rgba } from 'polished';
-import { ParticipationMethod } from 'services/participationContexts';
-import EmptyIdeas from './EmptyIdeas';
+import React from 'react';
 import { IIdeaData } from 'services/ideas';
+import { ParticipationMethod } from 'services/participationContexts';
+import styled, { useTheme } from 'styled-components';
 import { IParticipationContextType } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
+import EmptyIdeas from './EmptyIdeas';
+import messages from './messages';
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;

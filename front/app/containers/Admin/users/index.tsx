@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Resources
 import GetFeatureFlag, {
@@ -10,8 +10,8 @@ import GetFeatureFlag, {
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import Modal from 'components/UI/Modal';
-import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
+import GroupsListPanel from './GroupsListPanel';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 
 // Global state
@@ -62,7 +62,7 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // Services
-import { IGroupData, addGroup, MembershipType } from 'services/groups';
+import { addGroup, IGroupData, MembershipType } from 'services/groups';
 
 import Outlet from 'components/Outlet';
 

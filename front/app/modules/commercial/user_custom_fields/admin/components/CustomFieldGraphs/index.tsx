@@ -1,6 +1,6 @@
 // libraries
-import React from 'react';
 import { isEqual } from 'lodash-es';
+import React from 'react';
 
 // components
 import CustomFieldGraph from './CustomFieldGraph';

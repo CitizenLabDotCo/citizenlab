@@ -5,13 +5,13 @@ import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 import { IInviteAcceptedNotificationData } from 'services/notifications';
 
 // i18n
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IInviteAcceptedNotificationData;

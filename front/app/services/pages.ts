@@ -1,7 +1,7 @@
-import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
 import { apiEndpoint as navbarEndpoint } from 'services/navbar';
+import { IRelationship, Multiloc } from 'typings';
+import streams, { IStreamParams } from 'utils/streams';
 
 export const apiEndpoint = `${API_PATH}/static_pages`;
 

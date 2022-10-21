@@ -3,24 +3,24 @@ import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import PageForm, { FormValues } from 'components/PageForm';
 import PageWrapper from 'components/admin/PageWrapper';
-import GoBackButton from 'components/UI/GoBackButton';
+import PageForm, { FormValues } from 'components/PageForm';
 import T from 'components/T';
+import GoBackButton from 'components/UI/GoBackButton';
 
 // utils
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
 
 // services
-import { updatePage, IPageData } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
+import { IPageData, updatePage } from 'services/pages';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
+import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;

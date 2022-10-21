@@ -1,4 +1,4 @@
-import { isCLErrorJSON, handleHookFormSubmissionError } from 'utils/errorUtils';
+import { handleHookFormSubmissionError, isCLErrorJSON } from 'utils/errorUtils';
 
 const CLErrors = [
   {

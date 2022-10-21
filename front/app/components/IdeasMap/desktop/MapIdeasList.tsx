@@ -1,34 +1,34 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SelectSort from 'components/IdeaCards/SortFilterDropdown';
+import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import IdeaMapCard from '../IdeaMapCard';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useIdeaMarkers from 'hooks/useIdeaMarkers';
-import useProject from 'hooks/useProject';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaMarkers from 'hooks/useIdeaMarkers';
+import useLocale from 'hooks/useLocale';
+import useProject from 'hooks/useProject';
 
 // events
 import {
+  ideasSearch$,
+  ideasSort$,
+  ideasTopics$,
   setIdeasSearch,
   setIdeasSort,
   setIdeasTopics,
-  ideasSort$,
-  ideasSearch$,
-  ideasTopics$,
 } from '../events';
 
 // services
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';

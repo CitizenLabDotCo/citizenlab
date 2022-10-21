@@ -1,7 +1,7 @@
 import {
+  addBin,
   getLowerBoundLimits,
   getUpperBoundLimits,
-  addBin,
   removeBin,
 } from './bins';
 

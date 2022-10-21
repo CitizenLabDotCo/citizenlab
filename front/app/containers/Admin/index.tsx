@@ -1,17 +1,17 @@
-import React, { memo, useState, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { globalState } from 'services/globalState';
+import React, { memo, useEffect, useState } from 'react';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { globalState } from 'services/globalState';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // permissions
+import HasPermission from 'components/HasPermission';
 import useAuthUser from 'hooks/useAuthUser';
 import { usePermission } from 'services/permissions';
-import HasPermission from 'components/HasPermission';
 
 // components
-import Sidebar from './sideBar/';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
+import Sidebar from './sideBar/';
 
 // utils
 import clHistory from 'utils/cl-router/history';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, act } from 'utils/testUtils/rtl';
+import { act, render, screen } from 'utils/testUtils/rtl';
 
 import {
   ContentBuilderPage,
@@ -7,8 +7,8 @@ import {
   CONTENT_BUILDER_ERROR_EVENT,
 } from './';
 
-import { IContentBuilderLayoutData } from '../../services/contentBuilder';
 import eventEmitter from 'utils/eventEmitter';
+import { IContentBuilderLayoutData } from '../../services/contentBuilder';
 
 const mockEditorData: IContentBuilderLayoutData = {
   id: '2',

@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  Props as MultiBarChartProps,
   Bars as MultiBarChartBars,
+  Props as MultiBarChartProps,
 } from '../MultiBarChart/typings';
-import { KeyOfType, BaseMapping, CornerRadius } from '../typings';
+import { BaseMapping, CornerRadius, KeyOfType } from '../typings';
 
 export interface Props<Row>
   extends Omit<

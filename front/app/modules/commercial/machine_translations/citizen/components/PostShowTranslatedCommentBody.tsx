@@ -1,8 +1,8 @@
+import { CommentText } from 'components/PostShowComponents/Comments/CommentBody';
 import GetMachineTranslation from 'modules/commercial/machine_translations/resources/GetMachineTranslation';
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { CommentText } from 'components/PostShowComponents/Comments/CommentBody';
 import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   translateButtonClicked: boolean;

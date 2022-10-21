@@ -1,9 +1,9 @@
-import React from 'react';
 import FeatureFlag from 'components/FeatureFlag';
+import React from 'react';
 import styled from 'styled-components';
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
+import messages from './messages';
 
 const Badge = styled.div`
   color: #fff;

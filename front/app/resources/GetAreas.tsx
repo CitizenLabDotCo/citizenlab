@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { IAreaData, areasStream, IAreasQueryParams } from 'services/areas';
+import { areasStream, IAreaData, IAreasQueryParams } from 'services/areas';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}

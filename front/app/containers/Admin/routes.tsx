@@ -1,17 +1,17 @@
-import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
+import React, { lazy } from 'react';
 
 // routes
 import createDashboardRoutes from './dashboard/routes';
+import ideasRoutes from './ideas/routes';
 import createAdminInitiativesRoutes from './initiatives/routes';
-import createAdminUsersRoutes from './users/routes';
 import invitationsRoutes from './invitations/routes';
+import createAdminMessagingRoutes from './messaging/routes';
+import pagesRoutes from './pages/routes';
+import pagesAndMenuRoutes from './pagesAndMenu/routes';
 import createAdminProjectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
-import pagesRoutes from './pages/routes';
-import createAdminMessagingRoutes from './messaging/routes';
-import ideasRoutes from './ideas/routes';
-import pagesAndMenuRoutes from './pagesAndMenu/routes';
+import createAdminUsersRoutes from './users/routes';
 
 // components
 import PageLoading from 'components/UI/PageLoading';
@@ -21,14 +21,14 @@ const AdminWorkshops = lazy(() => import('containers/Admin/workshops'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 
 // hooks
-import { usePermission } from 'services/permissions';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import { usePermission } from 'services/permissions';
 
 // utils
 import { isModerator } from 'services/permissions/roles';
-import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { isNilOrError, isUUID } from 'utils/helperUtils';
 
 // typings
 import { IAppConfigurationData } from 'services/appConfiguration';

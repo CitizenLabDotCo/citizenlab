@@ -1,7 +1,18 @@
+import snippet from '@segment/snippet';
 import {
   IDestinationConfig,
   registerDestination,
 } from 'components/ConsentManager/destinations';
+import { get, isFunction } from 'lodash-es';
+import { combineLatest } from 'rxjs';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
+import { authUserStream } from 'services/auth';
+import {
+  isAdmin,
+  isProjectModerator,
+  isSuperAdmin,
+} from 'services/permissions/roles';
+import { IUser } from 'services/users';
 import {
   bufferUntilInitialized,
   events$,
@@ -9,18 +20,7 @@ import {
   pageChanges$,
   tenantInfo,
 } from 'utils/analytics';
-import snippet from '@segment/snippet';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { authUserStream } from 'services/auth';
-import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
-import { get, isFunction } from 'lodash-es';
-import { IUser } from 'services/users';
-import {
-  isAdmin,
-  isProjectModerator,
-  isSuperAdmin,
-} from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 export const CL_SEGMENT_API_KEY =

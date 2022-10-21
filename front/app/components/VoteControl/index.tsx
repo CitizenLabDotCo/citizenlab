@@ -1,15 +1,15 @@
-import React, { PureComponent, MouseEvent, KeyboardEvent } from 'react';
-import { isString, get, isEmpty, includes } from 'lodash-es';
+import { get, includes, isEmpty, isString } from 'lodash-es';
+import React, { KeyboardEvent, MouseEvent, PureComponent } from 'react';
 import {
   BehaviorSubject,
-  Subscription,
-  Observable,
   combineLatest,
+  Observable,
   of,
+  Subscription,
 } from 'rxjs';
-import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ScreenReaderContent from './ScreenReaderContent';
@@ -19,18 +19,18 @@ import VoteButton from './VoteButton';
 import { authUserStream } from 'services/auth';
 import {
   ideaByIdStream,
-  IIdea,
   IdeaVotingDisabledReason,
+  IIdea,
 } from 'services/ideas';
-import { IUser } from 'services/users';
-import { voteStream, addVote, deleteVote, TVoteMode } from 'services/ideaVotes';
-import { projectByIdStream, IProject, IProjectData } from 'services/projects';
+import { addVote, deleteVote, TVoteMode, voteStream } from 'services/ideaVotes';
 import {
-  phaseStream,
+  getLatestRelevantPhase,
   IPhase,
   IPhaseData,
-  getLatestRelevantPhase,
+  phaseStream,
 } from 'services/phases';
+import { IProject, IProjectData, projectByIdStream } from 'services/projects';
+import { IUser } from 'services/users';
 
 // utils
 import { openSignUpInModal } from 'components/SignUpIn/events';

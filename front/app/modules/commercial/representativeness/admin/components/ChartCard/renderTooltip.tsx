@@ -2,8 +2,8 @@ import React from 'react';
 
 // components
 import { Box, Text, TextProps } from '@citizenlab/cl2-component-library';
-import { Tooltip } from 'recharts';
 import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
+import { Tooltip } from 'recharts';
 
 // utils
 import { formatPercentage } from './utils';

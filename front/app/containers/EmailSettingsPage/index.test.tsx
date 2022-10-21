@@ -1,9 +1,9 @@
 // @ts-nocheck
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
+import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';
 
 jest.mock('services/campaignConsents');
-import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';
 
 jest.mock('components/ConsentForm', () => 'ConsentForm');
 jest.mock('./InitialUnsubscribeFeedback', () => 'InitialUnsubscribeFeedback');

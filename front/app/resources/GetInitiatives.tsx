@@ -1,25 +1,25 @@
-import React from 'react';
 import {
-  get,
-  isString,
-  isEqual,
-  omit,
   cloneDeep,
-  omitBy,
+  get,
+  isEqual,
   isNil,
+  isString,
+  omit,
+  omitBy,
   unionBy,
 } from 'lodash-es';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import React from 'react';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import {
-  map,
   distinctUntilChanged,
+  map,
   mergeScan,
   switchMap,
 } from 'rxjs/operators';
 import {
-  initiativesStream,
   IInitiativeData,
   InitiativePublicationStatus,
+  initiativesStream,
 } from 'services/initiatives';
 import {
   getPageNumberFromUrl,

@@ -2,14 +2,14 @@ import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // i18n
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
+import T from 'components/T';
 import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
-import T from 'components/T';
+import NotificationWrapper from '../NotificationWrapper';
 
 // services
 import { IIdeaMarkedAsSpamNotificationData } from 'services/notifications';

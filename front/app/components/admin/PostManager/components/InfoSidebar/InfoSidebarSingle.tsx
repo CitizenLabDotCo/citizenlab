@@ -1,8 +1,8 @@
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import GetIdea from 'resources/GetIdea';
 import T from 'components/T';
-import { Segment, Header } from 'semantic-ui-react';
+import React from 'react';
+import GetIdea from 'resources/GetIdea';
+import { Header, Segment } from 'semantic-ui-react';
+import { isNilOrError } from 'utils/helperUtils';
 import { handlePreviewCLick, StyledLink } from './';
 
 export default (props: {

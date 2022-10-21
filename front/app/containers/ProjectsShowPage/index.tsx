@@ -1,44 +1,44 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
 import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
+import { Box, Image, Spinner, Title } from '@citizenlab/cl2-component-library';
+import ForbiddenRoute from 'components/routing/forbiddenRoute';
+import Modal from 'components/UI/Modal';
+import ContinuousIdeas from './continuous/Ideas';
+import ContinuousPoll from './continuous/Poll';
+import ContinuousSurvey from './continuous/Survey';
+import ContinuousVolunteering from './continuous/Volunteering';
+import ProjectEvents from './shared/events';
+import ProjectHeader from './shared/header/ProjectHeader';
 import ProjectHelmet from './shared/header/ProjectHelmet';
 import ProjectNotFound from './shared/header/ProjectNotFound';
 import ProjectNotVisible from './shared/header/ProjectNotVisible';
-import ProjectHeader from './shared/header/ProjectHeader';
-import ProjectEvents from './shared/events';
-import ContinuousIdeas from './continuous/Ideas';
-import ContinuousSurvey from './continuous/Survey';
-import ContinuousPoll from './continuous/Poll';
-import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
-import { Box, Spinner, Title, Image } from '@citizenlab/cl2-component-library';
-import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import Modal from 'components/UI/Modal';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import useEvents from 'hooks/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
+import useEvents from 'hooks/useEvents';
+import useLocale from 'hooks/useLocale';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // style
-import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 import rocket from 'assets/img/rocket.png';
+import styled from 'styled-components';
+import { colors, media } from 'utils/styleUtils';
 
 // typings
 import { IProjectData } from 'services/projects';
 
 // other
-import { isValidPhase } from './phaseParam';
-import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'services/phases';
+import { anyIsUndefined, isApiError, isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
+import { isValidPhase } from './phaseParam';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;

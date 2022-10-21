@@ -1,13 +1,13 @@
 // @ts-nocheck
 // libraries
+import moment from 'moment';
 import React from 'react';
 import {
+  fireEvent,
   render,
   screen,
-  fireEvent,
   waitForElementToBeRemoved,
 } from 'utils/testUtils/rtl';
-import moment from 'moment';
 
 // component to test
 import EventInformation from './';

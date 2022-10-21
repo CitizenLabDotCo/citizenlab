@@ -1,16 +1,16 @@
-import React from 'react';
 import { isNil, omitBy } from 'lodash-es';
+import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import { usersStream, IUserData } from 'services/users';
-import shallowCompare from 'utils/shallowCompare';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { IUserData, usersStream } from 'services/users';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   getPageNumberFromUrl,
   getSortAttribute,
   getSortDirection,
   SortDirection,
 } from 'utils/paginationUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'role';
 export type Sort =

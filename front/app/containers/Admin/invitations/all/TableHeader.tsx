@@ -1,14 +1,14 @@
 import React from 'react';
 
 // components
-import { Thead, Tr, Th, Text } from '@citizenlab/cl2-component-library';
+import { Text, Th, Thead, Tr } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
 
 // i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // typings
 import { SortAttribute } from 'resources/GetInvites';

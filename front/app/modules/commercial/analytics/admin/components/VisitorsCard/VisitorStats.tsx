@@ -5,9 +5,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
 
 // i18n
-import messages from './messages';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import messages from './messages';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';

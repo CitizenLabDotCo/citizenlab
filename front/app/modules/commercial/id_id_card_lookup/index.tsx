@@ -1,13 +1,13 @@
+import { isLastVerificationMethod } from 'modules/commercial/verification';
 import React from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
-import './services/verificationMethods';
-import IdCardLookupButton from './components/IdCardLookupButton';
-import IdCardLookupForm from './components/IdCardLookupForm';
 import {
   IDLookupMethod,
   TVerificationMethodName,
 } from 'services/verificationMethods';
-import { isLastVerificationMethod } from 'modules/commercial/verification';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import IdCardLookupButton from './components/IdCardLookupButton';
+import IdCardLookupForm from './components/IdCardLookupForm';
+import './services/verificationMethods';
 
 const verificationMethodName: TVerificationMethodName = 'id_card_lookup';
 const configuration: ModuleConfiguration = {

@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { StyledSectionDescription } from '.';
 
 // components
+import { Toggle } from '@citizenlab/cl2-component-library';
 import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
-import { Toggle } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
 // i18n

@@ -2,8 +2,8 @@
 import messages from './messages';
 
 // typings
-import { Response, EmptyResponse } from './typings';
 import { WrappedComponentProps } from 'react-intl';
+import { EmptyResponse, Response } from './typings';
 
 export const isEmptyResponse = (
   response: Response | EmptyResponse

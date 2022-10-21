@@ -1,10 +1,10 @@
-import React from 'react';
 import { isString } from 'lodash-es';
-import { Subscription, BehaviorSubject, of } from 'rxjs';
-import { distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
+import React from 'react';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { IPageData, pageByIdStream, pageBySlugStream } from 'services/pages';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   id?: string;

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { IUserData } from 'services/users';
 import { projectModeratorsStream } from 'modules/commercial/project_management/services/projectModerators';
+import { useEffect, useState } from 'react';
+import { IUserData } from 'services/users';
 
 export default function useProjectModerators(projectId: string) {
   const [projectModerators, setProjectModerators] = useState<

@@ -1,46 +1,46 @@
-import {
-  startWith,
-  scan,
-  filter,
-  distinctUntilChanged,
-  refCount,
-  publishReplay,
-} from 'rxjs/operators';
 import modules from 'modules';
+import {
+  distinctUntilChanged,
+  filter,
+  publishReplay,
+  refCount,
+  scan,
+  startWith,
+} from 'rxjs/operators';
 
 // utils
 import {
-  includes,
+  cloneDeep,
   flatten,
+  forEach,
   forOwn,
+  has,
+  includes,
   isArray,
-  isString,
-  isObject,
   isEmpty,
   isFunction,
-  cloneDeep,
-  has,
+  isObject,
+  isString,
   omit,
-  forEach,
   union,
   uniq,
 } from 'lodash-es';
-import request from 'utils/request';
 import { reportError } from 'utils/loggingUtils';
+import request from 'utils/request';
 import {
   deepFreeze,
-  sanitizeQueryParameters,
-  removeTrailingSlash,
-  isSingleItemStream,
   getStreamId,
+  isSingleItemStream,
+  removeTrailingSlash,
+  sanitizeQueryParameters,
 } from './utils';
 
 // typings
-import { Observer, Observable, Subscription } from 'rxjs';
+import { Observable, Observer, Subscription } from 'rxjs';
 
 // constants
-import { authApiEndpoint } from 'services/auth';
 import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
+import { authApiEndpoint } from 'services/auth';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 
 export type pureFn<T> = (arg: T) => T;

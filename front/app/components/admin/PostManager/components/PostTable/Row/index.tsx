@@ -3,15 +3,15 @@ import { ManagerType, TFilterMenu } from '../../..';
 
 // services
 import { IIdeaData } from 'services/ideas';
-import { IInitiativeData } from 'services/initiatives';
-import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IPhaseData } from 'services/phases';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';

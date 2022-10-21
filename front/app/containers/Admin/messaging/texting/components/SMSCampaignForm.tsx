@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
-import TextArea from 'components/UI/TextArea';
+import { Box, Error, Label } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { Label, Box, Error } from '@citizenlab/cl2-component-library';
+import TextArea from 'components/UI/TextArea';
 import RemainingCharacters from '../components/RemainingCharacters';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
-  updateTextingCampaign,
   addTextingCampaign,
   ITextingCampaignData,
+  updateTextingCampaign,
 } from 'services/textingCampaigns';
 
 interface Props {

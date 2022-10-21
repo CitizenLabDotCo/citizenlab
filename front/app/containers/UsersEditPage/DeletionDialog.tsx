@@ -12,15 +12,15 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
-import Button from 'components/UI/Button';
 import FormattedAnchor from 'components/FormattedAnchor';
+import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import eventEmitter from 'utils/eventEmitter';
 import useLocalize from 'hooks/useLocalize';
 import { WrappedComponentProps } from 'react-intl';
+import eventEmitter from 'utils/eventEmitter';
 
 const Container = styled.div`
   padding: 0px 10px;

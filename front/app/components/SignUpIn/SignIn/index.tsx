@@ -1,14 +1,14 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
 // components
-import PasswordSignin from 'components/SignUpIn/SignIn/PasswordSignin';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
-import Error from 'components/UI/Error';
+import PasswordSignin from 'components/SignUpIn/SignIn/PasswordSignin';
 import {
   StyledHeaderContainer,
   StyledHeaderTitle,
   StyledModalContentContainer,
 } from 'components/SignUpIn/styles';
+import Error from 'components/UI/Error';
 
 // utils
 import { handleOnSSOClick } from 'services/singleSignOn';
@@ -18,8 +18,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/SignUpIn/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // style
 import styled from 'styled-components';

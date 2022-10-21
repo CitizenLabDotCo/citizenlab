@@ -1,4 +1,4 @@
-import { memo, useMemo, useEffect, useCallback } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -7,21 +7,21 @@ import useMapConfig from '../../../hooks/useMapConfig';
 // utils
 import {
   getCenter,
-  getZoomLevel,
-  getTileProvider,
   getTileOptions,
+  getTileProvider,
+  getZoomLevel,
 } from '../../../utils/map';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
 
 // styling
-import legendMarkerIcon from './legend-marker.svg';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
+import legendMarkerIcon from './legend-marker.svg';
 
 // typings
-import { LatLngTuple } from 'leaflet';
 import { GeoJSONLayer, Point } from 'components/UI/LeafletMap/typings';
+import { LatLngTuple } from 'leaflet';
 
 interface Props {
   onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;

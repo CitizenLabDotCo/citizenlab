@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { areasStream, IAreaData } from 'services/areas';
 import { isNilOrError } from 'utils/helperUtils';
 

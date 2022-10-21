@@ -1,13 +1,13 @@
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
 import React from 'react';
 import styled from 'styled-components';
-import { darken } from 'polished';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 
 // utils
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 import { timeAgo } from 'utils/dateUtils';
-import { trackEventByName } from 'utils/analytics';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import tracks from '../../tracks';
 
 // hooks

@@ -1,5 +1,5 @@
-import React, { createContext } from 'react';
 import moduleConfiguration from 'modules';
+import React, { createContext } from 'react';
 
 export const OutletsContext = createContext({});
 

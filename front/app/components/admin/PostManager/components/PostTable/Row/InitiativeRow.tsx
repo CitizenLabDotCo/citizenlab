@@ -1,29 +1,29 @@
+import { get, uniq } from 'lodash-es';
 import React from 'react';
+import { adopt } from 'react-adopt';
+import { DragSource } from 'react-dnd-cjs';
+import { findDOMNode } from 'react-dom';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { uniq, get } from 'lodash-es';
-import { findDOMNode } from 'react-dom';
-import { DragSource } from 'react-dnd-cjs';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
   IInitiativeData,
-  updateInitiative,
   initiativeByIdStream,
+  updateInitiative,
 } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
-import { TitleLink } from '.';
-import StyledRow from './StyledRow';
-import { Icon } from 'semantic-ui-react';
+import { StatusLabel, Td } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
-import SubRow from './SubRow';
+import { Icon } from 'semantic-ui-react';
+import { TitleLink } from '.';
 import AssigneeSelect from '../AssigneeSelect';
+import StyledRow from './StyledRow';
+import SubRow from './SubRow';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -40,7 +40,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 
 // typings
-import { TFilterMenu, ManagerType } from '../../..';
+import { ManagerType, TFilterMenu } from '../../..';
 
 // resources
 import GetAppConfiguration, {
@@ -52,10 +52,10 @@ import GetInitiativeAllowedTransitions, {
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
 import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
+import eventEmitter from 'utils/eventEmitter';
 
 interface DataProps {
   tenant: GetAppConfigurationChildProps;

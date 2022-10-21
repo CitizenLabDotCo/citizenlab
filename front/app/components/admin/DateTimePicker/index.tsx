@@ -3,8 +3,8 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 // libraries
-import React from 'react';
 import moment from 'moment';
+import React from 'react';
 import { SingleDatePicker } from 'react-dates';
 
 // styling

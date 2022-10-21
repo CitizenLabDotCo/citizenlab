@@ -1,14 +1,14 @@
-import { isNilOrError } from 'utils/helperUtils';
-import { IAppConfigurationData } from 'services/appConfiguration';
 import {
-  DEFAULT_TILE_PROVIDER,
-  DEFAULT_TILE_OPTIONS,
   DEFAULT_CENTER,
+  DEFAULT_TILE_OPTIONS,
+  DEFAULT_TILE_PROVIDER,
   DEFAULT_ZOOM,
 } from 'components/UI/LeafletMap/config';
+import formatcoords from 'formatcoords';
 import { LatLngTuple } from 'leaflet';
 import { isNil } from 'lodash-es';
-import formatcoords from 'formatcoords';
+import { IAppConfigurationData } from 'services/appConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const getCenter = (
   centerLatLng?: LatLngTuple | null,

@@ -1,19 +1,19 @@
-import { isNilOrError } from 'utils/helperUtils';
-import { IMapConfigState } from '../hooks/useMapConfig';
-import { IAppConfigurationData } from 'services/appConfiguration';
-import { IMapLayerAttributes } from '../services/mapLayers';
-import { Locale } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { isNumber } from 'lodash-es';
+import { IAppConfigurationData } from 'services/appConfiguration';
+import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   getCenter as baseGetCenter,
-  getZoomLevel as baseGetZoomLevel,
-  getTileProvider as baseGetTileProvider,
   getTileOptions as baseGetTileOptions,
+  getTileProvider as baseGetTileProvider,
+  getZoomLevel as baseGetZoomLevel,
 } from 'utils/map';
+import { IMapConfigState } from '../hooks/useMapConfig';
+import { IMapLayerAttributes } from '../services/mapLayers';
 import {
-  MAPTILER_DEFAULT_OPTIONS,
   BASEMAP_AT_DEFAULT_OPTIONS,
+  MAPTILER_DEFAULT_OPTIONS,
 } from './tileProviderDefaultOptions';
 
 export const getCenter = (

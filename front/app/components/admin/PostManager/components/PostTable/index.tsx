@@ -1,21 +1,21 @@
-import React from 'react';
 import { every, isEmpty, isFunction } from 'lodash-es';
+import React from 'react';
 
 // components
-import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
-import Row from './Row';
+import { Table, Tbody, Td, Tfoot, Tr } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
-import NoPost from './NoPost';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import IdeaHeaderRow from './header/IdeaHeaderRow';
 import InitiativesHeaderRow from './header/InitiativesHeaderRow';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import NoPost from './NoPost';
+import Row from './Row';
 
 // services
 import { IIdeaData } from 'services/ideas';
-import { IInitiativeData } from 'services/initiatives';
-import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IPhaseData } from 'services/phases';
 
 // styling
 import styled from 'styled-components';

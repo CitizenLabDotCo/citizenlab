@@ -5,24 +5,24 @@ import { isNilOrError } from 'utils/helperUtils';
 import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/PostShowComponents/Comments/messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // events
 import { commentTranslateButtonClicked } from 'components/PostShowComponents/Comments/events';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/PostShowComponents/Comments/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // types
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetCommentChildProps } from 'resources/GetComment';
 import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 
 const Container = styled.li`
   display: flex;

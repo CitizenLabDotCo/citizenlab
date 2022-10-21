@@ -1,12 +1,12 @@
 // @ts-nocheck
-import React from 'react';
 import { shallow } from 'enzyme';
-import { localizeProps } from 'utils/testUtils/localizeProps';
-import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
-import { getIdea } from 'services/__mocks__/ideas';
+import React from 'react';
 import { getAppConfigurationData } from 'services/__mocks__/appConfiguration';
+import { getIdea } from 'services/__mocks__/ideas';
 import { getLocale } from 'services/__mocks__/locale';
 import { getProject } from 'services/__mocks__/projects';
+import { localizeProps } from 'utils/testUtils/localizeProps';
+import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 
 jest.mock('containers/IdeasShow/PostedBy', () => 'PostedBy');
 jest.mock(

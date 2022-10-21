@@ -1,17 +1,17 @@
+import { parse } from 'qs';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
-import { parse } from 'qs';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // services
 import {
@@ -23,15 +23,15 @@ import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 // typings
 import { UploadFile } from 'typings';
 
 // style
-import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;

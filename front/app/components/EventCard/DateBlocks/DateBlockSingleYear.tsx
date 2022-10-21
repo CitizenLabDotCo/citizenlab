@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
 // components
-import { EventDateBlock, EventDate, EventYear } from './styling';
 import DayAndMonth from './DayAndMonth';
+import { EventDate, EventDateBlock, EventYear } from './styling';
 
 interface Props {
   startAtDay: string;

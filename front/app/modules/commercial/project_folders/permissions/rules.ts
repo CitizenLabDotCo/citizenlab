@@ -1,17 +1,17 @@
-import { IProjectFolderData } from './../services/projectFolders';
+import { IAppConfigurationData } from 'services/appConfiguration';
 import {
   definePermissionRule,
   IRouteItem,
 } from 'services/permissions/permissions';
-import { isProjectFolderModerator, userModeratesFolder } from './roles';
 import { isAdmin } from 'services/permissions/roles';
 import {
   canAccessRoute,
   isModeratorRoute,
 } from 'services/permissions/rules/routePermissions';
 import { IUser } from 'services/users';
-import { IAppConfigurationData } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
+import { IProjectFolderData } from './../services/projectFolders';
+import { isProjectFolderModerator, userModeratesFolder } from './roles';
 
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,

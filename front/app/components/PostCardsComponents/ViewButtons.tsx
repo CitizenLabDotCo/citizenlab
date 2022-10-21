@@ -1,24 +1,24 @@
 import React, {
-  memo,
   FormEvent,
-  useRef,
   KeyboardEvent,
+  memo,
   useEffect,
+  useRef,
 } from 'react';
 import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import {
-  Icon,
   defaultStyles,
   fontSizes,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 
 // styling
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

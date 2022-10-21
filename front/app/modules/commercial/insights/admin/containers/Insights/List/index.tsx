@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import EmptyState from './EmptyState';
-import useInsightsViews from 'modules/commercial/insights/hooks/useInsightsViews';
-import InsightsList from './InsightsList';
 import Modal from 'components/UI/Modal';
+import useInsightsViews from 'modules/commercial/insights/hooks/useInsightsViews';
 import CreateInsightsView from './CreateInsightsView';
+import EmptyState from './EmptyState';
+import InsightsList from './InsightsList';
 
 const Insights = () => {
   const [createModalOpened, setCreateModalOpened] = useState(false);

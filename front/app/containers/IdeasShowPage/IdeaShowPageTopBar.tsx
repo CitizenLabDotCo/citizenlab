@@ -2,8 +2,8 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
 
 // components
 import VoteControl from 'components/VoteControl';
@@ -13,9 +13,9 @@ import GoBackButton from 'containers/IdeasShow/GoBackButton';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // styling
-import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import styled from 'styled-components';
+import { colors, media } from 'utils/styleUtils';
 
 // typings
 import { IdeaVotingDisabledReason } from 'services/ideas';

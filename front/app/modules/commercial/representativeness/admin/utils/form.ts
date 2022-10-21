@@ -1,15 +1,15 @@
 // utils
-import { forEachBin } from './bins';
 import { isEqual } from 'lodash-es';
+import { forEachBin } from './bins';
 
 // typings
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
+import { RemoteFormValues } from '../hooks/useReferenceDistribution';
 import {
+  Bins,
   IBinnedDistribution,
   TUploadDistribution,
-  Bins,
 } from '../services/referenceDistribution';
-import { RemoteFormValues } from '../hooks/useReferenceDistribution';
 
 // EXPORTS
 export type FormValues = Record<string, number | null>;

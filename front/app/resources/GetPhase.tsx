@@ -1,8 +1,8 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import { IPhaseData, phaseStream } from 'services/phases';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   id?: string | null;

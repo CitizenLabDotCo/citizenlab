@@ -1,18 +1,18 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
+import { distinctUntilChanged, map, mergeScan } from 'rxjs/operators';
 
 // services
 import {
   getGroups,
-  IGroups,
-  IGroupData,
-  MembershipType,
   GetGroupsQueryParameters,
+  IGroupData,
+  IGroups,
+  MembershipType,
 } from 'services/groups';
 
 // utils
-import { isEqual, get, isString, omitBy, isNil, isError } from 'lodash-es';
+import { get, isEqual, isError, isNil, isString, omitBy } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // typings

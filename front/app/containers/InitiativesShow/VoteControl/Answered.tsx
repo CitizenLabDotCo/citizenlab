@@ -2,17 +2,17 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import { Icon } from '@citizenlab/cl2-component-library';
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
+import { StatusExplanation, StatusWrapper } from './SharedStyles';
 
 import T from 'components/T';
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div``;
 

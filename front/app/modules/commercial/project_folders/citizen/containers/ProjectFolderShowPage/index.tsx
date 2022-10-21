@@ -1,37 +1,37 @@
-import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
+import React, { memo } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from '../../../permissions/roles';
 
 // components
-import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
-import ProjectFolderHeader from './ProjectFolderHeader';
-import ProjectFolderDescription from './ProjectFolderDescription';
-import ProjectFolderProjectCards from './ProjectFolderProjectCards';
-import Button from 'components/UI/Button';
 import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
+import Button from 'components/UI/Button';
+import ProjectFolderDescription from './ProjectFolderDescription';
+import ProjectFolderHeader from './ProjectFolderHeader';
+import ProjectFolderProjectCards from './ProjectFolderProjectCards';
+import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 
 // hooks
+import useAdminPublications from 'hooks/useAdminPublications';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFolder from '../../../hooks/useProjectFolder';
-import useAdminPublications from 'hooks/useAdminPublications';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { maxPageWidth } from './styles';
-import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { IProjectFolderData } from '../../../services/projectFolders';
 import { PublicationStatus } from 'services/projects';
+import { IProjectFolderData } from '../../../services/projectFolders';
 
 const Container = styled.main`
   flex: 1 0 auto;

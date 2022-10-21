@@ -5,8 +5,8 @@ import React from 'react';
 import { IPollQuestion } from 'services/pollQuestions';
 
 // Components
-import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
+import Button from 'components/UI/Button';
 
 import T from 'components/T';
 

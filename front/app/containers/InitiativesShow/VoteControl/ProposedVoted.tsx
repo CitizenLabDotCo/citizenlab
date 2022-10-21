@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 
+import { darken } from 'polished';
 import styled, { keyframes } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import { Icon } from '@citizenlab/cl2-component-library';
 

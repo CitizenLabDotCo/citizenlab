@@ -4,12 +4,12 @@ import React, { useEffect } from 'react';
 import { Th } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/admin/PostManager/messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { CellConfiguration, InsertConfigurationOptions } from 'typings';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
+import { CellConfiguration, InsertConfigurationOptions } from 'typings';
 
 type Props = {
   onData: (

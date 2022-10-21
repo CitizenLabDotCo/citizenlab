@@ -1,54 +1,54 @@
+import { get, isEmpty, isNumber } from 'lodash-es';
+import { parse } from 'qs';
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isEmpty, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { parse } from 'qs';
 
 // libraries
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import IdeasNewButtonBar from './IdeasNewButtonBar';
-import NewIdeaForm from './NewIdeaForm';
 import IdeasNewMeta from './IdeasNewMeta';
+import NewIdeaForm from './NewIdeaForm';
 
 // feature flag variant
 import IdeasNewPageWithJSONForm from './WithJSONForm';
 
 // services
-import { addIdea, IIdeaAdd } from 'services/ideas';
-import { addIdeaFile } from 'services/ideaFiles';
-import { addIdeaImage } from 'services/ideaImages';
 import {
   globalState,
   IGlobalStateService,
   IIdeasPageGlobalState,
 } from 'services/globalState';
-import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
+import { addIdeaFile } from 'services/ideaFiles';
+import { addIdeaImage } from 'services/ideaImages';
+import { addIdea, IIdeaAdd } from 'services/ideas';
+import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // style
-import { media, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, media } from 'utils/styleUtils';
 
 // tracks
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProject from 'hooks/useProject';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { UploadFile } from 'typings';
-import useProject from 'hooks/useProject';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 const Container = styled.div`
   background: ${colors.background};

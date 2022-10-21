@@ -1,8 +1,8 @@
 import React from 'react';
+import { Divider, Menu } from 'semantic-ui-react';
 import { IPhaseData } from 'services/phases';
-import { Menu, Divider } from 'semantic-ui-react';
-import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 import { FormattedMessage } from 'utils/cl-intl';
+import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 
 import messages from '../../messages';
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import { FormProvider, useForm } from 'react-hook-form';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 import FileUploader from './';
-import { useForm, FormProvider } from 'react-hook-form';
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useRemoteFiles', () => () => null);

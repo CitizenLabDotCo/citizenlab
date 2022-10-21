@@ -1,20 +1,20 @@
-import React, { MouseEvent, KeyboardEvent } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
 import { get } from 'lodash-es';
+import React, { KeyboardEvent, MouseEvent } from 'react';
+import { adopt } from 'react-adopt';
+import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
 import T from 'components/T';
+import Link from 'utils/cl-router/Link';
+import NotificationWrapper from '../NotificationWrapper';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';

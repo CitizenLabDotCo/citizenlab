@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import React, { useState } from 'react';
 
 type Props = {
   microsoftFormsUrl: string;

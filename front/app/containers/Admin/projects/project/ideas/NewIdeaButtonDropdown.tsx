@@ -1,29 +1,29 @@
 import React from 'react';
 
 // intl
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // components
 import {
   Box,
   Dropdown,
   DropdownListItem,
-  Text,
   Icon,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig } from 'utils/participationMethodUtils';
+import { colors } from 'utils/styleUtils';
 
 // hooks & services
 import useLocalize from 'hooks/useLocalize';
-import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'services/projects';
 
 interface Props {
   phases: IPhaseData[] | null;

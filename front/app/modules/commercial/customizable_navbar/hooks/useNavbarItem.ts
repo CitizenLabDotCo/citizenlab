@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { navbarItemsStream, INavbarItem } from 'services/navbar';
+import { useEffect, useState } from 'react';
+import { INavbarItem, navbarItemsStream } from 'services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
 
 type TNavbarItemsState = INavbarItem | undefined | null | Error;

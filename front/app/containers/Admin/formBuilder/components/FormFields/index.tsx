@@ -1,8 +1,8 @@
+import { snakeCase } from 'lodash-es';
 import React from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { useFormContext } from 'react-hook-form';
-import { snakeCase } from 'lodash-es';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -12,10 +12,10 @@ import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
+import { Badge, Box, Text } from '@citizenlab/cl2-component-library';
 import { List, SortableRow } from 'components/admin/ResourceList';
-import { Box, Badge, Text } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 
 // styling
 import styled from 'styled-components';

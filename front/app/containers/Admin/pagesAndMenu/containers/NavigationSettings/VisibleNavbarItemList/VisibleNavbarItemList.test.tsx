@@ -1,8 +1,8 @@
-import React from 'react';
-import { fireEvent, render, screen, within } from 'utils/testUtils/rtl';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
-import VisibleNavbarItemList from '.';
+import React from 'react';
 import clHistory from 'utils/cl-router/history';
+import { fireEvent, render, screen, within } from 'utils/testUtils/rtl';
+import VisibleNavbarItemList from '.';
 
 const mockNavbarItems = allNavbarItems;
 

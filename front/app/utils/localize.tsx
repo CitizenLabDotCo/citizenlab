@@ -1,10 +1,10 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 
 // Services
-import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
+import { localeStream } from 'services/locale';
 
 // hooks
 import { Localize } from 'hooks/useLocalize';

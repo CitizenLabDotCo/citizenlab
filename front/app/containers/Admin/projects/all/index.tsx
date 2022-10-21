@@ -12,12 +12,12 @@ import messages from './messages';
 import { isAdmin } from 'services/permissions/roles';
 
 // components
-import CreateProject from './CreateProject';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import PageWrapper from 'components/admin/PageWrapper';
 import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
-import { Spinner } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
+import CreateProject from './CreateProject';
 
 const ModeratorProjectList = React.lazy(
   () => import('./Lists/ModeratorProjectList')

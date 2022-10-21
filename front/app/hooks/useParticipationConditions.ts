@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { of, Observable } from 'rxjs';
+import { useEffect, useState } from 'react';
+import { Observable, of } from 'rxjs';
 import {
-  IParticipationConditions,
   getGlobalParticipationConditions,
   getPCParticipationConditions,
+  IParticipationConditions,
 } from 'services/participationConditions';
 
 import { ContextShape } from 'components/Verification/verificationModalEvents';

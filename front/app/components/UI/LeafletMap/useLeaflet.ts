@@ -1,48 +1,48 @@
+import { isEqual } from 'lodash-es';
 import { useEffect, useState } from 'react';
+import { combineLatest } from 'rxjs';
 import {
-  distinctUntilChanged,
   debounceTime,
-  startWith,
+  distinctUntilChanged,
   pairwise,
+  startWith,
   tap,
 } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
-import { isEqual } from 'lodash-es';
 import {
-  DEFAULT_MARKER_ICON,
-  DEFAULT_MARKER_HOVER_ICON,
   DEFAULT_MARKER_ACTIVE_ICON,
+  DEFAULT_MARKER_HOVER_ICON,
+  DEFAULT_MARKER_ICON,
 } from './config';
 
 // events
 import {
-  setLeafletMapSelectedMarker,
-  setLeafletMapClicked,
-  setLeafletMapCenter,
-  setLeafletMapZoom,
+  leafletMapCenter$,
   leafletMapHoveredMarker$,
   leafletMapSelectedMarker$,
-  leafletMapCenter$,
   leafletMapZoom$,
+  setLeafletMapCenter,
+  setLeafletMapClicked,
+  setLeafletMapSelectedMarker,
+  setLeafletMapZoom,
 } from './events';
 
-import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import 'leaflet.markercluster';
-import './simplestyle';
-import marker from 'leaflet/dist/images/marker-icon.png';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
+import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import 'leaflet/dist/leaflet.css';
+import './simplestyle';
 
 import service from './services';
 
 import {
-  Point,
+  GeoJSONLayer,
   IMarkerStringOrObjectOrFunctionForLayer,
   IOverlayStringOrObjectOrFunctionForLayer,
-  ITooltipStringOrObjectOrFunctionForLayer,
   IPopupStringOrObjectOrFunctionForLayer,
-  GeoJSONLayer,
+  ITooltipStringOrObjectOrFunctionForLayer,
+  Point,
 } from './typings';
 
 delete L.Icon.Default.prototype['_getIconUrl'];

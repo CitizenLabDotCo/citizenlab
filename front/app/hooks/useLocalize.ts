@@ -1,8 +1,8 @@
-import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { getLocalizedWithFallback } from 'utils/i18n';
-import { Multiloc } from 'typings';
+import useLocale from 'hooks/useLocale';
 import { useCallback } from 'react';
+import { Multiloc } from 'typings';
+import { getLocalizedWithFallback } from 'utils/i18n';
 
 interface ILocalizeOptions {
   maxChar?: number;

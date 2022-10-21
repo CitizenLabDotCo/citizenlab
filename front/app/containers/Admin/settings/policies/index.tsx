@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // components
-import Link from 'utils/cl-router/Link';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import PageEditor from './PageEditor';
+import { SectionDescription, SectionTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
+import Link from 'utils/cl-router/Link';
+import PageEditor from './PageEditor';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';

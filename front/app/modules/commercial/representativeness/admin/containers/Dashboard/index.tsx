@@ -9,10 +9,10 @@ import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/serv
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Header from './Header';
 import ChartFilters from '../../components/ChartFilters';
-import EmptyState from './EmptyState';
 import ChartCards from './ChartCards';
+import EmptyState from './EmptyState';
+import Header from './Header';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

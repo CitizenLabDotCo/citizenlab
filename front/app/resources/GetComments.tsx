@@ -1,19 +1,19 @@
+import { get, isString, unionBy } from 'lodash-es';
 import React from 'react';
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import {
   distinctUntilChanged,
-  mergeScan,
   map,
+  mergeScan,
   switchMap,
   tap,
 } from 'rxjs/operators';
 import {
-  ICommentData,
   commentsForIdeaStream,
   commentsForInitiativeStream,
   CommentsSort,
+  ICommentData,
 } from 'services/comments';
-import { unionBy, isString, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 type children = (renderProps: GetCommentsChildProps) => JSX.Element | null;

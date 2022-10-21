@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import moment, { Moment } from 'moment';
+import React, { useState } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';

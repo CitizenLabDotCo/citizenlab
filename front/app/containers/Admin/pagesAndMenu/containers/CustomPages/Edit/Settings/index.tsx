@@ -1,10 +1,10 @@
-import React from 'react';
-import CustomPageSettingsForm from '../../CustomPageSettingsForm';
-import useCustomPage from 'hooks/useCustomPage';
-import { useParams } from 'react-router-dom';
-import { isNilOrError } from 'utils/helperUtils';
-import { updateCustomPage } from 'services/customPages';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
+import useCustomPage from 'hooks/useCustomPage';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { updateCustomPage } from 'services/customPages';
+import { isNilOrError } from 'utils/helperUtils';
+import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 
 const EditCustomPageSettings = () => {
   const { customPageId } = useParams() as { customPageId: string };

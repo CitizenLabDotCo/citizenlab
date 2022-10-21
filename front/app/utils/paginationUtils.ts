@@ -1,5 +1,5 @@
-import { parse } from 'qs';
 import { isNil } from 'lodash-es';
+import { parse } from 'qs';
 
 export type SortDirection = 'ascending' | 'descending';
 

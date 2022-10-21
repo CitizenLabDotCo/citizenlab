@@ -2,8 +2,8 @@
 import { legacyColors } from '../styling';
 
 // typings
+import { BarConfig, Bars } from '../MultiBarChart/typings';
 import { Mapping } from './typings';
-import { Bars, BarConfig } from '../MultiBarChart/typings';
 
 const FALLBACK_FILL = legacyColors.barFill;
 

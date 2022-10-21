@@ -1,26 +1,26 @@
-import React from 'react';
 import { isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import React from 'react';
 import {
-  Subscription,
   BehaviorSubject,
   combineLatest,
-  of,
   Observable,
+  of,
+  Subscription,
 } from 'rxjs';
-import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
-import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
-import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
-import { pageFilesStream, IPageFiles } from 'services/pageFiles';
+import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { eventFilesStream, IEventFiles } from 'services/eventFiles';
 import { ideaFilesStream, IIdeaFiles } from 'services/ideaFiles';
 import {
-  initiativeFilesStream,
   IInitiativeFiles,
+  initiativeFilesStream,
 } from 'services/initiativeFiles';
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { IPageFiles, pageFilesStream } from 'services/pageFiles';
+import { IPhaseFiles, phaseFilesStream } from 'services/phaseFiles';
+import { IProjectFiles, projectFilesStream } from 'services/projectFiles';
 import { UploadFile } from 'typings';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 // Converted file objects (to JS objects of type File).
 // Useful when you combining local files and remote files,

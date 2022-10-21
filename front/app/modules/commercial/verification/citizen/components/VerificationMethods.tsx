@@ -1,4 +1,4 @@
-import React, { memo, useCallback, Fragment } from 'react';
+import React, { Fragment, memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -6,8 +6,8 @@ import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Title, Subtitle } from './styles';
 import Or from 'components/UI/Or';
+import { Subtitle, Title } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -15,17 +15,17 @@ import useParticipationConditions from 'hooks/useParticipationConditions';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
-import { TVerificationMethod } from 'services/verificationMethods';
 import Outlet from 'components/Outlet';
 import { ContextShape } from 'components/Verification/verificationModalEvents';
+import { TVerificationMethod } from 'services/verificationMethods';
 
 const Container = styled.div`
   display: flex;

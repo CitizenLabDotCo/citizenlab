@@ -1,13 +1,13 @@
-import React from 'react';
-import styled, { useTheme } from 'styled-components';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
+import React from 'react';
+import styled, { useTheme } from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // style
-import { colors, media, fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 import useAuthUser from 'hooks/useAuthUser';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const UserNameContainer = styled.div`
   display: flex;

@@ -5,26 +5,26 @@ import { animation } from '../styling';
 
 // components
 import {
-  PieChart as RechartsPieChart,
-  Tooltip,
-  Pie,
   Cell,
   Label,
+  Pie,
+  PieChart as RechartsPieChart,
+  Tooltip,
 } from 'recharts';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 
 // utils
+import { getTooltipConfig, hasNoData, parseMargin } from '../utils';
 import { getPieConfig } from './utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 // typings
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import { Props } from './typings';
 
 const DEFAULT_LEGEND_OFFSET = 16;
 

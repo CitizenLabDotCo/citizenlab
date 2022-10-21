@@ -1,9 +1,9 @@
-import React from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
-import './services/verificationMethods';
-import ClaveUnicaButton from './components/ClaveUnicaButton';
 import { isLastVerificationMethod } from 'modules/commercial/verification';
+import React from 'react';
 import { TVerificationMethodName } from 'services/verificationMethods';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import ClaveUnicaButton from './components/ClaveUnicaButton';
+import './services/verificationMethods';
 
 const verificationMethodName: TVerificationMethodName = 'clave_unica';
 const configuration: ModuleConfiguration = {

@@ -1,22 +1,22 @@
-import React, { useEffect, useState, FormEvent } from 'react';
-import { CONFIRMATION_STEP_NAME } from '../../index';
-import { SignUpStepOutletProps } from 'utils/moduleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-import messages from './messages';
 import Error from 'components/UI/Error';
+import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import { darken } from 'polished';
+import React, { FormEvent, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { CLError, CLErrors } from 'typings';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { SignUpStepOutletProps } from 'utils/moduleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { CONFIRMATION_STEP_NAME } from '../../index';
 import {
   confirm,
-  resendCode,
   IConfirmation,
+  resendCode,
 } from '../../services/confirmation';
-import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
-import { CLErrors, CLError } from 'typings';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import messages from './messages';
+import tracks from './tracks';
 
 import {
   Box,
@@ -25,9 +25,9 @@ import {
   Label,
   Success,
 } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import { FormLabel } from 'components/UI/FormComponents';
+import Link from 'utils/cl-router/Link';
 
 const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;

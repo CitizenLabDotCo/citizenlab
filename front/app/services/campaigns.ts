@@ -1,5 +1,5 @@
-import { IRelationship, Multiloc, ILinks } from 'typings';
 import { API_PATH } from 'containers/App/constants';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/campaigns`;

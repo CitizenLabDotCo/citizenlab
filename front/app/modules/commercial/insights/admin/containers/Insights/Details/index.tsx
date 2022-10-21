@@ -1,24 +1,24 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styles
-import { stylingConsts, media } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { media, stylingConsts } from 'utils/styleUtils';
 
 // components
+import Navigation from 'modules/commercial/insights/admin/components/Navigation';
 import TopBar, {
   topBarHeight,
 } from 'modules/commercial/insights/admin/components/TopBar';
 import Categories from './Categories';
-import Network from './Network';
 import Inputs from './Inputs';
+import Network from './Network';
 import Preview from './Preview';
-import Navigation from 'modules/commercial/insights/admin/components/Navigation';
 
 // hooks
 import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';

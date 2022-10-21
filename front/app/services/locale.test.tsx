@@ -1,8 +1,8 @@
 import {
-  setPathnameLocale,
-  replacePathnameLocale,
   getUrlLocale,
   removeUrlLocale,
+  replacePathnameLocale,
+  setPathnameLocale,
 } from './locale';
 
 jest.mock('modules', () => ({ streamsToReset: [] }));

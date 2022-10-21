@@ -1,9 +1,9 @@
+import { capitalize, isEmpty, isString } from 'lodash-es';
 import React, { PureComponent } from 'react';
-import { isString, isEmpty, capitalize } from 'lodash-es';
 import { first } from 'rxjs/operators';
 
 // libraries
-import { MentionsInput, Mention } from 'react-mentions';
+import { Mention, MentionsInput } from 'react-mentions';
 
 // services
 import { mentionsStream } from 'services/mentions';
@@ -12,9 +12,9 @@ import { mentionsStream } from 'services/mentions';
 import Error from 'components/UI/Error';
 
 // style
-import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 import { transparentize } from 'polished';
+import styled, { withTheme } from 'styled-components';
+import { colors, defaultStyles, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';

@@ -2,16 +2,16 @@ import React from 'react';
 
 // components
 import {
-  Title,
   Box,
-  Text,
   StatusLabel,
+  Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
 // import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';

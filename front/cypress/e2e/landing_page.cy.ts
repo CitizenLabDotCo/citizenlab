@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
+import { randomEmail, randomString } from '../support/commands';
 
 describe('Landing page - not signed in', () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
-import { Response, PieRow } from './typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
+import { PieRow, Response } from './typings';
 import { Translations } from './utils';
 
 // styling

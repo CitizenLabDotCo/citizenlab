@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  verificationMethodsStream,
   TVerificationMethod,
+  verificationMethodsStream,
 } from 'services/verificationMethods';
 
 export default function useVerificationMethods() {

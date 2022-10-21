@@ -10,8 +10,8 @@ import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 const StyledLink = styled(Link)`
   color: ${colors.teal700};

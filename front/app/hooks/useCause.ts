@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ICauseData, causeByIdStream } from 'services/causes';
+import { useEffect, useState } from 'react';
+import { causeByIdStream, ICauseData } from 'services/causes';
 
 interface Input {
   causeId: string;

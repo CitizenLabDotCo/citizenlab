@@ -1,17 +1,17 @@
+import {
+  IDestinationConfig,
+  registerDestination,
+} from 'components/ConsentManager/destinations';
+import { combineLatest } from 'rxjs';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
+import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
 import {
   bufferUntilInitialized,
   events$,
   initializeFor,
 } from 'utils/analytics';
-import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  registerDestination,
-  IDestinationConfig,
-} from 'components/ConsentManager/destinations';
-import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 declare module 'components/ConsentManager/destinations' {

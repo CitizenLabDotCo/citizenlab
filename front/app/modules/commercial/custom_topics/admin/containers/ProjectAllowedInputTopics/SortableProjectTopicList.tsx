@@ -1,38 +1,38 @@
-import React, { memo, FormEvent, useState, useMemo } from 'react';
+import React, { FormEvent, memo, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
-import { isNilOrError, byId } from 'utils/helperUtils';
+import { byId, isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Button from 'components/UI/Button';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import { StyledLink } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+import Modal, {
+  ButtonsWrapper,
+  Content,
+  ModalContentContainer,
+} from 'components/UI/Modal';
+import Warning from 'components/UI/Warning';
+import VerticalCenterer from 'components/VerticalCenterer';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
 } from '../../components/RowStyles';
-import Warning from 'components/UI/Warning';
-import Modal, {
-  ModalContentContainer,
-  Content,
-  ButtonsWrapper,
-} from 'components/UI/Modal';
-import { StyledLink } from 'components/admin/Section';
-import VerticalCenterer from 'components/VerticalCenterer';
-import { Spinner } from '@citizenlab/cl2-component-library';
 
 // services
 import {
   deleteProjectAllowedInputTopic,
-  reorderProjectAllowedInputTopic,
   getTopicIds,
   IProjectAllowedInputTopic,
+  reorderProjectAllowedInputTopic,
 } from 'services/projectAllowedInputTopics';
 
 // hooks

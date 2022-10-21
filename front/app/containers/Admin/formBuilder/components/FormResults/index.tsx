@@ -1,8 +1,8 @@
+import { get, snakeCase } from 'lodash-es';
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import { get, snakeCase } from 'lodash-es';
 import { useParams } from 'react-router-dom';
+import { injectIntl } from 'utils/cl-intl';
 
 // Hooks
 import useLocale from 'hooks/useLocale';
@@ -10,14 +10,14 @@ import useLocale from 'hooks/useLocale';
 // components
 import {
   Box,
-  Title,
-  Text,
-  Icon,
   colors,
+  Icon,
+  Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
+import T from 'components/T';
 import Button from 'components/UI/Button';
 import CompletionBar from 'containers/Admin/formBuilder/components/FormResults/CompletionBar';
-import T from 'components/T';
 
 // i18n
 import messages from '../messages';

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
-  IGroupsProjectsData,
   groupsProjectsByProjectIdStream,
+  IGroupsProjectsData,
 } from 'services/groupsProjects';
 
 interface Props {

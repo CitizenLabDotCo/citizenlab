@@ -1,19 +1,19 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
 import AvatarBubbles from 'components/AvatarBubbles';
-import useLocalize from 'hooks/useLocalize';
-import { isNilOrError } from 'utils/helperUtils';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
-import SignUpButton from '../SignUpButton';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import useLocalize from 'hooks/useLocalize';
+import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import styled, { css } from 'styled-components';
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes, media } from 'utils/styleUtils';
+import messages from '../messages';
+import SignUpButton from '../SignUpButton';
+import tracks from '../tracks';
 
 const Container = styled.div<{
   align: 'center' | 'left';

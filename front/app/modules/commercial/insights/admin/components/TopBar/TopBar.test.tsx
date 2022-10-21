@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import { deleteInsightsView } from 'modules/commercial/insights/services/insightsViews';
+import React from 'react';
 import clHistory from 'utils/cl-router/history';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 
 import TopBar from './';
 

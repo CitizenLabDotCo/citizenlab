@@ -1,8 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-import { ImageSizes, Multiloc, Locale } from 'typings';
-import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
+import { ImageSizes, Locale, Multiloc } from 'typings';
+import streams, { IStreamParams } from 'utils/streams';
+import { authApiEndpoint } from './auth';
 
 const apiEndpoint = `${API_PATH}/users`;
 

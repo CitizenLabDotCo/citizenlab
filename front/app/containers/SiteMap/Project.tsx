@@ -1,8 +1,8 @@
+import T from 'components/T';
 import React from 'react';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { H3, H4 } from './';
-import T from 'components/T';
-import Link from 'utils/cl-router/Link';
 
 // components
 import ContinuousProject from './ContinuousProject';

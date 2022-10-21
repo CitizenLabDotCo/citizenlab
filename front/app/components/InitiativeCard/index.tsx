@@ -1,12 +1,12 @@
-import React, { PureComponent, FormEvent } from 'react';
-import { get, isUndefined, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { get, isString, isUndefined } from 'lodash-es';
+import React, { FormEvent, PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Card from 'components/UI/Card';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Author from 'components/Author';
+import Card from 'components/UI/Card';
 import VoteIndicator from './VoteIndicator';
 
 // resources
@@ -22,14 +22,14 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';

@@ -1,9 +1,9 @@
-import React from 'react';
 import { isString } from 'lodash-es';
+import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import { distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
+import { getCampaignStats, ICampaignStats } from 'services/campaigns';
 import shallowCompare from 'utils/shallowCompare';
-import { ICampaignStats, getCampaignStats } from 'services/campaigns';
 
 interface InputProps {
   campaignId: string;

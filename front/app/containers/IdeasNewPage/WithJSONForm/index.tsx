@@ -1,38 +1,38 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
-import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
+import usePhase from 'hooks/usePhase';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
+import { isError, isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
-import IdeasNewMeta from '../IdeasNewMeta';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
+import IdeasNewMeta from '../IdeasNewMeta';
 
-import PageContainer from 'components/UI/PageContainer';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import GoBackButton from 'containers/IdeasShow/GoBackButton';
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { FormattedMessage } from 'utils/cl-intl';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
+import GoBackButton from 'containers/IdeasShow/GoBackButton';
 import { addIdea } from 'services/ideas';
+import { FormattedMessage } from 'utils/cl-intl';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
 import { parse } from 'qs';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getCurrentPhase } from 'services/phases';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {

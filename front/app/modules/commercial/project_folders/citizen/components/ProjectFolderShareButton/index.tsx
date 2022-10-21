@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, FormEvent } from 'react';
+import React, { FormEvent, memo, useCallback, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -6,8 +6,8 @@ import Button, { Props as ButtonProps } from 'components/UI/Button';
 import ProjectFolderSharingModal from '../../../citizen/components/ProjectFolderSharingModal';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';

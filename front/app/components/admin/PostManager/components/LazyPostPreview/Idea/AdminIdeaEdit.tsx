@@ -2,30 +2,30 @@
 
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap, map, first } from 'rxjs/operators';
+import { combineLatest, of, Subscription } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import clHistory from 'utils/cl-router/history';
 
 // components
+import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import { Content, Top, Container } from '../PostPreview';
+import { Container, Content, Top } from '../PostPreview';
 
 // services
-import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { ideaByIdStream, updateIdea } from 'services/ideas';
+import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import {
-  ideaImageStream,
   addIdeaImage,
   deleteIdeaImage,
+  ideaImageStream,
 } from 'services/ideaImages';
+import { ideaByIdStream, updateIdea } from 'services/ideas';
+import { localeStream } from 'services/locale';
 import { hasPermission } from 'services/permissions';
-import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -37,25 +37,25 @@ import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { geocode } from 'utils/locationTools';
 
 // typings
-import { UploadFile, Multiloc, Locale, ILocationInfo } from 'typings';
+import { ILocationInfo, Locale, Multiloc, UploadFile } from 'typings';
 
 // style
-import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // resource components
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 
 // tracks
-import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 const ButtonWrapper = styled.div`
   display: flex;

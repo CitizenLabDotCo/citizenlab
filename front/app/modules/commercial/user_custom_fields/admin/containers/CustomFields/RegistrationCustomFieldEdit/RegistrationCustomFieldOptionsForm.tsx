@@ -6,22 +6,22 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import Button from 'components/UI/Button';
-import { SectionField } from 'components/admin/Section';
 import { Box } from '@citizenlab/cl2-component-library';
+import { SectionField } from 'components/admin/Section';
+import Button from 'components/UI/Button';
 
 // form
-import { FormProvider, useForm } from 'react-hook-form';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { object } from 'yup';
 
 // Typings
-import { Multiloc } from 'typings';
 import { useParams } from 'react-router-dom';
+import { Multiloc } from 'typings';
 
 export interface FormValues {
   title_multiloc: Multiloc;

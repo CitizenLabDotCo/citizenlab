@@ -3,8 +3,8 @@ import {
   getEmptyRow,
 } from '../../../hooks/useVisitorsData/parse/utils';
 // typings
-import moment, { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
+import moment, { Moment } from 'moment';
 
 export const generateEmptyData = (
   startAtMoment: Moment | null | undefined,

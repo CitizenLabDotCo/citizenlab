@@ -1,7 +1,7 @@
-import React from 'react';
 import { isEqual } from 'lodash-es';
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import React from 'react';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { ICampaignData, listCampaigns } from 'services/campaigns';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 

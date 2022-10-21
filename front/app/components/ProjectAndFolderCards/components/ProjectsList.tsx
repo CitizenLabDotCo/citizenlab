@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import ProjectsTabPanel from './ProjectsTabPanel';
@@ -12,8 +12,8 @@ import { TLayout } from '..';
 import { PublicationTab } from '../';
 
 // utils
-import getCardSizes from './getCardSizes';
 import { isEqual } from 'lodash-es';
+import getCardSizes from './getCardSizes';
 
 export type TCardSize = 'small' | 'medium' | 'large';
 

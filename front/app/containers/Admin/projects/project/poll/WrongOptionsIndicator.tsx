@@ -1,15 +1,15 @@
+import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { TextCell } from 'components/admin/ResourceList';
 import React from 'react';
+import { adopt } from 'react-adopt';
 import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
-import { TextCell } from 'components/admin/ResourceList';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
+import messages from './messages';
 
 export const Indicator = styled(TextCell)<{ isWarning?: boolean }>`
   display: flex;

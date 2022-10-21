@@ -2,13 +2,13 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 
 import {
-  SectionTitle,
   SectionDescription,
+  SectionTitle,
   StyledLink,
 } from 'components/admin/Section';
+import HasPermission from 'components/HasPermission';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
-import HasPermission from 'components/HasPermission';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

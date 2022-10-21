@@ -1,9 +1,9 @@
-import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useIdeaStatus from 'hooks/useIdeaStatus';
 import T from 'components/T';
-import styled from 'styled-components';
+import useIdeaStatus from 'hooks/useIdeaStatus';
 import { transparentize } from 'polished';
+import React, { memo } from 'react';
+import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div<{ color: string }>`

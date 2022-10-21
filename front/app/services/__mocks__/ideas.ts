@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { IIdeas, IIdeaData } from 'services/ideas';
+import { IIdeaData, IIdeas } from 'services/ideas';
 
 const mockIdeas = new BehaviorSubject<IIdeas | null>(null);
 

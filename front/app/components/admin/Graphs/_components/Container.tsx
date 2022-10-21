@@ -2,20 +2,20 @@ import React, { useCallback } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import { ResponsiveContainer } from 'recharts';
 import FakeLegend from './Legend/FakeLegend';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
 import { debounce, isEqual } from 'lodash-es';
 
 // typings
 import { Percentage } from 'typings';
+import { Legend } from '../typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
-import { Legend } from '../typings';
 
 interface Props {
   width?: number | Percentage;

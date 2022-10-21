@@ -1,5 +1,5 @@
-import React, { memo, useCallback } from 'react';
 import FilterSelector from 'components/FilterSelector';
+import React, { memo, useCallback } from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

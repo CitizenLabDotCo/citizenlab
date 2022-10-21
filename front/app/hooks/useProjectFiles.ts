@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Observable, of } from 'rxjs';
-import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
+import { IProjectFiles, projectFilesStream } from 'services/projectFiles';
 
 export default function useProjectFiles(projectId: string | null | undefined) {
   const [projectFiles, setProjectFiles] = useState<

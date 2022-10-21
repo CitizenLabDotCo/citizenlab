@@ -3,19 +3,19 @@ import styled, { withTheme } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // services
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 // components
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
+import { StatusExplanation, StatusWrapper } from './SharedStyles';
 
 // i18n
 import T from 'components/T';
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div``;
 

@@ -17,8 +17,8 @@ import ProposalProgressBar from 'containers/InitiativesShow/VoteControl/Proposal
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';

@@ -1,7 +1,7 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import useScanInsightsCategory from './useScanInsightsCategory';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { Observable } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
+import useScanInsightsCategory from './useScanInsightsCategory';
 
 import { insightsCategoriesSuggestionsTasksStream } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 

@@ -1,11 +1,11 @@
 // utils
 import { roundPercentages } from 'utils/math';
-import { FormValues } from './form';
 import { forEachBin } from './bins';
+import { FormValues } from './form';
 
 // typings
-import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
 import { Localize } from 'hooks/useLocalize';
+import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
 import { Bins } from '../services/referenceDistribution';
 
 /*

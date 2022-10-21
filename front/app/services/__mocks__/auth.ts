@@ -1,6 +1,6 @@
+import { BehaviorSubject } from 'rxjs';
 import { IUser } from 'services/users';
 import { makeUser } from './users';
-import { BehaviorSubject } from 'rxjs';
 
 export const mockUser = makeUser();
 export const mockAdmin = makeUser({ roles: [{ type: 'admin' }] });

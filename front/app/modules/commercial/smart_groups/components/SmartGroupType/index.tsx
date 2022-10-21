@@ -1,22 +1,22 @@
+import { Icon } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { transparentize } from 'polished';
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
-import { transparentize } from 'polished';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { colors } from 'utils/styleUtils';
 
-import messages from './messages';
 import adminUsersMessages from 'containers/Admin/users/messages';
+import messages from './messages';
 
 import {
-  MoreInfoLink,
   DescriptionText,
+  GroupDescription,
+  GroupName,
   GroupType as BaseGroupType,
   IconWrapper as BaseIconWrapper,
-  GroupDescription,
+  MoreInfoLink,
   Step2Button,
-  GroupName,
 } from 'containers/Admin/users/GroupCreationStep1';
 
 import { MembershipType } from 'services/groups';

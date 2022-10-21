@@ -1,7 +1,7 @@
 import { IProject } from 'services/projects';
 
-import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/projects`;
 

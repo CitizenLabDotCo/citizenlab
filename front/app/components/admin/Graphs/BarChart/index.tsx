@@ -4,7 +4,7 @@ import React from 'react';
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 
 // utils
-import { convertMapping, convertBars } from './utils';
+import { convertBars, convertMapping } from './utils';
 
 // typings
 import { Props } from './typings';

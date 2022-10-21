@@ -1,17 +1,17 @@
-import React, { PureComponent, FormEvent } from 'react';
 import { omit } from 'lodash-es';
+import React, { FormEvent, PureComponent } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled, { css } from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
-import { FormattedMessage } from 'utils/cl-intl';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
 } from 'components/UI/Button';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Omit } from 'typings';

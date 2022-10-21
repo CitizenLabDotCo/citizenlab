@@ -1,12 +1,12 @@
+import { darken } from 'polished';
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { darken } from 'polished';
 
 // components
-import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import { Box, Text, Title, Toggle } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
 
@@ -14,15 +14,15 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import messages from '../messages';
 import { Multiloc } from 'typings';
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import { useParams } from 'react-router-dom';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+import { useParams } from 'react-router-dom';
 
 // styles
 import { colors } from 'utils/styleUtils';

@@ -1,5 +1,5 @@
-import { Margin } from './typings';
 import { colors as mainColors } from 'utils/styleUtils';
+import { Margin } from './typings';
 
 // MARGIN
 export const DEFAULT_BAR_CHART_MARGIN: Margin = {

@@ -1,13 +1,13 @@
+import { isEmpty } from 'lodash-es';
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
-  IPermissionData,
   IGlobalPermissionAction,
   IPCPermissionAction,
+  IPermissionData,
 } from 'services/actionPermissions';
 import { getInputTerm } from 'services/participationContexts';
 
@@ -16,12 +16,12 @@ import ActionForm from './ActionForm';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 // hooks
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 const ActionPermissionWrapper = styled.div`
   margin-bottom: 30px;

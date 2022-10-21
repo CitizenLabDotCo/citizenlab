@@ -1,10 +1,10 @@
 import React, { lazy, Suspense } from 'react';
 
 // components
-import SignedOutHeader from './SignedOutHeader';
-import SignedInHeader from './SignedInHeader';
 import Fragment from 'components/Fragment';
 import LoadingBox from 'components/ProjectAndFolderCards/components/LoadingBox';
+import SignedInHeader from './SignedInHeader';
+import SignedOutHeader from './SignedOutHeader';
 const MainContent = lazy(() => import('./MainContent'));
 const HomepageInfoSection = lazy(() => import('./HomepageInfoSection'));
 const Footer = lazy(() => import('./Footer'));

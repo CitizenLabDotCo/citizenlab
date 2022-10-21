@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // services
 import {
-  referenceDistributionStream,
-  TReferenceDistributionData,
-  IReferenceDistribution,
-  IBinnedDistribution,
-  TCategoricalDistribution,
-} from '../services/referenceDistribution';
-import {
-  userCustomFieldStream,
   IUserCustomField,
+  userCustomFieldStream,
 } from 'modules/commercial/user_custom_fields//services/userCustomFields';
+import {
+  IBinnedDistribution,
+  IReferenceDistribution,
+  referenceDistributionStream,
+  TCategoricalDistribution,
+  TReferenceDistributionData,
+} from '../services/referenceDistribution';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';

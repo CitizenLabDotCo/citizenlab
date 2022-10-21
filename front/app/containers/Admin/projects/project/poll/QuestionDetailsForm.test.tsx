@@ -2,6 +2,7 @@ import React from 'react';
 
 import { shallow } from 'enzyme';
 
+import * as pollQuestionsService from 'services/pollQuestions';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 
 jest.mock('utils/cl-intl');
@@ -21,7 +22,6 @@ jest.mock('services/pollQuestions', () => ({
     return new Promise((resolve) => resolve);
   }),
 }));
-import * as pollQuestionsService from 'services/pollQuestions';
 const updatePollQuestionSpy = jest.spyOn(
   pollQuestionsService,
   'updatePollQuestion'

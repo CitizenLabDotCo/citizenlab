@@ -1,5 +1,5 @@
-import React from 'react';
 import Outlet from 'components/Outlet';
+import React from 'react';
 
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
@@ -32,7 +32,6 @@ import StatusChangeOnVotedInitiativeNotification from '../StatusChangeOnVotedIni
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 
 import {
-  TNotificationData,
   IAdminRightsReceivedNotificationData,
   ICommentDeletedByAdminNotificationData,
   ICommentMarkedAsSpamNotificationData,
@@ -62,6 +61,7 @@ import {
   IStatusChangeOnVotedIdeaNotificationData,
   IStatusChangeOnVotedInitiativeNotificationData,
   IThresholdReachedForAdminNotificationData,
+  TNotificationData,
 } from 'services/notifications';
 import styled from 'styled-components';
 

@@ -1,9 +1,9 @@
+import { Label } from '@citizenlab/cl2-component-library';
+import selectStyles from 'components/UI/MultipleSelect/styles';
+import { isArray, isBoolean, isString } from 'lodash-es';
 import React from 'react';
-import { isBoolean, isString, isArray } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Label } from '@citizenlab/cl2-component-library';
 
 export type Props = {
   id?: string;

@@ -1,22 +1,22 @@
 // libraries
 import { PureComponent } from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
 
 // typings
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStream, IStreamParams } from 'utils/streams';
 
 import {
-  IIdeasByTopic,
-  ICommentsByTopic,
-  IVotesByTopic,
-  IIdeasByStatus,
-  IIdeasByProject,
   ICommentsByProject,
+  ICommentsByTopic,
+  IIdeasByProject,
+  IIdeasByStatus,
+  IIdeasByTopic,
   IVotesByProject,
+  IVotesByTopic,
 } from 'services/stats';
 
 import { IGraphFormat, IParticipationByTopic } from 'typings';

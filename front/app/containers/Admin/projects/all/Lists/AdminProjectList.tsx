@@ -8,20 +8,20 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import ProjectRow from '../../components/ProjectRow';
 import Outlet from 'components/Outlet';
-import { ListHeader, HeaderTitle } from '../StyledComponents';
+import ProjectRow from '../../components/ProjectRow';
+import { HeaderTitle, ListHeader } from '../StyledComponents';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
-import { reorderAdminPublication } from 'services/adminPublications';
 import useAdminPublications, {
   IAdminPublicationContent,
 } from 'hooks/useAdminPublications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { reorderAdminPublication } from 'services/adminPublications';
 
 const StyledSortableRow = styled(SortableRow)`
   & .sortablerow-draghandle {

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes } from 'utils/styleUtils';
 import messages from './messages';
 

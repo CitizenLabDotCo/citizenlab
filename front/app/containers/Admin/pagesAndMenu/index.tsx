@@ -1,14 +1,14 @@
-import React from 'react';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import Outlet from 'components/Outlet';
-import styled from 'styled-components';
-import PageTitle from 'components/admin/PageTitle';
 import { Box } from '@citizenlab/cl2-component-library';
+import PageTitle from 'components/admin/PageTitle';
 import HelmetIntl from 'components/HelmetIntl';
+import Outlet from 'components/Outlet';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import styled from 'styled-components';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

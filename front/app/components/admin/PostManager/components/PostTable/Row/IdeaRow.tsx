@@ -1,29 +1,29 @@
+import { get, isEmpty, uniq } from 'lodash-es';
 import React, { ChangeEvent, useState } from 'react';
+import { DragSource } from 'react-dnd-cjs';
+import { findDOMNode } from 'react-dom';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { uniq, isEmpty, get } from 'lodash-es';
-import { findDOMNode } from 'react-dom';
-import { DragSource } from 'react-dnd-cjs';
 
 // services
-import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
-import { IPhaseData } from 'services/phases';
+import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IPhaseData } from 'services/phases';
 
 // components
-import { TitleLink } from '.';
 import { Box, colors, Td } from '@citizenlab/cl2-component-library';
+import FeatureFlag from 'components/FeatureFlag';
+import Outlet from 'components/Outlet';
+import T from 'components/T';
+import Checkbox from 'components/UI/Checkbox';
+import { Icon } from 'semantic-ui-react';
+import { TitleLink } from '.';
 import StyledRow from './StyledRow';
 import SubRow from './SubRow';
-import { Icon } from 'semantic-ui-react';
-import T from 'components/T';
-import Outlet from 'components/Outlet';
-import Checkbox from 'components/UI/Checkbox';
-import FeatureFlag from 'components/FeatureFlag';
 
 // utils
-import localize, { InjectedLocalized } from 'utils/localize';
 import { timeAgo } from 'utils/dateUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -31,16 +31,16 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-import { TFilterMenu, ManagerType } from '../../..';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
   Locale,
   Override,
 } from 'typings';
+import { trackEventByName } from 'utils/analytics';
 import { insertConfiguration } from 'utils/moduleUtils';
+import { ManagerType, TFilterMenu } from '../../..';
+import tracks from '../../../tracks';
 
 // hooks
 import { isNilOrError } from 'utils/helperUtils';

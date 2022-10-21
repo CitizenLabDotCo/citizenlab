@@ -1,17 +1,17 @@
+import T from 'components/T';
+import useIdea from 'hooks/useIdea';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 import React, { memo } from 'react';
 import { IStatusChangeOnCommentedIdeaNotificationData } from 'services/notifications';
-import T from 'components/T';
-import NotificationWrapper from '../NotificationWrapper';
-import useIdea from 'hooks/useIdea';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
+import { isNilOrError } from 'utils/helperUtils';
+import NotificationWrapper from '../NotificationWrapper';
 
 // // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from '../../messages';
 
 interface Props {
   notification: IStatusChangeOnCommentedIdeaNotificationData;

@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import RHFInput from './';
-import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
+import { object, string } from 'yup';
+import RHFInput from './';
 
 const schema = object({
   input: string().required('Error message'),

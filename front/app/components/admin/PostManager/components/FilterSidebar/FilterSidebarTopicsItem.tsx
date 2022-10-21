@@ -1,9 +1,9 @@
-import React from 'react';
-import { ITopicData } from 'services/topics';
-import { flow } from 'lodash-es';
 import T from 'components/T';
-import { Menu } from 'semantic-ui-react';
+import { flow } from 'lodash-es';
+import React from 'react';
 import { DropTarget } from 'react-dnd-cjs';
+import { Menu } from 'semantic-ui-react';
+import { ITopicData } from 'services/topics';
 
 interface Props {
   topic: ITopicData;

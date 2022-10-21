@@ -1,18 +1,18 @@
+import { JsonForms } from '@jsonforms/react';
 import React, {
   memo,
   ReactElement,
   useCallback,
-  useState,
   useEffect,
+  useState,
 } from 'react';
-import { JsonForms } from '@jsonforms/react';
 
 import {
   createAjv,
-  JsonSchema7,
-  UISchemaElement,
   isCategorization,
+  JsonSchema7,
   Translator,
+  UISchemaElement,
 } from '@jsonforms/core';
 import styled from 'styled-components';
 
@@ -27,15 +27,15 @@ import ButtonBar from './Components/ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import { CLErrors, Message } from 'typings';
-import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import { ErrorObject } from 'ajv';
-import { forOwn } from 'lodash-es';
-import { APIErrorsContext, FormContext } from './contexts';
 import useLocale from 'hooks/useLocale';
+import { forOwn } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import { CLErrors, Message } from 'typings';
+import { injectIntl } from 'utils/cl-intl';
+import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { APIErrorsContext, FormContext } from './contexts';
 import { selectRenderers } from './formConfig';
 
 // hopefully we can standardize this someday

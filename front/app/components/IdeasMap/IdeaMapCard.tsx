@@ -1,23 +1,23 @@
-import React, { memo, useEffect, useState } from 'react';
 import { IOpenPostPageModalEvent } from 'containers/App';
+import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import CloseIconButton from 'components/UI/CloseIconButton';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 // events
+import {
+  leafletMapHoveredMarker$,
+  setLeafletMapHoveredMarker,
+} from 'components/UI/LeafletMap/events';
 import eventEmitter from 'utils/eventEmitter';
 import { setIdeaMapCardSelected } from './events';
-import {
-  setLeafletMapHoveredMarker,
-  leafletMapHoveredMarker$,
-} from 'components/UI/LeafletMap/events';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
+import useProject from 'hooks/useProject';
 
 // i18n
 import T from 'components/T';
@@ -27,11 +27,11 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import {
+  colors,
   defaultCardStyle,
   fontSizes,
-  colors,
-  viewportWidths,
   media,
+  viewportWidths,
 } from 'utils/styleUtils';
 
 import { darken } from 'polished';

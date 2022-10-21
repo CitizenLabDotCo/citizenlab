@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
+import React from 'react';
+import { act, fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import RenameCategory from './RenameCategory';
 

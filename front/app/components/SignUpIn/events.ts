@@ -1,6 +1,6 @@
-import eventEmitter from 'utils/eventEmitter';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { TSignUpStep } from 'components/SignUpIn/SignUp';
+import eventEmitter from 'utils/eventEmitter';
 
 enum events {
   openSignUpInModal = 'openSignUpInModal',

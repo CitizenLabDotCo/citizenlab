@@ -1,6 +1,6 @@
-import streams, { IStreamParams } from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { IRelationship, Locale } from 'typings';
+import streams, { IStreamParams } from 'utils/streams';
 
 export interface IMachineTranslationData {
   id: string;

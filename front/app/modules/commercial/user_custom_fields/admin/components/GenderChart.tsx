@@ -1,35 +1,35 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // styling
 import { withTheme } from 'styled-components';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import PieChart from 'components/admin/Graphs/PieChart';
 import {
-  NoDataContainer,
-  GraphCardHeader,
-  GraphCardTitle,
   GraphCard,
+  GraphCardHeader,
   GraphCardInner,
+  GraphCardTitle,
+  NoDataContainer,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
-import PieChart from 'components/admin/Graphs/PieChart';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // services
 import {
-  usersByGenderStream,
   IUsersByRegistrationField,
+  usersByGenderStream,
   usersByGenderXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 

@@ -1,9 +1,9 @@
+import { isLastVerificationMethod } from 'modules/commercial/verification';
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import './services/verificationMethods';
 import BogusButton from './components/BogusButton';
 import VerificationFormBogus from './components/VerificationFormBogus';
-import { isLastVerificationMethod } from 'modules/commercial/verification';
+import './services/verificationMethods';
 
 const verificationMethodName = 'bogus';
 const configuration: ModuleConfiguration = {

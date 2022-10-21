@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import {
   Box,
-  Image as ImageComponent,
-  Input,
   colors,
   Icon,
+  Image as ImageComponent,
+  Input,
 } from '@citizenlab/cl2-component-library';
 
 // image upload
-import { addContentBuilderImage } from 'modules/commercial/content_builder/services/contentBuilderImages';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { addContentBuilderImage } from 'modules/commercial/content_builder/services/contentBuilderImages';
 import { UploadFile } from 'typings';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // craft
 import { useEditor, useNode } from '@craftjs/core';
@@ -23,8 +23,8 @@ import messages from '../../../messages';
 import { injectIntl } from 'utils/cl-intl';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
 import { IMAGE_UPLOADING_EVENT } from 'modules/commercial/content_builder/admin/containers';
+import eventEmitter from 'utils/eventEmitter';
 
 const Image = ({
   imageUrl,

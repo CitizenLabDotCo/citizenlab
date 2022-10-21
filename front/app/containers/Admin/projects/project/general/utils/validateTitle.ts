@@ -1,4 +1,4 @@
-import { Multiloc, Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 
 export default function validateTitle(
   appConfigLocales: Locale[],

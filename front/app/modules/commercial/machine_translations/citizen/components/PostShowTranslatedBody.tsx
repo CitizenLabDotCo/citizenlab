@@ -1,7 +1,7 @@
-import React from 'react';
 import useTranslation from 'modules/commercial/machine_translations/hooks/useTranslation';
-import { isNilOrError } from 'utils/helperUtils';
+import React from 'react';
 import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   postId: string;

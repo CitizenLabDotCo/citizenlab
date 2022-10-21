@@ -1,18 +1,18 @@
 import React from 'react';
 
 // components
-import MetaInformation from '../MetaInformation';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 import VoteControl from 'components/VoteControl';
 import Buttons from 'containers/IdeasShow/CTABox/Buttons';
-import AssignBudgetControl from 'components/AssignBudgetControl';
+import MetaInformation from '../MetaInformation';
 
 // styling
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { rightColumnWidthDesktop } from '../styleConstants';
 import { colors } from 'utils/styleUtils';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
-import { Box } from '@citizenlab/cl2-component-library';
+import { rightColumnWidthDesktop } from '../styleConstants';
 
 const Container = styled.div<{ insideModal: boolean }>`
   flex: 0 0 ${rightColumnWidthDesktop}px;

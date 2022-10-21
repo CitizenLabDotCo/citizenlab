@@ -1,14 +1,14 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
-import VerificationSuccess from './VerificationSuccess';
 import VerificationError from './VerificationError';
 import VerificationSteps from './VerificationSteps';
+import VerificationSuccess from './VerificationSuccess';
 
 // hooks
-import useIsMounted from 'hooks/useIsMounted';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useIsMounted from 'hooks/useIsMounted';
 
 // events
 import {
@@ -18,15 +18,15 @@ import {
 } from 'components/Verification/verificationModalEvents';
 
 import {
-  openVerificationModal$,
-  closeVerificationModal$,
   closeVerificationModal,
+  closeVerificationModal$,
+  openVerificationModal$,
 } from './verificationModalEvents';
 
 // style
+import ErrorBoundary from 'components/ErrorBoundary';
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
-import ErrorBoundary from 'components/ErrorBoundary';
 
 // typings
 const Container = styled.div`

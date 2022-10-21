@@ -1,21 +1,21 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { returnFileSize } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styles
+import { lighten } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // services
-import { IProjectFileData } from 'services/projectFiles';
-import { IPhaseFileData } from 'services/phaseFiles';
 import { IEventFileData } from 'services/eventFiles';
-import { IPageFileData } from 'services/pageFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
+import { IPageFileData } from 'services/pageFiles';
+import { IPhaseFileData } from 'services/phaseFiles';
+import { IProjectFileData } from 'services/projectFiles';
 
 const Container = styled.div`
   display: flex;

@@ -1,8 +1,8 @@
 // Libraries
 import React from 'react';
+import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import messages from '../messages';
-import { adopt } from 'react-adopt';
 
 // Utils
 import { FormattedMessage } from 'utils/cl-intl';
@@ -11,13 +11,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // Components
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
+import { SectionDescription, SectionTitle } from 'components/admin/Section';
 
 // resources
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;

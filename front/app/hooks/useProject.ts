@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { useEffect, useState } from 'react';
 import { Observable, of } from 'rxjs';
 import {
-  projectByIdStream,
-  projectBySlugStream,
   IProject,
   IProjectData,
+  projectByIdStream,
+  projectBySlugStream,
 } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId?: string | null;

@@ -1,30 +1,30 @@
+import { forOwn, isEmpty } from 'lodash-es';
+import moment from 'moment';
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { isEmpty, forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
 
 // components
 import Avatar from 'components/Avatar';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Button from 'components/UI/Button';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import styled from 'styled-components';
 import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   background-color: white;

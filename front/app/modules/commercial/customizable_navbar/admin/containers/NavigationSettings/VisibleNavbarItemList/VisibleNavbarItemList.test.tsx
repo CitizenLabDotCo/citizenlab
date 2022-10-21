@@ -1,14 +1,14 @@
-import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import VisibleNavbarItemList from '.';
-import {
-  reorderNavbarItem,
-  removeNavbarItem,
-} from '../../../../services/navbar';
-import { deletePage } from 'services/pages';
 import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import navbarItems from 'hooks/fixtures/navbarItems';
+import React from 'react';
+import { deletePage } from 'services/pages';
 import clHistory from 'utils/cl-router/history';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
+import VisibleNavbarItemList from '.';
+import {
+  removeNavbarItem,
+  reorderNavbarItem,
+} from '../../../../services/navbar';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');

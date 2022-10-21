@@ -9,10 +9,10 @@ jest.mock('components/UI/Warning', () => 'Warning');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
-import { makeUser } from 'services/__mocks__/users';
+import { mockPhasePollData } from 'services/__mocks__/phases';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 import { getProject } from 'services/__mocks__/projects';
-import { mockPhasePollData } from 'services/__mocks__/phases';
+import { makeUser } from 'services/__mocks__/users';
 
 import { Poll } from './';
 

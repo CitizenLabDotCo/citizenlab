@@ -1,9 +1,4 @@
-import {
-  BaseProps,
-  AxisProps,
-  KeyOfType,
-  // BaseLabels,
-} from '../typings';
+import { AxisProps, BaseProps, KeyOfType } from '../typings';
 
 // PROPS
 export interface Props<Row> extends BaseProps<Row, Payload> {

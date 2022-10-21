@@ -1,10 +1,10 @@
+import { isLastVerificationMethod } from 'modules/commercial/verification';
 import React from 'react';
+import { TVerificationMethodName } from 'services/verificationMethods';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import './services/verificationMethods';
 import CowButton from './components/CowButton';
 import VerificationFormCOW from './components/VerificationFormCOW';
-import { isLastVerificationMethod } from 'modules/commercial/verification';
-import { TVerificationMethodName } from 'services/verificationMethods';
+import './services/verificationMethods';
 
 const verificationMethodName: TVerificationMethodName = 'cow';
 const configuration: ModuleConfiguration = {

@@ -6,9 +6,9 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import GetUserStats, { GetUserStatsChildProps } from 'resources/GetUserStats';
 
 // styles
-import { fontSizes, media } from 'utils/styleUtils';
-import styled from 'styled-components';
 import { rgba } from 'polished';
+import styled from 'styled-components';
+import { fontSizes, media } from 'utils/styleUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';

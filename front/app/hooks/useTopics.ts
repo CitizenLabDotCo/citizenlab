@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { combineLatest, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
+  Code,
   ITopicData,
+  ITopicsQueryParams,
   topicByIdStream,
   topicsStream,
-  Code,
-  ITopicsQueryParams,
 } from 'services/topics';
-import { Observable, of, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 export interface Parameters {

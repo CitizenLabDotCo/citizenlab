@@ -1,23 +1,23 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
   isPrimitiveArrayControl,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import React, { useState } from 'react';
 
 // utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 // components
-import VerificationIcon from '../VerificationIcon';
 import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
 import { getOptions } from './controlUtils';
+import messages from './messages';
 
 const MultiSelectCheckboxControl = ({
   data,

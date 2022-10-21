@@ -1,11 +1,11 @@
 import {
-  isFormValid,
-  getSubmitAction,
-  getStatus,
-  isSubmittingAllowed,
   convertBinsToFormValues,
-  parseFormValues,
   FormValues,
+  getStatus,
+  getSubmitAction,
+  isFormValid,
+  isSubmittingAllowed,
+  parseFormValues,
 } from './form';
 
 describe('isFormValid', () => {

@@ -1,6 +1,6 @@
-import React, { PureComponent, FormEvent } from 'react';
-import styled from 'styled-components';
 import Button from 'components/UI/Button';
+import React, { FormEvent, PureComponent } from 'react';
+import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

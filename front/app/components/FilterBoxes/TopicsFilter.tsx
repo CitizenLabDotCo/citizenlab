@@ -1,5 +1,5 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
-import { isError, includes } from 'lodash-es';
+import { includes, isError } from 'lodash-es';
+import React, { memo, MouseEvent, useCallback } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
@@ -8,14 +8,14 @@ import messages from './messages';
 
 // styling
 import { ScreenReaderOnly } from 'utils/a11y';
-import { fontSizes, colors, defaultCardStyle } from 'utils/styleUtils';
+import { colors, defaultCardStyle, fontSizes } from 'utils/styleUtils';
 
 // components
 import T from 'components/T';
 
 // styling
-import styled from 'styled-components';
 import { darken } from 'polished';
+import styled from 'styled-components';
 import { Header, Title } from './styles';
 
 // typings

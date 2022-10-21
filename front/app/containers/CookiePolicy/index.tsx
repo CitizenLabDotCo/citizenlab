@@ -14,17 +14,17 @@ import Fragment from 'components/Fragment';
 
 import {
   Container,
-  StyledContentContainer,
   PageContent,
-  PageTitle,
   PageDescription,
+  PageTitle,
+  StyledContentContainer,
 } from 'containers/PagesShowPage';
 
 // styles
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const StyledButton = styled.button`
   color: ${colors.teal};

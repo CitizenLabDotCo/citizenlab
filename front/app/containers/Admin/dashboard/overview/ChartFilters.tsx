@@ -10,13 +10,13 @@ import ProjectFilter from '../components/filters/ProjectFilter';
 import TimeControl from '../components/TimeControl';
 
 // i18n
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // typings
-import { IOption } from 'typings';
 import { Moment } from 'moment';
+import { IOption } from 'typings';
 
 interface Props {
   startAtMoment?: Moment | null | undefined;

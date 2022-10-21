@@ -2,18 +2,18 @@ import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
+import messages from './messages';
 
 // style
-import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
 import FormattedAnchor from 'components/FormattedAnchor';
+import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // images
-import illustration from './illustration.png';
 import Modal from 'components/UI/Modal';
 import { WrappedComponentProps } from 'react-intl';
+import illustration from './illustration.png';
 
 const Container = styled.div`
   width: 100%;

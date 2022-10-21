@@ -1,9 +1,9 @@
-import React from 'react';
-import injectIntl from './injectIntl';
-import { screen, render } from 'utils/testUtils/rtl';
 import regularMessages from 'components/Author/messages';
 import orgNameMessages from 'components/CityLogoSection/messages';
 import tenantNameMessages from 'containers/SignUpInPage/messages';
+import React from 'react';
+import { render, screen } from 'utils/testUtils/rtl';
+import injectIntl from './injectIntl';
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useLocale');

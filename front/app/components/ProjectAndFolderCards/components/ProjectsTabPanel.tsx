@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import ProjectCard from 'components/ProjectCard';
 import Outlet from 'components/Outlet';
+import ProjectCard from 'components/ProjectCard';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { BaseProps, TCardSize } from './ProjectsList';
 import { PublicationTab } from '../';
+import { BaseProps, TCardSize } from './ProjectsList';
 
 // utils
 import { getTabId, getTabPanelId } from './Topbar/Tabs';

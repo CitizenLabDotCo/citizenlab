@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // services
 import {
@@ -8,16 +8,16 @@ import {
 } from '../../services/analyticsFacts';
 
 // parse
-import { parsePieData, parseExcelData } from './parse';
+import { parseExcelData, parsePieData } from './parse';
 
 // typings
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { Response, PieRow, QueryParameters } from './typings';
 import { WrappedComponentProps } from 'react-intl';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { PieRow, QueryParameters, Response } from './typings';
 
 // utils
-import { getProjectFilter, getDateFilter } from '../../utils/query';
+import { getDateFilter, getProjectFilter } from '../../utils/query';
 import { getTranslations } from './utils';
 
 const query = ({

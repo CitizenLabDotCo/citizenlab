@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { useEffect, useState } from 'react';
 import { Observable, of } from 'rxjs';
 import {
-  IIdeaImages,
-  IIdeaImageData,
   ideaImagesStream,
+  IIdeaImageData,
+  IIdeaImages,
 } from 'services/ideaImages';
+import { isNilOrError } from 'utils/helperUtils';
 
 export default function useIdeaImages(ideaId: string | undefined) {
   const [ideaImages, setIdeaImages] = useState<

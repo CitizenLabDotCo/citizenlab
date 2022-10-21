@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import getSubmitState from 'utils/getSubmitState';
-import { isCLErrorJSON } from 'utils/errorUtils';
 import { CLError, Multiloc } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
+import getSubmitState from 'utils/getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -11,27 +11,27 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import {
   IAppConfigurationSettings,
   IUpdatedAppConfigurationProperties,
-  updateAppConfiguration,
-  TAppConfigurationSettingCore,
   TAppConfigurationSetting,
+  TAppConfigurationSettingCore,
+  updateAppConfiguration,
 } from 'services/appConfiguration';
 
 // components
 import messages from 'containers/Admin/settings/messages';
 
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import {
+  SectionDescription,
+  SectionField,
   SectionTitle,
   SubSectionTitle,
-  SectionField,
-  SectionDescription,
 } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
+import { FormattedMessage } from 'utils/cl-intl';
 
 export const LabelTooltip = styled.div`
   display: flex;

@@ -1,12 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useIdeaStatus from 'hooks/useIdeaStatus';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useIdeaStatus from 'hooks/useIdeaStatus';
 import { updateIdeaStatus } from 'services/ideaStatuses';
 
 import { FormattedMessage } from 'utils/cl-intl';

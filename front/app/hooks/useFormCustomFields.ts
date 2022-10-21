@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { combineLatest, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import {
+  formCustomFieldOptionStream,
+  formCustomFieldsStream,
   ICustomFieldInputType,
   IFlatCustomField,
-  formCustomFieldsStream,
-  formCustomFieldOptionStream,
 } from '../services/formCustomFields';
 
 interface Props {

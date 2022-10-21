@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import {
-  insightsDetectedCategoriesStream,
-  IInsightsDetectedCategoriesData,
-} from '../services/insightsDetectCategories';
+import { useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import {
+  IInsightsDetectedCategoriesData,
+  insightsDetectedCategoriesStream,
+} from '../services/insightsDetectCategories';
 
 const useInsightsDetectedCategories = (viewId: string) => {
   const [detectedCategories, setDetectedCategories] = useState<

@@ -5,8 +5,8 @@ import {
   StyledHeaderContainer,
   StyledHeaderTitle,
 } from 'components/SignUpIn/styles';
-import ReactResizeDetector from 'react-resize-detector';
 import { HeaderSubtitle } from 'components/UI/Modal';
+import ReactResizeDetector from 'react-resize-detector';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -1,10 +1,10 @@
 // libraries
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 
 // component to test
-import { NotificationMenu } from './';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { NotificationMenu } from './';
 
 // mock utilities
 jest.mock('utils/cl-intl');

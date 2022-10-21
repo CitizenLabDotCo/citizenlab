@@ -1,10 +1,10 @@
 import React, {
-  memo,
-  useMemo,
-  useState,
   lazy,
+  memo,
   Suspense,
   useCallback,
+  useMemo,
+  useState,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -17,17 +17,17 @@ const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // utils
+import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   getCenter,
-  getZoomLevel,
-  getTileProvider,
   getTileOptions,
+  getTileProvider,
+  getZoomLevel,
 } from 'utils/map';
-import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 
 // styling
 import styled from 'styled-components';
-import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
+import { defaultCardStyle, defaultOutline, media } from 'utils/styleUtils';
 
 // typings
 import { LatLngTuple, Map as ILeafletMap } from 'leaflet';

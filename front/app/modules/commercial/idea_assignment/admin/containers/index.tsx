@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Section, SubSectionTitle } from 'components/admin/Section';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { Section, SubSectionTitle } from 'components/admin/Section';
 import Link from 'utils/cl-router/Link';
 import AssigneeSelector from '../components/AssigneeSelector';
 
@@ -17,8 +17,8 @@ const StyledLink = styled(Link)`
 `;
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 interface Props {
   projectId: string;

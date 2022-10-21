@@ -1,10 +1,10 @@
-import React, { memo, useCallback, FormEvent } from 'react';
-import { pull } from 'lodash-es';
-import { Label, Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import useTopics from 'hooks/useTopics';
-import { isNilOrError } from 'utils/helperUtils';
+import { pull } from 'lodash-es';
+import React, { FormEvent, memo, useCallback } from 'react';
+import { Icon, Label } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledLabel = styled(Label)`
   white-space: nowrap;

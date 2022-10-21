@@ -2,11 +2,11 @@ import React, { ChangeEvent, useState } from 'react';
 
 // components
 import {
+  Checkbox,
+  Text,
+  Th,
   Thead,
   Tr,
-  Th,
-  Text,
-  Checkbox,
 } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
@@ -19,16 +19,16 @@ import messages from '../../../messages';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { insertConfiguration } from 'utils/moduleUtils';
 import { roundPercentage } from 'utils/math';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 // typings
+import { SortAttribute as IdeasSortAttribute } from 'resources/GetIdeas';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
   Override,
 } from 'typings';
-import { SortAttribute as IdeasSortAttribute } from 'resources/GetIdeas';
 import { SortDirection } from 'utils/paginationUtils';
 
 interface SortableHeaderCellProps {

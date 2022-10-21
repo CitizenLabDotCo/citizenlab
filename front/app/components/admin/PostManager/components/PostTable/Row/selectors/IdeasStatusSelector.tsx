@@ -1,7 +1,7 @@
+import T from 'components/T';
 import React from 'react';
 import { Popup } from 'semantic-ui-react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
-import T from 'components/T';
 import styled from 'styled-components';
 
 const Container = styled.div`

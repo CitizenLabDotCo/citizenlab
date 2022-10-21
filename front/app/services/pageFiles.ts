@@ -1,9 +1,9 @@
-import streams, { IStreamParams } from 'utils/streams';
-import { getFilesToRemove, getFilesToAdd } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { UploadFile } from 'typings';
-import { apiEndpoint } from './pages';
 import { isString } from 'lodash-es';
+import { UploadFile } from 'typings';
+import { getFilesToAdd, getFilesToRemove } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import streams, { IStreamParams } from 'utils/streams';
+import { apiEndpoint } from './pages';
 
 export interface IPageFileData {
   id: string;

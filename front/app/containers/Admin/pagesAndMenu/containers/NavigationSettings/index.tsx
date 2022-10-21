@@ -1,10 +1,10 @@
-import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
+import React from 'react';
 
 // components
-import VisibleNavbarItemList from './VisibleNavbarItemList';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import Outlet from 'components/Outlet';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import VisibleNavbarItemList from './VisibleNavbarItemList';
 
 const NavigationSettings = () => {
   // It's better to avoid using this feature flag in the core

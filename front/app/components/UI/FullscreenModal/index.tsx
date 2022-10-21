@@ -1,15 +1,15 @@
+import { compact, isFunction } from 'lodash-es';
 import React, { PureComponent } from 'react';
-import { createPortal } from 'react-dom';
-import { Subscription, fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { isFunction, compact } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import clHistory from 'utils/cl-router/history';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // resource
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';

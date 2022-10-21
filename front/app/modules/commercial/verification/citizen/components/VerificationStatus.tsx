@@ -5,21 +5,21 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 
 // components
-import FeatureFlag from 'components/FeatureFlag';
-import { FormSection } from 'components/UI/FormComponents';
-import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
+import FeatureFlag from 'components/FeatureFlag';
+import Button from 'components/UI/Button';
+import { FormSection } from 'components/UI/FormComponents';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/UsersEditPage/messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
-import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
-import { darken } from 'polished';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { darken } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled(FormSection)`
   display: flex;

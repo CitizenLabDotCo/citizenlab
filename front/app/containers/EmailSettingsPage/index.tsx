@@ -7,16 +7,16 @@ import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 
 // Styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { colors } from 'utils/styleUtils';
 
 // services
-import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';
+import { API_PATH } from 'containers/App/constants';
 import GetCampaignConsentsWithToken from 'resources/GetCampaignConsentsWithToken';
+import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';
+import { Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
-import { Multiloc } from 'typings';
 
 const Container = styled.div`
   width: 100%;

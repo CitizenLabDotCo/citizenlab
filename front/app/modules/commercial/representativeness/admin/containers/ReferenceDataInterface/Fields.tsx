@@ -5,12 +5,12 @@ import useUserCustomFields from 'modules/commercial/user_custom_fields/hooks/use
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Field from '../../components/Field';
 import Warning from 'components/UI/Warning';
+import Field from '../../components/Field';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

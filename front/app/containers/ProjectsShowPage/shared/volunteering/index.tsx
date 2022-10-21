@@ -7,8 +7,8 @@ import useCauses from 'hooks/useCauses';
 
 // resource components
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // components
 import CauseCard from './CauseCard';

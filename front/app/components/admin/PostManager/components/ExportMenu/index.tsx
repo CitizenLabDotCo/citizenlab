@@ -10,8 +10,8 @@ import styled from 'styled-components';
 
 // typings
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
 import { ManagerType } from '../../';
+import messages from '../../messages';
 
 const DropdownButton = styled(Button)``;
 

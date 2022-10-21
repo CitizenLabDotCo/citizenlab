@@ -1,5 +1,5 @@
-import React from 'react';
 import { clone } from 'lodash-es';
+import React from 'react';
 import styled from 'styled-components';
 import { TRule } from './rules';
 
@@ -12,8 +12,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
 import tracks from 'containers/Admin/users/tracks';
+import { injectTracks } from 'utils/analytics';
 
 // styling
 import { colors } from 'utils/styleUtils';

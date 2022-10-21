@@ -1,4 +1,4 @@
-import React, { memo, Suspense, lazy } from 'react';
+import React, { lazy, memo, Suspense } from 'react';
 
 // components
 import LoadingComments from './Comments/LoadingComments';
@@ -9,10 +9,10 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import {
   columnsGapDesktop,
-  rightColumnWidthDesktop,
   columnsGapTablet,
-  rightColumnWidthTablet,
   postPageContentMaxWidth,
+  rightColumnWidthDesktop,
+  rightColumnWidthTablet,
 } from './styleConstants';
 
 const Container = styled.div`

@@ -1,9 +1,9 @@
-import React from 'react';
-import FullWidthBannerLayout from './FullWidthBannerLayout';
-import { isNilOrError } from 'utils/helperUtils';
 import Outlet from 'components/Outlet';
-import useHomepageSettings from 'hooks/useHomepageSettings';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+import FullWidthBannerLayout from './FullWidthBannerLayout';
 
 const SignedOutHeaderIndex = () => {
   const homepageSettings = useHomepageSettings();

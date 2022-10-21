@@ -1,8 +1,8 @@
-import React from 'react';
+import Error, { TFieldName } from 'components/UI/Error';
 import TextareaComponent, {
   Props as TextAreaProps,
 } from 'components/UI/TextArea';
-import Error, { TFieldName } from 'components/UI/Error';
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
 

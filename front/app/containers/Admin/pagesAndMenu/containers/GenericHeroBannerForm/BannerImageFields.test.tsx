@@ -1,6 +1,6 @@
 import React from 'react';
-import BannerImageFields from './BannerImageFields';
 import { render, screen } from 'utils/testUtils/rtl';
+import BannerImageFields from './BannerImageFields';
 
 jest.mock('utils/cl-intl');
 

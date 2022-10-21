@@ -1,10 +1,10 @@
-import React from 'react';
 import { isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { Subscription, BehaviorSubject, of } from 'rxjs';
+import React from 'react';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { ideaByIdStream, ideaBySlugStream, IIdeaData } from 'services/ideas';
+import { isNilOrError } from 'utils/helperUtils';
 import shallowCompare from 'utils/shallowCompare';
-import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
 
 interface InputProps {
   ideaId?: string | null;

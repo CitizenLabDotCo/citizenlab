@@ -1,5 +1,5 @@
-import React, { useEffect, memo } from 'react';
-import { Frame, Element, useEditor, SerializedNode } from '@craftjs/core';
+import { Element, Frame, SerializedNode, useEditor } from '@craftjs/core';
+import React, { memo, useEffect } from 'react';
 
 type ContentBuilderFrame = {
   editorData?: Record<string, SerializedNode>;

@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react';
 import { omit } from 'lodash-es';
+import React, { useEffect, useState } from 'react';
 
 // services
 import {
-  createReferenceDistribution,
-  replaceReferenceDistribution,
-  deleteReferenceDistribution,
   Bins,
+  createReferenceDistribution,
+  deleteReferenceDistribution,
+  replaceReferenceDistribution,
   TReferenceDistributionData,
 } from '../../services/referenceDistribution';
 
 // hooks
+import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
 import useReferenceDistribution, {
   RemoteFormValues,
 } from '../../hooks/useReferenceDistribution';
-import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
 
 // components
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
-import FieldTitle from './FieldTitle';
 import FieldContent from './FieldContent';
+import FieldTitle from './FieldTitle';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import {
-  getInitialValues,
-  getSubmitAction,
-  getStatus,
-  parseFormValues,
-  convertBinsToFormValues,
-} from '../../utils/form';
 import { isSupported } from '../../containers/Dashboard/utils';
+import {
+  convertBinsToFormValues,
+  getInitialValues,
+  getStatus,
+  getSubmitAction,
+  parseFormValues,
+} from '../../utils/form';
 
 // typings
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';

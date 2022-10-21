@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { quillEditedContent } from 'utils/styleUtils';
 

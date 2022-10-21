@@ -10,8 +10,8 @@ import GetIdeaVotesCount, {
 } from 'resources/GetIdeaVotesCount';
 
 // i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';

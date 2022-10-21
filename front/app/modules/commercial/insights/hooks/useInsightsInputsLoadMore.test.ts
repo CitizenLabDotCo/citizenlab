@@ -1,15 +1,15 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsInputsLoadMore, {
-  QueryParameters,
-} from './useInsightsInputsLoadMore';
+import { act, renderHook } from '@testing-library/react-hooks';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import {
+  IInsightsInputs,
+  insightsInputsStream,
+} from 'modules/commercial/insights/services/insightsInputs';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { waitFor } from 'utils/testUtils/rtl';
-import {
-  insightsInputsStream,
-  IInsightsInputs,
-} from 'modules/commercial/insights/services/insightsInputs';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
+import useInsightsInputsLoadMore, {
+  QueryParameters,
+} from './useInsightsInputsLoadMore';
 
 const viewId = '1';
 

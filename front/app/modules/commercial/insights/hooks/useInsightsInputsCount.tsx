@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  insightsInputsCountStream,
   IInsightsInputsCount,
+  insightsInputsCountStream,
 } from '../services/insightsInputsCount';
 
 export type QueryParameters = {

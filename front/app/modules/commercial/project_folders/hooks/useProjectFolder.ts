@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { useEffect, useState } from 'react';
 import { Observable, of } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 import {
+  IProjectFolderData,
   projectFolderByIdStream,
   projectFolderBySlugStream,
-  IProjectFolderData,
 } from '../services/projectFolders';
 
 interface Props {

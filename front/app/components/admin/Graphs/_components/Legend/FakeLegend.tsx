@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
 
 // components
@@ -6,12 +6,12 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Icon from './Icon';
 
 // utils
-import { getJustifyContent, getLegendDimensions } from './utils';
 import { isEqual } from 'lodash-es';
+import { getJustifyContent, getLegendDimensions } from './utils';
 
 // typings
-import { Position, LegendItem, LegendDimensions } from './typings';
 import { Percentage } from 'typings';
+import { LegendDimensions, LegendItem, Position } from './typings';
 
 interface Props {
   width?: number | Percentage;

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Locale } from 'typings';
 import {
   IMachineTranslationData,
-  machineTranslationByIdeaIdStream,
   machineTranslationByCommentIdStream,
+  machineTranslationByIdeaIdStream,
   machineTranslationByInitiativeIdStream,
 } from 'modules/commercial/machine_translations/services/machineTranslations';
+import { useEffect, useState } from 'react';
+import { Locale } from 'typings';
 
 interface Parameters {
   attributeName: 'body_multiloc' | 'title_multiloc';

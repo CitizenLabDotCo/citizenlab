@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -7,41 +7,41 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import TopicFilterDropdown from './TopicFilterDropdown';
-import SelectSort from './SortFilterDropdown';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import IdeasView from './IdeasView';
+import SelectSort from './SortFilterDropdown';
+import TopicFilterDropdown from './TopicFilterDropdown';
 
 // resources
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetIdeas, {
-  Sort,
-  GetIdeasChildProps,
-  InputProps as GetIdeasInputProps,
-} from 'resources/GetIdeas';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
 } from 'resources/GetIdeaCustomFieldsSchemas';
+import GetIdeas, {
+  GetIdeasChildProps,
+  InputProps as GetIdeasInputProps,
+  Sort,
+} from 'resources/GetIdeas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import { isRtl, media, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import {
   IdeaDefaultSortMethod,
-  ParticipationMethod,
   ideaDefaultSortMethodFallback,
+  ParticipationMethod,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';

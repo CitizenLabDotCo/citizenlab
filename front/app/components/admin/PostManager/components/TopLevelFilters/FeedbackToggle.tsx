@@ -1,7 +1,7 @@
+import { isFunction } from 'lodash-es';
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { isFunction } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

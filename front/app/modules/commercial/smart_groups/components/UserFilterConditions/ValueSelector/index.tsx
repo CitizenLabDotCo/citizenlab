@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TRule, ruleTypeConstraints } from '../rules';
+import { ruleTypeConstraints, TRule } from '../rules';
 
 type Props = {
   rule: TRule;

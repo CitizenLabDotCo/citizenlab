@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
-import { IOption } from 'typings';
-import useTopics from 'hooks/useTopics';
 import { Select } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
-import { isNilOrError } from 'utils/helperUtils';
+import useTopics from 'hooks/useTopics';
+import React, { memo } from 'react';
 import { ITopicData } from 'services/topics';
+import { IOption } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {
   value: string;

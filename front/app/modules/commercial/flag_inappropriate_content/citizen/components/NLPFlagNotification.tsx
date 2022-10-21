@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import NotificationWrapper from 'containers/MainHeader/NotificationMenu/components/NotificationWrapper';

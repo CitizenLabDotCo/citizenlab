@@ -5,11 +5,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import {
+  ActionsRowContainer,
+  RowButton,
   RowContent,
   RowContentInner,
   RowTitle,
-  RowButton,
-  ActionsRowContainer,
 } from 'containers/Admin/projects/components/StyledComponents';
 
 // styles
@@ -20,10 +20,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
 import useAdminPublications, {
   IAdminPublicationContent,
 } from 'hooks/useAdminPublications';
+import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
@@ -38,8 +38,8 @@ const FolderIcon = styled(Icon)`
 
 // types & services
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
+import { colors } from 'utils/styleUtils';
 import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`

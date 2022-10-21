@@ -1,11 +1,11 @@
 // @ts-nocheck
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 
 import { getIdea } from 'services/ideas';
-import { mockTopicData } from 'services/__mocks__/topics';
 import { mockIdeaStatusData } from 'services/__mocks__/ideaStatuses';
 import { mockProposalStatusData } from 'services/__mocks__/proposalStatuses';
+import { mockTopicData } from 'services/__mocks__/topics';
 
 // mocking dependencies
 jest.mock('services/globalState');

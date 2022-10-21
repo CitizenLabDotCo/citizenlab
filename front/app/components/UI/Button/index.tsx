@@ -1,12 +1,12 @@
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useLocale from 'hooks/useLocale';
 import {
   Button,
-  ButtonProps,
   ButtonContainerProps as ComponentLibraryButtonContainerProps,
+  ButtonProps,
   ButtonStyles,
 } from '@citizenlab/cl2-component-library';
+import useLocale from 'hooks/useLocale';
+import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 import Link from 'utils/cl-router/Link';
 interface Props extends ButtonProps {

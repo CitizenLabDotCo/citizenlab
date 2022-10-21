@@ -1,10 +1,10 @@
 import React, { memo, useState } from 'react';
 
 // components
-import { Box, Icon, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, Icon } from '@citizenlab/cl2-component-library';
 
 // styles
-import { stylingConsts, colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';

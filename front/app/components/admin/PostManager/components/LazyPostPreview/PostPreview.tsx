@@ -1,12 +1,12 @@
-import React, { Suspense, PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 
 // components
-import SideModal from 'components/UI/SideModal';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import SideModal from 'components/UI/SideModal';
 import LazyAdminIdeaEdit from './Idea/LazyAdminIdeaEdit';
 import LazyIdeaContent from './Idea/LazyIdeaContent';
-import LazyInitiativeEdit from './Initiative/LazyInitiativeEdit';
 import LazyInitiativeContent from './Initiative/LazyInitiativeContent';
+import LazyInitiativeEdit from './Initiative/LazyInitiativeEdit';
 
 // styling
 import styled from 'styled-components';

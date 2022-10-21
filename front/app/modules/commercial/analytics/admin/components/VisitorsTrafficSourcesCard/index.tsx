@@ -4,22 +4,22 @@ import React, { useRef, useState } from 'react';
 import useVisitorsTrafficSourcesData from '../../hooks/useVisitorsTrafficSourcesData';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
-import { Box } from '@citizenlab/cl2-component-library';
 import EmptyPieChart from '../EmptyPieChart';
 import renderTooltip from './renderTooltip';
 
 // i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // typings
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
   startAtMoment: Moment | null | undefined;

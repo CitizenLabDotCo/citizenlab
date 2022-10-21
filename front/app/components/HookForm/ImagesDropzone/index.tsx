@@ -1,8 +1,8 @@
-import React from 'react';
 import { Label } from '@citizenlab/cl2-component-library';
 import ImagesDropzoneComponent, {
   Props as ImagesDropzoneComponentProps,
 } from 'components/UI/ImagesDropzone';
+import React from 'react';
 
 import Error from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';

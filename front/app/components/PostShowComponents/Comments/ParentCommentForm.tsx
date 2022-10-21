@@ -1,14 +1,14 @@
+import { get, isString, trim } from 'lodash-es';
 import React, { PureComponent } from 'react';
-import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Avatar from 'components/Avatar';
-import clickOutside from 'utils/containers/clickOutside';
 import Link from 'utils/cl-router/Link';
+import clickOutside from 'utils/containers/clickOutside';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -24,8 +24,8 @@ import { addCommentToIdea, addCommentToInitiative } from 'services/comments';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetWindowSize, {
   GetWindowSizeChildProps,
@@ -35,13 +35,13 @@ import GetWindowSize, {
 import { commentAdded } from './events';
 
 // style
-import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
+import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
-import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
+import styled from 'styled-components';
+import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

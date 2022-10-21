@@ -2,10 +2,10 @@
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import {
+  activeBorderSize,
+  tabBorderSize,
   tabLineHeight,
   tabPadding,
-  tabBorderSize,
-  activeBorderSize,
 } from './tabsStyleConstants';
 
 const Tab = styled.div`

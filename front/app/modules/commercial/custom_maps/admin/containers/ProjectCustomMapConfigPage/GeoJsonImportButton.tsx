@@ -14,8 +14,8 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { getUnnamedLayerTitleMultiloc } from '../../../utils/map';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';

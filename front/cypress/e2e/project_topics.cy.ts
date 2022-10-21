@@ -1,4 +1,4 @@
-import { randomString, apiRemoveProject } from '../support/commands';
+import { apiRemoveProject, randomString } from '../support/commands';
 
 describe('Project topics', () => {
   const projectTitle = randomString();

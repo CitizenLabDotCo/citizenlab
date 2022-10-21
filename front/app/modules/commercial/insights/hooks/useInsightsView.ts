@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { insightsViewStream, IInsightsView } from '../services/insightsViews';
+import { useEffect, useState } from 'react';
+import { IInsightsView, insightsViewStream } from '../services/insightsViews';
 
 const useInsightsView = (id: string) => {
   const [insightsView, setInsightsView] = useState<

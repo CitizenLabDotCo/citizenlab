@@ -1,10 +1,10 @@
 import React, { createElement } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Multiloc, Locale } from 'typings';
-import { getLocalizedWithFallback } from 'utils/i18n';
-import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
+import { localeStream } from 'services/locale';
+import { Locale, Multiloc } from 'typings';
+import { getLocalizedWithFallback } from 'utils/i18n';
 
 type children = (localizedText: string) => JSX.Element | null;
 

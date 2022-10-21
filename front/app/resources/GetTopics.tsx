@@ -1,7 +1,8 @@
-import React from 'react';
+import { Parameters as InputProps } from 'hooks/useTopics';
 import { isEqual } from 'lodash-es';
-import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import React from 'react';
+import { BehaviorSubject, combineLatest, of, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import {
   ITopicData,
   ITopicsQueryParams,
@@ -9,7 +10,6 @@ import {
   topicsStream,
 } from 'services/topics';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
-import { Parameters as InputProps } from 'hooks/useTopics';
 
 type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;
 

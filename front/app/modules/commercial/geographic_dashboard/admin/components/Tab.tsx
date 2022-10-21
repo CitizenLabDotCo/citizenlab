@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
-import messages from './messages';
 import { ITabsOutlet } from 'utils/moduleUtils';
+import messages from './messages';
 
 const Tab: FC<ITabsOutlet> = ({ onData, formatMessage }) => {
   useEffect(

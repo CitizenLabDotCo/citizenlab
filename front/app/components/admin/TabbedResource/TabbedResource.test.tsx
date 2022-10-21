@@ -1,7 +1,7 @@
 import React from 'react';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
 import { render, screen } from 'utils/testUtils/rtl';
 import TabbedResource from '.';
-import { WithRouterProps } from 'utils/cl-router/withRouter';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-router/Link');

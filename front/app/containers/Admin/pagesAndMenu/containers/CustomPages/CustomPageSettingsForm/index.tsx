@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 
 // form
+import { yupResolver } from '@hookform/resolvers/yup';
+import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import { FormProvider, useForm } from 'react-hook-form';
-import { SectionField } from 'components/admin/Section';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { slugRegEx } from 'utils/textUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { object, string } from 'yup';
 // import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
-import Button from 'components/UI/Button';
+import { Box } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import SlugInput from 'components/HookForm/SlugInput';
-import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // intl
-import messages from '../messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // types
 import { Multiloc } from 'typings';

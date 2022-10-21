@@ -1,10 +1,10 @@
+import { makeUser } from 'services/__mocks__/users';
 import {
   isAdmin,
   isModerator,
   isProjectModerator,
   isSuperAdmin,
 } from './roles';
-import { makeUser } from 'services/__mocks__/users';
 
 jest.mock('modules', () => ({ streamsToReset: [] }));
 

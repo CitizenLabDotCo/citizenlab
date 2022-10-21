@@ -1,23 +1,23 @@
-import { Component } from 'react';
 import {
-  isString,
-  isEqual,
-  get,
-  omitBy,
-  isNil,
-  omit,
   cloneDeep,
+  get,
+  isEqual,
+  isNil,
+  isString,
+  omit,
+  omitBy,
 } from 'lodash-es';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
+import { Component } from 'react';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, mergeScan } from 'rxjs/operators';
 import {
-  projectsStream,
   IProjectData,
+  projectsStream,
   PublicationStatus,
 } from 'services/projects';
-import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export type Sort =
   | 'new'

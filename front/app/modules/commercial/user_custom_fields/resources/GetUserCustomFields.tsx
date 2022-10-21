@@ -1,9 +1,9 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import {
-  userCustomFieldsStream,
   IUserCustomFieldData,
   IUserCustomFieldInputType,
+  userCustomFieldsStream,
 } from '../services/userCustomFields';
 
 interface InputProps {}

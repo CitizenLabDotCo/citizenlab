@@ -1,15 +1,15 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import { Box, Radio } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isOneOfControl,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useState } from 'react';
-import ErrorDisplay from '../ErrorDisplay';
-import { Box, Radio } from '@citizenlab/cl2-component-library';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { FormLabel } from 'components/UI/FormComponents';
+import React, { useState } from 'react';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 import { getOptions } from './controlUtils';
 

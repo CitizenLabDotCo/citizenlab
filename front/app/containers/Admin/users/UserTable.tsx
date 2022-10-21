@@ -1,10 +1,10 @@
 // Libraries
+import { get, includes, isArray } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { isAdmin, TRole } from 'services/permissions/roles';
-import { includes, get, isArray } from 'lodash-es';
 
 // Components
-import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
+import { Table, Tbody, Th, Thead, Tr } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
@@ -12,8 +12,8 @@ import UserTableRow from './UserTableRow';
 import { IUserData, updateUser } from 'services/users';
 
 // Resources
-import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
 
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';

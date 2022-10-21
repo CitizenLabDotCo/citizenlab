@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import qs from 'qs';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import styled from 'styled-components';

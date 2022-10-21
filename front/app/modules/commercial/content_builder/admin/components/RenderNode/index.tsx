@@ -8,7 +8,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
 // craft
-import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
+import { ROOT_NODE, useEditor, useNode } from '@craftjs/core';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';

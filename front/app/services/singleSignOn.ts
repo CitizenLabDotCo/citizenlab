@@ -1,8 +1,8 @@
-import { AUTH_PATH } from 'containers/App/constants';
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { stringify } from 'qs';
-import { omitBy, isNil } from 'lodash-es';
 import { isProjectContext } from 'components/Verification/verificationModalEvents';
+import { AUTH_PATH } from 'containers/App/constants';
+import { isNil, omitBy } from 'lodash-es';
+import { stringify } from 'qs';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';

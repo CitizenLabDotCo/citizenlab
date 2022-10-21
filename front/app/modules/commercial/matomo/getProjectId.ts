@@ -1,10 +1,10 @@
 // services
-import { projectBySlugStream, IProject } from 'services/projects';
 import { ideaBySlugStream, IIdea } from 'services/ideas';
+import { IProject, projectBySlugStream } from 'services/projects';
 
 // utils
-import { slugRegEx } from 'utils/textUtils';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { slugRegEx } from 'utils/textUtils';
 
 // typings
 import { Subscription } from 'rxjs';

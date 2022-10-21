@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { get, isEmpty } from 'lodash-es';
+import { useEffect, useState } from 'react';
+import { combineLatest } from 'rxjs';
+import { localeStream } from 'services/locale';
 import {
   customFieldsSchemaForUsersStream,
   UserCustomFieldsInfos,
 } from '../services/userCustomFields';
-import { localeStream } from 'services/locale';
-import { combineLatest } from 'rxjs';
-import { isEmpty, get } from 'lodash-es';
 import { hasCustomFields } from '../utils/customFields';
 
 export type UserCustomFieldsSchema =

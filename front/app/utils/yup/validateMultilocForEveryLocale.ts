@@ -1,4 +1,4 @@
-import { object, lazy, string } from 'yup';
+import { lazy, object, string } from 'yup';
 
 // validates that every key passed in (e.g. for a multiloc)
 // has a corresponding value. this is based on the input object

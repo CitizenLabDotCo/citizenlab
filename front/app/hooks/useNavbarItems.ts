@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  navbarItemsStream,
   INavbarItem,
   MAX_TITLE_LENGTH,
+  navbarItemsStream,
 } from 'services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
 import { truncateMultiloc } from 'utils/textUtils';

@@ -1,9 +1,9 @@
 import React from 'react';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
 
 import { Section, SectionField } from 'components/admin/Section';
 
@@ -14,13 +14,13 @@ import { Multiloc } from 'typings';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 // form
-import { FormProvider, useForm } from 'react-hook-form';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { object } from 'yup';
 
 export interface FormValues {
   title_multiloc: Multiloc;

@@ -1,18 +1,18 @@
-import React, { memo, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useEffect, useState } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
+import { isNilOrError } from 'utils/helperUtils';
 
 // events
 import { ideaMapCardSelected$, setIdeaMapCardSelected } from '../events';
 
 // hooks
-import useProject from 'hooks/useProject';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useProject from 'hooks/useProject';
 
 // components
-import MapIdeasList from './MapIdeasList';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
+import MapIdeasList from './MapIdeasList';
 
 // styling
 import styled from 'styled-components';

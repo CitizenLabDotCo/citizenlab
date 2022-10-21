@@ -3,13 +3,13 @@ import React, { memo } from 'react';
 import { IOfficialFeedbackOnYourInitiativeNotificationData } from 'services/notifications';
 
 // i18n
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
 import T from 'components/T';
+import Link from 'utils/cl-router/Link';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IOfficialFeedbackOnYourInitiativeNotificationData;

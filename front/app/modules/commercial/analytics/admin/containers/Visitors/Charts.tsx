@@ -1,15 +1,15 @@
 import React from 'react';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import VisitorsCard from '../../components/VisitorsCard';
 import VisitorsLanguageCard from '../../components/VisitorsLanguageCard';
 import VisitorsTrafficSourcesCard from '../../components/VisitorsTrafficSourcesCard';
 import VisitorsTypeCard from '../../components/VisitorsTypeCard';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // typings
-import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { Moment } from 'moment';
 
 interface Props {
   startAtMoment: Moment | null | undefined;

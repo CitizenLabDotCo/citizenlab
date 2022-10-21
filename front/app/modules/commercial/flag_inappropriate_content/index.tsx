@@ -1,14 +1,14 @@
-import React, { ReactNode } from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
-import RenderOnNotificationType from 'modules/utilComponents/RenderOnNotificationType';
-import Setting from './admin/containers/Setting';
-import RemoveFlagButton from './admin/components/RemoveFlagButton';
-import ActivityWarningsTab from './admin/components/ActivityWarningsTab';
-import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
-import EmptyMessageModerationsWithFlag from './admin/components/EmptyMessageModerationsWithFlag';
-import NLPFlagNotification from './citizen/components/NLPFlagNotification';
-import { INLPFlagNotificationData } from 'services/notifications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import RenderOnNotificationType from 'modules/utilComponents/RenderOnNotificationType';
+import React, { ReactNode } from 'react';
+import { INLPFlagNotificationData } from 'services/notifications';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import ActivityWarningsTab from './admin/components/ActivityWarningsTab';
+import EmptyMessageModerationsWithFlag from './admin/components/EmptyMessageModerationsWithFlag';
+import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
+import RemoveFlagButton from './admin/components/RemoveFlagButton';
+import Setting from './admin/containers/Setting';
+import NLPFlagNotification from './citizen/components/NLPFlagNotification';
 
 type RenderOnSelectedTabValueProps = {
   isTabSelected: boolean;

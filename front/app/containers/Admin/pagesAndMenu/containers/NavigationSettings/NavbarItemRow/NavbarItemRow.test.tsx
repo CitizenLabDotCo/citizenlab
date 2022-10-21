@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import NavbarItemRow from '.';
 
 jest.mock('services/locale');

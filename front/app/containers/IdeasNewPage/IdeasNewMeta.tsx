@@ -1,23 +1,23 @@
 // libraries
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
+import { Helmet } from 'react-helmet';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';

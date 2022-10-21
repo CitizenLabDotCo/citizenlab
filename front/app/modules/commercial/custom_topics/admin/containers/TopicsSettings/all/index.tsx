@@ -7,10 +7,11 @@ import { deleteTopic } from '../../../../services/topics';
 import useTopics from 'hooks/useTopics';
 
 // i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // components
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   Section,
   SectionDescription,
@@ -18,14 +19,13 @@ import {
   StyledLink,
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
-import TopicTermConfig from '../../../components/TopicTermConfig';
-import TopicsList from '../../../components/TopicsList';
 import Modal, {
-  ModalContentContainer,
   ButtonsWrapper,
   Content,
+  ModalContentContainer,
 } from 'components/UI/Modal';
+import TopicsList from '../../../components/TopicsList';
+import TopicTermConfig from '../../../components/TopicTermConfig';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import PageForm, { FormValues } from 'components/PageForm';
 
 // services
-import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
+import { updatePage } from 'services/pages';
 
 // hooks
-import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
+import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

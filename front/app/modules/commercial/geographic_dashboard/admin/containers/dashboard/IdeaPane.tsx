@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 
 // dataloading
-import { isNilOrError } from 'utils/helperUtils';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';

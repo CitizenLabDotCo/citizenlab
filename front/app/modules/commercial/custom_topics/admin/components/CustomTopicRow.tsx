@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { ITopicData } from 'services/topics';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Row } from 'components/admin/ResourceList';
@@ -9,8 +9,8 @@ import Button from 'components/UI/Button';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Buttons = styled.div`
   display: flex;

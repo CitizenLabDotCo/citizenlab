@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  BaseProps,
   AxisProps,
-  KeyOfType,
-  Cell,
   BaseLabels,
   BaseMapping,
+  BaseProps,
+  Cell,
   CornerRadius,
+  KeyOfType,
 } from '../typings';
 
 // PROPS

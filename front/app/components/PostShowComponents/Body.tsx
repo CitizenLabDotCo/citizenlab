@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import React, { memo } from 'react';
 
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -8,9 +8,9 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { Locale } from 'typings';
 
 // styling
+import Outlet from 'components/Outlet';
 import styled, { useTheme } from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 

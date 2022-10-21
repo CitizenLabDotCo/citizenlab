@@ -2,37 +2,37 @@ import React, { useState } from 'react';
 
 // styling
 import {
+  animation,
   legacyColors,
   sizes,
-  animation,
 } from 'components/admin/Graphs/styling';
 
 // components
 import {
-  BarChart as RechartsBarChart,
   Bar,
-  XAxis,
-  YAxis,
+  BarChart as RechartsBarChart,
   Cell,
   LabelList,
   Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 
 // utils
-import { getBarConfigs } from './utils';
-import { getRechartsLayout, getLabelConfig } from '../MultiBarChart/utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 import { DEFAULT_LEGEND_OFFSET } from '../MultiBarChart';
+import { getLabelConfig, getRechartsLayout } from '../MultiBarChart/utils';
+import { getTooltipConfig, hasNoData, parseMargin } from '../utils';
+import { getBarConfigs } from './utils';
 
 // typings
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import { Props } from './typings';
 
 const StackedBarChart = <Row,>({
   width,

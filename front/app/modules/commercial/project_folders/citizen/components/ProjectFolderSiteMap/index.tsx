@@ -2,14 +2,14 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { H3, H4 } from 'containers/SiteMap';
 import T from 'components/T';
-import Link from 'utils/cl-router/Link';
+import { H3, H4 } from 'containers/SiteMap';
 import Project from 'containers/SiteMap/Project';
+import Link from 'utils/cl-router/Link';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';

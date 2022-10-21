@@ -6,15 +6,15 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // Styling
+import { darken, transparentize } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken, transparentize } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -86,8 +86,8 @@ export const MoreInfoLink = styled.a`
 export const Step2Button = styled(Button)``;
 
 // Typings
-import { IGroupData, MembershipType } from 'services/groups';
 import Outlet from 'components/Outlet';
+import { IGroupData, MembershipType } from 'services/groups';
 
 export interface Props {
   onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;

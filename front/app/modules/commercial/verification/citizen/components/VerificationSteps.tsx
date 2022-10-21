@@ -1,9 +1,9 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import streams from 'utils/streams';
 
 // components
-import VerificationMethods from './VerificationMethods';
 import Outlet from 'components/Outlet';
+import VerificationMethods from './VerificationMethods';
 
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -14,13 +14,13 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { TVerificationMethod } from 'services/verificationMethods';
-import { isNilOrError } from 'utils/helperUtils';
 import {
   ContextShape,
   IVerificationError,
   TVerificationStep,
 } from 'components/Verification/verificationModalEvents';
+import { TVerificationMethod } from 'services/verificationMethods';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;

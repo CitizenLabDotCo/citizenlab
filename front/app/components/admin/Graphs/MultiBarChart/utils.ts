@@ -3,12 +3,12 @@ import { legacyColors, sizes } from '../styling';
 
 // typings
 import {
-  Props,
-  Mapping,
-  Bars,
   BarConfig,
-  Layout,
+  Bars,
   LabelConfig,
+  Layout,
+  Mapping,
+  Props,
 } from './typings';
 
 const FALLBACK_FILL = legacyColors.barFill;

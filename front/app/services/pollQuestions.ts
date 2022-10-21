@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-import { Multiloc, IParticipationContextType } from 'typings';
+import { IParticipationContextType, Multiloc } from 'typings';
 import { capitalizeParticipationContextType } from 'utils/helperUtils';
+import streams from 'utils/streams';
 
 type IPollQuestionAttributes = {
   question_type: 'multiple_options' | 'single_option';

@@ -1,27 +1,27 @@
-import React from 'react';
 import {
-  get,
-  isString,
-  isEqual,
-  omit,
   cloneDeep,
-  omitBy,
-  isNil,
+  get,
   isArray,
+  isEqual,
+  isNil,
+  isString,
+  omit,
+  omitBy,
   unionBy,
 } from 'lodash-es';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import React from 'react';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import {
-  map,
   distinctUntilChanged,
+  map,
   mergeScan,
   switchMap,
 } from 'rxjs/operators';
 import {
-  ideasStream,
-  IIdeaData,
   IdeaPublicationStatus,
   ideasMiniStream,
+  ideasStream,
+  IIdeaData,
 } from 'services/ideas';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import {

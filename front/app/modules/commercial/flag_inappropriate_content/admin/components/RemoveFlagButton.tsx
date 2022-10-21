@@ -1,5 +1,5 @@
-import React from 'react';
 import Button from 'components/UI/Button';
+import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import { shallow } from 'enzyme';
+import React, { Component } from 'react';
 import { mockOption } from 'services/__mocks__/pollOptions';
 
 jest.mock('services/pollOptions', () => ({

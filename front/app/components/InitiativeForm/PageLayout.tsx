@@ -4,15 +4,15 @@ import React from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
-import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
-import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
 import Fragment from 'components/Fragment';
+import GoBackButton from 'components/UI/GoBackButton';
+import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
+import TipsBox from './TipsBox';
 
 // style
-import { media, colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';

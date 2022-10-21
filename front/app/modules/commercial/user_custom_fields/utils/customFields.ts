@@ -1,4 +1,4 @@
-import { isEmpty, get, forOwn } from 'lodash-es';
+import { forOwn, get, isEmpty } from 'lodash-es';
 
 export function hasCustomFields(customFieldsSchemas, locale) {
   // TODO

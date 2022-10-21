@@ -1,14 +1,14 @@
-import React, { FormEvent, ChangeEvent } from 'react';
-import { getBase64FromFile } from 'utils/fileUtils';
+import React, { ChangeEvent, FormEvent } from 'react';
 import { UploadFile } from 'typings';
+import { getBase64FromFile } from 'utils/fileUtils';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
+import { colors, defaultOutline, fontSizes, isRtl } from 'utils/styleUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';

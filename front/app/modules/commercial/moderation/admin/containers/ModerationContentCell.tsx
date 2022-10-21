@@ -1,5 +1,5 @@
-import React, { memo, useState, useCallback, MouseEvent } from 'react';
 import { truncate } from 'lodash-es';
+import React, { memo, MouseEvent, useCallback, useState } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
@@ -10,12 +10,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // typings
-import { Multiloc, Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 
 const Container = styled.div`
   overflow-wrap: break-word;

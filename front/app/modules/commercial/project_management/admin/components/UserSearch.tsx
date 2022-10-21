@@ -1,13 +1,13 @@
 // Libraries
-import React, { memo, useState } from 'react';
 import { get } from 'lodash-es';
+import React, { memo, useState } from 'react';
 import { first } from 'rxjs/operators';
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // Services
 import {
-  findMembership,
   addMembership,
+  findMembership,
 } from 'modules/commercial/project_management/services/projectModerators';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
@@ -24,8 +24,8 @@ import Button from 'components/UI/Button';
 import AsyncSelect from 'react-select/async';
 
 // Style
-import styled from 'styled-components';
 import selectStyles from 'components/UI/MultipleSelect/styles';
+import styled from 'styled-components';
 
 // Typings
 import { IOption } from 'typings';

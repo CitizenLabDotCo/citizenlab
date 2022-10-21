@@ -7,14 +7,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
+import { deletePollOption, IPollOption } from 'services/pollOptions';
 import { IPollQuestion } from 'services/pollQuestions';
-import { IPollOption, deletePollOption } from 'services/pollOptions';
 
 // Components
+import { List, Row, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Icon } from 'semantic-ui-react';
-import { Row, TextCell, List } from 'components/admin/ResourceList';
 import FormOptionRow from './FormOptionRow';
 import OptionRow from './OptionRow';
 import QuestionDetailsForm from './QuestionDetailsForm';

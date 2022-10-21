@@ -1,12 +1,12 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { isNilOrError } from 'utils/helperUtils';
 import shallowCompare from 'utils/shallowCompare';
 import {
-  userCustomFieldOptionsStream,
   IUserCustomFieldOptionData,
+  userCustomFieldOptionsStream,
 } from '../services/userCustomFieldOptions';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   customFieldId: string;

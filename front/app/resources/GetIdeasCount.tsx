@@ -1,24 +1,24 @@
+import { isEmpty, isEqual, isString } from 'lodash-es';
 import React from 'react';
-import { isString, isEmpty, isEqual } from 'lodash-es';
 import {
-  Subscription,
-  Subject,
   BehaviorSubject,
   combineLatest,
   merge,
+  Subject,
+  Subscription,
 } from 'rxjs';
 import {
+  debounceTime,
+  distinctUntilChanged,
   map,
   startWith,
-  distinctUntilChanged,
-  tap,
-  debounceTime,
   switchMap,
+  tap,
 } from 'rxjs/operators';
-import { ideasCount } from 'services/stats';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
-import shallowCompare from 'utils/shallowCompare';
+import { ideasCount } from 'services/stats';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export interface InputProps {
   projectIds?: string[];

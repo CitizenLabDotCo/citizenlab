@@ -11,7 +11,7 @@ import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import renderTooltip from './renderTooltip';
 
 // utils
-import { formatPercentage, emptyString } from './utils';
+import { emptyString, formatPercentage } from './utils';
 
 // typings
 import { RepresentativenessData } from '../../hooks/createRefDataSubscription';

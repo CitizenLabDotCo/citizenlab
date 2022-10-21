@@ -1,4 +1,4 @@
-import { object, lazy, string } from 'yup';
+import { lazy, object, string } from 'yup';
 
 const validateAtLeastOneLocale = (message: string) => {
   return lazy((obj) => {

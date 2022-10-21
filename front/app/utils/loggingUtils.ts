@@ -1,4 +1,4 @@
-import { captureMessage, captureException, withScope } from '@sentry/react';
+import { captureException, captureMessage, withScope } from '@sentry/react';
 import { isEmpty, isError, isObject } from 'lodash-es';
 
 function isErrorOrErrorEvent(wat: any) {

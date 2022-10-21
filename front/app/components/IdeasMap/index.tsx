@@ -1,58 +1,58 @@
+import { LatLng, Map as LeafletMap, popup } from 'leaflet';
 import React, {
   memo,
-  useState,
-  useRef,
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
+  useState,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { CSSTransition } from 'react-transition-group';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Map, { Point } from 'components/Map';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import IdeaButton from 'components/IdeaButton';
+import Map, { Point } from 'components/Map';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
+import usePhase from 'hooks/usePhase';
+import useProject from 'hooks/useProject';
 
 // services
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
+import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // events
 import {
+  leafletMapClicked$,
+  leafletMapSelectedMarker$,
+  setLeafletMapHoveredMarker,
+  setLeafletMapSelectedMarker,
+} from 'components/UI/LeafletMap/events';
+import {
+  ideaMapCardSelected$,
+  ideasSearch$,
+  ideasTopics$,
   setIdeaMapCardSelected,
   setIdeasSearch,
   setIdeasSort,
   setIdeasTopics,
-  ideaMapCardSelected$,
-  ideasSearch$,
-  ideasTopics$,
 } from './events';
-import {
-  setLeafletMapSelectedMarker,
-  setLeafletMapHoveredMarker,
-  leafletMapSelectedMarker$,
-  leafletMapClicked$,
-} from 'components/UI/LeafletMap/events';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // styling
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { Sort } from 'resources/GetIdeas';

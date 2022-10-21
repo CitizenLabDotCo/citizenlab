@@ -6,17 +6,17 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { Section, SectionField } from 'components/admin/Section';
 import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Section, SectionField } from 'components/admin/Section';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
+import { FormProvider, useForm } from 'react-hook-form';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { object } from 'yup';
 
 // typings
 import { Multiloc } from 'typings';

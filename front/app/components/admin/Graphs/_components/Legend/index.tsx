@@ -7,16 +7,16 @@ import Icon from './Icon';
 import { colors } from '../../styling';
 
 // utils
-import { itemsMatch, getLegendTranslate } from './utils';
+import { getLegendTranslate, itemsMatch } from './utils';
 
 // typings
+import { Margin } from '../../typings';
 import {
-  LegendItem,
   GraphDimensions,
   LegendDimensions,
+  LegendItem,
   Position,
 } from './typings';
-import { Margin } from '../../typings';
 
 interface Props {
   items: LegendItem[];

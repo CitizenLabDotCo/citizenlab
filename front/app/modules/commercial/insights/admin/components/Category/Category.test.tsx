@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
+import React from 'react';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),

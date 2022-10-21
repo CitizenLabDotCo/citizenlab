@@ -1,8 +1,8 @@
-import { IInitiativeAction } from 'services/initiatives';
-import { ActionPermission } from 'services/actionTakingRules';
 import useInitiativesPermissions, {
   IInitiativeDisabledReason,
 } from 'hooks/useInitiativesPermissions';
+import { ActionPermission } from 'services/actionTakingRules';
+import { IInitiativeAction } from 'services/initiatives';
 
 type children = (
   renderProps: GetInitiativesPermissionsChildProps

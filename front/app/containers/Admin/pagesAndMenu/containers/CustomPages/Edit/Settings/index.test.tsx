@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 import EditCustomPageSettings from './';
 
 jest.mock('utils/cl-intl');

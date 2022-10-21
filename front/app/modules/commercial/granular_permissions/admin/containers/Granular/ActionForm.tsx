@@ -2,16 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
-import localize, { InjectedLocalized } from 'utils/localize';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import localize, { InjectedLocalized } from 'utils/localize';
 
-import MultipleSelect from 'components/UI/MultipleSelect';
 import { Radio } from '@citizenlab/cl2-component-library';
+import MultipleSelect from 'components/UI/MultipleSelect';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import { IPermissionData } from 'services/actionPermissions';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const StyledFieldset = styled.fieldset`
   border: none;

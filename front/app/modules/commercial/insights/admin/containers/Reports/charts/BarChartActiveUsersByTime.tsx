@@ -1,30 +1,30 @@
 // libraries
+import { isEmpty, map } from 'lodash-es';
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map, isEmpty } from 'lodash-es';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 // typings
-import { IStreamParams, IStream } from 'utils/streams';
 import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
+import { IStream, IStreamParams } from 'utils/streams';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
-import {
-  IGraphUnit,
-  GraphCard,
-  GraphCardInner,
-  GraphCardHeader,
-  GraphCardTitle,
-} from 'components/admin/GraphWrappers';
+import { Icon } from '@citizenlab/cl2-component-library';
 import BarChart from 'components/admin/Graphs/BarChart';
+import {
+  GraphCard,
+  GraphCardHeader,
+  GraphCardInner,
+  GraphCardTitle,
+  IGraphUnit,
+} from 'components/admin/GraphWrappers';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';

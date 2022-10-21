@@ -1,12 +1,12 @@
-import { useCallback } from 'react';
-import {
-  // eslint-disable-next-line no-restricted-imports
-  useIntl as useOriginalUseIntl,
-  MessageDescriptor,
-} from 'react-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
+import { useCallback } from 'react';
+import {
+  MessageDescriptor,
+  // eslint-disable-next-line no-restricted-imports
+  useIntl as useOriginalUseIntl,
+} from 'react-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 const useIntl = () => {
   const intl = useOriginalUseIntl();

@@ -2,11 +2,11 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import StickyContainer from './StickyContainer';
-import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import PageTitle from 'components/admin/PageTitle';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
+import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
+import StickyContainer from './StickyContainer';
 
 interface Props {
   breadcrumbs?: TBreadcrumbs;

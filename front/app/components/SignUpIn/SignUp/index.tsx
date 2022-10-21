@@ -4,15 +4,15 @@ import { handleOnSSOClick } from 'services/singleSignOn';
 import { completeRegistration } from 'services/users';
 
 // components
-import Header from './Header';
+import Mounter from 'components/Mounter';
+import Outlet from 'components/Outlet';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
 import Success from 'components/SignUpIn/SignUp/Success';
+import { StyledModalContentContainer } from 'components/SignUpIn/styles';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { StyledModalContentContainer } from 'components/SignUpIn/styles';
-import Outlet from 'components/Outlet';
-import Mounter from 'components/Mounter';
+import Header from './Header';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -21,35 +21,35 @@ import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import {
-  getDefaultSteps,
-  getActiveStep,
-  getEnabledSteps,
-  registrationCanBeCompleted,
-  getNumberOfSteps,
-  getActiveStepNumber,
   allDataLoaded,
+  getActiveStep,
+  getActiveStepNumber,
+  getDefaultSteps,
+  getEnabledSteps,
+  getNumberOfSteps,
+  registrationCanBeCompleted,
 } from './stepUtils';
 
 // events
 import { signUpActiveStepChange } from 'components/SignUpIn/events';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import T from 'components/T';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/SignUpIn/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // style
 import styled, { useTheme } from 'styled-components';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
+import { Multiloc } from 'typings';
 
 const Container = styled.div`
   width: 100%;

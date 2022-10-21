@@ -1,13 +1,13 @@
-import React from 'react';
 import { get, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import {
   IOfficialFeedbacks,
   officialFeedbacksForIdeaStream,
   officialFeedbacksForInitiativeStream,
 } from 'services/officialFeedback';
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface InputProps {
   postId: string | null;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -6,11 +6,11 @@ import useLocale from 'hooks/useLocale';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
-  createGenderFieldSubscription,
   createAgeFieldSubscription,
+  createGenderFieldSubscription,
   createRegFieldSubscription,
-  RepresentativenessRowMultiloc,
   IncludedUsers,
+  RepresentativenessRowMultiloc,
 } from './createRefDataSubscription';
 
 // typings

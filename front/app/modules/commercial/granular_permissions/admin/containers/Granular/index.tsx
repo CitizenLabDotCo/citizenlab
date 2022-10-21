@@ -7,9 +7,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Timeline from './Timeline';
-import Continuous from './Continuous';
 import { Section, SubSectionTitle } from 'components/admin/Section';
+import Continuous from './Continuous';
+import Timeline from './Timeline';
 
 const StyledSection = styled(Section)`
   margin-bottom: 30px;

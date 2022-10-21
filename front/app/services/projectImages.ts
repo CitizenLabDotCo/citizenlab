@@ -1,5 +1,5 @@
-import { ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
+import { ImageSizes } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/projects`;

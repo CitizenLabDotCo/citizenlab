@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
-import { UploadFile, CLErrors } from 'typings';
+import { CLErrors, UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 import { requestBlob } from 'utils/request';
 
 // components
-import FileUploader from 'components/UI/FileUploader';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import FileUploader from 'components/UI/FileUploader';
 
 // resources
 import { addIdeaImportFile } from 'services/ideaFiles';

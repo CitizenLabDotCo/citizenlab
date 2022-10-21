@@ -1,9 +1,9 @@
-import React from 'react';
 import Button from 'components/UI/Button';
+import React from 'react';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {

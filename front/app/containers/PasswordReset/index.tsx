@@ -1,24 +1,24 @@
+import { isString } from 'lodash-es';
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // router
+import { parse } from 'qs';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
-import { parse } from 'qs';
 
 // components
 import { Success } from '@citizenlab/cl2-component-library';
+import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
 import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import { Helmet } from 'react-helmet';
-import ContentContainer from 'components/ContentContainer';
-import { FormLabel } from 'components/UI/FormComponents';
-import Error from 'components/UI/Error';
 
 // services
 import { resetPassword } from 'services/auth';
@@ -26,12 +26,12 @@ import { CLError } from 'typings';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 import messages from './messages';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 // resources
 import GetAppConfiguration, {

@@ -1,8 +1,8 @@
 // libraries
-import React, { useMemo } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
+import React, { useMemo } from 'react';
+import styled from 'styled-components';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 
@@ -16,25 +16,25 @@ import useIdeaStatuses from 'hooks/useIdeaStatuses';
 
 // streams
 import {
-  updateIdeaStatus,
   deleteIdeaStatus,
   IIdeaStatusData,
+  updateIdeaStatus,
 } from 'services/ideaStatuses';
 
 // components
-import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-} from 'components/admin/Section';
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   Row,
   SortableList,
   SortableRow,
   TextCell,
 } from 'components/admin/ResourceList';
+import {
+  Section,
+  SectionDescription,
+  SectionTitle,
+} from 'components/admin/Section';
 import Button from 'components/UI/Button';
 
 const Buttons = styled.div`

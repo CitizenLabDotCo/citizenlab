@@ -1,44 +1,44 @@
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
+import { get, isEmpty, isError } from 'lodash-es';
 import moment from 'moment';
-import { isEmpty, get, isError } from 'lodash-es';
+import React, { PureComponent } from 'react';
+import { combineLatest, of, Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
 
 // components
+import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
+import DateTimePicker from 'components/admin/DateTimePicker';
+import { Section, SectionField, SectionTitle } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import ErrorComponent from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import ErrorComponent from 'components/UI/Error';
-import DateTimePicker from 'components/admin/DateTimePicker';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
-import FileUploader from 'components/UI/FileUploader';
-import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 
 // utils
-import unsubscribe from 'utils/unsubscribe';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import unsubscribe from 'utils/unsubscribe';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { localeStream } from 'services/locale';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
+import { addEventFile, deleteEventFile } from 'services/eventFiles';
 import {
-  eventStream,
-  updateEvent,
   addEvent,
+  eventStream,
   IEvent,
   IUpdatedEventProperties,
+  updateEvent,
 } from 'services/events';
-import { addEventFile, deleteEventFile } from 'services/eventFiles';
+import { localeStream } from 'services/locale';
 
 // resources
 import GetRemoteFiles, {
@@ -46,7 +46,7 @@ import GetRemoteFiles, {
 } from 'resources/GetRemoteFiles';
 
 // typings
-import { Multiloc, CLError, Locale, UploadFile } from 'typings';
+import { CLError, Locale, Multiloc, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface DataProps {

@@ -1,11 +1,11 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsInputsCount, {
-  QueryParameters,
-} from './useInsightsInputsCount';
+import { act, renderHook } from '@testing-library/react-hooks';
+import { insightsInputsCountStream } from 'modules/commercial/insights/services/insightsInputsCount';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { waitFor } from 'utils/testUtils/rtl';
-import { insightsInputsCountStream } from 'modules/commercial/insights/services/insightsInputsCount';
+import useInsightsInputsCount, {
+  QueryParameters,
+} from './useInsightsInputsCount';
 
 const viewId = '1';
 

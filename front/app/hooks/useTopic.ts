@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ITopicData, topicByIdStream } from 'services/topics';
 import { isNilOrError } from 'utils/helperUtils';
 

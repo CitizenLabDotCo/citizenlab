@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Status from './Status';
-import Location from './Location';
 import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
+import Location from './Location';
 import PostedBy from './PostedBy';
+import Status from './Status';
 
 // hooks & services
-import useLocale from 'hooks/useLocale';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import Outlet from 'components/Outlet';
+import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useLocale from 'hooks/useLocale';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';

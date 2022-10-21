@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsViews';
+import React from 'react';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   addInsightsView: jest.fn(),
@@ -12,8 +12,8 @@ jest.mock('resources/GetProjects', () => {});
 jest.mock('hooks/useLocalize');
 jest.mock('services/locale');
 
-import { CreateInsightsView } from './CreateInsightsView';
 import { GetProjectsChildProps } from 'resources/GetProjects';
+import { CreateInsightsView } from './CreateInsightsView';
 
 const closeModal = jest.fn();
 

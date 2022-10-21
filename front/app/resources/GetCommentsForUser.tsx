@@ -1,12 +1,12 @@
+import { get, isString } from 'lodash-es';
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import {
-  ICommentData,
   commentsForUserStream,
+  ICommentData,
   IComments,
 } from 'services/comments';
-import { get, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {

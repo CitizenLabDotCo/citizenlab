@@ -1,4 +1,4 @@
-import { Label, Image } from '@citizenlab/cl2-component-library';
+import { Image, Label } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';

@@ -1,33 +1,33 @@
 // Libraries
-import React, { PureComponent, Fragment } from 'react';
+import { clone, isEqual } from 'lodash-es';
+import React, { Fragment, PureComponent } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { isEqual, clone } from 'lodash-es';
 import styled from 'styled-components';
 
 // Services / Data loading
 import {
   addPollQuestion,
   deletePollQuestion,
-  updatePollQuestion,
-  reorderPollQuestion,
   IPollQuestion,
+  reorderPollQuestion,
+  updatePollQuestion,
 } from 'services/pollQuestions';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import QuestionRow from './QuestionRow';
 import FormQuestionRow from './FormQuestionRow';
 import OptionForm from './OptionForm';
+import QuestionRow from './QuestionRow';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc, IParticipationContextType } from 'typings';
+import { IParticipationContextType, Multiloc } from 'typings';
 
 const StyledList = styled(List)`
   margin: 10px 0;

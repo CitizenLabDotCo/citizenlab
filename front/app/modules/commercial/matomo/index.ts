@@ -1,10 +1,14 @@
 import { combineLatest } from 'rxjs';
 
 // services
-import { authUserStream } from 'services/auth';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
+import { authUserStream } from 'services/auth';
 
 // utils
+import {
+  IDestinationConfig,
+  registerDestination,
+} from 'components/ConsentManager/destinations';
 import {
   bufferUntilInitialized,
   events$,
@@ -12,12 +16,8 @@ import {
   pageChanges$,
   shutdownFor,
 } from 'utils/analytics';
-import {
-  IDestinationConfig,
-  registerDestination,
-} from 'components/ConsentManager/destinations';
-import { setupMatomo } from './setup';
 import { trackEvent, trackPageChange } from './actions';
+import { setupMatomo } from './setup';
 
 // typings
 import { ModuleConfiguration } from 'utils/moduleUtils';

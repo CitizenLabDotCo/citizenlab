@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { IIdeaStatusData, ideaStatusesStream } from 'services/ideaStatuses';
+import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
 
 interface InputProps {}
 

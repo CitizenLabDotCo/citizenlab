@@ -1,7 +1,7 @@
-import { Multiloc } from 'typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Moment } from 'moment';
+import { Multiloc } from 'typings';
 
 export interface QueryParameters {
   projectId: string | undefined;

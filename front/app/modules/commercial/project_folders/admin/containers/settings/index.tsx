@@ -1,16 +1,16 @@
+import { SectionDescription, SectionTitle } from 'components/admin/Section';
+import GoBackButton from 'components/UI/GoBackButton';
 import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
 } from '../../../resources/GetProjectFolder';
-import { adopt } from 'react-adopt';
-import GoBackButton from 'components/UI/GoBackButton';
+import messages from '../messages';
 import ProjectFolderForm from './ProjectFolderForm';
 
 const Container = styled.div<{ mode: 'edit' | 'new' }>`

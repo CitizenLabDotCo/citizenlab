@@ -1,10 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
-import { findDOMNode } from 'react-dom';
-import { DragSource, DropTarget } from 'react-dnd-cjs';
-import { Row } from 'components/admin/ResourceList';
-import { Icon } from 'semantic-ui-react';
 import { Box } from '@citizenlab/cl2-component-library';
+import { Row } from 'components/admin/ResourceList';
+import React from 'react';
+import { DragSource, DropTarget } from 'react-dnd-cjs';
+import { findDOMNode } from 'react-dom';
+import { Icon } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 const DragHandle = styled.div`
   cursor: move;

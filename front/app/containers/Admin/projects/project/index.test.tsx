@@ -7,15 +7,15 @@ import { AdminProjectsProjectIndex } from '.';
 // mock data and functions to replace the HoCs
 import {
   mockPhaseIdeationData,
-  mockPhaseSurveyTypeformData,
-  mockPhaseSurveyGoogleFormData,
   mockPhaseInformationData,
+  mockPhaseSurveyGoogleFormData,
+  mockPhaseSurveyTypeformData,
 } from 'services/__mocks__/phases';
 import { getProject } from 'services/__mocks__/projects';
-import { shallowWithIntl } from 'utils/testUtils/withIntl';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
-import { WithRouterProps } from 'utils/cl-router/withRouter';
+import { shallowWithIntl } from 'utils/testUtils/withIntl';
 
 // what needs to be mocked by jest to render the component
 jest.mock('utils/cl-intl');

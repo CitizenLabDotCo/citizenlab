@@ -1,10 +1,10 @@
+import { RuleFailure, Rules, WalkContext } from 'tslint';
 import {
-  SourceFile,
-  Node,
   forEachChild,
   isImportDeclaration,
+  Node,
+  SourceFile,
 } from 'typescript';
-import { Rules, RuleFailure, WalkContext } from 'tslint';
 
 const walk = (ctx: WalkContext<void>) => {
   const cb = (node: Node): void => {

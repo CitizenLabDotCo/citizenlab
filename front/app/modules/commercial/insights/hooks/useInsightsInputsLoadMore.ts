@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import {
-  insightsInputsStream,
-  IInsightsInputData,
-} from '../services/insightsInputs';
-import { isNilOrError } from 'utils/helperUtils';
 import { unionBy } from 'lodash-es';
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import { useEffect, useState } from 'react';
+import { trackEventByName } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
+import {
+  IInsightsInputData,
+  insightsInputsStream,
+} from '../services/insightsInputs';
 
 const defaultPageSize = 20;
 

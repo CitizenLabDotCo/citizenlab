@@ -1,8 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc, ImageSizes, ILinks } from 'typings';
-import { first } from 'rxjs/operators';
 import { get } from 'lodash-es';
+import { first } from 'rxjs/operators';
+import { ILinks, ImageSizes, IRelationship, Multiloc } from 'typings';
+import streams, { IStreamParams } from 'utils/streams';
 
 export type InitiativePublicationStatus =
   | 'draft'

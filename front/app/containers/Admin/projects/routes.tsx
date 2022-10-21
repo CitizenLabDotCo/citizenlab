@@ -1,6 +1,6 @@
-import React, { lazy } from 'react';
-import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
+import moduleConfiguration from 'modules';
+import React, { lazy } from 'react';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));

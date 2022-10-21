@@ -4,20 +4,20 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
+import { Button, Spinner } from '@citizenlab/cl2-component-library';
 import InitiativeCard from 'components/InitiativeCard';
-import { Spinner, Button } from '@citizenlab/cl2-component-library';
 
 // resources
 import { IInitiativeData } from 'services/initiatives';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
+import { rgba } from 'polished';
 import styled, { useTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 const Loading = styled.div`
   width: 100%;

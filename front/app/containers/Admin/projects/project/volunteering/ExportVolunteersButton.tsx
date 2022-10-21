@@ -8,9 +8,9 @@ import { IParticipationContextType } from 'typings';
 import Button from 'components/UI/Button';
 
 // i18n
+import { exportVolunteers } from 'services/volunteers';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { exportVolunteers } from 'services/volunteers';
 
 interface Props {
   participationContextType: IParticipationContextType;

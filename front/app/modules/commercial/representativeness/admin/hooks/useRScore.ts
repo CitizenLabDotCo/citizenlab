@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { rScoreStream, RScore, RScoreData } from '../services/rScore';
+import { useEffect, useState } from 'react';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { RScore, RScoreData, rScoreStream } from '../services/rScore';
 
 export default function useRScore(
   userCustomFieldId: string,

@@ -1,19 +1,19 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
-import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
+import React, { FormEvent, PureComponent } from 'react';
+import { isAdmin } from 'services/permissions/roles';
 import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
-import { Tr, Td, Toggle, Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Td, Toggle, Tr } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
-import Tippy from '@tippyjs/react';
 
 // Translation
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Events --- For error handling
@@ -21,15 +21,15 @@ import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // Services
-import { IUserData, deleteUser } from 'services/users';
+import { deleteUser, IUserData } from 'services/users';
 
 // Typings
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
+import { lighten } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const StyledCheckbox = styled(Checkbox)`
   margin-left: 5px;

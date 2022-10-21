@@ -8,9 +8,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 interface Props {
   className?: string;

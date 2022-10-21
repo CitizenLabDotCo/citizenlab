@@ -1,9 +1,9 @@
-import React from 'react';
-import { IProjectData } from 'services/projects';
-import { flow } from 'lodash-es';
 import T from 'components/T';
-import { Menu } from 'semantic-ui-react';
+import { flow } from 'lodash-es';
+import React from 'react';
 import { DropTarget } from 'react-dnd-cjs';
+import { Menu } from 'semantic-ui-react';
+import { IProjectData } from 'services/projects';
 
 interface Props {
   project: IProjectData;

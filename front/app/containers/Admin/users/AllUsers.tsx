@@ -1,6 +1,6 @@
 // Libraries
+import { isEmpty, isString } from 'lodash-es';
 import React, { PureComponent } from 'react';
-import { isString, isEmpty } from 'lodash-es';
 
 // Components
 import UserManager from './UserManager';

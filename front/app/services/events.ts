@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
+import { ILinks, Multiloc } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc, ILinks } from 'typings';
 
 const apiEndpoint = `${API_PATH}/events`;
 

@@ -1,7 +1,7 @@
 import { NavItem } from 'containers/Admin/sideBar';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import { FC, useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type Props = {
   onData: (data: InsertConfigurationOptions<NavItem>) => void;

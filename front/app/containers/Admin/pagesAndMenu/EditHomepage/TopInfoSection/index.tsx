@@ -1,3 +1,4 @@
+import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
@@ -5,7 +6,6 @@ import { updateHomepageSettings } from 'services/homepageSettings';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { homeBreadcrumb } from '../../breadcrumbs';
-import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
 
 const TopInfoSection = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();

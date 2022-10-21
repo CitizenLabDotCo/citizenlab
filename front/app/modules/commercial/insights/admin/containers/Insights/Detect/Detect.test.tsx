@@ -1,13 +1,13 @@
+import categories from 'modules/commercial/insights/fixtures/categories';
+import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 import React from 'react';
 import {
+  fireEvent,
   render,
   screen,
-  fireEvent,
-  within,
   waitFor,
+  within,
 } from 'utils/testUtils/rtl';
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
-import categories from 'modules/commercial/insights/fixtures/categories';
 
 import Detect from './';
 

@@ -10,8 +10,8 @@ import tracks from './tracks';
 import NotificationCount from './components/NotificationCount';
 const NotificationsDropdown = lazy(() => import('./NotificationsDropdown'));
 
-import { markAllAsRead } from 'services/notifications';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { markAllAsRead } from 'services/notifications';
 
 const Container = styled.div`
   position: relative;

@@ -1,5 +1,5 @@
-import { userModeratesFolder, isProjectFolderModerator } from './roles';
 import { makeUser } from 'services/__mocks__/users';
+import { isProjectFolderModerator, userModeratesFolder } from './roles';
 
 jest.mock('modules', () => ({ streamsToReset: [] }));
 

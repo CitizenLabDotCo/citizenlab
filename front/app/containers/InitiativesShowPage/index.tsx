@@ -1,12 +1,12 @@
-import React, { memo } from 'react';
 import { isError } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import InitiativesShow from 'containers/InitiativesShow';
 import Button from 'components/UI/Button';
+import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
 // resources
@@ -20,7 +20,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const InitiativeNotFoundWrapper = styled.div`
   height: calc(

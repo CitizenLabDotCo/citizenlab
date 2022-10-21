@@ -1,15 +1,15 @@
 import React from 'react';
 
 // JSON forms
-import { withJsonFormsControlProps } from '@jsonforms/react';
 import { ControlProps } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 // Components
-import { Box, Text, Radio, Label } from '@citizenlab/cl2-component-library';
+import { Box, Label, Radio, Text } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
-import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
 
 const LinearScaleControl = ({
   data,

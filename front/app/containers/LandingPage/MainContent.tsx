@@ -1,13 +1,13 @@
-import React from 'react';
 import ContentContainer from 'components/ContentContainer';
-import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
+import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
+import React from 'react';
 import InitiativesCTABox from './InitiativesCTABox';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 

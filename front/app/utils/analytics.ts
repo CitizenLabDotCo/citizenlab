@@ -1,28 +1,28 @@
+import { isEqual, mapValues } from 'lodash-es';
 import React from 'react';
-import { Subject, Observable, concat, combineLatest } from 'rxjs';
+import { combineLatest, concat, Observable, Subject } from 'rxjs';
 import {
   buffer,
-  filter,
-  pairwise,
-  mergeAll,
-  take,
   distinctUntilChanged,
+  filter,
   map,
+  mergeAll,
+  pairwise,
+  take,
 } from 'rxjs/operators';
-import { isEqual, mapValues } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 
 import {
-  IAppConfigurationData,
   currentAppConfigurationStream,
+  IAppConfigurationData,
 } from 'services/appConfiguration';
 
+import { ISavedDestinations } from 'components/ConsentManager/consent';
 import {
   getDestinationConfig,
   IDestination,
   isDestinationActive,
 } from 'components/ConsentManager/destinations';
-import { ISavedDestinations } from 'components/ConsentManager/consent';
 import { authUserStream } from 'services/auth';
 
 export interface IEvent {

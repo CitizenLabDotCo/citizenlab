@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import { getTheme } from '@citizenlab/cl2-component-library';
+import React from 'react';
 import * as styledComponents from 'styled-components';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import ProjectAndFolderCards from '.';
 

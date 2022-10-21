@@ -1,5 +1,5 @@
-import React from 'react';
 import { Box, BoxMarginProps } from '@citizenlab/cl2-component-library';
+import React from 'react';
 import { colors } from 'utils/styleUtils';
 
 const Divider = ({

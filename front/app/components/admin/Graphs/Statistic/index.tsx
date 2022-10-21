@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 
 interface Props {
   name: string;

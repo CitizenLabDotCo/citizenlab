@@ -4,9 +4,9 @@ import React from 'react';
 import { Locale } from 'typings';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import RangeInput from './RangeInput';
 import ScaleLabelInput from './ScaleLabelsInput';
-import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   maximumName: string;

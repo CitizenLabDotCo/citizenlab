@@ -1,7 +1,7 @@
+import PageLoading from 'components/UI/PageLoading';
+import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import moduleConfiguration from 'modules';
-import PageLoading from 'components/UI/PageLoading';
 
 const AdminSettingsIndex = lazy(() => import('containers/Admin/settings'));
 const AdminSettingsGeneral = lazy(

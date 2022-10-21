@@ -1,10 +1,10 @@
-import { init, addTileLayer, changeView } from './setup';
+import { addTileLayer, changeView, init } from './setup';
 
 import { addLayersControl, removeLayersControl } from './controls';
-import { addLayers, removeLayers, removeLayer } from './layers';
+import { addLayers, removeLayer, removeLayers } from './layers';
 import {
-  addMarkersToMap,
   addMarkerClusterGroup,
+  addMarkersToMap,
   getMarkerIcon,
 } from './markers';
 

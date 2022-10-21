@@ -1,6 +1,5 @@
 import { randomString } from '../support/commands';
 import moment = require('moment');
-import project from '../fixtures/project';
 
 describe('Project card component', () => {
   const projectTitle = randomString();

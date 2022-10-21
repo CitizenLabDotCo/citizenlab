@@ -4,16 +4,16 @@ import { Helmet } from 'react-helmet';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAuthUser from 'hooks/useAuthUser';
 import useIdea from 'hooks/useIdea';
-import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
+import useProject from 'hooks/useProject';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';

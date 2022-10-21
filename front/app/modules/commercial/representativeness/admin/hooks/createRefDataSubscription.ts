@@ -1,20 +1,20 @@
 // services
 import {
-  usersByGenderStream,
-  usersByAgeStream,
-  usersByRegFieldStream,
   IUsersByAge,
   IUsersByRegistrationField,
+  usersByAgeStream,
+  usersByGenderStream,
+  usersByRegFieldStream,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { zipObject } from 'lodash-es';
-import { sum, roundPercentage, roundPercentages } from 'utils/math';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { roundPercentage, roundPercentages, sum } from 'utils/math';
 import { forEachBin } from '../utils/bins';
 
 // typings
-import { Multiloc, Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 
 interface RepresentativenessRowBase {
   actualPercentage: number;

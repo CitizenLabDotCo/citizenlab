@@ -6,7 +6,7 @@ import AdminBadge from './AdminBadge';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

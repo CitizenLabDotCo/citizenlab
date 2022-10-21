@@ -1,10 +1,10 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsView from './useInsightsView';
-import { Observable, Subscription } from 'rxjs';
-import { waitFor } from 'utils/testUtils/rtl';
-import { delay } from 'rxjs/operators';
-import { insightsViewStream } from 'modules/commercial/insights/services/insightsViews';
+import { act, renderHook } from '@testing-library/react-hooks';
 import views from 'modules/commercial/insights/fixtures/views';
+import { insightsViewStream } from 'modules/commercial/insights/services/insightsViews';
+import { Observable, Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { waitFor } from 'utils/testUtils/rtl';
+import useInsightsView from './useInsightsView';
 
 const viewId = views[0].id;
 

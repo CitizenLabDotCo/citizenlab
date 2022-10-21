@@ -1,15 +1,15 @@
+import { IAppConfigurationData } from 'services/appConfiguration';
 import {
   definePermissionRule,
   IRouteItem,
 } from 'services/permissions/permissions';
+import { IUser } from 'services/users';
 import {
   isAdmin,
   isModerator,
   isProjectModerator,
   isSuperAdmin,
 } from '../roles';
-import { IUser } from 'services/users';
-import { IAppConfigurationData } from 'services/appConfiguration';
 
 const MODERATOR_ROUTES = [
   '/admin/dashboard',

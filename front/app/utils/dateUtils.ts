@@ -1,7 +1,7 @@
-import moment from 'moment';
-import { isString } from 'lodash-es';
-import { Locale } from 'typings';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { isString } from 'lodash-es';
+import moment from 'moment';
+import { Locale } from 'typings';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so

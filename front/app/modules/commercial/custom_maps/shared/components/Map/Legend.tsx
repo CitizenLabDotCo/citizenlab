@@ -1,21 +1,21 @@
-import React, { memo } from 'react';
-import styled from 'styled-components';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import bowser from 'bowser';
 import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'modules/commercial/custom_maps/hooks/useMapConfig';
-import {
-  media,
-  isRtl,
-  fontSizes,
-  colors,
-  defaultCardStyle,
-} from 'utils/styleUtils';
-import { Multiloc } from 'typings';
 import {
   getLayerColor,
   getLayerIcon,
 } from 'modules/commercial/custom_maps/utils/map';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import bowser from 'bowser';
+import React, { memo } from 'react';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+import {
+  colors,
+  defaultCardStyle,
+  fontSizes,
+  isRtl,
+  media,
+} from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 25px;

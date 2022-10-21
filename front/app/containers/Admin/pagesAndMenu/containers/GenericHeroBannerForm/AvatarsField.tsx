@@ -3,16 +3,16 @@ import React from 'react';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import {
-  Setting,
-  ToggleLabel,
-  StyledToggle,
   LabelContent,
-  LabelTitle,
   LabelDescription,
+  LabelTitle,
+  Setting,
+  StyledToggle,
+  ToggleLabel,
 } from 'containers/Admin/settings/general';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {

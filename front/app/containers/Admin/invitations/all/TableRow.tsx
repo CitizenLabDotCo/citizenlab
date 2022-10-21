@@ -1,21 +1,21 @@
 import React from 'react';
 
 // services
-import { IInviteData, deleteInvite } from 'services/invites';
+import { deleteInvite, IInviteData } from 'services/invites';
 
 // hooks
 import useUser from 'hooks/useUser';
 
 // components
+import { Badge, Td, Tr } from '@citizenlab/cl2-component-library';
 import { Button as SemanticButton, Popup } from 'semantic-ui-react';
-import { Tr, Td, Badge } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils

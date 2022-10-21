@@ -1,14 +1,14 @@
 // @ts-nocheck
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 
 import { AdminProjectPoll } from '.';
 
-import { getProject } from 'services/__mocks__/projects';
 import {
   mockPhaseInformationData,
   mockPhasePollData,
 } from 'services/__mocks__/phases';
+import { getProject } from 'services/__mocks__/projects';
 
 jest.mock('./ExportPollButton', () => 'ExportPollButton');
 jest.mock('./PollAdminForm', () => 'PollAdminForm');

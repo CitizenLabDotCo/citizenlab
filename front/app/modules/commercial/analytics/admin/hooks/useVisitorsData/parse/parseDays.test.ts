@@ -1,6 +1,6 @@
 import moment from 'moment';
+import { TimeSeries, TimeSeriesResponse } from '../typings';
 import { parseDays } from './parseDays';
-import { TimeSeriesResponse, TimeSeries } from '../typings';
 
 describe('parseDays', () => {
   it('works', () => {

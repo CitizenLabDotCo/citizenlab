@@ -1,17 +1,17 @@
 import React, { memo } from 'react';
 
 // components
-import { Button, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
+import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
+import useProject from 'hooks/useProject';
 
 // utils
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-import eventEmitter from 'utils/eventEmitter';
 import { ScreenReaderOnly } from 'utils/a11y';
+import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId: string;

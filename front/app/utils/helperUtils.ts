@@ -1,12 +1,12 @@
+import { isUndefined, trim } from 'lodash-es';
+import { removeUrlLocale } from 'services/locale';
 import {
-  Locale,
-  Multiloc,
+  CLErrorsJSON,
   GraphqlLocale,
   IParticipationContextType,
-  CLErrorsJSON,
+  Locale,
+  Multiloc,
 } from 'typings';
-import { trim, isUndefined } from 'lodash-es';
-import { removeUrlLocale } from 'services/locale';
 import { viewportWidths } from 'utils/styleUtils';
 
 export function capitalizeParticipationContextType(

@@ -3,22 +3,22 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Fragment from 'components/Fragment';
-import FileAttachments from 'components/UI/FileAttachments';
-import ProjectInfoSideBar from './ProjectInfoSideBar';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+import FileAttachments from 'components/UI/FileAttachments';
 import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
+import ProjectInfoSideBar from './ProjectInfoSideBar';
 
 // hooks
+import { Title, useWindowSize } from '@citizenlab/cl2-component-library';
 import useProject from 'hooks/useProject';
 import useProjectFiles from 'hooks/useProjectFiles';
-import { useWindowSize, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import { isRtl, media, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

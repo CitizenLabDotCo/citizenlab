@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { addCustomFieldForUsers } from '../../../../services/userCustomFields';
 import clHistory from 'utils/cl-router/history';
+import { addCustomFieldForUsers } from '../../../../services/userCustomFields';
 
-import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
+import GoBackButton from 'components/UI/GoBackButton';
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';

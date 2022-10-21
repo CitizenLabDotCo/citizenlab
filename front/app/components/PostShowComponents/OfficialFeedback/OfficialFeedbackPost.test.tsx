@@ -1,6 +1,6 @@
-import React from 'react';
-import { shallow } from 'enzyme';
 import { IAction } from 'components/UI/MoreActionsMenu';
+import { shallow } from 'enzyme';
+import React from 'react';
 import * as officialFeedbackSerivce from 'services/officialFeedback';
 import { mockOfficialFeedback } from 'services/__mocks__/officialFeedback';
 import { OfficialFeedbackPost } from './OfficialFeedbackPost';

@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import {
-  insightsInputsStream,
   IInsightsInputData,
+  insightsInputsStream,
 } from '../services/insightsInputs';
-import { isNilOrError } from 'utils/helperUtils';
 
 export const defaultPageSize = 20;
 

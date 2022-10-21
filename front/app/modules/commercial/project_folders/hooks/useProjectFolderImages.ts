@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  projectFolderImagesStream,
   IProjectFolderImages,
+  projectFolderImagesStream,
 } from '../services/projectFolderImages';
 
 export default function useProjectFolderImages(

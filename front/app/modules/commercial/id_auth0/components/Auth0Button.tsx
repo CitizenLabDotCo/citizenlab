@@ -1,11 +1,11 @@
-import React from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
+import React from 'react';
 import { removeUrlLocale } from 'services/locale';
-import { getJwt } from 'utils/auth/jwt';
 import {
-  TVerificationMethod,
   IDAuth0Method,
+  TVerificationMethod,
 } from 'services/verificationMethods';
+import { getJwt } from 'utils/auth/jwt';
 // components
 import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
 

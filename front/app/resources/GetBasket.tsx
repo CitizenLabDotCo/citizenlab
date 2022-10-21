@@ -1,10 +1,10 @@
-import React from 'react';
 import { isString } from 'lodash-es';
-import { BehaviorSubject, Subscription, of } from 'rxjs';
+import React from 'react';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import { basketByIdStream, IBasketData } from 'services/baskets';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   id: string | null | undefined;

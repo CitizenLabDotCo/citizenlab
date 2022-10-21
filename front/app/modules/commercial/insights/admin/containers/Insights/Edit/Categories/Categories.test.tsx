@@ -1,8 +1,8 @@
-import React from 'react';
-import { render, screen, fireEvent, act, waitFor } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsCategories';
-import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
+import * as service from 'modules/commercial/insights/services/insightsCategories';
+import React from 'react';
+import clHistory from 'utils/cl-router/history';
+import { act, fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 
 import Categories from './';
 

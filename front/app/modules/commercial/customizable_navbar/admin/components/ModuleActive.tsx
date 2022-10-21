@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useEffect } from 'react';
 
 interface Props {
   onMount: () => void;

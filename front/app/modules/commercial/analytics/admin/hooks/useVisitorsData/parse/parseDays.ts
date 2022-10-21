@@ -1,12 +1,12 @@
 import { Moment } from 'moment';
+import { TimeSeriesResponse } from '../typings';
 import {
-  indexTimeSeries,
+  dateRange,
+  getEmptyRow,
   getFirstDateInData,
   getLastDateInData,
-  getEmptyRow,
-  dateRange,
+  indexTimeSeries,
 } from './utils';
-import { TimeSeriesResponse } from '../typings';
 
 export const parseDays = (
   responseTimeSeries: TimeSeriesResponse,

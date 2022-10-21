@@ -6,7 +6,7 @@ import { isEmpty } from 'lodash-es';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { Tooltip, TooltipConfig, Margin, Legend } from './typings';
+import { Legend, Margin, Tooltip, TooltipConfig } from './typings';
 import { LegendDimensions } from './_components/Legend/typings';
 
 export const hasNoData = (data: any[] | NilOrError): data is NilOrError =>

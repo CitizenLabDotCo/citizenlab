@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
+import { ImageSizes, Multiloc } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc, ImageSizes } from 'typings';
 
 const apiEndpoint = `${API_PATH}/causes`;
 

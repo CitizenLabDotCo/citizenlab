@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import {
+  activeBorderSize,
+  tabBorderSize,
   tabLineHeight,
   tabPadding,
-  tabBorderSize,
-  activeBorderSize,
   wrapperPadding,
 } from './tabsStyleConstants';
 

@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
 import { ideaByIdStream } from 'services/ideas';
 import { ImageSizes } from 'typings';
+import streams, { IStreamParams } from 'utils/streams';
 
 export interface IIdeaImageData {
   id: string;

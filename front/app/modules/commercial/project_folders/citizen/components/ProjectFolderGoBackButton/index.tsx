@@ -1,9 +1,9 @@
+import { Button } from '@citizenlab/cl2-component-library';
+import useLocalize from 'hooks/useLocalize';
 import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
-import { Button } from '@citizenlab/cl2-component-library';
-import useProjectFolder from '../../../hooks/useProjectFolder';
-import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
+import useProjectFolder from '../../../hooks/useProjectFolder';
 
 interface Props {
   projectFolderId: string;

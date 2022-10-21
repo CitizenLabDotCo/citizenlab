@@ -1,32 +1,32 @@
-import React from 'react';
 import { isNumber } from 'lodash-es';
+import React from 'react';
 
 // libraries
-import clHistory from 'utils/cl-router/history';
+import { parse } from 'qs';
 import { adopt } from 'react-adopt';
+import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { reverseGeocode } from 'utils/locationTools';
-import { parse } from 'qs';
 
 // resources
+import { PreviousPathnameContext } from 'context';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import InitiativesNewMeta from './InitiativesNewMeta';
-import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
-import { ITopicData } from 'services/topics';
-import { ILocationInfo } from 'typings';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import { ITopicData } from 'services/topics';
+import { ILocationInfo } from 'typings';
+import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
+import InitiativesNewMeta from './InitiativesNewMeta';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;

@@ -6,8 +6,8 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import CommentCount from './CommentCount';
 
 // types
-import { IParticipationContextType } from 'typings';
 import { IIdeaData } from 'services/ideas';
+import { IParticipationContextType } from 'typings';
 
 // styles
 import styled from 'styled-components';

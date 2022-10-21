@@ -1,8 +1,8 @@
 import { Locale } from '@citizenlab/cl2-component-library';
+import { locales } from 'containers/App/constants';
+import { includes } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
-import { includes } from 'lodash-es';
-import { locales } from 'containers/App/constants';
 
 export const getLocale = (): Locale => 'en-GB';
 

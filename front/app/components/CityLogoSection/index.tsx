@@ -2,8 +2,8 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Fragment from 'components/Fragment';
 import { Image } from '@citizenlab/cl2-component-library';
+import Fragment from 'components/Fragment';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -11,8 +11,8 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 // style

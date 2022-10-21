@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
-import { TRule } from '../rules';
-import { IOption } from 'typings';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
+import useLocalize from 'hooks/useLocalize';
+import React, { memo } from 'react';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { IOption } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+import { TRule } from '../rules';
 
 export interface Props {
   rule: TRule;

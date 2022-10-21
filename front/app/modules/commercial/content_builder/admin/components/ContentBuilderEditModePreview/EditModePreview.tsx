@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
 // hooks
-import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import { useParams } from 'react-router-dom';
+import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 
 // components
-import Editor from '../Editor';
-import ContentBuilderFrame from '../ContentBuilderFrame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
+import ContentBuilderFrame from '../ContentBuilderFrame';
+import Editor from '../Editor';
 
 // services
 import { PROJECT_DESCRIPTION_CODE } from '../../../services/contentBuilder';

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { ICampaignData } from 'services/campaigns';
 import GetCampaign from 'resources/GetCampaign';
+import { ICampaignData } from 'services/campaigns';
 import { isNilOrError } from 'utils/helperUtils';
 
 import PageWrapper from 'components/admin/PageWrapper';

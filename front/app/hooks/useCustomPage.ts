@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { customPageByIdStream, ICustomPageData } from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
 

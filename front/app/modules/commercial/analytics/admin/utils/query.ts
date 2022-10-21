@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
+import moment from 'moment';
 
 type ProjectFilter = { project: { id: string } };
 type EmptyObject = Record<string, unknown>;

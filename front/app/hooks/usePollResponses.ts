@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Observable, of } from 'rxjs';
 import {
   getPollResponses,

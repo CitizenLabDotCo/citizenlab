@@ -1,9 +1,9 @@
 // @ts-nocheck
 // libraries
-import React from 'react';
 import { shallow } from 'enzyme';
-import { intl } from 'utils/cl-intl';
 import useUser from 'hooks/useUser';
+import React from 'react';
+import { intl } from 'utils/cl-intl';
 
 // component to test
 import { UsersShowPage } from './';

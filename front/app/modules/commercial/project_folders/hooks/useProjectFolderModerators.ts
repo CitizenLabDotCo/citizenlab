@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IUserData } from 'services/users';
 import { folderModeratorsStream } from '../services/projectFolderModerators';
 

@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 // Components
+import { Row, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Row, TextCell } from 'components/admin/ResourceList';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

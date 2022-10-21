@@ -1,6 +1,6 @@
 import moment from 'moment';
+import { TimeSeries, TimeSeriesResponse } from '../typings';
 import { parseWeeks } from './parseWeeks';
-import { TimeSeriesResponse, TimeSeries } from '../typings';
 
 describe('parseWeeks', () => {
   const continuousData: TimeSeriesResponse = [

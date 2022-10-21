@@ -1,10 +1,10 @@
+import FeatureFlag from 'components/FeatureFlag';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import InitiativeSettingsTab from './admin/components/InitiativeSettingsTab';
 import ProjectSettingsTab from './admin/components/ProjectSettingsTab';
 import Granular from './admin/containers/Granular';
-import FeatureFlag from 'components/FeatureFlag';
 
 const AdminGranularPermissionsComponent = React.lazy(
   () => import('./admin/containers/permissions')

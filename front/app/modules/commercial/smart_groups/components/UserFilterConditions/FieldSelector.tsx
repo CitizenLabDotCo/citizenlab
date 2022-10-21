@@ -1,15 +1,15 @@
-import React, { memo } from 'react';
-import { keys } from 'lodash-es';
 import { Select } from '@citizenlab/cl2-component-library';
+import { keys } from 'lodash-es';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IOption } from 'typings';
 
 import {
+  ruleTypeConstraints,
+  TCustomRuleType,
   TRule,
   TStaticRuleType,
-  TCustomRuleType,
-  ruleTypeConstraints,
 } from './rules';
 
 import {
@@ -17,9 +17,9 @@ import {
   IUserCustomFieldInputType,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';

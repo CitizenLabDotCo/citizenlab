@@ -1,16 +1,16 @@
-import React from 'react';
 import { isString } from 'lodash-es';
-import { Subscription, BehaviorSubject, of } from 'rxjs';
-import { distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import {
   IMachineTranslationData,
-  machineTranslationByIdeaIdStream,
   machineTranslationByCommentIdStream,
+  machineTranslationByIdeaIdStream,
   machineTranslationByInitiativeIdStream,
 } from 'modules/commercial/machine_translations/services/machineTranslations';
-import { isNilOrError } from 'utils/helperUtils';
+import React from 'react';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   attributeName: 'body_multiloc' | 'title_multiloc';

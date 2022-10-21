@@ -1,10 +1,10 @@
+import FeatureFlag from 'components/FeatureFlag';
 import React, { lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import FeatureFlag from 'components/FeatureFlag';
 import ModuleActive from './admin/components/ModuleActive';
+import NavbarTitleField from './admin/components/NavbarTitleField';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 import PagesMenu from './admin/containers';
-import NavbarTitleField from './admin/components/NavbarTitleField';
 
 const NewPageFormComponent = lazy(
   () => import('./admin/containers/NewPageForm')

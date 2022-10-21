@@ -1,15 +1,15 @@
 // utils
+import stringify from 'json-stable-stringify';
 import {
+  cloneDeep,
   forOwn,
   isArray,
-  isString,
-  isObject,
   isEmpty,
-  cloneDeep,
+  isObject,
+  isString,
   isUndefined,
 } from 'lodash-es';
 import { isUUID } from 'utils/helperUtils';
-import stringify from 'json-stable-stringify';
 
 // typings
 import { IObject } from '.';

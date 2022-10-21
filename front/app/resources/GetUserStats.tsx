@@ -1,9 +1,9 @@
 // Libraries
 import React from 'react';
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { ideasCountForUser, commentsCountForUser } from 'services/stats';
-import { isNilOrError } from 'utils/helperUtils';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { commentsCountForUser, ideasCountForUser } from 'services/stats';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 

@@ -1,41 +1,41 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 // styles
 import styled from 'styled-components';
-import { stylingConsts, colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // components
-import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
+import { RightColumn } from 'containers/Admin';
 import ContentBuilderEditModePreview from '../components/ContentBuilderEditModePreview';
 
 // craft
-import Editor from '../components/Editor';
-import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
-import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 import ContentBuilderFrame from '../components/ContentBuilderFrame';
 import ContentBuilderSettings from '../components/ContentBuilderSettings';
+import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
+import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
+import Editor from '../components/Editor';
 
 // hooks
-import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useContentBuilderLayout from '../../hooks/useContentBuilder';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // intl
-import messages from '../messages';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import messages from '../messages';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);

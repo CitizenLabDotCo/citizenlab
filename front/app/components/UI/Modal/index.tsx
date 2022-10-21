@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
-import { createPortal } from 'react-dom';
 import { adopt } from 'react-adopt';
-import { Subscription, fromEvent } from 'rxjs';
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
-import { FocusOn } from 'react-focus-on';
 
 // i18n
 import messages from './messages';
@@ -29,12 +29,12 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import {
-  media,
   colors,
-  fontSizes,
   defaultOutline,
-  viewportWidths,
+  fontSizes,
   isRtl,
+  media,
+  viewportWidths,
 } from 'utils/styleUtils';
 
 const desktopOpacityTimeout = 500;

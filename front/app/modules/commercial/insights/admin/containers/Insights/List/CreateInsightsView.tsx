@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 // styles
 import styled from 'styled-components';
@@ -10,17 +10,17 @@ import messages from '../messages';
 
 // components
 import {
-  Input,
   Box,
   Icon,
-  Spinner,
+  Input,
   Label,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
+import Button from 'components/UI/Button';
 import Checkbox from 'components/UI/Checkbox';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
+import Error from 'components/UI/Error';
 import { CSSTransition } from 'react-transition-group';
 
 // resources
@@ -35,8 +35,8 @@ import useProjectFolders from 'modules/commercial/project_folders/hooks/useProje
 import { addInsightsView } from 'modules/commercial/insights/services/insightsViews';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { CLErrors } from 'typings';

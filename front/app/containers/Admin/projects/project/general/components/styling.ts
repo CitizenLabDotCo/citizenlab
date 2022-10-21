@@ -1,8 +1,8 @@
 // components
+import { SectionField } from 'components/admin/Section';
+import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import FileUploader from 'components/UI/FileUploader';
-import { SectionField } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
 
 // styling

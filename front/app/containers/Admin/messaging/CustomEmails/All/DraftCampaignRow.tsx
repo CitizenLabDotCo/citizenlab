@@ -1,12 +1,12 @@
-import React from 'react';
+import { Box, StatusLabel } from '@citizenlab/cl2-component-library';
 import { Row, TextCell } from 'components/admin/ResourceList';
-import { ICampaignData } from 'services/campaigns';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Box, StatusLabel } from '@citizenlab/cl2-component-library';
+import React from 'react';
+import { ICampaignData } from 'services/campaigns';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
 import { colors } from 'utils/styleUtils';
+import messages from '../../messages';
 
 interface Props {
   campaign: ICampaignData;

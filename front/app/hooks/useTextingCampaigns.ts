@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  textingCampaignsStream,
   ITextingCampaignData,
+  textingCampaignsStream,
 } from 'services/textingCampaigns';
 import { isNilOrError } from 'utils/helperUtils';
 

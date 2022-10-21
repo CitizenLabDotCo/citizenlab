@@ -1,9 +1,9 @@
-import { getDefaultSteps, getActiveStep, getEnabledSteps } from './stepUtils';
-import { IUserData } from 'services/users';
 import { ISignUpInMetaData } from 'components/SignUpIn';
+import { TAuthUser } from 'hooks/useAuthUser';
+import { IUserData } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 import { TSignUpConfiguration, TSignUpStepConfigurationObject } from './';
-import { TAuthUser } from 'hooks/useAuthUser';
+import { getActiveStep, getDefaultSteps, getEnabledSteps } from './stepUtils';
 
 const baseConfiguration = getDefaultSteps();
 

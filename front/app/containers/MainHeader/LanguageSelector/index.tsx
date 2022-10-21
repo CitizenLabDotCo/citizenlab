@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+import { Dropdown, Icon } from '@citizenlab/cl2-component-library';
 
 // services
 import { updateLocale } from 'services/locale';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 // style
 import styled from 'styled-components';

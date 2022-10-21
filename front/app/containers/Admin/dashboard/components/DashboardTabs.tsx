@@ -1,17 +1,17 @@
 import React, { memo, useMemo } from 'react';
 
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // typings
 import { ITab } from 'typings';
 
 // components
-import FeatureFlag from 'components/FeatureFlag';
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
+import FeatureFlag from 'components/FeatureFlag';
 
 // utils
 import { matchPathToUrl } from 'utils/helperUtils';

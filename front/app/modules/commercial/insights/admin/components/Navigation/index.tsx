@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
 import useKeyPress from 'hooks/useKeyPress';
+import React, { useEffect } from 'react';
 
-import { Button, Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 export type NavigationProps = {
   moveUp: () => void;

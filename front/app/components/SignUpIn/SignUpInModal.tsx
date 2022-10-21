@@ -1,20 +1,20 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { signOut } from 'services/auth';
 import tracks from './tracks';
 
 // components
-import Modal from 'components/UI/Modal';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 import { TSignUpStep } from 'components/SignUpIn/SignUp';
+import Modal from 'components/UI/Modal';
 
 // hooks
-import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
+import useIsMounted from 'hooks/useIsMounted';
 import useParticipationConditions from 'hooks/useParticipationConditions';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
 
 // events
 import {

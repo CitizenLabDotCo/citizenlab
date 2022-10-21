@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, memo } from 'react';
+import React, { lazy, memo, Suspense } from 'react';
 
 // components
 const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));
@@ -14,13 +14,13 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import {
-  ParticipationMethod,
-  IdeaDefaultSortMethod,
-} from 'services/participationContexts';
-import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
-import { IParticipationContextType } from 'typings';
 import { MessageDescriptor } from 'react-intl';
+import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import {
+  IdeaDefaultSortMethod,
+  ParticipationMethod,
+} from 'services/participationContexts';
+import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   width: 100%;

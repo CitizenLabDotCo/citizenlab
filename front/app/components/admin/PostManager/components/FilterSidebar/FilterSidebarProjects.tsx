@@ -1,9 +1,9 @@
 import React from 'react';
+import { Divider, Menu } from 'semantic-ui-react';
 import { IProjectData } from 'services/projects';
-import { Menu, Divider } from 'semantic-ui-react';
-import FilterSidebarProjectsItem from './FilterSidebarProjectsItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import FilterSidebarProjectsItem from './FilterSidebarProjectsItem';
 
 interface Props {
   projects?: IProjectData[] | null;

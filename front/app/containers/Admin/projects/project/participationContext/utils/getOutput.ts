@@ -1,5 +1,5 @@
-import { omitBy, isNil } from 'lodash-es';
-import { State, IParticipationContextConfig } from '..';
+import { isNil, omitBy } from 'lodash-es';
+import { IParticipationContextConfig, State } from '..';
 
 export default ({
   participation_method,

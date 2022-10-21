@@ -1,24 +1,24 @@
-import React, { ReactNode, lazy } from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
+import FeatureFlag from 'components/FeatureFlag';
+import CreateProject from 'containers/Admin/projects/all/CreateProject';
+import ProjectsListItem from 'containers/MainHeader/ProjectsListItem';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import useAuthUser from 'hooks/useAuthUser';
+import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
+import React, { lazy, ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import { AdminPublicationType } from 'services/adminPublications';
+import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
 import { isNilOrError } from 'utils/helperUtils';
+import { ModuleConfiguration } from 'utils/moduleUtils';
 import NewProjectFolderButton from './admin/components/NewProjectFolderButton';
 import ProjectFolderRow from './admin/components/ProjectFolderRow';
-import ProjectFolderTitle from './admin/components/ProjectFolderTitle';
 import ProjectFolderSelect from './admin/components/ProjectFolderSelect';
+import ProjectFolderTitle from './admin/components/ProjectFolderTitle';
 import ProjectFolderCard from './citizen/components/ProjectFolderCard';
-import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
-import ProjectFolderModerationRightsReceivedNotification from './citizen/components/ProjectFolderModerationRightsReceivedNotification';
-import CreateProject from 'containers/Admin/projects/all/CreateProject';
 import ProjectFolderGoBackButton from './citizen/components/ProjectFolderGoBackButton';
-import ProjectsListItem from 'containers/MainHeader/ProjectsListItem';
+import ProjectFolderModerationRightsReceivedNotification from './citizen/components/ProjectFolderModerationRightsReceivedNotification';
+import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 import { isProjectFolderModerator } from './permissions/roles';
-import useAuthUser from 'hooks/useAuthUser';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
-import { AdminPublicationType } from 'services/adminPublications';
-import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
-import FeatureFlag from 'components/FeatureFlag';
-import { Navigate } from 'react-router-dom';
 const FolderShowPage = lazy(
   () => import('./citizen/containers/ProjectFolderShowPage')
 );

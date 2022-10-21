@@ -1,12 +1,12 @@
+import { isEqual, isNil, omitBy } from 'lodash-es';
 import React from 'react';
-import { BehaviorSubject, Subscription, of } from 'rxjs';
-import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import { isEqual, omitBy, isNil } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import {
   IInitiativesFilterCounts,
   initiativesFilterCountsStream,
 } from 'services/initiatives';
+import { isNilOrError } from 'utils/helperUtils';
 import { IQueryParameters } from './GetInitiatives';
 
 type children = (

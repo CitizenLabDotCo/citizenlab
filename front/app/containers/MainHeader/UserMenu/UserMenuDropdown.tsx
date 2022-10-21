@@ -1,10 +1,10 @@
-import React, { MouseEvent, KeyboardEvent } from 'react';
+import React, { KeyboardEvent, MouseEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
 import { Dropdown } from '@citizenlab/cl2-component-library';
 import HasPermission from 'components/HasPermission';
+import Button from 'components/UI/Button';
 
 // services
 import { signOut } from 'services/auth';

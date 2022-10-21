@@ -6,18 +6,18 @@ import { DeletedUser } from '../Notification';
 import { ICommentOnYourIdeaNotificationData } from 'services/notifications';
 
 // i18n
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import { getInputTermMessage } from 'utils/i18n';
+import NotificationWrapper from '../NotificationWrapper';
 
 // hooks
 import useIdea from 'hooks/useIdea';
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // services
 import { getInputTerm } from 'services/participationContexts';

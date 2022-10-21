@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import styled from 'styled-components';
+import React, { useCallback, useMemo, useState } from 'react';
 import AsyncSelect from 'react-select/async';
 import { first } from 'rxjs/operators';
+import styled from 'styled-components';
 import { IOption } from 'typings';
 import {
   isProjectFolderModerator,
@@ -12,9 +12,9 @@ import {
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // services
-import { useProjectFolderModerators } from '../../../hooks';
-import { IUsers, IUserData, usersStream } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
+import { IUserData, IUsers, usersStream } from 'services/users';
+import { useProjectFolderModerators } from '../../../hooks';
 import {
   addFolderModerator,
   deleteFolderModerator,
@@ -22,15 +22,15 @@ import {
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
-import { SubSectionTitle } from 'components/admin/Section';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
+import { SubSectionTitle } from 'components/admin/Section';
 import Avatar from 'components/Avatar';
+import Button from 'components/UI/Button';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { isAdmin } from 'services/permissions/roles';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';

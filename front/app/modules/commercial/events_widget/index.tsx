@@ -1,11 +1,11 @@
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
-import EventsWidget from './citizen';
 import SectionToggle, {
   Props as SectionToggleProps,
 } from './admin/SectionToggle';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import EventsWidget from './citizen';
 
 // The events section toggle should be rendered if the customer is Allowed to use the feature
 const RenderOnFeatureAllowed = ({ children }) => {

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { useEffect, useState } from 'react';
 import { Observable, of } from 'rxjs';
 import {
+  ideaImageStream,
   IIdeaImage,
   IIdeaImageData,
-  ideaImageStream,
 } from 'services/ideaImages';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   ideaId: string | null | undefined;

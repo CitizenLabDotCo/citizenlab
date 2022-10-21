@@ -1,12 +1,12 @@
 import React from 'react';
-import { Subscription, of, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import {
-  IConsentData,
   consentsWithTokenStream,
+  IConsentData,
   IConsents,
 } from 'services/campaignConsents';
 import { isNilOrError } from 'utils/helperUtils';
-import { switchMap } from 'rxjs/operators';
 
 interface InputProps {}
 

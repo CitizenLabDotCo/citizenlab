@@ -1,15 +1,15 @@
 import React, { memo } from 'react';
 
 // components
-import TopBar from './TopBar';
-import EventsMessage from './EventsMessage';
-import EventsSpinner from './EventsSpinner';
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
+import EventsMessage from './EventsMessage';
+import EventsSpinner from './EventsSpinner';
+import TopBar from './TopBar';
 
 // i18n
-import messages from '../messages';
 import { MessageDescriptor } from 'react-intl';
+import messages from '../messages';
 
 // hooks
 import useEvents from 'hooks/useEvents';
@@ -18,7 +18,7 @@ import useEvents from 'hooks/useEvents';
 import styled from 'styled-components';
 
 // other
-import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+import { isError, isNil, isNilOrError } from 'utils/helperUtils';
 
 interface IStyledEventCard {
   last: boolean;

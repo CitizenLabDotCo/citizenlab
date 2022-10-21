@@ -1,12 +1,12 @@
+import FeatureFlag from 'components/FeatureFlag';
 import React, { ReactNode } from 'react';
+import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
 import LeafletConfig from './shared/components/Map/LeafletConfig';
 import Legend from './shared/components/Map/Legend';
-import { isNilOrError } from 'utils/helperUtils';
-import { IProjectData } from 'services/projects';
-import { IPhaseData } from 'services/phases';
-import FeatureFlag from 'components/FeatureFlag';
 
 const CustomMapConfigComponent = React.lazy(
   () => import('./admin/containers/ProjectCustomMapConfigPage')

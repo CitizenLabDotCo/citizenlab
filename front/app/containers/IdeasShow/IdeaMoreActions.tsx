@@ -6,8 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import HasPermission from 'components/HasPermission';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 
 // hooks
@@ -15,10 +15,10 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
+import messages from './messages';
 
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';

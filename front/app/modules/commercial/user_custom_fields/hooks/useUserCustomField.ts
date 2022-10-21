@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import {
-  userCustomFieldStream,
   IUserCustomField,
   IUserCustomFieldData,
+  userCustomFieldStream,
 } from '../services/userCustomFields';
 
 export default function useUserCustomField(userCustomFieldId: string) {

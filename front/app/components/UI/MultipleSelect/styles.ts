@@ -1,4 +1,4 @@
-import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
+import { colors, defaultStyles, fontSizes } from 'utils/styleUtils';
 
 export function getSelectStyles(borderColor = colors.borderDark) {
   return {

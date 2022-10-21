@@ -1,13 +1,13 @@
 // Libraries
-import React from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { take } from 'lodash-es';
+import React from 'react';
+import { combineLatest, of, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
 import { getGroupMemberships } from 'services/groupMemberships';
-import { userByIdStream, IUser } from 'services/users';
+import { IUser, userByIdStream } from 'services/users';
 
 // Components
 import Avatar from 'components/Avatar';

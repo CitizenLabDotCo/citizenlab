@@ -15,7 +15,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // svg
 import illustration from './illustration.svg';

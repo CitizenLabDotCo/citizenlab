@@ -1,11 +1,11 @@
 // utils
+import { events$ } from 'utils/analytics';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import request from 'utils/request';
-import { events$ } from 'utils/analytics';
 
 // constants
-import { API_PATH } from 'containers/App/constants';
 import signUpInTracks from 'components/SignUpIn/tracks';
+import { API_PATH } from 'containers/App/constants';
 
 const trackSessionStarted = () => {
   request(`${API_PATH}/sessions`, {}, { method: 'POST' }, null);

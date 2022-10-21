@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 
 // components
-import PageWrapper from 'components/admin/PageWrapper';
-import SectionToggle from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 import { Box } from '@citizenlab/cl2-component-library';
+import PageWrapper from 'components/admin/PageWrapper';
 import Warning from 'components/UI/Warning';
+import SectionToggle from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 
 // i18n
-import messages from './messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import messages from './messages';
 
 // services
 import {
-  updateCustomPage,
   TCustomPageEnabledSetting,
+  updateCustomPage,
 } from 'services/customPages';
 
 // hooks

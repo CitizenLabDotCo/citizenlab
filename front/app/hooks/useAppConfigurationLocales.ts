@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';

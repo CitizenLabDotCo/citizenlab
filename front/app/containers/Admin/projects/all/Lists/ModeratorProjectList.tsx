@@ -9,9 +9,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
-import ProjectRow from '../../components/ProjectRow';
-import { ListHeader, HeaderTitle } from '../StyledComponents';
 import Outlet from 'components/Outlet';
+import ProjectRow from '../../components/ProjectRow';
+import { HeaderTitle, ListHeader } from '../StyledComponents';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

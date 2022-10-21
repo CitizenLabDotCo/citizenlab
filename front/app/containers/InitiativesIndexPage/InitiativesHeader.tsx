@@ -4,24 +4,24 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
-import InitiativeInfoContent from './InitiativeInfoContent';
 import Warning from 'components/UI/Warning';
+import InitiativeInfoContent from './InitiativeInfoContent';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
+import styled from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { fontSizes, media } from 'utils/styleUtils';
 
 // images
 import InitiativeButton from 'components/InitiativeButton';

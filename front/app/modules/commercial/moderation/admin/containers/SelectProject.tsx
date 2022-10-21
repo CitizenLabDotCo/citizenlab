@@ -1,7 +1,7 @@
-import React, { memo, useCallback } from 'react';
-import { adopt } from 'react-adopt';
 import FilterSelector from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
+import React, { memo, useCallback } from 'react';
+import { adopt } from 'react-adopt';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

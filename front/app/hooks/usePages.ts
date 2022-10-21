@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
 import { isEqual } from 'lodash-es';
-import { BehaviorSubject, of, combineLatest } from 'rxjs';
-import { map, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { useEffect, useState } from 'react';
+import { BehaviorSubject, combineLatest, of } from 'rxjs';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import {
-  IPageData,
   IPage,
+  IPageData,
   IPages,
   listPages,
   pageByIdStream,

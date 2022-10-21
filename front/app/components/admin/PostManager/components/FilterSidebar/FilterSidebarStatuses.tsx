@@ -1,10 +1,10 @@
 import React from 'react';
+import { Divider, Menu } from 'semantic-ui-react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { Menu, Divider } from 'semantic-ui-react';
-import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 
 import messages from '../../messages';
 

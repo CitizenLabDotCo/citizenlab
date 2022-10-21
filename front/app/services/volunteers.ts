@@ -1,8 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-import { Multiloc, ImageSizes, IParticipationContextType } from 'typings';
-import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
+import { ImageSizes, IParticipationContextType, Multiloc } from 'typings';
+import { requestBlob } from 'utils/request';
+import streams from 'utils/streams';
 
 export interface IVolunteerData {
   id: string;

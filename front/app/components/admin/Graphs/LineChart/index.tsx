@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 
 import {
+  animation,
   legacyColors,
   sizes,
-  animation,
 } from 'components/admin/Graphs/styling';
 
 // components
 import {
-  LineChart as RechartsLineChart,
   CartesianGrid,
   Line,
+  LineChart as RechartsLineChart,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
 } from 'recharts';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
@@ -23,15 +23,15 @@ import Legend from '../_components/Legend';
 import { colors } from '../styling';
 
 // utils
+import { getTooltipConfig, hasNoData, parseMargin } from '../utils';
 import { getLineConfigs } from './utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 // typings
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import { Props } from './typings';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
 

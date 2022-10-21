@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
+import { Checkbox, Th, Thead, Tr } from '@citizenlab/cl2-component-library';
 import { SortableHeaderCell } from './IdeaHeaderRow';
 
 // i18n

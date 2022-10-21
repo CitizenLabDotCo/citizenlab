@@ -1,19 +1,19 @@
 // parse dates
+import { parseDays } from './parseDays';
 import { parseMonths } from './parseMonths';
 import { parseWeeks } from './parseWeeks';
-import { parseDays } from './parseDays';
 
 // utils
 import { keys } from 'utils/helperUtils';
 import {
-  roundDateToMidnight,
-  parseVisitDuration,
   parsePageViews,
+  parseVisitDuration,
+  roundDateToMidnight,
 } from './utils';
 
 // typings
-import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { Moment } from 'moment';
 import { Response, Stats, TimeSeries, TimeSeriesResponse } from '../typings';
 import { Translations } from '../utils';
 

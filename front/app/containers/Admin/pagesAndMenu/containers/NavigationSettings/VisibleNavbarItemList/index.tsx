@@ -1,14 +1,14 @@
 import React from 'react';
 
-import useNavbarItems from 'hooks/useNavbarItems';
-import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
-import NavbarItemRow from '../NavbarItemRow';
 import { List, Row } from 'components/admin/ResourceList';
-import { isNilOrError } from 'utils/helperUtils';
-import usePageSlugById from 'hooks/usePageSlugById';
-import clHistory from 'utils/cl-router/history';
 import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useNavbarItems from 'hooks/useNavbarItems';
+import usePageSlugById from 'hooks/usePageSlugById';
+import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import NavbarItemRow from '../NavbarItemRow';
 
 export default function VisibleNavbarItemList() {
   const navbarItems = useNavbarItems({ onlyDefault: true });

@@ -1,8 +1,8 @@
+import { isFinite, isNaN } from 'lodash-es';
 import React from 'react';
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { State } from '..';
-import { isFinite, isNaN } from 'lodash-es';
+import messages from '../../messages';
 
 export default (state: State, formatMessage) => {
   const {

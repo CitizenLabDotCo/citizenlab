@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
-import { Multiloc, IParticipationContextType, IPCAction } from 'typings';
+import { IParticipationContextType, IPCAction, Multiloc } from 'typings';
 import { IInitiativeAction } from './initiatives';
 
 export type IParticipationConditions = Multiloc[][];

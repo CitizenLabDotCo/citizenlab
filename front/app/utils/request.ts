@@ -1,9 +1,9 @@
-import 'whatwg-fetch';
-import { stringify } from 'qs';
-import { getJwt } from 'utils/auth/jwt';
 import { isString } from 'lodash-es';
+import { stringify } from 'qs';
 import { IHttpMethod } from 'typings';
+import { getJwt } from 'utils/auth/jwt';
 import { IObject } from 'utils/streams';
+import 'whatwg-fetch';
 
 export default function request<T>(
   url: string,

@@ -1,16 +1,16 @@
 import React from 'react';
 
 // styles
+import { darken } from 'polished';
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // components
 import {
-  Icon,
-  Spinner,
   Box,
   BoxMarginProps,
+  Icon,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 
 // TODO: Add Tag to component library once we remove tagging

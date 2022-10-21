@@ -1,7 +1,7 @@
-import React from 'react';
 import { isString } from 'lodash-es';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
+import React from 'react';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 
 import { IPollOption, pollOptionsStream } from 'services/pollOptions';

@@ -9,19 +9,19 @@ import {
 
 // components
 import {
-  IconTooltip,
-  Toggle,
   Accordion,
   Box,
+  IconTooltip,
   Title,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // i18n
 import T from 'components/T';
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';

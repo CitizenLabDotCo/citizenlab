@@ -1,10 +1,10 @@
-import { ScreenReaderOnly } from 'utils/a11y';
 import ContentContainer from 'components/ContentContainer';
-import styled, { withTheme } from 'styled-components';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
-import { colors, media } from 'utils/styleUtils';
 import React, { memo } from 'react';
+import styled, { withTheme } from 'styled-components';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { colors, media } from 'utils/styleUtils';
 import messages from './messages';
 
 interface FormSubmitFooterProps {

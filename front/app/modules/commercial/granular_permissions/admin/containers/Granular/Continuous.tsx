@@ -6,18 +6,18 @@ import ActionsForm from './ActionsForm';
 import GetProjectPermissions, {
   GetProjectPermissionsChildProps,
 } from 'resources/GetProjectPermissions';
-import { isNilOrError } from 'utils/helperUtils';
 import {
   IPermissionData,
   updateProjectPermission,
 } from 'services/actionPermissions';
+import { isNilOrError } from 'utils/helperUtils';
 
-import { fontSizes } from 'utils/styleUtils';
 import useProject from 'hooks/useProject';
 import {
   getMethodConfig,
   ParticipationMethodConfig,
 } from 'utils/participationMethodUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

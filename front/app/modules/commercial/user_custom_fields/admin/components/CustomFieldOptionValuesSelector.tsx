@@ -1,12 +1,12 @@
+import MultipleSelect from 'components/UI/MultipleSelect';
+import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import React from 'react';
+import { IOption } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
 import GetUserCustomFieldOptions, {
   GetUserCustomFieldOptionsChildProps,
 } from '../../resources/GetUserCustomFieldOptions';
-import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
-import { IOption } from 'typings';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import localize, { InjectedLocalized } from 'utils/localize';
-import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
   rule: TRule;

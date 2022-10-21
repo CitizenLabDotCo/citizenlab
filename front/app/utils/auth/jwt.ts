@@ -1,4 +1,4 @@
-import { get, set, remove } from 'js-cookie';
+import { get, remove, set } from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import { SECURE_COOKIE } from '../cookie';
 

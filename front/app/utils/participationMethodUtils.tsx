@@ -6,8 +6,8 @@ import messages from './participationMethodUtilsMessages';
 
 // services
 import {
-  ParticipationMethod,
   getInputTerm,
+  ParticipationMethod,
 } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
@@ -16,9 +16,9 @@ import { IProjectData } from 'services/projects';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
 // utils
-import { isNilOrError } from './helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'services/ideas';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from './helperUtils';
 
 type FormSubmissionMethodProps = {
   project?: IProjectData;

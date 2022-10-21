@@ -1,10 +1,10 @@
+import FeatureFlag from 'components/FeatureFlag';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import CreateProjectFromTemplate from './admin/containers/CreateProjectFromTemplate';
 import Tab from './admin/components/Tab';
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import CreateProjectFromTemplate from './admin/containers/CreateProjectFromTemplate';
 import ProjectTemplatePreviewAdminWithEventWrapper from './admin/containers/ProjectTemplatePreviewAdminWithEventWrapper';
-import FeatureFlag from 'components/FeatureFlag';
 
 const CitizenTemplatePreviewComponent = React.lazy(
   () => import('./citizen/containers/ProjectTemplatePreviewCitizen')

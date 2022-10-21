@@ -1,9 +1,9 @@
 import React from 'react';
 
 // styling
+import { rgba } from 'polished';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 // components
 import Link from 'utils/cl-router/Link';

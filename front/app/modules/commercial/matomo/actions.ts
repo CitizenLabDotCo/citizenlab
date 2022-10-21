@@ -3,9 +3,9 @@ import createRoutes from 'routes';
 import matchPath, { getAllPathsFromRoutes } from './matchPath';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { tenantInfo, IEvent } from 'utils/analytics';
 import { getUrlLocale } from 'services/locale';
+import { IEvent, tenantInfo } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
 import { getProjectId } from './getProjectId';
 
 // typings

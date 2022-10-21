@@ -1,24 +1,24 @@
 import { API_PATH } from 'containers/App/constants';
 
 // typings
-import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
+import { ISubmitState } from 'components/admin/SubmitWrapper';
+import { IAppConfiguration } from 'services/appConfiguration';
 import {
+  CLError,
+  ImageSizes,
   IRelationship,
   Multiloc,
-  ImageSizes,
   UploadFile,
-  CLError,
 } from 'typings';
 import { IAreaData } from './areas';
-import { IAppConfiguration } from 'services/appConfiguration';
 
 import streams, { IStreamParams } from 'utils/streams';
 import {
-  TSurveyService,
-  ParticipationMethod,
   IdeaDefaultSortMethod,
   InputTerm,
+  ParticipationMethod,
+  TSurveyService,
 } from './participationContexts';
 
 export const apiEndpoint = `${API_PATH}/projects`;

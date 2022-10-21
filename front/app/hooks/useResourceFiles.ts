@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import { Observable, of } from 'rxjs';
+import { useEffect, useState } from 'react';
 import {
   ResourceType,
   TResourceFileData,
   TResourceFiles,
 } from 'resources/GetResourceFiles';
+import { Observable, of } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { projectFilesStream } from 'services/projectFiles';
-import { phaseFilesStream } from 'services/phaseFiles';
 import { eventFilesStream } from 'services/eventFiles';
-import { pageFilesStream } from 'services/pageFiles';
 import { ideaFilesStream } from 'services/ideaFiles';
 import { initiativeFilesStream } from 'services/initiativeFiles';
+import { pageFilesStream } from 'services/pageFiles';
+import { phaseFilesStream } from 'services/phaseFiles';
+import { projectFilesStream } from 'services/projectFiles';
 
 interface Props {
   resourceId: string | null;

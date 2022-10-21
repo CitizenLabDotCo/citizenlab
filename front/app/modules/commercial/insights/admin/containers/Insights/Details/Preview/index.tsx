@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
-import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
 import { Spinner } from '@citizenlab/cl2-component-library';
+import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
+import { stringify } from 'qs';
+import React, { useEffect, useRef } from 'react';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styles
@@ -11,8 +11,8 @@ import styled from 'styled-components';
 
 // components
 import Button from 'components/UI/Button';
-import Idea from 'modules/commercial/insights/admin/components/Idea';
 import Category from 'modules/commercial/insights/admin/components/Category';
+import Idea from 'modules/commercial/insights/admin/components/Idea';
 
 const Container = styled.div`
   height: 100%;

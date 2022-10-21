@@ -1,27 +1,27 @@
+import { isEmpty, isEqual, isNil, isString, omitBy } from 'lodash-es';
 import React from 'react';
 import {
-  Subscription,
-  Subject,
   BehaviorSubject,
   combineLatest,
   merge,
+  Subject,
+  Subscription,
 } from 'rxjs';
 import {
+  debounceTime,
+  distinctUntilChanged,
   map,
   startWith,
-  distinctUntilChanged,
   switchMap,
-  debounceTime,
 } from 'rxjs/operators';
 import { IInviteData, invitesStream } from 'services/invites';
-import shallowCompare from 'utils/shallowCompare';
-import { isEqual, omitBy, isString, isEmpty, isNil } from 'lodash-es';
 import {
   getPageNumberFromUrl,
   getSortAttribute,
   getSortDirection,
   SortDirection,
 } from 'utils/paginationUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export type SortAttribute =
   | 'email'

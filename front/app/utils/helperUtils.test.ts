@@ -1,6 +1,6 @@
 import {
-  isNilOrError,
   isEmptyMultiloc,
+  isNilOrError,
   isNonEmptyString,
   isPage,
 } from './helperUtils';

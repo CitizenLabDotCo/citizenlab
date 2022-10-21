@@ -6,19 +6,19 @@ import { colors } from 'utils/styleUtils';
 // components
 import {
   Box,
-  Title,
-  Text,
   stylingConsts,
+  Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
-import CloseIconButton from 'components/UI/CloseIconButton';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
+import Button from 'components/UI/Button';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 // intl
-import messages from '../messages';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import messages from '../messages';
 
 // types
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';

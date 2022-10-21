@@ -1,10 +1,10 @@
-import React, { MouseEvent, KeyboardEvent } from 'react';
-import messages from './messages';
+import React, { KeyboardEvent, MouseEvent } from 'react';
 import BannerButton, { BannerButtonStyle } from './BannerButton';
+import messages from './messages';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 interface Props {
   signUpIn: (event: MouseEvent | KeyboardEvent) => void;

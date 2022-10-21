@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { useEffect, useState } from 'react';
 import { Observable, of } from 'rxjs';
 import {
   IPage,
@@ -7,6 +6,7 @@ import {
   pageByIdStream,
   pageBySlugStream,
 } from 'services/pages';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   pageId?: string | null;

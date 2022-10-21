@@ -1,16 +1,16 @@
-import React, { memo, MouseEvent } from 'react';
 import bowser from 'bowser';
+import React, { memo, MouseEvent } from 'react';
 
 // components
-import Link from 'utils/cl-router/Link';
 import Image from 'components/UI/Image';
+import Link from 'utils/cl-router/Link';
 
 // styling
 import styled from 'styled-components';
 import {
-  fontSizes,
-  defaultCardStyle,
   defaultCardHoverStyle,
+  defaultCardStyle,
+  fontSizes,
 } from 'utils/styleUtils';
 
 const Container = styled(Link)`

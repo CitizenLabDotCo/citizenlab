@@ -9,19 +9,19 @@ import LineChart from 'components/admin/Graphs/LineChart';
 import renderTooltip from './renderTooltip';
 
 // i18n
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { IResolution } from 'components/admin/ResolutionControl';
+import { Moment } from 'moment';
 import { TimeSeries } from '../../../hooks/useVisitorsData/typings';
 
 interface Props {

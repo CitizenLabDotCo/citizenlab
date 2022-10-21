@@ -9,8 +9,8 @@ import InitiativeShowPageTopBar from 'containers/InitiativesShowPage/InitiativeS
 import PlatformFooter from 'containers/PlatformFooter';
 
 // hooks
-import useIdea from 'hooks/useIdea';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useIdea from 'hooks/useIdea';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

@@ -2,8 +2,8 @@ import React from 'react';
 import IdeaCTAButton from './IdeaCTAButton';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {

@@ -3,12 +3,12 @@ import React from 'react';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import Header from './Header';
 import Fields from './Fields';
+import Header from './Header';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const ReferenceDataInterface = () => (
   <>

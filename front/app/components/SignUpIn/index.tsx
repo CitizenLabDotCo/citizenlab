@@ -1,12 +1,12 @@
 import React from 'react';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import { Box } from '@citizenlab/cl2-component-library';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // component
-import SignUp from './SignUp';
 import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 // styling
 import { ContextShape } from 'components/Verification/verificationModalEvents';

@@ -1,7 +1,7 @@
-import { definePermissionRule } from 'services/permissions/permissions';
-import { isAdmin } from '../roles';
 import { IInitiativeData } from 'services/initiatives';
+import { definePermissionRule } from 'services/permissions/permissions';
 import { IUser } from 'services/users';
+import { isAdmin } from '../roles';
 
 const isAuthor = (initiative: IInitiativeData, user?: IUser) => {
   return (

@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc, ILinks, IRelationship } from 'typings';
 
 export type TModerationStatus = 'read' | 'unread';
 export type TModeratableType = 'Idea' | 'Initiative' | 'Comment';

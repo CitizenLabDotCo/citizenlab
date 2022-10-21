@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 
 // styles
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 import { postPageContentMaxWidth } from './styleConstants';
-import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 import Outlet from 'components/Outlet';
 

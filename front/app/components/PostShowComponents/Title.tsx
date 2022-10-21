@@ -4,9 +4,9 @@ import React, { memo } from 'react';
 import { Locale } from 'typings';
 
 // styling
-import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
+import styled from 'styled-components';
+import { fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div<{ align: 'left' | 'center' }>`
   width: ${({ align }) => (align === 'left' ? '100%' : 'auto')};

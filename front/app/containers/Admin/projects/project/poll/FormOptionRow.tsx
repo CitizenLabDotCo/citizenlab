@@ -5,17 +5,17 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // Components
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import { TextCell, Row } from 'components/admin/ResourceList';
+import { Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
 // Resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // Typings
-import { Multiloc, Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 
 // Services
 import { addPollOption, updatePollOption } from 'services/pollOptions';

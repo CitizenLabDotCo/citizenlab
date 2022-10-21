@@ -1,33 +1,33 @@
 import React, { useState } from 'react';
 
 // hooks
-import useProject from 'hooks/useProject';
-import useLocalize from 'hooks/useLocalize';
-import { useEditor, SerializedNodes } from '@craftjs/core';
+import { SerializedNodes, useEditor } from '@craftjs/core';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
+import useProject from 'hooks/useProject';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
+import GoBackButton from 'components/UI/GoBackButton';
 
 // styling
-import { colors } from 'utils/styleUtils';
 import {
   Box,
-  stylingConsts,
+  LocaleSwitcher,
   Spinner,
+  stylingConsts,
   Text,
   Title,
   Toggle,
-  LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
+import { colors } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // routing
 import clHistory from 'utils/cl-router/history';

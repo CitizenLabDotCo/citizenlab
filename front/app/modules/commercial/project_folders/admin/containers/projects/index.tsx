@@ -1,6 +1,6 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { isAdmin } from 'services/permissions/roles';

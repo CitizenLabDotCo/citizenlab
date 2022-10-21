@@ -1,31 +1,31 @@
-import { useState, useEffect } from 'react';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
 
 // services
 import {
+  AggregationsConfig,
   analyticsStream,
   Query,
   QuerySchema,
-  AggregationsConfig,
 } from '../../services/analyticsFacts';
 
 // parse
-import { parseStats, parseTimeSeries, parseExcelData } from './parse';
+import { parseExcelData, parseStats, parseTimeSeries } from './parse';
 
 // utils
 import {
-  getProjectFilter,
   getDateFilter,
   getInterval,
+  getProjectFilter,
 } from '../../utils/query';
 import { deduceResolution, getTranslations } from './utils';
 
 // typings
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { WrappedComponentProps } from 'react-intl';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',

@@ -1,6 +1,6 @@
 // i18n
-import messages from './messages';
 import cardMessages from '../../components/VisitorsTrafficSourcesCard/messages';
+import messages from './messages';
 
 // typings
 import { WrappedComponentProps } from 'react-intl';

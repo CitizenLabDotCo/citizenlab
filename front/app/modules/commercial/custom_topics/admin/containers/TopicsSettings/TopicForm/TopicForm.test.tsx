@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 import TopicForm from './';
 
 const titleEN = 'en title';

@@ -1,13 +1,13 @@
-import React, { PureComponent, createRef } from 'react';
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import Button from 'components/UI/Button';
+import React, { createRef, PureComponent } from 'react';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import styled from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import Button from 'components/UI/Button';
+import { colors } from 'utils/styleUtils';
+import messages from '../messages';
 
 const CodeSnippet = styled.textarea`
   word-wrap: break-word;

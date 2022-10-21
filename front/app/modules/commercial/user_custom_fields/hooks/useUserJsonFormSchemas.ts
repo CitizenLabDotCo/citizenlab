@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { userJsonFormSchemasStream } from '../services/userCustomFields';
-import { isEmpty, get } from 'lodash-es';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
 import { JsonSchema7, Layout } from '@jsonforms/core';
+import useLocale from 'hooks/useLocale';
+import { get, isEmpty } from 'lodash-es';
+import { useEffect, useState } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+import { userJsonFormSchemasStream } from '../services/userCustomFields';
 
 interface UserCustomFieldsInfos {
   schema: JsonSchema7 | undefined;

@@ -1,7 +1,7 @@
+import FeatureFlag from 'components/FeatureFlag';
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import SimilarIdeas from './components/SimilarIdeas';
-import FeatureFlag from 'components/FeatureFlag';
 
 const configuration: ModuleConfiguration = {
   outlets: {

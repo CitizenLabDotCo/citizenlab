@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
 // components
-import Topbar from './components/Topbar';
 import EmptyContainer from './components/EmptyContainer';
-import ProjectsList from './components/ProjectsList';
-import LoadingBox from './components/LoadingBox';
 import Footer from './components/Footer';
+import LoadingBox from './components/LoadingBox';
+import ProjectsList from './components/ProjectsList';
+import Topbar from './components/Topbar';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
@@ -28,7 +28,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getAvailableTabs } from './utils';
 
 // typings
-import { PublicationTab, Props as BaseProps } from '.';
+import { Props as BaseProps, PublicationTab } from '.';
 
 const Container = styled.div`
   display: flex;

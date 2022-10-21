@@ -1,34 +1,34 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isEmpty } from 'lodash-es';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // module specific
 import useIdeaCustomFields from 'modules/commercial/idea_custom_fields/hooks/useIdeaCustomFields';
 import {
-  updateIdeaCustomField,
   IUpdatedIdeaCustomFieldProperties,
   refetchCustomFields,
+  updateIdeaCustomField,
 } from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
 
 import IdeaCustomField from '../../../../../admin/containers/projects/edit/ideaform/IdeaCustomField';
 
 // components
+import { Success } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Success } from '@citizenlab/cl2-component-library';
 
 import {
   Section,
-  SectionTitle,
   SectionDescription,
+  SectionTitle,
   SubSectionTitle,
 } from 'components/admin/Section';
 
 // i18n
-import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';

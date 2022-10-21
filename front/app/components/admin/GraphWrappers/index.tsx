@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { colors, defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
 
 export const ControlBar = styled.div`
   display: flex;

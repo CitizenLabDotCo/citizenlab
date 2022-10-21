@@ -1,7 +1,7 @@
 import React from 'react';
+import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -9,8 +9,8 @@ import messages from '../messages';
 import GetArea, { GetAreaChildProps } from 'resources/GetArea';
 import { updateArea } from 'services/areas';
 
-import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
+import GoBackButton from 'components/UI/GoBackButton';
 
 import AreaForm, { FormValues } from '../AreaForm';
 

@@ -2,14 +2,14 @@
 import React, { PureComponent } from 'react';
 
 // Services
-import { sendSpamReport, Report } from 'services/spamReports';
+import { Report, sendSpamReport } from 'services/spamReports';
 
 // Components
-import ReportForm from './SpamReportForm';
 import { ModalContentContainer } from 'components/UI/Modal';
+import ReportForm from './SpamReportForm';
 
 // Typings
-import { CRUDParams, CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, CRUDParams } from 'typings';
 
 // Utils
 import { isCLErrorJSON } from 'utils/errorUtils';

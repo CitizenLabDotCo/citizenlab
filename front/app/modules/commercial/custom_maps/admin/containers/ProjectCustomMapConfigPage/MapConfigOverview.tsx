@@ -1,10 +1,10 @@
 import React, { memo, useState } from 'react';
 
 // components
-import MapLayersList from './MapLayersList';
-import MapLayerConfig from './MapLayerConfig';
+import { SectionDescription, SectionTitle } from 'components/admin/Section';
 import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import MapLayerConfig from './MapLayerConfig';
+import MapLayersList from './MapLayersList';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

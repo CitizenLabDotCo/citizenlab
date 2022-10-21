@@ -8,13 +8,13 @@ import ActionsForm from './ActionsForm';
 
 // services
 import {
-  updatePhasePermission,
   IPCPermissionData,
+  updatePhasePermission,
 } from 'services/actionPermissions';
 
 // resources
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetPhasePermissions from 'resources/GetPhasePermissions';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // i18n
 import T from 'components/T';

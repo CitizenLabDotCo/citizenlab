@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
-import { IOption } from 'typings';
+import MultipleSelect from 'components/UI/MultipleSelect';
 import useIdeaStatuses from 'hooks/useIdeaStatuses';
 import useLocalize from 'hooks/useLocalize';
-import MultipleSelect from 'components/UI/MultipleSelect';
+import React, { memo } from 'react';
+import { IOption } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {

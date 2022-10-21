@@ -4,12 +4,12 @@ import React, { PureComponent } from 'react';
 import FilterSelector from 'components/FilterSelector';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import {
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 type Props = {
   id?: string | undefined;

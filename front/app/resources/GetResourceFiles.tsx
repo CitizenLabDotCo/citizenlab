@@ -1,30 +1,30 @@
-import React from 'react';
 import { isString } from 'lodash-es';
-import { Subscription, BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
-import {
-  projectFilesStream,
-  IProjectFileData,
-  IProjectFiles,
-} from 'services/projectFiles';
-import {
-  phaseFilesStream,
-  IPhaseFileData,
-  IPhaseFiles,
-} from 'services/phaseFiles';
+import React from 'react';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import {
   eventFilesStream,
   IEventFileData,
   IEventFiles,
 } from 'services/eventFiles';
-import { pageFilesStream, IPageFileData, IPageFiles } from 'services/pageFiles';
 import { ideaFilesStream, IIdeaFileData, IIdeaFiles } from 'services/ideaFiles';
 import {
-  initiativeFilesStream,
   IInitiativeFileData,
   IInitiativeFiles,
+  initiativeFilesStream,
 } from 'services/initiativeFiles';
+import { IPageFileData, IPageFiles, pageFilesStream } from 'services/pageFiles';
+import {
+  IPhaseFileData,
+  IPhaseFiles,
+  phaseFilesStream,
+} from 'services/phaseFiles';
+import {
+  IProjectFileData,
+  IProjectFiles,
+  projectFilesStream,
+} from 'services/projectFiles';
+import shallowCompare from 'utils/shallowCompare';
 
 import { isNilOrError } from 'utils/helperUtils';
 

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
+import { isAdmin } from 'services/permissions/roles';
 import { PublicationStatus } from 'services/projects';
 import { updateProjectFolderMembership } from '../../../services/projects';
-import { isAdmin } from 'services/permissions/roles';
 
 // hooks
 import useAdminPublications, {

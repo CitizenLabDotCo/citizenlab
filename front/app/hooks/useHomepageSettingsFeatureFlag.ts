@@ -1,11 +1,11 @@
+import { THomepageSetting } from 'services/appConfiguration';
 import {
   TAppConfigSectionSetting,
   TSectionSetting,
 } from 'services/homepageSettings';
-import { THomepageSetting } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
-import useHomepageSettings from './useHomepageSettings';
 import useAppConfiguration from './useAppConfiguration';
+import useHomepageSettings from './useHomepageSettings';
 
 // If we deal with a section whose allowed value needs to be checked
 // in appConfiguration, we require the appConfiguration setting name.

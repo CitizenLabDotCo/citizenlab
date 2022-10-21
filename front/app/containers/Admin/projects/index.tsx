@@ -1,5 +1,5 @@
-import React from 'react';
 import HelmetIntl from 'components/HelmetIntl';
+import React from 'react';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // i18n

@@ -1,8 +1,8 @@
 import React from 'react';
 
 // i18n
-import { injectIntl, FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
@@ -10,9 +10,9 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // styles
-import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';

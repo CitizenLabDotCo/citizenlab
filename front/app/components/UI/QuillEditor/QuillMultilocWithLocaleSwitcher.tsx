@@ -1,19 +1,19 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import {
+  IconTooltip,
+  Label,
+  LocaleSwitcher,
+} from '@citizenlab/cl2-component-library';
 import QuillEditor, {
   Props as QuillEditorProps,
 } from 'components/UI/QuillEditor';
-import {
-  IconTooltip,
-  LocaleSwitcher,
-  Label,
-} from '@citizenlab/cl2-component-library';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 // style
 import styled from 'styled-components';

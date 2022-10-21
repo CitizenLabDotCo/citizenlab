@@ -3,12 +3,12 @@ import React, { memo } from 'react';
 import { IOfficialFeedbackOnVotedInitiativeNotificationData } from 'services/notifications';
 
 // i18n
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
 import T from 'components/T';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IOfficialFeedbackOnVotedInitiativeNotificationData;

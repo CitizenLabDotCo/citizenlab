@@ -1,19 +1,19 @@
-import { useEffect, useState, useRef } from 'react';
 import { API_PATH } from 'containers/App/constants';
+import { useEffect, useRef, useState } from 'react';
 
 // services
 import {
   insightsCategoriesSuggestionsTasksStream,
-  insightsTriggerCategoriesSuggestionsTasks,
   insightsDeleteCategoriesSuggestionsTasks,
+  insightsTriggerCategoriesSuggestionsTasks,
 } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 import { BehaviorSubject } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 
 import streams from 'utils/streams';
 

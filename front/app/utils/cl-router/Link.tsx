@@ -3,9 +3,9 @@ import React from 'react';
 import { NavLink as RouterLink, NavLinkProps } from 'react-router-dom';
 // eslint-disable-next-line no-restricted-imports
 import { Path } from 'history';
-import updateLocationDescriptor from './updateLocationDescriptor';
-import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
+import updateLocationDescriptor from './updateLocationDescriptor';
 
 export type Props = {
   to: Path | string | { pathname: string };

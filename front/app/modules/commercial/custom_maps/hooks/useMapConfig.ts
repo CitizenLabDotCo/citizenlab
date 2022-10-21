@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import {
-  mapConfigByProjectStream,
-  IMapConfigData,
-  IMapConfig,
-} from '../services/mapConfigs';
-import { isNilOrError } from 'utils/helperUtils';
-import { combineLatest, of, Observable } from 'rxjs';
+import { useEffect, useState } from 'react';
+import { combineLatest, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { isNilOrError } from 'utils/helperUtils';
+import {
+  IMapConfig,
+  IMapConfigData,
+  mapConfigByProjectStream,
+} from '../services/mapConfigs';
 import { mapLayerByProjectMapConfigStream } from '../services/mapLayers';
 
 export interface Props {

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
 import VerificationSteps from 'modules/commercial/verification/citizen/components/VerificationSteps';
-import { SignUpStepOutletProps } from 'utils/moduleUtils';
+import React, { useEffect } from 'react';
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
+import { SignUpStepOutletProps } from 'utils/moduleUtils';
+import messages from './messages';
+import tracks from './tracks';
 
 type Props = SignUpStepOutletProps;
 

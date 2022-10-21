@@ -1,14 +1,14 @@
 import React from 'react';
 
 // components
-import { Input, IconTooltip, Box } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typings
