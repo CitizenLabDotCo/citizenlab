@@ -81,7 +81,11 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             ) {
               return [prop, remoteImages];
             } else if (prop === 'idea_files_attributes') {
-              return [prop, remoteFiles];
+              const attachmentsValue =
+                !isNilOrError(remoteFiles) && remoteFiles.length > 0
+                  ? remoteFiles
+                  : undefined;
+              return [prop, attachmentsValue];
             } else return [prop, undefined];
           })
         );
