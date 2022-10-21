@@ -404,11 +404,16 @@ describe XlsxExport::ValueVisitor do
 
         context 'when there is one value' do
           let!(:file) { create(:idea_file, idea: model) }
+          let(:expected_report_value) do
+            if CitizenLab.ee?
+              %r{\A/uploads/.+/idea_file/file/#{file.id}/#{file.name}\Z}
+            else
+              %r{\A/uploads/idea_file/file/#{file.id}/#{file.name}\Z}
+            end
+          end
 
           it 'returns the value for the report' do
-            expect(visitor.visit_files(field)).to match(
-              %r{\A/uploads/.+/idea_file/file/#{file.id}/#{file.name}\Z}
-            )
+            expect(visitor.visit_files(field)).to match expected_report_value
           end
         end
 
@@ -422,11 +427,16 @@ describe XlsxExport::ValueVisitor do
               name: 'david.csv'
             )
           end
+          let(:expected_report_value) do
+            if CitizenLab.ee?
+              %r{\A/uploads/.+/idea_file/file/#{file1.id}/#{file1.name}\n/uploads/.+/idea_file/file/#{file2.id}/#{file2.name}\Z}
+            else
+              %r{\A/uploads/idea_file/file/#{file1.id}/#{file1.name}\n/uploads/idea_file/file/#{file2.id}/#{file2.name}\Z}
+            end
+          end
 
           it 'returns the value for the report' do
-            expect(visitor.visit_files(field)).to match(
-              %r{\A/uploads/.+/idea_file/file/#{file1.id}/#{file1.name}\n/uploads/.+/idea_file/file/#{file2.id}/#{file2.name}\Z}
-            )
+            expect(visitor.visit_files(field)).to match expected_report_value
           end
         end
       end
