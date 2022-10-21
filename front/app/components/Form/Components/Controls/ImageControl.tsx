@@ -11,7 +11,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { deleteIdeaImage } from 'services/ideaImages';
 import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { FormContext } from '../../contexts';
