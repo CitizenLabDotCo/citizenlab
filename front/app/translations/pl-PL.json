@@ -545,6 +545,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "nasze wytyczne",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Zacznij pisać, aby znaleźć e-mail lub użytkownika...",
   "app.components.form.blockedVerified": "Nie możesz edytować tego pola, ponieważ zawiera ono zweryfikowane informacje",
+  "app.components.form.controls.adminFieldTooltip": "Pole widoczne tylko dla administratorów",
   "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.error": "Błąd",
   "app.components.form.locationGoogleUnavailable": "Nie można załadować pola lokalizacji dostarczonego przez mapy google.",
