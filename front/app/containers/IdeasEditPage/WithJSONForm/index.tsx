@@ -93,8 +93,9 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
   const onSubmit = async (data) => {
     let location_point_geojson;
-    // TODO: Correctly handle deletion for attachments
-    const { _idea_files_attributes, ...ideaWithOUtFiles } = data;
+    // TODO Remove this in CL-1788 when it is used
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { idea_files_attributes, ...ideaWithOUtFiles } = data;
 
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
