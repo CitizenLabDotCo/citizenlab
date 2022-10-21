@@ -545,6 +545,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "våra riktlinjer",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Börja skriva för att söka efter användarens e-postadress eller namn...",
   "app.components.form.blockedVerified": "Du kan inte redigera det här fältet eftersom det innehåller verifierad information",
+  "app.components.form.controls.adminFieldTooltip": "Fältet är endast synligt för administratörer",
   "app.components.form.controls.selectMany": "*Välj hur många du vill",
   "app.components.form.error": "Fel",
   "app.components.form.locationGoogleUnavailable": "Det gick inte att läsa in platsfältet från Google Maps.",
