@@ -3,7 +3,7 @@ import {
   indexTimeSeries,
   getFirstDateInData,
   getLastDateInData,
-  getEmptyRow,
+  parseRow,
 } from './utils';
 import { dateRange } from '../../../utils/timeSeries';
 import { TimeSeriesResponse } from '../typings';
@@ -33,7 +33,7 @@ export const parseMonths = (
     const currentMonthStr = month.format('YYYY-MM-DD');
     const row = indexedTimeSeries.get(currentMonthStr);
 
-    return row ?? getEmptyRow(month);
+    return parseRow(month, row);
   });
 };
 

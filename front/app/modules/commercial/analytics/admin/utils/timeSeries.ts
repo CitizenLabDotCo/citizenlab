@@ -5,17 +5,16 @@ export const roundDateToMidnight = (date: Moment) => {
   return moment(date.format('YYYY-MM-DD'));
 };
 
-export const indexTimeSeries = <Row, ParsedRow>(
+export const indexTimeSeries = <Row>(
   responseTimeSeries: Row[],
-  getDate: (row: Row) => Moment,
-  parseRow: (row: Row) => ParsedRow
-): Map<string, ParsedRow> => {
+  getDate: (row: Row) => Moment
+): Map<string, Row> => {
   return responseTimeSeries.reduce((acc, row) => {
     const date = getDate(row);
-    acc.set(date.format('YYYY-MM-DD'), parseRow(row));
+    acc.set(date.format('YYYY-MM-DD'), row);
 
     return acc;
-  }, new Map() as Map<string, ParsedRow>);
+  }, new Map<string, Row>());
 };
 
 export const getFirstDateInData = <Row>(

@@ -3,7 +3,7 @@ import {
   indexTimeSeries,
   getFirstDateInData,
   getLastDateInData,
-  getEmptyRow,
+  parseRow,
 } from './utils';
 import { dateRange } from '../../../utils/timeSeries';
 import { TimeSeriesResponse } from '../typings';
@@ -28,6 +28,6 @@ export const parseDays = (
     const currentDayStr = day.format('YYYY-MM-DD');
     const row = indexedTimeSeries.get(currentDayStr);
 
-    return row ?? getEmptyRow(day);
+    return parseRow(day, row);
   });
 };

@@ -13,8 +13,8 @@ import {
 
 export const indexTimeSeries = (
   responseTimeSeries: TimeSeriesResponse
-): Map<string, TimeSeriesRow> => {
-  return timeSerieUtils.indexTimeSeries(responseTimeSeries, getDate, parseRow);
+): Map<string, TimeSeriesResponseRow> => {
+  return timeSerieUtils.indexTimeSeries(responseTimeSeries, getDate);
 };
 
 export const getFirstDateInData = (responseTimeSeries: TimeSeriesResponse) => {
@@ -25,10 +25,23 @@ export const getLastDateInData = (responseTimeSeries: TimeSeriesResponse) => {
   return timeSerieUtils.getLastDateInData(responseTimeSeries, getDate);
 };
 
-const parseRow = (row: TimeSeriesResponseRow): TimeSeriesRow => ({
-  visitors: row.count_visitor_id,
-  visits: row.count,
-  date: getDate(row).format('YYYY-MM-DD'),
+export const parseRow = (
+  date: Moment,
+  row?: TimeSeriesResponseRow
+): TimeSeriesRow => {
+  if (!row) return getEmptyRow(date);
+
+  return {
+    visitors: row.count_visitor_id,
+    visits: row.count,
+    date: getDate(row).format('YYYY-MM-DD'),
+  };
+};
+
+export const getEmptyRow = (date: Moment) => ({
+  date: date.format('YYYY-MM-DD'),
+  visitors: 0,
+  visits: 0,
 });
 
 const getDate = (row: TimeSeriesResponseRow) => {
@@ -42,12 +55,6 @@ const getDate = (row: TimeSeriesResponseRow) => {
 
   return moment(row['dimension_date_last_action.date']);
 };
-
-export const getEmptyRow = (date: Moment) => ({
-  date: date.format('YYYY-MM-DD'),
-  visitors: 0,
-  visits: 0,
-});
 
 export const parsePageViews = (pageViews: string | null | undefined) => {
   if (!pageViews) return '-';
