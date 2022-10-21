@@ -7,8 +7,8 @@ module XlsxExport
     def initialize(inputs, form, participation_method, include_private_attributes)
       super()
       @inputs = inputs
-      @fields_in_form = IdeaCustomFieldsService.new(form).all_fields.reject do |field|
-        not_supported?(field)
+      @fields_in_form = IdeaCustomFieldsService.new(form).all_fields.select do |field|
+        supported?(field)
       end
       @include_private_attributes = include_private_attributes
       @participation_method = participation_method
@@ -44,8 +44,8 @@ module XlsxExport
 
     attr_reader :inputs, :fields_in_form, :participation_method, :include_private_attributes
 
-    def not_supported?(field)
-      field.code == 'idea_images_attributes' # Not supported by XlsxService
+    def supported?(field)
+      field.code != 'idea_images_attributes' # Not supported by XlsxService
     end
 
     def input_id_report_field
