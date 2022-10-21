@@ -12,11 +12,11 @@ module XlsxExport
     end
 
     def visit_multiline_text(field)
-      # Not supported yet. Field type not used in native surveys, nor idea form.
+      # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_html(field)
-      # Not supported yet. Field type not used in native surveys, nor idea form.
+      # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_text_multiloc(field)
@@ -24,11 +24,14 @@ module XlsxExport
     end
 
     def visit_multiline_text_multiloc(field)
-      # Not supported yet. Field type not used in native surveys, nor idea form.
+      # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_html_multiloc(field)
-      translation = MultilocService.new.t(value_for(field))
+      value = value_for(field)
+      return unless value
+
+      translation = MultilocService.new.t(value)
       Utils.new.convert_to_text_long_lines(translation)
     end
 
@@ -46,38 +49,38 @@ module XlsxExport
     end
 
     def visit_multiselect(field)
-      if field.code == 'topic_ids'
-        built_in_topics
-      else
-        option_values = value_for(field) || []
-        option_titles = option_values.map do |option_value|
-          option_title = options_for(field)[option_value].title_multiloc
-          MultilocService.new.t option_title
-        end
-        option_titles.join(VALUE_SEPARATOR)
+      return built_in_topics if field.code == 'topic_ids'
+
+      option_values = value_for(field) || []
+      return if option_values.empty?
+
+      option_titles = option_values.map do |option_value|
+        option_title = options_for(field)[option_value].title_multiloc
+        MultilocService.new.t option_title
       end
+      option_titles.join(VALUE_SEPARATOR)
     end
 
     def visit_checkbox(field)
-      # Not supported yet. Field type not used in native surveys, nor idea form.
+      # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_date(field)
-      # Not supported yet. Field type not used in native surveys, nor idea form.
+      # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_files(field)
       return built_in_files if field.code == 'idea_files_attributes'
 
-      # Not supported yet. Field type not used in native surveys, nor idea form.
+      # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_image_files(field)
-      # Not supported yet. Field type not used in native surveys, nor idea form.
+      # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_point(field)
-      # Not supported yet. Field type not used in native surveys, nor idea form.
+      # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     private

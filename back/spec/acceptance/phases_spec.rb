@@ -607,7 +607,7 @@ resource 'Phases' do
                     ideation_response1.location_point.coordinates.last,
                     ideation_response1.location_point.coordinates.first,
                     ideation_response1.location_description,
-                    %r{/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}},
+                    %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
                     'Answer',
                     ideation_response1.author_name,
                     ideation_response1.author.email,
