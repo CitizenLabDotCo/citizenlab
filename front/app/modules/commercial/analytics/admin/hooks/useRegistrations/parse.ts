@@ -4,7 +4,13 @@ import moment, { Moment } from 'moment';
 import { timeSeriesParser } from '../../utils/timeSeries';
 
 // typings
-import { TimeSeriesResponseRow, TimeSeries, TimeSeriesRow } from './typings';
+import {
+  Response,
+  TimeSeriesResponseRow,
+  TimeSeries,
+  TimeSeriesRow,
+  Stats,
+} from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export const getEmptyRow = (date: Moment) => ({
@@ -47,4 +53,20 @@ export const parseTimeSeries = (
     endAtMoment,
     resolution
   );
+};
+
+export const parseStats = (data: Response['data']): Stats => {
+  const registrationsWholePeriod = data[1][0];
+  const registrationsLastPeriod = data[2][0];
+
+  return {
+    totalRegistrations: {
+      value: registrationsWholePeriod?.count.toString() ?? '0',
+      lastPeriod: registrationsLastPeriod?.count.toString() ?? '0',
+    },
+    conversionRate: {
+      value: 'TODO',
+      lastPeriod: 'TODO',
+    },
+  };
 };

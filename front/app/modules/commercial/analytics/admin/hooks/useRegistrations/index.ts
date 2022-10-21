@@ -7,7 +7,7 @@ import { analyticsStream } from '../../services/analyticsFacts';
 import { query } from './query';
 
 // parse
-import { parseTimeSeries } from './parse';
+import { parseTimeSeries, parseStats } from './parse';
 
 // utils
 import { deduceResolution } from './utils';
@@ -57,6 +57,8 @@ export default function useRegistrations({
             deducedResolution
           )
         );
+
+        setStats(parseStats(response.data));
       }
     );
 
