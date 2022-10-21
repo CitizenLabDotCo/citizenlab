@@ -545,6 +545,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "unsere Richtlinien",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Beginnen Sie mit der Eingabe, um nach einer E-Mail oder einem Namen des Benutzers / der Benutzerin zu suchen...",
   "app.components.form.blockedVerified": "Sie können dieses Feld nicht bearbeiten, da es verifizierte Informationen enthält",
+  "app.components.form.controls.adminFieldTooltip": "Feld nur für Admins sichtbar",
   "app.components.form.controls.selectMany": "*Wählen Sie so viele aus, wie Sie möchten",
   "app.components.form.error": "Fehler",
   "app.components.form.locationGoogleUnavailable": "Das von Google Maps zur Verfügung gestellte Standort-Feld konnte nicht geladen werden.",
