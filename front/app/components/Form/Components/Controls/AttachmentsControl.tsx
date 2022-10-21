@@ -1,22 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import FileUploader from 'components/UI/FileUploader';
-import { UploadFile } from 'typings';
-import ErrorDisplay from '../ErrorDisplay';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { FormContext } from 'components/Form/contexts';
+import FileUploader from 'components/UI/FileUploader';
+import { FormLabel } from 'components/UI/FormComponents';
 import useResourceFiles from 'hooks/useResourceFiles';
-import { isNilOrError } from 'utils/helperUtils';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import React, { useContext, useEffect, useState } from 'react';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
-import { Box } from '@citizenlab/cl2-component-library';
+import { UploadFile } from 'typings';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import ErrorDisplay from '../ErrorDisplay';
 
 const AttachmentsControl = ({
   uischema,
@@ -36,10 +36,11 @@ const AttachmentsControl = ({
   const [didBlur, setDidBlur] = useState(false);
   const [files, setFiles] = useState<UploadFile[]>([]);
 
-  const handleFileOnAdd = (fileToAdd: UploadFile) => {
+  const handleFileOnAdd = async (fileToAdd: UploadFile) => {
     const oldData = data ?? [];
     if (inputId) {
       addIdeaFile(inputId, fileToAdd.base64, fileToAdd.name);
+      handleChange(path, [...oldData, fileToAdd]);
     } else {
       handleChange(path, [
         ...oldData,
@@ -58,6 +59,12 @@ const AttachmentsControl = ({
   const handleFileOnRemove = (fileToRemove: UploadFile) => {
     if (inputId && fileToRemove.remote) {
       deleteIdeaFile(inputId, fileToRemove.id as string);
+      handleChange(
+        path,
+        data?.length === 1
+          ? undefined
+          : data.filter((file) => file.id !== fileToRemove.id)
+      );
     } else {
       handleChange(
         path,

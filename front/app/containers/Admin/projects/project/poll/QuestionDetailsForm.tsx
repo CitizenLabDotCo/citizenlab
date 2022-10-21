@@ -5,9 +5,9 @@ import React, { PureComponent } from 'react';
 import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 
 // Components
-import Button from 'components/UI/Button';
+import { Input, Select } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
-import { Select, Input } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 // Typings
@@ -18,8 +18,8 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Style
+import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-import { InjectedIntlProps } from 'react-intl';
 
 const FormContainer = styled.div`
   display: flex;
@@ -51,12 +51,12 @@ interface State {
 }
 
 export class QuestionDetailsForm extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   typeOptions: IOption[];
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       maxAnswers: props.question.attributes.max_options,

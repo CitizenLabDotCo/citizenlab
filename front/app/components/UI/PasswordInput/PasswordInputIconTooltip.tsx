@@ -1,9 +1,9 @@
-import React from 'react';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+import React from 'react';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 const PasswordInputIconTooltip = ({
   intl: { formatMessage },
   className,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   return (
     <IconTooltip
       className={className}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 import NormalGroupForm from './NormalGroupForm';
 
 const titleEN = 'en title';
@@ -23,6 +23,7 @@ describe('NormalGroupForm', () => {
     render(<NormalGroupForm {...defaultProps} />);
     expect(screen.getByTestId('normalGroupForm')).toBeInTheDocument();
   });
+
   it('submits correct data', async () => {
     const { container } = render(<NormalGroupForm {...defaultProps} />);
 

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
 import Button from 'components/UI/Button';
+import React, { useState } from 'react';
 import { fontSizes } from 'utils/styleUtils';
 
 // i18n
-import messages from '../../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { isString } from 'lodash-es';
-import { trackEventByName } from 'utils/analytics';
-import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
+import { isString } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { requestBlob } from 'utils/request';
+import messages from '../../messages';
 import tracks from '../../tracks';
 import { exportType } from '../ExportMenu';
-import { saveAs } from 'file-saver';
-import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];
@@ -23,7 +23,7 @@ const ExportCommentsButton = ({
   exportQueryParameter: queryParameter,
   exportType,
   intl: { formatDate, formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [exporting, setExporting] = useState(false);
 
   const handleExportComments = async () => {

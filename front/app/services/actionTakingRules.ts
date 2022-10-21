@@ -1,18 +1,18 @@
-import {
-  PostingDisabledReason,
-  PollDisabledReason,
-  IProjectData,
-  SurveyDisabledReason,
-} from './projects';
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { GetProjectChildProps } from 'resources/GetProject';
-import { GetPhaseChildProps } from 'resources/GetPhase';
-import { isNilOrError } from 'utils/helperUtils';
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { IPhaseData } from './phases';
-import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { TPhase } from 'hooks/usePhase';
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetPhaseChildProps } from 'resources/GetPhase';
+import { GetProjectChildProps } from 'resources/GetProject';
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { IPhaseData } from './phases';
+import {
+  IProjectData,
+  PollDisabledReason,
+  PostingDisabledReason,
+  SurveyDisabledReason,
+} from './projects';
 
 interface ActionPermissionHide {
   show: false;
@@ -125,11 +125,9 @@ export const getIdeaPostingRules = ({
   authUser: GetAuthUserChildProps | TAuthUser;
 }): ActionPermission<IIdeaPostingDisabledReason> => {
   const signedIn = !isNilOrError(authUser);
-
   if (!isNilOrError(project)) {
     const { disabled_reason, future_enabled, enabled } =
       project.attributes.action_descriptor.posting_idea;
-
     if (
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) || isProjectModerator({ data: authUser }))
@@ -191,7 +189,29 @@ export const getIdeaPostingRules = ({
           action: null,
         };
       }
-      if (authUser) {
+      if (disabled_reason) {
+        const { disabledReason, action } = ideaPostingDisabledReason(
+          disabled_reason,
+          signedIn,
+          future_enabled
+        );
+        if (action) {
+          return {
+            action,
+            disabledReason: null,
+            show: true,
+            enabled: 'maybe',
+          };
+        }
+        if (disabledReason) {
+          return {
+            disabledReason,
+            action: null,
+            show: true,
+            enabled: false,
+          } as ActionPermissionDisabled<IIdeaPostingDisabledReason>;
+        }
+      } else {
         return {
           show: true,
           enabled: true,
@@ -199,12 +219,6 @@ export const getIdeaPostingRules = ({
           action: null,
         };
       }
-      return {
-        show: true,
-        enabled: false,
-        disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
-        action: null,
-      };
     }
 
     if (

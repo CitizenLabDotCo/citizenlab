@@ -5,20 +5,20 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 
 // components
-import PageWrapper from 'components/admin/PageWrapper';
-import Tag from 'modules/commercial/insights/admin/components/Tag';
-import PageTitle from 'components/admin/PageTitle';
-import TopBar from '../../../components/TopBar';
-import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
+import PageTitle from 'components/admin/PageTitle';
+import PageWrapper from 'components/admin/PageWrapper';
+import Button from 'components/UI/Button';
+import Tag from 'modules/commercial/insights/admin/components/Tag';
+import TopBar from '../../../components/TopBar';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // intl
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // styles
@@ -41,7 +41,7 @@ const ButtonsContainer = styled(Box)`
 const Detect = ({
   params: { viewId },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const [processing, setProcessing] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const detectedCategories = useDetectedCategories(viewId);

@@ -1,6 +1,6 @@
+import { get, isNumber } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // tracks
@@ -8,26 +8,23 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import InitiativesMap from 'components/InitiativesMap';
 import { Spinner } from '@citizenlab/cl2-component-library';
+import BottomBar from 'components/FiltersModal/BottomBar';
+import TopBar from 'components/FiltersModal/TopBar';
+import InitiativesMap from 'components/InitiativesMap';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+import Button from 'components/UI/Button';
+import FullscreenModal from 'components/UI/FullscreenModal';
+import SearchInput from 'components/UI/SearchInput';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
-import SearchInput from 'components/UI/SearchInput';
-import TopBar from 'components/FiltersModal/TopBar';
-import BottomBar from 'components/FiltersModal/BottomBar';
-import FullscreenModal from 'components/UI/FullscreenModal';
-import Button from 'components/UI/Button';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-
-//  Typings
-import { MessageDescriptor } from 'typings';
 
 // resources
 import GetInitiatives, {
-  Sort,
   GetInitiativesChildProps,
   IQueryParameters,
+  Sort,
 } from 'resources/GetInitiatives';
 import GetInitiativesFilterCounts, {
   GetInitiativesFilterCountsChildProps,
@@ -37,20 +34,20 @@ import GetWindowSize, {
 } from 'resources/GetWindowSize';
 
 // i18n
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  viewportWidths,
-  defaultCardStyle,
-} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import {
+  colors,
+  defaultCardStyle,
+  fontSizes,
+  media,
+  viewportWidths,
+} from 'utils/styleUtils';
 import EmptyProposals from './EmptyProposals';
 import ProposalsList from './ProposalsList';
 
@@ -223,11 +220,14 @@ interface State {
   previouslySelectedInitiativeFilters: Partial<IQueryParameters> | null;
 }
 
-class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
+class InitiativeCards extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   desktopSearchInputClearButton: HTMLButtonElement | null = null;
   mobileSearchInputClearButton: HTMLButtonElement | null = null;
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       selectedView: 'card',

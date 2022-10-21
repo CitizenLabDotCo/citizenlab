@@ -1,5 +1,27 @@
 # Changelog
 
+### Added
+
+- [CL-1811] New Oostende verification method
+
+## 2022-10-20
+
+### Fixed
+
+- [CL-1814] Fixed bug when opening the verification model after having a verification error
+
+## 2022-10-18
+
+### Fixed
+
+- [CL-1825] Made tables more visually consistent.
+
+## 2022-10-14
+
+### Fixed
+
+- Fixed bug where subtitle in some admin pages would appear above the main header.
+
 ## 2022-10-13
 
 ### Fixed

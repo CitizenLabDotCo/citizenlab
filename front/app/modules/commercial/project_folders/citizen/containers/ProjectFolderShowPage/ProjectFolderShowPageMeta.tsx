@@ -5,21 +5,21 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Helmet } from 'react-helmet';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useAuthUser from 'hooks/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAuthUser from 'hooks/useAuthUser';
+import useLocale from 'hooks/useLocale';
 
 // utils
-import { stripHtml } from 'utils/textUtils';
-import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { stripHtml } from 'utils/textUtils';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 // typings
 import { IProjectFolderData } from '../../../services/projectFolders';
@@ -28,7 +28,7 @@ interface Props {
   projectFolder: IProjectFolderData;
 }
 
-const Meta = memo<Props & InjectedIntlProps>(({ projectFolder, intl }) => {
+const Meta = memo<Props & WrappedComponentProps>(({ projectFolder, intl }) => {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const authUser = useAuthUser();

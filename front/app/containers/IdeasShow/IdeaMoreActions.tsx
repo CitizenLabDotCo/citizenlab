@@ -6,8 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import HasPermission from 'components/HasPermission';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 
 // hooks
@@ -15,10 +15,10 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
+import messages from './messages';
 
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';
@@ -46,7 +46,7 @@ const IdeaMoreActions = memo(
     className,
     projectId,
     intl: { formatMessage },
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const [isSpamModalVisible, setIsSpamModalVisible] =
       useState<boolean>(false);
     const authUser = useAuthUser();

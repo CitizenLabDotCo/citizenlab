@@ -1,55 +1,55 @@
 // libraries
+import { isEmpty, map } from 'lodash-es';
 import React from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { map, isEmpty } from 'lodash-es';
+import { combineLatest, Subscription } from 'rxjs';
 
 // intl
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
-import { IStreamParams, IStream } from 'utils/streams';
 import {
-  IResourceByTime,
-  IVotesByTime,
-  IUsersByTime,
-  IIdeasByTime,
   ICommentsByTime,
+  IIdeasByTime,
+  IResourceByTime,
+  IUsersByTime,
+  IVotesByTime,
 } from 'services/stats';
+import { IStream, IStreamParams } from 'utils/streams';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { Icon } from '@citizenlab/cl2-component-library';
 import {
-  ComposedChart,
-  CartesianGrid,
-  Tooltip,
-  Line,
-  Legend,
-  Bar,
-  XAxis,
-  YAxis,
-  Label,
-  ResponsiveContainer,
-} from 'recharts';
-import {
-  IGraphUnit,
   GraphCard,
-  NoDataContainer,
-  GraphCardInner,
-  GraphCardHeader,
-  GraphCardTitle,
-  GraphCardFigureContainer,
   GraphCardFigure,
   GraphCardFigureChange,
+  GraphCardFigureContainer,
+  GraphCardHeader,
+  GraphCardInner,
+  GraphCardTitle,
+  IGraphUnit,
+  NoDataContainer,
 } from 'components/admin/GraphWrappers';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
+import {
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Label,
+  Legend,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
-import styled from 'styled-components';
 import { legacyColors, sizes } from 'components/admin/Graphs/styling';
+import styled from 'styled-components';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -106,7 +106,7 @@ interface Props {
 }
 
 class LineBarChart extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   combined$: Subscription;
@@ -414,4 +414,4 @@ class LineBarChart extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChart);
+export default injectIntl<Props & WrappedComponentProps>(LineBarChart);

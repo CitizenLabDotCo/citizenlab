@@ -9,17 +9,16 @@ import UserName from 'components/UI/UserName';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // hooks
+import useLocale from 'hooks/useLocale';
 import useUser from 'hooks/useUser';
-
-// i18n
-import { FormattedRelative } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { timeAgo } from 'utils/dateUtils';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -98,7 +97,7 @@ const TimeAgo = styled.div`
 
 export interface Props {
   authorId: string | null;
-  createdAt?: string;
+  createdAt: string;
   size: number;
   isLinkToProfile?: boolean;
   projectId?: string | null;
@@ -130,52 +129,53 @@ const Author = memo(
     color,
     underline,
   }: Props) => {
+    const locale = useLocale();
     const author = useUser({ userId: authorId });
     const authorCanModerate =
       !isNilOrError(author) &&
       showModeration &&
       canModerateProject(projectId, { data: author });
 
-    return (
-      <Container className={className}>
-        <AuthorContainer>
-          {showAvatar && (
-            <StyledAvatar
-              userId={authorId}
-              size={size}
-              isLinkToProfile={isLinkToProfile}
-              moderator={authorCanModerate}
-              bgColor={avatarBadgeBgColor}
-            />
-          )}
-
-          <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
-            <AuthorNameContainer
-              className={horizontalLayout ? 'horizontalLayout' : ''}
-            >
-              <ScreenReaderOnly>
-                <FormattedMessage {...messages.a11y_postedBy} />:
-              </ScreenReaderOnly>
-              <UserName
+    if (!isNilOrError(locale)) {
+      return (
+        <Container className={className}>
+          <AuthorContainer>
+            {showAvatar && (
+              <StyledAvatar
                 userId={authorId}
+                size={size}
                 isLinkToProfile={isLinkToProfile}
-                canModerate={authorCanModerate}
-                fontWeight={fontWeight}
-                fontSize={fontSize}
-                color={color}
-                underline={underline}
+                moderator={authorCanModerate}
+                bgColor={avatarBadgeBgColor}
               />
-            </AuthorNameContainer>
-
-            {createdAt && (
-              <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
-                <FormattedRelative value={createdAt} />
-              </TimeAgo>
             )}
-          </AuthorMeta>
-        </AuthorContainer>
-      </Container>
-    );
+
+            <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
+              <AuthorNameContainer
+                className={horizontalLayout ? 'horizontalLayout' : ''}
+              >
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.a11y_postedBy} />:
+                </ScreenReaderOnly>
+                <UserName
+                  userId={authorId}
+                  isLinkToProfile={isLinkToProfile}
+                  canModerate={authorCanModerate}
+                  fontWeight={fontWeight}
+                  fontSize={fontSize}
+                  color={color}
+                  underline={underline}
+                />
+              </AuthorNameContainer>
+              <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
+                {timeAgo(Date.parse(createdAt), locale)}
+              </TimeAgo>
+            </AuthorMeta>
+          </AuthorContainer>
+        </Container>
+      );
+    }
+    return null;
   }
 );
 

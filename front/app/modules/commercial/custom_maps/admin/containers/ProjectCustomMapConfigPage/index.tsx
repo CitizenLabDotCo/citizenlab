@@ -1,14 +1,14 @@
-import React, { memo, useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isEqual } from 'lodash-es';
+import React, { memo, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import Map from 'components/Map';
-import MapConfigOverview from './MapConfigOverview';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
+import Map from 'components/Map';
+import Button from 'components/UI/Button';
+import MapConfigOverview from './MapConfigOverview';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -29,12 +29,12 @@ import {
 } from 'components/UI/LeafletMap/events';
 
 // utils
-import { getCenter, getZoomLevel } from '../../../utils/map';
 import { isNilOrError } from 'utils/helperUtils';
+import { getCenter, getZoomLevel } from '../../../utils/map';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -86,7 +86,7 @@ interface Props {
 }
 
 const ProjectCustomMapConfigPage = memo<
-  Props & WithRouterProps & InjectedIntlProps
+  Props & WithRouterProps & WrappedComponentProps
 >(({ params: { projectId }, className, intl: { formatMessage } }) => {
   const appConfig = useAppConfiguration();
   const mapConfig = useMapConfig({ projectId });

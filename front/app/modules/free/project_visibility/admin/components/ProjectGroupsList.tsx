@@ -1,30 +1,30 @@
 // Libraries
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
 import { find, map } from 'lodash-es';
+import React, { PureComponent } from 'react';
+import { combineLatest, Subscription } from 'rxjs';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // Components
+import { List, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import GroupAvatar from './GroupAvatar';
-import { List, Row } from 'components/admin/ResourceList';
 
 // Services
-import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { getGroups, IGroups, IGroupData } from 'services/groups';
+import { getGroups, IGroupData, IGroups } from 'services/groups';
 import {
   addGroupProject,
   deleteGroupProject,
   groupsProjectsByProjectIdStream,
   IGroupsProjects,
 } from 'services/groupsProjects';
+import { localeStream } from 'services/locale';
 
 // Style
 import styled from 'styled-components';
@@ -83,7 +83,7 @@ interface State {
 }
 
 class ProjectGroupsList extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscriptions: Subscription[];
@@ -289,4 +289,4 @@ class ProjectGroupsList extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(ProjectGroupsList);
+export default injectIntl(ProjectGroupsList);

@@ -3,30 +3,30 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'hooks/useAuthUser';
+import useLocale from 'hooks/useLocale';
 
 // services
 import { IUserData } from 'services/users';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getLocalized } from 'utils/i18n';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLocalized } from 'utils/i18n';
 
 interface Props {
   user: IUserData;
 }
 
-const UsersEditPageMeta = React.memo<Props & InjectedIntlProps>(
+const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
   ({ intl, user }) => {
     const locale = useLocale();
     const tenantLocales = useAppConfigurationLocales();
@@ -87,6 +87,6 @@ const UsersEditPageMeta = React.memo<Props & InjectedIntlProps>(
   }
 );
 
-const UsersEditPageMetaWithHoc = injectIntl<Props>(UsersEditPageMeta);
+const UsersEditPageMetaWithHoc = injectIntl(UsersEditPageMeta);
 
 export default UsersEditPageMetaWithHoc;

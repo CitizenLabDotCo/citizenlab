@@ -1,21 +1,21 @@
-import React, { useRef, KeyboardEvent } from 'react';
+import React, { KeyboardEvent, useRef } from 'react';
 
 // components
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // styling
-import styled from 'styled-components';
-import { fontSizes, isRtl, colors, media } from 'utils/styleUtils';
 import { rgba } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
+import { MessageDescriptor } from 'react-intl';
 import { PublicationTab } from '../..';
-import { MessageDescriptor } from 'typings';
 
 const TabsContainer = styled.div`
   display: flex;
@@ -113,7 +113,7 @@ const Tabs = ({
 
   return (
     <TabsContainer role="tablist">
-      {/* 
+      {/*
         These tabs need the role, aria-selected etc to work well with
         screen readers.
         See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role

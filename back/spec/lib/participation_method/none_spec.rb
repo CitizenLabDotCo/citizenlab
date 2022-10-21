@@ -45,6 +45,18 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
+  describe '#edit_custom_form_allowed?' do
+    it 'returns true' do
+      expect(participation_method.edit_custom_form_allowed?).to be true
+    end
+  end
+
+  describe '#delete_inputs_on_pc_deletion?' do
+    it 'returns false' do
+      expect(participation_method.delete_inputs_on_pc_deletion?).to be false
+    end
+  end
+
   describe '#extra_fields_category_translation_key' do
     it 'returns the translation key for the extra fields category' do
       expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'

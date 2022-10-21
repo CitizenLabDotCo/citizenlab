@@ -5,8 +5,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // services
 import {
   deletePage,
-  STANDARD_PAGES,
   IPageData,
+  STANDARD_PAGES,
   TPageCode,
 } from 'services/pages';
 
@@ -14,16 +14,16 @@ import {
 import usePages from 'hooks/usePages';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { List, Row, TextCell } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
-import FeatureFlag from 'components/FeatureFlag';
 import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
+import { List, Row, TextCell } from 'components/admin/ResourceList';
+import FeatureFlag from 'components/FeatureFlag';
+import Button from 'components/UI/Button';
 
 const PageTitle = styled.h1`
   font-size: 2.5rem;
@@ -47,7 +47,7 @@ const NON_DELETEABLE_PAGES = new Set<TPageCode>([
 const isDeletablePage = ({ attributes: { code } }: IPageData) =>
   !NON_DELETEABLE_PAGES.has(code);
 
-const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const Pages = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const pages = usePages();
 
   const handleOnDeleteClick = (pageId: string) => (event) => {

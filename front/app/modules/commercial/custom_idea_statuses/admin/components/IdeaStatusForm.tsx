@@ -1,33 +1,33 @@
 import React from 'react';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { Multiloc } from 'typings';
 import { ideaStatusCodes, TIdeaStatusCode } from 'services/ideaStatuses';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
-import { Section, SectionField } from 'components/admin/Section';
 import {
-  Label,
-  IconTooltip,
   Box,
   Button,
+  IconTooltip,
+  Label,
 } from '@citizenlab/cl2-component-library';
+import { Section, SectionField } from 'components/admin/Section';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
-import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
 import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
+import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { object, string } from 'yup';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 export interface FormValues {
@@ -40,7 +40,7 @@ export interface FormValues {
 export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const StyledSection = styled(Section)`
   margin-bottom: 40px;
@@ -80,8 +80,10 @@ const IdeaStatusForm = ({
 }: Props) => {
   const schema = object({
     color: string(),
-    title_multiloc: validateMultiloc(formatMessage(messages.fieldTitleError)),
-    description_multiloc: validateMultiloc(
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldTitleError)
+    ),
+    description_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldDescriptionError)
     ),
     code: string().required(),

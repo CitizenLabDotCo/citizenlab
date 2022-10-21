@@ -1,15 +1,15 @@
+import { forEach, isEmpty, size, uniqBy } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import Dropzone, { Accept } from 'react-dropzone';
-import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
-import { reportError } from 'utils/loggingUtils';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -18,7 +18,7 @@ import { getBase64FromFile } from 'utils/fileUtils';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
+import { colors, defaultOutline, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
@@ -224,7 +224,10 @@ interface State {
   errorMessage: string | null;
 }
 
-class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
+class ImagesDropzone extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   static defaultProps = {
     maxNumberOfImages: 1,
     maxImageFileSize: 10000000,

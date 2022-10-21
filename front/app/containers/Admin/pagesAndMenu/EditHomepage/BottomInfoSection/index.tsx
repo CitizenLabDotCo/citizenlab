@@ -1,13 +1,15 @@
+import GenericBottomInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericBottomInfoSection';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { updateHomepageSettings } from 'services/homepageSettings';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { homeBreadcrumb } from '../../breadcrumbs';
-import GenericBottomInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericBottomInfoSection';
 
-const BottomInfoSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const BottomInfoSection = ({
+  intl: { formatMessage },
+}: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   if (isNilOrError(homepageSettings)) {
     return null;

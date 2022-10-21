@@ -6,22 +6,22 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import {
+  Box,
   Dropdown,
   DropdownListItem,
   Icon,
-  Box,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 
 // intl
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
-import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
+import useProject from 'hooks/useProject';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -69,7 +69,7 @@ interface Props {
 const ProjectsDropdown = ({
   projectIds,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
   const toggleDropdown = () => {

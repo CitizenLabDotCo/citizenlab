@@ -82,13 +82,20 @@ describe('Content builder navigation', () => {
 
     cy.apiEnableContentBuilder({ projectId });
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-view-project-button > a')
-      .should(($a) => {
-        expect($a.attr('href'), 'href').to.equal(projectUrl);
-        expect($a.attr('target'), 'target').to.equal('_blank');
-        $a.attr('target', '_self');
-      })
-      .click();
+
+    cy.get('#e2e-view-project-button > a').should(
+      'have.attr',
+      'href',
+      projectUrl
+    );
+    cy.get('#e2e-view-project-button > a').should(
+      'have.attr',
+      'target',
+      '_blank'
+    );
+    cy.get('#e2e-view-project-button > a').invoke('attr', 'target', '_self');
+
+    cy.get('#e2e-view-project-button > a').click();
     cy.location('pathname').should('equal', projectUrl);
   });
 });

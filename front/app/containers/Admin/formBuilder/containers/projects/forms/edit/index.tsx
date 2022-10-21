@@ -1,31 +1,33 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { object, boolean, array, string, number } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { array, boolean, number, object, string } from 'yup';
 
 // styles
 import styled from 'styled-components';
-import { stylingConsts, colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // components
-import { RightColumn } from 'containers/Admin';
-import { Box } from '@citizenlab/cl2-component-library';
-import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
-import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
-import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
-import FormFields from 'containers/Admin/formBuilder/components/FormFields';
-import Error from 'components/UI/Error';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import Feedback from 'components/HookForm/Feedback';
+import Error from 'components/UI/Error';
+import { RightColumn } from 'containers/Admin';
+import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
+import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
+import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
+import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
+import FormFields from 'containers/Admin/formBuilder/components/FormFields';
 
 // utils
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
+// services
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
@@ -35,9 +37,10 @@ import {
 
 // hooks
 import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -61,17 +64,20 @@ type FormEditProps = {
   };
   projectId: string;
   phaseId?: string;
-} & InjectedIntlProps;
+  totalSubmissions: number;
+} & WrappedComponentProps;
 
 export const FormEdit = ({
   intl: { formatMessage },
   defaultValues,
   phaseId,
   projectId,
+  totalSubmissions,
 }: FormEditProps) => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+  const isEditingDisabled = totalSubmissions > 0;
 
   const schema = object().shape({
     customFields: array().of(
@@ -178,9 +184,15 @@ export const FormEdit = ({
       <FocusOn>
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onFormSubmit)}>
-            <FormBuilderTopBar isSubmitting={isSubmitting} />
+            <FormBuilderTopBar
+              isSubmitting={isSubmitting}
+              isEditingDisabled={isEditingDisabled}
+            />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-              <FormBuilderToolbox onAddField={onAddField} />
+              <FormBuilderToolbox
+                onAddField={onAddField}
+                isEditingDisabled={isEditingDisabled}
+              />
               <StyledRightColumn>
                 <Box width="1000px">
                   {hasErrors && (
@@ -196,11 +208,18 @@ export const FormEdit = ({
                   <Feedback
                     successMessage={formatMessage(messages.successMessage)}
                   />
+                  {isEditingDisabled && (
+                    <DeleteFormResultsNotice
+                      projectId={projectId}
+                      redirectToSurveyPage
+                    />
+                  )}
                   <Box bgColor="white" minHeight="300px">
                     <FormFields
                       onEditField={setSelectedField}
                       handleDragRow={handleDragRow}
                       selectedFieldId={selectedField?.id}
+                      isEditingDisabled={isEditingDisabled}
                     />
                   </Box>
                 </Box>
@@ -231,8 +250,14 @@ const FormBuilderPage = ({ intl }) => {
     projectId,
     phaseId,
   });
+  const submissionCount = useFormSubmissionCount({
+    projectId,
+    phaseId,
+  });
 
-  if (isNilOrError(formCustomFields)) return null;
+  if (isNilOrError(formCustomFields) || isNilOrError(submissionCount)) {
+    return <Spinner />;
+  }
 
   return modalPortalElement
     ? createPortal(
@@ -241,6 +266,7 @@ const FormBuilderPage = ({ intl }) => {
           defaultValues={{ customFields: formCustomFields }}
           phaseId={phaseId}
           projectId={projectId}
+          totalSubmissions={submissionCount.totalSubmissions}
         />,
         modalPortalElement
       )

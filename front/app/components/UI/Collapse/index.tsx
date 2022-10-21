@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
-import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
+import React, { PureComponent } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
+import styled from 'styled-components';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const timeout = 400;
 
@@ -104,6 +104,7 @@ interface Props {
   opened: boolean;
   onToggle: (event: React.MouseEvent) => void;
   className?: string;
+  children?: React.ReactNode;
 }
 
 class Collapse extends PureComponent<Props> {

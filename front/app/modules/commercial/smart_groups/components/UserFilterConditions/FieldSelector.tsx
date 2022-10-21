@@ -1,15 +1,15 @@
-import React, { memo } from 'react';
-import { keys } from 'lodash-es';
 import { Select } from '@citizenlab/cl2-component-library';
+import { keys } from 'lodash-es';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IOption } from 'typings';
 
 import {
+  ruleTypeConstraints,
+  TCustomRuleType,
   TRule,
   TStaticRuleType,
-  TCustomRuleType,
-  ruleTypeConstraints,
 } from './rules';
 
 import {
@@ -17,8 +17,8 @@ import {
   IUserCustomFieldInputType,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
@@ -42,7 +42,7 @@ const FieldSelector = memo(
     onChange,
     field,
     fieldName,
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
     const userCustomFields = useUserCustomFields({});
 
@@ -50,7 +50,7 @@ const FieldSelector = memo(
       userCustomFields: IUserCustomFieldData[]
     ): IOption[] => {
       const labelMessages: {
-        [key in TStaticRuleType]: ReactIntl.FormattedMessage.MessageDescriptor;
+        [key in TStaticRuleType]: MessageDescriptor;
       } = {
         email: messages.field_email,
         lives_in: messages.field_lives_in,

@@ -1,26 +1,26 @@
 import React from 'react';
 
 import styled, { useTheme } from 'styled-components';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
 
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
-import CountDown from './CountDown';
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import CountDown from './CountDown';
 
 import Button from 'components/UI/Button';
 import ProposalProgressBar from './ProposalProgressBar';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import Tippy from '@tippyjs/react';
 import T from 'components/T';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { darken } from 'polished';
-import Tippy from '@tippyjs/react';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div``;
 
@@ -149,7 +149,7 @@ interface InputProps {
 interface Props extends InputProps {}
 
 const disabledMessages: {
-  [key in IInitiativeDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in IInitiativeDisabledReason]: MessageDescriptor;
 } = {
   notPermitted: messages.votingNotPermitted,
 };

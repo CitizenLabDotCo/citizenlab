@@ -1,14 +1,14 @@
 import React from 'react';
 
 // components
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
-const Header = ({ intl: { formatMessage } }: InjectedIntlProps) => (
+const Header = ({ intl: { formatMessage } }: WrappedComponentProps) => (
   <Box display="flex">
     <Box width="60%">
       <Title variant="h6" as="h4" mt="0px" mb="8px" color="textSecondary">

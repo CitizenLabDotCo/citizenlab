@@ -1,15 +1,15 @@
 import React from 'react';
 
 // JSON forms
-import { withJsonFormsControlProps } from '@jsonforms/react';
 import { ControlProps } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 // Components
-import { Box, Text, Radio, Label } from '@citizenlab/cl2-component-library';
+import { Box, Label, Radio, Text } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
-import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
 
 const LinearScaleControl = ({
   data,
@@ -36,21 +36,29 @@ const LinearScaleControl = ({
         data-testid="linearScaleControl"
         display="flex"
         flexDirection="row"
-        gap="8px"
+        gap="16px"
         overflow="visible"
       >
-        <Box alignSelf="flex-end">
-          <Text mr="8px" fontWeight="bold">
-            {uischema.options?.minimum_label}
-          </Text>
-        </Box>
+        {uischema.options?.minimum_label && (
+          <Box pt="28px" alignSelf="center">
+            <Text
+              mr="8px"
+              mt="0"
+              mb="0"
+              color="textSecondary"
+              textAlign="right"
+            >
+              {uischema.options?.minimum_label}
+            </Text>
+          </Box>
+        )}
         <>
           {[...Array(maximum).keys()].map((i) => {
             const rowId = `${path}-radio-${i}`;
             const visualIndex = i + 1;
             return (
               <Box key={i} style={{ lineHeight: '0px' }}>
-                <Box mt="16px" mx="4px">
+                <Box mt="16px" mx="4px" minHeight="24px">
                   <Label htmlFor={rowId}>{visualIndex}</Label>
                 </Box>
                 <br />
@@ -66,8 +74,8 @@ const LinearScaleControl = ({
             );
           })}
         </>
-        <Box mt="28px" alignSelf="flex-end">
-          <Text mr="8px" fontWeight="bold">
+        <Box pt="28px" alignSelf="center">
+          <Text mr="8px" mt="0" mb="0" color="textSecondary">
             {uischema.options?.maximum_label}
           </Text>
         </Box>

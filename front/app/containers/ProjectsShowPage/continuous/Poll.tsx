@@ -3,21 +3,21 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import Poll from '../shared/poll';
-import { ScreenReaderOnly } from 'utils/a11y';
-import {
-  ProjectPageSectionTitle,
-  maxPageWidth,
-} from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+import {
+  maxPageWidth,
+  ProjectPageSectionTitle,
+} from 'containers/ProjectsShowPage/styles';
+import { ScreenReaderOnly } from 'utils/a11y';
+import Poll from '../shared/poll';
 
 // hooks
 import useProject from 'hooks/useProject';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -34,7 +34,7 @@ interface Props {
   className?: string;
 }
 
-const PollContainer = memo<Props & InjectedIntlProps>(
+const PollContainer = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const project = useProject({ projectId });
 

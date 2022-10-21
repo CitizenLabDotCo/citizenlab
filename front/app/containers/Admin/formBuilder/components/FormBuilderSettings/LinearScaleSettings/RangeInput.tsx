@@ -6,16 +6,16 @@ import { Controller, useFormContext } from 'react-hook-form';
 // components
 import {
   Box,
-  Label,
   IconTooltip,
-  Text,
+  Label,
   Select,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 // i18n
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 interface Props {
   maximumName: string;
@@ -24,7 +24,7 @@ interface Props {
 const RangeInput = ({
   maximumName,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const { control, setValue } = useFormContext();
   const defaultValues = [{}];
 

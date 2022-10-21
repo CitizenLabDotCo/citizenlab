@@ -1,10 +1,9 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import PasswordInput from './';
-import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import translationMessages from 'i18n/en';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
+import { object, string } from 'yup';
+import PasswordInput from './';
 
 const schema = object({
   password: string().min(8, 'Too short'),
@@ -92,11 +91,7 @@ describe('PasswordInput', () => {
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() => {
       expect(
-        screen.getByText(
-          (translationMessages as Record<string, string>)[
-            'app.errors.generics.invalid'
-          ]
-        )
+        screen.getByText('This field contains an invalid value.')
       ).toBeInTheDocument();
     });
   });

@@ -1,6 +1,6 @@
+import { get, isString } from 'lodash-es';
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isString, get } from 'lodash-es';
 import styled from 'styled-components';
 
 // typings
@@ -20,9 +20,9 @@ import { updateProject } from 'services/projects';
 import { Select } from '@citizenlab/cl2-component-library';
 
 // i18n
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 const StyledSelect = styled(Select)`
   width: 300px;
@@ -39,7 +39,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class IdeaAssignment extends React.PureComponent<Props & InjectedIntlProps> {
+class IdeaAssignment extends React.PureComponent<
+  Props & WrappedComponentProps
+> {
   getOptions = () => {
     const { adminsAndMods } = this.props;
     const prospectAssignees = adminsAndMods.usersList;

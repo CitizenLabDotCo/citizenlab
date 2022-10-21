@@ -1,19 +1,19 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
-import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
+import React, { FormEvent, PureComponent } from 'react';
+import { isAdmin } from 'services/permissions/roles';
 import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
-import Avatar from 'components/Avatar';
-import { Toggle, Icon } from '@citizenlab/cl2-component-library';
-import Checkbox from 'components/UI/Checkbox';
+import { Icon, Td, Toggle, Tr } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import Avatar from 'components/Avatar';
+import Checkbox from 'components/UI/Checkbox';
 
 // Translation
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Events --- For error handling
@@ -21,15 +21,15 @@ import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // Services
-import { IUserData, deleteUser } from 'services/users';
+import { deleteUser, IUserData } from 'services/users';
 
 // Typings
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
+import { lighten } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const StyledCheckbox = styled(Checkbox)`
   margin-left: 5px;
@@ -61,7 +61,7 @@ const MoreOptionsButton = styled.button`
   }
 `;
 
-const CreatedAt = styled.td`
+const CreatedAt = styled(Td)`
   white-space: nowrap;
 `;
 
@@ -127,8 +127,8 @@ interface State {
   createdAt: string;
 }
 
-class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props: Props & InjectedIntlProps) {
+class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       isAdmin: isAdmin({ data: this.props.user }),
@@ -190,28 +190,29 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     const { isAdmin } = this.state;
 
     return (
-      <tr
+      <Tr
         key={user.id}
+        background={selected ? colors.background : undefined}
         className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
       >
-        <td>
+        <Td>
           <StyledCheckbox
             checked={selected}
             onChange={this.handleUserSelectedOnChange}
           />
-        </td>
-        <td>
+        </Td>
+        <Td>
           <Avatar userId={user.id} size={30} />
-        </td>
-        <td>
+        </Td>
+        <Td>
           {user.attributes.first_name} {user.attributes.last_name}
-        </td>
-        <td>{user.attributes.email}</td>
+        </Td>
+        <Td>{user.attributes.email}</Td>
         <CreatedAt>{this.state.createdAt}</CreatedAt>
-        <td>
+        <Td>
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
-        </td>
-        <td>
+        </Td>
+        <Td>
           <MoreOptionsWrapper>
             <Tippy
               placement="bottom-end"
@@ -244,8 +245,8 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
               </MoreOptionsButton>
             </Tippy>
           </MoreOptionsWrapper>
-        </td>
-      </tr>
+        </Td>
+      </Tr>
     );
   }
 }

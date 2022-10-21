@@ -1,9 +1,9 @@
 import React from 'react';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
 
 import { Section, SectionField } from 'components/admin/Section';
 
@@ -14,13 +14,13 @@ import { Multiloc } from 'typings';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 // form
-import { FormProvider, useForm } from 'react-hook-form';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { object } from 'yup';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -29,7 +29,7 @@ export interface FormValues {
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const TopicForm = ({
   intl: { formatMessage },
@@ -37,7 +37,7 @@ const TopicForm = ({
   defaultValues,
 }: Props) => {
   const schema = object({
-    title_multiloc: validateMultiloc(
+    title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTopicTitleError)
     ),
   });
@@ -87,4 +87,4 @@ const TopicForm = ({
   );
 };
 
-export default injectIntl<Props>(TopicForm);
+export default injectIntl(TopicForm);

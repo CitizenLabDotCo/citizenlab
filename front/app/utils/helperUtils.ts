@@ -1,12 +1,12 @@
+import { isUndefined, trim } from 'lodash-es';
+import { removeUrlLocale } from 'services/locale';
 import {
-  Locale,
-  Multiloc,
+  CLErrorsJSON,
   GraphqlLocale,
   IParticipationContextType,
-  CLErrorsJSON,
+  Locale,
+  Multiloc,
 } from 'typings';
-import { trim, isUndefined } from 'lodash-es';
-import { removeUrlLocale } from 'services/locale';
 import { viewportWidths } from 'utils/styleUtils';
 
 export function capitalizeParticipationContextType(
@@ -58,14 +58,6 @@ export function isEmptyMultiloc(multiloc: Multiloc) {
 
 export function isNonEmptyString(str: string) {
   return isString(str) && trim(str) !== '';
-}
-
-export function sum(a, b) {
-  return a + b;
-}
-
-export function getDisplayName(Component) {
-  return Component.displayName || Component.name || 'Component';
 }
 
 type pageKeys =

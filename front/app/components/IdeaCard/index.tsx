@@ -1,13 +1,13 @@
-import React, { memo, FormEvent } from 'react';
 import { IOpenPostPageModalEvent } from 'containers/App';
+import React, { FormEvent, memo } from 'react';
 
 // components
-import UserName from 'components/UI/UserName';
-import Card from 'components/UI/Card/Compact';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
-import FooterWithVoteControl from './FooterWithVoteControl';
+import Card from 'components/UI/Card/Compact';
+import UserName from 'components/UI/UserName';
 import FooterWithBudgetControl from './FooterWithBudgetControl';
+import FooterWithVoteControl from './FooterWithVoteControl';
 
 // types
 import { ParticipationMethod } from 'services/participationContexts';
@@ -16,11 +16,8 @@ import { IParticipationContextType } from 'typings';
 // hooks
 import useIdea from 'hooks/useIdea';
 import useIdeaImage from 'hooks/useIdeaImage';
-import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
-
-// i18n
-import { FormattedRelative } from 'react-intl';
+import useProject from 'hooks/useProject';
 
 // utils
 import { get } from 'lodash-es';
@@ -28,8 +25,10 @@ import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styles
-import styled from 'styled-components';
+import useLocale from 'hooks/useLocale';
 import { transparentize } from 'polished';
+import styled from 'styled-components';
+import { timeAgo } from 'utils/dateUtils';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const BodyWrapper = styled.div`
@@ -120,6 +119,7 @@ const CompactIdeaCard = memo<Props>(
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
   }) => {
+    const locale = useLocale();
     const localize = useLocalize();
     const idea = useIdea({ ideaId });
     const project = useProject({
@@ -223,12 +223,11 @@ const CompactIdeaCard = memo<Props>(
             <Body>
               <StyledUserName userId={authorId || null} />
               <Separator aria-hidden>&bull;</Separator>
-              <TimeAgo>
-                <FormattedRelative
-                  value={idea.attributes.created_at}
-                  style="numeric"
-                />
-              </TimeAgo>
+              {!isNilOrError(locale) && (
+                <TimeAgo>
+                  {timeAgo(Date.parse(idea.attributes.created_at), locale)}
+                </TimeAgo>
+              )}
               <span aria-hidden> {bodyText}</span>
             </Body>
           </BodyWrapper>

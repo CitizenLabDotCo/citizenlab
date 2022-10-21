@@ -3,9 +3,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
+import { FormattedMessage, injectIntl, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -15,17 +14,17 @@ import Fragment from 'components/Fragment';
 
 import {
   Container,
-  StyledContentContainer,
   PageContent,
-  PageTitle,
   PageDescription,
+  PageTitle,
+  StyledContentContainer,
 } from 'containers/PagesShowPage';
 
 // styles
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const StyledButton = styled.button`
   color: ${colors.teal};
@@ -41,7 +40,8 @@ const StyledButton = styled.button`
   }
 `;
 
-const CookiePolicy = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const CookiePolicy = () => {
+  const { formatMessage } = useIntl();
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };

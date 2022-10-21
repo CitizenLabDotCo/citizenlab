@@ -1,7 +1,7 @@
+import { get } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // router
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -11,30 +11,30 @@ import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
-import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes, media, stylingConsts } from 'utils/styleUtils';
 
 // resources
+import Outlet from 'components/Outlet';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 import GetIdeasCount, {
   GetIdeasCountChildProps,
 } from 'resources/GetIdeasCount';
 import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import Outlet from 'components/Outlet';
+import { TAppConfigurationSetting } from 'services/appConfiguration';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
-import { TAppConfigurationSetting } from 'services/appConfiguration';
 
 const Menu = styled.div`
   z-index: 10;
@@ -160,10 +160,10 @@ export type NavItem = {
 };
 
 class Sidebar extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & WrappedComponentProps & WithRouterProps,
   State
 > {
-  constructor(props: Props & InjectedIntlProps & WithRouterProps) {
+  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
     super(props);
 
     this.state = {

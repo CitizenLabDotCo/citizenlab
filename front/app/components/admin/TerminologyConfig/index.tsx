@@ -1,16 +1,16 @@
+import { lowerCase, mapValues } from 'lodash-es';
 import React, { useState } from 'react';
-import { mapValues, lowerCase } from 'lodash-es';
 
 // components
-import Collapse from 'components/UI/Collapse';
-import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import { SectionField } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+import Collapse from 'components/UI/Collapse';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // i18n
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -65,7 +65,7 @@ const TerminologyConfig = ({
   pluralPlaceholderMessage,
   onSave,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [submitState, setSubmitState] = useState<TSubmitState>('enabled');
   const [opened, setOpened] = useState<boolean>(false);
   const [singular, setSingular] = useState<Multiloc | undefined>();

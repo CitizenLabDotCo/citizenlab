@@ -28,6 +28,7 @@ module ParticipationContext
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :timeline_project? do
       validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
+      validate :validate_participation_method_change, on: :update
 
       before_validation :set_participation_method, on: :create
       before_validation :set_presentation_mode, on: :create
@@ -136,5 +137,13 @@ module ParticipationContext
 
   def set_input_term
     self.input_term ||= DEFAULT_INPUT_TERM
+  end
+
+  def validate_participation_method_change
+    return unless participation_method_changed?
+
+    return if participation_method_was != 'native_survey' && participation_method != 'native_survey'
+
+    errors.add :participation_method, :change_not_permitted, message: 'change is not permitted'
   end
 end

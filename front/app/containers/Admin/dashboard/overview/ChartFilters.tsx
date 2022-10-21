@@ -10,13 +10,13 @@ import ProjectFilter from '../components/filters/ProjectFilter';
 import TimeControl from '../components/TimeControl';
 
 // i18n
-import messages from '../messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
 // typings
-import { IOption } from 'typings';
 import { Moment } from 'moment';
+import { IOption } from 'typings';
 
 interface Props {
   startAtMoment?: Moment | null | undefined;
@@ -41,7 +41,7 @@ const ChartFilters = injectIntl(
     onProjectFilter,
     onChangeResolution,
     intl: { formatMessage },
-  }: Props & InjectedIntlProps) => (
+  }: Props & WrappedComponentProps) => (
     <ControlBar>
       <Box display="flex" flexDirection="row">
         <TimeControl

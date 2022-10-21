@@ -1,20 +1,20 @@
+import { lighten } from 'polished';
 import React from 'react';
 import { returnFileSize } from 'utils/fileUtils';
-import { lighten } from 'polished';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // components
 import { Icon, IconButton } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;
@@ -81,7 +81,7 @@ const FileDisplay = ({
   file,
   intl: { formatMessage },
   onDeleteClick,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const { error, url, filename, size } = file;
   return (
     <Container error={!!file.error}>
@@ -115,8 +115,6 @@ const FileDisplay = ({
         iconName="delete"
         a11y_buttonActionMessage={formatMessage(messages.a11y_removeFile)}
         onClick={onDeleteClick}
-        iconWidth={'12px'}
-        iconHeight={'14px'}
         iconColor={colors.textSecondary}
         iconColorOnHover={colors.error}
       />

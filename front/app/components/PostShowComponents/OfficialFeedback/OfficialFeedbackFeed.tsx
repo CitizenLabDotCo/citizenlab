@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -13,12 +13,12 @@ import GetOfficialFeedbacks, {
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 // i18n
-import messages from './messages';
+import { FormattedDate, WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedDate } from 'react-intl';
+import messages from './messages';
 
 const Container = styled.div`
   &.hasTopMargin {
@@ -99,7 +99,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   render() {
@@ -195,7 +195,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
+const OfficialFeedbackFeedWithIntl = injectIntl(OfficialFeedbackFeed);
 
 const WrappedOfficialFeedback = (inputProps: InputProps) => (
   <Data {...inputProps}>

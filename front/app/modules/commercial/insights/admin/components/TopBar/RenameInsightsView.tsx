@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import { Button, Input } from '@citizenlab/cl2-component-library';
@@ -59,7 +59,7 @@ const RenameInsightsView = ({
   insightsViewId,
   originalViewName,
   intl: { formatMessage },
-}: RenameInsightsViewProps & InjectedIntlProps) => {
+}: RenameInsightsViewProps & WrappedComponentProps) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
@@ -114,4 +114,4 @@ const RenameInsightsView = ({
   );
 };
 
-export default injectIntl<RenameInsightsViewProps>(RenameInsightsView);
+export default injectIntl(RenameInsightsView);

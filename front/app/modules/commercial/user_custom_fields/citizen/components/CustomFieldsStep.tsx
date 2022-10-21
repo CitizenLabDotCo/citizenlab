@@ -1,11 +1,11 @@
-import React, { FormEvent, FC, memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { isObject } from 'lodash-es';
+import React, { FC, FormEvent, memo, useEffect, useState } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Spinner } from '@citizenlab/cl2-component-library';
 import UserCustomFieldsForm from '../../citizen/components/UserCustomFieldsForm';
 import UserCustomFieldsFormMigrated from '../../citizen/components/UserCustomFieldsFormMigrated';
 
@@ -14,9 +14,9 @@ import useAuthUser from 'hooks/useAuthUser';
 import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 import messages from 'components/SignUpIn/SignUp/messages';
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -33,8 +33,8 @@ import {
   TSignUpStep,
   TSignUpStepConfigurationObject,
 } from 'components/SignUpIn/SignUp';
-import { UserCustomFieldsInfos } from '../../services/userCustomFields';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { UserCustomFieldsInfos } from '../../services/userCustomFields';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -77,13 +77,13 @@ type InputProps = {
   step: TSignUpStep | null;
 };
 
-interface Props extends InputProps, InjectedIntlProps {}
+interface Props extends InputProps, WrappedComponentProps {}
 
 const isEnabled = (userCustomFieldsSchema: UserCustomFieldsInfos) =>
   userCustomFieldsSchema.hasRequiredFields ||
   userCustomFieldsSchema.hasCustomFields;
 
-const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
+const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
   ({ onData, onDataLoaded, intl: { formatMessage }, onCompleted, step }) => {
     const [processingSubmit, setProcessingSubmit] = useState(false);
     const [processingSkip, setProcessingSkip] = useState(false);
@@ -211,6 +211,6 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
   }
 );
 
-const CustomFieldsWithHoC = injectIntl<Props>(CustomFieldsStep);
+const CustomFieldsWithHoC = injectIntl(CustomFieldsStep);
 
 export default CustomFieldsWithHoC;

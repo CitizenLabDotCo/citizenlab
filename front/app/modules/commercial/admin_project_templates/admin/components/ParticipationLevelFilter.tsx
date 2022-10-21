@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useState } from 'react';
 
 // hooks
-import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useLocalize from 'hooks/useLocalize';
 
 // graphql
 import { gql, useQuery } from '@apollo/client';
@@ -14,15 +14,15 @@ import FilterSelector, {
 } from 'components/FilterSelector';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {
   onChange: (value: string[]) => void;
 }
 
-const ParticipationlevelFilter = memo<Props & InjectedIntlProps>(
+const ParticipationlevelFilter = memo<Props & WrappedComponentProps>(
   ({ intl: { formatMessage }, onChange }) => {
     const localize = useLocalize();
     const graphqlTenantLocales = useGraphqlTenantLocales();

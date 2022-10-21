@@ -1,22 +1,22 @@
 // libraries
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
+import { Helmet } from 'react-helmet';
 
 // i18n
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 interface InputProps {}
 
@@ -27,7 +27,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const ProjectsMeta = React.memo<Props & InjectedIntlProps>(
+const ProjectsMeta = React.memo<Props & WrappedComponentProps>(
   ({ intl, authUser, tenantLocales }) => {
     const { formatMessage } = intl;
     const { location } = window;
@@ -57,7 +57,7 @@ const ProjectsMeta = React.memo<Props & InjectedIntlProps>(
   }
 );
 
-const ProjectsMetaWithHoc = injectIntl<Props>(ProjectsMeta);
+const ProjectsMetaWithHoc = injectIntl(ProjectsMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

@@ -1,20 +1,20 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from '../messages';
 
 // hooks
+import SharingButtons from 'components/Sharing/SharingButtons';
+import useAuthUser from 'hooks/useAuthUser';
 import useIdea from 'hooks/useIdea';
 import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import SharingButtons from 'components/Sharing/SharingButtons';
+import useProject from 'hooks/useProject';
 
 interface Props {
   className?: string;
@@ -25,7 +25,7 @@ interface Props {
 const Component = ({
   ideaId,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const idea = useIdea({ ideaId });
   const projectId = !isNilOrError(idea)
     ? idea.relationships.project.data.id

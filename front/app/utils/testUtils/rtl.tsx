@@ -1,13 +1,13 @@
-import React from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from 'styled-components';
-import { getTheme } from 'utils/styleUtils';
 import GlobalStyle from 'global-styles';
-import { IntlProvider } from 'react-intl';
 import messages from 'i18n/en';
+import React from 'react';
+import { IntlProvider } from 'react-intl';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import history from 'utils/browserHistory';
+import { getTheme } from 'utils/styleUtils';
 
 window.confirm = jest.fn(() => true);
 window.scrollTo = jest.fn();
@@ -20,7 +20,17 @@ const AllTheProviders = ({ children }) => {
     <HistoryRouter history={history}>
       <ThemeProvider theme={getTheme(null)}>
         <GlobalStyle />
-        <IntlProvider locale="en" messages={messages}>
+        <IntlProvider
+          locale="en"
+          messages={messages}
+          onError={(err) => {
+            if (err.code === 'MISSING_TRANSLATION') {
+              console.warn('Missing translation', err.message);
+              return;
+            }
+            throw err;
+          }}
+        >
           <div id="modal-portal">{children}</div>
         </IntlProvider>
       </ThemeProvider>
@@ -47,7 +57,6 @@ const customRender: any = (ui: React.ReactElement, options?: RenderOptions) =>
 
 // re-export everything
 export * from '@testing-library/react';
-
 // override render method
 export { customRender as render };
 export { userEvent };

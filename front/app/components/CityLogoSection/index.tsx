@@ -2,17 +2,17 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Fragment from 'components/Fragment';
 import { Image } from '@citizenlab/cl2-component-library';
+import Fragment from 'components/Fragment';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 // style
@@ -39,7 +39,7 @@ interface Props {}
 
 const CityLogoSection = ({
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();

@@ -1,21 +1,21 @@
-import React from 'react';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { IPhaseData } from 'services/phases';
-import { IProjectData } from 'services/projects';
+import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { Menu, Popup, Segment } from 'semantic-ui-react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { Segment, Menu, Popup } from 'semantic-ui-react';
+import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'services/projects';
+import { ITopicData } from 'services/topics';
+import styled from 'styled-components';
+import { injectIntl } from 'utils/cl-intl';
+import { colors } from 'utils/styleUtils';
+import messages from '../../messages';
 import FilterSidebarPhases from './FilterSidebarPhases';
-import FilterSidebarTopics from './FilterSidebarTopics';
 import FilterSidebarProjects from './FilterSidebarProjects';
 import FilterSidebarStatuses from './FilterSidebarStatuses';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-import { Icon } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { ITopicData } from 'services/topics';
+import FilterSidebarTopics from './FilterSidebarTopics';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
@@ -46,7 +46,7 @@ interface Props {
   visibleFilterMenus: string[];
 }
 
-class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
+class FilterSidebar extends React.PureComponent<Props & WrappedComponentProps> {
   handleItemClick = (_event, data) => {
     this.props.onChangeActiveFilterMenu(data.id);
   };

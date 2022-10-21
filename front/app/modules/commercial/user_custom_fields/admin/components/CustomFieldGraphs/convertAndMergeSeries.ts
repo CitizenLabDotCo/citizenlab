@@ -2,24 +2,24 @@
 import { map, orderBy } from 'lodash-es';
 import {
   binBirthyear,
-  rename,
-  join,
   convertDomicileData,
+  join,
+  rename,
   Series,
 } from '../../../utils/data';
 import { fallbackMessages } from '../AreaChart';
 
 // typings
-import { TCustomFieldCode } from '../../../services/userCustomFields';
 import {
-  IUsersByRegistrationField,
-  IUsersByDomicile,
   IUsersByBirthyear,
+  IUsersByDomicile,
+  IUsersByRegistrationField,
 } from 'modules/commercial/user_custom_fields/services/stats';
+import { TCustomFieldCode } from '../../../services/userCustomFields';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { InjectedLocalized } from 'utils/localize';
 
 export type ISupportedDataType =
@@ -28,7 +28,7 @@ export type ISupportedDataType =
   | IUsersByBirthyear;
 
 interface IParameters {
-  formatMessage: InjectedIntlProps['intl']['formatMessage'];
+  formatMessage: WrappedComponentProps['intl']['formatMessage'];
   localize: InjectedLocalized['localize'];
 }
 
@@ -48,10 +48,7 @@ type Gender = 'male' | 'female' | 'unspecified' | '_blank';
 
 const GENDER_COLUMNS: Gender[] = ['male', 'female', 'unspecified', '_blank'];
 
-const GENDER_MESSAGES: Record<
-  Gender,
-  ReactIntl.FormattedMessage.MessageDescriptor
-> = {
+const GENDER_MESSAGES: Record<Gender, MessageDescriptor> = {
   male: messages.male,
   female: messages.female,
   unspecified: messages.unspecified,

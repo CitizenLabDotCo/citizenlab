@@ -1,19 +1,19 @@
 import React, { PureComponent } from 'react';
 import { Omit } from 'typings';
 
+import { DateRangePicker, DateRangePickerShape } from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import { DateRangePicker, DateRangePickerShape } from 'react-dates';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import { omit } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 interface Props
   extends Omit<
@@ -49,7 +49,7 @@ const StylingWrapper = styled.div`
 
 /** Light wrapper around react-dates DateRangePicker that autonomously deals with focusing and styling */
 class OurDateRangePicker extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   constructor(props) {

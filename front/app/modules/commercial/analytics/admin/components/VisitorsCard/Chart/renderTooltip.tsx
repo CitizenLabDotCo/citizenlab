@@ -2,23 +2,23 @@ import React from 'react';
 
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import { Tooltip } from 'recharts';
 import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
+import { Tooltip } from 'recharts';
 
 // styling
 import { colors } from 'components/admin/Graphs/styling';
 
 // i18n
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { toFullMonth } from 'utils/dateUtils';
 
 // typings
-import { TimeSeriesRow } from '../../../hooks/useVisitorsData/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { MessageDescriptor } from 'typings';
+import {} from 'typings';
+import { TimeSeriesRow } from '../../../hooks/useVisitorsData/typings';
 
 type DataKey = 'visitors' | 'visits';
 

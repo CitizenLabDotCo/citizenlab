@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
 import Button from 'components/UI/Button';
+import React, { useState } from 'react';
 import { fontSizes } from 'utils/styleUtils';
 
 // i18n
-import messages from '../../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { exportType } from '../ExportMenu';
-import { isString } from 'utils/helperUtils';
-import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
 import { saveAs } from 'file-saver';
+import { WrappedComponentProps } from 'react-intl';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isString } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
-import { InjectedIntlProps } from 'react-intl';
+import { requestBlob } from 'utils/request';
+import messages from '../../messages';
+import tracks from '../../tracks';
+import { exportType } from '../ExportMenu';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];
@@ -24,7 +24,7 @@ const ExportInitiativesButton = ({
   exportQueryParameter,
   exportType,
   intl: { formatDate, formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [exporting, setExporting] = useState(false);
   const handleExportInitiatives = async () => {
     const queryParametersObject = {};

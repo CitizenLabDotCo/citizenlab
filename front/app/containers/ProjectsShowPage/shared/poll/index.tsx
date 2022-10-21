@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 import { IParticipationContextType } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
@@ -11,18 +11,19 @@ import {
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // components
+import Warning from 'components/UI/Warning';
 import FormCompleted from './FormCompleted';
 import PollForm from './PollForm';
-import Warning from 'components/UI/Warning';
 
 // i18n
+import { MessageDescriptor } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -68,7 +69,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const disabledMessages: {
-  [key in IPollTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in IPollTakingDisabledReason]: MessageDescriptor;
 } = {
   projectInactive: messages.pollDisabledProjectInactive,
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,
