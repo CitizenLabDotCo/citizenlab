@@ -1,25 +1,25 @@
 import React, { memo, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
 
 // i18n
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // styles
+import Outlet from 'components/Outlet';
 import styled from 'styled-components';
 import { InsertConfigurationOptions, ITab } from 'typings';
-import Outlet from 'components/Outlet';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 const TopContainer = styled.div`
@@ -39,7 +39,7 @@ const ActionsContainer = styled.div`
     margin-right: 15px;
   }
 `;
-const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
+const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
   ({ intl: { formatMessage }, location }) => {
     const [tabs, setTabs] = useState<ITab[]>([
       {

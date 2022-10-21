@@ -1,6 +1,6 @@
 // @ts-nocheck
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 
 import { getIdea } from 'services/ideas';
 import { makeStatus } from 'services/ideaStatuses';
@@ -11,8 +11,8 @@ jest.mock('services/ideas');
 jest.mock('services/ideaStatuses');
 jest.mock('./Row', () => 'Row');
 jest.mock('./NoPost', () => 'NoPost');
-jest.mock('./IdeaHeaderRow', () => 'IdeaHeaderRow');
-jest.mock('./InitiativesHeaderRow', () => 'InitiativesHeaderRow');
+jest.mock('./header/IdeaHeaderRow', () => 'IdeaHeaderRow');
+jest.mock('./header/InitiativesHeaderRow', () => 'InitiativesHeaderRow');
 jest.mock('components/admin/Pagination', () => 'Pagination');
 
 import PostTable from './';

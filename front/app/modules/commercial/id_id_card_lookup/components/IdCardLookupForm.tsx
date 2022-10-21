@@ -1,25 +1,25 @@
-import React, { memo, useCallback, useState } from 'react';
-import { isEmpty, get } from 'lodash-es';
-import { reportError } from 'utils/loggingUtils';
 import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
+import { get, isEmpty } from 'lodash-es';
+import React, { memo, useCallback, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
+import streams from 'utils/streams';
 
 // components
-import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import { IconTooltip, Input } from '@citizenlab/cl2-component-library';
 import Collapse from 'components/UI/Collapse';
+import Error from 'components/UI/Error';
 import {
-  FormContainer,
-  Title,
-  Form,
-  FormField,
-  StyledLabel,
-  LabelTextContainer,
-  Footer,
-  SubmitButton,
   CancelButton,
+  Footer,
+  Form,
+  FormContainer,
+  FormField,
   HelpImage,
+  LabelTextContainer,
+  StyledLabel,
+  SubmitButton,
+  Title,
 } from 'modules/commercial/verification/citizen/components/styles';
 
 // hooks
@@ -29,10 +29,10 @@ import useAuthUser from 'hooks/useAuthUser';
 import { verifyIDLookup } from '../services/verify';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import T from 'components/T';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // typings
 import { IDLookupMethod } from 'services/verificationMethods';
@@ -46,7 +46,7 @@ interface Props {
   method: IDLookupMethod;
 }
 
-const VerificationFormLookup = memo<Props & InjectedIntlProps>(
+const VerificationFormLookup = memo<Props & WrappedComponentProps>(
   ({ onCancel, onVerified, showHeader, inModal, className, method, intl }) => {
     const authUser = useAuthUser();
 
@@ -190,4 +190,4 @@ const VerificationFormLookup = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl<Props>(VerificationFormLookup);
+export default injectIntl(VerificationFormLookup);

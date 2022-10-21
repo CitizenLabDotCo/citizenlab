@@ -2,10 +2,10 @@ import React from 'react';
 
 // components
 import { Input, Success } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
+import Button from 'components/UI/Button';
 import { FormLabel } from 'components/UI/FormComponents';
+import { Helmet } from 'react-helmet';
 
 // services
 import { sendPasswordResetMail } from 'services/auth';
@@ -14,13 +14,13 @@ import { sendPasswordResetMail } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 import messages from './messages';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -88,7 +88,7 @@ type State = {
 };
 
 class PasswordRecovery extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   emailInputElement: HTMLInputElement | null;
@@ -232,4 +232,4 @@ class PasswordRecovery extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(PasswordRecovery);
+export default injectIntl(PasswordRecovery);

@@ -3,10 +3,10 @@ import React from 'react';
 import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { Multiloc } from 'typings';
 
 interface Props {
   headerMultiloc: Multiloc;
@@ -17,7 +17,7 @@ const BannerHeaderMultilocField = ({
   intl: { formatMessage },
   headerMultiloc,
   onChange,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   return (
     <SectionField>
       <InputMultilocWithLocaleSwitcher

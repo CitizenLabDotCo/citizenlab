@@ -1,14 +1,14 @@
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import messages from './messages';
-import React, { ReactElement } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
 import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import React, { ReactElement } from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 import tracks from '../../../tracks';
+import messages from './messages';
 
 const StyledToggle = styled(Toggle)`
   margin-right: 15px;
@@ -49,7 +49,7 @@ const FlagInnapropriateContentSetting = ({
   className,
   onSettingChange,
   intl: { formatMessage },
-}: Props & InjectedIntlProps): ReactElement | null => {
+}: Props & WrappedComponentProps): ReactElement | null => {
   const appConfiguration = useAppConfiguration();
   const flagInnaproperiateContentSetting =
     !isNilOrError(appConfiguration) &&

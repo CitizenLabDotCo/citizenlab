@@ -2,12 +2,12 @@ import React from 'react';
 
 // styles
 import styled, { css, keyframes } from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -70,7 +70,7 @@ type ScanCategoryProps = {
   triggerScan: () => void;
   onClose: () => void;
   cancelScan: () => void;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const ScanCategory = ({
   intl: { formatMessage },

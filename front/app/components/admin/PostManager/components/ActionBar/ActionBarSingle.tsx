@@ -2,11 +2,11 @@ import React from 'react';
 import { deleteIdea } from 'services/ideas';
 import { deleteInitiative } from 'services/initiatives';
 
-import { Icon, Button } from 'semantic-ui-react';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import { WrappedComponentProps } from 'react-intl';
+import { Button, Icon } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { ManagerType } from '../..';
+import messages from '../../messages';
 
 interface Props {
   type: ManagerType;
@@ -21,7 +21,7 @@ const ActionBarSingle = ({
   handleClickEdit,
   type,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const handleClickDeleteIdea = () => {
     if (window.confirm(formatMessage(messages.deleteInputConfirmation))) {
       deleteIdea(postId);

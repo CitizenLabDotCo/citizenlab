@@ -1,8 +1,8 @@
 // libraries
+import { Canvg } from 'canvg';
 import React, { useState } from 'react';
 import { findDOMNode } from 'react-dom';
 import { trackEventByName } from 'utils/analytics';
-import { Canvg } from 'canvg';
 import XLSX from 'xlsx';
 
 // styling
@@ -10,15 +10,15 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
-import Button from 'components/UI/Button';
 import { Dropdown } from '@citizenlab/cl2-component-library';
-import { requestBlob } from 'utils/request';
-import { reportError } from 'utils/loggingUtils';
-import { saveAs } from 'file-saver';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { IResolution } from 'components/admin/ResolutionControl';
+import Button from 'components/UI/Button';
+import { saveAs } from 'file-saver';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { reportError } from 'utils/loggingUtils';
+import { requestBlob } from 'utils/request';
+import messages from './messages';
 
 const DropdownButton = styled(Button)``;
 
@@ -71,7 +71,7 @@ const ReportExportMenu = ({
   currentProjectFilterLabel,
   intl: { formatMessage, formatDate },
   xlsxData,
-}: ReportExportMenuProps & InjectedIntlProps) => {
+}: ReportExportMenuProps & WrappedComponentProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
 

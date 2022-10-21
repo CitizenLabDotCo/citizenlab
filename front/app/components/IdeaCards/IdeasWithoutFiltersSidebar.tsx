@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -7,44 +7,44 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import TopicFilterDropdown from './TopicFilterDropdown';
-import SelectSort from './SortFilterDropdown';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import IdeasView from './IdeasView';
+import SelectSort from './SortFilterDropdown';
+import TopicFilterDropdown from './TopicFilterDropdown';
 
 // resources
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetIdeas, {
-  Sort,
-  GetIdeasChildProps,
-  InputProps as GetIdeasInputProps,
-} from 'resources/GetIdeas';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
 } from 'resources/GetIdeaCustomFieldsSchemas';
+import GetIdeas, {
+  GetIdeasChildProps,
+  InputProps as GetIdeasInputProps,
+  Sort,
+} from 'resources/GetIdeas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import { isRtl, media, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import {
   IdeaDefaultSortMethod,
-  ParticipationMethod,
   ideaDefaultSortMethodFallback,
+  ParticipationMethod,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
-import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -209,24 +209,6 @@ const IdeasWithoutFiltersSidebar = ({
     setSelectedView(selectedView);
   };
 
-  const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
-    /*
-      If IdeaCards are used in a location that's not inside a project,
-      and has no ideaCustomFields settings as such,
-      we fall back to true
-    */
-
-    if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-      return (
-        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-          'ui:widget'
-        ] !== 'hidden'
-      );
-    }
-
-    return true;
-  };
-
   const {
     list,
     hasMore,
@@ -234,8 +216,16 @@ const IdeasWithoutFiltersSidebar = ({
     queryParameters: { phase: phaseId },
   } = ideas;
 
-  const locationEnabled = isFieldEnabled('location_description');
-  const topicsEnabled = isFieldEnabled('topic_ids');
+  const locationEnabled = isFieldEnabled(
+    'location_description',
+    ideaCustomFieldsSchemas,
+    locale
+  );
+  const topicsEnabled = isFieldEnabled(
+    'topic_ids',
+    ideaCustomFieldsSchemas,
+    locale
+  );
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showListView =
     !locationEnabled || (locationEnabled && selectedView === 'card');

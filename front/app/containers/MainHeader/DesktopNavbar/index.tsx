@@ -5,21 +5,21 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
-import DesktopNavbarItem from './DesktopNavbarItem';
 import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
+import DesktopNavbarItem from './DesktopNavbarItem';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
+import { isRtl, media } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.nav`
   height: 100%;
@@ -45,7 +45,7 @@ const NavbarItems = styled.ul`
   `};
 `;
 
-const DesktopNavbar = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const DesktopNavbar = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
   const pageSlugById = usePageSlugById();
 

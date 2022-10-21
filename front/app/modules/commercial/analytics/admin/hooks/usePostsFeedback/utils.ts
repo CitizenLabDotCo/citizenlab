@@ -2,8 +2,8 @@
 import messages from './messages';
 
 // typings
-import { Response, EmptyResponse } from './typings';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { EmptyResponse, Response } from './typings';
 
 export const isEmptyResponse = (
   response: Response | EmptyResponse
@@ -32,7 +32,7 @@ export interface Translations {
 }
 
 export const getTranslations = (
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
+  formatMessage: WrappedComponentProps['intl']['formatMessage']
 ): Translations => ({
   statusChanged: formatMessage(messages.statusChanged),
   officialUpdate: formatMessage(messages.officialUpdate),

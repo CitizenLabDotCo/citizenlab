@@ -4,23 +4,23 @@ import React from 'react';
 import { Multiloc } from 'typings';
 
 // form
-import { FormProvider, useForm } from 'react-hook-form';
-import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
 
 // components
-import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 // intl
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import messages from './messages';
 
 export interface FormValues {
   nav_bar_item_title_multiloc: Multiloc;
@@ -29,7 +29,7 @@ export interface FormValues {
 type PageFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const NavbarItemForm = ({
   onSubmit,
@@ -37,7 +37,7 @@ const NavbarItemForm = ({
   intl: { formatMessage },
 }: PageFormProps) => {
   const schema = object({
-    nav_bar_item_title_multiloc: validateMultiloc(
+    nav_bar_item_title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.emptyTitleError)
     ),
   });

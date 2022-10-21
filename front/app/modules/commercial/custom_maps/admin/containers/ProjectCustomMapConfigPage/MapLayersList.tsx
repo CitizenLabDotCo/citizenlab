@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 
 // components
-import Button from 'components/UI/Button';
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import { SubSectionTitle } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import { SubSectionTitle } from 'components/admin/Section';
+import Button from 'components/UI/Button';
 import GeoJsonImportButton from './GeoJsonImportButton';
 
 // hooks
@@ -24,9 +24,9 @@ import addOrderingToLayers, {
 } from './addOrderingToLayers';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -85,7 +85,7 @@ interface Props {
   className?: string;
 }
 
-const MapLayersList = memo<Props & InjectedIntlProps & InjectedLocalized>(
+const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
   ({
     projectId,
     onEditLayer,

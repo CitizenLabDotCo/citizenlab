@@ -1,11 +1,11 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import { darken } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useUser from 'hooks/useUser';
@@ -14,8 +14,8 @@ import useUser from 'hooks/useUser';
 import { IUserData } from 'services/users';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 const Name = styled.span<{
@@ -75,7 +75,7 @@ interface Props extends StyleProps {
   hideLastName?: boolean;
 }
 
-const UserName = (props: Props & InjectedIntlProps) => {
+const UserName = (props: Props & WrappedComponentProps) => {
   const {
     intl: { formatMessage },
     userId,

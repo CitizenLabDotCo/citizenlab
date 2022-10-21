@@ -1,20 +1,20 @@
-import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
+import React from 'react';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import Button from 'components/UI/Button';
 
 // intl
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import { InjectedIntlProps } from 'react-intl';
 
 // utils
-import { colors } from 'utils/styleUtils';
-import { requestBlob } from 'utils/request';
 import { isNilOrError } from 'utils/helperUtils';
+import { requestBlob } from 'utils/request';
+import { colors } from 'utils/styleUtils';
 
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
@@ -22,7 +22,7 @@ import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 // services
 import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';
 
-type ExportProps = WithRouterProps & InjectedIntlProps;
+type ExportProps = WithRouterProps & WrappedComponentProps;
 
 const Export = ({
   params: { viewId },

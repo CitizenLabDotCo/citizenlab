@@ -1,30 +1,30 @@
+import { isEmpty } from 'lodash-es';
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { isEmpty } from 'lodash-es';
 
 // intl
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 // typings
-import { IStreamParams, IStream } from 'utils/streams';
 import { IResourceByTime, IUsersByTime } from 'services/stats';
+import { IStream, IStreamParams } from 'utils/streams';
 
 // components
 import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
-import ReportExportMenu from 'components/admin/ReportExportMenu';
-import {
-  IGraphUnit,
-  GraphCard,
-  GraphCardInnerClean,
-  GraphCardHeader,
-  GraphCardTitle,
-} from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
+import {
+  GraphCard,
+  GraphCardHeader,
+  GraphCardInnerClean,
+  GraphCardTitle,
+  IGraphUnit,
+} from 'components/admin/GraphWrappers';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // utils
-import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
+import { toFullMonth, toThreeLetterMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Row = { name: string; code: string; value: number };
@@ -53,7 +53,7 @@ type Props = {
 };
 
 class BarChartActiveUsersByTime extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscription: Subscription;
@@ -223,4 +223,6 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(BarChartActiveUsersByTime);
+export default injectIntl<Props & WrappedComponentProps>(
+  BarChartActiveUsersByTime
+);

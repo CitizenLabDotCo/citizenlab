@@ -6,8 +6,8 @@ import messages from './participationMethodUtilsMessages';
 
 // services
 import {
-  ParticipationMethod,
   getInputTerm,
+  ParticipationMethod,
 } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
@@ -16,9 +16,9 @@ import { IProjectData } from 'services/projects';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
 // utils
-import { isNilOrError } from './helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'services/ideas';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from './helperUtils';
 
 type FormSubmissionMethodProps = {
   project?: IProjectData;
@@ -39,7 +39,7 @@ type FormTitleMethodProps = {
   phaseFromUrl?: IPhaseData;
 };
 
-type ParticipationMethodConfig = {
+export type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
@@ -48,11 +48,17 @@ type ParticipationMethodConfig = {
     props: ModalContentMethodProps
   ) => ReactNode | JSX.Element | null;
   getFormTitle?: (props: FormTitleMethodProps) => void;
+  getMethodPickerMessage: () => ReactNode | JSX.Element | null;
   showInputManager: boolean;
+  isMethodLocked: boolean;
+  postType: 'defaultInput' | 'nativeSurvey';
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.inputAndFeedback} />;
+  },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
@@ -66,6 +72,7 @@ const ideationConfig: ParticipationMethodConfig = {
       }
     }
   },
+  postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
@@ -101,10 +108,14 @@ const ideationConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
+  isMethodLocked: false,
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
   formEditor: 'surveyEditor',
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createNativeSurvey} />;
+  },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.project) {
       clHistory.push({
@@ -115,6 +126,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       });
     }
   },
+  postType: 'nativeSurvey',
   getModalContent: (props: ModalContentMethodProps) => {
     return (
       <FormattedMessage
@@ -128,35 +140,50 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     return <FormattedMessage {...messages.surveyTitle} {...props} />;
   },
   showInputManager: false,
+  isMethodLocked: true,
 };
 
 const informationConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.shareInformation} />;
+  },
   getModalContent: () => {
     return null;
   },
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
 };
 
 const surveyConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createSurveyText} />;
+  },
   getModalContent: () => {
     return null;
   },
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.conductParticipatoryBudgetingText} />;
+  },
   getModalContent: () => {
     return null;
   },
+  postType: 'defaultInput',
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
@@ -192,28 +219,39 @@ const budgetingConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
+  isMethodLocked: false,
 };
 
 const pollConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createPoll} />;
+  },
   getModalContent: () => {
     return null;
   },
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.findVolunteers} />;
+  },
   getModalContent: () => {
     return null;
   },
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
 };
 
 const methodToConfig: {

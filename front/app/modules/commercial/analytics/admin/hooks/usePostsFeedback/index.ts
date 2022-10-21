@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // services
 import {
@@ -12,29 +12,29 @@ import useLocalize from 'hooks/useLocalize';
 
 // parsing
 import {
+  getDays,
+  getPieCenterValue,
+  getStatusColorById,
+  parseExcelData,
   parsePieData,
   parseProgressBarsData,
   parseStackedBarsData,
-  getPieCenterValue,
-  getDays,
-  getStatusColorById,
-  parseStackedBarsPercentages,
   parseStackedBarsLegendItems,
-  parseExcelData,
+  parseStackedBarsPercentages,
 } from './parse';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { isEmptyResponse, getTranslations } from './utils';
-import { getProjectFilter, getDateFilter } from '../../utils/query';
+import { getDateFilter, getProjectFilter } from '../../utils/query';
+import { getTranslations, isEmptyResponse } from './utils';
 
 // typings
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import {
-  QueryParameters,
-  PostFeedback,
-  Response,
   EmptyResponse,
+  PostFeedback,
+  QueryParameters,
+  Response,
 } from './typings';
 
 const query = ({
@@ -79,7 +79,7 @@ const query = ({
 };
 
 export default function usePostsWithFeedback(
-  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+  formatMessage: WrappedComponentProps['intl']['formatMessage'],
   { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
   const localize = useLocalize();

@@ -2,8 +2,8 @@ import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Modal from 'components/UI/Modal';
 import SharingButtons from 'components/Sharing/SharingButtons';
+import Modal from 'components/UI/Modal';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -11,10 +11,10 @@ import useProjectFolder from '../../../hooks/useProjectFolder';
 
 // i18n
 import T from 'components/T';
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // style
 import { Box } from '@citizenlab/cl2-component-library';
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const ProjectFolderSharingModal = memo<
-  Props & InjectedIntlProps & InjectedLocalized
+  Props & WrappedComponentProps & InjectedLocalized
 >(({ projectFolderId, className, opened, close, intl: { formatMessage } }) => {
   const authUser = useAuthUser();
   const projectFolder = useProjectFolder({ projectFolderId });

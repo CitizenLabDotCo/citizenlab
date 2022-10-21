@@ -1,10 +1,9 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import RadioGroup, { Radio } from './';
-import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import translationMessages from 'i18n/en';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
+import { object, string } from 'yup';
+import RadioGroup, { Radio } from './';
 
 const schema = object({
   radio: string().required('Error message'),
@@ -83,11 +82,7 @@ describe('Radio', () => {
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() => {
       expect(
-        screen.getByText(
-          (translationMessages as Record<string, string>)[
-            'app.errors.generics.blank'
-          ]
-        )
+        screen.getByText('This field cannot be empty.')
       ).toBeInTheDocument();
     });
   });

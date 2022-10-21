@@ -1,51 +1,51 @@
-import React, { PureComponent, FormEvent } from 'react';
-import styled from 'styled-components';
 import { get, map, merge, set } from 'lodash-es';
+import React, { FormEvent, PureComponent } from 'react';
 import { Subscription } from 'rxjs';
+import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { CLError, Multiloc, IOption } from 'typings';
+import { CLError, IOption, Multiloc } from 'typings';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { appLocalePairs } from 'containers/App/constants';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
-  Input,
+  Error,
   IconTooltip,
+  Input,
   Label,
   Success,
-  Error,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
+  SectionDescription,
+  SectionField,
   SectionTitle,
   SubSectionTitle,
-  SectionField,
-  SectionDescription,
 } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Outlet from 'components/Outlet';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import MultipleSelect from 'components/UI/MultipleSelect';
 
 // services
 import {
   currentAppConfigurationStream,
-  updateAppConfiguration,
-  IUpdatedAppConfigurationProperties,
   IAppConfigurationData,
+  IUpdatedAppConfigurationProperties,
   TAppConfigurationSettingWithEnabled,
+  updateAppConfiguration,
 } from 'services/appConfiguration';
 
 // Utils
-import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import getSubmitState from 'utils/getSubmitState';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -89,7 +89,7 @@ interface State {
 }
 
 class SettingsGeneralTab extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscriptions: Subscription[];
@@ -467,4 +467,4 @@ class SettingsGeneralTab extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(SettingsGeneralTab);
+export default injectIntl(SettingsGeneralTab);

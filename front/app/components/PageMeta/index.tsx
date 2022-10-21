@@ -1,15 +1,15 @@
 // libraries
+import { isError } from 'lodash-es';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { isError } from 'lodash-es';
 
 // i18n
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAuthUser from 'hooks/useAuthUser';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -20,7 +20,7 @@ interface Props {
   descriptionMessage: MessageDescriptor;
 }
 
-const PageMeta = React.memo<Props & InjectedIntlProps>(
+const PageMeta = React.memo<Props & WrappedComponentProps>(
   ({ intl, titleMessage, descriptionMessage }) => {
     const authUser = useAuthUser();
     const tenantLocales = useAppConfigurationLocales();

@@ -1,12 +1,12 @@
-import React from 'react';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 import Topics from 'components/PostShowComponents/Topics';
 import useIdea from 'hooks/useIdea';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {
@@ -20,7 +20,7 @@ const IdeaTopics = ({
   compact,
   className,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {

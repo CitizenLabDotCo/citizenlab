@@ -1,49 +1,49 @@
+import moment, { Moment } from 'moment';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import moment, { Moment } from 'moment';
 
 // components
-import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
+import { Column, GraphsContainer } from 'components/admin/GraphWrappers';
 import Outlet from 'components/Outlet';
 import ChartFilters from './ChartFilters';
-import LineBarChart from './charts/LineBarChart';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import IdeasByStatusChart from './charts/IdeasByStatusChart';
+import LineBarChart from './charts/LineBarChart';
+import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-import IdeasByStatusChart from './charts/IdeasByStatusChart';
 
 // typings
-import { IOption } from 'typings';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { IOption } from 'typings';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
 import tracks from '../tracks';
 
 // i18n
-import messages from '../messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
+import messages from '../messages';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
 import {
-  usersByTimeCumulativeStream,
   activeUsersByTimeStream,
-  usersByTimeStream,
+  activeUsersByTimeXlsxEndpoint,
+  commentsByTimeCumulativeStream,
+  commentsByTimeCumulativeXlsxEndpoint,
   commentsByTimeStream,
   ideasByTimeCumulativeStream,
-  commentsByTimeCumulativeStream,
-  activeUsersByTimeXlsxEndpoint,
   ideasByTimeCumulativeXlsxEndpoint,
-  commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
+  usersByTimeCumulativeStream,
+  usersByTimeStream,
   usersByTimeXlsxEndpoint,
 } from 'services/stats';
+import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import { getSensibleResolution } from './getSensibleResolution';
@@ -74,7 +74,7 @@ interface Tracks {
 
 interface PropsHithHoCs
   extends Props,
-    InjectedIntlProps,
+    WrappedComponentProps,
     InjectedLocalized,
     Tracks {}
 

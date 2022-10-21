@@ -2,32 +2,32 @@
 import React from 'react';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // styling
-import { withTheme } from 'styled-components';
 import { legacyColors } from 'components/admin/Graphs/styling';
+import { withTheme } from 'styled-components';
 
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import PieChart from 'components/admin/Graphs/PieChart';
 import {
+  GraphCard,
+  GraphCardHeader,
+  GraphCardInner,
+  GraphCardTitle,
   IGraphUnit,
   NoDataContainer,
-  GraphCardHeader,
-  GraphCardTitle,
-  GraphCard,
-  GraphCardInner,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
-import PieChart from 'components/admin/Graphs/PieChart';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // typings
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStream, IStreamParams } from 'utils/streams';
 
 import { IGraphFormat } from 'typings';
 
@@ -67,11 +67,11 @@ export const piechartColors = [
 ];
 
 class PieChartByCategory extends React.PureComponent<
-  Props & InjectedIntlProps
+  Props & WrappedComponentProps
 > {
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props as any);
     this.currentChart = React.createRef();
   }
@@ -136,7 +136,7 @@ class PieChartByCategory extends React.PureComponent<
   }
 }
 
-const PieChartByCategoryWithHoCs = injectIntl<Props>(
+const PieChartByCategoryWithHoCs = injectIntl(
   withTheme(PieChartByCategory as any) as any
 );
 

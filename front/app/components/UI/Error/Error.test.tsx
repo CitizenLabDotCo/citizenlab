@@ -1,7 +1,7 @@
-import React from 'react';
-import { screen, render } from 'utils/testUtils/rtl';
-import Error from './';
 import translationMessages from 'i18n/en';
+import React from 'react';
+import { render, screen } from 'utils/testUtils/rtl';
+import Error from './';
 
 jest.mock('utils/cl-intl');
 jest.mock('react-transition-group/CSSTransition', () => ({ children }) => (
@@ -56,13 +56,7 @@ describe('Error', () => {
       />
     );
     expect(screen.getByTestId('error-message-text')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        (translationMessages as Record<string, string>)[
-          'app.errors.password_blank'
-        ]
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText('Please enter a password')).toBeInTheDocument();
     expect(
       screen.getByText(
         (translationMessages as Record<string, string>)[

@@ -1,54 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useEffect, useState } from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 
 // services
-import { updateUser } from 'services/users';
-import GetLockedFields, {
-  GetLockedFieldsChildProps,
-} from 'resources/GetLockedFields';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLockedFields, {
+  GetLockedFieldsChildProps,
+} from 'resources/GetLockedFields';
+import { updateUser } from 'services/users';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // components
-import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, IconTooltip } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import {
-  FormSection,
   FormLabel,
+  FormSection,
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, mixed } from 'yup';
+import Feedback from 'components/HookForm/Feedback';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
-import Feedback from 'components/HookForm/Feedback';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { mixed, object, string } from 'yup';
 
 // i18n
-import { appLocalePairs, API_PATH } from 'containers/App/constants';
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { API_PATH, appLocalePairs } from 'containers/App/constants';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
 
 // typings
-import { IOption, UploadFile, Multiloc } from 'typings';
+import { IOption, Multiloc, UploadFile } from 'typings';
 
 import Outlet from 'components/Outlet';
 import GetFeatureFlag, {
@@ -81,7 +81,7 @@ interface DataProps {
 
 export type ExtraFormDataKey = 'custom_field_values';
 
-type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
+type Props = InputProps & DataProps & WrappedComponentProps & InjectedLocalized;
 
 type FormValues = {
   first_name?: string;

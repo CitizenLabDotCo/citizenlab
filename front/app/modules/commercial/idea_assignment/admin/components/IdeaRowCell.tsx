@@ -1,17 +1,17 @@
-import React, { FC, useEffect } from 'react';
 import { get } from 'lodash-es';
+import React, { FC, useEffect } from 'react';
 
 import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
+import tracks from 'components/admin/PostManager/tracks';
 import { IIdeaData, updateIdea } from 'services/ideas';
 import {
-  InsertConfigurationOptions,
   CellConfiguration,
+  InsertConfigurationOptions,
   Override,
 } from 'typings';
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/admin/PostManager/tracks';
 
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 
 type Props = {
   onData: (

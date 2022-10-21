@@ -15,12 +15,12 @@ import Link from 'utils/cl-router/Link';
 import useUser from 'hooks/useUser';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { InjectedIntlProps } from 'react-intl';
 
 // styles
-import styled from 'styled-components';
 import { lighten } from 'polished';
+import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 export const Container = styled.div<{ size: number }>`
@@ -133,7 +133,7 @@ const Avatar = memo(
     userId,
     hideIfNoAvatar,
     ...props
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const user = useUser({ userId });
 
     if (!isNilOrError(user)) {

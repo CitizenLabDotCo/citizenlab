@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
 import { ITabItem } from 'components/UI/Tabs';
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 declare module 'modules/commercial/moderation/admin/containers/index' {
   export interface ITabNamesMap {
@@ -22,7 +22,7 @@ const ActivityWarningsTab = ({
   onData,
   activeFlagsCount,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   useEffect(
     () =>
       onData({

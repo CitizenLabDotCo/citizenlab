@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { get } from 'lodash-es';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { get } from 'lodash-es';
 
 // react hook form
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -9,24 +9,24 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 // components
 import {
   Box,
-  Label,
   Button,
-  LocaleSwitcher,
   Icon,
   Input,
+  Label,
+  LocaleSwitcher,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
+import { SectionField } from 'components/admin/Section';
 import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc, Locale, CLError } from 'typings';
+import { CLError, Locale, Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -46,7 +46,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   locales,
   intl: { formatMessage },
   allowDeletingAllOptions = false,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const {
     control,
     formState: { errors: formContextErrors },
@@ -122,7 +122,12 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                 }}
               >
                 <SectionField>
-                  <Box display="flex" flexWrap="wrap" marginBottom="12px">
+                  <Box
+                    display="flex"
+                    flexWrap="wrap"
+                    justifyContent="space-between"
+                    marginBottom="12px"
+                  >
                     <Box marginTop="4px" marginRight="8px">
                       <Label>{formatMessage(messages.fieldLabel)}</Label>
                     </Box>
@@ -150,7 +155,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                 // Do nothing, no need to handle dropping a row for now
                               }}
                             >
-                              <Box width="280px">
+                              <Box width="100%">
                                 <Input
                                   id={`e2e-option-input-${index}`}
                                   size="small"

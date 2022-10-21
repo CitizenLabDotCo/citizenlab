@@ -1,21 +1,3 @@
-import React, { memo } from 'react';
-import styled from 'styled-components';
-import {
-  fontSizes,
-  colors,
-  invisibleA11yText,
-  media,
-  defaultCardStyle,
-  isRtl,
-} from 'utils/styleUtils';
-import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-import {
-  Messages,
-  // eslint-disable-next-line no-restricted-imports
-  FormattedMessage as OriginalFormattedMessage,
-} from 'react-intl';
-import messages from './messages';
-import { isString } from 'utils/helperUtils';
 import {
   Box,
   BoxBackgroundProps,
@@ -35,6 +17,19 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
+import React, { memo } from 'react';
+import styled from 'styled-components';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { isString } from 'utils/helperUtils';
+import {
+  colors,
+  defaultCardStyle,
+  fontSizes,
+  invisibleA11yText,
+  isRtl,
+  media,
+} from 'utils/styleUtils';
+import messages from './messages';
 
 export const FormSection = styled.div`
   max-width: 620px;
@@ -70,15 +65,16 @@ const StyledSpan = styled.span`
   margin-right: 3px;
 `;
 
-interface FormSectionTitleProps extends IMessageInfo {
-  subtitleMessage?: Messages['key'];
+interface FormSectionTitleProps {
+  message: MessageDescriptor;
+  subtitleMessage?: MessageDescriptor;
 }
 
 export const FormSectionTitle = memo(
-  ({ message, values, subtitleMessage }: FormSectionTitleProps) => (
+  ({ message, subtitleMessage }: FormSectionTitleProps) => (
     <TitleContainer>
       <FormSectionTitleStyled>
-        <FormattedMessage {...message} values={values} />
+        <FormattedMessage {...message} />
       </FormSectionTitleStyled>
       {subtitleMessage && (
         <FormSectionDescriptionStyled>
@@ -144,6 +140,8 @@ declare type iconAriaHiddenFalse = {
 };
 declare type iconAriaHiddenProps = iconAriaHiddenTrue | iconAriaHiddenFalse;
 
+type FormattedMessageProps = React.ComponentProps<typeof FormattedMessage>;
+
 interface FormLabelGenericProps {
   id?: string;
   htmlFor?: string;
@@ -153,15 +151,15 @@ interface FormLabelGenericProps {
   noSpace?: boolean;
   optional?: boolean;
   iconName?: IconNames;
-  subtextMessage?: Messages['key'];
-  subtextMessageValues?: OriginalFormattedMessage.Props['values'];
+  subtextMessage?: MessageDescriptor;
+  subtextMessageValues?: FormattedMessageProps['values'];
   subtextValue?: JSX.Element | string;
   subtextSupportsHtml?: boolean;
 }
 
 interface FormLabelPropsMessages extends FormLabelGenericProps {
-  labelMessage: Messages['key'];
-  labelMessageValues?: OriginalFormattedMessage.Props['values'];
+  labelMessage: MessageDescriptor;
+  labelMessageValues?: FormattedMessageProps['values'];
 }
 
 interface FormLabelPropsValue extends FormLabelGenericProps {

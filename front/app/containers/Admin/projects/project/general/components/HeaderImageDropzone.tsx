@@ -4,12 +4,12 @@ import styled from 'styled-components';
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField } from './styling';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { StyledSectionField } from './styling';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // typings
@@ -34,7 +34,7 @@ export default injectIntl(
     handleHeaderOnAdd,
     handleHeaderOnRemove,
     intl: { formatMessage },
-  }: Props & InjectedIntlProps) => (
+  }: Props & WrappedComponentProps) => (
     <StyledSectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.headerImageLabelText} />

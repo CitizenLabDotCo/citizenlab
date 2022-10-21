@@ -1,16 +1,16 @@
 import React from 'react';
 
 // components
-import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // i18n
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
-const InvitationsPage = (props: InjectedIntlProps) => {
+const InvitationsPage = (props: WrappedComponentProps) => {
   const tabs = [
     {
       label: props.intl.formatMessage(messages.tabInviteUsers),

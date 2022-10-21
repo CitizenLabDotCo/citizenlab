@@ -1,15 +1,15 @@
+import { memoize } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Select } from 'semantic-ui-react';
-import { memoize } from 'lodash-es';
 
 // resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // utils
@@ -28,7 +28,7 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-class AssigneeSelect extends PureComponent<Props & InjectedIntlProps> {
+class AssigneeSelect extends PureComponent<Props & WrappedComponentProps> {
   getAssigneeOptions = memoize((prospectAssignees, authUser) => {
     const {
       intl: { formatMessage },
@@ -102,7 +102,7 @@ const Data = adopt<DataProps, InputProps>({
     ),
 });
 
-const AssigneeSelectWithHocs = injectIntl<Props>(AssigneeSelect);
+const AssigneeSelectWithHocs = injectIntl(AssigneeSelect);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

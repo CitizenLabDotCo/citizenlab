@@ -246,6 +246,14 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/id_oostende_rrn
+  specs:
+    id_oostende_rrn (0.1.0)
+      httparty (~> 0.16.2)
+      rails (~> 6.1)
+      verification
+
+PATH
   remote: engines/commercial/id_vienna_saml
   specs:
     id_vienna_saml (1.0.0)
@@ -802,11 +810,11 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.8-aarch64-linux)
+    nokogiri (1.13.9-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.13.8-arm64-darwin)
+    nokogiri (1.13.9-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.8-x86_64-linux)
+    nokogiri (1.13.9-x86_64-linux)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.9)
@@ -1212,6 +1220,7 @@ DEPENDENCIES
   id_franceconnect!
   id_gent_rrn!
   id_id_card_lookup!
+  id_oostende_rrn!
   id_vienna_saml!
   idea_assignment!
   idea_custom_fields!
@@ -1233,6 +1242,7 @@ DEPENDENCIES
   moderation!
   multi_tenancy!
   nlp!
+  nokogiri (>= 1.13.9)
   okcomputer
   omniauth (~> 1.9.1)
   omniauth-azure-activedirectory!
@@ -1312,4 +1322,4 @@ DEPENDENCIES
   whenever (~> 1.0)
 
 BUNDLED WITH
-   2.3.22
+   2.3.20

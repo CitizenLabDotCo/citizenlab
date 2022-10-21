@@ -1,14 +1,14 @@
+import { get, memoize } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, memoize } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
@@ -18,21 +18,21 @@ import { IOption } from 'typings';
 import styled from 'styled-components';
 
 // components
-import { Select, Label } from '@citizenlab/cl2-component-library';
+import { Label, Select } from '@citizenlab/cl2-component-library';
 
 // services
 import { updateIdea } from 'services/ideas';
 
 // resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetIdeaStatuses, {
-  GetIdeaStatusesChildProps,
-} from 'resources/GetIdeaStatuses';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaStatuses, {
+  GetIdeaStatusesChildProps,
+} from 'resources/GetIdeaStatuses';
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -59,7 +59,10 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
+interface PropsWithHoCs
+  extends Props,
+    InjectedLocalized,
+    WrappedComponentProps {}
 
 class FeedbackSettings extends PureComponent<PropsWithHoCs> {
   getStatusOptions = memoize((statuses) => {

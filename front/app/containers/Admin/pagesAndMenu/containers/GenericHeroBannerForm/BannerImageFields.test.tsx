@@ -1,6 +1,6 @@
 import React from 'react';
-import BannerImageFields from './BannerImageFields';
 import { render, screen } from 'utils/testUtils/rtl';
+import BannerImageFields from './BannerImageFields';
 
 jest.mock('utils/cl-intl');
 
@@ -27,6 +27,6 @@ describe('BannerImageFields', () => {
       />
     );
 
-    expect(screen.getByText('Banner image')).toBeInTheDocument();
+    expect(screen.getByText('Header image')).toBeInTheDocument();
   });
 });

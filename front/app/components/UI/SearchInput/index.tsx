@@ -1,13 +1,13 @@
-import React from 'react';
 import {
+  Label,
   SearchInput,
   SearchInputProps,
-  Label,
 } from '@citizenlab/cl2-component-library';
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 export interface Props {
   placeholder?: string;
@@ -32,7 +32,7 @@ const SearchInputWrapper = ({
   intl: { formatMessage },
   a11y_numberOfSearchResults,
   setInputRef,
-}: Props & InjectedIntlProps) => (
+}: Props & WrappedComponentProps) => (
   <>
     <Label htmlFor="search-input" hidden>
       {formatMessage(messages.searchLabel)}

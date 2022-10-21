@@ -1,23 +1,23 @@
+import { memoize } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { memoize } from 'lodash-es';
 
 import { isNilOrError } from 'utils/helperUtils';
 
 // import { Select } from '@citizenlab/cl2-component-library';
 import { Dropdown } from 'semantic-ui-react';
 
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
 import postManagerMessages from 'components/admin/PostManager/messages';
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
+import { ManagerType } from 'components/admin/PostManager';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-import { ManagerType } from 'components/admin/PostManager';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;
@@ -37,7 +37,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 export class AssigneeFilter extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   getAssigneeOptions = memoize((prospectAssignees, authUser) => {
@@ -131,7 +131,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const AssigneeFilterWithHocs = injectIntl<Props>(AssigneeFilter);
+const AssigneeFilterWithHocs = injectIntl(AssigneeFilter);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

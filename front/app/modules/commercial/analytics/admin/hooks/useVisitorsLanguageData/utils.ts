@@ -1,9 +1,9 @@
 // i18n
-import messages from './messages';
 import cardMessages from '../../components/VisitorsLanguageCard/messages';
+import messages from './messages';
 
 // typings
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 export interface Translations {
   language: string;
@@ -12,7 +12,7 @@ export interface Translations {
 }
 
 export const getTranslations = (
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
+  formatMessage: WrappedComponentProps['intl']['formatMessage']
 ): Translations => ({
   language: formatMessage(messages.language),
   count: formatMessage(messages.count),

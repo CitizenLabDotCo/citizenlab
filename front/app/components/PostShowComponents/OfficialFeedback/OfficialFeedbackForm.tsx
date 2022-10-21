@@ -1,40 +1,40 @@
 // libraries
-import React, { PureComponent } from 'react';
 import { forOwn, isEmpty } from 'lodash-es';
+import React, { PureComponent } from 'react';
 
 // components
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Section } from 'components/admin/Section';
-import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 // services
 import {
   addOfficialFeedbackToIdea,
   addOfficialFeedbackToInitiative,
-  updateOfficialFeedback,
   IOfficialFeedbackData,
+  updateOfficialFeedback,
 } from 'services/officialFeedback';
 
 // utils
-import { isPage, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // typings
-import { Multiloc, Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 
 // stylings
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -114,7 +114,7 @@ interface State {
 }
 
 class OfficialFeedbackForm extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   constructor(props) {
@@ -411,4 +411,4 @@ class OfficialFeedbackForm extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(OfficialFeedbackForm);
+export default injectIntl(OfficialFeedbackForm);

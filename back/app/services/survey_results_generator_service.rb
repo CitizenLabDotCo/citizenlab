@@ -79,6 +79,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     {
       inputType: field.input_type,
       question: field.title_multiloc,
+      required: field.required,
       totalResponses: answer_count,
       answers: answers
     }

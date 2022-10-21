@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
+import streams, { IStreamParams } from 'utils/streams';
 
 // We can add more input types here when we support them
 export type ICustomFieldInputType =
@@ -146,6 +146,7 @@ export interface Result {
   question: Multiloc;
   totalResponses: number;
   answers: Answer[];
+  required: boolean;
 }
 
 export interface SurveyResultData {
@@ -173,7 +174,7 @@ export function formCustomFieldsResultsStream(
 }
 
 export interface IFormSubmissionCountData {
-  totalSubmissions: string;
+  totalSubmissions: number;
 }
 
 export interface IFormSubmissionCount {

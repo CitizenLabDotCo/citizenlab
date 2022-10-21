@@ -1,6 +1,6 @@
+import { get, isEmpty } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, isEmpty } from 'lodash-es';
 
 // Styling
 import styled from 'styled-components';
@@ -10,7 +10,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import StatusChangeForm from './StatusChangeForm';
 
 // resources
-import { isNilOrError } from 'utils/helperUtils';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
@@ -23,18 +22,19 @@ import GetInitiativeStatus, {
 import GetOfficialFeedbacks, {
   GetOfficialFeedbacksChildProps,
 } from 'resources/GetOfficialFeedbacks';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
-  updateInitiativeStatusWithExistingFeedback,
   updateInitiativeStatusAddFeedback,
+  updateInitiativeStatusWithExistingFeedback,
 } from 'services/initiativeStatusChanges';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
 import T from 'components/T';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from '../../messages';
 
 // Typings
 import { Multiloc, MultilocFormValues } from 'typings';
@@ -80,10 +80,10 @@ interface State {
 }
 
 class StatusChangeFormWrapper extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       mode: 'new',

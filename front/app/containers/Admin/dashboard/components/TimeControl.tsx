@@ -1,14 +1,14 @@
-import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
+import React, { PureComponent } from 'react';
 
 // components
-import Button from 'components/UI/Button';
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+import { Dropdown, Icon } from '@citizenlab/cl2-component-library';
 import DateRangePicker from 'components/admin/DateRangePicker';
+import Button from 'components/UI/Button';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
@@ -63,7 +63,7 @@ type State = {
   dropdownOpened: boolean;
 };
 
-class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
+class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
   private presets = [
     {
       id: 'allTime',
@@ -204,4 +204,4 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(TimeControl);
+export default injectIntl(TimeControl);

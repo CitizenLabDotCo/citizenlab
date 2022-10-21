@@ -1,32 +1,32 @@
 import React, { useState } from 'react';
 
 // components
-import SectionToggle from '../../components/SectionToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
-import AdminViewButton from './AdminViewButton';
+import { homeBreadcrumb, pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
+import SectionToggle from '../../components/SectionToggle';
+import AdminViewButton from './AdminViewButton';
 
 // i18n
-import messages from './messages';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // services, hooks, resources, and types
 import Outlet from 'components/Outlet';
-import {
-  updateHomepageSettings,
-  THomepageEnabledSetting,
-} from 'services/homepageSettings';
 import useHomepageSettings from 'hooks/useHomepageSettings';
+import {
+  THomepageEnabledSetting,
+  updateHomepageSettings,
+} from 'services/homepageSettings';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 export type TSectionToggleData = {
   name: THomepageEnabledSetting | 'homepage_banner';
@@ -36,7 +36,7 @@ export type TSectionToggleData = {
   hideToggle?: boolean;
 };
 
-const EditHomepage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [sectionTogglesData, setSectionTogglesData] = useState<

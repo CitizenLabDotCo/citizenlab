@@ -1,17 +1,17 @@
-import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
+import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
-import HelmetIntl from 'components/HelmetIntl';
-import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 import NewCustomPage from './NewCustomPage';
-import TabbedResource from 'components/admin/TabbedResource';
 
 const CustomPagesNewSettings = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   return (
     <>
       <HelmetIntl title={messages.newCustomPageMetaTitle} />

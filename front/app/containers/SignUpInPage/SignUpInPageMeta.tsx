@@ -1,28 +1,28 @@
 // libraries
 import React, { memo } from 'react';
-import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
+import { Helmet } from 'react-helmet';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // i18n
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // resources
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
-import { isNilOrError, endsWith } from 'utils/helperUtils';
-import { getLocalized } from 'utils/i18n';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { endsWith, isNilOrError } from 'utils/helperUtils';
+import { getLocalized } from 'utils/i18n';
 
 interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
@@ -32,7 +32,7 @@ interface DataProps {
 
 interface Props extends DataProps {}
 
-const SignUpInPageMeta = memo<Props & InjectedIntlProps & WithRouterProps>(
+const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
   ({ intl, location: { pathname }, tenantLocales, tenant, locale }) => {
     if (
       !isNilOrError(tenantLocales) &&

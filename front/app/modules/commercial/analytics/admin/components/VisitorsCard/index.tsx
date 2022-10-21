@@ -4,15 +4,15 @@ import React, { useRef } from 'react';
 import useVisitorsData from '../../hooks/useVisitorsData';
 
 // components
-import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
-import VisitorStats from './VisitorStats';
+import GraphCard from 'components/admin/GraphCard';
 import Chart from './Chart';
+import VisitorStats from './VisitorStats';
 
 // i18n
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -32,7 +32,7 @@ const VisitorsCard = ({
   projectFilter,
   resolution,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const graphRef = useRef();
 
   const { deducedResolution, stats, timeSeries, xlsxData } = useVisitorsData(
