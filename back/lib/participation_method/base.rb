@@ -42,7 +42,7 @@ module ParticipationMethod
     end
 
     def sign_in_required_for_posting?
-      true
+      false
     end
 
     def extra_fields_category_translation_key

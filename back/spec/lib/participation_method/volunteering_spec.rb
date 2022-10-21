@@ -59,8 +59,8 @@ RSpec.describe ParticipationMethod::Volunteering do
   end
 
   describe '#sign_in_required_for_posting?' do
-    it 'returns true' do
-      expect(participation_method.sign_in_required_for_posting?).to be true
+    it 'returns false' do
+      expect(participation_method.sign_in_required_for_posting?).to be false
     end
   end
 

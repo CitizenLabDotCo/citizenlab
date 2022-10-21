@@ -17,5 +17,9 @@ module ParticipationMethod
     def validate_built_in_fields?
       true
     end
+
+    def sign_in_required_for_posting?
+      true
+    end
   end
 end
