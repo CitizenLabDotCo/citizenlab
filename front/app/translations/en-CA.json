@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "The question title must be at least 10 characters long",
   "app.containers.IdeasNewPage.contributionFormTitle": "Add new contribution",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Add new contribution | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "A file failed to upload. Please check the file size and format and try again.",
   "app.containers.IdeasNewPage.goBack": "Go back",
   "app.containers.IdeasNewPage.ideaFormTitle": "Add new idea",

@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "The question title must be at least 10 characters long",
   "app.containers.IdeasNewPage.contributionFormTitle": "Tilføy nytt bidrag",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Tilføy nytt bidrag | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "En fil ble ikke lastet opp. Sjekk filstørrelse og -format og prøv igjen.",
   "app.containers.IdeasNewPage.goBack": "Gå tilbake",
   "app.containers.IdeasNewPage.ideaFormTitle": "Tilføy ny ide",
