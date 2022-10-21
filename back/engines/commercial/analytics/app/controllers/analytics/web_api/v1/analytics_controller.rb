@@ -20,7 +20,7 @@ module Analytics
       def handle_request
         authorize :analytics, policy_class: AnalyticsPolicy
 
-        results, errors = handle_multiple(Array.wrap(params[:query]))
+        results, errors, paginations = handle_multiple(Array.wrap(params[:query]))
 
         unless params[:query].instance_of?(Array)
           results = results.empty? ? results : results[0]
@@ -29,6 +29,8 @@ module Analytics
 
         if errors.present?
           render json: { 'messages' => errors }, status: :bad_request
+        elsif paginations.present?
+          render json: { 'data' => results, 'links' => paginations }
         else
           render json: { 'data' => results }
         end
@@ -38,6 +40,7 @@ module Analytics
         results = []
         errors = {}
         queries = []
+        paginations = {}
 
         json_queries.each_with_index do |json_query, index|
           query = Query.new(json_query)
@@ -54,12 +57,23 @@ module Analytics
             if query.failed
               errors[index] = query.error_messages
             else
+              if query.pagination
+                paginations[index] = query.pagination
+              end
               results.push(query.results)
             end
           end
         end
 
-        [results, errors]
+        [results, errors, add_pagination_url(paginations)]
+      end
+
+      def add_pagination_url(paginations)
+        paginations.transform_values do |pagination|
+          pagination.transform_values do |params|
+            params && "#{request.original_url}?#{params}"
+          end
+        end
       end
     end
   end
