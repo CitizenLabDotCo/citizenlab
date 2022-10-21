@@ -7,7 +7,7 @@ import {
   optionIs,
 } from '@jsonforms/core';
 import QuillEditor from 'components/UI/QuillEditor';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import ErrorDisplay from '../ErrorDisplay';
 import { injectIntl } from 'utils/cl-intl';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -22,7 +22,7 @@ const WYSIWYGControl = ({
   uischema,
   schema,
   required,
-}: ControlProps & InjectedIntlProps) => {
+}: ControlProps & WrappedComponentProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
   return (

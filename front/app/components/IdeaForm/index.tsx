@@ -60,7 +60,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
@@ -181,7 +181,7 @@ interface State {
 }
 
 class IdeaForm extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & WrappedComponentProps & WithRouterProps,
   State
 > {
   subscriptions: Subscription[];
@@ -746,7 +746,7 @@ class IdeaForm extends PureComponent<
 
       const AdminBudgetFieldLabel = () => {
         return (
-          <>
+          <Box display="flex">
             <FormattedMessage
               {...messages.budgetLabel}
               values={{
@@ -760,7 +760,7 @@ class IdeaForm extends PureComponent<
               icon="shield-checkered"
               content={<FormattedMessage {...messages.adminFieldTooltip} />}
             />
-          </>
+          </Box>
         );
       };
 

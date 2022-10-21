@@ -8,7 +8,7 @@ import DateRangePicker from 'components/admin/DateRangePicker';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -63,7 +63,7 @@ type State = {
   dropdownOpened: boolean;
 };
 
-class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
+class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
   private presets = [
     {
       id: 'allTime',
@@ -204,4 +204,4 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(TimeControl);
+export default injectIntl(TimeControl);

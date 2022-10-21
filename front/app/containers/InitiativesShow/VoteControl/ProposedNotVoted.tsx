@@ -15,7 +15,7 @@ import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ProposalProgressBar from './ProposalProgressBar';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
@@ -149,7 +149,7 @@ interface InputProps {
 interface Props extends InputProps {}
 
 const disabledMessages: {
-  [key in IInitiativeDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in IInitiativeDisabledReason]: MessageDescriptor;
 } = {
   notPermitted: messages.votingNotPermitted,
 };

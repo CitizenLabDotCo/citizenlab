@@ -9,6 +9,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useInputSchema from 'hooks/useInputSchema';
+import useIdeaImages from 'hooks/useIdeaImages';
+import useResourceFiles from 'hooks/useResourceFiles';
 import { getInputTerm } from 'services/participationContexts';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -33,6 +35,11 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const project = useProject({
     projectId: isNilOrError(idea) ? null : idea.relationships.project.data.id,
   });
+  const remoteImages = useIdeaImages(ideaId);
+  const remoteFiles = useResourceFiles({
+    resourceId: ideaId,
+    resourceType: 'idea',
+  });
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -56,7 +63,9 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       ? null
       : Object.fromEntries(
           Object.keys(schema.properties).map((prop) => {
-            if (idea.attributes?.[prop]) {
+            if (prop === 'author_id') {
+              return [prop, idea.relationships?.author?.data?.id];
+            } else if (idea.attributes?.[prop]) {
               return [prop, idea.attributes?.[prop]];
             } else if (
               prop === 'topic_ids' &&
@@ -66,19 +75,33 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
                 prop,
                 idea.relationships?.topics?.data.map((rel) => rel.id),
               ];
+            } else if (
+              prop === 'idea_images_attributes' &&
+              Array.isArray(idea.relationships?.idea_images?.data)
+            ) {
+              return [prop, remoteImages];
+            } else if (prop === 'idea_files_attributes') {
+              const attachmentsValue =
+                !isNilOrError(remoteFiles) && remoteFiles.length > 0
+                  ? remoteFiles
+                  : undefined;
+              return [prop, attachmentsValue];
             } else return [prop, undefined];
           })
         );
 
   const onSubmit = async (data) => {
     let location_point_geojson;
+    // TODO Remove this in CL-1788 when it is used
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { idea_files_attributes, ...ideaWithOUtFiles } = data;
 
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
     }
 
     const idea = await updateIdea(ideaId, {
-      ...data,
+      ...ideaWithOUtFiles,
       location_point_geojson,
       project_id: project?.id,
       publication_status: 'published',
@@ -122,7 +145,6 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     },
     [uiSchema]
   );
-
   return (
     <PageContainer overflow="hidden" id="e2e-idea-edit-page">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (

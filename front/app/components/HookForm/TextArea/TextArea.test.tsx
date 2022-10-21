@@ -4,7 +4,6 @@ import TextArea from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import translationMessages from 'i18n/en';
 
 const schema = object({
   input: string().required('Error message'),
@@ -88,9 +87,7 @@ describe('TextArea', () => {
     await waitFor(() => {
       expect(
         screen.getByText(
-          (translationMessages as Record<string, string>)[
-            'app.errors.slug_taken'
-          ]
+          'This URL already exists. Please change the slug to something else.'
         )
       ).toBeInTheDocument();
     });

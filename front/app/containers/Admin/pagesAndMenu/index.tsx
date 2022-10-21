@@ -2,7 +2,7 @@ import React from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import Outlet from 'components/Outlet';
 import styled from 'styled-components';
@@ -21,7 +21,9 @@ const Container = styled.div`
   margin-bottom: 60px;
 `;
 
-const PagesAndMenuIndex = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const PagesAndMenuIndex = ({
+  intl: { formatMessage },
+}: WrappedComponentProps) => {
   // It's better to avoid using this feature flag in the core
   // https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916522447
   const customizableNavbarEnabled = useFeatureFlag({

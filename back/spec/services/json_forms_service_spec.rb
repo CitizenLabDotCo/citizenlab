@@ -289,7 +289,8 @@ describe JsonFormsService do
                         scope: '#/properties/topic_ids',
                         label: build_in_required_field.title_multiloc['en'],
                         options: {
-                          description: build_in_required_field.description_multiloc['en']
+                          description: build_in_required_field.description_multiloc['en'],
+                          isAdminField: false
                         }
                       }
                     ]
@@ -304,7 +305,8 @@ describe JsonFormsService do
                         scope: '#/properties/idea_files_attributes',
                         label: build_in_optional_field.title_multiloc['en'],
                         options: {
-                          description: build_in_optional_field.description_multiloc['en']
+                          description: build_in_optional_field.description_multiloc['en'],
+                          isAdminField: false
                         }
                       }
                     ]
@@ -319,7 +321,8 @@ describe JsonFormsService do
                         scope: "#/properties/#{required_field.key}",
                         label: required_field.title_multiloc['en'],
                         options: {
-                          description: required_field.description_multiloc['en']
+                          description: required_field.description_multiloc['en'],
+                          isAdminField: false
                         }
                       },
                       {
@@ -327,7 +330,8 @@ describe JsonFormsService do
                         scope: "#/properties/#{optional_field.key}",
                         label: optional_field.title_multiloc['en'],
                         options: {
-                          description: optional_field.description_multiloc['en']
+                          description: optional_field.description_multiloc['en'],
+                          isAdminField: false
                         }
                       }
                     ]

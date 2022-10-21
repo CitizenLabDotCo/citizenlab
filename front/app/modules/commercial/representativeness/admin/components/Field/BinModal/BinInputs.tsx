@@ -7,7 +7,7 @@ import BinInputsHeader from './BinInputsHeader';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
@@ -63,7 +63,7 @@ const BinInputRow = injectIntl(
     onUpdateUpperBound,
     onRemoveBin,
     intl: { formatMessage },
-  }: RowProps & InjectedIntlProps) => {
+  }: RowProps & WrappedComponentProps) => {
     const lowerBound = bins[binIndex];
     const nextBound = bins[binIndex + 1];
 
