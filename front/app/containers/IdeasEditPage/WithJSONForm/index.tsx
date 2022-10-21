@@ -27,6 +27,7 @@ import useIdea from 'hooks/useIdea';
 import IdeasEditMeta from '../IdeasEditMeta';
 import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { deleteIdeaImage } from 'services/ideaImages';
 
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -98,6 +99,18 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
+    }
+
+    // Delete a remote image only on submission
+    if (
+      data.idea_images_attributes !== initialFormData?.idea_images_attributes &&
+      initialFormData?.idea_images_attributes !== undefined
+    ) {
+      try {
+        deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
+      } catch (e) {
+        // TODO: Add graceful error handling
+      }
     }
 
     const idea = await updateIdea(ideaId, {
