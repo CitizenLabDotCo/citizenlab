@@ -2,12 +2,7 @@ import moment, { Moment } from 'moment';
 
 // utils
 import { round } from 'lodash-es';
-import {
-  roundDateToMidnight,
-  parseMonths,
-  parseWeeks,
-  parseDays,
-} from '../../utils/timeSeries';
+import { timeSeriesParser } from '../../utils/timeSeries';
 import { keys } from 'utils/helperUtils';
 
 // typings
@@ -49,48 +44,47 @@ export const parseStats = ([
   };
 };
 
+export const getEmptyRow = (date: Moment) => ({
+  date: date.format('YYYY-MM-DD'),
+  visitors: 0,
+  visits: 0,
+});
+
+const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
+  if (!row) return getEmptyRow(date);
+
+  return {
+    visitors: row.count_visitor_id,
+    visits: row.count,
+    date: getDate(row).format('YYYY-MM-DD'),
+  };
+};
+
+const getDate = (row: TimeSeriesResponseRow) => {
+  if ('dimension_date_last_action.month' in row) {
+    return moment(row['dimension_date_last_action.month']);
+  }
+
+  if ('dimension_date_last_action.week' in row) {
+    return moment(row['dimension_date_last_action.week']);
+  }
+
+  return moment(row['dimension_date_last_action.date']);
+};
+
+const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
+
 export const parseTimeSeries = (
   responseTimeSeries: TimeSeriesResponse,
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined,
   resolution: IResolution
 ): TimeSeries | null => {
-  if (responseTimeSeries.length === 0) return null;
-
-  const startAtMomentRounded = startAtMoment
-    ? roundDateToMidnight(startAtMoment)
-    : startAtMoment;
-
-  const endAtMomentRounded = endAtMoment
-    ? roundDateToMidnight(endAtMoment)
-    : endAtMoment;
-
-  if (resolution === 'month') {
-    return parseMonths(
-      responseTimeSeries,
-      startAtMomentRounded,
-      endAtMomentRounded,
-      getDate,
-      parseRow
-    );
-  }
-
-  if (resolution === 'week') {
-    return parseWeeks(
-      responseTimeSeries,
-      startAtMomentRounded,
-      endAtMomentRounded,
-      getDate,
-      parseRow
-    );
-  }
-
-  return parseDays(
+  return _parseTimeSeries(
     responseTimeSeries,
-    startAtMomentRounded,
-    endAtMomentRounded,
-    getDate,
-    parseRow
+    startAtMoment,
+    endAtMoment,
+    resolution
   );
 };
 
@@ -129,34 +123,6 @@ export const parseExcelData = (
   };
 
   return xlsxData;
-};
-
-export const getEmptyRow = (date: Moment) => ({
-  date: date.format('YYYY-MM-DD'),
-  visitors: 0,
-  visits: 0,
-});
-
-const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
-  if (!row) return getEmptyRow(date);
-
-  return {
-    visitors: row.count_visitor_id,
-    visits: row.count,
-    date: getDate(row).format('YYYY-MM-DD'),
-  };
-};
-
-const getDate = (row: TimeSeriesResponseRow) => {
-  if ('dimension_date_last_action.month' in row) {
-    return moment(row['dimension_date_last_action.month']);
-  }
-
-  if ('dimension_date_last_action.week' in row) {
-    return moment(row['dimension_date_last_action.week']);
-  }
-
-  return moment(row['dimension_date_last_action.date']);
 };
 
 const parsePageViews = (pageViews: string | null | undefined) => {

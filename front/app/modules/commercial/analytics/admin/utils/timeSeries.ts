@@ -1,6 +1,56 @@
 import moment, { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+export const timeSeriesParser =
+  <Row, ParsedRow>(
+    getDate: (row: Row) => Moment,
+    parseRow: (date: Moment, row?: Row) => ParsedRow
+  ) =>
+  (
+    timeSeries: Row[],
+    startAtMoment: Moment | null | undefined,
+    endAtMoment: Moment | null | undefined,
+    resolution: IResolution
+  ): ParsedRow[] | null => {
+    if (timeSeries.length === 0) return null;
+
+    const startAtMomentRounded = startAtMoment
+      ? roundDateToMidnight(startAtMoment)
+      : startAtMoment;
+
+    const endAtMomentRounded = endAtMoment
+      ? roundDateToMidnight(endAtMoment)
+      : endAtMoment;
+
+    if (resolution === 'month') {
+      return parseMonths(
+        timeSeries,
+        startAtMomentRounded,
+        endAtMomentRounded,
+        getDate,
+        parseRow
+      );
+    }
+
+    if (resolution === 'week') {
+      return parseWeeks(
+        timeSeries,
+        startAtMomentRounded,
+        endAtMomentRounded,
+        getDate,
+        parseRow
+      );
+    }
+
+    return parseDays(
+      timeSeries,
+      startAtMomentRounded,
+      endAtMomentRounded,
+      getDate,
+      parseRow
+    );
+  };
+
 export const parseMonths = <Row, ParsedRow>(
   timeSeries: Row[],
   startAtMoment: Moment | null | undefined,

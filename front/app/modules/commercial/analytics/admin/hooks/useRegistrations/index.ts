@@ -6,15 +6,24 @@ import { analyticsStream } from '../../services/analyticsFacts';
 // query
 import { query } from './query';
 
+// parse
+import { parseTimeSeries } from './parse';
+
+// utils
+import { deduceResolution } from './utils';
+
 // typings
 import { QueryParameters, Response, TimeSeries, Stats } from './typings';
-import { NilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export default function useRegistrations({
   startAtMoment,
   endAtMoment,
   resolution,
 }: QueryParameters) {
+  const [deducedResolution, setDeducedResolution] =
+    useState<IResolution>(resolution);
   const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
   const [stats, setStats] = useState<Stats | NilOrError>();
 
@@ -27,10 +36,32 @@ export default function useRegistrations({
       })
     ).observable;
 
-    const subscription = observable.subscribe((response) => {});
+    const subscription = observable.subscribe(
+      (response: Response | NilOrError) => {
+        if (isNilOrError(response)) {
+          setTimeSeries(response);
+          setStats(response);
+          return;
+        }
+
+        const deducedResolution =
+          deduceResolution(response.data[0]) ?? resolution;
+
+        setDeducedResolution(deducedResolution);
+
+        setTimeSeries(
+          parseTimeSeries(
+            response.data[0],
+            startAtMoment,
+            endAtMoment,
+            deducedResolution
+          )
+        );
+      }
+    );
 
     return () => subscription.unsubscribe();
   }, [startAtMoment, endAtMoment, resolution]);
 
-  return { timeSeries, stats };
+  return { deducedResolution, timeSeries, stats };
 }

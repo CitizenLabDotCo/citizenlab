@@ -18,7 +18,7 @@ export type Response = {
   ];
 };
 
-type TimeSeriesResponseRow =
+export type TimeSeriesResponseRow =
   | TimeSeriesResponseMonth
   | TimeSeriesResponseWeek
   | TimeSeriesResponseDay;
