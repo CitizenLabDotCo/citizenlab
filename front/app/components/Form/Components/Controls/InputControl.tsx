@@ -4,7 +4,6 @@ import {
   colors,
   IconTooltip,
   Input,
-  Text,
 } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
