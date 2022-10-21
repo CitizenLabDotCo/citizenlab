@@ -1,18 +1,18 @@
 // libraries
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
+import { Helmet } from 'react-helmet';
 
 // i18n
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -27,7 +27,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const InitiativesNewMeta = React.memo<Props & InjectedIntlProps>(
+const InitiativesNewMeta = React.memo<Props & WrappedComponentProps>(
   ({ intl, authUser, tenantLocales }) => {
     const { formatMessage } = intl;
     const initiativesIndexTitle = formatMessage(messages.metaTitle);
@@ -55,7 +55,7 @@ const InitiativesNewMeta = React.memo<Props & InjectedIntlProps>(
   }
 );
 
-const InitiativesNewMetaWithHoc = injectIntl<Props>(InitiativesNewMeta);
+const InitiativesNewMetaWithHoc = injectIntl(InitiativesNewMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

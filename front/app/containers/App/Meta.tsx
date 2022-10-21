@@ -5,25 +5,25 @@ import { adopt } from 'react-adopt';
 import { Helmet } from 'react-helmet';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import useHomepageSettings from 'hooks/useHomepageSettings';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
-import messages from './messages';
-import { getLocalized } from 'utils/i18n';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import { getLocalized } from 'utils/i18n';
+import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileUtils';
 import { API_PATH } from 'containers/App/constants';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 
@@ -35,7 +35,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const Meta: React.SFC<Props & InjectedIntlProps> = ({
+const Meta: React.SFC<Props & WrappedComponentProps> = ({
   locale,
   tenant,
   authUser,
@@ -154,7 +154,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const MetaWithHoc = injectIntl<Props>(Meta);
+const MetaWithHoc = injectIntl(Meta);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

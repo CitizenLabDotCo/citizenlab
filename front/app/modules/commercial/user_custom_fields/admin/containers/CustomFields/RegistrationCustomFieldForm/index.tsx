@@ -1,25 +1,25 @@
 import React from 'react';
 import { IUserCustomFieldInputType } from '../../../../services/userCustomFields';
 
-import { Button, Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, boolean, string } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
-import Toggle from 'components/HookForm/Toggle';
-import Select from 'components/HookForm/Select';
 import { Section, SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Select from 'components/HookForm/Select';
+import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
+import Toggle from 'components/HookForm/Toggle';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { boolean, object, string } from 'yup';
 
 export interface FormValues {
   enabled: boolean;
@@ -35,7 +35,7 @@ type Props = {
   builtInField: boolean;
   defaultValues?: FormValues;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const fieldTypes = [
   'select',
@@ -58,7 +58,9 @@ const RegistrationCustomFieldForm = ({
     input_type: string()
       .oneOf(fieldTypes, formatMessage(messages.answerFormatError))
       .required(formatMessage(messages.answerFormatError)),
-    title_multiloc: validateMultiloc(formatMessage(messages.fieldNameError)),
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldNameError)
+    ),
     description_multiloc: object(),
     required: boolean().required(),
   });

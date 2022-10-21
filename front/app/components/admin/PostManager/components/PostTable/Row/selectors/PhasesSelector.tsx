@@ -1,8 +1,8 @@
-import React from 'react';
-import { xor } from 'lodash-es';
-import { IPhaseData, canContainIdeas } from 'services/phases';
-import { Label, Popup } from 'semantic-ui-react';
 import T from 'components/T';
+import { xor } from 'lodash-es';
+import React from 'react';
+import { Label, Popup } from 'semantic-ui-react';
+import { canContainIdeas, IPhaseData } from 'services/phases';
 
 type Props = {
   selectedPhases: string[];

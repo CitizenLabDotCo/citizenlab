@@ -1,47 +1,48 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import clHistory from 'utils/cl-router/history';
-import { isEmpty, isEqual } from 'lodash-es';
-import { CLErrors, Multiloc, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import {
-  addProjectFolder,
-  updateProjectFolder,
-} from '../../../services/projectFolders';
-import {
-  addProjectFolderImage,
-  deleteProjectFolderImage,
-} from '../../../services/projectFolderImages';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
-import useProjectFolder from '../../../hooks/useProjectFolder';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import {
-  SectionField,
   Section,
+  SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
+import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import FileUploader from 'components/UI/FileUploader';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import FileUploader from 'components/UI/FileUploader';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import useAdminPublication from 'hooks/useAdminPublication';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { isEmpty, isEqual } from 'lodash-es';
+import React, { useCallback, useEffect, useState } from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { validateSlug } from 'utils/textUtils';
+import useProjectFolder from '../../../hooks/useProjectFolder';
+import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
+import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import {
   addProjectFolderFile,
   deleteProjectFolderFile,
 } from '../../../services/projectFolderFiles';
-import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
-import useAdminPublication from 'hooks/useAdminPublication';
-import SlugInput from 'components/admin/SlugInput';
-import { validateSlug } from 'utils/textUtils';
+import {
+  addProjectFolderImage,
+  deleteProjectFolderImage,
+} from '../../../services/projectFolderImages';
+import {
+  addProjectFolder,
+  updateProjectFolder,
+} from '../../../services/projectFolders';
+import messages from '../messages';
 
-interface Props {
+type Props = {
   mode: 'edit' | 'new';
   projectFolderId: string;
-}
+} & WrappedComponentProps;
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const projectFolder = useProjectFolder({ projectFolderId });

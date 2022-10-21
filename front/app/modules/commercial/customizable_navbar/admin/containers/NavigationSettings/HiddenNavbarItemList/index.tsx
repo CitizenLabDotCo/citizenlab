@@ -6,10 +6,10 @@ import { deletePage, FIXED_PAGES, IPageData, TPageCode } from 'services/pages';
 import { addNavbarItem } from '../../../../services/navbar';
 
 // hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useNavbarItems from 'hooks/useNavbarItems';
 import usePages from 'hooks/usePages';
 import usePageSlugById from 'hooks/usePageSlugById';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
 
 // components
@@ -18,7 +18,7 @@ import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSe
 import Header from './Header';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -34,7 +34,7 @@ const isNotFixedPage = (page: IPageData) =>
 
 const HiddenNavbarItemList = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = usePages();

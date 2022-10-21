@@ -11,12 +11,12 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 import { Box, Select } from '@citizenlab/cl2-component-library';
 
 // typings
-import { IOption } from 'typings';
 import { IProjectData, PublicationStatus } from 'services/projects';
+import { IOption } from 'typings';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
@@ -51,7 +51,7 @@ interface Props extends DataProps, InputProps {}
 const generateProjectOptions = (
   projectsList: IProjectData[],
   localize: Localize,
-  { formatMessage }: InjectedIntlProps['intl']
+  { formatMessage }: WrappedComponentProps['intl']
 ): IOption[] => {
   const projectOptions = projectsList.map((project) => ({
     value: project.id,
@@ -73,7 +73,7 @@ const ProjectFilter = ({
   padding,
   onProjectFilter,
   intl,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const localize = useLocalize();
 
   if (isNilOrError(projectsList)) return null;

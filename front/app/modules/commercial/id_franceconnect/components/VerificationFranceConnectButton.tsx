@@ -1,5 +1,5 @@
-import React from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
+import React from 'react';
 import { removeUrlLocale } from 'services/locale';
 import { getJwt } from 'utils/auth/jwt';
 
@@ -10,8 +10,8 @@ import { TVerificationMethod } from 'services/verificationMethods';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {
@@ -23,7 +23,7 @@ const VerificationFranceConnectButton = ({
   method,
   intl: { formatMessage },
   onClick,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const handleOnClick = () => {
     onClick(method);
     const jwt = getJwt();

@@ -6,10 +6,10 @@ import { clickSocialSharingLink, Medium } from '../utils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
 import { Button } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // style
 import { colors } from 'utils/styleUtils';
@@ -24,7 +24,7 @@ interface Props {
 const Messenger = ({
   url,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const tenant = useAppConfiguration();
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);

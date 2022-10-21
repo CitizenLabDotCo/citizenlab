@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // services
 import {
@@ -8,17 +8,17 @@ import {
 } from '../../services/analyticsFacts';
 
 // parse
-import { parsePieData, parseExcelData } from './parse';
+import { parseExcelData, parsePieData } from './parse';
 
 // utils
-import { getProjectFilter, getDateFilter } from '../../utils/query';
-import { getTranslations } from './utils';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { getDateFilter, getProjectFilter } from '../../utils/query';
+import { getTranslations } from './utils';
 
 // typings
-import { QueryParameters, Response, PieRow } from './typings';
-import { InjectedIntlProps } from 'react-intl';
 import { XlsxData } from 'components/admin/ReportExportMenu';
+import { WrappedComponentProps } from 'react-intl';
+import { PieRow, QueryParameters, Response } from './typings';
 
 const query = ({
   projectId,
@@ -48,7 +48,7 @@ const query = ({
 };
 
 export default function useVisitorsTrafficSourcesData(
-  formatMessage: InjectedIntlProps['intl']['formatMessage'],
+  formatMessage: WrappedComponentProps['intl']['formatMessage'],
   { projectId, startAtMoment, endAtMoment }: QueryParameters
 ) {
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();

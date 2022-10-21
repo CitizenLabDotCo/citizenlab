@@ -2,30 +2,30 @@ import React from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
+import { createNavbarItemUpdateData, getInitialFormValues } from './utils';
 
 // services
 import { updateNavbarItem } from '../../../services/navbar';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useNavbarItem from '../../../hooks/useNavbarItem';
 import useLocalize from 'hooks/useLocalize';
+import useNavbarItem from '../../../hooks/useNavbarItem';
 
 const EditNavbarItemForm = ({
   params: { navbarItemId },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const navbarItem = useNavbarItem({ navbarItemId });
   const localize = useLocalize();

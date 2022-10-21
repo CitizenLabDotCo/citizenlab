@@ -1,21 +1,21 @@
-import React from 'react';
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
+import React from 'react';
 
 // components
-import Error from 'components/UI/Error';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 import {
+  SlugPreview,
+  StyledInput,
   StyledSectionField,
   StyledWarning,
-  StyledInput,
-  SlugPreview,
 } from './styling';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -41,7 +41,7 @@ const SlugInput = ({
   showSlugErrorMessage,
   onSlugChange,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const appConfig = useAppConfiguration();
 

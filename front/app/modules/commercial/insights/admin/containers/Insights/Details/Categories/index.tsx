@@ -2,38 +2,38 @@ import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
 // components
-import Tag from 'modules/commercial/insights/admin/components/Tag';
 import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Tag from 'modules/commercial/insights/admin/components/Tag';
 
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
-import messages from '../../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from '../../messages';
 
-import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 import {
-  TooltipContent,
   SectionTitle,
+  TooltipContent,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
+import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 
-type CategoryProps = WithRouterProps & InjectedIntlProps;
+type CategoryProps = WithRouterProps & WrappedComponentProps;
 
 const StyledTag = styled(Tag)`
   margin-right: 8px;

@@ -1,11 +1,12 @@
-import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
-import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
-import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
-import { truncate } from 'utils/textUtils';
+import { get, has, isArray, isEmpty, isObject, keys, uniq } from 'lodash-es';
+import { MessageDescriptor } from 'react-intl';
 import { InputTerm } from 'services/participationContexts';
+import { GraphqlMultiloc, Locale, Multiloc } from 'typings';
+import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
+import { truncate } from 'utils/textUtils';
 
 type IInputTermMessages = {
-  [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in InputTerm]: MessageDescriptor;
 };
 
 export const getInputTermMessage = (

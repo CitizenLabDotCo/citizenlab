@@ -5,16 +5,15 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
-import { MessageDescriptor } from 'typings';
 import { Stats } from '../../hooks/useVisitorsData/typings';
 
 interface Props {
@@ -42,7 +41,7 @@ const VisitorStats = ({
   projectFilter,
   resolution,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
 
   const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);

@@ -1,35 +1,34 @@
-import React, { memo, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useEffect, useState } from 'react';
 
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SelectSort from 'components/IdeaCards/SortFilterDropdown';
+import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import IdeaMapCard from '../IdeaMapCard';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useIdeaMarkers from 'hooks/useIdeaMarkers';
-import useProject from 'hooks/useProject';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaMarkers from 'hooks/useIdeaMarkers';
+import useLocale from 'hooks/useLocale';
+import useProject from 'hooks/useProject';
 
 // events
 import {
+  ideasSearch$,
+  ideasSort$,
+  ideasTopics$,
   setIdeasSearch,
   setIdeasSort,
   setIdeasTopics,
-  ideasSort$,
-  ideasSearch$,
-  ideasTopics$,
 } from '../events';
 
 // services
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';
@@ -37,7 +36,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Sort } from 'resources/GetIdeas';
-import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
+
+// utils
+import { isFieldEnabled } from 'utils/projectUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -150,19 +151,11 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
 
   const isFiltered = (search && search.length > 0) || topics.length > 0;
 
-  const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
-    if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-      return (
-        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-          'ui:widget'
-        ] !== 'hidden'
-      );
-    }
-
-    return true;
-  };
-
-  const topicsEnabled = isFieldEnabled('topic_ids');
+  const topicsEnabled = isFieldEnabled(
+    'topic_ids',
+    ideaCustomFieldsSchemas,
+    locale
+  );
 
   useEffect(() => {
     const subscriptions = [

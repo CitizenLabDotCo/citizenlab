@@ -1,27 +1,27 @@
 import React from 'react';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import Button from 'components/UI/Button';
-import { SectionField } from 'components/admin/Section';
 import { Box } from '@citizenlab/cl2-component-library';
+import { SectionField } from 'components/admin/Section';
+import Button from 'components/UI/Button';
 
 // form
-import { FormProvider, useForm } from 'react-hook-form';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { object } from 'yup';
 
 // Typings
-import { Multiloc } from 'typings';
 import { useParams } from 'react-router-dom';
+import { Multiloc } from 'typings';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -30,7 +30,7 @@ export interface FormValues {
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const RegistrationCustomFieldOptionsForm = ({
   intl: { formatMessage },
@@ -39,7 +39,9 @@ const RegistrationCustomFieldOptionsForm = ({
 }: Props) => {
   const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.answerOptionError)),
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.answerOptionError)
+    ),
   });
 
   const methods = useForm({

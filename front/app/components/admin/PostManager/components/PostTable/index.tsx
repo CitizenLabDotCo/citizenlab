@@ -1,24 +1,30 @@
-import React from 'react';
 import { every, isEmpty, isFunction } from 'lodash-es';
-import styled from 'styled-components';
+import React from 'react';
 
 // components
-import { Table } from 'semantic-ui-react';
-import Row from './Row';
+import { Table, Tbody, Td, Tfoot, Tr } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import IdeaHeaderRow from './header/IdeaHeaderRow';
+import InitiativesHeaderRow from './header/InitiativesHeaderRow';
 import NoPost from './NoPost';
-import IdeaHeaderRow from './IdeaHeaderRow';
-import InitiativesHeaderRow from './InitiativesHeaderRow';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import Row from './Row';
 
 // services
 import { IIdeaData } from 'services/ideas';
-import { IInitiativeData } from 'services/initiatives';
-import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IPhaseData } from 'services/phases';
 
-// resources
+// styling
+import styled from 'styled-components';
+import { colors, stylingConsts } from 'utils/styleUtils';
+
+// i18n
+import { ManagerType, TFilterMenu } from '../..';
+
+// typings
 import {
   Sort as IdeasSort,
   SortAttribute as IdeasSortAttribute,
@@ -27,12 +33,7 @@ import {
   Sort as InitiativesSort,
   SortAttribute as InitiativesSortAttribute,
 } from 'resources/GetInitiatives';
-
-// utils
 import { SortDirection } from 'utils/paginationUtils';
-
-// i18n
-import { ManagerType, TFilterMenu } from '../..';
 
 const Container = styled.div`
   .ui.table {
@@ -76,10 +77,6 @@ const Container = styled.div`
       display: none;
     }
   }
-`;
-
-export const TableHeaderCellText = styled.span`
-  font-weight: 600;
 `;
 
 interface Props {
@@ -186,10 +183,17 @@ export default class PostTable extends React.Component<Props> {
 
     return (
       <Container>
-        <Table sortable size="small">
+        <Table
+          border={`1px solid ${colors.grey300}`}
+          borderRadius={stylingConsts.borderRadius}
+          innerBorders={{
+            headerCells: true,
+            bodyRows: true,
+          }}
+        >
           {type === 'Initiatives' ? (
             <InitiativesHeaderRow
-              sortAttribute={sortAttribute}
+              sortAttribute={sortAttribute as InitiativesSortAttribute}
               sortDirection={sortDirection}
               allSelected={this.allSelected()}
               toggleSelectAll={this.toggleSelectAll}
@@ -204,7 +208,7 @@ export default class PostTable extends React.Component<Props> {
               handleSortClick={this.handleSortClick}
             />
           ) : null}
-          <Table.Body>
+          <Tbody>
             {!isEmpty(posts) ? (
               <TransitionGroup component={null}>
                 {
@@ -233,19 +237,19 @@ export default class PostTable extends React.Component<Props> {
                 }
               </TransitionGroup>
             ) : null}
-          </Table.Body>
+          </Tbody>
           {!isEmpty(posts) && (
-            <Table.Footer fullWidth={true}>
-              <Table.Row>
-                <Table.HeaderCell colSpan="7">
+            <Tfoot>
+              <Tr background={colors.grey50}>
+                <Td colSpan={7}>
                   <Pagination
                     currentPage={this.props.currentPageNumber || 1}
                     totalPages={this.props.lastPageNumber || 1}
                     loadPage={this.handlePaginationClick}
                   />
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Footer>
+                </Td>
+              </Tr>
+            </Tfoot>
           )}
         </Table>
         {isEmpty(posts) && (

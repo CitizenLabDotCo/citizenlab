@@ -1,13 +1,13 @@
-import React from 'react';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import usePage from 'hooks/usePage';
-import { isNilOrError } from 'utils/helperUtils';
-import { isPolicyPageSlug } from 'services/pages';
 import { SectionField } from 'components/admin/Section';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import usePage from 'hooks/usePage';
+import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { isPolicyPageSlug } from 'services/pages';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import useNavbarItem from '../../hooks/useNavbarItem';
+import messages from './messages';
 
 type Props = {
   pageId: string | null;
@@ -18,7 +18,7 @@ const NavbarTitleField = ({
   pageId,
   navbarItemId,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const page = usePage({ pageId });
   const navbarItem = useNavbarItem({ navbarItemId });
 

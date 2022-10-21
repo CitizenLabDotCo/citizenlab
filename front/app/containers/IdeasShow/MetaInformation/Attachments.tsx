@@ -1,13 +1,13 @@
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import useResourceFiles from 'hooks/useResourceFiles';
 import React from 'react';
 import styled from 'styled-components';
-import Attachment from './Attachment';
-import useResourceFiles from 'hooks/useResourceFiles';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 import { isNilOrError } from 'utils/helperUtils';
+import Attachment from './Attachment';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div``;
@@ -26,7 +26,7 @@ const Attachments = ({
   compact,
   className,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
 
   if (!isNilOrError(files) && files.length > 0) {

@@ -1,19 +1,19 @@
-import React from 'react';
 import Button from 'components/UI/Button';
+import React from 'react';
 import { fontSizes } from 'utils/styleUtils';
 
 // i18n
-import messages from '../../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { exportType } from '../ExportMenu';
-import { isString } from 'utils/helperUtils';
-import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
 import { saveAs } from 'file-saver';
+import { WrappedComponentProps } from 'react-intl';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isString } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
-import { InjectedIntlProps } from 'react-intl';
+import { requestBlob } from 'utils/request';
+import messages from '../../messages';
+import tracks from '../../tracks';
+import { exportType } from '../ExportMenu';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];
@@ -25,7 +25,7 @@ interface State {
 }
 
 class ExportInitiativesButton extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   constructor(props) {

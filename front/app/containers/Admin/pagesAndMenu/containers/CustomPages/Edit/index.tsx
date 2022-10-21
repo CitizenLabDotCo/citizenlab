@@ -1,17 +1,17 @@
 import React from 'react';
 
 // components
-import TabbedResource from 'components/admin/TabbedResource';
 import { Box } from '@citizenlab/cl2-component-library';
+import TabbedResource from 'components/admin/TabbedResource';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 // i18n
-import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,7 +24,7 @@ import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
 const CustomPagesEditSettings = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage(customPageId);

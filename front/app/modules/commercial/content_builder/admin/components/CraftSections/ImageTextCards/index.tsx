@@ -4,21 +4,21 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import { UserComponent, Element } from '@craftjs/core';
-import TwoColumn from '../../CraftComponents/TwoColumn';
+import { Element, UserComponent } from '@craftjs/core';
 import Container from '../../CraftComponents/Container';
 import Image from '../../CraftComponents/Image';
 import Text from '../../CraftComponents/Text';
+import TwoColumn from '../../CraftComponents/TwoColumn';
 
 // intl
-import messages from '../../../messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from '../../../messages';
 import WhiteSpace from '../../CraftComponents/WhiteSpace';
 
 const ImageTextCards: UserComponent = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   return (
     <Element id="image-text-cards" is={Box} canvas>
       <TwoColumn columnLayout="1-2">

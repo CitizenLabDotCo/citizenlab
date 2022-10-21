@@ -1,12 +1,12 @@
-import React from 'react';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import React from 'react';
+import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
+import { FormattedNumber, WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedNumber } from 'react-intl';
 import messages from './messages';
 
 const StyledIcon = styled(Icon)`
@@ -23,7 +23,7 @@ interface Props {
 const FormattedBudget = ({
   value,
   intl: { formatMessage, formatNumber },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {

@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Label } from 'semantic-ui-react';
 import T from 'components/T';
+import React from 'react';
 import GetProject from 'resources/GetProject';
+import { Label } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 const LabelText = styled.span`
   font-weight: 600;

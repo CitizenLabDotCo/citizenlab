@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
 
 // components
-import Link from 'utils/cl-router/Link';
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
+import Link from 'utils/cl-router/Link';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -68,7 +68,7 @@ const Consent = memo(
     privacyPolicyAccepted,
     onTacAcceptedChange,
     onPrivacyAcceptedChange,
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const handleTermsAndConditionsOnChange = () => {
       onTacAcceptedChange(!termsAndConditionsAccepted);
     };

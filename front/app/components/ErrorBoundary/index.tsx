@@ -1,16 +1,16 @@
 // note that in devmode, errors caught by error boundary will be sent twice to sentry, this won't happen in production
 // https://github.com/facebook/react/issues/10474
 
+import { showReportDialog, withScope } from '@sentry/react';
 import React, { Component } from 'react';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { withScope, showReportDialog } from '@sentry/react';
-import messages from './messages';
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import styled from 'styled-components';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;
@@ -42,7 +42,7 @@ type State = {
   hasError: boolean;
 };
 
-class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
+class ErrorBoundary extends Component<Props & WrappedComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = { hasError: false };

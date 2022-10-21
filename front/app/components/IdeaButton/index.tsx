@@ -1,8 +1,8 @@
+import { stringify } from 'qs';
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -15,21 +15,21 @@ import {
 import { getInputTerm } from 'services/participationContexts';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // components
-import Button, { Props as ButtonProps } from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
 import { Icon } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
+import Button, { Props as ButtonProps } from 'components/UI/Button';
 
 // i18n
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 // utils
 import { openSignUpInModal } from 'components/SignUpIn/events';
@@ -42,9 +42,9 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // styling
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { LatLng } from 'leaflet';
@@ -120,7 +120,7 @@ interface InputProps extends Omit<ButtonProps, 'onClick'> {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaButton = memo<Props & InjectedIntlProps>(
+const IdeaButton = memo<Props & WrappedComponentProps>(
   ({
     id,
     project,
@@ -137,7 +137,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     ...buttonContainerProps
   }) => {
     const disabledMessages: {
-      [key in IIdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+      [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
       notPermitted: messages.postingNoPermission,
       postingDisabled: messages.postingDisabled,
@@ -322,6 +322,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
               hideOnClick={false}
             >
               <ButtonWrapper
+                id="e2e-cta-button"
                 tabIndex={!enabled ? 0 : -1}
                 className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
                   disabledReason ? disabledReason : ''

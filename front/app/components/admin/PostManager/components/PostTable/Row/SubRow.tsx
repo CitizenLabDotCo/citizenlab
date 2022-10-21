@@ -1,18 +1,22 @@
 import React from 'react';
 
-import PhasesSelector from './PhasesSelector';
-import TopicsSelector from './TopicsSelector';
-import ProjectSelector from './ProjectSelector';
-import IdeasStatusSelector from './IdeasStatusSelector';
-import InitiativesStatusSelector from './InitiativesStatusSelector';
+// components
+import { Td, Tr } from '@citizenlab/cl2-component-library';
+import IdeasStatusSelector from './selectors/IdeasStatusSelector';
+import InitiativesStatusSelector from './selectors/InitiativesStatusSelector';
+import PhasesSelector from './selectors/PhasesSelector';
+import ProjectSelector from './selectors/ProjectSelector';
+import TopicsSelector from './selectors/TopicsSelector';
 
-import { Table } from 'semantic-ui-react';
-import { FilterCell } from './Row';
-import { TFilterMenu } from '../..';
-import { IPhaseData } from 'services/phases';
+// styling
+import { colors } from 'utils/styleUtils';
+
+// typings
+import { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
+import { IPhaseData } from 'services/phases';
+import { TFilterMenu } from '../../..';
 
 interface Props {
   active: boolean;
@@ -49,9 +53,9 @@ export default ({
   postType,
 }: Props) => {
   return (
-    <Table.Row active={active} className={className}>
-      <Table.Cell as={FilterCell} collapsing={true} />
-      <Table.Cell colSpan={6} as={FilterCell}>
+    <Tr className={className} background={active ? colors.grey300 : undefined}>
+      <Td />
+      <Td colSpan={6}>
         {activeFilterMenu === 'phases' && phases && (
           <PhasesSelector
             selectedPhases={selectedPhases || []}
@@ -86,7 +90,7 @@ export default ({
             onUpdateStatus={onUpdateStatus}
           />
         )}
-      </Table.Cell>
-    </Table.Row>
+      </Td>
+    </Tr>
   );
 };

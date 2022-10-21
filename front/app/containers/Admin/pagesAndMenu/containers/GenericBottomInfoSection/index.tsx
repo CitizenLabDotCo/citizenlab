@@ -3,19 +3,19 @@ import { useTheme } from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Button from 'components/UI/Button';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
 import Feedback from 'components/HookForm/Feedback';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
+import { object } from 'yup';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -26,12 +26,12 @@ import { Multiloc } from 'typings';
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
-import { IHomepageSettingsData } from 'services/homepageSettings';
 import { ICustomPageData } from 'services/customPages';
+import { IHomepageSettingsData } from 'services/homepageSettings';
 
 // utils
-import validateMultiloc from 'utils/yup/validateMultiloc';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;
@@ -50,7 +50,7 @@ const GenericBottomInfoSection = ({
   updatePage,
   breadcrumbs,
   intl: { formatMessage },
-}: InjectedIntlProps & Props) => {
+}: WrappedComponentProps & Props) => {
   const theme: any = useTheme();
 
   const onFormSubmit = async (formValues: FormValues) => {
@@ -62,7 +62,7 @@ const GenericBottomInfoSection = ({
   };
 
   const schema = object({
-    bottom_info_section_multiloc: validateMultiloc(
+    bottom_info_section_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.blankDescriptionError)
     ),
   });

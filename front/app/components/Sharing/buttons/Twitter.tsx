@@ -3,17 +3,17 @@ import { TwitterShareButton } from 'react-share';
 import { Medium } from '../utils';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 
 // style
-import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -43,7 +43,7 @@ const Twitter = ({
   url,
   twitterMessage,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const trackClick = (medium: Medium) => () => {
     const properties = { network: medium };
     trackEventByName(tracks.shareButtonClicked.name, properties);

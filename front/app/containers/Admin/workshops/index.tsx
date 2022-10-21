@@ -1,14 +1,14 @@
 import React, { memo } from 'react';
 
 // components
-import Button from 'components/UI/Button';
 import PageWrapper from 'components/admin/PageWrapper';
 import { PageTitle, SectionDescription } from 'components/admin/Section';
+import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -30,7 +30,7 @@ const ButtonWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
-const WorkshopPage = memo<InjectedIntlProps>(({ intl }) => {
+const WorkshopPage = memo<WrappedComponentProps>(({ intl }) => {
   return (
     <>
       <HeaderContainer>

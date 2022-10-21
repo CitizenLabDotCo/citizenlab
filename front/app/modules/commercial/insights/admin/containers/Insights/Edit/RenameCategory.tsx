@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // components
 import { Button, Input } from '@citizenlab/cl2-component-library';
@@ -23,8 +23,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors } from 'typings';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 const Container = styled.div`
   width: 100%;
@@ -55,7 +55,7 @@ const ButtonContainer = styled.div`
 type RenameCategoryProps = {
   closeRenameModal: () => void;
   originalCategoryName: string;
-} & InjectedIntlProps &
+} & WrappedComponentProps &
   WithRouterProps;
 
 const RenameCategory = ({

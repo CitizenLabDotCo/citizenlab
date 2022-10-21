@@ -1,8 +1,8 @@
+import T from 'components/T';
 import React from 'react';
 import { Popup } from 'semantic-ui-react';
 import { IInitiativeAllowedTransitions } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import T from 'components/T';
 import styled from 'styled-components';
 
 const Container = styled.div`

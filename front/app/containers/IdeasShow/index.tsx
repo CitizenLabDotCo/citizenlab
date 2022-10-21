@@ -1,7 +1,7 @@
-import React, { lazy, Suspense, useState, useEffect } from 'react';
-import { isUndefined, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isString, isUndefined } from 'lodash-es';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { getInputTerm } from 'services/participationContexts';
@@ -11,52 +11,52 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaSharingButton from './Buttons/IdeaSharingButton';
-import IdeaMeta from './IdeaMeta';
-import Title from 'components/PostShowComponents/Title';
-import IdeaProposedBudget from './IdeaProposedBudget';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 import Body from 'components/PostShowComponents/Body';
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import Modal from 'components/UI/Modal';
-import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-import IdeaMoreActions from './IdeaMoreActions';
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import Title from 'components/PostShowComponents/Title';
+import Modal from 'components/UI/Modal';
+import IdeaSharingButton from './Buttons/IdeaSharingButton';
+import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
 import GoBackButton from './GoBackButton';
+import IdeaMeta from './IdeaMeta';
+import IdeaMoreActions from './IdeaMoreActions';
+import IdeaProposedBudget from './IdeaProposedBudget';
+import MetaInformation from './MetaInformation';
+import RightColumnDesktop from './RightColumnDesktop';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
-import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
-import MetaInformation from './MetaInformation';
-import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
-import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
-import { checkFieldEnabled } from './isFieldEnabled';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 // resources
+import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, {
   GetOfficialFeedbacksChildProps,
 } from 'resources/GetOfficialFeedbacks';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
-import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -65,19 +65,19 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import clHistory from 'utils/cl-router/history';
 
 // style
-import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
-import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { isRtl, media, viewportWidths } from 'utils/styleUtils';
+import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import usePhases from 'hooks/usePhases';
 import useIdea from 'hooks/useIdea';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useLocale from 'hooks/useLocale';
+import usePhases from 'hooks/usePhases';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -191,7 +191,7 @@ export const IdeasShow = ({
   officialFeedbacks,
   setRef,
   intl: { formatMessage },
-}: Props & InjectedIntlProps & InjectedLocalized & WithRouterProps) => {
+}: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
@@ -217,12 +217,6 @@ export const IdeasShow = ({
 
   const ideaflowSocialSharingIsEnabled = useFeatureFlag({
     name: 'ideaflow_social_sharing',
-  });
-  const isIdeaCustomFieldsEnabled = useFeatureFlag({
-    name: 'idea_custom_fields',
-  });
-  const isDynamicIdeaFormEnabled = useFeatureFlag({
-    name: 'dynamic_idea_form',
   });
 
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
@@ -276,12 +270,10 @@ export const IdeasShow = ({
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
 
-    const proposedBudgetEnabled = checkFieldEnabled(
+    const proposedBudgetEnabled = isFieldEnabled(
       'proposed_budget',
       ideaCustomFieldsSchemas,
-      locale,
-      isIdeaCustomFieldsEnabled,
-      isDynamicIdeaFormEnabled
+      locale
     );
 
     content = (

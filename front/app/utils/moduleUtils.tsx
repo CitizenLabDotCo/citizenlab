@@ -1,78 +1,75 @@
+import {
+  TSignUpStep,
+  TSignUpStepConfigurationObject,
+} from 'components/SignUpIn/SignUp';
+import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
+import { Moment } from 'moment';
 import React, {
-  MouseEvent,
-  KeyboardEvent,
   FunctionComponent,
+  KeyboardEvent,
+  MouseEvent,
   ReactElement,
 } from 'react';
-import { Moment } from 'moment';
-import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
-import {
-  TSignUpStepConfigurationObject,
-  TSignUpStep,
-} from 'components/SignUpIn/SignUp';
 
-import PageLoading from 'components/UI/PageLoading';
 import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
+import PageLoading from 'components/UI/PageLoading';
 
+import { OutletRenderProps } from 'components/Outlet';
+import { ITabItem } from 'components/UI/Tabs';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
-import { ITabItem } from 'components/UI/Tabs';
-import { OutletRenderProps } from 'components/Outlet';
-import { mergeWith, castArray, clamp, omitBy, isNil } from 'lodash-es';
 
+import { Point } from 'components/UI/LeafletMap/typings';
+import { LatLngTuple } from 'leaflet';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
+import { IUserData } from 'services/users';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
   ITab,
-  MessageDescriptor,
-  Multiloc,
   Locale,
+  Multiloc,
 } from 'typings';
-import { LatLngTuple } from 'leaflet';
-import { Point } from 'components/UI/LeafletMap/typings';
-import { IUserData } from 'services/users';
-import { MessageValue } from 'react-intl';
+
+import { ManagerType } from 'components/admin/PostManager';
+import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
+import { IResolution } from 'components/admin/ResolutionControl';
+import { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import { TVerificationStep } from 'components/Verification/verificationModalEvents';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
+import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
+import { Localize } from 'hooks/useLocalize';
+import { IntlFormatters } from 'react-intl';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import {
   AppConfigurationFeature,
   CustomizedButtonConfig,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
-import { THomepageBannerLayout } from 'services/homepageSettings';
-import { ManagerType } from 'components/admin/PostManager';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { TVerificationMethod } from 'services/verificationMethods';
-import { TVerificationStep } from 'components/Verification/verificationModalEvents';
-import { IPhaseData } from 'services/phases';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
-import { GetLocaleChildProps } from 'resources/GetLocale';
 import { ICommentData } from 'services/comments';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
-import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { GetIdeaChildProps } from 'resources/GetIdea';
+import { THomepageBannerLayout } from 'services/homepageSettings';
+import { TNotificationData } from 'services/notifications';
 import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
-import { TNotificationData } from 'services/notifications';
-import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
-import { AuthProvider } from 'components/SignUpIn/AuthProviders';
-import { Localize } from 'hooks/useLocalize';
-import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { IPhaseData } from 'services/phases';
+import { TVerificationMethod } from 'services/verificationMethods';
 
 export type ITabsOutlet = {
-  formatMessage: (
-    messageDescriptor: MessageDescriptor,
-    values?: { [key: string]: MessageValue } | undefined
-  ) => string;
+  formatMessage: IntlFormatters['formatMessage'];
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 

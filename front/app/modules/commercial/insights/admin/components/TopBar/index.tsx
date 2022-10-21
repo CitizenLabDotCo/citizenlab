@@ -2,28 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import {
+  Button,
   Dropdown,
   DropdownListItem,
-  Button,
 } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import RenameInsightsView from './RenameInsightsView';
 import ProjectButton from './ProjectButton';
 import ProjectsDropdown from './ProjectsDropdown';
+import RenameInsightsView from './RenameInsightsView';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
-import clHistory from 'utils/cl-router/history';
 import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError, isError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
+import { isError, isNilOrError } from 'utils/helperUtils';
 
 // services
 import { deleteInsightsView } from '../../../services/insightsViews';
@@ -71,7 +71,7 @@ const DropdownWrapper = styled.div`
 const TopBar = ({
   params,
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const viewId = params.viewId;

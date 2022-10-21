@@ -1,31 +1,31 @@
 // libraries
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
+import { Helmet } from 'react-helmet';
 
 // i18n
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // services
 import { IUserData } from 'services/users';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getLocalized } from 'utils/i18n';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLocalized } from 'utils/i18n';
 
 interface InputProps {
   user: IUserData;
@@ -40,7 +40,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
+const UsersShowPageMeta: React.SFC<Props & WrappedComponentProps> = ({
   intl,
   authUser,
   tenantLocales,
@@ -104,7 +104,7 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
   return null;
 };
 
-const UsersShowPageMetaWithHoc = injectIntl<Props>(UsersShowPageMeta);
+const UsersShowPageMetaWithHoc = injectIntl(UsersShowPageMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

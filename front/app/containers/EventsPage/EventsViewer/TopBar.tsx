@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // components
-import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import { Icon } from '@citizenlab/cl2-component-library';
+import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 
 // styling
 import styled, { useTheme } from 'styled-components';
@@ -51,7 +51,7 @@ interface Props {
   setProjectIds: (projectIds: string[]) => void;
 }
 
-const TopBar = memo<Props & InjectedIntlProps>(
+const TopBar = memo<Props & WrappedComponentProps>(
   ({ title, setProjectIds, intl }) => {
     const theme: any = useTheme();
 

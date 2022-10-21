@@ -4,42 +4,42 @@ import React from 'react';
 import { Multiloc, UploadFile } from 'typings';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, mixed } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import { SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import FileUploader from 'components/HookForm/FileUploader';
+import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Input from 'components/HookForm/Input';
-import FileUploader from 'components/HookForm/FileUploader';
-import Feedback from 'components/HookForm/Feedback';
-import { SectionField } from 'components/admin/Section';
+import { FormProvider, useForm } from 'react-hook-form';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import { mixed, object, string } from 'yup';
 
 // intl
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import {
+  Box,
   IconTooltip,
   Label,
-  Box,
   Text,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import Button from 'components/UI/Button';
 import Outlet from 'components/Outlet';
+import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { slugRegEx } from 'utils/textUtils';
 
 // hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 import usePage from 'hooks/usePage';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
@@ -54,7 +54,7 @@ type PageFormProps = {
   defaultValues?: FormValues;
   pageId: string | null;
   hideSlugInput?: boolean;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const PageForm = ({
   intl: { formatMessage },
@@ -68,15 +68,17 @@ const PageForm = ({
   const appConfig = useAppConfiguration();
 
   const schema = object({
-    title_multiloc: validateMultiloc(formatMessage(messages.blankTitleError)),
-    top_info_section_multiloc: validateMultiloc(
-      formatMessage(messages.blankDescriptionError)
+    title_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.titleMissingOneLanguageError)
+    ),
+    top_info_section_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.descriptionMissingOneLanguageError)
     ),
     ...(pageId &&
       !isNilOrError(page) &&
       page.relationships.nav_bar_item.data && {
-        nav_bar_item_title_multiloc: validateMultiloc(
-          formatMessage(messages.blankTitleError)
+        nav_bar_item_title_multiloc: validateAtLeastOneLocale(
+          formatMessage(messages.titleMissingOneLanguageError)
         ),
       }),
     ...(!hideSlugInput && {

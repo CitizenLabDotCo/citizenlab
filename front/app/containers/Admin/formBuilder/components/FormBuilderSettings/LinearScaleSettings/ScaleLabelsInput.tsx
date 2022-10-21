@@ -6,18 +6,18 @@ import { Controller, useFormContext } from 'react-hook-form';
 // components
 import {
   Box,
-  Label,
   IconTooltip,
   Input,
+  Label,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
 
 // i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { Locale } from 'typings';
+import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import messages from './messages';
 
 interface Props {
   minimumLabelName: string;
@@ -34,7 +34,7 @@ const ScaleLabelsInput = ({
   onSelectedLocaleChange,
   locales,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const { control, setValue, getValues } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 

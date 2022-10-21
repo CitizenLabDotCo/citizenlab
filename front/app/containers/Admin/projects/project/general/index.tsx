@@ -1,66 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import { Multiloc, UploadFile } from 'typings';
-import { isEmpty, get, isString } from 'lodash-es';
-import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+import { get, isEmpty, isString } from 'lodash-es';
+import React, { useEffect, useState } from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import { Multiloc, UploadFile } from 'typings';
 
 // components
-import ProjectStatusPicker from './components/ProjectStatusPicker';
-import ProjectNameInput from './components/ProjectNameInput';
-import SlugInput from 'components/admin/SlugInput';
-import ProjectTypePicker from './components/ProjectTypePicker';
-import TopicInputs from './components/TopicInputs';
-import GeographicAreaInputs from './components/GeographicAreaInputs';
-import HeaderImageDropzone from './components/HeaderImageDropzone';
-import ProjectImageDropzone from './components/ProjectImageDropzone';
-import AttachmentsDropzone from './components/AttachmentsDropzone';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
   Section,
-  SectionTitle,
   SectionDescription,
+  SectionTitle,
   SubSectionTitle,
 } from 'components/admin/Section';
+import SlugInput from 'components/admin/SlugInput';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Outlet from 'components/Outlet';
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import Outlet from 'components/Outlet';
+import AttachmentsDropzone from './components/AttachmentsDropzone';
+import GeographicAreaInputs from './components/GeographicAreaInputs';
+import HeaderImageDropzone from './components/HeaderImageDropzone';
+import ProjectImageDropzone from './components/ProjectImageDropzone';
+import ProjectNameInput from './components/ProjectNameInput';
+import ProjectStatusPicker from './components/ProjectStatusPicker';
+import ProjectTypePicker from './components/ProjectTypePicker';
 import {
-  StyledForm,
-  ProjectType,
-  StyledSectionField,
   ParticipationContextWrapper,
+  ProjectType,
+  StyledForm,
+  StyledSectionField,
 } from './components/styling';
+import TopicInputs from './components/TopicInputs';
 
 // hooks
-import useProject from 'hooks/useProject';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useProject from 'hooks/useProject';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
 import { useParams } from 'react-router-dom';
 
 // services
-import {
-  IUpdatedProjectProperties,
-  addProject,
-  updateProject,
-  IProjectFormState,
-  IProjectData,
-} from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
+import {
+  addProject,
+  IProjectData,
+  IProjectFormState,
+  IUpdatedProjectProperties,
+  updateProject,
+} from 'services/projects';
 
 // i18n
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
 
 // utils
-import { validateSlug } from 'utils/textUtils';
-import validateTitle from './utils/validateTitle';
-import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { validateSlug } from 'utils/textUtils';
+import validateTitle from './utils/validateTitle';
 
 export const TIMEOUT = 350;
 
@@ -71,7 +71,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 
 const AdminProjectsProjectGeneral = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const { projectId } = useParams();
   const project = useProject({ projectId });
   const appConfigLocales = useAppConfigurationLocales();
@@ -542,6 +542,7 @@ const AdminProjectsProjectGeneral = ({
             >
               <ParticipationContextWrapper>
                 <ParticipationContext
+                  project={project}
                   onSubmit={handleParticipationContextOnSubmit}
                   onChange={handleParticipationContextOnChange}
                   apiErrors={apiErrors}
@@ -553,6 +554,7 @@ const AdminProjectsProjectGeneral = ({
 
         {!isNilOrError(project) && projectType === 'continuous' && (
           <ParticipationContext
+            project={project}
             projectId={project.id}
             onSubmit={handleParticipationContextOnSubmit}
             onChange={handleParticipationContextOnChange}

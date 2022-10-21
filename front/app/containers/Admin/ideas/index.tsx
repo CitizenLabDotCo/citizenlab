@@ -5,17 +5,17 @@ import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
-import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // i18n
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
-const IdeasPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const IdeasPage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const [tabs, setTabs] = useState<ITab[]>([
     {
       label: formatMessage(messages.tabManage),

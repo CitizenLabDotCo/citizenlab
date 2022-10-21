@@ -1,55 +1,54 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import projectFoldersConfiguration from './commercial/project_folders';
-import smartGroupsConfiguration from './commercial/smart_groups';
-import userCustomFieldsConfiguration from './commercial/user_custom_fields';
-import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
-import granularPermissionsConfiguration from './commercial/granular_permissions';
-import projectManagementConfiguration from './commercial/project_management';
-import ideaAssignmentConfiguration from './commercial/idea_assignment';
-import moderationConfiguration from './commercial/moderation';
+import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
+import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
-import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
+import granularPermissionsConfiguration from './commercial/granular_permissions';
+import ideaAssignmentConfiguration from './commercial/idea_assignment';
+import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import machineTranslationsConfiguration from './commercial/machine_translations';
+import moderationConfiguration from './commercial/moderation';
+import projectFoldersConfiguration from './commercial/project_folders';
+import projectManagementConfiguration from './commercial/project_management';
 import similarIdeaConfiguration from './commercial/similar_ideas';
-import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
+import smartGroupsConfiguration from './commercial/smart_groups';
+import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 
 import projectVisibilityConfiguration from './free/project_visibility';
 
-import customMapsConfiguration from './commercial/custom_maps';
-import googleTagManagerConfiguration from './commercial/google_tag_manager';
-import googleAnalyticsConfiguration from './commercial/google_analytics';
-import intercomConfiguration from './commercial/intercom';
-import satismeterConfiguration from './commercial/satismeter';
-import segmentConfiguration from './commercial/segment';
-import matomoConfiguration from './commercial/matomo';
+import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
-import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
-import verificationConfiguration from './commercial/verification';
+import customMapsConfiguration from './commercial/custom_maps';
 import customTopicsConfiguration from './commercial/custom_topics';
+import googleAnalyticsConfiguration from './commercial/google_analytics';
+import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import impactTrackingConfiguration from './commercial/impact_tracking';
+import intercomConfiguration from './commercial/intercom';
+import matomoConfiguration from './commercial/matomo';
+import satismeterConfiguration from './commercial/satismeter';
+import segmentConfiguration from './commercial/segment';
+import verificationConfiguration from './commercial/verification';
 
 import idAuth0Configuration from './commercial/id_auth0';
-import idBosaFasConfiguration from './commercial/id_bosa_fas';
-import idCowConfiguration from './commercial/id_cow';
 import idBogusConfiguration from './commercial/id_bogus';
-import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
+import idBosaFasConfiguration from './commercial/id_bosa_fas';
+import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
+import idCowConfiguration from './commercial/id_cow';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
-import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
+import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 
-import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
+import widgetsConfiguration from './commercial/widgets';
 
-import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
 import customizableNavbarConfiguration from './commercial/customizable_navbar';
+import insightsConfiguration from './commercial/insights';
 
 import userConfirmationConfiguration from './free/user_confirmation';
 
-import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
@@ -219,10 +218,6 @@ export default loadModules([
   {
     configuration: userConfirmationConfiguration,
     isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
-  },
-  {
-    configuration: idViennaSamlConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_vienna_saml'],
   },
   {
     configuration: representativenessConfiguration,

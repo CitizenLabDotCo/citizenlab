@@ -1,26 +1,26 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import { Box } from '@citizenlab/cl2-component-library';
 import {
+  ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
-  ControlProps,
 } from '@jsonforms/core';
-import React, { useContext, useEffect, useState } from 'react';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { FormLabel } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { UploadFile } from 'typings';
-import ErrorDisplay from '../ErrorDisplay';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import React, { useContext, useEffect, useState } from 'react';
 import { deleteIdeaImage } from 'services/ideaImages';
-import useIdeaImages from 'hooks/useIdeaImages';
-import { isNilOrError } from 'utils/helperUtils';
+import { UploadFile } from 'typings';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { FormContext } from '../../contexts';
-import { Box } from '@citizenlab/cl2-component-library';
+import ErrorDisplay from '../ErrorDisplay';
 
 const ImageControl = ({
   uischema,
   path,
+  data,
   handleChange,
   errors,
   schema,
@@ -42,7 +42,6 @@ const ImageControl = ({
   };
 
   const { inputId } = useContext(FormContext);
-  const remoteImages = useIdeaImages(inputId);
 
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
   const [didBlur, setDidBlur] = useState(false);
@@ -50,19 +49,19 @@ const ImageControl = ({
   useEffect(() => {
     if (
       inputId &&
-      !isNilOrError(remoteImages) &&
-      remoteImages.length > 0 &&
-      remoteImages[0].attributes.versions.medium
+      !isNilOrError(data) &&
+      data.length > 0 &&
+      data[0].attributes?.versions.medium
     ) {
       (async () => {
         const newRemoteFile = await convertUrlToUploadFile(
-          remoteImages[0].attributes.versions.medium as string,
-          remoteImages[0].id
+          data[0].attributes.versions.medium as string,
+          data[0].id
         );
         newRemoteFile && setImageFiles([newRemoteFile]);
       })();
     }
-  }, [remoteImages, inputId]);
+  }, [data, inputId]);
 
   return (
     <Box id="e2e-idea-image-upload">

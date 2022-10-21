@@ -1,44 +1,44 @@
 // libraries
+import { clone, isEqual } from 'lodash-es';
 import React, { Component } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { isEqual, clone } from 'lodash-es';
+import styled from 'styled-components';
+import Link from 'utils/cl-router/Link';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
-import customfieldMessages from '../../../../admin/containers/CustomFields/messages';
 import T from 'components/T';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import customfieldMessages from '../../../../admin/containers/CustomFields/messages';
+import messages from './messages';
 
 // components
+import {
+  Badge,
+  Box,
+  IconTooltip,
+  Toggle,
+} from '@citizenlab/cl2-component-library';
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import {
-  Toggle,
-  Badge,
-  IconTooltip,
-  Box,
-} from '@citizenlab/cl2-component-library';
 
 import {
   Section,
-  SectionTitle,
   SectionDescription,
+  SectionTitle,
   SubSectionTitle,
 } from 'components/admin/Section';
 
 // services
 import {
-  IUserCustomFieldData,
   deleteUserCustomField,
-  updateCustomFieldForUsers,
-  reorderCustomFieldForUsers,
   isBuiltInField,
   isHiddenField,
+  IUserCustomFieldData,
+  reorderCustomFieldForUsers,
+  updateCustomFieldForUsers,
 } from '../../../../services/userCustomFields';
 
 // resources
@@ -88,7 +88,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class CustomFields extends Component<Props & InjectedIntlProps, State> {
+class CustomFields extends Component<Props & WrappedComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -317,7 +317,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
   }
 }
 
-const CustomFieldsListWithHoCs = injectIntl<Props>(CustomFields);
+const CustomFieldsListWithHoCs = injectIntl(CustomFields);
 
 export default (inputProps: InputProps) => (
   <GetUserCustomFields>

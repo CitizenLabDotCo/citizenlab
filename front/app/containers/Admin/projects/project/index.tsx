@@ -1,31 +1,31 @@
-import React, { PureComponent } from 'react';
 import { reject } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
-import Button from 'components/UI/Button';
+import { Box } from '@citizenlab/cl2-component-library';
 import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
-import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+import GoBackButton from 'components/UI/GoBackButton';
 import NewIdeaButton from './ideas/NewIdeaButton';
 import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
 
 // resources
+import { PreviousPathnameContext } from 'context';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { PreviousPathnameContext } from 'context';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
@@ -37,9 +37,9 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // typings
-import { InsertConfigurationOptions, ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
+import { InsertConfigurationOptions, ITab } from 'typings';
 
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -91,7 +91,7 @@ interface State {
 interface Props extends InputProps, DataProps {}
 
 export class AdminProjectsProjectIndex extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
+  Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
   constructor(props) {

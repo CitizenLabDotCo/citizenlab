@@ -1,16 +1,16 @@
 import React, { useRef, useState } from 'react';
 
 // components
-import GraphCard from 'components/admin/GraphCard';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import EmptyState from 'components/admin/Graphs/_components/EmptyState';
+import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
-import CenterLabel from './CenterLabel';
-import { stackLabels } from './stackLabels';
-import { stackedBarTooltip } from './stackedBarTooltip';
+import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import Button from 'components/UI/Button';
+import CenterLabel from './CenterLabel';
+import { stackedBarTooltip } from './stackedBarTooltip';
+import { stackLabels } from './stackLabels';
 
 // stylings
 import styled from 'styled-components';
@@ -29,9 +29,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getCornerRadius } from './utils';
 
 // typings
-import { InjectedIntlProps } from 'react-intl';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
+import { WrappedComponentProps } from 'react-intl';
 
 interface Props {
   projectId: string | undefined;
@@ -83,7 +83,7 @@ const PostFeedback = ({
   endAtMoment,
   resolution,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
   const currentStackedBarChart = useRef();

@@ -5,9 +5,9 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import {
   Box,
-  Title,
-  Text,
   StatusLabel,
+  Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
 
 // styling
@@ -15,11 +15,12 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // typings
-import { Multiloc, MessageDescriptor } from 'typings';
+import { MessageDescriptor } from 'react-intl';
+import { Multiloc } from 'typings';
 import { Status } from '../../utils/form';
 
 const DefaultStatusLabel = styled(StatusLabel)`
