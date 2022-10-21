@@ -172,6 +172,11 @@ class WebApi::V1::IdeasController < ApplicationController
     project = input.project
     authorize input
 
+    if invalid_author_removal? input, params
+      render json: { errors: { author: [{ error: :blank }] } }, status: :unprocessable_entity
+      return
+    end
+
     extract_custom_field_values_from_params! input.custom_form
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
@@ -333,6 +338,12 @@ class WebApi::V1::IdeasController < ApplicationController
     (input.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
       params[:idea][:custom_field_values][clear_key] = nil
     end
+  end
+
+  def invalid_author_removal?(input, params)
+    return false unless params[:idea].key?(:author_id) && params[:idea][:author_id].nil?
+
+    input.participation_method_on_creation.sign_in_required_for_posting?
   end
 end
 
