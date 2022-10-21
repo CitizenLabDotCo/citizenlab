@@ -20,7 +20,7 @@ describe 'rake email_campaigns' do
         expect { task.execute }
           .to have_enqueued_job(EmailCampaigns::TriggerOnScheduleJob)
           .with(t.to_i)
-          .exactly(2).times
+          .exactly(Tenant.count).times
       end
     end
   end
