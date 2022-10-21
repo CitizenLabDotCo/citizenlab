@@ -2,28 +2,9 @@ import moment, { Moment } from 'moment';
 
 // utils
 import { round } from 'lodash-es';
-import * as timeSerieUtils from '../../../utils/timeSeries';
 
 // typings
-import {
-  TimeSeriesResponse,
-  TimeSeriesResponseRow,
-  TimeSeriesRow,
-} from '../typings';
-
-export const indexTimeSeries = (
-  responseTimeSeries: TimeSeriesResponse
-): Map<string, TimeSeriesResponseRow> => {
-  return timeSerieUtils.indexTimeSeries(responseTimeSeries, getDate);
-};
-
-export const getFirstDateInData = (responseTimeSeries: TimeSeriesResponse) => {
-  return timeSerieUtils.getFirstDateInData(responseTimeSeries, getDate);
-};
-
-export const getLastDateInData = (responseTimeSeries: TimeSeriesResponse) => {
-  return timeSerieUtils.getLastDateInData(responseTimeSeries, getDate);
-};
+import { TimeSeriesResponseRow, TimeSeriesRow } from '../typings';
 
 export const parseRow = (
   date: Moment,
