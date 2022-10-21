@@ -46,7 +46,9 @@ export const ParticipationMethodPicker = ({
     if (!isNilOrError(project)) {
       return project.attributes.participation_method;
     }
-    return participation_method;
+    // Before a new project or phase is saved, use ideation as a default
+    // fallback config to control the radio behaviour.
+    return 'ideation';
   };
 
   const config = getMethodConfig(chooseParticipationMethod());
