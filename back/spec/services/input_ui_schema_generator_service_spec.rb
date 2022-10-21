@@ -55,19 +55,34 @@ RSpec.describe InputUiSchemaGeneratorService do
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/en",
                         label: 'Body multiloc field title',
-                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
+                        options: {
+                          description: 'Body multiloc field description',
+                          isAdminField: false,
+                          render: 'WYSIWYG',
+                          locale: 'en'
+                        }
                       },
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/fr-FR",
                         label: 'Body multiloc field title',
-                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
+                        options: {
+                          description: 'Body multiloc field description',
+                          isAdminField: false,
+                          render: 'WYSIWYG',
+                          locale: 'fr-FR'
+                        }
                       },
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/nl-NL",
                         label: 'Body multiloc field title',
-                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
+                        options: {
+                          description: 'Body multiloc field description',
+                          isAdminField: false,
+                          render: 'WYSIWYG',
+                          locale: 'nl-NL'
+                        }
                       }
                     ]
                   }
@@ -82,7 +97,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                     type: 'Control',
                     scope: "#/properties/#{field1.key}",
                     label: 'Text title',
-                    options: { description: 'Text description', transform: 'trim_on_blur' }
+                    options: {
+                      description: 'Text description',
+                      isAdminField: false,
+                      transform: 'trim_on_blur'
+                    }
                   }
                 ]
               }
@@ -108,19 +127,34 @@ RSpec.describe InputUiSchemaGeneratorService do
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/en",
                         label: 'Body multiloc field title',
-                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
+                        options: {
+                          description: 'Body multiloc field description',
+                          isAdminField: false,
+                          render: 'WYSIWYG',
+                          locale: 'en'
+                        }
                       },
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/fr-FR",
                         label: 'Body multiloc field title',
-                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
+                        options: {
+                          description: 'Body multiloc field description',
+                          isAdminField: false,
+                          render: 'WYSIWYG',
+                          locale: 'fr-FR'
+                        }
                       },
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/nl-NL",
                         label: 'Body multiloc field title',
-                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
+                        options: {
+                          description: 'Body multiloc field description',
+                          isAdminField: false,
+                          render: 'WYSIWYG',
+                          locale: 'nl-NL'
+                        }
                       }
                     ]
                   }
@@ -135,7 +169,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                     type: 'Control',
                     scope: "#/properties/#{field1.key}",
                     label: 'Text titre',
-                    options: { description: 'Text description', transform: 'trim_on_blur' }
+                    options: {
+                      description: 'Text description',
+                      isAdminField: false,
+                      transform: 'trim_on_blur'
+                    }
                   }
                 ]
               }
@@ -161,19 +199,34 @@ RSpec.describe InputUiSchemaGeneratorService do
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/en",
                         label: 'Body multiloc field title',
-                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
+                        options: {
+                          description: 'Body multiloc field description',
+                          isAdminField: false,
+                          render: 'WYSIWYG',
+                          locale: 'en'
+                        }
                       },
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/fr-FR",
                         label: 'Body multiloc field title',
-                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
+                        options: {
+                          description: 'Body multiloc field description',
+                          isAdminField: false,
+                          render: 'WYSIWYG',
+                          locale: 'fr-FR'
+                        }
                       },
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/nl-NL",
                         label: 'Body multiloc field title',
-                        options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
+                        options: {
+                          description: 'Body multiloc field description',
+                          isAdminField: false,
+                          render: 'WYSIWYG',
+                          locale: 'nl-NL'
+                        }
                       }
                     ]
                   }
@@ -188,7 +241,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                     type: 'Control',
                     scope: "#/properties/#{field1.key}",
                     label: 'Text titel',
-                    options: { description: 'Text description', transform: 'trim_on_blur' }
+                    options: {
+                      description: 'Text description',
+                      isAdminField: false,
+                      transform: 'trim_on_blur'
+                    }
                   }
                 ]
               }
@@ -274,7 +331,11 @@ RSpec.describe InputUiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field.key}",
               label: 'Did you attend',
-              options: { description: 'Which councils are you attending in our city?', transform: 'trim_on_blur' }
+              options: {
+                description: 'Which councils are you attending in our city?',
+                isAdminField: false,
+                transform: 'trim_on_blur'
+              }
             }]
           }]
         })
@@ -291,6 +352,96 @@ RSpec.describe InputUiSchemaGeneratorService do
       it 'uses the right input_term' do
         ui_schema = generator.generate_for(timeline_fields)['en']
         expect(ui_schema.dig(:options, :inputTerm)).to eq 'contribution'
+      end
+    end
+  end
+
+  describe '#visit_text' do
+    let(:code) { nil }
+    let(:field) do
+      create(
+        :custom_field,
+        input_type: 'text',
+        code: code,
+        key: field_key,
+        title_multiloc: { 'en' => 'Text field title' },
+        description_multiloc: { 'en-CA' => 'Text field description' }
+      )
+    end
+
+    context 'for author_id built-in field' do
+      let(:code) { 'author_id' }
+
+      it 'returns the schema for the author_id field with isAdminField set to true' do
+        expect(generator.visit_text(field)).to eq({
+          type: 'Control',
+          scope: "#/properties/#{field_key}",
+          label: 'Text field title',
+          options: {
+            description: 'Text field description',
+            transform: 'trim_on_blur',
+            isAdminField: true
+          }
+        })
+      end
+    end
+
+    context 'for other fields' do
+      it 'returns the schema for the given field with isAdminField set to false' do
+        expect(generator.visit_text(field)).to eq({
+          type: 'Control',
+          scope: "#/properties/#{field_key}",
+          label: 'Text field title',
+          options: {
+            description: 'Text field description',
+            transform: 'trim_on_blur',
+            isAdminField: false
+          }
+        })
+      end
+    end
+  end
+
+  describe '#visit_number' do
+    let(:code) { nil }
+    let(:field) do
+      create(
+        :custom_field,
+        input_type: 'number',
+        code: code,
+        key: field_key,
+        title_multiloc: { 'en' => 'Number field title' },
+        description_multiloc: { 'en' => 'Number field description' }
+      )
+    end
+
+    context 'for author_id built-in field' do
+      let(:code) { 'budget' }
+
+      it 'returns the schema for the budget field with isAdminField set to true' do
+        expect(generator.visit_number(field)).to eq({
+          type: 'Control',
+          scope: "#/properties/#{field_key}",
+          label: 'Number field title',
+          options: {
+            description: 'Number field description',
+            isAdminField: true
+          }
+        })
+      end
+    end
+
+    context 'for other fields' do
+      it 'returns the schema for the given field with isAdminField set to false' do
+        expect(generator.visit_number(field)).to eq({
+          type: 'Control',
+          scope: "#/properties/#{field_key}",
+          label: 'Number field title',
+          options: {
+            description: 'Number field description',
+            isAdminField: false
+          }
+        })
       end
     end
   end
@@ -317,19 +468,34 @@ RSpec.describe InputUiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field_key}/properties/en",
               label: 'Body multiloc field title',
-              options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'en' }
+              options: {
+                description: 'Body multiloc field description',
+                isAdminField: false,
+                render: 'WYSIWYG',
+                locale: 'en'
+              }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field_key}/properties/fr-FR",
               label: 'Body multiloc field title',
-              options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'fr-FR' }
+              options: {
+                description: 'Body multiloc field description',
+                isAdminField: false,
+                render: 'WYSIWYG',
+                locale: 'fr-FR'
+              }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field_key}/properties/nl-NL",
               label: 'Body multiloc field title',
-              options: { description: 'Body multiloc field description', render: 'WYSIWYG', locale: 'nl-NL' }
+              options: {
+                description: 'Body multiloc field description',
+                isAdminField: false,
+                render: 'WYSIWYG',
+                locale: 'nl-NL'
+              }
             }
           ]
         })
@@ -356,19 +522,37 @@ RSpec.describe InputUiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field_key}/properties/en",
               label: 'HTML multiloc field title',
-              options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'en' }
+              options: {
+                description: 'HTML multiloc field description',
+                isAdminField: false,
+                render: 'WYSIWYG',
+                trim_on_blur: true,
+                locale: 'en'
+              }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field_key}/properties/fr-FR",
               label: 'HTML multiloc field title',
-              options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'fr-FR' }
+              options: {
+                description: 'HTML multiloc field description',
+                isAdminField: false,
+                render: 'WYSIWYG',
+                trim_on_blur: true,
+                locale: 'fr-FR'
+              }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field_key}/properties/nl-NL",
               label: 'HTML multiloc field title',
-              options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'nl-NL' }
+              options: {
+                description: 'HTML multiloc field description',
+                isAdminField: false,
+                render: 'WYSIWYG',
+                trim_on_blur: true,
+                locale: 'nl-NL'
+              }
             }
           ]
         })

@@ -96,6 +96,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#delete_inputs_on_pc_deletion?' do
+    it 'returns true' do
+      expect(participation_method.delete_inputs_on_pc_deletion?).to be true
+    end
+  end
+
   describe '#extra_fields_category_translation_key' do
     it 'returns nil' do
       expect(participation_method.extra_fields_category_translation_key).to be_nil
