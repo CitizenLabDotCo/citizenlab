@@ -12,7 +12,7 @@ import TimeControl from '../components/TimeControl';
 // i18n
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // typings
 import { IOption } from 'typings';
@@ -41,7 +41,7 @@ const ChartFilters = injectIntl(
     onProjectFilter,
     onChangeResolution,
     intl: { formatMessage },
-  }: Props & InjectedIntlProps) => (
+  }: Props & WrappedComponentProps) => (
     <ControlBar>
       <Box display="flex" flexDirection="row">
         <TimeControl

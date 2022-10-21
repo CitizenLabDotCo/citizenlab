@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "Il titolo della domanda deve contenere almeno 10 caratteri",
   "app.containers.IdeasNewPage.contributionFormTitle": "Aggiungi un nuovo contributo",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Aggiungi un nuovo contributo | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "Il caricamento di un file non è riuscito. Si prega di controllare la dimensione e il formato del file e riprovare.",
   "app.containers.IdeasNewPage.goBack": "Torna indietro",
   "app.containers.IdeasNewPage.ideaFormTitle": "Aggiungi una nuova idea",

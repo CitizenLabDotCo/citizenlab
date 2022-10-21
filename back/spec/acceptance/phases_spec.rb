@@ -329,6 +329,35 @@ resource 'Phases' do
         expect(response_status).to eq 200
         expect { Comment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
+
+      context 'on a native survey phase' do
+        let(:phase) { create :phase, participation_method: 'native_survey', project: @project }
+
+        example 'Deleting a phase deletes all survey responses', document: false do
+          ideation_phase = create :phase, participation_method: 'ideation', project: @project, start_at: (phase.start_at - 7.days), end_at: (phase.start_at - 1.day)
+          idea = create :idea, project: @project, phases: [ideation_phase]
+          responses = create_list :idea, 2, project: @project, creation_phase: phase, phases: [phase]
+
+          do_request
+
+          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+          responses.each do |response|
+            expect { response.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
+      end
+
+      context 'on an ideation phase' do
+        let(:phase) { create :phase, participation_method: 'ideation', project: @project }
+
+        example 'Deleting a phase does not delete the ideas', document: false do
+          idea = create :idea, project: @project, phases: [phase]
+
+          do_request
+
+          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
     end
 
     get 'web_api/v1/phases/:id/survey_results' do
@@ -341,7 +370,8 @@ resource 'Phases' do
           :custom_field_multiselect,
           resource: form,
           title_multiloc: { 'en' => 'What are your favourite pets?' },
-          description_multiloc: {}
+          description_multiloc: {},
+          required: true
         )
       end
       let!(:cat_option) do
@@ -379,6 +409,7 @@ resource 'Phases' do
                 {
                   inputType: 'multiselect',
                   question: { en: 'What are your favourite pets?' },
+                  required: true,
                   totalResponses: 3,
                   answers: [
                     { answer: { en: 'Cat' }, responses: 2 },

@@ -11,6 +11,10 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 // style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+// hooks
+import useLocale from 'hooks/useLocale';
 
 // lazy-loaded components
 const IdeaRow = lazy(() => import('./IdeaRow'));
@@ -57,64 +61,70 @@ type Props = {
   className?: string;
 };
 
-export default class Row extends React.PureComponent<Props> {
-  onClickCheckbox = (event) => {
+const Row = ({
+  type,
+  post,
+  selection,
+  activeFilterMenu,
+  phases,
+  statuses,
+  className,
+  openPreview,
+  onToggleSelect,
+}: Props) => {
+  const locale = useLocale();
+  const onClickCheckbox = (event) => {
     event.stopPropagation();
-    this.props.onToggleSelect();
+    onToggleSelect();
   };
 
-  onClickTitle = (event) => {
+  const onClickTitle = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const { post, openPreview } = this.props;
+
     openPreview(post.id);
   };
 
-  render() {
-    const {
-      type,
-      post,
-      selection,
-      activeFilterMenu,
-      phases,
-      statuses,
-      className,
-    } = this.props;
-
-    if (type === 'AllIdeas' || type === 'ProjectIdeas') {
-      return (
-        <Suspense fallback={null}>
-          <IdeaRow
-            type={type}
-            idea={post as IIdeaData}
-            phases={phases}
-            statuses={statuses}
-            selection={selection}
-            activeFilterMenu={activeFilterMenu}
-            className={className}
-            onClickCheckbox={this.onClickCheckbox}
-            onClickTitle={this.onClickTitle}
-            nothingHappens={nothingHappens}
-          />
-        </Suspense>
-      );
-    } else if (type === 'Initiatives') {
-      return (
-        <Suspense fallback={null}>
-          <InitiativeRow
-            type={type}
-            initiative={post as IInitiativeData}
-            statuses={statuses as IInitiativeStatusData[]}
-            selection={selection}
-            activeFilterMenu={activeFilterMenu}
-            className={className}
-            onClickCheckbox={this.onClickCheckbox}
-            onClickTitle={this.onClickTitle}
-            nothingHappens={nothingHappens}
-          />
-        </Suspense>
-      );
-    }
+  if (isNilOrError(locale)) {
     return null;
   }
-}
+
+  if (type === 'AllIdeas' || type === 'ProjectIdeas') {
+    return (
+      <Suspense fallback={null}>
+        <IdeaRow
+          type={type}
+          idea={post as IIdeaData}
+          phases={phases}
+          statuses={statuses}
+          selection={selection}
+          activeFilterMenu={activeFilterMenu}
+          className={className}
+          onClickCheckbox={onClickCheckbox}
+          onClickTitle={onClickTitle}
+          nothingHappens={nothingHappens}
+          locale={locale}
+        />
+      </Suspense>
+    );
+  } else if (type === 'Initiatives') {
+    return (
+      <Suspense fallback={null}>
+        <InitiativeRow
+          type={type}
+          initiative={post as IInitiativeData}
+          statuses={statuses as IInitiativeStatusData[]}
+          selection={selection}
+          activeFilterMenu={activeFilterMenu}
+          className={className}
+          onClickCheckbox={onClickCheckbox}
+          onClickTitle={onClickTitle}
+          nothingHappens={nothingHappens}
+        />
+      </Suspense>
+    );
+  }
+  return null;
+};
+
+export default Row;

@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "Spørgsmålets titel skal være mindst 10 tegn lang",
   "app.containers.IdeasNewPage.contributionFormTitle": "Tilføj nyt bidrag",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Tilføj nyt bidrag | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "En eller flere filer kunne ikke uploades. Kontroller filstørrelse og format, og prøv igen.",
   "app.containers.IdeasNewPage.goBack": "Gå tilbage",
   "app.containers.IdeasNewPage.ideaFormTitle": "Tilføj en ny ide",

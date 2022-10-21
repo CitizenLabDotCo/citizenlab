@@ -18,7 +18,7 @@ import { media, colors, hexToRgb } from 'utils/styleUtils';
 import { darken } from 'polished';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import mainHeaderMessages from '../MainHeader/messages';
 
@@ -126,7 +126,7 @@ const FullMobileNavMenu = ({
   onClose,
   isFullMenuOpened,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
   const pageSlugById = usePageSlugById();
   const localize = useLocalize();

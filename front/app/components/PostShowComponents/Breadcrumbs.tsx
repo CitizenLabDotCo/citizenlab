@@ -1,8 +1,8 @@
 import React from 'react';
 
 // i18n
-import { injectIntl, FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // components
@@ -67,13 +67,15 @@ const StyledLink = styled(Link)`
 
 const LinkText = styled.span``;
 
+type Message = { message: MessageDescriptor };
+
 interface ILink {
   to: string;
-  text: Multiloc | IMessageInfo;
+  text: Multiloc | Message;
 }
 
-function isIMessageInfo(text: IMessageInfo | Multiloc): text is IMessageInfo {
-  return (text as IMessageInfo).message !== undefined;
+function isIMessageInfo(text: Message | Multiloc): text is Message {
+  return (text as Message).message !== undefined;
 }
 
 interface Props {
@@ -87,7 +89,7 @@ const Breadcrumbs = ({
   className,
   links,
   postType,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const localize = useLocalize();
 
   return (
@@ -108,10 +110,7 @@ const Breadcrumbs = ({
         >
           <LinkText>
             {isIMessageInfo(link.text) ? (
-              <FormattedMessage
-                {...link.text.message}
-                values={link.text.values}
-              />
+              <FormattedMessage {...link.text.message} />
             ) : (
               localize(link.text)
             )}

@@ -29,7 +29,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getCornerRadius } from './utils';
 
 // typings
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
 
@@ -83,7 +83,7 @@ const PostFeedback = ({
   endAtMoment,
   resolution,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const currentPieChart = useRef();
   const currentProgressBarsChart = useRef();
   const currentStackedBarChart = useRef();
