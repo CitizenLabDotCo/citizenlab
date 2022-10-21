@@ -47,7 +47,7 @@ export const InputControl = ({
   const FieldLabel = () => {
     return (
       <Box display="flex">
-        <Text>{label}</Text>
+        {label}
         {uischema?.options?.isAdminField && (
           <IconTooltip
             iconColor={colors.grey800}

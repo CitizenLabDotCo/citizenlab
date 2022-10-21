@@ -35,7 +35,7 @@ const UserPickerControl = ({
   const FieldLabel = () => {
     return (
       <Box display="flex">
-        <Text>{getLabel(uischema, schema, path)}</Text>
+        {getLabel(uischema, schema, path)}
         {uischema?.options?.isAdminField && (
           <IconTooltip
             iconColor={colors.grey800}
