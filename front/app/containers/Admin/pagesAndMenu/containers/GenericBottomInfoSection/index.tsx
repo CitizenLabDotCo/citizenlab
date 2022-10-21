@@ -141,6 +141,7 @@ const GenericBottomInfoSection = ({
                 buttonStyle="primary-outlined"
                 onClick={methods.handleSubmit(onFormSubmitAndEnable)}
                 processing={methods.formState.isSubmitting}
+                data-cy={`e2e-bottom-info-section-secondary-submit`}
               >
                 {formatMessage(messages.saveAndEnableButton)}
               </Button>

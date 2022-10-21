@@ -28,7 +28,9 @@ describe('Admin: update HomePage content', () => {
     cy.get('[data-cy="e2e-navbar-item-edit-button"]').first().click();
 
     // visit top into section edit page
-    cy.get('[data-cy="e2e-admin-edit-button"]').eq(1).click();
+    cy.get(
+      '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
+    ).click();
     cy.get('.e2e-localeswitcher').each((el) => {
       cy.wrap(el).click();
       cy.get('#top_info_section_multiloc-en').clear();
@@ -44,7 +46,9 @@ describe('Admin: update HomePage content', () => {
     cy.get('[data-cy="breadcrumbs-Home"]').click();
 
     // visit bottom into section edit page
-    cy.get('[data-cy="e2e-admin-edit-button"]').eq(2).click();
+    cy.get(
+      '[data-cy="e2e-admin-edit-button-bottom_info_section_enabled"]'
+    ).click();
 
     // update content for each language
     cy.get('.e2e-localeswitcher').each((el) => {
@@ -83,16 +87,10 @@ describe('Admin: update HomePage content', () => {
     ).click();
     cy.wait('@saveHomePage');
 
-    // wait for the bottom info section toggle to be enabled when the request finishes
-    cy.get('[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]')
+    // wait for the toggle to be enabled when the request finishes
+    cy.get('[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]')
       .find('i')
       .should('have.class', 'enabled');
-
-    // click bottom info section toggle and wait for requests to complete
-    cy.get(
-      '[data-cy="e2e-admin-section-toggle-bottom_info_section_enabled"]'
-    ).click();
-    cy.wait('@saveHomePage');
 
     // wait for the events toggle to become enabled after the request completes
     cy.get('[data-cy="e2e-admin-section-toggle-events_widget_enabled"]')
@@ -109,6 +107,18 @@ describe('Admin: update HomePage content', () => {
     cy.get('[data-cy="e2e-admin-section-toggle-events_widget_enabled"]')
       .find('i')
       .should('have.class', 'enabled');
+
+    // go back to bottom info section edit page
+    cy.get(
+      '[data-cy="e2e-admin-edit-button-bottom_info_section_enabled"]'
+    ).click();
+
+    // check for badge showing a disabled section
+    cy.contains('Not shown on page').should('exist');
+
+    // save + enable section, check for badge confirming it worked
+    cy.get('[data-cy="e2e-bottom-info-section-secondary-submit"').click();
+    cy.contains('Shown on page').should('exist');
 
     // go back to homepage and see that the content is there correctly
     cy.visit('/');

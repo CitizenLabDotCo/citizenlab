@@ -143,6 +143,7 @@ const GenericTopInfoSection = ({
                   buttonStyle="primary-outlined"
                   onClick={methods.handleSubmit(onFormSubmitAndEnable)}
                   processing={methods.formState.isSubmitting}
+                  data-cy={`e2e-top-info-section-secondary-submit`}
                 >
                   {formatMessage(messages.topInfoSaveAndEnableButton)}
                 </Button>
