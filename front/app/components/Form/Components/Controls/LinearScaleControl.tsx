@@ -39,11 +39,19 @@ const LinearScaleControl = ({
         gap="16px"
         overflow="visible"
       >
-        <Box pt="28px" alignSelf="center">
-          <Text mr="8px" mt="0" mb="0" color="textSecondary" textAlign="right">
-            {uischema.options?.minimum_label}
-          </Text>
-        </Box>
+        {uischema.options?.minimum_label && (
+          <Box pt="28px" alignSelf="center">
+            <Text
+              mr="8px"
+              mt="0"
+              mb="0"
+              color="textSecondary"
+              textAlign="right"
+            >
+              {uischema.options?.minimum_label}
+            </Text>
+          </Box>
+        )}
         <>
           {[...Array(maximum).keys()].map((i) => {
             const rowId = `${path}-radio-${i}`;

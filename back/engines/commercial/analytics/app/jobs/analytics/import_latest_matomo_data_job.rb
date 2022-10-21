@@ -20,12 +20,12 @@ module Analytics
     # determined by any smart calculations.
     RETROACTIVE_IMPORT = 15.minutes
 
-    def run(tenant_id, min_duration: 1.day, max_nb_batches: 5, batch_size: 250)
+    def run(tenant_id, min_duration: 1.day, max_nb_batches: 5, batch_size: 250, min_timestamp: nil)
       Tenant.find(tenant_id).switch do
         lock_name = calculate_lock_name(matomo_site_id)
 
         CitizenLab::LockManager.try_with_transaction_lock(lock_name) do
-          import_data(matomo_site_id, min_duration, max_nb_batches, batch_size)
+          import_data(matomo_site_id, min_duration, max_nb_batches, batch_size, min_timestamp)
         end
       end
     rescue CitizenLab::LockManager::FailedToLock
@@ -55,15 +55,16 @@ module Analytics
       arguments.first
     end
 
-    def import_data(site_id, min_duration, max_nb_batches, batch_size)
+    def import_data(site_id, min_duration, max_nb_batches, batch_size, min_timestamp = nil)
       # We resume the import at the timestamp of the last action or at the time of
       # creation of the platform if there are no visits yet in the DB.
-      from_timestamp =
-        (FactVisit.maximum(:matomo_last_action_time) || AppConfiguration.instance.created_at).to_i
+      unless min_timestamp
+        last_import_timestamp = FactVisit.maximum(:matomo_last_action_time)&.- RETROACTIVE_IMPORT
+        min_timestamp = (last_import_timestamp || AppConfiguration.instance.created_at).to_i
+      end
 
-      from_timestamp -= RETROACTIVE_IMPORT.to_i
       MatomoDataImporter.new.import(
-        site_id, from_timestamp,
+        site_id, min_timestamp,
         min_duration: min_duration, max_nb_batches: max_nb_batches, batch_size: batch_size
       )
     end

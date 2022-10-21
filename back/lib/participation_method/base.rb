@@ -37,6 +37,10 @@ module ParticipationMethod
       true
     end
 
+    def delete_inputs_on_pc_deletion?
+      false
+    end
+
     def sign_in_required_for_posting?
       true
     end

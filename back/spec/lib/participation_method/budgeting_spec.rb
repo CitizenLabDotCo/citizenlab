@@ -83,6 +83,12 @@ RSpec.describe ParticipationMethod::Budgeting do
     end
   end
 
+  describe '#delete_inputs_on_pc_deletion?' do
+    it 'returns false' do
+      expect(participation_method.delete_inputs_on_pc_deletion?).to be false
+    end
+  end
+
   describe '#sign_in_required_for_posting?' do
     it 'returns true' do
       expect(participation_method.sign_in_required_for_posting?).to be true

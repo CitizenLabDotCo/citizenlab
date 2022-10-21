@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "Frågetiteln måste vara minst 10 tecken lång",
   "app.containers.IdeasNewPage.contributionFormTitle": "Lägg till nytt bidrag",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Lägg till nytt bidrag | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "En fil kunde inte laddas upp. Kontrollera filstorleken och formatet och försök igen.",
   "app.containers.IdeasNewPage.goBack": "Gå tillbaka",
   "app.containers.IdeasNewPage.ideaFormTitle": "Lägg till ny idé",

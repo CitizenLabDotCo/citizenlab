@@ -32,6 +32,10 @@ module ParticipationMethod
       participation_context.ideas_count.zero?
     end
 
+    def delete_inputs_on_pc_deletion?
+      true
+    end
+
     def sign_in_required_for_posting?
       false
     end
