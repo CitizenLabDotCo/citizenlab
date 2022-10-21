@@ -92,6 +92,8 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
   const onSubmit = async (data) => {
     let location_point_geojson;
+    // TODO Remove this in CL-1788 when it is used
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { idea_files_attributes, ...ideaWithOUtFiles } = data;
 
     if (data.location_description && !data.location_point_geojson) {
