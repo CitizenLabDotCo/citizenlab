@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 import { openSignUpInModal } from 'components/SignUpIn/events';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
@@ -143,7 +143,7 @@ const HeaderContent = ({
   align = 'center',
   fontColors,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
 

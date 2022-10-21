@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { useParams, useLocation } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ import { getFormActionsConfig } from 'containers/Admin/formBuilder/utils';
 // Styles
 import { colors } from 'utils/styleUtils';
 
-const Forms = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as { projectId: string };
   const project = useProject({ projectId });
   const phases = usePhases(projectId);

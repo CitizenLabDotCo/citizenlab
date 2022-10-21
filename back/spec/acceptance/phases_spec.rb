@@ -370,7 +370,8 @@ resource 'Phases' do
           :custom_field_multiselect,
           resource: form,
           title_multiloc: { 'en' => 'What are your favourite pets?' },
-          description_multiloc: {}
+          description_multiloc: {},
+          required: true
         )
       end
       let!(:cat_option) do
@@ -408,6 +409,7 @@ resource 'Phases' do
                 {
                   inputType: 'multiselect',
                   question: { en: 'What are your favourite pets?' },
+                  required: true,
                   totalResponses: 3,
                   answers: [
                     { answer: { en: 'Cat' }, responses: 2 },

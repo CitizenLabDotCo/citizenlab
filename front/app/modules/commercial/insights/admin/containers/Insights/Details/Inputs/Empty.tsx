@@ -2,7 +2,7 @@ import React from 'react';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // styles
@@ -18,7 +18,7 @@ const Container = styled.div`
   }
 `;
 
-const Empty = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const Empty = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   return (
     <Container data-testid="insightsDetailsEmpty">
       <h2>{formatMessage(messages.inputsEmptyTitle)}</h2>

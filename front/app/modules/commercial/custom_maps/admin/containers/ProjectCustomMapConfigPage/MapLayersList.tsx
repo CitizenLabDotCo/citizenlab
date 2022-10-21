@@ -26,7 +26,7 @@ import addOrderingToLayers, {
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -85,7 +85,7 @@ interface Props {
   className?: string;
 }
 
-const MapLayersList = memo<Props & InjectedIntlProps & InjectedLocalized>(
+const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
   ({
     projectId,
     onEditLayer,

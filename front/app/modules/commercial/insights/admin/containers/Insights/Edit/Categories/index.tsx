@@ -34,7 +34,7 @@ import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsight
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // types
@@ -127,7 +127,7 @@ const Categories = ({
   intl: { formatMessage },
   params: { viewId },
   location: { query, pathname },
-}: InjectedIntlProps & WithRouterProps) => {
+}: WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
 
   const [loadingAdd, setLoadingAdd] = useState(false);

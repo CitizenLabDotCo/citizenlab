@@ -12,7 +12,7 @@ import { HookFormUserFilterConditions } from '../../components/UserFilterConditi
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import adminUsersMessages from 'containers/Admin/users/messages';
 
 // Styling
@@ -46,7 +46,7 @@ type Props = {
   onSubmit: (formValues: RulesFormValues) => void | Promise<void>;
   defaultValues?: Partial<RulesFormValues>;
   isVerificationEnabled: boolean;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const RulesGroupForm = ({
   intl: { formatMessage },

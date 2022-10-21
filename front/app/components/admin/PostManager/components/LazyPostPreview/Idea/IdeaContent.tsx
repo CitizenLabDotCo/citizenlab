@@ -44,7 +44,7 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
@@ -180,7 +180,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 export class IdeaContent extends PureComponent<
-  Props & InjectedLocalized & InjectedIntlProps,
+  Props & InjectedLocalized & WrappedComponentProps,
   State
 > {
   handleClickDelete = (processType: ProcessType) => () => {

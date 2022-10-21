@@ -41,7 +41,7 @@ describe('Form builder number field', () => {
 
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     // Set the field to required
-    cy.contains('Required').click();
+    cy.get('#e2e-required-toggle').find('input').click({ force: true });
 
     cy.get('form').submit();
     // Should show success message on saving

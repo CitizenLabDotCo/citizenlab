@@ -15,7 +15,7 @@ import { updateNavbarItem } from '../../../services/navbar';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -25,7 +25,7 @@ import useLocalize from 'hooks/useLocalize';
 const EditNavbarItemForm = ({
   params: { navbarItemId },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const navbarItem = useNavbarItem({ navbarItemId });
   const localize = useLocalize();

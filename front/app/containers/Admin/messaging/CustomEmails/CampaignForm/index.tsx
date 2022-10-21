@@ -3,7 +3,7 @@ import { Multiloc } from 'typings';
 import styled from 'styled-components';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -67,7 +67,7 @@ export interface FormValues {
 type CampaignFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const CampaignForm = ({
   onSubmit,

@@ -33,6 +33,10 @@ module ParticipationMethod
       false
     end
 
+    def edit_custom_form_allowed?
+      true
+    end
+
     def delete_inputs_on_pc_deletion?
       false
     end
