@@ -103,8 +103,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
     // Delete a remote image only on submission
     if (
-      data.idea_images_attributes === undefined &&
-      initialFormData?.idea_images_attributes !== undefined
+      data.idea_images_attributes !== initialFormData?.idea_images_attributes
     ) {
       try {
         deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
