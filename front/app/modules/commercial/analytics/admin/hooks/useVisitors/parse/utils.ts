@@ -44,7 +44,7 @@ export const getEmptyRow = (date: Moment) => ({
   visits: 0,
 });
 
-const getDate = (row: TimeSeriesResponseRow) => {
+export const getDate = (row: TimeSeriesResponseRow) => {
   if ('dimension_date_last_action.month' in row) {
     return moment(row['dimension_date_last_action.month']);
   }

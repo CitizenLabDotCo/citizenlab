@@ -1,12 +1,12 @@
-// parse dates
-import { parseMonths } from './parseMonths';
-import { parseWeeks } from './parseWeeks';
-import { parseDays } from './parseDays';
-
 // utils
+import { parseVisitDuration, parsePageViews, getDate, parseRow } from './utils';
+import {
+  roundDateToMidnight,
+  parseMonths,
+  parseWeeks,
+  parseDays,
+} from '../../../utils/timeSeries';
 import { keys } from 'utils/helperUtils';
-import { roundDateToMidnight } from '../../../utils/timeSeries';
-import { parseVisitDuration, parsePageViews } from './utils';
 
 // typings
 import { Moment } from 'moment';
@@ -61,7 +61,9 @@ export const parseTimeSeries = (
     return parseMonths(
       responseTimeSeries,
       startAtMomentRounded,
-      endAtMomentRounded
+      endAtMomentRounded,
+      getDate,
+      parseRow
     );
   }
 
@@ -69,14 +71,18 @@ export const parseTimeSeries = (
     return parseWeeks(
       responseTimeSeries,
       startAtMomentRounded,
-      endAtMomentRounded
+      endAtMomentRounded,
+      getDate,
+      parseRow
     );
   }
 
   return parseDays(
     responseTimeSeries,
     startAtMomentRounded,
-    endAtMomentRounded
+    endAtMomentRounded,
+    getDate,
+    parseRow
   );
 };
 

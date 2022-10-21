@@ -1,6 +1,103 @@
 import moment, { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+export const parseMonths = <Row, ParsedRow>(
+  timeSeries: Row[],
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined,
+  getDate: (row: Row) => Moment,
+  parseRow: (date: Moment, row?: Row) => ParsedRow
+): ParsedRow[] | null => {
+  const indexedTimeSeries = indexTimeSeries(timeSeries, getDate);
+
+  const firstDateInData = getFirstDateInData(timeSeries, getDate);
+  const lastDateInData = getLastDateInData(timeSeries, getDate);
+
+  const startMonth = startAtMoment
+    ? roundDownToFirstDayOfMonth(startAtMoment)
+    : roundDownToFirstDayOfMonth(firstDateInData);
+
+  const endMonth = endAtMoment
+    ? roundDownToFirstDayOfMonth(endAtMoment)
+    : roundDownToFirstDayOfMonth(lastDateInData);
+
+  const months = dateRange(startMonth, endMonth, 'month');
+  if (months === null) return null;
+
+  return months.map((month) => {
+    const currentMonthStr = month.format('YYYY-MM-DD');
+    const row = indexedTimeSeries.get(currentMonthStr);
+
+    return parseRow(month, row);
+  });
+};
+
+export const parseWeeks = <Row, ParsedRow>(
+  timeSeries: Row[],
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined,
+  getDate: (row: Row) => Moment,
+  parseRow: (date: Moment, row?: Row) => ParsedRow
+): ParsedRow[] | null => {
+  const indexedTimeSeries = indexTimeSeries(timeSeries, getDate);
+
+  const firstDateInData = getFirstDateInData(timeSeries, getDate);
+  const lastDateInData = getLastDateInData(timeSeries, getDate);
+
+  const startMonday = startAtMoment
+    ? roundDownToMonday(startAtMoment)
+    : roundDownToMonday(firstDateInData);
+
+  const endMonday = endAtMoment
+    ? roundDownToMonday(endAtMoment)
+    : roundDownToMonday(lastDateInData);
+
+  const mondays = dateRange(startMonday, endMonday, 'week');
+  if (mondays === null) return null;
+
+  return mondays.map((monday) => {
+    const currentMondayStr = monday.format('YYYY-MM-DD');
+    const row = indexedTimeSeries.get(currentMondayStr);
+
+    return parseRow(monday, row);
+  });
+};
+
+export const parseDays = <Row, ParsedRow>(
+  timeSeries: Row[],
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined,
+  getDate: (row: Row) => Moment,
+  parseRow: (date: Moment, row?: Row) => ParsedRow
+): ParsedRow[] | null => {
+  const indexedTimeSeries = indexTimeSeries(timeSeries, getDate);
+
+  const firstDateInData = getFirstDateInData(timeSeries, getDate);
+  const lastDateInData = getLastDateInData(timeSeries, getDate);
+
+  const startDay = startAtMoment ?? firstDateInData;
+  const endDay = endAtMoment ?? lastDateInData;
+
+  const days = dateRange(startDay, endDay, 'day');
+  if (days === null) return null;
+
+  return days.map((day) => {
+    const currentDayStr = day.format('YYYY-MM-DD');
+    const row = indexedTimeSeries.get(currentDayStr);
+
+    return parseRow(day, row);
+  });
+};
+
+const roundDownToFirstDayOfMonth = (date: Moment) => {
+  return moment(`${date.format('YYYY-MM')}-01`);
+};
+
+const roundDownToMonday = (date: Moment) => {
+  const dayNumber = date.isoWeekday();
+  return date.clone().subtract({ day: dayNumber - 1 });
+};
+
 export const roundDateToMidnight = (date: Moment) => {
   return moment(date.format('YYYY-MM-DD'));
 };
