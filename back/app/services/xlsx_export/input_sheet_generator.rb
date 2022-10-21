@@ -118,11 +118,11 @@ module XlsxExport
     end
 
     def assignee_fullname_report_field
-      ComputedFieldForReport.new(column_header_for('assignee_fullname'), ->(input) { input.assignee.full_name })
+      ComputedFieldForReport.new(column_header_for('assignee_fullname'), ->(input) { input.assignee&.full_name })
     end
 
     def assignee_email_report_field
-      ComputedFieldForReport.new(column_header_for('assignee_email'), ->(input) { input.assignee.email })
+      ComputedFieldForReport.new(column_header_for('assignee_email'), ->(input) { input.assignee&.email })
     end
 
     def input_report_fields
