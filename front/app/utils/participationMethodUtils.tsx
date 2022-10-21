@@ -50,7 +50,7 @@ export type ParticipationMethodConfig = {
   getFormTitle?: (props: FormTitleMethodProps) => void;
   getMethodPickerMessage: () => ReactNode | JSX.Element | null;
   showInputManager: boolean;
-  methodIsLocked: boolean;
+  isMethodLocked: boolean;
   postType: 'defaultInput' | 'nativeSurvey';
 };
 
@@ -108,7 +108,7 @@ const ideationConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
-  methodIsLocked: false,
+  isMethodLocked: false,
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -140,7 +140,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     return <FormattedMessage {...messages.surveyTitle} {...props} />;
   },
   showInputManager: false,
-  methodIsLocked: true,
+  isMethodLocked: true,
 };
 
 const informationConfig: ParticipationMethodConfig = {
@@ -156,7 +156,7 @@ const informationConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  methodIsLocked: false,
+  isMethodLocked: false,
 };
 
 const surveyConfig: ParticipationMethodConfig = {
@@ -172,7 +172,7 @@ const surveyConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  methodIsLocked: false,
+  isMethodLocked: false,
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
@@ -219,7 +219,7 @@ const budgetingConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
-  methodIsLocked: false,
+  isMethodLocked: false,
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -235,7 +235,7 @@ const pollConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  methodIsLocked: false,
+  isMethodLocked: false,
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
@@ -251,7 +251,7 @@ const volunteeringConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  methodIsLocked: false,
+  isMethodLocked: false,
 };
 
 const methodToConfig: {

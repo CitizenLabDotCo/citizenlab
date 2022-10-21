@@ -56,7 +56,7 @@ export const ParticipationMethodPicker = ({
     <SectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.participationMethodTitleText} />
-        {!config.methodIsLocked && (
+        {!config.isMethodLocked && (
           <IconTooltip
             content={
               <FormattedMessage {...messages.participationMethodTooltip} />
@@ -64,7 +64,7 @@ export const ParticipationMethodPicker = ({
           />
         )}
       </SubSectionTitle>
-      {!config.methodIsLocked ? (
+      {!config.isMethodLocked ? (
         <>
           <ParticipationMethodRadio
             onChange={handleParticipationMethodOnChange}
