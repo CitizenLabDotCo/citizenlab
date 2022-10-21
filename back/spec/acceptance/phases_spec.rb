@@ -505,7 +505,60 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/as_xlsx' do
-      context 'for an ideation phase' do
+      context 'for an ideation phase without persisted form', document: false do
+        let(:project) { create(:project, process_type: 'timeline') }
+        let(:ideation_phase) do
+          create(
+            :phase,
+            project: project,
+            participation_method: 'ideation',
+            title_multiloc: {
+              'en' => 'Ideation phase',
+              'nl-BE' => 'Ideeënfase'
+            }
+          )
+        end
+        let(:id) { ideation_phase.id }
+
+        example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+          do_request
+          expect(status).to eq 200
+          expect(xlsx_contents(response_body)).to match_array([
+            {
+              sheet_name: ideation_phase.title_multiloc['en'],
+              column_headers: [
+                'ID',
+                'Title',
+                'Description',
+                'Budget',
+                'Proposed Budget',
+                'Tags',
+                'Latitude',
+                'Longitude',
+                'Location',
+                'Attachments',
+                'Author name',
+                'Author email',
+                'Author ID',
+                'Submitted at',
+                'Published at',
+                'Comments',
+                'Upvotes',
+                'Downvotes',
+                'Baskets',
+                'URL',
+                'Project',
+                'Status',
+                'Assignee',
+                'Assignee email'
+              ],
+              rows: []
+            }
+          ])
+        end
+      end
+
+      context 'for an ideation phase with persisted form' do
         let(:project) { create(:project, process_type: 'timeline') }
         let(:project_form) { create(:custom_form, participation_context: project) }
         let(:ideation_phase) do
@@ -660,7 +713,32 @@ resource 'Phases' do
         end
       end
 
-      context 'for a native survey phase' do
+      context 'for a native survey phase without persisted form', document: false do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:active_phase) { project.phases.first }
+        let(:id) { active_phase.id }
+
+        example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+          do_request
+          expect(status).to eq 200
+          expect(xlsx_contents(response_body)).to match_array([
+            {
+              sheet_name: active_phase.title_multiloc['en'],
+              column_headers: [
+                'ID',
+                'Author name',
+                'Author email',
+                'Author ID',
+                'Submitted at',
+                'Project'
+              ],
+              rows: []
+            }
+          ])
+        end
+      end
+
+      context 'for a native survey phase with persisted form' do
         let(:project) { create(:project_with_active_native_survey_phase) }
         let(:active_phase) { project.phases.first }
         let(:form) { create(:custom_form, participation_context: active_phase) }
