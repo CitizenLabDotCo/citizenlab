@@ -7,7 +7,7 @@ import { capitalize } from 'lodash-es';
 
 // typings
 import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';
-import { Translations } from './utils';
+import { Translations } from './translations';
 import { Localize } from 'hooks/useLocalize';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 

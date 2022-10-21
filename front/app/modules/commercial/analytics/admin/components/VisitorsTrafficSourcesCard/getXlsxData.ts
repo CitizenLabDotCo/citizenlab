@@ -6,7 +6,7 @@ import { apiEndpoint, QuerySchema, Query } from '../../services/analyticsFacts';
 // i18n
 import messages from './messages';
 import referrerTypeMessages from '../../hooks/useVisitorReferrerTypes/messages';
-import { getTranslations as getReferrerTranslations } from '../../hooks/useVisitorReferrers/utils';
+import { getTranslations as getReferrerTranslations } from '../../hooks/useVisitorReferrers/translations';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';

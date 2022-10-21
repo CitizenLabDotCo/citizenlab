@@ -10,6 +10,7 @@ import {
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import { getTranslations } from './translations';
 
 // parse
 import { parseStats, parseTimeSeries, parseExcelData } from './parse';
@@ -21,7 +22,7 @@ import {
   getDateFilterLastPeriod,
   getInterval,
 } from '../../utils/query';
-import { deduceResolution, getTranslations } from './utils';
+import { deduceResolution } from './utils';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';

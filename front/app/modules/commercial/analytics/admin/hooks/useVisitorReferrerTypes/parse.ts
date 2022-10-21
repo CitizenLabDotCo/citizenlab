@@ -6,7 +6,7 @@ import { roundPercentages } from 'utils/math';
 
 // typings
 import { Response, PieRow } from './typings';
-import { Translations } from './utils';
+import { Translations } from './translations';
 
 export const parsePieData = (
   data: Response['data'],

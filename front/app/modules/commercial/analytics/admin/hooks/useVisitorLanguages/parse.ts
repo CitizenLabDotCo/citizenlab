@@ -1,6 +1,6 @@
 import { Response, PieRow } from './typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { Translations } from './utils';
+import { Translations } from './translations';
 
 // styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';

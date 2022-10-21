@@ -15,7 +15,7 @@ import {
   TimeSeriesResponseRow,
   TimeSeriesRow,
 } from './typings';
-import { Translations } from './utils';
+import { Translations } from './translations';
 
 export const parseStats = ([
   totalsWholePeriodRows,
