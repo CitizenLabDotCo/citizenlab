@@ -88,13 +88,14 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
   const onSubmit = async (data) => {
     let location_point_geojson;
+    const { idea_files_attributes, ...ideaWithOUtFiles } = data;
 
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
     }
 
     const idea = await updateIdea(ideaId, {
-      ...data,
+      ...ideaWithOUtFiles,
       location_point_geojson,
       project_id: project?.id,
       publication_status: 'published',
