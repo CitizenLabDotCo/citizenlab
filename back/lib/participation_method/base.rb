@@ -37,6 +37,10 @@ module ParticipationMethod
       true
     end
 
+    def delete_inputs_on_pc_deletion?
+      false
+    end
+
     def extra_fields_category_translation_key
       'custom_forms.categories.extra.title'
     end
