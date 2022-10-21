@@ -545,6 +545,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "our guidelines",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Start å skrive for å søke bruker ved hjelp av epost eller navn...",
   "app.components.form.blockedVerified": "Du kan ikke redigere dette feltet fordi det inneholder informasjon som er bekreftet",
+  "app.components.form.controls.adminFieldTooltip": "Feltet er bare synlig for administratorer",
   "app.components.form.controls.selectMany": "*Velg så mange som du ønsker",
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "Kunne ikke laste område for lokalisering basert på opplysninger fra google maps.",
