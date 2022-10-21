@@ -9,6 +9,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useInputSchema from 'hooks/useInputSchema';
+import useIdeaImages from 'hooks/useIdeaImages';
+import useResourceFiles from 'hooks/useResourceFiles';
 import { getInputTerm } from 'services/participationContexts';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,11 +31,15 @@ import { deleteIdeaImage } from 'services/ideaImages';
 
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
-
   const authUser = useAuthUser();
   const idea = useIdea({ ideaId });
   const project = useProject({
     projectId: isNilOrError(idea) ? null : idea.relationships.project.data.id,
+  });
+  const remoteImages = useIdeaImages(ideaId);
+  const remoteFiles = useResourceFiles({
+    resourceId: ideaId,
+    resourceType: 'idea',
   });
 
   const phases = usePhases(project?.id);
@@ -58,9 +64,6 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       ? null
       : Object.fromEntries(
           Object.keys(schema.properties).map((prop) => {
-            if (prop === 'idea_images_attributes') {
-              return [prop, idea.relationships?.idea_images?.data];
-            }
             if (prop === 'author_id') {
               return [prop, idea.relationships?.author?.data?.id];
             } else if (idea.attributes?.[prop]) {
@@ -73,12 +76,25 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
                 prop,
                 idea.relationships?.topics?.data.map((rel) => rel.id),
               ];
+            } else if (
+              prop === 'idea_images_attributes' &&
+              Array.isArray(idea.relationships?.idea_images?.data)
+            ) {
+              return [prop, remoteImages];
+            } else if (prop === 'idea_files_attributes') {
+              const attachmentsValue =
+                !isNilOrError(remoteFiles) && remoteFiles.length > 0
+                  ? remoteFiles
+                  : undefined;
+              return [prop, attachmentsValue];
             } else return [prop, undefined];
           })
         );
 
   const onSubmit = async (data) => {
     let location_point_geojson;
+    // TODO: Correctly handle deletion for attachments
+    const { _idea_files_attributes, ...ideaWithOUtFiles } = data;
 
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
@@ -96,21 +112,8 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       }
     }
 
-    // Delete an attachment only on submission
-    if (
-      data.idea_images_attributes === undefined &&
-      initialFormData?.idea_images_attributes !== undefined
-    ) {
-      try {
-        // Loop through and delete any initial files not present in the current data
-        deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
-      } catch (e) {
-        // TODO: Add graceful error handling
-      }
-    }
-
     const idea = await updateIdea(ideaId, {
-      ...data,
+      ...ideaWithOUtFiles,
       location_point_geojson,
       project_id: project?.id,
       publication_status: 'published',
@@ -154,7 +157,6 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     },
     [uiSchema]
   );
-
   return (
     <PageContainer overflow="hidden" id="e2e-idea-edit-page">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
