@@ -545,6 +545,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "наше смернице",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Почните са куцањем за претрагу по е-пошти или имену корисника...",
   "app.components.form.blockedVerified": "Не можете да измените ово поље зато што садржи верификоване информације",
+  "app.components.form.controls.adminFieldTooltip": "Поље је видљиво само администраторима",
   "app.components.form.controls.selectMany": "*Изабери колико год желиш",
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "Учитавање поља са локацијом Google мапе није успело.",
