@@ -12,7 +12,6 @@ import { UploadFile } from 'typings';
 import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { FormContext } from 'components/Form/contexts';
-import useResourceFiles from 'hooks/useResourceFiles';
 import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
@@ -29,10 +28,6 @@ const AttachmentsControl = ({
   schema,
 }: ControlProps) => {
   const { inputId } = useContext(FormContext);
-  const remoteFiles = useResourceFiles({
-    resourceId: inputId || null,
-    resourceType: 'idea',
-  });
   const [didBlur, setDidBlur] = useState(false);
   const [files, setFiles] = useState<UploadFile[]>([]);
 
@@ -75,11 +70,11 @@ const AttachmentsControl = ({
   };
 
   useEffect(() => {
-    if (inputId && !isNilOrError(remoteFiles) && remoteFiles.length > 0) {
+    if (inputId && !isNilOrError(data) && data.length > 0) {
       (async () => {
         const newRemoteFiles = (
           await Promise.all(
-            remoteFiles.map(
+            data.map(
               async (f) =>
                 await convertUrlToUploadFile(
                   f.attributes.file.url as string,
@@ -91,7 +86,7 @@ const AttachmentsControl = ({
         newRemoteFiles && setFiles(newRemoteFiles as UploadFile[]);
       })();
     }
-  }, [remoteFiles, inputId]);
+  }, [data, inputId]);
 
   return (
     <Box id="e2e-idea-file-upload">

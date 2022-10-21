@@ -9,6 +9,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useInputSchema from 'hooks/useInputSchema';
+import useIdeaImages from 'hooks/useIdeaImages';
+import useResourceFiles from 'hooks/useResourceFiles';
 import { getInputTerm } from 'services/participationContexts';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,8 +28,6 @@ import IdeasEditMeta from '../IdeasEditMeta';
 import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
-import useIdeaImages from 'hooks/useIdeaImages';
-
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
@@ -36,6 +36,10 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     projectId: isNilOrError(idea) ? null : idea.relationships.project.data.id,
   });
   const remoteImages = useIdeaImages(ideaId);
+  const remoteFiles = useResourceFiles({
+    resourceId: ideaId,
+    resourceType: 'idea',
+  });
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -76,10 +80,11 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
               Array.isArray(idea.relationships?.idea_images?.data)
             ) {
               return [prop, remoteImages];
+            } else if (prop === 'idea_files_attributes') {
+              return [prop, remoteFiles];
             } else return [prop, undefined];
           })
         );
-  debugger;
 
   const onSubmit = async (data) => {
     let location_point_geojson;
