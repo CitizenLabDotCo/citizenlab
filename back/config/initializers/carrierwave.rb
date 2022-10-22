@@ -15,7 +15,7 @@ module ProcessableUriDownloader
   # Before removing, please first make sure the following
   # steps succeed:
   #   1. Download the file from
-  #      https://res.cloudinary.com/citizenlabco/image/upload/v1630939376/Visio%CC%81n_2028_de_Metro_Plan_Estrate%CC%81gico_A_a9ylnk.pdf
+  #      https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/documents/vision_2028_de_metro_plan_estrategico.pdf
   #   2. Do not change the file name!
   #   3. Upload it as an attachment of an idea, on a real
   #      Citizenlab platform (not localhost).
