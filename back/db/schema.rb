@@ -1643,7 +1643,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
               WHEN (((pr.participation_method)::text = 'native_survey'::text) OR ((ph.participation_method)::text = 'native_survey'::text)) THEN survey.id
               ELSE idea.id
           END AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created,
+      (i.created_at)::date AS dimension_date_created_id,
       (i.upvotes_count + i.downvotes_count) AS votes_count,
       i.upvotes_count,
       i.downvotes_count
@@ -1657,7 +1657,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
       i.author_id AS dimension_user_id,
       NULL::uuid AS dimension_project_id,
       adt.id AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created,
+      (i.created_at)::date AS dimension_date_created_id,
       (i.upvotes_count + i.downvotes_count) AS votes_count,
       i.upvotes_count,
       i.downvotes_count
@@ -1668,7 +1668,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
       c.author_id AS dimension_user_id,
       i.project_id AS dimension_project_id,
       adt.id AS dimension_type_id,
-      (c.created_at)::date AS dimension_date_created,
+      (c.created_at)::date AS dimension_date_created_id,
       (c.upvotes_count + c.downvotes_count) AS votes_count,
       c.upvotes_count,
       c.downvotes_count
@@ -1680,7 +1680,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
       v.user_id AS dimension_user_id,
       COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
       adt.id AS dimension_type_id,
-      (v.created_at)::date AS dimension_date_created,
+      (v.created_at)::date AS dimension_date_created_id,
       1 AS votes_count,
           CASE
               WHEN ((v.mode)::text = 'up'::text) THEN 1
@@ -1700,7 +1700,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
       pr.user_id AS dimension_user_id,
       COALESCE(p.project_id, pr.participation_context_id) AS dimension_project_id,
       adt.id AS dimension_type_id,
-      (pr.created_at)::date AS dimension_date_created,
+      (pr.created_at)::date AS dimension_date_created_id,
       0 AS votes_count,
       0 AS upvotes_count,
       0 AS downvotes_count
@@ -1712,7 +1712,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
       vv.user_id AS dimension_user_id,
       COALESCE(p.project_id, vc.participation_context_id) AS dimension_project_id,
       adt.id AS dimension_type_id,
-      (vv.created_at)::date AS dimension_date_created,
+      (vv.created_at)::date AS dimension_date_created_id,
       0 AS votes_count,
       0 AS upvotes_count,
       0 AS downvotes_count

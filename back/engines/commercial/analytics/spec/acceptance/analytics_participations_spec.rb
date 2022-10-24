@@ -3,8 +3,8 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Analytics - FactRegistrations model' do
-  explanation 'Queries to summarise registrations.'
+resource 'Analytics - FactParticipations' do
+  explanation 'Queries to summarise participations/active users.'
 
   before do
     header 'Content-Type', 'application/json'
@@ -13,42 +13,48 @@ resource 'Analytics - FactRegistrations model' do
 
   post 'web_api/v1/analytics' do
     before_all do
-      # Create 3 users - 2 registered in Sept 2022 (admin & citizen) and 1 in Oct 2022 (citizen)
-      create(:admin, registration_completed_at: '2022-09-01 10:15:00')
-      create(:user, registration_completed_at: '2022-09-15 16:30:00')
-      create(:user, registration_completed_at: '2022-10-1 16:30:00')
+      # Date dimensions
+      dates = [Date.new(2022, 9, 1), Date.new(2022, 9, 15), Date.new(2022, 10, 1), Date.new(2022, 10, 15)]
+      dates.each do |date|
+        create(:dimension_date, date: date)
+      end
 
-      # Create associated date dimensions
-      create(:dimension_date, date: Date.new(2022, 9, 1))
-      create(:dimension_date, date: Date.new(2022, 9, 15))
-      create(:dimension_date, date: Date.new(2022, 10, 1))
+      # Type dimensions
+      %w[idea initiative comment vote].each do |type|
+        create(:dimension_type, name: type)
+      end
+
+      # Create participations (3 by citizens, 1 by admin)
+      idea = create(:idea, created_at: dates[0])
+      create(:comment, created_at: dates[2], post: idea)
+      create(:vote, created_at: dates[3], user: create(:admin), votable: idea)
+      create(:initiative, created_at: dates[1])
     end
 
     example 'group participations by month' do
       do_request({
         query: {
-          fact: 'registration',
-          groups: 'dimension_date_registration.month',
+          fact: 'participation',
+          groups: 'dimension_date_created.month',
           aggregations: {
-            all: 'count',
-            visitor_id: 'count'
+            all: 'count'
           }
         }
       })
       assert_status 200
       expect(response_data).to match_array([
-        { 'dimension_date_registration.month': '2022-09', count: 2 },
-        { 'dimension_date_registration.month': '2022-10', count: 1 }
+        { 'dimension_date_created.month': '2022-09', count: 2 },
+        { 'dimension_date_created.month': '2022-10', count: 2 }
       ])
     end
 
     example 'filter between dates and return citizen participations only' do
       do_request({
         query: {
-          fact: 'registration',
+          fact: 'participation',
           filters: {
-            dimension_date_registration: {
-              date: { from: '2022-09-01', to: '2022-09-30' }
+            dimension_date_created: {
+              date: { from: '2022-10-01', to: '2022-10-31' }
             },
             dimension_user: {
               role: ['citizen', nil]
@@ -61,6 +67,22 @@ resource 'Analytics - FactRegistrations model' do
       })
       assert_status 200
       expect(response_data).to match_array([{ count: 1 }])
+    end
+
+    example 'filter participations by project' do
+      do_request({
+        query: {
+          fact: 'participation',
+          filters: {
+            dimension_project: { id: Project.first.id }
+          },
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+      assert_status 200
+      expect(response_data).to match_array([{ count: 3 }])
     end
   end
 end
