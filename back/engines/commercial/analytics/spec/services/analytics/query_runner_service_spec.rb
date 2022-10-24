@@ -137,9 +137,9 @@ describe Analytics::QueryRunnerService do
         query_param = ActionController::Parameters.new(build_query(5, 3))
         runner = described_class.new
         results, pagination = runner.run(Analytics::Query.new(query_param))
-        
+
         expect(results).to eq([])
-        
+
         expect(URI.decode_www_form(pagination[:self]).to_h['page[number]']).to eq('3')
         expect(URI.decode_www_form(pagination[:first]).to_h['page[number]']).to eq('1')
         expect(URI.decode_www_form(pagination[:prev]).to_h['page[number]']).to eq('2')
