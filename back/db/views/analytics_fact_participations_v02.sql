@@ -6,18 +6,18 @@ SELECT
     i.author_id AS dimension_user_id,
     i.project_id AS dimension_project_id,
     CASE
-        WHEN pr.participation_method = 'native_surveys' OR ph.participation_method = 'native_surveys' THEN survey.id
+        WHEN pr.participation_method = 'native_survey' OR ph.participation_method = 'native_survey' THEN survey.id
         ELSE idea.id
-    END AS dimension_type_id,
+        END AS dimension_type_id,
     i.created_at::DATE AS dimension_date_created,
-    upvotes_count + downvotes_count AS votes_count,
+            upvotes_count + downvotes_count AS votes_count,
     upvotes_count,
     downvotes_count
 FROM ideas i
          LEFT JOIN projects pr ON pr.id = i.project_id
          LEFT JOIN phases ph ON ph.id = i.creation_phase_id
          INNER JOIN analytics_dimension_types idea ON idea.name = 'idea'
-         LEFT JOIN analytics_dimension_types survey ON survey.name = 'native_survey'
+         LEFT JOIN analytics_dimension_types survey ON survey.name = 'survey'
 
 UNION ALL
 

@@ -1640,7 +1640,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
       i.author_id AS dimension_user_id,
       i.project_id AS dimension_project_id,
           CASE
-              WHEN (((pr.participation_method)::text = 'native_surveys'::text) OR ((ph.participation_method)::text = 'native_surveys'::text)) THEN survey.id
+              WHEN (((pr.participation_method)::text = 'native_survey'::text) OR ((ph.participation_method)::text = 'native_survey'::text)) THEN survey.id
               ELSE idea.id
           END AS dimension_type_id,
       (i.created_at)::date AS dimension_date_created,
@@ -1651,7 +1651,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
        LEFT JOIN projects pr ON ((pr.id = i.project_id)))
        LEFT JOIN phases ph ON ((ph.id = i.creation_phase_id)))
        JOIN analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
-       LEFT JOIN analytics_dimension_types survey ON (((survey.name)::text = 'native_survey'::text)))
+       LEFT JOIN analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
   UNION ALL
    SELECT i.id,
       i.author_id AS dimension_user_id,
