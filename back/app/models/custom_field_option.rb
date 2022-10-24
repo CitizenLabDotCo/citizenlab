@@ -56,7 +56,7 @@ class CustomFieldOption < ApplicationRecord
     return unless area
     return unless ordering_previously_changed? || title_multiloc_previously_changed?
 
-    area.update(
+    area.update!(
       ordering: ordering,
       title_multiloc: title_multiloc
     )
