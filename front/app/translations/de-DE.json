@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "Der Titel der Frage muss mindestens 10 Zeichen lang sein",
   "app.containers.IdeasNewPage.contributionFormTitle": "Einen neuen Beitrag hinzufügen\n",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Einen neuen Beitrag hinzufügen | {projectName}\n",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "Das Hochladen einer Datei ist fehlgeschlagen. Bitte prüfen Sie die Dateigröße und das Format und versuchen Sie es erneut.\n",
   "app.containers.IdeasNewPage.goBack": "Zurück",
   "app.containers.IdeasNewPage.ideaFormTitle": "Eine neue Idee hinzufügen\n",
