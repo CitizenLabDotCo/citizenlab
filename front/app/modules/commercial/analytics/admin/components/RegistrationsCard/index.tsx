@@ -22,12 +22,14 @@ import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 interface Props {
+  projectFilter?: string;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
   resolution: IResolution;
 }
 
 const RegistrationsCard = ({
+  projectFilter,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -86,6 +88,7 @@ const RegistrationsCard = ({
         <Box width="100%" pl="80px">
           <Chart
             timeSeries={timeSeries}
+            projectFilter={projectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             resolution={deducedResolution}

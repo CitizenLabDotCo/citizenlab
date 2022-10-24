@@ -25,6 +25,7 @@ import { TimeSeries } from '../../hooks/useRegistrations/typings';
 
 interface Props {
   timeSeries: TimeSeries | NilOrError;
+  projectFilter?: string;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null | undefined;
   resolution: IResolution;
@@ -33,6 +34,7 @@ interface Props {
 
 const Chart = ({
   timeSeries,
+  projectFilter,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -64,7 +66,7 @@ const Chart = ({
 
   return (
     <Box pt="8px" width="90%" maxWidth="900px" height="250px">
-      {isNilOrError(timeSeries) && (
+      {(isNilOrError(timeSeries) || projectFilter) && (
         <LineChart
           width="100%"
           height="100%"
@@ -85,7 +87,7 @@ const Chart = ({
         />
       )}
 
-      {!isNilOrError(timeSeries) && (
+      {!isNilOrError(timeSeries) && !projectFilter && (
         <LineChart
           width="100%"
           height="100%"
