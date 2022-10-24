@@ -1,8 +1,11 @@
 import React from 'react';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import PagesShowPage from 'containers/PagesShowPage';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import InitiativeCards from 'components/InitiativeCards';
@@ -17,6 +20,9 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.main``;
 
@@ -70,7 +76,12 @@ const Padding = styled.div`
 `;
 
 const InitiativeIndexPage = () => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
+
+  if (!initiativesEnabled) {
+    return <PagesShowPage />;
+  }
 
   if (!isNilOrError(initiativePermissions)) {
     const { enabled } = initiativePermissions;
