@@ -14,6 +14,12 @@ describe('Admin: update Hero Banner content', () => {
   const updatedSignedInCTAButton = 'signedin button!';
   const updatedSignedInCTAURL = 'https://www.example.biz';
 
+  // for a fake verified user
+  const verifiedFirstName = randomString();
+  const verifiedLastName = randomString();
+  const verifiedEmail = randomEmail();
+  const verifiedPassword = randomString();
+
   const defaultHomepageSettings = {
     top_info_section_enabled: false,
     bottom_info_section_enabled: false,
@@ -36,6 +42,21 @@ describe('Admin: update Hero Banner content', () => {
     header_bg:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=',
   };
+
+  before(() => {
+    // create and verify a fake user
+    cy.apiSignup(
+      verifiedFirstName,
+      verifiedLastName,
+      verifiedEmail,
+      verifiedPassword
+    ).then(() => {
+      cy.apiLogin(verifiedEmail, verifiedPassword).then((response) => {
+        // verify the fake user
+        cy.apiVerifyBogus(response.body.jwt);
+      });
+    });
+  });
 
   beforeEach(() => {
     // set default homepage settings
@@ -148,8 +169,18 @@ describe('Admin: update Hero Banner content', () => {
     cy.wait('@saveHomePage');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
 
+    // logout of admin@citizenlab account
+    cy.logout();
+
+    // login as fake verified user
+    cy.setLoginCookie(verifiedEmail, verifiedPassword);
+
     // view page as verified user
     cy.goToLandingPage();
+    cy.reload();
+
+    // click button to remove "complete your profile" banner
+    cy.get('.e2e-signed-in-header-complete-skip-btn').find('button').click();
 
     // check content and url for signed in CTA button
     cy.get('[data-cy="e2e-cta-banner-button"]')
