@@ -48,14 +48,12 @@ const LinearScaleControl = ({
       >
         {uischema.options?.minimum_label && (
           <Box
-            pt={isSmallerThanXlPhone ? '8px' : '28px'}
-            mb={isSmallerThanXlPhone ? '16px' : '0px'}
+            pt={isSmallerThanXlPhone ? '0px' : '28px'}
+            mb={'0px'}
             alignSelf="center"
           >
             <Text
               mr="8px"
-              mt="0"
-              mb="0"
               color="textSecondary"
               textAlign={isSmallerThanXlPhone ? 'left' : 'right'}
             >
@@ -69,7 +67,7 @@ const LinearScaleControl = ({
             const visualIndex = i + 1;
             return (
               <Box
-                mb={isSmallerThanXlPhone ? '4px' : 'auto'}
+                mb={isSmallerThanXlPhone ? '4px' : '0px'}
                 display={isSmallerThanXlPhone ? 'flex' : 'block'}
                 gap={isSmallerThanXlPhone ? '4px' : 'auto'}
                 key={i}
@@ -78,7 +76,7 @@ const LinearScaleControl = ({
                 <Box
                   mt={isSmallerThanXlPhone ? '0px' : '16px'}
                   mr="4px"
-                  ml={isSmallerThanXlPhone ? '0px' : '4px'}
+                  ml={isSmallerThanXlPhone ? '0px' : '5px'}
                   minHeight="24px"
                 >
                   <Label htmlFor={rowId}>{visualIndex}</Label>
