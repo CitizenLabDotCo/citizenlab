@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  onSurveySubmission: {
-    id: 'app.utils.participationMethod.onSurveySubmission',
+  onSurveySubmissionMessage: {
+    id: 'app.utils.participationMethod.onSurveySubmissionMessage',
     defaultMessage: 'Thank you. Your response has been received.',
   },
   ideaFormTitle: {

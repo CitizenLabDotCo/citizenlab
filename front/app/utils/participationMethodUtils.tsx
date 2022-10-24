@@ -130,7 +130,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   getModalContent: (props: ModalContentMethodProps) => {
     return (
       <FormattedMessage
-        {...messages.onSurveySubmission}
+        {...messages.onSurveySubmissionMessage}
         {...props}
         data-cy="e2e-survey-success-message"
       />
