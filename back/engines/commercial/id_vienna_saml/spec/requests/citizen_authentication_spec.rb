@@ -76,14 +76,14 @@ describe 'Vienna SAML citizen authentication', type: :request do
 
   context 'when the user already exists' do
     before do
-      create(:user, email: 'philipp.press@extern.wien.gv.at')
+      create(:user, email: 'philipp.press@extern.wien.gv.at', first_name: 'Bob', last_name: 'Alice')
       get '/auth/vienna_citizen'
       follow_redirect!
     end
 
-    it 'updates the user attributes with the data from the auth response' do
+    it 'does not overwrite first name & last name with the data from the auth response' do
       user = User.find_by(email: 'philipp.press@extern.wien.gv.at')
-      expect(user).to have_attributes(first_name: 'Philipp', last_name: 'Preß')
+      expect(user).to have_attributes(first_name: 'Bob', last_name: 'Alice')
     end
 
     it 'sets the JWT auth token' do

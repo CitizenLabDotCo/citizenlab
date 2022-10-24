@@ -146,8 +146,8 @@ class OmniauthCallbackController < ApplicationController
     if overwrite_attrs
       user.update!(update_hash)
     else
-      attrs.each_pair do |attr, value|
-        user.write_attribute(attr, value) unless user.attribute_present?(attr)
+      update_hash.each_pair do |attr, value|
+        user.write_attributes(attr => value) unless user.attribute_present?(attr)
       end
       user.save!
     end
