@@ -1,16 +1,21 @@
 import { randomString } from '../../../support/commands';
 
-describe('Admin: update HomePage content', () => {
+describe('Admin: update text content and sections', () => {
   before(() => {
     cy.apiUpdateHomepageSettings({
       top_info_section_enabled: false,
       bottom_info_section_enabled: false,
       events_widget_enabled: false,
     });
+    cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
   });
 
-  beforeEach(() => {
-    cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
+  after(() => {
+    cy.apiUpdateHomepageSettings({
+      top_info_section_enabled: false,
+      bottom_info_section_enabled: false,
+      events_widget_enabled: false,
+    });
   });
 
   it('updates top and bottom info section content and visibility', () => {
@@ -125,13 +130,5 @@ describe('Admin: update HomePage content', () => {
     cy.contains(topInfoContent);
     cy.contains(bottomInfoContent);
     cy.get('[data-testid="e2e-events-widget-container"]').should('exist');
-  });
-
-  after(() => {
-    cy.apiUpdateHomepageSettings({
-      top_info_section_enabled: false,
-      bottom_info_section_enabled: false,
-      events_widget_enabled: false,
-    });
   });
 });

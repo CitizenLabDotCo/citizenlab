@@ -1178,6 +1178,7 @@ export function apiUpdateHomepageSettings({
   banner_signed_out_header_overlay_opacity,
   banner_cta_signed_out_type,
   banner_cta_signed_in_type,
+  header_bg,
 }: {
   top_info_section_enabled?: boolean;
   bottom_info_section_enabled?: boolean;
@@ -1192,6 +1193,7 @@ export function apiUpdateHomepageSettings({
   banner_signed_out_header_overlay_opacity?: number;
   banner_cta_signed_out_type?: string;
   banner_cta_signed_in_type?: string;
+  header_bg?: string;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1218,6 +1220,7 @@ export function apiUpdateHomepageSettings({
           banner_signed_out_header_overlay_opacity,
           banner_cta_signed_in_type,
           banner_cta_signed_out_type,
+          header_bg,
         },
       },
     });
