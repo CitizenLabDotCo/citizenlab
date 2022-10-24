@@ -48,11 +48,8 @@ class Area < ApplicationRecord
     greater_than_or_equal_to: 0
   }, unless: ->(area) { area.ordering.nil? }
 
-  # The optional +domicile_field+ parameter is only there for performance
-  # reasons.
-  def recreate_custom_field_option(domicile_field = nil)
-    domicile_field ||= CustomField.find_by(key: 'domicile')
-    return unless domicile_field
+  def recreate_custom_field_option
+    return unless (domicile_field = CustomField.find_by(key: 'domicile'))
 
     option_attrs = option_attributes(domicile_field)
 
