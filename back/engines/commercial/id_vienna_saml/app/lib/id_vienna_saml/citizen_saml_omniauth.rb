@@ -20,10 +20,11 @@ module IdViennaSaml
     # @return [Hash] The user attributes
     def profile_to_user_attrs(auth)
       attrs = auth.dig(:extra, :raw_info).to_h
-      email =  attrs.fetch('urn:oid:0.9.2342.19200300.100.1.3').first
+      email = attrs.fetch('urn:oid:0.9.2342.19200300.100.1.3').first
+      placeholder_name = generate_placeholder_name_from_email(email)
       locale = AppConfiguration.instance.settings.dig('core', 'locales').first
-      first_name = attrs.fetch('urn:oid:2.5.4.42', [generate_placeholder_from_email(email, :first)]).first
-      last_name = attrs.fetch('urn:oid:1.2.40.0.10.2.1.1.261.20', [generate_placeholder_from_email(email, :last)]).first
+      first_name = attrs['urn:oid:2.5.4.42']&.first || placeholder_name[:first_name]
+      last_name = attrs['urn:oid:1.2.40.0.10.2.1.1.261.20']&.first || placeholder_name[:last_name]
 
       {
         email: email,
@@ -83,30 +84,18 @@ module IdViennaSaml
     end
 
     # Generates a placeholder name based on the email.
-    # For first names, uses the first character of the email,
-    # For last names, uses the second character of the email or the first character of the second word if available.
     # @param [String] email
-    # @param [Symbol] part Either `:first` or `:last`
-    # @return [String]
-    def generate_placeholder_from_email(email, part)
-      case part
-      when :first
-        placeholder = email[0]
-      when :last
-        local_part = email.split('@').first
-        words = local_part.split(/_|\./)
-        if words.size > 1
-          second_word = words[1]
-          placeholder = second_word[0]
-        else
-          first_word = words[0]
-          placeholder = first_word[1]
-        end
-      else
-        raise ArgumentError, "name must be either :first or :last, but was #{part.inspect} instead."
-      end
+    # @return [Array<String>]
+    def generate_placeholder_name_from_email(email)
+      local_part = email.split('@').first
+      words = local_part.split(/_|\./)
+      first_word = words[0]
+      second_word = words[1]
 
-      placeholder.upcase
+      first_name = first_word.first
+      last_name = second_word&.first || first_word.second || first_name
+
+      { first_name: first_name.upcase, last_name: last_name.upcase }
     end
   end
 end
