@@ -40,6 +40,7 @@ declare global {
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
+      apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
@@ -946,6 +947,21 @@ export function apiRemoveFolder(folderId: string) {
   });
 }
 
+export function apiRemoveCustomPage(customPageId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/static_pages/${customPageId}`,
+    });
+  });
+}
+
 export function apiAddPoll(
   type: 'Project' | 'Phase',
   id: string,
@@ -1333,3 +1349,4 @@ Cypress.Commands.add(
   notIntersectsViewport
 );
 Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);
+Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
