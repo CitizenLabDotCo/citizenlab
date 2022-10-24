@@ -1,45 +1,40 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
-import { isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
+import React from 'react';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { useParams } from 'react-router-dom';
+import usePage from 'hooks/usePage';
+import useResourceFiles from 'hooks/useResourceFiles';
 
 // components
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import { Icon } from '@citizenlab/cl2-component-library';
 import Fragment from 'components/Fragment';
+import Link from 'utils/cl-router/Link';
+import ResolveTextVariables from 'components/ResolveTextVariables';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
-
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
-import T from 'components/T';
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import T from 'components/T';
 
 // styling
 import styled from 'styled-components';
 import {
-  media,
   colors,
+  media,
   fontSizes,
-  defaultCardStyle,
   isRtl,
+  defaultCardStyle,
 } from 'utils/styleUtils';
-import ResolveTextVariables from 'components/ResolveTextVariables';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 export const Container = styled.div`
   min-height: calc(
@@ -119,122 +114,88 @@ export const StyledLink = styled(Link)`
   }
 `;
 
-export const LinkIcon = styled(Icon)``;
+const PagesShowPage = () => {
+  const { slug } = useParams() as {
+    slug?: string;
+  };
 
-interface InputProps {}
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const tenantLocales = useAppConfigurationLocales();
+  const page = usePage({ pageSlug: slug });
+  const pageFiles = useResourceFiles({
+    resourceId: !isNilOrError(page) ? page.id : null,
+    resourceType: 'page',
+  });
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-  page: GetPageChildProps;
-  pageFiles: GetResourceFilesChildProps;
-}
+  if (
+    !isNilOrError(locale) &&
+    !isNilOrError(tenantLocales) &&
+    page !== undefined
+  ) {
+    let seoTitle: string;
+    let seoDescription: string;
+    let blockIndexing: boolean;
+    let pageTitle: JSX.Element;
+    let pageDescription: JSX.Element;
+    let pageSlug: string;
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class PagesShowPage extends PureComponent<
-  Props & WithRouterProps & WrappedComponentProps,
-  State
-> {
-  render() {
-    const { formatMessage } = this.props.intl;
-    const { locale, tenantLocales, page, pageFiles } = this.props;
-
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenantLocales) &&
-      !isUndefined(page)
-    ) {
-      let seoTitle: string;
-      let seoDescription: string;
-      let blockIndexing: boolean;
-      let pageTitle: JSX.Element;
-      let pageDescription: JSX.Element;
-      let pageSlug: string;
-
-      if (!isNilOrError(page)) {
-        seoTitle = getLocalized(
-          page.attributes.title_multiloc,
-          locale,
-          tenantLocales
-        );
-        seoDescription = '';
-        blockIndexing = false;
-        pageSlug = page.attributes.slug || '';
-        pageTitle = <T value={page.attributes.title_multiloc} />;
-        pageDescription = (
-          <ResolveTextVariables
-            value={page.attributes.top_info_section_multiloc}
-          >
-            {(multiloc) => <T value={multiloc} supportHtml={true} />}
-          </ResolveTextVariables>
-        );
-      } else {
-        seoTitle = formatMessage(messages.notFoundTitle);
-        seoDescription = formatMessage(messages.notFoundDescription);
-        blockIndexing = true;
-        pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
-        pageDescription = (
-          <FormattedMessage {...messages.notFoundDescription} />
-        );
-        pageSlug = '';
-      }
-
-      return (
-        <Container className={`e2e-page-${pageSlug}`}>
-          <Helmet>
-            <title>{seoTitle}</title>
-            <meta name="description" content={seoDescription} />
-            {blockIndexing && <meta name="robots" content="noindex" />}
-          </Helmet>
-
-          <PageContent>
-            <StyledContentContainer>
-              <Fragment
-                name={
-                  !isNilOrError(page) ? `pages/${page && page.id}/content` : ''
-                }
-              >
-                <PageTitle>{pageTitle}</PageTitle>
-                <PageDescription>
-                  <QuillEditedContent>{pageDescription}</QuillEditedContent>
-                </PageDescription>
-              </Fragment>
-            </StyledContentContainer>
-            {!isNilOrError(pageFiles) && pageFiles.length > 0 && (
-              <AttachmentsContainer>
-                <FileAttachments files={pageFiles} />
-              </AttachmentsContainer>
-            )}
-          </PageContent>
-        </Container>
+    if (!isNilOrError(page)) {
+      seoTitle = getLocalized(
+        page.attributes.title_multiloc,
+        locale,
+        tenantLocales
       );
+      seoDescription = '';
+      blockIndexing = false;
+      pageSlug = page.attributes.slug || '';
+      pageTitle = <T value={page.attributes.title_multiloc} />;
+      pageDescription = (
+        <ResolveTextVariables value={page.attributes.top_info_section_multiloc}>
+          {(multiloc) => <T value={multiloc} supportHtml={true} />}
+        </ResolveTextVariables>
+      );
+    } else {
+      seoTitle = formatMessage(messages.notFoundTitle);
+      seoDescription = formatMessage(messages.notFoundDescription);
+      blockIndexing = true;
+      pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
+      pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
+      pageSlug = '';
     }
 
-    return null;
+    return (
+      <Container className={`e2e-page-${pageSlug}`}>
+        <Helmet>
+          <title>{seoTitle}</title>
+          <meta name="description" content={seoDescription} />
+          {blockIndexing && <meta name="robots" content="noindex" />}
+        </Helmet>
+
+        <PageContent>
+          <StyledContentContainer>
+            <Fragment
+              name={
+                !isNilOrError(page) ? `pages/${page && page.id}/content` : ''
+              }
+            >
+              <PageTitle>{pageTitle}</PageTitle>
+              <PageDescription>
+                <QuillEditedContent>{pageDescription}</QuillEditedContent>
+              </PageDescription>
+            </Fragment>
+          </StyledContentContainer>
+          {!isNilOrError(pageFiles) && pageFiles.length > 0 && (
+            <AttachmentsContainer>
+              <FileAttachments files={pageFiles} />
+            </AttachmentsContainer>
+          )}
+        </PageContent>
+      </Container>
+    );
   }
-}
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  locale: <GetLocale />,
-  tenantLocales: <GetAppConfigurationLocales />,
-  page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
-  pageFiles: ({ page, render }) => (
-    <GetResourceFiles
-      resourceId={!isNilOrError(page) ? page.id : null}
-      resourceType="page"
-    >
-      {render}
-    </GetResourceFiles>
-  ),
-});
+  return null;
+};
 
-const PagesShowPageWithHOCs = injectIntl(PagesShowPage);
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <PagesShowPageWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default PagesShowPage;
