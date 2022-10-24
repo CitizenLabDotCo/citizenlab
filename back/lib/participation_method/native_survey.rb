@@ -36,10 +36,6 @@ module ParticipationMethod
       true
     end
 
-    def sign_in_required_for_posting?
-      false
-    end
-
     # The "Additional information" category in the UI should be suppressed.
     # As long as the form builder does not support sections/categories,
     # we can suppress the heading by returning nil.
