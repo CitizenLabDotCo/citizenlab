@@ -16,6 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { BOTTOM_LABEL_COPY } from '../VisitorsCard/VisitorStats';
+import { emptyStatsData } from './generateEmptyData';
 
 // typings
 import { Moment } from 'moment';
@@ -51,6 +52,8 @@ const RegistrationsCard = ({
   const endAt = endAtMoment?.toISOString();
   const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
 
+  const shownStatsData = projectFilter ? emptyStatsData : stats;
+
   return (
     <GraphCard
       title={cardTitle}
@@ -72,16 +75,16 @@ const RegistrationsCard = ({
         <Box width="initial">
           <Statistic
             name={formatMessage(messages.totalRegistrations)}
-            value={stats.registrations.value}
+            value={shownStatsData.registrations.value}
             bottomLabel={bottomLabel}
-            bottomLabelValue={stats.registrations.lastPeriod}
+            bottomLabelValue={shownStatsData.registrations.lastPeriod}
           />
           <Box mt="32px">
             <Statistic
               name={formatMessage(messages.conversionRate)}
-              value={stats.conversionRate.value}
+              value={shownStatsData.conversionRate.value}
               bottomLabel={bottomLabel}
-              bottomLabelValue={stats.conversionRate.lastPeriod}
+              bottomLabelValue={shownStatsData.conversionRate.lastPeriod}
             />
           </Box>
         </Box>
