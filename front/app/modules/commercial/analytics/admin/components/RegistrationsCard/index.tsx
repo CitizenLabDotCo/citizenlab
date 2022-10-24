@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 // hooks
 import useRegistrations from '../../hooks/useRegistrations';
@@ -7,6 +7,7 @@ import useRegistrations from '../../hooks/useRegistrations';
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
+import Chart from './Chart';
 
 // i18n
 import messages from './messages';
@@ -32,13 +33,14 @@ const RegistrationsCard = ({
   resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const graphRef = useRef();
   const { timeSeries, stats, xlsxData, deducedResolution } = useRegistrations({
     startAtMoment,
     endAtMoment,
     resolution,
   });
 
-  if (isNilOrError(stats) || isNilOrError(timeSeries)) {
+  if (isNilOrError(stats)) {
     return null;
   }
 
@@ -52,25 +54,42 @@ const RegistrationsCard = ({
       title={cardTitle}
       exportMenu={{
         name: cardTitle,
+        svgNode: graphRef,
         xlsx: !isNilOrError(xlsxData) ? { data: xlsxData } : undefined,
         startAt,
         endAt,
         resolution: deducedResolution,
       }}
     >
-      <Box px="20px">
-        <Box>
+      <Box
+        px="20px"
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+      >
+        <Box width="initial">
           <Statistic
             name={formatMessage(messages.totalRegistrations)}
             value={stats.registrations.value}
             bottomLabel={bottomLabel}
             bottomLabelValue={stats.registrations.lastPeriod}
           />
-          <Statistic
-            name={formatMessage(messages.conversionRate)}
-            value={stats.conversionRate.value}
-            bottomLabel={bottomLabel}
-            bottomLabelValue={stats.conversionRate.lastPeriod}
+          <Box mt="32px">
+            <Statistic
+              name={formatMessage(messages.conversionRate)}
+              value={stats.conversionRate.value}
+              bottomLabel={bottomLabel}
+              bottomLabelValue={stats.conversionRate.lastPeriod}
+            />
+          </Box>
+        </Box>
+        <Box width="100%" pl="80px">
+          <Chart
+            timeSeries={timeSeries}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={deducedResolution}
+            innerRef={graphRef}
           />
         </Box>
       </Box>

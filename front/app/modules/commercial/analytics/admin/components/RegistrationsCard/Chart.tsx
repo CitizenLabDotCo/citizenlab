@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 // styling
 import { colors } from 'components/admin/Graphs/styling';
@@ -9,19 +9,19 @@ import LineChart from 'components/admin/Graphs/LineChart';
 import renderTooltip from './renderTooltip';
 
 // i18n
-import messages from '../messages';
+import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { generateEmptyData } from './generateEmptyData';
+// import { generateEmptyData } from './generateEmptyData';
 
 // typings
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { TimeSeries } from '../../../hooks/useVisitors/typings';
+import { TimeSeries } from '../../hooks/useRegistrations/typings';
 
 interface Props {
   timeSeries: TimeSeries | NilOrError;
@@ -33,28 +33,23 @@ interface Props {
 
 const Chart = ({
   timeSeries,
-  startAtMoment,
-  endAtMoment,
+  // startAtMoment,
+  // endAtMoment,
   resolution,
   innerRef,
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const emptyData = useMemo(
-    () => generateEmptyData(startAtMoment, endAtMoment, resolution),
-    [startAtMoment, endAtMoment, resolution]
-  );
+  // const emptyData = useMemo(
+  //   () => generateEmptyData(startAtMoment, endAtMoment, resolution),
+  //   [startAtMoment, endAtMoment, resolution]
+  // );
 
   const legendItems: LegendItem[] = [
     {
       icon: 'circle',
       color: colors.categorical01,
-      label: formatMessage(messages.visitors),
-    },
-    {
-      icon: 'circle',
-      color: colors.categorical03,
-      label: formatMessage(messages.visits),
+      label: formatMessage(messages.newRegistrations),
     },
   ];
 
@@ -69,7 +64,7 @@ const Chart = ({
 
   return (
     <Box pt="8px" width="90%" maxWidth="900px" height="250px">
-      {isNilOrError(timeSeries) && (
+      {/* {isNilOrError(timeSeries) && (
         <LineChart
           width="100%"
           height="100%"
@@ -88,7 +83,7 @@ const Chart = ({
             items: legendItems,
           }}
         />
-      )}
+      )} */}
 
       {!isNilOrError(timeSeries) && (
         <LineChart
@@ -97,10 +92,10 @@ const Chart = ({
           data={timeSeries}
           mapping={{
             x: 'date',
-            y: ['visitors', 'visits'],
+            y: ['registrations'],
           }}
           lines={{
-            strokes: [colors.categorical01, colors.categorical03],
+            strokes: [colors.categorical01],
             activeDot: { r: 4 },
           }}
           grid={{ vertical: true }}
