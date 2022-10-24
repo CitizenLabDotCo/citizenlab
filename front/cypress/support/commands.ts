@@ -759,6 +759,8 @@ export function apiCreateProject({
           title_multiloc: {
             en: title,
             'nl-BE': title,
+            'nl-NL': title,
+            'fr-BE': title,
           },
           description_preview_multiloc: {
             en: descriptionPreview,

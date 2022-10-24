@@ -542,6 +542,7 @@ const AdminProjectsProjectGeneral = ({
             >
               <ParticipationContextWrapper>
                 <ParticipationContext
+                  project={project}
                   onSubmit={handleParticipationContextOnSubmit}
                   onChange={handleParticipationContextOnChange}
                   apiErrors={apiErrors}
@@ -553,6 +554,7 @@ const AdminProjectsProjectGeneral = ({
 
         {!isNilOrError(project) && projectType === 'continuous' && (
           <ParticipationContext
+            project={project}
             projectId={project.id}
             onSubmit={handleParticipationContextOnSubmit}
             onChange={handleParticipationContextOnChange}

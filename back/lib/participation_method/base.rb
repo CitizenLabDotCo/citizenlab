@@ -37,8 +37,36 @@ module ParticipationMethod
       true
     end
 
+    def delete_inputs_on_pc_deletion?
+      false
+    end
+
     def extra_fields_category_translation_key
       'custom_forms.categories.extra.title'
+    end
+
+    def supports_publication?
+      false
+    end
+
+    def supports_commenting?
+      false
+    end
+
+    def supports_voting?
+      false
+    end
+
+    def supports_baskets?
+      false
+    end
+
+    def supports_status?
+      false
+    end
+
+    def supports_assignment?
+      false
     end
 
     private
