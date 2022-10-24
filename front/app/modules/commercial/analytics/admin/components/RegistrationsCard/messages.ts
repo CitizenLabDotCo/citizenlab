@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations',
     defaultMessage: 'Registrations',
   },
+  conversionRate: {
+    id: 'app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate',
+    defaultMessage: 'Conversion rate',
+  },
 });

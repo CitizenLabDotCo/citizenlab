@@ -58,6 +58,6 @@ export interface TimeSeriesRow {
 export type TimeSeries = TimeSeriesRow[];
 
 export interface Stats {
-  totalRegistrations: Stat;
+  registrations: Stat;
   conversionRate: Stat;
 }

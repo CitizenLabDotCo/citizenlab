@@ -88,7 +88,10 @@ export const parseTimeSeries = (
   );
 };
 
-const RESOLUTION_TO_MESSAGE_KEY: Record<IResolution, keyof Translations> = {
+export const RESOLUTION_TO_MESSAGE_KEY: Record<
+  IResolution,
+  keyof Translations
+> = {
   month: 'last30Days',
   week: 'last7Days',
   day: 'yesterday',
@@ -100,9 +103,10 @@ export const parseExcelData = (
   translations: Translations,
   resolution: IResolution
 ) => {
+  const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
+
   const statsData = keys(stats).map((key) => {
     const stat = stats[key];
-    const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
 
     return {
       [translations.statistic]: translations[key],
