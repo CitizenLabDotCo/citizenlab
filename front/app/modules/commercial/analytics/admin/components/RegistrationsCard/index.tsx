@@ -66,12 +66,7 @@ const RegistrationsCard = ({
         resolution: deducedResolution,
       }}
     >
-      <Box
-        px="20px"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-      >
+      <Box px="20px" display="flex" flexDirection="row">
         <Box width="initial">
           <Statistic
             name={formatMessage(messages.totalRegistrations)}
@@ -88,7 +83,7 @@ const RegistrationsCard = ({
             />
           </Box>
         </Box>
-        <Box width="100%" pl="80px">
+        <Box flexGrow={1} display="flex" justifyContent="flex-end">
           <Chart
             timeSeries={timeSeries}
             projectFilter={projectFilter}
