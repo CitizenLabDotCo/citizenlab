@@ -113,6 +113,11 @@ describe('Admin: update Hero Banner content', () => {
     // click two-column banner layout
     cy.get('[data-cy="e2e-two-column-layout-option"]').click();
 
+    // focus the header dropzone and drop an image onto it
+    cy.get('#header-dropzone').attachFile('icon.png', {
+      subjectType: 'drag-n-drop',
+    });
+
     // fill in header and subheader
     cy.get('[data-cy="e2e-signed-out-header-section"]')
       .find('input')
