@@ -92,8 +92,8 @@ module IdViennaSaml
       first_word = words[0]
       second_word = words[1]
 
-      first_name = first_word.first
-      last_name = second_word&.first || first_word.second || first_name
+      first_name = first_word.at(0)
+      last_name = second_word&.at(0) || first_word.at(1) || first_name
 
       { first_name: first_name.upcase, last_name: last_name.upcase }
     end
