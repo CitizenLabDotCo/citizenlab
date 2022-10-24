@@ -38,6 +38,7 @@ const LinearScaleControl = ({
         flexDirection="row"
         gap="16px"
         overflow="visible"
+        flexWrap="wrap"
       >
         {uischema.options?.minimum_label && (
           <Box pt="28px" alignSelf="center">

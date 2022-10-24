@@ -100,4 +100,11 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
     end
   end
+
+  its(:supports_publication?) { is_expected.to be true }
+  its(:supports_commenting?) { is_expected.to be true }
+  its(:supports_voting?) { is_expected.to be true }
+  its(:supports_baskets?) { is_expected.to be true }
+  its(:supports_status?) { is_expected.to be true }
+  its(:supports_assignment?) { is_expected.to be true }
 end

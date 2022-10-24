@@ -38,6 +38,7 @@ import idBogusConfiguration from './commercial/id_bogus';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
+import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
@@ -182,6 +183,10 @@ export default loadModules([
   {
     configuration: IdGentRrnConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_gent_rrn'],
+  },
+  {
+    configuration: IdOostendeRrnConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_oostende_rrn'],
   },
   {
     configuration: IdClaveUnicaConfiguration,

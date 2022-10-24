@@ -18,6 +18,30 @@ module ParticipationMethod
       true
     end
 
+    def supports_publication?
+      true
+    end
+
+    def supports_commenting?
+      true
+    end
+
+    def supports_voting?
+      true
+    end
+
+    def supports_baskets?
+      true
+    end
+
+    def supports_status?
+      true
+    end
+
+    def supports_assignment?
+      true
+    end
+
     def sign_in_required_for_posting?
       true
     end
