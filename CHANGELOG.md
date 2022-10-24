@@ -1,8 +1,14 @@
 # Changelog
 
+## Next release
+
 ### Added
 
 - [CL-1811] New Oostende verification method
+
+### Fixed
+
+- [CL-1817] Show 'Page not found' on proposals page if proposals are disabled
 
 ## 2022-10-20
 
