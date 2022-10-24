@@ -196,7 +196,7 @@ const TIME_DELTA_MAP: Record<IResolution, TimeDelta> = {
   day: { day: 1 },
 };
 
-export const dateRange = (start: Moment, end: Moment, step: IResolution) => {
+const dateRange = (start: Moment, end: Moment, step: IResolution) => {
   const timeDelta = TIME_DELTA_MAP[step];
   const dates: Moment[] = [];
 
@@ -212,4 +212,19 @@ export const dateRange = (start: Moment, end: Moment, step: IResolution) => {
   }
 
   return dates;
+};
+
+export const emptyDateRange = <Row>(
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined,
+  resolution: IResolution,
+  getEmptyRow: (date: Moment, index: number) => Row
+): Row[] => {
+  const start = startAtMoment ?? moment().subtract({ month: 7 });
+  const end = endAtMoment ?? moment();
+
+  const dates = dateRange(start, end, resolution);
+  if (dates === null) return [];
+
+  return dates.map(getEmptyRow);
 };

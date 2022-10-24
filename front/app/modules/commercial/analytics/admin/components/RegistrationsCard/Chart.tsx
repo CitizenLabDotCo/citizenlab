@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // styling
 import { colors } from 'components/admin/Graphs/styling';
@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-// import { generateEmptyData } from './generateEmptyData';
+import { generateEmptyData } from './generateEmptyData';
 
 // typings
 import { Moment } from 'moment';
@@ -33,17 +33,17 @@ interface Props {
 
 const Chart = ({
   timeSeries,
-  // startAtMoment,
-  // endAtMoment,
+  startAtMoment,
+  endAtMoment,
   resolution,
   innerRef,
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  // const emptyData = useMemo(
-  //   () => generateEmptyData(startAtMoment, endAtMoment, resolution),
-  //   [startAtMoment, endAtMoment, resolution]
-  // );
+  const emptyData = useMemo(
+    () => generateEmptyData(startAtMoment, endAtMoment, resolution),
+    [startAtMoment, endAtMoment, resolution]
+  );
 
   const legendItems: LegendItem[] = [
     {
@@ -64,14 +64,14 @@ const Chart = ({
 
   return (
     <Box pt="8px" width="90%" maxWidth="900px" height="250px">
-      {/* {isNilOrError(timeSeries) && (
+      {isNilOrError(timeSeries) && (
         <LineChart
           width="100%"
           height="100%"
           data={emptyData}
           mapping={{
             x: 'date',
-            y: ['visits'],
+            y: ['registrations'],
           }}
           lines={{
             strokeWidths: [0],
@@ -83,7 +83,7 @@ const Chart = ({
             items: legendItems,
           }}
         />
-      )} */}
+      )}
 
       {!isNilOrError(timeSeries) && (
         <LineChart
