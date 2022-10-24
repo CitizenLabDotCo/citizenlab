@@ -27,3 +27,8 @@ new Set([...branchKeys, ...prKeys]).forEach((jiraKey) => {
     `Jira issue: <a href="https://citizenlab.atlassian.net/browse/${jiraKey}">${jiraKey}</a>`
   );
 });
+
+// Link to trigger e2e tests
+message(
+  `<a href="https://epic.citizenlab.co/ci-e2e?citizenlab_branch=${danger.github.pr.head.ref}&citizenlab_ee_branch=${danger.github.pr.head.ref}">Run the e2e tests</a>`
+);
