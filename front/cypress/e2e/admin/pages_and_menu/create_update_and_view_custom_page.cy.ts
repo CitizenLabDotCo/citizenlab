@@ -8,9 +8,7 @@ describe('Admin: create, update, and view custom page', () => {
   });
 
   it('creates a custom page successfully', () => {
-    cy.intercept('POST', '**/static_pages/**').as('createCustomPage');
     cy.intercept('PATCH', '**/static_pages/**').as('updateCustomPage');
-    cy.intercept('GET', '**/static_pages/**').as('getCustomPage');
 
     const pageName = randomString();
     const headerContent = randomString();
@@ -38,6 +36,7 @@ describe('Admin: create, update, and view custom page', () => {
       'top_info_section_enabled',
       'files_section_enabled',
     ];
+
     // toggle top info section and wait for requests to complete
     sectionNames.forEach((sectionName) => {
       // click the toggle
@@ -52,6 +51,12 @@ describe('Admin: create, update, and view custom page', () => {
 
     // go to the hero banner edit
     cy.get('[data-cy="e2e-admin-edit-button-banner_enabled"]').click();
+
+    // check for section enabled banner and check that enable button is not present
+    cy.contains('Shown on page').should('exist');
+    cy.get('[data-cy="e2e-submit-wrapper-secondary-submit-button"]').should(
+      'not.exist'
+    );
 
     // focus the header dropzone and drop an image onto it
     cy.get('#header-dropzone').attachFile('icon.png', {
@@ -83,6 +88,7 @@ describe('Admin: create, update, and view custom page', () => {
     // enable custom button
     cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]').click();
 
+    // enter button multiloc content
     cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]')
       .find('.e2e-localeswitcher')
       .each((button) => {
@@ -101,18 +107,19 @@ describe('Admin: create, update, and view custom page', () => {
     // scroll to breadcrumbs, go back to main page
     cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
 
-    // to do: test color and opacity
     // go to top info section edit page
     cy.get(
       '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
     ).click();
+
+    // check for enabled banner to exist
+    cy.contains('Shown on page').should('exist');
 
     // fill out top info section
     cy.get('[data-cy="e2e-top-info-form"]')
       .find('.e2e-localeswitcher')
       .each((button) => {
         cy.wrap(button).click();
-        // to do- remove locale from id, it doesn't work
         cy.get('#top_info_section_multiloc-en').type(topInfoContent);
         cy.wrap(button).get('.notEmpty');
       });
@@ -137,6 +144,31 @@ describe('Admin: create, update, and view custom page', () => {
 
     //  go back to main page
     cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
+
+    // turn off top info section again
+    cy.get(
+      `[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]`
+    ).click();
+    // wait for the call to complete
+    cy.wait('@updateCustomPage');
+    // wait for the toggle to become enabled in the UI
+    cy.get(`[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]`)
+      .find('i')
+      .should('have.class', 'enabled');
+
+    // go to top info section edit page
+    cy.get(
+      '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
+    ).click();
+
+    // check that the section is now disabled
+    cy.contains('Not shown on page').should('exist');
+
+    // enable it via the save + enable button
+    cy.get('[data-cy="e2e-top-info-section-secondary-submit"]').click();
+
+    // wait for the badge showing that it was enabled
+    cy.contains('Shown on page').should('exist');
 
     // visit our custom page by slug
     cy.visit(`/en/pages/${pageName}`);
