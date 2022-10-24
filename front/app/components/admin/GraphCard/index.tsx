@@ -30,7 +30,6 @@ const GraphCard = ({
 }: Props) => (
   <Box p="10px" width="100%">
     <GraphCardInnerClean>
-      {/* <GraphCardHeader> */}
       <Box
         display="flex"
         minHeight="64px"
@@ -65,7 +64,6 @@ const GraphCard = ({
             </Box>
           )}
         </Box>
-        {/* </GraphCardHeader> */}
       </Box>
       {children}
     </GraphCardInnerClean>
