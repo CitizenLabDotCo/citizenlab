@@ -148,7 +148,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.wait('@saveHomePage');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
 
-    // log out, view page as verified user
+    // view page as verified user
     cy.goToLandingPage();
 
     // check content and url for signed in CTA button
@@ -164,9 +164,8 @@ describe('Admin: update Hero Banner content', () => {
     cy.goToLandingPage();
     cy.reload();
 
-    cy.get('[data-cy=e2e-two-column-layout-container]').should('exist');
-
     // check that the content we saved earlier is shown here
+    cy.get('[data-cy=e2e-two-column-layout-container]').should('exist');
     cy.get('#hook-header-content').should(
       'contain',
       updatedSignedOutHeaderEnglish
