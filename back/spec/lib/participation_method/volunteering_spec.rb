@@ -63,4 +63,11 @@ RSpec.describe ParticipationMethod::Volunteering do
       expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
     end
   end
+
+  its(:supports_publication?) { is_expected.to be false }
+  its(:supports_commenting?) { is_expected.to be false }
+  its(:supports_voting?) { is_expected.to be false }
+  its(:supports_baskets?) { is_expected.to be false }
+  its(:supports_status?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be false }
 end
