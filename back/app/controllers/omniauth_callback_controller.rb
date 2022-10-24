@@ -134,6 +134,7 @@ class OmniauthCallbackController < ApplicationController
     }
   end
 
+  # Updates the user with attributes from the auth response if `updateable_user_attrs` is set
   def update_user!(auth, user, authver_method)
     return unless authver_method.respond_to? :updateable_user_attrs
 

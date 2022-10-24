@@ -20,12 +20,16 @@ module IdViennaSaml
     # @return [Hash] The user attributes
     def profile_to_user_attrs(auth)
       attrs = auth.dig(:extra, :raw_info).to_h
+      email =  attrs.fetch('urn:oid:0.9.2342.19200300.100.1.3').first
+      locale = AppConfiguration.instance.settings.dig('core', 'locales').first
+      first_name = attrs.fetch('urn:oid:2.5.4.42', [generate_placeholder_from_email(email, :first)]).first
+      last_name = attrs.fetch('urn:oid:1.2.40.0.10.2.1.1.261.20', [generate_placeholder_from_email(email, :last)]).first
 
       {
-        email: attrs.fetch('urn:oid:0.9.2342.19200300.100.1.3').first,
-        first_name: attrs.fetch('urn:oid:2.5.4.42').first,
-        last_name: attrs.fetch('urn:oid:1.2.40.0.10.2.1.1.261.20').first,
-        locale: AppConfiguration.instance.settings.dig('core', 'locales').first
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+        locale: locale
       }
     end
 
@@ -71,6 +75,33 @@ module IdViennaSaml
     # @return [Symbol] The configured Vienna Login environment as a symbol
     def vienna_login_env
       AppConfiguration.instance.settings('vienna_citizen_login', 'environment').to_sym
+    end
+
+    # Generates a placeholder name based on the email.
+    # For first names, uses the first character of the email,
+    # For last names, uses the second character of the email or the first character of the second word if available.
+    # @param [String] email
+    # @param [Symbol] part Either `:first` or `:last`
+    # @return [String]
+    def generate_placeholder_from_email(email, part)
+      case part
+      when :first
+        placeholder = email[0]
+      when :last
+        local_part = email.split('@').first
+        words = local_part.split(/_|\./)
+        if words.size > 1
+          second_word = words[1]
+          placeholder = second_word[0]
+        else
+          first_word = words[0]
+          placeholder = first_word[1]
+        end
+      else
+        raise ArgumentError, "name must be either :first or :last, but was #{part.inspect} instead."
+      end
+
+      placeholder.upcase
     end
   end
 end
