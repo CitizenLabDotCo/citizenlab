@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe IdViennaSaml::CitizenSamlOmniauth do
   describe '#profile_to_user_attrs' do
-    subject(:profile_to_user_attrs) { described_class.new.profile_to_user_attrs(profile) }
+    subject(:user_attrs) { described_class.new.profile_to_user_attrs(profile) }
 
     context 'when the name is included in the SAML response' do
       let(:profile) do
@@ -39,7 +39,7 @@ describe IdViennaSaml::CitizenSamlOmniauth do
       end
 
       it 'returns user attrs from profile response' do
-        expect(subject).to include(
+        expect(user_attrs).to include(
           email: 'philipp.press@extern.wien.gv.at',
           first_name: 'Philipp',
           last_name: 'Preß',
@@ -79,7 +79,7 @@ describe IdViennaSaml::CitizenSamlOmniauth do
       end
 
       it 'returns placeholder' do
-        expect(subject).to include(
+        expect(user_attrs).to include(
           email: 'philipp.press@extern.wien.gv.at',
           first_name: 'P',
           last_name: 'P',
@@ -119,7 +119,7 @@ describe IdViennaSaml::CitizenSamlOmniauth do
       end
 
       it 'returns placeholder' do
-        expect(subject).to include(
+        expect(user_attrs).to include(
           email: 'philipp@extern.wien.gv.at',
           first_name: 'P',
           last_name: 'H',
@@ -159,7 +159,7 @@ describe IdViennaSaml::CitizenSamlOmniauth do
       end
 
       it 'returns placeholder' do
-        expect(subject).to include(
+        expect(user_attrs).to include(
           email: 'p@extern.wien.gv.at',
           first_name: 'P',
           last_name: 'P',
