@@ -16,8 +16,10 @@ describe Analytics::QueryRunnerService do
       query = Analytics::Query.new(query_param)
 
       runner = described_class.new
-      results = runner.run(query)
+      results, pagination = runner.run(query)
+
       expect(results).to match_array(ideas.map { |idea| { 'id' => idea.id } })
+      expect(pagination).to be_nil
     end
 
     it 'return groups with aggregations' do
@@ -36,7 +38,7 @@ describe Analytics::QueryRunnerService do
       query = Analytics::Query.new(query_param)
 
       runner = described_class.new
-      results = runner.run(query)
+      results, * = runner.run(query)
 
       expected_result = [
         { 'type.name' => 'initiative', 'sum_votes_count' => 1 },
@@ -63,7 +65,7 @@ describe Analytics::QueryRunnerService do
       query = Analytics::Query.new(query_param)
 
       runner = described_class.new
-      results = runner.run(query)
+      results, * = runner.run(query)
       expect(results).to eq([{ 'count' => 1 }])
     end
 
@@ -79,7 +81,7 @@ describe Analytics::QueryRunnerService do
       query = Analytics::Query.new(query_param)
 
       runner = described_class.new
-      results = runner.run(query)
+      results, * = runner.run(query)
       posts = (ideas + initiatives)
         .sort_by { |p| p[:id] }
         .map { |p| { 'id' => p.id } }
@@ -99,7 +101,7 @@ describe Analytics::QueryRunnerService do
           page: { size: 2, number: 1 }
         )
         runner = described_class.new
-        results = runner.run(Analytics::Query.new(query_param))
+        results, * = runner.run(Analytics::Query.new(query_param))
 
         expect(results.length).to eq(2)
         expect(results.first['id']).to eq(Idea.order(:id).first.id)
@@ -113,7 +115,7 @@ describe Analytics::QueryRunnerService do
           page: { size: 3, number: 2 }
         )
         runner = described_class.new
-        results = runner.run(Analytics::Query.new(query_param))
+        results, * = runner.run(Analytics::Query.new(query_param))
 
         expect(results.length).to eq(3)
         expect(results.first['id']).to eq(Idea.order(:id).fourth.id)
@@ -128,7 +130,7 @@ describe Analytics::QueryRunnerService do
           page: { size: 5, number: 3 }
         )
         runner = described_class.new
-        results = runner.run(Analytics::Query.new(query_param))
+        results, * = runner.run(Analytics::Query.new(query_param))
 
         expect(results).to eq([])
       end

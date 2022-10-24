@@ -32,7 +32,7 @@ module Analytics
         results = query_order(results)
       end
 
-      results, pagination = page(results)
+      results, pagination = page(results) 
 
       [query_pluck(results), pagination]
     end
@@ -164,7 +164,11 @@ module Analytics
     end
 
     def pagination(results, size, number)
-      total = results.count
+      if @json_query.key?(:groups)
+        total = query_pluck(results).length.to_i
+      else
+        total = results.count
+      end
       last_page = (total / size.to_f).ceil
 
       return if last_page == number
