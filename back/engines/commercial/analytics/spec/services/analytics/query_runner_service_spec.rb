@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'query'
+require 'uri'
 
 describe Analytics::QueryRunnerService do
   describe 'run' do
@@ -16,10 +17,9 @@ describe Analytics::QueryRunnerService do
       query = Analytics::Query.new(query_param)
 
       runner = described_class.new
-      results, pagination = runner.run(query)
+      results, * = runner.run(query)
 
       expect(results).to match_array(ideas.map { |idea| { 'id' => idea.id } })
-      expect(pagination).to be_nil
     end
 
     it 'return groups with aggregations' do
@@ -93,46 +93,58 @@ describe Analytics::QueryRunnerService do
         create_list(:idea, 10)
       end
 
-      it 'returns the first page of 2 items from 10 posts' do
-        query_param = ActionController::Parameters.new(
+      def build_query(size = 1, number = 1)
+        {
           fact: 'post',
           fields: 'id',
           sort: { id: 'ASC' },
-          page: { size: 2, number: 1 }
-        )
+          page: { size: size, number: number }
+        }
+      end
+
+      it 'returns the first page of 2 items from 10 posts' do
+        query_param = ActionController::Parameters.new(build_query(2, 1))
         runner = described_class.new
-        results, * = runner.run(Analytics::Query.new(query_param))
+        results, pagination = runner.run(Analytics::Query.new(query_param))
 
         expect(results.length).to eq(2)
         expect(results.first['id']).to eq(Idea.order(:id).first.id)
+
+        expect(URI.decode_www_form(pagination[:self]).to_h['page[number]']).to eq('1')
+        expect(URI.decode_www_form(pagination[:first]).to_h['page[number]']).to eq('1')
+        expect(pagination[:prev]).to be_nil
+        expect(URI.decode_www_form(pagination[:next]).to_h['page[number]']).to eq('2')
+        expect(URI.decode_www_form(pagination[:last]).to_h['page[number]']).to eq('5')
       end
 
       it 'returns the second page of 3 items from 10 posts' do
-        query_param = ActionController::Parameters.new(
-          fact: 'post',
-          fields: 'id',
-          sort: { id: 'ASC' },
-          page: { size: 3, number: 2 }
-        )
+        query_param = ActionController::Parameters.new(build_query(3, 2))
         runner = described_class.new
-        results, * = runner.run(Analytics::Query.new(query_param))
+        results, pagination = runner.run(Analytics::Query.new(query_param))
 
         expect(results.length).to eq(3)
         expect(results.first['id']).to eq(Idea.order(:id).fourth.id)
         expect(results.second['id']).to eq(Idea.order(:id).fifth.id)
+
+        expect(URI.decode_www_form(pagination[:self]).to_h['page[number]']).to eq('2')
+        expect(URI.decode_www_form(pagination[:first]).to_h['page[number]']).to eq('1')
+        expect(URI.decode_www_form(pagination[:prev]).to_h['page[number]']).to eq('1')
+        expect(URI.decode_www_form(pagination[:next]).to_h['page[number]']).to eq('3')
+        expect(URI.decode_www_form(pagination[:last]).to_h['page[number]']).to eq('4')
       end
 
       it 'returns nothing if the page number is too high for the size' do
-        query_param = ActionController::Parameters.new(
-          fact: 'post',
-          fields: 'id',
-          sort: { id: 'ASC' },
-          page: { size: 5, number: 3 }
-        )
+        query_param = ActionController::Parameters.new(build_query(5, 3))
         runner = described_class.new
-        results, * = runner.run(Analytics::Query.new(query_param))
-
+        results, pagination = runner.run(Analytics::Query.new(query_param))
+        
         expect(results).to eq([])
+        
+        expect(URI.decode_www_form(pagination[:self]).to_h['page[number]']).to eq('3')
+        expect(URI.decode_www_form(pagination[:first]).to_h['page[number]']).to eq('1')
+        expect(URI.decode_www_form(pagination[:prev]).to_h['page[number]']).to eq('2')
+        expect(pagination[:next]).to be_nil
+        expect(URI.decode_www_form(pagination[:last]).to_h['page[number]']).to eq('2')
       end
     end
   end
