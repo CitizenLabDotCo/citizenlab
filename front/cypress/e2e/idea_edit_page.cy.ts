@@ -100,6 +100,8 @@ describe('Idea edit page', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
+    cy.intercept(`**/ideas/${ideaId}`).as('ideaRequest');
+    cy.wait('@ideaRequest');
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);

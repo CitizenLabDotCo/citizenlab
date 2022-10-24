@@ -39,6 +39,10 @@ class PhasePolicy < ApplicationPolicy
     survey_results?
   end
 
+  def index_xlsx?
+    survey_results?
+  end
+
   def delete_inputs?
     return false unless active?
 

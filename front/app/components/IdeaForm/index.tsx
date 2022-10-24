@@ -746,7 +746,7 @@ class IdeaForm extends PureComponent<
 
       const AdminBudgetFieldLabel = () => {
         return (
-          <>
+          <Box display="flex">
             <FormattedMessage
               {...messages.budgetLabel}
               values={{
@@ -760,7 +760,7 @@ class IdeaForm extends PureComponent<
               icon="shield-checkered"
               content={<FormattedMessage {...messages.adminFieldTooltip} />}
             />
-          </>
+          </Box>
         );
       };
 

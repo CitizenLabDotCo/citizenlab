@@ -1,5 +1,15 @@
 # Changelog
 
+### Added
+
+- [CL-1811] New Oostende verification method
+
+## 2022-10-20
+
+### Fixed
+
+- [CL-1814] Fixed bug when opening the verification model after having a verification error
+
 ## 2022-10-18
 
 ### Fixed

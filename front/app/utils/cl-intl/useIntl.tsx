@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   // eslint-disable-next-line no-restricted-imports
   useIntl as useOriginalUseIntl,
@@ -12,23 +13,26 @@ const useIntl = () => {
   const localize = useLocalize();
   const appConfig = useAppConfiguration();
 
-  const formatMessageReplacement = (
-    messageDescriptor: MessageDescriptor,
-    values?: { [key: string]: string | number | boolean | Date } | undefined
-  ) => {
-    return intl.formatMessage(messageDescriptor, {
-      tenantName: !isNilOrError(appConfig)
-        ? appConfig.attributes.name
-        : undefined,
-      orgName: !isNilOrError(appConfig)
-        ? localize(appConfig.attributes.settings.core.organization_name)
-        : undefined,
-      orgType: !isNilOrError(appConfig)
-        ? appConfig.attributes.settings.core.organization_type
-        : undefined,
-      ...(values || {}),
-    });
-  };
+  const formatMessageReplacement = useCallback(
+    (
+      messageDescriptor: MessageDescriptor,
+      values?: { [key: string]: string | number | boolean | Date } | undefined
+    ) => {
+      return intl.formatMessage(messageDescriptor, {
+        tenantName: !isNilOrError(appConfig)
+          ? appConfig.attributes.name
+          : undefined,
+        orgName: !isNilOrError(appConfig)
+          ? localize(appConfig.attributes.settings.core.organization_name)
+          : undefined,
+        orgType: !isNilOrError(appConfig)
+          ? appConfig.attributes.settings.core.organization_type
+          : undefined,
+        ...(values || {}),
+      });
+    },
+    [intl, localize, appConfig]
+  );
 
   return { ...intl, formatMessage: formatMessageReplacement };
 };

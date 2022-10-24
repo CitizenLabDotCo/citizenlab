@@ -26,4 +26,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.successMessage',
     defaultMessage: 'Survey successfully saved',
   },
+  downloadAllResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadAllResults',
+    defaultMessage: 'Download all survey results',
+  },
 });
