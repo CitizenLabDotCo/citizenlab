@@ -1122,6 +1122,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation": "Sind Sie sicher, dass Sie alle Umfrageergebnisse löschen möchten?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage": "Der Inhalt der Umfrage kann nicht mehr bearbeitet werden, da die ersten Umfrageergebnisse bereits vorliegen.",
   "app.containers.AdminPage.ProjectEdit.survey.done": "Abschließen",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults": "Alle Umfrageergebnisse herunterladen",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults": "Umfrageergebnisse herunterladen",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Bearbeiten",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Inhalt der Umfrage bearbeiten",
