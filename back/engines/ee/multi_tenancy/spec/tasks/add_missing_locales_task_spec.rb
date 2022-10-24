@@ -4,8 +4,8 @@ require 'rails_helper'
 
 # rubocop:disable RSpec/DescribeClass
 describe 'rake add_missing_locales' do
-  before_all do
-    Rails.application.load_tasks
+  before do
+    load_rake_tasks_if_not_loaded
   end
 
   after do
