@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe 'rake email_campaigns' do
-  before(:context) do
-    Rails.application.load_tasks
+  before do
+    load_rake_tasks_if_not_loaded
   end
 
   let(:task) { Rake::Task[task_name] }
