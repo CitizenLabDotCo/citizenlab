@@ -17,5 +17,29 @@ module ParticipationMethod
     def validate_built_in_fields?
       true
     end
+
+    def supports_publication?
+      true
+    end
+
+    def supports_commenting?
+      true
+    end
+
+    def supports_voting?
+      true
+    end
+
+    def supports_baskets?
+      true
+    end
+
+    def supports_status?
+      true
+    end
+
+    def supports_assignment?
+      true
+    end
   end
 end

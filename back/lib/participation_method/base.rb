@@ -45,6 +45,30 @@ module ParticipationMethod
       'custom_forms.categories.extra.title'
     end
 
+    def supports_publication?
+      false
+    end
+
+    def supports_commenting?
+      false
+    end
+
+    def supports_voting?
+      false
+    end
+
+    def supports_baskets?
+      false
+    end
+
+    def supports_status?
+      false
+    end
+
+    def supports_assignment?
+      false
+    end
+
     private
 
     attr_reader :participation_context

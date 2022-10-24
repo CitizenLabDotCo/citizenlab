@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: %i[show update destroy survey_results submission_count delete_inputs]
+  before_action :set_phase, only: %i[show update destroy survey_results submission_count index_xlsx delete_inputs]
   skip_before_action :authenticate_user
 
   def index
@@ -66,6 +66,14 @@ class WebApi::V1::PhasesController < ApplicationController
   def submission_count
     count = SurveyResultsGeneratorService.new(@phase).generate_submission_count
     render json: count
+  end
+
+  def index_xlsx
+    I18n.with_locale(current_user.locale) do
+      include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
+      xlsx = XlsxExport::GeneratorService.new.generate_for_phase(@phase.id, include_private_attributes)
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
+    end
   end
 
   def delete_inputs
