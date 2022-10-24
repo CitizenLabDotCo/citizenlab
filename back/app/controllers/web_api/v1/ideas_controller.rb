@@ -172,7 +172,7 @@ class WebApi::V1::IdeasController < ApplicationController
     project = input.project
     authorize input
 
-    if invalid_author_removal? input, params
+    if invalid_blank_author_for_update? input, params
       render json: { errors: { author: [{ error: :blank }] } }, status: :unprocessable_entity
       return
     end
@@ -340,8 +340,11 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  def invalid_author_removal?(input, params)
-    return false unless params[:idea].key?(:author_id) && params[:idea][:author_id].nil?
+  def invalid_blank_author_for_update?(input, params)
+    author_removal = params[:idea].key?(:author_id) && params[:idea][:author_id].nil?
+    publishing = params[:idea][:publication_status] == 'published'
+
+    return false unless author_removal || (publishing && !input.author_id)
 
     input.participation_method_on_creation.sign_in_required_for_posting?
   end
