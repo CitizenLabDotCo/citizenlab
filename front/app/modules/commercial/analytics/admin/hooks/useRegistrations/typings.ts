@@ -12,9 +12,10 @@ export interface QueryParameters {
 export type Response = {
   data: [
     TimeSeriesResponseRow[],
-    [RegistrationsCountRow] | [],
-    [RegistrationsCountRow] | [],
-    [VisitorsCountRow] | []
+    [RegistrationsCountRow],
+    [RegistrationsCountRow],
+    [VisitorsCountRow],
+    [VisitorsCountRow]
   ];
 };
 

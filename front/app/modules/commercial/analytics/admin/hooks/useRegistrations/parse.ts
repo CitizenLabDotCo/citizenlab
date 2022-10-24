@@ -2,6 +2,7 @@ import moment, { Moment } from 'moment';
 
 // utils
 import { timeSeriesParser } from '../../utils/timeSeries';
+import { roundPercentage } from 'utils/math';
 
 // typings
 import {
@@ -58,15 +59,32 @@ export const parseTimeSeries = (
 export const parseStats = (data: Response['data']): Stats => {
   const registrationsWholePeriod = data[1][0];
   const registrationsLastPeriod = data[2][0];
+  const visitsWholePeriod = data[3][0];
+  const visitsLastPeriod = data[4][0];
+
+  const conversionRateWholePeriod = getConversionRate(
+    registrationsWholePeriod.count,
+    visitsWholePeriod.count_visitor_id
+  );
+
+  const conversionRateLastPeriod = getConversionRate(
+    registrationsLastPeriod.count,
+    visitsLastPeriod.count_visitor_id
+  );
 
   return {
     totalRegistrations: {
-      value: registrationsWholePeriod?.count.toString() ?? '0',
-      lastPeriod: registrationsLastPeriod?.count.toString() ?? '0',
+      value: registrationsWholePeriod.count.toString(),
+      lastPeriod: registrationsLastPeriod.count.toString(),
     },
     conversionRate: {
-      value: 'TODO',
-      lastPeriod: 'TODO',
+      value: conversionRateWholePeriod,
+      lastPeriod: conversionRateLastPeriod,
     },
   };
+};
+
+const getConversionRate = (registrations: number, visits: number) => {
+  if (visits <= 0) return `0%`;
+  return `${roundPercentage(registrations, visits)}%`;
 };

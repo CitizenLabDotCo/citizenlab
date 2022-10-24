@@ -62,7 +62,7 @@ export const query = ({
     },
   };
 
-  const totalVisitsQuery: QuerySchema = {
+  const visitsWholePeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
       dimension_user: {
@@ -79,12 +79,26 @@ export const query = ({
     },
   };
 
+  const visitsLastPeriodQuery: QuerySchema = {
+    fact: 'visit',
+    filters: {
+      dimension_user: {
+        role: ['citizen', null],
+      },
+      ...getDateFilterLastPeriod('dimension_date_first_action', resolution),
+    },
+    aggregations: {
+      visitor_id: 'count',
+    },
+  };
+
   return {
     query: [
       timeSeriesQuery,
       registrationsWholePeriodQuery,
       registrationsLastPeriodQuery,
-      totalVisitsQuery,
+      visitsWholePeriodQuery,
+      visitsLastPeriodQuery,
     ],
   };
 };
