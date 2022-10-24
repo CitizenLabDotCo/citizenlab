@@ -19,7 +19,7 @@ describe('profile edition', () => {
   });
   it('lets user edit their profile', () => {
     cy.intercept(`**/users/${userId}`).as('saveUser');
-    cy.get('input[type="file"]').attachFile('cypress/fixtures/icon.png');
+    cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#first_name').clear().type('Jane');
     cy.get('#last_name').clear().type('Doe');
     const newEmail = randomEmail();
