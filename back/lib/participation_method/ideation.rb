@@ -41,5 +41,9 @@ module ParticipationMethod
     def supports_assignment?
       true
     end
+
+    def sign_in_required_for_posting?
+      true
+    end
   end
 end
