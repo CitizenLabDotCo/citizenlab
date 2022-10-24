@@ -21,6 +21,7 @@ import {
   fontSizes,
   media,
   stylingConsts,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ButtonBar from './Components/ButtonBar';
@@ -120,6 +121,7 @@ const Form = memo(
       () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
       [getApiErrorMessage]
     );
+    const isSmallerThanXlPhone = useBreakpoint('phone');
 
     // To handle multilocs we had the two options of adding one control for each multiloc thing : InputMultiloc, WYSIWYGMultiloc, or have the top-level multiloc object be a custom layout that shows the appropriate field and render the controls inside normally. I went for the second option.
     // Both options limited somehow the validation power, and with this solution, it means that the errors on the layout level are not available (IE this field is required, or this field should have at least one property). So this is a hacky thing to make the current locale required, but we will have to find something better would we want to make all locales required like in the admin side or simply is we would want to have a cleaner form component.
@@ -209,11 +211,24 @@ const Form = memo(
     return (
       <Box
         as="form"
-        height={layoutType === 'fullpage' ? '100vh' : '100%'}
+        minHeight={
+          isSmallerThanXlPhone && layoutType === 'fullpage'
+            ? `calc(100vh - ${stylingConsts.menuHeight}px)`
+            : '100%'
+        }
+        height={
+          isSmallerThanXlPhone
+            ? '100%'
+            : layoutType === 'fullpage'
+            ? '100vh'
+            : '100%'
+        }
         display="flex"
         flexDirection="column"
         maxHeight={
           layoutType === 'inline'
+            ? 'auto'
+            : isSmallerThanXlPhone
             ? 'auto'
             : `calc(100vh - ${stylingConsts.menuHeight}px)`
         }
