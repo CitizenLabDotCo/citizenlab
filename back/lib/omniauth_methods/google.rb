@@ -38,6 +38,10 @@ module OmniauthMethods
       [:remote_avatar_url]
     end
 
+    def overwrite_user_attrs?
+      true
+    end
+
     private
 
     def image_available?(img_url_s)

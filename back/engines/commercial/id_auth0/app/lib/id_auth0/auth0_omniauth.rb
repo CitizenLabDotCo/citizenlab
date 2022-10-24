@@ -24,5 +24,9 @@ module IdAuth0
     def updateable_user_attrs
       []
     end
+
+    def overwrite_user_attrs?
+      true
+    end
   end
 end

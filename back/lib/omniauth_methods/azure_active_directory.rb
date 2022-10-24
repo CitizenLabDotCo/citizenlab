@@ -24,4 +24,8 @@ module OmniauthMethods
   def updateable_user_attrs
     [:remote_avatar_url]
   end
+
+  def overwrite_user_attrs?
+    true
+  end
 end

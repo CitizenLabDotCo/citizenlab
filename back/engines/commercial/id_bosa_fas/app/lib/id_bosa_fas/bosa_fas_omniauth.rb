@@ -66,5 +66,9 @@ module IdBosaFas
     def updateable_user_attrs
       %i[first_name last_name]
     end
+
+    def overwrite_user_attrs?
+      true
+    end
   end
 end

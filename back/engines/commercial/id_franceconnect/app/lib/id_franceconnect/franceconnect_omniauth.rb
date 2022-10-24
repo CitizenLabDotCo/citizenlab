@@ -77,6 +77,10 @@ module IdFranceconnect
       %i[first_name last_name birthyear remote_avatar_url]
     end
 
+    def overwrite_user_attrs?
+      true
+    end
+
     private
 
     # @param [AppConfiguration] configuration

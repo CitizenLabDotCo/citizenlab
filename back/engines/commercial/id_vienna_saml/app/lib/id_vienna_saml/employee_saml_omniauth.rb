@@ -52,6 +52,10 @@ module IdViennaSaml
       %i[first_name last_name]
     end
 
+    def overwrite_user_attrs?
+      true
+    end
+
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
     # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The filtered hash that will be persisted in the database

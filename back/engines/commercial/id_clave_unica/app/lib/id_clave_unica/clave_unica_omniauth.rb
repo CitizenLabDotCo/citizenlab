@@ -54,6 +54,10 @@ module IdClaveUnica
       %i[first_name last_name]
     end
 
+    def overwrite_user_attrs?
+      true
+    end
+
     def logout_url(_user)
       url_params = {
         redirect: Frontend::UrlService.new.home_url

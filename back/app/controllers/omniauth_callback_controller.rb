@@ -135,12 +135,22 @@ class OmniauthCallbackController < ApplicationController
   end
 
   # Updates the user with attributes from the auth response if `updateable_user_attrs` is set
+  # Overwrites current attributes by default unless `overwrite_attrs?` is set to false on the authver method
   def update_user!(auth, user, authver_method)
     return unless authver_method.respond_to? :updateable_user_attrs
 
     attrs = authver_method.updateable_user_attrs
+    overwrite_attrs = authver_method.respond_to?(:overwrite_user_attrs?) && authver_method.overwrite_user_attrs?
     update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
-    user.update!(update_hash)
+
+    if overwrite_attrs
+      user.update!(update_hash)
+    else
+      attrs.each_pair do |attr, value|
+        user.write_attribute(attr, value) unless user.attribute_present?(attr)
+      end
+      user.save!
+    end
   end
 
   private
