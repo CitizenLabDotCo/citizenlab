@@ -30,7 +30,7 @@ fr-BE:
       "official_feedback_on_voted_initiative": Mise à jour d'une proposition pour laquelle j'ai voté
       "official_feedback_on_your_idea": Mise à jour de mon idée
       "official_feedback_on_your_initiative": Mise à jour de mon proposition
-      "password_reset": Réinitialisation du mot de passe
+      "password_reset": Réinitialisation de mot de passe
       "project_moderation_rights_received": Droits de modération de projet reçus
       "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
       "project_phase_started": Nouvelle phase de projet
@@ -177,7 +177,7 @@ fr-BE:
       today_by_author: 'Aujourd''hui par %{author}'
       x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
       idea_section: Idées
-      initiative_section: Initiatives
+      initiative_section: Propositions
       title_initiatives_past_week: 'Nouvelles initiatives qui vous sont confiées'
       title_successful_initiatives_past_week: 'Les initiatives qui vous sont confiées et qui ont atteint le nombre de voix requis'
     idea_marked_as_spam:
@@ -323,7 +323,7 @@ fr-BE:
     new_idea_for_admin:
       by_author: 'par %{authorName}'
       commented: '%{authorFirstName} a commenté :'
-      cta_reply_to: 'Faites vos retours à %{authorName}'
+      cta_reply_to: 'Donner un feedback à %{authorName}'
       days_ago: 'Il y a %{numberOfDays} jours'
       event_description: '%{authorName} a publié une nouvelle idée sur votre plate-forme. Découvrez-la, faites un retour ou modifiez son état !'
       main_header: '%{firstName}, une nouvelle idée a été postée sur votre plate-forme'
@@ -358,7 +358,7 @@ fr-BE:
       by_author: 'par %{authorName}'
       updated: '%{officialName} écrit :'
       cta_view: 'Aller à cette idée'
-      event_description: '%{officialName} a réagi à l''idée ''%{ideaTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{officialName}.'
+      event_description: '%{officialName} a réagi à votre idée ''%{ideaTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{officialName}.'
       main_header: 'Il y a un retour officiel sur une idée que vous avez commenté'
       subject: 'Une idée que vous avez commenté a reçu une mise à jour officielle sur la plate-forme de %{organizationName}'
       preheader: '%{officialName} a fait un retour officiel sur une idée que vous avez commenté'
@@ -445,7 +445,7 @@ fr-BE:
       preheader: '%{organizationName} a modifié le statut de votre idée'
     status_change_of_voted_idea:
       status_change: 'Le nouveau statut de cette idée est ''%{ideaStatus}'''
-      cta_view_idea: 'Allez à l''idée'
+      cta_view_idea: 'Aller à cette idée'
       event_description: '%{organizationName} a changé le statut de l''idée ''%{ideaTitle}'' sur leur plateforme de participation numérique.'
       main_header: 'Une idée sur laquelle vous avez voté a un nouveau statut'
       subject: 'Le statut d''une idée pour laquelle vous avez voté a changé'
@@ -504,7 +504,7 @@ fr-BE:
       action_add_image: '%{addImageLink} pour donner plus de visibilité à votre idée'
       action_comment: '%{textComment} sur les idées déjà postées'
       action_published_idea: 'Publiez votre idée'
-      action_send_email: 'Envoyez un %{sendEmailLink} à vos contacts'
+      action_send_email: 'Envoyez vos contacts un %{sendEmailLink}'
       action_share_fb: 'Informez vos amis sur %{fbLink}'
       action_share_link: 'Partagez-la via n''importe quel canal en copiant le %{link}'
       action_share_twitter: 'Informez vos suiveurs sur %{twitterLink}'
@@ -527,7 +527,7 @@ fr-BE:
     idea_published:
       action_add_image: '%{addImageLink} pour donner plus de visibilité à votre idée'
       action_published_idea: 'Publiez votre idée'
-      action_send_email: 'Envoyez un %{sendEmailLink} à vos contacts'
+      action_send_email: 'Envoyez vos contacts un %{sendEmailLink}'
       action_share_fb: 'Informez vos amis sur %{fbLink}'
       action_share_link: 'Partagez-la via n''importe quel canal en copiant le %{link}'
       action_share_twitter: 'Informez vos suiveurs sur %{twitterLink}'
