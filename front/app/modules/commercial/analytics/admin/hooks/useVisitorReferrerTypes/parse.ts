@@ -18,10 +18,7 @@ export const parsePieData = (
   const percentages = roundPercentages(counts);
 
   return data.map((row, i) => ({
-    name:
-      row.first_dimension_referrer_type_name in translations
-        ? translations[row.first_dimension_referrer_type_name]
-        : row.first_dimension_referrer_type_name,
+    name: translations[row.first_dimension_referrer_type_name],
     value: row.count,
     percentage: percentages[i],
     color: categoricalColorScheme({ rowIndex: i }),

@@ -20,7 +20,7 @@ export interface ReferrerListResponse {
 export interface ReferrerRow {
   count: number;
   count_visitor_id: number;
-  'dimension_referrer_type.name': ReferrerTypeName | string;
+  'dimension_referrer_type.name': ReferrerTypeName;
   referrer_name: string | null;
 }
 
