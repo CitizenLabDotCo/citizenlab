@@ -9,6 +9,8 @@ module IdeaCustomFields
     attr_reader :errors
   end
 
+  class UpdatingFormWithInputError < StandardError; end
+
   class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
     CONSTANTIZER = {
       'Project' => {
@@ -25,6 +27,7 @@ module IdeaCustomFields
     before_action :set_custom_field, only: %i[show update]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
+    rescue_from UpdatingFormWithInputError, with: :render_updating_form_with_input_error
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
@@ -55,8 +58,11 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
+      participation_method = Factory.instance.participation_method_for @custom_form.participation_context
+      verify_no_responses participation_method
+
       update_fields
-      @custom_form.reload
+      @custom_form.reload if @custom_form.persisted?
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).configurable_fields,
         params: fastjson_params,
@@ -237,6 +243,16 @@ module IdeaCustomFields
 
     def secure_constantize(key)
       CONSTANTIZER.fetch(params[:container_type])[key]
+    end
+
+    def verify_no_responses(participation_method)
+      return if participation_method.edit_custom_form_allowed?
+
+      raise UpdatingFormWithInputError
+    end
+
+    def render_updating_form_with_input_error
+      render json: { error: :updating_form_with_input }, status: :unauthorized
     end
   end
 end

@@ -322,6 +322,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
               hideOnClick={false}
             >
               <ButtonWrapper
+                id="e2e-cta-button"
                 tabIndex={!enabled ? 0 : -1}
                 className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
                   disabledReason ? disabledReason : ''

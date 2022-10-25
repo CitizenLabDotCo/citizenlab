@@ -634,6 +634,311 @@ resource 'Projects' do
       end
     end
 
+    get 'web_api/v1/projects/:id/as_xlsx' do
+      context 'for a continuous native survey project' do
+        let(:project) { create(:continuous_native_survey_project) }
+        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:id) { project.id }
+        let(:multiselect_field) do
+          create(
+            :custom_field_multiselect,
+            resource: project_form,
+            title_multiloc: { 'en' => 'What are your favourite pets?' },
+            description_multiloc: {}
+          )
+        end
+        let!(:cat_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+        end
+        let!(:dog_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+        end
+
+        context 'when there are no inputs in the project' do
+          example 'Download native survey phase inputs in one sheet', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: project.title_multiloc['en'],
+                column_headers: [
+                  'ID',
+                  'What are your favourite pets?',
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: []
+              }
+            ])
+          end
+        end
+
+        context 'when there are inputs in the project' do
+          let!(:survey_response1) do
+            create(
+              :idea,
+              project: project,
+              custom_field_values: { multiselect_field.key => %w[cat dog] }
+            )
+          end
+          let!(:survey_response2) do
+            create(
+              :idea,
+              project: project,
+              custom_field_values: { multiselect_field.key => %w[cat] }
+            )
+          end
+
+          example 'Download native survey phase inputs in one sheet', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: project.title_multiloc['en'],
+                column_headers: [
+                  'ID',
+                  multiselect_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: [
+                  [
+                    survey_response1.id,
+                    'Cat, Dog',
+                    survey_response1.author_name,
+                    survey_response1.author.email,
+                    survey_response1.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ],
+                  [
+                    survey_response2.id,
+                    'Cat',
+                    survey_response2.author_name,
+                    survey_response2.author.email,
+                    survey_response2.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ]
+                ]
+              }
+            ])
+          end
+        end
+      end
+
+      context 'for a timeline project' do
+        let(:project) { create(:project, process_type: 'timeline') }
+        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:active_phase) do
+          create(
+            :active_phase,
+            project: project,
+            participation_method: 'native_survey',
+            title_multiloc: {
+              'en' => 'Phase 2: survey',
+              'nl-BE' => 'Fase 2: survey'
+            }
+          )
+        end
+        let(:future_phase) do
+          create(
+            :phase,
+            project: project,
+            participation_method: 'native_survey',
+            start_at: active_phase.end_at + 30.days,
+            end_at: active_phase.end_at + 60.days,
+            title_multiloc: {
+              'en' => 'Phase 3: survey',
+              'nl-BE' => 'Fase 3: survey'
+            }
+          )
+        end
+        let(:ideation_phase) do
+          create(
+            :phase,
+            project: project,
+            participation_method: 'ideation',
+            start_at: active_phase.start_at - 60.days,
+            end_at: active_phase.start_at - 30.days,
+            title_multiloc: {
+              'en' => 'Phase 1: ideation',
+              'nl-BE' => 'Fase 1: ideeën'
+            }
+          )
+        end
+        let(:active_phase_form) { create(:custom_form, participation_context: active_phase) }
+        let(:future_phase_form) { create(:custom_form, participation_context: future_phase) }
+        let(:id) { project.id }
+        let(:multiselect_field) do
+          create(
+            :custom_field_multiselect,
+            resource: active_phase_form,
+            title_multiloc: { 'en' => 'What are your favourite pets?' },
+            description_multiloc: {}
+          )
+        end
+        let!(:cat_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+        end
+        let!(:dog_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+        end
+        let!(:linear_scale_field) do
+          create(
+            :custom_field_linear_scale,
+            resource: future_phase_form
+          )
+        end
+        let!(:extra_idea_field) do
+          create(
+            :custom_field_extra_custom_form,
+            resource: project_form
+          )
+        end
+
+        context 'when there are no inputs in the phases' do
+          example 'Download native survey phase inputs in separate sheets', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: 'Phase 2 survey', # The colon is removed from phase title "Phase 2: survey"
+                column_headers: [
+                  'ID',
+                  'What are your favourite pets?',
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: []
+              },
+              {
+                sheet_name: 'Phase 3 survey', # The colon is removed from phase title "Phase 3: survey"
+                column_headers: [
+                  'ID',
+                  'We need a swimming pool.',
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: []
+              }
+            ])
+          end
+        end
+
+        context 'when there are inputs in the phases' do
+          let!(:ideation_response1) do
+            create(
+              :idea,
+              project: project,
+              custom_field_values: { extra_idea_field.key => 'Answer' }
+            )
+          end
+          let!(:active_survey_response1) do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              custom_field_values: { multiselect_field.key => %w[cat dog] }
+            )
+          end
+          let!(:active_survey_response2) do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              custom_field_values: { multiselect_field.key => %w[cat] }
+            )
+          end
+          let!(:future_survey_response1) do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [future_phase],
+              custom_field_values: { linear_scale_field.key => 4 }
+            )
+          end
+
+          example 'Download native survey phase inputs in separate sheets', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: 'Phase 2 survey', # The colon is removed from phase title "Phase 2: survey"
+                column_headers: [
+                  'ID',
+                  multiselect_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: [
+                  [
+                    active_survey_response1.id,
+                    'Cat, Dog',
+                    active_survey_response1.author_name,
+                    active_survey_response1.author.email,
+                    active_survey_response1.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ],
+                  [
+                    active_survey_response2.id,
+                    'Cat',
+                    active_survey_response2.author_name,
+                    active_survey_response2.author.email,
+                    active_survey_response2.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ]
+                ]
+              },
+              {
+                sheet_name: 'Phase 3 survey', # The colon is removed from phase title "Phase 3: survey"
+                column_headers: [
+                  'ID',
+                  linear_scale_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: [
+                  [
+                    future_survey_response1.id,
+                    4,
+                    future_survey_response1.author_name,
+                    future_survey_response1.author.email,
+                    future_survey_response1.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ]
+                ]
+              }
+            ])
+          end
+        end
+      end
+    end
+
     delete 'web_api/v1/projects/:id/inputs' do
       let(:project) { create :continuous_project }
       let(:id) { project.id }
@@ -712,6 +1017,28 @@ resource 'Projects' do
         do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
         assert_status 200
         expect(json_response[:data].size).to eq 0
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/:id/as_xlsx' do
+    context 'for a continuous project' do
+      let(:project) { create(:continuous_project) }
+      let(:id) { project.id }
+
+      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+
+    context 'for a timeline project' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:id) { project.id }
+
+      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 401
       end
     end
   end
