@@ -24,6 +24,7 @@ class JsonFormsService
 
   def input_ui_and_json_multiloc_schemas(fields, current_user, input_term)
     return if fields.empty?
+
     visible_fields = custom_form_allowed_fields(fields, current_user).reject do |field|
       !field.enabled? || field.hidden?
     end
