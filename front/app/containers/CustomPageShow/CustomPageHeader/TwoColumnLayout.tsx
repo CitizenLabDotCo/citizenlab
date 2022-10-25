@@ -27,6 +27,7 @@ const TwoColumnLayout = ({ pageData }: Props) => {
         />
       )}
       <HeaderContent
+        align="left"
         fontColors="dark"
         hasHeaderBannerImage={imageUrl != null}
         pageAttributes={pageAttributes}
