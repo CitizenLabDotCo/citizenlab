@@ -69,6 +69,7 @@ const TabbedResource = ({
         width="100%"
         display="flex"
         justifyContent="space-between"
+        alignItems="center"
         className="e2e-resource-header"
       >
         <Box>
