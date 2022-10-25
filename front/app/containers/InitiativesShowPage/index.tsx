@@ -5,6 +5,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
 
 // components
+import PageNotFound from 'components/PageNotFound';
 import InitiativesShow from 'containers/InitiativesShow';
 import Button from 'components/UI/Button';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
@@ -13,6 +14,9 @@ import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -92,8 +96,16 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativesShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter((inputProps: InputProps & WithRouterProps) => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
+
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => <InitiativesShowPage {...inputProps} {...dataProps} />}
+    </Data>
+  );
+});
