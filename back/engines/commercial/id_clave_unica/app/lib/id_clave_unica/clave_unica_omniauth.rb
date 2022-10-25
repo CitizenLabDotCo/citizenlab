@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module IdClaveUnica
-  class ClaveUnicaOmniauth
-    include ClaveUnicaVerification < OmniauthMethods::Base
+  class ClaveUnicaOmniauth < OmniauthMethods::Base
+    include ClaveUnicaVerification
 
     def profile_to_user_attrs(auth)
       Rails.logger.info("GREPME Clave unica auth response: #{auth.inspect}")
