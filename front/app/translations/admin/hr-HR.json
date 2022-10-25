@@ -994,6 +994,7 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Bez vremenske trake",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Kreiraj projekt",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Kreirajte projekt na osnovu predloška",
+  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Crea un sondaggio esterno",
   "app.containers.AdminPage.ProjectEdit.createNativeSurvey": "Izradite upitnik unutar platforme",
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Postavite upitnik bez napuštanja platforme.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Kreirajte anketu",

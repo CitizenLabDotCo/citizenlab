@@ -994,6 +994,7 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Utan tidslinje",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Skapa ett projekt",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Skapa ett projekt från en mall",
+  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Creați un sondaj extern",
   "app.containers.AdminPage.ProjectEdit.createNativeSurvey": "Skapa en undersökning på plattformen",
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Skapa en undersökning utan att lämna vår plattform.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Skapa en omröstning",

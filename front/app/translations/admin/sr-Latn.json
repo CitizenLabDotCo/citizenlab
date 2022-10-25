@@ -994,6 +994,7 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Bez vremenskih okvira",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Kreirajte projekat",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Kreirajte projekat na osnovu šablona",
+  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Kreiraj spoljnu anketu",
   "app.containers.AdminPage.ProjectEdit.createNativeSurvey": "Kreiraj anketu u okviru plafome",
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Postavite anketu bez napuštanja platforme.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Kreirajte anketu",

@@ -994,6 +994,7 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Sans une ligne de temps",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Créer un projet",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Créer un projet à partir d'un modèle",
+  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Créer une enquête externe",
   "app.containers.AdminPage.ProjectEdit.createNativeSurvey": "Créez une enquête sur la plateforme",
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Mettez en place une enquête sans quitter notre plateforme.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Créer un sondage",
