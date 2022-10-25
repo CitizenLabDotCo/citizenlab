@@ -63,6 +63,12 @@ const TableComponent = ({
     pageNumber,
   });
 
+  // Reduce 'flickering' effect of component collapsing
+  // while data is available yet
+  if (tableData === undefined) {
+    return <Box mx="20px" height="164px" />;
+  }
+
   if (isNilOrError(tableData)) return null;
 
   return (
