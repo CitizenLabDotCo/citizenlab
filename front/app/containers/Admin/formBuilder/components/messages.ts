@@ -171,4 +171,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsCondition',
     defaultMessage: 'if you need to make changes.',
   },
+  choiceCount: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount',
+    defaultMessage:
+      '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
+  },
 });

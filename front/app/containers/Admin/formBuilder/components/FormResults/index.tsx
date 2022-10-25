@@ -163,7 +163,10 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                       bgColor={colors.primary}
                       completed={percentage}
                       leftLabel={answer}
-                      rightLabel={`${percentage}% (${responses} choices)`}
+                      rightLabel={formatMessage(messages.choiceCount, {
+                        choiceCount: responses,
+                        percentage,
+                      })}
                     />
                   );
                 })}
