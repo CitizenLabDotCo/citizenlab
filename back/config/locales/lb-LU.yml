@@ -15,8 +15,8 @@ lb:
     rejected: Ofgeleent
     rejected_description: Dës Iddi gouf ofgeleent
   initiative_statuses:
-    proposed: proposéiert
-    proposed_description: proposéiert
+    proposed: virgeschloen
+    proposed_description: virgeschloen
     expired: ofgelaf
     expired_description: ofgelaf
     threshold_reached: Schwell erreecht
@@ -55,7 +55,7 @@ lb:
     community: Entwécklung vum Gemengewiesen
     community_description: Entwécklung vum Gemengewiesen
     services: Ëffentlech Déngschtleeschtungen
-    services_description: Ëffentlech Déngschter
+    services_description: Ëffentlech Déngschtleeschtungen
     other: Aner
     other_description: Aner
   static_pages:
@@ -117,7 +117,7 @@ lb:
         title: Auteur
         description:
       topic_ids:
-        title: Sujeten
+        title: Themen
         description:
       location:
         title: Standuert
@@ -181,3 +181,22 @@ lb:
       message_you_reset_your_password: 'Dir hutt d’Zerécksetzung vun engem Passwuert op der Bedeelegungsplattform vun %{organizationName} ugefuerdert. Klickt op de Knappsenden hei ënnendrënner, fir en neit, séchert Passwuert ze wielen. De Link leeft an 1 Stonn of.'
       subject: '%{organizationName}: Äert Passwuert zerécksetzen'
       title_reset_your_password: 'Wielt en neit Passwuert'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Héicht'
+      longitude: 'Längt'
+      author_fullname: 'Numm vum Auteur'
+      author_email: 'E-Mail vum Auteur'
+      author_id: 'ID vum Auteur'
+      created_at: 'Agereecht bei'
+      published_at: 'Verëffentlecht bei'
+      comments_count: 'Kommentaren'
+      upvotes_count: 'Upvotes'
+      downvotes_count: 'Downvotes'
+      baskets_count: 'Kierf'
+      input_url: 'URL'
+      project: 'Projet'
+      status: 'Status'
+      assignee_fullname: 'Assignee'
+      assignee_email: 'E-Mail vum Beoptragten'
