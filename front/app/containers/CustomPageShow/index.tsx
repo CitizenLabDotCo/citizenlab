@@ -1,6 +1,7 @@
 import React from 'react';
 
 // components
+import PageNotFound from 'components/PageNotFound';
 import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -26,7 +27,7 @@ import { injectIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { fontSizes, isRtl, media } from 'utils/styleUtils';
 
-const PageTitle = styled.h1`
+export const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
@@ -68,8 +69,7 @@ const CustomPageShow = () => {
   });
 
   if (isNilOrError(page) || isNilOrError(appConfiguration)) {
-    return null;
-    // should return 404 here
+    return <PageNotFound />;
   }
 
   const pageAttributes = page.attributes;
