@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "يجب ألا يقل طول عنوان السؤال عن 10 أحرف",
   "app.containers.IdeasNewPage.contributionFormTitle": "أضف مُساهمة جديدة",
   "app.containers.IdeasNewPage.contributionMetaTitle": "أضف مُساهمة جديدة | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "فشلت عملية تحميل الملف. يُرجى تفقُّد حجم الملف وتنسيقه والمحاولة مرة أخرى. ",
   "app.containers.IdeasNewPage.goBack": "العودة",
   "app.containers.IdeasNewPage.ideaFormTitle": "أضف فكرة جديدة",

@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "Apeqqutip qulequtaa minnerpaamik 10-nik naqinnertaqassaaq",
   "app.containers.IdeasNewPage.contributionFormTitle": "Nutaamik ilanngussaqarit",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Nutaamik ilanngussaqarit | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "Fileq ikkutinngitsoorsimavoq. Filip angissusaa ilusaalu misissoriarlugit misileeqqigit.",
   "app.containers.IdeasNewPage.goBack": "Uterit",
   "app.containers.IdeasNewPage.ideaFormTitle": "Isummamik nutaamik ilanngusigit",

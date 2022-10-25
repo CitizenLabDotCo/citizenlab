@@ -33,4 +33,32 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.surveyTitle',
     defaultMessage: 'Survey',
   },
+  createSurveyText: {
+    id: 'app.utils.AdminPage.ProjectEdit.createSurveyText',
+    defaultMessage: 'Embed an external survey',
+  },
+  createNativeSurvey: {
+    id: 'app.utils.AdminPage.ProjectEdit.createNativeSurvey',
+    defaultMessage: 'Create an in-platform survey',
+  },
+  createPoll: {
+    id: 'app.utils.AdminPage.ProjectEdit.createPoll',
+    defaultMessage: 'Create a poll',
+  },
+  inputAndFeedback: {
+    id: 'app.utils.AdminPage.ProjectEdit.inputAndFeedback',
+    defaultMessage: 'Collect input and feedback',
+  },
+  conductParticipatoryBudgetingText: {
+    id: 'app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
+    defaultMessage: 'Conduct a budget allocation exercise',
+  },
+  findVolunteers: {
+    id: 'app.utils.AdminPage.ProjectEdit.findVolunteers',
+    defaultMessage: 'Find volunteers',
+  },
+  shareInformation: {
+    id: 'app.utils.AdminPage.ProjectEdit.shareInformation',
+    defaultMessage: 'Share information',
+  },
 });

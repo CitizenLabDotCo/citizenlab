@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "D’Beschreiwung vun der Fro muss op d’mannst 10 Zeeche laang sinn",
   "app.containers.IdeasNewPage.contributionFormTitle": "Neie Bäitrag bäifügen",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Neie Bäitrag bäifügen | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "Eng Datei konnt net eropgeluede ginn. Iwwerpréift wgl. Dateiegréisst a -format a probéiert nach eng Kéier.",
   "app.containers.IdeasNewPage.goBack": "Zeréck",
   "app.containers.IdeasNewPage.ideaFormTitle": "Nei Iddi bäifügen",

@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "Soru başlığı en az 10 karakter uzunluğunda olmalıdır",
   "app.containers.IdeasNewPage.contributionFormTitle": "Yeni katkı ekleyin",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Yeni katkı ekleyin | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "Bir dosya yüklenemedi. Lütfen dosya boyutunu ve biçimini kontrol edip tekrar deneyin.",
   "app.containers.IdeasNewPage.goBack": "Geri gidin",
   "app.containers.IdeasNewPage.ideaFormTitle": "Yeni fikir ekleyin",

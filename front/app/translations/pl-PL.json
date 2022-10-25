@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "Tytuł pytania musi mieć co najmniej 10 znaków",
   "app.containers.IdeasNewPage.contributionFormTitle": "Dodaj nowy wkład",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Dodaj nowy wkład | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "Nie udało się przesłać pliku. Proszę sprawdź rozmiar i format pliku i spróbuj ponownie.",
   "app.containers.IdeasNewPage.goBack": "Wróć",
   "app.containers.IdeasNewPage.ideaFormTitle": "Dodaj nowy pomysł",

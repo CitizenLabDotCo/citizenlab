@@ -147,6 +147,7 @@ describe('Native survey project page actions', () => {
     cy.visit(`admin/projects/${projectIdContinuous}/permissions`);
     // Select that unregistered users may submit surveys
     cy.get('#e2e-granular-permissions').within(() => {
+      cy.contains('Anyone').should('be.visible');
       cy.contains('Anyone').click({ force: true });
     });
     // Logout
@@ -154,6 +155,7 @@ describe('Native survey project page actions', () => {
     // Visit the project page
     cy.visit(`/projects/${projectSlugContinous}`);
     // Check that correct text and actions shown
+    cy.get('#e2e-cta-button').should('be.visible');
     cy.get('#e2e-cta-button').find('button').click({ force: true });
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });

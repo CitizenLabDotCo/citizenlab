@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "De titel van de vraag dient meer dan 10 tekens lang te zijn",
   "app.containers.IdeasNewPage.contributionFormTitle": "Voeg een nieuw onderwerp toe",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Nieuw onderwerp toevoegen | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "Een bestand is niet geüpload. Gelieve de bestandsgrootte en -indeling te controleren en het opnieuw te proberen.",
   "app.containers.IdeasNewPage.goBack": "Ga terug",
   "app.containers.IdeasNewPage.ideaFormTitle": "Nieuwe bijdrage toevoegen",

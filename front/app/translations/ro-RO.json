@@ -806,6 +806,7 @@
   "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short": "Titlul întrebării trebuie să aibă cel puțin 10 caractere",
   "app.containers.IdeasNewPage.contributionFormTitle": "Adaugă o contribuție nouă",
   "app.containers.IdeasNewPage.contributionMetaTitle": "Adaugă o contribuție nouă | {projectName}",
+  "app.containers.IdeasNewPage.editSurvey": "Edit survey",
   "app.containers.IdeasNewPage.fileUploadError": "Un fișier nu a putut fi încărcat. Vă rugăm să verificați dimensiunea și formatul fișierului și să încercați din nou.",
   "app.containers.IdeasNewPage.goBack": "Întoarce-te",
   "app.containers.IdeasNewPage.ideaFormTitle": "Adaugă o idee nouă",
