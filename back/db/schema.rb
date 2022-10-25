@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_21_140619) do
+ActiveRecord::Schema.define(version: 2022_10_25_100507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1720,5 +1720,12 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
        LEFT JOIN volunteering_causes vc ON ((vc.id = vv.cause_id)))
        LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
+  SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
   SQL
 end

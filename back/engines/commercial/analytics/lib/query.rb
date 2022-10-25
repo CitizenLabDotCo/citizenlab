@@ -6,7 +6,8 @@ module Analytics
       post: FactPost,
       participation: FactParticipation,
       visit: FactVisit,
-      registration: FactRegistration
+      registration: FactRegistration,
+      event: FactEvent
     }.freeze
 
     def initialize(query)
