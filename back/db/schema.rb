@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_21_140619) do
+ActiveRecord::Schema.define(version: 2022_10_25_131832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1628,13 +1628,6 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
       COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
      FROM users;
   SQL
-  create_view "analytics_fact_registrations", sql_definition: <<-SQL
-      SELECT users.id,
-      users.id AS dimension_user_id,
-      (users.registration_completed_at)::date AS dimension_date_registration_id
-     FROM users
-    WHERE (users.registration_completed_at IS NOT NULL);
-  SQL
   create_view "analytics_fact_participations", sql_definition: <<-SQL
       SELECT i.id,
       i.author_id AS dimension_user_id,
@@ -1720,5 +1713,22 @@ ActiveRecord::Schema.define(version: 2022_10_21_140619) do
        LEFT JOIN volunteering_causes vc ON ((vc.id = vv.cause_id)))
        LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
+  SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
+  SQL
+  create_view "analytics_fact_registrations", sql_definition: <<-SQL
+      SELECT u.id,
+      u.id AS dimension_user_id,
+      (u.registration_completed_at)::date AS dimension_date_registration_id,
+      (i.created_at)::date AS dimension_date_invited_id,
+      (i.accepted_at)::date AS dimension_date_accepted_id,
+      u.invite_status
+     FROM (users u
+       LEFT JOIN invites i ON ((i.invitee_id = u.id)));
   SQL
 end

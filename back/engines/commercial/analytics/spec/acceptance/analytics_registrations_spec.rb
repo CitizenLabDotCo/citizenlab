@@ -18,13 +18,17 @@ resource 'Analytics - FactRegistrations model' do
       create(:user, registration_completed_at: '2022-09-15 16:30:00')
       create(:user, registration_completed_at: '2022-10-1 16:30:00')
 
+      # Create 2 additional pending registrations
+      create(:invite, created_at: '2022-09-1 12:10:00')
+      create(:invite, created_at: '2022-10-1 13:22:00')
+
       # Create associated date dimensions
       create(:dimension_date, date: Date.new(2022, 9, 1))
       create(:dimension_date, date: Date.new(2022, 9, 15))
       create(:dimension_date, date: Date.new(2022, 10, 1))
     end
 
-    example 'group registrations by month' do
+    example 'group complete registrations by month' do
       do_request({
         query: {
           fact: 'registration',
@@ -41,7 +45,7 @@ resource 'Analytics - FactRegistrations model' do
       ])
     end
 
-    example 'filter between dates and return citizen registrations only' do
+    example 'filter complete registrations between dates and return citizens only' do
       do_request({
         query: {
           fact: 'registration',
@@ -61,5 +65,43 @@ resource 'Analytics - FactRegistrations model' do
       assert_status 200
       expect(response_data).to match_array([{ count: 1 }])
     end
+
+    example 'find pending invitations only' do
+      do_request({
+                   query: {
+                     fact: 'registration',
+                     filters: {
+                       invite_status: 'pending'
+                     },
+                     aggregations: {
+                       all: 'count'
+                     }
+                   }
+                 })
+      assert_status 200
+      expect(response_data).to match_array([{ count: 2 }])
+    end
+
+    # example 'group invitations by status' do
+    #   do_request({
+    #                query: {
+    #                  fact: 'registration',
+    #                  filters: {
+    #                    dimension_date_registration: {
+    #                      date: { from: '2022-09-01', to: '2022-09-30' }
+    #                    },
+    #                    dimension_user: {
+    #                      role: ['citizen', nil]
+    #                    }
+    #                  },
+    #                  aggregations: {
+    #                    all: 'count'
+    #                  }
+    #                }
+    #              })
+    #   assert_status 200
+    #   expect(response_data).to match_array([{ count: 1 }])
+    end
+
   end
 end
