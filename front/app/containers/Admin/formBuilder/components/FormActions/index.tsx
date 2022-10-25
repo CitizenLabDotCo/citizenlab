@@ -109,6 +109,7 @@ const FormActions = ({
         >
           <Button
             icon="chart-bar"
+            data-cy="e2e-form-view-results"
             buttonStyle="cl-blue"
             width="auto"
             minWidth="312px"
