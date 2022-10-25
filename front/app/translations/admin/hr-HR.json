@@ -1122,6 +1122,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation": "Jeste li sigurni da želite izbrisati sve rezultate upitnika?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage": "Istraživanje nije moguće uređivati jer su rezultati istraživanja počeli pristizati.",
   "app.containers.AdminPage.ProjectEdit.survey.done": "Gotovo",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults": "Preuzimanje svih rezultata upitnika",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults": "Preuzimanje rezultata upitnika",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Uredi",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Uređivanje sadržaja upitnika",
