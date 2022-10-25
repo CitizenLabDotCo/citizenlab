@@ -70,7 +70,7 @@ const FormActions = ({
   };
 
   if (!isNilOrError(submissionCount)) {
-    const isEditingDisabled = submissionCount.totalSubmissions > 0;
+    const haveSubmissionsComeIn = submissionCount.totalSubmissions > 0;
 
     return (
       <Box width="100%" my="60px">
@@ -94,7 +94,7 @@ const FormActions = ({
             }}
           />
         </Box>
-        {isEditingDisabled && (
+        {haveSubmissionsComeIn && (
           <Box width="100%" mb="36px">
             <DeleteFormResultsNotice projectId={projectId} />
           </Box>
@@ -109,7 +109,7 @@ const FormActions = ({
         >
           <Button
             icon="chart-bar"
-            buttonStyle="primary"
+            buttonStyle="cl-blue"
             width="auto"
             minWidth="312px"
             onClick={() => {
@@ -122,10 +122,10 @@ const FormActions = ({
           </Button>
           <Button
             icon="edit"
-            buttonStyle="primary"
+            buttonStyle="cl-blue"
             width="auto"
             minWidth="312px"
-            disabled={isEditingDisabled}
+            disabled={haveSubmissionsComeIn}
             onClick={() => {
               clHistory.push(editFormLink);
             }}
@@ -137,35 +137,37 @@ const FormActions = ({
             linkTo={viewFormLink}
             icon="eye"
             openLinkInNewTab
-            buttonStyle="primary"
+            buttonStyle="cl-blue"
             width="auto"
             minWidth="312px"
           >
             {formatMessage(messages.viewSurveyText)}
           </Button>
         </Box>
-        <Box
-          display="flex"
-          alignItems="flex-start"
-          flexDirection="row"
-          width="100%"
-          justifyContent="space-between"
-          mt="32px"
-        >
-          <Button
-            icon="delete"
-            width="auto"
-            minWidth="312px"
-            bgColor="transparent"
-            borderColor={colors.red600}
-            iconColor={colors.red600}
-            textColor={colors.red600}
-            bgHoverColor={darken(0.12, colors.red600)}
-            onClick={openModal}
+        {haveSubmissionsComeIn && (
+          <Box
+            display="flex"
+            alignItems="flex-start"
+            flexDirection="row"
+            width="100%"
+            justifyContent="space-between"
+            mt="32px"
           >
-            {formatMessage(messages.deleteSurveyResults)}
-          </Button>
-        </Box>
+            <Button
+              icon="delete"
+              width="auto"
+              minWidth="312px"
+              bgColor="transparent"
+              borderColor={colors.red600}
+              iconColor={colors.red600}
+              textColor={colors.red600}
+              bgHoverColor={darken(0.12, colors.red600)}
+              onClick={openModal}
+            >
+              {formatMessage(messages.deleteSurveyResults)}
+            </Button>
+          </Box>
+        )}
         <Modal opened={showDeleteModal} close={closeModal}>
           <Box display="flex" flexDirection="column" width="100%" p="20px">
             <Box mb="40px">
