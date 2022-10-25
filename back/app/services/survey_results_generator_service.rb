@@ -49,7 +49,11 @@ class SurveyResultsGeneratorService < FieldVisitorService
     values = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
-    distribution = Idea.select(:value).from(values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
+    distribution_from_db = Idea.select(:value).from(values).group(:value).order(value: :desc).count.to_h
+    distribution = []
+    (1..field.maximum).reverse_each do |value|
+      distribution << [value, distribution_from_db[value] || 0]
+    end
     option_titles = (1..field.maximum).index_with do |value|
       locales.index_with { |_locale| value.to_s }
     end
