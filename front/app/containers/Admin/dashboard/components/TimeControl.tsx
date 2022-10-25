@@ -150,7 +150,7 @@ class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
     const activePreset = this.findActivePreset();
 
     return (
-      <Container>
+      <Container className="intercom-admin-dashboard-time-control">
         <DropdownContainer>
           <StyledButton
             buttonStyle="text"

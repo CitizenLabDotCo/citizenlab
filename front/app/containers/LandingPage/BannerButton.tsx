@@ -18,6 +18,7 @@ const BannerButton = ({ buttonStyle, ...props }: Props) => (
     fontWeight="500"
     padding="13px 22px"
     data-cy="e2e-cta-banner-button"
+    className="intercom-cta-banner-button"
     {...props}
   />
 );
