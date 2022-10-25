@@ -16,12 +16,6 @@ RSpec.describe Idea, type: :model do
       expect(build(:idea, author: nil).valid?(:create)).to be true
     end
 
-    it 'cannot create an idea without author on publication' do
-      idea = build(:idea, author: nil)
-      expect(idea.valid?(:publication)).to be false
-      expect(idea.errors.details).to eq({ author: [{ error: :blank }] })
-    end
-
     context 'without custom form' do
       it 'can publish an idea without custom fields' do
         project = create :project

@@ -66,6 +66,7 @@ const Export = ({
   return (
     <Box data-testid="insightsExport" display="flex" justifyContent="flex-end">
       <Button
+        className="intercom-insights-network-export-all-button"
         buttonStyle="text"
         textColor={colors.textSecondary}
         onClick={handleExportClick}

@@ -268,7 +268,13 @@ const Network = ({
 
   return (
     <Box ref={containerRef} h="100%" position="relative" overflow="hidden">
-      <Box mt="24px" ml="24px" position="absolute" zIndex="1000">
+      <Box
+        mt="24px"
+        ml="24px"
+        position="absolute"
+        zIndex="1000"
+        className="intercom-insights-network-keywords-map"
+      >
         <SectionTitle>
           {formatMessage(messages.networkTitle)}
           <IconTooltip

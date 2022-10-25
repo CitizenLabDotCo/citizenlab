@@ -262,7 +262,7 @@ const ReportExportMenu = ({
   };
 
   return (
-    <Container className={className}>
+    <Container className={`${className} intercom-admin-export-button`}>
       <DropdownButton
         buttonStyle="admin-dark-text"
         onClick={toggleDropdown()}

@@ -218,7 +218,11 @@ const Actions = ({
         <>
           {otherCategories.length > 0 && (
             <ActionButtonWrapper data-testid="insightsTableActionsBulkAssign">
-              <Button onClick={toggleDropdown} buttonStyle="admin-dark-text">
+              <Button
+                className="intercom-insights-edit-bulk-assign-button"
+                onClick={toggleDropdown}
+                buttonStyle="admin-dark-text"
+              >
                 <StyledIcon name="folder-move" />
                 <FormattedMessage {...messages.bulkAssignCategory} />
               </Button>

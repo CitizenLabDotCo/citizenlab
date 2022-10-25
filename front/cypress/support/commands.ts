@@ -317,8 +317,10 @@ export function apiCreateModeratorForProject(
 }
 
 export function logout() {
-  cy.get('#e2e-user-menu-container button').click();
-  cy.get('#e2e-sign-out-link').click();
+  cy.get('#e2e-user-menu-container button').should('be.visible');
+  cy.get('#e2e-user-menu-container button').click({ force: true });
+  cy.get('#e2e-sign-out-link').should('be.visible');
+  cy.get('#e2e-sign-out-link').click({ force: true });
 }
 
 export function acceptCookies() {
@@ -757,6 +759,8 @@ export function apiCreateProject({
           title_multiloc: {
             en: title,
             'nl-BE': title,
+            'nl-NL': title,
+            'fr-BE': title,
           },
           description_preview_multiloc: {
             en: descriptionPreview,
