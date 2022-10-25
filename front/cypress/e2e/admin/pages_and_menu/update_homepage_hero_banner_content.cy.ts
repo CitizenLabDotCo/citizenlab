@@ -14,12 +14,6 @@ describe('Admin: update Hero Banner content', () => {
   const updatedSignedInCTAButton = 'signedin button!';
   const updatedSignedInCTAURL = 'https://www.example.biz';
 
-  // for a fake verified user
-  const verifiedFirstName = randomString();
-  const verifiedLastName = randomString();
-  const verifiedEmail = randomEmail();
-  const verifiedPassword = randomString();
-
   const defaultHomepageSettings = {
     top_info_section_enabled: false,
     bottom_info_section_enabled: false,
@@ -42,21 +36,6 @@ describe('Admin: update Hero Banner content', () => {
     header_bg:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=',
   };
-
-  before(() => {
-    // create and verify a fake user
-    cy.apiSignup(
-      verifiedFirstName,
-      verifiedLastName,
-      verifiedEmail,
-      verifiedPassword
-    ).then(() => {
-      cy.apiLogin(verifiedEmail, verifiedPassword).then((response) => {
-        // verify the fake user
-        cy.apiVerifyBogus(response.body.jwt);
-      });
-    });
-  });
 
   beforeEach(() => {
     // set default homepage settings
@@ -98,7 +77,7 @@ describe('Admin: update Hero Banner content', () => {
     );
   });
 
-  it('updates and views hero banner settings correctly', () => {
+  it('updates and persists hero banner settings correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
 
@@ -169,48 +148,49 @@ describe('Admin: update Hero Banner content', () => {
     cy.wait('@saveHomePage');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
 
-    // logout of admin@citizenlab account
-    cy.logout();
-
-    // login as fake verified user
-    cy.setLoginCookie(verifiedEmail, verifiedPassword);
-
-    // view page as verified user
-    cy.goToLandingPage();
+    // reload page
     cy.reload();
+    cy.wait('@getHomePage');
 
-    // click button to remove "complete your profile" banner
-    cy.get('.e2e-signed-in-header-complete-skip-btn').find('button').click();
+    // check that the data we entered earlier is persisted in the form
+    // layout chooser
+    cy.get('[data-cy="e2e-two-column-layout-option"]')
+      .find('label')
+      .should('have.class', 'enabled');
 
-    // check content and url for signed in CTA button
-    cy.get('[data-cy="e2e-cta-banner-button"]')
-      .find('a')
-      .contains(updatedSignedInCTAButton);
-    cy.get('[data-cy="e2e-cta-banner-button"]')
-      .find('a')
-      .should('have.attr', 'href', updatedSignedInCTAURL);
+    // signed-out header and subheader
+    cy.get('[data-cy="e2e-signed-out-header-section"]')
+      .find('input')
+      .should('have.value', updatedSignedOutHeaderEnglish);
+    cy.get('[data-cy="e2e-signed-out-subheader-section"]')
+      .find('input')
+      .should('have.value', updatedSignedOutSubheaderEnglish);
 
-    // check content as logged-out user
-    cy.logout();
-    cy.goToLandingPage();
-    cy.reload();
+    // avatar display
+    cy.get('[data-cy="e2e-banner-avatar-toggle-section"]')
+      .find('i')
+      .should('have.class', 'enabled');
 
-    // check that the content we saved earlier is shown here
-    cy.get('[data-cy=e2e-two-column-layout-container]').should('exist');
-    cy.get('#hook-header-content').should(
-      'contain',
-      updatedSignedOutHeaderEnglish
-    );
-    cy.get('#hook-header-content').should(
-      'contain',
-      updatedSignedOutSubheaderEnglish
-    );
+    // signed out button and url
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_out-customized_button"]')
+      .find('[data-testid=inputMultilocLocaleSwitcher]')
+      .find('input')
+      .should('have.value', updatedSignedOutCTAButton);
 
-    cy.get('#hook-header-content')
-      .find('a')
-      .contains(updatedSignedOutCTAButton);
-    cy.get('#hook-header-content')
-      .find('a')
-      .should('have.attr', 'href', updatedSignedOutCTAURL);
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_out-customized_button"]')
+      .find('[data-testid=buttonConfigInput]')
+      .find('input')
+      .should('have.value', updatedSignedOutCTAURL);
+
+    // signed in button and url
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_in-customized_button"]')
+      .find('[data-testid=inputMultilocLocaleSwitcher]')
+      .find('input')
+      .should('have.value', updatedSignedInCTAButton);
+
+    cy.get('[data-cy="e2e-cta-settings-homepage_signed_in-customized_button"]')
+      .find('[data-testid=buttonConfigInput]')
+      .find('input')
+      .should('have.value', updatedSignedInCTAURL);
   });
 });
