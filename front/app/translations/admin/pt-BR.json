@@ -1121,6 +1121,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation": "Are you sure you want to delete all survey results?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage": "Survey content can't be edited as survey results have started coming in.",
   "app.containers.AdminPage.ProjectEdit.survey.done": "Feito",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults": "Download all survey results",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults": "Baixar resultados da pesquisa",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Editar",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Editar conteúdo da enquete",

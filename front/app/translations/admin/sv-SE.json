@@ -1121,6 +1121,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation": "Är du säker på att du vill ta bort alla undersökningsresultat?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage": "Undersökningsinnehållet kan inte redigeras eftersom undersökningsresultat har börjat komma in.",
   "app.containers.AdminPage.ProjectEdit.survey.done": "Klart",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults": "Ladda ner alla undersökningsresultat",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults": "Ladda ner undersökningsresultat",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Redigera",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Redigera innehåll i undersökningen",

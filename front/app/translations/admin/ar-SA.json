@@ -1121,6 +1121,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation": "هل تريد بالتأكيد حذف كل نتائج الاستبيان؟",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage": "لا يمكن تعديل محتوى الاستبيان؛ لأن نتائج الاستبيان بدأت في الوصول.",
   "app.containers.AdminPage.ProjectEdit.survey.done": "تم",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults": "تنزيل كل نتائج الاستبيان",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults": "تنزيل نتائج الاستبيان",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "تعديل",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "تعديل محتوى الاستبيان",

@@ -1121,6 +1121,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation": "Er du sikker på, at du ønsker at slette alle undersøgelsesresultater?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage": "Undersøgelsesindholdet kan ikke redigeres, da undersøgelsesresultaterne er begyndt at komme ind.",
   "app.containers.AdminPage.ProjectEdit.survey.done": "Færdig",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults": "Download alle undersøgelsesresultater",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults": "Download undersøgelsesresultater",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Rediger",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Rediger undersøgelsesindhold",

@@ -1121,6 +1121,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation": "Weet je zeker dat je alle enquêteresultaten wilt verwijderen?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage": "Enquête-inhoud kan meer niet worden gewijzigd zodra resultaten binnen beginnen te komen.",
   "app.containers.AdminPage.ProjectEdit.survey.done": "Klaar",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults": "Alle enquêteresultaten downloaden",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults": "Enquêteresultaten downloaden",
   "app.containers.AdminPage.ProjectEdit.survey.editButtonLabel": "Bewerk",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent": "Enquête-inhoud wijzigen",
