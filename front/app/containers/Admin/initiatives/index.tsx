@@ -3,9 +3,13 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
+import { PageNotFoundInner } from 'components/PageNotFound';
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
 import Button from 'components/UI/Button';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import messages from './messages';
@@ -102,4 +106,14 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
   }
 );
 
-export default withRouter(injectIntl(InitiativesPage));
+const InitiativesPageWithHOCs = withRouter(injectIntl(InitiativesPage));
+
+export default () => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFoundInner />;
+  }
+
+  return <InitiativesPageWithHOCs />;
+};
