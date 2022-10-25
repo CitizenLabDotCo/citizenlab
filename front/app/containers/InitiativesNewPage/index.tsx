@@ -14,11 +14,15 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
 
 // components
+import PageNotFound from 'components/PageNotFound';
 import InitiativesNewMeta from './InitiativesNewMeta';
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
@@ -156,8 +160,16 @@ const Data = adopt<DataProps>({
   postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 
-export default withRouter((inputProps: WithRouterProps) => (
-  <Data>
-    {(dataProps) => <InitiativesNewPage {...dataProps} {...inputProps} />}
-  </Data>
-));
+export default withRouter((inputProps: WithRouterProps) => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
+
+  return (
+    <Data>
+      {(dataProps) => <InitiativesNewPage {...dataProps} {...inputProps} />}
+    </Data>
+  );
+});
