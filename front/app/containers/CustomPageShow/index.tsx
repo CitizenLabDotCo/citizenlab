@@ -8,6 +8,7 @@ import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';
+import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -49,6 +50,7 @@ const AttachmentsContainer = styled.div`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 30px;
   padding-left: 20px;
   padding-right: 20px;
 `;
@@ -83,7 +85,11 @@ const CustomPageShow = () => {
           pageAttributes.title_multiloc
         )} | ${localizedOrgName}`}
       />
-      {pageAttributes.banner_enabled && <CustomPageHeader pageData={page} />}
+      {pageAttributes.banner_enabled ? (
+        <CustomPageHeader pageData={page} />
+      ) : (
+        <AdminCustomPageEditButton pageId={page.id} />
+      )}
       <Content>
         <Fragment
           name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
