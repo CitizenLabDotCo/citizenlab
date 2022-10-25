@@ -102,9 +102,22 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#sign_in_required_for_posting?' do
+    it 'returns false' do
+      expect(participation_method.sign_in_required_for_posting?).to be false
+    end
+  end
+
   describe '#extra_fields_category_translation_key' do
     it 'returns nil' do
       expect(participation_method.extra_fields_category_translation_key).to be_nil
     end
   end
+
+  its(:supports_publication?) { is_expected.to be false }
+  its(:supports_commenting?) { is_expected.to be false }
+  its(:supports_voting?) { is_expected.to be false }
+  its(:supports_baskets?) { is_expected.to be false }
+  its(:supports_status?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be false }
 end
