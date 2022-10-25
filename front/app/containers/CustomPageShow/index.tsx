@@ -15,6 +15,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useCustomPage from 'hooks/useCustomPage';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -57,6 +58,7 @@ const AttachmentsContainer = styled.div`
 const CustomPageShow = () => {
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
 
   const { slug } = useParams() as {
     slug: string;
@@ -68,7 +70,18 @@ const CustomPageShow = () => {
     resourceId: !isNilOrError(page) ? page.id : null,
   });
 
+  if (page === undefined || appConfiguration === undefined) {
+    return null;
+  }
+
   if (isNilOrError(page) || isNilOrError(appConfiguration)) {
+    return <PageNotFound />;
+  }
+
+  const hideInitiatives =
+    !initiativesEnabled && page.attributes.code === 'proposals';
+
+  if (hideInitiatives) {
     return <PageNotFound />;
   }
 

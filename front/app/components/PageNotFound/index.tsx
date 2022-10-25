@@ -27,7 +27,9 @@ const PageNotFound = () => {
       <Content>
         <ContentContainer>
           <PageTitle>{title}</PageTitle>
-          <Text mt="40px">{description}</Text>
+          <Text mt="40px" color="textSecondary">
+            {description}
+          </Text>
         </ContentContainer>
       </Content>
     </Container>
