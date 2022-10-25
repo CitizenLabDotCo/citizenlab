@@ -388,18 +388,15 @@ describe('Survey builder', () => {
     // Click button to export survey results
     cy.get('[data-cy="e2e-download-survey-results"]').click();
 
-    // Check that file is downloaded
-    const downloadsFolder = Cypress.config('downloadsFolder');
-    // cy.readFile(path.join(downloadsFolder, "fileName.zip")).should("exist");
-
     const fileName = `${snakeCase(projectTitle)}_${moment().format(
       'YYYY-MM-DD'
     )}.xlsx`;
 
-    // cy.readFile(`cypress/downloads/${fileName}`).should('exist');
+    // Check that file is downloaded
+    const downloadsFolder = Cypress.config('downloadsFolder');
     cy.readFile(`${downloadsFolder}/${fileName}`).should('exist');
 
-    // Delete the file and clean up
+    // Delete the downloads folder and its contents
     cy.task('deleteFolder', downloadsFolder);
   });
 });
