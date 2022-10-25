@@ -39,7 +39,7 @@
   "app.components.admin.DateRangePicker.endDatePlaceholder": "Data końcowa",
   "app.components.admin.DateRangePicker.startDatePlaceholder": "Data rozpoczęcia",
   "app.components.admin.Graphs": "Brak danych dla obecnie stosowanych filtrów.",
-  "app.components.admin.Graphs.noDataShort": "No data available.",
+  "app.components.admin.Graphs.noDataShort": "Brak dostępnych danych.",
   "app.components.admin.InputManager.onePost": "1 wkład",
   "app.components.admin.PostManager.PostPreview.assignee": "Moderator",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Anuluj edycję",
