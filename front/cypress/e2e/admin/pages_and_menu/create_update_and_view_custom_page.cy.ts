@@ -145,8 +145,9 @@ describe('Admin: create, update, and view custom page', () => {
     // go to attachments section edit page
     cy.get('[data-cy="e2e-admin-edit-button-files_section_enabled"]').click();
 
-    // drop an example pdf file
+    // drop an example pdf file and wait for it to be uploaded
     cy.get('#local_page_files').selectFile('cypress/fixtures/example.pdf');
+    cy.contains('example.pdf');
 
     // submit
     cy.get('[data-cy="e2e-attachments-section-submit"]').click();
