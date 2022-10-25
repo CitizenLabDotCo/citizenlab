@@ -8,6 +8,7 @@ import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';
+import Button from 'components/UI/Button';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -16,15 +17,16 @@ import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isError, isNil, isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage, useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, isRtl, media } from 'utils/styleUtils';
+import { fontSizes, isRtl, media, colors } from 'utils/styleUtils';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -53,9 +55,22 @@ const AttachmentsContainer = styled.div`
   padding-right: 20px;
 `;
 
+const PageNotFoundWrapper = styled.div`
+  height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem;
+  font-size: ${fontSizes.l}px;
+  color: ${colors.textSecondary};
+`;
+
 const CustomPageShow = () => {
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const { slug } = useParams() as {
     slug: string;
@@ -67,9 +82,25 @@ const CustomPageShow = () => {
     resourceId: !isNilOrError(page) ? page.id : null,
   });
 
-  if (isNilOrError(page) || isNilOrError(appConfiguration)) {
+  // will be error if page is specifically not found
+  if (isError(page) || isError(appConfiguration)) {
+    return (
+      <PageNotFoundWrapper>
+        <p>
+          <FormattedMessage {...messages.notFound} />
+        </p>
+        <Button
+          linkTo="/"
+          text={formatMessage(messages.goBack)}
+          icon="arrow-left"
+        />
+      </PageNotFoundWrapper>
+    );
+  }
+
+  // when neither have loaded
+  if (isNil(page) || isNil(appConfiguration)) {
     return null;
-    // should return 404 here
   }
 
   const pageAttributes = page.attributes;
