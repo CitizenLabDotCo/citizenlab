@@ -175,11 +175,11 @@ class Idea < ApplicationRecord
     Factory.instance.participation_method_for participation_context_on_creation
   end
 
-  private
-
   def participation_context_on_creation
     creation_phase || project
   end
+
+  private
 
   def schema_for_validation
     fields = custom_form.custom_fields

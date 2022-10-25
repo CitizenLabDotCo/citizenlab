@@ -15,7 +15,12 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
   def json_forms_schema
     if participation_context
-      render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user)
+      schema = JsonFormsService.new.input_ui_and_json_multiloc_schemas(
+        custom_fields,
+        current_user,
+        project.input_term
+      )
+      render json: schema
     else
       send_not_found
     end

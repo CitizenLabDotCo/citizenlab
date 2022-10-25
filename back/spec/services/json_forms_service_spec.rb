@@ -220,6 +220,16 @@ describe JsonFormsService do
 
         project = create :project
         form = create :custom_form, participation_context: project
+        built_in_main_field = create(
+          :custom_field,
+          resource: form,
+          key: 'title_multiloc',
+          code: 'title_multiloc',
+          input_type: 'text_multiloc',
+          title_multiloc: { 'en' => 'Title' },
+          required: true,
+          enabled: true
+        )
         required_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
         optional_field = create :custom_field_select, :for_custom_form, resource: form, required: false
         create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
@@ -240,9 +250,9 @@ describe JsonFormsService do
           key: 'idea_files_attributes',
           code: 'idea_files_attributes'
         )
-        fields = [required_field, optional_field, build_in_required_field, build_in_optional_field]
+        fields = [built_in_main_field, required_field, optional_field, build_in_required_field, build_in_optional_field]
 
-        output = service.input_ui_and_json_multiloc_schemas fields, user
+        output = service.input_ui_and_json_multiloc_schemas fields, user, 'question'
         expect(output).to include(
           {
             json_schema_multiloc: {
@@ -250,6 +260,11 @@ describe JsonFormsService do
                 type: 'object',
                 additionalProperties: false,
                 properties: {
+                  'title_multiloc' => {
+                    type: 'object',
+                    minProperties: 1,
+                    properties: { 'en' => { type: 'string', minLength: 10, maxLength: 80 } }
+                  },
                   'topic_ids' => {
                     type: 'array',
                     uniqueItems: true,
@@ -271,14 +286,38 @@ describe JsonFormsService do
                     items: { type: 'string' }
                   }
                 },
-                required: match_array(['topic_ids', required_field.key])
+                required: match_array(['title_multiloc', 'topic_ids', required_field.key])
               }
             },
             ui_schema_multiloc: {
               'en' => {
                 type: 'Categorization',
-                options: { formId: 'idea-form', inputTerm: 'idea' },
+                options: { formId: 'idea-form', inputTerm: 'question' },
                 elements: [
+                  {
+                    type: 'Category',
+                    label: 'What is your question ?',
+                    options: { id: 'mainContent' },
+                    elements: [
+                      {
+                        type: 'VerticalLayout',
+                        options: { render: 'multiloc' },
+                        elements: [
+                          {
+                            type: 'Control',
+                            scope: '#/properties/title_multiloc/properties/en',
+                            label: 'Title',
+                            options: {
+                              description: 'Which councils are you attending in our city?',
+                              isAdminField: false,
+                              trim_on_blur: true,
+                              locale: 'en'
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
                   {
                     type: 'Category',
                     options: { id: 'details' },

@@ -26,6 +26,27 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe '#participation_context_on_creation' do
+    context 'in a continuous project' do
+      let(:project) { create :continuous_project }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the project' do
+        expect(idea.participation_context_on_creation).to eq project
+      end
+    end
+
+    context 'in a timeline project when created in a phase' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let(:creation_phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project, creation_phase: creation_phase) }
+
+      it 'returns the phase on creation' do
+        expect(idea.participation_context_on_creation).to eq creation_phase
+      end
+    end
+  end
+
   describe '#participation_method_on_creation' do
     context 'in a continuous project' do
       let(:project) { create :continuous_project }

@@ -3,13 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe InputUiSchemaGeneratorService do
-  subject(:generator) { described_class.new }
+  subject(:generator) { described_class.new input_term }
+
+  let(:input_term) { nil }
 
   let(:field_key) { 'field_key' }
 
   describe '#generate_for' do
     context 'for project with a built-in field and an extra field' do
-      let(:project) { create :continuous_project, input_term: 'contribution' }
+      let(:input_term) { 'contribution' }
+      let(:project) { create :continuous_project }
       let(:custom_form) { create :custom_form, participation_context: project }
       let(:field1) do
         create(
@@ -256,7 +259,8 @@ RSpec.describe InputUiSchemaGeneratorService do
     end
 
     context 'for a continuous ideation project' do
-      let(:project) { create(:continuous_project, input_term: 'option') }
+      let(:input_term) { 'option' }
+      let(:project) { create(:continuous_project) }
       let(:continuous_fields) do
         IdeaCustomFieldsService.new(
           create(:custom_form, participation_context: project)
@@ -343,15 +347,15 @@ RSpec.describe InputUiSchemaGeneratorService do
     end
 
     context 'for a timeline project' do
+      let(:input_term) { 'contribution' }
       let(:timeline_fields) do
-        project_with_current_phase = create(:project_with_current_phase, input_term: 'contribution')
-        TimelineService.new.current_phase(project_with_current_phase).update!(input_term: 'option')
+        project_with_current_phase = create(:project_with_current_phase)
         IdeaCustomFieldsService.new(create(:custom_form, participation_context: project_with_current_phase)).all_fields
       end
 
-      it 'uses the right input_term' do
+      it 'uses the given input_term' do
         ui_schema = generator.generate_for(timeline_fields)['en']
-        expect(ui_schema.dig(:options, :inputTerm)).to eq 'contribution'
+        expect(ui_schema.dig(:options, :inputTerm)).to eq input_term
       end
     end
   end
