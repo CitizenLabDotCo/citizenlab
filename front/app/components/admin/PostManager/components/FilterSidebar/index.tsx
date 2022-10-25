@@ -148,13 +148,19 @@ class FilterSidebar extends React.PureComponent<Props & WrappedComponentProps> {
     const selectedItem = items.find((i) => i.key === activeFilterMenu);
     return (
       <>
-        <Menu tabular attached="top" size="tiny">
+        <Menu
+          tabular
+          attached="top"
+          size="tiny"
+          className="intercom-admin-input-manager-filter-sidebar"
+        >
           {items.map((item) => (
             <Menu.Item
               key={item.key}
               id={item.key}
               active={activeFilterMenu === item.key}
               onClick={this.handleItemClick}
+              className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
             >
               {item.name}
             </Menu.Item>

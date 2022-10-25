@@ -18,6 +18,7 @@ const AdminEditButton = ({ onClick }: Props) => {
       icon="edit"
       onClick={onClick}
       data-cy={`e2e-admin-edit-button`}
+      className="intercom-admin-pages-menu-edit-section-button"
     >
       <FormattedMessage {...messages.edit} />
     </Button>
