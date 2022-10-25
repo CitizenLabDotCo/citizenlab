@@ -13,5 +13,4 @@ RSpec.describe Analytics::FactEvent, type: :model do
       expect(fact_event.dimension_date_end_id).to eq(event.end_at.to_date)
     end
   end
-
 end
