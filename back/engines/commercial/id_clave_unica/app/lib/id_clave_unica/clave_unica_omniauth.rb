@@ -2,7 +2,7 @@
 
 module IdClaveUnica
   class ClaveUnicaOmniauth
-    include ClaveUnicaVerification
+    include ClaveUnicaVerification < OmniauthMethods::Base
 
     def profile_to_user_attrs(auth)
       Rails.logger.info("GREPME Clave unica auth response: #{auth.inspect}")
@@ -52,10 +52,6 @@ module IdClaveUnica
 
     def updateable_user_attrs
       %i[first_name last_name]
-    end
-
-    def overwrite_user_attrs?
-      true
     end
 
     def logout_url(_user)

@@ -2,7 +2,7 @@
 
 module IdViennaSaml
   # Provides a SAML Omniauth configuration for Vienna city employees.
-  class EmployeeSamlOmniauth
+  class EmployeeSamlOmniauth < OmniauthMethods::Base
     # The Issuer is hardcoded on Vienna's side and needs to match exactly.
     ENVIRONMENTS = {
       test: {
@@ -50,10 +50,6 @@ module IdViennaSaml
     # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
     def updateable_user_attrs
       %i[first_name last_name]
-    end
-
-    def overwrite_user_attrs?
-      true
     end
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OmniauthMethods
-  class Facebook
+  class Facebook < Omniauth::Base
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('facebook_login')
@@ -37,9 +37,5 @@ module OmniauthMethods
 
   def updateable_user_attrs
     [:remote_avatar_url]
-  end
-
-  def overwrite_user_attrs?
-    true
   end
 end

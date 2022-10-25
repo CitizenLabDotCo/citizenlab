@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IdBosaFas
-  class BosaFasOmniauth
+  class BosaFasOmniauth < OmniauthMethods::Base
     include BosaFasVerification
 
     ENVIRONMENTS = {
@@ -65,10 +65,6 @@ module IdBosaFas
 
     def updateable_user_attrs
       %i[first_name last_name]
-    end
-
-    def overwrite_user_attrs?
-      true
     end
   end
 end
