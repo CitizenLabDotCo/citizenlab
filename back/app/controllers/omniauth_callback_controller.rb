@@ -148,7 +148,7 @@ class OmniauthCallbackController < ApplicationController
       user.update!(update_hash)
     else
       update_hash.each_pair do |attr, value|
-        user.write_attributes(attr => value) unless user.attribute_present?(attr)
+        user.assign_attributes(attr => value) unless user.attribute_present?(attr)
       end
       user.save!
     end
