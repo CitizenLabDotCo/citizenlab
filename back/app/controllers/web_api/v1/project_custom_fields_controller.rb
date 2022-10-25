@@ -18,7 +18,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
       schema = JsonFormsService.new.input_ui_and_json_multiloc_schemas(
         custom_fields,
         current_user,
-        project.input_term
+        input_term
       )
       render json: schema
     else
@@ -34,6 +34,16 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
   def participation_context
     @participation_context ||= determine_participation_context
+  end
+
+  def input_term
+    return unless project
+    return project.input_term if project.continuous?
+
+    phase = ParticipationContextService.new.get_participation_context(project)
+    return unless phase
+
+    phase.input_term
   end
 
   def determine_participation_context

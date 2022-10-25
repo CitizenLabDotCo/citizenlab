@@ -179,15 +179,45 @@ resource 'Project level Custom Fields' do
       end
     end
 
-    get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
-      example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        %i[en fr-FR nl-NL].each do |locale|
-          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq expected_json_forms_field_keys
+    context 'when no input term is set on the phase' do
+      get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
+        example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+          %i[en fr-FR nl-NL].each do |locale|
+            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq expected_json_forms_field_keys
+          end
+          expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+          expect(json_response[:ui_schema_multiloc][:en][:elements][0]).to include({
+            type: 'Category',
+            label: 'What is your idea ?',
+            options: { id: 'mainContent' }
+          })
         end
-        expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+      end
+    end
+
+    context 'when an input term is set on the phase' do
+      before do
+        project.phases.first.update_column(:input_term, 'contribution')
+      end
+
+      get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
+        example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+          %i[en fr-FR nl-NL].each do |locale|
+            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq expected_json_forms_field_keys
+          end
+          expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+          expect(json_response[:ui_schema_multiloc][:en][:elements][0]).to include({
+            type: 'Category',
+            label: 'What is your contribution ?',
+            options: { id: 'mainContent' }
+          })
+        end
       end
     end
   end
