@@ -154,13 +154,13 @@ module Analytics
     def pagination_query_params(number)
       return if number.nil?
 
-      json_query_clone = @json_query.clone
+      json_query = @json_query.to_unsafe_hash
       if @json_query.key?(:page)
-        json_query_clone[:page][:number] = number
+        json_query[:page][:number] = number
       else
-        json_query_clone[:page] = { number: number }
+        json_query[:page] = { number: number }
       end
-      json_query_clone.to_unsafe_hash.to_query
+      { query: json_query }.to_query
     end
 
     def pagination(results, size, number)

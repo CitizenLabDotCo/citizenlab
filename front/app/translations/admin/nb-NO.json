@@ -1108,6 +1108,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Add answer",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Add survey content",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Avbryt",
+  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
   "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Lukk",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Closed",
