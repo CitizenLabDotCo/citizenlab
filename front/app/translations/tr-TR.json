@@ -690,6 +690,8 @@
   "app.containers.CookiePolicy.viewPreferencesText": "Aşağıdaki çerez kategorileri tüm ziyaretçiler veya platformlar için geçerli olmayabilir. Sizin için geçerli olan üçüncü taraf entegrasyonlarının tam listesi için: {viewPreferencesButton}",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Çerezleri ne için kullanıyoruz?",
   "app.containers.CustomPageShow.editPage": "Edit page",
+  "app.containers.CustomPageShow.goBack": "Geri gidin",
+  "app.containers.CustomPageShow.notFound": "Sayfa bulunamadı",
   "app.containers.IdeaButton.addAContribution": "Bir katkı ekleyin",
   "app.containers.IdeaButton.addAProject": "Bir proje ekleyin",
   "app.containers.IdeaButton.addAQuestion": "Bir soru ekleyin",
