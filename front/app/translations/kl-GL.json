@@ -690,6 +690,8 @@
   "app.containers.CookiePolicy.viewPreferencesText": "Cookie-t assigiinngitsut ataani takusinnaasatit quppernernut alakkarterisunut tamanut qupernernulluunniit tamanut atuutinngitsooratarsinnaapput, allaniit ikkussat ilinnut atuutsinneqartut takussutissartaat tamaat takuniarlugu {viewPreferencesButton}-mukarit.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Cookie-t sumut atortarpavut?",
   "app.containers.CustomPageShow.editPage": "Edit page",
+  "app.containers.CustomPageShow.goBack": "Uterit",
+  "app.containers.CustomPageShow.notFound": "Qupperneq nassaarineqanngilaq",
   "app.containers.IdeaButton.addAContribution": "Ilanngussaqarit",
   "app.containers.IdeaButton.addAProject": "Suliamik ilanngussigit",
   "app.containers.IdeaButton.addAQuestion": "Apeqqummik nutaamik ilanngussigit",
