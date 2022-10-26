@@ -68,7 +68,11 @@ module Analytics
       def add_pagination_url(paginations)
         paginations.map do |pagination|
           pagination.transform_values do |params|
-            params && "#{request.original_url}?#{params}"
+            next unless params
+
+            parsed_url = URI.parse(request.original_url)
+            parsed_url.query = params
+            parsed_url
           end
         end
       end
