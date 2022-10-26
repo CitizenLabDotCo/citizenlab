@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 // intl
 import { FormattedMessage } from './cl-intl';
-import messages from './participationMethodUtilsMessages';
+import messages from './messages';
 
 // services
 import {
@@ -48,12 +48,17 @@ export type ParticipationMethodConfig = {
     props: ModalContentMethodProps
   ) => ReactNode | JSX.Element | null;
   getFormTitle?: (props: FormTitleMethodProps) => void;
+  getMethodPickerMessage: () => ReactNode | JSX.Element | null;
   showInputManager: boolean;
+  isMethodLocked: boolean;
   postType: 'defaultInput' | 'nativeSurvey';
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.inputAndFeedback} />;
+  },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
@@ -103,10 +108,14 @@ const ideationConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
+  isMethodLocked: false,
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
   formEditor: 'surveyEditor',
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createNativeSurvey} />;
+  },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.project) {
       clHistory.push({
@@ -131,10 +140,14 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     return <FormattedMessage {...messages.surveyTitle} {...props} />;
   },
   showInputManager: false,
+  isMethodLocked: true,
 };
 
 const informationConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.shareInformation} />;
+  },
   getModalContent: () => {
     return null;
   },
@@ -143,10 +156,14 @@ const informationConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
 };
 
 const surveyConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createSurveyText} />;
+  },
   getModalContent: () => {
     return null;
   },
@@ -155,10 +172,14 @@ const surveyConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.conductParticipatoryBudgetingText} />;
+  },
   getModalContent: () => {
     return null;
   },
@@ -198,10 +219,14 @@ const budgetingConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
+  isMethodLocked: false,
 };
 
 const pollConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createPoll} />;
+  },
   getModalContent: () => {
     return null;
   },
@@ -210,10 +235,14 @@ const pollConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.findVolunteers} />;
+  },
   getModalContent: () => {
     return null;
   },
@@ -222,6 +251,7 @@ const volunteeringConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
 };
 
 const methodToConfig: {

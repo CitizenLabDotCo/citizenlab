@@ -27,6 +27,8 @@ const DropdownIcon = styled(Icon)<{ textColor?: string }>`
 const Container = styled.button<{ textColor?: string }>`
   height: 24px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 
   &.adminpage {
     ${Text} {

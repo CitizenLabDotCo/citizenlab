@@ -77,10 +77,14 @@ const TabbedResource = ({
           {tabs.map((tab) => {
             return tab.feature ? (
               <FeatureFlag key={tab.url} name={tab.feature}>
-                <Tab tab={tab} />
+                <Tab tab={tab} className={`intercom-admin-tab-${tab.name}`} />
               </FeatureFlag>
             ) : (
-              <Tab key={tab.url} tab={tab} />
+              <Tab
+                key={tab.url}
+                tab={tab}
+                className={`intercom-admin-tab-${tab.name}`}
+              />
             );
           })}
         </TabbedNav>

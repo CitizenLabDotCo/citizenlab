@@ -42,6 +42,10 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.goBack',
     defaultMessage: 'Go back',
   },
+  editSurvey: {
+    id: 'app.containers.IdeasNewPage.editSurvey',
+    defaultMessage: 'Edit survey',
+  },
   shareViaMessenger: {
     id: 'app.containers.IdeasNewPage.shareViaMessenger',
     defaultMessage: 'Share via Messenger',
