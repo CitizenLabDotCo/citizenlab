@@ -29,6 +29,14 @@ interface Props {
   children: React.ReactElement;
 }
 
+const warn = console.warn.bind(console);
+function wrapWarn(...args) {
+  if (args[0].includes('ResponsiveContainer')) return;
+  warn(...args);
+}
+
+console.warn = wrapWarn;
+
 const Container = ({
   width,
   height,
@@ -68,37 +76,19 @@ const Container = ({
   const rightLegend = legend?.position?.includes('right');
   const maintainGraphSize = !!legend?.maintainGraphSize;
 
-  const getWidth = () => {
-    if (width === undefined) return '100%';
-    if (typeof width === 'string') return width;
-
-    if (rightLegend && maintainGraphSize) {
-      const adjustedWidth =
-        width +
+  const parsedWidth =
+    rightLegend && typeof width === 'number' && maintainGraphSize
+      ? width +
         (legendDimensions?.width ?? 0) +
-        (legend.marginLeft ?? defaultLegendOffset);
+        (legend.marginLeft ?? defaultLegendOffset)
+      : width;
 
-      return `${adjustedWidth}px`;
-    }
-
-    return `${width}px`;
-  };
-
-  const getHeight = () => {
-    if (height === undefined) return '100%';
-    if (typeof height === 'string') return height;
-
-    if (!rightLegend && maintainGraphSize) {
-      const adjustedHeight =
-        height +
+  const parsedHeight =
+    !rightLegend && typeof height === 'number' && maintainGraphSize
+      ? height +
         (legendDimensions?.height ?? 0) +
-        (legend.marginTop ?? defaultLegendOffset);
-
-      return `${adjustedHeight}px`;
-    }
-
-    return `${height}px`;
-  };
+        (legend.marginTop ?? defaultLegendOffset)
+      : height;
 
   return (
     <Box
@@ -108,11 +98,13 @@ const Container = ({
       width="100%"
       height="100%"
     >
-      <Box width={getWidth()} height={getHeight()}>
-        <ResponsiveContainer width="100%" height="100%" ref={handleRef}>
-          {children}
-        </ResponsiveContainer>
-      </Box>
+      <ResponsiveContainer
+        width={parsedWidth}
+        height={parsedHeight}
+        ref={handleRef}
+      >
+        {children}
+      </ResponsiveContainer>
 
       {legend && onUpdateLegendDimensions && (
         <FakeLegend
