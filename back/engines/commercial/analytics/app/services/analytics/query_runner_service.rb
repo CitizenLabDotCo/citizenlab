@@ -171,8 +171,6 @@ module Analytics
       end
       last_page = (total / size.to_f).ceil
 
-      return if last_page == number
-
       {
         self:  pagination_query_params(number),
         first: pagination_query_params(1),

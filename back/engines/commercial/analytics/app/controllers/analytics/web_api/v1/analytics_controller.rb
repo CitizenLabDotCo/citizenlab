@@ -24,15 +24,14 @@ module Analytics
 
         unless params[:query].instance_of?(Array)
           results = results.empty? ? results : results[0]
+          paginations = paginations.empty? ? paginations : paginations[0]
           errors = errors.key?(0) ? errors[0] : errors
         end
 
         if errors.present?
           render json: { 'messages' => errors }, status: :bad_request
-        elsif paginations.present?
-          render json: { 'data' => results, 'links' => paginations }
         else
-          render json: { 'data' => results }
+          render json: { 'data' => results, 'links' => paginations }
         end
       end
 
@@ -40,7 +39,7 @@ module Analytics
         results = []
         errors = {}
         queries = []
-        paginations = {}
+        paginations = []
 
         json_queries.each_with_index do |json_query, index|
           query = Query.new(json_query)
@@ -57,9 +56,7 @@ module Analytics
             if query.failed
               errors[index] = query.error_messages
             else
-              if query.pagination
-                paginations[index] = query.pagination
-              end
+              paginations.push(query.pagination)
               results.push(query.results)
             end
           end
@@ -69,7 +66,7 @@ module Analytics
       end
 
       def add_pagination_url(paginations)
-        paginations.transform_values do |pagination|
+        paginations.map do |pagination|
           pagination.transform_values do |params|
             params && "#{request.original_url}?#{params}"
           end
