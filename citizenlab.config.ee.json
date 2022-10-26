@@ -25,6 +25,7 @@
     "commercial/id_franceconnect": true,
     "commercial/id_gent_rrn": true,
     "commercial/id_id_card_lookup": true,
+    "commercial/id_oostende_rrn": true,
     "commercial/id_vienna_saml": true,
     "commercial/impact_tracking": true,
     "commercial/idea_assignment": true,
