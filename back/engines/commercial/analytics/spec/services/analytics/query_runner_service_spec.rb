@@ -110,11 +110,12 @@ describe Analytics::QueryRunnerService do
         expect(results.length).to eq(2)
         expect(results.first['id']).to eq(Idea.order(:id).first.id)
 
-        expect(URI.decode_www_form(pagination[:self]).to_h['page[number]']).to eq('1')
-        expect(URI.decode_www_form(pagination[:first]).to_h['page[number]']).to eq('1')
+        puts URI.decode_www_form(pagination[:self]).to_h
+        expect(URI.decode_www_form(pagination[:self]).to_h['query[page][number]']).to eq('1')
+        expect(URI.decode_www_form(pagination[:first]).to_h['query[page][number]']).to eq('1')
         expect(pagination[:prev]).to be_nil
-        expect(URI.decode_www_form(pagination[:next]).to_h['page[number]']).to eq('2')
-        expect(URI.decode_www_form(pagination[:last]).to_h['page[number]']).to eq('5')
+        expect(URI.decode_www_form(pagination[:next]).to_h['query[page][number]']).to eq('2')
+        expect(URI.decode_www_form(pagination[:last]).to_h['query[page][number]']).to eq('5')
       end
 
       it 'returns the second page of 3 items from 10 posts' do
@@ -126,11 +127,11 @@ describe Analytics::QueryRunnerService do
         expect(results.first['id']).to eq(Idea.order(:id).fourth.id)
         expect(results.second['id']).to eq(Idea.order(:id).fifth.id)
 
-        expect(URI.decode_www_form(pagination[:self]).to_h['page[number]']).to eq('2')
-        expect(URI.decode_www_form(pagination[:first]).to_h['page[number]']).to eq('1')
-        expect(URI.decode_www_form(pagination[:prev]).to_h['page[number]']).to eq('1')
-        expect(URI.decode_www_form(pagination[:next]).to_h['page[number]']).to eq('3')
-        expect(URI.decode_www_form(pagination[:last]).to_h['page[number]']).to eq('4')
+        expect(URI.decode_www_form(pagination[:self]).to_h['query[page][number]']).to eq('2')
+        expect(URI.decode_www_form(pagination[:first]).to_h['query[page][number]']).to eq('1')
+        expect(URI.decode_www_form(pagination[:prev]).to_h['query[page][number]']).to eq('1')
+        expect(URI.decode_www_form(pagination[:next]).to_h['query[page][number]']).to eq('3')
+        expect(URI.decode_www_form(pagination[:last]).to_h['query[page][number]']).to eq('4')
       end
 
       it 'returns nothing if the page number is too high for the size' do
@@ -140,11 +141,11 @@ describe Analytics::QueryRunnerService do
 
         expect(results).to eq([])
 
-        expect(URI.decode_www_form(pagination[:self]).to_h['page[number]']).to eq('3')
-        expect(URI.decode_www_form(pagination[:first]).to_h['page[number]']).to eq('1')
-        expect(URI.decode_www_form(pagination[:prev]).to_h['page[number]']).to eq('2')
+        expect(URI.decode_www_form(pagination[:self]).to_h['query[page][number]']).to eq('3')
+        expect(URI.decode_www_form(pagination[:first]).to_h['query[page][number]']).to eq('1')
+        expect(URI.decode_www_form(pagination[:prev]).to_h['query[page][number]']).to eq('2')
         expect(pagination[:next]).to be_nil
-        expect(URI.decode_www_form(pagination[:last]).to_h['page[number]']).to eq('2')
+        expect(URI.decode_www_form(pagination[:last]).to_h['query[page][number]']).to eq('2')
       end
     end
   end
