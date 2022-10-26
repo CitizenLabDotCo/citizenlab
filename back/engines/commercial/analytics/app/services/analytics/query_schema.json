@@ -31,14 +31,18 @@
           "minProperties" : 1,
           "patternProperties" : {
             "^[a-z_]*$" : {
-              "type" : ["string", "array", "object"],
+              "type" : ["string", "array"],
+              "items" : {"type" : "string"},
               "minLength" : 1,
-              "properties" : {
-                "from" : {"type": ["integer","string"]},
-                "to" : {"type": ["integer","string"]}
-              },
-              "required" : ["from", "to"],
               "additionalProperties": false
+            },
+            "date": {
+              "type" : "object",
+              "properties" : {
+                "from" : {"type": ["string"]},
+                "to" : {"type": ["string"]}
+              },
+              "required" : ["from", "to"]
             }
           }
         }
@@ -95,9 +99,7 @@
       "additionalProperties" : false
     },
     "limit" : {
-      "type" : "integer",
-      "minimum" : 1,
-      "maximum" : 1000
+      "type" : "string"
     }
   },
   "additionalProperties" : false,
