@@ -13,6 +13,7 @@ import { parseTableData } from './parse';
 import { referrersListQuery, referrersTotalQuery } from './query';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { getTranslations } from './utils';
+import { getPageNumberFromUrl } from '../../utils/pagination';
 
 // typings
 import {
@@ -32,6 +33,7 @@ export default function useVisitorReferrers({
 }: QueryParameters) {
   const { formatMessage } = useIntl();
   const [tableData, setTableData] = useState<TableRow[] | NilOrError>();
+  const [pages, setPages] = useState<number | NilOrError>();
   const [totals, setTotals] = useState<ReferrersTotalRow | NilOrError>();
 
   useEffect(() => {
@@ -51,12 +53,14 @@ export default function useVisitorReferrers({
       (response: ReferrerListResponse | NilOrError) => {
         if (isNilOrError(response)) {
           setTableData(response);
+          setPages(response);
           return;
         }
 
         const translations = getTranslations(formatMessage);
 
         setTableData(parseTableData(response.data, totals, translations));
+        setPages(getPageNumberFromUrl(response.links.last));
       }
     );
 
@@ -96,5 +100,5 @@ export default function useVisitorReferrers({
     return () => subscription.unsubscribe();
   }, [projectId, startAtMoment, endAtMoment]);
 
-  return { tableData };
+  return { tableData, pages };
 }

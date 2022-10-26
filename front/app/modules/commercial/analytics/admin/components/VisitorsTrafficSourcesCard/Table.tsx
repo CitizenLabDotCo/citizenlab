@@ -55,7 +55,7 @@ const TableComponent = ({
 }: Props) => {
   const [pageNumber, setPageNumber] = useState<number>(1);
 
-  const { tableData } = useVisitorReferrers({
+  const { tableData, pages } = useVisitorReferrers({
     projectId,
     startAtMoment,
     endAtMoment,
@@ -118,11 +118,13 @@ const TableComponent = ({
         justifyContent="space-between"
         alignItems="center"
       >
-        <Pagination
-          currentPage={pageNumber}
-          totalPages={5}
-          loadPage={setPageNumber}
-        />
+        {!isNilOrError(pages) && (
+          <Pagination
+            currentPage={pageNumber}
+            totalPages={pages}
+            loadPage={setPageNumber}
+          />
+        )}
 
         {onOpenModal && <ReferrerListLink onOpenModal={onOpenModal} />}
       </Box>
