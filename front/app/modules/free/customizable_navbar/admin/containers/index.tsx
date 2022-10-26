@@ -19,6 +19,7 @@ const PagesMenu = ({ intl: { formatMessage } }: WrappedComponentProps) => {
           icon="plus-circle"
           id="create-custom-page"
           linkTo={'/admin/pages-menu/pages/new'}
+          className="intercom-admin-pages-menu-add-page"
         >
           {formatMessage(messages.createCustomPageButton)}
         </Button>
