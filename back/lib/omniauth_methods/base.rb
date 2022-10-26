@@ -23,5 +23,9 @@ module OmniauthMethods
     def overwrite_user_attrs?
       true
     end
+
+    def can_be_merged?(_user, _user_attrs)
+      true
+    end
   end
 end

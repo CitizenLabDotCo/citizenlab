@@ -77,6 +77,13 @@ module IdFranceconnect
       %i[first_name last_name birthyear remote_avatar_url]
     end
 
+    def can_be_merged?(user, user_attrs)
+      matcher = IdFranceconnect::AttributesMatcher
+
+      matcher.match?(user.first_name, user_attrs[:first_name]) ||
+        matcher.match?(user.last_name, user_attrs[:last_name])
+    end
+
     private
 
     # @param [AppConfiguration] configuration

@@ -46,6 +46,7 @@ export default function openSignUpInModalIfNecessary(
       sso_verification_action,
       sso_verification_id,
       sso_verification_type,
+      error_code,
     } = urlSearchParams;
 
     if (isAuthError || isInvitation) {
@@ -87,7 +88,7 @@ export default function openSignUpInModalIfNecessary(
           isInvitation,
           token,
           flow: isAuthError && sso_flow ? sso_flow : 'signup',
-          error: isAuthError,
+          error: isAuthError ? { code: error_code || 'general' } : undefined,
           verification: !!sso_verification,
           verificationContext:
             sso_verification &&

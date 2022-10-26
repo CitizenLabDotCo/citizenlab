@@ -19,6 +19,25 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
+  def failure
+    failure_redirect
+  end
+
+  def logout
+    provider = params[:provider]
+    user_id = params[:user_id]
+    user = User.find(user_id)
+    auth_service = AuthenticationService.new
+
+    url = auth_service.logout_url(provider, user)
+
+    redirect_to url
+  rescue ActiveRecord::RecordNotFound
+    redirect_to Frontend::UrlService.new.home_url
+  end
+
+  private
+
   def auth_callback(verify:, authver_method:)
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
@@ -27,7 +46,15 @@ class OmniauthCallbackController < ApplicationController
 
     @identity = Identity.find_or_create_with_omniauth(auth, authver_method)
 
-    @user = @identity.user || User.find_by_cimail(user_attrs.fetch(:email))
+    @user = @identity.user
+
+    if @user.nil?
+      @user = User.find_by_cimail(user_attrs.fetch(:email))
+      if @user && !authver_method.can_be_merged?(@user, user_attrs)
+        failure_redirect(error_code: 'france_connect_merging_failed')
+        return
+      end
+    end
 
     if @user
       @identity.update(user: @user) unless @identity.user
@@ -44,7 +71,7 @@ class OmniauthCallbackController < ApplicationController
           @user.save!
           @invite.save!
           SideFxInviteService.new.after_accept @invite
-          redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
+          signup_success_redirect
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           failure
@@ -58,7 +85,7 @@ class OmniauthCallbackController < ApplicationController
           failure
           return
         end
-        redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), omniauth_params))
+        signin_success_redirect
       end
 
       set_auth_cookie(provider: provider)
@@ -76,32 +103,24 @@ class OmniauthCallbackController < ApplicationController
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie(provider: provider)
         handle_verification(auth, @user) if verify
-        redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
+        signup_success_redirect
       rescue ActiveRecord::RecordInvalid => e
-        Sentry.configure_scope { |scope| scope.set_context('auth object', auth) }
-        Sentry.capture_message("#{authver_method.class.name.demodulize} auth - ActiveRecord::RecordInvalid error: '#{e.message}' in create_def rescue block")
         Rails.logger.info "Social signup failed: #{e.message}"
-        redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, omniauth_params))
+        failure
       end
     end
   end
 
-  def failure
-    omniauth_params = request.env['omniauth.params']
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, omniauth_params))
+  def failure_redirect(params = {})
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, request.env['omniauth.params'].merge(params)))
   end
 
-  def logout
-    provider = params[:provider]
-    user_id = params[:user_id]
-    user = User.find(user_id)
-    auth_service = AuthenticationService.new
+  def signin_success_redirect
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), request.env['omniauth.params']))
+  end
 
-    url = auth_service.logout_url(provider, user)
-
-    redirect_to url
-  rescue ActiveRecord::RecordNotFound
-    redirect_to Frontend::UrlService.new.home_url
+  def signup_success_redirect
+    redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), request.env['omniauth.params']))
   end
 
   def add_uri_params(uri, params = {})
@@ -153,8 +172,6 @@ class OmniauthCallbackController < ApplicationController
       user.save!
     end
   end
-
-  private
 
   # Return locale if a locale can be parsed from pathname which matches an app locale
   # and is not the default locale, otherwise return nil.
