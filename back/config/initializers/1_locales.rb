@@ -9,6 +9,7 @@ CL2_SUPPORTED_LOCALES = %i[
   en
   ar-MA
   ar-SA
+  ca-ES
   da-DK
   de-DE
   en-CA
@@ -38,6 +39,7 @@ CL2_SUPPORTED_LOCALES = %i[
 fallback_locales =
   %i[
     ar
+    ca
     da
     de
     es

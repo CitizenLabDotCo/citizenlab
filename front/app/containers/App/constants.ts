@@ -20,6 +20,7 @@ export const DEFAULT_LOCALE = 'en';
 export const locales = [
   'ar-MA',
   'ar-SA',
+  'ca-ES',
   'da',
   'da-DK',
   'de',
@@ -57,6 +58,7 @@ export const locales = [
 export const appLocalePairs = {
   'ar-MA': 'عربي',
   'ar-SA': 'عربى',
+  'ca-ES': 'Català',
   'da-DK': 'Dansk',
   'de-DE': 'Deutsch',
   en: 'English',
@@ -87,6 +89,7 @@ export const appLocalePairs = {
 export const appGraphqlLocalePairs = {
   arMa: 'ar-MA',
   arSa: 'ar',
+  caEs: 'ca',
   da: 'da',
   daDk: 'da-DK',
   de: 'de',
@@ -123,6 +126,7 @@ export const appGraphqlLocalePairs = {
 export const shortenedAppLocalePairs = {
   'ar-MA': 'عربي',
   'ar-SA': 'عربى',
+  'ca-ES': 'Català',
   'da-DK': 'Dansk',
   'de-DE': 'Deutsch',
   en: 'English',
@@ -154,6 +158,7 @@ export const shortenedAppLocalePairs = {
 export const appLocalesMomentPairs = {
   'ar-MA': 'ar-ma',
   'ar-SA': 'ar',
+  'ca-ES': 'ca',
   'da-DK': 'da',
   'de-DE': 'de',
   'en-CA': 'en-ca',
