@@ -690,6 +690,8 @@
   "app.containers.CookiePolicy.viewPreferencesText": "Die unten stehenden Cookie-Kategorien müssen nicht für alle Besucher:innen oder Plattformen gelten; sehen Sie sich Ihre {viewPreferencesButton} für eine vollständige Liste, der für Sie geltenden Drittpartei-Integrationen an.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Welche Cookies kommen zum Einsatz?",
   "app.containers.CustomPageShow.editPage": "Seite bearbeiten",
+  "app.containers.CustomPageShow.goBack": "Zurück",
+  "app.containers.CustomPageShow.notFound": "Seite nicht gefunden",
   "app.containers.IdeaButton.addAContribution": "Einen Beitrag hinzufügen\n",
   "app.containers.IdeaButton.addAProject": "Hinzufügen eines Projekts",
   "app.containers.IdeaButton.addAQuestion": "Eine Frage hinzufügen",
