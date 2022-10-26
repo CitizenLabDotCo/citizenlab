@@ -21,7 +21,11 @@ const Header = ({ itemsNotInNavbarPresent }: Props) => (
       </SubSectionTitle>
     )}
 
-    <Button buttonStyle="cl-blue" linkTo="/admin/pages-menu/pages/new">
+    <Button
+      buttonStyle="cl-blue"
+      linkTo="/admin/pages-menu/pages/new"
+      className="intercom-admin-pages-menu-add-page"
+    >
       <FormattedMessage {...messages.addPageButton} />
     </Button>
   </Box>
