@@ -1108,6 +1108,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Dodaj odpowiedź",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Dodaj treść ankiety",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Anuluj",
+  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
   "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Zamknij",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Zamknięte",
