@@ -40,6 +40,7 @@ declare global {
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
+      apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
@@ -759,6 +760,8 @@ export function apiCreateProject({
           title_multiloc: {
             en: title,
             'nl-BE': title,
+            'nl-NL': title,
+            'fr-BE': title,
           },
           description_preview_multiloc: {
             en: descriptionPreview,
@@ -942,6 +945,21 @@ export function apiRemoveFolder(folderId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/project_folders/${folderId}`,
+    });
+  });
+}
+
+export function apiRemoveCustomPage(customPageId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/static_pages/${customPageId}`,
     });
   });
 }
@@ -1178,6 +1196,7 @@ export function apiUpdateHomepageSettings({
   banner_signed_out_header_overlay_opacity,
   banner_cta_signed_out_type,
   banner_cta_signed_in_type,
+  header_bg,
 }: {
   top_info_section_enabled?: boolean;
   bottom_info_section_enabled?: boolean;
@@ -1192,6 +1211,7 @@ export function apiUpdateHomepageSettings({
   banner_signed_out_header_overlay_opacity?: number;
   banner_cta_signed_out_type?: string;
   banner_cta_signed_in_type?: string;
+  header_bg?: string;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1218,6 +1238,7 @@ export function apiUpdateHomepageSettings({
           banner_signed_out_header_overlay_opacity,
           banner_cta_signed_in_type,
           banner_cta_signed_out_type,
+          header_bg,
         },
       },
     });
@@ -1330,3 +1351,4 @@ Cypress.Commands.add(
   notIntersectsViewport
 );
 Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);
+Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);

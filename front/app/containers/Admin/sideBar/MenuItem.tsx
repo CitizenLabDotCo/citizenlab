@@ -121,7 +121,10 @@ const MenuItem = ({ navItem }: Props) => {
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   }) ? (
     <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
-      <MenuItemLink to={navItem.link}>
+      <MenuItemLink
+        to={navItem.link}
+        className={`intercom-admin-menu-item-${navItem.name}`}
+      >
         <IconWrapper className={navItem.iconName}>
           <Icon name={navItem.iconName} />
         </IconWrapper>

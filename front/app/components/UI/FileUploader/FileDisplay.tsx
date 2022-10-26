@@ -115,8 +115,6 @@ const FileDisplay = ({
         iconName="delete"
         a11y_buttonActionMessage={formatMessage(messages.a11y_removeFile)}
         onClick={onDeleteClick}
-        iconWidth={'12px'}
-        iconHeight={'14px'}
         iconColor={colors.textSecondary}
         iconColorOnHover={colors.error}
       />

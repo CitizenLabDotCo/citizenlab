@@ -1,7 +1,6 @@
 import React from 'react';
 
 // components
-import PageNotFound from 'components/PageNotFound';
 import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -9,6 +8,9 @@ import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';
+import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
+import PageNotFound from 'components/PageNotFound';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -18,7 +20,7 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isError, isNil, isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -47,41 +49,33 @@ export const PageTitle = styled.h1`
   `}
 `;
 
-const AttachmentsContainer = styled.div`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+const AttachmentsContainer = styled(ContentContainer)`
+  margin-bottom: 30px;
 `;
 
 const CustomPageShow = () => {
-  const appConfiguration = useAppConfiguration();
-  const localize = useLocalize();
-  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
-
   const { slug } = useParams() as {
     slug: string;
   };
+  const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
   const page = useCustomPage({ customPageSlug: slug });
-
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
 
-  if (page === undefined || appConfiguration === undefined) {
+  // when neither have loaded
+  if (isNil(page) || isNilOrError(appConfiguration)) {
     return null;
   }
 
-  if (isNilOrError(page) || isNilOrError(appConfiguration)) {
-    return <PageNotFound />;
-  }
-
-  const hideInitiatives =
-    !initiativesEnabled && page.attributes.code === 'proposals';
-
-  if (hideInitiatives) {
+  if (
+    // if URL is mistyped, page is also an error
+    isError(page) ||
+    (!isError(page) && !false && page.attributes.code === 'proposals')
+  ) {
     return <PageNotFound />;
   }
 
@@ -90,13 +84,19 @@ const CustomPageShow = () => {
     appConfiguration.attributes.settings.core.organization_name
   );
   return (
-    <Container className={`e2e-custom-page`}>
+    <Container className={`e2e-page-${slug}`}>
       <Helmet
         title={`${localize(
           pageAttributes.title_multiloc
         )} | ${localizedOrgName}`}
       />
-      {pageAttributes.banner_enabled && <CustomPageHeader pageData={page} />}
+      {pageAttributes.banner_enabled ? (
+        <CustomPageHeader pageData={page} />
+      ) : (
+        <Box zIndex="9999">
+          <AdminCustomPageEditButton pageId={page.id} />
+        </Box>
+      )}
       <Content>
         <Fragment
           name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}

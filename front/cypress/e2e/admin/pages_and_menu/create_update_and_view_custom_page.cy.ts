@@ -1,14 +1,15 @@
 import { randomString } from '../../../support/commands';
 
 describe('Admin: create, update, and view custom page', () => {
-  before(() => {
-    cy.setAdminLoginCookie();
-    cy.visit('/admin/pages-menu/');
-    cy.acceptCookies();
+  let customPageId: string;
+
+  after(() => {
+    cy.apiRemoveCustomPage(customPageId);
   });
 
   it('creates a custom page successfully', () => {
     cy.intercept('PATCH', '**/static_pages/**').as('updateCustomPage');
+    cy.intercept('POST', '**/static_pages').as('createCustomPage');
 
     const pageName = randomString();
     const headerContent = randomString();
@@ -16,10 +17,16 @@ describe('Admin: create, update, and view custom page', () => {
     const ctaContent = randomString();
     const topInfoContent = randomString();
 
+    // log in as admin, visit the pages and menu section in admin
+    cy.setAdminLoginCookie();
+    cy.visit('/admin/pages-menu/');
+    cy.acceptCookies();
+
     // go to custom page creation form
     cy.get('#create-custom-page').click();
 
     // type title in each language
+
     cy.get('.e2e-localeswitcher').each((button) => {
       cy.wrap(button).click();
       cy.get('#title_multiloc').type(pageName);
@@ -27,6 +34,11 @@ describe('Admin: create, update, and view custom page', () => {
 
     // submit
     cy.get('[data-cy="e2e-submit-custom-page"]').click();
+
+    // intercept the response and save the ID of the new page
+    cy.wait('@createCustomPage').then((interception) => {
+      customPageId = interception.response?.body.data.id;
+    });
 
     // click the page content tab
     cy.contains('Page content').click();
@@ -133,8 +145,9 @@ describe('Admin: create, update, and view custom page', () => {
     // go to attachments section edit page
     cy.get('[data-cy="e2e-admin-edit-button-files_section_enabled"]').click();
 
-    // drop an example pdf file
+    // drop an example pdf file and wait for it to be uploaded
     cy.get('#local_page_files').selectFile('cypress/fixtures/example.pdf');
+    cy.contains('example.pdf');
 
     // submit
     cy.get('[data-cy="e2e-attachments-section-submit"]').click();
@@ -151,6 +164,7 @@ describe('Admin: create, update, and view custom page', () => {
     ).click();
     // wait for the call to complete
     cy.wait('@updateCustomPage');
+
     // wait for the toggle to become enabled in the UI
     cy.get(`[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]`)
       .find('i')

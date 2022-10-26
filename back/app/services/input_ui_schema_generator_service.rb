@@ -13,6 +13,10 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
 
   protected
 
+  def default_options(field)
+    super.merge(isAdminField: admin_field?(field))
+  end
+
   def generate_for_current_locale(fields)
     participation_context = fields.first.resource.participation_context
     participation_method = Factory.instance.participation_method_for participation_context
@@ -40,6 +44,10 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   private
+
+  def admin_field?(field)
+    field.code == 'budget' || field.code == 'author_id'
+  end
 
   def category_for(fields, category_id, translation_key)
     return if fields.empty?
