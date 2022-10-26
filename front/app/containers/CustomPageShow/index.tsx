@@ -10,6 +10,7 @@ import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from './PageNotFound';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -93,7 +94,9 @@ const CustomPageShow = () => {
       {pageAttributes.banner_enabled ? (
         <CustomPageHeader pageData={page} />
       ) : (
-        <AdminCustomPageEditButton pageId={page.id} />
+        <Box zIndex="9999">
+          <AdminCustomPageEditButton pageId={page.id} />
+        </Box>
       )}
       <Content>
         <Fragment
