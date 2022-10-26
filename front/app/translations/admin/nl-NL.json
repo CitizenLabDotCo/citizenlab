@@ -820,7 +820,7 @@
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Maak een nieuwe map aan",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Instellingen",
   "app.containers.AdminPage.FoldersEdit.viewPublicProjectFolder": "Bekijk de map",
-  "app.containers.AdminPage.HeroBannerForm.heroBannerInfoBar": "e hero-banner-afbeelding en -tekst bewerken",
+  "app.containers.AdminPage.HeroBannerForm.heroBannerInfoBar": "De hero-banner-afbeelding en -tekst bewerken.",
   "app.containers.AdminPage.HeroBannerForm.heroBannerTitle": "Hero-banner",
   "app.containers.AdminPage.HeroBannerForm.saveHeroBanner": "Hero-banner opslaan",
   "app.containers.AdminPage.PagesEdition.buttonSave": "Opslaan",
