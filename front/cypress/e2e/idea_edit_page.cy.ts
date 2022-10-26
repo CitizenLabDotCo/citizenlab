@@ -39,8 +39,13 @@ describe('Idea edit page', () => {
     ).then((idea) => {
       ideaId = idea.body.data.id;
       ideaSlug = idea.body.data.attributes.slug;
-      cy.wait(2000);
     });
+  });
+
+  afterEach(() => {
+    if (ideaId) {
+      cy.apiRemoveIdea(ideaId);
+    }
   });
 
   it('has a working idea edit form', () => {
@@ -132,9 +137,5 @@ describe('Idea edit page', () => {
     cy.visit(`/ideas/edit/${ideaId}`);
     // Check that author field has correct value
     cy.contains(`${lastName}, ${firstName}`).should('exist');
-  });
-
-  after(() => {
-    cy.apiRemoveIdea(ideaId);
   });
 });
