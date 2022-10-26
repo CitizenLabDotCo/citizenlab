@@ -62,6 +62,22 @@ resource 'Analytics', use_transactional_fixtures: false do
         assert_status 400
         expect(json_response_body[:messages]).to eq(['Groups field dimension_non_existent does not exist.'])
       end
+
+      example 'returns one page pagination' do
+        query = {
+          fact: 'post',
+          aggregations: { all: 'count' }
+        }
+        expected_pagination = 'http://example.org/web_api/v1/analytics?aggregations%5Ball%5D=count&fact=post&page%5Bnumber%5D=1'
+        do_request(query: query)
+
+        assert_status 200
+        expect(json_response_body[:links][:first]).to eq(expected_pagination)
+        expect(json_response_body[:links][:last]).to eq(expected_pagination)
+        expect(json_response_body[:links][:next]).to be_nil
+        expect(json_response_body[:links][:prev]).to be_nil
+        expect(json_response_body[:links][:self]).to eq(expected_pagination)
+      end
     end
 
     context 'When not admin' do

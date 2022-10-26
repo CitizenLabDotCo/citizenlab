@@ -94,10 +94,13 @@
       },
       "additionalProperties" : false
     },
-    "limit" : {
-      "type" : "integer",
-      "minimum" : 1,
-      "maximum" : 1000
+    "page" : {
+      "properties" : {
+        "size" : {"type": ["string"], "minimum" : 1, "maximum" : 1000 },
+        "number" : {"type": ["string"], "minimum" : 1 }
+      },
+      "minProperties" : 1,
+      "additionalProperties": false
     }
   },
   "additionalProperties" : false,

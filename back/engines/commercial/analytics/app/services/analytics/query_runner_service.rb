@@ -2,6 +2,7 @@
 
 module Analytics
   class QueryRunnerService
+    MAX_RESULTS = 1000
     def run(query)
       @query = query
       @json_query = query.json_query
@@ -31,10 +32,9 @@ module Analytics
         results = query_order(results)
       end
 
-      limit = @json_query.fetch(:limit, 1000)
-      results = results.limit(limit)
+      results, pagination = page(results)
 
-      query_pluck(results)
+      [query_pluck(results), pagination]
     end
 
     private
@@ -134,6 +134,50 @@ module Analytics
 
         response_row
       end
+    end
+
+    def page(results)
+      if @json_query.key?(:page)
+        page = @json_query[:page]
+        size = page.key?(:size) ? page[:size].to_i : MAX_RESULTS
+        number = page.key?(:number) ? page[:number].to_i : 1
+      else
+        size = MAX_RESULTS
+        number = 1
+      end
+      pagination = pagination(results, size, number)
+      results = results.limit(size)
+      offset = size * (number - 1)
+      [results.offset(offset), pagination]
+    end
+
+    def pagination_query_params(number)
+      return if number.nil?
+
+      json_query_clone = @json_query.clone
+      if @json_query.key?(:page)
+        json_query_clone[:page][:number] = number
+      else
+        json_query_clone[:page] = { number: number }
+      end
+      json_query_clone.to_unsafe_hash.to_query
+    end
+
+    def pagination(results, size, number)
+      total = if @json_query.key?(:groups)
+        query_pluck(results).length.to_i
+      else
+        results.count
+      end
+      last_page = (total / size.to_f).ceil
+
+      {
+        self:  pagination_query_params(number),
+        first: pagination_query_params(1),
+        prev:  pagination_query_params(number - 1 < 1 ? nil : number - 1),
+        next:  pagination_query_params(number + 1 > last_page ? nil : number + 1),
+        last:  pagination_query_params(last_page)
+      }
     end
   end
 end
