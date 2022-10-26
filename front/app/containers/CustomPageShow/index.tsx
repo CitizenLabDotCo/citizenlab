@@ -8,7 +8,9 @@ import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';
+import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from './PageNotFound';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -46,12 +48,8 @@ const PageTitle = styled.h1`
   `}
 `;
 
-const AttachmentsContainer = styled.div`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+const AttachmentsContainer = styled(ContentContainer)`
+  margin-bottom: 30px;
 `;
 
 const CustomPageShow = () => {
@@ -88,7 +86,13 @@ const CustomPageShow = () => {
           pageAttributes.title_multiloc
         )} | ${localizedOrgName}`}
       />
-      {pageAttributes.banner_enabled && <CustomPageHeader pageData={page} />}
+      {pageAttributes.banner_enabled ? (
+        <CustomPageHeader pageData={page} />
+      ) : (
+        <Box zIndex="9999">
+          <AdminCustomPageEditButton pageId={page.id} />
+        </Box>
+      )}
       <Content>
         <Fragment
           name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
