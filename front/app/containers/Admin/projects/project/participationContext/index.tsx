@@ -4,14 +4,14 @@ import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 
 // components
-import ParticipationMethodPicker from './components/ParticipationMethodPicker';
+import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
 
 // services
-import { projectByIdStream, IProject } from 'services/projects';
+import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
 import {
   ParticipationMethod,
@@ -85,6 +85,8 @@ interface InputProps {
   onSubmit: (arg: IParticipationContextConfig) => void;
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
+  phase?: IPhase | undefined | null;
+  project?: IProjectData | undefined | null;
   apiErrors: ApiErrors;
 }
 
@@ -432,6 +434,8 @@ class ParticipationContext extends PureComponent<
         <Container className={className}>
           <StyledSection>
             <ParticipationMethodPicker
+              phase={this.props.phase}
+              project={this.props.project}
               participation_method={participation_method}
               showSurveys={showSurveys}
               apiErrors={apiErrors}
