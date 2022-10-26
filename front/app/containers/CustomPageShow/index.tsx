@@ -80,7 +80,7 @@ const CustomPageShow = () => {
     appConfiguration.attributes.settings.core.organization_name
   );
   return (
-    <Container className={`e2e-custom-page`}>
+    <Container className={`e2e-page-${slug}`}>
       <Helmet
         title={`${localize(
           pageAttributes.title_multiloc
