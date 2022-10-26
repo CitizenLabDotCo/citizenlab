@@ -1108,6 +1108,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Add answer",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Inhalter vun der Ëmfro dobäifügen",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Ofbriechen",
+  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
   "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Zoumaachen",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Closed",
