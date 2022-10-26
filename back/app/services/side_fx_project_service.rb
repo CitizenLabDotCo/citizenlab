@@ -66,10 +66,6 @@ class SideFxProjectService
 
   private
 
-  def after_publish(project, user)
-    LogActivityJob.set(wait: 20.seconds).perform_later(project, 'published', user, Time.now.to_i)
-  end
-
   def after_folder_changed(project, current_user)
     # Defined in core app to eliminate dependency between
     # idea assignment and folder engine.
