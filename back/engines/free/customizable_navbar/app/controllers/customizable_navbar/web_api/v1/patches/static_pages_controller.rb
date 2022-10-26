@@ -11,7 +11,8 @@ module CustomizableNavbar
           # `attribute :nav_bar_item_title_multiloc`
           def assign_attributes
             attributes = permitted_attributes(StaticPage).to_h
-            if (nav_bar_item_title = attributes.delete(:nav_bar_item_title_multiloc)).present?
+            nav_bar_item_title = attributes.delete(:nav_bar_item_title_multiloc)
+            if nav_bar_item_title.present? && @page.nav_bar_item_id.present?
               attributes[:nav_bar_item_attributes] ||= {}
               attributes[:nav_bar_item_attributes][:id] = @page.nav_bar_item_id
               attributes[:nav_bar_item_attributes][:title_multiloc] = nav_bar_item_title

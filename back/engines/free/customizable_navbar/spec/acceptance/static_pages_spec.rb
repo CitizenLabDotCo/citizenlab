@@ -25,7 +25,7 @@ resource 'StaticPages' do
       ValidationErrorHelper.new.error_fields self, StaticPage
       ValidationErrorHelper.new.error_fields self, NavBarItem
 
-      example 'Create a static page with NavBarItem' do
+      example 'Does not create a NavBarItem' do
         page = build :static_page
         item_title_multiloc = { 'en' => 'Awesome item' }
 
@@ -38,7 +38,7 @@ resource 'StaticPages' do
         )
         expect(response_status).to eq 201
         json_response = json_parse response_body
-        expect(StaticPage.find(json_response.dig(:data, :id)).nav_bar_item&.title_multiloc).to match item_title_multiloc
+        expect(StaticPage.find(json_response.dig(:data, :id)).nav_bar_item).to be_nil
       end
     end
 
