@@ -72,11 +72,11 @@ resource 'Analytics', use_transactional_fixtures: false do
         do_request(query: query)
 
         assert_status 200
-        expect(json_response_body[:links][:first).to eq(expected_pagination)
-        expect(json_response_body[:links][:last).to eq(expected_pagination)
-        expect(json_response_body[:links][:next).to be_nil
-        expect(json_response_body[:links][:prev).to be_nil
-        expect(json_response_body[:links][:self).to eq(expected_pagination)
+        expect(json_response_body[:links][:first]).to eq(expected_pagination)
+        expect(json_response_body[:links][:last]).to eq(expected_pagination)
+        expect(json_response_body[:links][:next]).to be_nil
+        expect(json_response_body[:links][:prev]).to be_nil
+        expect(json_response_body[:links][:self]).to eq(expected_pagination)
       end
     end
 
