@@ -690,6 +690,8 @@
   "app.containers.CookiePolicy.viewPreferencesText": "Ниженаведене категорије колачића можда се не односе на све посетиоце или платформе. Погледајте своје {viewPreferencesButton} за комплетну листу интеграција са трећом страном које се односе на вас.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "За шта користимо колачиће?",
   "app.containers.CustomPageShow.editPage": "Уреди страницу",
+  "app.containers.CustomPageShow.goBack": "Повратак назад",
+  "app.containers.CustomPageShow.notFound": "Страница није пронађена",
   "app.containers.IdeaButton.addAContribution": "Додајте допринос",
   "app.containers.IdeaButton.addAProject": "Додајте пројекат",
   "app.containers.IdeaButton.addAQuestion": "Додајте питање",
