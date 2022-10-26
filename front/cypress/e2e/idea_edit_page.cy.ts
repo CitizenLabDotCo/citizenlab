@@ -25,20 +25,22 @@ describe('Idea edit page', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea(
-          projectId,
-          ideaTitle,
-          ideaContent,
-          undefined,
-          undefined,
-          jwt
-        );
-      })
-      .then((idea) => {
-        ideaId = idea.body.data.id;
-        ideaSlug = idea.body.data.attributes.slug;
-        cy.wait(2000);
       });
+  });
+
+  beforeEach(() => {
+    cy.apiCreateIdea(
+      projectId,
+      ideaTitle,
+      ideaContent,
+      undefined,
+      undefined,
+      jwt
+    ).then((idea) => {
+      ideaId = idea.body.data.id;
+      ideaSlug = idea.body.data.attributes.slug;
+      cy.wait(2000);
+    });
   });
 
   it('has a working idea edit form', () => {
@@ -108,10 +110,10 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);
-    cy.get('#e2e-idea-show')
-      .find('#e2e-idea-topics')
-      .find('.e2e-idea-topic')
-      .should('have.length', 1);
+    cy.get('#e2e-idea-show').should('exist');
+    cy.get('#e2e-idea-topics').should('exist');
+    cy.get('.e2e-idea-topic').should('exist');
+    cy.get('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show #e2e-map-popup').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(
       `${firstName} ${lastName}`
