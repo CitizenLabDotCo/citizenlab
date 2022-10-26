@@ -690,6 +690,8 @@
   "app.containers.CookiePolicy.viewPreferencesText": "The below cookie categories may not apply to all visitors or platforms; view your {viewPreferencesButton} for a full list of 3rd party integrations applicable to you.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "What do we use cookies for?",
   "app.containers.CustomPageShow.editPage": "Edit page",
+  "app.containers.CustomPageShow.goBack": "Go back",
+  "app.containers.CustomPageShow.notFound": "Page not found",
   "app.containers.IdeaButton.addAContribution": "Add a contribution",
   "app.containers.IdeaButton.addAProject": "Add a project",
   "app.containers.IdeaButton.addAQuestion": "Add a question",

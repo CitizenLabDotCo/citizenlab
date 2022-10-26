@@ -8,6 +8,7 @@ import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';
+import PageNotFound from './PageNotFound';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -16,7 +17,7 @@ import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isError, isNil, isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -67,9 +68,13 @@ const CustomPageShow = () => {
     resourceId: !isNilOrError(page) ? page.id : null,
   });
 
-  if (isNilOrError(page) || isNilOrError(appConfiguration)) {
+  if (isError(page)) {
+    return <PageNotFound />;
+  }
+
+  // when neither have loaded
+  if (isNil(page) || isNilOrError(appConfiguration)) {
     return null;
-    // should return 404 here
   }
 
   const pageAttributes = page.attributes;
