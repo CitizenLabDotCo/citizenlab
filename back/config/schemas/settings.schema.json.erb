@@ -169,13 +169,13 @@
 
       "dynamic_idea_form": {
         "type": "object",
-        "title": "Dynamic idea form (experimental)",
-        "description":  "Changes the idea form from the hard-coded version, to the experimental generated version. Don't turn this on unless you know what you're doing.",
+        "title": "Dynamic idea form",
+        "description": "Changes the idea form from the hard-coded version to the generated version.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       },
       "jsonforms_custom_fields": {
@@ -979,12 +979,12 @@
       "native_surveys": {
         "type": "object",
         "title": "Allow in-platform surveys",
-        "description":  "DO NOT ENABLE THIS FEATURE BECAUSE IT IS STILL UNDER DEVELOPMENT !!!",
+        "description":  "",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
