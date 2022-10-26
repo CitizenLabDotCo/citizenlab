@@ -1,7 +1,7 @@
 import React from 'react';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // components and styling
@@ -26,9 +26,7 @@ const PageNotFound = () => {
 
   return (
     <PageNotFoundWrapper>
-      <p>
-        <FormattedMessage {...messages.notFound} />
-      </p>
+      <p>{formatMessage(messages.notFound)}</p>
       <Button
         linkTo="/"
         text={formatMessage(messages.goBack)}
