@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- [CL-1786] Added Greek language capabilities
+
 ## 2022-10-25
 
 ### Added
