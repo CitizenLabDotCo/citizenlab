@@ -63,8 +63,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
       <SubSectionTitle>
         <FormattedMessage {...messages.chooseLayout} />
       </SubSectionTitle>
-      {/* minwidth to allow longer i18n strings to fit on one line */}
-      <Box display="flex" minWidth="750px">
+      <Box display="flex">
         <LayoutOption>
           <LayoutOptionTop>
             <Radio
