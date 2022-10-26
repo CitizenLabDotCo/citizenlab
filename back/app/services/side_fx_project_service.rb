@@ -33,17 +33,6 @@ class SideFxProjectService
     @sfx_pc.after_update project, user if project.participation_context?
   end
 
-  # @param [Project] project
-  # @param [User] user
-  def log_publication_status_change(project, user, change: nil)
-    change ||= project.admin_publication.publication_status_previous_change
-    return unless change
-
-    LogActivityJob
-      .set(wait: 20.seconds)
-      .perform_later(project, change.last, user, Time.now.to_i, change)
-  end
-
   def before_destroy(project, user)
     @sfx_pc.before_destroy project, user if project.participation_context?
   end
@@ -65,6 +54,18 @@ class SideFxProjectService
   end
 
   private
+
+  # @param [Project] project
+  # @param [User] user
+  # @param [Array<String>,nil] change
+  def log_publication_status_change(project, user, change: nil)
+    change ||= project.admin_publication.publication_status_previous_change
+    return unless change
+
+    LogActivityJob
+      .set(wait: 20.seconds)
+      .perform_later(project, change.last, user, Time.now.to_i, change)
+  end
 
   def after_folder_changed(project, current_user)
     # Defined in core app to eliminate dependency between
