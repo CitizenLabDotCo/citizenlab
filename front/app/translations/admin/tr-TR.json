@@ -1108,6 +1108,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Yanıt ekleyin",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Anket içeriği ekleyin",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "İptal",
+  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
   "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Kapat",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Kapalı",
