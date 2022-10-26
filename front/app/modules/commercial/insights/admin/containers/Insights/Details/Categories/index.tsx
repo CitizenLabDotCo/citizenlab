@@ -103,7 +103,7 @@ const Categories: React.FC<CategoryProps> = ({
         padding="28px"
         data-testid="insightsDetailsCategories"
       >
-        <Box mb="16px">
+        <Box mb="16px" className="intercom-insights-network-tags">
           <SectionTitle>
             {formatMessage(messages.categoriesTitle)}
             <IconTooltip
@@ -156,6 +156,7 @@ const Categories: React.FC<CategoryProps> = ({
               </Box>
             </Box>
             <Button
+              className="intercom-insights-network-manage-tags-button"
               buttonStyle="secondary"
               linkTo={`${pathname}/edit`}
               icon="categories"

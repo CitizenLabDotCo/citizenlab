@@ -85,7 +85,7 @@ const ProjectFilter = ({
   );
 
   return (
-    <Box width={width ?? '32%'}>
+    <Box width={width ?? '32%'} className="intercom-admin-project-filter">
       <StyledSelect
         id="projectFilter"
         label={
