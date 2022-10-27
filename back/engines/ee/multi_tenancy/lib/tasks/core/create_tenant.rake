@@ -93,6 +93,7 @@ namespace :cl2_back do
         password_login: {
           enabled: true,
           allowed: true,
+          enable_signup: true,
           phone: false,
           minimum_length: 8
         },
