@@ -159,7 +159,7 @@ ar:
     gender:
       male: ذكر
       female: أنثى
-      unspecified: غير محدد
+      unspecified: آخر
     domicile:
       outside: في مكان آخر
     education:
@@ -200,3 +200,8 @@ ar:
       status: 'الحالة'
       assignee_fullname: 'المعيّن إليه'
       assignee_email: 'البريد الإلكتروني للمعيَّن إليه'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
