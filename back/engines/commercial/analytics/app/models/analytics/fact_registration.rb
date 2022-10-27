@@ -9,7 +9,6 @@
 #  dimension_date_registration_id :date
 #  dimension_date_invited_id      :date
 #  dimension_date_accepted_id     :date
-#  invite_status                  :string
 #
 module Analytics
   class FactRegistration < Analytics::ApplicationRecordView

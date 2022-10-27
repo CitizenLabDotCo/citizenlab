@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_25_131832) do
+ActiveRecord::Schema.define(version: 2022_10_27_125738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1623,11 +1623,6 @@ ActiveRecord::Schema.define(version: 2022_10_25_131832) do
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
   SQL
-  create_view "analytics_dimension_users", sql_definition: <<-SQL
-      SELECT users.id,
-      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
-     FROM users;
-  SQL
   create_view "analytics_fact_participations", sql_definition: <<-SQL
       SELECT i.id,
       i.author_id AS dimension_user_id,
@@ -1714,21 +1709,19 @@ ActiveRecord::Schema.define(version: 2022_10_25_131832) do
        LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
   SQL
-  create_view "analytics_fact_events", sql_definition: <<-SQL
-      SELECT events.id,
-      events.project_id AS dimension_project_id,
-      (events.start_at)::date AS dimension_date_start_id,
-      (events.end_at)::date AS dimension_date_end_id
-     FROM events;
-  SQL
   create_view "analytics_fact_registrations", sql_definition: <<-SQL
       SELECT u.id,
       u.id AS dimension_user_id,
       (u.registration_completed_at)::date AS dimension_date_registration_id,
       (i.created_at)::date AS dimension_date_invited_id,
-      (i.accepted_at)::date AS dimension_date_accepted_id,
-      u.invite_status
+      (i.accepted_at)::date AS dimension_date_accepted_id
      FROM (users u
        LEFT JOIN invites i ON ((i.invitee_id = u.id)));
+  SQL
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+      users.invite_status
+     FROM users;
   SQL
 end
