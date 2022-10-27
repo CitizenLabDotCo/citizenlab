@@ -38,7 +38,6 @@ export type TSectionToggleData = {
 
 const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
-  const [isLoading, setIsLoading] = useState(false);
   const [sectionTogglesData, setSectionTogglesData] = useState<
     TSectionToggleData[]
   >([
@@ -74,15 +73,12 @@ const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       if (isNilOrError(homepageSettings)) {
         return;
       }
-      setIsLoading(true);
       try {
         await updateHomepageSettings({
           [sectionName]: !homepageSettings.attributes[sectionName],
         });
       } catch (error) {
         console.error(error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -96,7 +92,7 @@ const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
 
   const handleOnClick = (url: string) => {
     if (url) {
-      clHistory.push(`/admin/pages-menu/${url}/`);
+      clHistory.push(`/admin/pages-menu/homepage/${url}/`);
     }
   };
 
@@ -155,7 +151,6 @@ const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                 editLinkPath={linkToPath}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
-                disabled={isLoading}
                 isLastItem={index === sectionTogglesData.length - 1}
                 hideToggle={hideToggle}
               />

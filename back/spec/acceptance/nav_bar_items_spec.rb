@@ -71,26 +71,5 @@ resource 'NavBarItems' do
         end
       end
     end
-
-    %w[proposals events all_input].each do |code|
-      post "web_api/v1/nav_bar_items/toggle_#{code}" do
-        parameter :enabled, 'Boolean value to decide whether to add (enable) or remove (disable) the item.'
-
-        example "Enable #{code}" do
-          do_request enabled: true
-          expect(status).to eq 201
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes, :code)).to eq code
-          expect(NavBarItem.find_by(code: code)).to be_present
-        end
-
-        example "Disable #{code}" do
-          create :nav_bar_item, code: code
-          do_request enabled: false
-          expect(status).to eq 200
-          expect(NavBarItem.find_by(code: code)).to be_blank
-        end
-      end
-    end
   end
 end
