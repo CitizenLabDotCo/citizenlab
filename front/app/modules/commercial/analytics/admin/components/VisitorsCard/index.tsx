@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useVisitorsData from '../../hooks/useVisitorsData';
+import useVisitors from '../../hooks/useVisitors';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -11,8 +11,7 @@ import Chart from './Chart';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -31,19 +30,16 @@ const VisitorsCard = ({
   endAtMoment,
   projectFilter,
   resolution,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitorsData(
-    formatMessage,
-    {
-      startAtMoment,
-      endAtMoment,
-      projectId: projectFilter,
-      resolution,
-    }
-  );
+  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitors({
+    startAtMoment,
+    endAtMoment,
+    projectId: projectFilter,
+    resolution,
+  });
 
   const cardTitle = formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
@@ -56,7 +52,7 @@ const VisitorsCard = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
+        xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
         currentProjectFilter: projectFilter,
@@ -86,4 +82,4 @@ const VisitorsCard = ({
   );
 };
 
-export default injectIntl(VisitorsCard);
+export default VisitorsCard;
