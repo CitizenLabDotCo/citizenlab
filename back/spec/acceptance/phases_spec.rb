@@ -217,7 +217,6 @@ resource 'Phases' do
 
         example_request '[error] Create an invalid phase', document: false do
           assert_status 422
-          json_response = json_parse response_body
           expect(json_response).to include_response_error(:start_at, 'blank')
         end
       end
@@ -233,7 +232,6 @@ resource 'Phases' do
 
         example_request '[error] Create an overlapping phase' do
           assert_status 422
-          json_response = json_parse response_body
           expect(json_response).to include_response_error(:base, 'has_other_overlapping_phases')
         end
       end
@@ -280,7 +278,6 @@ resource 'Phases' do
         example '[error] Create multiple budgeting phases', document: false do
           do_request
           assert_status 422
-          json_response = json_parse response_body
           expect(json_response).to include_response_error(:base, 'has_other_budgeting_phases')
         end
       end
