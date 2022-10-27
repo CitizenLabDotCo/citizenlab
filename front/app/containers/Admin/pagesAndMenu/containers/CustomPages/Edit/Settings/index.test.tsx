@@ -9,8 +9,15 @@ jest.mock('hooks/useAppConfiguration', () => () => ({
 }));
 
 jest.mock('hooks/useCustomPage', () =>
-  jest.fn(() => ({ attributes: { title_multiloc: { en: 'title' } } }))
+  jest.fn(() => ({
+    relationships: { nav_bar_item: { data: { id: '123' } } },
+    attributes: {
+      title_multiloc: { en: 'title' },
+      nav_bar_item_title_multiloc: { en: 'user generated content' },
+    },
+  }))
 );
+
 jest.mock('services/customPages', () => ({
   // `async` simulates the original `updateCustomPage` which is also `async`.
   // It's important for testing it properly.
@@ -33,7 +40,6 @@ describe('EditCustomPageSettings', () => {
   describe('Edit custom page', () => {
     it('renders error in case of invalid slug', async () => {
       const { container } = render(<EditCustomPageSettings />);
-
       fireEvent.change(screen.getByRole('textbox', { name: 'Page URL' }), {
         target: {
           value: 'existing-slug',
@@ -41,7 +47,6 @@ describe('EditCustomPageSettings', () => {
       });
       fireEvent.click(container.querySelector('button[type="submit"]'));
       await waitFor(() => {
-        expect(screen.getAllByTestId('error-message')).toHaveLength(2);
         expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
       });
     });

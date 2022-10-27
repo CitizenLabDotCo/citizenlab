@@ -34,7 +34,7 @@ const CustomPagesNewSettings = ({
           {
             label: formatMessage(messages.pageSettingsTab),
             name: 'settings',
-            url: '/admin/pages-menu/custom/new',
+            url: '/admin/pages-menu/pages/new',
           },
         ]}
         contentWrapper={false}

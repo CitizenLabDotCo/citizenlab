@@ -156,4 +156,8 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.heroBannerError',
     defaultMessage: "Couldn't save hero banner",
   },
+  saveAndEnable: {
+    id: 'app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner',
+    defaultMessage: 'Save and enable hero banner',
+  },
 });
