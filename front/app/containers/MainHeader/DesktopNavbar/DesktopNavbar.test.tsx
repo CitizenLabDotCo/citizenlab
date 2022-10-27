@@ -5,7 +5,7 @@ import DesktopNavbar from '.';
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 jest.mock('hooks/useNavbarItems');
-jest.mock('hooks/usePageSlugById');
+jest.mock('hooks/useCustomPageSlugById');
 
 const mockAdminPublications = [
   {

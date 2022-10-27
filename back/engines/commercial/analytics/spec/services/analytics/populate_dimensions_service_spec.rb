@@ -10,7 +10,7 @@ describe Analytics::PopulateDimensionsService do
     end
 
     it 'has a last dimension date six months in the future' do
-      expect(Analytics::DimensionDate.last.date).to eq(Time.zone.today + 6.months)
+      expect(Analytics::DimensionDate.last.date).to eq(Time.zone.today + 180.days)
     end
 
     it 'has a first dimension date the same as the app configuration date' do
@@ -21,8 +21,8 @@ describe Analytics::PopulateDimensionsService do
       expect(Analytics::DimensionDate.count).to be >= 180
     end
 
-    it 'has 4 dimension types' do
-      expect(Analytics::DimensionType.count).to eq(4)
+    it 'has 7 dimension types' do
+      expect(Analytics::DimensionType.count).to eq(7)
     end
 
     it 'has 5 referrer types' do
@@ -49,7 +49,7 @@ describe Analytics::PopulateDimensionsService do
       expect { described_class.run }.to change(Analytics::DimensionDate, :count).by(1)
     end
 
-    it 'creates new dates in the future and past - moving forward & adding an earlier initiative' do
+    it 'creates new dates in the future and past - moving forward & adding an earlier initiative', :aggregate_failures do
       travel 5.days
       initiative_date = Analytics::DimensionDate.order(:date).first.date - 5.days
       create(:initiative, created_at: initiative_date)

@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 // intl
 import { FormattedMessage } from './cl-intl';
-import messages from './participationMethodUtilsMessages';
+import messages from './messages';
 
 // services
 import {
