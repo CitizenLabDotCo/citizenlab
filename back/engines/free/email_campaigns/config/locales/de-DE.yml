@@ -106,7 +106,7 @@ de:
       "unsubscribe_text": "abbestellen"
     comment_deleted_by_admin:
       reason: 'Der Grund, warum Ihr Kommentar gelöscht wurde:'
-      cta_view: 'Diese Idee ansehen'
+      cta_view: 'Zur Plattform'
       event_description: '%{organizationName} den Kommentar, den Sie zu einer Idee geschrieben haben, gelöscht.'
       main_header: '%{organizationName} hat Ihren Kommentar gelöscht'
       other_reason: '%{otherReason}'
@@ -160,7 +160,7 @@ de:
       yesterday: Gestern
     comment_on_your_initiative:
       commented: '%{authorFirstName} hat geschrieben:'
-      cta_reply_to: 'Antworte auf %{commentAuthor}'
+      cta_reply_to: '%{commentAuthor} antworten'
       event_description: '%{authorNameFull} hat eine Reaktion auf Ihre Initiative ''%{initiativeTitle}'' gegeben. Klicken Sie auf den Button unten, um das Gespräch mit %{authorName} fortzusetzen.'
       main_header: '%{commentAuthor} hat Ihre Idee kommentiert'
       subject: 'Sie haben einen Kommentar auf der Plattform von %{organizationName} erhalten'
@@ -235,14 +235,14 @@ de:
     mention_in_official_feedback:
       by_author: 'von %{authorName}'
       commented: '%{organizationName} hat geschrieben:'
-      cta_reply_to: 'Antworte %{organizationName}'
+      cta_reply_to: '%{organizationName} antworten'
       event_description: '%{organizationName} hat dich in seinem Feedback zu der Idee ''%{post}'' erwähnt. Klicke auf den unten stehenden Link, um mit %{organizationName} zu interagieren'
       main_header: 'Sie wurden erwähnt'
       subject: '%{organizationName} hat Sie in ihrem Feedback erwähnt'
       preheader: '%{commentAuthor} hat Sie in der Rückmeldung erwähnt'
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} hat geschrieben:'
-      cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
+      cta_reply_to: 'Antworten Sie %{commentAuthor}'
       event_description: '%{commentAuthorFull} hat auch einen Kommentar zur Idee ''%{ideaTitle}'' auf der Beteiligungsplattform %{organizationName} gepostet. Klicke auf den Button unten, um das Gespräch mit %{commentAuthor} zu beginnen.'
       main_header: '%{commentAuthor} hat einen Kommentar zu derselben Idee geschrieben'
       subject: 'Es gibt einen weiteren Kommentar zu der Idee, die Sie kommentiert haben'
@@ -250,7 +250,7 @@ de:
     mention_in_comment:
       by_author: 'von %{authorName}'
       commented: '%{commentAuthor} schrieb:'
-      cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
+      cta_reply_to: 'Antworten Sie %{commentAuthor}'
       event_description: '%{commentAuthorFull} hat dich in seinem Kommentar zur Idee ''%{post}'' erwähnt. Klicke auf den untenstehenden Link, um mit %{commentAuthor} zu interagieren'
       main_header: 'Du wurdest von jemandem erwähnt'
       subject: 'Jemand hat Sie auf der Plattform von %{organizationName} erwähnt'
@@ -271,7 +271,7 @@ de:
       x_days_ago_by_author: 'Vor %{x} Tagen von %{author}'
     new_comment_on_commented_initiative:
       commented: '%{commentAuthor} schrieb:'
-      cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
+      cta_reply_to: 'Antworten Sie %{commentAuthor}'
       event_description: '%{commentAuthorFull} hat auch einen Kommentar zum Vorschlag ''%{initiativeTitle}'' auf der Beteiligungsplattform %{organizationName} gepostet. Klicke auf den Button unten, um das Gespräch mit %{commentAuthor} zu beginnen.'
       main_header: '%{commentAuthor} hat einen Kommentar zum gleichen Vorschlag geschrieben'
       subject: 'Es gibt einen weiteren Kommentar zu dem Vorschlag, den du kommentiert hast'
@@ -332,7 +332,7 @@ de:
       today: Heute
       yesterday: Gestern
     comment_on_your_comment:
-      cta_reply_to: 'Antworte %{firstName}'
+      cta_reply_to: '%{firstName} antworten'
       event_description: '%{authorNameFull} hat eine Antwort auf Ihren Kommentar zu "%{post}" auf der Beteiligungsplattform geschrieben. Klicken Sie auf den Button unten, um das Gespräch mit %{authorName} fortzusetzen.'
       subject: 'Sie haben eine Antwort auf Ihren Kommentar auf der Plattform von %{organizationName} erhalten'
       main_header: '%{authorName} hat auf Ihren Kommentar geantwortet'
@@ -395,7 +395,7 @@ de:
       text_moderate_analyse_input: 'Sobald das Projekt angelaufen ist, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht in Ihrer Projektmanager-Ansicht hilft Ihnen zu verstehen, welche Ideen die meisten Für- und Gegen-Stimmen erhalten haben.'
       text_share_project_information: 'Um die Qualität der Ideen, die Sie erhalten, zu erhöhen, ist es vor allem wichtig, die Bürger:innen genügend zu informieren. Fügen Sie eine Projektbeschreibung hinzu. Fügen Sie Bilder, wie Pläne und Skizzen, hinzu. Kommunizieren Sie alle betreffenden Veranstaltungen und Ereignisse. Denken Sie daran: gut informieren ist das A und O jeder Beteiligung!'
       title_design_participatory_process: 'Gestalten Sie den partizipativen Prozess'
-      title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der BürgerInnen'
+      title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der Bürger:innen'
       title_share_project_information: 'Stellen Sie Projektinformationen bereit'
       title_what_can_you_do_moderator: 'Was können Sie als Projektmanager:in tun?'
       title_you_became_moderator: 'Sie sind nun Projektmanager:in'
@@ -410,7 +410,7 @@ de:
       text_moderate_analyse_input: 'Sobald die Projekte gestartet wurden, werden die ersten Beiträge eingehen. Sie werden wöchentliche Berichte mit den wichtigsten Aktivitäten erhalten, damit Sie den Überblick behalten können. Mit dem Beitragsmanager in Ihrer Admin-Ansicht können Sie sich die Beiträge ansehen und sie verwalten (z. B. können Sie einen Status zuweisen und auf Beiträge und Kommentare antworten).'
       text_design_participatory_process: 'Sie können die verschiedenen Beteiligungsprojekte in Ihrem Ordner verwalten – konfigurieren Sie die Teilnahmemethode, fügen Sie eine Projektbeschreibung hinzu, hängen Sie Bilder an und informieren Sie über relevante Ereignisse. Sie können auch festlegen, wie Teilnehmende bei Ihren Projekten mitwirken können. Zum Beispiel können Sie die Zugriffsrechte festlegen und die Beitrags-, Abstimmungs- und Kommentareinstellungen konfigurieren.'
       title_design_participatory_process: 'Gestalten Sie den partizipativen Prozess'
-      title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der BürgerInnen'
+      title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der Bürger:innen'
       title_manage_folder: 'Verwalten Sie die Ordnereinstellungen und erstellen Sie neue Projekte.'
       title_what_can_you_do_folderadmin: 'Was können Sie als Ordnermanager:in machen?'
       title_added_as_folderadmin: 'Sie wurden als OrdnermanagerIn hinzugefügt'
@@ -438,7 +438,7 @@ de:
       preheader: '%{organizationName} den Status einer Idee geändert, die Sie kommentiert haben'
     status_change_of_your_idea:
       status_change: 'Der neue Status Ihrer Idee ist ''%{ideaStatus}'''
-      cta_view_idea: 'Gehen Sie zu Ihrer Idee'
+      cta_view_idea: 'Zur Idee'
       event_description: '%{organizationName} hat den Status Ihrer Idee ''%{ideaTitle}'' auf ihrer digitalen Beteiligungsplattform aktualisiert.'
       main_header: 'Ihre Idee hat einen neuen Status'
       subject: 'Der Status Ihrer Idee wurde geändert'
@@ -509,7 +509,7 @@ de:
       action_share_link: 'Teile es über einen beliebigen Kanal, indem du den %{link} kopierst'
       action_share_twitter: 'Informiere deine Follower über %{twitterLink}'
       add_image: 'Füge ein Bild hinzu'
-      cta_view_idea: 'Gehen Sie zu Ihrer Idee'
+      cta_view_idea: 'Zur Idee'
       event_description: '%{firstName}, wir gratulieren Ihnen zu Ihrer ersten Idee auf der Beteiligungsplattform %{organizationName}. Sie werden benachrichtigt, wenn Menschen mit Ihrer Idee interagieren. Im Folgenden erfahren Sie, welche nächsten Schritte Sie unternehmen können.'
       link: Link
       main_header: '%{firstName}, Sie haben Ihre erste Idee gepostet!'
@@ -522,7 +522,7 @@ de:
       cta_join_platform: 'Entdecke die Plattform'
       subject: 'Ihre Registrierung für die Plattform der %{organizationName}'
       main_header: Herzlich Willkommen!
-      message_welcome: 'Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} angemeldet. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
+      message_welcome: 'Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
       preheader: 'Das können Sie auf der Plattform von %{organizationName} tun:'
     idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
@@ -532,7 +532,7 @@ de:
       action_share_link: 'Teile es über einen beliebigen Kanal, indem du den %{link} kopierst'
       action_share_twitter: 'Informiere deine Follower über %{twitterLink}'
       add_image: 'Füge ein Bild hinzu'
-      cta_view_idea: 'Gehen Sie zu Ihrer Idee'
+      cta_view_idea: 'Zur Idee'
       event_description: '%{firstName}, Ihre Idee ist erfolgreich auf der Beteiligungsplattform %{organizationName}veröffentlicht worden. Sie werden benachrichtigt, wenn Menschen mit Ihrer Idee interagieren. Im Folgenden erfahren Sie, welche nächsten Schritte Sie unternehmen können.'
       link: Link
       main_header: 'Du hast eine Idee gepostet! Lass uns sicherstellen, dass sie gelesen wird.'
