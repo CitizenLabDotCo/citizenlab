@@ -20,7 +20,7 @@
     },
     "fact" : {
       "type" : "string",
-      "enum" : ["post", "participation", "visit"]
+      "enum" : ["post", "participation", "visit", "registration"]
     },
     "filters" : {
       "type" : "object",
@@ -98,8 +98,13 @@
       },
       "additionalProperties" : false
     },
-    "limit" : {
-      "type" : "string"
+    "page" : {
+      "properties" : {
+        "size" : {"type": ["string"], "minimum" : 1, "maximum" : 1000 },
+        "number" : {"type": ["string"], "minimum" : 1 }
+      },
+      "minProperties" : 1,
+      "additionalProperties": false
     }
   },
   "additionalProperties" : false,
