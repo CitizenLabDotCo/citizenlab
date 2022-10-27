@@ -20,7 +20,7 @@
     },
     "fact" : {
       "type" : "string",
-      "enum" : ["post", "participation", "visit"]
+      "enum" : ["post", "participation", "visit", "registration"]
     },
     "filters" : {
       "type" : "object",

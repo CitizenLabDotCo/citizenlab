@@ -68,7 +68,7 @@ resource 'Analytics', use_transactional_fixtures: false do
           fact: 'post',
           aggregations: { all: 'count' }
         }
-        expected_pagination = 'http://example.org/web_api/v1/analytics?aggregations%5Ball%5D=count&fact=post&page%5Bnumber%5D=1'
+        expected_pagination = 'http://example.org/web_api/v1/analytics?query%5Baggregations%5D%5Ball%5D=count&query%5Bfact%5D=post&query%5Bpage%5D%5Bnumber%5D=1'
         do_request(query: query)
 
         assert_status 200
