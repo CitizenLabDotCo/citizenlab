@@ -56,10 +56,10 @@ const DeleteFormResultsNotice = ({
           data-cy="e2e-delete-form-results-notice-link"
           onlyActiveOnIndex
         >
-          {formatMessage(messages.deleteResultsMessageLink)}
+          {formatMessage(messages.deleteResultsLink)}
         </StyledLink>
       ) : (
-        formatMessage(messages.deleteResultsMessageLink)
+        formatMessage(messages.deleteResultsLink)
       )}
     </Text>
   </Box>

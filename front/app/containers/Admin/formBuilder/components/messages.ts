@@ -163,9 +163,9 @@ export default defineMessages({
     defaultMessage:
       "Survey content can't be edited as survey results have started coming in.",
   },
-  deleteResultsMessageLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsMessageLink',
-    defaultMessage: 'Delete the results if you need to make changes',
+  deleteResultsLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink',
+    defaultMessage: 'Delete the results if you need to make changes.',
   },
   choiceCount: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount',
