@@ -58,6 +58,12 @@ RSpec.describe ParticipationMethod::Survey do
     end
   end
 
+  describe '#sign_in_required_for_posting?' do
+    it 'returns false' do
+      expect(participation_method.sign_in_required_for_posting?).to be false
+    end
+  end
+
   describe '#extra_fields_category_translation_key' do
     it 'returns the translation key for the extra fields category' do
       expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'

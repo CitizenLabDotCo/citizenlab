@@ -151,7 +151,7 @@ describe('Native survey project page actions', () => {
       cy.contains('Anyone').click({ force: true });
     });
     // Logout
-    cy.logout();
+    cy.clearCookies();
     // Visit the project page
     cy.visit(`/projects/${projectSlugContinous}`);
     // Check that correct text and actions shown

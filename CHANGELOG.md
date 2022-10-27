@@ -1,8 +1,13 @@
 # Changelog
 
+## Next release
+
+## 2022-10-25
+
 ### Added
 
 - [CL-1811] New Oostende verification method
+- [CL-1558] Native surveys
 
 ## 2022-10-20
 

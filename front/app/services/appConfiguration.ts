@@ -116,7 +116,6 @@ export interface IAppConfigurationSettings {
   manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;
   pages?: AppConfigurationFeature;
-  preview_new_custom_pages?: AppConfigurationFeature;
   project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
@@ -212,7 +211,6 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
   representativeness?: AppConfigurationFeature;
