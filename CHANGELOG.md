@@ -1,8 +1,19 @@
 # Changelog
 
+## Next release
+
 ### Added
 
+- [CL-1786] Added Latvian language capabilities
+- [CL-1786] Add Catalan language capabilities
 - [CL-1786] Added Greek language capabilities
+
+## 2022-10-27
+
+### Changed
+
+- [CL-1611] Improved layout & content of Project Phase Started & Project Phase Upcoming emails.
+- [CL-1744] Visitors dashboard: add referrers table to traffic sources card
 
 ## 2022-10-25
 

@@ -46,8 +46,8 @@ import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
-import customizableNavbarConfiguration from './commercial/customizable_navbar';
 
+import customizableNavbarConfiguration from './free/customizable_navbar';
 import userConfirmationConfiguration from './free/user_confirmation';
 
 import representativenessConfiguration from './commercial/representativeness';
@@ -218,7 +218,7 @@ export default loadModules([
   },
   {
     configuration: customizableNavbarConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/customizable_navbar'],
+    isEnabled: CL_CONFIG['modules']['free/customizable_navbar'],
   },
   {
     configuration: userConfirmationConfiguration,

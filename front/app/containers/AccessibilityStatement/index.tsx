@@ -15,9 +15,9 @@ import {
   StyledContentContainer,
   PageContent,
   PageTitle,
-  PageDescription,
 } from 'containers/PagesShowPage';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const CookiePolicy = memo((props: WrappedComponentProps) => {
   const { formatMessage } = props.intl;
@@ -38,7 +38,7 @@ const CookiePolicy = memo((props: WrappedComponentProps) => {
             <PageTitle>
               <FormattedMessage {...messages.title} />
             </PageTitle>
-            <PageDescription>
+            <Box>
               <QuillEditedContent>
                 <p>
                   <FormattedMessage
@@ -136,7 +136,7 @@ const CookiePolicy = memo((props: WrappedComponentProps) => {
                 </ul>
                 <p>{formatMessage(messages.responsiveness)}</p>
               </QuillEditedContent>
-            </PageDescription>
+            </Box>
           </Fragment>
         </StyledContentContainer>
       </PageContent>
