@@ -1,38 +1,46 @@
 import React from 'react';
 
-// components
-import { Container, Content } from 'components/LandingPages/citizen';
-import { Helmet } from 'react-helmet';
-import ContentContainer from 'components/ContentContainer';
-import { PageTitle } from 'containers/CustomPageShow';
-import { Text } from '@citizenlab/cl2-component-library';
-
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
+// components and styling
+import Button from 'components/UI/Button';
+import styled from 'styled-components';
+import { Title, Text, media } from '@citizenlab/cl2-component-library';
+
+const PageNotFoundWrapper = styled.div`
+  height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
+
+  ${media.tablet`
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
+  `}
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 0;
+`;
+
 const PageNotFound = () => {
   const { formatMessage } = useIntl();
 
-  const title = formatMessage(messages.notFoundTitle);
-  const description = formatMessage(messages.notFoundDescription);
-
   return (
-    <Container>
-      <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="robots" content="noindex" />
-      </Helmet>
-      <Content>
-        <ContentContainer>
-          <PageTitle>{title}</PageTitle>
-          <Text mt="40px" color="textSecondary">
-            {description}
-          </Text>
-        </ContentContainer>
-      </Content>
-    </Container>
+    <PageNotFoundWrapper>
+      <Title mb="0">{formatMessage(messages.notFoundTitle)}</Title>
+      <Text fontSize="l" color={'textSecondary'} mb="35px">
+        {formatMessage(messages.pageNotFoundDescription)}
+      </Text>
+      <Button
+        linkTo="/"
+        text={formatMessage(messages.goBackToHomePage)}
+        icon="arrow-left"
+      />
+    </PageNotFoundWrapper>
   );
 };
 

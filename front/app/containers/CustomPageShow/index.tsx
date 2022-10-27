@@ -29,7 +29,7 @@ import { injectIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { fontSizes, isRtl, media } from 'utils/styleUtils';
 
-export const PageTitle = styled.h1`
+const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;

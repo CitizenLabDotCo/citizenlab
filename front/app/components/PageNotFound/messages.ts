@@ -5,8 +5,12 @@ export default defineMessages({
     id: 'app.components.PageNotFound.notFoundTitle',
     defaultMessage: 'Page not found',
   },
-  notFoundDescription: {
-    id: 'app.components.PageNotFound.notFoundDescription',
-    defaultMessage: 'The requested page could not be found',
+  pageNotFoundDescription: {
+    id: 'app.components.PageNotFound.pageNotFoundDescription',
+    defaultMessage: 'The requested page could not be found.',
+  },
+  goBackToHomePage: {
+    id: 'app.components.PageNotFound.goBackToHomePage',
+    defaultMessage: 'Back to the homepage',
   },
 });
