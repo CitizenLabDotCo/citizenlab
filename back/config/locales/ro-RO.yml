@@ -159,7 +159,7 @@ ro:
     gender:
       male: Masculin
       female: Femeie
-      unspecified: Nespecificat
+      unspecified: Alte
     domicile:
       outside: Altundeva
     education:
@@ -200,3 +200,8 @@ ro:
       status: 'Status'
       assignee_fullname: 'Responsabil'
       assignee_email: 'Assignee email'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
