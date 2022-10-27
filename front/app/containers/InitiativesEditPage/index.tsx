@@ -169,6 +169,7 @@ const Data = adopt<DataProps, WithRouterProps>({
 export default withRouter((withRouterProps: WithRouterProps) => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
 
+  if (initiativesEnabled === undefined) return null;
   if (!initiativesEnabled) {
     return <PageNotFound />;
   }

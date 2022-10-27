@@ -77,6 +77,7 @@ const InitiativeIndexPage = () => {
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
 
+  if (initiativesEnabled === undefined) return null;
   if (!initiativesEnabled) {
     return <PageNotFound />;
   }

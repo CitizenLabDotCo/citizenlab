@@ -80,6 +80,7 @@ const InitiativesShowPage = ({ initiative }: Props) => {
     );
   }
 
+  if (initiativesEnabled === undefined) return null;
   if (!initiativesEnabled) {
     return <PageNotFound />;
   }
