@@ -89,7 +89,7 @@ const CustomPageShow = () => {
       {pageAttributes.banner_enabled ? (
         <CustomPageHeader pageData={page} />
       ) : (
-        <Box zIndex="9999">
+        <Box zIndex="4">
           <AdminCustomPageEditButton pageId={page.id} />
         </Box>
       )}
