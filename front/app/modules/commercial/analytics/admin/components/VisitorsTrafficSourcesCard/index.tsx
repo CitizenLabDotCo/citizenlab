@@ -18,7 +18,6 @@ import { useIntl } from 'utils/cl-intl';
 import getXlsxData from './getXlsxData';
 
 // typings
-import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
 import { View } from 'components/admin/GraphCard/ViewToggle';
@@ -27,14 +26,12 @@ interface Props {
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
   projectFilter: string | undefined;
-  resolution: IResolution;
 }
 
 const VisitorsTrafficSourcesCard = ({
   startAtMoment,
   endAtMoment,
   projectFilter,
-  resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -83,7 +80,6 @@ const VisitorsTrafficSourcesCard = ({
         startAt,
         endAt,
         currentProjectFilter: projectFilter,
-        resolution,
       }}
       viewToggle={{
         view: currentView,
