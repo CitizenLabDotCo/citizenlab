@@ -28,6 +28,7 @@ import { injectIntl } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { fontSizes, isRtl, media } from 'utils/styleUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -59,6 +60,7 @@ const CustomPageShow = () => {
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
   const page = useCustomPage({ customPageSlug: slug });
+  const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
@@ -72,7 +74,12 @@ const CustomPageShow = () => {
   if (
     // if URL is mistyped, page is also an error
     isError(page) ||
-    (!isError(page) && !false && page.attributes.code === 'proposals')
+    // If page loaded but it's /pages/initiatives but
+    // the initiatives feature is not enabled also show
+    // not found
+    (!isError(page) &&
+      page.attributes.code === 'proposals' &&
+      !proposalsEnabled)
   ) {
     return <PageNotFound />;
   }
