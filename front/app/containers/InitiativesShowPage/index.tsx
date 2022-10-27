@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
