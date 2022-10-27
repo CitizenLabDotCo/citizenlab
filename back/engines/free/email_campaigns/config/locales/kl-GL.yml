@@ -101,7 +101,7 @@ kl:
       "link_privacy_policy": "Kinaasutsimik isertuusinermi politikki"
       "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
       "link_unsubscribe": "Atuisuujunnaarneq"
-      "powered_by": "Ingerlanneqartoq"
+      "powered_by": "Uuminnga ingerlanneqarpoq"
       "statement": "Emaili una %{organizationName} sinnerlugu CitizenLabimit nassiunneqarpoq, %{organizationLink}-imut atuisutut nalunaarsimagavit. Siunissami emailinik ima ittunik nassinneqartarusunngikkuit una %{unsubscribeLink} tooruk."
       "unsubscribe_text": "atuisuujunnaarit"
     comment_deleted_by_admin:
@@ -176,8 +176,8 @@ kl:
       yesterday_by_author: 'Ippassaq %{author}-mit'
       today_by_author: 'Ullumi %{author}-mit'
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
-      idea_section: Isumassarsiat
-      initiative_section: Innuttaasunit siunnersuut
+      idea_section: Idéer
+      initiative_section: Innuttaasut siunnersuutaat
       title_initiatives_past_week: 'Innuttaasunit siunnersuutit ilinnut tunniunneqartut'
       title_successful_initiatives_past_week: 'Innuttaasunit siunnersuutit ilinnut tunniunneqartut killigititamiittut'
     idea_marked_as_spam:
