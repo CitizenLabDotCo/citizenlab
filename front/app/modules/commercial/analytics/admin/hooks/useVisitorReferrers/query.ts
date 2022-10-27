@@ -9,9 +9,9 @@ export const referrersListQuery = ({
   projectId,
   startAtMoment,
   endAtMoment,
-}: // pageNumber,
-// pageSize,
-QueryParameters): Query => {
+  pageNumber,
+  pageSize,
+}: QueryParameters): Query => {
   const referrersListQuery: QuerySchema = {
     fact: 'visit',
     filters: {
@@ -30,10 +30,10 @@ QueryParameters): Query => {
       all: 'count',
       visitor_id: 'count',
     },
-    // page: {
-    //   number: pageNumber,
-    //   size: pageSize,
-    // },
+    page: {
+      number: pageNumber,
+      size: pageSize,
+    },
   };
 
   return {

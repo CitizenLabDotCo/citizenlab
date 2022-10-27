@@ -2,7 +2,7 @@
 
 module IdViennaSaml
   # Provides a SAML Omniauth configuration for Vienna's StandardPortal, a citizen SSO method.
-  class CitizenSamlOmniauth
+  class CitizenSamlOmniauth < OmniauthMethods::Base
     # The Issuer is hardcoded on Vienna's side and needs to match exactly.
     ENVIRONMENTS = {
       test: {
@@ -20,12 +20,17 @@ module IdViennaSaml
     # @return [Hash] The user attributes
     def profile_to_user_attrs(auth)
       attrs = auth.dig(:extra, :raw_info).to_h
+      email = attrs.fetch('urn:oid:0.9.2342.19200300.100.1.3').first
+      placeholder_name = generate_placeholder_name_from_email(email)
+      locale = AppConfiguration.instance.settings.dig('core', 'locales').first
+      first_name = attrs['urn:oid:2.5.4.42']&.first || placeholder_name[:first_name]
+      last_name = attrs['urn:oid:1.2.40.0.10.2.1.1.261.20']&.first || placeholder_name[:last_name]
 
       {
-        email: attrs.fetch('urn:oid:0.9.2342.19200300.100.1.3').first,
-        first_name: attrs.fetch('urn:oid:2.5.4.42').first,
-        last_name: attrs.fetch('urn:oid:1.2.40.0.10.2.1.1.261.20').first,
-        locale: AppConfiguration.instance.settings.dig('core', 'locales').first
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+        locale: locale
       }
     end
 
@@ -52,6 +57,11 @@ module IdViennaSaml
       %i[first_name last_name]
     end
 
+    # @return [Boolean] If existing user attributes should be overwritten
+    def overwrite_user_attrs?
+      false
+    end
+
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
     # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The filtered hash that will be persisted in the database
@@ -71,6 +81,21 @@ module IdViennaSaml
     # @return [Symbol] The configured Vienna Login environment as a symbol
     def vienna_login_env
       AppConfiguration.instance.settings('vienna_citizen_login', 'environment').to_sym
+    end
+
+    # Generates a placeholder name based on the email.
+    # @param [String] email
+    # @return [Array<String>]
+    def generate_placeholder_name_from_email(email)
+      local_part = email.split('@').first
+      words = local_part.split(/_|\./)
+      first_word = words[0]
+      second_word = words[1]
+
+      first_name = first_word.at(0)
+      last_name = second_word&.at(0) || first_word.at(1) || first_name
+
+      { first_name: first_name.upcase, last_name: last_name.upcase }
     end
   end
 end

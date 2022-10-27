@@ -1,8 +1,15 @@
 # Changelog
 
+## 2022-10-27
+
+- [CL-1744] Visitors dashboard: add referrers table to traffic sources card
+
+## 2022-10-25
+
 ### Added
 
 - [CL-1811] New Oostende verification method
+- [CL-1558] Native surveys
 
 ## 2022-10-20
 

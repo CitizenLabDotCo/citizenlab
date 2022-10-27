@@ -57,7 +57,7 @@ module XlsxExport
     end
 
     def author_email_report_field
-      ComputedFieldForReport.new(column_header_for('author_email'), ->(input) { input.author.email })
+      ComputedFieldForReport.new(column_header_for('author_email'), ->(input) { input.author&.email })
     end
 
     def author_id_report_field

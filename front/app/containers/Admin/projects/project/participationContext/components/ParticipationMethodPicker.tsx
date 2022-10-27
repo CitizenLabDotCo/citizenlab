@@ -140,23 +140,25 @@ export const ParticipationMethodPicker = ({
               }
             />
           </FeatureFlag>
-    {showSurveys && (
-      <ParticipationMethodRadio
-        onChange={handleParticipationMethodOnChange}
-        currentValue={participation_method}
-        value="survey"
-        name="participationmethod"
-        id={'participationmethod-survey'}
-        label={
-          <LabelHeaderDescription
-            header={<FormattedMessage {...messages.createExternalSurveyText} />}
-            description={
-              <FormattedMessage {...messages.createSurveyDescription} />
-            }
-          />
-        }
-      />
-    )}
+          {showSurveys && (
+            <ParticipationMethodRadio
+              onChange={handleParticipationMethodOnChange}
+              currentValue={participation_method}
+              value="survey"
+              name="participationmethod"
+              id={'participationmethod-survey'}
+              label={
+                <LabelHeaderDescription
+                  header={
+                    <FormattedMessage {...messages.createExternalSurveyText} />
+                  }
+                  description={
+                    <FormattedMessage {...messages.createSurveyDescription} />
+                  }
+                />
+              }
+            />
+          )}
           <FeatureFlag name="volunteering">
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}

@@ -1,5 +1,6 @@
 import { Moment } from 'moment';
 import { ReferrerTypeName } from '../useVisitorReferrerTypes/typings';
+import { ILinks } from 'typings';
 
 export interface QueryParameters extends QueryParametersWithoutPagination {
   pageSize: number;
@@ -15,6 +16,7 @@ export interface QueryParametersWithoutPagination {
 // Responses
 export interface ReferrerListResponse {
   data: ReferrerRow[];
+  links: ILinks;
 }
 
 export interface ReferrerRow {
