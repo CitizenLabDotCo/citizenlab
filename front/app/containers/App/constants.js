@@ -35,6 +35,7 @@ exports.DEFAULT_LOCALE = 'en';
 exports.locales = [
   'ar-MA',
   'ar-SA',
+  'ca-ES',
   'da',
   'da-DK',
   'de',
@@ -72,6 +73,7 @@ exports.locales = [
 exports.appLocalePairs = {
   'ar-MA': 'عربي',
   'ar-SA': 'عربى',
+  'ca-ES': 'Català',
   'da-DK': 'Dansk',
   'de-DE': 'Deutsch',
   en: 'English',
@@ -102,6 +104,7 @@ exports.appLocalePairs = {
 exports.appGraphqlLocalePairs = {
   arMa: 'ar-MA',
   arSa: 'ar',
+  caEs: 'ca',
   da: 'da',
   daDk: 'da-DK',
   de: 'de',
@@ -138,6 +141,7 @@ exports.appGraphqlLocalePairs = {
 exports.shortenedAppLocalePairs = {
   'ar-MA': 'عربي',
   'ar-SA': 'عربى',
+  'ca-ES': 'Català',
   'da-DK': 'Dansk',
   'de-DE': 'Deutsch',
   en: 'English',
@@ -169,6 +173,7 @@ exports.shortenedAppLocalePairs = {
 exports.appLocalesMomentPairs = {
   'ar-MA': 'ar-ma',
   'ar-SA': 'ar',
+  'ca-ES': 'ca',
   'da-DK': 'da',
   'de-DE': 'de',
   'en-CA': 'en-ca',

@@ -5,6 +5,7 @@
 ### Added
 
 - [CL-1786] Added Latvian language capabilities
+- [CL-1786] Add Catalan language capabilities
 
 ## 2022-10-27
 
