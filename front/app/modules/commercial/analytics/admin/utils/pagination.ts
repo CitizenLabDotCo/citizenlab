@@ -5,7 +5,7 @@ export function getPageNumberFromUrl(url: string) {
   if (url === '') return null;
   const queryString = url.split('?')[1];
   const queryObject = parse(queryString)?.query as any;
-  console.log(queryObject);
+  console.log(parse(queryString));
   const result = queryObject?.page?.['number'];
   return isNil(result) || result < 0 ? null : parseInt(result, 10);
 }
