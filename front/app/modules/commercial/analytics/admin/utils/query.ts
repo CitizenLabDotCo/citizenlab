@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 type ProjectFilter = { project: { id: string } };
@@ -25,9 +25,12 @@ type DateFilter = {
 
 export const getDateFilter = (
   filter: string,
-  startAt: string | null | undefined,
-  endAt: string | null | undefined
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null | undefined
 ): DateFilter | EmptyObject => {
+  const startAt = startAtMoment?.toISOString();
+  const endAt = endAtMoment?.toISOString();
+
   return startAt && endAt
     ? {
         [filter]: {
