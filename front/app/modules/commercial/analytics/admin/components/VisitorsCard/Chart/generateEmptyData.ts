@@ -1,7 +1,4 @@
-import {
-  dateRange,
-  getEmptyRow,
-} from '../../../hooks/useVisitorsData/parse/utils';
+import { dateRange, getEmptyRow } from '../../../hooks/useVisitors/parse/utils';
 // typings
 import moment, { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
