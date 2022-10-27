@@ -22,13 +22,13 @@ module AdminApi
 
       # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
       @template['models']['project']                 = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
-      @template['models']['custom_form']             = yml_custom_forms shift_timestamps: shift_timestamps
-      @template['models']['custom_field']            = yml_custom_fields shift_timestamps: shift_timestamps
-      @template['models']['custom_field_option']     = yml_custom_field_options shift_timestamps: shift_timestamps
       @template['models']['project_file']            = yml_project_files shift_timestamps: shift_timestamps
       @template['models']['project_image']           = yml_project_images shift_timestamps: shift_timestamps
       @template['models']['phase']                   = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
       @template['models']['phase_file']              = yml_phase_files shift_timestamps: shift_timestamps
+      @template['models']['custom_form']             = yml_custom_forms shift_timestamps: shift_timestamps
+      @template['models']['custom_field']            = yml_custom_fields shift_timestamps: shift_timestamps
+      @template['models']['custom_field_option']     = yml_custom_field_options shift_timestamps: shift_timestamps
       @template['models']['event']                   = yml_events shift_timestamps: shift_timestamps
       @template['models']['event_file']              = yml_event_files shift_timestamps: shift_timestamps
       @template['models']['permission']              = yml_permissions shift_timestamps: shift_timestamps
@@ -79,21 +79,20 @@ module AdminApi
     end
 
     def yml_custom_forms(shift_timestamps: 0)
-      return [] unless @project.custom_form_id
-
-      yml_custom_form = {
-        'participation_context_ref' => lookup_ref(@project.id, :project),
-        'created_at' => shift_timestamp(@project.custom_form.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(@project.custom_form.updated_at, shift_timestamps)&.iso8601
-      }
-      store_ref yml_custom_form, @project.custom_form.id, :custom_form
-      [yml_custom_form]
+      ([@project.custom_form] + @project.phases.map(&:custom_form)).compact.map do |cf|
+        yml_custom_form = {
+          'participation_context_ref' => lookup_ref(cf.participation_context_id, %i[project phase]),
+          'created_at' => shift_timestamp(cf.created_at, shift_timestamps)&.iso8601,
+          'updated_at' => shift_timestamp(cf.updated_at, shift_timestamps)&.iso8601
+        }
+        store_ref yml_custom_form, cf.id, :custom_form
+        yml_custom_form
+      end
     end
 
     def yml_custom_fields(shift_timestamps: 0)
-      return [] unless @project.custom_form_id
-
-      CustomField.where(resource: @project.custom_form).map do |c|
+      custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
+      CustomField.where(resource: custom_form_ids).map do |c|
         yml_custom_field = {
           'resource_ref' => c.resource_id && lookup_ref(c.resource_id, :custom_form),
           'key' => c.key,
@@ -106,7 +105,10 @@ module AdminApi
           'enabled' => c.enabled,
           'required' => c.required,
           'code' => c.code,
-          'hidden' => c.hidden
+          'hidden' => c.hidden,
+          'maximum' => c.maximum,
+          'minimum_label_multiloc' => c.minimum_label_multiloc,
+          'maximum_label_multiloc' => c.maximum_label_multiloc
         }
         store_ref yml_custom_field, c.id, :custom_field
         yml_custom_field
@@ -114,9 +116,8 @@ module AdminApi
     end
 
     def yml_custom_field_options(shift_timestamps: 0)
-      return [] unless @project.custom_form_id
-
-      CustomFieldOption.where(custom_field: @project.custom_form.custom_fields).map do |c|
+      custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
+      CustomFieldOption.where(custom_field: CustomField.where(resource: custom_form_ids)).map do |c|
         yml_custom_field_option = {
           'custom_field_ref' => lookup_ref(c.custom_field_id, :custom_field),
           'key' => c.key,
@@ -128,6 +129,29 @@ module AdminApi
         store_ref yml_custom_field_option, c.id, :custom_field_option
         yml_custom_field_option
       end
+    end
+
+    def yml_participation_context(pc, shift_timestamps: 0)
+      yml_pc = {
+        'presentation_mode' => pc.presentation_mode,
+        'participation_method' => pc.participation_method,
+        'posting_enabled' => pc.posting_enabled,
+        'commenting_enabled' => pc.commenting_enabled,
+        'voting_enabled' => pc.voting_enabled,
+        'upvoting_method' => pc.upvoting_method,
+        'upvoting_limited_max' => pc.upvoting_limited_max,
+        'downvoting_enabled' => pc.downvoting_enabled,
+        'downvoting_method' => pc.downvoting_method,
+        'downvoting_limited_max' => pc.downvoting_limited_max,
+        'max_budget' => pc.max_budget,
+        'min_budget' => pc.min_budget,
+        'input_term' => pc.input_term
+      }
+      if yml_pc['participation_method'] == 'survey'
+        yml_pc['survey_embed_url'] = pc.survey_embed_url
+        yml_pc['survey_service'] = pc.survey_service
+      end
+      yml_pc
     end
 
     def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil)
@@ -223,27 +247,6 @@ module AdminApi
           'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
         }
       end
-    end
-
-    def yml_participation_context(pc, shift_timestamps: 0)
-      yml_pc = {
-        'presentation_mode' => pc.presentation_mode,
-        'participation_method' => pc.participation_method,
-        'posting_enabled' => pc.posting_enabled,
-        'commenting_enabled' => pc.commenting_enabled,
-        'voting_enabled' => pc.voting_enabled,
-        'upvoting_method' => pc.upvoting_method,
-        'upvoting_limited_max' => pc.upvoting_limited_max,
-        'downvoting_enabled' => pc.downvoting_enabled,
-        'downvoting_method' => pc.downvoting_method,
-        'downvoting_limited_max' => pc.downvoting_limited_max,
-        'max_budget' => pc.max_budget
-      }
-      if yml_pc['participation_method'] == 'survey'
-        yml_pc['survey_embed_url'] = pc.survey_embed_url
-        yml_pc['survey_service'] = pc.survey_service
-      end
-      yml_pc
     end
 
     def yml_poll_questions(shift_timestamps: 0)
@@ -474,7 +477,8 @@ module AdminApi
               'updated_at' => text_image.updated_at.to_s
             }
           end,
-          'custom_field_values' => i.custom_field_values
+          'custom_field_values' => i.custom_field_values,
+          'creation_phase_ref' => lookup_ref(i.creation_phase_id, :phase)
         }
         store_ref yml_idea, i.id, :idea
         yml_idea

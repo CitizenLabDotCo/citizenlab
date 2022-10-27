@@ -59,9 +59,17 @@ describe AdminApi::ProjectCopyService do
         expect(Idea.count).to eq 3
         new_continuous_project = Project.where(process_type: 'continuous').first
         expect(new_continuous_project.custom_form.custom_fields.pluck(:input_type)).to eq ['linear_scale']
+        new_field1 = new_continuous_project.custom_form.custom_fields.first
+        expect(new_continuous_project.ideas_count).to eq 1
+        expect(new_continuous_project.ideas.first.custom_field_values[new_field1.key]).to eq 1
+
         new_timeline_project = Project.where(process_type: 'timeline').first
         new_survey_phase = new_timeline_project.phases.order(:start_at).last
-        expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['linear_scale']
+        expect(new_timeline_project.ideas.map(&:creation_phase_id)).to match_array [nil, new_survey_phase.id]
+        expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
+        new_field2 = new_survey_phase.custom_form.custom_fields.first
+        expect(new_survey_phase.ideas_count).to eq 1
+        expect(new_survey_phase.ideas.first.custom_field_values[new_field2.key]).to eq 'My value'
       end
     end
   end
