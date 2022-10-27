@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- [CL-1800] It is now possible to disable email + password registration while logins are still allowed for existing users.
+
 ## 2022-10-27
 
 ### Added
