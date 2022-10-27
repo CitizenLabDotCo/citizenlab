@@ -75,4 +75,4 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 end
 
-::WebApi::V1::StaticPagesController.prepend_if_ee 'CustomizableNavbar::WebApi::V1::Patches::StaticPagesController'
+::WebApi::V1::StaticPagesController.prepend CustomizableNavbar::WebApi::V1::Patches::StaticPagesController

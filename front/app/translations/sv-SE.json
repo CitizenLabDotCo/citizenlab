@@ -268,8 +268,6 @@
   "app.components.PagesForm.slugLabelTooltip": "Du kan ange den sista delen av din sidas webbadress (kallas för slug). Till exempel är den aktuella sidans webbadress {currentPageURL}, där {currentPageSlug} är webbadressens slug.",
   "app.components.PagesForm.slugRegexError": "En slug får bara innehålla små bokstäver (a–z), siffror (0–9) och bindestreck (-). Det första och sista tecknet får inte vara ett bindestreck. Två bindestreck i rad (--) får inte användas.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Ange titel för minst ett språk",
-  "app.components.PagesShowPage.notFoundDescription": "Den begärda sidan hittades inte",
-  "app.components.PagesShowPage.notFoundTitle": "Sidan hittades inte",
   "app.components.PasswordInput.a11y_passwordHidden": "Lösenordet är dolt",
   "app.components.PasswordInput.a11y_passwordVisible": "Lösenordet är synligt",
   "app.components.PasswordInput.a11y_strength1Password": "Dålig lösenordsstyrka",

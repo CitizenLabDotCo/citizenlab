@@ -268,8 +268,6 @@
   "app.components.PagesForm.slugLabelTooltip": "You can specify the last part of your page's URL (called the slug). For example, the current page's URL is {currentPageURL}, where {currentPageSlug} is the slug.",
   "app.components.PagesForm.slugRegexError": "Opis može da sadrži samo obična mala slova (a-z), brojeve (0-9) i crtice (-). Crtica ne može da bude na mestu prvog i poslednjeg znaka. Crtice jedna za drugom (--) su zabranjene.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Unesite naslov za najmanje jedan jezik",
-  "app.components.PagesShowPage.notFoundDescription": "Tražena stranica nije pronađena",
-  "app.components.PagesShowPage.notFoundTitle": "Stranica nije pronađena",
   "app.components.PasswordInput.a11y_passwordHidden": "Lozinka je skrivena",
   "app.components.PasswordInput.a11y_passwordVisible": "Lozinka je vidljiva",
   "app.components.PasswordInput.a11y_strength1Password": "Izuzetno slaba lozinka",

@@ -9,16 +9,8 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.homeTitle',
     defaultMessage: 'Home',
   },
-  pageHeader: {
-    id: 'app.containers.Admin.PagesAndMenu.pageHeader',
-    defaultMessage: 'Pages',
-  },
   pagesMenuMetaTitle: {
     id: 'app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle',
     defaultMessage: 'Pages & menu | {orgName}',
-  },
-  pagesMetaTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.pagesMetaTitle',
-    defaultMessage: 'Pages | {orgName}',
   },
 });

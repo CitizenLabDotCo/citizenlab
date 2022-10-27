@@ -268,8 +268,6 @@
   "app.components.PagesForm.slugLabelTooltip": "Sayfanızın URL'sinin son bölümünü (adres kısa adı) kendiniz belirleyebilirsiniz. Örneğin, geçerli sayfanın URL'si {currentPageURL} iken {currentPageSlug} bölümü adres kısa adıdır.",
   "app.components.PagesForm.slugRegexError": "Adres kısa adında yalnızca küçük harf (a-z), rakam (0-9) ve tire (-) bulunabilir. İlk ve son karakterler tire olamaz. Ardışık tire kullanımına (--) izin verilmez.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Provide title for at least one language",
-  "app.components.PagesShowPage.notFoundDescription": "İstenen sayfa bulunamadı",
-  "app.components.PagesShowPage.notFoundTitle": "Sayfa bulunamadı",
   "app.components.PasswordInput.a11y_passwordHidden": "Parola gizli",
   "app.components.PasswordInput.a11y_passwordVisible": "Parola görünür",
   "app.components.PasswordInput.a11y_strength1Password": "Parola gücü çok düşük",

@@ -268,8 +268,6 @@
   "app.components.PagesForm.slugLabelTooltip": "Puteți specifica ultima parte a URL-ului paginii dvs. (numită slug). De exemplu, adresa URL a paginii curente este {currentPageURL}, unde {currentPageSlug} este slug-ul.",
   "app.components.PagesForm.slugRegexError": "Slug-ul poate conține numai litere obișnuite, minuscule (a-z), numere (0-9) și liniuțe (-). Primul și ultimul caracter nu pot fi cratime. Sunt interzise cratimele consecutive (--).",
   "app.components.PagesForm.titleMissingOneLanguageError": "Furnizați titlul pentru cel puțin o limbă",
-  "app.components.PagesShowPage.notFoundDescription": "Pagina solicitată nu a putut fi găsită",
-  "app.components.PagesShowPage.notFoundTitle": "Pagina nu a fost găsită",
   "app.components.PasswordInput.a11y_passwordHidden": "Parolă ascunsă",
   "app.components.PasswordInput.a11y_passwordVisible": "Parolă vizibilă",
   "app.components.PasswordInput.a11y_strength1Password": "Parolă foarte slabă",

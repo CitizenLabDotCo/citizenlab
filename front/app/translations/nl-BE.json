@@ -268,8 +268,6 @@
   "app.components.PagesForm.slugLabelTooltip": "Je kan het laatste deel van de URL van je pagina, de slug, zelf kiezen. De URL van de huidige pagina is bijvoorbeeld {currentPageURL}, waarbij {currentPageSlug} de slug is.",
   "app.components.PagesForm.slugRegexError": "De slug kan alleen gewone, kleine letters (a-z), cijfers (0-9) en koppeltekens (-) bevatten. De eerste en de laatste letter kunnen geen koppelteken zijn. Opeenvolgende koppeltekens (--) kunnen niet.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Geef een titel op voor ten minste één taal",
-  "app.components.PagesShowPage.notFoundDescription": "De opgevraagde pagina kon niet worden gevonden",
-  "app.components.PagesShowPage.notFoundTitle": "Pagina niet gevonden",
   "app.components.PasswordInput.a11y_passwordHidden": "Wachtwoord verborgen",
   "app.components.PasswordInput.a11y_passwordVisible": "Wachtwoord zichtbaar",
   "app.components.PasswordInput.a11y_strength1Password": "Zeer zwak wachtwoord",
