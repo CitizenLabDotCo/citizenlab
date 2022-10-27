@@ -70,11 +70,16 @@ const Padding = styled.div`
   height: 100px;
   ${media.phone`
     height: 40px;
-  `}
+    `}
 `;
 
 const InitiativeIndexPage = () => {
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
 
   if (!isNilOrError(initiativePermissions)) {
     const { enabled } = initiativePermissions;
@@ -112,11 +117,4 @@ const InitiativeIndexPage = () => {
   return null;
 };
 
-export default () => {
-  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
-  if (!initiativesEnabled) {
-    return <PageNotFound />;
-  }
-
-  return <InitiativeIndexPage />;
-};
+export default InitiativeIndexPage;
