@@ -147,7 +147,7 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
               <ReportExportMenu
                 name={formatMessage(messages.usersByGenderTitle)}
                 svgNode={this.currentChart}
-                xlsxEndpoint={usersByGenderXlsxEndpoint}
+                xlsx={{ endpoint: usersByGenderXlsxEndpoint }}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
                 startAt={startAt}

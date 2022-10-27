@@ -7,6 +7,9 @@ import {
   QuerySchema,
 } from '../../services/analyticsFacts';
 
+// i18n
+import { useIntl } from 'utils/cl-intl';
+
 // parse
 import { parsePieData, parseExcelData } from './parse';
 
@@ -14,7 +17,6 @@ import { parsePieData, parseExcelData } from './parse';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Response, PieRow, QueryParameters } from './typings';
-import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
@@ -25,9 +27,6 @@ const query = ({
   startAtMoment,
   endAtMoment,
 }: QueryParameters): Query => {
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
-
   const localesCountQuery: QuerySchema = {
     fact: 'visit',
     filters: {
@@ -35,7 +34,11 @@ const query = ({
         role: ['citizen', null],
       },
       ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter('dimension_date_last_action', startAt, endAt),
+      ...getDateFilter(
+        'dimension_date_last_action',
+        startAtMoment,
+        endAtMoment
+      ),
     },
     groups: 'dimension_locales.id',
     aggregations: {
@@ -49,10 +52,12 @@ const query = ({
   };
 };
 
-export default function useVisitorsData(
-  formatMessage: WrappedComponentProps['intl']['formatMessage'],
-  { projectId, startAtMoment, endAtMoment }: QueryParameters
-) {
+export default function useVisitorsData({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters) {
+  const { formatMessage } = useIntl();
   const [pieData, setPieData] = useState<PieRow[] | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
