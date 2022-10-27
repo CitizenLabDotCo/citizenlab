@@ -6,9 +6,9 @@
 
 ### Added
 
-- [CL-1786] Added Latvian language capabilities
-- [CL-1786] Add Catalan language capabilities
-- [CL-1786] Added Greek language capabilities
+- [CL-1786] Latvian language capabilities
+- [CL-1786] Catalan language capabilities
+- [CL-1786] Greek language capabilities
 
 ### Changed
 
