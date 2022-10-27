@@ -11,20 +11,14 @@ import { Text } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-const PageNotFound = () => (
-  <Container>
-    <PageNotFoundInner />
-  </Container>
-);
-
-export const PageNotFoundInner = () => {
+const PageNotFound = () => {
   const { formatMessage } = useIntl();
 
   const title = formatMessage(messages.notFoundTitle);
   const description = formatMessage(messages.notFoundDescription);
 
   return (
-    <>
+    <Container>
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -38,7 +32,7 @@ export const PageNotFoundInner = () => {
           </Text>
         </ContentContainer>
       </Content>
-    </>
+    </Container>
   );
 };
 
