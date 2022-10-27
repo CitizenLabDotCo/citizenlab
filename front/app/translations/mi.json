@@ -252,8 +252,6 @@
   "app.components.PagesForm.pageUrl": "Page URL",
   "app.components.PagesForm.resultingPageURL": "Resulting URL",
   "app.components.PagesForm.slugLabelTooltip": "You can specify the last part of your page's URL (called the slug). For example, the current page's URL is {currentPageURL}, where {currentPageSlug} is the slug.",
-  "app.components.PagesShowPage.notFoundDescription": "The requested page could not be found",
-  "app.components.PagesShowPage.notFoundTitle": "Page not found",
   "app.components.PasswordInput.a11y_passwordHidden": "Password hidden",
   "app.components.PasswordInput.a11y_passwordVisible": "Password visible",
   "app.components.PasswordInput.a11y_strength1Password": "Poor password strength",

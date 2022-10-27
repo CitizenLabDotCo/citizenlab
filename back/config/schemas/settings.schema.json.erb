@@ -476,7 +476,7 @@
       "initiatives": {
         "type": "object",
         "title": "Proposals",
-        "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
+        "description":  "Allow proposals. Disabling this feature removes the corresponding item from the navbar",
         "additionalProperties": false,
         "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
         "required": ["allowed", "enabled"],
@@ -829,18 +829,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "preview_new_custom_pages": {
-        "type": "object",
-        "title": "Preview New Custom Pages",
-        "description":	"Allow new custom pages to be created. Don't enable if you're not sure what is it.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
         }
       },
 

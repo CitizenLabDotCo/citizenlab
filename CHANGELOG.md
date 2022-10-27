@@ -1,5 +1,9 @@
 # Changelog
 
+## 2022-10-27
+
+- [CL-1744] Visitors dashboard: add referrers table to traffic sources card
+
 ## 2022-10-25
 
 ### Added
