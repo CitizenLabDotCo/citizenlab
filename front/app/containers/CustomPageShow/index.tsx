@@ -17,7 +17,6 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useCustomPage from 'hooks/useCustomPage';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isError, isNil, isNilOrError } from 'utils/helperUtils';
@@ -59,7 +58,6 @@ const CustomPageShow = () => {
   };
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
-  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
   const page = useCustomPage({ customPageSlug: slug });
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
