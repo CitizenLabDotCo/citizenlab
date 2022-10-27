@@ -140,6 +140,8 @@ const NavbarItemRow = ({
 
         {showAddButton && (
           <Button
+            // no icon on add and remove buttons, so specify height to match the others
+            height="44px"
             buttonStyle="secondary"
             onClick={handleOnClickAddButton}
             disabled={addButtonDisabled}
@@ -152,6 +154,7 @@ const NavbarItemRow = ({
 
         {showRemoveButton && (
           <Button
+            height="44px"
             buttonStyle="secondary"
             onClick={handleOnClickRemoveButton}
             ml="10px"

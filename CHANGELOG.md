@@ -1,5 +1,7 @@
 # Changelog
 
+## Next release
+
 ### Added
 
 - [CL-1786] Added Latvian language capabilities
