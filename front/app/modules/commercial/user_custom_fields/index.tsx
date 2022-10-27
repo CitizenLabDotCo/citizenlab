@@ -2,17 +2,25 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-import CustomFieldsStep from './citizen/components/CustomFieldsStep';
-import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
+const CustomFieldsStep = React.lazy(
+  () => import('./citizen/components/CustomFieldsStep')
+);
+const UserCustomFieldsForm = React.lazy(
+  () => import('./citizen/components/UserCustomFieldsForm')
+);
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
-import RegistrationQuestions from './admin/components/RegistrationQuestions';
+const RegistrationQuestions = React.lazy(
+  () => import('./admin/components/RegistrationQuestions')
+);
 import {
   IUsersByBirthyear,
   IUsersByDomicile,
   IUsersByRegistrationField,
 } from './services/stats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import UserCustomFieldsFormMigrated from './citizen/components/UserCustomFieldsFormMigrated';
+const UserCustomFieldsFormMigrated = React.lazy(
+  () => import('./citizen/components/UserCustomFieldsFormMigrated')
+);
 
 // lazy components for outlets
 const CustomFieldGraphs = React.lazy(
