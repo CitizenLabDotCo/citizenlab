@@ -20,6 +20,70 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#create_default_form!' do
+    let(:multiloc_service) { instance_double MultilocService }
+
+    before do
+      allow(MultilocService).to receive(:new).and_return multiloc_service
+      allow(multiloc_service).to receive(
+        :i18n_to_multiloc
+      ).with(
+        'form_builder.default_select_field.title'
+      ).and_return({
+        'en' => 'Default question',
+        'fr-FR' => 'Question par défaut',
+        'nl-NL' => 'Standaardvraag'
+      })
+      allow(multiloc_service).to receive(
+        :i18n_to_multiloc
+      ).with(
+        'form_builder.default_select_field.option1'
+      ).and_return({
+        'en' => 'First option',
+        'fr-FR' => 'Première option',
+        'nl-NL' => 'Eerste optie'
+      })
+      allow(multiloc_service).to receive(
+        :i18n_to_multiloc
+      ).with(
+        'form_builder.default_select_field.option2'
+      ).and_return({
+        'en' => 'Second option',
+        'fr-FR' => 'Deuxième option',
+        'nl-NL' => 'Tweede optie'
+      })
+    end
+
+    it 'persists a default form for the participation context' do
+      expect(participation_context.custom_form).to be_nil
+
+      participation_method.create_default_form!
+
+      participation_context.reload
+      expect(participation_context.custom_form.custom_fields.size).to eq 1
+      field = participation_context.custom_form.custom_fields.first
+      expect(field.title_multiloc).to match({
+        'en' => 'Default question',
+        'fr-FR' => 'Question par défaut',
+        'nl-NL' => 'Standaardvraag'
+      })
+      options = field.options
+      expect(options.size).to eq 2
+      expect(options[0].key).to eq 'option1'
+      expect(options[1].key).to eq 'option2'
+      expect(options[0].title_multiloc).to match({
+        'en' => 'First option',
+        'fr-FR' => 'Première option',
+        'nl-NL' => 'Eerste optie'
+      })
+      expect(options[1].title_multiloc).to match({
+        'en' => 'Second option',
+        'fr-FR' => 'Deuxième option',
+        'nl-NL' => 'Tweede optie'
+      })
+    end
+  end
+
   describe '#validate_built_in_fields?' do
     it 'returns false' do
       expect(participation_method.validate_built_in_fields?).to be false
