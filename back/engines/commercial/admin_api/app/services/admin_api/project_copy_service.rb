@@ -145,6 +145,8 @@ module AdminApi
         'downvoting_limited_max' => pc.downvoting_limited_max,
         'max_budget' => pc.max_budget,
         'min_budget' => pc.min_budget,
+        'poll_anonymous' => pc.poll_anonymous,
+        'ideas_order' => pc.ideas_order,
         'input_term' => pc.input_term
       }
       if yml_pc['participation_method'] == 'survey'
@@ -174,7 +176,8 @@ module AdminApi
             'created_at' => ti.created_at.to_s,
             'updated_at' => ti.updated_at.to_s
           }
-        end
+        end,
+        'include_all_areas' => @project.include_all_areas
       })
       yml_project['slug'] = new_slug if new_slug.present?
       store_ref yml_project, @project.id, :project
@@ -257,7 +260,9 @@ module AdminApi
           'title_multiloc' => q.title_multiloc,
           'ordering' => q.ordering,
           'created_at' => shift_timestamp(q.created_at, shift_timestamps)&.iso8601,
-          'updated_at' => shift_timestamp(q.updated_at, shift_timestamps)&.iso8601
+          'updated_at' => shift_timestamp(q.updated_at, shift_timestamps)&.iso8601,
+          'question_type' => q.question_type,
+          'max_options' => q.max_options
         }
         store_ref yml_question, q.id, :poll_question
         yml_question
@@ -332,6 +337,7 @@ module AdminApi
           'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
           'title_multiloc' => legend_item.title_multiloc,
           'color' => legend_item.color,
+          'ordering' => legend_item.ordering,
           'created_at' => shift_timestamp(legend_item.created_at, shift_timestamps)&.iso8601,
           'updated_at' => shift_timestamp(legend_item.updated_at, shift_timestamps)&.iso8601
         }
