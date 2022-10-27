@@ -642,7 +642,7 @@
   "app.containers.Comments.commentDeletedPlaceholder": "Dieses Kommentar wurde gelöscht.",
   "app.containers.Comments.commentDeletionCancelButton": "Meinen Kommentar beibehalten",
   "app.containers.Comments.commentDeletionConfirmButton": "Meinen Kommentar löschen",
-  "app.containers.Comments.commentReplyButton": "Antwort",
+  "app.containers.Comments.commentReplyButton": "Antworten",
   "app.containers.Comments.commentUpvote": "Gefällt mir",
   "app.containers.Comments.commentsSortTitle": "Kommentare sortieren nach ",
   "app.containers.Comments.confirmCommentDeletion": "Sind Sie sicher, dass Sie diesen Kommentar löschen möchten? Es gibt keinen Weg, um dies rückgängig zu machen!",
