@@ -7,8 +7,6 @@ import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
 import Button from 'components/UI/Button';
 
-// hooks
-
 // i18n
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
