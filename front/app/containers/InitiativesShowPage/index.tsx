@@ -62,7 +62,9 @@ interface Props extends InputProps, DataProps {}
 
 const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
 
-const InitiativesShowPage = memo<Props>(({ initiative }) => {
+const InitiativesShowPage = ({ initiative }: Props) => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
   if (isError(initiative)) {
     return (
       <InitiativeNotFoundWrapper>
@@ -78,6 +80,10 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
     );
   }
 
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
+
   if (!isNilOrError(initiative)) {
     return (
       <Container>
@@ -88,7 +94,7 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
   }
 
   return null;
-});
+};
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   initiative: ({ params, render }) => (
@@ -97,12 +103,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => {
-  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
-
-  if (!initiativesEnabled) {
-    return <PageNotFound />;
-  }
-
   return (
     <Data {...inputProps}>
       {(dataProps) => <InitiativesShowPage {...inputProps} {...dataProps} />}
