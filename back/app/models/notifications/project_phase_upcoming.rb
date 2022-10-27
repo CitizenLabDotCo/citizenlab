@@ -55,7 +55,7 @@
 #
 module Notifications
   class ProjectPhaseUpcoming < Notification
-    validates :phase, presence: true
+    validates :phase, :project, presence: true
 
     ACTIVITY_TRIGGERS = { 'Phase' => { 'upcoming' => true } }.freeze
     EVENT_NAME = 'Project phase upcoming'
