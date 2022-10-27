@@ -202,6 +202,6 @@ es-CL:
       assignee_email: 'Correo electrónico del beneficiario'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'Tu pregunta'
+      option1: 'Opción 1'
+      option2: 'Opción 2'
