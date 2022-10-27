@@ -106,7 +106,7 @@ de:
       "unsubscribe_text": "abbestellen"
     comment_deleted_by_admin:
       reason: 'Der Grund, warum Ihr Kommentar gelöscht wurde:'
-      cta_view: 'Diese Idee ansehen'
+      cta_view: 'Zur Plattform'
       event_description: '%{organizationName} den Kommentar, den Sie zu einer Idee geschrieben haben, gelöscht.'
       main_header: '%{organizationName} hat Ihren Kommentar gelöscht'
       other_reason: '%{otherReason}'
@@ -160,7 +160,7 @@ de:
       yesterday: Gestern
     comment_on_your_initiative:
       commented: '%{authorFirstName} hat geschrieben:'
-      cta_reply_to: 'Antworte auf %{commentAuthor}'
+      cta_reply_to: '%{commentAuthor} antworten'
       event_description: '%{authorNameFull} hat eine Reaktion auf Ihre Initiative ''%{initiativeTitle}'' gegeben. Klicken Sie auf den Button unten, um das Gespräch mit %{authorName} fortzusetzen.'
       main_header: '%{commentAuthor} hat Ihre Idee kommentiert'
       subject: 'Sie haben einen Kommentar auf der Plattform von %{organizationName} erhalten'
@@ -235,14 +235,14 @@ de:
     mention_in_official_feedback:
       by_author: 'von %{authorName}'
       commented: '%{organizationName} hat geschrieben:'
-      cta_reply_to: 'Antworte %{organizationName}'
+      cta_reply_to: '%{organizationName} antworten'
       event_description: '%{organizationName} hat dich in seinem Feedback zu der Idee ''%{post}'' erwähnt. Klicke auf den unten stehenden Link, um mit %{organizationName} zu interagieren'
       main_header: 'Sie wurden erwähnt'
       subject: '%{organizationName} hat Sie in ihrem Feedback erwähnt'
       preheader: '%{commentAuthor} hat Sie in der Rückmeldung erwähnt'
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} hat geschrieben:'
-      cta_reply_to: 'Antworte auf %{commentAuthor}'
+      cta_reply_to: '%{commentAuthor} antworten'
       event_description: '%{commentAuthorFull} hat auch einen Kommentar zur Idee ''%{ideaTitle}'' auf der Beteiligungsplattform %{organizationName} gepostet. Klicke auf den Button unten, um das Gespräch mit %{commentAuthor} zu beginnen.'
       main_header: '%{commentAuthor} hat einen Kommentar zu derselben Idee geschrieben'
       subject: 'Es gibt einen weiteren Kommentar zu der Idee, die Sie kommentiert haben'
@@ -250,7 +250,7 @@ de:
     mention_in_comment:
       by_author: 'von %{authorName}'
       commented: '%{commentAuthor} hat geschrieben:'
-      cta_reply_to: 'Antworte auf %{commentAuthor}'
+      cta_reply_to: '%{commentAuthor} antworten'
       event_description: '%{commentAuthorFull} hat dich in seinem Kommentar zur Idee ''%{post}'' erwähnt. Klicke auf den untenstehenden Link, um mit %{commentAuthor} zu interagieren'
       main_header: 'Du wurdest von jemandem erwähnt'
       subject: 'Jemand hat Sie auf der Plattform von %{organizationName} erwähnt'
@@ -271,7 +271,7 @@ de:
       x_days_ago_by_author: 'Vor %{x} Tagen von %{author}'
     new_comment_on_commented_initiative:
       commented: '%{commentAuthor} hat geschrieben:'
-      cta_reply_to: 'Antworte auf %{commentAuthor}'
+      cta_reply_to: '%{commentAuthor} antworten'
       event_description: '%{commentAuthorFull} hat auch einen Kommentar zum Vorschlag ''%{initiativeTitle}'' auf der Beteiligungsplattform %{organizationName} gepostet. Klicke auf den Button unten, um das Gespräch mit %{commentAuthor} zu beginnen.'
       main_header: '%{commentAuthor} hat einen Kommentar zum gleichen Vorschlag geschrieben'
       subject: 'Es gibt einen weiteren Kommentar zu dem Vorschlag, den du kommentiert hast'
@@ -290,7 +290,7 @@ de:
     comment_on_your_idea:
       by_author: 'von %{authorName}'
       commented: '%{authorFirstName} hat geschrieben:'
-      cta_reply_to: 'Antworte auf %{commentAuthor}'
+      cta_reply_to: '%{commentAuthor} antworten'
       event_description: '%{authorNameFull} hat eine Reaktion auf Ihre Idee ''%{ideaTitle}'' abgegeben. Klicken Sie auf den Button unten, um das Gespräch mit %{authorName} fortzusetzen.'
       main_header: '%{authorName} hat Ihre Idee kommentiert'
       subject: 'Sie haben einen Kommentar auf der Plattform von %{organizationName} erhalten'
@@ -304,7 +304,7 @@ de:
       preheader: '%{commentAuthor} hat auf der Plattform von %{organizationName} einen Kommentar zum Vorschlag hinterlassen, für den du abgestimmt hast'
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} hat kommentiert:'
-      cta_reply_to: 'Antworte auf %{commentAuthor}'
+      cta_reply_to: '%{commentAuthor} antworten'
       days_ago: 'vor %{numberOfDays} Tagen'
       event_description: '%{commentAuthor} hat sich zu der Idee ''%{ideaTitle}'' geäußert, über die Sie abgestimmt haben. Beteiligen Sie sich an der Diskussion auf der Plattform von %{organizationName}!'
       main_header: '%{firstName}, es gibt einen neuen Kommentar zu der Idee, über die Sie abgestimmt haben'
@@ -332,7 +332,7 @@ de:
       today: Heute
       yesterday: Gestern
     comment_on_your_comment:
-      cta_reply_to: 'Antworte %{firstName}'
+      cta_reply_to: '%{firstName} antworten'
       event_description: '%{authorNameFull} hat eine Antwort auf Ihren Kommentar zu "%{post}" auf der Beteiligungsplattform geschrieben. Klicken Sie auf den Button unten, um das Gespräch mit %{authorName} fortzusetzen.'
       subject: 'Sie haben eine Antwort auf Ihren Kommentar auf der Plattform von %{organizationName} erhalten'
       main_header: '%{authorName} hat auf Ihren Kommentar geantwortet'
@@ -519,10 +519,10 @@ de:
       send_email: E-Mail
       subject: 'Deine erste Idee auf der Plattform von %{organizationName}'
     welcome:
-      cta_join_platform: 'Entdecke die Plattform'
+      cta_join_platform: 'Plattform entdecken'
       subject: 'Ihre Registrierung für die Plattform der %{organizationName}'
       main_header: Herzlich Willkommen!
-      message_welcome: 'Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} angemeldet. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
+      message_welcome: 'Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
       preheader: 'Das können Sie auf der Plattform von %{organizationName} tun:'
     idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
