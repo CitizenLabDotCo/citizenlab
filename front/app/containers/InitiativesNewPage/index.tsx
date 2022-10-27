@@ -26,7 +26,6 @@ import PageNotFound from 'components/PageNotFound';
 import InitiativesNewMeta from './InitiativesNewMeta';
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
-import { ITopicData } from 'services/topics';
 import { ILocationInfo } from 'typings';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
@@ -129,9 +128,7 @@ export class InitiativesNewPage extends React.PureComponent<
     ) {
       return null;
     }
-    const initiativeTopics = topics.filter(
-      (topic) => !isNilOrError(topic)
-    ) as ITopicData[];
+    const initiativeTopics = topics.filter((topic) => !isNilOrError(topic));
 
     return (
       <>
@@ -169,7 +166,9 @@ export default withRouter((inputProps: WithRouterProps) => {
 
   return (
     <Data>
-      {(dataProps) => <InitiativesNewPage {...dataProps} {...inputProps} />}
+      {(dataProps: DataProps) => (
+        <InitiativesNewPage {...dataProps} {...inputProps} />
+      )}
     </Data>
   );
 });
