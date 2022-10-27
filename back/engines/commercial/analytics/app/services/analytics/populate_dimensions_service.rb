@@ -14,7 +14,7 @@ module Analytics
 
       def populate_dates
         from = Time.zone.today
-        to = from + 6.months
+        to = from + 180.days
 
         tenant_creation = AppConfiguration.first.created_at
         first_idea = Idea.order(:created_at).limit(1).pluck(:created_at)[0]

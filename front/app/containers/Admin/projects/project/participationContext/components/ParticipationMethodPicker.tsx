@@ -140,7 +140,6 @@ export const ParticipationMethodPicker = ({
               }
             />
           </FeatureFlag>
-
           {showSurveys && (
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}
@@ -150,7 +149,9 @@ export const ParticipationMethodPicker = ({
               id={'participationmethod-survey'}
               label={
                 <LabelHeaderDescription
-                  header={<FormattedMessage {...messages.createSurveyText} />}
+                  header={
+                    <FormattedMessage {...messages.createExternalSurveyText} />
+                  }
                   description={
                     <FormattedMessage {...messages.createSurveyDescription} />
                   }
@@ -158,7 +159,6 @@ export const ParticipationMethodPicker = ({
               }
             />
           )}
-
           <FeatureFlag name="volunteering">
             <ParticipationMethodRadio
               onChange={handleParticipationMethodOnChange}

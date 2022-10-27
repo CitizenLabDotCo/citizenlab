@@ -3,7 +3,7 @@
 # FranceConnect works locally with any of these identifiers
 # https://github.com/france-connect/identity-provider-example/blob/master/database.csv
 module IdFranceconnect
-  class FranceconnectOmniauth
+  class FranceconnectOmniauth < OmniauthMethods::Base
     include FranceconnectVerification
 
     def profile_to_user_attrs(auth)

@@ -805,7 +805,8 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[dog] }
+              custom_field_values: { multiselect_field.key => %w[dog] },
+              author: nil
             )
           end
 
@@ -846,9 +847,9 @@ resource 'Phases' do
                   [
                     survey_response3.id,
                     'Dog',
-                    survey_response3.author_name,
-                    survey_response3.author.email,
-                    survey_response3.author_id,
+                    nil,
+                    nil,
+                    nil,
                     an_instance_of(DateTime), # created_at
                     project.title_multiloc['en']
                   ]

@@ -87,9 +87,6 @@ class Idea < ApplicationRecord
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
   with_options unless: :draft? do |post|
-    post.validates :author, presence: true, on: :publication
-    post.validates :author, presence: true, if: :author_id_changed?
-
     post.before_validation :strip_title
     post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
