@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 // hooks
-import useVisitorsLanguageData from '../../hooks/useVisitorsLanguageData';
+import useVisitorLanguages from '../../hooks/useVisitorLanguages';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -12,8 +12,7 @@ import renderTooltip from '../VisitorsTypeCard/renderTooltip';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,11 +34,11 @@ const VisitorsCard = ({
   endAtMoment,
   projectFilter,
   resolution,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { pieData, xlsxData } = useVisitorsLanguageData(formatMessage, {
+  const { pieData, xlsxData } = useVisitorLanguages({
     startAtMoment,
     endAtMoment,
     projectId: projectFilter,
@@ -81,7 +80,7 @@ const VisitorsCard = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
+        xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
         currentProjectFilter: projectFilter,
@@ -118,4 +117,4 @@ const VisitorsCard = ({
   );
 };
 
-export default injectIntl(VisitorsCard);
+export default VisitorsCard;
