@@ -4,6 +4,7 @@ import React from 'react';
 import VisitorsCard from '../../components/VisitorsCard';
 import VisitorsTrafficSourcesCard from '../../components/VisitorsTrafficSourcesCard';
 import RegistrationsCard from '../../components/RegistrationsCard';
+import ActiveUsersCard from '../../components/ActiveUsersCard';
 import VisitorsLanguageCard from '../../components/VisitorsLanguageCard';
 import VisitorsTypeCard from '../../components/VisitorsTypeCard';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -23,7 +24,10 @@ const Charts = (props: Props) => (
   <>
     <VisitorsCard {...props} />
     <VisitorsTrafficSourcesCard {...props} />
-    <RegistrationsCard {...props} />
+    <Box display="flex" flexDirection="row">
+      <RegistrationsCard {...props} />
+      <ActiveUsersCard {...props} />
+    </Box>
     <Box display="flex" flexDirection="row">
       <VisitorsLanguageCard {...props} />
       <VisitorsTypeCard {...props} />
