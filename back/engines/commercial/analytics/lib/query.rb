@@ -5,14 +5,15 @@ module Analytics
     MODELS = {
       post: FactPost,
       participation: FactParticipation,
-      visit: FactVisit
+      visit: FactVisit,
+      registration: FactRegistration
     }.freeze
 
     def initialize(query)
       @json_query = query
     end
 
-    attr_reader :valid, :error_messages, :results, :json_query, :failed
+    attr_reader :valid, :error_messages, :results, :pagination, :json_query, :failed
 
     def validate
       validation = QueryValidatorService.new(self)
@@ -25,12 +26,13 @@ module Analytics
 
       runner = QueryRunnerService.new
       begin
-        results = runner.run(self)
+        results, pagination = runner.run(self)
       rescue ActiveRecord::StatementInvalid => e
         @error_messages.push(e.message)
         @failed = true
       else
         @results = results
+        @pagination = pagination
       end
     end
 

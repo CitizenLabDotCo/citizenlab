@@ -53,7 +53,10 @@ module Analytics
           { name: 'idea', parent: 'post' },
           { name: 'initiative', parent: 'post' },
           { name: 'comment', parent: nil },
-          { name: 'vote', parent: nil }
+          { name: 'vote', parent: nil },
+          { name: 'poll', parent: nil },
+          { name: 'volunteer', parent: nil },
+          { name: 'survey', parent: nil }
         ]
         types.each do |type|
           next if Analytics::DimensionType.exists?(name: type[:name])
