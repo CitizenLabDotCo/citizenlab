@@ -7,7 +7,6 @@ import RegistrationsCard from '../../components/RegistrationsCard';
 import VisitorsLanguageCard from '../../components/VisitorsLanguageCard';
 import VisitorsTypeCard from '../../components/VisitorsTypeCard';
 import { Box } from '@citizenlab/cl2-component-library';
-import GraphCard from 'components/admin/GraphCard';
 
 // typings
 import { Moment } from 'moment';
@@ -29,7 +28,6 @@ const Charts = (props: Props) => (
       <VisitorsLanguageCard {...props} />
       <VisitorsTypeCard {...props} />
     </Box>
-    <GraphCard title="Text">Content</GraphCard>
   </>
 );
 
