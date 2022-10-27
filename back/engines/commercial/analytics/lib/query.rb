@@ -54,6 +54,17 @@ module Analytics
         end
     end
 
+    def schema
+      @schema ||= model
+        .reflect_on_all_associations
+        .to_h do |assoc|
+          [
+            assoc.name.to_s,
+            assoc.options[:class_name].constantize.columns_hash.transform_values(&:type)
+          ]
+        end.merge(model.columns_hash.transform_values(&:type))
+    end
+
     def all_attributes
       all_dimensions.keys + model.column_names + aggregations_names
     end

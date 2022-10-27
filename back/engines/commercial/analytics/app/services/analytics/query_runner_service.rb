@@ -81,9 +81,9 @@ module Analytics
         dimensions = dimensions.reject { |dim| @json_query[:filters].key?(dim) }
       end
 
-      all_dimensions = @query.all_dimensions
       dimensions.each do |dimension|
-        primary_key = all_dimensions[dimension][:primary_key]
+        dimension_assoc = @query.model.reflect_on_association(dimension)
+        primary_key = dimension_assoc.options.key?(:primary_key) ? dimension_assoc.options[:primary_key] : nil
         primary_key ||= 'id'
         results = results.where.not(dimension => { primary_key => nil })
       end
