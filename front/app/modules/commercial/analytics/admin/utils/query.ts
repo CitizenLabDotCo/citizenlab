@@ -1,14 +1,14 @@
 import moment, { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-type ProjectFilter = { project: { id: string } };
+type ProjectFilter = { [key: string]: string };
 type EmptyObject = Record<string, unknown>;
 
 export const getProjectFilter = (
   filter: string,
   projectId: string | undefined
 ): ProjectFilter | EmptyObject => {
-  return projectId ? { [filter]: { id: projectId } } : {};
+  return projectId ? { [filter]: projectId } : {};
 };
 
 const formatDate = (dateString: string) =>
@@ -16,10 +16,8 @@ const formatDate = (dateString: string) =>
 
 type DateFilter = {
   [key: string]: {
-    date: {
-      from: string;
-      to: string;
-    };
+    from: string;
+    to: string;
   };
 };
 
@@ -33,11 +31,9 @@ export const getDateFilter = (
 
   return startAt && endAt
     ? {
-        [filter]: {
-          date: {
-            from: formatDate(startAt),
-            to: formatDate(endAt),
-          },
+        [filter + '.date']: {
+          from: formatDate(startAt),
+          to: formatDate(endAt),
         },
       }
     : {};

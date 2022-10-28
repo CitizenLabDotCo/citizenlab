@@ -51,7 +51,7 @@ const query = ({
       feedback_time_taken: 'avg',
     },
     filters: {
-      type: { name: 'idea' },
+      'type.name': 'idea',
       ...getProjectFilter('project', projectId),
       ...getDateFilter('created_date', startAtMoment, endAtMoment),
     },
@@ -66,7 +66,7 @@ const query = ({
       'status.color': 'first',
     },
     filters: {
-      type: { name: 'idea' },
+      'type.name': 'idea',
       ...getProjectFilter('project', projectId),
       ...getDateFilter('created_date', startAtMoment, endAtMoment),
     },
