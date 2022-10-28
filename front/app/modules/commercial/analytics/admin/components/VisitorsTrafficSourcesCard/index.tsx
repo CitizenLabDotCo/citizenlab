@@ -23,22 +23,22 @@ import { isNilOrError } from 'utils/helperUtils';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 
 interface Props {
+  projectId: string | undefined;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
-  projectFilter: string | undefined;
 }
 
 const VisitorsTrafficSourcesCard = ({
+  projectId,
   startAtMoment,
   endAtMoment,
-  projectFilter,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
   const { pieData, xlsxData } = useVisitorReferrerTypes({
+    projectId,
     startAtMoment,
     endAtMoment,
-    projectId: projectFilter,
   });
   const [currentView, setCurrentView] = useState<View>('chart');
   const [modalOpen, setModalOpen] = useState(false);
@@ -69,7 +69,7 @@ const VisitorsTrafficSourcesCard = ({
           onDownload: () =>
             getXlsxData(
               {
-                projectId: projectFilter,
+                projectId,
                 startAtMoment,
                 endAtMoment,
               },
@@ -79,7 +79,7 @@ const VisitorsTrafficSourcesCard = ({
         },
         startAt,
         endAt,
-        currentProjectFilter: projectFilter,
+        currentProjectFilter: projectId,
       }}
       viewToggle={{
         view: currentView,
@@ -92,7 +92,7 @@ const VisitorsTrafficSourcesCard = ({
 
       {currentView === 'table' && (
         <Table
-          projectId={projectFilter}
+          projectId={projectId}
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
           onOpenModal={openModal}
@@ -100,7 +100,7 @@ const VisitorsTrafficSourcesCard = ({
       )}
 
       <TableModal
-        projectId={projectFilter}
+        projectId={projectId}
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
         open={modalOpen}

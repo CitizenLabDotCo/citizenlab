@@ -19,25 +19,25 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
+  projectId: string | undefined;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
-  projectFilter: string | undefined;
   resolution: IResolution;
 }
 
 const VisitorsCard = ({
+  projectId,
   startAtMoment,
   endAtMoment,
-  projectFilter,
   resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
   const { deducedResolution, stats, timeSeries, xlsxData } = useVisitors({
+    projectId,
     startAtMoment,
     endAtMoment,
-    projectId: projectFilter,
     resolution,
   });
 
@@ -55,7 +55,7 @@ const VisitorsCard = ({
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
-        currentProjectFilter: projectFilter,
+        currentProjectFilter: projectId,
         resolution: deducedResolution,
       }}
     >
@@ -63,7 +63,7 @@ const VisitorsCard = ({
         <Box display="flex" flexDirection="row">
           <VisitorStats
             stats={stats}
-            projectFilter={projectFilter}
+            projectId={projectId}
             resolution={deducedResolution}
           />
         </Box>

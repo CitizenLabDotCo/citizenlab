@@ -26,7 +26,7 @@ import { Margin } from 'components/admin/Graphs/typings';
 
 interface Props {
   timeSeries: TimeSeries | NilOrError;
-  projectFilter?: string;
+  projectId: string | undefined;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null | undefined;
   resolution: IResolution;
@@ -50,7 +50,7 @@ const lineConfig = {
 
 const Chart = ({
   timeSeries,
-  projectFilter,
+  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -81,7 +81,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = isNilOrError(timeSeries) || !!projectFilter;
+  const noData = isNilOrError(timeSeries) || !!projectId;
 
   return (
     <LineChart

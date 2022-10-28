@@ -18,7 +18,7 @@ import { Stats } from '../../hooks/useVisitors/typings';
 
 interface Props {
   stats: Stats | NilOrError;
-  projectFilter: string | undefined;
+  projectId: string | undefined;
   resolution: IResolution;
 }
 
@@ -38,7 +38,7 @@ const EMPTY_DATA: Stats = {
 
 const VisitorStats = ({
   stats,
-  projectFilter,
+  projectId,
   resolution,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
@@ -63,7 +63,7 @@ const VisitorStats = ({
             bottomLabel={bottomLabel}
             bottomLabelValue={shownStats.visitDuration.lastPeriod}
             tooltipContent={
-              projectFilter
+              projectId
                 ? formatMessage(messages.durationStatTooltipMessage)
                 : undefined
             }
@@ -85,7 +85,7 @@ const VisitorStats = ({
             bottomLabel={bottomLabel}
             bottomLabelValue={shownStats.pageViews.lastPeriod}
             tooltipContent={
-              projectFilter
+              projectId
                 ? formatMessage(messages.pageViewsStatTooltipMessage)
                 : undefined
             }

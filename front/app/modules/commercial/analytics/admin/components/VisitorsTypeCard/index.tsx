@@ -23,25 +23,25 @@ import { Moment } from 'moment';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
+  projectId: string | undefined;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
-  projectFilter: string | undefined;
   resolution: IResolution;
 }
 
 const VisitorsCard = ({
+  projectId,
   startAtMoment,
   endAtMoment,
-  projectFilter,
   resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
   const { pieData, xlsxData } = useVisitorTypes({
+    projectId,
     startAtMoment,
     endAtMoment,
-    projectId: projectFilter,
   });
 
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
@@ -84,7 +84,7 @@ const VisitorsCard = ({
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
-        currentProjectFilter: projectFilter,
+        currentProjectFilter: projectId,
         resolution,
       }}
     >

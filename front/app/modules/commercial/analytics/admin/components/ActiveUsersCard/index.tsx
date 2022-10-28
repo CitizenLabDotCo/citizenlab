@@ -23,7 +23,7 @@ import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 interface Props {
-  projectId?: string;
+  projectId: string | undefined;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
   resolution: IResolution;

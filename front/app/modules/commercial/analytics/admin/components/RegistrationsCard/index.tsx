@@ -24,7 +24,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { Layout, BoxLayout } from '../typings';
 
 interface Props {
-  projectFilter?: string;
+  projectId: string | undefined;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
   resolution: IResolution;
@@ -57,7 +57,7 @@ const GRAPHS_INNER_LAYOUT: BoxLayout = {
 };
 
 const RegistrationsCard = ({
-  projectFilter,
+  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -80,7 +80,7 @@ const RegistrationsCard = ({
   const endAt = endAtMoment?.toISOString();
   const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
 
-  const shownStatsData = projectFilter ? emptyStatsData : stats;
+  const shownStatsData = projectId ? emptyStatsData : stats;
 
   return (
     <GraphCard
@@ -125,7 +125,7 @@ const RegistrationsCard = ({
           <Box pt="8px" height="250px" {...GRAPHS_INNER_LAYOUT[layout]}>
             <Chart
               timeSeries={timeSeries}
-              projectFilter={projectFilter}
+              projectId={projectId}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={deducedResolution}
