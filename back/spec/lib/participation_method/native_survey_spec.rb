@@ -21,39 +21,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   end
 
   describe '#create_default_form!' do
-    let(:multiloc_service) { instance_double MultilocService }
-
-    before do
-      allow(MultilocService).to receive(:new).and_return multiloc_service
-      allow(multiloc_service).to receive(
-        :i18n_to_multiloc
-      ).with(
-        'form_builder.default_select_field.title'
-      ).and_return({
-        'en' => 'Default question',
-        'fr-FR' => 'Question par défaut',
-        'nl-NL' => 'Standaardvraag'
-      })
-      allow(multiloc_service).to receive(
-        :i18n_to_multiloc
-      ).with(
-        'form_builder.default_select_field.option1'
-      ).and_return({
-        'en' => 'First option',
-        'fr-FR' => 'Première option',
-        'nl-NL' => 'Eerste optie'
-      })
-      allow(multiloc_service).to receive(
-        :i18n_to_multiloc
-      ).with(
-        'form_builder.default_select_field.option2'
-      ).and_return({
-        'en' => 'Second option',
-        'fr-FR' => 'Deuxième option',
-        'nl-NL' => 'Tweede optie'
-      })
-    end
-
     it 'persists a default form for the participation context' do
       expect(participation_context.custom_form).to be_nil
 
