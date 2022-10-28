@@ -78,15 +78,21 @@ const RegistrationsCard = ({
           width="initial"
           display="flex"
           flexDirection={layout === 'narrow' ? 'row' : 'column'}
-          justifyContent={layout === 'narrow' ? 'space-between' : undefined}
+          // justifyContent={layout === 'narrow' ? 'flex-start' : undefined}
         >
-          <Statistic
-            name={formatMessage(messages.totalRegistrations)}
-            value={shownStatsData.registrations.value}
-            bottomLabel={bottomLabel}
-            bottomLabelValue={shownStatsData.registrations.lastPeriod}
-          />
-          <Box {...(layout === 'wide' ? { mt: '32px' } : { ml: '32px' })}>
+          <Box width={layout === 'narrow' ? '50%' : undefined}>
+            <Statistic
+              name={formatMessage(messages.totalRegistrations)}
+              value={shownStatsData.registrations.value}
+              bottomLabel={bottomLabel}
+              bottomLabelValue={shownStatsData.registrations.lastPeriod}
+            />
+          </Box>
+          <Box
+            {...(layout === 'wide'
+              ? { mt: '32px' }
+              : { ml: '32px', width: '50%' })}
+          >
             <Statistic
               name={formatMessage(messages.conversionRate)}
               value={shownStatsData.conversionRate.value}
