@@ -41,22 +41,33 @@ module Analytics
     end
 
     def fact_dimensions
-      fact_schema.select { |_k, v| v.is_a? Hash }.keys
-    end
-
-    def fact_schema
-      @fact_schema ||= model
-        .reflect_on_all_associations
-        .to_h do |assoc|
-          [
-            assoc.name.to_s,
-            assoc.options[:class_name].constantize.columns_hash.transform_values(&:type)
-          ]
-        end.merge(model.columns_hash.transform_values(&:type))
+      @fact_dimensions ||= fact_attributes
+        .keys
+        .select { |k| k.include?('.') }
+        .map { |k| k.split('.')[0] }
+        .uniq
     end
 
     def fact_attributes
-      fact_schema.keys + aggregations_names
+      model_attributes = model
+        .columns_hash
+        .transform_values(&:type)
+        .clone
+        .delete_if { |k, _v| k.include? '_id' }
+
+      associations = model
+        .reflect_on_all_associations
+        .map do |assoc|
+          fields = assoc.options[:class_name].constantize.columns_hash.map do |k, v|
+            [
+              "#{assoc.name}.#{k}",
+              v.type
+            ]
+          end.to_h
+          fields
+        end.reduce({}, :merge)
+
+      @fact_attributes ||= associations.merge(model_attributes)
     end
 
     def dimensions
@@ -97,20 +108,20 @@ module Analytics
     end
 
     def aggregations
-      attributes = []
+      fields = []
       if @json_query.key?(:aggregations)
-        @json_query[:aggregations].each do |column, aggregation|
+        @json_query[:aggregations].each do |field, aggregation|
           if aggregation.instance_of?(Array)
             aggregation.each do |aggregation_|
-              attributes.push([column, aggregation_])
+              fields.push([field, aggregation_])
             end
           else
-            attributes.push([column, aggregation])
+            fields.push([field, aggregation])
           end
         end
       end
 
-      attributes
+      fields
     end
 
     def aggregation_alias(column, aggregation)
@@ -140,8 +151,8 @@ module Analytics
     end
 
     def aggregations_names
-      aggregations.map do |column, aggregation|
-        aggregation_alias(column, aggregation)
+      @aggregations_names ||= aggregations.map do |field, aggregation|
+        aggregation_alias(field, aggregation)
       end
     end
   end
