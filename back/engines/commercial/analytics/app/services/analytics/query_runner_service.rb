@@ -7,7 +7,7 @@ module Analytics
       @query = query
       @json_query = query.json_query
       @pluck_attributes = []
-      dimensions = @query.used_dimensions
+      dimensions = @query.dimensions
 
       results = @query.model.includes(dimensions)
       results = include_dimensions(results)
@@ -76,7 +76,7 @@ module Analytics
     # so that an alias is automatically created
     # and can be used elsewhere in the query
     def include_dimensions(results)
-      dimensions = @query.used_dimensions
+      dimensions = @query.dimensions
       if @json_query.key?(:filters)
         dimensions = dimensions.reject { |dim| @json_query[:filters].key?(dim) }
       end
@@ -91,7 +91,7 @@ module Analytics
     end
 
     def query_groups(results)
-      @pluck_attributes = @query.groups_keys
+      @pluck_attributes = @query.groups
       results.group(@json_query[:groups])
     end
 

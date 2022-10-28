@@ -59,11 +59,11 @@ module Analytics
     def validate_attributes(attributes, kind)
       attributes.each do |attribute|
         field, subfield = attribute.include?('.') ? attribute.split('.') : [attribute, nil]
-        if @query.all_attributes.include?(field)
-          if subfield && @query.all_dimensions.exclude?(field)
+        if @query.fact_attributes.include?(field)
+          if subfield && @query.fact_dimensions.exclude?(field)
             add_error("#{kind} field #{field} does not contain #{subfield} because is not a dimension.")
 
-          elsif subfield && @query.all_dimensions[field][:columns].exclude?(subfield)
+          elsif subfield && @query.fact_schema[field].keys.exclude?(subfield)
             add_error("#{kind} column #{subfield} does not exist in dimension #{field}.")
           end
         else
@@ -90,7 +90,7 @@ module Analytics
     end
 
     def validate_groups
-      validate_attributes(@query.groups_keys, 'Groups')
+      validate_attributes(@query.groups, 'Groups')
 
       return if @json_query.key?(:aggregations)
 

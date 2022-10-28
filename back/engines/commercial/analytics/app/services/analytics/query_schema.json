@@ -31,20 +31,17 @@
           "minProperties" : 1,
           "patternProperties" : {
             "^[a-z_]*$" : {
-              "type" : ["string", "array"],
+              "type" : ["string", "array", "object"],
               "items" : {"type" : "string"},
-              "minLength" : 1,
-              "additionalProperties": false
-            },
-            "date": {
-              "type" : "object",
               "properties" : {
                 "from" : {"type": ["string"]},
                 "to" : {"type": ["string"]}
               },
-              "required" : ["from", "to"]
+              "required" : ["from", "to"],
+              "minLength" : 1
             }
-          }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
