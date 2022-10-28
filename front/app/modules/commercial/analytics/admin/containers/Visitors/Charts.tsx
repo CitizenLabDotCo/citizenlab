@@ -29,7 +29,6 @@ const Charts = (props: Props) => {
   return (
     <>
       <VisitorsCard {...props} />
-      <RegistrationsCard {...props} />
       <VisitorsTrafficSourcesCard {...props} />
       <Box display="flex" flexDirection="row">
         <Box width="50%">

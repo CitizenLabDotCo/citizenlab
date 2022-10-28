@@ -78,7 +78,6 @@ const RegistrationsCard = ({
           width="initial"
           display="flex"
           flexDirection={layout === 'narrow' ? 'row' : 'column'}
-          // justifyContent={layout === 'narrow' ? 'flex-start' : undefined}
         >
           <Box width={layout === 'narrow' ? '50%' : undefined}>
             <Statistic

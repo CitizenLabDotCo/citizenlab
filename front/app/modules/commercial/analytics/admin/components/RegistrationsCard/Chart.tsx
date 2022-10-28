@@ -75,55 +75,37 @@ const Chart = ({
     return null;
   }
 
-  return (
-    <>
-      {(isNilOrError(timeSeries) || projectFilter) && (
-        <LineChart
-          width="100%"
-          height="100%"
-          data={emptyData}
-          mapping={{
-            x: 'date',
-            y: ['registrations'],
-          }}
-          margin={MARGINS[layout]}
-          lines={{
-            strokeWidths: [0],
-          }}
-          grid={{ vertical: true }}
-          xaxis={{ tickFormatter: formatTick }}
-          legend={{
-            marginTop: 16,
-            items: legendItems,
-          }}
-        />
-      )}
+  const noData = isNilOrError(timeSeries) || projectFilter;
 
-      {!isNilOrError(timeSeries) && !projectFilter && (
-        <LineChart
-          width="100%"
-          height="100%"
-          data={timeSeries}
-          mapping={{
-            x: 'date',
-            y: ['registrations'],
-          }}
-          margin={MARGINS[layout]}
-          lines={{
-            strokes: [colors.categorical01],
-            activeDot: { r: 4 },
-          }}
-          grid={{ vertical: true }}
-          xaxis={{ tickFormatter: formatTick }}
-          tooltip={renderTooltip(resolution)}
-          legend={{
-            marginTop: 16,
-            items: legendItems,
-          }}
-          innerRef={innerRef}
-        />
-      )}
-    </>
+  return (
+    <LineChart
+      width="100%"
+      height="100%"
+      data={noData ? emptyData : timeSeries}
+      mapping={{
+        x: 'date',
+        y: ['registrations'],
+      }}
+      margin={MARGINS[layout]}
+      lines={
+        noData
+          ? {
+              strokeWidths: [0],
+            }
+          : {
+              strokes: [colors.categorical01],
+              activeDot: { r: 4 },
+            }
+      }
+      grid={{ vertical: true }}
+      xaxis={{ tickFormatter: formatTick }}
+      tooltip={noData ? undefined : renderTooltip(resolution)}
+      legend={{
+        marginTop: 16,
+        items: legendItems,
+      }}
+      innerRef={noData ? undefined : innerRef}
+    />
   );
 };
 
