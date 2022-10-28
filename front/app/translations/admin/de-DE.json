@@ -1111,7 +1111,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Löschen",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Löschen",
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo": "Dies kann nicht rückgängig gemacht werden",
-  "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink": "Delete the results if you need to make changes.",
+  "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink": "Löschen Sie die Ergebnisse, wenn Sie Änderungen vornehmen müssen.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults": "Umfrageergebnisse löschen",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation": "Sind Sie sicher, dass Sie alle Umfrageergebnisse löschen möchten?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage": "Der Inhalt der Umfrage kann nicht mehr bearbeitet werden, da die ersten Umfrageergebnisse bereits vorliegen.",
