@@ -19,6 +19,5 @@ module Analytics
     belongs_to :dimension_date_accepted, class_name: 'Analytics::DimensionDate', primary_key: 'date'
 
     validates :dimension_user, presence: true
-
   end
 end

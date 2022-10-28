@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from analytics (originally 20221027135433)
 
 class UpdateDimensionUsersView < ActiveRecord::Migration[6.1]
