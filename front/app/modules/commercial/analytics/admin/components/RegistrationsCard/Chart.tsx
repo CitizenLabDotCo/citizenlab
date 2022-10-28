@@ -21,6 +21,7 @@ import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../hooks/useRegistrations/typings';
+import { Layout } from '../typings';
 
 interface Props {
   timeSeries: TimeSeries | NilOrError;
@@ -29,6 +30,7 @@ interface Props {
   endAtMoment: Moment | null | undefined;
   resolution: IResolution;
   innerRef: React.RefObject<any>;
+  layout?: Layout;
 }
 
 const Chart = ({
@@ -38,6 +40,7 @@ const Chart = ({
   endAtMoment,
   resolution,
   innerRef,
+  layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -95,6 +98,14 @@ const Chart = ({
             x: 'date',
             y: ['registrations'],
           }}
+          margin={
+            layout === 'narrow'
+              ? {
+                  left: -30,
+                  right: 20,
+                }
+              : undefined
+          }
           lines={{
             strokes: [colors.categorical01],
             activeDot: { r: 4 },

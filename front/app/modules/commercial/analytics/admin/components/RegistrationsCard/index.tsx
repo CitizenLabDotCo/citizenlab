@@ -128,6 +128,7 @@ const RegistrationsCard = ({
               endAtMoment={endAtMoment}
               resolution={deducedResolution}
               innerRef={graphRef}
+              layout={layout}
             />
           </Box>
         </Box>
