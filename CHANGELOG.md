@@ -2,11 +2,13 @@
 
 ## Next release
 
+## 2022-10-27
+
 ### Added
 
-- [CL-1786] Added Latvian language capabilities
-
-## 2022-10-27
+- [CL-1786] Latvian language capabilities
+- [CL-1786] Catalan language capabilities
+- [CL-1786] Greek language capabilities
 
 ### Changed
 
