@@ -1,5 +1,5 @@
 WITH regular_project_statuses AS -- project statuses that do not need to be calculated
-         (SELECT item_id as project_id, action as status, acted_at::DATE as date
+         (SELECT item_id as project_id, action as status, acted_at as timestamp
           FROM activities
           WHERE item_type = 'Project'
             AND action IN ('created', 'draft', 'published', 'archived', 'deleted')),
@@ -8,16 +8,17 @@ WITH regular_project_statuses AS -- project statuses that do not need to be calc
          (SELECT DISTINCT ON (project_id) *
           FROM regular_project_statuses JOIN projects ON project_id = projects.id
           WHERE process_type = 'continuous'
-          ORDER BY project_id, date DESC),
+          ORDER BY project_id, timestamp DESC),
 
      finished_statuses_for_continuous_projects AS
-         (SELECT project_id, 'finished' as status, date
+         (SELECT project_id, 'finished' as status, timestamp
           FROM last_statuses_for_continuous_projects
           where status = 'archived'),
 
      finished_status_for_timeline_projects AS
-         -- The project is considered finished the day after the last phase ends.
-         (SELECT project_id, 'finished' as status, (MAX(end_at) + 1) as date
+         -- The project is considered finished at the beginning of the day following the end
+         -- date of the last phase.
+         (SELECT project_id, 'finished' as status, (MAX(end_at) + 1)::timestamp as timestamp
           FROM phases
           GROUP BY project_id
           HAVING MAX(end_at) < NOW()),
@@ -30,6 +31,7 @@ WITH regular_project_statuses AS -- project statuses that do not need to be calc
          SELECT * FROM finished_statuses_for_continuous_projects
      )
 
-SELECT *
+SELECT *, timestamp::DATE as date
 FROM project_statuses
-ORDER BY date DESC;
+ORDER BY timestamp DESC;
+
