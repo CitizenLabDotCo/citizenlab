@@ -78,12 +78,16 @@ module Analytics
         columns.each do |column, value|
           validate_attributes(["#{dimension}.#{column}"], 'Filters')
 
-          next unless column == 'date' && value.is_a?(ActionController::Parameters)
-
-          dates_attrs.each do |date|
-            Date.parse(value[date])
-          rescue ArgumentError
-            add_error("Invalid '#{date}' date in #{dimension} dimension on column #{column}.")
+          if value.is_a?(ActionController::Parameters)
+            if column == 'date'
+              dates_attrs.each do |date|
+                Date.parse(value[date])
+              rescue ArgumentError
+                add_error("Invalid '#{date}' date in #{dimension} dimension on column #{column}.")
+              end
+            else
+              add_error("Invalid #{column} value type on #{dimension} dimension.")
+            end
           end
         end
       end
