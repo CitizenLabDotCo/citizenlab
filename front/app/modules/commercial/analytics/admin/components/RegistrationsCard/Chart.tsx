@@ -22,6 +22,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../hooks/useRegistrations/typings';
 import { Layout } from '../typings';
+import { Margin } from 'components/admin/Graphs/typings';
 
 interface Props {
   timeSeries: TimeSeries | NilOrError;
@@ -32,6 +33,14 @@ interface Props {
   innerRef: React.RefObject<any>;
   layout?: Layout;
 }
+
+const MARGINS: Record<Layout, Margin | undefined> = {
+  wide: undefined,
+  narrow: {
+    left: -30,
+    right: 30,
+  },
+};
 
 const Chart = ({
   timeSeries,
@@ -77,6 +86,7 @@ const Chart = ({
             x: 'date',
             y: ['registrations'],
           }}
+          margin={MARGINS[layout]}
           lines={{
             strokeWidths: [0],
           }}
@@ -98,16 +108,7 @@ const Chart = ({
             x: 'date',
             y: ['registrations'],
           }}
-          margin={
-            layout === 'narrow'
-              ? {
-                  left: -30,
-                  right: 30,
-                }
-              : {
-                  left: -30,
-                }
-          }
+          margin={MARGINS[layout]}
           lines={{
             strokes: [colors.categorical01],
             activeDot: { r: 4 },

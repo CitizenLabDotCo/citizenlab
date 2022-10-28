@@ -4,7 +4,6 @@ import React, { useMemo } from 'react';
 import { colors } from 'components/admin/Graphs/styling';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import LineChart from 'components/admin/Graphs/LineChart';
 import renderTooltip from './renderTooltip';
 
@@ -68,7 +67,7 @@ const Chart = ({
   }
 
   return (
-    <Box pt="8px" width="90%" maxWidth="900px" height="250px">
+    <>
       {isNilOrError(timeSeries) && (
         <LineChart
           width="100%"
@@ -113,7 +112,7 @@ const Chart = ({
           innerRef={innerRef}
         />
       )}
-    </Box>
+    </>
   );
 };
 

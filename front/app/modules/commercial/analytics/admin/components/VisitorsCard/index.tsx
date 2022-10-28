@@ -59,8 +59,8 @@ const VisitorsCard = ({
         resolution: deducedResolution,
       }}
     >
-      <Box width="100%" display="flex" flexDirection="row">
-        <Box display="flex" flexDirection="row" pl="20px">
+      <Box px="20px" width="100%" display="flex" flexDirection="row">
+        <Box display="flex" flexDirection="row">
           <VisitorStats
             stats={stats}
             projectFilter={projectFilter}
@@ -68,14 +68,16 @@ const VisitorsCard = ({
           />
         </Box>
 
-        <Box flexGrow={1} display="flex" justifyContent="center">
-          <Chart
-            timeSeries={timeSeries}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={deducedResolution}
-            innerRef={graphRef}
-          />
+        <Box flexGrow={1} display="flex" justifyContent="flex-end">
+          <Box pt="8px" width="95%" maxWidth="800px" height="250px">
+            <Chart
+              timeSeries={timeSeries}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={deducedResolution}
+              innerRef={graphRef}
+            />
+          </Box>
         </Box>
       </Box>
     </GraphCard>

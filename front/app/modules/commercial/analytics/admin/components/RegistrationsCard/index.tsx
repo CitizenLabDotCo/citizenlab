@@ -108,17 +108,15 @@ const RegistrationsCard = ({
               })}
         >
           <Box
+            pt="8px"
+            height="250px"
             {...(layout === 'wide'
               ? {
-                  pt: '8px',
-                  width: '90%',
-                  maxWidth: '900px',
-                  height: '250px',
+                  width: '95%',
+                  maxWidth: '800px',
                 }
               : {
-                  pt: '8px',
                   width: '100%',
-                  height: '250px',
                 })}
           >
             <Chart
