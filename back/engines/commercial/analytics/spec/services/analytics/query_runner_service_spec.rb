@@ -110,7 +110,6 @@ describe Analytics::QueryRunnerService do
         expect(results.length).to eq(2)
         expect(results.first['id']).to eq(Idea.order(:id).first.id)
 
-        puts URI.decode_www_form(pagination[:self]).to_h
         expect(URI.decode_www_form(pagination[:self]).to_h['query[page][number]']).to eq('1')
         expect(URI.decode_www_form(pagination[:first]).to_h['query[page][number]']).to eq('1')
         expect(pagination[:prev]).to be_nil
