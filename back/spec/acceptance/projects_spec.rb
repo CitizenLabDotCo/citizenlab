@@ -366,7 +366,8 @@ resource 'Projects' do
 
           let(:presentation_mode) { 'map' }
 
-          example_request '[error] Create a project', document: false do
+          example '[error] Create a project', document: false do
+            do_request
             expect(response_status).to eq 401
           end
         end
@@ -416,7 +417,8 @@ resource 'Projects' do
         let(:process_type) { project.process_type }
         let(:participation_method) { project.participation_method }
 
-        example_request 'Create a continuous project', document: false do
+        example 'Create a continuous project', document: false do
+          do_request
           assert_status 201
           project_id = json_response.dig(:data, :id)
           project_in_db = Project.find(project_id)

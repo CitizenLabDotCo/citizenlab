@@ -164,7 +164,8 @@ resource 'Phases' do
         let(:min_budget) { nil }
         let(:max_budget) { nil }
 
-        example_request 'Create a native survey phase', document: false do
+        example 'Create a native survey phase', document: false do
+          do_request
           assert_status 201
           phase_id = json_response.dig(:data, :id)
           phase_in_db = Phase.find(phase_id)
@@ -241,7 +242,8 @@ resource 'Phases' do
         let(:survey_embed_url) { 'https://citizenlabco.typeform.com/to/StrNJP' }
         let(:survey_service) { 'typeform' }
 
-        example_request 'Create a survey phase', document: false do
+        example 'Create a survey phase', document: false do
+          do_request
           assert_status 201
           expect(json_response.dig(:data, :attributes, :survey_embed_url)).to eq survey_embed_url
           expect(json_response.dig(:data, :attributes, :survey_service)).to eq survey_service
@@ -979,7 +981,8 @@ resource 'Phases' do
           )
         end
 
-        example_request 'Download phase inputs without private user data', document: false do
+        example 'Download phase inputs without private user data', document: false do
+          do_request
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
             {
@@ -1068,7 +1071,8 @@ resource 'Phases' do
           )
         end
 
-        example_request 'Download phase inputs without private user data', document: false do
+        example 'Download phase inputs without private user data', document: false do
+          do_request
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
             {
