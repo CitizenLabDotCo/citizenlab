@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useRegistrations from '../../hooks/useRegistrations';
+import useActiveUsers from '../../hooks/useActiveUsers';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -23,21 +23,22 @@ import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 interface Props {
-  projectFilter?: string;
+  projectId?: string;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
   resolution: IResolution;
 }
 
 const RegistrationsCard = ({
-  // projectFilter,
+  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const x = useRegistrations({
+  const x = useActiveUsers({
+    projectId,
     startAtMoment,
     endAtMoment,
     resolution,
