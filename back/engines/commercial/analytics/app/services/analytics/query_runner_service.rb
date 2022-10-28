@@ -40,27 +40,33 @@ module Analytics
     private
 
     def query_filters(results)
-      @json_query[:filters].each do |field, values|
-        values = Array.wrap(values)
+      @json_query[:filters].each do |field, value|
         field, subfield = field.include?('.') ? field.split('.') : [field, nil]
-        values.each do |value|
-          if value.is_a?(ActionController::Parameters) && column == 'date'
-            from, to = value.values_at(:from, :to)
-            results = results.where(field => { subfield => from..to })
+
+        if value.is_a?(ActionController::Parameters) && subfield == 'date'
+          from, to = value.values_at(:from, :to)
+          results = results.where(field => { subfield => from..to })
+        else
+          value = convert_empty_to_null(value)
+          results = if subfield
+            results.where(field => { subfield => value })
           else
-            if value == ''
-              value = nil
-            end
-            results = if subfield
-              results.where(field => { subfield => value })
-            else
-              results.where(field => value)
-            end
+            results.where(field => value)
           end
         end
       end
 
       results
+    end
+
+    def convert_empty_to_null(value)
+      case value
+      when Array
+        value.map! { |x| x == '' ? nil : x }
+      when ''
+        value = nil
+      end
+      value
     end
 
     # creates a dummy where statement in the active record query

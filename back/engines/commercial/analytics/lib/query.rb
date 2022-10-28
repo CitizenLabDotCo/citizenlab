@@ -52,18 +52,16 @@ module Analytics
       model_attributes = model
         .columns_hash
         .transform_values(&:type)
-        .clone
-        .delete_if { |k, _v| k.include? '_id' }
 
       associations = model
         .reflect_on_all_associations
         .map do |assoc|
-          fields = assoc.options[:class_name].constantize.columns_hash.map do |k, v|
+          fields = assoc.options[:class_name].constantize.columns_hash.to_h do |k, v|
             [
               "#{assoc.name}.#{k}",
               v.type
             ]
-          end.to_h
+          end
           fields
         end.reduce({}, :merge)
 

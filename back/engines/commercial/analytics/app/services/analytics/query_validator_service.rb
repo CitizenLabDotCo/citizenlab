@@ -76,7 +76,7 @@ module Analytics
               dates_attrs.each do |date|
                 Date.parse(value[date])
               rescue ArgumentError
-                add_error("Invalid filter date '#{date}' for #{field}.#{subfield}.")
+                add_error("Invalid '#{date}' date for #{field}.#{subfield}.")
               end
             else
               add_error("Unsupported object type. Field #{field}.#{subfield} is not a date.")
