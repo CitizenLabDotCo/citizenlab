@@ -33,6 +33,7 @@ module ParticipationMethod
         key: 'option2',
         title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option2')
       )
+      participation_context.reload
     end
 
     def never_show?

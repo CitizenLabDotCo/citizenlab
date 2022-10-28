@@ -26,7 +26,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
       participation_method.create_default_form!
 
-      participation_context.reload
       expect(participation_context.custom_form.custom_fields.size).to eq 1
       field = participation_context.custom_form.custom_fields.first
       expect(field.title_multiloc).to match({
