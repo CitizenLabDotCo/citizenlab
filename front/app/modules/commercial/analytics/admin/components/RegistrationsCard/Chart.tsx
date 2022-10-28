@@ -42,6 +42,12 @@ const MARGINS: Record<Layout, Margin | undefined> = {
   },
 };
 
+const emptyLineConfig = { strokeWidths: [0] };
+const lineConfig = {
+  strokes: [colors.categorical01],
+  activeDot: { r: 4 },
+};
+
 const Chart = ({
   timeSeries,
   projectFilter,
@@ -75,7 +81,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = isNilOrError(timeSeries) || projectFilter;
+  const noData = isNilOrError(timeSeries) || !!projectFilter;
 
   return (
     <LineChart
@@ -87,16 +93,7 @@ const Chart = ({
         y: ['registrations'],
       }}
       margin={MARGINS[layout]}
-      lines={
-        noData
-          ? {
-              strokeWidths: [0],
-            }
-          : {
-              strokes: [colors.categorical01],
-              activeDot: { r: 4 },
-            }
-      }
+      lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
       tooltip={noData ? undefined : renderTooltip(resolution)}

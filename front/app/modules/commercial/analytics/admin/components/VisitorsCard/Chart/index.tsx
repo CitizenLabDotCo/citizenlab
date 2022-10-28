@@ -30,6 +30,12 @@ interface Props {
   innerRef: React.RefObject<any>;
 }
 
+const emptyLineConfig = { strokeWidths: [0, 0] };
+const lineConfig = {
+  strokes: [colors.categorical01, colors.categorical03],
+  activeDot: { r: 4 },
+};
+
 const Chart = ({
   timeSeries,
   startAtMoment,
@@ -77,16 +83,7 @@ const Chart = ({
         x: 'date',
         y: ['visitors', 'visits'],
       }}
-      lines={
-        noData
-          ? {
-              strokeWidths: [0, 0],
-            }
-          : {
-              strokes: [colors.categorical01, colors.categorical03],
-              activeDot: { r: 4 },
-            }
-      }
+      lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
       tooltip={noData ? undefined : renderTooltip(resolution)}

@@ -21,7 +21,7 @@ import { emptyStatsData } from './generateEmptyData';
 // typings
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Layout } from '../typings';
+import { Layout, BoxLayout } from '../typings';
 
 interface Props {
   projectFilter?: string;
@@ -30,6 +30,31 @@ interface Props {
   resolution: IResolution;
   layout?: Layout;
 }
+
+const STATS_CONTAINER_LAYOUT: BoxLayout = {
+  wide: { mt: '32px' },
+  narrow: { ml: '32px', width: '50%' },
+};
+
+const GRAPHS_OUTER_LAYOUT: BoxLayout = {
+  wide: {
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  narrow: {
+    width: '100%',
+    mt: '20px',
+  },
+};
+
+const GRAPHS_INNER_LAYOUT: BoxLayout = {
+  wide: {
+    width: '95%',
+    maxWidth: '800px',
+  },
+  narrow: { width: '100%' },
+};
 
 const RegistrationsCard = ({
   projectFilter,
@@ -87,11 +112,7 @@ const RegistrationsCard = ({
               bottomLabelValue={shownStatsData.registrations.lastPeriod}
             />
           </Box>
-          <Box
-            {...(layout === 'wide'
-              ? { mt: '32px' }
-              : { ml: '32px', width: '50%' })}
-          >
+          <Box {...STATS_CONTAINER_LAYOUT[layout]}>
             <Statistic
               name={formatMessage(messages.conversionRate)}
               value={shownStatsData.conversionRate.value}
@@ -100,30 +121,8 @@ const RegistrationsCard = ({
             />
           </Box>
         </Box>
-        <Box
-          {...(layout === 'wide'
-            ? {
-                flexGrow: 1,
-                display: 'flex',
-                justifyContent: 'flex-end',
-              }
-            : {
-                width: '100%',
-                mt: '20px',
-              })}
-        >
-          <Box
-            pt="8px"
-            height="250px"
-            {...(layout === 'wide'
-              ? {
-                  width: '95%',
-                  maxWidth: '800px',
-                }
-              : {
-                  width: '100%',
-                })}
-          >
+        <Box {...GRAPHS_OUTER_LAYOUT[layout]}>
+          <Box pt="8px" height="250px" {...GRAPHS_INNER_LAYOUT[layout]}>
             <Chart
               timeSeries={timeSeries}
               projectFilter={projectFilter}
