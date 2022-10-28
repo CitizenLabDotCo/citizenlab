@@ -1,5 +1,8 @@
 import React from 'react';
 
+// hooks
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+
 // components
 import VisitorsCard from '../../components/VisitorsCard';
 import VisitorsTrafficSourcesCard from '../../components/VisitorsTrafficSourcesCard';
@@ -20,19 +23,35 @@ interface Props {
   resolution: IResolution;
 }
 
-const Charts = (props: Props) => (
-  <>
-    <VisitorsCard {...props} />
-    <VisitorsTrafficSourcesCard {...props} />
-    <Box display="flex" flexDirection="row">
-      <RegistrationsCard {...props} layout="narrow" />
-      <ActiveUsersCard {...props} />
-    </Box>
-    <Box display="flex" flexDirection="row">
-      <VisitorsLanguageCard {...props} />
-      <VisitorsTypeCard {...props} />
-    </Box>
-  </>
-);
+const Charts = (props: Props) => {
+  const smallerThanTablet = useBreakpoint('tablet');
+
+  return (
+    <>
+      <VisitorsCard {...props} />
+      <VisitorsTrafficSourcesCard {...props} />
+      <RegistrationsCard {...props} />
+      <Box display="flex" flexDirection="row">
+        <Box width="50%">
+          <RegistrationsCard
+            {...props}
+            layout={smallerThanTablet ? 'narrow' : 'wide'}
+          />
+        </Box>
+        <Box width="50%">
+          <ActiveUsersCard {...props} />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row">
+        <Box width="50%">
+          <VisitorsLanguageCard {...props} />
+        </Box>
+        <Box width="50%">
+          <VisitorsTypeCard {...props} />
+        </Box>
+      </Box>
+    </>
+  );
+};
 
 export default Charts;

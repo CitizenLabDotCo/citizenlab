@@ -70,7 +70,7 @@ function getLegendOffset(
 }
 
 function getLegendPosition(legend: Legend) {
-  return legend.position === undefined || legend.position.includes('right')
-    ? 'right'
-    : 'bottom';
+  return legend.position === undefined || legend.position.includes('bottom')
+    ? 'bottom'
+    : 'right';
 }

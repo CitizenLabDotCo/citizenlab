@@ -102,9 +102,11 @@ const Chart = ({
             layout === 'narrow'
               ? {
                   left: -30,
-                  right: 20,
+                  right: 30,
                 }
-              : undefined
+              : {
+                  left: -30,
+                }
           }
           lines={{
             strokes: [colors.categorical01],
