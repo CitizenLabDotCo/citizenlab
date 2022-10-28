@@ -7,9 +7,9 @@ RSpec.describe Analytics::FactRegistration, type: :model do
     let!(:user) { create(:user, invite_status: nil) }
 
     it 'is also available as a registration fact with a completed date' do
-      dimension_user = described_class.find(user.id)
-      expect(dimension_user.dimension_date_registration_id).to eq(user.registration_completed_at.to_date)
-      expect(dimension_user.invite_status).to be_nil
+      fact_registration = described_class.find(user.id)
+      expect(fact_registration.dimension_date_registration_id).to eq(user.registration_completed_at.to_date)
+      expect(fact_registration.dimension_user.invite_status).to be_nil
     end
   end
 
@@ -17,11 +17,11 @@ RSpec.describe Analytics::FactRegistration, type: :model do
     let!(:invite) { create(:invite) }
 
     it 'is also available as a registration fact without a completion date' do
-      dimension_user = described_class.find(invite.invitee_id)
-      expect(dimension_user.dimension_date_invited_id).to eq(invite.created_at.to_date)
-      expect(dimension_user.dimension_date_registration_id).to be_nil
-      expect(dimension_user.dimension_date_accepted_id).to be_nil
-      expect(dimension_user.invite_status).to eq('pending')
+      fact_registration = described_class.find(invite.invitee_id)
+      expect(fact_registration.dimension_date_invited_id).to eq(invite.created_at.to_date)
+      expect(fact_registration.dimension_date_registration_id).to be_nil
+      expect(fact_registration.dimension_date_accepted_id).to be_nil
+      expect(fact_registration.dimension_user.invite_status).to eq('pending')
     end
   end
 
@@ -29,11 +29,11 @@ RSpec.describe Analytics::FactRegistration, type: :model do
     let!(:accepted_invite) { create(:accepted_invite) }
 
     it 'is also available as an accepted registration fact' do
-      dimension_user = described_class.find(accepted_invite.invitee_id)
-      expect(dimension_user.dimension_date_invited_id).to eq(accepted_invite.created_at.to_date)
-      expect(dimension_user.dimension_date_registration_id).to eq(accepted_invite.invitee.registration_completed_at.to_date)
-      expect(dimension_user.dimension_date_accepted_id).to eq(accepted_invite.accepted_at.to_date)
-      expect(dimension_user.invite_status).to eq('accepted')
+      fact_registration = described_class.find(accepted_invite.invitee_id)
+      expect(fact_registration.dimension_date_invited_id).to eq(accepted_invite.created_at.to_date)
+      expect(fact_registration.dimension_date_registration_id).to eq(accepted_invite.invitee.registration_completed_at.to_date)
+      expect(fact_registration.dimension_date_accepted_id).to eq(accepted_invite.accepted_at.to_date)
+      expect(fact_registration.dimension_user.invite_status).to eq('accepted')
     end
   end
 end
