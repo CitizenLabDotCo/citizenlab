@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from analytics (originally 20221027180337)
 
 class UpdateFactPostsView < ActiveRecord::Migration[6.1]
