@@ -21,12 +21,14 @@ import { emptyStatsData } from './generateEmptyData';
 // typings
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { Layout } from '../typings';
 
 interface Props {
   projectFilter?: string;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
   resolution: IResolution;
+  layout?: Layout;
 }
 
 const RegistrationsCard = ({
@@ -34,6 +36,7 @@ const RegistrationsCard = ({
   startAtMoment,
   endAtMoment,
   resolution,
+  layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -66,15 +69,24 @@ const RegistrationsCard = ({
         resolution: deducedResolution,
       }}
     >
-      <Box px="20px" display="flex" flexDirection="row">
-        <Box width="initial">
+      <Box
+        px="20px"
+        display="flex"
+        flexDirection={layout === 'wide' ? 'row' : 'column'}
+      >
+        <Box
+          width="initial"
+          display="flex"
+          flexDirection={layout === 'narrow' ? 'row' : 'column'}
+          justifyContent={layout === 'narrow' ? 'center' : undefined}
+        >
           <Statistic
             name={formatMessage(messages.totalRegistrations)}
             value={shownStatsData.registrations.value}
             bottomLabel={bottomLabel}
             bottomLabelValue={shownStatsData.registrations.lastPeriod}
           />
-          <Box mt="32px">
+          <Box {...(layout === 'wide' ? { mt: '32px' } : { ml: '32px' })}>
             <Statistic
               name={formatMessage(messages.conversionRate)}
               value={shownStatsData.conversionRate.value}
@@ -83,15 +95,41 @@ const RegistrationsCard = ({
             />
           </Box>
         </Box>
-        <Box flexGrow={1} display="flex" justifyContent="flex-end">
-          <Chart
-            timeSeries={timeSeries}
-            projectFilter={projectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={deducedResolution}
-            innerRef={graphRef}
-          />
+        <Box
+          {...(layout === 'wide'
+            ? {
+                flexGrow: 1,
+                display: 'flex',
+                justifyContent: 'flex-end',
+              }
+            : {
+                width: '100%',
+                mt: '20px',
+              })}
+        >
+          <Box
+            {...(layout === 'wide'
+              ? {
+                  pt: '8px',
+                  width: '90%',
+                  maxWidth: '900px',
+                  height: '250px',
+                }
+              : {
+                  pt: '8px',
+                  width: '100%',
+                  height: '250px',
+                })}
+          >
+            <Chart
+              timeSeries={timeSeries}
+              projectFilter={projectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={deducedResolution}
+              innerRef={graphRef}
+            />
+          </Box>
         </Box>
       </Box>
     </GraphCard>
