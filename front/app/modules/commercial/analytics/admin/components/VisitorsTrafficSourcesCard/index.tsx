@@ -16,17 +16,13 @@ import { useIntl } from 'utils/cl-intl';
 
 // utils
 import getXlsxData from './getXlsxData';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { Moment } from 'moment';
-import { isNilOrError } from 'utils/helperUtils';
+import { ProjectId, Dates } from '../../typings';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 
-interface Props {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-}
+type Props = ProjectId & Dates;
 
 const VisitorsTrafficSourcesCard = ({
   projectId,

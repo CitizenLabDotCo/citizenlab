@@ -18,16 +18,10 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Moment } from 'moment';
+import { ProjectId, Dates, Resolution } from '../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
-interface Props {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
 const VisitorsCard = ({
   projectId,

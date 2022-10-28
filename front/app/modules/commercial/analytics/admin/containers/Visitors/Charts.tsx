@@ -13,15 +13,9 @@ import VisitorsTypeCard from '../../components/VisitorsTypeCard';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { ProjectId, Dates, Resolution } from '../../typings';
 
-interface Props {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
 const Charts = (props: Props) => {
   const smallerThanTablet = useBreakpoint('tablet');

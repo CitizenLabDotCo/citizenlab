@@ -14,16 +14,10 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { ProjectId, Dates, Resolution } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
 const VisitorsCard = ({
   projectId,

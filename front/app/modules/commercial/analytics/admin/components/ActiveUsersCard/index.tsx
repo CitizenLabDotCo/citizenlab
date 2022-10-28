@@ -19,15 +19,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // import { emptyStatsData } from './generateEmptyData';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { ProjectId, Dates, Resolution } from '../../typings';
 
-interface Props {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
 const RegistrationsCard = ({
   projectId,

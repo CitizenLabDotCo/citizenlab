@@ -19,17 +19,14 @@ import { BOTTOM_LABEL_COPY } from '../VisitorsCard/VisitorStats';
 import { emptyStatsData } from './generateEmptyData';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { ProjectId, Dates, Resolution } from '../../typings';
 import { Layout, BoxLayout } from '../typings';
 
-interface Props {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  resolution: IResolution;
-  layout?: Layout;
-}
+type Props = ProjectId &
+  Dates &
+  Resolution & {
+    layout?: Layout;
+  };
 
 const STATS_CONTAINER_LAYOUT: BoxLayout = {
   wide: { mt: '32px' },

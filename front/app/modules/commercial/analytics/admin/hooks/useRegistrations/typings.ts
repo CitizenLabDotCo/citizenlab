@@ -1,12 +1,7 @@
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { Dates, Resolution } from '../../typings';
 import { Stat } from '../typings';
 
-export interface QueryParameters {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-}
+export type QueryParameters = Dates & Resolution;
 
 // Response
 export type Response = {
