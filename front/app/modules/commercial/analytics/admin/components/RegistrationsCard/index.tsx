@@ -78,7 +78,7 @@ const RegistrationsCard = ({
           width="initial"
           display="flex"
           flexDirection={layout === 'narrow' ? 'row' : 'column'}
-          justifyContent={layout === 'narrow' ? 'center' : undefined}
+          justifyContent={layout === 'narrow' ? 'space-between' : undefined}
         >
           <Statistic
             name={formatMessage(messages.totalRegistrations)}
