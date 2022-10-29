@@ -7,7 +7,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { Button } from '@citizenlab/cl2-component-library';
 
@@ -24,7 +24,7 @@ interface Props {
 const Messenger = ({
   url,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const tenant = useAppConfiguration();
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);
@@ -36,8 +36,7 @@ const Messenger = ({
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
   if (!isNilOrError(tenant)) {
-    const facebookAppId =
-      tenant.data.attributes.settings.facebook_login?.app_id;
+    const facebookAppId = tenant.attributes.settings.facebook_login?.app_id;
     const messengerHref = facebookAppId
       ? `fb-messenger://share/?link=${url}&app_id=${facebookAppId}`
       : null;
@@ -50,7 +49,7 @@ const Messenger = ({
           bgColor={colors.facebookMessenger}
           width="40px"
           height="40px"
-          icon="messenger"
+          icon="facebook-messenger"
           iconSize="20px"
         />
       );

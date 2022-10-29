@@ -1,82 +1,74 @@
+import {
+  TSignUpStep,
+  TSignUpStepConfigurationObject,
+} from 'components/SignUpIn/SignUp';
+import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
+import { Moment } from 'moment';
 import React, {
-  MouseEvent,
-  KeyboardEvent,
   FunctionComponent,
+  KeyboardEvent,
+  MouseEvent,
   ReactElement,
 } from 'react';
 
-import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
-import {
-  TSignUpStepConfigurationObject,
-  TSignUpStep,
-} from 'components/SignUpIn/SignUp';
-
-import PageLoading from 'components/UI/PageLoading';
 import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
+import PageLoading from 'components/UI/PageLoading';
 
+import { OutletRenderProps } from 'components/Outlet';
+import { ITabItem } from 'components/UI/Tabs';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
-import { ITabItem } from 'components/UI/Tabs';
-import { OutletRenderProps } from 'components/Outlet';
-import { mergeWith, castArray, clamp, omitBy, isNil } from 'lodash-es';
 
-import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { ParticipationMethod } from 'services/participationContexts';
-import {
-  CellConfiguration,
-  FormikSubmitHandler,
-  InsertConfigurationOptions,
-  ITab,
-  MessageDescriptor,
-  Multiloc,
-  Locale,
-  CLErrors,
-} from 'typings';
-import { LatLngTuple } from 'leaflet';
+import { ManagerType } from 'components/admin/PostManager';
+import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
+import { IResolution } from 'components/admin/ResolutionControl';
+import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
-import { IUserData } from 'services/users';
-import { MessageValue } from 'react-intl';
+import { TVerificationStep } from 'components/Verification/verificationModalEvents';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
+import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
+import { Localize } from 'hooks/useLocalize';
+import { LatLngTuple } from 'leaflet';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import {
   AppConfigurationFeature,
   CustomizedButtonConfig,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
-import {
-  THomepageBannerLayout,
-  IHomepageSettingsAttributes,
-} from 'services/homepageSettings';
-import { ManagerType } from 'components/admin/PostManager';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { TVerificationMethod } from 'services/verificationMethods';
-import { TVerificationStep } from 'components/Verification/verificationModalEvents';
-import { IPhaseData } from 'services/phases';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
-import { GetLocaleChildProps } from 'resources/GetLocale';
 import { ICommentData } from 'services/comments';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
-import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { GetIdeaChildProps } from 'resources/GetIdea';
+import { IGroupDataAttributes, MembershipType } from 'services/groups';
+import { THomepageBannerLayout } from 'services/homepageSettings';
+import { TNotificationData } from 'services/notifications';
 import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
-import { TNotificationData } from 'services/notifications';
-import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
-import { AuthProvider } from 'components/SignUpIn/AuthProviders';
-import { Localize } from 'hooks/useLocalize';
-import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import { ParticipationMethod } from 'services/participationContexts';
+import { IPhaseData } from 'services/phases';
+import { IUserData } from 'services/users';
+import { TVerificationMethod } from 'services/verificationMethods';
+import {
+  CellConfiguration,
+  InsertConfigurationOptions,
+  ITab,
+  Locale,
+  Multiloc,
+} from 'typings';
+import { IntlFormatters } from 'react-intl';
 
 export type ITabsOutlet = {
-  formatMessage: (
-    messageDescriptor: MessageDescriptor,
-    values?: { [key: string]: MessageValue } | undefined
-  ) => string;
+  formatMessage: IntlFormatters['formatMessage'];
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
@@ -161,7 +153,7 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.users.form': {
     type: GroupCreationModal;
-    onSubmit: FormikSubmitHandler<NormalFormValues>;
+    onSubmit: (values: NormalFormValues) => void;
     isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.header': {
@@ -170,7 +162,7 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersGroup.form': {
     initialValues: IGroupDataAttributes;
     type: GroupCreationModal;
-    onSubmit: FormikSubmitHandler<NormalFormValues>;
+    onSubmit: (values: NormalFormValues) => void;
     isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.UsersGroup.header': {
@@ -184,6 +176,13 @@ export interface OutletsPropertyMap {
     endAt: string | null;
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
+  };
+  'app.containers.Admin.dashboard.summary.postStatus': {
+    projectId: string | undefined;
+    startAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null | undefined;
+    resolution: IResolution;
+    onMount: () => void;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
@@ -319,7 +318,7 @@ export interface OutletsPropertyMap {
     isVerified: boolean;
   };
   'app.containers.App.modals': { onMounted: (id: string) => void };
-  'app.containers.LandingPage.onboardingCampaigns': {
+  'app.containers.HomePage.onboardingCampaigns': {
     onboardingCampaigns: IOnboardingCampaigns;
     contentTimeout: number;
     contentDelay: number;
@@ -354,45 +353,17 @@ export interface OutletsPropertyMap {
     projectFolderId: string;
     className?: string;
   };
-  'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.Events': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.settings.customize.AllInput': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.initiatives.settings.EnableSwitch': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.settings.customize.headerSectionStart': {
-    homepageSettings: IHomepageSettingsAttributes;
-    handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
-    ) => void;
-  };
-  'app.containers.Admin.settings.customize.headerSectionEnd': {
-    homepageSettings: IHomepageSettingsAttributes;
-    handleOnChange: (
-      settingKey: keyof IHomepageSettingsAttributes,
-      settingValue: any
-    ) => void;
-    errors: CLErrors | null;
-  };
-  'app.containers.LandingPage.SignedOutHeader.index': {
+  'app.containers.HomePage.EventsWidget': Record<string, any>;
+  'app.containers.HomePage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
   };
-  'app.containers.Admin.settings.policies.start': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
   'app.containers.Admin.pages-menu.index': Record<string, any>;
   'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
-  'app.containers.LandingPage.SignedOutHeader.CTA': {
+  'app.containers.HomePage.SignedOutHeader.CTA': {
     buttonStyle: BannerButtonStyle;
     signUpIn: (event: MouseEvent | KeyboardEvent) => void;
   };
-  'app.containers.LandingPage.SignedInHeader.CTA': {
+  'app.containers.HomePage.SignedInHeader.CTA': {
     customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
   };
@@ -404,6 +375,10 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
+  'app.components.PageForm.index.top': {
+    pageId: string | null;
+    navbarItemId: string | null;
+  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

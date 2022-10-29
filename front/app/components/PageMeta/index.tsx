@@ -4,8 +4,8 @@ import { Helmet } from 'react-helmet';
 import { isError } from 'lodash-es';
 
 // i18n
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -20,7 +20,7 @@ interface Props {
   descriptionMessage: MessageDescriptor;
 }
 
-const PageMeta = React.memo<Props & InjectedIntlProps>(
+const PageMeta = React.memo<Props & WrappedComponentProps>(
   ({ intl, titleMessage, descriptionMessage }) => {
     const authUser = useAuthUser();
     const tenantLocales = useAppConfigurationLocales();

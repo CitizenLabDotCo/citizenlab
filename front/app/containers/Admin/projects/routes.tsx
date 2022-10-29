@@ -15,6 +15,12 @@ const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(() => import('./project/permissions'));
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
+const AdminProjectsSurvey = lazy(
+  () => import('../formBuilder/containers/projects/forms')
+);
+const AdminProjectsSurveyEdit = lazy(
+  () => import('../formBuilder/containers/projects/forms/edit')
+);
 const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
 const AdminProjectVolunteering = lazy(() => import('./project/volunteering'));
@@ -170,12 +176,28 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
+            path: 'native-survey',
+            element: <AdminProjectsSurvey />,
+          },
+          {
+            path: 'native-survey/results',
+            element: <AdminProjectsSurvey />,
+          },
+          {
             path: 'volunteering/phases/:phaseId/causes/new',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringNew />
               </PageLoading>
             ),
+          },
+          {
+            path: 'native-survey/edit',
+            element: <AdminProjectsSurveyEdit />,
+          },
+          {
+            path: 'phases/:phaseId/native-survey/edit',
+            element: <AdminProjectsSurveyEdit />,
           },
           {
             path: 'volunteering/causes/:causeId',

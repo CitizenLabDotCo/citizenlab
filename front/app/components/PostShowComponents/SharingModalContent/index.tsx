@@ -28,7 +28,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { PostType } from 'resources/GetPost';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
@@ -39,8 +39,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-
-import rocket from './rocket.png';
+import rocket from 'assets/img/rocket.png';
 
 interface InputProps {
   postType: PostType;
@@ -65,7 +64,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class SharingModalContent extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized,
+  Props & WrappedComponentProps & InjectedLocalized,
   State
 > {
   componentDidMount() {
@@ -97,12 +96,9 @@ class SharingModalContent extends PureComponent<
 
   getIdeaMessages = () => {
     const { project, phases } = this.props;
-    let emailSharingSubject: ReactIntl.FormattedMessage.MessageDescriptor | null =
-      null;
-    let emailSharingBody: ReactIntl.FormattedMessage.MessageDescriptor | null =
-      null;
-    let whatsAppMessage: ReactIntl.FormattedMessage.MessageDescriptor | null =
-      null;
+    let emailSharingSubject: MessageDescriptor | null = null;
+    let emailSharingBody: MessageDescriptor | null = null;
+    let whatsAppMessage: MessageDescriptor | null = null;
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
@@ -191,7 +187,7 @@ class SharingModalContent extends PureComponent<
             {title}
           </Title>
           <Text
-            color="text"
+            color="textPrimary"
             mt="12px"
             mb="36px"
             fontSize={'m'}
@@ -240,9 +236,7 @@ class SharingModalContent extends PureComponent<
   }
 }
 
-const SharingModalContentWithHoCs = injectIntl<Props>(
-  localize(SharingModalContent)
-);
+const SharingModalContentWithHoCs = injectIntl(localize(SharingModalContent));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

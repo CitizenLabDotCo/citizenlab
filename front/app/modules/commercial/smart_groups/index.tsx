@@ -1,7 +1,6 @@
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import React, { ReactNode } from 'react';
-import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { FormikSubmitHandler } from 'typings';
+import { MembershipType } from 'services/groups';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import HeaderIcon from './components/HeaderIcon';
 
@@ -11,6 +10,7 @@ import SmartGroupType, {
   SmartGroupTypeProps,
 } from './components/SmartGroupType';
 import RulesGroupFormWithValidation from './containers/RulesGroupFormWithValidation';
+import { RulesFormValues } from './containers/RulesGroupFormWithValidation/RulesGroupForm';
 
 interface RenderOnTypeProps {
   type: MembershipType;
@@ -36,9 +36,9 @@ const ModalHeaderOutlet = ({ type }: ModalHeaderOutletProps) => (
 
 interface ModalFormOutletProps {
   type: MembershipType;
-  onSubmit: FormikSubmitHandler<NormalFormValues>;
+  onSubmit: (values: NormalFormValues) => Promise<void>;
   isVerificationEnabled: boolean;
-  initialValues: IGroupDataAttributes;
+  initialValues: RulesFormValues;
 }
 
 const ModalFormOutlet = ({

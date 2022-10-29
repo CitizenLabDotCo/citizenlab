@@ -4,7 +4,7 @@ import { combineLatest } from 'rxjs';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import T from 'components/T';
@@ -23,7 +23,7 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import { Tooltip, LabelList } from 'recharts';
+import { Tooltip } from 'recharts';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
@@ -83,7 +83,7 @@ interface InputProps {
   className?: string;
 }
 
-type Props = InputProps & InjectedIntlProps & InjectedLocalized;
+type Props = InputProps & WrappedComponentProps & InjectedLocalized;
 
 interface TooltipProps {
   payload?: { name?: string; value?: string; payload?: { total: number } }[];
@@ -104,7 +104,7 @@ const CustomTooltip = ({
         <h4 style={{ fontWeight: 600 }}>{label}</h4>
         <div>{`${payload[0].name} : ${payload[0].value}`}</div>
         <Box
-          color={colors.label}
+          color={colors.textSecondary}
         >{`${totalLabel} : ${payload[0]?.payload?.total}`}</Box>
       </Box>
     );
@@ -215,7 +215,7 @@ const CustomFieldsGraph = ({
                 fieldName: localize(customField.attributes.title_multiloc),
               })}
               svgNode={currentChartRef}
-              xlsxEndpoint={xlsxEndpoint}
+              xlsx={{ endpoint: xlsxEndpoint }}
               currentProjectFilter={currentProject}
               startAt={startAt}
               endAt={endAt}
@@ -225,16 +225,20 @@ const CustomFieldsGraph = ({
         <BarChart
           height={serie && serie.length > 1 ? serie.length * 50 : 100}
           data={serie}
+          mapping={{
+            category: 'name',
+            length: 'participants',
+          }}
+          bars={{ name: formatMessage(messages.participants), size: sizes.bar }}
           layout="horizontal"
           innerRef={currentChartRef}
           margin={{
             ...DEFAULT_BAR_CHART_MARGIN,
             left: 20,
           }}
-          bars={{ name: formatMessage(messages.participants), size: sizes.bar }}
-          mapping={{ length: 'participants' }}
           yaxis={{ width: 150, tickLine: false }}
-          renderTooltip={() => (
+          labels
+          tooltip={() => (
             <>
               <Tooltip
                 content={({ active, payload, label }: TooltipProps) => (
@@ -248,13 +252,10 @@ const CustomFieldsGraph = ({
               />
             </>
           )}
-          renderLabels={(props) => <LabelList {...props} />}
         />
       </GraphCardInner>
     </GraphCard>
   );
 };
 
-export default injectLocalize<InputProps>(
-  injectIntl<InputProps & InjectedLocalized>(CustomFieldsGraph)
-);
+export default injectLocalize<InputProps>(injectIntl(CustomFieldsGraph));

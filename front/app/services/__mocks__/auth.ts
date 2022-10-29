@@ -21,3 +21,5 @@ export const authUserStream = jest.fn(() => {
     observable: authUserObservable,
   };
 });
+
+export const authApiEndpoint = '/web_api/v1/users/me';

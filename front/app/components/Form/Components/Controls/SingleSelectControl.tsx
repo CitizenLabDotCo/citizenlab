@@ -12,6 +12,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 import VerificationIcon from '../VerificationIcon';
+import { getOptions } from './controlUtils';
 
 const StyledSelect = styled(Select)`
   flex-grow: 1;
@@ -28,13 +29,7 @@ const SingleSelectControl = ({
   id,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const options =
-    schema?.oneOf
-      ?.map((o) => ({
-        value: o.const,
-        label: o.title || o.const,
-      }))
-      .filter((e) => e.value && e.label) || null;
+  const options = getOptions(schema, 'single');
 
   return (
     <>

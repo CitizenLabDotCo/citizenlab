@@ -6,8 +6,8 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -19,12 +19,12 @@ import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCat
 
 const ScanContainer = styled.div`
   width: 100%;
-  background-color: ${colors.clBlueLightest};
+  background-color: ${colors.teal100};
   padding: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   text-align: left;
   border-radius: 3px;
   position: relative;
@@ -70,7 +70,7 @@ type ScanCategoryProps = {
   triggerScan: () => void;
   onClose: () => void;
   cancelScan: () => void;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const ScanCategory = ({
   intl: { formatMessage },
@@ -141,7 +141,7 @@ const ScanCategory = ({
       <ProgressBar
         data-testid="insightsScanCategory-progress"
         isInProgress={isInProgress}
-        bgColor={colors.adminTextColor}
+        bgColor={colors.primary}
         width={`${progress * 100}%`}
         position="absolute"
         top="0"
@@ -158,6 +158,7 @@ const ScanCategory = ({
       </Box>
       {scanCategoryMessagesMap[status].button && (
         <Button
+          className="intercom-insights-edit-scan-button"
           buttonStyle={
             status === 'isScanning' ? 'admin-dark-outlined' : 'admin-dark'
           }

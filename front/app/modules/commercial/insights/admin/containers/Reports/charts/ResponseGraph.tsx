@@ -3,16 +3,17 @@ import React, { memo } from 'react';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'components/admin/Graphs/styling';
+import { legacyColors } from 'components/admin/Graphs/styling';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   IGraphUnit,
   GraphCardHeader,
@@ -34,22 +35,12 @@ interface Props {
   customId?: string;
 }
 
-const StyledBarChart = styled(BarChart)`
-  .recharts-wrapper {
-    @media print {
-      margin: 0 auto;
-    }
-    padding: 20px;
-    padding-top: 0px;
-  }
-`;
-
 const StyledGraphCardInner = styled(GraphCardInner)`
   border: none;
 `;
 
 export const ResponseGraph = memo(
-  ({ graphTitleString, serie }: Props & InjectedIntlProps) => {
+  ({ graphTitleString, serie }: Props & WrappedComponentProps) => {
     const currentChart: React.RefObject<any> = React.createRef();
 
     const NameLabel = (props) => {
@@ -61,7 +52,7 @@ export const ResponseGraph = memo(
             y={y}
             dx={30}
             dy={-6}
-            fill={colors.chartLabel}
+            fill={legacyColors.chartLabel}
             textAnchor="left"
           >
             {value}
@@ -79,7 +70,7 @@ export const ResponseGraph = memo(
             y={y}
             dx={5}
             dy={-6}
-            fill={colors.chartLabel}
+            fill={legacyColors.chartLabel}
             textAnchor="right"
             fontWeight={'800'}
           >
@@ -97,31 +88,37 @@ export const ResponseGraph = memo(
             <ReportExportMenu svgNode={currentChart} name={graphTitleString} />
           )}
         </GraphCardHeader>
-        <StyledBarChart
-          height={serie && serie?.length > 1 ? serie.length * 50 : 100}
-          data={serie}
-          layout="horizontal"
-          innerRef={currentChart}
-          margin={{ right: 20, top: 10 }}
-          bars={{ name: 'Count', size: 5 }}
-          xaxis={{ hide: true }}
-          yaxis={{ width: 150, tickLine: false, hide: true }}
-          renderLabels={() => (
-            <>
-              <LabelList
-                dataKey="name"
-                position="top"
-                content={<NameLabel />}
-              />
-              <LabelList
-                dataKey="value"
-                position="insideTopRight"
-                offset={-20}
-                content={<ValueLabel />}
-              />
-            </>
-          )}
-        />
+        <Box p="20px" pt="0px">
+          <BarChart
+            height={serie && serie?.length > 1 ? serie.length * 50 : 100}
+            data={serie}
+            mapping={{
+              category: 'name',
+              length: 'value',
+            }}
+            bars={{ name: 'Count', size: 5 }}
+            layout="horizontal"
+            innerRef={currentChart}
+            margin={{ right: 20, top: 10 }}
+            xaxis={{ hide: true }}
+            yaxis={{ width: 150, tickLine: false, hide: true }}
+            labels={() => (
+              <>
+                <LabelList
+                  dataKey="name"
+                  position="top"
+                  content={<NameLabel />}
+                />
+                <LabelList
+                  dataKey="value"
+                  position="insideTopRight"
+                  offset={-20}
+                  content={<ValueLabel />}
+                />
+              </>
+            )}
+          />
+        </Box>
       </StyledGraphCardInner>
     );
   }

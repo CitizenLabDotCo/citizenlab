@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
 
 // components
-import ChartFilters from '../components/ChartFilters';
+import ChartFilters from './ChartFilters';
 import { GraphsContainer, ControlBar } from 'components/admin/GraphWrappers';
 import TimeControl from '../components/TimeControl';
 import Outlet from 'components/Outlet';

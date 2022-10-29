@@ -24,7 +24,7 @@ const GoBackButton = memo(
   ({ projectId, className, insideModal, deselectIdeaOnMap }: Props) => {
     const project = useProject({ projectId });
     const localize = useLocalize();
-    const isSmallTablet = useBreakpoint('smallTablet');
+    const isPhone = useBreakpoint('phone');
 
     const projectExists = !isNilOrError(project);
     const deselectIdeaCallbackExists = !isNilOrError(deselectIdeaOnMap);
@@ -55,14 +55,15 @@ const GoBackButton = memo(
         <Button
           className={className}
           id="e2e-idea-other-link"
-          icon="circle-arrow-left"
+          icon="arrow-left-circle"
           onClick={onGoBack}
           buttonStyle="text"
           iconSize="26px"
           padding="0"
           textDecorationHover="underline"
+          whiteSpace="normal"
         >
-          <Box as="span" display={isSmallTablet ? 'none' : 'block'} aria-hidden>
+          <Box as="span" display={isPhone ? 'none' : 'block'} aria-hidden>
             {localize(project.attributes.title_multiloc)}
           </Box>
           <ScreenReaderOnly>

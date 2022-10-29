@@ -15,7 +15,7 @@ const timeout = 300;
 
 const Container = styled.div`
   background: #fff;
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divider};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
@@ -26,12 +26,10 @@ const Title = styled.div`
 
 const TitleIcon = styled(Icon)`
   flex: 0 0 16px;
-  width: 16px;
-  height: 23px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 13px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex: 0 0 14px;
     width: 14px;
     height: 20px;
@@ -39,7 +37,7 @@ const TitleIcon = styled(Icon)`
 `;
 
 const ContentLabel = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-right: 6px;
@@ -59,7 +57,7 @@ const ContentToggleButton = styled.button`
   padding-right: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: 24px;
   font-weight: 600;
@@ -67,16 +65,14 @@ const ContentToggleButton = styled.button`
 
   &:hover {
     ${ContentLabel} {
-      color: ${darken(0.2, colors.label)};
+      color: ${darken(0.2, colors.textSecondary)};
     }
   }
 `;
 
 const ArrowIcon = styled(Icon)`
-  flex: 0 0 13px;
-  width: 13px;
-  height: 13px;
-  fill: ${colors.label};
+  flex: 0 0 24px;
+  fill: ${colors.textSecondary};
   transform: rotate(90deg);
   transition: all 0.2s linear;
 
@@ -93,7 +89,7 @@ const Wrapper = styled.div<{ contentBackgroundColor?: string }>`
   background-color: ${(props) => props.contentBackgroundColor || '#fff'};
   margin-top: 1px;
 
-  ${media.largePhone`
+  ${media.phone`
     padding: 30px 20px;
   `}
 
@@ -157,7 +153,7 @@ const CollapsibleBox = memo<Props>((props) => {
           {titleIconName && <TitleIcon name={titleIconName} />}
           <ContentLabel>{title}</ContentLabel>
         </Title>
-        <ArrowIcon name="dropdown" className={showContent ? 'open' : ''} />
+        <ArrowIcon name="chevron-down" className={showContent ? 'open' : ''} />
       </ContentToggleButton>
       <CSSTransition
         classNames="content"

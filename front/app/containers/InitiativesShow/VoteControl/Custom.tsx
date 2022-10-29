@@ -22,7 +22,7 @@ const CountDownWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -40,12 +40,12 @@ const VoteText = styled.div`
 
 const VoteTextLeft = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorMain};
+  color: ${(props) => props.theme.colors.tenantPrimary};
 `;
 
 const VoteTextRight = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
 `;
 
 const StyledButton = styled(Button)`
@@ -100,7 +100,7 @@ class Custom extends PureComponent<Props & { theme: any }> {
         </VoteCounter>
         {!userVoted && (
           <StyledButton
-            icon="upvote"
+            icon="vote-up"
             buttonStyle="primary"
             onClick={this.handleOnVote}
           >

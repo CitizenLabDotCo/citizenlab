@@ -54,7 +54,7 @@ const Container = styled.div<{ windowHeight: string }>`
     }
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     height: ${(props) =>
       `calc(${props.windowHeight} - ${props.theme.mobileMenuHeight}px)`};
     top: 0;

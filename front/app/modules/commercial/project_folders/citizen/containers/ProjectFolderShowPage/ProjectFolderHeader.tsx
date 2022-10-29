@@ -33,7 +33,7 @@ const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
   right: 25px;
   bottom: 20px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     right: 10px;
     top: 10px;
   `};

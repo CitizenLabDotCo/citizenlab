@@ -13,7 +13,7 @@ import useProject from 'hooks/useProject';
 import T from 'components/T';
 import messages from 'containers/ProjectsShowPage/messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // style
 import { Box } from '@citizenlab/cl2-component-library';
@@ -25,7 +25,7 @@ interface Props {
   close: () => void;
 }
 
-const ProjectSharingModal = memo<Props & InjectedIntlProps>(
+const ProjectSharingModal = memo<Props & WrappedComponentProps>(
   ({ projectId, className, opened, close, intl: { formatMessage } }) => {
     const authUser = useAuthUser();
     const project = useProject({ projectId });

@@ -13,7 +13,7 @@ import useProjectFolder from '../../../hooks/useProjectFolder';
 import T from 'components/T';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // style
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const ProjectFolderSharingModal = memo<
-  Props & InjectedIntlProps & InjectedLocalized
+  Props & WrappedComponentProps & InjectedLocalized
 >(({ projectFolderId, className, opened, close, intl: { formatMessage } }) => {
   const authUser = useAuthUser();
   const projectFolder = useProjectFolder({ projectFolderId });

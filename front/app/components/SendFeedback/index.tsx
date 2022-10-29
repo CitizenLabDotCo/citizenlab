@@ -10,11 +10,11 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // import i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 const SendFeedbackText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-decoration: underline;
@@ -22,9 +22,7 @@ const SendFeedbackText = styled.span`
 `;
 
 const SendFeedbackIcon = styled(Icon)`
-  fill: ${colors.label};
-  width: 22px;
-  height: 22px;
+  fill: ${colors.textSecondary};
   transition: all 100ms ease-out;
   margin-right: 8px;
 
@@ -49,38 +47,36 @@ const Container = styled.a`
   }
 `;
 
-interface Props {
+type Props = {
   showFeedbackText: boolean;
   className?: string;
-}
+} & WrappedComponentProps;
 
-const SendFeedbackComponent = React.memo<Props>(
-  (props: Props & InjectedIntlProps) => {
-    const {
-      showFeedbackText,
-      className,
-      intl: { formatMessage },
-    } = props;
+const SendFeedbackComponent = React.memo<Props>((props: Props) => {
+  const {
+    showFeedbackText,
+    className,
+    intl: { formatMessage },
+  } = props;
 
-    return (
-      <Container
-        className={className}
-        target="_blank"
-        href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
-      >
-        <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
-        <SendFeedbackText>
-          {showFeedbackText ? (
-            <FormattedMessage {...messages.sendFeedback} />
-          ) : (
-            <ScreenReaderOnly>
-              {formatMessage(messages.sendFeedback)}
-            </ScreenReaderOnly>
-          )}
-        </SendFeedbackText>
-      </Container>
-    );
-  }
-);
+  return (
+    <Container
+      className={className}
+      target="_blank"
+      href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
+    >
+      <SendFeedbackIcon name="question-bubble" className="send-feedback-icon" />
+      <SendFeedbackText>
+        {showFeedbackText ? (
+          <FormattedMessage {...messages.sendFeedback} />
+        ) : (
+          <ScreenReaderOnly>
+            {formatMessage(messages.sendFeedback)}
+          </ScreenReaderOnly>
+        )}
+      </SendFeedbackText>
+    </Container>
+  );
+});
 
 export default injectIntl(SendFeedbackComponent);

@@ -47,11 +47,11 @@ export const isDestinationActive = (
   tenant: IAppConfigurationData,
   user?: IUserData | null
 ): boolean => {
-  if (config?.feature_flag && !isFeatureActive(config.feature_flag, tenant)) {
+  if (config.feature_flag && !isFeatureActive(config.feature_flag, tenant)) {
     return false;
   }
 
-  if (config?.hasPermission && !config.hasPermission(user || undefined)) {
+  if (config.hasPermission && !config.hasPermission(user || undefined)) {
     return false;
   }
 

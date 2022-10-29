@@ -61,7 +61,12 @@ resource 'User Custom Fields' do
           updated_at: custom_field.updated_at.as_json
         },
         relationships: {
-          current_ref_distribution: expected_ref_distribution_linkage
+          current_ref_distribution: expected_ref_distribution_linkage,
+          options: {
+            data: custom_field.options.map do |option|
+              { id: option.id, type: 'custom_field_option' }
+            end
+          }
         }
       }.deep_symbolize_keys
     end

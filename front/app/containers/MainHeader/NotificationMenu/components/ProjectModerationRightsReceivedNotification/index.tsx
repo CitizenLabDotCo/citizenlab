@@ -25,7 +25,7 @@ const ProjectModerationRightsReceivedNotification = memo<Props>((props) => {
     <NotificationWrapper
       linkTo={adminProjectsProjectPath(notification.attributes.project_id)}
       timing={notification.attributes.created_at}
-      icon="admin"
+      icon="shield-checkered"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage

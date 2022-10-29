@@ -121,6 +121,15 @@ resource 'Volunteering Causes' do
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :image)).to be_present
       end
+
+      describe do
+        example 'The image can be removed' do
+          cause.update!(image: Rails.root.join('spec/fixtures/header.jpg').open)
+          expect(cause.reload.image_url).to be_present
+          do_request cause: { image: nil }
+          expect(cause.reload.image_url).to be_nil
+        end
+      end
     end
 
     patch 'web_api/v1/causes/:id/reorder' do

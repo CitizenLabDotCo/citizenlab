@@ -24,7 +24,7 @@ const InitiativesIcon = styled(Icon)`
   width: 42px;
   height: 42px;
   background-color: rgba(4, 77, 108, 0.06);
-  fill: ${colors.adminTextColor};
+  fill: ${colors.primary};
   border-radius: 50%;
   padding: 10px;
   margin-right: 17px;
@@ -36,18 +36,18 @@ const PostedByWrapper = styled.div`
 `;
 
 const PostedByText = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   margin-bottom: 3px;
 `;
 
 const AboutInitiativesLink = styled(Link)`
   font-size: ${fontSizes.s}px;
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
   text-decoration: underline;
 
   &:hover {
-    color: ${darken(0.2, colors.clGreyOnGreyBackground)};
+    color: ${darken(0.2, colors.coolGrey600)};
     text-decoration: underline;
   }
 `;

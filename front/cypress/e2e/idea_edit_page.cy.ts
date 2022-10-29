@@ -100,6 +100,8 @@ describe('Idea edit page', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
+    cy.intercept(`**/ideas/${ideaId}`).as('ideaRequest');
+    cy.wait('@ideaRequest');
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
@@ -114,6 +116,20 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(
       `${firstName} ${lastName}`
     );
+  });
+
+  it('has a working idea edit form for author field', () => {
+    cy.setAdminLoginCookie();
+    // Visit idea edit page as Admin
+    cy.visit(`/ideas/edit/${ideaId}`);
+    // Search and select an author
+    cy.get('#e2e-user-select').click().type(`${lastName}, ${firstName}{enter}`);
+    // Save
+    cy.get('form').submit();
+    // Reload idea edit page
+    cy.visit(`/ideas/edit/${ideaId}`);
+    // Check that author field has correct value
+    cy.contains(`${lastName}, ${firstName}`).should('exist');
   });
 
   after(() => {

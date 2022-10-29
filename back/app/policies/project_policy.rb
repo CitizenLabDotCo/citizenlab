@@ -62,6 +62,18 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def survey_results?
+    active_moderator?
+  end
+
+  def submission_count?
+    survey_results?
+  end
+
+  def delete_inputs?
+    record.continuous? && active_moderator?
+  end
+
   def create?
     active? && admin?
   end

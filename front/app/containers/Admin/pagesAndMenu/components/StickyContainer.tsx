@@ -3,7 +3,7 @@ import { media, colors } from 'utils/styleUtils';
 
 const StickyContainer = styled.div`
   background-color: #fcfcfc;
-  border-top: 1px solid ${colors.separation};
+  border-top: 1px solid ${colors.divider};
 
   height: 78px;
   width: calc(100% + 8rem);
@@ -17,7 +17,7 @@ const StickyContainer = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     width: calc(100% + 4rem);
     margin-left: -2rem;
     padding-left: 2rem;

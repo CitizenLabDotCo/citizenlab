@@ -16,7 +16,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
@@ -31,7 +31,7 @@ const Container = styled.div`
   position: relative;
   z-index: 2;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
     padding-bottom: 35px;
   `}
@@ -64,7 +64,7 @@ const HeaderImage = styled(Image)`
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 160px;
     margin-bottom: 20px;
   `}
@@ -76,7 +76,7 @@ const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
   margin-top: ${(props) => (props.hasHeaderImage ? '-20px' : '0px')};
   margin-bottom: 25px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -86,7 +86,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectHeader = memo<Props & InjectedIntlProps>(
+const ProjectHeader = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const [moduleActive, setModuleActive] = useState(false);
 

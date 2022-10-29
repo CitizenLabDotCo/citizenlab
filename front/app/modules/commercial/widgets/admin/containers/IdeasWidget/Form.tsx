@@ -1,20 +1,22 @@
-import React, { PureComponent } from 'react';
-import { Form, Field, InjectedFormikProps } from 'formik';
+import React, { useState } from 'react';
 
 // Components
-import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import { Section, SectionField } from 'components/admin/Section';
-import { default as ErrorxBox } from 'components/UI/Error';
-import FormikInput from 'components/UI/FormikInput';
 import { Label } from '@citizenlab/cl2-component-library';
 import Collapse from 'components/UI/Collapse';
-import FormikToggle from 'components/UI/FormikToggle';
-import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
-import FormikSelect from 'components/UI/FormikSelect';
+
+// form
+import { useFormContext } from 'react-hook-form';
+import Toggle from 'components/HookForm/Toggle';
+import Select from 'components/HookForm/Select';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
+import Input from 'components/HookForm/Input';
+import ColorPicker from 'components/HookForm/ColorPicker';
+import Feedback from 'components/HookForm/Feedback';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from '../../messages';
 
@@ -45,8 +47,6 @@ const StyledSection = styled(Section)`
   background: #fff;
 `;
 
-export interface Props {}
-
 export interface FormValues {
   width: number;
   height: number;
@@ -69,414 +69,287 @@ export interface FormValues {
   limit: number;
 }
 
-interface State {
-  openedCollapse: 'dimensions' | 'ideas' | 'style' | 'headerAndFooter' | null;
-}
+const WidgetForm = ({
+  intl: { formatMessage },
+  localize,
+}: WrappedComponentProps & InjectedLocalized) => {
+  const methods = useFormContext();
+  const [openedCollapse, setOpenedCollapse] = useState<
+    'dimensions' | 'ideas' | 'style' | 'headerAndFooter' | null
+  >(null);
 
-class WidgetForm extends PureComponent<
-  InjectedFormikProps<
-    Props & InjectedIntlProps & InjectedLocalized,
-    FormValues
-  >,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      openedCollapse: null,
-    };
-  }
-
-  resourcesToOptionList = (resources) => {
+  const resourcesToOptionList = (resources) => {
     return (
       resources &&
       resources.map((resource) => ({
-        label: this.props.localize(resource.attributes.title_multiloc),
+        label: localize(resource.attributes.title_multiloc),
         value: resource.id,
       }))
     );
   };
 
-  sortOptions = () => {
+  const sortOptions = () => {
     return [
       {
         value: 'trending',
-        label: this.props.intl.formatMessage(messages.sortTrending),
+        label: formatMessage(messages.sortTrending),
       },
       {
         value: 'popular',
-        label: this.props.intl.formatMessage(messages.sortPopular),
+        label: formatMessage(messages.sortPopular),
       },
       {
         value: 'new',
-        label: this.props.intl.formatMessage(messages.sortNewest),
+        label: formatMessage(messages.sortNewest),
       },
     ];
   };
 
-  relativeLinkOptions = (projects?: IProjectData[] | null) => {
+  const relativeLinkOptions = (projects?: IProjectData[] | null) => {
     return [
       {
         value: '/',
-        label: this.props.intl.formatMessage(messages.homepage),
+        label: formatMessage(messages.homepage),
       },
       ...(!projects
         ? []
         : projects.map((project) => ({
             value: `/projects/${project.attributes.slug}`,
-            label: this.props.localize(project.attributes.title_multiloc),
+            label: localize(project.attributes.title_multiloc),
           }))),
     ];
   };
 
-  handleCollapseToggle = (collapse) => () => {
-    this.setState({
-      openedCollapse: this.state.openedCollapse === collapse ? null : collapse,
-    });
+  const handleCollapseToggle = (collapse) => () => {
+    setOpenedCollapse(openedCollapse === collapse ? null : collapse);
   };
 
-  handleSubmit = () => {
-    this.props.handleSubmit();
-  };
+  return (
+    <>
+      <StyledCollapse
+        opened={openedCollapse === 'dimensions'}
+        onToggle={handleCollapseToggle('dimensions')}
+        label={<FormattedMessage {...messages.titleDimensions} />}
+      >
+        <StyledSection>
+          <SectionField>
+            <Feedback />
+          </SectionField>
+          <SectionField>
+            <Input
+              name="width"
+              type="number"
+              label={formatMessage(messages.fieldWidth)}
+            />
+          </SectionField>
+          <SectionField>
+            <Input
+              name="height"
+              type="number"
+              label={formatMessage(messages.fieldHeight)}
+            />
+          </SectionField>
 
-  render() {
-    const { errors, touched, values } = this.props;
-    const { openedCollapse } = this.state;
+          <SectionField>
+            <Input
+              name="fontSize"
+              type="number"
+              label={formatMessage(messages.fieldFontSize)}
+            />
+          </SectionField>
+        </StyledSection>
+      </StyledCollapse>
 
-    return (
-      <Form>
-        <StyledCollapse
-          opened={openedCollapse === 'dimensions'}
-          onToggle={this.handleCollapseToggle('dimensions')}
-          label={<FormattedMessage {...messages.titleDimensions} />}
-        >
+      <StyledCollapse
+        opened={openedCollapse === 'style'}
+        onToggle={handleCollapseToggle('style')}
+        label={<FormattedMessage {...messages.titleStyle} />}
+      >
+        <StyledSection>
+          <SectionField>
+            <Label htmlFor="siteBgColor">
+              <FormattedMessage {...messages.fieldSiteBackgroundColor} />
+            </Label>
+            <ColorPicker name="siteBgColor" />
+          </SectionField>
+          <SectionField>
+            <Label htmlFor="bgColor">
+              <FormattedMessage {...messages.fieldBackgroundColor} />
+            </Label>
+            <ColorPicker name="bgColor" />
+          </SectionField>
+          <SectionField>
+            <Label htmlFor="textColor">
+              <FormattedMessage {...messages.fieldTextColor} />
+            </Label>
+            <ColorPicker name="textColor" />
+          </SectionField>
+          <SectionField>
+            <Label htmlFor="accentColor">
+              <FormattedMessage {...messages.fieldAccentColor} />
+            </Label>
+            <ColorPicker name="accentColor" />
+          </SectionField>
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.fieldFont} />
+            </Label>
+            <Input name="font" type="text" />
+            <p>
+              <FormattedMessage
+                {...messages.fieldFontDescription}
+                values={{
+                  googleFontsLink: (
+                    <a
+                      href="https://fonts.google.com"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Google Fonts
+                    </a>
+                  ),
+                }}
+              />
+            </p>
+          </SectionField>
+        </StyledSection>
+      </StyledCollapse>
+
+      <StyledCollapse
+        opened={openedCollapse === 'headerAndFooter'}
+        onToggle={handleCollapseToggle('headerAndFooter')}
+        label={<FormattedMessage {...messages.titleHeaderAndFooter} />}
+      >
+        <>
           <StyledSection>
             <SectionField>
               <Label>
-                <FormattedMessage {...messages.fieldWidth} />
-              </Label>
-              <Field name="width" component={FormikInput} type="number" />
-              {touched.width && (
-                <ErrorxBox fieldName="width" apiErrors={errors.width as any} />
-              )}
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldHeight} />
-              </Label>
-              <Field name="height" component={FormikInput} type="number" />
-              {touched.height && (
-                <ErrorxBox
-                  fieldName="height"
-                  apiErrors={errors.height as any}
-                />
-              )}
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldFontSize} />
-              </Label>
-              <Field name="fontSize" component={FormikInput} type="number" />
-              {touched.fontSize && (
-                <ErrorxBox
-                  fieldName="fontSize"
-                  apiErrors={errors.fontSize as any}
-                />
-              )}
-            </SectionField>
-          </StyledSection>
-        </StyledCollapse>
-
-        <StyledCollapse
-          opened={openedCollapse === 'style'}
-          onToggle={this.handleCollapseToggle('style')}
-          label={<FormattedMessage {...messages.titleStyle} />}
-        >
-          <StyledSection>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldSiteBackgroundColor} />
-              </Label>
-              <Field name="siteBgColor" component={FormikColorPickerInput} />
-              {touched.siteBgColor && (
-                <ErrorxBox
-                  fieldName="siteBgColor"
-                  apiErrors={errors.siteBgColor as any}
-                />
-              )}
-            </SectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldBackgroundColor} />
-              </Label>
-              <Field name="bgColor" component={FormikColorPickerInput} />
-              {touched.bgColor && (
-                <ErrorxBox
-                  fieldName="bgColor"
-                  apiErrors={errors.bgColor as any}
-                />
-              )}
-            </SectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldTextColor} />
-              </Label>
-              <Field name="textColor" component={FormikColorPickerInput} />
-              {touched.textColor && (
-                <ErrorxBox
-                  fieldName="textColor"
-                  apiErrors={errors.textColor as any}
-                />
-              )}
-            </SectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldAccentColor} />
-              </Label>
-              <Field name="accentColor" component={FormikColorPickerInput} />
-              {touched.accentColor && (
-                <ErrorxBox
-                  fieldName="accentColor"
-                  apiErrors={errors.accentColor as any}
-                />
-              )}
-            </SectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldFont} />
-              </Label>
-              <Field name="font" component={FormikInput} />
-              <p>
-                <FormattedMessage
-                  {...messages.fieldFontDescription}
-                  values={{
-                    googleFontsLink: (
-                      <a
-                        href="https://fonts.google.com"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Google Fonts
-                      </a>
-                    ),
-                  }}
-                />
-              </p>
-              {touched.font && (
-                <ErrorxBox fieldName="font" apiErrors={errors.font as any} />
-              )}
-            </SectionField>
-          </StyledSection>
-        </StyledCollapse>
-
-        <StyledCollapse
-          opened={openedCollapse === 'headerAndFooter'}
-          onToggle={this.handleCollapseToggle('headerAndFooter')}
-          label={<FormattedMessage {...messages.titleHeaderAndFooter} />}
-        >
-          <>
-            <StyledSection>
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.fieldRelativeLink} />
-                </Label>
-                <GetProjects publicationStatuses={['published', 'archived']}>
-                  {(projects) =>
-                    projects && isNilOrError(projects) ? null : (
-                      <Field
-                        name="relativeLink"
-                        component={FormikSelect}
-                        options={this.relativeLinkOptions(
-                          projects.projectsList
-                        )}
-                        clearable={false}
-                        disabled={!values.showHeader && !values.showFooter}
-                      />
-                    )
-                  }
-                </GetProjects>
-                {touched.relativeLink && (
-                  <ErrorxBox
-                    fieldName="relativeLink"
-                    apiErrors={errors.relativeLink as any}
-                  />
-                )}
-              </SectionField>
-
-              <SectionField>
-                <Field
-                  name="showHeader"
-                  component={FormikToggle}
-                  label={<FormattedMessage {...messages.fieldShowHeader} />}
-                />
-                {touched.showHeader && (
-                  <ErrorxBox
-                    fieldName="showHeader"
-                    apiErrors={errors.showHeader as any}
-                  />
-                )}
-              </SectionField>
-
-              {values.showHeader && (
-                <Section>
-                  <SectionField>
-                    <Field
-                      name="showLogo"
-                      component={FormikToggle}
-                      label={<FormattedMessage {...messages.fieldShowLogo} />}
-                    />
-                    {touched.showLogo && (
-                      <ErrorxBox
-                        fieldName="showLogo"
-                        apiErrors={errors.showLogo as any}
-                      />
-                    )}
-                  </SectionField>
-                  <SectionField>
-                    <Label>
-                      <FormattedMessage {...messages.fieldHeaderText} />
-                    </Label>
-                    <Field
-                      name="headerText"
-                      component={FormikInput}
-                      type="text"
-                    />
-                    {touched.headerText && (
-                      <ErrorxBox
-                        fieldName="headerText"
-                        apiErrors={errors.headerText as any}
-                      />
-                    )}
-                  </SectionField>
-                  <SectionField>
-                    <Label>
-                      <FormattedMessage {...messages.fieldHeaderSubText} />
-                    </Label>
-                    <Field
-                      name="headerSubText"
-                      component={FormikInput}
-                      type="text"
-                    />
-                    {touched.headerSubText && (
-                      <ErrorxBox
-                        fieldName="headerSubText"
-                        apiErrors={errors.headerSubText as any}
-                      />
-                    )}
-                  </SectionField>
-                </Section>
-              )}
-            </StyledSection>
-
-            <StyledSection>
-              <SectionField>
-                <Field
-                  name="showFooter"
-                  component={FormikToggle}
-                  label={<FormattedMessage {...messages.fieldShowFooter} />}
-                />
-                {touched.showFooter && (
-                  <ErrorxBox
-                    fieldName="showFooter"
-                    apiErrors={errors.showFooter as any}
-                  />
-                )}
-              </SectionField>
-
-              {values.showFooter && (
-                <Section>
-                  <SectionField>
-                    <Label>
-                      <FormattedMessage {...messages.fieldButtonText} />
-                    </Label>
-                    <Field
-                      name="buttonText"
-                      component={FormikInput}
-                      type="text"
-                    />
-                    {touched.buttonText && (
-                      <ErrorxBox
-                        fieldName="buttonText"
-                        apiErrors={errors.buttonText as any}
-                      />
-                    )}
-                  </SectionField>
-                </Section>
-              )}
-            </StyledSection>
-          </>
-        </StyledCollapse>
-
-        <StyledCollapse
-          opened={openedCollapse === 'ideas'}
-          onToggle={this.handleCollapseToggle('ideas')}
-          label={<FormattedMessage {...messages.titleInputSelection} />}
-        >
-          <StyledSection>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldProjects} />
+                <FormattedMessage {...messages.fieldRelativeLink} />
               </Label>
               <GetProjects publicationStatuses={['published', 'archived']}>
                 {(projects) =>
                   projects && isNilOrError(projects) ? null : (
-                    <Field
-                      name="projects"
-                      component={FormikMultipleSelect}
-                      options={this.resourcesToOptionList(
-                        projects.projectsList
-                      )}
+                    <Select
+                      name="relativeLink"
+                      options={relativeLinkOptions(projects.projectsList)}
+                      disabled={
+                        !methods.getValues('showHeader') &&
+                        !methods.getValues('showFooter')
+                      }
                     />
                   )
                 }
               </GetProjects>
             </SectionField>
-
             <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldTopics} />
-              </Label>
-              <GetTopics>
-                {(topics) =>
-                  topics && isNilOrError(topics) ? null : (
-                    <Field
-                      name="topics"
-                      component={FormikMultipleSelect}
-                      options={this.resourcesToOptionList(topics)}
-                    />
-                  )
-                }
-              </GetTopics>
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldSort} />
-              </Label>
-              <Field
-                name="sort"
-                component={FormikSelect}
-                clearable={false}
-                options={this.sortOptions()}
+              <Toggle
+                name="showHeader"
+                label={<FormattedMessage {...messages.fieldShowHeader} />}
               />
             </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldInputsLimit} />
-              </Label>
-              <Field name="limit" component={FormikInput} type="number" />
-              {touched.limit && (
-                <ErrorxBox fieldName="limit" apiErrors={errors.limit as any} />
-              )}
-            </SectionField>
+            {methods.getValues('showHeader') && (
+              <Section>
+                <SectionField>
+                  <Toggle
+                    name="showLogo"
+                    label={<FormattedMessage {...messages.fieldShowLogo} />}
+                  />
+                </SectionField>
+                <SectionField>
+                  <Input
+                    type="text"
+                    name="headerText"
+                    label={<FormattedMessage {...messages.fieldHeaderText} />}
+                  />
+                </SectionField>
+                <SectionField>
+                  <Input
+                    type="text"
+                    name="headerSubText"
+                    label={
+                      <FormattedMessage {...messages.fieldHeaderSubText} />
+                    }
+                  />
+                </SectionField>
+              </Section>
+            )}
           </StyledSection>
-        </StyledCollapse>
-      </Form>
-    );
-  }
-}
+          <StyledSection>
+            <SectionField>
+              <Toggle
+                name="showFooter"
+                label={<FormattedMessage {...messages.fieldShowFooter} />}
+              />
+            </SectionField>
+            {methods.getValues('showFooter') && (
+              <Section>
+                <SectionField>
+                  <Input
+                    type="text"
+                    label={<FormattedMessage {...messages.fieldButtonText} />}
+                    name="buttonText"
+                  />
+                </SectionField>
+              </Section>
+            )}
+          </StyledSection>
+        </>
+      </StyledCollapse>
+
+      <StyledCollapse
+        opened={openedCollapse === 'ideas'}
+        onToggle={handleCollapseToggle('ideas')}
+        label={<FormattedMessage {...messages.titleInputSelection} />}
+      >
+        <StyledSection>
+          <SectionField>
+            <Label htmlFor="projects">
+              <FormattedMessage {...messages.fieldProjects} />
+            </Label>
+            <GetProjects publicationStatuses={['published', 'archived']}>
+              {(projects) =>
+                projects && isNilOrError(projects) ? null : (
+                  <MultipleSelect
+                    name="projects"
+                    options={resourcesToOptionList(projects.projectsList)}
+                  />
+                )
+              }
+            </GetProjects>
+          </SectionField>
+          <SectionField>
+            <Label htmlFor="topics">
+              <FormattedMessage {...messages.fieldTopics} />
+            </Label>
+            <GetTopics>
+              {(topics) =>
+                topics && isNilOrError(topics) ? null : (
+                  <MultipleSelect
+                    name="topics"
+                    options={resourcesToOptionList(topics)}
+                  />
+                )
+              }
+            </GetTopics>
+          </SectionField>
+          <SectionField>
+            <Select
+              name="sort"
+              label={<FormattedMessage {...messages.fieldSort} />}
+              options={sortOptions()}
+            />
+          </SectionField>
+          <SectionField>
+            <Input
+              type="number"
+              label={<FormattedMessage {...messages.fieldInputsLimit} />}
+              name="limit"
+            />
+          </SectionField>
+        </StyledSection>
+      </StyledCollapse>
+    </>
+  );
+};
 
 export default injectIntl(localize(WidgetForm));

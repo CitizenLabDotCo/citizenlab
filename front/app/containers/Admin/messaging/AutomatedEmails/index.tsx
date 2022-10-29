@@ -14,7 +14,7 @@ import Warning from 'components/UI/Warning';
 import styled from 'styled-components';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 const StyledWarning = styled(Warning)`
@@ -27,7 +27,7 @@ type DataProps = GetCampaignsChildProps;
 type Props = DataProps;
 
 class AutomatedCampaigns extends React.PureComponent<
-  Props & InjectedIntlProps
+  Props & WrappedComponentProps
 > {
   handleOnEnabledToggle = (campaign: ICampaignData) => () => {
     updateCampaign(campaign.id, {
@@ -71,7 +71,7 @@ class AutomatedCampaigns extends React.PureComponent<
   }
 }
 
-const AutomatedCampaignsWithIntl = injectIntl<Props>(AutomatedCampaigns);
+const AutomatedCampaignsWithIntl = injectIntl(AutomatedCampaigns);
 
 export default () => (
   <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>

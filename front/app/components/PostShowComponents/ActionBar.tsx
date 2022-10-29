@@ -12,9 +12,9 @@ import Outlet from 'components/Outlet';
 const Container = styled.div`
   width: 100%;
   height: 50px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   background: rgba(132, 147, 158, 0.06);
-  border-bottom: 1px solid ${colors.adminSeparation};
+  border-bottom: 1px solid ${colors.divider};
 `;
 
 const Inner = styled.div`
@@ -27,11 +27,11 @@ const Inner = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     max-width: 100vw;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     max-width: 100vw;
     padding-left: 15px;

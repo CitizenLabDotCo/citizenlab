@@ -7,7 +7,7 @@ import BinInputsHeader from './BinInputsHeader';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
@@ -63,7 +63,7 @@ const BinInputRow = injectIntl(
     onUpdateUpperBound,
     onRemoveBin,
     intl: { formatMessage },
-  }: RowProps & InjectedIntlProps) => {
+  }: RowProps & WrappedComponentProps) => {
     const lowerBound = bins[binIndex];
     const nextBound = bins[binIndex + 1];
 
@@ -118,7 +118,9 @@ const BinInputRow = injectIntl(
     return (
       <Box display="flex" flexDirection="row" mt="10px" mb="10px">
         <Box width="25%">
-          <Text color="adminTextColor">Age group {binIndex + 1}</Text>
+          <Text color="primary">
+            {formatMessage(messages.ageGroupX, { number: binIndex + 1 })}
+          </Text>
         </Box>
         <Box width="25%" pr="24px" display="flex" alignItems="center">
           <Input
@@ -147,7 +149,7 @@ const BinInputRow = injectIntl(
           />
         </Box>
         <Box width="25%" display="flex" alignItems="center">
-          <Text variant="bodyS" fontWeight="bold" color="adminTextColor">
+          <Text variant="bodyS" fontWeight="bold" color="primary">
             {parseLabel(
               lowerBoundDisplayValue,
               upperBoundDisplayValue,
@@ -161,8 +163,9 @@ const BinInputRow = injectIntl(
               >
                 <Icon
                   name="minus-circle"
-                  width="13px"
-                  height="13px"
+                  fill={colors.red500}
+                  width="20px"
+                  height="20px"
                   ml="12px"
                 />
               </RemoveBinButton>

@@ -1,26 +1,38 @@
 import React from 'react';
 
 // components
-import MultiBarChart, {
-  Props as MultiBarChartProps,
-} from 'components/admin/Graphs/MultiBarChart';
+import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 
 // utils
-import { convertMapping, convertBarProps, Mapping, BarProps } from './utils';
+import { convertMapping, convertBars } from './utils';
 
-interface Props extends Omit<MultiBarChartProps, 'mapping' | 'bars'> {
-  mapping?: Mapping;
-  bars?: BarProps;
-}
+// typings
+import { Props } from './typings';
 
-const BarChart = ({ mapping, bars, ...otherProps }: Props) => {
+const BarChart = <Row,>({
+  mapping,
+  bars,
+  onMouseOver,
+  onMouseOut,
+  ...otherProps
+}: Props<Row>) => {
   const convertedMapping = convertMapping(mapping);
-  const convertedBarProps = convertBarProps(bars);
+  const convertedBars = convertBars(bars);
+
+  const handleMouseOver = ({ row, rowIndex }, event: React.MouseEvent) => {
+    onMouseOver && onMouseOver({ row, rowIndex }, event);
+  };
+
+  const handleMouseOut = ({ row, rowIndex }, event: React.MouseEvent) => {
+    onMouseOut && onMouseOut({ row, rowIndex }, event);
+  };
 
   return (
     <MultiBarChart
       mapping={convertedMapping}
-      bars={convertedBarProps}
+      bars={convertedBars}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
       {...otherProps}
     />
   );

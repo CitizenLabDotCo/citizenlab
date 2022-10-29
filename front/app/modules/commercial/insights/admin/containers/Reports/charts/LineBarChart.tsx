@@ -5,7 +5,7 @@ import { map, isEmpty } from 'lodash-es';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
@@ -49,7 +49,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { colors, sizes } from 'components/admin/Graphs/styling';
+import { legacyColors, sizes } from 'components/admin/Graphs/styling';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -57,8 +57,6 @@ const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 20px;
-  height: 22px;
   margin-left: 10px;
 `;
 
@@ -108,7 +106,7 @@ interface Props {
 }
 
 class LineBarChart extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   combined$: Subscription;
@@ -300,7 +298,7 @@ class LineBarChart extends React.PureComponent<
                   basic
                   trigger={
                     <div>
-                      <InfoIcon name="info" />
+                      <InfoIcon name="info-outline" />
                     </div>
                   }
                   content={infoMessage}
@@ -336,13 +334,13 @@ class LineBarChart extends React.PureComponent<
                 ref={this.currentChart}
               >
                 <CartesianGrid
-                  stroke={colors.cartesianGrid}
+                  stroke={legacyColors.cartesianGrid}
                   strokeWidth={0.5}
                 />
                 <XAxis
                   dataKey="name"
                   interval="preserveStartEnd"
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
@@ -350,7 +348,7 @@ class LineBarChart extends React.PureComponent<
                 />
                 <YAxis
                   yAxisId="total"
-                  stroke={colors.chartLabel}
+                  stroke={legacyColors.chartLabel}
                   fontSize={sizes.chartLabel}
                   tickLine={false}
                 >
@@ -386,7 +384,7 @@ class LineBarChart extends React.PureComponent<
                   dataKey="barValue"
                   yAxisId="barValue"
                   barSize={sizes.bar}
-                  fill={colors.barFill}
+                  fill={legacyColors.barFill}
                   fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {
                     period: formatMessage(messages[resolution]),
@@ -397,8 +395,8 @@ class LineBarChart extends React.PureComponent<
                   yAxisId="total"
                   dataKey="total"
                   activeDot={Boolean(serie && serie?.length < 31)}
-                  stroke={colors.line}
-                  fill={colors.line}
+                  stroke={legacyColors.line}
+                  fill={legacyColors.line}
                   strokeWidth={1}
                   name={formatMessage(messages.total)}
                 />
@@ -416,4 +414,4 @@ class LineBarChart extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChart);
+export default injectIntl<Props & WrappedComponentProps>(LineBarChart);

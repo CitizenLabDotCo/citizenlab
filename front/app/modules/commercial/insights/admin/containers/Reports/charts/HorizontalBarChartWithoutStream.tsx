@@ -3,12 +3,16 @@ import React, { memo } from 'react';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, sizes, animation } from 'components/admin/Graphs/styling';
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -63,7 +67,7 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
 `;
 
 export const HorizontalBarChartWithoutStream: React.SFC<
-  Props & InjectedIntlProps
+  Props & WrappedComponentProps
 > = memo(({ className, graphTitleString, serie, graphUnit }) => {
   const currentChart: React.RefObject<any> = React.createRef();
 
@@ -82,7 +86,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
           y={y}
           dx={30}
           dy={-6}
-          fill={colors.chartLabel}
+          fill={legacyColors.chartLabel}
           textAnchor="left"
         >
           {value}
@@ -100,7 +104,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
           y={y}
           dx={5}
           dy={-6}
-          fill={colors.chartLabel}
+          fill={legacyColors.chartLabel}
           textAnchor="right"
           fontWeight={'800'}
         >
@@ -149,7 +153,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 name="Downvotes"
                 stackId={'votes'}
                 dataKey="down"
-                fill={colors.barFill}
+                fill={legacyColors.barFill}
                 barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : sizes.bar}
                 animationDuration={animation.duration}
                 animationBegin={animation.begin}
@@ -163,7 +167,9 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                       return (
                         <Cell
                           key={`cell-${index}`}
-                          fill={(entry.color && entry.color) || colors.barFill}
+                          fill={
+                            (entry.color && entry.color) || legacyColors.barFill
+                          }
                           opacity={0.8}
                         />
                       );
@@ -185,7 +191,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 name="Upvotes"
                 stackId={'votes'}
                 dataKey="up"
-                fill={colors.barFill}
+                fill={legacyColors.barFill}
                 opacity={0.7}
                 barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : sizes.bar}
                 animationDuration={animation.duration}
@@ -196,7 +202,9 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                     return (
                       <Cell
                         key={`cell-${index}`}
-                        fill={(entry.color && entry.color) || colors.barFill}
+                        fill={
+                          (entry.color && entry.color) || legacyColors.barFill
+                        }
                         opacity={0.4}
                       />
                     );
@@ -207,13 +215,13 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 dataKey="name"
                 type="category"
                 width={150}
-                stroke={colors.chartLabel}
+                stroke={legacyColors.chartLabel}
                 fontSize={sizes.chartLabel}
                 tickLine={false}
                 hide={true}
               />
               <XAxis
-                stroke={colors.chartLabel}
+                stroke={legacyColors.chartLabel}
                 fontSize={sizes.chartLabel}
                 type="number"
                 tick={{ transform: 'translate(0, 7)' }}
@@ -227,8 +235,8 @@ export const HorizontalBarChartWithoutStream: React.SFC<
   );
 });
 
-const HorizontalBarChartWithoutStreamWithHoCs = injectIntl<Props>(
-  HorizontalBarChartWithoutStream as any
-);
+const HorizontalBarChartWithoutStreamWithHoCs = injectIntl<
+  Props & WrappedComponentProps
+>(HorizontalBarChartWithoutStream);
 
 export default HorizontalBarChartWithoutStreamWithHoCs;

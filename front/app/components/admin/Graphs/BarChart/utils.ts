@@ -1,66 +1,21 @@
+import { Mapping, Bars } from './typings';
 import {
   Mapping as ConvertedMapping,
-  BarProps as ConvertedBarProps,
-} from 'components/admin/Graphs/MultiBarChart/utils';
-import { DataRow } from '../typings';
+  Bars as ConvertedBars,
+} from 'components/admin/Graphs/MultiBarChart/typings';
 
-// MAPPING
-type MappingFunction<T> = (row: DataRow) => T;
-type Channel<T> = string | MappingFunction<T>;
+export const convertMapping = <Row>(
+  mapping: Mapping<Row>
+): ConvertedMapping<Row> => ({
+  category: mapping.category,
+  length: [mapping.length],
+  fill: mapping.fill,
+  opacity: mapping.opacity,
+});
 
-export interface Mapping {
-  length?: string;
-  fill?: Channel<string>;
-  opacity?: Channel<number>;
-}
+export const convertBars = (bars?: Bars): ConvertedBars | undefined => {
+  if (!bars) return;
+  const { name, ...rest } = bars;
 
-export const convertMapping = (mapping?: Mapping): ConvertedMapping => {
-  if (!mapping) {
-    return {
-      length: ['value'],
-    };
-  }
-
-  return {
-    length: wrapIfAvailable(mapping.length) ?? ['value'],
-    fill: convertChannel(mapping.fill),
-    opacity: convertChannel(mapping.opacity),
-  };
+  return { names: name ? [name] : undefined, ...rest };
 };
-
-// BARS
-export interface BarProps {
-  name?: string;
-  size?: number;
-  fill?: string;
-  opacity?: string | number;
-  isAnimationActive?: boolean;
-  categoryGap?: string | number;
-}
-
-export const convertBarProps = (
-  barProps?: BarProps
-): ConvertedBarProps | undefined => {
-  if (!barProps) return;
-
-  const { name, size, fill, opacity, isAnimationActive, categoryGap } =
-    barProps;
-
-  return {
-    name: wrapIfAvailable(name),
-    size: wrapIfAvailable(size),
-    fill: wrapIfAvailable(fill),
-    opacity: wrapIfAvailable(opacity),
-    isAnimationActive,
-    categoryGap,
-  };
-};
-
-// UTILS
-const wrapIfAvailable = <T>(value?: T): T[] | undefined =>
-  value ? [value] : undefined;
-
-const convertChannel = <T>(channel?: Channel<T>) =>
-  channel instanceof Function
-    ? (row: DataRow) => [channel(row)]
-    : wrapIfAvailable(channel);

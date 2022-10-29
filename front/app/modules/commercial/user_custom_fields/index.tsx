@@ -1,9 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import CustomFieldGraphs from './admin/components/CustomFieldGraphs';
-import RegistrationFieldsToGraphs from './admin/components/RegistrationFieldsToGraphs';
-import AllCustomFields from './admin/components/CustomFields/All';
 
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
@@ -17,6 +14,16 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import UserCustomFieldsFormMigrated from './citizen/components/UserCustomFieldsFormMigrated';
 
+// lazy components for outlets
+const CustomFieldGraphs = React.lazy(
+  () => import('./admin/components/CustomFieldGraphs')
+);
+const RegistrationFieldsToGraphs = React.lazy(
+  () => import('./admin/components/RegistrationFieldsToGraphs')
+);
+const AllCustomFields = React.lazy(
+  () => import('./admin/components/CustomFields/All')
+);
 // lazy components for routes
 const AdminCustomFieldsContainer = React.lazy(
   () => import('./admin/containers/CustomFields/')

@@ -16,7 +16,7 @@ const StatusChangeOnCommentedInitiativeNotification = memo<Props>((props) => {
     <NotificationWrapper
       linkTo={`/initiatives/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
-      icon="notification_status"
+      icon="label"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage

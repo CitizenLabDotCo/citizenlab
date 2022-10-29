@@ -60,20 +60,13 @@ export function isNonEmptyString(str: string) {
   return isString(str) && trim(str) !== '';
 }
 
-export function sum(a, b) {
-  return a + b;
-}
-
-export function getDisplayName(Component) {
-  return Component.displayName || Component.name || 'Component';
-}
-
 type pageKeys =
   | 'admin'
   | 'idea_form'
   | 'initiative_form'
   | 'idea_edit'
   | 'initiative_edit'
+  | 'native_survey'
   | 'sign_in'
   | 'sign_up'
   | 'email-settings';
@@ -105,6 +98,8 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/ideas/edit/');
     case 'initiative_edit':
       return pathnameWithoutLocale.startsWith('/initiatives/edit/');
+    case 'native_survey':
+      return pathnameWithoutLocale.endsWith('/survey');
     case 'sign_in':
       return pathnameWithoutLocale.startsWith('/sign-in');
     case 'sign_up':
@@ -195,7 +190,7 @@ export function removeFocusAfterMouseClick(event: React.MouseEvent) {
 }
 
 export function isDesktop(windowWidth: number) {
-  return windowWidth > viewportWidths.largeTablet;
+  return windowWidth > viewportWidths.tablet;
 }
 
 export const keys = <T>(obj: T) => Object.keys(obj) as Array<keyof T>;

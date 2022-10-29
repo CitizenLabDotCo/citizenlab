@@ -26,7 +26,7 @@ export const Container = styled.div`
 
 export const Top = styled.div`
   background-color: white;
-  border-bottom: 1px solid ${colors.separation};
+  border-bottom: 1px solid ${colors.divider};
   display: flex;
   align-items: center;
   position: sticky;

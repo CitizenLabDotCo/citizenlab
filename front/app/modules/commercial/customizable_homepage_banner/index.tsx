@@ -1,43 +1,57 @@
+import FeatureFlag from 'components/FeatureFlag';
+import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
 import React from 'react';
+import {
+  IHomepageSettingsAttributes,
+  THomepageBannerLayout,
+} from 'services/homepageSettings';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import LayoutSetting from './admin/LayoutSetting';
-import TwoColumnLayout from './citizen/TwoColumnLayout';
-import TwoRowLayout from './citizen/TwoRowLayout';
 import CTASettings from './admin/CTASettings';
 import CTA from './citizen/CTA';
-import FeatureFlag from 'components/FeatureFlag';
+import TwoColumnLayout from './citizen/TwoColumnLayout';
+import TwoRowLayout from './citizen/TwoRowLayout';
+
+declare module 'utils/moduleUtils' {
+  export interface OutletsPropertyMap {
+    'app.containers.Admin.settings.customize.headerSectionStart': {
+      bannerLayout: THomepageBannerLayout;
+      onChange: (
+        key: keyof IHomepageSettingsAttributes,
+        value: THomepageBannerLayout
+      ) => void;
+    };
+  }
+}
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.settings.customize.headerSectionStart': (props) => {
-      return (
-        <FeatureFlag name="customizable_homepage_banner">
-          <LayoutSetting {...props} />
-        </FeatureFlag>
-      );
+    'app.containers.Admin.settings.customize.headerSectionStart': ({
+      onChange,
+      ...otherProps
+    }) => {
+      const handleOnChange = (bannerLayout: THomepageBannerLayout) => {
+        onChange('banner_layout', bannerLayout);
+      };
+      return <LayoutSettingField onChange={handleOnChange} {...otherProps} />;
     },
     'app.containers.Admin.settings.customize.headerSectionEnd': (props) => {
-      return (
-        <FeatureFlag name="customizable_homepage_banner">
-          <CTASettings {...props} />
-        </FeatureFlag>
-      );
+      return <CTASettings {...props} />;
     },
-    'app.containers.LandingPage.SignedOutHeader.CTA': (props) => {
+    'app.containers.HomePage.SignedOutHeader.CTA': (props) => {
       return (
         <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn={false} {...props} />
         </FeatureFlag>
       );
     },
-    'app.containers.LandingPage.SignedInHeader.CTA': (props) => {
+    'app.containers.HomePage.SignedInHeader.CTA': (props) => {
       return (
         <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn {...props} />
         </FeatureFlag>
       );
     },
-    'app.containers.LandingPage.SignedOutHeader.index': ({
+    'app.containers.HomePage.SignedOutHeader.index': ({
       homepageBannerLayout,
     }) => {
       if (homepageBannerLayout === 'two_column_layout') {

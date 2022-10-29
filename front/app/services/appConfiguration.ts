@@ -78,6 +78,7 @@ export interface IAppConfigurationSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
+    enable_signup: boolean;
     phone?: boolean;
     minimum_length?: number;
     phone_email_pattern?: string;
@@ -211,11 +212,13 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
   representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
+  native_surveys?: AppConfigurationFeature;
+  analytics?: AppConfigurationFeature;
+  visitors_dashboard?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -297,8 +300,8 @@ export async function updateAppConfiguration(
   return tenant;
 }
 
-export const coreSettings = (appConfiguration: IAppConfiguration) =>
-  appConfiguration.data.attributes.settings.core;
+export const coreSettings = (appConfiguration: IAppConfigurationData) =>
+  appConfiguration.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

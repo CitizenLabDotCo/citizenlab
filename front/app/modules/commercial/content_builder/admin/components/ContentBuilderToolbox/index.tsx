@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // components
 import ToolboxItem from './ToolboxItem';
@@ -41,7 +41,7 @@ const DraggableElement = styled.div`
 
 type ContentBuilderToolboxProps = {
   selectedLocale: Locale;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const ContentBuilderToolbox = ({
   selectedLocale,
@@ -65,7 +65,7 @@ const ContentBuilderToolbox = ({
       alignItems="center"
       bgColor="#ffffff"
       overflowY="auto"
-      borderRight={`1px solid ${colors.mediumGrey}`}
+      borderRight={`1px solid ${colors.grey500}`}
     >
       <Box w="100%" display="inline">
         <Title
@@ -75,7 +75,7 @@ const ContentBuilderToolbox = ({
           ml="10px"
           variant="h6"
           as="h3"
-          color="secondaryText"
+          color="textSecondary"
         >
           <FormattedMessage {...messages.sections} />
         </Title>
@@ -91,7 +91,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="imageCardSection"
+            icon="section-image-text"
             label={formatMessage(messages.imageTextCards)}
           />
         </DraggableElement>
@@ -111,7 +111,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="infoAccordionSection"
+            icon="section-info-accordion"
             label={formatMessage(messages.infoWithAccordions)}
           />
         </DraggableElement>
@@ -122,7 +122,7 @@ const ContentBuilderToolbox = ({
           ml="10px"
           variant="h6"
           as="h3"
-          color="secondaryText"
+          color="textSecondary"
         >
           <FormattedMessage {...messages.layout} />
         </Title>
@@ -142,7 +142,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="column2"
+            icon="layout-2column-1"
             label={formatMessage(messages.twoColumn)}
           />
         </DraggableElement>
@@ -158,7 +158,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="column3"
+            icon="layout-3column"
             label={formatMessage(messages.threeColumn)}
           />
         </DraggableElement>
@@ -174,7 +174,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="dashedBorderRectangle"
+            icon="layout-white-space"
             label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>
@@ -185,7 +185,7 @@ const ContentBuilderToolbox = ({
           ml="10px"
           variant="h6"
           as="h3"
-          color="secondaryText"
+          color="textSecondary"
         >
           <FormattedMessage {...messages.content} />
         </Title>
@@ -274,7 +274,10 @@ const ContentBuilderToolbox = ({
             })
           }
         >
-          <ToolboxItem icon="info3" label={formatMessage(messages.aboutBox)} />
+          <ToolboxItem
+            icon="info-solid"
+            label={formatMessage(messages.aboutBox)}
+          />
         </DraggableElement>
         <DraggableElement
           id="e2e-draggable-accordion"

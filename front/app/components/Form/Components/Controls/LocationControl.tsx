@@ -12,7 +12,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
 import Error from 'components/UI/Error';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { getLabel } from 'utils/JSONFormUtils';
 import messages from '../../messages';
 
@@ -25,7 +25,7 @@ const LocationControl = ({
   errors,
   required,
   intl: { formatMessage },
-}: ControlProps & InjectedIntlProps) => {
+}: ControlProps & WrappedComponentProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
   return (

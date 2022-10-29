@@ -11,6 +11,9 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
+import { Box } from '@citizenlab/cl2-component-library';
+import NewIdeaButton from './ideas/NewIdeaButton';
+import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
 
 // resources
 import GetFeatureFlag, {
@@ -21,11 +24,10 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -39,7 +41,12 @@ import { InsertConfigurationOptions, ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
+// utils
 import { insertConfiguration } from 'utils/moduleUtils';
+import {
+  getMethodConfig,
+  showInputManager,
+} from 'utils/participationMethodUtils';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -70,6 +77,7 @@ interface DataProps {
 }
 
 interface State {
+  showIdeaDropdown: boolean;
   tabs: ITab[];
   goBackUrl: string | null;
   tabHideConditions: {
@@ -83,7 +91,7 @@ interface State {
 interface Props extends InputProps, DataProps {}
 
 export class AdminProjectsProjectIndex extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
+  Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
   constructor(props) {
@@ -93,6 +101,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
     } = props;
 
     this.state = {
+      showIdeaDropdown: false,
       tabs: [
         {
           label: formatMessage(messages.generalTab),
@@ -114,6 +123,14 @@ export class AdminProjectsProjectIndex extends PureComponent<
           url: 'poll',
           feature: 'polls',
           name: 'poll',
+        },
+        {
+          label: formatMessage(messages.surveyTab),
+          url: 'native-survey',
+          name: 'survey',
+          active: (url: string) =>
+            url.endsWith('native-survey') ||
+            url.endsWith('native-survey/results'),
         },
         {
           label: formatMessage(messages.surveyResultsTab),
@@ -144,19 +161,8 @@ export class AdminProjectsProjectIndex extends PureComponent<
         description: function isDescriptionTabHidden() {
           return false;
         },
-        ideas: function isIdeaTabHidden(project) {
-          const processType = project?.attributes.process_type;
-          const participationMethod = project.attributes.participation_method;
-
-          if (
-            processType === 'continuous' &&
-            participationMethod !== 'ideation' &&
-            participationMethod !== 'budgeting'
-          ) {
-            return true;
-          }
-
-          return false;
+        ideas: function isIdeaTabHidden(project, phases) {
+          return !showInputManager(project, phases);
         },
         poll: function isPollTabHidden(project, phases) {
           const processType = project?.attributes.process_type;
@@ -173,6 +179,29 @@ export class AdminProjectsProjectIndex extends PureComponent<
             return true;
           }
 
+          return false;
+        },
+        survey: function isSurveyTabHidden(project, phases) {
+          const processType = project.attributes.process_type;
+          const participationMethod = project.attributes.participation_method;
+          const noNativeSurveyInTimeline =
+            !isNilOrError(phases) &&
+            !phases.some(
+              (phase) =>
+                phase.attributes.participation_method === 'native_survey'
+            );
+
+          // Hide tab when participation method is not native survey in timeline and continuous process types
+          const hideTab =
+            (processType === 'continuous' &&
+              participationMethod !== 'native_survey') ||
+            (processType === 'timeline' &&
+              !isNilOrError(phases) &&
+              noNativeSurveyInTimeline);
+
+          if (hideTab) {
+            return true;
+          }
           return false;
         },
         'survey-results': function surveyResultsTabHidden(project, phases) {
@@ -309,12 +338,28 @@ export class AdminProjectsProjectIndex extends PureComponent<
       },
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
+
+    let numberIdeationPhases = 0;
+    let ideationPhase;
+
     if (!isNilOrError(project) && phases !== undefined) {
       const inputTerm = getInputTerm(
         project?.attributes.process_type,
         project,
         phases
       );
+
+      if (!isNilOrError(phases)) {
+        phases.map((phase) => {
+          if (
+            getMethodConfig(phase.attributes.participation_method)
+              .showInputManager
+          ) {
+            numberIdeationPhases++;
+            ideationPhase = phase;
+          }
+        });
+      }
 
       return (
         <>
@@ -328,23 +373,39 @@ export class AdminProjectsProjectIndex extends PureComponent<
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>
               {tabbedProps.tabs.some((tab) => tab.name === 'ideas') && (
-                <Button
-                  id="e2e-new-idea"
-                  buttonStyle="cl-blue"
-                  icon="idea"
-                  linkTo={`/projects/${project.attributes.slug}/ideas/new`}
-                  text={formatMessage(
-                    getInputTermMessage(inputTerm, {
-                      idea: messages.addNewIdea,
-                      option: messages.addNewOption,
-                      project: messages.addNewProject,
-                      question: messages.addNewQuestion,
-                      issue: messages.addNewIssue,
-                      contribution: messages.addNewContribution,
-                    })
-                  )}
-                  onClick={this.onNewIdea(pathname)}
-                />
+                <>
+                  <Box
+                    onClick={this.onNewIdea(pathname)}
+                    onMouseOver={() => {
+                      this.setState({ showIdeaDropdown: true });
+                    }}
+                    onMouseLeave={() => {
+                      this.setState({ showIdeaDropdown: false });
+                    }}
+                  >
+                    {project.attributes.process_type === 'continuous' && (
+                      <NewIdeaButton
+                        inputTerm={inputTerm}
+                        linkTo={`/projects/${project.attributes.slug}/ideas/new`}
+                      />
+                    )}
+                    {project.attributes.process_type === 'timeline' &&
+                      numberIdeationPhases === 1 && (
+                        <NewIdeaButton
+                          inputTerm={ideationPhase.attributes.input_term}
+                          linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${ideationPhase.id}`}
+                        />
+                      )}
+                    {project.attributes.process_type === 'timeline' &&
+                      numberIdeationPhases > 1 && (
+                        <NewIdeaButtonDropdown
+                          phases={phases}
+                          project={project}
+                          showDropdown={this.state.showIdeaDropdown}
+                        />
+                      )}
+                  </Box>
+                </>
               )}
               <Button
                 buttonStyle="cl-blue"

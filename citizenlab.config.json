@@ -6,6 +6,7 @@
   ],
   "modules": {
     "free/email_campaigns": true,
+    "free/customizable_navbar": true,
     "free/frontend": true,
     "free/onboarding": true,
     "free/polls": true,
@@ -14,6 +15,7 @@
     "free/seo": true,
     "free/surveys": true,
     "free/user_confirmation": true,
-    "free/volunteering": true
+    "free/volunteering": true,
+    "free/native_surveys": true
   }
 }

@@ -40,13 +40,13 @@ const Container = styled.main`
   background: ${colors.background};
   position: relative;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     min-height: calc(
       100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
     );
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -60,7 +60,7 @@ const Section = styled.div`
 const Left = styled(Section)`
   display: none;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: block;
   `}
 `;
@@ -78,7 +78,7 @@ const Banner = styled.div`
 const Slogan = styled.div`
   width: 100%;
   max-width: 400px;
-  color: ${(props) => props.theme.colorMain || '#333'};
+  color: ${(props) => props.theme.colors.tenantPrimary || '#333'};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 44px;
   font-weight: 600;
@@ -96,7 +96,7 @@ const RightInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: 35px;
   `}
 `;

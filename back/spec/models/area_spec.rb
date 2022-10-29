@@ -3,11 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe Area, type: :model do
+  subject { build(:area) }
+
   describe 'Default factory' do
-    it 'is valid' do
-      expect(build(:area)).to be_valid
-    end
+    it { is_expected.to be_valid }
   end
+
+  it { is_expected.not_to validate_presence_of(:ordering) }
+  it { is_expected.to validate_numericality_of(:ordering) }
+  it { is_expected.to belong_to(:custom_field_option).optional }
 
   describe 'default_scope' do
     it 'defaults to sorting areas by ordering' do
@@ -36,13 +40,6 @@ RSpec.describe Area, type: :model do
       create_list(:area, 3)
     end
 
-    context 'when ordering is given' do
-      subject { create(:area) }
-
-      it { is_expected.not_to validate_presence_of(:ordering) }
-      it { is_expected.to validate_numericality_of(:ordering) }
-    end
-
     context 'when no ordering is given' do
       subject { create(:area) }
 
@@ -60,6 +57,85 @@ RSpec.describe Area, type: :model do
       it 'should stay as given' do
         expect(subject.ordering).to eq(ordering)
       end
+    end
+
+    context 'when domicile field exist' do
+      before { create(:custom_field_domicile) }
+
+      it 'creates the corresponding domicile option' do
+        area = nil
+        expect { area = create(:area) }.to change(CustomFieldOption, :count).by(1)
+
+        expect(area.title_multiloc).to eq(area.custom_field_option.title_multiloc)
+        expect(area.ordering).to eq(area.custom_field_option.ordering)
+      end
+    end
+  end
+
+  describe '#update' do
+    context 'when domicile field exist' do
+      before { create(:custom_field_domicile) }
+
+      let(:area) { create(:area, title_multiloc: { 'en' => 'Title' }) }
+
+      it 'updates the corresponding domicile option' do
+        area.update(title_multiloc: { 'en' => 'New title' })
+        expect(area.custom_field_option.title_multiloc).to eq(area.title_multiloc)
+      end
+    end
+  end
+
+  describe '#recreate_custom_field_options!' do
+    let!(:domicile) { create(:custom_field_domicile) }
+
+    before do
+      create_list(:area, 2)
+    end
+
+    it 'restores missing options' do
+      area = described_class.first
+      area.custom_field_option.destroy
+
+      expect { described_class.recreate_custom_field_options }
+        .to change(domicile.options, :count).by(1)
+
+      expect(area.reload.custom_field_option.attributes.symbolize_keys)
+        .to include(area.send(:option_attributes))
+    end
+
+    it 'fixes inconsistent options' do
+      area = described_class.first
+      option = area.custom_field_option
+
+      original_ordering = option.ordering
+      new_ordering = domicile.options.count + 1
+
+      original_title = option.title_multiloc
+      new_title = { 'en' => 'wrong-value' }
+      expect(original_title).not_to eq(new_title) # sanity check
+
+      # Using +update_columns+ to skip the callbacks to propagate the changes
+      # to the associated area.
+      option.update_columns(title_multiloc: new_title, ordering: new_ordering)
+      described_class.recreate_custom_field_options
+
+      area.reload
+      expect(area.title_multiloc).to eq(original_title)
+      expect(area.ordering).to eq(original_ordering)
+    end
+
+    # Does not include details for the somewhere-else option.
+    def option_details
+      domicile = CustomField.find_by(key: 'domicile')
+      domicile.options.left_joins(:area).pluck('areas.id', 'ordering', 'title_multiloc')
+    end
+
+    it 'is idempotent' do
+      option_details_before = option_details
+      described_class.recreate_custom_field_options
+      option_details_after = option_details
+
+      expect(option_details_before).to match_array(option_details_after)
     end
   end
 end

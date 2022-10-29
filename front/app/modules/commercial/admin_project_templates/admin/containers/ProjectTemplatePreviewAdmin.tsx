@@ -75,7 +75,7 @@ const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
         <Container className={className || ''}>
           <AdminHeader>
             {goBack ? (
-              <Button buttonStyle="text" icon="arrow-back" onClick={onGoBack}>
+              <Button buttonStyle="text" icon="arrow-left" onClick={onGoBack}>
                 <FormattedMessage {...messages.goBack} />
               </Button>
             ) : (

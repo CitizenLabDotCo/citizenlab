@@ -9,7 +9,7 @@ describe XlsxService do
   describe 'generate_ideas_xlsx' do
     before do
       @project = create :project
-      @form = create :custom_form, project: @project
+      @form = create :custom_form, participation_context: @project
       create(
         :custom_field,
         :for_custom_form,

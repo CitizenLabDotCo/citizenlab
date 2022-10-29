@@ -27,7 +27,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
@@ -53,7 +53,7 @@ const SignUpInWrapper = styled.div`
   padding-top: 45px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
   `}
 `;
@@ -78,14 +78,14 @@ const StyledSignUpIn = styled(SignUpIn)`
 `;
 
 const SignUpInHeader = styled.h2`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: normal;
   font-weight: 500;
   margin: 0;
   padding: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.xl}px;
   `}
 `;
@@ -160,7 +160,7 @@ class Survey extends PureComponent<Props, State> {
   noOp = () => {};
 
   disabledMessage: {
-    [key in ISurveyTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+    [key in ISurveyTakingDisabledReason]: MessageDescriptor;
   } = {
     projectInactive: messages.surveyDisabledProjectInactive,
     maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,

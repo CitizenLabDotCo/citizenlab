@@ -22,7 +22,7 @@ import usePhases from 'hooks/usePhases';
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -50,8 +50,6 @@ const PreviousPhaseButton = styled(Button)`
   `}
 `;
 
-const CurrentPhaseButton = styled(Button)``;
-
 const NextPhaseButton = styled(Button)`
   margin-left: 5px;
 
@@ -68,7 +66,7 @@ interface Props {
   className?: string;
 }
 
-const PhaseNavigation = memo<Props & InjectedIntlProps>(
+const PhaseNavigation = memo<Props & WrappedComponentProps>(
   ({ projectId, buttonStyle, className, intl: { formatMessage } }) => {
     const phases = usePhases(projectId);
 
@@ -146,8 +144,7 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
               <PreviousPhaseButton
                 onClick={goToPreviousPhase}
                 icon="chevron-left"
-                iconSize="12px"
-                iconColor={colors.label}
+                iconColor={colors.textSecondary}
                 buttonStyle={navButtonStyle}
                 width={navButtonSize}
                 height={navButtonSize}
@@ -169,11 +166,11 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
               hideOnClick={true}
             >
               <div>
-                <CurrentPhaseButton
+                <Button
                   onClick={goToCurrentPhase}
                   icon="dot"
-                  iconSize="8px"
-                  iconColor={colors.clGreen}
+                  iconSize="16px"
+                  iconColor={colors.success}
                   buttonStyle={navButtonStyle}
                   width={navButtonSize}
                   height={navButtonSize}
@@ -198,8 +195,7 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
               <NextPhaseButton
                 onClick={goToNextPhase}
                 icon="chevron-right"
-                iconSize="12px"
-                iconColor={colors.label}
+                iconColor={colors.textSecondary}
                 buttonStyle={navButtonStyle}
                 width={navButtonSize}
                 height={navButtonSize}

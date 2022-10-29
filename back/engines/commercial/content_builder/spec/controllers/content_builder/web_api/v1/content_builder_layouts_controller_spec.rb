@@ -57,7 +57,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           }
         }
         post :upsert, params: params, format: :json
-        expect(response.status).to eq(201)
+        expect(response).to have_http_status(:created)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(layout.reload.craftjs_jsonmultiloc).to eq swapped_multiloc
       end
@@ -74,7 +74,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
         }
         post :upsert, params: params, format: :json
-        expect(response.status).to eq 201
+        expect(response).to have_http_status :created
         expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
       end
     end
@@ -104,7 +104,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           content_builder_layout: { enabled: true }
         }
         post :upsert, params: params, format: :json
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
       end
     end
@@ -148,7 +148,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           }
         }
         post :upsert, params: params, format: :json
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(layout.reload.craftjs_jsonmultiloc).to eq swapped_multiloc
       end
@@ -166,7 +166,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
         }
         post :upsert, params: params, format: :json
-        expect(response.status).to eq 200
+        expect(response).to have_http_status :ok
         expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
       end
     end
@@ -194,7 +194,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           content_builder_layout: { enabled: false }
         }
         post :upsert, params: params, format: :json
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
       end
     end
@@ -230,7 +230,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           code: code
         }
         delete :destroy, params: params, format: :json
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq 'application/json'
       end
     end
@@ -258,7 +258,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           code: code
         }
         delete :destroy, params: params, format: :json
-        expect(response.status).to eq(500)
+        expect(response).to have_http_status(:internal_server_error)
         expect(response.content_type).to eq 'application/json'
       end
     end

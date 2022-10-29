@@ -4,7 +4,8 @@ import tracks from './tracks';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useLocalize from 'hooks/useLocalize';
 
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
@@ -17,15 +18,16 @@ import { media, colors, hexToRgb } from 'utils/styleUtils';
 import { darken } from 'polished';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
+import mainHeaderMessages from '../MainHeader/messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-const containerBackgroundColorRgb = hexToRgb(colors.label);
+const containerBackgroundColorRgb = hexToRgb(colors.textSecondary);
 
 const Container = styled.div`
   ${containerBackgroundColorRgb
@@ -45,7 +47,7 @@ const Container = styled.div`
   padding-top: 40px;
   position: relative;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;
@@ -84,7 +86,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     background: #e0e0e0;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     right: 15px;
   `}
 `;
@@ -124,16 +126,17 @@ const FullMobileNavMenu = ({
   onClose,
   isFullMenuOpened,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
-  const pageSlugById = usePageSlugById();
+  const pageSlugById = useCustomPageSlugById();
+  const localize = useLocalize();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
   const navbarItemPropsArray = getNavbarItemPropsArray(
     navbarItems,
     pageSlugById
-  );
+  ).filter(({ linkTo }) => linkTo !== '/projects'); // /projects is already in the 'outer' fixed menu
 
   const modalPortalElement = document?.getElementById('mobile-nav-portal');
 
@@ -175,19 +178,23 @@ const FullMobileNavMenu = ({
                     key={linkTo}
                     linkTo={linkTo}
                     onlyActiveOnIndex={onlyActiveOnIndex}
-                    navigationItemTitle={navigationItemTitle}
+                    navigationItemTitle={localize(navigationItemTitle)}
                     onClick={handleOnMenuItemClick(linkTo)}
                   />
                 );
               })}
+              <FullMobileNavMenuItem
+                linkTo="/projects?focusSearch=true"
+                navigationItemTitle={formatMessage(mainHeaderMessages.search)}
+                onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
+                iconName="search"
+              />
             </MenuItems>
             <StyledCloseIconButton
               a11y_buttonActionMessage={messages.closeMobileNavMenu}
               onClick={handleOnCloseButtonClick}
-              iconColor={colors.label}
-              iconColorOnHover={darken(0.1, colors.label)}
-              iconWidth={'12px'}
-              iconHeight={'12px'}
+              iconColor={colors.textSecondary}
+              iconColorOnHover={darken(0.1, colors.textSecondary)}
             />
           </ContentContainer>
         </Container>

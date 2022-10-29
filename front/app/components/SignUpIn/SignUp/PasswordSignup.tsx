@@ -36,7 +36,7 @@ import GetAppConfiguration, {
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -129,13 +129,16 @@ type State = {
   apiErrors: CLErrorsJSON | null | Error;
 };
 
-class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
+class PasswordSignup extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   firstNameInputElement: HTMLInputElement | null;
   lastNameInputElement: HTMLInputElement | null;
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       token: props.metaData.token,
@@ -534,9 +537,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       azureAdLoginEnabled,
       franceconnectLoginEnabled,
     ].filter((provider) => provider === true);
-    const isDesktop = windowSize
-      ? windowSize > viewportWidths.largeTablet
-      : true;
+    const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
 
     let unknownApiError: string | null = null;
 

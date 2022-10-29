@@ -34,7 +34,7 @@ const Legend = ({ labels, colors }: Props) => (
             fill={color}
             mr="8px"
           />
-          <Text fontSize="s" color="adminSecondaryTextColor">
+          <Text fontSize="s" color="textSecondary">
             {label}
           </Text>
         </Box>

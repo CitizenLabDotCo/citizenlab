@@ -9,7 +9,7 @@ import Pagination from 'components/Pagination';
 
 // i18n
 import messages from '../messages';
-import { MessageDescriptor } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 
 // hooks
 import useEvents from 'hooks/useEvents';

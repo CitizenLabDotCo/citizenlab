@@ -62,6 +62,8 @@ module ProjectFolders
     def update
       @project_folder.assign_attributes project_folder_params
       authorize @project_folder
+      remove_image_if_requested!(@project_folder, project_folder_params, :header_bg)
+
       SideFxService.new.before_update(@project_folder, current_user)
       if @project_folder.save
         SideFxService.new.after_update(@project_folder, current_user)

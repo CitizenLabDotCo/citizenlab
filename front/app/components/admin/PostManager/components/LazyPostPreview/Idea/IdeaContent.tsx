@@ -44,7 +44,7 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
@@ -74,7 +74,7 @@ const Left = styled.div`
 
 const BelongsToProject = styled.p`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 300;
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -91,7 +91,7 @@ const ProjectLink = styled(Link)`
   margin-left: 4px;
 
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, colors.textSecondary)};
     text-decoration: underline;
   }
 `;
@@ -101,7 +101,7 @@ const IdeaImage = styled.img`
   margin: 0 0 2rem;
   padding: 0;
   border-radius: 8px;
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divider};
 `;
 
 const StyledBody = styled(Body)`
@@ -131,7 +131,7 @@ const Right = styled.div`
   position: sticky;
   top: 80px;
   align-self: flex-start;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   line-height: 19px;
 `;
@@ -148,7 +148,7 @@ const BudgetBox = styled.div`
   position: relative;
   border-radius: 5px;
   background: ${colors.background};
-  border: solid 1px ${colors.adminTextColor};
+  border: solid 1px ${colors.primary};
   font-size: ${fontSizes.l}px;
   font-weight: 500;
 `;
@@ -180,7 +180,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 export class IdeaContent extends PureComponent<
-  Props & InjectedLocalized & InjectedIntlProps,
+  Props & InjectedLocalized & WrappedComponentProps,
   State
 > {
   handleClickDelete = (processType: ProcessType) => () => {

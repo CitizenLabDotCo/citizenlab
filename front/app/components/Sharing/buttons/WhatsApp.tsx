@@ -3,7 +3,7 @@ import { clickSocialSharingLink, Medium } from '../utils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { Button } from '@citizenlab/cl2-component-library';
 
@@ -23,7 +23,7 @@ const WhatsApp = ({
   whatsAppMessage,
   url,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);
     trackClick('whatsapp');
@@ -44,7 +44,7 @@ const WhatsApp = ({
     <Button
       onClick={handleClick(whatsAppHref)}
       aria-label={formatMessage(messages.shareViaWhatsApp)}
-      bgColor={colors.whatsapp}
+      bgColor={colors.success}
       width="40px"
       height="40px"
       icon="whatsapp"

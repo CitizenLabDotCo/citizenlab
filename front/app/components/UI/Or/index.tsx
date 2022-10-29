@@ -18,7 +18,7 @@ const Line = styled.span`
 `;
 
 const OrText = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   text-transform: lowercase;

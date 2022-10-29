@@ -33,9 +33,7 @@ const InitiativesTranslateButton = ({
     !isNilOrError(locale) &&
     !initiative.attributes.title_multiloc[locale];
 
-  const isNotDesktop = windowSize
-    ? windowSize <= viewportWidths.largeTablet
-    : false;
+  const isNotDesktop = windowSize ? windowSize <= viewportWidths.tablet : false;
 
   if (isNotDesktop && showTranslateButton) {
     <FeatureFlag name="machine_translations">

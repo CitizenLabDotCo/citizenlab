@@ -43,12 +43,12 @@ export interface Props extends RequiredOrOptionalProps {
 
 const FieldInfo = ({ includedUsers, fieldIsRequired }: Props) => (
   <>
-    <Text fontSize="s" color="adminSecondaryTextColor">
+    <Text fontSize="s" color="textSecondary">
       <StyledIcon
-        name="user"
-        width="16px"
-        height="16px"
-        fill={colors.adminSecondaryTextColor}
+        name="user-circle"
+        width="20px"
+        height="20px"
+        fill={colors.textSecondary}
         mr="6px"
       />
       <FormattedMessage

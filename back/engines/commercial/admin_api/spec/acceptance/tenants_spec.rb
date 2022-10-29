@@ -40,7 +40,6 @@ resource 'Tenants', admin_api: true do
       parameter :name, 'The name of the tenant'
       parameter :host, 'The host URL of the tenant'
       parameter :logo, 'The logo image of the tenant'
-      parameter :header_bg, 'The header background image of the tenant'
       parameter :settings, 'The tenant settings'
       parameter :style, 'The tenant style definitions'
     end
@@ -118,11 +117,8 @@ resource 'Tenants', admin_api: true do
 
   delete 'admin_api/tenants/:tenant_id' do
     example_request 'Deleting a tenant', document: false do
-      original_host = tenant.host
-
       assert_status 200
       expect(tenant.reload.deleted_at).not_to be_nil
-      expect(tenant.reload.host).not_to eq(original_host)
     end
   end
 

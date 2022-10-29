@@ -2,12 +2,11 @@ import React from 'react';
 import { ICampaignData, deleteCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
-import { InjectedIntlProps } from 'react-intl';
 import PreviewFrame from './PreviewFrame';
 import styled from 'styled-components';
 
@@ -25,12 +24,11 @@ interface DataProps {
   campaign: ICampaignData;
 }
 
-interface Props extends InputProps, DataProps, InjectedIntlProps {}
+interface Props extends InputProps, DataProps {}
 
-const DraftCampaignDetails = ({
-  intl: { formatMessage },
-  campaign,
-}: Props & InjectedIntlProps) => {
+const DraftCampaignDetails = ({ campaign }: Props) => {
+  const { formatMessage } = useIntl();
+
   const handleDelete = () => {
     const deleteMessage = formatMessage(messages.campaignDeletionConfirmation);
     if (window.confirm(deleteMessage)) {
@@ -44,7 +42,7 @@ const DraftCampaignDetails = ({
     <>
       <PreviewFrame campaignId={campaign.id} />
       <ButtonWrapper>
-        <Button buttonStyle="delete" icon="trash" onClick={handleDelete}>
+        <Button buttonStyle="delete" icon="delete" onClick={handleDelete}>
           <FormattedMessage {...messages.deleteCampaignButton} />
         </Button>
       </ButtonWrapper>
@@ -52,13 +50,11 @@ const DraftCampaignDetails = ({
   );
 };
 
-const DraftCampaignDetailsWithHOCs = injectIntl(DraftCampaignDetails);
-
 export default (inputProps: InputProps) => (
   <GetCampaign id={inputProps.campaignId}>
     {(campaign) =>
       isNilOrError(campaign) ? null : (
-        <DraftCampaignDetailsWithHOCs {...inputProps} campaign={campaign} />
+        <DraftCampaignDetails {...inputProps} campaign={campaign} />
       )
     }
   </GetCampaign>

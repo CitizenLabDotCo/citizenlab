@@ -10,7 +10,12 @@ import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
-import { Input, LocationInput } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Input,
+  LocationInput,
+} from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import UserSelect from 'components/UI/UserSelect';
@@ -52,9 +57,10 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import eventEmitter from 'utils/eventEmitter';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
@@ -81,12 +87,12 @@ const Form = styled.form`
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 25px;
     padding-right: 25px;
   `}
 
-  ${media.largePhone`
+  ${media.phone`
     padding-left: 18px;
     padding-right: 18px;
   `}
@@ -132,6 +138,8 @@ interface InputProps {
   onAddressChange: (address: string) => void;
   onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
   authorId: string | null;
+  ideaId?: string;
+  phaseId?: string;
 }
 
 interface DataProps {
@@ -173,7 +181,7 @@ interface State {
 }
 
 class IdeaForm extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & WrappedComponentProps & WithRouterProps,
   State
 > {
   subscriptions: Subscription[];
@@ -214,13 +222,15 @@ class IdeaForm extends PureComponent<
   }
 
   componentDidMount() {
-    const { projectId } = this.props;
+    const { projectId, ideaId, phaseId } = this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
     const project$: Observable<IProject | null> =
       projectByIdStream(projectId).observable;
     const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
-      projectId as string
+      projectId as string,
+      phaseId,
+      ideaId
     ).observable;
     const pbContext$: Observable<IProjectData | IPhaseData | null> =
       project$.pipe(
@@ -647,22 +657,7 @@ class IdeaForm extends PureComponent<
   ) => {
     return ideaCustomFieldsSchemas.json_schema_multiloc[
       locale
-    ].required.includes(fieldCode);
-  };
-
-  isFieldEnabled = (
-    fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaFormSchemas,
-    locale: Locale
-  ) => {
-    return (
-      ideaCustomFieldsSchemas.json_schema_multiloc?.[locale]?.properties?.[
-        fieldCode
-      ] &&
-      ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-        'ui:widget'
-      ] !== 'hidden'
-    );
+    ].required?.includes(fieldCode);
   };
 
   handleAuthorChange = (authorId?: string) => {
@@ -718,22 +713,22 @@ class IdeaForm extends PureComponent<
       !isNilOrError(allowedTopics) &&
       !isNilOrError(project)
     ) {
-      const topicsEnabled = this.isFieldEnabled(
+      const topicsEnabled = isFieldEnabled(
         'topic_ids',
         ideaCustomFieldsSchemas,
         locale
       );
-      const locationEnabled = this.isFieldEnabled(
+      const locationEnabled = isFieldEnabled(
         'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
-      const attachmentsEnabled = this.isFieldEnabled(
+      const attachmentsEnabled = isFieldEnabled(
         'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
-      const proposedBudgetEnabled = this.isFieldEnabled(
+      const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,
         locale
@@ -748,6 +743,26 @@ class IdeaForm extends PureComponent<
         project,
         phases
       );
+
+      const AdminBudgetFieldLabel = () => {
+        return (
+          <Box display="flex">
+            <FormattedMessage
+              {...messages.budgetLabel}
+              values={{
+                currency: tenantCurrency,
+                maxBudget: pbContext?.attributes.max_budget,
+              }}
+            />
+            <IconTooltip
+              iconColor="black"
+              marginLeft="4px"
+              icon="shield-checkered"
+              content={<FormattedMessage {...messages.adminFieldTooltip} />}
+            />
+          </Box>
+        );
+      };
 
       return (
         <Form id="idea-form" className={className}>
@@ -883,15 +898,13 @@ class IdeaForm extends PureComponent<
                   context={{ projectId }}
                 >
                   <FormElement>
-                    <FormLabel
-                      labelMessage={messages.budgetLabel}
-                      labelMessageValues={{
-                        currency: tenantCurrency,
-                        maxBudget: pbContext?.attributes.max_budget,
-                      }}
-                      htmlFor="budget"
-                      iconName="admin"
-                    />
+                    <Box display="flex">
+                      <FormLabel
+                        width="auto"
+                        labelValue={<AdminBudgetFieldLabel />}
+                        htmlFor="budget"
+                      />
+                    </Box>
                     <Input
                       id="budget"
                       error={budgetError}
