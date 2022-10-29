@@ -2,7 +2,7 @@ import React from 'react';
 import { ICampaignData, deleteCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
@@ -43,7 +43,7 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
       <PreviewFrame campaignId={campaign.id} />
       <ButtonWrapper>
         <Button buttonStyle="delete" icon="delete" onClick={handleDelete}>
-          <FormattedMessage {...messages.deleteCampaignButton} />
+          {formatMessage(messages.deleteCampaignButton)}
         </Button>
       </ButtonWrapper>
     </>
