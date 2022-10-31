@@ -20,7 +20,7 @@ import { emptyStatsData } from './generateEmptyData';
 
 // typings
 import { ProjectId, Dates, Resolution } from '../../typings';
-import { Layout, BoxLayout } from '../typings';
+import { Layout, BoxLayout } from '../../typings';
 
 type Props = ProjectId &
   Dates &
