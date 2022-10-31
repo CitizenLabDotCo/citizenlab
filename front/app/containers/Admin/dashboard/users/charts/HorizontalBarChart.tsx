@@ -97,7 +97,7 @@ export class HorizontalBarChart extends React.PureComponent<
             {!noData && (
               <ReportExportMenu
                 svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
+                xlsx={xlsxEndpoint ? { endpoint: xlsxEndpoint } : undefined}
                 name={graphTitleString}
                 startAt={startAt}
                 endAt={endAt}

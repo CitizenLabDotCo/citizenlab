@@ -145,15 +145,6 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: engines/commercial/customizable_navbar
-  specs:
-    customizable_navbar (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
-      rails (~> 6.1)
-      ros-apartment (>= 2.9.0)
-
-PATH
   remote: engines/commercial/flag_inappropriate_content
   specs:
     flag_inappropriate_content (0.1.0)
@@ -385,6 +376,15 @@ PATH
     multi_tenancy (0.1.0)
       actionpack-cloudfront (~> 1.2.0)
       nlp
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
+
+PATH
+  remote: engines/free/customizable_navbar
+  specs:
+    customizable_navbar (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
 
@@ -1322,4 +1322,4 @@ DEPENDENCIES
   whenever (~> 1.0)
 
 BUNDLED WITH
-   2.3.22
+   2.3.20

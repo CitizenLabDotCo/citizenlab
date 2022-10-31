@@ -61,6 +61,7 @@ const EmptyState = ({
         </Text>
         <Box display="flex" flexWrap="wrap" alignItems="flex-start" mt="40px">
           <Button
+            className="intercom-admin-create-insights-button"
             bgColor={colors.primary}
             onClick={openCreateModal}
             mr="12px"
