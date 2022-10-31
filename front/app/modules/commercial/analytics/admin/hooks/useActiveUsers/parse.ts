@@ -1,5 +1,60 @@
-import { Response, Stats } from './typings';
+import moment, { Moment } from 'moment';
+
+// utils
 import { getConversionRate } from '../useRegistrations/parse';
+import { timeSeriesParser } from '../../utils/timeSeries';
+
+// typings
+import {
+  Response,
+  TimeSeriesResponseRow,
+  TimeSeriesRow,
+  TimeSeries,
+  Stats,
+} from './typings';
+import { IResolution } from 'components/admin/ResolutionControl';
+
+export const getEmptyRow = (date: Moment) => ({
+  date: date.format('YYYY-MM-DD'),
+  activeUsers: 0,
+});
+
+const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
+  if (!row) return getEmptyRow(date);
+
+  return {
+    activeUsers: row.count_dimension_user_id,
+    date: getDate(row).format('YYYY-MM-DD'),
+  };
+};
+
+const getDate = (row: TimeSeriesResponseRow) => {
+  if ('dimension_date_created.month' in row) {
+    return moment(row['dimension_date_created.month']);
+  }
+
+  if ('dimension_date_created.week' in row) {
+    return moment(row['dimension_date_created.week']);
+  }
+
+  return moment(row['dimension_date_created.date']);
+};
+
+const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
+
+export const parseTimeSeries = (
+  responseTimeSeries: TimeSeriesResponseRow[],
+  startAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null,
+  resolution: IResolution
+): TimeSeries | null => {
+  return _parseTimeSeries(
+    responseTimeSeries,
+    startAtMoment,
+    endAtMoment,
+    resolution
+  );
+};
 
 export const parseStats = (data: Response['data']): Stats => {
   const activeUsersWholePeriod = data[1][0];

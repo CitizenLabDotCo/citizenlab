@@ -9,7 +9,7 @@ export const timeSeriesParser =
   (
     timeSeries: Row[],
     startAtMoment: Moment | null | undefined,
-    endAtMoment: Moment | null | undefined,
+    endAtMoment: Moment | null,
     resolution: IResolution
   ): ParsedRow[] | null => {
     if (timeSeries.length === 0) return null;
@@ -54,7 +54,7 @@ export const timeSeriesParser =
 export const parseMonths = <Row, ParsedRow>(
   timeSeries: Row[],
   startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null,
   getDate: (row: Row) => Moment,
   parseRow: (date: Moment, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {
@@ -85,7 +85,7 @@ export const parseMonths = <Row, ParsedRow>(
 export const parseWeeks = <Row, ParsedRow>(
   timeSeries: Row[],
   startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null,
   getDate: (row: Row) => Moment,
   parseRow: (date: Moment, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {
@@ -116,7 +116,7 @@ export const parseWeeks = <Row, ParsedRow>(
 export const parseDays = <Row, ParsedRow>(
   timeSeries: Row[],
   startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null,
   getDate: (row: Row) => Moment,
   parseRow: (date: Moment, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {

@@ -41,6 +41,14 @@ interface VisitorsRow {
 }
 
 // Hook return value
+export interface TimeSeriesRow {
+  /* Date format: YYYY-MM-DD */
+  date: string;
+  activeUsers: number;
+}
+
+export type TimeSeries = TimeSeriesRow[];
+
 export interface Stats {
   activeUsers: Stat;
   conversionRate: Stat;

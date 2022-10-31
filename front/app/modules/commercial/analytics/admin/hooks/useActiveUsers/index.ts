@@ -7,13 +7,13 @@ import { analyticsStream } from '../../services/analyticsFacts';
 import { query } from './query';
 
 // parse
-import { parseStats } from './parse';
+import { parseTimeSeries, parseStats } from './parse';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { QueryParameters, Response, Stats } from './typings';
+import { QueryParameters, Response, TimeSeries, Stats } from './typings';
 
 export default function useActiveUsers({
   projectId,
@@ -21,6 +21,7 @@ export default function useActiveUsers({
   endAtMoment,
   resolution,
 }: QueryParameters) {
+  const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
   const [stats, setStats] = useState<Stats | NilOrError>();
 
   useEffect(() => {
@@ -41,12 +42,19 @@ export default function useActiveUsers({
         }
 
         setStats(parseStats(response.data));
-        // TODO
+        setTimeSeries(
+          parseTimeSeries(
+            response.data[0],
+            startAtMoment,
+            endAtMoment,
+            resolution
+          )
+        );
       }
     );
 
     return () => subscription.unsubscribe();
   }, [startAtMoment, endAtMoment, resolution]);
 
-  return { stats };
+  return { timeSeries, stats };
 }
