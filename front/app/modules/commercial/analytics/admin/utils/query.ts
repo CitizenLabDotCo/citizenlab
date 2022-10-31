@@ -31,7 +31,7 @@ export const getDateFilter = (
 
   return startAt && endAt
     ? {
-        [filter + '.date']: {
+        [`${filter}.date`]: {
           from: formatDate(startAt),
           to: formatDate(endAt),
         },
