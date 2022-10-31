@@ -10,7 +10,7 @@
       <!-- Finished action: idea published -->
       <tr>
         <td style="width:22px; padding-bottom:15px">
-          <img style="vertical-align: middle; width: 22px; height: 22px;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Checked checkmark"
           src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_checked_checkbox.png">
         </td>
@@ -25,7 +25,7 @@
       <% if event.post_images.empty? %>
         <tr>
           <td style="width:22px; padding-bottom:15px">
-            <img style="vertical-align: middle; width: 22px; height: 22px;"
+            <img style="vertical-align: middle; height: 22px;"
             alt="Empty checkmark"
             src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
           </td>
@@ -37,7 +37,7 @@
             %>
           </td>
           <td style="padding-bottom:15px">
-            <img alt="Image icon" width="22px" height="22px" style="vertical-align: middle;"
+            <img alt="Image icon" style="vertical-align: middle; height: 22px;"
               src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_image.png">
           </td>
         </tr>
@@ -46,7 +46,7 @@
       <!-- Action item 2: Share on Facebook -->
       <tr>
         <td style="width:22px; padding-bottom:15px">
-          <img style="vertical-align: middle; width: 22px; height: 22px;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Empty checkmark"
           src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
         </td>
@@ -58,7 +58,7 @@
           %>
         </td>
         <td style="padding-bottom:15px">
-            <img style="vertical-align: middle; width: 22px; height: 22px;"
+            <img style="vertical-align: middle; height: 22px;"
             alt="Facebook icon"
             src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_facebook_logo.png">
         </td>
@@ -67,7 +67,7 @@
       <!-- Action item 3: Share on Twitter -->
       <tr>
         <td style="width:22px; padding-bottom:15px;">
-          <img style="vertical-align: middle; width: 22px; height: 22px;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Empty checkmark"
           src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
         </td>
@@ -89,7 +89,7 @@
       <!-- Action item 4: Send an email -->
       <tr>
         <td style="width:22px; padding-bottom:15px;">
-          <img style="vertical-align: middle; width: 22px; height: 22px;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Empty checkmark"
           src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
         </td>
@@ -103,7 +103,7 @@
         <td style="padding-bottom: 15px">
           <img
             alt="Paper plane"
-            style="vertical-align: middle; width: 22px; height: 22px;"
+            style="vertical-align: middle; height: 22px;"
             src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_sent.png">
         </td>
       </tr>
@@ -111,7 +111,7 @@
       <!-- Action item 5: Share link -->
       <tr>
         <td style="width:22px; padding-bottom:15px;">
-          <img style="vertical-align: middle; width: 22px; height: 22px;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Empty checkmark"
           src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
         </td>
@@ -125,7 +125,7 @@
         <td style="padding-bottom: 15px">
           <img
             alt="Copy"
-            style="vertical-align: middle; width: 22px; height: 22px;"
+            style="vertical-align: middle; height: 22px;"
             src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_copy.png">
         </td>
       </tr>
