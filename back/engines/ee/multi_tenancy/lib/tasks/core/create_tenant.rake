@@ -93,6 +93,7 @@ namespace :cl2_back do
         password_login: {
           enabled: true,
           allowed: true,
+          enable_signup: true,
           phone: false,
           minimum_length: 8
         },
@@ -267,10 +268,6 @@ namespace :cl2_back do
           allowed: true
         },
         content_builder: {
-          enabled: true,
-          allowed: true
-        },
-        customizable_navbar: {
           enabled: true,
           allowed: true
         },

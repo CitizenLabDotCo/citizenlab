@@ -33,6 +33,7 @@ module MultiTenancy
             password_login: {
               allowed: true,
               enabled: true,
+              enable_signup: true,
               phone: false,
               minimum_length: 8
             },
@@ -125,10 +126,6 @@ module MultiTenancy
               allowed: true
             },
             custom_idea_statuses: {
-              enabled: true,
-              allowed: true
-            },
-            customizable_navbar: {
               enabled: true,
               allowed: true
             },

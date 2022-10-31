@@ -18,16 +18,16 @@ module MultiTenancy
             'project_folders/image'                => yml_project_folder_images,
             'project_folders/file'                 => yml_project_folder_files,
             'project'                              => yml_projects,
+            'project_file'                         => yml_project_files,
+            'project_image'                        => yml_project_images,
+            'phase'                                => yml_phases,
+            'phase_file'                           => yml_phase_files,
             'custom_form'                          => yml_custom_forms,
             'custom_field'                         => yml_custom_fields,
             'custom_field_option'                  => yml_custom_field_options,
             'user'                                 => yml_users,
             'email_campaigns/unsubscription_token' => yml_unsubscription_tokens,
-            'project_file'                         => yml_project_files,
-            'project_image'                        => yml_project_images,
             'projects_allowed_input_topic'         => yml_projects_allowed_input_topics,
-            'phase'                                => yml_phases,
-            'phase_file'                           => yml_phase_files,
             'areas_project'                        => yml_areas_projects,
             'email_campaigns/campaigns'            => yml_campaigns,
             'basket'                               => yml_baskets,
@@ -160,7 +160,10 @@ module MultiTenancy
             'created_at' => c.created_at.to_s,
             'updated_at' => c.updated_at.to_s,
             'enabled' => c.enabled,
-            'code' => c.code
+            'code' => c.code,
+            'maximum' => c.maximum,
+            'minimum_label_multiloc' => c.minimum_label_multiloc,
+            'maximum_label_multiloc' => c.maximum_label_multiloc
           }
           if c.resource_type == User.name
             yml_custom_field['resource_type'] = c.resource_type
@@ -310,7 +313,8 @@ module MultiTenancy
                 'created_at' => ti.created_at.to_s,
                 'updated_at' => ti.updated_at.to_s
               }
-            end
+            end,
+            'include_all_areas' => p.include_all_areas
           })
           if p.admin_publication.present?
             yml_project['admin_publication_attributes'] = {
@@ -414,7 +418,11 @@ module MultiTenancy
           'downvoting_enabled' => context.downvoting_enabled,
           'downvoting_method' => context.downvoting_method,
           'downvoting_limited_max' => context.downvoting_limited_max,
-          'max_budget' => context.max_budget
+          'max_budget' => context.max_budget,
+          'min_budget' => context.min_budget,
+          'poll_anonymous' => context.poll_anonymous,
+          'ideas_order' => context.ideas_order,
+          'input_term' => context.input_term
         }
         if yml_pc['participation_method'] == 'survey'
           yml_pc['survey_embed_url'] = context.survey_embed_url
@@ -695,7 +703,8 @@ module MultiTenancy
                 'updated_at' => img.updated_at.to_s
               }
             end,
-            'custom_field_values' => i.custom_field_values
+            'custom_field_values' => i.custom_field_values,
+            'creation_phase_ref' => lookup_ref(i.creation_phase_id, :phase)
           }
           store_ref yml_idea, i.id, :idea
           yml_idea
@@ -912,7 +921,9 @@ module MultiTenancy
             'title_multiloc' => q.title_multiloc,
             'ordering' => q.ordering,
             'created_at' => q.created_at.to_s,
-            'updated_at' => q.updated_at.to_s
+            'updated_at' => q.updated_at.to_s,
+            'question_type' => q.question_type,
+            'max_options' => q.max_options
           }
           store_ref yml_question, q.id, :poll_question
           yml_question
@@ -1024,6 +1035,7 @@ module MultiTenancy
             'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
             'title_multiloc' => legend_item.title_multiloc,
             'color' => legend_item.color,
+            'ordering' => legend_item.ordering,
             'created_at' => legend_item.created_at.to_s,
             'updated_at' => legend_item.updated_at.to_s
           }

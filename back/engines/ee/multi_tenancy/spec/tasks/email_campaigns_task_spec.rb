@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe 'rake email_campaigns' do
-  before(:context) do
-    Rails.application.load_tasks
+  before do
+    load_rake_tasks_if_not_loaded
   end
 
   let(:task) { Rake::Task[task_name] }
@@ -20,7 +20,7 @@ describe 'rake email_campaigns' do
         expect { task.execute }
           .to have_enqueued_job(EmailCampaigns::TriggerOnScheduleJob)
           .with(t.to_i)
-          .exactly(2).times
+          .exactly(Tenant.count).times
       end
     end
   end
