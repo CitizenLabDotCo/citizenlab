@@ -299,7 +299,7 @@ resource 'Projects' do
 
           expect(LogActivityJob)
             .to have_received('perform_later')
-            .with(project, 'draft', @user, be_a(Numeric), [nil, 'draft'])
+            .with(project, 'draft', @user, be_a(Numeric), payload: [nil, 'draft'])
         end
 
         example 'Create a project in a folder', skip: !CitizenLab.ee? do
@@ -568,7 +568,7 @@ resource 'Projects' do
 
         expect(LogActivityJob)
           .to have_received('perform_later')
-          .with(project, 'archived', @user, be_a(Numeric), %w[published archived])
+          .with(project, 'archived', @user, be_a(Numeric), payload: %w[published archived])
       end
 
       example 'Add a project to a folder', skip: !CitizenLab.ee? do

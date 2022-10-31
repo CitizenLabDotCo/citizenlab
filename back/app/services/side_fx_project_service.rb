@@ -66,7 +66,7 @@ class SideFxProjectService
 
     LogActivityJob
       .set(wait: 20.seconds)
-      .perform_later(project, change.last, user, Time.now.to_i, change)
+      .perform_later(project, change.last, user, Time.now.to_i, payload: change)
   end
 
   def after_folder_changed(project, current_user)
