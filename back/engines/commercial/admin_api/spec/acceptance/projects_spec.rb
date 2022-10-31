@@ -42,10 +42,10 @@ resource 'Project', admin_api: true do
 
   post 'admin_api/projects/template_import' do
     parameter :tenant_id, 'The tenant id in which to import the project', required: true
-    parameter :folder_id, 'The folder id in which to import the project', required: false
 
     with_options scope: :project do
       parameter :template_yaml, 'The yml template for the project to import', required: true
+      parameter :folder_id, 'The folder id in which to import the project', required: false
     end
 
     let(:tenant) { create(:tenant) }
@@ -58,7 +58,7 @@ resource 'Project', admin_api: true do
     end
 
     example 'Import a project template' do
-      do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml }, folder_id: folder.id)
+      do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id })
 
       expect(status).to eq(200)
       expect(DumpTenantJob).to have_been_enqueued if defined?(NLP)
