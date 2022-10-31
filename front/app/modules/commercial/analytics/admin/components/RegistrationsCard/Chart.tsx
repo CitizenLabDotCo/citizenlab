@@ -21,7 +21,7 @@ import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../hooks/useRegistrations/typings';
-import { Layout } from '../typings';
+import { Layout } from '../../typings';
 import { Margin } from 'components/admin/Graphs/typings';
 
 interface Props {

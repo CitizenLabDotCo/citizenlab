@@ -37,6 +37,7 @@ export default function useActiveUsers({
           return;
         }
 
+        console.log(response);
         // TODO
       }
     );
