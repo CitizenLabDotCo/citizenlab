@@ -91,7 +91,7 @@ export class IdeasByStatusChart extends React.PureComponent<
               <ReportExportMenu
                 name={formatMessage(messages.inputsByStatusTitle)}
                 svgNode={this.currentChart}
-                xlsxEndpoint={ideasByStatusXlsxEndpoint}
+                xlsx={{ endpoint: ideasByStatusXlsxEndpoint }}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
                 startAt={startAt}

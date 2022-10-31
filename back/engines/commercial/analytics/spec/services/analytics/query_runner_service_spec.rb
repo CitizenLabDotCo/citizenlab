@@ -44,7 +44,7 @@ describe Analytics::QueryRunnerService do
         { 'type.name' => 'initiative', 'sum_votes_count' => 1 },
         { 'type.name' => 'idea', 'sum_votes_count' => 2 }
       ]
-      expect(results).to eq expected_result
+      expect(results).to match_array expected_result
     end
 
     it 'return filtered ideas count' do
