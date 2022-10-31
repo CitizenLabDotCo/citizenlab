@@ -62,7 +62,7 @@ Metrics/AbcSize:
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
 # IgnoredMethods: refine
 Metrics/BlockLength:
-  Max: 824
+  Max: 1017
 
 # Offense count: 68
 # Configuration parameters: IgnoredMethods.
@@ -172,7 +172,7 @@ RSpec/MissingExampleGroupArgument:
 # Offense count: 380
 # Configuration parameters: AllowSubject.
 RSpec/MultipleMemoizedHelpers:
-  Max: 30
+  Max: 37
 
 # Offense count: 29
 # Configuration parameters: IgnoreSharedExamples.
@@ -190,7 +190,7 @@ RSpec/NamedSubject:
 
 # Offense count: 31
 RSpec/NestedGroups:
-  Max: 4
+  Max: 5
 
 # Offense count: 16
 RSpec/RepeatedDescription:

@@ -49,6 +49,7 @@ interface Props {
   resource: {
     title: string;
     subtitle?: string;
+    rightSideCTA?: JSX.Element | JSX.Element[];
   };
   tabs: ITab[];
   children: React.ReactNode;
@@ -57,19 +58,29 @@ interface Props {
 
 const TabbedResource = ({
   children,
-  resource: { title, subtitle },
+  resource: { title, subtitle, rightSideCTA },
   tabs,
   contentWrapper = true,
 }: Props) => {
   return (
     <>
-      <Box mb="30px" className="e2e-resource-header">
-        <Title color="primary">{title}</Title>
-        {subtitle && (
-          <Text maxWidth="60em" color="textSecondary">
-            {subtitle}
-          </Text>
-        )}
+      <Box
+        mb="30px"
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        className="e2e-resource-header"
+      >
+        <Box>
+          <Title color="primary">{title}</Title>
+          {subtitle && (
+            <Text maxWidth="60em" color="textSecondary">
+              {subtitle}
+            </Text>
+          )}
+        </Box>
+        {rightSideCTA && <Box ml="60px">{rightSideCTA}</Box>}
       </Box>
 
       {tabs && tabs.length > 0 && (
@@ -77,10 +88,14 @@ const TabbedResource = ({
           {tabs.map((tab) => {
             return tab.feature ? (
               <FeatureFlag key={tab.url} name={tab.feature}>
-                <Tab tab={tab} />
+                <Tab tab={tab} className={`intercom-admin-tab-${tab.name}`} />
               </FeatureFlag>
             ) : (
-              <Tab key={tab.url} tab={tab} />
+              <Tab
+                key={tab.url}
+                tab={tab}
+                className={`intercom-admin-tab-${tab.name}`}
+              />
             );
           })}
         </TabbedNav>

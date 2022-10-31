@@ -22,7 +22,7 @@ import { generateEmptyData } from './generateEmptyData';
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { TimeSeries } from '../../../hooks/useVisitorsData/typings';
+import { TimeSeries } from '../../../hooks/useVisitors/typings';
 
 interface Props {
   timeSeries: TimeSeries | NilOrError;

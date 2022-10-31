@@ -44,18 +44,6 @@ export default defineMessages({
     defaultMessage:
       'Add a link to view all project events in the navigation bar',
   },
-  allInputSection: {
-    id: 'app.components.AdminPage.SettingsPage.allInputSection',
-    defaultMessage: 'All input',
-  },
-  allInputPageSetting: {
-    id: 'app.components.AdminPage.SettingsPage.allInputPageSetting',
-    defaultMessage: 'Add All input to navigation bar',
-  },
-  allInputPageSettingDescription: {
-    id: 'app.components.AdminPage.SettingsPage.allInputPageDescription',
-    defaultMessage: 'Add a link to view all input to the navigation bar',
-  },
   contrastRatioTooLow: {
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
     defaultMessage:

@@ -100,9 +100,9 @@ export default defineMessages({
     defaultMessage:
       'Create or collect inputs, votes and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
   },
-  createSurveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.createSurveyText',
-    defaultMessage: 'Embed an external survey',
+  createExternalSurveyText: {
+    id: 'app.containers.AdminPage.ProjectEdit.createExternalSurveyText',
+    defaultMessage: 'Create an external survey',
   },
   createSurveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',

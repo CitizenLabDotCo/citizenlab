@@ -30,6 +30,7 @@ AppConfiguration.create!(
     password_login: {
       enabled: true,
       allowed: true,
+      enable_signup: true,
       phone: false,
       minimum_length: 8
     },

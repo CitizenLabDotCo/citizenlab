@@ -156,6 +156,8 @@ models:
     code: about
     title_multiloc: static_pages.infopage_title
     top_info_section_multiloc: static_pages.infopage_body
+    top_info_section_enabled: true
+    files_section_enabled: true
     slug: information
     text_images_attributes:
       - imageable_field: top_info_section_multiloc
@@ -186,16 +188,20 @@ models:
     code: privacy-policy
     title_multiloc: static_pages.privacy_policy_title
     top_info_section_multiloc: static_pages.privacy_policy_body
+    top_info_section_enabled: true
     slug: privacy-policy
   - &terms-and-conditions-page
     code: terms-and-conditions
     title_multiloc: static_pages.terms_and_conditions_title
     top_info_section_multiloc: static_pages.terms_and_conditions_body
+    top_info_section_enabled: true
     slug: terms-and-conditions
   - &initiatives-page
     code: proposals
     title_multiloc: static_pages.initiatives_title
     top_info_section_multiloc: static_pages.initiatives_body
+    top_info_section_enabled: true
+    files_section_enabled: true
     slug: initiatives
     text_images_attributes:
       - imageable_field: top_info_section_multiloc
@@ -223,6 +229,8 @@ models:
     code: faq
     title_multiloc: static_pages.faq_title
     top_info_section_multiloc: static_pages.faq_body
+    top_info_section_enabled: true
+    files_section_enabled: true
     slug: faq
   nav_bar_item:
     -

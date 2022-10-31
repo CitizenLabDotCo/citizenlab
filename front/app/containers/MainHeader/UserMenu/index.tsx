@@ -51,6 +51,7 @@ const UserMenu = () => {
           onMouseDown={removeFocusAfterMouseClick}
           onClick={toggleDropdown}
           aria-expanded={opened}
+          className="intercom-user-menu-button"
         >
           <User userId={userId} />
         </DropdownButton>

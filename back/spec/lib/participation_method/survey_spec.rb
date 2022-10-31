@@ -15,6 +15,12 @@ RSpec.describe ParticipationMethod::Survey do
     end
   end
 
+  describe '#create_default_form!' do
+    it 'does not create a default form' do
+      expect { participation_method.create_default_form! }.not_to change(CustomForm, :count)
+    end
+  end
+
   describe '#validate_built_in_fields?' do
     it 'returns false' do
       expect(participation_method.validate_built_in_fields?).to be false
@@ -58,9 +64,22 @@ RSpec.describe ParticipationMethod::Survey do
     end
   end
 
+  describe '#sign_in_required_for_posting?' do
+    it 'returns false' do
+      expect(participation_method.sign_in_required_for_posting?).to be false
+    end
+  end
+
   describe '#extra_fields_category_translation_key' do
     it 'returns the translation key for the extra fields category' do
       expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
     end
   end
+
+  its(:supports_publication?) { is_expected.to be false }
+  its(:supports_commenting?) { is_expected.to be false }
+  its(:supports_voting?) { is_expected.to be false }
+  its(:supports_baskets?) { is_expected.to be false }
+  its(:supports_status?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be false }
 end
