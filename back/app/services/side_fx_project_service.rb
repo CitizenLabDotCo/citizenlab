@@ -12,6 +12,8 @@ class SideFxProjectService
   end
 
   def after_create(project, user)
+    participation_method = Factory.instance.participation_method_for(project)
+    participation_method.create_default_form!
     project.set_default_topics!
     project.update!(description_multiloc: TextImageService.new.swap_data_images(project, :description_multiloc))
 
@@ -64,7 +66,7 @@ class SideFxProjectService
 
     LogActivityJob
       .set(wait: 20.seconds)
-      .perform_later(project, change.last, user, Time.now.to_i, change)
+      .perform_later(project, change.last, user, Time.now.to_i, payload: change)
   end
 
   def after_folder_changed(project, current_user)

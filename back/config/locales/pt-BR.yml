@@ -200,3 +200,8 @@ pt:
       status: 'Status'
       assignee_fullname: 'Atribuído'
       assignee_email: 'Assignee email'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'

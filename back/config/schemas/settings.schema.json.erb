@@ -208,10 +208,16 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "phone"],
+        "required-settings": ["minimum_length", "phone", "enable_signup"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "enable_signup": {
+            "type": "boolean",
+            "title": "Enable sign-up",
+            "description": "If unchecked, only login via password is allowed for existing users; sign-up via password is disabled for new users.",
+            "default": true
+          },
           "minimum_length": {
             "type": "number",
             "title": "Minimum password length",
