@@ -11,9 +11,11 @@ import { parseTimeSeries, parseStats } from './parse';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { deduceResolution } from './utils';
 
 // typings
 import { QueryParameters, Response, TimeSeries, Stats } from './typings';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export default function useActiveUsers({
   projectId,
@@ -23,6 +25,8 @@ export default function useActiveUsers({
 }: QueryParameters) {
   const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
   const [stats, setStats] = useState<Stats | NilOrError>();
+  const [deducedResolution, setDeducedResolution] =
+    useState<IResolution>(resolution);
 
   useEffect(() => {
     const observable = analyticsStream<Response>(
@@ -42,13 +46,17 @@ export default function useActiveUsers({
           return;
         }
 
+        const deducedResolution =
+          deduceResolution(response.data[0]) ?? resolution;
+        setDeducedResolution(deducedResolution);
+
         setStats(parseStats(response.data));
         setTimeSeries(
           parseTimeSeries(
             response.data[0],
             startAtMoment,
             endAtMoment,
-            resolution
+            deducedResolution
           )
         );
       }
@@ -57,5 +65,5 @@ export default function useActiveUsers({
     return () => subscription.unsubscribe();
   }, [startAtMoment, endAtMoment, resolution]);
 
-  return { timeSeries, stats };
+  return { timeSeries, stats, deducedResolution };
 }
