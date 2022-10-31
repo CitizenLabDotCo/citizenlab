@@ -6,11 +6,14 @@ import { analyticsStream } from '../../services/analyticsFacts';
 // query
 import { query } from './query';
 
+// parse
+import { parseStats } from './parse';
+
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { QueryParameters, Response } from './typings';
+import { QueryParameters, Response, Stats } from './typings';
 
 export default function useActiveUsers({
   projectId,
@@ -18,7 +21,7 @@ export default function useActiveUsers({
   endAtMoment,
   resolution,
 }: QueryParameters) {
-  const [state, setState] = useState<NilOrError>();
+  const [stats, setStats] = useState<Stats | NilOrError>();
 
   useEffect(() => {
     const observable = analyticsStream<Response>(
@@ -33,11 +36,11 @@ export default function useActiveUsers({
     const subscription = observable.subscribe(
       (response: Response | NilOrError) => {
         if (isNilOrError(response)) {
-          setState(response);
+          setStats(response);
           return;
         }
 
-        console.log(response);
+        setStats(parseStats(response.data));
         // TODO
       }
     );
@@ -45,5 +48,5 @@ export default function useActiveUsers({
     return () => subscription.unsubscribe();
   }, [startAtMoment, endAtMoment, resolution]);
 
-  return state;
+  return { stats };
 }

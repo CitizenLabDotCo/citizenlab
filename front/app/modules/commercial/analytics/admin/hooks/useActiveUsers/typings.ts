@@ -1,4 +1,4 @@
-import { ProjectId, Dates, Resolution } from '../../typings';
+import { ProjectId, Dates, Resolution, Stat } from '../../typings';
 
 export type QueryParameters = ProjectId & Dates & Resolution;
 
@@ -6,10 +6,10 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 export interface Response {
   data: [
     TimeSeriesResponse | [],
-    ActiveUsersRow,
-    ActiveUsersRow,
-    VisitorsRow,
-    VisitorsRow
+    [ActiveUsersRow],
+    [ActiveUsersRow],
+    [VisitorsRow],
+    [VisitorsRow]
   ];
 }
 
@@ -38,4 +38,10 @@ interface TimeSeriesResponseDay extends ActiveUsersRow {
 
 interface VisitorsRow {
   count_visitor_id: number;
+}
+
+// Hook return value
+export interface Stats {
+  activeUsers: Stat;
+  conversionRate: Stat;
 }

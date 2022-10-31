@@ -86,9 +86,9 @@ export const parseStats = (data: Response['data']): Stats => {
   };
 };
 
-const getConversionRate = (registrations: number, visits: number) => {
-  if (visits <= 0) return `0%`;
-  return `${Math.min(100, roundPercentage(registrations, visits))}%`;
+export const getConversionRate = (from: number, to: number) => {
+  if (to <= 0) return `0%`;
+  return `${Math.min(100, roundPercentage(from, to))}%`;
 };
 
 export const parseExcelData = (

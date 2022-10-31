@@ -42,6 +42,8 @@ const RegistrationsCard = ({
     return null;
   }
 
+  console.log(x);
+
   const cardTitle = formatMessage(messages.activeUsers);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
