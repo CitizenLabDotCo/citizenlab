@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- [CL-1765] Resize new icons used in 3 email campaigns
+
 ### Added
 
 - [CL-1811] New Oostende verification method
