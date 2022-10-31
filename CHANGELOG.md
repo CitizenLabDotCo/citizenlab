@@ -1,3 +1,4 @@
+
 # Changelog
 
 ## Next release
@@ -5,6 +6,10 @@
 ### Fixed
 
 - [CL-1841] Show project attachments in content builder project description
+
+### Added
+
+- [CL-1700] Native surveys: create a default form when creating new native survey projects or phases
 
 ## 2022-10-28
 
