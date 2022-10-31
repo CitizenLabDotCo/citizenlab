@@ -72,3 +72,5 @@ export const parseStats = (data: Response['data']): Stats => {
     },
   };
 };
+
+export const parseExcel = () => {};

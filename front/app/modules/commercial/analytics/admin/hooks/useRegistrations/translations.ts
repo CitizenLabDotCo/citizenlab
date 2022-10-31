@@ -1,8 +1,11 @@
-import { FormatMessage } from 'typings';
-import visitorsMessages from '../useVisitors/messages';
+// i18n
 import messages from './messages';
+import visitorsMessages from '../useVisitors/messages';
 import cardMessages from '../../components/RegistrationsCard/messages';
-import visitorsCardMessages from '../../components/VisitorsCard/messages';
+import { getTimePeriodTranslations } from '../../utils/resolution';
+
+// typings
+import { FormatMessage } from 'typings';
 
 export interface Translations {
   stats: string;
@@ -27,7 +30,5 @@ export const getTranslations = (
   statistic: formatMessage(visitorsMessages.statistic),
   conversionRate: formatMessage(cardMessages.conversionRate),
   total: formatMessage(visitorsMessages.total),
-  last30Days: formatMessage(visitorsCardMessages.last30Days),
-  last7Days: formatMessage(visitorsCardMessages.last7Days),
-  yesterday: formatMessage(visitorsCardMessages.yesterday),
+  ...getTimePeriodTranslations(formatMessage),
 });

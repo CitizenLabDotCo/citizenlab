@@ -1,4 +1,9 @@
+// i18n
+import messages from '../messages';
+
+// typings
 import { IResolution } from 'components/admin/ResolutionControl';
+import { FormatMessage } from 'typings';
 
 export const resolutionDeducer =
   <Row>(columnPrefix: string) =>
@@ -16,3 +21,26 @@ export const resolutionDeducer =
 
     return 'day';
   };
+
+interface TimePeriodTranslations {
+  last30Days: string;
+  last7Days: string;
+  yesterday: string;
+}
+
+export const getTimePeriodTranslations = (
+  formatMessage: FormatMessage
+): TimePeriodTranslations => ({
+  last30Days: formatMessage(messages.last30Days),
+  last7Days: formatMessage(messages.last7Days),
+  yesterday: formatMessage(messages.yesterday),
+});
+
+export const RESOLUTION_TO_MESSAGE_KEY: Record<
+  IResolution,
+  keyof TimePeriodTranslations
+> = {
+  month: 'last30Days',
+  week: 'last7Days',
+  day: 'yesterday',
+};

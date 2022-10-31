@@ -3,7 +3,7 @@ import { Moment } from 'moment';
 // utils
 import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
 import { roundPercentage } from 'utils/math';
-import { RESOLUTION_TO_MESSAGE_KEY } from '../useVisitors/parse';
+import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 
 // typings
 import {

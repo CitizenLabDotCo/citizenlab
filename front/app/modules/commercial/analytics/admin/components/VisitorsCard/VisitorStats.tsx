@@ -6,8 +6,11 @@ import Statistic from 'components/admin/Graphs/Statistic';
 
 // i18n
 import messages from './messages';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
+import {
+  getTimePeriodTranslations,
+  RESOLUTION_TO_MESSAGE_KEY,
+} from '../../utils/resolution';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -22,12 +25,6 @@ interface Props {
   resolution: IResolution;
 }
 
-export const BOTTOM_LABEL_COPY: Record<IResolution, MessageDescriptor> = {
-  month: messages.last30Days,
-  week: messages.last7Days,
-  day: messages.yesterday,
-};
-
 const EMPTY_STAT = { value: '-', lastPeriod: '-' };
 const EMPTY_DATA: Stats = {
   visitors: EMPTY_STAT,
@@ -36,15 +33,13 @@ const EMPTY_DATA: Stats = {
   pageViews: EMPTY_STAT,
 };
 
-const VisitorStats = ({
-  stats,
-  projectId,
-  resolution,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const VisitorStats = ({ stats, projectId, resolution }: Props) => {
+  const { formatMessage } = useIntl();
   const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
 
-  const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
+  const timePeriodTranslations = getTimePeriodTranslations(formatMessage);
+  const bottomLabel =
+    timePeriodTranslations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
 
   return (
     <>
@@ -96,4 +91,4 @@ const VisitorStats = ({
   );
 };
 
-export default injectIntl(VisitorStats);
+export default VisitorStats;

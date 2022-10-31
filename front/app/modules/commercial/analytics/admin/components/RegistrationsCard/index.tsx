@@ -12,10 +12,13 @@ import Chart from './Chart';
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
+import {
+  getTimePeriodTranslations,
+  RESOLUTION_TO_MESSAGE_KEY,
+} from '../../utils/resolution';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { BOTTOM_LABEL_COPY } from '../VisitorsCard/VisitorStats';
 import { emptyStatsData } from './generateEmptyData';
 
 // typings
@@ -77,7 +80,9 @@ const RegistrationsCard = ({
   const cardTitle = formatMessage(messages.registrations);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
-  const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
+  const timePeriodTranslations = getTimePeriodTranslations(formatMessage);
+  const bottomLabel =
+    timePeriodTranslations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
 
   const shownStatsData = projectId ? emptyStatsData : stats;
 

@@ -4,6 +4,7 @@ import { Moment } from 'moment';
 import { round } from 'lodash-es';
 import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
 import { keys } from 'utils/helperUtils';
+import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -75,15 +76,6 @@ export const parseTimeSeries = (
     endAtMoment,
     resolution
   );
-};
-
-export const RESOLUTION_TO_MESSAGE_KEY: Record<
-  IResolution,
-  keyof Translations
-> = {
-  month: 'last30Days',
-  week: 'last7Days',
-  day: 'yesterday',
 };
 
 export const parseExcelData = (

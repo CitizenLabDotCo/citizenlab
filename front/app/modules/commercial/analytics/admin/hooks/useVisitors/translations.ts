@@ -1,6 +1,7 @@
 // i18n
 import messages from './messages';
 import cardMessages from '../../components/VisitorsCard/messages';
+import { getTimePeriodTranslations } from '../../utils/resolution';
 
 // typings
 import { FormatMessage } from 'typings';
@@ -32,7 +33,5 @@ export const getTranslations = (
   visits: formatMessage(cardMessages.visits),
   visitDuration: formatMessage(cardMessages.visitDuration),
   pageViews: formatMessage(cardMessages.pageViews),
-  last30Days: formatMessage(cardMessages.last30Days),
-  last7Days: formatMessage(cardMessages.last7Days),
-  yesterday: formatMessage(cardMessages.yesterday),
+  ...getTimePeriodTranslations(formatMessage),
 });
