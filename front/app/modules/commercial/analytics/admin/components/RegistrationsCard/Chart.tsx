@@ -17,22 +17,19 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { ProjectId, Dates, Resolution } from '../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../hooks/useRegistrations/typings';
 import { Layout } from '../../typings';
 import { Margin } from 'components/admin/Graphs/typings';
 
-interface Props {
-  timeSeries: TimeSeries | NilOrError;
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-  innerRef: React.RefObject<any>;
-  layout?: Layout;
-}
+type Props = ProjectId &
+  Dates &
+  Resolution & {
+    timeSeries: TimeSeries | NilOrError;
+    innerRef: React.RefObject<any>;
+    layout?: Layout;
+  };
 
 const MARGINS: Record<Layout, Margin | undefined> = {
   wide: undefined,

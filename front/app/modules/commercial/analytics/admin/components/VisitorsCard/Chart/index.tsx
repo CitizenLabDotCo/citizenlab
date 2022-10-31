@@ -17,18 +17,15 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { Dates, Resolution } from '../../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../../hooks/useVisitors/typings';
 
-interface Props {
-  timeSeries: TimeSeries | NilOrError;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-  innerRef: React.RefObject<any>;
-}
+type Props = Dates &
+  Resolution & {
+    timeSeries: TimeSeries | NilOrError;
+    innerRef: React.RefObject<any>;
+  };
 
 const emptyLineConfig = { strokeWidths: [0, 0] };
 const lineConfig = {
