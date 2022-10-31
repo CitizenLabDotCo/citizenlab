@@ -20,6 +20,36 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#create_default_form!' do
+    it 'persists a default form for the participation context' do
+      expect(participation_context.custom_form).to be_nil
+
+      participation_method.create_default_form!
+
+      expect(participation_context.custom_form.custom_fields.size).to eq 1
+      field = participation_context.custom_form.custom_fields.first
+      expect(field.title_multiloc).to match({
+        'en' => 'Default question',
+        'fr-FR' => 'Question par défaut',
+        'nl-NL' => 'Standaardvraag'
+      })
+      options = field.options
+      expect(options.size).to eq 2
+      expect(options[0].key).to eq 'option1'
+      expect(options[1].key).to eq 'option2'
+      expect(options[0].title_multiloc).to match({
+        'en' => 'First option',
+        'fr-FR' => 'Première option',
+        'nl-NL' => 'Eerste optie'
+      })
+      expect(options[1].title_multiloc).to match({
+        'en' => 'Second option',
+        'fr-FR' => 'Deuxième option',
+        'nl-NL' => 'Tweede optie'
+      })
+    end
+  end
+
   describe '#validate_built_in_fields?' do
     it 'returns false' do
       expect(participation_method.validate_built_in_fields?).to be false
