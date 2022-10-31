@@ -1,8 +1,8 @@
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 
 // utils
 import { getConversionRate } from '../useRegistrations/parse';
-import { timeSeriesParser } from '../../utils/timeSeries';
+import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
 
 // typings
 import {
@@ -28,18 +28,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   };
 };
 
-const getDate = (row: TimeSeriesResponseRow) => {
-  if ('dimension_date_created.month' in row) {
-    return moment(row['dimension_date_created.month']);
-  }
-
-  if ('dimension_date_created.week' in row) {
-    return moment(row['dimension_date_created.week']);
-  }
-
-  return moment(row['dimension_date_created.date']);
-};
-
+const getDate = dateGetter<TimeSeriesResponseRow>('dimension_date_created');
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (

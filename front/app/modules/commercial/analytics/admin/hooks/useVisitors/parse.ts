@@ -1,8 +1,8 @@
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 
 // utils
 import { round } from 'lodash-es';
-import { timeSeriesParser } from '../../utils/timeSeries';
+import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
 import { keys } from 'utils/helperUtils';
 
 // typings
@@ -60,18 +60,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   };
 };
 
-const getDate = (row: TimeSeriesResponseRow) => {
-  if ('dimension_date_last_action.month' in row) {
-    return moment(row['dimension_date_last_action.month']);
-  }
-
-  if ('dimension_date_last_action.week' in row) {
-    return moment(row['dimension_date_last_action.week']);
-  }
-
-  return moment(row['dimension_date_last_action.date']);
-};
-
+const getDate = dateGetter<TimeSeriesResponseRow>('dimension_date_last_action');
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (

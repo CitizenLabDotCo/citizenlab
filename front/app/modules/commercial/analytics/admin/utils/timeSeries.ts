@@ -139,6 +139,20 @@ export const parseDays = <Row, ParsedRow>(
   });
 };
 
+export const dateGetter =
+  <Row>(columnPrefix: string) =>
+  (row: Row) => {
+    if (`${columnPrefix}.month` in row) {
+      return moment(row[`${columnPrefix}.month`]);
+    }
+
+    if (`${columnPrefix}.week` in row) {
+      return moment(row[`${columnPrefix}.week`]);
+    }
+
+    return moment(row[`${columnPrefix}.date`]);
+  };
+
 const roundDownToFirstDayOfMonth = (date: Moment) => {
   return moment(`${date.format('YYYY-MM')}-01`);
 };
