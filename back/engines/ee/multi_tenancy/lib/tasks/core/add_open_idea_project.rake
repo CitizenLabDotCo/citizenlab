@@ -22,14 +22,14 @@ namespace :fix_existing_tenants do
           presentation_mode: 'card',
           process_type: 'continuous',
           participation_method: 'ideation',
-          remote_header_bg_url: 'http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg',
+          remote_header_bg_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg',
           posting_enabled: true,
           commenting_enabled: true,
           upvoting_enabled: true,
           upvoting_method: 'unlimited'
         })
         ProjectImage.create({ project: open_idea_project,
-remote_image_url: 'http://res.cloudinary.com/citizenlabco/image/upload/v1516925813/open_idea_box_gaxtpy.png' })
+remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg' })
         puts 'Open Idea Project created.'
 
         count = 0
