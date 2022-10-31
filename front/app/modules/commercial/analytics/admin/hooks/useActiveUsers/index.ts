@@ -38,6 +38,7 @@ export default function useActiveUsers({
       (response: Response | NilOrError) => {
         if (isNilOrError(response)) {
           setStats(response);
+          setTimeSeries(response);
           return;
         }
 
