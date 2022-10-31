@@ -119,7 +119,7 @@ const PostPageFullscreenModal = memo<Props>(
     return (
       <FullscreenModal
         opened={!!(postId && slug && type)}
-        close={onClose}
+        onClose={onClose}
         url={slug ? `/${type}s/${slug}` : null}
         topBar={topBar}
         navbarRef={navbarRef}

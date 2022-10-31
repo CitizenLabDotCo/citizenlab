@@ -165,7 +165,7 @@ const SignUpInModal = ({
       ) : (
         <FullscreenModal
           opened={opened}
-          close={onClose}
+          onClose={onClose}
           navbarRef={navbarRef}
           mobileNavbarRef={mobileNavbarRef}
         >

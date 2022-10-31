@@ -451,7 +451,7 @@ class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
               <>
                 <FullscreenModal
                   opened={filtersModalOpened}
-                  close={this.closeModalAndRevertFilters}
+                  onClose={this.closeModalAndRevertFilters}
                   animateInOut={true}
                   topBar={
                     <TopBar

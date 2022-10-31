@@ -156,7 +156,7 @@ const FullMobileNavMenu = ({
     return (
       <StyledFullscreenModal
         opened={isFullMenuOpened}
-        close={onClose}
+        onClose={onClose}
         mobileNavbarRef={mobileNavbarRef}
         modalPortalElement={modalPortalElement}
       >

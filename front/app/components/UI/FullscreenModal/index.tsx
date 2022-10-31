@@ -85,8 +85,7 @@ const Content = styled.div`
 interface InputProps {
   className?: string;
   opened: boolean;
-  // rename to onClose
-  close: () => void;
+  onClose: () => void;
   url?: string | null;
   goBackUrl?: string | null;
   topBar?: JSX.Element | null;
@@ -159,21 +158,21 @@ class FullscreenModal extends PureComponent<Props, State> {
       window.history.pushState({ path: this.url }, '', this.url);
       window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
       window.addEventListener('keydown', this.handleKeypress, useCapture);
-      this.unlisten = clHistory.listen(() => this.props.close());
+      this.unlisten = clHistory.listen(() => this.props.onClose());
 
       trackPage(this.url, { modal: true });
     }
   };
 
-  handleKeypress = (event) => {
+  handleKeypress = (event: KeyboardEvent) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
-      this.props.close();
+      this.props.onClose();
     }
   };
 
   handlePopstateEvent = () => {
-    this.props.close();
+    this.props.onClose();
   };
 
   cleanup = () => {
@@ -270,6 +269,8 @@ const Data = adopt<DataProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <FullscreenModal {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => (
+      <FullscreenModal {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

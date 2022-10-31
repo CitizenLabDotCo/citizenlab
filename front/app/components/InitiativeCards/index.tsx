@@ -476,7 +476,7 @@ class InitiativeCards extends PureComponent<
               <>
                 <FullscreenModal
                   opened={filtersModalOpened}
-                  close={this.closeModalAndRevertFilters}
+                  onClose={this.closeModalAndRevertFilters}
                   animateInOut={true}
                   topBar={
                     <TopBar
