@@ -14,6 +14,7 @@ interface Props {
   className?: string;
   iconWidth?: string;
   iconHeight?: string;
+  fullScreen?: boolean;
 }
 
 const CloseIconButton = ({
@@ -25,11 +26,13 @@ const CloseIconButton = ({
   className,
   iconWidth = '24px',
   iconHeight = '24px',
+  fullScreen = false,
 }: Props & WrappedComponentProps) => {
   return (
     <IconButton
       className={className ?? ''}
-      iconName="close"
+      // to do find right back ison
+      iconName={fullScreen ? 'upload-image' : 'close'}
       onClick={onClick}
       a11y_buttonActionMessage={formatMessage(
         a11y_buttonActionMessage

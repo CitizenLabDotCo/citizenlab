@@ -51,6 +51,9 @@ const SignUpInModal = memo<Props>(
 
     const opened = !!metaData?.inModal;
 
+    // testing
+    const useFullScreen = true;
+
     const hasParticipationConditions =
       !isNilOrError(participationConditions) &&
       participationConditions.length > 0;
@@ -122,6 +125,7 @@ const SignUpInModal = memo<Props>(
 
     return (
       <Modal
+        fullScreen={useFullScreen}
         width={modalWidth}
         padding="0px"
         opened={opened}
