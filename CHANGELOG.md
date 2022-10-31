@@ -1,6 +1,9 @@
+
 # Changelog
 
 ## Next release
+
+- [CL-1700] Native surveys: create a default form when creating new native survey projects or phases
 
 ## 2022-10-28
 

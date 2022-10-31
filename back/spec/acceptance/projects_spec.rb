@@ -333,6 +333,12 @@ resource 'Projects' do
 
         example_request 'Create a continuous project' do
           assert_status 201
+          project_id = json_response.dig(:data, :id)
+          project_in_db = Project.find(project_id)
+
+          # A new ideation project does not have a default form.
+          expect(project_in_db.custom_form).to be_nil
+
           expect(json_response.dig(:data, :attributes, :process_type)).to eq process_type
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
@@ -360,7 +366,8 @@ resource 'Projects' do
 
           let(:presentation_mode) { 'map' }
 
-          example_request '[error] Create a project', document: false do
+          example '[error] Create a project', document: false do
+            do_request
             expect(response_status).to eq 401
           end
         end
@@ -398,6 +405,63 @@ resource 'Projects' do
             expect(json_response[:errors][:title_multiloc]).to be_present
             expect(TextImage.count).to eq ti_count
           end
+        end
+      end
+
+      context 'native survey' do
+        let(:project) { build(:continuous_native_survey_project) }
+        let(:title_multiloc) { project.title_multiloc }
+        let(:description_multiloc) { project.description_multiloc }
+        let(:description_preview_multiloc) { project.description_preview_multiloc }
+        let(:visible_to) { 'admins' }
+        let(:process_type) { project.process_type }
+        let(:participation_method) { project.participation_method }
+
+        example 'Create a continuous project', document: false do
+          do_request
+          assert_status 201
+          project_id = json_response.dig(:data, :id)
+          project_in_db = Project.find(project_id)
+
+          # A new native survey project has a default form.
+          expect(project_in_db.custom_form.custom_fields.size).to eq 1
+          field = project_in_db.custom_form.custom_fields.first
+          expect(field.title_multiloc).to match({
+            'en' => an_instance_of(String),
+            'fr-FR' => an_instance_of(String),
+            'nl-NL' => an_instance_of(String)
+          })
+          options = field.options
+          expect(options.size).to eq 2
+          expect(options[0].key).to eq 'option1'
+          expect(options[1].key).to eq 'option2'
+          expect(options[0].title_multiloc).to match({
+            'en' => an_instance_of(String),
+            'fr-FR' => an_instance_of(String),
+            'nl-NL' => an_instance_of(String)
+          })
+          expect(options[1].title_multiloc).to match({
+            'en' => an_instance_of(String),
+            'fr-FR' => an_instance_of(String),
+            'nl-NL' => an_instance_of(String)
+          })
+
+          expect(project_in_db.process_type).to eq 'continuous'
+          expect(project_in_db.participation_method).to eq 'native_survey'
+          expect(project_in_db.title_multiloc).to match title_multiloc
+          expect(project_in_db.description_multiloc).to match description_multiloc
+          expect(project_in_db.visible_to).to eq visible_to
+          expect(project_in_db.ideas_order).to be_nil
+
+          # A native survey project still has some ideation-related state, all column defaults.
+          expect(project_in_db.input_term).to eq 'idea'
+          expect(project_in_db.presentation_mode).to eq 'card'
+          expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :voting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq 'unlimited'
+          expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq 10
         end
       end
     end
