@@ -37,8 +37,8 @@ interface Props {
 const MARGINS: Record<Layout, Margin | undefined> = {
   wide: undefined,
   narrow: {
-    left: -30,
-    right: 30,
+    left: -25,
+    right: 35,
   },
 };
 
