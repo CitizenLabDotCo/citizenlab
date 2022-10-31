@@ -50,6 +50,7 @@ const GRAPHS_INNER_LAYOUT: BoxLayout = {
   wide: {
     width: '95%',
     maxWidth: '800px',
+    mt: '-1px',
   },
   narrow: { width: '100%' },
 };
