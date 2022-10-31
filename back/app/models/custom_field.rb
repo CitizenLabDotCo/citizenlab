@@ -4,20 +4,23 @@
 #
 # Table name: custom_fields
 #
-#  id                   :uuid             not null, primary key
-#  resource_type        :string
-#  key                  :string
-#  input_type           :string
-#  title_multiloc       :jsonb
-#  description_multiloc :jsonb
-#  required             :boolean          default(FALSE)
-#  ordering             :integer
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  enabled              :boolean          default(TRUE), not null
-#  code                 :string
-#  resource_id          :uuid
-#  hidden               :boolean          default(FALSE), not null
+#  id                     :uuid             not null, primary key
+#  resource_type          :string
+#  key                    :string
+#  input_type             :string
+#  title_multiloc         :jsonb
+#  description_multiloc   :jsonb
+#  required               :boolean          default(FALSE)
+#  ordering               :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  enabled                :boolean          default(TRUE), not null
+#  code                   :string
+#  resource_id            :uuid
+#  hidden                 :boolean          default(FALSE), not null
+#  maximum                :integer
+#  minimum_label_multiloc :jsonb            not null
+#  maximum_label_multiloc :jsonb            not null
 #
 # Indexes
 #
@@ -35,7 +38,7 @@ class CustomField < ApplicationRecord
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
-  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point].freeze
+  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale].freeze
   CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
@@ -52,6 +55,7 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
+  after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
   scope :with_resource_type, ->(resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
@@ -81,6 +85,47 @@ class CustomField < ApplicationRecord
     required
   end
 
+  def domicile?
+    key == 'domicile' && code == 'domicile'
+  end
+
+  def accept(visitor)
+    case input_type
+    when 'text'
+      visitor.visit_text self
+    when 'number'
+      visitor.visit_number self
+    when 'multiline_text'
+      visitor.visit_multiline_text self
+    when 'html'
+      visitor.visit_html self
+    when 'text_multiloc'
+      visitor.visit_text_multiloc self
+    when 'multiline_text_multiloc'
+      visitor.visit_multiline_text_multiloc self
+    when 'html_multiloc'
+      visitor.visit_html_multiloc self
+    when 'select'
+      visitor.visit_select self
+    when 'multiselect'
+      visitor.visit_multiselect self
+    when 'checkbox'
+      visitor.visit_checkbox self
+    when 'date'
+      visitor.visit_date self
+    when 'files'
+      visitor.visit_files self
+    when 'image_files'
+      visitor.visit_image_files self
+    when 'point'
+      visitor.visit_point self
+    when 'linear_scale'
+      visitor.visit_linear_scale self
+    else
+      raise "Unsupported input type: #{input_type}"
+    end
+  end
+
   private
 
   def set_default_enabled
@@ -90,7 +135,10 @@ class CustomField < ApplicationRecord
   def generate_key
     return if key
 
-    self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
+    title = title_multiloc.values.first
+    return unless title
+
+    self.key = CustomFieldService.new.generate_key(self, title) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end

@@ -26,8 +26,8 @@ import {
   commentsByTimeCumulativeStream,
   commentsByTimeStream,
 } from 'services/stats';
-import { InjectedIntlProps } from 'react-intl';
 import { colors } from 'utils/styleUtils';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';
@@ -59,8 +59,8 @@ const Phase = styled.div<{ isCurrentPhase: boolean }>`
   padding: 10px;
   border: ${(props) =>
     props.isCurrentPhase
-      ? `solid 3px ${colors.border}`
-      : `solid 1px ${colors.adminBorder}`};
+      ? `solid 3px ${colors.borderDark}`
+      : `solid 1px ${colors.borderLight}`};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
@@ -89,10 +89,11 @@ interface Props {
 
 const PARTICIPATION_METHOD_MESSAGES: Record<
   ParticipationMethod,
-  ReactIntl.FormattedMessage.MessageDescriptor
+  MessageDescriptor
 > = {
   ideation: messages.ideationAndFeedback,
   information: messages.information,
+  native_survey: messages.native_survey,
   survey: messages.survey,
   budgeting: messages.budgeting,
   poll: messages.poll,
@@ -116,7 +117,7 @@ const ProjectReport = memo(
     phases,
     mostVotedIdeas,
     intl: { formatMessage, formatDate },
-  }: Props & InjectedIntlProps & WithRouterProps) => {
+  }: Props & WrappedComponentProps & WithRouterProps) => {
     const localize = useLocalize();
 
     // set time boundaries

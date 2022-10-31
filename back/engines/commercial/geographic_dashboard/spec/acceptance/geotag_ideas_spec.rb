@@ -21,7 +21,12 @@ resource 'GeotagIdeas' do
 
   get '/web_api/v1/ideas/geotagged' do
     let!(:ideas) do
-      create_list(:idea, 2, title_multiloc: { 'nl-BE' => 'Een fietspad in het Prinsenbos van Grimbergen' })
+      create_list(
+        :idea,
+        2,
+        location_point_geojson: nil,
+        title_multiloc: { 'nl-BE' => 'Een fietspad in het Prinsenbos van Grimbergen' }
+      )
     end
 
     before do

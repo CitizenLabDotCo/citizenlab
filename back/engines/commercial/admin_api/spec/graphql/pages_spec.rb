@@ -30,7 +30,7 @@ RSpec.describe AdminApi::Schema do
                   en
                   nlBe
                 }
-                bodyMultiloc {
+                topInfoSectionMultiloc {
                   en
                   nlBe
                 }
@@ -50,7 +50,7 @@ RSpec.describe AdminApi::Schema do
       expect(edges&.first&.dig('node', 'id')).to eq p1.id
       expect(edges&.first&.dig('node', 'href')).to eq "#{AppConfiguration.instance.base_frontend_uri}/pages/#{p1.slug}"
       expect(edges&.first&.dig('node', 'titleMultiloc', 'en')).to eq p1.title_multiloc['en']
-      expect(edges&.first&.dig('node', 'bodyMultiloc', 'en')).to eq p1.body_multiloc['en']
+      expect(edges&.first&.dig('node', 'topInfoSectionMultiloc', 'en')).to eq p1.top_info_section_multiloc['en']
       expect(edges&.first&.dig('node', 'slug')).to eq p1.slug
     end
   end

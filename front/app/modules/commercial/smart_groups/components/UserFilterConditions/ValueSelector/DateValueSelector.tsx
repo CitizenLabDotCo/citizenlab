@@ -1,31 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import moment, { Moment } from 'moment';
 
 import { DateInput } from '@citizenlab/cl2-component-library';
 
 type Props = {
   value: string;
-  onChange: (string) => void;
+  onChange: (string: string) => void;
 };
 
-interface State {}
+const DateValueSelector = ({ value, onChange }: Props) => {
+  useEffect(() => {
+    if (!value) {
+      onChange(moment().format('YYYY-MM-DD'));
+    }
+  }, [onChange, value]);
 
-class DateValueSelector extends React.PureComponent<Props, State> {
-  handleOnChange = (moment: Moment) => {
-    this.props.onChange(moment.format('YYYY-MM-DD'));
+  const handleOnChange = (moment: Moment) => {
+    onChange(moment.format('YYYY-MM-DD'));
   };
 
-  render() {
-    const { value } = this.props;
-
-    return (
-      <DateInput
-        value={moment(value) || null}
-        onChange={this.handleOnChange}
-        openOnLeft={true}
-      />
-    );
-  }
-}
+  return (
+    <DateInput
+      value={value ? moment(value) : null}
+      onChange={handleOnChange}
+      openOnLeft={true}
+    />
+  );
+};
 
 export default DateValueSelector;

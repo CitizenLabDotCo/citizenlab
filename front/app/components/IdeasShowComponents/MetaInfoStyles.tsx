@@ -21,7 +21,7 @@ export const Item = styled.div<{ compact?: boolean }>`
 export const Header = styled.h3`
   font-size: ${fontSizes.base}px;
   font-weight: 500;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   padding: 0;
   margin: 0;
   margin-bottom: 12px;

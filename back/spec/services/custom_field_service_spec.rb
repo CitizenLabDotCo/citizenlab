@@ -151,7 +151,7 @@ describe CustomFieldService do
     end
 
     it 'properly handles the custom behaviour of the domicile field' do
-      fields = [create(:custom_field, key: 'domicile', code: 'domicile')]
+      fields = [create(:custom_field_domicile)]
       create_list(:area, 5)
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true

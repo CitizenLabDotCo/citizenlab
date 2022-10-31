@@ -17,16 +17,6 @@ class UserCustomFields::Representativeness::RScore
   end
 
   class << self
-    # Factory method that instantiates an RScore based on observed user counts and a reference distribution.
-    # @param [Hash] user_counts
-    # @param [UserCustomFields::Representativeness::RefDistribution] ref_distribution
-    # @return [UserCustomFields::Representativeness::RScore]
-    def compute(user_counts, ref_distribution)
-      population_counts = ref_distribution.distribution
-      score_value = compute_scores(user_counts, population_counts)[:min_max_p_ratio]
-      new(score_value, user_counts, ref_distribution)
-    end
-
     # Compute the ratio between the minimum and maximum participation rates.
     # @param [Hash] user_counts
     # @param [Hash] population_counts
@@ -65,9 +55,19 @@ class UserCustomFields::Representativeness::RScore
       end
     end
 
-    private
-
     def compute_scores(user_counts, population_counts)
+      if user_counts.is_a?(Array) && population_counts.is_a?(Array)
+        raise ArgumentError, <<~MSG unless user_counts.size == population_counts.size
+          'user_counts' and 'population_counts' must be of the same length when counts 
+          are arrays.
+        MSG
+
+        # Converting arrays to hashes. The choice of the key is not important as long as
+        # they are consistent between the two arrays.
+        user_counts = user_counts.index_by.with_index { |_count, i| i }
+        population_counts = population_counts.index_by.with_index { |_count, i| i }
+      end
+
       scores = {
         min_max_p_ratio: min_max_p_ratio(user_counts, population_counts),
         min_mean_p_ratio: min_mean_p_ratio(user_counts, population_counts),
@@ -81,6 +81,8 @@ class UserCustomFields::Representativeness::RScore
 
       scores
     end
+
+    private
 
     def normalize(counts)
       total = counts.values.sum

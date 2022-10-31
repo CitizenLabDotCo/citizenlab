@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import isFieldEnabled from '../isFieldEnabled';
 
 // components
 import Status from './Status';
@@ -10,10 +9,13 @@ import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
 import PostedBy from './PostedBy';
 
-// hooks
+// hooks & services
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import Outlet from 'components/Outlet';
+
+// utils
+import { isFieldEnabled } from 'utils/projectUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -41,18 +43,24 @@ const MetaInformation = ({
   className,
 }: Props) => {
   const locale = useLocale();
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+    projectId,
+    inputId: ideaId,
+  });
+
   if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
       ideaCustomFieldsSchemas,
       locale
     );
+
     const locationEnabled = isFieldEnabled(
       'location_description',
       ideaCustomFieldsSchemas,
       locale
     );
+
     const attachmentsEnabled = isFieldEnabled(
       'idea_files_attributes',
       ideaCustomFieldsSchemas,

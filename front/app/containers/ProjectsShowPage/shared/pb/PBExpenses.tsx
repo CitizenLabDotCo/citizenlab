@@ -22,7 +22,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
@@ -59,7 +59,7 @@ const Header = styled.div`
 
 const Title = styled.h2`
   min-height: 20px;
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 500;
@@ -75,14 +75,13 @@ const Title = styled.h2`
   }
 
   &.validationSuccess {
-    color: ${colors.clGreenSuccess};
-    fill: ${colors.clGreenSuccess};
+    color: ${colors.success};
+    fill: ${colors.success};
   }
 `;
 
 const TitleIcon = styled(Icon)<{ viewMode?: 'row' | 'column' }>`
-  flex: 0 0 18px;
-  height: 18px;
+  flex: 0 0 24px;
   margin-right: 10px;
 
   ${({ viewMode }) =>
@@ -97,7 +96,7 @@ const Spacer = styled.div`
 `;
 
 const Budget = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   display: flex;
@@ -121,7 +120,7 @@ const BudgetAmount = styled.span`
   }
 
   &.green {
-    color: ${colors.clGreenSuccess};
+    color: ${colors.success};
   }
 `;
 
@@ -151,7 +150,7 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
 const ProgressBarOverlay: any = styled.div`
   width: ${(props: any) => props.progress}%;
   height: 100%;
-  background: ${colors.label};
+  background: ${colors.textSecondary};
   border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
@@ -163,7 +162,7 @@ const ProgressBarOverlay: any = styled.div`
   }
 
   &.green {
-    background: ${colors.clGreenSuccess};
+    background: ${colors.success};
   }
 `;
 
@@ -242,15 +241,15 @@ const TooltipContent = styled.div`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
+  flex: 0 0 20px;
   width: 20px;
-  height: 25px;
+  height: 20px;
   margin-right: 1rem;
 `;
 
 const TooltipContentText = styled.div`
   flex: 1 1 auto;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -272,7 +271,7 @@ const PBExpenses = ({
   className,
   viewMode,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [processing, setProcessing] = useState(false);
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
@@ -321,7 +320,7 @@ const PBExpenses = ({
     ((participationContextType === 'project' && !isNilOrError(project)) ||
       (participationContextType === 'phase' && !isNilOrError(phase)))
   ) {
-    const currency = appConfiguration.data.attributes.settings.core.currency;
+    const currency = appConfiguration.attributes.settings.core.currency;
     const spentBudget = !isNilOrError(basket)
       ? basket.attributes.total_budget
       : 0;
@@ -407,7 +406,12 @@ const PBExpenses = ({
               )}
               {validationStatus === 'validationError' && (
                 <>
-                  <TitleIcon name="error" ariaHidden viewMode={viewMode} />
+                  <TitleIcon
+                    name="alert-circle"
+                    fill={colors.error}
+                    ariaHidden
+                    viewMode={viewMode}
+                  />
                   {showFixedRequiredBudget ? (
                     <FormattedMessage {...messages.requiredSelectionExceeded} />
                   ) : (
@@ -417,7 +421,7 @@ const PBExpenses = ({
               )}
               {validationStatus === 'validationSuccess' && (
                 <>
-                  <TitleIcon name="checkmark" ariaHidden viewMode={viewMode} />
+                  <TitleIcon name="check" ariaHidden viewMode={viewMode} />
                   <FormattedMessage {...messages.basketSubmitted} />
                 </>
               )}
@@ -531,7 +535,7 @@ const PBExpenses = ({
                 placement="bottom"
                 content={
                   <TooltipContent>
-                    <TooltipContentIcon name="lock-outlined" ariaHidden />
+                    <TooltipContentIcon name="lock" ariaHidden />
                     <TooltipContentText>
                       <FormattedMessage
                         // This will only show when there's a min budget that is not reached,
@@ -552,7 +556,7 @@ const PBExpenses = ({
                 <div>
                   <SubmitExpensesButton
                     onClick={handleSubmitExpensesOnClick}
-                    bgColor={colors.adminTextColor}
+                    bgColor={colors.primary}
                     disabled={
                       validationStatus === 'validationSuccess' ||
                       budgetExceedsLimit ||

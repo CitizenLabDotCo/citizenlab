@@ -20,7 +20,7 @@ const Container = styled.div``;
 
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${colors.clGreyOnGreyBackground};
+    fill: ${colors.coolGrey600};
   }
   width: 30px;
   height: 30px;
@@ -29,7 +29,7 @@ const StatusIcon = styled(Icon)`
 
 const VoteCounter = styled.div`
   margin-top: 15px;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -43,7 +43,7 @@ const VoteTexts = styled.div`
 
 const VoteText = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
 `;
 
 const StyledButton = styled(Button)`
@@ -103,8 +103,8 @@ class Ineligible extends PureComponent<Props, State> {
                 {text}
                 {eligibility_criteria && (
                   <IconTooltip
-                    icon="info"
-                    iconColor={this.props.theme.colorText}
+                    icon="info-outline"
+                    iconColor={this.props.theme.colors.tenantText}
                     theme="light"
                     placement="bottom"
                     content={<T value={eligibility_criteria} supportHtml />}

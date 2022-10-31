@@ -3,31 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe UserCustomFields::Representativeness::RScore do
-  describe '.compute' do
-    subject(:r_score) { described_class.compute(user_counts, ref_distribution) }
-
-    let(:ref_distribution) { create(:ref_distribution, population_counts: [100, 200]) }
-    let(:user_counts) do
-      # The number of missing values (UNKNOWN_VALUE_LABEL) does not matter as it does
-      # not affect the scores.
-      ref_distribution
-        .custom_field.option_ids.index_with(100)
-        .merge(UserCustomFields::FieldValueCounter::UNKNOWN_VALUE_LABEL => 123)
-    end
-
-    it 'creates an RScore with the correct value' do
-      expect(r_score.value).to eq(0.5)
-    end
-
-    it 'creates an RScore that holds a reference to the reference distribution' do
-      expect(r_score.ref_distribution).to eq(ref_distribution)
-    end
-
-    it 'creates an RScore that holds a reference to the user counts' do
-      expect(r_score.user_counts).to eq(user_counts)
-    end
-  end
-
   describe 'scoring methods' do
     shared_examples 'ill-defined scores' do |scoring_method|
       it 'returns NaN when the score is ill-defined' do

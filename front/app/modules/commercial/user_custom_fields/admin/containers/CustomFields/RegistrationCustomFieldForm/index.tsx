@@ -1,27 +1,25 @@
 import React from 'react';
-import styled from 'styled-components';
-import { isEmpty, values as getValues, every } from 'lodash-es';
 import { IUserCustomFieldInputType } from '../../../../services/userCustomFields';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
-import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
-import FormikToggle from 'components/UI/FormikToggle';
-import FormikSelect from 'components/UI/FormikSelect';
-import Error from 'components/UI/Error';
-import { Section, SectionField } from 'components/admin/Section';
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import { Label } from '@citizenlab/cl2-component-library';
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+
+import { Button, Box } from '@citizenlab/cl2-component-library';
+
+import { injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
 
-const StyledSpan = styled.span`
-  display: inline-block;
-  margin-left: 6px;
-`;
-
-const StyledLabel = styled(Label)``;
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, boolean, string } from 'yup';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
+import Feedback from 'components/HookForm/Feedback';
+import Toggle from 'components/HookForm/Toggle';
+import Select from 'components/HookForm/Select';
+import { Section, SectionField } from 'components/admin/Section';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
   enabled: boolean;
@@ -31,131 +29,107 @@ export interface FormValues {
   required: boolean;
 }
 
-export interface Props {
+type Props = {
   mode: 'new' | 'edit';
-  customFieldId: string;
+  customFieldId?: string;
   builtInField: boolean;
-}
+  defaultValues?: FormValues;
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+} & WrappedComponentProps;
 
-class RegistrationCustomFieldForm extends React.Component<
-  InjectedFormikProps<Props & InjectedIntlProps, FormValues>
-> {
-  public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
+const fieldTypes = [
+  'select',
+  'multiselect',
+  'checkbox',
+  'text',
+  'multiline_text',
+  'number',
+  'date',
+];
 
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
-    }
+const RegistrationCustomFieldForm = ({
+  intl: { formatMessage },
+  defaultValues,
+  onSubmit,
+  builtInField,
+  mode,
+}: Props) => {
+  const schema = object({
+    input_type: string()
+      .oneOf(fieldTypes, formatMessage(messages.answerFormatError))
+      .required(formatMessage(messages.answerFormatError)),
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldNameError)
+    ),
+    description_multiloc: object(),
+    required: boolean().required(),
+  });
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
 
-    return errors;
-  };
-
-  inputTypeOptions = () => {
-    const fieldTypes = [
-      'select',
-      'multiselect',
-      'checkbox',
-      'text',
-      'multiline_text',
-      'number',
-      'date',
-    ];
+  const inputTypeOptions = () => {
     return fieldTypes.map((inputType) => ({
       value: inputType,
-      label: this.props.intl.formatMessage(messages[`fieldType_${inputType}`]),
+      label: formatMessage(messages[`fieldType_${inputType}`]),
     }));
   };
 
-  render() {
-    const {
-      isSubmitting,
-      mode,
-      errors,
-      touched,
-      builtInField,
-      status,
-      intl: { formatMessage },
-    } = this.props;
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
 
-    return (
-      <Form>
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <Section>
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.answerFormat} />
-            </Label>
-            <Field
+            <Feedback
+              successMessage={formatMessage(messages.saveFieldSuccess)}
+            />
+            <Select
               name="input_type"
-              component={FormikSelect}
-              options={this.inputTypeOptions()}
+              options={inputTypeOptions()}
+              label={formatMessage(messages.answerFormat)}
               disabled={mode === 'edit' || builtInField}
             />
-            {touched.input_type && (
-              <Error
-                fieldName="input_type"
-                apiErrors={errors.input_type as any}
-              />
-            )}
           </SectionField>
-
           <SectionField>
-            <Field
-              name="title_multiloc"
-              component={FormikInputMultilocWithLocaleSwitcher}
+            <InputMultilocWithLocaleSwitcher
               label={formatMessage(messages.fieldName)}
+              type="text"
+              name="title_multiloc"
               disabled={builtInField}
             />
-            {touched.title_multiloc && (
-              <Error
-                fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc as any}
-              />
-            )}
           </SectionField>
-
           <SectionField>
-            <Field
+            <TextAreaMultilocWithLocaleSwitcher
               name="description_multiloc"
-              component={FormikTextAreaMultilocWithLocaleSwitcher}
               label={formatMessage(messages.fieldDescription)}
-              labelTooltipText={formatMessage(messages.descriptionTooltip)}
               disabled={builtInField}
             />
-            {touched.description_multiloc && (
-              <Error
-                fieldName="description_multiloc"
-                apiErrors={errors.description_multiloc as any}
-              />
-            )}
           </SectionField>
-
           <SectionField>
-            <StyledLabel>
-              <Field
-                className={`e2e-custom-field-required-toggle ${
-                  this.props.values.required ? 'enabled' : 'disabled'
-                }`}
-                name="required"
-                component={FormikToggle}
-              />
-              <StyledSpan>
-                <FormattedMessage {...messages.isFieldRequired} />
-              </StyledSpan>
-            </StyledLabel>
-            {touched.required && (
-              <Error fieldName="required" apiErrors={errors.required as any} />
-            )}
+            <Toggle
+              name="required"
+              label={formatMessage(messages.isFieldRequired)}
+            />
           </SectionField>
         </Section>
-
-        <FormikSubmitWrapper
-          isSubmitting={isSubmitting}
-          status={status}
-          touched={touched}
-        />
-      </Form>
-    );
-  }
-}
+        <Box display="flex">
+          <Button type="submit" processing={methods.formState.isSubmitting}>
+            {formatMessage(messages.saveField)}
+          </Button>
+        </Box>
+      </form>
+    </FormProvider>
+  );
+};
 
 export default injectIntl(RegistrationCustomFieldForm);

@@ -15,8 +15,7 @@ const Container: any = styled.span`
   justify-content: center;
 
   color: #ffffff;
-  background: ${(props: any) =>
-    props.bgColor ? props.bgColor : colors.red500};
+  background: ${(props: any) => (props.bgColor ? props.bgColor : colors.error)};
 `;
 
 interface Props {

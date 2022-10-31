@@ -1,5 +1,4 @@
 import {
-  sum,
   isNilOrError,
   isEmptyMultiloc,
   isNonEmptyString,
@@ -7,10 +6,6 @@ import {
 } from './helperUtils';
 
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
-});
 
 describe('isNilOrError', () => {
   test.each([

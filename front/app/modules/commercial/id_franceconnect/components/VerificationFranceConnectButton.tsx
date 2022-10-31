@@ -11,7 +11,7 @@ import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {
@@ -23,7 +23,7 @@ const VerificationFranceConnectButton = ({
   method,
   intl: { formatMessage },
   onClick,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const handleOnClick = () => {
     onClick(method);
     const jwt = getJwt();

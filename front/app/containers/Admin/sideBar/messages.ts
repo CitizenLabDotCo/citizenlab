@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.insights',
     defaultMessage: 'Reporting',
   },
+  menu: {
+    id: 'app.containers.AdminPage.SideBar.menu',
+    defaultMessage: 'Pages & menu',
+  },
   academy: {
     id: 'app.containers.AdminPage.SideBar.academy',
     defaultMessage: 'Academy',

@@ -46,7 +46,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   padding: 0;
@@ -159,8 +159,8 @@ const ProjectTemplateCard = memo<Props>(
             onClick={onOpenModal}
             buttonStyle="secondary"
             fullWidth={true}
-            bgColor={darken(0.05, colors.lightGreyishBlue)}
-            bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
+            bgColor={darken(0.05, colors.grey200)}
+            bgHoverColor={darken(0.1, colors.grey200)}
           >
             <FormattedMessage {...messages.useTemplate} />
           </UseTemplateButton>

@@ -5,7 +5,7 @@ import { map, isEmpty } from 'lodash-es';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -22,7 +22,6 @@ import {
   GraphCardTitle,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { Tooltip } from 'recharts';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -36,17 +35,7 @@ const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 20px;
-  height: 22px;
   margin-left: 10px;
-`;
-
-const StyledBarChart = styled(BarChart)`
-  .recharts-wrapper {
-    @media print {
-      margin: 0 auto;
-    }
-  }
 `;
 
 type State = {
@@ -73,7 +62,7 @@ type Props = {
 };
 
 class BarChartActiveUsersByTime extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscription: Subscription;
@@ -224,7 +213,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
                   basic
                   trigger={
                     <div>
-                      <InfoIcon name="info" />
+                      <InfoIcon name="info-outline" />
                     </div>
                   }
                   content={infoMessage}
@@ -240,14 +229,16 @@ class BarChartActiveUsersByTime extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          <StyledBarChart
+          <BarChart
             data={serie}
-            innerRef={this.currentChart}
+            mapping={{
+              category: 'name',
+              length: 'value',
+            }}
             bars={{ name: graphTitle }}
+            innerRef={this.currentChart}
             xaxis={{ tickFormatter: this.formatTick }}
-            renderTooltip={(props) => (
-              <Tooltip {...props} labelFormatter={this.formatLabel} />
-            )}
+            tooltip={{ labelFormatter: this.formatLabel }}
           />
         </GraphCardInner>
       </GraphCard>
@@ -255,4 +246,6 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(BarChartActiveUsersByTime);
+export default injectIntl<Props & WrappedComponentProps>(
+  BarChartActiveUsersByTime
+);

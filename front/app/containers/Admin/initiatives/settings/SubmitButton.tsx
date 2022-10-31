@@ -29,7 +29,7 @@ const ErrorMessage = styled.div`
 
 const SuccessMessage = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clGreenSuccess};
+  color: ${colors.success};
   font-weight: 400;
   line-height: normal;
   margin-left: 14px;

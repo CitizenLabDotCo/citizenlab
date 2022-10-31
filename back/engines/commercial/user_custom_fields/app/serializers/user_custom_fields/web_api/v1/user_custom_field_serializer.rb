@@ -17,7 +17,7 @@ module UserCustomFields
         has_one(
           :current_ref_distribution,
           record_type: :reference_distribution,
-          serializer: UserCustomFields::WebApi::V1::RefDistributionSerializer
+          polymorphic: true
         ) do |record, _params|
           record.current_ref_distribution
         end

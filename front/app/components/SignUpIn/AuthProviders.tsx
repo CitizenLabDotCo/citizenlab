@@ -18,7 +18,7 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './SignUp/messages';
 
 // styling
@@ -53,14 +53,14 @@ interface DataProps {
   googleLoginEnabled: boolean | null;
   passwordLoginEnabled: boolean | null;
   tenant: GetAppConfigurationChildProps;
-  viennaLoginEnabled: boolean | null;
+  viennaCitizenLoginEnabled: boolean | null;
 }
 
 interface Props extends InputProps, DataProps {}
 
 export type AuthProvider = 'email' | SSOProvider;
 
-const AuthProviders = memo<Props & InjectedIntlProps>(
+const AuthProviders = memo<Props & WrappedComponentProps>(
   ({
     azureAdLoginEnabled,
     className,
@@ -73,7 +73,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
     onAuthProviderSelected,
     passwordLoginEnabled,
     tenant,
-    viennaLoginEnabled,
+    viennaCitizenLoginEnabled,
   }) => {
     const { flow, inModal, noPushLinks } = metaData;
     const azureProviderName = !isNilOrError(tenant)
@@ -87,7 +87,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
         isBoolean(facebookLoginEnabled) &&
         isBoolean(azureAdLoginEnabled) &&
         isBoolean(franceconnectLoginEnabled) &&
-        isBoolean(viennaLoginEnabled)
+        isBoolean(viennaCitizenLoginEnabled)
       ) {
         const enabledProviders = [
           passwordLoginEnabled,
@@ -95,7 +95,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
           facebookLoginEnabled,
           azureAdLoginEnabled,
           franceconnectLoginEnabled,
-          viennaLoginEnabled,
+          viennaCitizenLoginEnabled,
         ].filter((provider) => provider === true);
 
         if (enabledProviders.length === 1 && passwordLoginEnabled) {
@@ -108,7 +108,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       facebookLoginEnabled,
       azureAdLoginEnabled,
       franceconnectLoginEnabled,
-      viennaLoginEnabled,
+      viennaCitizenLoginEnabled,
       onAuthProviderSelected,
     ]);
 
@@ -137,6 +137,13 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
 
+    const isPasswordSigninOrSignupAllowed =
+      passwordLoginEnabled &&
+      (flow === 'signin' ||
+        (flow === 'signup' &&
+          !isNilOrError(tenant) &&
+          tenant.attributes.settings.password_login?.enable_signup));
+
     return (
       <Container className={className}>
         {franceconnectLoginEnabled && (
@@ -148,12 +155,12 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
           />
         )}
 
-        {(passwordLoginEnabled ||
+        {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
           azureAdLoginEnabled) &&
           franceconnectLoginEnabled && <Or />}
 
-        {passwordLoginEnabled && (
+        {isPasswordSigninOrSignupAllowed && (
           <StyledAuthProviderButton
             flow={flow}
             icon="email"
@@ -201,7 +208,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
         {azureAdLoginEnabled && (
           <StyledAuthProviderButton
-            icon="azureactivedirectory"
+            icon="microsoft-windows"
             flow={flow}
             authProvider="azureactivedirectory"
             onContinue={onAuthProviderSelected}
@@ -250,7 +257,7 @@ const Data = adopt<DataProps>({
   franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
-  viennaLoginEnabled: <GetFeatureFlag name="vienna_login" />,
+  viennaCitizenLoginEnabled: <GetFeatureFlag name="vienna_citizen_login" />,
 });
 
 export default (inputProps: InputProps) => (

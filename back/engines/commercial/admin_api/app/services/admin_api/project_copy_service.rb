@@ -21,10 +21,10 @@ module AdminApi
       @template = { 'models' => {} }
 
       # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
+      @template['models']['project']                 = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
       @template['models']['custom_form']             = yml_custom_forms shift_timestamps: shift_timestamps
       @template['models']['custom_field']            = yml_custom_fields shift_timestamps: shift_timestamps
       @template['models']['custom_field_option']     = yml_custom_field_options shift_timestamps: shift_timestamps
-      @template['models']['project']                 = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
       @template['models']['project_file']            = yml_project_files shift_timestamps: shift_timestamps
       @template['models']['project_image']           = yml_project_images shift_timestamps: shift_timestamps
       @template['models']['phase']                   = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
@@ -82,6 +82,7 @@ module AdminApi
       return [] unless @project.custom_form_id
 
       yml_custom_form = {
+        'participation_context_ref' => lookup_ref(@project.id, :project),
         'created_at' => shift_timestamp(@project.custom_form.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(@project.custom_form.updated_at, shift_timestamps)&.iso8601
       }
@@ -141,7 +142,6 @@ module AdminApi
         'description_preview_multiloc' => @project.description_preview_multiloc,
         'process_type' => @project.process_type,
         'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
-        'custom_form_ref' => lookup_ref(@project.custom_form_id, :custom_form),
         'text_images_attributes' => @project.text_images.map do |ti|
           {
             'imageable_field' => ti.imageable_field,

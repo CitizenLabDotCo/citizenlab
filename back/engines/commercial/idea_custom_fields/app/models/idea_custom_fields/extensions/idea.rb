@@ -6,7 +6,7 @@ module IdeaCustomFields
       def self.included(base)
         # TODO: Validation of idea fields cannot be implemented correctly today.
         # In principle, all fields should be validated against the JSON
-        # Schema, but that clashes with the hardocoded ActiveRecord validations
+        # Schema, but that clashes with the hardcoded ActiveRecord validations
         # in idea and Post. When built-in fields (except title_multiloc and body_multiloc)
         # are configured as "required", then there are no validations to check missing
         # field values. On top of that, the validation errors coming out

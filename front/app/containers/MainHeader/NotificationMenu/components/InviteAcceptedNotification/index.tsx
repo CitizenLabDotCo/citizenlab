@@ -27,7 +27,7 @@ const InviteAcceptedNotification = memo<Props>((props) => {
     <NotificationWrapper
       linkTo={'/admin/users/invitations'}
       timing={notification.attributes.created_at}
-      icon="notification_invitation_accepted"
+      icon="user-check"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage

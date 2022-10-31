@@ -84,6 +84,10 @@ class ApplicationController < ActionController::API
     links
   end
 
+  def parse_bool(value)
+    ActiveModel::Type::Boolean.new.cast(value)
+  end
+
   private
 
   def build_link(number)
@@ -98,5 +102,12 @@ class ApplicationController < ActionController::API
   def paginate(collection)
     collection.page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+  end
+
+  def remove_image_if_requested!(resource, resource_params, image_field_name)
+    return unless resource_params.key?(image_field_name) && resource_params[image_field_name].nil?
+
+    # setting the image attribute to nil will not remove the image
+    resource.public_send("remove_#{image_field_name}!")
   end
 end

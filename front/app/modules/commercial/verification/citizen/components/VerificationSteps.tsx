@@ -28,7 +28,7 @@ const Container = styled.div`
   align-items: stretch;
   padding-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 20px;
   `}
 `;

@@ -22,7 +22,7 @@ const Text = styled.div`
   align-items: center;
   transition: all 80ms ease-out;
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -32,7 +32,7 @@ const ArrowIcon = styled(Icon)`
   opacity: 0;
   transition: all 80ms ease-out;
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -62,10 +62,10 @@ const MenuItemLink = styled(Link)`
   &:not(.active) {
     .cl-icon {
       .cl-icon-primary {
-        fill: ${colors.clIconPrimary};
+        fill: ${colors.blue400};
       }
       .cl-icon-accent {
-        fill: ${colors.clIconAccent};
+        fill: ${colors.teal400};
       }
     }
   }
@@ -77,31 +77,22 @@ const MenuItemLink = styled(Link)`
 
     .cl-icon {
       .cl-icon-primary {
-        fill: ${colors.clIconAccent};
+        fill: ${colors.teal400};
       }
       .cl-icon-accent {
-        fill: ${colors.clIconPrimary};
-      }
-    }
-
-    &.moderation {
-      .cl-icon {
-        .cl-icon-primary {
-          fill: ${colors.clIconAccent};
-        }
-        .cl-icon-accent {
-          fill: ${colors.clIconAccent};
-        }
+        fill: ${colors.blue400};
       }
     }
   }
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     width: 56px;
     padding-right: 5px;
   `}
 `;
 
+// We should not set the height for a blankPage icon in the admin navigation like this
+// https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916039349
 const IconWrapper = styled.div`
   flex: 0 0 auto;
   width: 45px;
@@ -110,8 +101,13 @@ const IconWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  &.processing svg {
-    height: 31px;
+  &.sidebar-reporting svg {
+    height: 30px;
+    width: 30px;
+  }
+
+  &.sidebar-pages-menu svg {
+    height: 22px;
   }
 `;
 
@@ -125,7 +121,10 @@ const MenuItem = ({ navItem }: Props) => {
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   }) ? (
     <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
-      <MenuItemLink to={navItem.link}>
+      <MenuItemLink
+        to={navItem.link}
+        className={`intercom-admin-menu-item-${navItem.name}`}
+      >
         <IconWrapper className={navItem.iconName}>
           <Icon name={navItem.iconName} />
         </IconWrapper>
@@ -133,7 +132,7 @@ const MenuItem = ({ navItem }: Props) => {
           <FormattedMessage {...messages[navItem.message]} />
           {!!navItem.count && <CountBadge count={navItem.count} />}
         </Text>
-        <ArrowIcon name="arrowLeft" />
+        <ArrowIcon name="arrow-right" />
       </MenuItemLink>
     </HasPermission>
   ) : null;

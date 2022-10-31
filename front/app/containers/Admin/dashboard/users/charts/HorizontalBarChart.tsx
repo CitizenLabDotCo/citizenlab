@@ -4,11 +4,14 @@ import { isEmpty } from 'lodash-es';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
 import {
@@ -19,8 +22,6 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
-import { LabelList } from 'recharts';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
@@ -62,15 +63,14 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 export class HorizontalBarChart extends React.PureComponent<
-  Props & InjectedIntlProps
+  Props & WrappedComponentProps
 > {
   currentChart: React.RefObject<any>;
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props as any);
     this.currentChart = React.createRef();
   }
   render() {
-    const { barSize } = this.props['theme'];
     const {
       startAt,
       endAt,
@@ -97,7 +97,7 @@ export class HorizontalBarChart extends React.PureComponent<
             {!noData && (
               <ReportExportMenu
                 svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
+                xlsx={xlsxEndpoint ? { endpoint: xlsxEndpoint } : undefined}
                 name={graphTitleString}
                 startAt={startAt}
                 endAt={endAt}
@@ -105,13 +105,21 @@ export class HorizontalBarChart extends React.PureComponent<
             )}
           </GraphCardHeader>
           <BarChart
+            innerRef={this.currentChart}
             height={!noData && serie.length > 1 ? serie.length * 50 : 100}
             data={serie}
+            mapping={{
+              category: 'name',
+              length: 'value',
+            }}
+            bars={{
+              name: unitName,
+              size: graphUnit === 'ideas' ? 5 : sizes.bar,
+            }}
             layout="horizontal"
             margin={DEFAULT_BAR_CHART_MARGIN}
-            bars={{ name: unitName, size: graphUnit === 'ideas' ? 5 : barSize }}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} />}
+            labels
           />
         </GraphCardInner>
       </GraphCard>
@@ -119,9 +127,7 @@ export class HorizontalBarChart extends React.PureComponent<
   }
 }
 
-const HorizontalBarChartWithHoCs = injectIntl<Props>(
-  withTheme(HorizontalBarChart as any) as any
-);
+const HorizontalBarChartWithHoCs = injectIntl(HorizontalBarChart);
 
 const WrappedHorizontalBarChart = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

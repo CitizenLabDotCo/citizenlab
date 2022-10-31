@@ -36,7 +36,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
@@ -62,7 +62,7 @@ const EmptyIcon = styled.svg`
 
 const EmptyText = styled.div`
   width: 100%;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   line-height: 18px;
   font-weight: 500;
@@ -107,7 +107,7 @@ const IdeaTitle = styled.div`
 `;
 
 const IdeaBudget = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: 18px;
@@ -140,7 +140,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
+class PBBasket extends PureComponent<Props & WrappedComponentProps, State> {
   ideaRemovedFromBasket =
     (ideaIdToRemove: string) => async (event: FormEvent<any>) => {
       event.preventDefault();
@@ -230,7 +230,7 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
                     icon="basket-minus"
                     buttonStyle="text"
                     iconSize="21px"
-                    iconColor={colors.label}
+                    iconColor={colors.textSecondary}
                     padding="0"
                     onClick={this.ideaRemovedFromBasket(idea.id)}
                     ariaLabel={this.props.intl.formatMessage(
@@ -343,7 +343,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const PBBasketWithHoCs = injectIntl<Props>(PBBasket);
+const PBBasketWithHoCs = injectIntl(PBBasket);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

@@ -13,9 +13,12 @@ module UserCustomFields
     #
     # @param [ActiveRecord::Relation] users
     # @param [UserCustomField] user_custom_field
-    # @param [Boolean] by_option_id index the counts by the option id instead of the option key
+    # @param [Symbol] by index the counts by
+    #   - option id if +by+ is +:option_id+
+    #   - area id if +by+ is +:area_id+ (only for domicile field)
+    #   - option key otherwise.
     # @return [ActiveSupport::HashWithIndifferentAccess]
-    def self.counts_by_field_option(users, custom_field, by_option_id: false)
+    def self.counts_by_field_option(users, custom_field, by: :option_key)
       field_values = select_field_values(users, custom_field)
 
       # Warning: The method +count+ cannot be used here because it introduces a SQL syntax
@@ -29,7 +32,23 @@ module UserCustomFields
 
       counts[UNKNOWN_VALUE_LABEL] = counts.delete(nil) || 0
       counts = add_missing_options(counts, custom_field)
-      convert_keys_to_option_ids!(counts, custom_field) if by_option_id
+
+      # TODO: Tech debt of CL-959.
+      # CL-959 adds custom field options to the domicile custom field. Before CL-959, the
+      # domicile custom field was a select custom field without options
+      # (CustomFieldOption records associated to it). Instead, the options were implicitly
+      # defined by the areas (Area model). As a consequence, the user custom field values are
+      # using the area id as the field value, instead of the option key (as for the other
+      # select custom fields).
+      #
+      # We have to run a data migration to update the user custom field values to use the
+      # option key for domicile before we can remove the following conversion step.
+      convert_area_ids_to_option_keys!(counts, custom_field) if by != :area_id && custom_field.domicile?
+      raise ArgumentError, <<~MSG if by == :area_id && !custom_field.domicile?
+        'by: :area_id' option can only be used with domicile custom field.
+      MSG
+
+      convert_keys_to_option_ids!(counts, custom_field) if by == :option_id
       counts.with_indifferent_access
     end
 
@@ -60,6 +79,20 @@ module UserCustomFields
       end
     end
 
+    private_class_method def self.convert_area_ids_to_option_keys!(counts, custom_field)
+      raise 'custom_field is not the domicile field' unless custom_field.domicile?
+
+      area_id_to_option_key = Area.includes(:custom_field_option)
+        .all.to_h { |area| [area.id, area.custom_field_option.key] }
+
+      # Adding special keys to the mapping
+      somewhere_else_option = custom_field.options.left_joins(:area).find_by(areas: { id: nil })
+      area_id_to_option_key['outside'] = somewhere_else_option.key
+      area_id_to_option_key[FieldValueCounter::UNKNOWN_VALUE_LABEL] = FieldValueCounter::UNKNOWN_VALUE_LABEL
+
+      counts.transform_keys! { |key| area_id_to_option_key.fetch(key) }
+    end
+
     private_class_method def self.convert_keys_to_option_ids!(counts, custom_field)
       key_to_id = custom_field.options.to_h { |option| [option.key, option.id] }
       counts.transform_keys! do |option_key|
@@ -80,9 +113,14 @@ module UserCustomFields
     #   custom field options. That is if the custom field values reference options that
     #   do not exist.
     private_class_method def self.add_missing_options!(counts, custom_field)
-      return counts if custom_field.options.empty?
+      if custom_field.domicile?
+        option_keys = Area.ids << 'outside'
+      elsif custom_field.options.present?
+        option_keys = custom_field.options.pluck(:key)
+      else
+        return counts
+      end
 
-      option_keys = custom_field.options.pluck(:key)
       unknown_option_keys = counts.keys - option_keys - [UNKNOWN_VALUE_LABEL]
       raise ArgumentError, <<~MSG.squish if unknown_option_keys.present?
         The `counts` hash keys are inconsistent with the custom field options

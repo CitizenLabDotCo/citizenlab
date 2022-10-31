@@ -23,7 +23,26 @@ class IdeasFinder < ApplicationFinder
     Idea.unscoped.where(id: ids).order_as_specified(id: ids)
   }
 
+  def initialize(params, scope: nil, includes: [], current_user: nil, paginate: true)
+    scope ||= _base_scope
+    super(
+      params,
+      scope: only_idea_inputs_scope(scope),
+      includes: includes,
+      current_user: current_user,
+      paginate: paginate
+    )
+  end
+
   private
+
+  def only_idea_inputs_scope(scope)
+    phase_ideas = scope.where(project: Project.where(process_type: 'timeline'), creation_phase: nil)
+    project_ideas = scope.where(
+      project: Project.where(process_type: 'continuous', participation_method: %w[ideation budgeting])
+    )
+    phase_ideas.or(project_ideas)
+  end
 
   def ideas_condition(ids)
     where(id: ids)

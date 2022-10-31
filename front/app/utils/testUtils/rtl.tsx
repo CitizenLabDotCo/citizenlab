@@ -10,6 +10,7 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import history from 'utils/browserHistory';
 
 window.confirm = jest.fn(() => true);
+window.scrollTo = jest.fn();
 global.URL.createObjectURL = jest.fn();
 Element.prototype.scrollTo = jest.fn();
 Element.prototype.scrollIntoView = jest.fn();
@@ -19,7 +20,17 @@ const AllTheProviders = ({ children }) => {
     <HistoryRouter history={history}>
       <ThemeProvider theme={getTheme(null)}>
         <GlobalStyle />
-        <IntlProvider locale="en" messages={messages}>
+        <IntlProvider
+          locale="en"
+          messages={messages}
+          onError={(err) => {
+            if (err.code === 'MISSING_TRANSLATION') {
+              console.warn('Missing translation', err.message);
+              return;
+            }
+            throw err;
+          }}
+        >
           <div id="modal-portal">{children}</div>
         </IntlProvider>
       </ThemeProvider>

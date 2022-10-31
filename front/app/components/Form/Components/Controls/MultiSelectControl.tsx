@@ -13,6 +13,7 @@ import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import VerificationIcon from '../VerificationIcon';
+import { getOptions } from './controlUtils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
@@ -29,13 +30,7 @@ const MultiSelectControl = ({
   id,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const options =
-    (!Array.isArray(schema.items) &&
-      schema.items?.oneOf?.map((o) => ({
-        value: o.const as string,
-        label: (o.title || o.const) as string,
-      }))) ||
-    null;
+  const options = getOptions(schema, 'multi');
 
   return (
     <>

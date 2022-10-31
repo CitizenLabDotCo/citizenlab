@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
     defaultMessage: 'Add an idea',
   },
+  addNewInput: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewInput',
+    defaultMessage: 'Add an input',
+  },
   addNewProject: {
     id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
     defaultMessage: 'Add a project',
@@ -96,9 +100,9 @@ export default defineMessages({
     defaultMessage:
       'Create or collect inputs, votes and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
   },
-  createSurveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.createSurveyText',
-    defaultMessage: 'Create an advanced survey',
+  createExternalSurveyText: {
+    id: 'app.containers.AdminPage.ProjectEdit.createExternalSurveyText',
+    defaultMessage: 'Create an external survey',
   },
   createSurveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
@@ -113,6 +117,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
     defaultMessage:
       'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
+  },
+  createNativeSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.createNativeSurvey',
+    defaultMessage: 'Create an in-platform survey',
+  },
+  createNativeSurveyDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription',
+    defaultMessage: 'Set up a survey without leaving our platform.',
   },
   createPoll: {
     id: 'app.containers.AdminPage.ProjectEdit.createPoll',
@@ -352,6 +364,10 @@ export default defineMessages({
   surveyResultsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyResultsTab',
     defaultMessage: 'Survey Results',
+  },
+  surveyTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyTab',
+    defaultMessage: 'Survey',
   },
   exportSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',

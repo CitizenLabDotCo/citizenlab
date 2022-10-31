@@ -28,7 +28,7 @@ import { IOption } from 'typings';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import useAuthUser from 'hooks/useAuthUser';
 
@@ -52,7 +52,7 @@ const ProjectFolderSelect = ({
   projectAttrs: { folder_id },
   onProjectAttributesDiffChange,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const { projectFolders } = useProjectFolders({});
 
   const authUser = useAuthUser();

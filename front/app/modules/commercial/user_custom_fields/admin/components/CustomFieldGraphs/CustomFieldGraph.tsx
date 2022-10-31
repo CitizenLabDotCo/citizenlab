@@ -4,13 +4,16 @@ import { combineLatest } from 'rxjs';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import T from 'components/T';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -20,14 +23,14 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import { Tooltip, LabelList } from 'recharts';
+import { Tooltip } from 'recharts';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
 import { IUserCustomFieldData } from '../../../services/userCustomFields';
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStream } from 'utils/streams';
+import { ICustomFieldParams } from '../../../services/stats';
 
 // services
 import {
@@ -49,7 +52,9 @@ import createConvertAndMergeSeries, {
 } from './convertAndMergeSeries';
 
 interface ICustomFieldEndpoint {
-  stream: (streamParams: IStreamParams | null) => IStream<ISupportedDataType>;
+  stream: (
+    streamParams: ICustomFieldParams | null
+  ) => IStream<ISupportedDataType>;
   xlsxEndpoint: string;
 }
 
@@ -78,7 +83,7 @@ interface InputProps {
   className?: string;
 }
 
-type Props = InputProps & InjectedIntlProps & InjectedLocalized;
+type Props = InputProps & WrappedComponentProps & InjectedLocalized;
 
 interface TooltipProps {
   payload?: { name?: string; value?: string; payload?: { total: number } }[];
@@ -99,7 +104,7 @@ const CustomTooltip = ({
         <h4 style={{ fontWeight: 600 }}>{label}</h4>
         <div>{`${payload[0].name} : ${payload[0].value}`}</div>
         <Box
-          color={colors.label}
+          color={colors.textSecondary}
         >{`${totalLabel} : ${payload[0]?.payload?.total}`}</Box>
       </Box>
     );
@@ -147,8 +152,7 @@ const CustomFieldsGraph = ({
   localize,
   intl: { formatMessage },
   className,
-  theme: { barSize },
-}: Props & { theme: any }) => {
+}: Props) => {
   const [serie, setSerie] = useState<TOutput | null>(null);
   const currentChartRef = useRef();
   const convertAndMergeSeriesRef = useRef(
@@ -211,7 +215,7 @@ const CustomFieldsGraph = ({
                 fieldName: localize(customField.attributes.title_multiloc),
               })}
               svgNode={currentChartRef}
-              xlsxEndpoint={xlsxEndpoint}
+              xlsx={{ endpoint: xlsxEndpoint }}
               currentProjectFilter={currentProject}
               startAt={startAt}
               endAt={endAt}
@@ -221,16 +225,20 @@ const CustomFieldsGraph = ({
         <BarChart
           height={serie && serie.length > 1 ? serie.length * 50 : 100}
           data={serie}
+          mapping={{
+            category: 'name',
+            length: 'participants',
+          }}
+          bars={{ name: formatMessage(messages.participants), size: sizes.bar }}
           layout="horizontal"
           innerRef={currentChartRef}
           margin={{
             ...DEFAULT_BAR_CHART_MARGIN,
             left: 20,
           }}
-          bars={{ name: formatMessage(messages.participants), size: barSize }}
-          mapping={{ length: 'participants' }}
           yaxis={{ width: 150, tickLine: false }}
-          renderTooltip={() => (
+          labels
+          tooltip={() => (
             <>
               <Tooltip
                 content={({ active, payload, label }: TooltipProps) => (
@@ -244,15 +252,10 @@ const CustomFieldsGraph = ({
               />
             </>
           )}
-          renderLabels={(props) => <LabelList {...props} />}
         />
       </GraphCardInner>
     </GraphCard>
   );
 };
 
-export default injectLocalize<InputProps>(
-  injectIntl<InputProps & InjectedLocalized>(
-    withTheme(CustomFieldsGraph as any) as any
-  )
-);
+export default injectLocalize<InputProps>(injectIntl(CustomFieldsGraph));

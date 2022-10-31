@@ -8,9 +8,9 @@ import createAdminUsersRoutes from './users/routes';
 import invitationsRoutes from './invitations/routes';
 import createAdminProjectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
-import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
+import pagesAndMenuRoutes from './pagesAndMenu/routes';
 
 // components
 import PageLoading from 'components/UI/PageLoading';
@@ -30,7 +30,7 @@ import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 // typings
-import { IAppConfiguration } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
@@ -40,16 +40,14 @@ const isTemplatePreviewPage = (urlSegments: string[]) =>
   isUUID(urlSegments[3]);
 
 const getRedirectURL = (
-  appConfiguration: IAppConfiguration,
+  appConfiguration: IAppConfigurationData,
   authUser: TAuthUser,
   pathname: string | undefined,
   urlLocale: string | null
 ) => {
   const localeSegment = urlLocale ? `/${urlLocale}` : '';
 
-  if (
-    appConfiguration.data.attributes.settings.core.lifecycle_stage === 'churned'
-  ) {
+  if (appConfiguration.attributes.settings.core.lifecycle_stage === 'churned') {
     return `${localeSegment}/subscription-ended`;
   }
 
@@ -70,6 +68,9 @@ const getRedirectURL = (
   }
 
   // if not, redirect them to the sign-in page
+  // TO DO: Here we need to redirect to index
+  // if the user is already signed in. If I want to access the admin as a signed in user
+  // I get redirect => sign in => then index (because I'm already signed in)
   return `${localeSegment}/sign-in`;
 };
 
@@ -105,6 +106,8 @@ const createAdminRoutes = () => {
     element: <IndexElement />,
     children: [
       {
+        // Careful: moderators currently have access to the admin index route
+        // Adjust isModerator in routePermissions.ts if needed.
         path: '',
         element: <Navigate to="dashboard" />,
       },
@@ -113,7 +116,7 @@ const createAdminRoutes = () => {
       createAdminUsersRoutes(),
       createAdminProjectsRoutes(),
       settingsRoutes(),
-      pagesRoutes(),
+      pagesAndMenuRoutes(),
       invitationsRoutes(),
       createAdminMessagingRoutes(),
       ideasRoutes(),

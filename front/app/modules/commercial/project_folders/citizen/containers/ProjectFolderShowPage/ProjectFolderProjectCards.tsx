@@ -30,7 +30,7 @@ const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
     width: 100%;
     margin-right: 0px;
   }
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     margin: 0;
     margin-bottom: 20px;

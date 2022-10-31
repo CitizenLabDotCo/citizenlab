@@ -304,4 +304,43 @@ export default defineMessages({
     defaultMessage:
       'No image could be downloaded from {value}. Make sure the URL is valid and ends with a file extension such as .png or .jpg. This issue occurs in the row with ID {row}.',
   },
+  banner_cta_signed_in_text_multiloc_blank: {
+    id: 'app.errors.banner_cta_signed_in_text_multiloc_blank',
+    defaultMessage: 'Enter a button text.',
+  },
+  banner_cta_signed_in_url_blank: {
+    id: 'app.errors.banner_cta_signed_in_url_blank',
+    defaultMessage: 'Enter a link.',
+  },
+  banner_cta_signed_in_url_url: {
+    id: 'app.errors.banner_cta_signed_in_url_url',
+    defaultMessage:
+      "Enter a valid link. Make sure the link starts with 'https://'.",
+  },
+  banner_cta_signed_out_text_multiloc_blank: {
+    id: 'app.errors.banner_cta_signed_out_text_multiloc_blank',
+    defaultMessage: 'Enter a button text.',
+  },
+  banner_cta_signed_out_url_blank: {
+    id: 'app.errors.banner_cta_signed_out_url_blank',
+    defaultMessage: 'Enter a link.',
+  },
+  banner_cta_signed_out_url_url: {
+    id: 'app.errors.banner_cta_signed_out_url_url',
+    defaultMessage:
+      "Enter a valid link. Make sure the link starts with 'https://'.",
+  },
+  banner_cta_button_multiloc_blank: {
+    id: 'app.errors.banner_cta_button_multiloc_blank',
+    defaultMessage: 'Enter a button text.',
+  },
+  banner_cta_button_url_blank: {
+    id: 'app.errors.banner_cta_button_url_blank',
+    defaultMessage: 'Enter a link.',
+  },
+  banner_cta_button_url_url: {
+    id: 'app.errors.banner_cta_button_url_url',
+    defaultMessage:
+      "Enter a valid link. Make sure the link starts with 'https://'.",
+  },
 });

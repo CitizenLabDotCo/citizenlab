@@ -1,6 +1,6 @@
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { deleteIdea } from 'services/ideas';
 import { deleteInitiative } from 'services/initiatives';
 import { Button, Icon } from 'semantic-ui-react';
@@ -14,7 +14,9 @@ interface Props {
   resetSelection: () => void;
 }
 
-class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
+class ActionBarMulti extends React.PureComponent<
+  Props & WrappedComponentProps
+> {
   handleClickDeleteIdeas = () => {
     const {
       selection,
@@ -64,7 +66,7 @@ class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
           basic={true}
           onClick={this.handleClickDeleteIdeas}
         >
-          <Icon name="trash" />
+          <Icon name="delete" />
           <FormattedMessage
             {...messages.deleteAllSelectedInputs}
             values={{ count: selection.size }}
@@ -78,7 +80,7 @@ class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
           basic={true}
           onClick={this.handleClickDeleteInitiatives}
         >
-          <Icon name="trash" />
+          <Icon name="delete" />
           <FormattedMessage
             {...messages.deleteAllSelectedInitiatives}
             values={{ count: selection.size }}
@@ -90,4 +92,4 @@ class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
   }
 }
 
-export default injectIntl<Props>(ActionBarMulti);
+export default injectIntl(ActionBarMulti);

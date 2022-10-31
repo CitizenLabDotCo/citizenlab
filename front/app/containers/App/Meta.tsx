@@ -10,11 +10,12 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // i18n
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // utils
@@ -34,18 +35,24 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const Meta: React.SFC<Props & InjectedIntlProps> = ({
+const Meta: React.SFC<Props & WrappedComponentProps> = ({
   locale,
   tenant,
   authUser,
   intl,
 }) => {
-  if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+  const homepageSettings = useHomepageSettings();
+  if (
+    !isNilOrError(locale) &&
+    !isNilOrError(tenant) &&
+    !isNilOrError(homepageSettings)
+  ) {
     const { formatMessage } = intl;
     const tenantLocales = tenant.attributes.settings.core.locales;
     const headerBg =
-      tenant.attributes.header_bg && tenant.attributes.header_bg.large
-        ? tenant.attributes.header_bg.large
+      homepageSettings.attributes.header_bg &&
+      homepageSettings.attributes.header_bg.large
+        ? homepageSettings.attributes.header_bg.large
         : '';
     const organizationNameMultiLoc =
       tenant.attributes.settings.core.organization_name;
@@ -147,7 +154,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const MetaWithHoc = injectIntl<Props>(Meta);
+const MetaWithHoc = injectIntl(Meta);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

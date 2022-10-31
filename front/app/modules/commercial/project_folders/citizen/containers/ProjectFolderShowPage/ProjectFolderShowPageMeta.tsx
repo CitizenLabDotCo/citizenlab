@@ -19,7 +19,7 @@ import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // typings
 import { IProjectFolderData } from '../../../services/projectFolders';
@@ -28,7 +28,7 @@ interface Props {
   projectFolder: IProjectFolderData;
 }
 
-const Meta = memo<Props & InjectedIntlProps>(({ projectFolder, intl }) => {
+const Meta = memo<Props & WrappedComponentProps>(({ projectFolder, intl }) => {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const authUser = useAuthUser();

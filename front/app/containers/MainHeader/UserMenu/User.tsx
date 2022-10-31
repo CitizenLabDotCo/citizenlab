@@ -24,7 +24,7 @@ const StyledUserName = styled(UserName)`
   align-items: flex-end;
   transition: all 100ms ease-out;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -50,7 +50,7 @@ const User = ({ userId }: Props) => {
     <>
       <UserNameContainer>
         <StyledUserName
-          color={theme.navbarTextColor || theme.colorText}
+          color={theme.navbarTextColor || theme.colors.tenantText}
           userId={userId}
           hideLastName
         />
@@ -63,7 +63,7 @@ const User = ({ userId }: Props) => {
       <Avatar
         userId={userId}
         size={30}
-        fillColor={theme?.navbarTextColor || colors.label}
+        fillColor={theme?.navbarTextColor || colors.textSecondary}
         addVerificationBadge
       />
     </>

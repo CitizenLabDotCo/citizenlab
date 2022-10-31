@@ -6,7 +6,7 @@ import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -25,7 +25,7 @@ const CheckboxWrapper = styled.div`
 `;
 
 const ConsentText = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
   font-weight: 300;
@@ -34,7 +34,7 @@ const ConsentText = styled.div`
   word-break: break-word;
 
   a {
-    color: ${(props: any) => props.theme.colorText};
+    color: ${(props: any) => props.theme.colors.tenantText};
     font-weight: 400;
     text-decoration: underline;
     overflow-wrap: break-word;
@@ -68,7 +68,7 @@ const Consent = memo(
     privacyPolicyAccepted,
     onTacAcceptedChange,
     onPrivacyAcceptedChange,
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const handleTermsAndConditionsOnChange = () => {
       onTacAcceptedChange(!termsAndConditionsAccepted);
     };

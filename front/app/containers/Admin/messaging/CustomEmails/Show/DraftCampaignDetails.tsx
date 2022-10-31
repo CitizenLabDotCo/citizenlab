@@ -7,7 +7,7 @@ import messages from '../../messages';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import PreviewFrame from './PreviewFrame';
 import styled from 'styled-components';
 
@@ -25,7 +25,7 @@ interface DataProps {
   campaign: ICampaignData;
 }
 
-interface Props extends InputProps, DataProps, InjectedIntlProps {}
+interface Props extends InputProps, DataProps, WrappedComponentProps {}
 
 class DraftCampaignDetails extends React.Component<Props> {
   handleDelete = () => {
@@ -45,7 +45,11 @@ class DraftCampaignDetails extends React.Component<Props> {
       <>
         <PreviewFrame campaignId={campaign.id} />
         <ButtonWrapper>
-          <Button buttonStyle="delete" icon="trash" onClick={this.handleDelete}>
+          <Button
+            buttonStyle="delete"
+            icon="delete"
+            onClick={this.handleDelete}
+          >
             <FormattedMessage {...messages.deleteCampaignButton} />
           </Button>
         </ButtonWrapper>
@@ -54,9 +58,7 @@ class DraftCampaignDetails extends React.Component<Props> {
   }
 }
 
-const DraftCampaignDetailsWithHOCs = injectIntl<InputProps & DataProps>(
-  DraftCampaignDetails
-);
+const DraftCampaignDetailsWithHOCs = injectIntl(DraftCampaignDetails);
 
 export default (inputProps: InputProps) => (
   <GetCampaign id={inputProps.campaignId}>

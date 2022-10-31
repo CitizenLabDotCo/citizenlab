@@ -8,7 +8,7 @@ import FieldInfo, { Props as FieldInfoProps } from '../FieldInfo';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // typings
-import { RepresentativenessData } from '../../../hooks/useReferenceData';
+import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';
 
 interface Props extends FieldInfoProps {
   open: boolean;
@@ -55,7 +55,7 @@ const TableModal = ({
           <ReportExportMenu
             name={title}
             currentProjectFilter={projectFilter}
-            xlsxEndpoint={xlsxEndpoint}
+            xlsx={{ endpoint: xlsxEndpoint }}
           />
         </Box>
       </Box>

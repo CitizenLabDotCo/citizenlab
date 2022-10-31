@@ -5,7 +5,6 @@ import {
   Box,
   Image as ImageComponent,
   Input,
-  IconTooltip,
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
@@ -65,7 +64,7 @@ const Image = ({
           padding="24px"
           width="100px"
           height="100px"
-          fill={colors.clIconSecondary}
+          fill={colors.grey500}
           name="image"
         />
       )}
@@ -144,15 +143,8 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
           id="imageAltTextInput"
           onChange={handleChange}
           value={alt}
-          label={
-            <span>
-              {formatMessage(messages.imageAltTextLabel)}{' '}
-              <IconTooltip
-                icon="info3"
-                content={formatMessage(messages.imageAltTextTooltip)}
-              />
-            </span>
-          }
+          labelTooltipText={formatMessage(messages.imageAltTextTooltip)}
+          label={formatMessage(messages.imageAltTextLabel)}
         />
       </Box>
     </Box>

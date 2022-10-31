@@ -90,15 +90,13 @@ const CloseButton = styled.button`
     ${defaultOutline};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     top: 4px;
     right: 4px;
   `}
 `;
 
 const CloseIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
   fill: #000;
 `;
 

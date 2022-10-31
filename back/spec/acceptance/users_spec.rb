@@ -88,6 +88,7 @@ resource 'Users' do
           settings['password_login'] = {
             'allowed' => true,
             'enabled' => true,
+            'enable_signup' => true,
             'phone' => true,
             'phone_email_pattern' => 'phone+__PHONE__@test.com',
             'minimum_length' => 6
@@ -122,6 +123,19 @@ resource 'Users' do
     end
 
     post 'web_api/v1/users' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['password_login'] = {
+          'allowed' => true,
+          'enabled' => true,
+          'enable_signup' => true,
+          'phone' => true,
+          'phone_email_pattern' => 'phone+__PHONE__@test.com',
+          'minimum_length' => 6
+        }
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
       with_options scope: 'user' do
         parameter :first_name, 'User full name', required: true
         parameter :last_name, 'User full name', required: true
@@ -170,6 +184,18 @@ resource 'Users' do
       end
 
       describe 'Creating an admin user' do
+        before do
+          settings = AppConfiguration.instance.settings
+          settings['password_login'] = {
+            'enabled' => true,
+            'allowed' => true,
+            'enable_signup' => true,
+            'minimum_length' => 5,
+            'phone' => false
+          }
+          AppConfiguration.instance.update! settings: settings
+        end
+
         let(:roles) { [{ type: 'admin' }] }
 
         example 'creates a user, but not an admin', document: false do
@@ -187,6 +213,7 @@ resource 'Users' do
           settings['password_login'] = {
             'enabled' => true,
             'allowed' => true,
+            'enable_signup' => true,
             'minimum_length' => 5,
             'phone' => false
           }
@@ -236,6 +263,7 @@ resource 'Users' do
           settings['password_login'] = {
             'allowed' => true,
             'enabled' => true,
+            'enable_signup' => true,
             'phone' => true,
             'phone_email_pattern' => 'phone+__PHONE__@test.com',
             'minimum_length' => 6
@@ -266,7 +294,7 @@ resource 'Users' do
 
   context 'when authenticated' do
     before do
-      @user = create :user
+      @user = create(:user, last_name: 'Smith')
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
@@ -837,9 +865,11 @@ resource 'Users' do
       let(:id) { @user.id }
 
       example 'Get the number of ideas published by one user' do
+        IdeaStatus.create_defaults
         create(:idea, author: @user)
         create(:idea)
         create(:idea, author: @user, publication_status: 'draft')
+        create(:idea, author: @user, project: create(:continuous_native_survey_project))
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { useParams } from 'react-router-dom';
+import { Multiloc, UploadFile } from 'typings';
+import { isEmpty, get, isString } from 'lodash-es';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
@@ -28,26 +31,13 @@ import {
   StyledSectionField,
   ParticipationContextWrapper,
 } from './components/styling';
+
 // hooks
 import useProject from 'hooks/useProject';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-// animation
-import CSSTransition from 'react-transition-group/CSSTransition';
-
-import { validateSlug } from 'utils/textUtils';
-import validateTitle from './utils/validateTitle';
-
-// typings
-import { Multiloc, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
-import { isEmpty, get, isString } from 'lodash-es';
-import eventEmitter from 'utils/eventEmitter';
+import { useParams } from 'react-router-dom';
 
 // services
 import {
@@ -60,8 +50,17 @@ import {
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 
-// typings
-import { INewProjectCreatedEvent } from '../../all/CreateProject';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
+
+// utils
+import { validateSlug } from 'utils/textUtils';
+import validateTitle from './utils/validateTitle';
+import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 export const TIMEOUT = 350;
 
@@ -72,13 +71,13 @@ export type TOnProjectAttributesDiffChangeFunction = (
 
 const AdminProjectsProjectGeneral = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
-  const params = useParams();
-  const project = useProject({ projectId: params.projectId });
+}: WrappedComponentProps) => {
+  const { projectId } = useParams();
+  const project = useProject({ projectId });
   const appConfigLocales = useAppConfigurationLocales();
-  const remoteProjectFiles = useProjectFiles(params.projectId);
+  const remoteProjectFiles = useProjectFiles(projectId);
   const remoteProjectImages = useProjectImages({
-    projectId: params.projectId || null,
+    projectId: projectId || null,
   });
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
   const [processing, setProcessing] =
@@ -232,6 +231,23 @@ const AdminProjectsProjectGeneral = ({
     setProjectHeaderImage(null);
   };
 
+  const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
+    setSubmitState('enabled');
+    setProjectImages(projectImages);
+  };
+
+  const handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
+    setProjectImages((projectImages) => {
+      return projectImages.filter(
+        (image) => image.base64 !== projectImageToRemove.base64
+      );
+    });
+    setProjectImagesToRemove((projectImagesToRemove) => {
+      return [...projectImagesToRemove, projectImageToRemove];
+    });
+    setSubmitState('enabled');
+  };
+
   const handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
     let isDuplicate = false;
 
@@ -255,23 +271,6 @@ const AdminProjectsProjectGeneral = ({
     ]);
   };
 
-  const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
-    setSubmitState('enabled');
-    setProjectImages(projectImages);
-  };
-
-  const handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
-    setProjectImages((projectImages) => {
-      return projectImages.filter(
-        (image) => image.base64 !== projectImageToRemove.base64
-      );
-    });
-    setProjectImagesToRemove((projectImagesToRemove) => {
-      return [...projectImagesToRemove, projectImageToRemove];
-    });
-    setSubmitState('enabled');
-  };
-
   const handleTopicsChange = (topicIds: string[]) => {
     setSubmitState('enabled');
     setProjectAttributesDiff((projectAttributesDiff) => ({
@@ -285,8 +284,8 @@ const AdminProjectsProjectGeneral = ({
   ) {
     // Should be split. Same func for existing/new project
     // Makes things unnecessarily complicated (e.g. projectId below).
-    let projectId = params.projectId;
     let isNewProject = false;
+    let latestProjectId = projectId;
     const isFormValid = validateForm();
 
     if (!isFormValid) {
@@ -305,52 +304,68 @@ const AdminProjectsProjectGeneral = ({
       try {
         setProcessing(true);
         if (!isEmpty(nextProjectAttributesDiff)) {
-          if (projectId) {
-            await updateProject(projectId, nextProjectAttributesDiff);
+          if (latestProjectId) {
+            await updateProject(latestProjectId, nextProjectAttributesDiff);
           } else {
             const project = await addProject(nextProjectAttributesDiff);
-            projectId = project.data.id;
+            latestProjectId = project.data.id;
             isNewProject = true;
           }
         }
 
-        if (isString(projectId)) {
-          const imagesToAddPromises = projectImages
-            .filter((file) => !file.remote)
-            .map((file) => addProjectImage(projectId as string, file.base64));
-          const imagesToRemovePromises = projectImagesToRemove
-            .filter((file) => file.remote === true && isString(file.id))
-            .map((file) =>
-              deleteProjectImage(projectId as string, file.id as string)
-            );
-          const filesToAddPromises = projectFiles
-            .filter((file) => !file.remote)
-            .map((file) =>
-              addProjectFile(projectId as string, file.base64, file.name)
-            );
-          const filesToRemovePromises = projectFilesToRemove
-            .filter((file) => file.remote === true && isString(file.id))
-            .map((file) =>
-              deleteProjectFile(projectId as string, file.id as string)
-            );
+        const imagesToAddPromises = projectImages
+          .filter((file) => !file.remote)
+          .map((file) => {
+            if (latestProjectId) {
+              return addProjectImage(latestProjectId, file.base64);
+            }
 
-          await Promise.all([
-            ...imagesToAddPromises,
-            ...imagesToRemovePromises,
-            ...filesToAddPromises,
-            ...filesToRemovePromises,
-          ] as Promise<any>[]);
+            return;
+          });
+        const imagesToRemovePromises = projectImagesToRemove
+          .filter((file) => file.remote === true && isString(file.id))
+          .map((file) => {
+            if (latestProjectId && file.id) {
+              return deleteProjectImage(latestProjectId, file.id);
+            }
 
-          setSubmitState('success');
-          setProjectImagesToRemove([]);
-          setProjectFilesToRemove([]);
-          setProcessing(false);
+            return;
+          });
+        const filesToAddPromises = projectFiles
+          .filter((file) => !file.remote)
+          .map((file) => {
+            if (latestProjectId) {
+              return addProjectFile(latestProjectId, file.base64, file.name);
+            }
 
-          if (isNewProject && projectId) {
-            eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', {
-              projectId,
-            });
-          }
+            return;
+          });
+        const filesToRemovePromises = projectFilesToRemove
+          .filter((file) => file.remote === true && isString(file.id))
+          .map((file) => {
+            if (latestProjectId && file.id) {
+              return deleteProjectFile(latestProjectId, file.id);
+            }
+
+            return;
+          });
+
+        await Promise.all([
+          ...imagesToAddPromises,
+          ...imagesToRemovePromises,
+          ...filesToAddPromises,
+          ...filesToRemovePromises,
+        ] as Promise<any>[]);
+
+        setSubmitState('success');
+        setProjectImagesToRemove([]);
+        setProjectFilesToRemove([]);
+        setProcessing(false);
+
+        if (isNewProject && latestProjectId) {
+          eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', {
+            projectId: latestProjectId,
+          });
         }
       } catch (errors) {
         const apiErrors = get(
@@ -377,7 +392,7 @@ const AdminProjectsProjectGeneral = ({
     }
   };
 
-  const handleParcticipationContextOnSubmit = (
+  const handleParticipationContextOnSubmit = (
     participationContextConfig: IParticipationContextConfig
   ) => {
     save(participationContextConfig);
@@ -463,7 +478,7 @@ const AdminProjectsProjectGeneral = ({
   return (
     <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
       <Section>
-        {params.projectId && (
+        {projectId && (
           <>
             <SectionTitle>
               <FormattedMessage {...messages.titleGeneral} />
@@ -487,13 +502,14 @@ const AdminProjectsProjectGeneral = ({
         />
 
         {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-        {!isNilOrError(project) && project.attributes.slug && (
+        {slug && (
           <SlugInput
+            inputFieldId="project-slug"
             slug={slug}
-            resource="project"
+            pathnameWithoutSlug={'projects'}
             apiErrors={apiErrors}
             showSlugErrorMessage={showSlugErrorMessage}
-            handleSlugOnChange={handleSlugOnChange}
+            onSlugChange={handleSlugOnChange}
           />
         )}
 
@@ -526,7 +542,8 @@ const AdminProjectsProjectGeneral = ({
             >
               <ParticipationContextWrapper>
                 <ParticipationContext
-                  onSubmit={handleParcticipationContextOnSubmit}
+                  project={project}
+                  onSubmit={handleParticipationContextOnSubmit}
                   onChange={handleParticipationContextOnChange}
                   apiErrors={apiErrors}
                 />
@@ -537,8 +554,9 @@ const AdminProjectsProjectGeneral = ({
 
         {!isNilOrError(project) && projectType === 'continuous' && (
           <ParticipationContext
+            project={project}
             projectId={project.id}
-            onSubmit={handleParcticipationContextOnSubmit}
+            onSubmit={handleParticipationContextOnSubmit}
             onChange={handleParticipationContextOnChange}
             apiErrors={apiErrors}
           />

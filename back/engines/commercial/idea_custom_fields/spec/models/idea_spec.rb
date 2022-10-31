@@ -10,7 +10,7 @@ RSpec.describe Idea, type: :model do
     end
 
     let(:project) { create :project }
-    let(:form) { create :custom_form, project: project }
+    let(:form) { create :custom_form, participation_context: project }
     let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
     let!(:optional_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
     let!(:disabled_field) { create :custom_field, :for_custom_form, resource: form, enabled: false, required: false, input_type: 'text' }

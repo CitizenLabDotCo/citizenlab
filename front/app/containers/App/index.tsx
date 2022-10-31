@@ -1,57 +1,59 @@
-import React, { PureComponent, Suspense, lazy } from 'react';
-import { adopt } from 'react-adopt';
-import { Subscription, combineLatest } from 'rxjs';
-import { tap, first } from 'rxjs/operators';
-import { uniq, includes } from 'lodash-es';
-import { isNilOrError, isPage, endsWith, isDesktop } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
+import { configureScope } from '@sentry/react';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import 'focus-visible';
+import GlobalStyle from 'global-styles';
+import 'intersection-observer';
+import { has, includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
-import 'intersection-observer';
-import 'focus-visible';
+import { parse } from 'qs';
+import React, { lazy, PureComponent, Suspense } from 'react';
+import { adopt } from 'react-adopt';
+import { combineLatest, Subscription } from 'rxjs';
+import { first, tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
-import { configureScope } from '@sentry/browser';
-import GlobalStyle from 'global-styles';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { endsWith, isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 
 // context
 import { PreviousPathnameContext } from 'context';
+import { trackPage } from 'utils/analytics';
 
 // analytics
 const ConsentManager = lazy(() => import('components/ConsentManager'));
-import { trackPage } from 'utils/analytics';
 
 // components
-import Meta from './Meta';
-const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
+import ErrorBoundary from 'components/ErrorBoundary';
+import Outlet from 'components/Outlet';
+import ForbiddenRoute from 'components/routing/forbiddenRoute';
+import SignUpInModal from 'components/SignUpIn/SignUpInModal';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
+import Meta from './Meta';
+const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
-import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import ErrorBoundary from 'components/ErrorBoundary';
-import SignUpInModal from 'components/SignUpIn/SignUpInModal';
-import Outlet from 'components/Outlet';
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
 
 // services
-import { localeStream } from 'services/locale';
-import { IUser } from 'services/users';
-import {
-  authUserStream,
-  signOut,
-  signOutAndDeleteAccount,
-} from 'services/auth';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
   IAppConfigurationStyle,
 } from 'services/appConfiguration';
+import {
+  authUserStream,
+  signOut,
+  signOutAndDeleteAccount,
+} from 'services/auth';
+import { localeStream } from 'services/locale';
+import { IUser } from 'services/users';
 
 // resources
 import GetFeatureFlag, {
@@ -62,20 +64,19 @@ import GetWindowSize, {
 } from 'resources/GetWindowSize';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
 import { openSignUpInModal$ } from 'components/SignUpIn/events';
+import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
-import { media, getTheme } from 'utils/styleUtils';
+import { getTheme, media } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
 
 // utils
-import openVerificationModalIfSuccessOrError from './openVerificationModalIfSuccessOrError';
-import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 
 const Container = styled.div`
   display: flex;
@@ -93,7 +94,7 @@ const InnerContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
     min-height: calc(100vh - ${(props) =>
       props.theme.mobileTopBarHeight}px - ${(props) =>
@@ -359,7 +360,29 @@ class App extends PureComponent<Props, State> {
       verificationModalMounted &&
       (prevState.authUser === undefined || !prevState.verificationModalMounted)
     ) {
-      openVerificationModalIfSuccessOrError(search);
+      this.openVerificationModalIfSuccessOrError(search);
+    }
+  }
+
+  openVerificationModalIfSuccessOrError(search: string) {
+    const { location } = this.props;
+    const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
+
+    if (has(urlSearchParams, 'verification_success')) {
+      window.history.replaceState(null, '', window.location.pathname);
+      openVerificationModal({ step: 'success' });
+    }
+
+    if (
+      has(urlSearchParams, 'verification_error') &&
+      urlSearchParams.verification_error === 'true'
+    ) {
+      window.history.replaceState(null, '', window.location.pathname);
+      openVerificationModal({
+        step: 'error',
+        error: location.query?.error || null,
+        context: null,
+      });
     }
   }
 

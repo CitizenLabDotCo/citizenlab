@@ -43,11 +43,11 @@ const Container = styled.main`
   flex-direction: column;
   background: #fff;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     background: ${colors.background};
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -87,7 +87,7 @@ const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
   height: 240px;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 140px;
   `};
 `;
@@ -98,7 +98,7 @@ const Content = styled.div`
   justify-content: flex-start;
   margin-bottom: 110px;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
   `};
@@ -107,7 +107,7 @@ const Content = styled.div`
 const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     margin-bottom: 40px;
   `};
 `;
@@ -127,7 +127,7 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
     width: 500px;
   }
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     flex: 1;
     width: 100%;
     margin: 0;
@@ -144,7 +144,7 @@ const NotFoundWrapper = styled.div`
   align-items: center;
   padding: 4rem;
   font-size: ${fontSizes.l}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const CardsWrapper = styled.div`
@@ -190,7 +190,7 @@ const ProjectFolderShowPage = memo<{
             <Button
               linkTo="/projects"
               text={<FormattedMessage {...messages.goBackToList} />}
-              icon="arrow-back"
+              icon="arrow-left"
             />
           </NotFoundWrapper>
         ) : loading ? (

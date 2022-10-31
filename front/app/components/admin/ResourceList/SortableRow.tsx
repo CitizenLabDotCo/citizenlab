@@ -24,6 +24,7 @@ export interface Props {
   noStyling?: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex: number) => void;
+  children?: React.ReactNode;
 }
 
 interface State {}

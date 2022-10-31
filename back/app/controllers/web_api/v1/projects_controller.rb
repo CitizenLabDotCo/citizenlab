@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy]
+class WebApi::V1::ProjectsController < ApplicationController
+  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx delete_inputs]
+
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -20,16 +21,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     # scope.
 
     @projects = Project.where(id: publications.select(:publication_id))
+      .ordered
       .includes(:project_images, :phases, :areas, admin_publication: [:children])
     @projects = paginate @projects
-
-    @projects = if params[:search].present?
-      @projects.search_by_all(params[:search])
-    else
-      @projects.ordered
-    end
-
-    LogActivityJob.perform_later(current_user, 'searched_projects', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')
@@ -70,10 +64,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def create
     project_params = permitted_attributes(Project)
     @project = Project.new(project_params)
-    SideFxProjectService.new.before_create(@project, current_user)
+    sidefx.before_create(@project, current_user)
 
     if save_project
-      SideFxProjectService.new.after_create(@project, current_user)
+      sidefx.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: fastjson_params,
@@ -85,18 +79,14 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def update
-    sidefx = SideFxProjectService.new
-
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
 
     project_params = permitted_attributes(Project)
 
     @project.assign_attributes project_params
-    if project_params.key?(:header_bg) && project_params[:header_bg].nil?
-      # setting the header image attribute to nil will not remove the header image
-      @project.remove_header_bg!
-    end
+    remove_image_if_requested!(@project, project_params, :header_bg)
+
     sidefx.before_update(@project, current_user)
 
     if save_project
@@ -112,16 +102,47 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def destroy
-    SideFxProjectService.new.before_destroy(@project, current_user)
+    sidefx.before_destroy(@project, current_user)
     if @project.destroy
-      SideFxProjectService.new.after_destroy(@project, current_user)
+      sidefx.after_destroy(@project, current_user)
       head :ok
     else
       head :internal_server_error
     end
   end
 
+  def survey_results
+    results = SurveyResultsGeneratorService.new(@project).generate_results
+    render json: results
+  end
+
+  def submission_count
+    count = SurveyResultsGeneratorService.new(@project).generate_submission_count
+    render json: count
+  end
+
+  def index_xlsx
+    I18n.with_locale(current_user.locale) do
+      include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
+      xlsx = XlsxExport::GeneratorService.new.generate_for_project(@project.id, include_private_attributes)
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
+    end
+  end
+
+  def delete_inputs
+    sidefx.before_delete_inputs @project, current_user
+    ActiveRecord::Base.transaction do
+      @project.ideas.each(&:destroy!)
+    end
+    sidefx.after_delete_inputs @project, current_user
+    head :ok
+  end
+
   private
+
+  def sidefx
+    @sidefx ||= SideFxProjectService.new
+  end
 
   def save_project
     ActiveRecord::Base.transaction do

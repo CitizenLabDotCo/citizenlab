@@ -18,7 +18,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -67,15 +67,15 @@ const FormContainer = styled(clickOutside)`
 const Form = styled.form`
   flex: 1;
   background: #fff;
-  border: 1px solid ${colors.border};
+  border: 1px solid ${colors.borderDark};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   &:not(.focused):hover {
-    border-color: ${colors.hoveredBorder};
+    border-color: ${colors.black};
   }
 
   &.focused {
-    border-color: ${colors.focussedBorder};
+    border-color: ${colors.black};
     box-shadow: ${defaultStyles.boxShadowFocused};
   }
 `;
@@ -123,7 +123,10 @@ interface State {
   hasApiError: boolean;
 }
 
-class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
+class ChildCommentForm extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   textareaElement: HTMLTextAreaElement;
   subscriptions: Subscription[] = [];
 
@@ -364,7 +367,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         !isNilOrError(authUser) &&
         canModerateProject(postId, { data: authUser });
       const smallerThanSmallTablet =
-        !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
+        !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
 
       return (
         <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -431,7 +434,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const ChildCommentFormWithHoCs = injectIntl<Props>(ChildCommentForm);
+const ChildCommentFormWithHoCs = injectIntl(ChildCommentForm);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

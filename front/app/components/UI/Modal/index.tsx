@@ -59,7 +59,7 @@ export const ModalContentContainer = styled.div<{
   -webkit-overflow-scrolling: touch;
   padding: ${({ padding }) => padding || '30px'};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: ${({ padding }) => padding || '20px'};
   `}
 `;
@@ -71,7 +71,6 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
-  background: #fff;
   transition: all 100ms ease-out;
   outline: none !important;
   padding: 10px;
@@ -88,7 +87,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     left: 25px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     top: 13px;
     right: 15px;
   `}
@@ -125,7 +124,7 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
     margin-top: 120px;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     max-width: calc(100vw - 30px);
     max-height: ${(props) => `calc(${props.windowHeight} - 30px)`};
     margin-top: 15px;
@@ -155,11 +154,11 @@ const Overlay = styled.div`
   z-index: 1000001;
   will-change: opacity, transform;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     justify-content: center;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 12px;
     padding-right: 12px;
     padding: 0px;
@@ -172,7 +171,7 @@ const Overlay = styled.div`
       opacity: 1;
       transform: translateY(${desktopTranslateY});
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         transform: translateY(${mobileTranslateY});
       `}
     }
@@ -181,7 +180,7 @@ const Overlay = styled.div`
       opacity: 1;
       transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing};
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing};
       `}
 
@@ -191,7 +190,7 @@ const Overlay = styled.div`
         transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing},
           transform ${desktopTransformTimeout}ms ${desktopEasing};
 
-        ${media.smallerThanMinTablet`
+        ${media.phone`
           transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing},
                       transform ${mobileTransformTimeout}ms ${mobileEasing};
         `}
@@ -211,7 +210,7 @@ export const HeaderContainer = styled.div`
   border-bottom: solid 1px #e0e0e0;
   background: transparent;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 20px;
@@ -220,7 +219,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderTitle = styled.h1`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   line-height: normal;
@@ -228,7 +227,7 @@ export const HeaderTitle = styled.h1`
   margin-right: 45px;
   padding: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 35px;
   `}
 
@@ -237,7 +236,7 @@ export const HeaderTitle = styled.h1`
     margin: 0;
     margin-left: 45px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       margin-left: 35px;
     `}
   `}
@@ -245,7 +244,7 @@ export const HeaderTitle = styled.h1`
 
 export const HeaderSubtitle = styled.h2`
   width: 100%;
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
@@ -268,10 +267,10 @@ const FooterContainer = styled.div`
   padding-right: 30px;
   padding-top: 15px;
   padding-bottom: 15px;
-  border-top: solid 1px ${colors.separation};
+  border-top: solid 1px ${colors.divider};
   background: #fff;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 20px;
@@ -287,7 +286,7 @@ const Skip = styled.div`
   margin-top: 15px;
   cursor: pointer;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -435,7 +434,7 @@ class Modal extends PureComponent<Props, State> {
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
-      ? windowSize <= viewportWidths.smallTablet
+      ? windowSize <= viewportWidths.tablet
       : false;
     const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
@@ -476,7 +475,7 @@ class Modal extends PureComponent<Props, State> {
                 <StyledCloseIconButton
                   className="e2e-modal-close-button"
                   onClick={this.clickCloseButton}
-                  iconColor={colors.label}
+                  iconColor={colors.textSecondary}
                   iconColorOnHover={'#000'}
                   a11y_buttonActionMessage={messages.closeModal}
                 />

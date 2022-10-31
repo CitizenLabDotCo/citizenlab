@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
 // resources
@@ -39,7 +39,7 @@ interface DataProps {
 interface Props
   extends InputProps,
     DataProps,
-    InjectedIntlProps,
+    WrappedComponentProps,
     InjectedLocalized {}
 
 const IdeasNewMeta = React.memo<Props>(

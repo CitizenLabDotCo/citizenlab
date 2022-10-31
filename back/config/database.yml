@@ -95,4 +95,3 @@ staging:
 production:
   <<: *default
   database: <%= ENV.fetch("POSTGRES_DB", 'cl2_back_production') %>
-

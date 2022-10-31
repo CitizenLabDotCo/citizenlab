@@ -75,6 +75,61 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_active_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        project.phases << create(:active_phase, project: project, participation_method: 'native_survey')
+      end
+    end
+
+    factory :project_with_active_and_future_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        active_phase = create(:active_phase, project: project, participation_method: 'native_survey')
+        future_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: active_phase.end_at + 30.days,
+          end_at: active_phase.end_at + 60.days
+        )
+        project.phases << active_phase
+        project.phases << future_phase
+      end
+    end
+
+    factory :project_with_past_and_future_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        past_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: 60.days.ago,
+          end_at: 30.days.ago
+        )
+        future_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: past_phase.end_at + 30.days,
+          end_at: past_phase.end_at + 60.days
+        )
+        project.phases << past_phase
+        project.phases << future_phase
+      end
+    end
+
+    factory :project_with_future_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        future_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: 10.days.from_now,
+          end_at: 40.days.from_now
+        )
+        project.phases << future_phase
+      end
+    end
+
     factory :project_with_past_phases do
       transient do
         phases_count { 5 }
@@ -91,6 +146,22 @@ FactoryBot.define do
         end
       end
     end
+
+    # Example usage: Create a project with 4 timeline phases, for which the 2nd
+    # is the current phase. The first phase has posting_enabled, the last 2 have
+    # voting_disabled
+    # create(
+    #   :project_with_current_phase,
+    #   phases_config: {
+    #     sequence: 'xcyy',
+    #     x: { posting_enabled: false },
+    #     y: { voting_enabled: false }
+    #   },
+    #   current_phase_attrs: {
+    #     participation_method: 'budgeting',
+    #     max_budget: 1200
+    #   }
+    # )
 
     factory :project_with_current_phase do
       transient do
@@ -219,6 +290,11 @@ FactoryBot.define do
       participation_method { 'ideation' }
       upvoting_method { 'unlimited' }
       upvoting_limited_max { 7 }
+    end
+
+    factory :continuous_native_survey_project do
+      process_type { 'continuous' }
+      participation_method { 'native_survey' }
     end
 
     factory :continuous_survey_project do

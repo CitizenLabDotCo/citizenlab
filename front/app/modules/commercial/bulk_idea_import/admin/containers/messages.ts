@@ -17,11 +17,6 @@ export default defineMessages({
     id: 'app.containers.admin.import.downloadTemplate',
     defaultMessage: 'Download template',
   },
-  importHint: {
-    id: 'app.containers.admin.import.importHint',
-    defaultMessage:
-      'Important: In order to import the inputs correctly, no column can be removed from the import template. Leave unused columns empty.',
-  },
   importStepTwo: {
     id: 'app.containers.admin.import.importStepTwo',
     defaultMessage: '2. Upload your completed template file',

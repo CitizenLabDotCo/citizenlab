@@ -19,7 +19,7 @@ import messages from './messages';
 
 // Style
 import styled from 'styled-components';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const FormContainer = styled.div`
   display: flex;
@@ -51,12 +51,12 @@ interface State {
 }
 
 export class QuestionDetailsForm extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   typeOptions: IOption[];
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       maxAnswers: props.question.attributes.max_options,

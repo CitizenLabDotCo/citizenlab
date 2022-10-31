@@ -1,10 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { debounce, omitBy, isNil, isEmpty, isString } from 'lodash-es';
+import { omitBy, isNil, isEmpty, isString, debounce } from 'lodash-es';
 import { stringify } from 'qs';
 
 import Form, { FormValues } from './Form';
-import { Formik, FormikErrors } from 'formik';
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object, number, boolean, array } from 'yup';
 
 import WidgetPreview from '../WidgetPreview';
 import Modal from 'components/UI/Modal';
@@ -12,7 +14,7 @@ import WidgetCode from '../WidgetCode';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 import { trackEventByName } from 'utils/analytics';
@@ -36,33 +38,32 @@ const StyledWidgetPreview = styled(WidgetPreview)`
   margin-bottom: 40px;
 `;
 
-interface Props {}
+const schema = object({
+  width: number(),
+  height: number(),
+  siteBgColor: string(),
+  textColor: string(),
+  accentColor: string(),
+  font: string().nullable(),
+  fontSize: number(),
+  relativeLink: string(),
+  showHeader: boolean(),
+  showLogo: boolean(),
+  headerText: string(),
+  headerSubText: string(),
+  showFooter: boolean(),
+  buttonText: string(),
+  sort: string().oneOf(['trending', 'popular', 'new']),
+  topics: array().of(string()),
+  projects: array().of(string()),
+  limit: number(),
+});
 
-type State = {
-  widgetParams: Partial<FormValues>;
-  codeModalOpened: boolean;
-};
+const IdeasWidget = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+  const [codeModalOpened, setCodeModalOpened] = useState(false);
+  const [widgetParams, setWidgetParams] = useState('');
 
-class IdeasWidget extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      widgetParams: this.initialValues(),
-      codeModalOpened: false,
-    };
-  }
-
-  debouncedSetState = debounce((stateUpdate) => {
-    this.setState(stateUpdate);
-  }, 400);
-
-  validate = (): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
-    return errors;
-  };
-
-  initialValues = (): FormValues => {
-    const { formatMessage } = this.props.intl;
+  const initialValues = (): FormValues => {
     return {
       width: 320,
       height: 400,
@@ -86,98 +87,76 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps, State> {
     };
   };
 
-  handleOnSubmit = (values: FormValues, { setSubmitting }) => {
-    this.setState(({ widgetParams }) => ({
-      widgetParams: {
-        ...widgetParams,
-        ...values,
-      },
-    }));
-    setSubmitting(false);
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues: initialValues(),
+    resolver: yupResolver(schema),
+  });
+
+  const formValues = methods.watch();
+
+  const getWidgetParams = useMemo(() => {
+    return debounce((formValues: FormValues) => {
+      const cleanedParams = omitBy(
+        formValues,
+        (v) => isNil(v) || (isString(v) && isEmpty(v))
+      );
+      setWidgetParams(stringify(cleanedParams));
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    getWidgetParams(formValues);
+  }, [getWidgetParams, formValues]);
+
+  const handleCloseCodeModal = () => {
+    setCodeModalOpened(false);
   };
 
-  generateWidgetParams = () => {
-    const { widgetParams } = this.state;
-    const cleanedParams = omitBy(
-      widgetParams,
-      (v) => isNil(v) || (isString(v) && isEmpty(v))
-    );
-    return stringify(cleanedParams);
-  };
-
-  handleCloseCodeModal = () => {
-    this.setState({ codeModalOpened: false });
-  };
-
-  handleShowCodeClick = () => {
-    this.setState({ codeModalOpened: true });
+  const handleShowCodeClick = () => {
+    setCodeModalOpened(true);
     trackEventByName(tracks.clickAdminExportHTML.name);
   };
 
-  renderIdeasFormFn = (props) => {
-    // This is a hack to react on Formik form changes without submitting,
-    // since there is no global onChange()
-    // See https://github.com/jaredpalmer/formik/issues/271
-    this.debouncedSetState({
-      widgetParams: {
-        ...this.state.widgetParams,
-        ...props.values,
-      },
-    });
+  return (
+    <Container>
+      <WidgetConfigWrapper>
+        <WidgetTitle>
+          <FormattedMessage {...messages.settingsTitle} />
+        </WidgetTitle>
+        <FormProvider {...methods}>
+          <form>
+            <Form defaultValues={initialValues()} />
+          </form>
+        </FormProvider>
+      </WidgetConfigWrapper>
+      <WidgetPreviewWrapper>
+        <WidgetTitle>
+          <FormattedMessage {...messages.previewTitle} />
+        </WidgetTitle>
+        <StyledWidgetPreview
+          path={`/ideas?${widgetParams}`}
+          width={methods.getValues('width') || 300}
+          height={methods.getValues('height') || 400}
+        />
+        <Button onClick={handleShowCodeClick} buttonStyle="cl-blue" icon="code">
+          <FormattedMessage {...messages.exportHtmlCodeButton} />
+        </Button>
+      </WidgetPreviewWrapper>
 
-    return <Form {...props} />;
-  };
-
-  render() {
-    const {
-      widgetParams: { width, height },
-      codeModalOpened,
-    } = this.state;
-    return (
-      <Container>
-        <WidgetConfigWrapper>
-          <WidgetTitle>
-            <FormattedMessage {...messages.settingsTitle} />
-          </WidgetTitle>
-          <Formik
-            initialValues={this.initialValues()}
-            render={this.renderIdeasFormFn}
-            validate={this.validate}
-            onSubmit={this.handleOnSubmit}
-          />
-        </WidgetConfigWrapper>
-        <WidgetPreviewWrapper>
-          <WidgetTitle>
-            <FormattedMessage {...messages.previewTitle} />
-          </WidgetTitle>
-          <StyledWidgetPreview
-            path={`/ideas?${this.generateWidgetParams()}`}
-            width={width || 300}
-            height={height || 400}
-          />
-          <Button
-            onClick={this.handleShowCodeClick}
-            buttonStyle="cl-blue"
-            icon="code"
-          >
-            <FormattedMessage {...messages.exportHtmlCodeButton} />
-          </Button>
-        </WidgetPreviewWrapper>
-
-        <Modal
-          opened={codeModalOpened}
-          close={this.handleCloseCodeModal}
-          fixedHeight={true}
-        >
-          <WidgetCode
-            path={`/ideas?${this.generateWidgetParams()}`}
-            width={width || 300}
-            height={height || 400}
-          />
-        </Modal>
-      </Container>
-    );
-  }
-}
+      <Modal
+        opened={codeModalOpened}
+        close={handleCloseCodeModal}
+        fixedHeight={true}
+      >
+        <WidgetCode
+          path={`/ideas?${widgetParams}`}
+          width={methods.getValues('width') || 300}
+          height={methods.getValues('height') || 400}
+        />
+      </Modal>
+    </Container>
+  );
+};
 
 export default injectIntl(IdeasWidget);

@@ -543,7 +543,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
               ariaHidden={ariaHidden}
               styleType={styleType}
               size={size}
-              iconName="upvote"
+              iconName="vote-up"
               votesCount={upvotesCount}
               ideaId={idea.data.id}
             />
@@ -558,7 +558,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
                 ariaHidden={ariaHidden}
                 styleType={styleType}
                 size={size}
-                iconName="downvote"
+                iconName="vote-down"
                 votesCount={downvotesCount}
                 ideaId={idea.data.id}
               />

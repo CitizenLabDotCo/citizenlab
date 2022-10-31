@@ -29,7 +29,7 @@ import T from 'components/T';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // analytics
@@ -67,12 +67,12 @@ const Success = styled.div`
 
 const SuccessIcon = styled(Icon)`
   height: 40px;
-  fill: ${colors.clGreenSuccess};
+  fill: ${colors.success};
   margin-bottom: 20px;
 `;
 
 const SuccessText = styled.div`
-  color: ${colors.clGreenSuccess};
+  color: ${colors.success};
   font-size: ${fontSizes.m}px;
   font-weight: 400;
   text-align: center;
@@ -85,11 +85,11 @@ const SuccessText = styled.div`
   }
 
   a {
-    color: ${colors.clGreenSuccess};
+    color: ${colors.success};
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, colors.clGreenSuccess)};
+      color: ${darken(0.15, colors.success)};
       text-decoration: underline;
     }
   }
@@ -121,7 +121,7 @@ interface IVariables {
   timelineStartAt: string;
 }
 
-const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
+const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
   ({
     params,
     intl,
@@ -353,7 +353,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
             </>
           ) : (
             <Success>
-              <SuccessIcon name="round-checkmark" />
+              <SuccessIcon name="check-circle" />
               <SuccessText>
                 <FormattedMessage {...messages.successMessage} />
                 {showGoBackLink && (

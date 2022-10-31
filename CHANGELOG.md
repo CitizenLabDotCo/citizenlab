@@ -1,10 +1,210 @@
 # Changelog
 
-## Next Release
+## Next release
+
+## 2022-10-28
 
 ### Added
 
-- [CL-1189] Adds Turkish locale to platform
+- [CL-1800] It is now possible to disable email + password registration while logins are still allowed for existing users.
+
+## 2022-10-27
+
+### Added
+
+- [CL-1786] Latvian language capabilities
+- [CL-1786] Catalan language capabilities
+- [CL-1786] Greek language capabilities
+
+### Changed
+
+- [CL-1611] Improved layout & content of Project Phase Started & Project Phase Upcoming emails.
+- [CL-1744] Visitors dashboard: add referrers table to traffic sources card
+
+## 2022-10-25
+
+### Added
+
+- [CL-1811] New Oostende verification method
+- [CL-1558] Native surveys
+
+## 2022-10-20
+
+### Fixed
+
+- [CL-1814] Fixed bug when opening the verification model after having a verification error
+
+## 2022-10-18
+
+### Fixed
+
+- [CL-1825] Made tables more visually consistent.
+
+## 2022-10-14
+
+### Fixed
+
+- Fixed bug where subtitle in some admin pages would appear above the main header.
+
+## 2022-10-13
+
+### Fixed
+
+- [CL-1835] Fixed missing verification button icon, which caused the verification modal to not open.
+
+## 2022-10-11
+
+### Fixed
+
+- [CL-1544] Fixed banner images and attachments being deleted in the back-office when a form is submitted via keyboard Enter press
+
+## 2022-10-06
+
+### Added
+
+- [CL-1328] New visitors dashboard released behind feature flag
+
+### Fixed
+
+- Some colors used in the charts were replaced wrongly during the design system refactor. Now they're correct again.
+
+## 2022-10-03
+
+### Fixed
+
+- [CL-1762] Default pages titles and content, and default navbar items, now display in Swedish for newly created platforms with the Swedish locale.
+
+## 2022-09-30
+
+### Added
+
+- [CL-1553] Basic privacy-friendly session counting for all visitors and users, for now not exposed in the product
+
+## 2022-09-29
+
+- [CL-1757] Don't show proposals in site map when proposals feature is disabled.
+
+## 2022-09-23
+
+### Fixed
+
+- [DISP-185] Fix 'Age group' copy not being translated
+
+## 2022-09-20
+
+## Added
+
+- Vienna citizen Single sign-on (StandardPortal)
+
+### Fixed
+
+- [CL-1586] Fix deleting folder and cause images
+
+## 2022-09-08
+
+### Fixed
+
+- Save button text in representation data input interface is now translated.
+
+## 2022-09-07_2
+
+### Changed
+
+- Custom forms can be associated with projects and phases.
+- Survey form builder improvements.
+
+### 2022-09-07
+
+### Fixed
+
+- Input status dashboard card now updates immediately (not just after refresh) when changing idea status in input manager
+
+## 2022-09-06
+
+### Added
+
+- [CL-423] Added input feedback dashboard card with new analytics endpoint
+
+## 2022-09-05
+
+### Added
+
+- [CL-1157] Added domicile fields to representation dashboard
+
+## 2022-09-02
+
+### Fixed
+
+- [CL-1580] Do not show full admin panel to moderators
+
+## 2022-08-30
+
+### Fixed
+
+- [CL-1308] Do not allow editing page slug when custom navbar is disabled
+
+## 2022-08-29
+
+### Fixed
+
+- [SLS-65] Fixed issue in citizenlab-ee to allow bulk import of custom field options
+
+## 2022-08-24
+
+### Fixed
+
+- [CL-1505] Posting ideas when there is no current phase
+- [CL-1509] Bulk idea import works for special date cells
+
+## 2022-08-23
+
+### Added
+
+- The public API now supports phases, as well as additional project properties
+- The project search now also searches through content builder content
+
+## 2022-08-18
+
+### Fixed
+
+- [CL-1407] Quickfix for critical bug that made the 'Submit your idea' button disappear for projects with a timeline
+
+### Added
+
+- [CL-1097] Added the ability for users to search for projects and folders by keyword on the main projects index page
+
+### Changed
+
+- Improve error handling and user feedback in the forms for creating pages and custom navigation items
+- [CL-854] Added tooltip to admin budget field in idea form for clarity
+
+## 2022-08-11
+
+### Fixed
+
+- [CL-1302] Added topics column to bulk idea import example sheet
+
+## 2022-08-09
+
+### Fixed
+
+- [CL-1289] Fix 'Submit base data' button width (representation dashboard)
+
+### Added
+
+- [CL-1273] Enable age graphs in representation dashboard
+
+## 2022-08-04
+
+### Added
+
+-[CL-5] Customizable Pages iteration 1
+
+## 2022-08-03
+
+### Added
+
+- [CL-1189] Added Turkish locale to platform
 
 ## 2022-07-28_2
 
@@ -65,6 +265,7 @@
 
 ### Added
 
+- [CL-1058] - Add desktop preview in content builder
 - [CL-1096] Add representativeness score to header of representativeness chart card
 
 ## 2022-07-07

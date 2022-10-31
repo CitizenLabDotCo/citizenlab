@@ -27,6 +27,7 @@
 #  assigned_at              :datetime
 #  proposed_budget          :integer
 #  custom_field_values      :jsonb            not null
+#  creation_phase_id        :uuid
 #
 # Indexes
 #
@@ -41,6 +42,7 @@
 #
 #  fk_rails_...  (assignee_id => users.id)
 #  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (creation_phase_id => phases.id)
 #  fk_rails_...  (idea_status_id => idea_statuses.id)
 #  fk_rails_...  (project_id => projects.id)
 #
@@ -49,6 +51,7 @@ class Idea < ApplicationRecord
   extend OrderAsSpecified
 
   belongs_to :project, touch: true
+  belongs_to :creation_phase, class_name: 'Phase', optional: true
   belongs_to :idea_status, optional: true
 
   counter_culture :idea_status, touch: true
@@ -83,15 +86,33 @@ class Idea < ApplicationRecord
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
-  validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
+  with_options unless: :draft? do |post|
+    post.before_validation :strip_title
+    post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
+    post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
+  end
+
+  with_options if: :validate_built_in_fields? do
+    validates :title_multiloc, presence: true, multiloc: { presence: true }
+    validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
+    validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
+  end
+
+  validate :validate_creation_phase
+
+  # validates :custom_field_values, json: {
+  #   schema: :schema_for_validation,
+  #   message: ->(errors) { errors }
+  # }
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
-    before_validation :set_idea_status
+    before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
+  after_create :assign_slug
   after_update :fix_comments_count_on_projects
 
   scope :with_some_topics, (proc do |topics|
@@ -142,7 +163,43 @@ class Idea < ApplicationRecord
     publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
   end
 
+  def custom_form
+    if participation_method_on_creation.form_in_phase?
+      creation_phase.custom_form || CustomForm.new(participation_context: creation_phase)
+    else
+      project.custom_form || CustomForm.new(participation_context: project)
+    end
+  end
+
+  def participation_method_on_creation
+    Factory.instance.participation_method_for participation_context_on_creation
+  end
+
   private
+
+  def participation_context_on_creation
+    creation_phase || project
+  end
+
+  def schema_for_validation
+    fields = custom_form.custom_fields
+    multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
+    multiloc_schema.values.first
+  end
+
+  def validate_built_in_fields?
+    !draft? && participation_method_on_creation.validate_built_in_fields?
+  end
+
+  def assign_slug
+    return if slug # Slugs never change.
+
+    participation_method_on_creation.assign_slug self
+  end
+
+  def assign_defaults
+    participation_method_on_creation.assign_defaults self
+  end
 
   def sanitize_body_multiloc
     service = SanitizationService.new
@@ -154,10 +211,6 @@ class Idea < ApplicationRecord
     self.body_multiloc = service.linkify_multiloc(body_multiloc)
   end
 
-  def set_idea_status
-    self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
-  end
-
   def fix_comments_count_on_projects
     return unless project_id_previously_changed?
 
@@ -166,6 +219,36 @@ class Idea < ApplicationRecord
 
   def update_phase_ideas_count(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
+  end
+
+  def validate_creation_phase
+    return unless creation_phase
+
+    if project.continuous?
+      errors.add(
+        :creation_phase,
+        :not_in_timeline_project,
+        message: 'The creation phase cannot be set for inputs in a continuous project'
+      )
+      return
+    end
+
+    if creation_phase.project_id != project_id
+      errors.add(
+        :creation_phase,
+        :invalid_project,
+        message: 'The creation phase must be a phase of the input\'s project'
+      )
+      return
+    end
+
+    return if participation_method_on_creation.form_in_phase?
+
+    errors.add(
+      :creation_phase,
+      :invalid_participation_method,
+      message: 'The creation phase cannot be set for transitive participation methods'
+    )
   end
 end
 

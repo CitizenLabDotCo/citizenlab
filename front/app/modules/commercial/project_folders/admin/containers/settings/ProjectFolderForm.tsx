@@ -16,6 +16,7 @@ import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import {
   SectionField,
@@ -38,10 +39,10 @@ import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
 
-interface Props {
+type Props = {
   mode: 'edit' | 'new';
   projectFolderId: string;
-}
+} & WrappedComponentProps;
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const projectFolder = useProjectFolder({ projectFolderId });
@@ -376,7 +377,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   description_preview_multiloc: changedShortDescriptionMultiloc
                     ? shortDescriptionMultiloc
                     : undefined,
-                  header_bg: changedHeaderBg ? headerBg?.base64 : undefined,
+                  header_bg: changedHeaderBg
+                    ? headerBg?.base64 || null
+                    : undefined,
                   admin_publication_attributes: {
                     publication_status: publicationStatus,
                   },
@@ -390,6 +393,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 setStatus('apiError');
               }
             }
+            setProjectFolderFilesToRemove([]);
             setStatus('success');
           } else {
             setStatus('apiError');
@@ -403,7 +407,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   };
 
   // ---- Rendering
-  if (mode === 'edit' && isNilOrError(projectFolder)) return null;
+  if (mode === 'edit' && isNilOrError(projectFolder)) {
+    return null;
+  }
 
   return (
     <form onSubmit={onSubmit}>
@@ -455,11 +461,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
         <SectionField>
           <SlugInput
+            inputFieldId="folder-slug"
             slug={slug}
-            resource="folder"
+            pathnameWithoutSlug={'folders'}
             apiErrors={errors}
             showSlugErrorMessage={showSlugErrorMessage}
-            handleSlugOnChange={handleSlugOnChange}
+            onSlugChange={handleSlugOnChange}
           />
         </SectionField>
         <SectionField>

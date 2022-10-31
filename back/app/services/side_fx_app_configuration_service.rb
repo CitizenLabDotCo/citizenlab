@@ -5,19 +5,9 @@ class SideFxAppConfigurationService
 
   def before_create(app_config, current_user = nil) end
 
-  def after_create(app_config, _ = nil)
-    return unless app_config.homepage_info_multiloc
+  def after_create(app_config, _ = nil) end
 
-    app_config.update!(
-      homepage_info_multiloc: TextImageService.new.swap_data_images(app_config, :homepage_info_multiloc)
-    )
-  end
-
-  def before_update(app_config, _ = nil)
-    return unless app_config.homepage_info_multiloc
-
-    app_config.homepage_info_multiloc = TextImageService.new.swap_data_images app_config, :homepage_info_multiloc
-  end
+  def before_update(app_config, _ = nil) end
 
   def after_update(app_config, current_user = nil)
     log_activity(app_config, 'changed', current_user)

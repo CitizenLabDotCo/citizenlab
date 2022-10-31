@@ -9,7 +9,7 @@ import PhasesMenu from './FilterSidebarPhases';
 import TopicsMenu from './FilterSidebarTopics';
 import ProjectsMenu from './FilterSidebarProjects';
 import StatusesMenu from './FilterSidebarStatuses';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -18,9 +18,9 @@ import { colors } from 'utils/styleUtils';
 import { ITopicData } from 'services/topics';
 
 const InfoIcon = styled(Icon)`
-  fill: ${colors.clBlueDarker};
-  width: 16px;
-  height: 16px;
+  fill: ${colors.teal700};
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 
   &:hover {
@@ -46,7 +46,7 @@ interface Props {
   visibleFilterMenus: string[];
 }
 
-class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
+class FilterSidebar extends React.PureComponent<Props & WrappedComponentProps> {
   handleItemClick = (_event, data) => {
     this.props.onChangeActiveFilterMenu(data.id);
   };
@@ -80,7 +80,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
             content={this.props.intl.formatMessage(tooltipMessage)}
             trigger={
               <button>
-                <InfoIcon name="info3" />
+                <InfoIcon name="info-solid" />
               </button>
             }
           />
@@ -148,13 +148,19 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
     const selectedItem = items.find((i) => i.key === activeFilterMenu);
     return (
       <>
-        <Menu tabular attached="top" size="tiny">
+        <Menu
+          tabular
+          attached="top"
+          size="tiny"
+          className="intercom-admin-input-manager-filter-sidebar"
+        >
           {items.map((item) => (
             <Menu.Item
               key={item.key}
               id={item.key}
               active={activeFilterMenu === item.key}
               onClick={this.handleItemClick}
+              className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
             >
               {item.name}
             </Menu.Item>
