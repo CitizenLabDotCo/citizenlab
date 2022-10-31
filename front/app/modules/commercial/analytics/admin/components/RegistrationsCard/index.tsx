@@ -38,7 +38,7 @@ const GRAPHS_OUTER_LAYOUT: BoxLayout = {
     flexGrow: 1,
     display: 'flex',
     justifyContent: 'flex-end',
-    px: '20px',
+    pr: '20px',
   },
   narrow: {
     width: '100%',
@@ -96,7 +96,7 @@ const RegistrationsCard = ({
         <Box
           width="initial"
           display="flex"
-          px="20px"
+          pl="20px"
           flexDirection={layout === 'narrow' ? 'row' : 'column'}
         >
           <Box width={layout === 'narrow' ? '50%' : undefined}>
