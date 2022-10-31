@@ -179,7 +179,7 @@ const SignUpInModal = ({
               <Box padding="60px 0 0">
                 <StyledButton
                   className={className}
-                  icon="circle-arrow-left"
+                  icon="arrow-left-circle"
                   onClick={onClose}
                   buttonStyle="text"
                   iconSize="26px"
