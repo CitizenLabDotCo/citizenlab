@@ -91,10 +91,10 @@ module Analytics
         query_dimensions += @json_query[:filters].keys
       end
 
-      query_dimensions = query_dimensions.map { |key| key.include?('.') ? key.split('.')[0] : key }
-      query_dimensions = query_dimensions.select { |key| fact_dimensions.include? key }
-
-      query_dimensions.uniq
+      query_dimensions
+        .map { |key| key.include?('.') ? key.split('.')[0] : key }
+        .select { |key| fact_dimensions.include? key }
+        .uniq
     end
 
     def groups

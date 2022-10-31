@@ -69,21 +69,23 @@ module Analytics
       value
     end
 
-    # creates a dummy where statement in the active record query
+    # creates an irrelevant where statement
     # for dimensions that are not being used in filters
     # so that an alias is automatically created
     # and can be used elsewhere in the query
     def include_dimensions(results)
       dimensions = @query.dimensions
-      if @json_query.key?(:filters)
-        dimensions = dimensions.reject { |dim| @json_query[:filters].key?(dim) }
-      end
 
       dimensions.each do |dimension|
         dimension_assoc = @query.model.reflect_on_association(dimension)
         primary_key = dimension_assoc.options.key?(:primary_key) ? dimension_assoc.options[:primary_key] : nil
         primary_key ||= 'id'
-        results = results.where.not(dimension => { primary_key => nil })
+        results = results
+          .where
+          .not(dimension => { primary_key => nil })
+          .or(
+            results.where(dimension => { primary_key => nil })
+          )
       end
       results
     end
