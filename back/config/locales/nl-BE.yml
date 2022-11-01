@@ -142,7 +142,7 @@ nl-BE:
         question:
           title: Wat is je vraag?
         contribution:
-          title: Wat is je bijdrage?
+          title: Wat is je onderwerp?
         project:
           title: Wat is je project?
         issue:
@@ -159,7 +159,7 @@ nl-BE:
     gender:
       male: Man
       female: Vrouw
-      unspecified: Onbepaald
+      unspecified: Overige
     domicile:
       outside: Ergens anders
     education:
@@ -177,7 +177,7 @@ nl-BE:
       <ul> <li>Het moet binnen de competenties van het lokale beleid vallen</li> <li>Het dient het algemeen belang in plaats van jouw individueel belang</li> <li>Het discrimineert niet op basis van geslacht, ras, leeftijd of achtergrond</li> <li>Het brengt anderen geen schade toe</li> </ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Stel je wachtwoord opnieuw in'
+      cta_reset_password: 'Wijzig je wachtwoord'
       message_you_reset_your_password: 'Je vroeg een reset van je wachtwoord om je aan te melden op het participatieplatform van %{organizationName}. Klik op onderstaande knop om een nieuw, veilig wachtwoord in te stellen. De link is 1 uur geldig.'
       subject: 'Reset je wachtwoord voor het participatieplatform van %{organizationName}'
       title_reset_your_password: 'Kies een nieuw wachtwoord'
