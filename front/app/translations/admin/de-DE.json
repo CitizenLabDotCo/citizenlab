@@ -1598,7 +1598,7 @@
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Muss eine gültige URL angeben.",
   "app.containers.admin.ContentBuilder.image": "Bild",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kurzbeschreibung des Bildes",
-  "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Das Hinzufügen von \"Alt-Text\" für Bilder ist wichtig, um Ihre Plattform für Nutzer mit Bildschirmlesegeräten zugänglich zu machen.",
+  "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Das Hinzufügen von \"Alt-Text\" für Bilder ist wichtig, um Ihre Plattform für NutzerInnen mit Bildschirmlesegeräten zugänglich zu machen.",
   "app.containers.admin.ContentBuilder.imageTextCards": "Bild & Textkarten",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & Akkordeons",
   "app.containers.admin.ContentBuilder.layout": "LAYOUT",
