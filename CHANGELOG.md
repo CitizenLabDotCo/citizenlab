@@ -1,11 +1,35 @@
+
 # Changelog
+
+## Next release
+
+## 2022-11-01
+
+### Fixed
+
+- [CL-1765] Replace missing icon and resize new icons used in 3 email campaigns
+
+### Changed
+
+- [CL-1700] Native surveys: create a default form when creating new native survey projects or phases
+
+## 2022-10-28
+
+### Added
+
+- [CL-1800] It is now possible to disable email + password registration while logins are still allowed for existing users.
+
+## 2022-10-27
+
+### Added
+
+- [CL-1786] Latvian language capabilities
+- [CL-1786] Catalan language capabilities
+- [CL-1786] Greek language capabilities
 
 ### Changed
 
 - [CL-1611] Improved layout & content of Project Phase Started & Project Phase Upcoming emails.
-
-## 2022-10-27
-
 - [CL-1744] Visitors dashboard: add referrers table to traffic sources card
 
 ## 2022-10-25
