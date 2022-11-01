@@ -1,6 +1,6 @@
 // i18n
 import messages from './messages';
-import visitorsMessages from '../useVisitors/messages';
+import moduleMessages from '../../messages';
 import cardMessages from '../../components/RegistrationsCard/messages';
 import { getTimePeriodTranslations } from '../../utils/resolution';
 
@@ -23,12 +23,12 @@ export interface Translations {
 export const getTranslations = (
   formatMessage: FormatMessage
 ): Translations => ({
-  stats: formatMessage(visitorsMessages.stats),
+  stats: formatMessage(moduleMessages.stats),
   timeSeries: formatMessage(messages.timeSeries),
-  date: formatMessage(visitorsMessages.date),
+  date: formatMessage(moduleMessages.date),
   registrations: formatMessage(cardMessages.registrations),
-  statistic: formatMessage(visitorsMessages.statistic),
-  conversionRate: formatMessage(cardMessages.conversionRate),
-  total: formatMessage(visitorsMessages.total),
+  statistic: formatMessage(moduleMessages.statistic),
+  conversionRate: formatMessage(moduleMessages.conversionRate),
+  total: formatMessage(moduleMessages.total),
   ...getTimePeriodTranslations(formatMessage),
 });

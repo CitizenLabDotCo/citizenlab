@@ -13,4 +13,24 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday',
     defaultMessage: 'Yesterday:',
   },
+  stats: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsData.stats',
+    defaultMessage: 'Overall statistics',
+  },
+  statistic: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsData.statistic',
+    defaultMessage: 'Statistic',
+  },
+  total: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsData.total',
+    defaultMessage: 'Total over period',
+  },
+  date: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsData.date',
+    defaultMessage: 'Date',
+  },
+  conversionRate: {
+    id: 'app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate',
+    defaultMessage: 'Conversion rate',
+  },
 });
