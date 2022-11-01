@@ -142,7 +142,7 @@
         question:
           title: What is your question ?
         contribution:
-          title: What is your contribution ?
+          title: Hva er bidraget ditt?
         project:
           title: What is your project ?
         issue:
