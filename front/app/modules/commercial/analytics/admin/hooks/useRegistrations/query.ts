@@ -17,9 +17,7 @@ export const query = ({
   const timeSeriesQuery: QuerySchema = {
     fact: 'registration',
     filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
+      'dimension_user.role': ['citizen', null],
       ...getDateFilter(
         'dimension_date_registration',
         startAtMoment,
@@ -35,9 +33,7 @@ export const query = ({
   const registrationsWholePeriodQuery: QuerySchema = {
     fact: 'registration',
     filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
+      'dimension_user.role': ['citizen', null],
       ...getDateFilter(
         'dimension_date_registration',
         startAtMoment,
@@ -52,9 +48,7 @@ export const query = ({
   const registrationsLastPeriodQuery: QuerySchema = {
     fact: 'registration',
     filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
+      'dimension_user.role': ['citizen', null],
       ...getDateFilterLastPeriod('dimension_date_registration', resolution),
     },
     aggregations: {
@@ -65,9 +59,7 @@ export const query = ({
   const visitsWholePeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
+      'dimension_user.role': ['citizen', null],
       ...getDateFilter(
         'dimension_date_first_action',
         startAtMoment,
@@ -82,9 +74,7 @@ export const query = ({
   const visitsLastPeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
+      'dimension_user.role': ['citizen', null],
       ...getDateFilterLastPeriod('dimension_date_first_action', resolution),
     },
     aggregations: {

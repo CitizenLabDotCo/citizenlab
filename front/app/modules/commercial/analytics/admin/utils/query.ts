@@ -70,11 +70,9 @@ export const getDateFilterLastPeriod = (
   const lastPeriod = getLastPeriod(resolution);
 
   return {
-    [filter]: {
-      date: {
-        from: lastPeriod,
-        to: today,
-      },
+    [`${filter}.date`]: {
+      from: lastPeriod,
+      to: today,
     },
   };
 };
