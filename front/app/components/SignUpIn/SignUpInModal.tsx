@@ -31,7 +31,7 @@ const Container = styled.div``;
 interface Props {
   className?: string;
   onMounted?: () => void;
-  onDeclineInvitation?: () => void;
+  onClosed: () => void;
   onOpened?: (opened: boolean) => void;
   fullScreenModal?: boolean;
 }
@@ -40,7 +40,7 @@ const SignUpInModal = memo<Props>(
   ({
     className,
     onMounted,
-    onDeclineInvitation,
+    onClosed,
     onOpened,
     fullScreenModal,
   }) => {
@@ -109,9 +109,7 @@ const SignUpInModal = memo<Props>(
         trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
       }
 
-      if (onDeclineInvitation && metaData?.isInvitation) {
-        onDeclineInvitation();
-      }
+      onClosed();
 
       closeSignUpInModal();
     };
