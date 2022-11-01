@@ -23,7 +23,9 @@ const Charts = (props: Props) => (
   <>
     <VisitorsCard {...props} />
     <VisitorsTrafficSourcesCard {...props} />
-    <RegistrationsCard {...props} />
+    <Box display="none">
+      <RegistrationsCard {...props} />
+    </Box>
     <Box display="flex" flexDirection="row">
       <VisitorsLanguageCard {...props} />
       <VisitorsTypeCard {...props} />
