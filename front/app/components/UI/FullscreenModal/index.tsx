@@ -10,6 +10,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { FocusOn } from 'react-focus-on';
 import eventEmitter from 'utils/eventEmitter';
+import clickOutside from 'utils/containers/clickOutside';
 
 // resource
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -24,7 +25,7 @@ import { media } from 'utils/styleUtils';
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
-const Container = styled.div<{ windowHeight: string }>`
+const Container = styled(clickOutside)<{ windowHeight: string }>`
   width: 100vw;
   height: ${(props) =>
     `calc(${props.windowHeight} - ${props.theme.menuHeight}px)`};
@@ -211,6 +212,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       navbarRef,
       mobileNavbarRef,
       className,
+      onClose,
     } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement =
@@ -223,6 +225,7 @@ class FullscreenModal extends PureComponent<Props, State> {
           id="e2e-fullscreenmodal-content"
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
           windowHeight={windowHeight}
+          onClickOutside={onClose}
         >
           <StyledFocusOn autoFocus={false} shards={shards}>
             {topBar}
