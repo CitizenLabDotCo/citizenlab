@@ -30,7 +30,7 @@ describe Analytics::QueryRunnerService do
 
       query_param = ActionController::Parameters.new(
         fact: 'post',
-        groups: 'type.name',
+        groups: 'dimension_type.name',
         aggregations: {
           votes_count: %w[sum]
         }
@@ -41,10 +41,10 @@ describe Analytics::QueryRunnerService do
       results, * = runner.run(query)
 
       expected_result = [
-        { 'type.name' => 'initiative', 'sum_votes_count' => 1 },
-        { 'type.name' => 'idea', 'sum_votes_count' => 2 }
+        { 'dimension_type.name' => 'initiative', 'sum_votes_count' => 1 },
+        { 'dimension_type.name' => 'idea', 'sum_votes_count' => 2 }
       ]
-      expect(results).to eq expected_result
+      expect(results).to match_array expected_result
     end
 
     it 'return filtered ideas count' do
@@ -54,7 +54,7 @@ describe Analytics::QueryRunnerService do
       query_param = ActionController::Parameters.new(
         fact: 'post',
         filters: {
-          'type.name': 'idea'
+          'dimension_type.name': 'idea'
         },
         aggregations: {
           all: 'count'

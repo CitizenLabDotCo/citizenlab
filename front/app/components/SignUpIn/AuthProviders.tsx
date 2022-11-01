@@ -137,6 +137,13 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
 
+    const isPasswordSigninOrSignupAllowed =
+      passwordLoginEnabled &&
+      (flow === 'signin' ||
+        (flow === 'signup' &&
+          !isNilOrError(tenant) &&
+          tenant.attributes.settings.password_login?.enable_signup));
+
     return (
       <Container className={className}>
         {franceconnectLoginEnabled && (
@@ -148,12 +155,12 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
           />
         )}
 
-        {(passwordLoginEnabled ||
+        {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
           azureAdLoginEnabled) &&
           franceconnectLoginEnabled && <Or />}
 
-        {passwordLoginEnabled && (
+        {isPasswordSigninOrSignupAllowed && (
           <StyledAuthProviderButton
             flow={flow}
             icon="email"

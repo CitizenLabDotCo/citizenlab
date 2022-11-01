@@ -16,6 +16,26 @@ module ParticipationMethod
       input.idea_status = IdeaStatus.find_by!(code: 'proposed')
     end
 
+    def create_default_form!
+      form = CustomForm.create(participation_context: participation_context)
+      field = CustomField.create(
+        resource: form,
+        input_type: 'select',
+        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.title')
+      )
+      CustomFieldOption.create(
+        custom_field: field,
+        key: 'option1',
+        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option1')
+      )
+      CustomFieldOption.create(
+        custom_field: field,
+        key: 'option2',
+        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option2')
+      )
+      participation_context.reload
+    end
+
     def never_show?
       true
     end
