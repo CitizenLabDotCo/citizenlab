@@ -200,3 +200,8 @@ fr-BE:
       status: 'Statut'
       assignee_fullname: 'Attribué'
       assignee_email: 'E-mails du destinataire'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
