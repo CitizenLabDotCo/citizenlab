@@ -1,6 +1,19 @@
+
 # Changelog
 
 ## Next release
+
+## 2022-11-01
+
+### Fixed
+
+- [CL-1765] Replace missing icon and resize new icons used in 3 email campaigns
+
+### Changed
+
+- [CL-1700] Native surveys: create a default form when creating new native survey projects or phases
+
+## 2022-10-28
 
 ### Added
 

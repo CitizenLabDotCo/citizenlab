@@ -200,3 +200,8 @@ nl:
       status: 'Status'
       assignee_fullname: 'Toegewezen aan'
       assignee_email: 'E-mailadres toegewezen persoon'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
