@@ -3,6 +3,7 @@ import { Moment } from 'moment';
 // utils
 import { getConversionRate } from '../useRegistrations/parse';
 import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
+import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 
 // typings
 import {
@@ -12,6 +13,7 @@ import {
   TimeSeries,
   Stats,
 } from './typings';
+import { Translations } from './translations';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export const getEmptyRow = (date: Moment) => ({
@@ -73,4 +75,30 @@ export const parseStats = (data: Response['data']): Stats => {
   };
 };
 
-export const parseExcel = () => {};
+export const parseExcelData = (
+  stats: Stats,
+  timeSeries: TimeSeries | null,
+  resolution: IResolution,
+  translations: Translations
+) => {
+  const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
+  const statsKeys: (keyof Stats)[] = ['activeUsers', 'conversionRate'];
+
+  const statsData = statsKeys.map((statistic) => ({
+    [translations.statistic]: translations[statistic],
+    [translations.total]: stats[statistic].value,
+    [lastPeriod]: stats[statistic].lastPeriod,
+  }));
+
+  const timeSeriesData = timeSeries?.map((row) => ({
+    [translations.date]: row.date,
+    [translations.activeUsers]: row.activeUsers,
+  }));
+
+  return {
+    [translations.stats]: statsData,
+    ...(timeSeriesData
+      ? { [translations.timeSeries]: timeSeriesData }
+      : undefined),
+  };
+};
