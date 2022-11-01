@@ -1678,7 +1678,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrer": "Weiterleitung",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrerListButton": "hier klicken",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.referrers": "Weiterleitung",
-  "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.viewReferrerList": "Die vollständige Liste der Weiterleitungen finden Sie unter {referrerListButton}",
+  "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.viewReferrerList": "Für die vollständige Liste der Weiterleitungen {referrerListButton}",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visitors": "BesucherInnen",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visitorsTrafficSources": "Top-Kanäle",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Besuche",
