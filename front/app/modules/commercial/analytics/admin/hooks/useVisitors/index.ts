@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 
 // services
 import {
@@ -11,6 +10,7 @@ import {
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import { getTranslations } from './translations';
 
 // parse
 import { parseStats, parseTimeSeries, parseExcelData } from './parse';
@@ -19,9 +19,10 @@ import { parseStats, parseTimeSeries, parseExcelData } from './parse';
 import {
   getProjectFilter,
   getDateFilter,
+  getDateFilterLastPeriod,
   getInterval,
 } from '../../utils/query';
-import { deduceResolution, getTranslations } from './utils';
+import { deduceResolution } from './utils';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -35,18 +36,6 @@ const getAggregations = (): AggregationsConfig => ({
   duration: 'avg',
   pages_visited: 'avg',
 });
-
-const getLastPeriod = (resolution: IResolution) => {
-  if (resolution === 'month') {
-    return moment().subtract({ days: 30 }).format('YYYY-MM-DD');
-  }
-
-  if (resolution === 'week') {
-    return moment().subtract({ days: 7 }).format('YYYY-MM-DD');
-  }
-
-  return moment().subtract({ days: 1 }).format('YYYY-MM-DD');
-};
 
 const query = ({
   projectId,
@@ -70,9 +59,6 @@ const query = ({
     aggregations: getAggregations(),
   };
 
-  const today = moment().format('YYYY-MM-DD');
-  const lastPeriod = getLastPeriod(resolution);
-
   const totalsLastPeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
@@ -80,12 +66,7 @@ const query = ({
         role: ['citizen', null],
       },
       ...getProjectFilter('dimension_projects', projectId),
-      dimension_date_last_action: {
-        date: {
-          from: lastPeriod,
-          to: today,
-        },
-      },
+      ...getDateFilterLastPeriod('dimension_date_last_action', resolution),
     },
     aggregations: getAggregations(),
   };

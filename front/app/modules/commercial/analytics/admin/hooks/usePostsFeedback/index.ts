@@ -10,6 +10,7 @@ import {
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
+import { getTranslations } from './translations';
 
 // parsing
 import {
@@ -26,7 +27,7 @@ import {
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { isEmptyResponse, getTranslations } from './utils';
+import { isEmptyResponse } from './utils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 
 // typings
