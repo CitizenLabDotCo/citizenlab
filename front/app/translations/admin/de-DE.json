@@ -1365,7 +1365,7 @@
   "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "Sie können aus Sicherheitsgründen keine Inhalte von dieser Webseite einbetten, versuchen Sie etwas anderes.",
   "app.containers.admin.ContentBuilder.image": "Bild",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kurzbeschreibung des Bildes",
-  "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Das Hinzufügen von \"Alt-Text\" für Bilder ist wichtig, um Ihre Plattform für Nutzer mit Bildschirmlesegeräten zugänglich zu machen.",
+  "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Das Hinzufügen von \"Alt-Text\" für Bilder ist wichtig, um Ihre Plattform für NutzerInnen mit Bildschirmlesegeräten zugänglich zu machen.",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 Spalte",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeschreibung",
   "app.containers.admin.ContentBuilder.text": "Text",
