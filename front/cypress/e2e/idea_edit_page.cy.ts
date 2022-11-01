@@ -138,4 +138,16 @@ describe('Idea edit page', () => {
     // Check that author field has correct value
     cy.contains(`${lastName}, ${firstName}`).should('exist');
   });
+
+  it('has a go back link that redirects the user to the edit page when clicked', () => {
+    cy.setAdminLoginCookie();
+    // Go to idea edit page
+    cy.visit(`/ideas/edit/${ideaId}`);
+
+    // Click the back button
+    cy.get('[data-cy="e2e-back-to-idea-page-button"]').click();
+
+    // Check to see that the user is redirected to the idea page
+    cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
+  });
 });
