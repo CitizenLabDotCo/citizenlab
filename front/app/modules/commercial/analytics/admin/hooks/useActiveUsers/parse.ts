@@ -3,6 +3,7 @@ import { Moment } from 'moment';
 // utils
 import { getConversionRate } from '../useRegistrations/parse';
 import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
+import { keys } from 'utils/helperUtils';
 import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 
 // typings
@@ -82,12 +83,11 @@ export const parseExcelData = (
   translations: Translations
 ) => {
   const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
-  const statsKeys: (keyof Stats)[] = ['activeUsers', 'conversionRate'];
 
-  const statsData = statsKeys.map((statistic) => ({
-    [translations.statistic]: translations[statistic],
-    [translations.total]: stats[statistic].value,
-    [lastPeriod]: stats[statistic].lastPeriod,
+  const statsData = keys(stats).map((key) => ({
+    [translations.statistic]: translations[key],
+    [translations.total]: stats[key].value,
+    [lastPeriod]: stats[key].lastPeriod,
   }));
 
   const timeSeriesData = timeSeries?.map((row) => ({
@@ -97,8 +97,6 @@ export const parseExcelData = (
 
   return {
     [translations.stats]: statsData,
-    ...(timeSeriesData
-      ? { [translations.timeSeries]: timeSeriesData }
-      : undefined),
+    [translations.timeSeries]: timeSeriesData ?? [],
   };
 };

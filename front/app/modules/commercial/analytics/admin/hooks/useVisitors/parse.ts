@@ -86,15 +86,11 @@ export const parseExcelData = (
 ) => {
   const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
 
-  const statsData = keys(stats).map((key) => {
-    const stat = stats[key];
-
-    return {
-      [translations.statistic]: translations[key],
-      [translations.total]: stat.value,
-      [lastPeriod]: stat.lastPeriod,
-    };
-  });
+  const statsData = keys(stats).map((key) => ({
+    [translations.statistic]: translations[key],
+    [translations.total]: stats[key].value,
+    [lastPeriod]: stats[key].lastPeriod,
+  }));
 
   const timeSeriesData = timeSeries?.map((row) => ({
     [translations.visits]: row.visits,
@@ -102,12 +98,10 @@ export const parseExcelData = (
     [translations.date]: row.date,
   }));
 
-  const xlsxData = {
+  return {
     [translations.stats]: statsData,
     [translations.timeSeries]: timeSeriesData ?? [],
   };
-
-  return xlsxData;
 };
 
 const parsePageViews = (pageViews: string | null | undefined) => {
