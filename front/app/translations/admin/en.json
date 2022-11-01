@@ -1658,6 +1658,7 @@
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Registered users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.activeUsers": "Active users",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage": "The number of users who have participated in one or more project(s). Participants for polling and embedded surveys will not be counted here.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalActiveUsers": "Total active users",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "Go to Input Manager",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "Inputs",
