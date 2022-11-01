@@ -140,69 +140,45 @@ const SignUpInModal = ({
     }
   };
 
-  // to be changed, temporary value
-  const franceConnectEnabled = false;
-
   return (
-    <>
-      {franceConnectEnabled ? (
-        <Modal
-          width={modalWidth}
-          padding="0px"
-          opened={opened}
-          close={onClose}
-          closeOnClickOutside={false}
+    <FullscreenModal
+      opened={opened}
+      onClose={onClose}
+      navbarRef={navbarRef}
+      mobileNavbarRef={mobileNavbarRef}
+    >
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
         >
-          <Container id="e2e-sign-up-in-modal" className={className}>
+          <Box padding="60px 0 0">
+            <StyledButton
+              className={className}
+              icon="arrow-left-circle"
+              onClick={onClose}
+              buttonStyle="text"
+              iconSize="26px"
+              padding="0"
+              textDecorationHover="underline"
+            >
+              Go back
+            </StyledButton>
             {metaData && (
-              <SignUpIn
+              <StyledSignUpIn
                 metaData={metaData}
                 onSignUpInCompleted={onSignUpInCompleted}
               />
             )}
-          </Container>
-        </Modal>
-      ) : (
-        <FullscreenModal
-          opened={opened}
-          onClose={onClose}
-          navbarRef={navbarRef}
-          mobileNavbarRef={mobileNavbarRef}
-        >
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <Box
-              width="100%"
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-            >
-              <Box padding="60px 0 0">
-                <StyledButton
-                  className={className}
-                  icon="arrow-left-circle"
-                  onClick={onClose}
-                  buttonStyle="text"
-                  iconSize="26px"
-                  padding="0"
-                  textDecorationHover="underline"
-                >
-                  Go back
-                </StyledButton>
-                {metaData && (
-                  <StyledSignUpIn
-                    metaData={metaData}
-                    onSignUpInCompleted={onSignUpInCompleted}
-                  />
-                )}
-              </Box>
-              <Box width="100%">
-                <PlatformFooter insideModal />
-              </Box>
-            </Box>
           </Box>
-        </FullscreenModal>
-      )}
-    </>
+          <Box width="100%">
+            <PlatformFooter insideModal />
+          </Box>
+        </Box>
+      </Box>
+    </FullscreenModal>
   );
 };
 
