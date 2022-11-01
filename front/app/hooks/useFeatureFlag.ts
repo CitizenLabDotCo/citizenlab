@@ -25,11 +25,8 @@ export default function useFeatureFlag({
   onlyCheckAllowed = false,
 }: Parameters) {
   const [tenantSettings, setTenantSettings] = useState<
-    | IAppConfiguration['data']['attributes']['settings']
-    | undefined
-    | null
-    | Error
-  >(undefined);
+    IAppConfiguration['data']['attributes']['settings'] | null | Error
+  >(null);
 
   useEffect(() => {
     const subscription = currentAppConfigurationStream().observable.subscribe(
