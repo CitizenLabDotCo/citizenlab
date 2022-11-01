@@ -15,7 +15,7 @@ glob(
         let newFileContent = fileContent;
 
         const defaultImportRegExExcludingReactMessagesHooks =
-          /import ((?!React)(?!messages)(?!use*)[A-Za-z]+) from \'([A-Za-z0-9./]+)\';/g;
+          /import ((?!React)(?!messages)(?!use*)(?!CustomFieldsStep)[A-Za-z]+) from \'([A-Za-z0-9./]+)\';/g;
 
         const defaultImportsArray = [
           ...fileContent.matchAll(
