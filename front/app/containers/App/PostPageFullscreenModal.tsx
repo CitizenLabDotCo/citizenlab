@@ -46,8 +46,8 @@ interface Props {
   type: 'idea' | 'initiative' | null;
   postId: string | null;
   slug: string | null;
-  navbarRef?: HTMLElement | null;
-  mobileNavbarRef?: HTMLElement | null;
+  navbarRef: HTMLElement | null;
+  mobileNavbarRef: HTMLElement | null;
   close: () => void;
 }
 
