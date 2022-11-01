@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import Tab from './admin/components/Tab';
+const Tab = React.lazy(() => import('./admin/components/Tab'));
 
 const AdminWidgetsContainerComponent = React.lazy(
   () => import('./admin/containers')
