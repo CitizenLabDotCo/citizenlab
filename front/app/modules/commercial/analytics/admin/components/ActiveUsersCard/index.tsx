@@ -25,7 +25,6 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { emptyStatsData } from './generateEmptyData';
 
 // typings
 import { ProjectId, Dates, Resolution, Layout } from '../../typings';
@@ -63,8 +62,6 @@ const ActiveUsersCard = ({
   const bottomLabel =
     timePeriodTranslations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
 
-  const shownStatsData = projectId ? emptyStatsData : stats;
-
   return (
     <GraphCard
       title={cardTitle}
@@ -88,17 +85,17 @@ const ActiveUsersCard = ({
           <Box width={layout === 'narrow' ? '50%' : undefined}>
             <Statistic
               name={formatMessage(messages.totalActiveUsers)}
-              value={shownStatsData.activeUsers.value}
+              value={stats.activeUsers.value}
               bottomLabel={bottomLabel}
-              bottomLabelValue={shownStatsData.activeUsers.lastPeriod}
+              bottomLabelValue={stats.activeUsers.lastPeriod}
             />
           </Box>
           <Box {...STATS_CONTAINER_LAYOUT[layout]}>
             <Statistic
               name={formatMessage(moduleMessages.conversionRate)}
-              value={shownStatsData.conversionRate.value}
+              value={stats.conversionRate.value}
               bottomLabel={bottomLabel}
-              bottomLabelValue={shownStatsData.conversionRate.lastPeriod}
+              bottomLabelValue={stats.conversionRate.lastPeriod}
             />
           </Box>
         </Box>
@@ -106,7 +103,6 @@ const ActiveUsersCard = ({
           <Box pt="8px" height="250px" {...GRAPHS_INNER_LAYOUT[layout]}>
             <Chart
               timeSeries={timeSeries}
-              projectId={projectId}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={deducedResolution}

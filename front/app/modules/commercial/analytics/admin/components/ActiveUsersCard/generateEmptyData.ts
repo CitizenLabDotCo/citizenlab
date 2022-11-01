@@ -5,7 +5,6 @@ import { emptyDateRange } from '../../utils/timeSeries';
 // typings
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Stats } from '../../hooks/useActiveUsers/typings';
 
 export const generateEmptyData = (
   startAtMoment: Moment | null | undefined,
@@ -16,15 +15,4 @@ export const generateEmptyData = (
     ...getEmptyRow(date),
     ...(i === 0 ? { activeUsers: 10 } : {}),
   }));
-};
-
-export const emptyStatsData: Stats = {
-  activeUsers: {
-    value: '-',
-    lastPeriod: '-',
-  },
-  conversionRate: {
-    value: '-',
-    lastPeriod: '-',
-  },
 };

@@ -17,13 +17,12 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
-import { ProjectId, Dates, Resolution, Layout } from '../../typings';
+import { Dates, Resolution, Layout } from '../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../hooks/useActiveUsers/typings';
 import { Margin } from 'components/admin/Graphs/typings';
 
-type Props = ProjectId &
-  Dates &
+type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
     innerRef: React.RefObject<any>;
@@ -46,7 +45,6 @@ const lineConfig = {
 
 const Chart = ({
   timeSeries,
-  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -77,7 +75,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = isNilOrError(timeSeries) || !!projectId;
+  const noData = isNilOrError(timeSeries);
 
   return (
     <LineChart
