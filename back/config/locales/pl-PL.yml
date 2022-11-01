@@ -200,3 +200,8 @@ pl:
       status: 'Status'
       assignee_fullname: 'Moderator'
       assignee_email: 'E-mail osoby przypisanej'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
