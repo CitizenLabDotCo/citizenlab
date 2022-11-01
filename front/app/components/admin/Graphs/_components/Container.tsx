@@ -29,6 +29,14 @@ interface Props {
   children: React.ReactElement;
 }
 
+const warn = console.warn.bind(console);
+function wrapWarn(...args) {
+  if (args[0].includes('ResponsiveContainer')) return;
+  warn(...args);
+}
+
+console.warn = wrapWarn;
+
 const Container = ({
   width,
   height,

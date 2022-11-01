@@ -6,7 +6,7 @@ import { apiEndpoint, QuerySchema, Query } from '../../services/analyticsFacts';
 // i18n
 import messages from './messages';
 import referrerTypeMessages from '../../hooks/useVisitorReferrerTypes/messages';
-import { getTranslations as getReferrerTranslations } from '../../hooks/useVisitorReferrers/utils';
+import { getTranslations as getReferrerTranslations } from '../../hooks/useVisitorReferrers/translations';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
@@ -20,7 +20,7 @@ import {
   ReferrerListResponse,
 } from '../../hooks/useVisitorReferrers/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { WrappedComponentProps } from 'react-intl';
+import { FormatMessage } from 'typings';
 
 const query = ({
   projectId,
@@ -53,7 +53,7 @@ const query = ({
 export default async function getXlsxData(
   parameters: QueryParametersWithoutPagination,
   referrerTypesXlsxData: XlsxData,
-  formatMessage: WrappedComponentProps['intl']['formatMessage']
+  formatMessage: FormatMessage
 ): Promise<XlsxData> {
   try {
     const referrersResponse = await request<ReferrerListResponse>(
@@ -75,7 +75,7 @@ export default async function getXlsxData(
 
 const parseReferrers = (
   { data }: ReferrerListResponse,
-  formatMessage: WrappedComponentProps['intl']['formatMessage']
+  formatMessage: FormatMessage
 ): XlsxData => {
   if (data.length === 0) return {};
 
