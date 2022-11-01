@@ -1,11 +1,12 @@
-
 # Changelog
 
 ## Next release
 
+## 2022-11-01
+
 ### Fixed
 
-- [CL-1765] Resize new icons used in 3 email campaigns
+- [CL-1765] Replace missing icon and resize new icons used in 3 email campaigns
 
 ### Changed
 

@@ -1,7 +1,9 @@
 import React, { lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import PagesMenu from './admin/containers';
-import NavbarTitleField from './admin/components/NavbarTitleField';
+const PagesMenu = React.lazy(() => import('./admin/containers'));
+const NavbarTitleField = React.lazy(
+  () => import('./admin/components/NavbarTitleField')
+);
 
 const EditNavbarItemComponent = lazy(
   () => import('./admin/containers/EditNavbarItemForm')
