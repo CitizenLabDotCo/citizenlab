@@ -314,7 +314,7 @@ describe('timeline project with no active ideation phase', () => {
   it('allows admin users to add an idea via the map for a non-active phase', () => {
     // Select map view
     cy.get('#view-tab-2').click();
-    // Click center of the map to open popup
+    // Click map to open popup
     cy.get('.leaflet-map-pane').click('bottom', { force: true });
     // Add idea button should appear, click it
     cy.get('.leaflet-popup-content').within(() => {
