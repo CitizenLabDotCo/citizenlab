@@ -51,24 +51,24 @@ const query = ({
       feedback_time_taken: 'avg',
     },
     filters: {
-      type: { name: 'idea' },
-      ...getProjectFilter('project', projectId),
-      ...getDateFilter('created_date', startAtMoment, endAtMoment),
+      dimension_type: { name: 'idea' },
+      ...getProjectFilter('dimension_project', projectId),
+      ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
   };
 
   const queryStatus: QuerySchema = {
     fact: 'post',
-    groups: 'status.id',
+    groups: 'dimension_status.id',
     aggregations: {
       all: 'count',
-      'status.title_multiloc': 'first',
-      'status.color': 'first',
+      'dimension_status.title_multiloc': 'first',
+      'dimension_status.color': 'first',
     },
     filters: {
-      type: { name: 'idea' },
-      ...getProjectFilter('project', projectId),
-      ...getDateFilter('created_date', startAtMoment, endAtMoment),
+      dimension_type: { name: 'idea' },
+      ...getProjectFilter('dimension_project', projectId),
+      ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
   };
 
@@ -122,7 +122,9 @@ export default function usePostsFeedback({
         const days = getDays(feedbackRow);
 
         const statusColorById = getStatusColorById(statusRows);
-        const stackedBarColumns = statusRows.map((row) => row['status.id']);
+        const stackedBarColumns = statusRows.map(
+          (row) => row['dimension_status.id']
+        );
         const stackedBarPercentages = parseStackedBarsPercentages(statusRows);
 
         const stackedBarsLegendItems = parseStackedBarsLegendItems(
