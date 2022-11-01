@@ -36,7 +36,7 @@ type Props = ProjectId &
     layout?: Layout;
   };
 
-const RegistrationsCard = ({
+const ActiveUsersCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
@@ -119,4 +119,4 @@ const RegistrationsCard = ({
   );
 };
 
-export default RegistrationsCard;
+export default ActiveUsersCard;
