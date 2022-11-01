@@ -204,7 +204,7 @@
     "husky": "^4.3.8",
     "jest": "^28.1.2",
     "jest-cli": "^29.2.2",
-    "jest-environment-jsdom": "^29.1.2",
+    "jest-environment-jsdom": "^29.2.2",
     "jest-junit": "^14.0.0",
     "jest-styled-components": "^7.0.8",
     "mini-css-extract-plugin": "^2.6.1",
