@@ -3,7 +3,6 @@ import { signOut } from 'services/auth';
 import tracks from './tracks';
 
 // components
-import Modal from 'components/UI/Modal';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 import { TSignUpStep } from 'components/SignUpIn/SignUp';
 import FullscreenModal from 'components/UI/FullscreenModal';
@@ -14,6 +13,8 @@ import PlatformFooter from 'containers/PlatformFooter';
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -57,6 +58,7 @@ const SignUpInModal = ({
   navbarRef,
   mobileNavbarRef,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const isMounted = useIsMounted();
   const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
     undefined
@@ -164,7 +166,7 @@ const SignUpInModal = ({
               padding="0"
               textDecorationHover="underline"
             >
-              Go back
+              {formatMessage(messages.goBack)}
             </StyledButton>
             {metaData && (
               <StyledSignUpIn

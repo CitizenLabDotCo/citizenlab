@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.components.SignUpIn.continue',
     defaultMessage: 'Continue',
   },
+  goBack: {
+    id: 'app.components.SignUpIn.goBack',
+    defaultMessage: 'Go back',
+  },
 });
