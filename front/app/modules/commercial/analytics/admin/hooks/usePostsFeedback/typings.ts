@@ -35,9 +35,9 @@ export interface FeedbackRow {
 
 export interface StatusRow {
   count: number;
-  'status.id': string;
-  first_status_title_multiloc: Multiloc;
-  first_status_color: string;
+  'dimension_status.id': string;
+  first_dimension_status_title_multiloc: Multiloc;
+  first_dimension_status_color: string;
 }
 
 // Hook return value
