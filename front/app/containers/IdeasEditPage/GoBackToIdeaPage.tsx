@@ -35,7 +35,7 @@ const GoBackToIdeaPage = ({ idea }: Props) => {
         icon="arrow-left-circle"
         linkTo={`/ideas/${idea.attributes.slug}`}
         buttonStyle="text"
-        iconSize="26px"
+        iconSize="24px"
         padding="0"
         textDecorationHover="underline"
         whiteSpace="normal"
