@@ -122,7 +122,9 @@ export default function usePostsFeedback({
         const days = getDays(feedbackRow);
 
         const statusColorById = getStatusColorById(statusRows);
-        const stackedBarColumns = statusRows.map((row) => row['status.id']);
+        const stackedBarColumns = statusRows.map(
+          (row) => row['dimension_status.id']
+        );
         const stackedBarPercentages = parseStackedBarsPercentages(statusRows);
 
         const stackedBarsLegendItems = parseStackedBarsLegendItems(
