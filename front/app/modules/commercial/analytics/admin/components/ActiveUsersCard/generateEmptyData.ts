@@ -14,7 +14,7 @@ export const generateEmptyData = (
 ) => {
   return emptyDateRange(startAtMoment, endAtMoment, resolution, (date, i) => ({
     ...getEmptyRow(date),
-    ...(i === 0 ? { registrations: 10 } : {}),
+    ...(i === 0 ? { activeUsers: 10 } : {}),
   }));
 };
 
