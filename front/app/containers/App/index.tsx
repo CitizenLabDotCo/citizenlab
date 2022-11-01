@@ -123,9 +123,9 @@ interface State {
   previousPathname: string | null;
   tenant: IAppConfiguration | null;
   authUser: TAuthUser;
-  modalId: string | null;
-  modalSlug: string | null;
-  modalType: 'idea' | 'initiative' | null;
+  postModalId: string | null;
+  postModalSlug: string | null;
+  postModalType: 'idea' | 'initiative' | null;
   visible: boolean;
   userDeletedSuccessfullyModalOpened: boolean;
   userSuccessfullyDeleted: boolean;
@@ -147,9 +147,9 @@ class App extends PureComponent<Props, State> {
       previousPathname: null,
       tenant: null,
       authUser: undefined,
-      modalId: null,
-      modalSlug: null,
-      modalType: null,
+      postModalId: null,
+      postModalSlug: null,
+      postModalType: null,
       visible: true,
       userDeletedSuccessfullyModalOpened: false,
       userSuccessfullyDeleted: false,
@@ -419,17 +419,17 @@ class App extends PureComponent<Props, State> {
     type: 'idea' | 'initiative'
   ) => {
     this.setState({
-      modalId: id,
-      modalSlug: slug,
-      modalType: type,
+      postModalId: id,
+      postModalSlug: slug,
+      postModalType: type,
     });
   };
 
   closePostPageModal = () => {
     this.setState({
-      modalId: null,
-      modalSlug: null,
-      modalType: null,
+      postModalId: null,
+      postModalSlug: null,
+      postModalType: null,
     });
   };
 
@@ -464,9 +464,9 @@ class App extends PureComponent<Props, State> {
     const {
       previousPathname,
       tenant,
-      modalId,
-      modalSlug,
-      modalType,
+      postModalId,
+      postModalSlug,
+      postModalType,
       visible,
       userDeletedSuccessfullyModalOpened,
       userSuccessfullyDeleted,
@@ -509,9 +509,9 @@ class App extends PureComponent<Props, State> {
                 <ErrorBoundary>
                   <Suspense fallback={null}>
                     <PostPageFullscreenModal
-                      type={modalType}
-                      postId={modalId}
-                      slug={modalSlug}
+                      type={postModalType}
+                      postId={postModalId}
+                      slug={postModalSlug}
                       close={this.closePostPageModal}
                       navbarRef={navbarRef}
                       mobileNavbarRef={mobileNavbarRef}
