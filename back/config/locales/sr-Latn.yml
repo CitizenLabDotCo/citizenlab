@@ -108,7 +108,7 @@ sr-Latn:
         title: Obrazovanje
     ideas:
       title:
-        title: Naslov
+        title: Naziv
         description:
       body:
         title: Opis
@@ -117,7 +117,7 @@ sr-Latn:
         title: Autor
         description:
       topic_ids:
-        title: Tema
+        title: Teme
         description:
       location:
         title: Lokacija
@@ -142,7 +142,7 @@ sr-Latn:
         question:
           title: Šta je vaše pitanje ?
         contribution:
-          title: Šta je vaš prilog ?
+          title: Šta je to čime ćete doprineti?
         project:
           title: Šta je vaš projekat ?
         issue:
@@ -159,7 +159,7 @@ sr-Latn:
     gender:
       male: Muškarac
       female: Žena
-      unspecified: Ostalo
+      unspecified: Drugo
     domicile:
       outside: Negde drugo
     education:
