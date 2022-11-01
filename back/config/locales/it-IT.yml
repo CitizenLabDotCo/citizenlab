@@ -142,7 +142,7 @@ it:
         question:
           title: What is your question ?
         contribution:
-          title: What is your contribution ?
+          title: Qual è il suo contributo?
         project:
           title: What is your project ?
         issue:
