@@ -10,13 +10,13 @@ import {
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
+import moment from 'moment';
+import { parseChartData, parseExcelData } from './parse';
 
 // typings
 import { QueryParameters, Proposals, Response } from './typings';
-
-import moment from 'moment';
 import { Moment } from 'moment';
-import { IResolution } from '../../../../../../components/admin/ResolutionControl';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 // TODO: This is duplicated from elsewhere - but removed the formatting & simplified
 const getLastPeriodMoment = (resolution: IResolution) => {
@@ -83,14 +83,6 @@ const query = ({
   };
 };
 
-// const parseExcelData = (all, allPeriod, successful, successfulPeriod) => {
-//
-//   const xlsxData = undefined;
-//   console.log(all, allPeriod, successful, successfulPeriod)
-//
-//   return xlsxData;
-// };
-
 export default function useProposals({
   projectId,
   startAtMoment,
@@ -112,23 +104,23 @@ export default function useProposals({
         }
 
         const [all, allPeriod, successful, successfulPeriod] = response.data;
-
-        // const xlsxData = parseExcelData(
-        //   all, allPeriod, successful, successfulPeriod
-        // );
+        const chartData = parseChartData(
+          all,
+          allPeriod,
+          successful,
+          successfulPeriod
+        );
+        const xlsxData = parseExcelData(
+          all,
+          allPeriod,
+          successful,
+          successfulPeriod,
+          resolution
+        );
 
         setProposals({
-          chartData: {
-            totalProposals: {
-              value: all[0].count,
-              lastPeriod: allPeriod[0].count,
-            },
-            successfulProposals: {
-              value: successful[0].count,
-              lastPeriod: successfulPeriod[0].count,
-            },
-          },
-          // xlsxData
+          chartData,
+          xlsxData,
         });
       }
     );

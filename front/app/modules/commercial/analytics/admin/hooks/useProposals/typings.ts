@@ -1,6 +1,6 @@
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
-// import { XlsxData } from 'components/admin/ReportExportMenu';
+import { XlsxData } from 'components/admin/ReportExportMenu';
 
 // TODO: Duplicated from other components
 export interface QueryParameters {
@@ -10,19 +10,21 @@ export interface QueryParameters {
   resolution: IResolution;
 }
 
+export interface ChartData {
+  totalProposals: {
+    value: string;
+    lastPeriod: string;
+  };
+  successfulProposals: {
+    value: string;
+    lastPeriod: string;
+  };
+}
+
 // TODO: Why does the Statistics component take string values?
 export interface Proposals {
-  chartData: {
-    totalProposals: {
-      value: string;
-      lastPeriod: string;
-    };
-    successfulProposals: {
-      value: string;
-      lastPeriod: string;
-    };
-  };
-  // xlsxData: XlsxData | null | undefined;
+  chartData: ChartData;
+  xlsxData: XlsxData;
 }
 
 export type Count = {

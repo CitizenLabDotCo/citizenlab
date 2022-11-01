@@ -4,8 +4,10 @@ import React from 'react';
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import EmptyState from 'components/admin/Graphs/_components/EmptyState';
+import Statistic from 'components/admin/Graphs/Statistic';
 
-import { useIntl } from 'utils/cl-intl';
+// messages
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
@@ -17,9 +19,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
-import { MessageDescriptor } from '../../../../../../utils/cl-intl';
-
-import Statistic from '../../../../../../components/admin/Graphs/Statistic';
 
 interface Props {
   projectId: string | undefined;
@@ -59,14 +58,10 @@ const ProposalsCard = ({
     );
   }
 
-  const {
-    chartData,
-    // xlsxData
-  } = data;
+  const { chartData, xlsxData } = data;
 
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
-
   const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
 
   return (
@@ -74,8 +69,8 @@ const ProposalsCard = ({
       title={cardTitle}
       exportMenu={{
         name: cardTitle.toLowerCase().replace(' ', '_'),
-        // svgNode: []
-        // xlsx: { data: xlsxData },
+        svgNode: [],
+        xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,
         endAt,
