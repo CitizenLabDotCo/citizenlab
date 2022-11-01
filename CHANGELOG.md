@@ -1,7 +1,10 @@
-
 # Changelog
 
 ## Next release
+
+### Added
+
+- [CL-1790] Add back to idea link on the idea edit page
 
 ## 2022-11-01
 

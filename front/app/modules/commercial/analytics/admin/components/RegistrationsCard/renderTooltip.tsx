@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
 import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 
@@ -9,52 +9,39 @@ import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 import { colors } from 'components/admin/Graphs/styling';
 
 // i18n
-import messages from '../messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { toFullMonth } from 'utils/dateUtils';
 
 // typings
-import { TimeSeriesRow } from '../../../hooks/useVisitors/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-type DataKey = 'visitors' | 'visits';
-
-interface CustomTooltipProps {
+type CustomTooltipProps = {
   label?: string;
-  payload?: {
-    name: string;
-    dataKey: DataKey;
-    payload: TimeSeriesRow;
-    stroke: string;
-  }[];
+  payload?:
+    | [
+        {
+          payload?: {
+            registrations: number;
+            date: string;
+          };
+        }
+      ]
+    | [];
   resolution: IResolution;
-}
-
-const MESSAGES_MAP: Record<DataKey, MessageDescriptor> = {
-  visitors: messages.visitors,
-  visits: messages.visits,
 };
 
 const CustomTooltip = ({ label, payload, resolution }: CustomTooltipProps) => {
-  if (!payload || !label) return null;
+  if (!payload?.[0]?.payload || !label) return null;
 
   return (
     <TooltipOutline label={toFullMonth(label, resolution)}>
-      {payload.map(({ stroke, dataKey, payload }) => (
-        <Box py="0px" key={dataKey}>
-          <Icon
-            name="dot"
-            width="8px"
-            height="8px"
-            fill={stroke}
-            mr="6px"
-            mt="-2px"
-          />
-          <FormattedMessage {...MESSAGES_MAP[dataKey]} />: {payload[dataKey]}
-        </Box>
-      ))}
+      <Box py="0px">
+        <FormattedMessage {...messages.newRegistrations} />:{' '}
+        {payload[0].payload.registrations}
+      </Box>
     </TooltipOutline>
   );
 };

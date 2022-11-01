@@ -9,13 +9,13 @@ import {
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import { getTranslations } from './translations';
 
 // parse
 import { parsePieData, parseExcelData } from './parse';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
-import { getTranslations } from './utils';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings

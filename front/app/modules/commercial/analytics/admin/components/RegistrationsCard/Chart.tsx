@@ -9,7 +9,7 @@ import LineChart from 'components/admin/Graphs/LineChart';
 import renderTooltip from './renderTooltip';
 
 // i18n
-import messages from '../messages';
+import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
@@ -21,10 +21,11 @@ import { generateEmptyData } from './generateEmptyData';
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { TimeSeries } from '../../../hooks/useVisitors/typings';
+import { TimeSeries } from '../../hooks/useRegistrations/typings';
 
 interface Props {
   timeSeries: TimeSeries | NilOrError;
+  projectFilter?: string;
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null | undefined;
   resolution: IResolution;
@@ -33,6 +34,7 @@ interface Props {
 
 const Chart = ({
   timeSeries,
+  projectFilter,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -49,12 +51,7 @@ const Chart = ({
     {
       icon: 'circle',
       color: colors.categorical01,
-      label: formatMessage(messages.visitors),
-    },
-    {
-      icon: 'circle',
-      color: colors.categorical03,
-      label: formatMessage(messages.visits),
+      label: formatMessage(messages.newRegistrations),
     },
   ];
 
@@ -69,14 +66,14 @@ const Chart = ({
 
   return (
     <Box pt="8px" width="90%" maxWidth="900px" height="250px">
-      {isNilOrError(timeSeries) && (
+      {(isNilOrError(timeSeries) || projectFilter) && (
         <LineChart
           width="100%"
           height="100%"
           data={emptyData}
           mapping={{
             x: 'date',
-            y: ['visits'],
+            y: ['registrations'],
           }}
           lines={{
             strokeWidths: [0],
@@ -90,17 +87,17 @@ const Chart = ({
         />
       )}
 
-      {!isNilOrError(timeSeries) && (
+      {!isNilOrError(timeSeries) && !projectFilter && (
         <LineChart
           width="100%"
           height="100%"
           data={timeSeries}
           mapping={{
             x: 'date',
-            y: ['visitors', 'visits'],
+            y: ['registrations'],
           }}
           lines={{
-            strokes: [colors.categorical01, colors.categorical03],
+            strokes: [colors.categorical01],
             activeDot: { r: 4 },
           }}
           grid={{ vertical: true }}
