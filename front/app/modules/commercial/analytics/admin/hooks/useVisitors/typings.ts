@@ -1,5 +1,4 @@
-import { ProjectId, Dates, Resolution } from '../../typings';
-import { Stat } from '../../typings';
+import { ProjectId, Dates, Resolution, Stat } from '../../typings';
 
 export type QueryParameters = ProjectId & Dates & Resolution;
 

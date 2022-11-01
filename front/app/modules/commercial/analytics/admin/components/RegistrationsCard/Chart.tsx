@@ -17,10 +17,9 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
-import { ProjectId, Dates, Resolution } from '../../typings';
+import { ProjectId, Dates, Resolution, Layout } from '../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../hooks/useRegistrations/typings';
-import { Layout } from '../../typings';
 import { Margin } from 'components/admin/Graphs/typings';
 
 type Props = ProjectId &

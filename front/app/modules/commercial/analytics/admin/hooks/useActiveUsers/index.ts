@@ -80,7 +80,7 @@ export default function useActiveUsers({
     );
 
     return () => subscription.unsubscribe();
-  }, [startAtMoment, endAtMoment, resolution]);
+  }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
 
   return { timeSeries, stats, xlsxData, deducedResolution };
 }
