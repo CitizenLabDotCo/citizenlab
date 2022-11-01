@@ -9,4 +9,9 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalActiveUsers',
     defaultMessage: 'Total active users',
   },
+  cardTitleTooltipMessage: {
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage',
+    defaultMessage:
+      'The number of users who have participated in one or more project(s). Participants for polling and embedded surveys will not be counted here.',
+  },
 });
