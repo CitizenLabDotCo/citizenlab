@@ -250,6 +250,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 />
               )}
               <Outlet
+                id="app.containers.Admin.dashboard.summary.proposals"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+              <Outlet
                 id="app.containers.Admin.dashboard.summary.postStatus"
                 projectId={currentProjectFilter}
                 startAtMoment={startAtMoment}

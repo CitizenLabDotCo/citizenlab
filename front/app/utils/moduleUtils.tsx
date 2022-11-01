@@ -184,6 +184,12 @@ export interface OutletsPropertyMap {
     resolution: IResolution;
     onMount: () => void;
   };
+  'app.containers.Admin.dashboard.summary.proposals': {
+    projectId: string | undefined;
+    startAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null | undefined;
+    resolution: IResolution;
+  };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;
