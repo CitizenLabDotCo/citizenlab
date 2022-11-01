@@ -8,6 +8,7 @@ import { TSignUpStep } from 'components/SignUpIn/SignUp';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import PlatformFooter from 'containers/PlatformFooter';
+import MainHeader from 'containers/MainHeader';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
@@ -29,8 +30,13 @@ import {
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
-const Container = styled.div``;
+const StyledBox = styled(Box)`
+  ${media.tablet`
+      padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
+  `};
+`;
 
 const StyledSignUpIn = styled(SignUpIn)`
   padding-top: 20px;
@@ -165,8 +171,9 @@ const SignUpInModal = ({
       navbarRef={navbarRef}
       mobileNavbarRef={mobileNavbarRef}
       url={getUrl()}
+      topBar={<MainHeader />}
     >
-      <Box display="flex" flexDirection="column" alignItems="center">
+      <StyledBox display="flex" flexDirection="column" alignItems="center">
         <Box
           width="100%"
           display="flex"
@@ -196,7 +203,7 @@ const SignUpInModal = ({
             <PlatformFooter insideModal />
           </Box>
         </Box>
-      </Box>
+      </StyledBox>
     </FullscreenModal>
   );
 };
