@@ -8,6 +8,11 @@ import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
 import Chart from './Chart';
+import {
+  STATS_CONTAINER_LAYOUT,
+  GRAPHS_OUTER_LAYOUT,
+  GRAPHS_INNER_LAYOUT,
+} from './layouts';
 
 // i18n
 import messages from './messages';
@@ -23,41 +28,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import { emptyStatsData } from './generateEmptyData';
 
 // typings
-import { ProjectId, Dates, Resolution } from '../../typings';
-import { Layout, BoxLayout } from '../../typings';
+import { ProjectId, Dates, Resolution, Layout } from '../../typings';
 
 type Props = ProjectId &
   Dates &
   Resolution & {
     layout?: Layout;
   };
-
-const STATS_CONTAINER_LAYOUT: BoxLayout = {
-  wide: { mt: '32px' },
-  narrow: { ml: '32px', width: '50%' },
-};
-
-const GRAPHS_OUTER_LAYOUT: BoxLayout = {
-  wide: {
-    flexGrow: 1,
-    display: 'flex',
-    justifyContent: 'flex-end',
-    pr: '20px',
-  },
-  narrow: {
-    width: '100%',
-    mt: '20px',
-  },
-};
-
-const GRAPHS_INNER_LAYOUT: BoxLayout = {
-  wide: {
-    width: '95%',
-    maxWidth: '800px',
-    mt: '-1px',
-  },
-  narrow: { width: '100%' },
-};
 
 const RegistrationsCard = ({
   projectId,
