@@ -1,4 +1,3 @@
-
 # Changelog
 
 ## Next release
@@ -6,6 +5,7 @@
 ### Fixed
 
 - [CL-1765] Resize new icons used in 3 email campaigns
+- [CL-1955] Fixed bug where admins were not able to add ideas via the map in non-active ideation phases
 
 ### Changed
 
