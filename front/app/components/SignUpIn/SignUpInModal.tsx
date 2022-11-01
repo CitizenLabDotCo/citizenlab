@@ -72,7 +72,7 @@ const SignUpInModal = ({
     metaData?.verificationContext
   );
 
-  const opened = !!metaData?.inModal;
+  const opened = metaData?.inModal || false;
 
   const hasParticipationConditions =
     !isNilOrError(participationConditions) &&
