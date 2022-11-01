@@ -81,7 +81,7 @@ describe Analytics::QueryValidatorService do
         fact: 'post',
         fields: 'id',
         filters: {
-          created_date: {
+          dimension_date_created: {
             date: { from: '2021-01-01', to: '2022-01-01' }
           }
         }
