@@ -18,33 +18,6 @@ import {
 } from './typings';
 import { Translations } from './translations';
 
-export const parseStats = ([
-  totalsWholePeriodRows,
-  totalsLastPeriodRows,
-]: Response['data']): Stats => {
-  const wholePeriod = totalsWholePeriodRows[0];
-  const lastPeriod = totalsLastPeriodRows[0];
-
-  return {
-    visitors: {
-      value: wholePeriod?.count_visitor_id.toLocaleString() ?? '0',
-      lastPeriod: lastPeriod?.count_visitor_id.toLocaleString() ?? '0',
-    },
-    visits: {
-      value: wholePeriod?.count.toLocaleString() ?? '0',
-      lastPeriod: lastPeriod?.count.toLocaleString() ?? '0',
-    },
-    visitDuration: {
-      value: parseVisitDuration(wholePeriod?.avg_duration),
-      lastPeriod: parseVisitDuration(lastPeriod?.avg_duration),
-    },
-    pageViews: {
-      value: parsePageViews(wholePeriod?.avg_pages_visited),
-      lastPeriod: parsePageViews(lastPeriod?.avg_pages_visited),
-    },
-  };
-};
-
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
   visitors: 0,
@@ -76,6 +49,33 @@ export const parseTimeSeries = (
     endAtMoment,
     resolution
   );
+};
+
+export const parseStats = ([
+  totalsWholePeriodRows,
+  totalsLastPeriodRows,
+]: Response['data']): Stats => {
+  const wholePeriod = totalsWholePeriodRows[0];
+  const lastPeriod = totalsLastPeriodRows[0];
+
+  return {
+    visitors: {
+      value: wholePeriod?.count_visitor_id.toLocaleString() ?? '0',
+      lastPeriod: lastPeriod?.count_visitor_id.toLocaleString() ?? '0',
+    },
+    visits: {
+      value: wholePeriod?.count.toLocaleString() ?? '0',
+      lastPeriod: lastPeriod?.count.toLocaleString() ?? '0',
+    },
+    visitDuration: {
+      value: parseVisitDuration(wholePeriod?.avg_duration),
+      lastPeriod: parseVisitDuration(lastPeriod?.avg_duration),
+    },
+    pageViews: {
+      value: parsePageViews(wholePeriod?.avg_pages_visited),
+      lastPeriod: parsePageViews(lastPeriod?.avg_pages_visited),
+    },
+  };
 };
 
 export const parseExcelData = (
