@@ -250,19 +250,19 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 />
               )}
               <Outlet
-                id="app.containers.Admin.dashboard.summary.proposals"
-                projectId={currentProjectFilter}
-                startAtMoment={startAtMoment}
-                endAtMoment={endAtMoment}
-                resolution={resolution}
-              />
-              <Outlet
                 id="app.containers.Admin.dashboard.summary.postStatus"
                 projectId={currentProjectFilter}
                 startAtMoment={startAtMoment}
                 endAtMoment={endAtMoment}
                 resolution={resolution}
                 onMount={this.hideIdeasByStatusChart}
+              />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.proposals"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
               />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
