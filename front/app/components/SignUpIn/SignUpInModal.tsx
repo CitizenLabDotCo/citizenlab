@@ -142,12 +142,29 @@ const SignUpInModal = ({
     }
   };
 
+  const getUrl = () => {
+    if (metaData) {
+      const { flow } = metaData;
+
+      if (flow === 'signin') {
+        return '/sign-in';
+      }
+
+      if (flow === 'signup') {
+        return '/sign-up';
+      }
+    }
+
+    return null;
+  };
+
   return (
     <FullscreenModal
       opened={opened}
       onClose={onClose}
       navbarRef={navbarRef}
       mobileNavbarRef={mobileNavbarRef}
+      url={getUrl()}
     >
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box
