@@ -283,7 +283,7 @@
   "app.containers.Admin.Insights.Reports.numberOfVotesDown": "Ablehnung",
   "app.containers.Admin.Insights.Reports.numberOfVotesUp": "Zustimmungen",
   "app.containers.Admin.Insights.Reports.participantsOverTimeTitle": "Teilnehmende",
-  "app.containers.Admin.Insights.Reports.participationPerTopic": "Teilnahme pro Thema",
+  "app.containers.Admin.Insights.Reports.participationPerTopic": "Beteiligung pro Thema",
   "app.containers.Admin.Insights.Reports.perPeriod": "Pro {period}",
   "app.containers.Admin.Insights.Reports.poll": "Abstimmung",
   "app.containers.Admin.Insights.Reports.projectType": "Projekttyp : {projectType}",
