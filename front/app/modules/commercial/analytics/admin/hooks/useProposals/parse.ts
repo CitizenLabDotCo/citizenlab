@@ -1,9 +1,6 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { ChartData } from './typings';
 
-// TODO: Could we process all the messages in here and pass them back in the data object
-// Separate function to get all labels in this file
-
 export const parseChartData = (
   all,
   allPeriod,
