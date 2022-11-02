@@ -182,18 +182,7 @@ const SignUpInModal = memo(
             flexDirection="column"
             alignItems="center"
           >
-            <Box padding="60px 0 0">
-              <StyledButton
-                className={className}
-                icon="arrow-left-circle"
-                onClick={onClose}
-                buttonStyle="text"
-                iconSize="26px"
-                padding="0"
-                textDecorationHover="underline"
-              >
-                {formatMessage(messages.goBack)}
-              </StyledButton>
+            <Box padding="20px 0">
               {metaData && (
                 <StyledSignUpIn
                   metaData={metaData}
