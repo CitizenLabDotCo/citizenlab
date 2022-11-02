@@ -1,8 +1,12 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
-import IdCardLookupButton from './components/IdCardLookupButton';
-import IdCardLookupForm from './components/IdCardLookupForm';
+const IdCardLookupButton = React.lazy(
+  () => import('./components/IdCardLookupButton')
+);
+const IdCardLookupForm = React.lazy(
+  () => import('./components/IdCardLookupForm')
+);
 import {
   IDLookupMethod,
   TVerificationMethodName,
