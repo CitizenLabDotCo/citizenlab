@@ -67,22 +67,26 @@ const ProposalsCard = ({
         resolution,
       }}
     >
-      <Box>
-        <Statistic
-          name={labels.total}
-          value={chartData.totalProposals.value}
-          bottomLabel={labels.period}
-          bottomLabelValue={chartData.totalProposals.lastPeriod}
-        />
-      </Box>
-      <Box>
-        <Statistic
-          name={labels.successful}
-          value={chartData.successfulProposals.value}
-          bottomLabel={labels.period}
-          bottomLabelValue={chartData.successfulProposals.lastPeriod}
-          tooltipContent={labels.successfulToolTip}
-        />
+      <Box width="100%" display="flex" flexDirection="row">
+        <Box display="flex" flexDirection="row" pl="20px">
+          <Box pr="20px" borderRight="1px solid #ccc">
+            <Statistic
+              name={labels.total}
+              value={chartData.totalProposals.value}
+              bottomLabel={labels.period}
+              bottomLabelValue={chartData.totalProposals.lastPeriod}
+            />
+          </Box>
+          <Box pl="20px">
+            <Statistic
+              name={labels.successful}
+              value={chartData.successfulProposals.value}
+              bottomLabel={labels.period}
+              bottomLabelValue={chartData.successfulProposals.lastPeriod}
+              tooltipContent={labels.successfulToolTip}
+            />
+          </Box>
+        </Box>
       </Box>
     </GraphCard>
   );
