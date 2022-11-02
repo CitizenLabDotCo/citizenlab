@@ -8,7 +8,7 @@ export const getProjectFilter = (
   filter: string,
   projectId: string | undefined
 ): ProjectFilter | EmptyObject => {
-  return projectId ? { [filter]: projectId } : {};
+  return projectId ? { [`${filter}.id`]: projectId } : {};
 };
 
 const formatDate = (dateString: string) =>
