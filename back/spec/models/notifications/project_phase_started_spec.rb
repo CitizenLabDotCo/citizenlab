@@ -7,9 +7,10 @@ RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
     it 'makes a notification on phase started activity' do
       user = create(:user)
       phase = create(:phase)
-      activity = create(:activity, item: phase, action: 'started')
+      activity = create :activity, item: phase, action: 'started', user: nil
 
       notifications = described_class.make_notifications_on activity
+      expect(notifications.size).to eq 1
       expect(notifications.first).to have_attributes(
         recipient_id: user.id,
         phase_id: phase.id,
