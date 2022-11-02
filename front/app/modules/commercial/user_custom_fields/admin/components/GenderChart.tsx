@@ -6,6 +6,7 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 // utils
 import shallowCompare from 'utils/shallowCompare';
 import renderTooltip from './renderGenderTooltip';
+import { roundPercentages } from 'utils/math';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -39,7 +40,14 @@ import {
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 type State = {
-  serie: { name: string; value: number; code: string }[] | null;
+  serie:
+    | {
+        name: string;
+        value: number;
+        code: string;
+        percentage: number;
+      }[]
+    | null;
   hoverIndex: number | undefined;
 };
 
@@ -53,6 +61,8 @@ interface Props extends QueryProps {
   currentGroupFilterLabel: string | undefined;
   className?: string;
 }
+
+const options = ['male', 'female', 'unspecified', '_blank'];
 
 class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
   private subscriptions: Subscription[];
@@ -116,10 +126,14 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
   }
 
   convertToGraphFormat = (data: IUsersByRegistrationField) => {
-    const res = ['male', 'female', 'unspecified', '_blank'].map((gender) => ({
+    const percentages = roundPercentages(
+      options.map((gender) => data.series.users[gender])
+    );
+    const res = options.map((gender, i) => ({
       value: data.series.users[gender] || 0,
       name: this.props.intl.formatMessage(messages[gender]),
       code: gender,
+      percentage: percentages[i],
     }));
     return res.length > 0 ? res : null;
   };
@@ -149,7 +163,7 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
         (row, i): LegendItem => ({
           icon: 'circle',
           color: categoricalColorScheme({ rowIndex: i }),
-          label: row.name,
+          label: `${row.name} (${row.percentage}%)`,
         })
       );
 
