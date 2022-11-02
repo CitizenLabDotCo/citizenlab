@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 # Iterate over records with fields that contain 'multiloc' in their names,
-# and replace specific URLs that appear in mapping CSV.
+# and replace specific URLs as mapped in the CSV file you provide.
 #
 # mapping_urls is a CSV file, mapping old to new URLs, with format:
 # old,new
 # <old_url_1>,<new_url_1>
 # <old_url_1>,<new_url_1>
 # ...
-
 namespace :fix do
   desc 'Update selected cloudinary URLs to new s3 equivalents.'
   task :replace_cloudinary_urls, %i[mapping_urls] => [:environment] do |_t, args|
