@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
 # Iterate over records with fields that contain 'multiloc' in their names,
-# and replace cloudinary URLs that appear in mapping with mapped s3 URLs.
+# and replace specific URLs that appear in mapping CSV.
+#
+# mapping_urls is a CSV file, mapping old to new URLs, with format:
+# old,new
+# <old_url_1>,<new_url_1>
+# <old_url_1>,<new_url_1>
+# ...
+
 namespace :fix do
   desc 'Update selected cloudinary URLs to new s3 equivalents.'
   task :replace_cloudinary_urls, %i[mapping_urls] => [:environment] do |_t, args|
@@ -24,8 +31,8 @@ namespace :fix do
               n_gsubs = 0
 
               data.each do |d|
-                if multiloc_value.to_json.include?(d['original'])
-                  multiloc_value = JSON.parse(multiloc_value.to_json.gsub(d['original'], d['s3']))
+                if multiloc_value.to_json.include?(d['old'])
+                  multiloc_value = JSON.parse(multiloc_value.to_json.gsub(d['old'], d['new']))
                   n_gsubs += 1
                 end
               end
