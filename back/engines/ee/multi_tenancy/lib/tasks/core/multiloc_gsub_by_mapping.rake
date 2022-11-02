@@ -49,8 +49,8 @@ namespace :fix do
       end
     end
 
-    puts "#{gsubs_performed} URL substitution events performed."
-    puts 'Each event = 1 or more of same URL replaced within a multiloc value.' if gsubs_performed > 0
+    puts "#{gsubs_performed} substitution events performed."
+    puts 'Each event = 1 or more of same substring replaced within a multiloc value.' if gsubs_performed > 0
 
     if errors.count > 0
       puts 'Errors occured!'
