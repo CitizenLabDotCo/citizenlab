@@ -1,21 +1,21 @@
-// parse dates
-import { parseMonths } from './parseMonths';
-import { parseWeeks } from './parseWeeks';
-import { parseDays } from './parseDays';
+import moment, { Moment } from 'moment';
 
 // utils
+import { round } from 'lodash-es';
+import { timeSeriesParser } from '../../utils/timeSeries';
 import { keys } from 'utils/helperUtils';
-import {
-  roundDateToMidnight,
-  parseVisitDuration,
-  parsePageViews,
-} from './utils';
 
 // typings
-import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Response, Stats, TimeSeries, TimeSeriesResponse } from '../typings';
-import { Translations } from '../utils';
+import {
+  Response,
+  Stats,
+  TimeSeries,
+  TimeSeriesResponse,
+  TimeSeriesResponseRow,
+  TimeSeriesRow,
+} from './typings';
+import { Translations } from './translations';
 
 export const parseStats = ([
   totalsWholePeriodRows,
@@ -44,46 +44,54 @@ export const parseStats = ([
   };
 };
 
+export const getEmptyRow = (date: Moment) => ({
+  date: date.format('YYYY-MM-DD'),
+  visitors: 0,
+  visits: 0,
+});
+
+const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
+  if (!row) return getEmptyRow(date);
+
+  return {
+    visitors: row.count_visitor_id,
+    visits: row.count,
+    date: getDate(row).format('YYYY-MM-DD'),
+  };
+};
+
+const getDate = (row: TimeSeriesResponseRow) => {
+  if ('dimension_date_last_action.month' in row) {
+    return moment(row['dimension_date_last_action.month']);
+  }
+
+  if ('dimension_date_last_action.week' in row) {
+    return moment(row['dimension_date_last_action.week']);
+  }
+
+  return moment(row['dimension_date_last_action.date']);
+};
+
+const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
+
 export const parseTimeSeries = (
   responseTimeSeries: TimeSeriesResponse,
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined,
   resolution: IResolution
 ): TimeSeries | null => {
-  if (responseTimeSeries.length === 0) return null;
-
-  const startAtMomentRounded = startAtMoment
-    ? roundDateToMidnight(startAtMoment)
-    : startAtMoment;
-
-  const endAtMomentRounded = endAtMoment
-    ? roundDateToMidnight(endAtMoment)
-    : endAtMoment;
-
-  if (resolution === 'month') {
-    return parseMonths(
-      responseTimeSeries,
-      startAtMomentRounded,
-      endAtMomentRounded
-    );
-  }
-
-  if (resolution === 'week') {
-    return parseWeeks(
-      responseTimeSeries,
-      startAtMomentRounded,
-      endAtMomentRounded
-    );
-  }
-
-  return parseDays(
+  return _parseTimeSeries(
     responseTimeSeries,
-    startAtMomentRounded,
-    endAtMomentRounded
+    startAtMoment,
+    endAtMoment,
+    resolution
   );
 };
 
-const RESOLUTION_TO_MESSAGE_KEY: Record<IResolution, keyof Translations> = {
+export const RESOLUTION_TO_MESSAGE_KEY: Record<
+  IResolution,
+  keyof Translations
+> = {
   month: 'last30Days',
   week: 'last7Days',
   day: 'yesterday',
@@ -95,9 +103,10 @@ export const parseExcelData = (
   translations: Translations,
   resolution: IResolution
 ) => {
+  const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
+
   const statsData = keys(stats).map((key) => {
     const stat = stats[key];
-    const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
 
     return {
       [translations.statistic]: translations[key],
@@ -118,4 +127,14 @@ export const parseExcelData = (
   };
 
   return xlsxData;
+};
+
+const parsePageViews = (pageViews: string | null | undefined) => {
+  if (!pageViews) return '-';
+  return round(+pageViews, 2).toString();
+};
+
+const parseVisitDuration = (seconds: string | null | undefined) => {
+  if (!seconds) return '-';
+  return new Date(+seconds * 1000).toISOString().substring(11, 19);
 };
