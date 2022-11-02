@@ -33,7 +33,7 @@ describe('Content builder toggle', () => {
   });
 
   after(() => {
-    // cy.apiRemoveProject(projectId);
+    cy.apiRemoveProject(projectId);
   });
 
   it('shows original description by default', () => {
