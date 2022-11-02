@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -37,8 +37,9 @@ const ProposalsCard = ({
     endAtMoment,
     resolution,
   });
-
   const { formatMessage } = useIntl();
+  const graphRef = useRef(); // TODO: How does this work?
+
   const labels = getLabels(formatMessage, resolution);
 
   if (isNilOrError(data)) {
@@ -58,7 +59,7 @@ const ProposalsCard = ({
       title={labels.cardTitle}
       exportMenu={{
         name: labels.cardTitle.toLowerCase().replace(' ', '_'),
-        svgNode: [],
+        svgNode: graphRef,
         xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,
