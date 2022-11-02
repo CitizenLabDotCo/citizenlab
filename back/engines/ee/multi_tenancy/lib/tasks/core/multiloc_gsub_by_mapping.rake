@@ -39,8 +39,7 @@ namespace :fix do
 
               if n_gsubs > 0
                 record.send("#{column}=", multiloc_value)
-                record.save!
-                gsubs_performed += n_gsubs
+                gsubs_performed += n_gsubs if record.save!
               end
             rescue Exception => e
               errors << "Exception occured for tenant: #{tenant.schema_name}, model: #{model}, record.id: #{record.id}, attribute: #{column}: #{e.message}"
