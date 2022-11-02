@@ -12,6 +12,8 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 import moment from 'moment';
 import { parseChartData, parseExcelData } from './parse';
+import { useIntl } from 'utils/cl-intl';
+import { getLabels } from './utils';
 
 // typings
 import { QueryParameters, Proposals, Response } from './typings';
@@ -90,7 +92,7 @@ export default function useProposals({
   resolution,
 }: QueryParameters) {
   const [proposals, setProposals] = useState<Proposals | NilOrError>(undefined);
-
+  const { formatMessage } = useIntl();
   useEffect(() => {
     const { observable } = analyticsStream<Response>(
       query({ projectId, startAtMoment, endAtMoment, resolution })
@@ -110,12 +112,14 @@ export default function useProposals({
           successful,
           successfulPeriod
         );
+
+        const labels = getLabels(formatMessage, resolution);
         const xlsxData = parseExcelData(
           all,
           allPeriod,
           successful,
           successfulPeriod,
-          resolution
+          labels
         );
 
         setProposals({

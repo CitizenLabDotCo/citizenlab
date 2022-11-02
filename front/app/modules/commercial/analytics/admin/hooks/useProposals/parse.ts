@@ -27,32 +27,21 @@ export const parseExcelData = (
   allPeriod,
   successful,
   successfulPeriod,
-  resolution
+  labels
 ): XlsxData => {
   const data = parseChartData(all, allPeriod, successful, successfulPeriod);
-  // TODO: Get translations
-  // statusChanged: formatMessage(messages.statusChanged),
-  //   officialUpdate: formatMessage(messages.officialUpdate),
-  //   feedbackGiven: formatMessage(messages.feedbackGiven),
-
-  // const BOTTOM_LABEL_COPY: Record<IResolution, MessageDescriptor> = {
-  //   month: messages.last30Days,
-  //   week: messages.last7Days,
-  //   day: messages.yesterday,
-  // };
 
   const xlsxDataSheet1 = {
-    ['All proposals']: data.totalProposals.value,
-    [`All proposals ${resolution}`]: data.totalProposals.lastPeriod,
-    ['Successful proposals']: data.successfulProposals.value,
-    [`Successful proposals ${resolution}`]: data.successfulProposals.lastPeriod,
+    [labels.total]: data.totalProposals.value,
+    [`${labels.total}:${labels.period}`]: data.totalProposals.lastPeriod,
+    [`${labels.successful}:${labels.period}`]: data.successfulProposals.value,
+    [`${labels.successful}:${labels.period}`]:
+      data.successfulProposals.lastPeriod,
   };
 
   const xlsxData = {
-    ['Proposals']: [xlsxDataSheet1],
+    [labels.cardTitle]: [xlsxDataSheet1],
   };
-
-  console.log(all, allPeriod, successful, successfulPeriod);
 
   return xlsxData;
 };
