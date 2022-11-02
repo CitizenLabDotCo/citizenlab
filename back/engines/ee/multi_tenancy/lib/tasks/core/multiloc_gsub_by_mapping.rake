@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
 # Iterate over records with fields that contain 'multiloc' in their names,
-# and replace specific URLs as mapped in the CSV file you provide.
+# and replace specific sub-strings as mapped in the CSV file you provide.
+# Designed for use in replacing URLs, but is generalized to sub-strings.
 #
-# mapping_urls is a CSV file, mapping old to new URLs, with format:
+# mapping is a CSV file, mapping old to new sub-strings, with format:
 # old,new
-# <old_url_1>,<new_url_1>
-# <old_url_1>,<new_url_1>
+# <old_sub-string_1>,<new_sub-string_1>
+# <old_sub-string_1>,<new_sub-string_1>
 # ...
 namespace :fix do
   desc 'Update selected cloudinary URLs to new s3 equivalents.'
-  task :replace_cloudinary_urls, %i[mapping_urls] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:mapping_urls]).read, { headers: true, col_sep: ',', converters: [] })
+  task :multiloc_gsub, %i[mapping] => [:environment] do |_t, args|
+    data = CSV.parse(open(args[:mapping]).read, { headers: true, col_sep: ',', converters: [] })
     gsubs_performed = 0
     errors = []
 
