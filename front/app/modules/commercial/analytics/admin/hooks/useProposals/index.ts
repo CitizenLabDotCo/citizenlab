@@ -13,20 +13,11 @@ import { getProjectFilter, getDateFilter } from '../../utils/query';
 import moment from 'moment';
 import { parseChartData, parseExcelData } from './parse';
 import { useIntl } from 'utils/cl-intl';
-import { getLabels } from './utils';
+import { getLastPeriodMoment, getLabels } from './utils';
 
 // typings
 import { QueryParameters, Proposals, Response } from './typings';
 import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
-
-// TODO: This is duplicated from elsewhere - but removed the formatting & simplified
-const getLastPeriodMoment = (resolution: IResolution) => {
-  let days = 1;
-  if (resolution === 'month') days = 30;
-  if (resolution === 'week') days = 7;
-  return moment().subtract({ days });
-};
 
 const query = ({
   projectId,

@@ -38,7 +38,7 @@ const ProposalsCard = ({
     resolution,
   });
   const { formatMessage } = useIntl();
-  const graphRef = useRef(); // TODO: How does this work?
+  const graphRef = useRef(); // TODO: How does the SVG/PNG export work & do we need it?
 
   const labels = getLabels(formatMessage, resolution);
 
@@ -80,7 +80,7 @@ const ProposalsCard = ({
           name={labels.successful}
           value={chartData.successfulProposals.value}
           bottomLabel={labels.period}
-          bottomLabelValue={chartData.successfulProposals.value}
+          bottomLabelValue={chartData.successfulProposals.lastPeriod}
           tooltipContent={labels.successfulToolTip}
         />
       </Box>

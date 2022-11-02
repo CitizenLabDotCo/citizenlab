@@ -15,10 +15,9 @@ interface Props {
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null | undefined;
   resolution: IResolution;
-  onMount: () => void;
 }
 
-export default ({ ...otherProps }: Props) => {
+export default ({ ...props }: Props) => {
   const analyticsActive = useFeatureFlag({ name: 'analytics' });
 
   useEffect(() => {
@@ -27,5 +26,5 @@ export default ({ ...otherProps }: Props) => {
 
   if (!analyticsActive) return null;
 
-  return <ProposalsCard {...otherProps} />;
+  return <ProposalsCard {...props} />;
 };
