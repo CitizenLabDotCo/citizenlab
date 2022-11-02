@@ -5,11 +5,6 @@
 namespace :fix do
   desc 'Update selected cloudinary URLs to new s3 equivalents.'
   task :replace_cloudinary_urls, %i[mapping_urls] => [:environment] do |_t, args|
-    # Temporary way to kill logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
-
     data = CSV.parse(open(args[:mapping_urls]).read, { headers: true, col_sep: ',', converters: [] })
     gsubs_performed = 0
     errors = []
