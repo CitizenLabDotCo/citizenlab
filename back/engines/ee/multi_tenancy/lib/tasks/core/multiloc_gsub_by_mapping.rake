@@ -62,6 +62,7 @@ namespace :fix do
 end
 
 def models
+  Zeitwerk::Loader.eager_load_all
   ObjectSpace.each_object(Class).select { |c| c < ApplicationRecord }.select(&:name)
 end
 
