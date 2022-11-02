@@ -18,6 +18,7 @@
   "app.components.ProjectTemplatePreview.goBackTo": "Wróć do {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Czy chcesz skorzystać z tego szablonu w swoim projekcie?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Skontaktuj się z osobą odpowiedzialną w administracji miasta lub skontaktuj się z {link}.",
+  "app.components.ProjectTemplatePreview.projectFolder": "Project folder",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "Wybrana data jest niewprawidłowa. Proszę podać datę w następującym formacie: YYYYY-MM-DD",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "Proszę wybrać datę rozpoczęcia projektu",
   "app.components.ProjectTemplatePreview.projectStartDate": "Data rozpoczęcia projektu",
