@@ -1258,7 +1258,6 @@
   "app.containers.SignUpInPage.signInPageMetaDescription": "Приступите партиципативној платформи {orgName} и придружите се конверзацији!",
   "app.containers.SignUpInPage.signUpMetaTitle": "Приступите ЦитизенЛаб платформи {tenantName} | ЦитизенЛаб",
   "app.containers.SignUpInPage.signUpPageMetaDescription": "Приступите партиципативној платформи {orgName} и придружите се конверзацији!",
-  "app.containers.SignUpInPage.slogan": "Региструјте се и учествујте!",
   "app.containers.SiteMap.contributions": "Доприноси",
   "app.containers.SiteMap.issues": "Коментари",
   "app.containers.SiteMap.options": "Опције",

@@ -1258,7 +1258,6 @@
   "app.containers.SignUpInPage.signInPageMetaDescription": "Zaloguj się do platformy uczestnictwa {orgName}, aby dołączyć do rozmowy!",
   "app.containers.SignUpInPage.signUpMetaTitle": "Zarejestruj się na platformie CitizenLab {tenantName} | CitizenLab",
   "app.containers.SignUpInPage.signUpPageMetaDescription": "Zarejestruj się na platformie uczestnictwa {orgName}, aby dołączyć do rozmowy!",
-  "app.containers.SignUpInPage.slogan": "Potrzebujemy Twojej opinii, aby nasze miasto było lepsze!",
   "app.containers.SiteMap.contributions": "Wkład",
   "app.containers.SiteMap.issues": "Potrzeby",
   "app.containers.SiteMap.options": "Opcje",

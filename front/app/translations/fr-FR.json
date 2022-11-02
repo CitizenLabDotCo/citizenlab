@@ -1258,7 +1258,6 @@
   "app.containers.SignUpInPage.signInPageMetaDescription": "Connectez-vous à la plateforme de participation de {orgName} pour rejoindre la conversation !",
   "app.containers.SignUpInPage.signUpMetaTitle": "Inscrivez-vous à la plateforme CitizenLab de {tenantName} | CitizenLab",
   "app.containers.SignUpInPage.signUpPageMetaDescription": "Inscrivez-vous à la plateforme de participation de {orgName} pour rejoindre la conversation !",
-  "app.containers.SignUpInPage.slogan": "Inscrivez-vous et partager vos contributions !",
   "app.containers.SiteMap.contributions": "Suggestions",
   "app.containers.SiteMap.issues": "Problèmes",
   "app.containers.SiteMap.options": "Options",

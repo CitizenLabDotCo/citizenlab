@@ -1258,7 +1258,6 @@
   "app.containers.SignUpInPage.signInPageMetaDescription": "Sohbete katılmak için {orgName} katılım platformunda oturum açın!",
   "app.containers.SignUpInPage.signUpMetaTitle": "{tenantName} için CitizenLab platformuna kaydolun | CitizenLab",
   "app.containers.SignUpInPage.signUpPageMetaDescription": "Sohbete katılmak için {orgName} katılım platformuna kaydolun!",
-  "app.containers.SignUpInPage.slogan": "Sohbete katılmak için kaydolun!",
   "app.containers.SiteMap.contributions": "Katkılar",
   "app.containers.SiteMap.issues": "Yorumlar",
   "app.containers.SiteMap.options": "Seçenekler",

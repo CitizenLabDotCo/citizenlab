@@ -1258,7 +1258,6 @@
   "app.containers.SignUpInPage.signInPageMetaDescription": "Prijavite se na platformu za sudjelovanje {orgName} i pridružite se razgovoru!",
   "app.containers.SignUpInPage.signUpMetaTitle": "Registrirajte se na CitizenLab platformu za {tenantName} | CitizenLab",
   "app.containers.SignUpInPage.signUpPageMetaDescription": "Registrirajte se na platformu za sudjelovanje {orgName} i pridružite se razgovoru!",
-  "app.containers.SignUpInPage.slogan": "Registrirajte se kako biste se pridružili razgovoru!",
   "app.containers.SiteMap.contributions": "Doprinosi",
   "app.containers.SiteMap.issues": "Komentari",
   "app.containers.SiteMap.options": "Opcije",
