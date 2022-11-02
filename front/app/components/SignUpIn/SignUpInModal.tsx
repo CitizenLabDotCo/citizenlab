@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { signOut } from 'services/auth';
 import tracks from './tracks';
 
@@ -57,155 +57,158 @@ interface Props {
   mobileNavbarRef: HTMLElement | null;
 }
 
-const SignUpInModal = ({
-  className,
-  onMounted,
-  onDeclineInvitation,
-  navbarRef,
-  mobileNavbarRef,
-}: Props) => {
-  const { formatMessage } = useIntl();
-  const isMounted = useIsMounted();
-  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
-    undefined
-  );
-  const [signUpActiveStep, setSignUpActiveStep] = useState<
-    TSignUpStep | null | undefined
-  >(undefined);
+const SignUpInModal = memo(
+  ({
+    className,
+    onMounted,
+    onDeclineInvitation,
+    navbarRef,
+    mobileNavbarRef,
+  }: Props) => {
+    const { formatMessage } = useIntl();
+    const isMounted = useIsMounted();
+    const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
+      undefined
+    );
+    const [signUpActiveStep, setSignUpActiveStep] = useState<
+      TSignUpStep | null | undefined
+    >(undefined);
 
-  const authUser = useAuthUser();
-  const participationConditions = useParticipationConditions(
-    metaData?.verificationContext
-  );
+    const authUser = useAuthUser();
+    const participationConditions = useParticipationConditions(
+      metaData?.verificationContext
+    );
 
-  const opened = metaData?.inModal || false;
+    const opened = metaData?.inModal || false;
 
-  const hasParticipationConditions =
-    !isNilOrError(participationConditions) &&
-    participationConditions.length > 0;
+    const hasParticipationConditions =
+      !isNilOrError(participationConditions) &&
+      participationConditions.length > 0;
 
-  const modalWidth =
-    signUpActiveStep === 'verification' && hasParticipationConditions
-      ? 820
-      : 580;
+    const modalWidth =
+      signUpActiveStep === 'verification' && hasParticipationConditions
+        ? 820
+        : 580;
 
-  useEffect(() => {
-    if (isMounted()) {
-      onMounted?.();
-    }
-  }, [onMounted, isMounted]);
+    useEffect(() => {
+      if (isMounted()) {
+        onMounted?.();
+      }
+    }, [onMounted, isMounted]);
 
-  useEffect(() => {
-    const subscriptions = [
-      openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
-        setMetaData(newMetaData);
-      }),
-      signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
-        setSignUpActiveStep(activeStep);
-      }),
-    ];
+    useEffect(() => {
+      const subscriptions = [
+        openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
+          setMetaData(newMetaData);
+        }),
+        signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
+          setSignUpActiveStep(activeStep);
+        }),
+      ];
 
-    return () =>
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }, [authUser]);
+      return () =>
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+    }, [authUser]);
 
-  const onClose = async () => {
-    const signedUpButNotCompleted =
-      !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
+    const onClose = async () => {
+      const signedUpButNotCompleted =
+        !isNilOrError(authUser) &&
+        !authUser.attributes.registration_completed_at;
 
-    if (signedUpButNotCompleted) {
-      // We need to await signOut. If authUser would be there
-      // when we call closeSignUpModal,
-      // it would cause openSignUpInModalIfNecessary in App/index.tsx to open the modal again.
-      // This happens because the user is indeed not completely registered/verified
-      // (see openSignUpInModalIfNecessary).
-      await signOut();
-      trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
-    }
-
-    if (onDeclineInvitation && metaData?.isInvitation) {
-      onDeclineInvitation();
-    }
-
-    closeSignUpInModal();
-  };
-
-  const onSignUpInCompleted = () => {
-    closeSignUpInModal();
-    const requiresVerification = !!metaData?.verification;
-
-    const authUserIsVerified =
-      !isNilOrError(authUser) && authUser.attributes.verified;
-
-    // Temporary fix for CL-355 given urgency
-    if (metaData?.pathname.includes('projects/')) {
-      location.reload();
-    }
-    // Temporary fix end
-
-    if (!requiresVerification || authUserIsVerified) {
-      metaData?.action?.();
-    }
-  };
-
-  const getUrl = () => {
-    if (metaData) {
-      const { flow } = metaData;
-
-      if (flow === 'signin') {
-        return '/sign-in';
+      if (signedUpButNotCompleted) {
+        // We need to await signOut. If authUser would be there
+        // when we call closeSignUpModal,
+        // it would cause openSignUpInModalIfNecessary in App/index.tsx to open the modal again.
+        // This happens because the user is indeed not completely registered/verified
+        // (see openSignUpInModalIfNecessary).
+        await signOut();
+        trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
       }
 
-      if (flow === 'signup') {
-        return '/sign-up';
+      if (onDeclineInvitation && metaData?.isInvitation) {
+        onDeclineInvitation();
       }
-    }
 
-    return null;
-  };
+      closeSignUpInModal();
+    };
 
-  return (
-    <FullscreenModal
-      opened={opened}
-      onClose={onClose}
-      navbarRef={navbarRef}
-      mobileNavbarRef={mobileNavbarRef}
-      url={getUrl()}
-      topBar={<MainHeader />}
-    >
-      <StyledBox display="flex" flexDirection="column" alignItems="center">
-        <Box
-          width="100%"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <Box padding="60px 0 0">
-            <StyledButton
-              className={className}
-              icon="arrow-left-circle"
-              onClick={onClose}
-              buttonStyle="text"
-              iconSize="26px"
-              padding="0"
-              textDecorationHover="underline"
-            >
-              {formatMessage(messages.goBack)}
-            </StyledButton>
-            {metaData && (
-              <StyledSignUpIn
-                metaData={metaData}
-                onSignUpInCompleted={onSignUpInCompleted}
-              />
-            )}
+    const onSignUpInCompleted = () => {
+      closeSignUpInModal();
+      const requiresVerification = !!metaData?.verification;
+
+      const authUserIsVerified =
+        !isNilOrError(authUser) && authUser.attributes.verified;
+
+      // Temporary fix for CL-355 given urgency
+      if (metaData?.pathname.includes('projects/')) {
+        location.reload();
+      }
+      // Temporary fix end
+
+      if (!requiresVerification || authUserIsVerified) {
+        metaData?.action?.();
+      }
+    };
+
+    const getUrl = () => {
+      if (metaData) {
+        const { flow } = metaData;
+
+        if (flow === 'signin') {
+          return '/sign-in';
+        }
+
+        if (flow === 'signup') {
+          return '/sign-up';
+        }
+      }
+
+      return null;
+    };
+
+    return (
+      <FullscreenModal
+        opened={opened}
+        onClose={onClose}
+        navbarRef={navbarRef}
+        mobileNavbarRef={mobileNavbarRef}
+        url={getUrl()}
+        topBar={<MainHeader />}
+      >
+        <StyledBox display="flex" flexDirection="column" alignItems="center">
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+          >
+            <Box padding="60px 0 0">
+              <StyledButton
+                className={className}
+                icon="arrow-left-circle"
+                onClick={onClose}
+                buttonStyle="text"
+                iconSize="26px"
+                padding="0"
+                textDecorationHover="underline"
+              >
+                {formatMessage(messages.goBack)}
+              </StyledButton>
+              {metaData && (
+                <StyledSignUpIn
+                  metaData={metaData}
+                  onSignUpInCompleted={onSignUpInCompleted}
+                />
+              )}
+            </Box>
+            <Box width="100%">
+              <PlatformFooter insideModal />
+            </Box>
           </Box>
-          <Box width="100%">
-            <PlatformFooter insideModal />
-          </Box>
-        </Box>
-      </StyledBox>
-    </FullscreenModal>
-  );
-};
+        </StyledBox>
+      </FullscreenModal>
+    );
+  }
+);
 
 export default SignUpInModal;
