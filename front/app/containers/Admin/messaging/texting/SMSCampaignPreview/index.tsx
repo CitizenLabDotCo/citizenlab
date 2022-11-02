@@ -217,13 +217,11 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
           <Button
             onClick={goBackToCampaignView}
             buttonStyle="secondary"
-            size="s"
             text={'Edit'}
           />
           <Button
             onClick={openSendConfirmationModal}
             buttonStyle="primary"
-            size="s"
             icon="send"
             iconPos="right"
             text={'Send'}
@@ -272,7 +270,6 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
         <Button
           onClick={openDeleteModal}
           buttonStyle="delete"
-          size="s"
           icon="delete"
           text={'Delete this draft SMS'}
         />
