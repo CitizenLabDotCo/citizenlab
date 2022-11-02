@@ -1102,7 +1102,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Añadir respuesta",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Añadir contenido de la encuesta",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Cancelar",
-  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
+  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# opciones} una {# opción} otra {# opciones}})",
   "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Elige varios",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Cerrar",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Cerrado",
