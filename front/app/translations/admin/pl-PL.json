@@ -452,7 +452,7 @@
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.messageSuccess": "Załączniki zapisane",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.pageMetaTitle": "Załączniki | {orgName}",
   "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.pageTitle": "Załączniki",
-  "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.saveButton": "Save attachments",
+  "app.containers.Admin.PagesAndMenu.containers.AttachmentsSection.saveButton": "Zapisz załączniki",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.blankDescriptionError": "Podaj treść dla wszystkich języków",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.buttonSuccess": "Sukces",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.contentEditorTitle": "Treść",
