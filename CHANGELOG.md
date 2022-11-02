@@ -2,6 +2,31 @@
 
 ## Next release
 
+### Fixed
+
+- [CL-1955] Fixed bug where admins were not able to add ideas via the map in non-active ideation phases
+
+### Added
+
+- [CL-1790] Add back to idea link on the idea edit page
+
+## 2022-11-01
+
+### Fixed
+
+- [CL-1765] Resize new icons used in 3 email campaigns
+- [CL-1765] Replace missing icon and resize new icons used in 3 email campaigns
+
+### Changed
+
+- [CL-1700] Native surveys: create a default form when creating new native survey projects or phases
+
+## 2022-10-28
+
+### Added
+
+- [CL-1800] It is now possible to disable email + password registration while logins are still allowed for existing users.
+
 ## 2022-10-27
 
 ### Added

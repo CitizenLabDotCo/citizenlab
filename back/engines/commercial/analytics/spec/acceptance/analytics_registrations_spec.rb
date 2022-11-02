@@ -46,12 +46,8 @@ resource 'Analytics - FactRegistrations model' do
         query: {
           fact: 'registration',
           filters: {
-            dimension_date_registration: {
-              date: { from: '2022-09-01', to: '2022-09-30' }
-            },
-            dimension_user: {
-              role: ['citizen', nil]
-            }
+            'dimension_date_registration.date': { from: '2022-09-01', to: '2022-09-30' },
+            'dimension_user.role': ['citizen', nil]
           },
           aggregations: {
             all: 'count'

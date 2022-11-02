@@ -142,7 +142,7 @@ ro:
         question:
           title: What is your question ?
         contribution:
-          title: What is your contribution ?
+          title: Care este contribuția ta?
         project:
           title: What is your project ?
         issue:
@@ -200,3 +200,8 @@ ro:
       status: 'Status'
       assignee_fullname: 'Responsabil'
       assignee_email: 'Assignee email'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'

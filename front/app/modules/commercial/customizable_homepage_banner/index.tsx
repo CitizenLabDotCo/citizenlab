@@ -1,15 +1,20 @@
-import FeatureFlag from 'components/FeatureFlag';
-import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
+const LayoutSettingField = React.lazy(
+  () =>
+    import(
+      'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField'
+    )
+);
 import React from 'react';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import CTASettings from './admin/CTASettings';
-import CTA from './citizen/CTA';
-import TwoColumnLayout from './citizen/TwoColumnLayout';
-import TwoRowLayout from './citizen/TwoRowLayout';
+const CTASettings = React.lazy(() => import('./admin/CTASettings'));
+const CTA = React.lazy(() => import('./citizen/CTA'));
+const TwoColumnLayout = React.lazy(() => import('./citizen/TwoColumnLayout'));
+const TwoRowLayout = React.lazy(() => import('./citizen/TwoRowLayout'));
 
 declare module 'utils/moduleUtils' {
   export interface OutletsPropertyMap {
