@@ -29,6 +29,14 @@ describe XlsxExport::DomicileFieldForReport do
       end
     end
 
+    context 'when the field value is "outside"' do
+      let(:model) { create(:user, custom_field_values: { 'domicile' => 'outside' }) }
+
+      it 'returns nil' do
+        expect(report_field.value_from(model)).to be_nil
+      end
+    end
+
     context 'when there are areas' do
       let(:area) do
         create(
