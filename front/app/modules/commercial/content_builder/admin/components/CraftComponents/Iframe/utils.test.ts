@@ -46,18 +46,6 @@ const validPlatformLinks = [
     urls: ['https://player.vimeo.com/video/719182720?h=ef103ac0a7'],
   },
   {
-    platform: 'Vimeo py',
-    urls: ['https://player.vimeo.com/1'],
-  },
-  {
-    platform: 'Vimeo pp',
-    urls: ['https://vimeo.com/1'],
-  },
-  {
-    platform: 'Vimeo p',
-    urls: ['https://vimeo.com/759916071'],
-  },
-  {
     platform: 'Dailymotion',
     urls: ['https://www.dailymotion.com/embed/video/x855y3y?'],
   },

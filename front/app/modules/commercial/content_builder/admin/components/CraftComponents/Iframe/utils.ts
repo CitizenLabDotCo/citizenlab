@@ -17,7 +17,6 @@ const urlWhiteList = [
   /^(https?):\/\/(www\.)?facebook\.com\//,
   /^(https?):\/\/(?:www\.)?youtu(?:be\.com\/(?:watch\?v=|embed\/)|\.be\/)([\w\-_]*)/,
   /^(https?):\/\/(?:www\.)?player\.vimeo\.(com\/video|vimeo\.com)\/(\d+)(?:|\/\?)/,
-  // /^(https?):\/\/(?:www\.)?player\.(vimeo\.com\/video|vimeo\.com)\/(\d+)(?:|\/\?)/,
   /^(https?):\/\/(?:www\.)?dailymotion\.com\/embed\/video\/?(.+)/,
   /^(https?):\/\/?media\.videotool\.dk\/?\?vn=[\w-]+/,
   /^(https?):\/\/(?:www\.)?dreambroker\.com\/channel\/([\w-]+)\/iframe\//,
