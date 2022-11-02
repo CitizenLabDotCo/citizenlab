@@ -10,7 +10,7 @@
 # <old_sub-string_1>,<new_sub-string_1>
 # ...
 namespace :fix do
-  desc 'Update mutlilocs according to mapping of old -> new substrings.'
+  desc 'Update multilocs according to mapping of old -> new substrings.'
   task :multiloc_gsub, %i[mapping] => [:environment] do |_t, args|
     data = CSV.parse(open(args[:mapping]).read, { headers: true, col_sep: ',', converters: [] })
     gsubs_performed = 0
