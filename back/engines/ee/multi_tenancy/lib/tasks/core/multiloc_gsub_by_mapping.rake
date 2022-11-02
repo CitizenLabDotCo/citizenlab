@@ -7,7 +7,7 @@
 # mapping is a CSV file, mapping old to new sub-strings, with format:
 # old,new
 # <old_sub-string_1>,<new_sub-string_1>
-# <old_sub-string_1>,<new_sub-string_1>
+# <old_sub-string_2>,<new_sub-string_2>
 # ...
 namespace :fix do
   desc 'Update multilocs according to mapping of old -> new substrings.'
