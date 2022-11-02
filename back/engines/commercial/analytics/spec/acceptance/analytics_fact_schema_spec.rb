@@ -18,7 +18,7 @@ resource 'Analytics - Fact tables' do
       describe 'Post' do
         let(:fact) { 'post' }
 
-        example_request 'Returns Post Fact attributes' do
+        example_request 'Returns Post Fact attributes and dimensions' do
           expect(status).to eq(200)
         end
       end
@@ -26,7 +26,7 @@ resource 'Analytics - Fact tables' do
       describe 'Participation' do
         let(:fact) { 'participation' }
 
-        example_request 'Returns Participation Fact attributes' do
+        example_request 'Returns Participation Fact attributes and dimensions' do
           expect(status).to eq(200)
         end
       end
@@ -34,7 +34,7 @@ resource 'Analytics - Fact tables' do
       describe 'Visit' do
         let(:fact) { 'visit' }
 
-        example_request 'Returns Visit Fact attributes' do
+        example_request 'Returns Visit Fact attributes and dimensions' do
           expect(status).to eq(200)
         end
       end
@@ -42,7 +42,7 @@ resource 'Analytics - Fact tables' do
       describe 'Registration' do
         let(:fact) { 'registration' }
 
-        example_request 'Returns Registration Fact attributes' do
+        example_request 'Returns Registration Fact attributes and dimensions' do
           expect(status).to eq(200)
         end
       end
