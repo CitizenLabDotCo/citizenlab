@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-
+import { useTheme } from 'styled-components';
 // components
 import PasswordSignin from 'components/SignUpIn/SignIn/PasswordSignin';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
@@ -37,6 +37,7 @@ export interface Props {
 
 const SignIn = memo<Props>(
   ({ metaData, customHeader, onSignInCompleted, onGoToSignUp, className }) => {
+    const theme: any = useTheme();
     const [activeStep, setActiveStep] =
       useState<TSignInSteps>('auth-providers');
 
@@ -76,13 +77,18 @@ const SignIn = memo<Props>(
     }, []);
 
     return (
-      <Box id="e2e-sign-in-container" className={className}>
+      <Box
+        id="e2e-sign-in-container"
+        className={className}
+        minHeight={`calc(100vh - ${theme.menuHeight}px - ${theme.footerHeight}px)`}
+        padding="40px 0 20px"
+      >
         <StyledHeaderContainer
           className="signupinheadercontainer"
           inModal={!!metaData.inModal}
         >
           {!customHeader ? (
-            <StyledHeaderTitle inModal={!!metaData.inModal}>
+            <StyledHeaderTitle>
               <FormattedMessage {...messages.logIn} />
             </StyledHeaderTitle>
           ) : (
@@ -91,7 +97,6 @@ const SignIn = memo<Props>(
         </StyledHeaderContainer>
 
         <StyledModalContentContainer
-          inModal={!!metaData.inModal}
           headerHeight="68px"
           className="signupincontentcontainer"
         >

@@ -88,41 +88,24 @@ export const StyledHeaderContainer = styled((props) => (
     `}
 `;
 
-export const StyledHeaderTitle = styled((props) => <HeaderTitle {...props} />)<{
-  inModal: boolean;
-}>`
+export const StyledHeaderTitle = styled(HeaderTitle)`
   font-size: ${fontSizes.xxl}px;
 `;
 
 export const StyledModalContentContainer = styled(ModalContentContainer)<{
-  inModal: boolean;
   headerHeight: string;
 }>`
   padding-left: 0;
   padding-right: 0;
 
   ${(props) =>
-    props.inModal &&
-    css`
+    `
       padding-top: 20px;
       padding-bottom: 0px;
       max-height: calc(85vh - ${props.headerHeight});
 
       ${media.phone`
         max-height: ${(props) => `calc(85vh - 30px - ${props.headerHeight})`};
-      `}
-    `}
-
-  ${(props) =>
-    !props.inModal &&
-    css`
-      padding-top: 10px;
-      padding-bottom: 0px;
-
-      ${media.phone`
-        padding-top: 10px;
-        padding-left: 2px;
-        padding-right: 2px;
       `}
     `}
 `;

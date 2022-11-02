@@ -34,7 +34,7 @@ const Header = ({
       <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
         <div>
           <StyledHeaderContainer inModal={!!inModal}>
-            <StyledHeaderTitle inModal={!!inModal}>
+            <StyledHeaderTitle>
               <FormattedMessage {...messages.signUp2} />
             </StyledHeaderTitle>
 

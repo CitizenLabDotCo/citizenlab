@@ -21,8 +21,4 @@ export default defineMessages({
     defaultMessage:
       'Log into the participation platform of {orgName} to join the conversation!',
   },
-  slogan: {
-    id: 'app.containers.SignUpInPage.slogan',
-    defaultMessage: 'We need your opinion to create a better city!',
-  },
 });

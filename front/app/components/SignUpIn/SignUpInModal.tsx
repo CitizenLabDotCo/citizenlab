@@ -6,7 +6,7 @@ import tracks from './tracks';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 import { TSignUpStep } from 'components/SignUpIn/SignUp';
 import FullscreenModal from 'components/UI/FullscreenModal';
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import PlatformFooter from 'containers/PlatformFooter';
 import MainHeader from 'containers/MainHeader';
 
@@ -14,8 +14,6 @@ import MainHeader from 'containers/MainHeader';
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -39,14 +37,9 @@ const StyledBox = styled(Box)`
 `;
 
 const StyledSignUpIn = styled(SignUpIn)`
-  padding-top: 20px;
   display: flex;
   flex-direction: column;
   width: 580px;
-`;
-
-const StyledButton = styled(Button)`
-  display: inline-flex;
 `;
 
 interface Props {
@@ -58,14 +51,7 @@ interface Props {
 }
 
 const SignUpInModal = memo(
-  ({
-    className,
-    onMounted,
-    onDeclineInvitation,
-    navbarRef,
-    mobileNavbarRef,
-  }: Props) => {
-    const { formatMessage } = useIntl();
+  ({ onMounted, onDeclineInvitation, navbarRef, mobileNavbarRef }: Props) => {
     const isMounted = useIsMounted();
     const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
       undefined
@@ -182,14 +168,12 @@ const SignUpInModal = memo(
             flexDirection="column"
             alignItems="center"
           >
-            <Box padding="20px 0">
-              {metaData && (
-                <StyledSignUpIn
-                  metaData={metaData}
-                  onSignUpInCompleted={onSignUpInCompleted}
-                />
-              )}
-            </Box>
+            {metaData && (
+              <StyledSignUpIn
+                metaData={metaData}
+                onSignUpInCompleted={onSignUpInCompleted}
+              />
+            )}
             <Box width="100%">
               <PlatformFooter insideModal />
             </Box>
