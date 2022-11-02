@@ -192,13 +192,13 @@
       created_at: 'Submitted at'
       published_at: 'Published at'
       comments_count: 'Kommentarer'
-      upvotes_count: 'Upvotes'
-      downvotes_count: 'Downvotes'
+      upvotes_count: 'Positive stemmer'
+      downvotes_count: 'Negative stemmer'
       baskets_count: 'Baskets'
-      input_url: 'URL'
+      input_url: 'URL-adresse'
       project: 'Prosjekt'
       status: 'Status'
-      assignee_fullname: 'Assignee'
+      assignee_fullname: 'Anvist til'
       assignee_email: 'Assignee email'
   form_builder:
     default_select_field:
