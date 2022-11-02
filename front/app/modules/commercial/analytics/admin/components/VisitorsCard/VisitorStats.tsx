@@ -22,7 +22,7 @@ interface Props {
   resolution: IResolution;
 }
 
-const BOTTOM_LABEL_COPY: Record<IResolution, MessageDescriptor> = {
+export const BOTTOM_LABEL_COPY: Record<IResolution, MessageDescriptor> = {
   month: messages.last30Days,
   week: messages.last7Days,
   day: messages.yesterday,
