@@ -5,6 +5,7 @@ import { analyticsStream } from '../../services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import { getTranslations } from './translations';
 
 // parse
 import { parseTableData } from './parse';
@@ -12,7 +13,6 @@ import { parseTableData } from './parse';
 // utils
 import { referrersListQuery, referrersTotalQuery } from './query';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { getTranslations } from './utils';
 import { getPageNumberFromUrl } from '../../utils/pagination';
 
 // typings

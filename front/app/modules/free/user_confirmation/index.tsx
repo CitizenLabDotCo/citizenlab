@@ -1,7 +1,11 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ConfirmationSignupStep from './citizen/components/ConfirmationSignupStep';
-import ToggleUserConfirmation from './admin/components/ToggleUserConfirmation';
+const ConfirmationSignupStep = React.lazy(
+  () => import('./citizen/components/ConfirmationSignupStep')
+);
+const ToggleUserConfirmation = React.lazy(
+  () => import('./admin/components/ToggleUserConfirmation')
+);
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export const CONFIRMATION_STEP_NAME = 'confirmation';
