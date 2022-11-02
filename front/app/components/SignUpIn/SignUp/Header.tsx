@@ -17,7 +17,7 @@ interface Props {
   onResize: (w: number, h: number) => void;
   activeStepNumber: number | null;
   totalStepsCount: number;
-  error?: string;
+  error?: string | null;
   stepName: string;
 }
 

@@ -9,6 +9,7 @@ import {
   StyledHeaderTitle,
   StyledModalContentContainer,
 } from 'components/SignUpIn/styles';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
 import { handleOnSSOClick } from 'services/singleSignOn';
@@ -21,20 +22,8 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/SignUpIn/tracks';
 
-// style
-import styled from 'styled-components';
-
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
-
-const Container = styled.div`
-  min-height: calc(
-    100vh -
-      ${(props) => {
-        return props.theme.menuHeight + props.theme.footerHeight;
-      }}px
-  );
-`;
 
 export type TSignInSteps = 'auth-providers' | 'password-signin';
 
@@ -87,7 +76,7 @@ const SignIn = memo<Props>(
     }, []);
 
     return (
-      <Container id="e2e-sign-in-container" className={className}>
+      <Box id="e2e-sign-in-container" className={className}>
         <StyledHeaderContainer
           className="signupinheadercontainer"
           inModal={!!metaData.inModal}
@@ -133,7 +122,7 @@ const SignIn = memo<Props>(
             </>
           )}
         </StyledModalContentContainer>
-      </Container>
+      </Box>
     );
   }
 );

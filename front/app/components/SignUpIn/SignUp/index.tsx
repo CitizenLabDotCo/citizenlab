@@ -34,8 +34,8 @@ import {
 import { signUpActiveStepChange } from 'components/SignUpIn/events';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
 
@@ -55,12 +55,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: calc(
-    100vh -
-      ${(props) => {
-        return props.theme.menuHeight + props.theme.footerHeight;
-      }}px
-  );
 `;
 
 const SignUpHelperText = styled(QuillEditedContent)`
@@ -118,12 +112,12 @@ export interface Props {
 }
 
 const SignUp = ({
-  intl: { formatMessage },
   metaData,
   onSignUpCompleted,
   onGoToSignIn,
   className,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
   const theme: any = useTheme();
@@ -149,7 +143,7 @@ const SignUp = ({
       accountCreated,
     })
   );
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<string | null>(null);
   const [headerHeight, setHeaderHeight] = useState<string>('100px');
 
   // this transitions the current step to the next step
@@ -378,4 +372,4 @@ const SignUp = ({
     </Container>
   );
 };
-export default injectIntl(SignUp);
+export default SignUp;
