@@ -1,4 +1,3 @@
-
 # Changelog
 
 ## Next release
@@ -9,7 +8,15 @@
 
 ### Added
 
+- [CL-1955] Fixed bug where admins were not able to add ideas via the map in non-active ideation phases
+- [CL-1790] Add back to idea link on the idea edit page
+
+## 2022-11-01
+
+### Fixed
+
 - [CL-1765] Resize new icons used in 3 email campaigns
+- [CL-1765] Replace missing icon and resize new icons used in 3 email campaigns
 
 ### Changed
 

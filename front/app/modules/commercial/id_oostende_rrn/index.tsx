@@ -1,8 +1,12 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
-import OostendeRrnButton from './components/OostendeRrnButton';
-import VerificationFormOostendeRrn from './components/VerificationFormOostendeRrn';
+const OostendeRrnButton = React.lazy(
+  () => import('./components/OostendeRrnButton')
+);
+const VerificationFormOostendeRrn = React.lazy(
+  () => import('./components/VerificationFormOostendeRrn')
+);
 import { isLastVerificationMethod } from 'modules/commercial/verification';
 import { TVerificationMethodName } from 'services/verificationMethods';
 

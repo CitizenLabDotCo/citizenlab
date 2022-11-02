@@ -10,8 +10,7 @@ import renderTooltip from './renderTooltip';
 
 // i18n
 import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -38,8 +37,9 @@ const Chart = ({
   endAtMoment,
   resolution,
   innerRef,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
+
   const emptyData = useMemo(
     () => generateEmptyData(startAtMoment, endAtMoment, resolution),
     [startAtMoment, endAtMoment, resolution]
@@ -117,4 +117,4 @@ const Chart = ({
   );
 };
 
-export default injectIntl(Chart);
+export default Chart;
