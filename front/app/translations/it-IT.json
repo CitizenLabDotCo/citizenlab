@@ -264,7 +264,7 @@
   "app.components.PagesForm.pageUrl": "URL della pagina",
   "app.components.PagesForm.resultingPageURL": "URL risultante",
   "app.components.PagesForm.savePage": "Salva la pagina",
-  "app.components.PagesForm.saveSuccess": "Page successfully saved.",
+  "app.components.PagesForm.saveSuccess": "Pagina salvata correttamente.",
   "app.components.PagesForm.slugLabelTooltip": "Puoi specificare l'ultima parte dell'URL della tua pagina (chiamata slug). Per esempio, l'URL della pagina corrente è {currentPageURL}, dove {currentPageSlug} è lo slug.",
   "app.components.PagesForm.slugRegexError": "Lo slug può contenere solo lettere regolari minuscole (a-z), numeri (0-9) e trattini (-). Il primo e l'ultimo carattere non possono essere trattini. I trattini consecutivi (--) sono proibiti.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Fornire titolo per almeno una lingua",
