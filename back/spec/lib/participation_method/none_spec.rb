@@ -14,6 +14,12 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
+  describe '#create_default_form!' do
+    it 'does not create a default form' do
+      expect { participation_method.create_default_form! }.not_to change(CustomForm, :count)
+    end
+  end
+
   describe '#validate_built_in_fields?' do
     it 'returns false' do
       expect(participation_method.validate_built_in_fields?).to be false

@@ -1,8 +1,10 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
-import GentRrnButton from './components/GentRrnButton';
-import VerificationFormGentRrn from './components/VerificationFormGentRrn';
+const GentRrnButton = React.lazy(() => import('./components/GentRrnButton'));
+const VerificationFormGentRrn = React.lazy(
+  () => import('./components/VerificationFormGentRrn')
+);
 import { isLastVerificationMethod } from 'modules/commercial/verification';
 import { TVerificationMethodName } from 'services/verificationMethods';
 

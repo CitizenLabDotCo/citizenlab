@@ -18,7 +18,6 @@ import { toFullMonth } from 'utils/dateUtils';
 // typings
 import { TimeSeriesRow } from '../../../hooks/useVisitors/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-import {} from 'typings';
 
 type DataKey = 'visitors' | 'visits';
 
