@@ -3,10 +3,11 @@
 module Analytics
   class Query
     MODELS = {
-      post: FactPost,
       participation: FactParticipation,
-      visit: FactVisit,
-      registration: FactRegistration
+      post: FactPost,
+      project_status: FactProjectStatus,
+      registration: FactRegistration,
+      visit: FactVisit
     }.freeze
 
     def initialize(query)
