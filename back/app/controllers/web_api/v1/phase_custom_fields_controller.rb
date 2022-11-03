@@ -15,7 +15,7 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
 
   def json_forms_schema
     if phase
-      render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user)
+      render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user, phase.input_term)
     else
       send_not_found
     end

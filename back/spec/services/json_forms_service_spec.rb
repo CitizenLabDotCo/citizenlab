@@ -242,7 +242,7 @@ describe JsonFormsService do
         )
         fields = [required_field, optional_field, build_in_required_field, build_in_optional_field]
 
-        output = service.input_ui_and_json_multiloc_schemas fields, user
+        output = service.input_ui_and_json_multiloc_schemas fields, user, 'question'
         expect(output).to include(
           {
             json_schema_multiloc: {
@@ -277,7 +277,7 @@ describe JsonFormsService do
             ui_schema_multiloc: {
               'en' => {
                 type: 'Categorization',
-                options: { formId: 'idea-form', inputTerm: 'idea' },
+                options: { formId: 'idea-form', inputTerm: 'question' },
                 elements: [
                   {
                     type: 'Category',

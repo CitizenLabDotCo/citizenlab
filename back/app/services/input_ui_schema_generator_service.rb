@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class InputUiSchemaGeneratorService < UiSchemaGeneratorService
+  def initialize(input_term)
+    super()
+    @input_term = input_term || ParticipationContext::DEFAULT_INPUT_TERM
+  end
+
   def visit_html_multiloc(field)
     super.tap do |ui_field|
       if field.code == 'body_multiloc'
@@ -20,7 +25,6 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def generate_for_current_locale(fields)
     participation_context = fields.first.resource.participation_context
     participation_method = Factory.instance.participation_method_for participation_context
-    input_term = participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM
     built_in_field_index = fields.select(&:built_in?).index_by(&:code)
     main_fields = built_in_field_index.slice('title_multiloc', 'author_id', 'body_multiloc').values
     details_fields = built_in_field_index.slice('proposed_budget', 'budget', 'topic_ids', 'location_description').values
@@ -44,6 +48,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   private
+
+  attr_reader :input_term
 
   def admin_field?(field)
     field.code == 'budget' || field.code == 'author_id'

@@ -19,7 +19,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def json_forms_schema
     input = Idea.find params[:id]
     enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(enabled_fields, current_user)
+    render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(enabled_fields, current_user, input.input_term)
   end
 
   def index

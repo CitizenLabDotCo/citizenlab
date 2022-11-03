@@ -140,6 +140,59 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe '#input_term' do
+    context 'in a continuous project' do
+      let(:project) { create :continuous_project, input_term: 'issue' }
+      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the input_term of the project' do
+        expect(idea.input_term).to eq 'issue'
+      end
+    end
+
+    context 'in a timeline project when created in a phase' do
+      let(:project) { create :project_with_future_native_survey_phase }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
+
+      it 'returns the input_term of the phase' do
+        phase.update!(input_term: 'option')
+        expect(idea.input_term).to eq 'option'
+      end
+    end
+
+    context 'in a timeline project when created outside a phase' do
+      let(:project) { create :project_with_future_native_survey_phase, input_term: 'issue' }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the input_term of the project' do
+        expect(idea.input_term).to eq 'issue'
+      end
+    end
+
+    context 'in a timeline project when created in an ideation phase, and the current phase is information' do
+      let(:project) { create :project_with_past_ideation_and_current_information_phase, input_term: 'issue' }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns nil, because an information does not have an input_term' do
+        expect(idea.input_term).to be_nil
+      end
+    end
+
+    context 'in a timeline project when the project does not have an active phase' do
+      let(:project) { create :project_with_past_ideation_and_future_ideation_phase, input_term: 'issue' }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the input_term of the project' do
+        expect(idea.input_term).to eq 'issue'
+      end
+    end
+  end
+
   context 'with custom fields' do
     context 'when creating ideas' do
       let(:idea) { build :idea }

@@ -22,14 +22,14 @@ class JsonFormsService
     }
   end
 
-  def input_ui_and_json_multiloc_schemas(fields, current_user)
+  def input_ui_and_json_multiloc_schemas(fields, current_user, input_term)
     return if fields.empty?
 
     visible_fields = custom_form_allowed_fields(fields, current_user).reject do |field|
       !field.enabled? || field.hidden?
     end
     json_schema_multiloc = InputJsonSchemaGeneratorService.new.generate_for visible_fields
-    ui_schema_multiloc = InputUiSchemaGeneratorService.new.generate_for visible_fields
+    ui_schema_multiloc = InputUiSchemaGeneratorService.new(input_term).generate_for visible_fields
     {
       json_schema_multiloc: json_schema_multiloc,
       ui_schema_multiloc: ui_schema_multiloc

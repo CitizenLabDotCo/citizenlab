@@ -39,9 +39,14 @@ resource 'Phase level Custom Fields' do
 
   describe 'in an ideation phase with form fields' do
     let(:project) { create(:project_with_active_ideation_phase) }
-    let(:phase_id) { project.phases.first.id }
+    let(:phase) { project.phases.first }
+    let(:phase_id) { phase.id }
     let(:custom_form) { create(:custom_form, participation_context: project) }
     let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+
+    before do
+      phase.update!(input_term: 'question')
+    end
 
     get 'web_api/v1/phases/:phase_id/custom_fields/schema' do
       example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
@@ -89,6 +94,15 @@ resource 'Phase level Custom Fields' do
           %i[en fr-FR nl-NL].each do |locale|
             expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
           end
+          ui_schema = json_response[:ui_schema_multiloc][:en]
+          expect(ui_schema.keys).to eq %i[type options elements]
+          expect(ui_schema[:type]).to eq 'Categorization'
+          expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
+          expect(ui_schema[:elements][0]).to include(
+            type: 'Category',
+            label: 'What is your question ?',
+            options: { id: 'mainContent' }
+          )
         else
           %i[en fr-FR nl-NL].each do |locale|
             expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq visible_built_in_field_keys

@@ -171,6 +171,13 @@ class Idea < ApplicationRecord
     end
   end
 
+  def input_term
+    return creation_phase.input_term if participation_method_on_creation.form_in_phase?
+
+    participation_context = ParticipationContextService.new.get_participation_context(project)
+    participation_context ? participation_context.input_term : project.input_term
+  end
+
   def participation_method_on_creation
     Factory.instance.participation_method_for participation_context_on_creation
   end
