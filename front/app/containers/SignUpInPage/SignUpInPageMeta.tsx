@@ -87,5 +87,5 @@ const Data = adopt<DataProps>({
 });
 
 export default () => (
-  <Data>{(dataprops) => <SignUpInPageMetaWithHoC {...dataprops} />}</Data>
+  <Data>{(dataProps) => <SignUpInPageMetaWithHoC {...dataProps} />}</Data>
 );

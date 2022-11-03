@@ -12,6 +12,7 @@ import TenantLogo from './TenantLogo';
 import LanguageSelector from 'containers/MainHeader/LanguageSelector';
 import Fragment from 'components/Fragment';
 import { IconButton, useWindowSize } from '@citizenlab/cl2-component-library';
+import Link from 'utils/cl-router/Link';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -192,7 +193,9 @@ const StyledRightFragment = styled(Fragment)`
   max-width: 200px;
 `;
 
-const LogInMenuItem = styled.button`
+const LogInMenuItem = styled(Link)`
+  display: flex;
+  align-items: center;
   height: 100%;
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
@@ -213,7 +216,7 @@ const LogInMenuItem = styled.button`
   `}
 `;
 
-const SignUpMenuItem = styled.button`
+const SignUpMenuItem = styled(Link)`
   height: 100%;
   color: #fff;
   font-size: ${fontSizes.base}px;
@@ -311,14 +314,6 @@ const MainHeader = ({
     trackEventByName(tracks.clickSignUpLink.name);
   };
 
-  const signIn = () => {
-    openSignUpInModal({ flow: 'signin' });
-  };
-
-  const signUp = () => {
-    openSignUpInModal({ flow: 'signup' });
-  };
-
   return (
     <Container
       id="e2e-navbar"
@@ -364,7 +359,7 @@ const MainHeader = ({
                   <RightItem className="login noLeftMargin">
                     <LogInMenuItem
                       id="e2e-navbar-login-menu-item"
-                      onClick={signIn}
+                      to="/sign-in"
                     >
                       <NavigationItemBorder />
                       <NavigationItemText>
@@ -381,7 +376,7 @@ const MainHeader = ({
                   >
                     <SignUpMenuItem
                       id="e2e-navbar-signup-menu-item"
-                      onClick={signUp}
+                      to="/sign-up"
                     >
                       <NavigationItemText className="sign-up-span">
                         <FormattedMessage {...messages.signUp} />

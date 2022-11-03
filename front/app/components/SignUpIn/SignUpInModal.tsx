@@ -4,7 +4,6 @@ import tracks from './tracks';
 
 // components
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
-import { TSignUpStep } from 'components/SignUpIn/SignUp';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import { Box } from '@citizenlab/cl2-component-library';
 import PlatformFooter from 'containers/PlatformFooter';
@@ -13,7 +12,6 @@ import MainHeader from 'containers/MainHeader';
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
-import useParticipationConditions from 'hooks/useParticipationConditions';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,7 +21,6 @@ import { trackEventByName } from 'utils/analytics';
 import {
   closeSignUpInModal,
   openSignUpInModal$,
-  signUpActiveStepChange$,
 } from 'components/SignUpIn/events';
 
 // style
@@ -56,25 +53,8 @@ const SignUpInModal = memo(
     const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
       undefined
     );
-    const [signUpActiveStep, setSignUpActiveStep] = useState<
-      TSignUpStep | null | undefined
-    >(undefined);
-
     const authUser = useAuthUser();
-    const participationConditions = useParticipationConditions(
-      metaData?.verificationContext
-    );
-
     const opened = metaData?.inModal || false;
-
-    const hasParticipationConditions =
-      !isNilOrError(participationConditions) &&
-      participationConditions.length > 0;
-
-    const modalWidth =
-      signUpActiveStep === 'verification' && hasParticipationConditions
-        ? 820
-        : 580;
 
     useEffect(() => {
       if (isMounted()) {
@@ -86,9 +66,6 @@ const SignUpInModal = memo(
       const subscriptions = [
         openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
           setMetaData(newMetaData);
-        }),
-        signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
-          setSignUpActiveStep(activeStep);
         }),
       ];
 
