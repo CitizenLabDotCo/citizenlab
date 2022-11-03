@@ -22,9 +22,6 @@ import { media } from 'utils/styleUtils';
 import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.main`
-  width: 100%;
-  margin: 0;
-  padding: 0;
   display: flex;
   justify-content: center;
 
