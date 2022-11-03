@@ -95,14 +95,12 @@ const SignUpInPage = ({ flow }: Props) => {
     <>
       <SignUpInPageMeta />
       <Container id="e2e-sign-up-in-page">
-        {metaData && (
-          <Box maxWidth="580px" padding={phone ? '0 20px' : '0 40px'}>
-            <SignUpIn
-              metaData={metaData}
-              onSignUpInCompleted={onSignUpInCompleted}
-            />
-          </Box>
-        )}
+        <Box maxWidth="580px" width="100%" padding={phone ? '0 20px' : '0'}>
+          <SignUpIn
+            metaData={metaData}
+            onSignUpInCompleted={onSignUpInCompleted}
+          />
+        </Box>
       </Container>
     </>
   );

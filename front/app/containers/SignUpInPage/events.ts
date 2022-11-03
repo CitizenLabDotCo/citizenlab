@@ -9,13 +9,12 @@ enum events {
 
 // ---------
 
-function emitOpenSignUpInModal(metaData: ISignUpInMetaData | undefined) {
+function emitOpenSignUpInModal(metaData: ISignUpInMetaData | null) {
   eventEmitter.emit(events.openSignUpInModal, metaData);
 }
 
-export const openSignUpInModal$ = eventEmitter.observeEvent<
-  ISignUpInMetaData | undefined
->(events.openSignUpInModal);
+export const openSignUpInModal$ =
+  eventEmitter.observeEvent<ISignUpInMetaData | null>(events.openSignUpInModal);
 
 export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
   const emittedMetaData: ISignUpInMetaData = {
@@ -34,7 +33,7 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
 }
 
 export function closeSignUpInModal() {
-  emitOpenSignUpInModal(undefined);
+  emitOpenSignUpInModal(null);
 }
 
 // ---------

@@ -34,9 +34,7 @@ interface Props {
 const SignUpInModal = memo(
   ({ onMounted, onDeclineInvitation, navbarRef, mobileNavbarRef }: Props) => {
     const isMounted = useIsMounted();
-    const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
-      undefined
-    );
+    const [metaData, setMetaData] = useState<ISignUpInMetaData | null>(null);
     const authUser = useAuthUser();
     const theme: any = useTheme();
     const opened = metaData?.inModal || false;
