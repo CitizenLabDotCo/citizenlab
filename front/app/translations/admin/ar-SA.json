@@ -18,7 +18,6 @@
   "app.components.ProjectTemplatePreview.goBackTo": "العودة إلى {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "هل ترغب في استخدام هذا القالب لمشروع المشاركة الخاص بك؟",
   "app.components.ProjectTemplatePreview.infoboxLine2": "تواصل مع الشخص المسؤول في إدارة مدينتك، أو تواصل مع {link}.",
-  "app.components.ProjectTemplatePreview.projectFolder": "Project folder",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "التاريخ المحدد غير صالح. يُرجى تحديد تاريخ بالتنسيق التالي: سنة-شهر-يوم",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "يُرجى تحديد تاريخ بدء المشروع",
   "app.components.ProjectTemplatePreview.projectStartDate": "تاريخ بدء مشروعك",

@@ -25,7 +25,7 @@ const TextingHeader = ({
         buttonStyle="text"
         icon="arrow-left"
         padding="0"
-        size="2"
+        size="m"
         mb="2rem"
         text={'Go back'}
       />

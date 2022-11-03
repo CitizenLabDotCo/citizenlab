@@ -175,7 +175,11 @@ module XlsxExport
       return [] unless include_private_attributes
 
       user_fields.map do |field|
-        CustomFieldForReport.new(field, :author)
+        if field.code == 'domicile'
+          DomicileFieldForReport.new(field, :author)
+        else
+          CustomFieldForReport.new(field, :author)
+        end
       end
     end
 

@@ -18,7 +18,6 @@
   "app.components.ProjectTemplatePreview.goBackTo": "Volte para o {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Você quer usar este modelo para o seu projeto de participação?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Entre em contato com a pessoa responsável da administração da sua cidade ou entre em contato com {link}.",
-  "app.components.ProjectTemplatePreview.projectFolder": "Project folder",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "A data selecionada é inválida. Forneça uma data no seguinte formato: AAAA-MM-DD",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "Por favor selecione uma data de início do projeto",
   "app.components.ProjectTemplatePreview.projectStartDate": "Data de início do seu projeto",
