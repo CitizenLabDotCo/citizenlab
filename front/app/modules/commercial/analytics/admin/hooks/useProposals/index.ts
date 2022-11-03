@@ -34,7 +34,7 @@ const query = ({
     accepted = false
   ): QuerySchema => {
     const acceptedStatus = () => {
-      return accepted ? { dimension_status: { code: 'accepted' } } : {};
+      return accepted ? { 'dimension_status.code': 'accepted' } : {};
     };
     return {
       fact: 'post',
@@ -42,7 +42,7 @@ const query = ({
         all: 'count',
       },
       filters: {
-        dimension_type: { name: 'initiative' },
+        'dimension_type.name': 'initiative',
         ...acceptedStatus,
         ...getProjectFilter('dimension_project', projectId),
         ...getDateFilter('dimension_date_created', startMoment, endMoment),
