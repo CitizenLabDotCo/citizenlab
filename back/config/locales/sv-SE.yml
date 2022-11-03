@@ -117,7 +117,7 @@ sv:
         title: Författare
         description:
       topic_ids:
-        title: Topics
+        title: Ämnen
         description:
       location:
         title: Plats
@@ -202,6 +202,6 @@ sv:
       assignee_email: 'Mottagarens e-postadress'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'Din fråga'
+      option1: 'Alternativ 1'
+      option2: 'Alternativ 2'
