@@ -142,7 +142,7 @@ ro:
         question:
           title: What is your question ?
         contribution:
-          title: What is your contribution ?
+          title: Care este contribuția ta?
         project:
           title: What is your project ?
         issue:

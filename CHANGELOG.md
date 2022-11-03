@@ -4,10 +4,11 @@
 
 ### Fixed
 
-- [CL-1955] Fixed bug where admins were not able to add ideas via the map in non-active ideation phases
+- [CL-1841] Show project attachments in content builder project description
 
 ### Added
 
+- [CL-1955] Fixed bug where admins were not able to add ideas via the map in non-active ideation phases
 - [CL-1790] Add back to idea link on the idea edit page
 
 ## 2022-11-01
