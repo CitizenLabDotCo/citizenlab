@@ -46,9 +46,7 @@ const query = ({
   const totalsWholePeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
+      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_last_action',
@@ -62,9 +60,7 @@ const query = ({
   const totalsLastPeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
+      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilterLastPeriod('dimension_date_last_action', resolution),
     },
@@ -74,9 +70,7 @@ const query = ({
   const timeSeriesQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
+      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_last_action',

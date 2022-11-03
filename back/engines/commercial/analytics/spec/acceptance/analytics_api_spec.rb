@@ -60,7 +60,7 @@ resource 'Analytics', use_transactional_fixtures: false do
         }
         do_request(query: query)
         assert_status 400
-        expect(json_response_body[:messages]).to eq(['Groups field dimension_non_existent does not exist.'])
+        expect(json_response_body[:messages]).to eq(['Groups field dimension_non_existent.id does not exist.'])
       end
 
       example 'returns one page pagination' do

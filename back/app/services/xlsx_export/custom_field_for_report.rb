@@ -18,12 +18,16 @@ module XlsxExport
         model = model.public_send(scope)
         return unless model
       end
-      visitor = ValueVisitor.new(model)
+      visitor = ValueVisitor.new(model, option_index)
       visitor.visit self
     end
 
     private
 
-    attr_reader :custom_field, :scope
+    attr_reader :custom_field, :scope, :options
+
+    def option_index
+      @option_index ||= custom_field.options.index_by(&:key)
+    end
   end
 end

@@ -52,7 +52,7 @@ const query = ({
       feedback_time_taken: 'avg',
     },
     filters: {
-      dimension_type: { name: 'idea' },
+      'dimension_type.name': 'idea',
       ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
@@ -67,7 +67,7 @@ const query = ({
       'dimension_status.color': 'first',
     },
     filters: {
-      dimension_type: { name: 'idea' },
+      'dimension_type.name': 'idea',
       ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
