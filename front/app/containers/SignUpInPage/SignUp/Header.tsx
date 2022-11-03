@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { StyledHeaderContainer, StyledHeaderTitle } from './styles';
+import { StyledHeaderContainer, StyledHeaderTitle } from '../styles';
 import ReactResizeDetector from 'react-resize-detector';
 import { HeaderSubtitle } from 'components/UI/Modal';
 
