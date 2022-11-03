@@ -8,11 +8,11 @@ describe('Analytics proposals response parsing', () => {
     [{ count: 4 }],
     [{ count: 3 }],
     [{ count: 2 }],
-    [{ count: 1 }],
+    [{ count: 0 }],
   ];
   const [all, allPeriod, successful, successfulPeriod] = responseData;
 
-  it('Transforms into chart data', () => {
+  it('Transforms into correct chart data', () => {
     const expectedChartData: ChartData = {
       totalProposals: {
         value: '4',
@@ -20,7 +20,7 @@ describe('Analytics proposals response parsing', () => {
       },
       successfulProposals: {
         value: '2',
-        lastPeriod: '1',
+        lastPeriod: '-',
       },
     };
 
@@ -40,7 +40,7 @@ describe('Analytics proposals response parsing', () => {
           Total: '4',
           Total_30days: '3',
           Successful: '2',
-          Successful_30days: '1',
+          Successful_30days: '-',
         },
       ],
     };

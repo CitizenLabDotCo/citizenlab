@@ -9,14 +9,20 @@ export const parseChartData = (
 ): ChartData => {
   return {
     totalProposals: {
-      value: all[0].count.toString(),
-      lastPeriod: allPeriod[0].count.toString(),
+      value: formatValue(all[0].count),
+      lastPeriod: formatValue(allPeriod[0].count),
     },
     successfulProposals: {
-      value: successful[0].count.toString(),
-      lastPeriod: successfulPeriod[0].count.toString(),
+      value: formatValue(successful[0].count),
+      lastPeriod: formatValue(successfulPeriod[0].count),
     },
   };
+};
+
+// Replace zeroes with '-' by convention & return strings
+const formatValue = (count: number): string => {
+  if (count === 0) return '-';
+  return count.toString();
 };
 
 export const parseExcelData = (
