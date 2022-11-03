@@ -207,6 +207,7 @@ const LogInMenuItem = styled(Link)`
   transition: all 100ms ease-out;
 
   &:hover {
+    color: inherit;
     text-decoration: underline;
   }
 
@@ -216,6 +217,8 @@ const LogInMenuItem = styled(Link)`
 `;
 
 const SignUpMenuItem = styled(Link)`
+  display: flex;
+  align-items: center;
   height: 100%;
   color: #fff;
   font-size: ${fontSizes.base}px;
