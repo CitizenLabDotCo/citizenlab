@@ -5,16 +5,13 @@ import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
 // components
 import SignUpInPageMeta from './SignUpInPageMeta';
-import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
+import SignUpIn, { ISignUpInMetaData } from './SignUpIn';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // events
-import {
-  signUpActiveStepChange$,
-  openSignUpInModal$,
-} from 'components/SignUpIn/events';
+import { signUpActiveStepChange$, openSignUpInModal$ } from './events';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -48,7 +45,7 @@ interface Props {
   flow: 'signin' | 'signup';
 }
 
-const SignUpPage = ({ flow }: Props) => {
+const SignUpInPage = ({ flow }: Props) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const { pathname } = useLocation();
   const authUser = useAuthUser();
@@ -111,4 +108,4 @@ const SignUpPage = ({ flow }: Props) => {
   );
 };
 
-export default SignUpPage;
+export default SignUpInPage;

@@ -30,7 +30,7 @@ const ConsentManager = lazy(() => import('components/ConsentManager'));
 import ErrorBoundary from 'components/ErrorBoundary';
 import Outlet from 'components/Outlet';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+import SignUpInModal from 'containers/SignUpInPage/SignUpInModal';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 import Meta from './Meta';
@@ -64,7 +64,7 @@ import GetWindowSize, {
 } from 'resources/GetWindowSize';
 
 // events
-import { openSignUpInModal$ } from 'components/SignUpIn/events';
+import { openSignUpInModal$ } from 'containers/SignUpInPage/events';
 import eventEmitter from 'utils/eventEmitter';
 
 // style

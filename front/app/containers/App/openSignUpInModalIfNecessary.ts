@@ -1,6 +1,6 @@
 import { isNilOrError, endsWith } from 'utils/helperUtils';
 import { parse } from 'qs';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'containers/SignUpInPage/events';
 import { SSOParams } from 'services/singleSignOn';
 import clHistory from 'utils/cl-router/history';
 import { TAuthUser } from 'containers/App';

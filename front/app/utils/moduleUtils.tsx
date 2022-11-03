@@ -1,7 +1,7 @@
 import {
   TSignUpStep,
   TSignUpStepConfigurationObject,
-} from 'components/SignUpIn/SignUp';
+} from 'containers/SignUpInPage/SignUp';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
 import React, {
@@ -11,7 +11,10 @@ import React, {
   ReactElement,
 } from 'react';
 
-import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
+import {
+  ISignUpInMetaData,
+  TSignUpInFlow,
+} from 'containers/SignUpInPage/SignUpIn';
 import PageLoading from 'components/UI/PageLoading';
 
 import { OutletRenderProps } from 'components/Outlet';
@@ -26,7 +29,7 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import { AuthProvider } from 'containers/SignUpInPage/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'components/Verification/verificationModalEvents';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';

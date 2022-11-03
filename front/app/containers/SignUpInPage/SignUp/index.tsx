@@ -5,12 +5,12 @@ import { completeRegistration } from 'services/users';
 
 // components
 import Header from './Header';
-import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
-import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
-import Success from 'components/SignUpIn/SignUp/Success';
+import AuthProviders, { AuthProvider } from '../AuthProviders';
+import PasswordSignup from '../SignUp/PasswordSignup';
+import Success from '../SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { StyledModalContentContainer } from 'components/SignUpIn/styles';
+import { StyledModalContentContainer } from '../styles';
 import Outlet from 'components/Outlet';
 import Mounter from 'components/Mounter';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -32,7 +32,7 @@ import {
 } from './stepUtils';
 
 // events
-import { signUpActiveStepChange } from 'components/SignUpIn/events';
+import { signUpActiveStepChange } from '../events';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -42,13 +42,13 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/SignUpIn/tracks';
+import tracks from '../tracks';
 
 // style
 import { useTheme } from 'styled-components';
 
 // typings
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from '../SignUpIn';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
 

@@ -20,7 +20,7 @@ import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 // utils
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'containers/SignUpInPage/events';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';

@@ -33,7 +33,7 @@ import {
 } from 'services/phases';
 
 // utils
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'containers/SignUpInPage/events';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // style

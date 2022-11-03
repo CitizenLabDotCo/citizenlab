@@ -23,11 +23,11 @@ import messages from './SignUp/messages';
 
 // styling
 import styled from 'styled-components';
-import { Options, Option } from 'components/SignUpIn/styles';
+import { Options, Option } from './styles';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from './SignUpIn';
 
 const Container = styled.div`
   display: flex;

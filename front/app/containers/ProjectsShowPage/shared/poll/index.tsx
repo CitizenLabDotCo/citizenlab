@@ -28,7 +28,7 @@ import messages from './messages';
 import { MessageDescriptor } from 'react-intl';
 
 // events
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'containers/SignUpInPage/events';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 import styled from 'styled-components';

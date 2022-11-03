@@ -25,7 +25,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // events
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'containers/SignUpInPage/events';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // i18n

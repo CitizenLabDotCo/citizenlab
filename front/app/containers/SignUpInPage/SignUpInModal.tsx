@@ -3,7 +3,7 @@ import { signOut } from 'services/auth';
 import tracks from './tracks';
 
 // components
-import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
+import SignUpIn, { ISignUpInMetaData } from './SignUpIn';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import PlatformFooter from 'containers/PlatformFooter';
@@ -18,10 +18,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 
 // events
-import {
-  closeSignUpInModal,
-  openSignUpInModal$,
-} from 'components/SignUpIn/events';
+import { closeSignUpInModal, openSignUpInModal$ } from './events';
 
 // style
 import { useTheme } from 'styled-components';

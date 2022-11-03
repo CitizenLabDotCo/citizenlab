@@ -4,7 +4,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // components
 import { IconNames } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import Consent from 'components/SignUpIn/SignUp/Consent';
+import Consent from './SignUp/Consent';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -12,7 +12,7 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/SignUpIn/tracks';
+import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { TSignUpInFlow } from 'components/SignUpIn';
+import { TSignUpInFlow } from './SignUpIn';
 import { AuthProvider } from './AuthProviders';
 
 const timeout = 300;

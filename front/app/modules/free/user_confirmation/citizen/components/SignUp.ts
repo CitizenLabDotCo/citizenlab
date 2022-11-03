@@ -1,6 +1,6 @@
-import 'components/SignUpIn/SignUp';
+import 'containers/SignUpInPage/SignUp';
 
-declare module 'components/SignUpIn/SignUp' {
+declare module 'containers/SignUpInPage/SignUp' {
   export interface TSignUpStepsMap {
     confirmation: 'confirmation';
   }

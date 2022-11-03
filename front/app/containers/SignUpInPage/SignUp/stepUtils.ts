@@ -13,7 +13,7 @@ import {
   TDataLoadedPerOutlet,
 } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from './SignUpIn';
 
 export function getDefaultSteps(): TSignUpConfiguration {
   return {

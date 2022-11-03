@@ -16,7 +16,7 @@ import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from 'components/SignUpIn/SignUp/messages';
+import messages from 'containers/SignUpInPage/SignUp/messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -32,7 +32,7 @@ import styled from 'styled-components';
 import {
   TSignUpStep,
   TSignUpStepConfigurationObject,
-} from 'components/SignUpIn/SignUp';
+} from 'containers/SignUpInPage/SignUp';
 import { UserCustomFieldsInfos } from '../../services/userCustomFields';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

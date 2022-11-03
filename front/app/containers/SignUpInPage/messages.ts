@@ -21,4 +21,12 @@ export default defineMessages({
     defaultMessage:
       'Log into the participation platform of {orgName} to join the conversation!',
   },
+  continue: {
+    id: 'app.components.SignUpIn.continue',
+    defaultMessage: 'Continue',
+  },
+  goBack: {
+    id: 'app.components.SignUpIn.goBack',
+    defaultMessage: 'Go back',
+  },
 });

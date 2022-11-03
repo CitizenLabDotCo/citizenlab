@@ -12,7 +12,7 @@ import SmartSurvey from './SmartSurvey';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import SnapSurvey from './SnapSurvey';
 import Warning from 'components/UI/Warning';
-import SignUpIn from 'components/SignUpIn';
+import SignUpIn from 'containers/SignUpInPage/SignUpIn';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
@@ -31,7 +31,7 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'containers/SignUpInPage/events';
 
 // styling
 import styled from 'styled-components';

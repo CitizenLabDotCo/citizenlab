@@ -1,14 +1,14 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { useTheme } from 'styled-components';
 // components
-import PasswordSignin from 'components/SignUpIn/SignIn/PasswordSignin';
-import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import PasswordSignin from '../SignIn/PasswordSignin';
+import AuthProviders, { AuthProvider } from '../AuthProviders';
 import Error from 'components/UI/Error';
 import {
   StyledHeaderContainer,
   StyledHeaderTitle,
   StyledModalContentContainer,
-} from 'components/SignUpIn/styles';
+} from '../styles';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -20,10 +20,10 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/SignUpIn/tracks';
+import tracks from '../tracks';
 
 // typings
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from '../SignUpIn';
 
 export type TSignInSteps = 'auth-providers' | 'password-signin';
 

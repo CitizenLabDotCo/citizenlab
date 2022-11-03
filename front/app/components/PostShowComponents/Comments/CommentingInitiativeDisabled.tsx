@@ -14,7 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // events
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'containers/SignUpInPage/events';
 
 // styling
 import styled from 'styled-components';
