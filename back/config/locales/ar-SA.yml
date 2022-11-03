@@ -142,7 +142,7 @@ ar:
         question:
           title: ما سؤالك؟
         contribution:
-          title: ما مساهمتك؟
+          title: ما هي مساهمتك؟
         project:
           title: ما مشروعك؟
         issue:
@@ -159,7 +159,7 @@ ar:
     gender:
       male: ذكر
       female: أنثى
-      unspecified: غير محدد
+      unspecified: آخر
     domicile:
       outside: في مكان آخر
     education:
@@ -202,6 +202,6 @@ ar:
       assignee_email: 'البريد الإلكتروني للمعيَّن إليه'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'سؤالك'
+      option1: 'الخيار 1'
+      option2: 'الخيار 2'
