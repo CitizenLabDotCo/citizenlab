@@ -557,7 +557,7 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/as_xlsx' do
-      context 'for an ideation phase without persisted form', document: false do
+      context 'for an ideation phase without persisted form' do
         let(:project) { create(:project, process_type: 'timeline') }
         let(:ideation_phase) do
           create(
@@ -572,7 +572,7 @@ resource 'Phases' do
         end
         let(:id) { ideation_phase.id }
 
-        example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+        example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
           do_request
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
@@ -633,7 +633,7 @@ resource 'Phases' do
         end
 
         context 'when there are no inputs in the phase' do
-          example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -697,7 +697,7 @@ resource 'Phases' do
           let!(:downvotes) { create_list(:downvote, 1, votable: ideation_response1) }
           let!(:baskets) { [] }
 
-          example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download ideation phase inputs in one sheet', skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -765,12 +765,12 @@ resource 'Phases' do
         end
       end
 
-      context 'for a native survey phase without persisted form', document: false do
+      context 'for a native survey phase without persisted form' do
         let(:project) { create(:project_with_active_native_survey_phase) }
         let(:active_phase) { project.phases.first }
         let(:id) { active_phase.id }
 
-        example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+        example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
           do_request
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
@@ -811,7 +811,7 @@ resource 'Phases' do
         end
 
         context 'when there are no inputs in the phase' do
-          example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -862,7 +862,7 @@ resource 'Phases' do
             )
           end
 
-          example 'Download phase inputs', skip: !CitizenLab.ee? do
+          example 'Download native survey phase inputs in one sheet', skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([

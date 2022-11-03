@@ -10,6 +10,7 @@
 
 - [CL-1955] Fixed bug where admins were not able to add ideas via the map in non-active ideation phases
 - [CL-1790] Add back to idea link on the idea edit page
+- [CL-1721] It is now possible to create a project from a template inside a folder (by anyone).
 
 ## 2022-11-01
 
