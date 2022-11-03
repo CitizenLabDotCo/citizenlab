@@ -202,6 +202,6 @@ hr:
       assignee_email: 'E-pošta opunomoćenika'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'Vaše pitanje'
+      option1: '1. opcija'
+      option2: '2. opcija'
