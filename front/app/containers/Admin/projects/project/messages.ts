@@ -85,7 +85,7 @@ export default defineMessages({
       'Some participation methods aren’t available for existing phases. A new phase will have to be created in these cases.',
   },
   projectMethodChangeWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning',
+    id: 'app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning',
     defaultMessage:
       'Some participation methods aren’t available for existing projects. A new project will have to be created in these cases.',
   },
