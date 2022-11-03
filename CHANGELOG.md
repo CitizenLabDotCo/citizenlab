@@ -9,6 +9,7 @@
 ### Added
 
 - [CL-1790] Add back to idea link on the idea edit page
+- [CL-1721] It is now possible for folder managers to use templates to create projects
 
 ## 2022-11-01
 
