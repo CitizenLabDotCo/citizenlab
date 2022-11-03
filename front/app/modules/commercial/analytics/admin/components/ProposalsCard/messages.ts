@@ -15,7 +15,7 @@ export default defineMessages({
   },
   successfulProposalsToolTip: {
     id: 'app.modules.commercial.analytics.admin.components.Proposals.successfulProposalsToolTip',
-    defaultMessage: 'Something here that explains',
+    defaultMessage: 'Proposals that have reached the required voting threshold',
   },
   last30Days: {
     id: 'app.modules.commercial.analytics.admin.components.Proposals.last30Days',
