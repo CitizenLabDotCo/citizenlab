@@ -18,7 +18,6 @@
   "app.components.ProjectTemplatePreview.goBackTo": "Gå tilbake til {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Vil du bruke denne malen for deltakelsesprosjektet?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Ta kontakt med den ansvarlige personen i byadministrasjonen din, eller kontakt en {link}.",
-  "app.components.ProjectTemplatePreview.projectFolder": "Project folder",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "Den valgte datoen er ugyldig. Oppgi en dato i følgende format: ÅÅÅÅ-MM-DD",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "Velg en startdato for prosjektet",
   "app.components.ProjectTemplatePreview.projectStartDate": "Startdatoen for prosjektet",
