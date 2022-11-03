@@ -73,7 +73,7 @@ export const ParticipationMethodPicker = ({
         )}
       </SubSectionTitle>
       {isExistingProjectOrPhase && (
-        <Box mb="24px">
+        <Box id="e2e-participation-method-warning" mb="24px">
           <Warning>
             {!isNilOrError(phase) ? (
               <FormattedMessage {...messages.phaseMethodChangeWarning} />
