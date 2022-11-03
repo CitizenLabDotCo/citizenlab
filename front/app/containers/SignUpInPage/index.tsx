@@ -1,5 +1,5 @@
-import React, { useEffect, ReactElement, useState, useContext } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import React, { useEffect, useState, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -49,15 +49,13 @@ const StyledSignUpIn = styled(SignUpIn)`
   width: 580px;
 `;
 
-interface InputProps {
+interface Props {
   flow: 'signin' | 'signup';
 }
 
-interface Props extends InputProps, WithRouterProps {}
-
-const SignUpPage = ({ location, flow }: Props): ReactElement => {
+const SignUpPage = ({ flow }: Props) => {
   const previousPathName = useContext(PreviousPathnameContext);
-  const { pathname } = location;
+  const { pathname } = useLocation();
   const authUser = useAuthUser();
   const [metaData, setMetaData] = useState<ISignUpInMetaData>({
     flow,
@@ -115,4 +113,4 @@ const SignUpPage = ({ location, flow }: Props): ReactElement => {
   );
 };
 
-export default withRouter(SignUpPage);
+export default SignUpPage;
