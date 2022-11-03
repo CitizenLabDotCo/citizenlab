@@ -54,9 +54,7 @@ describe Analytics::QueryRunnerService do
       query_param = ActionController::Parameters.new(
         fact: 'post',
         filters: {
-          dimension_type: {
-            name: 'idea'
-          }
+          'dimension_type.name': 'idea'
         },
         aggregations: {
           all: 'count'
