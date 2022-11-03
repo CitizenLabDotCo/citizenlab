@@ -27,6 +27,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;

@@ -123,23 +123,20 @@ const SignUpInModal = memo(
         url={getUrl()}
         topBar={<MainHeader />}
       >
-        <Box pt={tablet ? `${theme.mobileTopBarHeight}px` : '0'}>
-          <Box
-            width="100%"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-          >
-            {metaData && (
-              <StyledSignUpIn
-                metaData={metaData}
-                onSignUpInCompleted={onSignUpInCompleted}
-              />
-            )}
-            <Box width="100%">
-              <PlatformFooter insideModal />
-            </Box>
-          </Box>
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          pt={tablet ? `${theme.mobileTopBarHeight}px` : '0'}
+        >
+          {metaData && (
+            <StyledSignUpIn
+              metaData={metaData}
+              onSignUpInCompleted={onSignUpInCompleted}
+            />
+          )}
+          <PlatformFooter insideModal />
         </Box>
       </FullscreenModal>
     );
