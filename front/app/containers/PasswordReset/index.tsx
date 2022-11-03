@@ -284,7 +284,7 @@ class PasswordReset extends React.PureComponent<
                 ))}
 
               <StyledButton
-                size="2"
+                size="m"
                 processing={processing}
                 text={updatePassword}
                 onClick={this.handleOnSubmit}
