@@ -127,6 +127,7 @@ const SignUpInModal = memo(
           topBar={<MainHeader />}
         >
           <Box
+            id="e2e-sign-up-in-modal"
             width="100%"
             display="flex"
             flexDirection="column"

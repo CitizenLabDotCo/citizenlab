@@ -98,7 +98,6 @@ const SignUpInPage = ({ flow }: Props) => {
       <PageContainer id="e2e-sign-up-in-page">
         <Box
           background="#fff"
-          id="e2e-sign-up-in-page"
           display="flex"
           justifyContent="center"
           pt={tablet ? `${theme.mobileTopBarHeight}px` : '0'}
