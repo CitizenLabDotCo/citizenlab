@@ -85,6 +85,9 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
 
     project_status = described_class.find_by(status: 'finished')
     expect(project_status.project_id).to eq(project.id)
-    expect(project_status.timestamp).to eq(archived_at)
+
+    # We round the timestamps for comparison because postgres timestamps are stored with
+    # a smaller precision than Ruby timestamp when running the CI.
+    expect(project_status.timestamp.round).to eq(archived_at.round)
   end
 end
