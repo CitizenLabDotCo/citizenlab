@@ -10,14 +10,13 @@ import {
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { parseChartData, parseExcelData } from './parse';
 import { useIntl } from 'utils/cl-intl';
 import { getLastPeriodMoment, getLabels } from './utils';
 
 // typings
 import { QueryParameters, Proposals, Response } from './typings';
-import { Moment } from 'moment';
 
 const query = ({
   projectId,

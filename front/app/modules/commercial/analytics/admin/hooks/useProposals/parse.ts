@@ -9,12 +9,12 @@ export const parseChartData = (
 ): ChartData => {
   return {
     totalProposals: {
-      value: all[0].count,
-      lastPeriod: allPeriod[0].count,
+      value: all[0].count.toString(),
+      lastPeriod: allPeriod[0].count.toString(),
     },
     successfulProposals: {
-      value: successful[0].count,
-      lastPeriod: successfulPeriod[0].count,
+      value: successful[0].count.toString(),
+      lastPeriod: successfulPeriod[0].count.toString(),
     },
   };
 };
@@ -30,9 +30,9 @@ export const parseExcelData = (
 
   const xlsxDataSheet1 = {
     [labels.total]: data.totalProposals.value,
-    [`${labels.total}:${labels.period}`]: data.totalProposals.lastPeriod,
-    [`${labels.successful}:${labels.period}`]: data.successfulProposals.value,
-    [`${labels.successful}:${labels.period}`]:
+    [`${labels.total}_${labels.period}`]: data.totalProposals.lastPeriod,
+    [`${labels.successful}`]: data.successfulProposals.value,
+    [`${labels.successful}_${labels.period}`]:
       data.successfulProposals.lastPeriod,
   };
 

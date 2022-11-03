@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Moment } from 'moment';
 
 // hooks
@@ -19,10 +19,6 @@ interface Props {
 
 export default ({ ...props }: Props) => {
   const analyticsActive = useFeatureFlag({ name: 'analytics' });
-
-  useEffect(() => {
-    if (!analyticsActive) return;
-  }, [analyticsActive]);
 
   if (!analyticsActive) return null;
 

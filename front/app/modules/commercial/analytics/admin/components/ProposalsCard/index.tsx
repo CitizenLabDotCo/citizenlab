@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -38,7 +38,6 @@ const ProposalsCard = ({
     resolution,
   });
   const { formatMessage } = useIntl();
-  const graphRef = useRef(); // TODO: How does the SVG/PNG export work & do we need it?
 
   const labels = getLabels(formatMessage, resolution);
 
@@ -59,7 +58,6 @@ const ProposalsCard = ({
       title={labels.cardTitle}
       exportMenu={{
         name: labels.cardTitle.toLowerCase().replace(' ', '_'),
-        svgNode: graphRef,
         xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,
@@ -67,7 +65,12 @@ const ProposalsCard = ({
         resolution,
       }}
     >
-      <Box width="100%" display="flex" flexDirection="row">
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+      >
         <Box display="flex" flexDirection="row" pl="20px">
           <Box pr="20px" borderRight="1px solid #ccc">
             <Statistic
