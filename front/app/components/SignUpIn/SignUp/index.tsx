@@ -310,7 +310,6 @@ const SignUp = ({
       )}
 
       <StyledModalContentContainer
-        inModal={!!metaData.inModal}
         headerHeight={headerHeight}
         ref={modalContentRef}
       >

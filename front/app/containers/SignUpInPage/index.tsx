@@ -119,8 +119,6 @@ const SignUpPage = ({
   );
 };
 
-const SignUpPageWithHoC = withRouter(SignUpPage);
-
 const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
@@ -131,8 +129,8 @@ const Data = adopt<DataProps, WithRouterProps>({
   ),
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <SignUpPageWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <SignUpPage {...inputProps} {...dataProps} />}
   </Data>
-);
+));
