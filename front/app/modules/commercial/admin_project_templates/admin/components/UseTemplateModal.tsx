@@ -254,7 +254,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
         }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tenantLocales, titleMultiloc, startDate, selectedLocale]);
+    }, [tenantLocales, titleMultiloc, startDate, selectedLocale, folderId]);
 
     const onClose = useCallback(() => {
       close();
@@ -276,6 +276,10 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       setStartDateError(null);
       setStartDate(startDate);
     }, []);
+
+    const handleSelectFolderChange = ({ value: folderId }) => {
+      setFolderId(folderId);
+    };
 
     useEffect(() => {
       setTitleMultiloc(null);
@@ -312,10 +316,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
             }),
         ]
       : [];
-
-    const handleSelectFolderChange = ({ value: folderId }) => {
-      setFolderId(folderId);
-    };
 
     return (
       <Modal
