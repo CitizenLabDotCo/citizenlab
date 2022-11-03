@@ -2,6 +2,8 @@
 
 ## Next release
 
+## 2022-11-03
+
 ### Fixed
 
 - [CL-1841] Show project attachments in content builder project description
