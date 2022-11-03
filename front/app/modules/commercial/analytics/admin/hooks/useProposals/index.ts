@@ -120,7 +120,7 @@ export default function useProposals({
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment]);
+  }, [projectId, startAtMoment, endAtMoment, formatMessage, resolution]);
 
   return proposals;
 }
