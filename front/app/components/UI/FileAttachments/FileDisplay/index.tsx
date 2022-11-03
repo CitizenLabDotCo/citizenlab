@@ -33,6 +33,9 @@ const Container = styled.div`
 const Paperclip = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 15px;
+  ${media.phone`
+    width: 40px;
+  `}
 `;
 
 const FileDownloadLink = styled.a`
@@ -41,6 +44,7 @@ const FileDownloadLink = styled.a`
   display: inline-block;
   margin-right: 10px;
   hyphens: auto;
+  word-break: break-word;
 
   &:hover {
     color: #000;
