@@ -142,7 +142,7 @@ tr:
         question:
           title: Sorunuz nedir ?
         contribution:
-          title: Katkınız nedir ?
+          title: Katkınız nedir?
         project:
           title: Projeniz nedir ?
         issue:
