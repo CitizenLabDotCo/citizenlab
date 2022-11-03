@@ -1102,7 +1102,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "إضافة إجابة",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "إضافة محتوى الاستبيان",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "إلغاء المحاولة",
-  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
+  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# اختيار/اختيارات} one {# اختيار} other {# اختيار/اختيارات}})",
   "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "اختيار متعدد",
   "app.containers.AdminPage.ProjectEdit.survey.close": "إغلاق ",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "مغلق",
