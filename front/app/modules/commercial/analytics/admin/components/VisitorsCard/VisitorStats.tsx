@@ -14,7 +14,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Stats } from '../../hooks/useVisitorsData/typings';
+import { Stats } from '../../hooks/useVisitors/typings';
 
 interface Props {
   stats: Stats | NilOrError;
@@ -22,7 +22,7 @@ interface Props {
   resolution: IResolution;
 }
 
-const BOTTOM_LABEL_COPY: Record<IResolution, MessageDescriptor> = {
+export const BOTTOM_LABEL_COPY: Record<IResolution, MessageDescriptor> = {
   month: messages.last30Days,
   week: messages.last7Days,
   day: messages.yesterday,

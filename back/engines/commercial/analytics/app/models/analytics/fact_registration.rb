@@ -7,6 +7,8 @@
 #  id                             :uuid             primary key
 #  dimension_user_id              :uuid
 #  dimension_date_registration_id :date
+#  dimension_date_invited_id      :date
+#  dimension_date_accepted_id     :date
 #
 module Analytics
   class FactRegistration < Analytics::ApplicationRecordView

@@ -42,10 +42,8 @@ resource 'Analytics - FactEvent' do
         query: {
           fact: 'event',
           filters: {
-            dimension_date_end: {
-              date: { from: '2022-09-01', to: '2022-09-30' }
-            },
-            dimension_project: { id: Project.first.id }
+            'dimension_date_end.date': { from: '2022-09-01', to: '2022-09-30' },
+            'dimension_project.id': Project.first.id
           },
           aggregations: {
             all: 'count'

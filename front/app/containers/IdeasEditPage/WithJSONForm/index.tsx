@@ -21,6 +21,7 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import { Box } from '@citizenlab/cl2-component-library';
 import { updateIdea } from 'services/ideas';
 import { geocode } from 'utils/locationTools';
 import useIdea from 'hooks/useIdea';
@@ -28,6 +29,7 @@ import IdeasEditMeta from '../IdeasEditMeta';
 import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { deleteIdeaImage } from 'services/ideaImages';
+import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -158,6 +160,34 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     },
     [uiSchema]
   );
+
+  if (isNilOrError(project)) {
+    return null;
+  }
+
+  const TitleComponent = !isNilOrError(idea) ? (
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <GoBackToIdeaPage idea={idea} />
+
+      <FormattedMessage
+        {...{
+          idea: messages.formTitle,
+          option: messages.optionFormTitle,
+          project: messages.projectFormTitle,
+          question: messages.questionFormTitle,
+          issue: messages.issueFormTitle,
+          contribution: messages.contributionFormTitle,
+        }[getInputTerm(project?.attributes.process_type, project, phases)]}
+      />
+    </Box>
+  ) : undefined;
+
   return (
     <PageContainer overflow="hidden" id="e2e-idea-edit-page">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
@@ -172,24 +202,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             config={'input'}
-            title={
-              <FormattedMessage
-                {...{
-                  idea: messages.formTitle,
-                  option: messages.optionFormTitle,
-                  project: messages.projectFormTitle,
-                  question: messages.questionFormTitle,
-                  issue: messages.issueFormTitle,
-                  contribution: messages.contributionFormTitle,
-                }[
-                  getInputTerm(
-                    project?.attributes.process_type,
-                    project,
-                    phases
-                  )
-                ]}
-              />
-            }
+            title={TitleComponent}
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (

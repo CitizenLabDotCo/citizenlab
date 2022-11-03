@@ -26,21 +26,16 @@
       "type" : "object",
       "minProperties" : 1,
       "patternProperties" : {
-        "^[a-z_]*$" : {
-          "type" : "object",
-          "minProperties" : 1,
-          "patternProperties" : {
-            "^[a-z_]*$" : {
-              "type" : ["string", "array", "object"],
-              "minLength" : 1,
-              "properties" : {
-                "from" : {"type": ["integer","string"]},
-                "to" : {"type": ["integer","string"]}
-              },
-              "required" : ["from", "to"],
-              "additionalProperties": false
-            }
-          }
+        "^[a-z_]*\.[a-z_]*$" : {
+          "type" : ["string", "integer", "null", "array", "object"],
+          "items" : {"type" : ["string", "integer", "null"]},
+          "properties" : {
+            "from" : {"type": ["string"]},
+            "to" : {"type": ["string"]}
+          },
+          "required" : ["from", "to"],
+          "minLength" : 1,
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

@@ -10,8 +10,7 @@ import renderTooltip from './renderTooltip';
 
 // i18n
 import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -22,7 +21,7 @@ import { generateEmptyData } from './generateEmptyData';
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { TimeSeries } from '../../../hooks/useVisitorsData/typings';
+import { TimeSeries } from '../../../hooks/useVisitors/typings';
 
 interface Props {
   timeSeries: TimeSeries | NilOrError;
@@ -38,8 +37,9 @@ const Chart = ({
   endAtMoment,
   resolution,
   innerRef,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
+
   const emptyData = useMemo(
     () => generateEmptyData(startAtMoment, endAtMoment, resolution),
     [startAtMoment, endAtMoment, resolution]
@@ -117,4 +117,4 @@ const Chart = ({
   );
 };
 
-export default injectIntl(Chart);
+export default Chart;

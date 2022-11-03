@@ -8,11 +8,11 @@ describe IdeasFinder do
   let(:params) { {} }
   let(:options) { {} }
   let(:result_record_ids) { finder.find_records.pluck(:id) }
+  let(:timeline_project) { create :project_with_phases }
+  let!(:ideas) { create_list :idea_with_topics, 5, project: timeline_project }
 
   before_all do
     IdeaStatus.create_defaults
-    timeline_project = create :project_with_phases
-    create_list :idea_with_topics, 5, project: timeline_project
   end
 
   context 'default scope' do
@@ -79,23 +79,19 @@ describe IdeasFinder do
 
     describe '#sort_scopes (trending)' do
       let(:sort) { 'trending' }
-      let(:expected_record_ids) do
-        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).map(&:id)
-      end
 
-      it 'returns the sorted records' do
-        expect(result_record_ids).to eq expected_record_ids
+      it 'returns the ids in trending order' do
+        allow_any_instance_of(TrendingIdeaService).to receive(:sort_trending).with(ideas).and_return ideas
+        expect(result_record_ids).to eq ideas.map(&:id)
       end
     end
 
     describe '#sort_scopes (-trending)' do
       let(:sort) { '-trending' }
-      let(:expected_record_ids) do
-        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).map(&:id).reverse
-      end
 
-      it 'returns the sorted records' do
-        expect(result_record_ids).to eq expected_record_ids
+      it 'returns the ids in reverse trending order' do
+        allow_any_instance_of(TrendingIdeaService).to receive(:sort_trending).with(ideas).and_return ideas
+        expect(result_record_ids).to eq ideas.map(&:id).reverse
       end
     end
 

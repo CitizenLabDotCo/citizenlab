@@ -1,9 +1,9 @@
-import {
-  dateRange,
-  getEmptyRow,
-} from '../../../hooks/useVisitorsData/parse/utils';
+// utils
+import { getEmptyRow } from '../../../hooks/useVisitors/parse';
+import { emptyDateRange } from '../../../utils/timeSeries';
+
 // typings
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export const generateEmptyData = (
@@ -11,13 +11,7 @@ export const generateEmptyData = (
   endAtMoment: Moment | null | undefined,
   resolution: IResolution
 ) => {
-  const start = startAtMoment ?? moment().subtract({ month: 7 });
-  const end = endAtMoment ?? moment();
-
-  const dates = dateRange(start, end, resolution);
-  if (dates === null) return [];
-
-  return dates.map((date, i) => ({
+  return emptyDateRange(startAtMoment, endAtMoment, resolution, (date, i) => ({
     ...getEmptyRow(date),
     ...(i === 0 ? { visitors: 10, visits: 10 } : {}),
   }));

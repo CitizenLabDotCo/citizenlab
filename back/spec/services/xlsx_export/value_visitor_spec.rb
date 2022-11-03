@@ -4,9 +4,10 @@ require 'rails_helper'
 
 describe XlsxExport::ValueVisitor do
   subject(:visitor) do
-    described_class.new(model)
+    described_class.new(model, option_index)
   end
 
+  let(:option_index) { {} }
   let(:model) { instance_double Idea, custom_field_values: { field_key => 'John' } }
   let(:field) { create(:custom_field, input_type: 'text', key: field_key) }
 
@@ -219,6 +220,11 @@ describe XlsxExport::ValueVisitor do
         context 'when there is a value' do
           let!(:area) { create(:area, title_multiloc: { 'en' => 'Paris', 'nl-NL' => 'Parijs' }) }
           let(:value) { area.id }
+          let(:option_index) do
+            {
+              area.id => area
+            }
+          end
 
           it 'returns the value for the report' do
             I18n.with_locale('nl-NL') do
@@ -244,6 +250,12 @@ describe XlsxExport::ValueVisitor do
             key: 'dog',
             title_multiloc: { 'en' => 'Dog', 'nl-NL' => 'Hond' }
           )
+        end
+        let(:option_index) do
+          {
+            field_option1.key => field_option1,
+            field_option2.key => field_option2
+          }
         end
 
         context 'when there is no value' do
@@ -334,6 +346,12 @@ describe XlsxExport::ValueVisitor do
             key: 'dog',
             title_multiloc: { 'en' => 'Dog', 'nl-NL' => 'Hond' }
           )
+        end
+        let(:option_index) do
+          {
+            field_option1.key => field_option1,
+            field_option2.key => field_option2
+          }
         end
 
         context 'when there are no options selected' do
