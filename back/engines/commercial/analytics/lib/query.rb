@@ -10,6 +10,10 @@ module Analytics
       visit: FactVisit
     }.freeze
 
+    def self.fact_names
+      MODELS.keys.map(&:to_s)
+    end
+
     def initialize(query)
       @json_query = query
     end
