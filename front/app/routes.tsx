@@ -55,7 +55,7 @@ export default function createRoutes() {
           path: 'sign-in',
           element: (
             <PageLoading>
-              <SignUpInPage />
+              <SignUpInPage flow="signin" />
             </PageLoading>
           ),
         },
@@ -63,7 +63,7 @@ export default function createRoutes() {
           path: 'sign-up',
           element: (
             <PageLoading>
-              <SignUpInPage />
+              <SignUpInPage flow="signup" />
             </PageLoading>
           ),
         },

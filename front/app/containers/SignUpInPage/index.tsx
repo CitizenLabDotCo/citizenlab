@@ -8,7 +8,7 @@ import SignUpInPageMeta from './SignUpInPageMeta';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 
 // utils
-import { isNilOrError, endsWith } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // events
 import {
@@ -50,7 +50,9 @@ const StyledSignUpIn = styled(SignUpIn)`
   width: 580px;
 `;
 
-interface InputProps {}
+interface InputProps {
+  flow: 'signin' | 'signup';
+}
 
 interface DataProps {
   previousPathName: string | null;
@@ -58,12 +60,14 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps, WithRouterProps {}
 
-const SignUpPage = ({ location, previousPathName }: Props): ReactElement => {
+const SignUpPage = ({
+  location,
+  previousPathName,
+  flow,
+}: Props): ReactElement => {
   const { pathname } = location;
   const authUser = useAuthUser();
-  const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
-
-  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>({
+  const [metaData, setMetaData] = useState<ISignUpInMetaData>({
     flow,
     pathname,
     inModal: false,
@@ -75,6 +79,14 @@ const SignUpPage = ({ location, previousPathName }: Props): ReactElement => {
   if (isLoggedIn) {
     clHistory.replace(previousPathName || '/');
   }
+
+  useEffect(() => {
+    setMetaData({
+      ...metaData,
+      pathname,
+      flow,
+    });
+  }, [flow, pathname]);
 
   useEffect(() => {
     const subscriptions = [
