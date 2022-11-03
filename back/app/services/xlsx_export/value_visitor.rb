@@ -2,9 +2,10 @@
 
 module XlsxExport
   class ValueVisitor < FieldVisitorService
-    def initialize(model)
+    def initialize(model, option_index)
       super()
       @model = model
+      @option_index = option_index
     end
 
     def default(field)
@@ -39,13 +40,8 @@ module XlsxExport
       option_value = value_for(field)
       return unless option_value
 
-      if field.code == 'domicile'
-        areas = Area.all.index_by(&:id)
-        MultilocService.new.t(areas[option_value]&.title_multiloc)
-      else
-        option_title = options_for(field)[option_value].title_multiloc
-        MultilocService.new.t(option_title)
-      end
+      option_title = option_index[option_value]&.title_multiloc
+      MultilocService.new.t(option_title)
     end
 
     def visit_multiselect(field)
@@ -54,8 +50,8 @@ module XlsxExport
       option_values = value_for(field) || []
       return if option_values.empty?
 
-      option_titles = option_values.map do |option_value|
-        option_title = options_for(field)[option_value].title_multiloc
+      option_titles = option_values.filter_map do |option_value|
+        option_title = option_index[option_value]&.title_multiloc
         MultilocService.new.t option_title
       end
       option_titles.join(VALUE_SEPARATOR)
@@ -85,7 +81,7 @@ module XlsxExport
 
     private
 
-    attr_reader :model
+    attr_reader :model, :option_index
 
     VALUE_SEPARATOR = ', '
 
@@ -110,11 +106,6 @@ module XlsxExport
       else
         model.custom_field_values[field.key]
       end
-    end
-
-    def options_for(field)
-      @options ||= {}
-      @options[field] ||= field.options.index_by(&:key)
     end
   end
 end
