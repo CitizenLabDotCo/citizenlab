@@ -1102,7 +1102,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Tilføj svar",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Tilføj indhold til undersøgelsen",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Annuller",
-  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
+  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# valgmuligheder} one {# valgmulighed} other {# valgmuligheder}})",
   "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Vælg flere",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Luk",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Lukket",
