@@ -15,8 +15,8 @@ da:
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
   initiative_statuses:
-    proposed: aktive
-    proposed_description: aktive
+    proposed: foreslået
+    proposed_description: foreslået
     expired: udløbet
     expired_description: udløbet
     threshold_reached: fået nok stemmer
@@ -202,6 +202,6 @@ da:
       assignee_email: 'E-mail til modtageren'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'Dit spørgsmål'
+      option1: 'Mulighed 1'
+      option2: 'Mulighed 2'
