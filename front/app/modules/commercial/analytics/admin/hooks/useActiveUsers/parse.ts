@@ -55,19 +55,21 @@ export const parseStats = (data: Response['data']): Stats => {
   const visitsLastPeriod = data[4][0];
 
   const conversionRateWholePeriod = getConversionRate(
-    activeUsersWholePeriod.count_dimension_user_id,
-    visitsWholePeriod.count_visitor_id
+    activeUsersWholePeriod?.count_dimension_user_id ?? 0,
+    visitsWholePeriod?.count_visitor_id ?? 0
   );
 
   const conversionRateLastPeriod = getConversionRate(
-    activeUsersLastPeriod.count_dimension_user_id,
-    visitsLastPeriod.count_visitor_id
+    activeUsersLastPeriod?.count_dimension_user_id ?? 0,
+    visitsLastPeriod?.count_visitor_id ?? 0
   );
 
   return {
     activeUsers: {
-      value: activeUsersWholePeriod.count_dimension_user_id.toString(),
-      lastPeriod: activeUsersLastPeriod.count_dimension_user_id.toString(),
+      value: (activeUsersWholePeriod?.count_dimension_user_id ?? 0).toString(),
+      lastPeriod: (
+        activeUsersLastPeriod?.count_dimension_user_id ?? 0
+      ).toString(),
     },
     conversionRate: {
       value: conversionRateWholePeriod,

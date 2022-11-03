@@ -20,7 +20,7 @@ export const query = ({
     fact: 'participation',
     filters: {
       'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
+      ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
     groups: `dimension_date_created.${getInterval(resolution)}`,
@@ -33,7 +33,7 @@ export const query = ({
     fact: 'participation',
     filters: {
       'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
+      ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
     aggregations: {
@@ -45,7 +45,7 @@ export const query = ({
     fact: 'participation',
     filters: {
       'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
+      ...getProjectFilter('dimension_project', projectId),
       ...getDateFilterLastPeriod('dimension_date_created', resolution),
     },
     aggregations: {

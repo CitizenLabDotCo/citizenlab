@@ -6,10 +6,10 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 export interface Response {
   data: [
     TimeSeriesResponse | [],
-    [ActiveUsersRow],
-    [ActiveUsersRow],
-    [VisitorsRow],
-    [VisitorsRow]
+    [ActiveUsersRow] | [],
+    [ActiveUsersRow] | [],
+    [VisitorsRow] | [],
+    [VisitorsRow] | []
   ];
 }
 

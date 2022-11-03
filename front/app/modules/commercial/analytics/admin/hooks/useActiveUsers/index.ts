@@ -52,6 +52,8 @@ export default function useActiveUsers({
         if (isNilOrError(response)) {
           setStats(response);
           setTimeSeries(response);
+          setXlsxData(response);
+
           return;
         }
 

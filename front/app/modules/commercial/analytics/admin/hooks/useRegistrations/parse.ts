@@ -57,19 +57,19 @@ export const parseStats = (data: Response['data']): Stats => {
   const visitsLastPeriod = data[4][0];
 
   const conversionRateWholePeriod = getConversionRate(
-    registrationsWholePeriod.count,
-    visitsWholePeriod.count_visitor_id
+    registrationsWholePeriod?.count ?? 0,
+    visitsWholePeriod?.count_visitor_id ?? 0
   );
 
   const conversionRateLastPeriod = getConversionRate(
-    registrationsLastPeriod.count,
-    visitsLastPeriod.count_visitor_id
+    registrationsLastPeriod?.count ?? 0,
+    visitsLastPeriod?.count_visitor_id ?? 0
   );
 
   return {
     registrations: {
-      value: registrationsWholePeriod.count.toString(),
-      lastPeriod: registrationsLastPeriod.count.toString(),
+      value: (registrationsWholePeriod?.count ?? 0).toString(),
+      lastPeriod: (registrationsWholePeriod?.count ?? 0).toString(),
     },
     conversionRate: {
       value: conversionRateWholePeriod,

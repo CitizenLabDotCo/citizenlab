@@ -6,10 +6,10 @@ export type QueryParameters = Dates & Resolution;
 export type Response = {
   data: [
     TimeSeriesResponseRow[],
-    [RegistrationsCountRow],
-    [RegistrationsCountRow],
-    [VisitorsCountRow],
-    [VisitorsCountRow]
+    [RegistrationsCountRow] | [],
+    [RegistrationsCountRow] | [],
+    [VisitorsCountRow] | [],
+    [VisitorsCountRow] | []
   ];
 };
 
