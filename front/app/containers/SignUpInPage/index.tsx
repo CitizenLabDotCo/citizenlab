@@ -45,6 +45,24 @@ interface Props {
   flow: 'signin' | 'signup';
 }
 
+interface StyledSignUpInProps {
+  metaData: ISignUpInMetaData;
+  onSignUpInCompleted: () => void;
+}
+
+export const StyledSignUpIn = ({
+  metaData,
+  onSignUpInCompleted,
+}: StyledSignUpInProps) => {
+  const phone = useBreakpoint('phone');
+
+  return (
+    <Box maxWidth="580px" padding={phone ? '0 20px' : '0 40px'}>
+      <SignUpIn metaData={metaData} onSignUpInCompleted={onSignUpInCompleted} />
+    </Box>
+  );
+};
+
 const SignUpInPage = ({ flow }: Props) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const { pathname } = useLocation();
@@ -54,7 +72,6 @@ const SignUpInPage = ({ flow }: Props) => {
     pathname,
     inModal: false,
   });
-  const phone = useBreakpoint('phone');
 
   const isLoggedIn =
     !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
@@ -95,12 +112,10 @@ const SignUpInPage = ({ flow }: Props) => {
     <>
       <SignUpInPageMeta />
       <Container id="e2e-sign-up-in-page">
-        <Box maxWidth="580px" width="100%" padding={phone ? '0 20px' : '0'}>
-          <SignUpIn
-            metaData={metaData}
-            onSignUpInCompleted={onSignUpInCompleted}
-          />
-        </Box>
+        <StyledSignUpIn
+          metaData={metaData}
+          onSignUpInCompleted={onSignUpInCompleted}
+        />
       </Container>
     </>
   );

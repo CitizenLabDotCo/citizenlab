@@ -3,7 +3,8 @@ import { signOut } from 'services/auth';
 import tracks from './tracks';
 
 // components
-import SignUpIn, { ISignUpInMetaData } from './SignUpIn';
+import { ISignUpInMetaData } from './SignUpIn';
+import { StyledSignUpIn } from '.';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import PlatformFooter from 'containers/PlatformFooter';
@@ -39,7 +40,6 @@ const SignUpInModal = memo(
     const theme: any = useTheme();
     const opened = metaData?.inModal || false;
     const tablet = useBreakpoint('tablet');
-    const phone = useBreakpoint('phone');
 
     useEffect(() => {
       if (isMounted()) {
@@ -131,12 +131,10 @@ const SignUpInModal = memo(
             alignItems="center"
           >
             {metaData && (
-              <Box maxWidth="580px" padding={phone ? '0 20px' : '0 40px'}>
-                <SignUpIn
-                  metaData={metaData}
-                  onSignUpInCompleted={onSignUpInCompleted}
-                />
-              </Box>
+              <StyledSignUpIn
+                metaData={metaData}
+                onSignUpInCompleted={onSignUpInCompleted}
+              />
             )}
             <Box width="100%">
               <PlatformFooter insideModal />
