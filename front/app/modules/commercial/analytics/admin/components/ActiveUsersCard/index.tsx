@@ -8,11 +8,7 @@ import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
 import Chart from './Chart';
-import {
-  STATS_CONTAINER_LAYOUT,
-  GRAPHS_OUTER_LAYOUT,
-  GRAPHS_INNER_LAYOUT,
-} from '../RegistrationsCard/layouts';
+import { STATS_CONTAINER_LAYOUT } from '../RegistrationsCard/layouts';
 
 // i18n
 import messages from './messages';
@@ -99,8 +95,23 @@ const ActiveUsersCard = ({
             />
           </Box>
         </Box>
-        <Box {...GRAPHS_OUTER_LAYOUT[layout]}>
-          <Box pt="8px" height="250px" {...GRAPHS_INNER_LAYOUT[layout]}>
+        {layout === 'wide' && (
+          <Box flexGrow={1} display="flex" justifyContent="flex-end" pr="20px">
+            <Box pt="8px" height="250px" width="95%" maxWidth="800px" mt="-1px">
+              <Chart
+                timeSeries={timeSeries}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={deducedResolution}
+                innerRef={graphRef}
+                layout={layout}
+              />
+            </Box>
+          </Box>
+        )}
+
+        {layout === 'narrow' && (
+          <Box width="100%" height="250px" mt="30px">
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAtMoment}
@@ -110,7 +121,7 @@ const ActiveUsersCard = ({
               layout={layout}
             />
           </Box>
-        </Box>
+        )}
       </Box>
     </GraphCard>
   );

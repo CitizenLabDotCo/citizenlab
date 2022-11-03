@@ -17,7 +17,7 @@ import { ProjectId, Dates, Resolution } from '../../typings';
 type Props = ProjectId & Dates & Resolution;
 
 const Charts = (props: Props) => {
-  const smallerThanTablet = useBreakpoint('tablet');
+  const smallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
   return (
     <>
@@ -27,11 +27,14 @@ const Charts = (props: Props) => {
         <Box width="50%">
           <RegistrationsCard
             {...props}
-            layout={smallerThanTablet ? 'narrow' : 'wide'}
+            layout={smallerThanSmallDesktop ? 'narrow' : 'wide'}
           />
         </Box>
         <Box width="50%">
-          <ActiveUsersCard {...props} />
+          <ActiveUsersCard
+            {...props}
+            layout={smallerThanSmallDesktop ? 'narrow' : 'wide'}
+          />
         </Box>
       </Box>
       <Box display="flex" flexDirection="row">
