@@ -114,32 +114,34 @@ const SignUpInModal = memo(
       return null;
     };
 
-    return (
-      <FullscreenModal
-        opened={opened}
-        onClose={onClose}
-        navbarRef={navbarRef}
-        mobileNavbarRef={mobileNavbarRef}
-        url={getUrl()}
-        topBar={<MainHeader />}
-      >
-        <Box
-          width="100%"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          pt={tablet ? `${theme.mobileTopBarHeight}px` : '0'}
+    if (metaData) {
+      return (
+        <FullscreenModal
+          opened={opened}
+          onClose={onClose}
+          navbarRef={navbarRef}
+          mobileNavbarRef={mobileNavbarRef}
+          url={getUrl()}
+          topBar={<MainHeader />}
         >
-          {metaData && (
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            pt={tablet ? `${theme.mobileTopBarHeight}px` : '0'}
+          >
             <StyledSignUpIn
               metaData={metaData}
               onSignUpInCompleted={onSignUpInCompleted}
             />
-          )}
-          <PlatformFooter insideModal />
-        </Box>
-      </FullscreenModal>
-    );
+            <PlatformFooter insideModal />
+          </Box>
+        </FullscreenModal>
+      );
+    }
+
+    return null;
   }
 );
 
