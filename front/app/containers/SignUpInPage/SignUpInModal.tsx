@@ -32,6 +32,8 @@ interface Props {
   mobileNavbarRef: HTMLElement | null;
 }
 
+// Note: we also use SignUpInPage (when not clicking Log in/Sign up in the top navigation)
+// This component looks the same.
 const SignUpInModal = memo(
   ({ onMounted, onDeclineInvitation, navbarRef, mobileNavbarRef }: Props) => {
     const isMounted = useIsMounted();

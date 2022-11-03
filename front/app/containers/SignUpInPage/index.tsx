@@ -43,6 +43,8 @@ export const StyledSignUpIn = ({
   );
 };
 
+// Note: we also use SignUpInModal (when not clicking Log in/Sign up in the top navigation)
+// This component looks the same.
 const SignUpInPage = ({ flow }: Props) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const { pathname } = useLocation();
