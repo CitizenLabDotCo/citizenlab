@@ -1,5 +1,4 @@
-import React, { useEffect, ReactElement, useState } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useEffect, ReactElement, useState, useContext } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
@@ -54,17 +53,10 @@ interface InputProps {
   flow: 'signin' | 'signup';
 }
 
-interface DataProps {
-  previousPathName: string | null;
-}
+interface Props extends InputProps, WithRouterProps {}
 
-interface Props extends DataProps, InputProps, WithRouterProps {}
-
-const SignUpPage = ({
-  location,
-  previousPathName,
-  flow,
-}: Props): ReactElement => {
+const SignUpPage = ({ location, flow }: Props): ReactElement => {
+  const previousPathName = useContext(PreviousPathnameContext);
   const { pathname } = location;
   const authUser = useAuthUser();
   const [metaData, setMetaData] = useState<ISignUpInMetaData>({
@@ -123,16 +115,4 @@ const SignUpPage = ({
   );
 };
 
-const Data = adopt<DataProps, WithRouterProps>({
-  previousPathName: ({ render }) => (
-    <PreviousPathnameContext.Consumer>
-      {render as any}
-    </PreviousPathnameContext.Consumer>
-  ),
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <SignUpPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter(SignUpPage);
