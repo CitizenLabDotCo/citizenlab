@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
+import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
 // components
 import SignUpInPageMeta from './SignUpInPageMeta';
@@ -43,12 +44,6 @@ const Container = styled.main`
   `}
 `;
 
-const StyledSignUpIn = styled(SignUpIn)`
-  display: flex;
-  flex-direction: column;
-  width: 580px;
-`;
-
 interface Props {
   flow: 'signin' | 'signup';
 }
@@ -62,6 +57,7 @@ const SignUpPage = ({ flow }: Props) => {
     pathname,
     inModal: false,
   });
+  const phone = useBreakpoint('phone');
 
   const isLoggedIn =
     !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
@@ -103,10 +99,12 @@ const SignUpPage = ({ flow }: Props) => {
       <SignUpInPageMeta />
       <Container id="e2e-sign-up-in-page">
         {metaData && (
-          <StyledSignUpIn
-            metaData={metaData}
-            onSignUpInCompleted={onSignUpInCompleted}
-          />
+          <Box maxWidth="580px" padding={phone ? '0 20px' : '0 40px'}>
+            <SignUpIn
+              metaData={metaData}
+              onSignUpInCompleted={onSignUpInCompleted}
+            />
+          </Box>
         )}
       </Container>
     </>

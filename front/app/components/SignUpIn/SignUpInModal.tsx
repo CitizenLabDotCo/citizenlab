@@ -5,7 +5,7 @@ import tracks from './tracks';
 // components
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 import FullscreenModal from 'components/UI/FullscreenModal';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import PlatformFooter from 'containers/PlatformFooter';
 import MainHeader from 'containers/MainHeader';
 
@@ -24,20 +24,7 @@ import {
 } from 'components/SignUpIn/events';
 
 // style
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-
-const StyledBox = styled(Box)`
-  ${media.tablet`
-      padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
-  `};
-`;
-
-const StyledSignUpIn = styled(SignUpIn)`
-  display: flex;
-  flex-direction: column;
-  width: 580px;
-`;
+import { useTheme } from 'styled-components';
 
 interface Props {
   className?: string;
@@ -54,7 +41,10 @@ const SignUpInModal = memo(
       undefined
     );
     const authUser = useAuthUser();
+    const theme: any = useTheme();
     const opened = metaData?.inModal || false;
+    const tablet = useBreakpoint('tablet');
+    const phone = useBreakpoint('phone');
 
     useEffect(() => {
       if (isMounted()) {
@@ -138,7 +128,7 @@ const SignUpInModal = memo(
         url={getUrl()}
         topBar={<MainHeader />}
       >
-        <StyledBox display="flex" flexDirection="column" alignItems="center">
+        <Box pt={tablet ? `${theme.mobileTopBarHeight}px` : '0'}>
           <Box
             width="100%"
             display="flex"
@@ -146,16 +136,18 @@ const SignUpInModal = memo(
             alignItems="center"
           >
             {metaData && (
-              <StyledSignUpIn
-                metaData={metaData}
-                onSignUpInCompleted={onSignUpInCompleted}
-              />
+              <Box maxWidth="580px" padding={phone ? '0 20px' : '0 40px'}>
+                <SignUpIn
+                  metaData={metaData}
+                  onSignUpInCompleted={onSignUpInCompleted}
+                />
+              </Box>
             )}
             <Box width="100%">
               <PlatformFooter insideModal />
             </Box>
           </Box>
-        </StyledBox>
+        </Box>
       </FullscreenModal>
     );
   }
