@@ -6,7 +6,7 @@ import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 // components
 import SignUpInPageMeta from './SignUpInPageMeta';
 import SignUpIn, { ISignUpInMetaData } from './SignUpIn';
-
+import PageContainer from 'components/UI/PageContainer';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -17,26 +17,9 @@ import { signUpActiveStepChange$, openSignUpInModal$ } from './events';
 import { PreviousPathnameContext } from 'context';
 
 // style
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { useTheme } from 'styled-components';
+
 import useAuthUser from 'hooks/useAuthUser';
-
-const Container = styled.main`
-  display: flex;
-  justify-content: center;
-
-  ${media.desktop`
-    min-height: calc(
-      100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-    );
-  `}
-
-  ${media.tablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
-  `}
-`;
 
 interface Props {
   flow: 'signin' | 'signup';
@@ -54,7 +37,7 @@ export const StyledSignUpIn = ({
   const phone = useBreakpoint('phone');
 
   return (
-    <Box maxWidth="580px" padding={phone ? '0 20px' : '0 40px'}>
+    <Box maxWidth="580px" width="100%" padding={phone ? '0 20px' : '0 40px'}>
       <SignUpIn metaData={metaData} onSignUpInCompleted={onSignUpInCompleted} />
     </Box>
   );
@@ -63,12 +46,14 @@ export const StyledSignUpIn = ({
 const SignUpInPage = ({ flow }: Props) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const { pathname } = useLocation();
+  const theme: any = useTheme();
   const authUser = useAuthUser();
   const [metaData, setMetaData] = useState<ISignUpInMetaData>({
     flow,
     pathname,
     inModal: false,
   });
+  const tablet = useBreakpoint('tablet');
 
   const isLoggedIn =
     !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
@@ -108,12 +93,20 @@ const SignUpInPage = ({ flow }: Props) => {
   return (
     <>
       <SignUpInPageMeta />
-      <Container id="e2e-sign-up-in-page">
-        <StyledSignUpIn
-          metaData={metaData}
-          onSignUpInCompleted={onSignUpInCompleted}
-        />
-      </Container>
+      <PageContainer id="e2e-sign-up-in-page">
+        <Box
+          background="#fff"
+          id="e2e-sign-up-in-page"
+          display="flex"
+          justifyContent="center"
+          pt={tablet ? `${theme.mobileTopBarHeight}px` : '0'}
+        >
+          <StyledSignUpIn
+            metaData={metaData}
+            onSignUpInCompleted={onSignUpInCompleted}
+          />
+        </Box>
+      </PageContainer>
     </>
   );
 };
