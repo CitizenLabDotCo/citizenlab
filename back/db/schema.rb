@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_27_170719) do
+ActiveRecord::Schema.define(version: 2022_11_03_153024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1720,5 +1720,56 @@ ActiveRecord::Schema.define(version: 2022_10_27_170719) do
        LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
+  SQL
+  create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
+      WITH regular_project_statuses AS (
+           SELECT activities.item_id AS project_id,
+              activities.action AS status,
+              activities.acted_at AS "timestamp"
+             FROM activities
+            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY ((ARRAY['created'::character varying, 'draft'::character varying, 'published'::character varying, 'archived'::character varying, 'deleted'::character varying])::text[])))
+          ), last_statuses_for_continuous_projects AS (
+           SELECT DISTINCT ON (rps.project_id) rps.project_id,
+              rps.status,
+              rps."timestamp"
+             FROM (regular_project_statuses rps
+               JOIN projects p ON ((rps.project_id = p.id)))
+            WHERE ((p.process_type)::text = 'continuous'::text)
+            ORDER BY rps.project_id, rps."timestamp" DESC
+          ), finished_statuses_for_continuous_projects AS (
+           SELECT last_statuses_for_continuous_projects.project_id,
+              'finished'::text AS status,
+              last_statuses_for_continuous_projects."timestamp"
+             FROM last_statuses_for_continuous_projects
+            WHERE ((last_statuses_for_continuous_projects.status)::text = 'archived'::text)
+          ), finished_status_for_timeline_projects AS (
+           SELECT phases.project_id,
+              'finished'::text AS status,
+              ((max(phases.end_at) + 1))::timestamp without time zone AS "timestamp"
+             FROM phases
+            GROUP BY phases.project_id
+           HAVING (max(phases.end_at) < now())
+          ), project_statuses AS (
+           SELECT regular_project_statuses.project_id,
+              regular_project_statuses.status,
+              regular_project_statuses."timestamp"
+             FROM regular_project_statuses
+          UNION
+           SELECT finished_status_for_timeline_projects.project_id,
+              finished_status_for_timeline_projects.status,
+              finished_status_for_timeline_projects."timestamp"
+             FROM finished_status_for_timeline_projects
+          UNION
+           SELECT finished_statuses_for_continuous_projects.project_id,
+              finished_statuses_for_continuous_projects.status,
+              finished_statuses_for_continuous_projects."timestamp"
+             FROM finished_statuses_for_continuous_projects
+          )
+   SELECT project_statuses.project_id,
+      project_statuses.status,
+      project_statuses."timestamp",
+      (project_statuses."timestamp")::date AS date
+     FROM project_statuses
+    ORDER BY project_statuses."timestamp" DESC;
   SQL
 end
