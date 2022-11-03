@@ -50,10 +50,6 @@ const validPlatformLinks = [
     urls: ['https://www.dailymotion.com/embed/video/x855y3y?'],
   },
   {
-    platform: 'Vimeo',
-    urls: ['https://player.vimeo.com/video/719182720?h=ef103ac0a7'],
-  },
-  {
     platform: 'Dreambroker',
     urls: ['https://www.dreambroker.com/channel/3lkvmi5h/iframe/33jxadml'],
   },
