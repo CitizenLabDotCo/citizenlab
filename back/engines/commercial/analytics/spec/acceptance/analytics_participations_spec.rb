@@ -53,12 +53,8 @@ resource 'Analytics - FactParticipations' do
         query: {
           fact: 'participation',
           filters: {
-            dimension_date_created: {
-              date: { from: '2022-10-01', to: '2022-10-31' }
-            },
-            dimension_user: {
-              role: ['citizen', nil]
-            }
+            'dimension_date_created.date': { from: '2022-10-01', to: '2022-10-31' },
+            'dimension_user.role': ['citizen', nil]
           },
           aggregations: {
             all: 'count'
@@ -74,7 +70,7 @@ resource 'Analytics - FactParticipations' do
         query: {
           fact: 'participation',
           filters: {
-            dimension_project: { id: Project.first.id }
+            'dimension_project.id': Project.first.id
           },
           aggregations: {
             all: 'count'
