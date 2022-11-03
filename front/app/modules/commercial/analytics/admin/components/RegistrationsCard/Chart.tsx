@@ -30,9 +30,10 @@ type Props = ProjectId &
     layout?: Layout;
   };
 
-const MARGINS: Record<Layout, Margin | undefined> = {
-  wide: undefined,
+export const MARGINS: Record<Layout, Margin | undefined> = {
+  wide: { top: 10 },
   narrow: {
+    top: 10,
     left: -25,
     right: 35,
   },

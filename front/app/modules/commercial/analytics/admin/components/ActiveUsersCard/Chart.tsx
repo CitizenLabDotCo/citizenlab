@@ -15,12 +15,12 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
+import { MARGINS } from '../RegistrationsCard/Chart';
 
 // typings
 import { Dates, Resolution, Layout } from '../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../hooks/useActiveUsers/typings';
-import { Margin } from 'components/admin/Graphs/typings';
 
 type Props = Dates &
   Resolution & {
@@ -28,14 +28,6 @@ type Props = Dates &
     innerRef: React.RefObject<any>;
     layout?: Layout;
   };
-
-const MARGINS: Record<Layout, Margin | undefined> = {
-  wide: undefined,
-  narrow: {
-    left: -25,
-    right: 35,
-  },
-};
 
 const emptyLineConfig = { strokeWidths: [0] };
 const lineConfig = {
