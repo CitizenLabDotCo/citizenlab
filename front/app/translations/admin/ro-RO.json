@@ -18,6 +18,7 @@
   "app.components.ProjectTemplatePreview.goBackTo": "Întoarce-te la {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Doriți să utilizați acest șablon pentru proiectul dumneavoastră de bugetare participativă?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Contactează persoana responsabilă din cadrul primăriei sau accesează {link}.",
+  "app.components.ProjectTemplatePreview.projectFolder": "Project folder",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "Data selectată nu este validă. Vă rugăm să furnizați o dată în următorul format: AAAA-LL-ZZ",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "Vă rugăm să selectați o dată de început pentru proiect",
   "app.components.ProjectTemplatePreview.projectStartDate": "Data de începere a proiectului dvs",
