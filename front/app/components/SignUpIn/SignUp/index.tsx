@@ -13,6 +13,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { StyledModalContentContainer } from 'components/SignUpIn/styles';
 import Outlet from 'components/Outlet';
 import Mounter from 'components/Mounter';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -44,22 +45,12 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/SignUpIn/tracks';
 
 // style
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const SignUpHelperText = styled(QuillEditedContent)`
-  padding-bottom: 25px;
-`;
 
 export interface TSignUpStepsMap {
   'auth-providers': 'auth-providers';
@@ -80,7 +71,7 @@ export type TSignUpStepConfigurationObject = {
   position: number;
   stepDescriptionMessage?: MessageDescriptor;
   helperText?: (
-    tenant: IAppConfigurationData | undefined
+    tenant: IAppConfigurationData | null
   ) => Multiloc | null | undefined;
   isEnabled: (
     authUser: TAuthUser,
@@ -242,7 +233,7 @@ const SignUp = ({
     }
   }, [metaData?.error, formatMessage]);
 
-  const onResize = (_width, height) => {
+  const onResize = (_width: number, height: number) => {
     setHeaderHeight(`${Math.round(height) + 2}px`);
   };
 
@@ -290,14 +281,19 @@ const SignUp = ({
     : null;
   const activeStepConfiguration = activeStep ? configuration[activeStep] : null;
   const helpText = activeStepConfiguration?.helperText?.(
-    !isNilOrError(tenant) ? tenant : undefined
+    !isNilOrError(tenant) ? tenant : null
   );
   const stepDescription = activeStepConfiguration?.stepDescriptionMessage
     ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
     : '';
 
   return (
-    <Container id="e2e-sign-up-container" className={className ?? ''}>
+    <Box
+      id="e2e-sign-up-container"
+      className={className ?? ''}
+      minHeight={`calc(100vh - ${theme.menuHeight}px - ${theme.footerHeight}px)`}
+      padding="40px 0 20px"
+    >
       {activeStep !== 'success' && (
         <Header
           inModal={metaData.inModal}
@@ -318,13 +314,15 @@ const SignUp = ({
         ) : (
           <>
             {helpText && (
-              <SignUpHelperText
-                textColor={theme.colors.tenantText}
-                fontSize="base"
-                fontWeight={300}
-              >
-                <T value={helpText} supportHtml />
-              </SignUpHelperText>
+              <Box pb="25px">
+                <QuillEditedContent
+                  textColor={theme.colors.tenantText}
+                  fontSize="base"
+                  fontWeight={300}
+                >
+                  <T value={helpText} supportHtml />
+                </QuillEditedContent>
+              </Box>
             )}
 
             {activeStep === 'auth-providers' && (
@@ -368,7 +366,7 @@ const SignUp = ({
           </>
         )}
       </StyledModalContentContainer>
-    </Container>
+    </Box>
   );
 };
 export default SignUp;

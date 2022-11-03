@@ -79,7 +79,7 @@ const SignIn = memo<Props>(
     return (
       <Box
         id="e2e-sign-in-container"
-        className={className}
+        className={className ?? ''}
         minHeight={`calc(100vh - ${theme.menuHeight}px - ${theme.footerHeight}px)`}
         padding="40px 0 20px"
       >
