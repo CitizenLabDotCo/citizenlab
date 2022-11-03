@@ -7,10 +7,6 @@ import clHistory from 'utils/cl-router/history';
 import SignUpInPageMeta from './SignUpInPageMeta';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
 // utils
 import { isNilOrError, endsWith } from 'utils/helperUtils';
 
@@ -26,6 +22,7 @@ import { PreviousPathnameContext } from 'context';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.main`
   width: 100%;
@@ -56,19 +53,14 @@ const StyledSignUpIn = styled(SignUpIn)`
 interface InputProps {}
 
 interface DataProps {
-  authUser: GetAuthUserChildProps;
-  locale: GetLocaleChildProps;
   previousPathName: string | null;
 }
 
 interface Props extends DataProps, InputProps, WithRouterProps {}
 
-const SignUpPage = ({
-  authUser,
-  location,
-  previousPathName,
-}: Props): ReactElement => {
+const SignUpPage = ({ location, previousPathName }: Props): ReactElement => {
   const { pathname } = location;
+  const authUser = useAuthUser();
   const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
 
   const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>({
@@ -120,8 +112,6 @@ const SignUpPage = ({
 };
 
 const Data = adopt<DataProps, WithRouterProps>({
-  authUser: <GetAuthUser />,
-  locale: <GetLocale />,
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
       {render as any}
