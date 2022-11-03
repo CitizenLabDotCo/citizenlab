@@ -9,6 +9,7 @@ import {
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import { getTranslations } from './translations';
 
 // parse
 import { parsePieData, parseExcelData } from './parse';
@@ -20,7 +21,6 @@ import { Response, PieRow, QueryParameters } from './typings';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
-import { getTranslations } from './utils';
 
 const query = ({
   projectId,
@@ -30,9 +30,7 @@ const query = ({
   const localesCountQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      dimension_user: {
-        role: ['citizen', null],
-      },
+      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_last_action',

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_27_125738) do
+ActiveRecord::Schema.define(version: 2022_10_27_170719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1577,51 +1577,17 @@ ActiveRecord::Schema.define(version: 2022_10_27_125738) do
             GROUP BY official_feedbacks.post_id) a
     GROUP BY a.post_id;
   SQL
-  create_view "analytics_fact_posts", sql_definition: <<-SQL
-      SELECT i.id,
-      i.author_id AS user_id,
-      i.project_id,
-      adt.id AS type_id,
-      (i.created_at)::date AS created_date_id,
-      (abf.feedback_first_date)::date AS feedback_first_date,
-      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
-      COALESCE(abf.feedback_official, 0) AS feedback_official,
-      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
-          CASE
-              WHEN (abf.feedback_first_date IS NULL) THEN 1
-              ELSE 0
-          END AS feedback_none,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count,
-      i.idea_status_id AS status_id
-     FROM ((ideas i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
-       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-  UNION ALL
-   SELECT i.id,
-      i.author_id AS user_id,
-      NULL::uuid AS project_id,
-      adt.id AS type_id,
-      (i.created_at)::date AS created_date_id,
-      (abf.feedback_first_date)::date AS feedback_first_date,
-      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
-      COALESCE(abf.feedback_official, 0) AS feedback_official,
-      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
-          CASE
-              WHEN (abf.feedback_first_date IS NULL) THEN 1
-              ELSE 0
-          END AS feedback_none,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count,
-      isc.initiative_status_id AS status_id
-     FROM (((initiatives i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-       LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
-             FROM initiative_status_changes isc_
-            WHERE (isc_.initiative_id = i.id))))));
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
+     FROM users;
+  SQL
+  create_view "analytics_fact_registrations", sql_definition: <<-SQL
+      SELECT users.id,
+      users.id AS dimension_user_id,
+      (users.registration_completed_at)::date AS dimension_date_registration_id
+     FROM users
+    WHERE (users.registration_completed_at IS NOT NULL);
   SQL
   create_view "analytics_fact_participations", sql_definition: <<-SQL
       SELECT i.id,
@@ -1709,19 +1675,50 @@ ActiveRecord::Schema.define(version: 2022_10_27_125738) do
        LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
        JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
   SQL
-  create_view "analytics_fact_registrations", sql_definition: <<-SQL
-      SELECT u.id,
-      u.id AS dimension_user_id,
-      (u.registration_completed_at)::date AS dimension_date_registration_id,
-      (i.created_at)::date AS dimension_date_invited_id,
-      (i.accepted_at)::date AS dimension_date_accepted_id
-     FROM (users u
-       LEFT JOIN invites i ON ((i.invitee_id = u.id)));
-  SQL
-  create_view "analytics_dimension_users", sql_definition: <<-SQL
-      SELECT users.id,
-      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
-      users.invite_status
-     FROM users;
+  create_view "analytics_fact_posts", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS user_id,
+      i.project_id AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
+      i.idea_status_id AS dimension_status_id,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM ((ideas i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS user_id,
+      NULL::uuid AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
+      isc.initiative_status_id AS dimension_status_id,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM (((initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+       LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
+             FROM initiative_status_changes isc_
+            WHERE (isc_.initiative_id = i.id))))));
   SQL
 end
