@@ -49,12 +49,8 @@ resource 'Analytics - FactRegistrations model' do
           query: {
             fact: 'registration',
             filters: {
-              dimension_date_registration: {
-                date: { from: '2022-08-01', to: '2022-08-31' }
-              },
-              dimension_user: {
-                role: ['citizen', nil]
-              }
+              'dimension_date_registration.date': { from: '2022-08-01', to: '2022-08-31' },
+              'dimension_user.role': 'citizen'
             },
             aggregations: {
               all: 'count'
@@ -80,9 +76,7 @@ resource 'Analytics - FactRegistrations model' do
           query: {
             fact: 'registration',
             filters: {
-              dimension_user: {
-                invite_status: 'pending'
-              }
+              'dimension_user.invite_status': 'pending'
             },
             aggregations: {
               all: 'count'
@@ -99,9 +93,7 @@ resource 'Analytics - FactRegistrations model' do
           query: {
             fact: 'registration',
             filters: {
-              dimension_date_invited: {
-                date: { from: '2022-08-01', to: '2022-09-30' }
-              }
+              'dimension_date_invited.date': { from: '2022-08-01', to: '2022-09-30' }
             },
             groups: 'dimension_user.invite_status',
             aggregations: {

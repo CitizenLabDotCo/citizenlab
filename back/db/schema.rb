@@ -1577,18 +1577,6 @@ ActiveRecord::Schema.define(version: 2022_10_27_170719) do
             GROUP BY official_feedbacks.post_id) a
     GROUP BY a.post_id;
   SQL
-  create_view "analytics_dimension_users", sql_definition: <<-SQL
-      SELECT users.id,
-      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
-     FROM users;
-  SQL
-  create_view "analytics_fact_registrations", sql_definition: <<-SQL
-      SELECT users.id,
-      users.id AS dimension_user_id,
-      (users.registration_completed_at)::date AS dimension_date_registration_id
-     FROM users
-    WHERE (users.registration_completed_at IS NOT NULL);
-  SQL
   create_view "analytics_fact_participations", sql_definition: <<-SQL
       SELECT i.id,
       i.author_id AS dimension_user_id,
@@ -1720,5 +1708,20 @@ ActiveRecord::Schema.define(version: 2022_10_27_170719) do
        LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
+  SQL
+  create_view "analytics_fact_registrations", sql_definition: <<-SQL
+      SELECT u.id,
+      u.id AS dimension_user_id,
+      (u.registration_completed_at)::date AS dimension_date_registration_id,
+      (i.created_at)::date AS dimension_date_invited_id,
+      (i.accepted_at)::date AS dimension_date_accepted_id
+     FROM (users u
+       LEFT JOIN invites i ON ((i.invitee_id = u.id)));
+  SQL
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+      users.invite_status
+     FROM users;
   SQL
 end
