@@ -51,5 +51,5 @@ export type TimeSeries = TimeSeriesRow[];
 
 export interface Stats {
   activeUsers: Stat;
-  conversionRate: Stat;
+  participationRate: Stat;
 }

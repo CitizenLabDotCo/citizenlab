@@ -13,7 +13,7 @@ export interface Translations {
   date: string;
   registrations: string;
   statistic: string;
-  conversionRate: string;
+  registrationRate: string;
   total: string;
   last30Days: string;
   last7Days: string;
@@ -28,7 +28,7 @@ export const getTranslations = (
   date: formatMessage(moduleMessages.date),
   registrations: formatMessage(cardMessages.registrations),
   statistic: formatMessage(moduleMessages.statistic),
-  conversionRate: formatMessage(moduleMessages.conversionRate),
+  registrationRate: formatMessage(cardMessages.registrationRate),
   total: formatMessage(moduleMessages.total),
   ...getTimePeriodTranslations(formatMessage),
 });

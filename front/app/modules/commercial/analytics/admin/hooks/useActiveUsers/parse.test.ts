@@ -29,7 +29,7 @@ describe('parseStats', () => {
         value: '4',
         lastPeriod: '4',
       },
-      conversionRate: {
+      participationRate: {
         value: '100%',
         lastPeriod: '0%',
       },
@@ -57,7 +57,7 @@ describe('parseStats', () => {
         value: '3',
         lastPeriod: '3',
       },
-      conversionRate: {
+      participationRate: {
         value: '100%',
         lastPeriod: '0%',
       },

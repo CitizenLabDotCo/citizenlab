@@ -29,8 +29,4 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsData.date',
     defaultMessage: 'Date',
   },
-  conversionRate: {
-    id: 'app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate',
-    defaultMessage: 'Conversion rate',
-  },
 });
