@@ -588,7 +588,7 @@
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Einreichung von Vorschlägen",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Tage bis zum Erreichen der Abstimmungsschwelle",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Abstimmungsschwelle",
-  "app.containers.Admin.initiatives.granularPermissionsTitle": "Wer kann einen Beitrag leisten?",
+  "app.containers.Admin.initiatives.granularPermissionsTitle": "Wer kann teilnehmen?",
   "app.containers.Admin.initiatives.initiativeSettingsFormError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später noch eimmal.",
   "app.containers.Admin.initiatives.initiativeSettingsFormSave": "Speichern",
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Gespeichert!",
