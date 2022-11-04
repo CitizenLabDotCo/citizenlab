@@ -768,7 +768,7 @@
   "app.containers.AdminPage.DashboardPage.usersByAgeTitle": "BenutzerInnen nach Alter",
   "app.containers.AdminPage.DashboardPage.usersByDomicileTitle": "BenutzerInnen nach geografischem Gebiet",
   "app.containers.AdminPage.DashboardPage.usersByGenderTitle": "BenutzerInnen nach Geschlecht",
-  "app.containers.AdminPage.DashboardPage.usersByTimeTitle": "Anmeldungen",
+  "app.containers.AdminPage.DashboardPage.usersByTimeTitle": "Registrierungen",
   "app.containers.AdminPage.DashboardPage.votes": "Stimmen",
   "app.containers.AdminPage.DashboardPage.week": "Woche",
   "app.containers.AdminPage.FaviconPage.favicon": "Favicon",
