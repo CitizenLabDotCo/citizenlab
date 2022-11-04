@@ -18,6 +18,7 @@
   "app.components.ProjectTemplatePreview.goBackTo": "Gå tilbage til {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Ønsker du at bruge denne skabelon til din deltagelsesprojekt?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Kontakt den ansvarlige person i din byadministration, eller kontakt en {link}.",
+  "app.components.ProjectTemplatePreview.projectFolder": "Project folder",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "Den udvalgtee dato er ugyldig. Giv venligst en dato i følgende format: ÅÅÅÅÅ-MM-DD",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "Ududvalgte venligst en startdato for projektet",
   "app.components.ProjectTemplatePreview.projectStartDate": "Startdatoen for din projekt",
