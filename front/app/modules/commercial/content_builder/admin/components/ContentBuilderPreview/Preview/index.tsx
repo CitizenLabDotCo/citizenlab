@@ -28,10 +28,8 @@ type PreviewProps = {
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   const locale = useLocale();
   const localize = useLocalize();
-  // Will have to be abstracted out
   const projectFiles = useProjectFiles(projectId);
 
-  // Will have to be abstracted out
   const contentBuilderLayout = useContentBuilderLayout({
     projectId,
     code: PROJECT_DESCRIPTION_CODE,
