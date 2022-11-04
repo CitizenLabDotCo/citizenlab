@@ -46,7 +46,7 @@ const SignUpInPage = ({ flow }: Props) => {
       pathname,
       flow,
     });
-  }, [flow, pathname, metaData]);
+  }, [flow, pathname]);
 
   useEffect(() => {
     const subscriptions = [
