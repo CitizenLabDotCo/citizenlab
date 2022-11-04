@@ -1263,7 +1263,7 @@
   "app.containers.SignUp.viennaConsentHeader": "The following data will be transmitted:",
   "app.containers.SignUp.viennaConsentLastName": "Презиме",
   "app.containers.SignUp.viennaConsentUserName": "User name",
-  "app.containers.SignUp.whatIsFranceConnect": "Шта је France Connect?",
+  "app.containers.SignUp.whatIsFranceConnect": "Шта је FranceConnect?",
   "app.containers.SignUpInPage.signInMetaTitle": "Приступите ЦитизенЛаб платформи {tenantName} | ЦитизенЛаб",
   "app.containers.SignUpInPage.signInPageMetaDescription": "Приступите партиципативној платформи {orgName} и придружите се конверзацији!",
   "app.containers.SignUpInPage.signUpMetaTitle": "Приступите ЦитизенЛаб платформи {tenantName} | ЦитизенЛаб",
