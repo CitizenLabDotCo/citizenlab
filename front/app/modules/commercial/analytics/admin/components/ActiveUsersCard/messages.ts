@@ -18,4 +18,8 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate',
     defaultMessage: 'Participation rate',
   },
+  participationRateTooltip: {
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip',
+    defaultMessage: 'Percentage of all participants compared to all visitors.',
+  },
 });

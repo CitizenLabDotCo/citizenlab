@@ -89,6 +89,7 @@ const RegistrationsCard = ({
           <Box {...STATS_CONTAINER_LAYOUT[layout]}>
             <Statistic
               name={formatMessage(messages.registrationRate)}
+              tooltipContent={formatMessage(messages.registrationRateTooltip)}
               value={shownStatsData.registrationRate.value}
               bottomLabel={bottomLabel}
               bottomLabelValue={shownStatsData.registrationRate.lastPeriod}

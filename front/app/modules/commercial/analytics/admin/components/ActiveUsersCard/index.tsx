@@ -88,6 +88,7 @@ const ActiveUsersCard = ({
           <Box {...STATS_CONTAINER_LAYOUT[layout]}>
             <Statistic
               name={formatMessage(messages.participationRate)}
+              tooltipContent={formatMessage(messages.participationRateTooltip)}
               value={stats.participationRate.value}
               bottomLabel={bottomLabel}
               bottomLabelValue={stats.participationRate.lastPeriod}
