@@ -213,7 +213,7 @@ class PasswordRecovery extends React.PureComponent<
               />
 
               <StyledButton
-                size="2"
+                size="m"
                 width="100%"
                 processing={processing}
                 text={resetPassword}
