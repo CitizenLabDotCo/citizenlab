@@ -54,23 +54,17 @@ module Analytics
     end
 
     def fact_attributes
-      model_attributes = model
-        .columns_hash
-        .transform_values(&:type)
+      return if @fact_attributes
 
-      associations = model
-        .reflect_on_all_associations
-        .map do |assoc|
-          fields = assoc.options[:class_name].constantize.columns_hash.to_h do |k, v|
-            [
-              "#{assoc.name}.#{k}",
-              v.type
-            ]
-          end
-          fields
-        end.reduce({}, :merge)
+      model_attributes = model.columns_hash.transform_values(&:type)
 
-      @fact_attributes ||= associations.merge(model_attributes)
+      associations_attributes = model.reflect_on_all_associations.map do |assoc|
+        assoc.klass.columns_hash.to_h do |column_name, column|
+          ["#{assoc.name}.#{column_name}", column.type]
+        end
+      end.reduce(:merge)
+
+      @fact_attributes = associations_attributes.merge(model_attributes)
     end
 
     def dimensions
