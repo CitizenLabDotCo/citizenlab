@@ -128,6 +128,7 @@ const SignUpInModal = memo(
               display="flex"
               justifyContent="center"
               background="#fff"
+              padding={'40px 20px 20px'}
             >
               <Box
                 maxWidth="580px"
@@ -144,6 +145,7 @@ const SignUpInModal = memo(
                   padding="0"
                   textDecorationHover="underline"
                   mr="auto"
+                  mb="20px"
                 >
                   {formatMessage(messages.goBack)}
                 </Button>

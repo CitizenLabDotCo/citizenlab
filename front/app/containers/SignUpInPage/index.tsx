@@ -76,6 +76,7 @@ const SignUpInPage = ({ flow }: Props) => {
         id="e2e-sign-up-in-page"
         display="flex"
         justifyContent="center"
+        padding={'40px 20px 20px'}
       >
         <Box maxWidth="580px" width="100%">
           <SignUpIn
