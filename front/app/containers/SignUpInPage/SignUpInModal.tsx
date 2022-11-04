@@ -6,9 +6,8 @@ import tracks from './tracks';
 import { ISignUpInMetaData } from './SignUpIn';
 import { StyledSignUpIn } from '.';
 import FullscreenModal from 'components/UI/FullscreenModal';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import PlatformFooter from 'containers/PlatformFooter';
-import MainHeader from 'containers/MainHeader';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
@@ -20,9 +19,6 @@ import { trackEventByName } from 'utils/analytics';
 
 // events
 import { closeSignUpInModal, openSignUpInModal$ } from './events';
-
-// style
-import { useTheme } from 'styled-components';
 
 interface Props {
   className?: string;
@@ -39,9 +35,7 @@ const SignUpInModal = memo(
     const isMounted = useIsMounted();
     const [metaData, setMetaData] = useState<ISignUpInMetaData | null>(null);
     const authUser = useAuthUser();
-    const theme: any = useTheme();
     const opened = metaData?.inModal || false;
-    const tablet = useBreakpoint('tablet');
 
     useEffect(() => {
       if (isMounted()) {
@@ -124,7 +118,6 @@ const SignUpInModal = memo(
           navbarRef={navbarRef}
           mobileNavbarRef={mobileNavbarRef}
           url={getUrl()}
-          topBar={<MainHeader />}
         >
           <Box
             id="e2e-sign-up-in-modal"
@@ -132,7 +125,6 @@ const SignUpInModal = memo(
             display="flex"
             flexDirection="column"
             alignItems="center"
-            pt={tablet ? `${theme.mobileTopBarHeight}px` : '0'}
           >
             <StyledSignUpIn
               metaData={metaData}
