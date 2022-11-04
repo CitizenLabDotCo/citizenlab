@@ -72,7 +72,7 @@ const SignUpInPage = ({ flow }: Props) => {
     <>
       <SignUpInPageMeta />
       <PageContainer
-        backgroundColor="#fff"
+        background="#fff"
         id="e2e-sign-up-in-page"
         display="flex"
         justifyContent="center"
