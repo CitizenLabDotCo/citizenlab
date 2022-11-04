@@ -5,11 +5,11 @@ import { AUTH_PATH } from 'containers/App/constants';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { StyledAuthProviderButton } from 'components/SignUpIn/AuthProviders';
-import { TOnContinueFunction } from 'components/SignUpIn/AuthProviderButton';
+import { StyledAuthProviderButton } from 'containers/SignUpInPage/AuthProviders';
+import { TOnContinueFunction } from 'containers/SignUpInPage/AuthProviderButton';
 
 // typings
-import { TSignUpInFlow } from 'components/SignUpIn';
+import { TSignUpInFlow } from 'containers/SignUpInPage/SignUpIn';
 
 interface Props {
   flow: TSignUpInFlow;
