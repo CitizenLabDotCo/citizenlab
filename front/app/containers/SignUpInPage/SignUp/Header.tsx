@@ -2,7 +2,6 @@ import React from 'react';
 
 // components
 import { StyledHeaderContainer, StyledHeaderTitle } from '../styles';
-import ReactResizeDetector from 'react-resize-detector';
 import { HeaderSubtitle } from 'components/UI/Modal';
 
 // i18n
@@ -11,7 +10,6 @@ import messages from './messages';
 
 interface Props {
   inModal?: boolean;
-  onResize: (w: number, h: number) => void;
   activeStepNumber: number | null;
   totalStepsCount: number;
   error?: string | null;
@@ -20,41 +18,34 @@ interface Props {
 
 const Header = ({
   inModal,
-  onResize,
   activeStepNumber,
   totalStepsCount,
   error,
   stepName,
 }: Props) => {
   return (
-    <div>
-      <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
-        <div>
-          <StyledHeaderContainer inModal={!!inModal}>
-            <StyledHeaderTitle>
-              <FormattedMessage {...messages.signUp2} />
-            </StyledHeaderTitle>
+    <StyledHeaderContainer inModal={!!inModal}>
+      <StyledHeaderTitle>
+        <FormattedMessage {...messages.signUp2} />
+      </StyledHeaderTitle>
 
-            {!error && stepName && (
-              <HeaderSubtitle>
-                {totalStepsCount > 1 && activeStepNumber ? (
-                  <FormattedMessage
-                    {...messages.headerSubtitle}
-                    values={{
-                      activeStepNumber,
-                      stepName,
-                      totalStepsCount,
-                    }}
-                  />
-                ) : (
-                  stepName
-                )}
-              </HeaderSubtitle>
-            )}
-          </StyledHeaderContainer>
-        </div>
-      </ReactResizeDetector>
-    </div>
+      {!error && stepName && (
+        <HeaderSubtitle>
+          {totalStepsCount > 1 && activeStepNumber ? (
+            <FormattedMessage
+              {...messages.headerSubtitle}
+              values={{
+                activeStepNumber,
+                stepName,
+                totalStepsCount,
+              }}
+            />
+          ) : (
+            stepName
+          )}
+        </HeaderSubtitle>
+      )}
+    </StyledHeaderContainer>
   );
 };
 

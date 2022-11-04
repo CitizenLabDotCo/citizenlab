@@ -71,10 +71,6 @@ const StyledSignUpIn = styled(SignUpIn)`
   & .signupinheadercontainer {
     border-bottom: none !important;
   }
-
-  & .signupincontentcontainer {
-    max-height: unset !important;
-  }
 `;
 
 const SignUpInHeader = styled.h2`

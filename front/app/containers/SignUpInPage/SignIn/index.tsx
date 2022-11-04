@@ -4,11 +4,7 @@ import { useTheme } from 'styled-components';
 import PasswordSignin from '../SignIn/PasswordSignin';
 import AuthProviders, { AuthProvider } from '../AuthProviders';
 import Error from 'components/UI/Error';
-import {
-  StyledHeaderContainer,
-  StyledHeaderTitle,
-  StyledModalContentContainer,
-} from '../styles';
+import { StyledHeaderContainer, StyledHeaderTitle } from '../styles';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -96,10 +92,7 @@ const SignIn = memo<Props>(
           )}
         </StyledHeaderContainer>
 
-        <StyledModalContentContainer
-          headerHeight="68px"
-          className="signupincontentcontainer"
-        >
+        <Box>
           {metaData.error ? (
             <Error
               text={<FormattedMessage {...messages.somethingWentWrongText} />}
@@ -126,7 +119,7 @@ const SignIn = memo<Props>(
               )}
             </>
           )}
-        </StyledModalContentContainer>
+        </Box>
       </Box>
     );
   }

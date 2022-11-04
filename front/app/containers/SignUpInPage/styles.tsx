@@ -1,10 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import {
-  HeaderContainer,
-  HeaderTitle,
-  ModalContentContainer,
-} from 'components/UI/Modal';
+import { HeaderContainer, HeaderTitle } from 'components/UI/Modal';
 import { fontSizes, defaultOutline, media } from 'utils/styleUtils';
 
 export const Options = styled.div`
@@ -72,6 +68,7 @@ export const StyledHeaderContainer = styled((props) => (
 }>`
   padding: 0;
   border: none;
+  margin-bottom: 20px;
 
   ${(props) =>
     !props.inModal &&
@@ -90,22 +87,4 @@ export const StyledHeaderContainer = styled((props) => (
 
 export const StyledHeaderTitle = styled(HeaderTitle)`
   font-size: ${fontSizes.xxl}px;
-`;
-
-export const StyledModalContentContainer = styled(ModalContentContainer)<{
-  headerHeight: string;
-}>`
-  padding-left: 0;
-  padding-right: 0;
-
-  ${(props) =>
-    `
-      padding-top: 20px;
-      padding-bottom: 0px;
-      max-height: calc(85vh - ${props.headerHeight});
-
-      ${media.phone`
-        max-height: ${(props) => `calc(85vh - 30px - ${props.headerHeight})`};
-      `}
-    `}
 `;

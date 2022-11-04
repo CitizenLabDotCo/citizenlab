@@ -16,9 +16,6 @@ import { signUpActiveStepChange$, openSignUpInModal$ } from './events';
 // context
 import { PreviousPathnameContext } from 'context';
 
-// style
-import { useTheme } from 'styled-components';
-
 import useAuthUser from 'hooks/useAuthUser';
 
 interface Props {
@@ -48,14 +45,12 @@ export const StyledSignUpIn = ({
 const SignUpInPage = ({ flow }: Props) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const { pathname } = useLocation();
-  const theme: any = useTheme();
   const authUser = useAuthUser();
   const [metaData, setMetaData] = useState<ISignUpInMetaData>({
     flow,
     pathname,
     inModal: false,
   });
-  const tablet = useBreakpoint('tablet');
 
   const isLoggedIn =
     !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
@@ -96,12 +91,7 @@ const SignUpInPage = ({ flow }: Props) => {
     <>
       <SignUpInPageMeta />
       <PageContainer id="e2e-sign-up-in-page">
-        <Box
-          background="#fff"
-          display="flex"
-          justifyContent="center"
-          pt={tablet ? `${theme.mobileTopBarHeight}px` : '0'}
-        >
+        <Box background="#fff" display="flex" justifyContent="center">
           <StyledSignUpIn
             metaData={metaData}
             onSignUpInCompleted={onSignUpInCompleted}

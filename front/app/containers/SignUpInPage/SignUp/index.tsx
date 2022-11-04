@@ -10,10 +10,9 @@ import PasswordSignup from '../SignUp/PasswordSignup';
 import Success from '../SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { StyledModalContentContainer } from '../styles';
 import Outlet from 'components/Outlet';
 import Mounter from 'components/Mounter';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -112,6 +111,7 @@ const SignUp = ({
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
   const theme: any = useTheme();
+  const tablet = useBreakpoint('tablet');
 
   const modalContentRef = useRef<HTMLDivElement>(null);
 
@@ -135,7 +135,6 @@ const SignUp = ({
     })
   );
   const [error, setError] = useState<string | null>(null);
-  const [headerHeight, setHeaderHeight] = useState<string>('100px');
 
   // this transitions the current step to the next step
   useEffect(() => {
@@ -233,10 +232,6 @@ const SignUp = ({
     }
   }, [metaData?.error, formatMessage]);
 
-  const onResize = (_width: number, height: number) => {
-    setHeaderHeight(`${Math.round(height) + 2}px`);
-  };
-
   const handleSelectAuthProvider = (
     selectedAuthProvider: AuthProvider,
     setHrefFromModule?: () => void
@@ -291,13 +286,16 @@ const SignUp = ({
     <Box
       id="e2e-sign-up-container"
       className={className ?? ''}
-      minHeight={`calc(100vh - ${theme.menuHeight}px - ${theme.footerHeight}px)`}
+      minHeight={
+        tablet
+          ? `calc(100vh - ${theme.mobileMenuHeight}px - ${theme.mobileTopBarHeight}px)`
+          : `calc(100vh - ${theme.menuHeight}px - ${theme.footerHeight}px)`
+      }
       padding="40px 0 20px"
     >
       {activeStep !== 'success' && (
         <Header
           inModal={metaData.inModal}
-          onResize={onResize}
           activeStepNumber={activeStepNumber}
           totalStepsCount={totalStepsCount}
           error={error}
@@ -305,10 +303,7 @@ const SignUp = ({
         />
       )}
 
-      <StyledModalContentContainer
-        headerHeight={headerHeight}
-        ref={modalContentRef}
-      >
+      <Box ref={modalContentRef}>
         {error ? (
           <Error text={error} animate={false} marginBottom="30px" />
         ) : (
@@ -365,7 +360,7 @@ const SignUp = ({
             )}
           </>
         )}
-      </StyledModalContentContainer>
+      </Box>
     </Box>
   );
 };
