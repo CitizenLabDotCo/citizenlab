@@ -47,12 +47,15 @@ const ContentBuilderToolbox = ({
   selectedLocale,
   intl: { formatMessage },
 }: ContentBuilderToolboxProps) => {
+  // Will have to be abstracted out
   const { projectId } = useParams() as { projectId: string };
   const {
     connectors,
     actions: { selectNode },
   } = useEditor();
 
+  // Maybe this markup could be dynamicaly generated based on
+  // a configuration object passed to the project builder instance
   return (
     <Box
       position="fixed"
@@ -101,6 +104,7 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
+              // Will have to be abstracted out
               <InfoWithAccordions projectId={projectId} />,
               {
                 onCreate: (node) => {
@@ -267,6 +271,7 @@ const ContentBuilderToolbox = ({
           id="e2e-draggable-about-box"
           ref={(ref) =>
             ref &&
+            // Will have to be abstracted out
             connectors.create(ref, <AboutBox projectId={projectId} />, {
               onCreate: (node) => {
                 selectNode(node.rootNodeId);

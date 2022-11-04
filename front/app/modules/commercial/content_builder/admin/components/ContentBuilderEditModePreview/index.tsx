@@ -16,6 +16,7 @@ type ContentBuilderPreviewProps = {
 const ContentBuilderEditModePreview = React.forwardRef<
   HTMLIFrameElement,
   ContentBuilderPreviewProps
+  // Same here: projectId needs to be abstracted away somehow
 >(({ projectId }, ref) => {
   const locale = useLocale();
   const [isMobile, setIsMobile] = useState(true);
@@ -79,6 +80,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
           <Box
             as="iframe"
             ref={ref}
+            // This URL too
             src={`/${locale}/admin/content-builder/projects/${projectId}/preview`}
             height="560px"
             width={isMobile ? '320px' : '1100px'}

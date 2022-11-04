@@ -34,6 +34,8 @@ const Editor: React.FC<EditorProps> = ({
   return (
     <CraftEditor
       resolver={{
+        // Maybe these could be imported and passed as part of
+        // a configuration object to the project builder instance
         Box,
         Container,
         TwoColumn,

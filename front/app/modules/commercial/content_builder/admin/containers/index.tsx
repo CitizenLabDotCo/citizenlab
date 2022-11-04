@@ -21,6 +21,7 @@ import ContentBuilderFrame from '../components/ContentBuilderFrame';
 import ContentBuilderSettings from '../components/ContentBuilderSettings';
 
 // hooks
+// Will have to be abstracted out
 import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
 import useLocale from 'hooks/useLocale';
 import useContentBuilderLayout from '../../hooks/useContentBuilder';
@@ -62,6 +63,10 @@ export const ContentBuilderPage = () => {
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { pathname } = useLocation();
+
+  // The report builder should also be usable without selecting a
+  // single project, or even with multiple projects- so
+  // we would have to abstract this out somehow
   const { projectId } = useParams() as { projectId: string };
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -232,6 +237,7 @@ export const ContentBuilderPage = () => {
         </Editor>
         <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
           <ContentBuilderEditModePreview
+            // Will have to be abstracted out
             projectId={projectId}
             ref={iframeRef}
           />

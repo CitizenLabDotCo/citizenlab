@@ -19,6 +19,7 @@ const ContentBuilderPreview = ({
   onMount,
   params: { slug },
 }: ContentBuilderPreviewProps) => {
+  // Will have to be abstracted out
   const project = useProject({ projectSlug: slug });
   const featureEnabled = useFeatureFlag({ name: 'content_builder' });
 
@@ -33,6 +34,7 @@ const ContentBuilderPreview = ({
 
   return (
     <Preview
+      // Will have to be abstracted out
       projectId={project.id}
       projectTitle={project.attributes.title_multiloc}
     />

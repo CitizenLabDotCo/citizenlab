@@ -68,6 +68,7 @@ const ContentBuilderTopBar = ({
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
+  // Will have to be abstracted out
   const project = useProject({ projectId });
   const locales = useAppConfigurationLocales();
 
@@ -84,6 +85,7 @@ const ContentBuilderTopBar = ({
   }, {});
 
   const goBack = () => {
+    // Will have to be abstracted out
     clHistory.push(`/admin/projects/${projectId}/description`);
   };
 
@@ -91,6 +93,7 @@ const ContentBuilderTopBar = ({
     if (selectedLocale) {
       try {
         setLoading(true);
+        // Will have to be abstracted out
         await addContentBuilderLayout(
           { projectId, code: PROJECT_DESCRIPTION_CODE },
           {
@@ -140,6 +143,7 @@ const ContentBuilderTopBar = ({
           ) : (
             <>
               <Text mb="0px" color="textSecondary">
+                {/* Will have to be abstracted out */}
                 {localize(project.attributes.title_multiloc)}
               </Text>
               <Title variant="h4" as="h1">
@@ -171,6 +175,7 @@ const ContentBuilderTopBar = ({
           checked={previewEnabled}
           onChange={() => setPreviewEnabled(!previewEnabled)}
         />
+        {/* Will have to be abstracted out */}
         <Button
           id="e2e-view-project-button"
           buttonStyle="secondary"

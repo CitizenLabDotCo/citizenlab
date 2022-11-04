@@ -14,6 +14,8 @@ import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
+// Maybe this markup could be dynamicaly generated based on
+// a configuration object passed to the project builder instance
 const CONTAINER = 'Container';
 const TWO_COLUMNS = 'TwoColumn';
 const THREE_COLUMNS = 'ThreeColumn';

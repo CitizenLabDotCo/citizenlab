@@ -4,6 +4,7 @@ import {
   IContentBuilderLayout,
 } from '../services/contentBuilder';
 
+// We will need a different hook- every report will have its own ID
 const useContentBuilderLayout = ({ projectId, code }) => {
   const [contentBuilderLayout, setContentBuilderLayout] = useState<
     IContentBuilderLayout | undefined | null | Error
