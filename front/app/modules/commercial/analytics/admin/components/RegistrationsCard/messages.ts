@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations',
     defaultMessage: 'New registrations',
   },
+  registrationRate: {
+    id: 'app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate',
+    defaultMessage: 'Registration rate',
+  },
 });

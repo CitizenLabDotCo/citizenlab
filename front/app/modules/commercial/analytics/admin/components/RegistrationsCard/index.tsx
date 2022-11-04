@@ -12,7 +12,6 @@ import { STATS_CONTAINER_LAYOUT } from './layouts';
 
 // i18n
 import messages from './messages';
-import moduleMessages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
 import {
   getTimePeriodTranslations,
@@ -89,10 +88,10 @@ const RegistrationsCard = ({
           </Box>
           <Box {...STATS_CONTAINER_LAYOUT[layout]}>
             <Statistic
-              name={formatMessage(moduleMessages.conversionRate)}
-              value={shownStatsData.conversionRate.value}
+              name={formatMessage(messages.registrationRate)}
+              value={shownStatsData.registrationRate.value}
               bottomLabel={bottomLabel}
-              bottomLabelValue={shownStatsData.conversionRate.lastPeriod}
+              bottomLabelValue={shownStatsData.registrationRate.lastPeriod}
             />
           </Box>
         </Box>

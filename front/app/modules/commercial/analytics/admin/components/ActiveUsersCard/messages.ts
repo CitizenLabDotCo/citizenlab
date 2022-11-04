@@ -14,4 +14,8 @@ export default defineMessages({
     defaultMessage:
       'The number of users who have participated in one or more project(s). Participants for polling and embedded surveys will not be counted here.',
   },
+  participationRate: {
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate',
+    defaultMessage: 'Participation rate',
+  },
 });
