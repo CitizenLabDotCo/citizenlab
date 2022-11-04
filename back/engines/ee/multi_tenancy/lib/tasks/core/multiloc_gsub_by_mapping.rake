@@ -26,19 +26,21 @@ namespace :fix do
           next if columns.empty?
 
           model.find_each do |record|
+            next if record.readonly?
+
             columns.each do |column|
-              multiloc_value = record.public_send(column)
+              multiloc_value = record.public_send(column).to_json
               n_gsubs = 0
 
               data.each do |d|
-                if multiloc_value.to_json.include?(d['old'])
-                  multiloc_value = JSON.parse(multiloc_value.to_json.gsub(d['old'], d['new']))
+                if multiloc_value.include?(d['old'])
+                  multiloc_value = multiloc_value.gsub(d['old'], d['new'])
                   n_gsubs += 1
                 end
               end
 
               if n_gsubs > 0
-                record.send("#{column}=", multiloc_value)
+                record.send("#{column}=", JSON.parse(multiloc_value))
                 gsubs_performed += n_gsubs if record.save!
               end
             # rubocop:disable Lint/RescueException
