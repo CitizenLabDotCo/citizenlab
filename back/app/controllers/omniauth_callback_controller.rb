@@ -51,7 +51,8 @@ class OmniauthCallbackController < ApplicationController
     if @user.nil?
       @user = User.find_by_cimail(user_attrs.fetch(:email))
       if @user && !authver_method.can_be_merged?(@user, user_attrs)
-        failure_redirect(error_code: 'france_connect_merging_failed')
+        # `sso_flow: 'signin'` - even if user signs up, we propose to sign in in case of this error
+        failure_redirect(error_code: 'france_connect_merging_failed', sso_flow: 'signin')
         return
       end
     end
@@ -112,7 +113,8 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def failure_redirect(params = {})
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, request.env['omniauth.params'].merge(params)))
+    redirect_params = request.env['omniauth.params'].with_indifferent_access.merge(params)
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, redirect_params))
   end
 
   def signin_success_redirect
