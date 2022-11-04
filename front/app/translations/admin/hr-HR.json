@@ -18,7 +18,7 @@
   "app.components.ProjectTemplatePreview.goBackTo": "Povratak na {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Želite li koristiti ovaj predložak za svoj projekt?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Obratite se odgovornoj osobi u svojoj gradskoj upravi ili kontaktirajte {link}.",
-  "app.components.ProjectTemplatePreview.projectFolder": "Project folder",
+  "app.components.ProjectTemplatePreview.projectFolder": "Mapa projekta",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "Odabrani datum je neispravan. Molimo odaberite datum u slijedećem formatu YYYY-MM-DD",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "Molimo vas da odredite datum početka projekta",
   "app.components.ProjectTemplatePreview.projectStartDate": "Datum početka vašeg projekta",
