@@ -111,10 +111,20 @@ export interface Props {
   className?: string;
   onContinue: TOnContinueFunction;
   children: React.ReactNode;
+  showConsentOnFlow?: TSignUpInFlow;
 }
 
 const AuthProviderButton = memo<Props>(
-  ({ flow, authProvider, className, onContinue, children, id, icon }) => {
+  ({
+    flow,
+    authProvider,
+    className,
+    onContinue,
+    children,
+    id,
+    icon,
+    showConsentOnFlow = 'signup',
+  }) => {
     const [expanded, setExpanded] = useState(false);
     const [tacAccepted, setTacAccepted] = useState(false);
     const [tacError, setTacError] = useState(false);
@@ -133,14 +143,14 @@ const AuthProviderButton = memo<Props>(
       (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (flow === 'signup' && authProvider !== 'email') {
+        if (showConsentOnFlow === flow && authProvider !== 'email') {
           setExpanded((prevExpanded) => !prevExpanded);
         } else {
           trackEventByName(tracks.signInWithSSOClicked, { authProvider });
           onContinue(authProvider);
         }
       },
-      [flow, authProvider, onContinue]
+      [flow, authProvider, onContinue, showConsentOnFlow]
     );
 
     const handleContinueClicked = useCallback(() => {
@@ -148,11 +158,14 @@ const AuthProviderButton = memo<Props>(
         setTacError(true);
       }
 
-      if (!privacyAccepted) {
+      if (!privacyAccepted && authProvider !== 'id_vienna_saml') {
         setPrivacyError(true);
       }
 
-      if (tacAccepted && privacyAccepted) {
+      if (
+        tacAccepted &&
+        (privacyAccepted || authProvider === 'id_vienna_saml')
+      ) {
         trackEventByName(tracks.signUpWithSSOClicked, { authProvider });
         onContinue(authProvider);
       }
@@ -170,6 +183,11 @@ const AuthProviderButton = memo<Props>(
       },
       []
     );
+
+    const isContinueEnabled =
+      authProvider === 'id_vienna_saml'
+        ? tacAccepted
+        : tacAccepted && privacyAccepted;
 
     return (
       <Container className={className} id={id}>
@@ -189,7 +207,7 @@ const AuthProviderButton = memo<Props>(
           {children}
         </Button>
 
-        {flow === 'signup' && (
+        {showConsentOnFlow === flow && (
           <CSSTransition
             classNames="consent"
             in={expanded}
@@ -208,11 +226,12 @@ const AuthProviderButton = memo<Props>(
                   privacyPolicyError={privacyError}
                   onTacAcceptedChange={handleTacAcceptedChange}
                   onPrivacyAcceptedChange={handlePrivacyAcceptedChange}
+                  authProvider={authProvider}
                 />
                 <ButtonWrapper>
                   <ContinueButton
                     onClick={handleContinueClicked}
-                    disabled={!(tacAccepted && privacyAccepted)}
+                    disabled={!isContinueEnabled}
                   >
                     <FormattedMessage {...messages.continue} />
                   </ContinueButton>
