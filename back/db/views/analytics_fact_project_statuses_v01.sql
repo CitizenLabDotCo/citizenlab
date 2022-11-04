@@ -2,7 +2,7 @@ WITH last_project_statuses AS -- project statuses that do not need to be calcula
          (SELECT DISTINCT ON (item_id) item_id as project_id, action as status, acted_at as timestamp
           FROM activities
           WHERE item_type = 'Project'
-            AND action IN ('draft', 'published', 'archived')
+            AND action IN ('draft', 'published', 'archived', 'deleted')
           ORDER BY item_id, acted_at DESC),
 
      finished_statuses_for_continuous_projects AS

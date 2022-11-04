@@ -1727,7 +1727,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_153024) do
               activities.action AS status,
               activities.acted_at AS "timestamp"
              FROM activities
-            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY ((ARRAY['draft'::character varying, 'published'::character varying, 'archived'::character varying])::text[])))
+            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY ((ARRAY['draft'::character varying, 'published'::character varying, 'archived'::character varying, 'deleted'::character varying])::text[])))
             ORDER BY activities.item_id, activities.acted_at DESC
           ), finished_statuses_for_continuous_projects AS (
            SELECT lps.project_id,
