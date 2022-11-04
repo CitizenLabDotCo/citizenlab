@@ -1659,7 +1659,6 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "من يمكنه رؤية هذا المشروع؟",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "انتقال إلى مدير المدخلات",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "مدخلات",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate": "معدل التحويل",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "تسجيلات جديدة",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "التسجيلات",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "إجمالي التسجيلات",
