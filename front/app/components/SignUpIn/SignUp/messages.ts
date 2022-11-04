@@ -126,7 +126,7 @@ export default defineMessages({
   },
   whatIsFranceConnect: {
     id: 'app.containers.SignUp.whatIsFranceConnect',
-    defaultMessage: 'What is France Connect?',
+    defaultMessage: 'What is FranceConnect?',
   },
   somethingWentWrongText: {
     id: 'app.containers.SignUp.somethingWentWrongText',
@@ -136,7 +136,7 @@ export default defineMessages({
   franceConnectMergingFailed: {
     id: 'app.containers.SignUp.franceConnectMergingFailed',
     defaultMessage:
-      'An account already exists with this email address.{br}{br}You cannot access the platform using FranceConnect as the personal details do not match. To log in using France Connect, you will have to first change your first name or last name on this platform to match your official details.{br}{br}You can log in as you normally do below.',
+      'An account already exists with this email address.{br}{br}You cannot access the platform using FranceConnect as the personal details do not match. To log in using FranceConnect, you will have to first change your first name or last name on this platform to match your official details.{br}{br}You can log in as you normally do below.',
   },
   signUpWithEmail: {
     id: 'app.containers.SignUp.signUpWithEmail',
