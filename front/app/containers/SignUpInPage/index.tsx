@@ -77,7 +77,7 @@ const SignUpInPage = ({ flow }: Props) => {
         display="flex"
         justifyContent="center"
       >
-        <Box maxWidth="580px">
+        <Box maxWidth="580px" width="100%">
           <SignUpIn
             metaData={metaData}
             onSignUpInCompleted={onSignUpInCompleted}

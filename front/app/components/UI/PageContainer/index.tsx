@@ -9,16 +9,15 @@ import { colors } from 'utils/styleUtils';
 
 interface Props extends BoxProps {
   children: ReactNode;
-  backgroundColor?: string;
 }
 
-const PageContainer = ({ children, backgroundColor, ...otherProps }: Props) => {
+const PageContainer = ({ children, background, ...otherProps }: Props) => {
   const tablet = useBreakpoint('tablet');
   const theme: any = useTheme();
 
   return (
     <Box
-      background={backgroundColor || colors.background}
+      background={background || colors.background}
       width="100%"
       position="relative"
       minHeight={

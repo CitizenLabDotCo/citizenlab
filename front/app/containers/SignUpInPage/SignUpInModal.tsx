@@ -20,6 +20,7 @@ import { trackEventByName } from 'utils/analytics';
 
 // events
 import { closeSignUpInModal, openSignUpInModal$ } from './events';
+import PageContainer from 'components/UI/PageContainer';
 
 interface Props {
   className?: string;
@@ -121,31 +122,39 @@ const SignUpInModal = memo(
           mobileNavbarRef={mobileNavbarRef}
           url={getUrl()}
         >
-          <Box
-            id="e2e-sign-up-in-modal"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-          >
-            <Box maxWidth="580px" display="flex" flexDirection="column">
-              <Button
-                icon="arrow-left-circle"
-                onClick={onClose}
-                buttonStyle="text"
-                iconSize="26px"
-                padding="0"
-                textDecorationHover="underline"
-                mr="auto"
+          <>
+            <PageContainer
+              id="e2e-sign-up-in-modal"
+              display="flex"
+              justifyContent="center"
+              background="#fff"
+            >
+              <Box
+                maxWidth="580px"
+                width="100%"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
               >
-                {formatMessage(messages.goBack)}
-              </Button>
-              <SignUpIn
-                metaData={metaData}
-                onSignUpInCompleted={onSignUpInCompleted}
-              />
-            </Box>
+                <Button
+                  icon="arrow-left-circle"
+                  onClick={onClose}
+                  buttonStyle="text"
+                  iconSize="26px"
+                  padding="0"
+                  textDecorationHover="underline"
+                  mr="auto"
+                >
+                  {formatMessage(messages.goBack)}
+                </Button>
+                <SignUpIn
+                  metaData={metaData}
+                  onSignUpInCompleted={onSignUpInCompleted}
+                />
+              </Box>
+            </PageContainer>
             <PlatformFooter insideModal />
-          </Box>
+          </>
         </FullscreenModal>
       );
     }

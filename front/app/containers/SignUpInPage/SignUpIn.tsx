@@ -67,7 +67,7 @@ const SignUpIn = ({
 
   if (!isNilOrError(appConfiguration)) {
     return (
-      <Box className={className}>
+      <Box className={className} width="100%">
         {metaData.flow === 'signup' ? (
           <SignUp
             metaData={metaData}
