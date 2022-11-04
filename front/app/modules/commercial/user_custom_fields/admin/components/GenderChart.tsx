@@ -146,6 +146,12 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
     this.setState({ hoverIndex: undefined });
   };
 
+  makeLegends = (row, i): LegendItem => ({
+    icon: 'circle',
+    color: categoricalColorScheme({ rowIndex: i }),
+    label: `${row.name} (${row.percentage}%)`,
+  });
+
   render() {
     const {
       startAt,
@@ -156,16 +162,6 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
       currentGroupFilterLabel,
     } = this.props;
     const { serie } = this.state;
-
-    const legend =
-      serie &&
-      serie.map(
-        (row, i): LegendItem => ({
-          icon: 'circle',
-          color: categoricalColorScheme({ rowIndex: i }),
-          label: `${row.name} (${row.percentage}%)`,
-        })
-      );
 
     return (
       <GraphCard className={className}>
@@ -211,7 +207,7 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
                 innerRef={this.currentChart}
                 tooltip={renderTooltip()}
                 legend={{
-                  items: legend as LegendItem[],
+                  items: serie.map(this.makeLegends),
                   maintainGraphSize: true,
                   marginLeft: 50,
                   position: 'right-center',
