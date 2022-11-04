@@ -1664,7 +1664,7 @@
   "app.modules.commercial.analytics.admin.components.Proposals.last7Days": "Last 7 days:",
   "app.modules.commercial.analytics.admin.components.Proposals.proposals": "Proposals",
   "app.modules.commercial.analytics.admin.components.Proposals.successfulProposals": "Successful proposals",
-  "app.modules.commercial.analytics.admin.components.Proposals.successfulProposalsToolTip": "Something here that explains",
+  "app.modules.commercial.analytics.admin.components.Proposals.successfulProposalsToolTip": "Proposals that have reached the required voting threshold",
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Total proposals",
   "app.modules.commercial.analytics.admin.components.Proposals.yesterday": "Yesterday:",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate": "Conversion rate",

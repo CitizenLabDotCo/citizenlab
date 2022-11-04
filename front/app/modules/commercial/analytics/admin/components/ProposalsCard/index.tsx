@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import Statistic from 'components/admin/Graphs/Statistic';
 
@@ -65,30 +65,23 @@ const ProposalsCard = ({
         resolution,
       }}
     >
-      <Box
-        width="100%"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-      >
-        <Box display="flex" flexDirection="row" pl="20px">
-          <Box pr="20px" borderRight="1px solid #ccc">
-            <Statistic
-              name={labels.total}
-              value={chartData.totalProposals.value}
-              bottomLabel={labels.period}
-              bottomLabelValue={chartData.totalProposals.lastPeriod}
-            />
-          </Box>
-          <Box pl="20px">
-            <Statistic
-              name={labels.successful}
-              value={chartData.successfulProposals.value}
-              bottomLabel={labels.period}
-              bottomLabelValue={chartData.successfulProposals.lastPeriod}
-              tooltipContent={labels.successfulToolTip}
-            />
-          </Box>
+      <Box width="100%" display="flex" flexDirection="row" pl="20px">
+        <Box pr="20px" width="100%" borderRight={`1px solid ${colors.divider}`}>
+          <Statistic
+            name={labels.total}
+            value={chartData.totalProposals.value}
+            bottomLabel={labels.period}
+            bottomLabelValue={chartData.totalProposals.lastPeriod}
+          />
+        </Box>
+        <Box pl="20px" width="100%">
+          <Statistic
+            name={labels.successful}
+            value={chartData.successfulProposals.value}
+            bottomLabel={labels.period}
+            bottomLabelValue={chartData.successfulProposals.lastPeriod}
+            tooltipContent={labels.successfulToolTip}
+          />
         </Box>
       </Box>
     </GraphCard>
