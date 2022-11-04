@@ -1,6 +1,10 @@
 # Changelog
 
-## Next release
+## 2022-11-04
+
+#### Fixed
+
+- [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
 
 ## 2022-11-03
 
