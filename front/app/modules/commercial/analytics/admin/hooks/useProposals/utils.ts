@@ -1,7 +1,8 @@
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../components/ProposalsCard/messages';
-import { IResolution } from '../../../../../../components/admin/ResolutionControl';
+import { IResolution } from 'components/admin/ResolutionControl';
 import moment from 'moment';
+import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
 
 export interface Labels {
   cardTitle: string;
@@ -15,16 +16,12 @@ export const getLabels = (
   formatMessage: WrappedComponentProps['intl']['formatMessage'],
   resolution
 ): Labels => {
-  let period = messages.last30Days;
-  if (resolution === 'week') period = messages.last7Days;
-  if (resolution === 'day') period = messages.yesterday;
-
   return {
     cardTitle: formatMessage(messages.proposals),
     total: formatMessage(messages.totalProposals),
     successful: formatMessage(messages.successfulProposals),
     successfulToolTip: formatMessage(messages.successfulProposalsToolTip),
-    period: formatMessage(period),
+    period: getTimePeriodTranslationByResolution(formatMessage, resolution),
   };
 };
 
