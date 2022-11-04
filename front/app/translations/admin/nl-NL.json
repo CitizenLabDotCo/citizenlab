@@ -18,6 +18,7 @@
   "app.components.ProjectTemplatePreview.goBackTo": "Ga terug naar de {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Wil je dit sjabloon gebruiken voor jouw participatieproject?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Neem contact op met de verantwoordelijke binnen je organisatie, of contacteer een {link}.",
+  "app.components.ProjectTemplatePreview.projectFolder": "Project folder",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "De ingevoerde datum is ongeldig. Gelieve het volgende formaat te gebruiken: JJJJ-MM-DD",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "Selecteer een startdatum voor het project",
   "app.components.ProjectTemplatePreview.projectStartDate": "De startdatum van je project",
