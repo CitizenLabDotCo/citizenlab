@@ -1,17 +1,18 @@
 import React, { useState, useEffect, memo } from 'react';
 import { signOut } from 'services/auth';
 import tracks from './tracks';
-
+import messages from './messages';
 // components
-import { ISignUpInMetaData } from './SignUpIn';
-import { StyledSignUpIn } from '.';
+import SignUpIn, { ISignUpInMetaData } from './SignUpIn';
 import FullscreenModal from 'components/UI/FullscreenModal';
+import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
 import PlatformFooter from 'containers/PlatformFooter';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,6 +36,7 @@ const SignUpInModal = memo(
     const isMounted = useIsMounted();
     const [metaData, setMetaData] = useState<ISignUpInMetaData | null>(null);
     const authUser = useAuthUser();
+    const { formatMessage } = useIntl();
     const opened = metaData?.inModal || false;
 
     useEffect(() => {
@@ -121,15 +123,27 @@ const SignUpInModal = memo(
         >
           <Box
             id="e2e-sign-up-in-modal"
-            width="100%"
             display="flex"
             flexDirection="column"
             alignItems="center"
           >
-            <StyledSignUpIn
-              metaData={metaData}
-              onSignUpInCompleted={onSignUpInCompleted}
-            />
+            <Box maxWidth="580px" display="flex" flexDirection="column">
+              <Button
+                icon="arrow-left-circle"
+                onClick={onClose}
+                buttonStyle="text"
+                iconSize="26px"
+                padding="0"
+                textDecorationHover="underline"
+                mr="auto"
+              >
+                {formatMessage(messages.goBack)}
+              </Button>
+              <SignUpIn
+                metaData={metaData}
+                onSignUpInCompleted={onSignUpInCompleted}
+              />
+            </Box>
             <PlatformFooter insideModal />
           </Box>
         </FullscreenModal>

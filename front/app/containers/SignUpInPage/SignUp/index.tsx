@@ -12,7 +12,7 @@ import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Outlet from 'components/Outlet';
 import Mounter from 'components/Mounter';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -98,21 +98,13 @@ export interface Props {
   customHeader?: JSX.Element;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
-  className?: string;
 }
 
-const SignUp = ({
-  metaData,
-  onSignUpCompleted,
-  onGoToSignIn,
-  className,
-}: Props) => {
+const SignUp = ({ metaData, onSignUpCompleted, onGoToSignIn }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
   const theme: any = useTheme();
-  const tablet = useBreakpoint('tablet');
-
   const modalContentRef = useRef<HTMLDivElement>(null);
 
   // state
@@ -283,16 +275,7 @@ const SignUp = ({
     : '';
 
   return (
-    <Box
-      id="e2e-sign-up-container"
-      className={className ?? ''}
-      minHeight={
-        tablet
-          ? `calc(100vh - ${theme.mobileMenuHeight}px - ${theme.mobileTopBarHeight}px)`
-          : `calc(100vh - ${theme.menuHeight}px - ${theme.footerHeight}px)`
-      }
-      padding="40px 0 20px"
-    >
+    <Box id="e2e-sign-up-container">
       {activeStep !== 'success' && (
         <Header
           inModal={metaData.inModal}

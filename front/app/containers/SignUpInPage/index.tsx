@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
-import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // components
 import SignUpInPageMeta from './SignUpInPageMeta';
@@ -15,30 +15,11 @@ import { signUpActiveStepChange$, openSignUpInModal$ } from './events';
 
 // context
 import { PreviousPathnameContext } from 'context';
-
 import useAuthUser from 'hooks/useAuthUser';
 
 interface Props {
   flow: 'signin' | 'signup';
 }
-
-interface StyledSignUpInProps {
-  metaData: ISignUpInMetaData;
-  onSignUpInCompleted: () => void;
-}
-
-export const StyledSignUpIn = ({
-  metaData,
-  onSignUpInCompleted,
-}: StyledSignUpInProps) => {
-  const phone = useBreakpoint('phone');
-
-  return (
-    <Box maxWidth="580px" width="100%" padding={phone ? '0 20px' : '0 40px'}>
-      <SignUpIn metaData={metaData} onSignUpInCompleted={onSignUpInCompleted} />
-    </Box>
-  );
-};
 
 // Note: we also use SignUpInModal (when not clicking Log in/Sign up in the top navigation)
 // This component looks the same.
@@ -90,9 +71,14 @@ const SignUpInPage = ({ flow }: Props) => {
   return (
     <>
       <SignUpInPageMeta />
-      <PageContainer id="e2e-sign-up-in-page">
-        <Box background="#fff" display="flex" justifyContent="center">
-          <StyledSignUpIn
+      <PageContainer
+        backgroundColor="#fff"
+        id="e2e-sign-up-in-page"
+        display="flex"
+        justifyContent="center"
+      >
+        <Box maxWidth="580px">
+          <SignUpIn
             metaData={metaData}
             onSignUpInCompleted={onSignUpInCompleted}
           />
