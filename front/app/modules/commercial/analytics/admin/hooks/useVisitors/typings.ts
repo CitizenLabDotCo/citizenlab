@@ -1,13 +1,6 @@
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Moment } from 'moment';
-import { Stat } from '../typings';
+import { ProjectId, Dates, Resolution, Stat } from '../../typings';
 
-export interface QueryParameters {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-}
+export type QueryParameters = ProjectId & Dates & Resolution;
 
 // Response
 export type Response = {

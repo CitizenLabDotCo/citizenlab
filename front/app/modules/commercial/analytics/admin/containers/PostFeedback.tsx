@@ -13,7 +13,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 interface Props {
   projectId: string | undefined;
   startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
+  endAtMoment: Moment | null;
   resolution: IResolution;
   onMount: () => void;
 }

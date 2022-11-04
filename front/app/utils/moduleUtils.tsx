@@ -180,7 +180,7 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.postStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
     resolution: IResolution;
     onMount: () => void;
   };

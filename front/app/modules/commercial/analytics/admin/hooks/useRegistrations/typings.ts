@@ -1,21 +1,15 @@
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Stat } from '../typings';
+import { Dates, Resolution, Stat } from '../../typings';
 
-export interface QueryParameters {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-}
+export type QueryParameters = Dates & Resolution;
 
 // Response
 export type Response = {
   data: [
     TimeSeriesResponseRow[],
-    [RegistrationsCountRow],
-    [RegistrationsCountRow],
-    [VisitorsCountRow],
-    [VisitorsCountRow]
+    [RegistrationsCountRow] | [],
+    [RegistrationsCountRow] | [],
+    [VisitorsCountRow] | [],
+    [VisitorsCountRow] | []
   ];
 };
 
@@ -59,5 +53,5 @@ export type TimeSeries = TimeSeriesRow[];
 
 export interface Stats {
   registrations: Stat;
-  conversionRate: Stat;
+  registrationRate: Stat;
 }

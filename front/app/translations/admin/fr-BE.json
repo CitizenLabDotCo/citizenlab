@@ -1660,7 +1660,6 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Qui peut voir ce projet ?",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "Aller au gestionnaire d'entrée",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "Entrées",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate": "Taux de conversion",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nouvelles inscriptions",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Inscriptions",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total des inscriptions",
