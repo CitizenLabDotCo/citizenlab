@@ -1263,7 +1263,7 @@
   "app.containers.SignUp.viennaConsentHeader": "The following data will be transmitted:",
   "app.containers.SignUp.viennaConsentLastName": "Familljennumm",
   "app.containers.SignUp.viennaConsentUserName": "User name",
-  "app.containers.SignUp.whatIsFranceConnect": "Wat ass France Connect?",
+  "app.containers.SignUp.whatIsFranceConnect": "Wat ass FranceConnect?",
   "app.containers.SignUpInPage.signInMetaTitle": "An d'CitizenLab-Plattform vun {tenantName} aloggen | CitizenLab",
   "app.containers.SignUpInPage.signInPageMetaDescription": "Mellt Iech op der participativer Plattform {orgName} un, fir Iech um Austausch ze bedeelegen!",
   "app.containers.SignUpInPage.signUpMetaTitle": "Op der CitizenLab-Plattform vun {tenantName} umellen | CitizenLab",
