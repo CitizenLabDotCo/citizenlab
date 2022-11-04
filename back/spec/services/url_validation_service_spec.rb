@@ -93,8 +93,6 @@ describe UrlValidationService do
         'https://www.youtube.com/embed/something?showinfo=0',
         'https://youtube.com/embed/something?showinfo=0',
         'https://player.vimeo.com/video/1',
-        'https://vimeo.com/1',
-        'https://www.vimeo.com/1',
         'https://subdomain.wistia.com/medias/something',
         'https://wistia.com/medias/something',
         'https://www.wistia.com/medias/something',
@@ -109,6 +107,8 @@ describe UrlValidationService do
       [
         'https://www.youtube.com/embed',
         'https://player.vimeo.com/1',
+        'https://vimeo.com/1',
+        'https://www.vimeo.com/1',
         'https://www.wistia.com',
         'https://www.dailymotion.com/embed',
         'https://videotool.dk/?vn=1',

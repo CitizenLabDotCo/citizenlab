@@ -41,54 +41,64 @@ module Analytics
       MODELS[@json_query['fact'].to_sym]
     end
 
-    def all_dimensions
-      @all_dimensions ||= model
+    def fact_dimensions
+      @fact_dimensions ||= fact_attributes
+        .keys
+        .select { |k| k.include?('.') }
+        .map { |k| k.split('.')[0] }
+        .uniq
+    end
+
+    def fact_attributes
+      model_attributes = model
+        .columns_hash
+        .transform_values(&:type)
+
+      associations = model
         .reflect_on_all_associations
-        .to_h do |assoc|
-          [
-            assoc.name.to_s,
-            {
-              columns: assoc.options[:class_name].constantize.attribute_names,
-              primary_key: assoc.options.key?(:primary_key) ? assoc.options[:primary_key] : nil
-            }
-          ]
-        end
+        .map do |assoc|
+          fields = assoc.options[:class_name].constantize.columns_hash.to_h do |k, v|
+            [
+              "#{assoc.name}.#{k}",
+              v.type
+            ]
+          end
+          fields
+        end.reduce({}, :merge)
+
+      @fact_attributes ||= associations.merge(model_attributes)
     end
 
-    def all_attributes
-      all_dimensions.keys + model.column_names + aggregations_names
-    end
-
-    def used_dimensions
-      used_dimensions = []
+    def dimensions
+      query_dimensions = []
 
       if @json_query.key?(:fields)
-        used_dimensions += fields
+        query_dimensions += fields
       end
 
       if @json_query.key?(:groups)
-        used_dimensions += groups_keys
+        query_dimensions += groups
       end
 
       if @json_query.key?(:aggregations)
-        used_dimensions += @json_query[:aggregations].keys
+        query_dimensions += @json_query[:aggregations].keys
       end
 
       if @json_query.key?(:sort)
-        used_dimensions += @json_query[:sort].keys
+        query_dimensions += @json_query[:sort].keys
       end
 
       if @json_query.key?(:filters)
-        used_dimensions += @json_query[:filters].keys
+        query_dimensions += @json_query[:filters].keys
       end
 
-      used_dimensions = used_dimensions.map { |key| key.include?('.') ? key.split('.')[0] : key }
-      used_dimensions = used_dimensions.select { |key| all_dimensions.include? key }
-
-      used_dimensions.uniq
+      query_dimensions
+        .map { |key| key.include?('.') ? key.split('.')[0] : key }
+        .select { |key| fact_dimensions.include? key }
+        .uniq
     end
 
-    def groups_keys
+    def groups
       Array.wrap(@json_query[:groups])
     end
 
@@ -97,20 +107,20 @@ module Analytics
     end
 
     def aggregations
-      attributes = []
+      fields = []
       if @json_query.key?(:aggregations)
-        @json_query[:aggregations].each do |column, aggregation|
+        @json_query[:aggregations].each do |field, aggregation|
           if aggregation.instance_of?(Array)
             aggregation.each do |aggregation_|
-              attributes.push([column, aggregation_])
+              fields.push([field, aggregation_])
             end
           else
-            attributes.push([column, aggregation])
+            fields.push([field, aggregation])
           end
         end
       end
 
-      attributes
+      fields
     end
 
     def aggregation_alias(column, aggregation)
@@ -140,8 +150,8 @@ module Analytics
     end
 
     def aggregations_names
-      aggregations.map do |column, aggregation|
-        aggregation_alias(column, aggregation)
+      @aggregations_names ||= aggregations.map do |field, aggregation|
+        aggregation_alias(field, aggregation)
       end
     end
   end

@@ -6,14 +6,14 @@ module Analytics
     def run(query)
       @query = query
       @json_query = query.json_query
-      @pluck_attributes = []
-      dimensions = @query.used_dimensions
+      @pluck_fields = []
+      dimensions = @query.dimensions
 
       results = @query.model.includes(dimensions)
       results = include_dimensions(results)
 
       if @json_query.key?(:fields)
-        @pluck_attributes += @query.fields
+        @pluck_fields += @query.fields
       end
 
       if @json_query.key?(:filters)
@@ -40,20 +40,18 @@ module Analytics
     private
 
     def query_filters(results)
-      @json_query[:filters].each do |dimension, columns|
-        columns.each do |column, value|
-          if [Array, String].include? value.class
-            value = convert_empty_to_null(value)
-            results = results.where(dimension => { column => value })
+      @json_query[:filters].each do |field, value|
+        field, subfield = field.include?('.') ? field.split('.') : [field, nil]
+
+        if value.is_a?(ActionController::Parameters) && subfield == 'date'
+          from, to = value.values_at(:from, :to)
+          results = results.where(field => { subfield => from..to })
+        else
+          value = convert_empty_to_null(value)
+          results = if subfield
+            results.where(field => { subfield => value })
           else
-            if column == 'date'
-              from = Date.parse(value['from'])
-              to = Date.parse(value['to'])
-            else
-              from = value['from'].to_i
-              to = value['to'].to_i
-            end
-            results = results.where(dimension => { column => from..to })
+            results.where(field => value)
           end
         end
       end
@@ -71,27 +69,34 @@ module Analytics
       value
     end
 
-    # creates a dummy where statement in the active record query
+    # creates an irrelevant where statement
     # for dimensions that are not being used in filters
     # so that an alias is automatically created
     # and can be used elsewhere in the query
     def include_dimensions(results)
-      dimensions = @query.used_dimensions
+      dimensions = @query.dimensions
+
       if @json_query.key?(:filters)
-        dimensions = dimensions.reject { |dim| @json_query[:filters].key?(dim) }
+        filters_dim = @json_query[:filters].keys
+          .map { |key| key.include?('.') ? key.split('.')[0] : key }
+          .select { |key| @query.fact_dimensions.include? key }
+
+        dimensions = dimensions.reject { |field| filters_dim.include?(field) }
       end
 
-      all_dimensions = @query.all_dimensions
       dimensions.each do |dimension|
-        primary_key = all_dimensions[dimension][:primary_key]
+        dimension_assoc = @query.model.reflect_on_association(dimension)
+        primary_key = dimension_assoc.options.key?(:primary_key) ? dimension_assoc.options[:primary_key] : nil
         primary_key ||= 'id'
-        results = results.where.not(dimension => { primary_key => nil })
+        results = results
+          .where
+          .not(dimension => { primary_key => nil })
       end
       results
     end
 
     def query_groups(results)
-      @pluck_attributes = @query.groups_keys
+      @pluck_fields = @query.groups
       results.group(@json_query[:groups])
     end
 
@@ -99,15 +104,15 @@ module Analytics
       aggregations_sql = @query.aggregations_sql
 
       if @json_query.key?(:groups)
-        @pluck_attributes += aggregations_sql
+        @pluck_fields += aggregations_sql
       else
-        @pluck_attributes = aggregations_sql
+        @pluck_fields = aggregations_sql
       end
     end
 
     def query_order(results)
       keys = @json_query[:sort].keys
-      @pluck_attributes += keys.filter { |key| @query.aggregations_names.exclude?(key) }
+      @pluck_fields += keys.filter { |key| @query.aggregations_names.exclude?(key) }
 
       order_query = []
       @json_query[:sort].each do |key, direction|
@@ -117,17 +122,17 @@ module Analytics
     end
 
     def query_pluck(results)
-      @pluck_attributes = @pluck_attributes.uniq
-      results = results.pluck(*@pluck_attributes)
-      response_attributes = @pluck_attributes.map { |key| @query.extract_aggregation_name(key) }
+      @pluck_fields = @pluck_fields.uniq
+      results = results.pluck(*@pluck_fields)
+      response_fields = @pluck_fields.map { |key| @query.extract_aggregation_name(key) }
 
       results.map do |result|
         result = Array.wrap(result)
 
-        response_row = response_attributes.zip(result).to_h
+        response_row = response_fields.zip(result).to_h
 
         substring = 'first_'
-        first_aggregations = response_attributes.select { |agg| agg[0, substring.length] == substring }
+        first_aggregations = response_fields.select { |agg| agg[0, substring.length] == substring }
         first_aggregations.each do |first_agg|
           response_row[first_agg] = response_row[first_agg][0]
         end
