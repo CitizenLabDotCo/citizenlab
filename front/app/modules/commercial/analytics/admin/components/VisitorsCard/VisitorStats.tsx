@@ -7,10 +7,7 @@ import Statistic from 'components/admin/Graphs/Statistic';
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-import {
-  getTimePeriodTranslations,
-  RESOLUTION_TO_MESSAGE_KEY,
-} from '../../utils/resolution';
+import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -37,9 +34,10 @@ const VisitorStats = ({ stats, projectId, resolution }: Props) => {
   const { formatMessage } = useIntl();
   const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
 
-  const timePeriodTranslations = getTimePeriodTranslations(formatMessage);
-  const bottomLabel =
-    timePeriodTranslations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
+  const bottomLabel = getTimePeriodTranslationByResolution(
+    formatMessage,
+    resolution
+  );
 
   return (
     <>

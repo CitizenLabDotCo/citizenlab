@@ -44,3 +44,10 @@ export const RESOLUTION_TO_MESSAGE_KEY: Record<
   week: 'last7Days',
   day: 'yesterday',
 };
+
+export const getTimePeriodTranslationByResolution = (
+  formatMessage: FormatMessage,
+  resolution: IResolution
+) => {
+  return formatMessage(messages[RESOLUTION_TO_MESSAGE_KEY[resolution]]);
+};

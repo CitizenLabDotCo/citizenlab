@@ -13,10 +13,7 @@ import { STATS_CONTAINER_LAYOUT } from '../RegistrationsCard/layouts';
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-import {
-  getTimePeriodTranslations,
-  RESOLUTION_TO_MESSAGE_KEY,
-} from '../../utils/resolution';
+import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -53,9 +50,10 @@ const ActiveUsersCard = ({
   const cardTitle = formatMessage(messages.activeUsers);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
-  const timePeriodTranslations = getTimePeriodTranslations(formatMessage);
-  const bottomLabel =
-    timePeriodTranslations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
+  const bottomLabel = getTimePeriodTranslationByResolution(
+    formatMessage,
+    resolution
+  );
 
   return (
     <GraphCard
