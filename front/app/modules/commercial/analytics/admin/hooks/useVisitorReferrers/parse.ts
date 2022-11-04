@@ -3,7 +3,7 @@ import { roundPercentage } from 'utils/math';
 
 // typings
 import { ReferrerRow, ReferrersTotalRow, TableRow } from './typings';
-import { Translations } from './utils';
+import { Translations } from './translations';
 
 export const parseTableData = (
   referrerRows: ReferrerRow[],

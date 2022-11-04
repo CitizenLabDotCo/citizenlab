@@ -200,3 +200,8 @@ sr-Latn:
       status: 'Status'
       assignee_fullname: 'Zadužena osoba'
       assignee_email: 'E-pošta dodeljenog korisnika'
+  form_builder:
+    default_select_field:
+      title: 'Vaše pitanje'
+      option1: 'Opcija 1'
+      option2: 'Opcija 2'

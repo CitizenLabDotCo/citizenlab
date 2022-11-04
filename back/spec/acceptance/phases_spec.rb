@@ -6,6 +6,8 @@ require 'rspec_api_documentation/dsl'
 resource 'Phases' do
   explanation 'Timeline projects consist of multiple phases through which ideas can transit.'
 
+  let(:json_response) { json_parse(response_body) }
+
   before do
     header 'Content-Type', 'application/json'
     create(:idea_status_proposed)
@@ -22,7 +24,6 @@ resource 'Phases' do
 
     example_request 'List all phases of a project' do
       assert_status 200
-      json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
   end
@@ -34,7 +35,6 @@ resource 'Phases' do
       create_list(:idea, 2, project: @project, phases: @phases)
       do_request
       assert_status 200
-      json_response = json_parse(response_body)
 
       expect(json_response.dig(:data, :id)).to eq @phases.first.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
@@ -137,13 +137,19 @@ resource 'Phases' do
 
       example_request 'Create a phase for a project' do
         assert_status 201
-        json_response = json_parse(response_body)
+        phase_id = json_response.dig(:data, :id)
+        phase_in_db = Phase.find(phase_id)
+
+        # A new ideation phase does not have a default form.
+        expect(phase_in_db.custom_form).to be_nil
+
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
         expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :voting_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
@@ -153,12 +159,65 @@ resource 'Phases' do
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
       end
 
+      context 'native survey' do
+        let(:phase) { build(:native_survey_phase) }
+        let(:min_budget) { nil }
+        let(:max_budget) { nil }
+
+        example 'Create a native survey phase', document: false do
+          do_request
+          assert_status 201
+          phase_id = json_response.dig(:data, :id)
+          phase_in_db = Phase.find(phase_id)
+
+          # A new native survey phase has a default form.
+          expect(phase_in_db.custom_form.custom_fields.size).to eq 1
+          field = phase_in_db.custom_form.custom_fields.first
+          expect(field.title_multiloc).to match({
+            'en' => an_instance_of(String),
+            'fr-FR' => an_instance_of(String),
+            'nl-NL' => an_instance_of(String)
+          })
+          options = field.options
+          expect(options.size).to eq 2
+          expect(options[0].key).to eq 'option1'
+          expect(options[1].key).to eq 'option2'
+          expect(options[0].title_multiloc).to match({
+            'en' => an_instance_of(String),
+            'fr-FR' => an_instance_of(String),
+            'nl-NL' => an_instance_of(String)
+          })
+          expect(options[1].title_multiloc).to match({
+            'en' => an_instance_of(String),
+            'fr-FR' => an_instance_of(String),
+            'nl-NL' => an_instance_of(String)
+          })
+
+          expect(phase_in_db.participation_method).to eq 'native_survey'
+          expect(phase_in_db.title_multiloc).to match title_multiloc
+          expect(phase_in_db.description_multiloc).to match description_multiloc
+          expect(phase_in_db.start_at).to eq start_at
+          expect(phase_in_db.end_at).to eq end_at
+          expect(phase_in_db.min_budget).to be_nil
+          expect(phase_in_db.max_budget).to be_nil
+
+          # A native survey phase still has some ideation-related state, all column defaults.
+          expect(phase_in_db.input_term).to eq 'idea'
+          expect(phase_in_db.presentation_mode).to eq 'card'
+          expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :voting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq 'unlimited'
+          expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq 10
+        end
+      end
+
       describe do
         let(:start_at) { nil }
 
         example_request '[error] Create an invalid phase', document: false do
           assert_status 422
-          json_response = json_parse response_body
           expect(json_response).to include_response_error(:start_at, 'blank')
         end
       end
@@ -174,7 +233,6 @@ resource 'Phases' do
 
         example_request '[error] Create an overlapping phase' do
           assert_status 422
-          json_response = json_parse response_body
           expect(json_response).to include_response_error(:base, 'has_other_overlapping_phases')
         end
       end
@@ -184,9 +242,9 @@ resource 'Phases' do
         let(:survey_embed_url) { 'https://citizenlabco.typeform.com/to/StrNJP' }
         let(:survey_service) { 'typeform' }
 
-        example_request 'Create a survey phase', document: false do
+        example 'Create a survey phase', document: false do
+          do_request
           assert_status 201
-          json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :survey_embed_url)).to eq survey_embed_url
           expect(json_response.dig(:data, :attributes, :survey_service)).to eq survey_service
         end
@@ -200,7 +258,6 @@ resource 'Phases' do
         example 'Create a participatory budgeting phase', document: false do
           do_request
           assert_status 201
-          json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :max_budget)).to eq max_budget
           expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
           expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
@@ -223,7 +280,6 @@ resource 'Phases' do
         example '[error] Create multiple budgeting phases', document: false do
           do_request
           assert_status 422
-          json_response = json_parse response_body
           expect(json_response).to include_response_error(:base, 'has_other_budgeting_phases')
         end
       end
@@ -247,7 +303,6 @@ resource 'Phases' do
           do_request phase: { start_at: nil, end_at: nil }
 
           assert_status 422
-          json_response = json_parse(response_body)
           expect(json_response[:errors].keys & %i[start_at end_at]).to be_present
           expect(TextImage.count).to eq ti_count
         end
@@ -293,7 +348,6 @@ resource 'Phases' do
 
       example_request 'Update a phase' do
         expect(response_status).to eq 200
-        json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
         expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
@@ -425,7 +479,6 @@ resource 'Phases' do
         do_request
         expect(status).to eq 200
 
-        json_response = json_parse(response_body)
         expect(json_response).to eq(
           {
             data: {
@@ -499,13 +552,12 @@ resource 'Phases' do
         do_request
         expect(status).to eq 200
 
-        json_response = json_parse(response_body)
         expect(json_response).to eq({ data: { totalSubmissions: 3 } })
       end
     end
 
     get 'web_api/v1/phases/:id/as_xlsx' do
-      context 'for an ideation phase without persisted form', document: false do
+      context 'for an ideation phase without persisted form' do
         let(:project) { create(:project, process_type: 'timeline') }
         let(:ideation_phase) do
           create(
@@ -520,7 +572,7 @@ resource 'Phases' do
         end
         let(:id) { ideation_phase.id }
 
-        example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+        example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
           do_request
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
@@ -581,7 +633,7 @@ resource 'Phases' do
         end
 
         context 'when there are no inputs in the phase' do
-          example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -645,7 +697,7 @@ resource 'Phases' do
           let!(:downvotes) { create_list(:downvote, 1, votable: ideation_response1) }
           let!(:baskets) { [] }
 
-          example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download ideation phase inputs in one sheet', skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -713,12 +765,12 @@ resource 'Phases' do
         end
       end
 
-      context 'for a native survey phase without persisted form', document: false do
+      context 'for a native survey phase without persisted form' do
         let(:project) { create(:project_with_active_native_survey_phase) }
         let(:active_phase) { project.phases.first }
         let(:id) { active_phase.id }
 
-        example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+        example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
           do_request
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
@@ -759,7 +811,7 @@ resource 'Phases' do
         end
 
         context 'when there are no inputs in the phase' do
-          example 'Download phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -810,7 +862,7 @@ resource 'Phases' do
             )
           end
 
-          example 'Download phase inputs', skip: !CitizenLab.ee? do
+          example 'Download native survey phase inputs in one sheet', skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -929,7 +981,8 @@ resource 'Phases' do
           )
         end
 
-        example_request 'Download phase inputs without private user data', document: false do
+        example 'Download phase inputs without private user data', document: false do
+          do_request
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
             {
@@ -1018,7 +1071,8 @@ resource 'Phases' do
           )
         end
 
-        example_request 'Download phase inputs without private user data', document: false do
+        example 'Download phase inputs without private user data', document: false do
+          do_request
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
             {

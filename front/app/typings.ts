@@ -11,6 +11,7 @@ import {
 } from 'services/appConfiguration';
 import { IIdeaAction } from 'services/ideas';
 import { IProjectAction } from 'services/projects';
+import { WrappedComponentProps } from 'react-intl';
 
 declare global {
   interface Function {
@@ -208,3 +209,5 @@ type _OneOf<T extends {}> = Values<{
 
 export type OneOf<T extends {}[]> = _OneOf<Tuplize<T>>;
 /* eslint-enable */
+
+export type FormatMessage = WrappedComponentProps['intl']['formatMessage'];

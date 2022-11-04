@@ -4,7 +4,7 @@ require 'csv'
 require 'open-uri'
 
 # Usage:
-# rake bulk_import:ideas['http://res.cloudinary.com/citizenlabco/raw/upload/v1516117361/CitizenLab_import_template_Sint-Niklaas_1_.xlsx_-_Overmolen_nligii.csv','sint-niklaas.citizenlab.co']
+# rake bulk_import:ideas['<URL of CSV file>','sint-niklaas.citizenlab.co']
 namespace :bulk_import do
   desc 'Imports ideas from a csv file, as specified by the path argument, into the tenant specified by the host.'
   task :ideas, %i[url host] => [:environment] do |_t, args|

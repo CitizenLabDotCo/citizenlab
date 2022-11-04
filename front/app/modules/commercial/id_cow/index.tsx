@@ -1,8 +1,10 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
-import CowButton from './components/CowButton';
-import VerificationFormCOW from './components/VerificationFormCOW';
+const CowButton = React.lazy(() => import('./components/CowButton'));
+const VerificationFormCOW = React.lazy(
+  () => import('./components/VerificationFormCOW')
+);
 import { isLastVerificationMethod } from 'modules/commercial/verification';
 import { TVerificationMethodName } from 'services/verificationMethods';
 

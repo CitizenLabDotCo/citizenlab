@@ -180,7 +180,7 @@ const SMSCampaignForm = ({
         <Box display="flex" justifyContent="flex-start">
           <Button
             buttonStyle="primary"
-            size="2"
+            size="m"
             type="submit"
             text={buttonCopy}
             onClick={handleOnSubmit}

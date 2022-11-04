@@ -4,3 +4,8 @@ en:
   nav_bar_items:
     home:
       title: Home
+  form_builder:
+    default_select_field:
+      title: Default question
+      option1: First option
+      option2: Second option
