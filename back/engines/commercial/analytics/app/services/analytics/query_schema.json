@@ -27,8 +27,8 @@
       "minProperties" : 1,
       "patternProperties" : {
         "^[a-z_]*\.[a-z_]*$" : {
-          "type" : ["string", "integer", "null", "array", "object"],
-          "items" : {"type" : ["string", "integer", "null"]},
+          "type" : ["string", "integer", "null", "array", "object", "boolean"],
+          "items" : {"type" : ["string", "integer", "null", "boolean"]},
           "properties" : {
             "from" : {"type": ["string"]},
             "to" : {"type": ["string"]}

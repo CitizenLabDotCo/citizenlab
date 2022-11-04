@@ -13,18 +13,15 @@ resource 'Analytics - FactEmailDeliveries model' do
 
   post 'web_api/v1/analytics' do
     before_all do
-      # Create 3 email deliveries with different campaigns and statuses
-      automated_campaign = create(:comment_on_your_idea_campaign)
-      create(:delivery, campaign: automated_campaign)
       create(:delivery)
     end
 
-    example 'count manual email deliveries' do
+    example 'count sent email deliveries' do
       do_request({
         query: {
           fact: 'email_delivery',
           filters: {
-            automated: false
+            sent: true
           },
           aggregations: {
             all: 'count'
@@ -32,9 +29,8 @@ resource 'Analytics - FactEmailDeliveries model' do
         }
       })
 
-      # assert_status 200
-      puts response_data
-      expect(response_data).to eq({count: 1})
+      assert_status 200
+      expect(response_data).to eq([{ count: 1 }])
     end
   end
 end
