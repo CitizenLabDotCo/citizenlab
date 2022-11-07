@@ -868,7 +868,7 @@
   "app.containers.AdminPage.ProjectDescription.save": "Lagre",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Endringene dine er lagret.",
   "app.containers.AdminPage.ProjectDescription.saved": "Lagret!",
-  "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Bestem deg for hva du ønsker å fortelle publikummet ditt. Rediger prosjektet og berik det med bilder, videoer, filvedlegg … Denne informasjonen hjelper de besøkende med å forstå hva prosjektet går ut på.",
+  "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Bestem deg for hva du ønsker å fortelle publikummet ditt. Rediger prosjektet og berik det med bilder, videoer, filvedlegg,… Denne informasjonen hjelper de besøkende med å forstå hva prosjektet går ut på.",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Prosjektbeskrivelse",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Bruk innholdsbyggeren for en beskrivelse",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Ved å bruke innholdsbyggeren kan du bruke mer avanserte alternativer for oppsett.",
