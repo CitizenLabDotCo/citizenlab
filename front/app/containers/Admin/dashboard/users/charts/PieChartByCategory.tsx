@@ -112,7 +112,7 @@ class PieChartByCategory extends React.PureComponent<
       currentGroupFilterLabel,
     } = this.props;
 
-    const percentages_serie = this.addPercentages(serie);
+    const percentagesSerie = this.addPercentages(serie);
 
     return (
       <GraphCard className={className}>
@@ -131,14 +131,14 @@ class PieChartByCategory extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          {!percentages_serie ? (
+          {!percentagesSerie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
             <PieChartStyleFixesDiv>
               <PieChart
-                data={percentages_serie}
+                data={percentagesSerie}
                 width={164}
                 mapping={{
                   angle: 'value',
@@ -151,7 +151,7 @@ class PieChartByCategory extends React.PureComponent<
                 }}
                 tooltip={renderTooltip()}
                 legend={{
-                  items: percentages_serie.map(this.makeLegends),
+                  items: percentagesSerie.map(this.makeLegends),
                   maintainGraphSize: true,
                   marginLeft: 50,
                   position: 'right-center',
