@@ -108,7 +108,7 @@ module.exports = {
           {
             name: '@testing-library/react',
             message:
-              "Import react testing library exports from 'utils/testUtils/rtl' instead",
+              "Import React testing library exports from 'utils/testUtils/rtl' instead",
           },
         ],
       },
