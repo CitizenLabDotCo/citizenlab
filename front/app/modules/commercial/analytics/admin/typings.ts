@@ -38,9 +38,14 @@ export type WeekRow<DateColumnPrefix extends string> = TimeSeriesRow<
   DateColumn<DateColumnPrefix, 'week'>
 >;
 
-export type DayRow<DateColumnPrefix extends string> = TimeSeriesRow<
+type DayRow<DateColumnPrefix extends string> = TimeSeriesRow<
   DateColumn<DateColumnPrefix, 'date'>
 >;
+
+export type DateRow<Prefix extends string> =
+  | MonthRow<Prefix>
+  | WeekRow<Prefix>
+  | DayRow<Prefix>;
 
 type TimeSeriesRow<DateColumn extends string> = { [K in DateColumn]: string };
 
