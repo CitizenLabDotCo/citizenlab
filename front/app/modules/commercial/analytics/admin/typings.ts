@@ -21,6 +21,25 @@ export interface Pagination {
   pageNumber: number;
 }
 
+// Response values
+export type GetTimeSeriesResponse<
+  DateColumnPrefix extends string,
+  OtherColumns extends object
+> =
+  | TimeSeriesRow<DateColumn<DateColumnPrefix, 'month'>, OtherColumns>[]
+  | TimeSeriesRow<DateColumn<DateColumnPrefix, 'week'>, OtherColumns>[]
+  | TimeSeriesRow<DateColumn<DateColumnPrefix, 'date'>, OtherColumns>[];
+
+type TimeSeriesRow<
+  DateColumn extends string,
+  OtherColumns extends object
+> = OtherColumns & { [K in DateColumn]: string };
+
+type DateColumn<
+  DateColumnPrefix extends string,
+  Period extends 'month' | 'week' | 'date'
+> = `${DateColumnPrefix}.${Period}`;
+
 // Hook return values
 export interface Stat {
   value: string;
