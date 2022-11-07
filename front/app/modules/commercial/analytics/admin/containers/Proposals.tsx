@@ -4,9 +4,10 @@ import React from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import ProposalsCard, { Props } from '../components/ProposalsCard';
+import ProposalsCard from '../components/ProposalsCard';
+import { StatCardPeriodProps } from '../typings';
 
-export default ({ ...props }: Props) => {
+export default ({ ...props }: StatCardPeriodProps) => {
   const analyticsActive = useFeatureFlag({ name: 'analytics' });
 
   if (!analyticsActive) return null;
