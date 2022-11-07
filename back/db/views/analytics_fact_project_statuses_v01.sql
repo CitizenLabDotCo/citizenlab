@@ -1,3 +1,12 @@
+-- This view lists the last statuses of each project.
+
+-- All statuses, except 'finished', are sourced directly from the 'activities' table.
+-- The view has one record for each project with one of those "regular" statuses. The
+-- finished on the other hand is computed based on some application logic and does not
+-- correspond to any status used in activities or admin publications. The finished
+-- status comes in addition to the regular status. Thus, the view has two records for
+-- finished projects.
+
 WITH last_project_statuses AS -- project statuses that do not need to be calculated
          (SELECT DISTINCT ON (item_id) item_id as project_id, action as status, acted_at as timestamp
           FROM activities
