@@ -31,7 +31,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   };
 };
 
-const getDate = dateGetter<TimeSeriesResponseRow>('dimension_date_created');
+const getDate = dateGetter('dimension_date_created');
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (

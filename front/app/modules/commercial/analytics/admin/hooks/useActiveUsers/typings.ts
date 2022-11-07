@@ -20,9 +20,7 @@ export interface Response {
 }
 
 type Prefix = 'dimension_date_created';
-
 type TimeSeriesResponse = GetTimeSeriesResponse<Prefix, ActiveUsersRow>;
-
 export type TimeSeriesResponseRow = TimeSeriesResponse[number];
 
 interface ActiveUsersRow {

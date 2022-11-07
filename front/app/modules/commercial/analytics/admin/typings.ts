@@ -26,16 +26,25 @@ export type GetTimeSeriesResponse<
   DateColumnPrefix extends string,
   OtherColumns extends object
 > =
-  | TimeSeriesRow<DateColumn<DateColumnPrefix, 'month'>, OtherColumns>[]
-  | TimeSeriesRow<DateColumn<DateColumnPrefix, 'week'>, OtherColumns>[]
-  | TimeSeriesRow<DateColumn<DateColumnPrefix, 'date'>, OtherColumns>[];
+  | (MonthRow<DateColumnPrefix> & OtherColumns)[]
+  | (WeekRow<DateColumnPrefix> & OtherColumns)[]
+  | (DayRow<DateColumnPrefix> & OtherColumns)[];
 
-type TimeSeriesRow<
-  DateColumn extends string,
-  OtherColumns extends object
-> = OtherColumns & { [K in DateColumn]: string };
+export type MonthRow<DateColumnPrefix extends string> = TimeSeriesRow<
+  DateColumn<DateColumnPrefix, 'month'>
+>;
 
-type DateColumn<
+export type WeekRow<DateColumnPrefix extends string> = TimeSeriesRow<
+  DateColumn<DateColumnPrefix, 'week'>
+>;
+
+export type DayRow<DateColumnPrefix extends string> = TimeSeriesRow<
+  DateColumn<DateColumnPrefix, 'date'>
+>;
+
+type TimeSeriesRow<DateColumn extends string> = { [K in DateColumn]: string };
+
+export type DateColumn<
   DateColumnPrefix extends string,
   Period extends 'month' | 'week' | 'date'
 > = `${DateColumnPrefix}.${Period}`;
