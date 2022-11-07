@@ -12,7 +12,6 @@ import { roundPercentages } from 'utils/math';
 
 // styling
 import { withTheme } from 'styled-components';
-import { legacyColors } from 'components/admin/Graphs/styling';
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
 // components
@@ -67,13 +66,6 @@ interface InputProps {
 }
 
 interface Props extends InputProps, DataProps {}
-
-export const piechartColors = [
-  legacyColors.pinkRed,
-  legacyColors.lightBlue,
-  legacyColors.lightGreen,
-  legacyColors.grey,
-];
 
 class PieChartByCategory extends React.PureComponent<
   Props & WrappedComponentProps
