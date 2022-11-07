@@ -15,16 +15,14 @@ import { useIntl } from 'utils/cl-intl';
 import { getProposalsLabels } from '../../hooks/useProposals/utils';
 
 // typings
-import { Dates, ProjectId, Resolution } from '../../typings';
-
-export type Props = ProjectId & Dates & Resolution;
+import { StatCardPeriodProps } from '../../typings';
 
 const ProposalsCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
-}: Props) => {
+}: StatCardPeriodProps) => {
   const data = useProposals({
     projectId,
     startAtMoment,

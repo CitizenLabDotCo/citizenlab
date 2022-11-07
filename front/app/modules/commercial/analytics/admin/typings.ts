@@ -21,7 +21,7 @@ export interface Pagination {
   pageNumber: number;
 }
 
-export type StandardQueryParameters = ProjectId & Dates & Resolution;
+export type StatCardPeriodProps = ProjectId & Dates & Resolution;
 
 // Hook return values
 export interface Stat {
