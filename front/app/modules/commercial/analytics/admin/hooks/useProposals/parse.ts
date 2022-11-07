@@ -1,5 +1,6 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { ProposalsChartData } from './typings';
+import { formatCountValue } from '../../utils/parse';
 
 export const parseProposalsChartData = (
   all,
@@ -9,20 +10,14 @@ export const parseProposalsChartData = (
 ): ProposalsChartData => {
   return {
     totalProposals: {
-      value: formatValue(all[0].count),
-      lastPeriod: formatValue(allPeriod[0].count),
+      value: formatCountValue(all[0].count),
+      lastPeriod: formatCountValue(allPeriod[0].count),
     },
     successfulProposals: {
-      value: formatValue(successful[0].count),
-      lastPeriod: formatValue(successfulPeriod[0].count),
+      value: formatCountValue(successful[0].count),
+      lastPeriod: formatCountValue(successfulPeriod[0].count),
     },
   };
-};
-
-// Replace zeroes with '-' by convention & return strings
-const formatValue = (count: number): string => {
-  if (count === 0) return '-';
-  return count.toString();
 };
 
 export const parseProposalsExcelData = (
