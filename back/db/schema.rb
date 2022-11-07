@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_03_192615) do
+ActiveRecord::Schema.define(version: 2022_11_07_124858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1724,18 +1724,12 @@ ActiveRecord::Schema.define(version: 2022_11_03_192615) do
   create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
       SELECT ecd.id,
       (ecd.sent_at)::date AS dimension_date_sent_id,
-          CASE
-              WHEN ((ecc.type)::text = 'EmailCampaigns::Campains::Manual'::text) THEN false
+          CASE ecc.type
+              WHEN 'EmailCampaigns::Campaigns::Manual'::text THEN false
               ELSE true
           END AS automated,
-          CASE ecd.delivery_status
-              WHEN 'sent'::text THEN true
-              WHEN 'bounced'::text THEN true
-              WHEN 'failed'::text THEN true
-              WHEN 'accepted'::text THEN true
-              WHEN 'delivered'::text THEN true
-              WHEN 'opened'::text THEN true
-              WHEN 'clicked'::text THEN true
+          CASE
+              WHEN (((ecd.delivery_status)::text = 'sent'::text) OR ((ecd.delivery_status)::text = 'bounced'::text) OR ((ecd.delivery_status)::text = 'failed'::text) OR ((ecd.delivery_status)::text = 'accepted'::text) OR ((ecd.delivery_status)::text = 'delivered'::text) OR ((ecd.delivery_status)::text = 'opened'::text) OR ((ecd.delivery_status)::text = 'clicked'::text)) THEN true
               ELSE false
           END AS sent
      FROM (email_campaigns_deliveries ecd
