@@ -1,6 +1,6 @@
-import { parseChartData, parseExcelData } from './parse';
-import { ChartData } from './typings';
-import { Labels } from './utils';
+import { parseProposalsChartData, parseProposalsExcelData } from './parse';
+import { ProposalsChartData } from './typings';
+import { ProposalsLabels } from './utils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 
 describe('Analytics proposals response parsing', () => {
@@ -13,7 +13,7 @@ describe('Analytics proposals response parsing', () => {
   const [all, allPeriod, successful, successfulPeriod] = responseData;
 
   it('Transforms into correct chart data', () => {
-    const expectedChartData: ChartData = {
+    const expectedChartData: ProposalsChartData = {
       totalProposals: {
         value: '4',
         lastPeriod: '3',
@@ -24,7 +24,7 @@ describe('Analytics proposals response parsing', () => {
       },
     };
 
-    const chartData = parseChartData(
+    const chartData = parseProposalsChartData(
       all,
       allPeriod,
       successful,
@@ -45,14 +45,15 @@ describe('Analytics proposals response parsing', () => {
       ],
     };
 
-    const labels: Labels = {
+    const labels: ProposalsLabels = {
       cardTitle: 'CardTitle',
+      fileName: 'cardtitle',
       total: 'Total',
       successful: 'Successful',
       successfulToolTip: 'Tooltip',
       period: '30days',
     };
-    const xlsData = parseExcelData(
+    const xlsData = parseProposalsExcelData(
       all,
       allPeriod,
       successful,

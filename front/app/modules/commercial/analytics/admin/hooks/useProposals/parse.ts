@@ -1,12 +1,12 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { ChartData } from './typings';
+import { ProposalsChartData } from './typings';
 
-export const parseChartData = (
+export const parseProposalsChartData = (
   all,
   allPeriod,
   successful,
   successfulPeriod
-): ChartData => {
+): ProposalsChartData => {
   return {
     totalProposals: {
       value: formatValue(all[0].count),
@@ -25,14 +25,19 @@ const formatValue = (count: number): string => {
   return count.toString();
 };
 
-export const parseExcelData = (
+export const parseProposalsExcelData = (
   all,
   allPeriod,
   successful,
   successfulPeriod,
   labels
 ): XlsxData => {
-  const data = parseChartData(all, allPeriod, successful, successfulPeriod);
+  const data = parseProposalsChartData(
+    all,
+    allPeriod,
+    successful,
+    successfulPeriod
+  );
 
   const xlsxDataSheet1 = {
     [labels.total]: data.totalProposals.value,

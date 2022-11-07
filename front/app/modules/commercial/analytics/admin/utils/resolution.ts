@@ -4,6 +4,7 @@ import messages from '../messages';
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { FormatMessage } from 'typings';
+import moment from 'moment';
 
 export const resolutionDeducer =
   <Row>(columnPrefix: string) =>
@@ -50,4 +51,11 @@ export const getTimePeriodTranslationByResolution = (
   resolution: IResolution
 ) => {
   return formatMessage(messages[RESOLUTION_TO_MESSAGE_KEY[resolution]]);
+};
+
+export const getTimePeriodMoment = (resolution: IResolution) => {
+  let days = 30;
+  if (resolution === 'week') days = 7;
+  if (resolution === 'day') days = 1;
+  return moment().subtract({ days });
 };

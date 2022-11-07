@@ -1,21 +1,10 @@
 import React from 'react';
-import { Moment } from 'moment';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import ProposalsCard from '../components/ProposalsCard';
-
-// typings
-import { IResolution } from 'components/admin/ResolutionControl';
-
-interface Props {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-}
+import ProposalsCard, { Props } from '../components/ProposalsCard';
 
 export default ({ ...props }: Props) => {
   const analyticsActive = useFeatureFlag({ name: 'analytics' });

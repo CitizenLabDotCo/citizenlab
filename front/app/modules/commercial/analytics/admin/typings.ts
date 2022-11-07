@@ -27,6 +27,16 @@ export interface Stat {
   lastPeriod: string;
 }
 
+export type StandardQueryParameters = ProjectId & Dates & Resolution;
+
+export type SingleCount = {
+  count: number;
+};
+
+export type SingleCountResponse = {
+  data: SingleCount[];
+};
+
 // Component layouts
 export type Layout = 'wide' | 'narrow';
 export type BoxLayout = Record<Layout, BoxProps>;

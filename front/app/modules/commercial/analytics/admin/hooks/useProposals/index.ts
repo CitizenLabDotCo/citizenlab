@@ -11,25 +11,27 @@ import {
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 import moment, { Moment } from 'moment';
-import { parseChartData, parseExcelData } from './parse';
+import { parseProposalsChartData, parseProposalsExcelData } from './parse';
 import { useIntl } from 'utils/cl-intl';
-import { getLastPeriodMoment, getLabels } from './utils';
+import { getTimePeriodMoment } from '../../utils/resolution';
+import { getProposalsLabels } from './utils';
 
 // typings
-import { QueryParameters, Proposals, Response } from './typings';
+import { Proposals } from './typings';
+import { StandardQueryParameters, SingleCountResponse } from '../../typings';
 
 const query = ({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
-}: QueryParameters): Query => {
+}: StandardQueryParameters): Query => {
   const todayMoment = moment();
-  const lastPeriodMoment = getLastPeriodMoment(resolution);
+  const lastPeriodMoment = getTimePeriodMoment(resolution);
 
   const queryBase = (
     startMoment: Moment | null | undefined,
-    endMoment: Moment | null | undefined,
+    endMoment: Moment | null,
     accepted = false
   ): QuerySchema => {
     const acceptedStatus = () => {
@@ -80,31 +82,30 @@ export default function useProposals({
   startAtMoment,
   endAtMoment,
   resolution,
-}: QueryParameters) {
+}: StandardQueryParameters) {
   const [proposals, setProposals] = useState<Proposals | NilOrError>(undefined);
   const { formatMessage } = useIntl();
   useEffect(() => {
-    const { observable } = analyticsStream<Response>(
+    const { observable } = analyticsStream<SingleCountResponse>(
       query({ projectId, startAtMoment, endAtMoment, resolution })
     );
     const subscription = observable.subscribe(
-      (response: Response | NilOrError) => {
-        // TODO: Don't think we need to catch an empty response here?
+      (response: SingleCountResponse | NilOrError) => {
         if (isNilOrError(response)) {
           setProposals(response);
           return;
         }
 
         const [all, allPeriod, successful, successfulPeriod] = response.data;
-        const chartData = parseChartData(
+        const chartData = parseProposalsChartData(
           all,
           allPeriod,
           successful,
           successfulPeriod
         );
 
-        const labels = getLabels(formatMessage, resolution);
-        const xlsxData = parseExcelData(
+        const labels = getProposalsLabels(formatMessage, resolution);
+        const xlsxData = parseProposalsExcelData(
           all,
           allPeriod,
           successful,

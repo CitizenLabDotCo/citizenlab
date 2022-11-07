@@ -12,18 +12,12 @@ import useProposals from '../../hooks/useProposals';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
-import { getLabels } from '../../hooks/useProposals/utils';
+import { getProposalsLabels } from '../../hooks/useProposals/utils';
 
 // typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Moment } from 'moment';
+import { Dates, ProjectId, Resolution } from '../../typings';
 
-interface Props {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-}
+export type Props = ProjectId & Dates & Resolution;
 
 const ProposalsCard = ({
   projectId,
@@ -39,7 +33,7 @@ const ProposalsCard = ({
   });
   const { formatMessage } = useIntl();
 
-  const labels = getLabels(formatMessage, resolution);
+  const labels = getProposalsLabels(formatMessage, resolution);
 
   if (isNilOrError(data)) {
     return (
@@ -57,7 +51,7 @@ const ProposalsCard = ({
     <GraphCard
       title={labels.cardTitle}
       exportMenu={{
-        name: labels.cardTitle.toLowerCase().replace(' ', '_'),
+        name: labels.fileName,
         xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,
