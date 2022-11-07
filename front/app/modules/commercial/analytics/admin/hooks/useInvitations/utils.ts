@@ -1,13 +1,13 @@
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../../components/ProposalsCard/messages';
+import messages from '../../components/InvitationsCard/messages';
 import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
 
 export interface InvitationsLabels {
   cardTitle: string;
   fileName: string;
   total: string;
-  successful: string;
-  successfulToolTip: string;
+  pending: string;
+  accepted: string;
   period: string;
 }
 
@@ -16,11 +16,13 @@ export const getInvitationsLabels = (
   resolution
 ): InvitationsLabels => {
   return {
-    cardTitle: formatMessage(messages.proposals),
-    fileName: formatMessage(messages.proposals).toLowerCase().replace(' ', '_'),
-    total: formatMessage(messages.totalProposals),
-    successful: formatMessage(messages.successfulProposals),
-    successfulToolTip: formatMessage(messages.successfulProposalsToolTip),
+    cardTitle: formatMessage(messages.invitations),
+    fileName: formatMessage(messages.invitations)
+      .toLowerCase()
+      .replace(' ', '_'),
+    total: formatMessage(messages.totalInvites),
+    pending: formatMessage(messages.pending),
+    accepted: formatMessage(messages.accepted),
     period: getTimePeriodTranslationByResolution(formatMessage, resolution),
   };
 };

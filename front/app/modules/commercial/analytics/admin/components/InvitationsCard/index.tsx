@@ -61,18 +61,23 @@ const InvitationsCard = ({
         <Box pr="20px" width="100%" borderRight={`1px solid ${colors.divider}`}>
           <Statistic
             name={labels.total}
-            value={chartData.totalProposals.value}
-            bottomLabel={labels.period}
-            bottomLabelValue={chartData.totalProposals.lastPeriod}
+            value={chartData.totalInvites.value}
+            bottomLabel={labels.total}
+            bottomLabelValue={chartData.totalInvites.lastPeriod}
+          />
+        </Box>
+        <Box pl="20px" width="100%" borderRight={`1px solid ${colors.divider}`}>
+          <Statistic
+            name={labels.pending}
+            value={chartData.pendingInvites.value}
           />
         </Box>
         <Box pl="20px" width="100%">
           <Statistic
-            name={labels.successful}
-            value={chartData.successfulProposals.value}
+            name={labels.accepted}
+            value={chartData.acceptedInvites.value}
             bottomLabel={labels.period}
-            bottomLabelValue={chartData.successfulProposals.lastPeriod}
-            tooltipContent={labels.successfulToolTip}
+            bottomLabelValue={chartData.acceptedInvites.lastPeriod}
           />
         </Box>
       </Box>

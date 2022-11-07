@@ -32,47 +32,61 @@ const query = ({
   const queryBase = (
     startMoment: Moment | null | undefined,
     endMoment: Moment | null,
-    accepted = false
+    inviteStatus: 'pending' | 'accepted' | null = null
   ): QuerySchema => {
-    const acceptedStatus = () => {
-      return accepted ? { 'dimension_status.code': 'accepted' } : {};
+    const dateDimension =
+      inviteStatus === 'accepted'
+        ? 'dimension_date_accepted'
+        : 'dimension_date_invited';
+
+    const inviteStatusFilter = () => {
+      if (inviteStatus === null) {
+        return {};
+      }
+      return { 'dimension_user.invite_status': inviteStatus };
     };
+
     return {
-      fact: 'post',
+      fact: 'registration',
       aggregations: {
         all: 'count',
       },
       filters: {
-        'dimension_type.name': 'initiative',
-        ...acceptedStatus,
+        ...inviteStatusFilter,
         ...getProjectFilter('dimension_project', projectId),
-        ...getDateFilter('dimension_date_created', startMoment, endMoment),
+        ...getDateFilter(dateDimension, startMoment, endMoment),
       },
     };
   };
 
-  const queryAll: QuerySchema = queryBase(startAtMoment, endAtMoment);
-  const queryAllLastPeriod: QuerySchema = queryBase(
+  const queryTotal: QuerySchema = queryBase(startAtMoment, endAtMoment);
+  const queryTotalLastPeriod: QuerySchema = queryBase(
     lastPeriodMoment,
     todayMoment
   );
-  const querySuccessful: QuerySchema = queryBase(
+  const queryPending: QuerySchema = queryBase(
     startAtMoment,
     endAtMoment,
-    true
+    'pending'
   );
-  const querySuccessfulLastPeriod: QuerySchema = queryBase(
+  const queryAccepted: QuerySchema = queryBase(
+    startAtMoment,
+    endAtMoment,
+    'accepted'
+  );
+  const queryAcceptedLastPeriod: QuerySchema = queryBase(
     lastPeriodMoment,
     todayMoment,
-    true
+    'accepted'
   );
 
   return {
     query: [
-      queryAll,
-      queryAllLastPeriod,
-      querySuccessful,
-      querySuccessfulLastPeriod,
+      queryTotal,
+      queryTotalLastPeriod,
+      queryPending,
+      queryAccepted,
+      queryAcceptedLastPeriod,
     ],
   };
 };
@@ -98,20 +112,23 @@ export default function useInvitations({
           return;
         }
 
-        const [all, allPeriod, successful, successfulPeriod] = response.data;
+        const [total, totalPeriod, pending, accepted, acceptedPeriod] =
+          response.data;
         const chartData = parseInvitationsChartData(
-          all,
-          allPeriod,
-          successful,
-          successfulPeriod
+          total,
+          totalPeriod,
+          pending,
+          accepted,
+          acceptedPeriod
         );
 
         const labels = getInvitationsLabels(formatMessage, resolution);
         const xlsxData = parseInvitationsExcelData(
-          all,
-          allPeriod,
-          successful,
-          successfulPeriod,
+          total,
+          totalPeriod,
+          pending,
+          accepted,
+          acceptedPeriod,
           labels
         );
 

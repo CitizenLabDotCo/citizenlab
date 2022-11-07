@@ -3,7 +3,7 @@ import { Stat } from '../../typings';
 
 export interface InvitationsChartData {
   totalInvites: Stat;
-  pendingInvites: Stat;
+  pendingInvites: { value: string };
   acceptedInvites: Stat;
 }
 

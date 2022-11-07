@@ -3,42 +3,49 @@ import { InvitationsChartData } from './typings';
 import { formatCountValue } from '../../utils/parse';
 
 export const parseInvitationsChartData = (
-  all,
-  allPeriod,
-  successful,
-  successfulPeriod
+  total,
+  totalPeriod,
+  pending,
+  accepted,
+  acceptedPeriod
 ): InvitationsChartData => {
   return {
     totalInvites: {
-      value: formatCountValue(all[0].count),
-      lastPeriod: formatCountValue(allPeriod[0].count),
+      value: formatCountValue(total[0].count),
+      lastPeriod: formatCountValue(totalPeriod[0].count),
     },
     pendingInvites: {
-      value: formatCountValue(successful[0].count),
-      lastPeriod: formatCountValue(successfulPeriod[0].count),
+      value: formatCountValue(pending[0].count),
+    },
+    acceptedInvites: {
+      value: formatCountValue(accepted[0].count),
+      lastPeriod: formatCountValue(acceptedPeriod[0].count),
     },
   };
 };
 
 export const parseInvitationsExcelData = (
-  all,
-  allPeriod,
-  successful,
-  successfulPeriod,
+  total,
+  totalPeriod,
+  pending,
+  accepted,
+  acceptedPeriod,
   labels
 ): XlsxData => {
   const data = parseInvitationsChartData(
-    all,
-    allPeriod,
-    successful,
-    successfulPeriod
+    total,
+    totalPeriod,
+    pending,
+    accepted,
+    acceptedPeriod
   );
 
   const xlsxDataSheet1 = {
     [labels.total]: data.totalInvites.value,
     [`${labels.total}_${labels.period}`]: data.totalInvites.lastPeriod,
-    [`${labels.successful}`]: data.pendingInvites.value,
-    [`${labels.successful}_${labels.period}`]: data.pendingInvites.lastPeriod,
+    [`${labels.pending}`]: data.pendingInvites.value,
+    [`${labels.accepted}`]: data.acceptedInvites.value,
+    [`${labels.accepted}_${labels.period}`]: data.acceptedInvites.lastPeriod,
   };
 
   const xlsxData = {

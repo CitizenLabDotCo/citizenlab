@@ -8,9 +8,10 @@ describe('Analytics proposals response parsing', () => {
     [{ count: 4 }],
     [{ count: 3 }],
     [{ count: 2 }],
+    [{ count: 2 }],
     [{ count: 0 }],
   ];
-  const [all, allPeriod, successful, successfulPeriod] = responseData;
+  const [total, totalPeriod, pending, accepted, acceptedPeriod] = responseData;
 
   it('Transforms into correct chart data', () => {
     const expectedChartData: InvitationsChartData = {
@@ -20,15 +21,19 @@ describe('Analytics proposals response parsing', () => {
       },
       pendingInvites: {
         value: '2',
+      },
+      acceptedInvites: {
+        value: '2',
         lastPeriod: '-',
       },
     };
 
     const chartData = parseInvitationsChartData(
-      all,
-      allPeriod,
-      successful,
-      successfulPeriod
+      total,
+      totalPeriod,
+      pending,
+      accepted,
+      acceptedPeriod
     );
     expect(chartData).toEqual(expectedChartData);
   });
@@ -39,8 +44,9 @@ describe('Analytics proposals response parsing', () => {
         {
           Total: '4',
           Total_30days: '3',
-          Successful: '2',
-          Successful_30days: '-',
+          Pending: '2',
+          Accepted: '2',
+          Accepted_30days: '-',
         },
       ],
     };
@@ -49,15 +55,16 @@ describe('Analytics proposals response parsing', () => {
       cardTitle: 'CardTitle',
       fileName: 'cardtitle',
       total: 'Total',
-      successful: 'Successful',
-      successfulToolTip: 'Tooltip',
+      pending: 'Pending',
+      accepted: 'Accepted',
       period: '30days',
     };
     const xlsData = parseInvitationsExcelData(
-      all,
-      allPeriod,
-      successful,
-      successfulPeriod,
+      total,
+      totalPeriod,
+      pending,
+      accepted,
+      acceptedPeriod,
       labels
     );
     expect(xlsData).toEqual(expectedXlsData);
