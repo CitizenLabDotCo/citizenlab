@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- [CL-1929] Fix gender pie chart and update user pie charts style
+
 ### Added
 
 - [CL-1790] Add back to idea link on the idea edit page
