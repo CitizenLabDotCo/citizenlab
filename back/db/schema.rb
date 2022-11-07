@@ -1724,14 +1724,11 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
   create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
       SELECT ecd.id,
       (ecd.sent_at)::date AS dimension_date_sent_id,
+      ecd.campaign_id,
           CASE ecc.type
               WHEN 'EmailCampaigns::Campaigns::Manual'::text THEN false
               ELSE true
-          END AS automated,
-          CASE
-              WHEN (((ecd.delivery_status)::text = 'sent'::text) OR ((ecd.delivery_status)::text = 'bounced'::text) OR ((ecd.delivery_status)::text = 'failed'::text) OR ((ecd.delivery_status)::text = 'accepted'::text) OR ((ecd.delivery_status)::text = 'delivered'::text) OR ((ecd.delivery_status)::text = 'opened'::text) OR ((ecd.delivery_status)::text = 'clicked'::text)) THEN true
-              ELSE false
-          END AS sent
+          END AS automated
      FROM (email_campaigns_deliveries ecd
        JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
   SQL

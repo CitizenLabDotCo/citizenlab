@@ -14,16 +14,16 @@ resource 'Analytics - FactEmailDeliveries model' do
   post 'web_api/v1/analytics' do
     before_all do
       create(:delivery)
-      create(:delivery, campaign: create(:comment_on_your_idea_campaign))
+      campaign1 = create(:comment_on_your_idea_campaign)
+      campaign2 = create(:comment_on_your_idea_campaign)
+      create(:delivery, campaign: campaign1)
+      create(:delivery, campaign: campaign2)
     end
 
     example 'count sent email deliveries' do
       do_request({
         query: {
           fact: 'email_delivery',
-          filters: {
-            sent: true
-          },
           aggregations: {
             all: 'count'
           }
@@ -31,7 +31,7 @@ resource 'Analytics - FactEmailDeliveries model' do
       })
 
       assert_status 200
-      expect(response_data).to eq([{ count: 2 }])
+      expect(response_data).to eq([{ count: 3 }])
     end
 
     example 'count automated email deliveries' do
@@ -48,7 +48,21 @@ resource 'Analytics - FactEmailDeliveries model' do
       })
 
       assert_status 200
-      expect(response_data).to eq([{ count: 1 }])
+      expect(response_data).to eq([{ count: 2 }])
+    end
+
+    example 'count email campaigns' do
+      do_request({
+        query: {
+          fact: 'email_delivery',
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+
+      assert_status 200
+      expect(response_data).to eq([{ count: 3 }])
     end
   end
 end

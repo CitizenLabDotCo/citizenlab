@@ -6,8 +6,8 @@
 #
 #  id                     :uuid             primary key
 #  dimension_date_sent_id :date
+#  campaign_id            :uuid
 #  automated              :boolean
-#  sent                   :boolean
 #
 module Analytics
   class FactEmailDelivery < Analytics::ApplicationRecordView
