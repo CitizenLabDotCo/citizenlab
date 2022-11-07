@@ -54,17 +54,7 @@ module Analytics
     end
 
     def fact_attributes
-      return if @fact_attributes
-
-      model_attributes = model.columns_hash.transform_values(&:type)
-
-      associations_attributes = model.reflect_on_all_associations.map do |assoc|
-        assoc.klass.columns_hash.to_h do |column_name, column|
-          ["#{assoc.name}.#{column_name}", column.type]
-        end
-      end.reduce(:merge)
-
-      @fact_attributes = associations_attributes.merge(model_attributes)
+      @fact_attributes ||= calculate_fact_attributes
     end
 
     def dimensions
@@ -151,6 +141,20 @@ module Analytics
       @aggregations_names ||= aggregations.map do |field, aggregation|
         aggregation_alias(field, aggregation)
       end
+    end
+
+    private
+
+    def calculate_fact_attributes
+      model_attributes = model.columns_hash.transform_values(&:type)
+
+      associations_attributes = model.reflect_on_all_associations.map do |assoc|
+        assoc.klass.columns_hash.to_h do |column_name, column|
+          ["#{assoc.name}.#{column_name}", column.type]
+        end
+      end.reduce(:merge)
+
+      associations_attributes.merge(model_attributes)
     end
   end
 end
