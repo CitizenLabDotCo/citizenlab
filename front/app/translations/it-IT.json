@@ -1430,7 +1430,7 @@
   "app.errors.bulk_import_ideas_maximum_phase_rank_exceeded": "Il progetto idea ha meno fasi della fase richiesta {value}. Questo problema si verifica nella riga con ID {row}.",
   "app.errors.bulk_import_ideas_non_numeric_phase_rank": "Rango di fase non numerico in {value}. Questo problema si verifica nella riga con ID {row}.",
   "app.errors.bulk_import_ideas_project_not_found": "Non esiste alcun progetto con il titolo \"{value}\". Questo problema si verifica nella riga con ID {row}.",
-  "app.errors.bulk_import_ideas_project_phase_not_found": "Nessuna fase {valore} trovata nel progetto. Questo problema si verifica nella riga con ID {row}.",
+  "app.errors.bulk_import_ideas_project_phase_not_found": "Nessuna fase {value} trovata nel progetto. Questo problema si verifica nella riga con ID {row}.",
   "app.errors.bulk_import_ideas_publication_date_invalid_format": "Idea con formato data di pubblicazione \"{value}\" non valido. Questo problema si verifica nella riga con ID {row}.",
   "app.errors.cannot_contain_ideas": "Il metodo di partecipazione che hai selezionato non supporta questo tipo di post. Si prega di modificare la selezione e riprovare.",
   "app.errors.cant_change_after_first_response": "Non è più possibile cambiare questo, poiché alcuni utenti hanno già risposto",
