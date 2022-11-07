@@ -62,7 +62,6 @@ const getInputFormsSchemaEndpoint = (
   phaseId?: string | null,
   inputId?: string
 ) => {
-  debugger;
   if (inputId) {
     return `${API_PATH}/ideas/${inputId}/schema`;
   } else if (phaseId) {
