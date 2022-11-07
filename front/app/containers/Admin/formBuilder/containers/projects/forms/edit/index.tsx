@@ -125,14 +125,48 @@ export const FormEdit = ({
     closeSettings();
   };
 
-  // TODO: Improve this to remove usage of type casting
+  const objectHasProperties = (
+    element: unknown,
+    propertyNames: string[]
+  ): boolean => {
+    let hasProperties = true;
+    propertyNames.forEach((propertyName) => {
+      if (!Object.prototype.hasOwnProperty.call(element, propertyName)) {
+        hasProperties = false;
+      }
+    });
+    return hasProperties;
+  };
+
+  const properties = [
+    'id',
+    'input_type',
+    'description_multiloc',
+    'required',
+    'title_multiloc',
+    'maximum_label_multiloc',
+    'minimum_label_multiloc',
+    'maximum',
+    'options',
+    'enabled',
+    'index',
+  ];
+
+  const isFlatCustomFieldWithIndex = (
+    element: unknown
+  ): element is IFlatCustomFieldWithIndex =>
+    objectHasProperties(element, properties);
+
   const onAddField = (field: IFlatCreateCustomField) => {
     const newField = {
       ...field,
       index: !isNilOrError(fields) ? fields.length : 0,
     };
-    append(newField);
-    setSelectedField(newField as IFlatCustomFieldWithIndex);
+
+    if (isFlatCustomFieldWithIndex(newField)) {
+      append(newField);
+      setSelectedField(newField);
+    }
   };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
