@@ -12,7 +12,6 @@ import {
   Response,
   Stats,
   TimeSeries,
-  TimeSeriesResponse,
   TimeSeriesResponseRow,
   TimeSeriesRow,
 } from './typings';
@@ -34,11 +33,11 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   };
 };
 
-const getDate = dateGetter<TimeSeriesResponseRow>('dimension_date_last_action');
+const getDate = dateGetter('dimension_date_last_action');
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: TimeSeriesResponse,
+  responseTimeSeries: Response['data'][2],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
