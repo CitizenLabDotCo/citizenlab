@@ -1725,10 +1725,7 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
       SELECT ecd.id,
       (ecd.sent_at)::date AS dimension_date_sent_id,
       ecd.campaign_id,
-          CASE ecc.type
-              WHEN 'EmailCampaigns::Campaigns::Manual'::text THEN false
-              ELSE true
-          END AS automated
+      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
      FROM (email_campaigns_deliveries ecd
        JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
   SQL
