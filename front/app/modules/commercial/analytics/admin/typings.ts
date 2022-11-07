@@ -21,20 +21,21 @@ export interface Pagination {
   pageNumber: number;
 }
 
+export type StandardQueryParameters = ProjectId & Dates & Resolution;
+
 // Hook return values
 export interface Stat {
   value: string;
   lastPeriod: string;
 }
 
-export type StandardQueryParameters = ProjectId & Dates & Resolution;
-
+// Responses
 export type SingleCount = {
   count: number;
 };
 
 export type SingleCountResponse = {
-  data: SingleCount[];
+  data: SingleCount[][];
 };
 
 // Component layouts
