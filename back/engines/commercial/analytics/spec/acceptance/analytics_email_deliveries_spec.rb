@@ -17,6 +17,7 @@ resource 'Analytics - FactEmailDeliveries model' do
       campaign1 = create(:comment_on_your_idea_campaign)
       campaign2 = create(:comment_on_your_idea_campaign)
       create(:delivery, campaign: campaign1)
+      create(:delivery, campaign: campaign1)
       create(:delivery, campaign: campaign2)
     end
 
@@ -31,15 +32,15 @@ resource 'Analytics - FactEmailDeliveries model' do
       })
 
       assert_status 200
-      expect(response_data).to eq([{ count: 3 }])
+      expect(response_data).to eq([{ count: 4 }])
     end
 
-    example 'count automated email deliveries' do
+    example 'count custom email deliveries' do
       do_request({
         query: {
           fact: 'email_delivery',
           filters: {
-            automated: true
+            automated: false
           },
           aggregations: {
             all: 'count'
@@ -48,7 +49,7 @@ resource 'Analytics - FactEmailDeliveries model' do
       })
 
       assert_status 200
-      expect(response_data).to eq([{ count: 2 }])
+      expect(response_data).to eq([{ count: 1 }])
     end
 
     example 'count email campaigns' do
@@ -56,13 +57,13 @@ resource 'Analytics - FactEmailDeliveries model' do
         query: {
           fact: 'email_delivery',
           aggregations: {
-            all: 'count'
+            campaign_id: 'count'
           }
         }
       })
 
       assert_status 200
-      expect(response_data).to eq([{ count: 3 }])
+      expect(response_data).to eq([{ count_campaign_id: 3 }])
     end
   end
 end
