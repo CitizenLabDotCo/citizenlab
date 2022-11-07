@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_27_170719) do
+ActiveRecord::Schema.define(version: 2022_11_07_124858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1720,5 +1720,13 @@ ActiveRecord::Schema.define(version: 2022_10_27_170719) do
        LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
+  SQL
+  create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
+      SELECT ecd.id,
+      (ecd.sent_at)::date AS dimension_date_sent_id,
+      ecd.campaign_id,
+      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
+     FROM (email_campaigns_deliveries ecd
+       JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
   SQL
 end
