@@ -186,6 +186,7 @@ export interface OutletsPropertyMap {
     onMount: () => void;
   };
   'app.containers.Admin.dashboard.summary.proposals': StatCardPeriodProps;
+  'app.containers.Admin.dashboard.summary.invitations': StatCardPeriodProps;
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;

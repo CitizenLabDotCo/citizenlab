@@ -264,6 +264,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAtMoment={endAtMoment}
                 resolution={resolution}
               />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.invitations"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
                 onResourceByTopicChange={this.onResourceByTopicChange}

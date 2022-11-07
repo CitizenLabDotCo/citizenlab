@@ -9,6 +9,7 @@ const VisitorsContainer = React.lazy(
   () => import('./admin/containers/Visitors')
 );
 const Proposals = React.lazy(() => import('./admin/containers/Proposals'));
+const Invitations = React.lazy(() => import('./admin/containers/Invitations'));
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -23,6 +24,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.dashboard.summary.postStatus': PostFeedback,
     'app.containers.Admin.dashboards.tabs': Tab,
     'app.containers.Admin.dashboard.summary.proposals': Proposals,
+    'app.containers.Admin.dashboard.summary.invitations': Invitations,
   },
 };
 
