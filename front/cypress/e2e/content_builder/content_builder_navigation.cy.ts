@@ -102,7 +102,7 @@ describe('Content builder navigation', () => {
       'target',
       '_blank'
     );
-    cy.get('#e2e-view-project-button > a').invoke('attr', 'target', '_self');
+    cy.get('#e2e-view-project-button > a').invoke('removeAttr', 'target');
 
     cy.get('#e2e-view-project-button > a').click();
     cy.location('pathname').should('equal', projectUrl);
