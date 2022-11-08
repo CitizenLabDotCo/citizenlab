@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -6,9 +6,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import DonutChart from './DonutChart';
 import ProgressBars from './ProgressBars';
-import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
-import { stackLabels } from './stackLabels';
-import { stackedBarTooltip } from './stackedBarTooltip';
+import StackedBars from './StackedBars';
 import Button from 'components/UI/Button';
 
 // stylings
@@ -25,7 +23,6 @@ import usePostsFeedback from '../../hooks/usePostsFeedback';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getCornerRadius } from './utils';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -85,18 +82,7 @@ const PostFeedback = ({
 
   const donutChartRef = useRef();
   const progressBarsRef = useRef();
-  const currentStackedBarChart = useRef();
-  const [stackedBarHoverIndex, setStackedBarHoverIndex] = useState<
-    number | undefined
-  >();
-
-  const onMouseOverStackedBar = ({ stackIndex }) => {
-    setStackedBarHoverIndex(stackIndex);
-  };
-
-  const onMouseOutStackedBar = () => {
-    setStackedBarHoverIndex(undefined);
-  };
+  const stackedBarsRef = useRef();
 
   const data = usePostsFeedback({
     projectId,
@@ -114,14 +100,7 @@ const PostFeedback = ({
     );
   }
 
-  const {
-    stackedBarsData,
-    stackedBarColumns,
-    statusColorById,
-    stackedBarPercentages,
-    stackedBarsLegendItems,
-    xlsxData,
-  } = data;
+  const { xlsxData } = data;
 
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
@@ -131,7 +110,7 @@ const PostFeedback = ({
       title={cardTitle}
       exportMenu={{
         name: cardTitle.toLowerCase().replace(' ', '_'),
-        svgNode: [donutChartRef, progressBarsRef, currentStackedBarChart],
+        svgNode: [donutChartRef, progressBarsRef, stackedBarsRef],
         xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,
@@ -148,43 +127,7 @@ const PostFeedback = ({
         </ProgressBarsContainer>
       </Container>
       <Box width="100%" maxWidth="600px" height="initial" mt="30px" p="8px">
-        <StackedBarChart
-          data={stackedBarsData}
-          height={25}
-          mapping={{
-            stackedLength: stackedBarColumns,
-            fill: ({ stackIndex }) =>
-              statusColorById[stackedBarColumns[stackIndex]],
-            cornerRadius: getCornerRadius(stackedBarColumns.length, 3),
-            opacity: ({ stackIndex }) => {
-              if (stackedBarHoverIndex === undefined) return 1;
-              return stackedBarHoverIndex === stackIndex ? 1 : 0.3;
-            },
-          }}
-          layout="horizontal"
-          labels={stackLabels(
-            stackedBarsData,
-            stackedBarColumns,
-            stackedBarPercentages
-          )}
-          xaxis={{ hide: true, domain: [0, 'dataMax'] }}
-          yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
-          tooltip={stackedBarTooltip(
-            stackedBarHoverIndex,
-            stackedBarsData,
-            stackedBarColumns,
-            stackedBarPercentages,
-            stackedBarsLegendItems.map((item) => item.label)
-          )}
-          legend={{
-            items: stackedBarsLegendItems,
-            marginTop: 15,
-            maintainGraphSize: true,
-          }}
-          innerRef={currentStackedBarChart}
-          onMouseOver={onMouseOverStackedBar}
-          onMouseOut={onMouseOutStackedBar}
-        />
+        <StackedBars data={data} innerRef={stackedBarsRef} />
       </Box>
 
       <Button
