@@ -1263,7 +1263,7 @@
   "app.containers.SignUp.viennaConsentHeader": "The following data will be transmitted:",
   "app.containers.SignUp.viennaConsentLastName": "Kinguliaqut",
   "app.containers.SignUp.viennaConsentUserName": "User name",
-  "app.containers.SignUp.whatIsFranceConnect": "France Connect sunaana?",
+  "app.containers.SignUp.whatIsFranceConnect": "FranceConnect sunaana?",
   "app.containers.SignUpInPage.signInMetaTitle": "Inuttaasunut-isaaffimmut uunga iserit {tenantName} | CitizenLab\n ",
   "app.containers.SignUpInPage.signInPageMetaDescription": "{orgName}-imi peqataatitsinermut nittartakkamut iseriarlutit oqalliseqataagit!",
   "app.containers.SignUpInPage.signUpMetaTitle": "Innuttaasut isaaffiannut nalunaarit uunga {tenantName} | CitizenLab",
