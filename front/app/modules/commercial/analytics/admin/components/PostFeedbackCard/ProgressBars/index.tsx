@@ -11,16 +11,22 @@ import { useIntl } from 'utils/cl-intl';
 // styling
 import { colors } from 'utils/styleUtils';
 
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+
 // typings
 import { PostFeedback } from '../../../hooks/usePostsFeedback/typings';
 
 interface Props {
-  data: PostFeedback;
+  data: PostFeedback | NilOrError;
   innerRef: React.RefObject<any>;
 }
 
 const ProgressBars = ({ data, innerRef }: Props) => {
   const { formatMessage } = useIntl();
+
+  if (isNilOrError(data)) return null;
+
   const { progressBarsData, days } = data;
 
   return (

@@ -3,7 +3,6 @@ import React, { useRef } from 'react';
 // components
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
-import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import DonutChart from './DonutChart';
 import ProgressBars from './ProgressBars';
 import StackedBars from './StackedBars';
@@ -21,12 +20,10 @@ import { useIntl } from 'utils/cl-intl';
 // hooks
 import usePostsFeedback from '../../hooks/usePostsFeedback';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId: string | undefined;
@@ -91,17 +88,6 @@ const PostFeedback = ({
   });
 
   const cardTitle = formatMessage(hookMessages.inputStatus);
-
-  if (isNilOrError(data)) {
-    return (
-      <GraphCard title={cardTitle}>
-        <EmptyState />
-      </GraphCard>
-    );
-  }
-
-  const { xlsxData } = data;
-
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
@@ -111,7 +97,7 @@ const PostFeedback = ({
       exportMenu={{
         name: cardTitle.toLowerCase().replace(' ', '_'),
         svgNode: [donutChartRef, progressBarsRef, stackedBarsRef],
-        xlsx: { data: xlsxData },
+        xlsx: isNilOrError(data) ? undefined : { data: data.xlsxData },
         currentProjectFilter: projectId,
         startAt,
         endAt,

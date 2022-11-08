@@ -7,12 +7,13 @@ import { stackedBarTooltip } from './stackedBarTooltip';
 
 // utils
 import { getCornerRadius } from './utils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { PostFeedback } from '../../../hooks/usePostsFeedback/typings';
 
 interface Props {
-  data: PostFeedback;
+  data: PostFeedback | NilOrError;
   innerRef: React.RefObject<any>;
 }
 
@@ -28,6 +29,10 @@ const StackedBars = ({ data, innerRef }: Props) => {
   const onMouseOutStackedBar = () => {
     setStackedBarHoverIndex(undefined);
   };
+
+  if (isNilOrError(data)) {
+    return null;
+  }
 
   const {
     stackedBarsData,
