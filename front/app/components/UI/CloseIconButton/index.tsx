@@ -32,7 +32,7 @@ const CloseIconButton = ({
     <IconButton
       className={className ?? ''}
       // to do find right back ison
-      iconName={fullScreen ? 'upload-image' : 'close'}
+      iconName={fullScreen ? 'arrow-left' : 'close'}
       onClick={onClick}
       a11y_buttonActionMessage={formatMessage(
         a11y_buttonActionMessage

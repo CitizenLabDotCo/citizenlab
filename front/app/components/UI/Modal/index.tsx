@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import { adopt } from 'react-adopt';
 import { Subscription, fromEvent } from 'rxjs';
@@ -96,6 +96,23 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   `}
 `;
 
+const StyledNonFocusableContainer = styled.div<{
+  width: number | string;
+  fullScreen?: boolean;
+}>`
+  width: 100%;
+  max-width: ${({ width }) =>
+    width.constructor === String ? width : `${width}px`};
+  display: flex;
+  justify-content: center;
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+  height: 100%;
+  max-width: 100%;`}
+`;
+
 const StyledFocusOn = styled(FocusOn)<{
   width: number | string;
   fullScreen?: boolean;
@@ -166,12 +183,13 @@ const ModalContainer = styled(clickOutside)<{
     ${({ fullScreen }) =>
       fullScreen &&
       `
-      margin-top: 0;
-      max-height: 100%;
-      max-width: 100%;
+        margin-top: 0;
+        max-height: 100%;
+        max-width: 100%;
+      `}
     `}
-  `}
 `;
+// to do check on header height hardcoded above
 
 const Overlay = styled.div<{ fullScreen?: boolean }>`
   width: 100vw;
@@ -194,6 +212,8 @@ const Overlay = styled.div<{ fullScreen?: boolean }>`
   ${({ fullScreen }) =>
     fullScreen &&
     `
+    margin-top: 78px;
+    border-top: 2px solid light-gray;
     padding: 0px;`}
 
   ${media.desktop`
@@ -357,6 +377,30 @@ export const Content = styled.p`
   margin-bottom: 30px;
 `;
 
+const ModalContentContainerSwitch = ({
+  fullScreen,
+  width,
+  children,
+}: {
+  fullScreen: boolean | undefined;
+  width: number | string;
+  children: ReactElement | ReactElement[];
+}) => {
+  if (fullScreen) {
+    return (
+      <StyledNonFocusableContainer width={width} fullScreen={fullScreen}>
+        {children}
+      </StyledNonFocusableContainer>
+    );
+  }
+
+  return (
+    <StyledFocusOn width={width} fullScreen={fullScreen}>
+      {children}
+    </StyledFocusOn>
+  );
+};
+
 interface DataProps {
   windowSize: GetWindowSizeChildProps;
 }
@@ -515,7 +559,7 @@ class Modal extends PureComponent<Props, State> {
             className={this.props.className}
             fullScreen={fullScreen}
           >
-            <StyledFocusOn width={width} fullScreen={fullScreen}>
+            <ModalContentContainerSwitch width={width} fullScreen={fullScreen}>
               <ModalContainer
                 fullScreen={fullScreen}
                 className={`modalcontent ${
@@ -555,7 +599,7 @@ class Modal extends PureComponent<Props, State> {
                   <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
                 )}
               </ModalContainer>
-            </StyledFocusOn>
+            </ModalContentContainerSwitch>
           </Overlay>
         </CSSTransition>,
         modalPortalElement
