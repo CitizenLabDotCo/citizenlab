@@ -7,7 +7,6 @@ import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import DonutChart from './DonutChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
-import CenterLabel from './DonutChart/CenterLabel';
 import { stackLabels } from './stackLabels';
 import { stackedBarTooltip } from './stackedBarTooltip';
 import Button from 'components/UI/Button';
