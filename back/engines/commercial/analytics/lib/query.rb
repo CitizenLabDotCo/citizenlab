@@ -3,6 +3,7 @@
 module Analytics
   class Query
     MODELS = {
+      email_delivery: FactEmailDelivery,
       participation: FactParticipation,
       post: FactPost,
       project_status: FactProjectStatus,
