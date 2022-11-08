@@ -142,7 +142,7 @@ nl:
         question:
           title: Wat is je vraag?
         contribution:
-          title: Wat is je bijdrage?
+          title: Wat is je onderwerp?
         project:
           title: Wat is je project?
         issue:
@@ -200,3 +200,8 @@ nl:
       status: 'Status'
       assignee_fullname: 'Toegewezen aan'
       assignee_email: 'E-mailadres toegewezen persoon'
+  form_builder:
+    default_select_field:
+      title: 'Jouw vraag'
+      option1: 'Optie 1'
+      option2: 'Optie 2'
