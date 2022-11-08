@@ -69,7 +69,7 @@ const ProgressBarsContainer = styled.div`
   `}
 `;
 
-const PostFeedback = ({
+const InputStatusCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
@@ -141,4 +141,4 @@ const PostFeedback = ({
   );
 };
 
-export default PostFeedback;
+export default InputStatusCard;
