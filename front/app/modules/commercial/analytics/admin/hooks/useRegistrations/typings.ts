@@ -1,11 +1,11 @@
-import { Dates, Resolution, Stat } from '../../typings';
+import { Dates, Resolution, Stat, GetTimeSeriesResponse } from '../../typings';
 
 export type QueryParameters = Dates & Resolution;
 
 // Response
 export type Response = {
   data: [
-    TimeSeriesResponseRow[],
+    TimeSeriesResponse | [],
     [RegistrationsCountRow] | [],
     [RegistrationsCountRow] | [],
     [VisitorsCountRow] | [],
@@ -13,26 +13,10 @@ export type Response = {
   ];
 };
 
-export type TimeSeriesResponseRow =
-  | TimeSeriesResponseMonth
-  | TimeSeriesResponseWeek
-  | TimeSeriesResponseDay;
+type Prefix = 'dimension_date_registration';
 
-interface TimeSeriesResponseMonth extends BaseTimeSeriesResponseRow {
-  'dimension_date_registration.month': string;
-}
-
-interface TimeSeriesResponseWeek extends BaseTimeSeriesResponseRow {
-  'dimension_date_registration.week': string;
-}
-
-interface TimeSeriesResponseDay extends BaseTimeSeriesResponseRow {
-  'dimension_date_registration.date': string;
-}
-
-interface BaseTimeSeriesResponseRow {
-  count: number;
-}
+type TimeSeriesResponse = GetTimeSeriesResponse<Prefix, { count: number }>;
+export type TimeSeriesResponseRow = TimeSeriesResponse[number];
 
 interface RegistrationsCountRow {
   count: number;
