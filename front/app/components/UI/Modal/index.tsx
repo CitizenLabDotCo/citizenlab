@@ -113,8 +113,9 @@ const StyledNonFocusableContainer = styled.div<{
   ${({ fullScreen }) =>
     fullScreen &&
     `
-  height: 100%;
-  max-width: 100%;`}
+    height: calc(100vh - 78px);
+    max-width: 100%;
+  `}
 `;
 
 const StyledFocusOn = styled(FocusOn)<{
@@ -130,8 +131,9 @@ const StyledFocusOn = styled(FocusOn)<{
   ${({ fullScreen }) =>
     fullScreen &&
     `
-  height: 100%;
-  max-width: 100%;`}
+      height: calc(100vh - 78px);
+      max-width: 100%;
+    `}
 `;
 
 const ModalContainer = styled(clickOutside)<{
@@ -219,7 +221,6 @@ const Overlay = styled.div<{ fullScreen?: boolean }>`
     `
       margin-top: 78px;
       padding: 0px;
-      z-index: 5;
     `}
 
   ${media.desktop`
