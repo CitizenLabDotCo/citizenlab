@@ -31,7 +31,6 @@ const CloseIconButton = ({
   return (
     <IconButton
       className={className ?? ''}
-      // to do find right back ison
       iconName={fullScreen ? 'arrow-left' : 'close'}
       onClick={onClick}
       a11y_buttonActionMessage={formatMessage(
