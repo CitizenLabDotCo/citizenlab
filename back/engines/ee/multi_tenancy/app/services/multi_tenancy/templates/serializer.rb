@@ -163,7 +163,16 @@ module MultiTenancy
             'code' => c.code,
             'maximum' => c.maximum,
             'minimum_label_multiloc' => c.minimum_label_multiloc,
-            'maximum_label_multiloc' => c.maximum_label_multiloc
+            'maximum_label_multiloc' => c.maximum_label_multiloc,
+            'text_images_attributes' => c.text_images.map do |ti|
+              {
+                'imageable_field' => ti.imageable_field,
+                'remote_image_url' => ti.image_url,
+                'text_reference' => ti.text_reference,
+                'created_at' => ti.created_at.to_s,
+                'updated_at' => ti.updated_at.to_s
+              }
+            end
           }
           if c.resource_type == User.name
             yml_custom_field['resource_type'] = c.resource_type
