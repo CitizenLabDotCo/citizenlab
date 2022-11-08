@@ -1261,7 +1261,7 @@
   "app.containers.SignUp.viennaConsentHeader": "The following data will be transmitted:",
   "app.containers.SignUp.viennaConsentLastName": "Last name",
   "app.containers.SignUp.viennaConsentUserName": "User name",
-  "app.containers.SignUp.whatIsFranceConnect": "What is France Connect?",
+  "app.containers.SignUp.whatIsFranceConnect": "What is FranceConnect?",
   "app.containers.SignUpInPage.signInMetaTitle": "Log into the CitizenLab platform of {tenantName} | CitizenLab",
   "app.containers.SignUpInPage.signInPageMetaDescription": "Log into the participation platform of {orgName} to join the conversation!",
   "app.containers.SignUpInPage.signUpMetaTitle": "Sign up for the CitizenLab platform of {tenantName} | CitizenLab",
