@@ -880,6 +880,8 @@ resource 'Projects' do
         let(:active_phase_form) { create(:custom_form, participation_context: active_phase) }
         let(:future_phase_form) { create(:custom_form, participation_context: future_phase) }
         let(:id) { project.id }
+        # Create a page to describe that it is not included in the export.
+        let!(:page_field) { create(:custom_field_page, resource: active_phase_form) }
         let(:multiselect_field) do
           create(
             :custom_field_multiselect,

@@ -56,7 +56,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       type: 'Category',
       label: (I18n.t(translation_key) if translation_key),
       options: { id: category_id },
-      elements: fields.map { |field| visit field }
+      elements: fields.filter_map { |field| visit field }
     }
   end
 end

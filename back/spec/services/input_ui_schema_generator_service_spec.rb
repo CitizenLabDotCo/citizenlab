@@ -313,10 +313,12 @@ RSpec.describe InputUiSchemaGeneratorService do
     context 'for a continuous native survey project' do
       let(:project) { create(:continuous_native_survey_project) }
       let(:form) { create :custom_form, participation_context: project }
+      # Create a page to describe that it is not included in the schema.
+      let!(:page_field) { create(:custom_field_page, resource: form) }
       let!(:field) { create :custom_field, resource: form }
 
       it 'has an empty extra category label, so that the category label is suppressed in the UI' do
-        en_ui_schema = generator.generate_for([field])['en']
+        en_ui_schema = generator.generate_for([page_field, field])['en']
         expect(en_ui_schema).to eq({
           type: 'Categorization',
           options: {
