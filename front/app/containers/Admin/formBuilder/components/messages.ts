@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.shortAnswer',
     defaultMessage: 'Short answer',
   },
+  page: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.page',
+    defaultMessage: 'Page',
+  },
   multipleChoice: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multipleChoice',
     defaultMessage: 'Multiple choice',
