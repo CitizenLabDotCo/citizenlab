@@ -142,7 +142,7 @@ ca:
         question:
           title: What is your question ?
         contribution:
-          title: What is your contribution ?
+          title: Quina és la vostra aportació?
         project:
           title: What is your project ?
         issue:
@@ -200,3 +200,8 @@ ca:
       status: 'Estat'
       assignee_fullname: 'Cesionari'
       assignee_email: 'Assignee email'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
