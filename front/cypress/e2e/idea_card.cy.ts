@@ -79,16 +79,28 @@ describe('Idea card component', () => {
     cy.get('@downvoteBtn').contains('0');
 
     // add upvote
-    cy.get('@upvoteBtn').wait(500).click().wait(1000).contains('2');
+    cy.wait(500);
+    cy.get('@upvoteBtn').click();
+    cy.wait(1000);
+    cy.get('@upvoteBtn').contains('2');
 
     // remove upvote
-    cy.get('@upvoteBtn').wait(500).click().wait(1000).contains('1');
+    cy.wait(500);
+    cy.get('@upvoteBtn').click();
+    cy.wait(1000);
+    cy.get('@upvoteBtn').contains('1');
 
     // add downvote
-    cy.get('@downvoteBtn').wait(500).click().wait(1000).contains('1');
+    cy.wait(500);
+    cy.get('@downvoteBtn').click();
+    cy.wait(1000);
+    cy.get('@downvoteBtn').contains('1');
 
     // remove downvote
-    cy.get('@downvoteBtn').wait(500).click().wait(1000).contains('0');
+    cy.wait(500);
+    cy.get('@downvoteBtn').click();
+    cy.wait(1000);
+    cy.get('@downvoteBtn').contains('0');
 
     // add downvote, then upvote
     cy.get('@downvoteBtn').wait(500).click().wait(1000);
