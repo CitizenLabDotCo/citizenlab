@@ -109,7 +109,16 @@ const PostFeedback = ({
           <DonutChart data={data} innerRef={donutChartRef} />
         </DonutChartContainer>
         <ProgressBarsContainer>
-          <ProgressBars data={data} innerRef={progressBarsRef} />
+          <Box
+            width="100%"
+            maxWidth="256px"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <ProgressBars data={null} innerRef={progressBarsRef} />
+          </Box>
         </ProgressBarsContainer>
       </Container>
       <Box width="100%" maxWidth="600px" height="initial" mt="30px" p="8px">

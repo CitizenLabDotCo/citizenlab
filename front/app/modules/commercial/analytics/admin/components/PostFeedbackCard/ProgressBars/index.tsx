@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // components
 import ProgressBarsGraph from 'components/admin/Graphs/ProgressBars';
@@ -13,6 +13,7 @@ import { colors } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { generateEmptyData } from './generateEmptyData';
 
 // typings
 import { PostFeedback } from '../../../hooks/usePostsFeedback/typings';
@@ -25,19 +26,21 @@ interface Props {
 const ProgressBars = ({ data, innerRef }: Props) => {
   const { formatMessage } = useIntl();
 
-  if (isNilOrError(data)) return null;
+  const emptyData = useMemo(
+    () =>
+      generateEmptyData(
+        formatMessage(hookMessages.statusChanged),
+        formatMessage(hookMessages.officialUpdate)
+      ),
+    [formatMessage]
+  );
 
-  const { progressBarsData, days } = data;
+  const { progressBarsData, days } = isNilOrError(data)
+    ? { progressBarsData: emptyData, days: '?' }
+    : data;
 
   return (
-    <Box
-      width="100%"
-      maxWidth="256px"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <>
       <ProgressBarsGraph
         height={136}
         data={progressBarsData}
@@ -55,7 +58,7 @@ const ProgressBars = ({ data, innerRef }: Props) => {
           {formatMessage(hookMessages.averageTime, { days })}
         </Text>
       </Box>
-    </Box>
+    </>
   );
 };
 
