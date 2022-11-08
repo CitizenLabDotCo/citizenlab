@@ -5,6 +5,9 @@ import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
 import { stackLabels } from './stackLabels';
 import { stackedBarTooltip } from './stackedBarTooltip';
 
+// styling
+import { colors } from 'components/admin/Graphs/styling';
+
 // utils
 import { getCornerRadius } from './utils';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -16,6 +19,8 @@ interface Props {
   data: PostFeedback | NilOrError;
   innerRef: React.RefObject<any>;
 }
+
+const EMPTY_DATA = [{ x: 1 }];
 
 const StackedBars = ({ data, innerRef }: Props) => {
   const [stackedBarHoverIndex, setStackedBarHoverIndex] = useState<
@@ -31,7 +36,21 @@ const StackedBars = ({ data, innerRef }: Props) => {
   };
 
   if (isNilOrError(data)) {
-    return null;
+    return (
+      <StackedBarChart
+        margin={{ top: 0 }}
+        height={25}
+        data={EMPTY_DATA}
+        mapping={{
+          stackedLength: ['x'],
+          fill: () => colors.lightGrey,
+          cornerRadius: getCornerRadius(EMPTY_DATA.length, 3),
+        }}
+        layout="horizontal"
+        xaxis={{ hide: true, domain: [0, 'dataMax'] }}
+        yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
+      />
+    );
   }
 
   const {
