@@ -142,7 +142,7 @@ hr:
         question:
           title: Šta je vaše pitanje ?
         contribution:
-          title: Šta je vaš prilog ?
+          title: Čime ćete doprinijeti?
         project:
           title: Šta je vaš projekat ?
         issue:
@@ -200,3 +200,8 @@ hr:
       status: 'Status'
       assignee_fullname: 'Opunomoćenik'
       assignee_email: 'E-pošta opunomoćenika'
+  form_builder:
+    default_select_field:
+      title: 'Vaše pitanje'
+      option1: '1. opcija'
+      option2: '2. opcija'
