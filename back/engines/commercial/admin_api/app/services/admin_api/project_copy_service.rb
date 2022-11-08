@@ -110,7 +110,7 @@ module AdminApi
           'maximum' => c.maximum,
           'minimum_label_multiloc' => c.minimum_label_multiloc,
           'maximum_label_multiloc' => c.maximum_label_multiloc,
-          'text_images_attributes' => e.text_images.map do |ti|
+          'text_images_attributes' => c.text_images.map do |ti|
             {
               'imageable_field' => ti.imageable_field,
               'remote_image_url' => ti.image_url,

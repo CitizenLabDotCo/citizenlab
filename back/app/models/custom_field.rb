@@ -36,6 +36,7 @@ class CustomField < ApplicationRecord
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
   has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
