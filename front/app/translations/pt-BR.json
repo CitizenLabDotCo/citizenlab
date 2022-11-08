@@ -553,8 +553,6 @@
   "app.components.form.submit": "Enviar",
   "app.components.form.submitApiError": "Houve um problema com o envio do formulário. Por favor, verifique se há algum erro e tente novamente.",
   "app.components.pageForm.takenSlugError": "Este slug já está tomado. Por favor, escolha uma diferente.",
-  "app.components.sendFeedback": "Envie a sua opinião sobre a plataforma",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "O orçamento previsto é muito grande.",
   "app.container.IdeaForm.budgetIsZeroError": "Por favor, forneça um orçamento maior que 0",
   "app.container.IdeaForm.budgetLabel": "Orçamento",

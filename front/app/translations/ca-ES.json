@@ -553,8 +553,6 @@
   "app.components.form.submit": "Presentar",
   "app.components.form.submitApiError": "Hi ha hagut un problema en enviar el formulari. Comproveu si hi ha errors i torneu-ho a provar.",
   "app.components.pageForm.takenSlugError": "Aquest identificador d’URL ja està agafat. Trieu-ne un de diferent",
-  "app.components.sendFeedback": "Els vostres comentaris sobre la plataforma",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "El pressupost previst és massa gran",
   "app.container.IdeaForm.budgetIsZeroError": "Proporcioneu un pressupost superior a 0",
   "app.container.IdeaForm.budgetLabel": "Pressupost",
