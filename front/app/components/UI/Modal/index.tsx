@@ -13,7 +13,6 @@ import messages from './messages';
 // components
 import CloseIconButton from 'components/UI/CloseIconButton';
 import clickOutside from 'utils/containers/clickOutside';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetWindowSize, {
@@ -196,7 +195,6 @@ const ModalContainer = styled(clickOutside)<{
       `}
     `}
 `;
-// to do check on header height hardcoded above
 
 const Overlay = styled.div<{ fullScreen?: boolean }>`
   width: 100vw;
@@ -219,8 +217,10 @@ const Overlay = styled.div<{ fullScreen?: boolean }>`
   ${({ fullScreen }) =>
     fullScreen &&
     `
-    margin-top: 78px;
-    padding: 0px;`}
+      margin-top: 78px;
+      padding: 0px;
+      z-index: 5;
+    `}
 
   ${media.desktop`
     justify-content: center;
@@ -596,9 +596,7 @@ class Modal extends PureComponent<Props, State> {
                   padding={padding}
                   fullScreen={fullScreen}
                 >
-                  {/* // to do fix this, to make the */}
-                  {/* signup content appear in the center */}
-                  <Box maxWidth="580px">{children}</Box>
+                  {children}
                 </ModalContentContainer>
 
                 {footer && <FooterContainer>{footer}</FooterContainer>}
