@@ -1,4 +1,10 @@
-import { ProjectId, Dates, Resolution, Stat } from '../../typings';
+import {
+  ProjectId,
+  Dates,
+  Resolution,
+  Stat,
+  GetTimeSeriesResponse,
+} from '../../typings';
 
 export type QueryParameters = ProjectId & Dates & Resolution;
 
@@ -13,27 +19,12 @@ export interface Response {
   ];
 }
 
-type TimeSeriesResponse = TimeSeriesResponseRow[];
-
-export type TimeSeriesResponseRow =
-  | TimeSeriesResponseMonth
-  | TimeSeriesResponseWeek
-  | TimeSeriesResponseDay;
+type Prefix = 'dimension_date_created';
+type TimeSeriesResponse = GetTimeSeriesResponse<Prefix, ActiveUsersRow>;
+export type TimeSeriesResponseRow = TimeSeriesResponse[number];
 
 interface ActiveUsersRow {
   count_dimension_user_id: number;
-}
-
-interface TimeSeriesResponseMonth extends ActiveUsersRow {
-  'dimension_date_created.month': string;
-}
-
-interface TimeSeriesResponseWeek extends ActiveUsersRow {
-  'dimension_date_created.week': string;
-}
-
-interface TimeSeriesResponseDay extends ActiveUsersRow {
-  'dimension_date_created.date': string;
 }
 
 interface VisitorsRow {

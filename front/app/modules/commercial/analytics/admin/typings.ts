@@ -23,13 +23,39 @@ export interface Pagination {
 
 export type StatCardPeriodProps = ProjectId & Dates & Resolution;
 
-// Hook return values
-export interface Stat {
-  value: string;
-  lastPeriod: string;
-}
+// Response values
+export type GetTimeSeriesResponse<
+  DateColumnPrefix extends string,
+  OtherColumns extends object
+> =
+  | (MonthRow<DateColumnPrefix> & OtherColumns)[]
+  | (WeekRow<DateColumnPrefix> & OtherColumns)[]
+  | (DayRow<DateColumnPrefix> & OtherColumns)[];
 
-// Responses
+export type MonthRow<DateColumnPrefix extends string> = TimeSeriesRow<
+  DateColumn<DateColumnPrefix, 'month'>
+>;
+
+export type WeekRow<DateColumnPrefix extends string> = TimeSeriesRow<
+  DateColumn<DateColumnPrefix, 'week'>
+>;
+
+type DayRow<DateColumnPrefix extends string> = TimeSeriesRow<
+  DateColumn<DateColumnPrefix, 'date'>
+>;
+
+export type DateRow<Prefix extends string> =
+  | MonthRow<Prefix>
+  | WeekRow<Prefix>
+  | DayRow<Prefix>;
+
+type TimeSeriesRow<DateColumn extends string> = { [K in DateColumn]: string };
+
+export type DateColumn<
+  DateColumnPrefix extends string,
+  Period extends 'month' | 'week' | 'date'
+> = `${DateColumnPrefix}.${Period}`;
+
 export type SingleCount = {
   count: number;
 };
@@ -37,6 +63,12 @@ export type SingleCount = {
 export type SingleCountResponse = {
   data: SingleCount[][];
 };
+
+// Hook return values
+export interface Stat {
+  value: string;
+  lastPeriod: string;
+}
 
 // Component layouts
 export type Layout = 'wide' | 'narrow';
