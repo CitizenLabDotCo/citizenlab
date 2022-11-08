@@ -40,10 +40,8 @@ describe('Content builder navigation', () => {
 
   it('navigates to content builder when edit project description link clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
-    cy.get('#e2e-toggle-enable-content-builder')
-      .find('input')
-      .click({ force: true });
-    cy.get('#e2e-content-builder-link').click();
+    cy.acceptCookies();
+    cy.get('#e2e-content-builder-link').click({ force: true });
     cy.url().should(
       'eq',
       `${
@@ -104,7 +102,7 @@ describe('Content builder navigation', () => {
       'target',
       '_blank'
     );
-    cy.get('#e2e-view-project-button > a').invoke('attr', 'target', '_self');
+    cy.get('#e2e-view-project-button > a').invoke('removeAttr', 'target');
 
     cy.get('#e2e-view-project-button > a').click();
     cy.location('pathname').should('equal', projectUrl);
