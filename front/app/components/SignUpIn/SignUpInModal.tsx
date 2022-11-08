@@ -137,6 +137,7 @@ const SignUpInModal = memo<Props>(
             <SignUpIn
               metaData={metaData}
               onSignUpInCompleted={onSignUpInCompleted}
+              fullScreen={useFullScreen}
             />
           )}
         </Container>
