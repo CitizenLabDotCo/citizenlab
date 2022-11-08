@@ -1,10 +1,20 @@
 # Changelog
 
-## Next release
+## 2022-11-04
+
+#### Fixed
+
+- [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
+
+## 2022-11-03
 
 ### Fixed
 
 - [CL-1841] Show project attachments in content builder project description
+
+### Fixed
+
+- [CL-1929] Fix gender pie chart and update user pie charts style
 
 ### Added
 

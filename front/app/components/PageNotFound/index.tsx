@@ -7,18 +7,23 @@ import messages from './messages';
 // components and styling
 import Button from 'components/UI/Button';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { Title, Text, media } from '@citizenlab/cl2-component-library';
 
 const PageNotFoundWrapper = styled.div`
   height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
+
+  ${media.tablet`
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
+  `}
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4rem;
-  font-size: ${fontSizes.l}px;
-  color: ${colors.textSecondary};
+  padding: 4rem 0;
 `;
 
 const PageNotFound = () => {
@@ -26,10 +31,13 @@ const PageNotFound = () => {
 
   return (
     <PageNotFoundWrapper>
-      <p>{formatMessage(messages.notFound)}</p>
+      <Title mb="0">{formatMessage(messages.notFoundTitle)}</Title>
+      <Text fontSize="l" color={'textSecondary'} mb="35px">
+        {formatMessage(messages.pageNotFoundDescription)}
+      </Text>
       <Button
         linkTo="/"
-        text={formatMessage(messages.goBack)}
+        text={formatMessage(messages.goBackToHomePage)}
         icon="arrow-left"
       />
     </PageNotFoundWrapper>
