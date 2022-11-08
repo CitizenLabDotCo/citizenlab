@@ -955,7 +955,7 @@
   "app.containers.NotificationMenu.officialFeedbackOnVotedQuestion": "Ο/η {officialName} έδωσε επίσημη ενημέρωση σχετικά με μια ερώτηση που ψηφίσατε",
   "app.containers.NotificationMenu.officialFeedbackOnYourContribution": "Ο/η {officialName} έδωσε επίσημη ενημέρωση για τη συνεισφορά σας",
   "app.containers.NotificationMenu.officialFeedbackOnYourIdea2": "Ο/η {officialName} έδωσε επίσημη ενημέρωση για την ιδέα σας",
-  "app.containers.NotificationMenu.officialFeedbackOnYourInitiative": "Ο/η {{officialName}} ενημέρωσε για την {initiative}",
+  "app.containers.NotificationMenu.officialFeedbackOnYourInitiative": "Ο/η {officialName} ενημέρωσε για την {initiative}",
   "app.containers.NotificationMenu.officialFeedbackOnYourIssue": "Ο/η {officialName} έδωσε επίσημη ενημέρωση για το σχόλιό σας",
   "app.containers.NotificationMenu.officialFeedbackOnYourOption": "Ο/η {officialName} έδωσε επίσημη ενημέρωση για την επιλογή σας",
   "app.containers.NotificationMenu.officialFeedbackOnYourProject": "Ο/η {officialName} έδωσε επίσημη ενημέρωση για το έργο σας",
