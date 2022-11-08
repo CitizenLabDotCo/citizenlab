@@ -10,6 +10,10 @@ module Analytics
       admin?
     end
 
+    def schema?
+      admin?
+    end
+
     private
 
     def admin

@@ -200,3 +200,8 @@ hr:
       status: 'Status'
       assignee_fullname: 'Opunomoćenik'
       assignee_email: 'E-pošta opunomoćenika'
+  form_builder:
+    default_select_field:
+      title: 'Vaše pitanje'
+      option1: '1. opcija'
+      option2: '2. opcija'

@@ -92,14 +92,6 @@ export const GraphCardInnerClean = styled.div`
   padding-right: 20px;
   padding-bottom: 35px;
   ${defaultCardStyle}
-  @media print {
-    position: relative;
-    display: block;
-    page-break-inside: avoid;
-    width: 100%;
-    padding: 0 10px;
-    border: none;
-  }
 `;
 
 export const GraphCard = styled.div`

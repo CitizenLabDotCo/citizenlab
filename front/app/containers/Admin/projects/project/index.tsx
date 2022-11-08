@@ -60,7 +60,6 @@ const TopContainer = styled.div`
 
 const ActionsContainer = styled.div`
   display: flex;
-
   & > *:not(:last-child) {
     margin-right: 15px;
   }
@@ -361,6 +360,10 @@ export class AdminProjectsProjectIndex extends PureComponent<
         });
       }
 
+      const showDropdownButton =
+        project.attributes.process_type === 'timeline' &&
+        numberIdeationPhases > 1;
+
       return (
         <>
           <Outlet
@@ -377,10 +380,14 @@ export class AdminProjectsProjectIndex extends PureComponent<
                   <Box
                     onClick={this.onNewIdea(pathname)}
                     onMouseOver={() => {
-                      this.setState({ showIdeaDropdown: true });
+                      if (showDropdownButton) {
+                        this.setState({ showIdeaDropdown: true });
+                      }
                     }}
                     onMouseLeave={() => {
-                      this.setState({ showIdeaDropdown: false });
+                      if (showDropdownButton) {
+                        this.setState({ showIdeaDropdown: false });
+                      }
                     }}
                   >
                     {project.attributes.process_type === 'continuous' && (
@@ -396,14 +403,13 @@ export class AdminProjectsProjectIndex extends PureComponent<
                           linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${ideationPhase.id}`}
                         />
                       )}
-                    {project.attributes.process_type === 'timeline' &&
-                      numberIdeationPhases > 1 && (
-                        <NewIdeaButtonDropdown
-                          phases={phases}
-                          project={project}
-                          showDropdown={this.state.showIdeaDropdown}
-                        />
-                      )}
+                    {showDropdownButton && (
+                      <NewIdeaButtonDropdown
+                        phases={phases}
+                        project={project}
+                        showDropdown={this.state.showIdeaDropdown}
+                      />
+                    )}
                   </Box>
                 </>
               )}
