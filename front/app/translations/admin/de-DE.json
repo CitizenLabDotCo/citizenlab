@@ -78,7 +78,7 @@
   "app.components.admin.PostManager.currentZoomLevel": "Zoom-Level",
   "app.components.admin.PostManager.delete": "Löschen",
   "app.components.admin.PostManager.deleteAllSelectedInitiatives": "{count} ausgewählte Vorschläge löschen",
-  "app.components.admin.PostManager.deleteAllSelectedInputs": "{count} Einreichungen löschen",
+  "app.components.admin.PostManager.deleteAllSelectedInputs": "{count} Beiträge löschen",
   "app.components.admin.PostManager.deleteConfirmation": "Diese Ebene wirklich löschen?",
   "app.components.admin.PostManager.deleteInitiativeConfirmation": "Bist du sicher, dass du diesen Vorschlag löschen möchtest?",
   "app.components.admin.PostManager.deleteInitiativesConfirmation": " {count} Vorschläge wirklich löschen?",
