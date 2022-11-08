@@ -15,8 +15,9 @@ module Analytics
     self.primary_key = :id
     belongs_to :dimension_user, class_name: 'Analytics::DimensionUser', optional: false
     belongs_to :dimension_date_registration, class_name: 'Analytics::DimensionDate', primary_key: 'date'
+    belongs_to :dimension_date_invited, class_name: 'Analytics::DimensionDate', primary_key: 'date'
+    belongs_to :dimension_date_accepted, class_name: 'Analytics::DimensionDate', primary_key: 'date'
 
     validates :dimension_user, presence: true
-    validates :dimension_date_registration, presence: true
   end
 end

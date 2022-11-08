@@ -14,12 +14,10 @@ interface Props {
 }
 
 export default function useProject({ projectId, projectSlug }: Props) {
-  const [project, setProject] = useState<IProjectData | undefined | null>(
-    undefined
-  );
+  const [project, setProject] = useState<IProjectData | null>(null);
 
   useEffect(() => {
-    setProject(undefined);
+    setProject(null);
 
     let observable: Observable<IProject | null> = of(null);
 
