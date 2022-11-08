@@ -1,6 +1,10 @@
 # Changelog
 
-## 2022-11-04
+### Changed
+
+- [CL-1776] Remove feedback icon in Bottom Right
+
+## 2022-11-08
 
 ### Added
 
@@ -8,13 +12,15 @@
 
 ### Fixed
 
-- [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
+- [CL-1923] Disabled switching from existing participation method to in-platform survey. Warning message added for additional clarity.
 
-## 2022-11-03
+## 2022-11-04
 
 ### Fixed
 
--[CL-1923] Disabled switching from existing participation method to in-platform survey. Warning message added for additional clarity.
+- [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
+
+## 2022-11-03
 
 ### Fixed
 

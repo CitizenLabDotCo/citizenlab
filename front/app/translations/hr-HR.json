@@ -553,8 +553,6 @@
   "app.components.form.submit": "Pošalji",
   "app.components.form.submitApiError": "Došlo je do problema prilikom slanja obrasca. Molimo vas da provjerite pogreške i pokušate ponovo.",
   "app.components.pageForm.takenSlugError": "Ovaj „puž“ je već zauzet. Odaberite drugi.",
-  "app.components.sendFeedback": "Vaše povratne informacije o platformi",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Predloženi proračun je previsok",
   "app.container.IdeaForm.budgetIsZeroError": "Proračun mora biti veći od 0",
   "app.container.IdeaForm.budgetLabel": "Proračun",

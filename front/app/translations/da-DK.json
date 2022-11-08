@@ -553,8 +553,6 @@
   "app.components.form.submit": "Indsend",
   "app.components.form.submitApiError": "Der opstod et problem med at indsende formularen. Kontroller for eventuelle fejl, og prøv igen.",
   "app.components.pageForm.takenSlugError": "Denne snegl er allerede optaget. Vælg venligst en anden.",
-  "app.components.sendFeedback": "Send din feedback",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Det afsatte budget er for stort",
   "app.container.IdeaForm.budgetIsZeroError": "Angiv venligst et budget større end 0",
   "app.container.IdeaForm.budgetLabel": "Budget",
