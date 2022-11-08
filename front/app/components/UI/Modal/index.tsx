@@ -13,6 +13,7 @@ import messages from './messages';
 // components
 import CloseIconButton from 'components/UI/CloseIconButton';
 import clickOutside from 'utils/containers/clickOutside';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetWindowSize, {
@@ -64,7 +65,11 @@ export const ModalContentContainer = styled.div<{
     padding: ${({ padding }) => padding || '20px'};
   `}
 
-  ${({ fullScreen }) => fullScreen && `max-width: 580px;`}
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+    width: 100%;
+  `}
 `;
 
 const StyledCloseIconButton = styled(CloseIconButton)`
@@ -590,7 +595,9 @@ class Modal extends PureComponent<Props, State> {
                   padding={padding}
                   fullScreen={fullScreen}
                 >
-                  {children}
+                  {/* // to do fix this, to make the */}
+                  {/* signup content appear in the center */}
+                  <Box maxWidth="580px">{children}</Box>
                 </ModalContentContainer>
 
                 {footer && <FooterContainer>{footer}</FooterContainer>}
