@@ -37,21 +37,21 @@ resource 'Analytics - FactEvent' do
       ])
     end
 
-    example 'filter events by end date and project' do
-      do_request({
-        query: {
-          fact: 'event',
-          filters: {
-            'dimension_date_end.date': { from: '2022-09-01', to: '2022-09-30' },
-            'dimension_project.id': Project.first.id
-          },
-          aggregations: {
-            all: 'count'
-          }
-        }
-      })
-      assert_status 200
-      expect(response_data).to match_array([{ count: 1 }])
-    end
+    # example 'filter events by end date and project' do
+    #   do_request({
+    #     query: {
+    #       fact: 'event',
+    #       filters: {
+    #         'dimension_date_end.date': { from: '2022-09-01', to: '2022-09-30' },
+    #         'dimension_project.id': Project.first.id
+    #       },
+    #       aggregations: {
+    #         all: 'count'
+    #       }
+    #     }
+    #   })
+    #   assert_status 200
+    #   expect(response_data).to match_array([{ count: 1 }])
+    # end
   end
 end
