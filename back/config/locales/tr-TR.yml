@@ -142,7 +142,7 @@ tr:
         question:
           title: Sorunuz nedir ?
         contribution:
-          title: Katkınız nedir ?
+          title: Katkınız nedir?
         project:
           title: Projeniz nedir ?
         issue:
@@ -200,3 +200,8 @@ tr:
       status: 'Durum'
       assignee_fullname: 'Atanan'
       assignee_email: 'Assignee email'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
