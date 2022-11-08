@@ -142,7 +142,7 @@ el:
         question:
           title: What is your question ?
         contribution:
-          title: What is your contribution ?
+          title: Ποια είναι η συνεισφορά σας;
         project:
           title: What is your project ?
         issue:
@@ -200,3 +200,8 @@ el:
       status: 'Κατάσταση'
       assignee_fullname: 'Αποδέκτης'
       assignee_email: 'Assignee email'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'
