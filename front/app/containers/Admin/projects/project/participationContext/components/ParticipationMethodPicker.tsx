@@ -60,6 +60,7 @@ export const ParticipationMethodPicker = ({
   const isExistingProjectOrPhase =
     !isNilOrError(project) || !isNilOrError(phase);
   const config = getMethodConfig(chooseParticipationMethod());
+
   return (
     <SectionField>
       <SubSectionTitle>
@@ -75,11 +76,11 @@ export const ParticipationMethodPicker = ({
       {isExistingProjectOrPhase && (
         <Box id="e2e-participation-method-warning" mb="24px">
           <Warning>
-            {!isNilOrError(phase) ? (
-              <FormattedMessage {...messages.phaseMethodChangeWarning} />
-            ) : (
-              <FormattedMessage {...messages.projectMethodChangeWarning} />
-            )}
+            <FormattedMessage
+              {...(!isNilOrError(phase)
+                ? messages.phaseMethodChangeWarning
+                : messages.projectMethodChangeWarning)}
+            />
           </Warning>
         </Box>
       )}
@@ -147,7 +148,7 @@ export const ParticipationMethodPicker = ({
               value="native_survey"
               name="participationmethod"
               id={'participationmethod-native_survey'}
-              disabled={isExistingProjectOrPhase ? true : false}
+              disabled={isExistingProjectOrPhase}
               label={
                 <LabelHeaderDescription
                   disabled={isExistingProjectOrPhase}
