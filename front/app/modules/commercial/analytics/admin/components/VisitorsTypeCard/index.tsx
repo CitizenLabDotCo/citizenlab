@@ -62,7 +62,7 @@ const VisitorsCard = ({
     (row): LegendItem => ({
       icon: 'circle',
       color: row.color,
-      label: row.name,
+      label: `${row.name} (${row.percentage}%)`,
     })
   );
 

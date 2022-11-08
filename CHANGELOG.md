@@ -12,6 +12,10 @@
 
 - [CL-1841] Show project attachments in content builder project description
 
+### Fixed
+
+- [CL-1929] Fix gender pie chart and update user pie charts style
+
 ### Added
 
 - [CL-1955] Fixed bug where admins were not able to add ideas via the map in non-active ideation phases
