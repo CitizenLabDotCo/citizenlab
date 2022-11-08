@@ -32,10 +32,11 @@ interface Props {
   className?: string;
   onMounted?: () => void;
   onDeclineInvitation?: () => void;
+  onOpened?: (opened: boolean) => void;
 }
 
 const SignUpInModal = memo<Props>(
-  ({ className, onMounted, onDeclineInvitation }) => {
+  ({ className, onMounted, onDeclineInvitation, onOpened }) => {
     const isMounted = useIsMounted();
     const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
       undefined
@@ -68,6 +69,12 @@ const SignUpInModal = memo<Props>(
         onMounted?.();
       }
     }, [onMounted, isMounted]);
+
+    useEffect(() => {
+      if (onOpened) {
+        onOpened(opened);
+      }
+    }, [opened, onOpened]);
 
     useEffect(() => {
       const subscriptions = [

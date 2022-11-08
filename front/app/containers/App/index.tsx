@@ -78,12 +78,24 @@ import { Locale } from 'typings';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 
-const Container = styled.div`
+// disable scroll if the modal is fullscreen and currently open
+const Container = styled.div<{
+  fullScreenModal?: boolean;
+  isModalOpen?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   align-items: stretch;
   position: relative;
   background: #fff;
+
+  ${(props: any) =>
+    props.fullScreenModal &&
+    props.isModalOpen &&
+    `
+      height: 100%;
+      overflow: hidden;
+    `};
 `;
 
 const InnerContainer = styled.div`
@@ -130,6 +142,7 @@ interface State {
   userDeletedSuccessfullyModalOpened: boolean;
   userSuccessfullyDeleted: boolean;
   signUpInModalMounted: boolean;
+  signUpInModalOpened: boolean;
   verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
@@ -154,6 +167,7 @@ class App extends PureComponent<Props, State> {
       userDeletedSuccessfullyModalOpened: false,
       userSuccessfullyDeleted: false,
       signUpInModalMounted: false,
+      signUpInModalOpened: false,
       verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
@@ -437,6 +451,10 @@ class App extends PureComponent<Props, State> {
     this.setState({ userDeletedSuccessfullyModalOpened: false });
   };
 
+  updateModalOpened = (opened: boolean) => {
+    this.setState({ signUpInModalOpened: opened });
+  };
+
   setNavbarRef = (navbarRef: HTMLElement) => {
     this.setState({ navbarRef });
   };
@@ -472,7 +490,10 @@ class App extends PureComponent<Props, State> {
       userSuccessfullyDeleted,
       navbarRef,
       mobileNavbarRef,
+      signUpInModalOpened,
     } = this.state;
+
+    console.log({ signUpInModalOpened });
 
     const isAdminPage = isPage('admin', location.pathname);
     const isInitiativeFormPage = isPage('initiative_form', location.pathname);
@@ -503,8 +524,10 @@ class App extends PureComponent<Props, State> {
               theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
             >
               <GlobalStyle />
-
-              <Container>
+              <Container
+                fullScreenModal={true}
+                isModalOpen={signUpInModalOpened}
+              >
                 <Meta />
                 <ErrorBoundary>
                   <Suspense fallback={null}>
@@ -530,6 +553,7 @@ class App extends PureComponent<Props, State> {
                 <ErrorBoundary>
                   <SignUpInModal
                     onMounted={this.handleSignUpInModalMounted}
+                    onOpened={this.updateModalOpened}
                     onDeclineInvitation={this.handleDeclineInvitation}
                   />
                 </ErrorBoundary>
