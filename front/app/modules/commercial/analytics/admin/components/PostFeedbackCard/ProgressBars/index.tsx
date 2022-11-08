@@ -45,7 +45,7 @@ const ProgressBars = ({ data, innerRef }: Props) => {
           height="13px"
           mr="11px"
         />
-        <Text m="0" color="primary" fontSize="s">
+        <Text m="0" color="primary" fontSize="s" display="inline">
           {formatMessage(hookMessages.averageTime, { days })}
         </Text>
       </Box>
