@@ -10,6 +10,10 @@
 
 ### Fixed
 
+-[CL-1923] Disabled switching from existing participation method to in-platform survey. Warning message added for additional clarity.
+
+### Fixed
+
 - [CL-1841] Show project attachments in content builder project description
 
 ### Fixed
