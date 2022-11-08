@@ -1734,4 +1734,11 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
       users.invite_status
      FROM users;
   SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
+  SQL
 end
