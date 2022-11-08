@@ -200,3 +200,8 @@ de:
       status: 'Status'
       assignee_fullname: 'Zugewiesen an'
       assignee_email: 'E-Mail-Adresse des Empfängers / der Empfängerin'
+  form_builder:
+    default_select_field:
+      title: 'Ihre Frage'
+      option1: 'Option 1'
+      option2: 'Option 2'
