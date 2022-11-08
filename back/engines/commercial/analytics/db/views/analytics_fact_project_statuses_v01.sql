@@ -36,6 +36,9 @@ WITH last_project_statuses AS -- project statuses that do not need to be calcula
          SELECT * FROM finished_statuses_for_continuous_projects
      )
 
-SELECT *, timestamp::DATE as date
+SELECT project_id      as dimension_project_id,
+       status,
+       timestamp,
+       timestamp::DATE as dimension_date_id
 FROM project_statuses
 ORDER BY timestamp DESC;

@@ -1761,10 +1761,10 @@ ActiveRecord::Schema.define(version: 2022_11_03_153024) do
               finished_statuses_for_continuous_projects."timestamp"
              FROM finished_statuses_for_continuous_projects
           )
-   SELECT project_statuses.project_id,
+   SELECT project_statuses.project_id AS dimension_project_id,
       project_statuses.status,
       project_statuses."timestamp",
-      (project_statuses."timestamp")::date AS date
+      (project_statuses."timestamp")::date AS dimension_date_id
      FROM project_statuses
     ORDER BY project_statuses."timestamp" DESC;
   SQL

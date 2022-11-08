@@ -4,14 +4,14 @@
 #
 # Table name: analytics_fact_project_statuses
 #
-#  project_id :uuid
-#  status     :string
-#  timestamp  :datetime
-#  date       :date
+#  dimension_project_id :uuid
+#  status               :string
+#  timestamp            :datetime
+#  dimension_date_id    :date
 #
 module Analytics
   class FactProjectStatus < Analytics::ApplicationRecordView
-    belongs_to :dimension_date, foreign_key: :date
-    belongs_to :project
+    belongs_to :dimension_date
+    belongs_to :dimension_project
   end
 end
