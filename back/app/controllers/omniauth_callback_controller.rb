@@ -51,8 +51,16 @@ class OmniauthCallbackController < ApplicationController
     if @user.nil?
       @user = User.find_by_cimail(user_attrs.fetch(:email))
       if @user && !authver_method.can_be_merged?(@user, user_attrs)
-        # `sso_flow: 'signin'` - even if user signs up, we propose to sign in in case of this error
-        failure_redirect(error_code: 'france_connect_merging_failed', sso_flow: 'signin')
+        # `sso_flow: 'signin'` - even if user signs up, we propose to sign in due to the content of the error message
+        #
+        # `sso_pathname: '/'` - when sso_pathname is `/en/sign-in`, it's not redirected to /en/sign-in and the error message is not shown
+        # On the FE, this hack can be tested accessing this URL
+        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2F&error_code=france_connect_merging_failed
+        # Note, that the modal is not shown with this URL
+        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=france_connect_merging_failed
+        #
+        # Probaby, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
+        failure_redirect(error_code: 'france_connect_merging_failed', sso_flow: 'signin', sso_pathname: '/')
         return
       end
     end
