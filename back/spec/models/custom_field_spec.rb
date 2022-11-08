@@ -62,6 +62,10 @@ class TestVisitor < FieldVisitorService
   def visit_linear_scale(_field)
     'linear_scale from visitor'
   end
+
+  def visit_page(_field)
+    'page from visitor'
+  end
 end
 
 RSpec.describe CustomField, type: :model do
