@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_27_170719) do
+ActiveRecord::Schema.define(version: 2022_11_07_124858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1540,17 +1540,6 @@ ActiveRecord::Schema.define(version: 2022_10_27_170719) do
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
   SQL
-  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
-      SELECT idea_statuses.id,
-      idea_statuses.title_multiloc,
-      idea_statuses.color
-     FROM idea_statuses
-  UNION ALL
-   SELECT initiative_statuses.id,
-      initiative_statuses.title_multiloc,
-      initiative_statuses.color
-     FROM initiative_statuses;
-  SQL
   create_view "analytics_dimension_projects", sql_definition: <<-SQL
       SELECT projects.id,
       projects.title_multiloc
@@ -1576,18 +1565,6 @@ ActiveRecord::Schema.define(version: 2022_10_27_170719) do
              FROM official_feedbacks
             GROUP BY official_feedbacks.post_id) a
     GROUP BY a.post_id;
-  SQL
-  create_view "analytics_dimension_users", sql_definition: <<-SQL
-      SELECT users.id,
-      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
-     FROM users;
-  SQL
-  create_view "analytics_fact_registrations", sql_definition: <<-SQL
-      SELECT users.id,
-      users.id AS dimension_user_id,
-      (users.registration_completed_at)::date AS dimension_date_registration_id
-     FROM users
-    WHERE (users.registration_completed_at IS NOT NULL);
   SQL
   create_view "analytics_fact_participations", sql_definition: <<-SQL
       SELECT i.id,
@@ -1720,5 +1697,41 @@ ActiveRecord::Schema.define(version: 2022_10_27_170719) do
        LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
+  SQL
+  create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
+      SELECT ecd.id,
+      (ecd.sent_at)::date AS dimension_date_sent_id,
+      ecd.campaign_id,
+      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
+     FROM (email_campaigns_deliveries ecd
+       JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
+  SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc,
+      idea_statuses.code,
+      idea_statuses.color
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc,
+      initiative_statuses.code,
+      initiative_statuses.color
+     FROM initiative_statuses;
+  SQL
+  create_view "analytics_fact_registrations", sql_definition: <<-SQL
+      SELECT u.id,
+      u.id AS dimension_user_id,
+      (u.registration_completed_at)::date AS dimension_date_registration_id,
+      (i.created_at)::date AS dimension_date_invited_id,
+      (i.accepted_at)::date AS dimension_date_accepted_id
+     FROM (users u
+       LEFT JOIN invites i ON ((i.invitee_id = u.id)));
+  SQL
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+      users.invite_status
+     FROM users;
   SQL
 end
