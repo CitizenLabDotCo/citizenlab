@@ -69,8 +69,6 @@ export const ModalContentContainer = styled.div<{
     fullScreen &&
     `
     width: 100%;
-    display: flex;
-    justify-content: center;
   `}
 `;
 
@@ -133,8 +131,8 @@ const StyledFocusOn = styled(FocusOn)<{
   ${({ fullScreen }) =>
     fullScreen &&
     `
-height: 100%;
-max-width: 100%;`}
+  height: 100%;
+  max-width: 100%;`}
 `;
 
 const ModalContainer = styled(clickOutside)<{
