@@ -17,7 +17,7 @@ const ReferenceDataInterface = () => (
         linkTo="/admin/dashboard/representation"
         buttonStyle="text"
         icon="arrow-left"
-        size="2"
+        size="m"
         padding="0px"
         text={<FormattedMessage {...messages.backToDashboard} />}
       />

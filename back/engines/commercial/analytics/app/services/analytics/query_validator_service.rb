@@ -22,10 +22,11 @@ module Analytics
       return if @valid == false
 
       if @json_query.key?(:fields)
-        validate_attributes(@query.fields, 'Fields')
+        validate_fields(@query.fields, 'Fields')
       end
 
       if @json_query.key?(:filters)
+        validate_fields(@json_query[:filters].keys, 'Filters')
         validate_filters
       end
 
@@ -39,7 +40,7 @@ module Analytics
 
       return unless @json_query.key?(:sort)
 
-      validate_attributes(@json_query[:sort].keys, 'Sort')
+      validate_fields(@json_query[:sort].keys, 'Sort')
     end
 
     private
@@ -56,17 +57,9 @@ module Analytics
       add_error(json_errors)
     end
 
-    def validate_attributes(attributes, kind)
-      attributes.each do |attribute|
-        field, subfield = attribute.include?('.') ? attribute.split('.') : [attribute, nil]
-        if @query.all_attributes.include?(field)
-          if subfield && @query.all_dimensions.exclude?(field)
-            add_error("#{kind} field #{field} does not contain #{subfield} because is not a dimension.")
-
-          elsif subfield && @query.all_dimensions[field][:columns].exclude?(subfield)
-            add_error("#{kind} column #{subfield} does not exist in dimension #{field}.")
-          end
-        else
+    def validate_fields(fields, kind)
+      fields.each do |field|
+        if @query.fact_attributes.keys.exclude?(field) && @query.aggregations_names.exclude?(field)
           add_error("#{kind} field #{field} does not exist.")
         end
       end
@@ -74,23 +67,27 @@ module Analytics
 
     def validate_filters
       dates_attrs = %w[from to]
-      @json_query[:filters].each do |dimension, columns|
-        columns.each do |column, value|
-          validate_attributes(["#{dimension}.#{column}"], 'Filters')
-
-          next unless column == 'date' && value.is_a?(ActionController::Parameters)
-
-          dates_attrs.each do |date|
-            Date.parse(value[date])
-          rescue ArgumentError
-            add_error("Invalid '#{date}' date in #{dimension} dimension on column #{column}.")
+      @json_query[:filters].each do |field, values|
+        values = Array.wrap(values)
+        field, subfield = field.include?('.') ? field.split('.') : [field, nil]
+        values.each do |value|
+          if value.is_a?(ActionController::Parameters)
+            if subfield == 'date'
+              dates_attrs.each do |date|
+                Date.parse(value[date])
+              rescue ArgumentError
+                add_error("Invalid '#{date}' date for #{field}.#{subfield}.")
+              end
+            else
+              add_error("Unsupported object type. Field #{field}.#{subfield} is not a date.")
+            end
           end
         end
       end
     end
 
     def validate_groups
-      validate_attributes(@query.groups_keys, 'Groups')
+      validate_fields(@query.groups, 'Groups')
 
       return if @json_query.key?(:aggregations)
 
@@ -111,7 +108,7 @@ module Analytics
           next
         end
 
-        validate_attributes([key], 'Aggregations')
+        validate_fields([key], 'Aggregations')
       end
     end
   end

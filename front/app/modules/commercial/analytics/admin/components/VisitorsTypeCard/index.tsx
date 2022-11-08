@@ -58,7 +58,7 @@ const VisitorsCard = ({
 
   if (isNilOrError(pieData)) {
     return (
-      <GraphCard title={cardTitle} fullWidth={false}>
+      <GraphCard title={cardTitle}>
         <EmptyPieChart />
       </GraphCard>
     );
@@ -68,7 +68,7 @@ const VisitorsCard = ({
     (row): LegendItem => ({
       icon: 'circle',
       color: row.color,
-      label: row.name,
+      label: `${row.name} (${row.percentage}%)`,
     })
   );
 
@@ -87,7 +87,6 @@ const VisitorsCard = ({
         currentProjectFilter: projectFilter,
         resolution,
       }}
-      fullWidth={false}
     >
       <Box height="initial" p="20px">
         <PieChart

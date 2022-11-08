@@ -67,7 +67,7 @@ const VisitorsTrafficSourcesCard = ({
       title={cardTitle}
       exportMenu={{
         name: cardTitle,
-        svgNode: graphRef,
+        svgNode: currentView === 'chart' ? graphRef : undefined,
         xlsx: {
           onDownload: () =>
             getXlsxData(
