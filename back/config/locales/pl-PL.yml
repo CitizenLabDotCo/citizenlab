@@ -142,7 +142,7 @@ pl:
         question:
           title: Jakie jest twoje pytanie?
         contribution:
-          title: Jaki jest twój wkład ?
+          title: Jaki jest twój wkład?
         project:
           title: Jaki jest Twój projekt ?
         issue:
@@ -200,3 +200,8 @@ pl:
       status: 'Status'
       assignee_fullname: 'Moderator'
       assignee_email: 'E-mail osoby przypisanej'
+  form_builder:
+    default_select_field:
+      title: 'Twoje pytanie'
+      option1: 'Opcja 1'
+      option2: 'Opcja 2'
