@@ -21,8 +21,6 @@ export interface Pagination {
   pageNumber: number;
 }
 
-export type StatCardPeriodProps = ProjectId & Dates & Resolution;
-
 // Response values
 export type GetTimeSeriesResponse<
   DateColumnPrefix extends string,
@@ -55,14 +53,6 @@ export type DateColumn<
   DateColumnPrefix extends string,
   Period extends 'month' | 'week' | 'date'
 > = `${DateColumnPrefix}.${Period}`;
-
-export type SingleCount = {
-  count: number;
-};
-
-export type SingleCountResponse = {
-  data: SingleCount[][];
-};
 
 // Hook return values
 export interface Stat {

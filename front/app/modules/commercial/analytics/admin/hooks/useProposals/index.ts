@@ -18,14 +18,17 @@ import { getProposalsLabels } from './utils';
 
 // typings
 import { Proposals } from './typings';
-import { StatCardPeriodProps, SingleCountResponse } from '../../typings';
+import {
+  SingleCountResponse,
+  StatCardProps,
+} from '../../hooks/useStatCard/typings';
 
 const query = ({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
-}: StatCardPeriodProps): Query => {
+}: StatCardProps): Query => {
   const todayMoment = moment();
   const lastPeriodMoment = getTimePeriodMoment(resolution);
 
@@ -82,7 +85,7 @@ export default function useProposals({
   startAtMoment,
   endAtMoment,
   resolution,
-}: StatCardPeriodProps) {
+}: StatCardProps) {
   const [proposals, setProposals] = useState<Proposals | NilOrError>(undefined);
   const { formatMessage } = useIntl();
   useEffect(() => {

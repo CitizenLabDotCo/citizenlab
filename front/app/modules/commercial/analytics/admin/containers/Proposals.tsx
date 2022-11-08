@@ -5,9 +5,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import ProposalsCard from '../components/ProposalsCard';
-import { StatCardPeriodProps } from '../typings';
+import { StatCardProps } from '../hooks/useStatCard/typings';
 
-export default ({ ...props }: StatCardPeriodProps) => {
+export default ({ ...props }: StatCardProps) => {
   const proposalsActive = useFeatureFlag({ name: 'initiatives' });
   const analyticsActive = useFeatureFlag({ name: 'analytics' });
 
