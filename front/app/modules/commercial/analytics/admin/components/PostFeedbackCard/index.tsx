@@ -4,10 +4,10 @@ import React, { useRef, useState } from 'react';
 import GraphCard from 'components/admin/GraphCard';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import EmptyState from 'components/admin/Graphs/_components/EmptyState';
-import PieChart from 'components/admin/Graphs/PieChart';
+import DonutChart from './DonutChart';
 import ProgressBars from 'components/admin/Graphs/ProgressBars';
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
-import CenterLabel from './CenterLabel';
+import CenterLabel from './DonutChart/CenterLabel';
 import { stackLabels } from './stackLabels';
 import { stackedBarTooltip } from './stackedBarTooltip';
 import Button from 'components/UI/Button';
@@ -84,7 +84,7 @@ const PostFeedback = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const currentPieChart = useRef();
+  const donutChartRef = useRef();
   const currentProgressBarsChart = useRef();
   const currentStackedBarChart = useRef();
   const [stackedBarHoverIndex, setStackedBarHoverIndex] = useState<
@@ -116,11 +116,8 @@ const PostFeedback = ({
   }
 
   const {
-    pieData,
     progressBarsData,
     stackedBarsData,
-    pieCenterValue,
-    pieCenterLabel,
     days,
     stackedBarColumns,
     statusColorById,
@@ -138,7 +135,7 @@ const PostFeedback = ({
       exportMenu={{
         name: cardTitle.toLowerCase().replace(' ', '_'),
         svgNode: [
-          currentPieChart,
+          donutChartRef,
           currentProgressBarsChart,
           currentStackedBarChart,
         ],
@@ -151,26 +148,7 @@ const PostFeedback = ({
     >
       <Container>
         <DonutChartContainer>
-          <PieChart
-            data={pieData}
-            height={200}
-            mapping={{
-              angle: 'value',
-              name: 'name',
-              fill: ({ row: { color } }) => color,
-            }}
-            pie={{
-              innerRadius: '85%',
-            }}
-            centerLabel={({ viewBox: { cy } }) => (
-              <CenterLabel
-                y={cy - 5}
-                value={pieCenterValue}
-                label={pieCenterLabel}
-              />
-            )}
-            innerRef={currentPieChart}
-          />
+          <DonutChart data={data} innerRef={donutChartRef} />
         </DonutChartContainer>
         <ProgressBarsContainer>
           <Box
