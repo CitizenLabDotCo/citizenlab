@@ -18,7 +18,6 @@
   "app.components.ProjectTemplatePreview.goBackTo": "Uunga {goBackLink} uterit.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Peqataanermut suliami una immersugassaq atussaviuk?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Illoqarfigisanni allaffissornermi akisussaasoq imaluunniit {link} attavigiuk.",
-  "app.components.ProjectTemplatePreview.projectFolder": "Project folder",
   "app.components.ProjectTemplatePreview.projectInvalidStartDateError": "Ulloq toqqarneqartoq atorsinnaanngilaq. Ullorsiut una atorlugu ulloq allaguk: ÅÅÅÅ-MM-DD",
   "app.components.ProjectTemplatePreview.projectNoStartDateError": "Suliniutip aallartiffissaa toqqaruk",
   "app.components.ProjectTemplatePreview.projectStartDate": "Illit suliniutivit aallartiffissaa",
