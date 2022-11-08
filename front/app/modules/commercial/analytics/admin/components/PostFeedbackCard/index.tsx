@@ -117,7 +117,7 @@ const PostFeedback = ({
             justifyContent="center"
             alignItems="center"
           >
-            <ProgressBars data={null} innerRef={progressBarsRef} />
+            <ProgressBars data={data} innerRef={progressBarsRef} />
           </Box>
         </ProgressBarsContainer>
       </Container>
