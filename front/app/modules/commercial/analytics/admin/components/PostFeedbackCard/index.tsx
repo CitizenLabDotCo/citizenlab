@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import DonutChart from './DonutChart';
-import ProgressBars from 'components/admin/Graphs/ProgressBars';
+import ProgressBars from './ProgressBars';
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
 import { stackLabels } from './stackLabels';
 import { stackedBarTooltip } from './stackedBarTooltip';
@@ -13,7 +13,7 @@ import Button from 'components/UI/Button';
 
 // stylings
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 
 // i18n
 import hookMessages from '../../hooks/usePostsFeedback/messages';
@@ -84,7 +84,7 @@ const PostFeedback = ({
   const { formatMessage } = useIntl();
 
   const donutChartRef = useRef();
-  const currentProgressBarsChart = useRef();
+  const progressBarsRef = useRef();
   const currentStackedBarChart = useRef();
   const [stackedBarHoverIndex, setStackedBarHoverIndex] = useState<
     number | undefined
@@ -115,9 +115,7 @@ const PostFeedback = ({
   }
 
   const {
-    progressBarsData,
     stackedBarsData,
-    days,
     stackedBarColumns,
     statusColorById,
     stackedBarPercentages,
@@ -133,11 +131,7 @@ const PostFeedback = ({
       title={cardTitle}
       exportMenu={{
         name: cardTitle.toLowerCase().replace(' ', '_'),
-        svgNode: [
-          donutChartRef,
-          currentProgressBarsChart,
-          currentStackedBarChart,
-        ],
+        svgNode: [donutChartRef, progressBarsRef, currentStackedBarChart],
         xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,
@@ -150,37 +144,7 @@ const PostFeedback = ({
           <DonutChart data={data} innerRef={donutChartRef} />
         </DonutChartContainer>
         <ProgressBarsContainer>
-          <Box
-            width="100%"
-            maxWidth="256px"
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <ProgressBars
-              height={136}
-              data={progressBarsData}
-              innerRef={currentProgressBarsChart}
-            />
-            <Box
-              m="0 0 0 0"
-              style={{
-                color: colors.primary,
-                fontSize: fontSizes.s,
-              }}
-              width="100%"
-            >
-              <Icon
-                name="calendar"
-                fill={colors.primary}
-                width="13px"
-                height="13px"
-                mr="11px"
-              />
-              {formatMessage(hookMessages.averageTime, { days })}
-            </Box>
-          </Box>
+          <ProgressBars data={data} innerRef={progressBarsRef} />
         </ProgressBarsContainer>
       </Container>
       <Box width="100%" maxWidth="600px" height="initial" mt="30px" p="8px">
