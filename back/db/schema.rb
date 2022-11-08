@@ -1540,17 +1540,6 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
   SQL
-  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
-      SELECT idea_statuses.id,
-      idea_statuses.title_multiloc,
-      idea_statuses.color
-     FROM idea_statuses
-  UNION ALL
-   SELECT initiative_statuses.id,
-      initiative_statuses.title_multiloc,
-      initiative_statuses.color
-     FROM initiative_statuses;
-  SQL
   create_view "analytics_dimension_projects", sql_definition: <<-SQL
       SELECT projects.id,
       projects.title_multiloc
@@ -1728,5 +1717,18 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
       ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
      FROM (email_campaigns_deliveries ecd
        JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
+  SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc,
+      idea_statuses.code,
+      idea_statuses.color
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc,
+      initiative_statuses.code,
+      initiative_statuses.color
+     FROM initiative_statuses;
   SQL
 end
