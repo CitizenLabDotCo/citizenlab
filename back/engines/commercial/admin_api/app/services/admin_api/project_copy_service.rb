@@ -109,7 +109,16 @@ module AdminApi
           'hidden' => c.hidden,
           'maximum' => c.maximum,
           'minimum_label_multiloc' => c.minimum_label_multiloc,
-          'maximum_label_multiloc' => c.maximum_label_multiloc
+          'maximum_label_multiloc' => c.maximum_label_multiloc,
+          'text_images_attributes' => e.text_images.map do |ti|
+            {
+              'imageable_field' => ti.imageable_field,
+              'remote_image_url' => ti.image_url,
+              'text_reference' => ti.text_reference,
+              'created_at' => ti.created_at.to_s,
+              'updated_at' => ti.updated_at.to_s
+            }
+          end
         }
         store_ref yml_custom_field, c.id, :custom_field
         yml_custom_field
@@ -161,7 +170,7 @@ module AdminApi
       yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
       yml_project.merge!({
         'title_multiloc' => new_title_multiloc || @project.title_multiloc,
-        'description_multiloc' => TextImageService.new.render_data_images(@project, :description_multiloc),
+        'description_multiloc' => @project.description_multiloc,
         'created_at' => shift_timestamp(@project.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(@project.updated_at, shift_timestamps)&.iso8601,
         'remote_header_bg_url' => @project.header_bg_url,
@@ -220,7 +229,7 @@ module AdminApi
         yml_phase.merge!({
           'project_ref' => lookup_ref(p.project_id, :project),
           'title_multiloc' => p.title_multiloc,
-          'description_multiloc' => TextImageService.new.render_data_images(p, :description_multiloc),
+          'description_multiloc' => p.description_multiloc,
           'start_at' => shift_timestamp(p.start_at, shift_timestamps)&.iso8601,
           'end_at' => shift_timestamp(p.end_at, shift_timestamps)&.iso8601,
           'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
@@ -411,7 +420,7 @@ module AdminApi
         yml_event = {
           'project_ref' => lookup_ref(e.project_id, :project),
           'title_multiloc' => e.title_multiloc,
-          'description_multiloc' => TextImageService.new.render_data_images(e, :description_multiloc),
+          'description_multiloc' => e.description_multiloc,
           'location_multiloc' => e.location_multiloc,
           'start_at' => shift_timestamp(e.start_at, shift_timestamps)&.iso8601,
           'end_at' => shift_timestamp(e.end_at, shift_timestamps)&.iso8601,
