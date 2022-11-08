@@ -1662,7 +1662,6 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Ποιος μπορεί να δει αυτό το έργο;",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "Μετάβαση στη Διαχείριση εισηγήσεων",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "Εισηγήσεις",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate": "Conversion rate",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "New registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Εγγραφές",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total registrations",
