@@ -142,7 +142,7 @@ ar-MA:
         question:
           title: ما سؤالك؟
         contribution:
-          title: ما مساهمتك؟
+          title: ما هي مساهمتك؟
         project:
           title: ما مشروعك؟
         issue:
@@ -200,3 +200,8 @@ ar-MA:
       status: 'الحالة'
       assignee_fullname: 'المعيّن إليه'
       assignee_email: 'البريد الإلكتروني للمعيَّن إليه'
+  form_builder:
+    default_select_field:
+      title: 'سؤالك'
+      option1: 'الخيار 1'
+      option2: 'الخيار 2'
