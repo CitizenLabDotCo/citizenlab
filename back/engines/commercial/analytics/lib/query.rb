@@ -7,7 +7,8 @@ module Analytics
       participation: FactParticipation,
       visit: FactVisit,
       registration: FactRegistration,
-      email_delivery: FactEmailDelivery
+      email_delivery: FactEmailDelivery,
+      event: FactEvent
     }.freeze
 
     def initialize(query)
