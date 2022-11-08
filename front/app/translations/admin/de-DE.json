@@ -1649,7 +1649,7 @@
   "app.containers.admin.ideas.all.tabManage": "Bearbeiten",
   "app.containers.admin.ideas.all.tabStatuses": "Status",
   "app.containers.admin.import.downloadTemplate": "Vorlage herunterladen",
-  "app.containers.admin.import.importDescription": "Importieren Sie vorhandene Beiträge aus einer Excel-Datei.",
+  "app.containers.admin.import.importDescription": "Importieren Sie analog gesammelte Beiträge aus einer Excel-Datei.",
   "app.containers.admin.import.importInput": "Beiträge importieren",
   "app.containers.admin.import.importInputs": "Beiträge importieren",
   "app.containers.admin.import.importStepOne": "1. Herunterladen und Ausfüllen der Vorlage",
