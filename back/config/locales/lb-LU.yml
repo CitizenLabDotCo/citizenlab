@@ -142,7 +142,7 @@ lb:
         question:
           title: Wat ass Är Fro?
         contribution:
-          title: Wat ass Äre Bäitrag ?
+          title: Wat ass Äre Bäitrag?
         project:
           title: Wat ass Äre Projet?
         issue:
@@ -200,3 +200,8 @@ lb:
       status: 'Status'
       assignee_fullname: 'Assignee'
       assignee_email: 'E-Mail vum Beoptragten'
+  form_builder:
+    default_select_field:
+      title: 'Är Fro'
+      option1: 'Méiglechkeet 1'
+      option2: 'Méiglechkeet 2'
