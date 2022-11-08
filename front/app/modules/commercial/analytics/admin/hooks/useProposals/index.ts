@@ -32,10 +32,10 @@ const query = ({
   const queryBase = (
     startMoment: Moment | null | undefined,
     endMoment: Moment | null,
-    accepted = false
+    successful = false
   ): QuerySchema => {
-    const acceptedStatus = () => {
-      return accepted ? { 'dimension_status.code': 'accepted' } : {};
+    const successStatus = () => {
+      return successful ? { 'dimension_status.code': 'threshold_reached' } : {};
     };
     return {
       fact: 'post',
@@ -44,7 +44,7 @@ const query = ({
       },
       filters: {
         'dimension_type.name': 'initiative',
-        ...acceptedStatus,
+        ...successStatus,
         ...getProjectFilter('dimension_project', projectId),
         ...getDateFilter('dimension_date_created', startMoment, endMoment),
       },

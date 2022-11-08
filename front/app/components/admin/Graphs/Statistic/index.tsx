@@ -9,6 +9,7 @@ interface Props {
   bottomLabel?: string;
   bottomLabelValue?: string;
   tooltipContent?: React.ReactChild;
+  textAlign?: 'left' | 'center';
 }
 
 const Statistic = ({
@@ -17,55 +18,58 @@ const Statistic = ({
   bottomLabel,
   bottomLabelValue,
   tooltipContent,
+  textAlign = 'left',
 }: Props) => (
   <Box>
-    <Box>
-      <Text color="primary" fontSize="s" mt="0px" mb="0px" display="inline">
-        {name}
-      </Text>
-
-      {tooltipContent && (
-        <Box ml="8px" display="inline">
-          <IconTooltip
-            content={tooltipContent}
-            theme="light"
-            transform="translate(0,-2)"
-            display="inline"
-          />
-        </Box>
-      )}
-    </Box>
-
-    <Text color="textPrimary" fontSize="xl" mt="2px" mb="0px">
-      {value}
-    </Text>
-    {bottomLabel && (
-      <Box mt="3px">
-        <Text
-          color="textSecondary"
-          fontSize="s"
-          mt="0px"
-          mb="0px"
-          display="inline"
-        >
-          {bottomLabel}
+    <Text textAlign={textAlign} m="0">
+      <Box>
+        <Text color="primary" fontSize="s" mt="0px" mb="0px" display="inline">
+          {name}
         </Text>
 
-        {bottomLabelValue && (
+        {tooltipContent && (
+          <Box ml="8px" display="inline">
+            <IconTooltip
+              content={tooltipContent}
+              theme="light"
+              transform="translate(0,-2)"
+              display="inline"
+            />
+          </Box>
+        )}
+      </Box>
+
+      <Text color="textPrimary" fontSize="xl" mt="2px" mb="0px">
+        {value}
+      </Text>
+      {bottomLabel && (
+        <Box mt="3px">
           <Text
             color="textSecondary"
-            display="inline"
-            fontWeight="bold"
             fontSize="s"
             mt="0px"
             mb="0px"
-            ml="4px"
+            display="inline"
           >
-            {bottomLabelValue}
+            {bottomLabel}
           </Text>
-        )}
-      </Box>
-    )}
+
+          {bottomLabelValue && (
+            <Text
+              color="textSecondary"
+              display="inline"
+              fontWeight="bold"
+              fontSize="s"
+              mt="0px"
+              mb="0px"
+              ml="4px"
+            >
+              {bottomLabelValue}
+            </Text>
+          )}
+        </Box>
+      )}
+    </Text>
   </Box>
 );
 

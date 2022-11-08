@@ -64,6 +64,7 @@ const ProposalsCard = ({
             value={chartData.totalProposals.value}
             bottomLabel={labels.period}
             bottomLabelValue={chartData.totalProposals.lastPeriod}
+            textAlign="center"
           />
         </Box>
         <Box pl="20px" width="100%">
@@ -73,6 +74,7 @@ const ProposalsCard = ({
             bottomLabel={labels.period}
             bottomLabelValue={chartData.successfulProposals.lastPeriod}
             tooltipContent={labels.successfulToolTip}
+            textAlign="center"
           />
         </Box>
       </Box>
