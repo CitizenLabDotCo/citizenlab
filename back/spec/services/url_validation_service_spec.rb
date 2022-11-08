@@ -46,7 +46,7 @@ describe UrlValidationService do
       'http://www.slideshare.net/slideshow/embed_code/key/AYBogCfDlXkgMi',
       'https://online1.snapsurveys.com/interview/deff624d-0604-45bb-a072-0c6da45b22e6',
       'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-      'https://btt.abalancingact.com\dummy'
+      'https://btt.abalancingact.com/dummy'
     ]
 
     invalid_urls = [
@@ -71,7 +71,7 @@ describe UrlValidationService do
       'https://konveio.com/something',
       'https://subdomain.arcgis.com',
       'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pd',
-      'https://btt.abalancingact\dummy'
+      'https://btt.abalancingact/dummy'
     ]
 
     valid_urls.each do |url|
