@@ -142,7 +142,7 @@ sr-SP:
         question:
           title: Шта је ваше питање ?
         contribution:
-          title: Шта је ваш прилог ?
+          title: Шта је то чиме ћете допринети?
         project:
           title: Шта је ваш пројекат ?
         issue:
@@ -200,3 +200,8 @@ sr-SP:
       status: 'Статус'
       assignee_fullname: 'Assignee'
       assignee_email: 'Е-пошта додељеног корисника'
+  form_builder:
+    default_select_field:
+      title: 'Ваше питање'
+      option1: 'Опција 1'
+      option2: 'Опција 2'
