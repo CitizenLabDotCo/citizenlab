@@ -328,7 +328,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       }
 
       setFolderOptions(folders);
-    }, [opened, projectFolders, authUser]);
+    }, [opened, projectFolders, authUser, localize, intl]);
 
     if (isNilOrError(authUser)) {
       return null;
