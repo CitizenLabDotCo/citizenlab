@@ -69,6 +69,8 @@ export const ModalContentContainer = styled.div<{
     fullScreen &&
     `
     width: 100%;
+    display: flex;
+    justify-content: center;
   `}
 `;
 
@@ -163,6 +165,7 @@ const ModalContainer = styled(clickOutside)<{
     align-items: center;
     max-height: 100%;
     border-radius: 0;
+    border-top: 2px solid ${colors.borderLight};
   `}
 
   /* tall desktops screens */
@@ -219,7 +222,6 @@ const Overlay = styled.div<{ fullScreen?: boolean }>`
     fullScreen &&
     `
     margin-top: 78px;
-    border-top: 2px solid light-gray;
     padding: 0px;`}
 
   ${media.desktop`
