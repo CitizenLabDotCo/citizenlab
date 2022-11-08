@@ -2,11 +2,19 @@
 
 ## 2022-11-04
 
-#### Fixed
+### Added
+
+- Added support for Balancing Act embed in content builder
+
+### Fixed
 
 - [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
 
 ## 2022-11-03
+
+### Fixed
+
+-[CL-1923] Disabled switching from existing participation method to in-platform survey. Warning message added for additional clarity.
 
 ### Fixed
 
