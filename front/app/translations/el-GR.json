@@ -553,8 +553,6 @@
   "app.components.form.submit": "Υποβολή",
   "app.components.form.submitApiError": "Υπήρξε πρόβλημα με την υποβολή της φόρμας. Ελέγξτε για τυχόν σφάλματα και προσπαθήστε ξανά.",
   "app.components.pageForm.takenSlugError": "Αυτό το slug είναι ήδη κατειλημμένο, επιλέξτε ένα άλλο",
-  "app.components.sendFeedback": "Η ανατροφοδότησή σας για την πλατφόρμα",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Ο παρεχόμενος προϋπολογισμός είναι πολύ μεγάλος",
   "app.container.IdeaForm.budgetIsZeroError": "Παρακαλούμε δώστε έναν προϋπολογισμό μεγαλύτερο από 0",
   "app.container.IdeaForm.budgetLabel": "Προϋπολογισμός",

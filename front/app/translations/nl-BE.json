@@ -553,8 +553,6 @@
   "app.components.form.submit": "Verzenden",
   "app.components.form.submitApiError": "Er was een probleem met het verzenden van het formulier. Controleer op eventuele fouten en probeer het opnieuw.",
   "app.components.pageForm.takenSlugError": "Deze slug is al in gebruik. Kies een andere.",
-  "app.components.sendFeedback": "Je feedback over het platform",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/AWSAgY?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Het voorziene bedrag is te groot",
   "app.container.IdeaForm.budgetIsZeroError": "Geef een bedrag groter dan 0",
   "app.container.IdeaForm.budgetLabel": "Bedrag",
