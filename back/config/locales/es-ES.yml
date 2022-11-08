@@ -142,7 +142,7 @@ es:
         question:
           title: '¿Cuál es su pregunta?'
         contribution:
-          title: '¿Cuál es su contribución?'
+          title: '¿Cuál es tu contribución?'
         project:
           title: '¿Cuál es su proyecto?'
         issue:
@@ -200,3 +200,8 @@ es:
       status: 'Estado'
       assignee_fullname: 'Asignado'
       assignee_email: 'Correo electrónico del destinatario'
+  form_builder:
+    default_select_field:
+      title: 'Su pregunta'
+      option1: 'Opción 1'
+      option2: 'Opción 2'
