@@ -2,7 +2,11 @@
 
 ## 2022-11-04
 
-#### Fixed
+### Added
+
+- Added support for Balancing Act embed in content builder
+
+### Fixed
 
 - [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
 

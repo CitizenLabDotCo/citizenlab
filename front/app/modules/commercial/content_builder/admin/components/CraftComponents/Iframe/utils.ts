@@ -27,6 +27,7 @@ const urlWhiteList = [
   /^(https?):\/\/(www\.)?google\.com\/maps(\/[a-z])?\/embed\?([^&]*)=([-A-Z0-9+&@#/%=~_|!:,.;]+)/i,
   /^(https?):\/\/([-A-Z0-9.]+)\.slideshare(\.(net|com))\/slideshow\/embed_code\/key\/([-A-Z0-9+&@#/%=~_|!:,.;]+)/i,
   /^(https?):\/\/(www\.)?onedrive\.live\.([-A-Z0-9+&@#/%=~_|!:,.;?]+)/i,
+  /^(https?):\/\/(.+\.)abalancingact\.com/i,
   /^(https?):\/\/.*pdf$/,
 ];
 
