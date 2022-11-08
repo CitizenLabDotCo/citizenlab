@@ -493,8 +493,6 @@ class App extends PureComponent<Props, State> {
       signUpInModalOpened,
     } = this.state;
 
-    console.log({ signUpInModalOpened });
-
     const isAdminPage = isPage('admin', location.pathname);
     const isInitiativeFormPage = isPage('initiative_form', location.pathname);
     const isIdeaFormPage = isPage('idea_form', location.pathname);
