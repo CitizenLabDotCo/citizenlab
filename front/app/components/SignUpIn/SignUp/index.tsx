@@ -109,6 +109,7 @@ export interface Props {
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
+  fullScreen?: boolean;
 }
 
 const SignUp = ({
@@ -117,6 +118,7 @@ const SignUp = ({
   onSignUpCompleted,
   onGoToSignIn,
   className,
+  fullScreen,
 }: Props & WrappedComponentProps) => {
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
@@ -313,6 +315,7 @@ const SignUp = ({
         inModal={!!metaData.inModal}
         headerHeight={headerHeight}
         ref={modalContentRef}
+        fullScreen={fullScreen}
       >
         {error ? (
           <Error text={error} animate={false} marginBottom="30px" />
