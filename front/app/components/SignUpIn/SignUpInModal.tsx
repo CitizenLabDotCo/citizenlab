@@ -37,13 +37,7 @@ interface Props {
 }
 
 const SignUpInModal = memo<Props>(
-  ({
-    className,
-    onMounted,
-    onClosed,
-    onOpened,
-    fullScreenModal,
-  }) => {
+  ({ className, onMounted, onClosed, onOpened, fullScreenModal }) => {
     const isMounted = useIsMounted();
     const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
       undefined
@@ -116,6 +110,8 @@ const SignUpInModal = memo<Props>(
 
     const onSignUpInCompleted = () => {
       closeSignUpInModal();
+      onClosed();
+
       const requiresVerification = !!metaData?.verification;
 
       const authUserIsVerified =
