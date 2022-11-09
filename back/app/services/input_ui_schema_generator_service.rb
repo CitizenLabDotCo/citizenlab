@@ -14,7 +14,16 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   protected
 
   def default_options(field)
-    super.merge(isAdminField: admin_field?(field))
+    super.merge(isAdminField: admin_field?(field)).tap do |options|
+      @descriptions ||= {}
+      @descriptions[field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
+      options[:description] = @descriptions[field]
+    end
+  end
+
+  def description_option(field)
+    @descriptions ||= {}
+    @descriptions[field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
   end
 
   def generate_for_current_locale(fields)
