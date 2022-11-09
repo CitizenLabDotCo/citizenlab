@@ -553,8 +553,6 @@
   "app.components.form.submit": "Prześlij",
   "app.components.form.submitApiError": "Wystąpił problem przy przesyłaniu formularza. Sprawdź, czy nie wystąpiły błędy i spróbuj ponownie.",
   "app.components.pageForm.takenSlugError": "Ten url jest już zajęty. Proszę wybrać inny.",
-  "app.components.sendFeedback": "Twoja opinia o platformie",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Budżet jest za duży",
   "app.container.IdeaForm.budgetIsZeroError": "Proszę podać budżet większy niż 0",
   "app.container.IdeaForm.budgetLabel": "Budżet",

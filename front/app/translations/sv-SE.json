@@ -553,8 +553,6 @@
   "app.components.form.submit": "Skicka",
   "app.components.form.submitApiError": "Ett problem uppstod när formuläret skulle skickas. Kontrollera om det finns några fel och försök igen.",
   "app.components.pageForm.takenSlugError": "Denna slug är redan tagen. Välj en annan.",
-  "app.components.sendFeedback": "Din återkoppling om plattformen",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Den angivna budgeten är för stor",
   "app.container.IdeaForm.budgetIsZeroError": "Ange en budget som är större än 0",
   "app.container.IdeaForm.budgetLabel": "Budget",
