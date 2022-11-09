@@ -1,7 +1,7 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Dates, ProjectId, Resolution } from '../../typings';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
-import { Query } from '../../services/analyticsFacts'; // ? WHY ?
+import { Query } from '../../services/analyticsFacts';
 
 export interface StatCardStat {
   value: string;
@@ -53,7 +53,7 @@ export interface StatCardDataParser {
   (
     responseData,
     formatMessage: WrappedComponentProps['intl']['formatMessage'],
-    resolution
+    resolution?
   ): StatCardChartData;
 }
 

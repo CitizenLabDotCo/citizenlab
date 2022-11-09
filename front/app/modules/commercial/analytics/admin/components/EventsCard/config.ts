@@ -1,7 +1,6 @@
 import messages from './messages';
 
 // Utils
-import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
 import { formatCountValue } from '../../utils/parse';
 import { getDateFilter, getProjectFilter } from '../../utils/query';
 
@@ -22,32 +21,38 @@ export const eventsConfig: StatCardConfig = {
   // Create the data object
   dataParser: (
     responseData,
-    formatMessage: WrappedComponentProps['intl']['formatMessage'],
-    resolution
+    formatMessage: WrappedComponentProps['intl']['formatMessage']
   ): StatCardChartData => {
-    const [total, upcoming, completed] = responseData;
-    return {
+    // Upcoming is not available if 3 stat arrays are not returned
+    let total;
+    let upcoming;
+    let completed;
+    if (responseData.length === 3) {
+      [total, upcoming, completed] = responseData;
+    } else {
+      [total, completed] = responseData;
+    }
+
+    const cardData: StatCardChartData = {
       cardTitle: formatMessage(messages.events),
       fileName: formatMessage(messages.events).toLowerCase().replace(' ', '_'),
-      periodLabel: getTimePeriodTranslationByResolution(
-        formatMessage,
-        resolution
-      ),
-      stats: [
-        {
-          label: formatMessage(messages.totalEvents),
-          value: formatCountValue(total[0].count),
-        },
-        {
-          label: formatMessage(messages.upcoming),
-          value: formatCountValue(upcoming[0].count),
-        },
-        {
-          label: formatMessage(messages.completed),
-          value: formatCountValue(completed[0].count),
-        },
-      ],
+      stats: [],
     };
+    cardData.stats.push({
+      label: formatMessage(messages.totalEvents),
+      value: formatCountValue(total[0].count),
+    });
+    upcoming &&
+      cardData.stats.push({
+        label: formatMessage(messages.upcoming),
+        value: formatCountValue(upcoming[0].count),
+      });
+    cardData.stats.push({
+      label: formatMessage(messages.completed),
+      value: formatCountValue(completed[0].count),
+    });
+
+    return cardData;
   },
 
   // Analytics API query
@@ -55,56 +60,62 @@ export const eventsConfig: StatCardConfig = {
     projectId,
     startAtMoment,
     endAtMoment,
-    resolution,
   }: StatCardProps): Query => {
-    console.log(resolution); // Needs to work without resolution too
     const queryBase = (
       startMoment: Moment | null | undefined,
       endMoment: Moment | null,
-      inviteStatus: 'pending' | 'accepted' | null = null
+      dateType: 'start' | 'end' = 'start'
     ): QuerySchema => {
-      const dateDimension =
-        inviteStatus === 'accepted'
-          ? 'dimension_date_accepted'
-          : 'dimension_date_invited';
-
-      const inviteStatusFilter = () => {
-        if (inviteStatus === null) {
-          return {};
-        }
-        return { 'dimension_user.invite_status': inviteStatus };
-      };
-
-      // upcoming is dimension_date_start after today
-      // completed is dimension_date_end after today
-
-      return {
+      const querySchema: QuerySchema = {
         fact: 'event',
         aggregations: {
           all: 'count',
         },
-        filters: {
-          ...inviteStatusFilter,
-          ...getProjectFilter('dimension_project', projectId),
-          ...getDateFilter('dimension_date_start', startMoment, endMoment),
-        },
+        filters: {},
       };
+
+      // TODO: Need fresh eyes on this - cannot get filters working with current types
+      const dateFilter = getDateFilter(
+        `dimension_date_${dateType}`,
+        startMoment,
+        endMoment
+      );
+      const projectFilter = getProjectFilter('dimension_project', projectId);
+      console.log(dateFilter, projectFilter, dateType);
+      //
+      // console.log(startMoment, endMoment, dateType);
+      //
+      // (startMoment && endMoment) &&
+      //   querySchema.filters = { ...dateFilter };
+      //
+      //   console.log('date');
+      // //   querySchema.filters = {
+      // //   ...dateFilter,
+      // //   ...projectFilter,
+      // //   };
+      // }
+
+      return querySchema;
     };
 
     const queryTotal: QuerySchema = queryBase(startAtMoment, endAtMoment);
     const queryUpcoming: QuerySchema = queryBase(
       startAtMoment,
       endAtMoment,
-      'pending'
+      'start'
     );
     const queryCompleted: QuerySchema = queryBase(
       startAtMoment,
       endAtMoment,
-      'accepted'
+      'end'
     );
 
+    // Remove the upcoming query if there are start and end date filters
+    let returnQuery = [queryTotal, queryUpcoming, queryCompleted];
+    if (startAtMoment && endAtMoment)
+      returnQuery = [queryTotal, queryCompleted];
     return {
-      query: [queryTotal, queryUpcoming, queryCompleted],
+      query: returnQuery,
     };
   },
 };

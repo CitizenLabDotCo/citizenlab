@@ -28,9 +28,19 @@ export const invitationsConfig: StatCardConfig = {
     formatMessage: WrappedComponentProps['intl']['formatMessage'],
     resolution
   ): StatCardChartData => {
-    const [total, totalPeriod, pending, accepted, acceptedPeriod] =
-      responseData;
-    return {
+    // Pending stat is not available if 5 stat arrays are not returned
+    let total;
+    let totalPeriod;
+    let pending;
+    let accepted;
+    let acceptedPeriod;
+    if (responseData.length === 5) {
+      [total, totalPeriod, pending, accepted, acceptedPeriod] = responseData;
+    } else {
+      [total, totalPeriod, accepted, acceptedPeriod] = responseData;
+    }
+
+    const cardData: StatCardChartData = {
       cardTitle: formatMessage(messages.invitations),
       fileName: formatMessage(messages.invitations)
         .toLowerCase()
@@ -39,23 +49,25 @@ export const invitationsConfig: StatCardConfig = {
         formatMessage,
         resolution
       ),
-      stats: [
-        {
-          label: formatMessage(messages.totalInvites),
-          value: formatCountValue(total[0].count),
-          lastPeriod: formatCountValue(totalPeriod[0].count),
-        },
-        {
-          label: formatMessage(messages.pending),
-          value: formatCountValue(pending[0].count),
-        },
-        {
-          label: formatMessage(messages.accepted),
-          value: formatCountValue(accepted[0].count),
-          lastPeriod: formatCountValue(acceptedPeriod[0].count),
-        },
-      ],
+      stats: [],
     };
+    cardData.stats.push({
+      label: formatMessage(messages.totalInvites),
+      value: formatCountValue(total[0].count),
+      lastPeriod: formatCountValue(totalPeriod[0].count),
+    });
+    pending &&
+      cardData.stats.push({
+        label: formatMessage(messages.pending),
+        value: formatCountValue(pending[0].count),
+      });
+    cardData.stats.push({
+      label: formatMessage(messages.accepted),
+      value: formatCountValue(accepted[0].count),
+      lastPeriod: formatCountValue(acceptedPeriod[0].count),
+    });
+
+    return cardData;
   },
 
   // Analytics API query
@@ -119,6 +131,17 @@ export const invitationsConfig: StatCardConfig = {
       'accepted'
     );
 
+    // Don't return the pending query if there are start and end date filters
+    if (startAtMoment && endAtMoment) {
+      return {
+        query: [
+          queryTotal,
+          queryTotalLastPeriod,
+          queryAccepted,
+          queryAcceptedLastPeriod,
+        ],
+      };
+    }
     return {
       query: [
         queryTotal,
