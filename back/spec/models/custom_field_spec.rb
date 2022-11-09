@@ -69,6 +69,18 @@ class TestVisitor < FieldVisitorService
 end
 
 RSpec.describe CustomField, type: :model do
+  describe '#page?' do
+    it 'returns true when the input_type is "page"' do
+      page_field = described_class.new input_type: 'page'
+      expect(page_field.page?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.page?).to be false
+    end
+  end
+
   context 'hooks' do
     it 'generates a key on creation, if not specified' do
       cf = create(:custom_field, key: nil)
