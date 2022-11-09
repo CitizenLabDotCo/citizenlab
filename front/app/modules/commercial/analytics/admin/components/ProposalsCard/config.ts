@@ -19,6 +19,9 @@ import moment, { Moment } from 'moment';
 import { WrappedComponentProps } from 'react-intl';
 
 export const proposalsConfig: StatCardConfig = {
+  // Card title
+  title: messages.proposals,
+
   // Create the data object
   dataParser: (
     responseData,
@@ -45,6 +48,7 @@ export const proposalsConfig: StatCardConfig = {
           label: formatMessage(messages.successfulProposals),
           value: formatCountValue(successful[0].count),
           lastPeriod: formatCountValue(successfulPeriod[0].count),
+          toolTip: formatMessage(messages.successfulProposalsToolTip),
         },
       ],
     };
@@ -108,12 +112,5 @@ export const proposalsConfig: StatCardConfig = {
         querySuccessfulLastPeriod,
       ],
     };
-  },
-
-  // Function only used when there is no data
-  titleGetter: (
-    formatMessage: WrappedComponentProps['intl']['formatMessage']
-  ): string => {
-    return formatMessage(messages.proposals);
   },
 };

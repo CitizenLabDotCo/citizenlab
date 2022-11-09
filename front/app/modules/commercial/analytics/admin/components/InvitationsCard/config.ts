@@ -19,6 +19,9 @@ import moment, { Moment } from 'moment';
 import { WrappedComponentProps } from 'react-intl';
 
 export const invitationsConfig: StatCardConfig = {
+  // Card title
+  title: messages.invitations,
+
   // Create the data object
   dataParser: (
     responseData,
@@ -125,12 +128,5 @@ export const invitationsConfig: StatCardConfig = {
         queryAcceptedLastPeriod,
       ],
     };
-  },
-
-  // Function only used when there is no data
-  titleGetter: (
-    formatMessage: WrappedComponentProps['intl']['formatMessage']
-  ): string => {
-    return formatMessage(messages.invitations);
   },
 };

@@ -34,7 +34,7 @@ const StatCard = ({
 
   const { formatMessage } = useIntl();
   if (isNilOrError(data)) {
-    const cardTitle = config.titleGetter(formatMessage);
+    const cardTitle = formatMessage(config.title);
     return (
       <GraphCard title={cardTitle}>
         <EmptyState />
@@ -42,13 +42,13 @@ const StatCard = ({
     );
   }
 
-  const { chartData, xlsxData } = data;
+  const { cardData, xlsxData } = data;
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
   // TODO: Add tooltips
   const displayStats: ReactElement[] = [];
-  chartData.stats.map((stat, index, arr) => {
+  cardData.stats.map((stat, index, arr) => {
     displayStats.push(
       <Box
         pr="20px"
@@ -62,8 +62,9 @@ const StatCard = ({
           name={stat.label}
           value={stat.value}
           textAlign="center"
-          bottomLabel={stat.lastPeriod ? chartData.periodLabel : undefined}
-          bottomLabelValue={stat.lastPeriod ? stat.lastPeriod : undefined}
+          bottomLabel={stat.lastPeriod ? cardData.periodLabel : undefined}
+          bottomLabelValue={stat.lastPeriod}
+          tooltipContent={stat.toolTip}
         />
       </Box>
     );
@@ -71,9 +72,9 @@ const StatCard = ({
 
   return (
     <GraphCard
-      title={chartData.cardTitle}
+      title={cardData.cardTitle}
       exportMenu={{
-        name: chartData.fileName,
+        name: cardData.fileName,
         xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,

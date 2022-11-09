@@ -41,7 +41,7 @@ export default function useStatCard({
         const xlsxData = parseExcelData(chartData);
 
         setStatCard({
-          chartData,
+          cardData: chartData,
           xlsxData,
         });
       }
