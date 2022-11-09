@@ -5,7 +5,7 @@
 require 'rails_helper'
 
 describe IdFranceconnect::FranceconnectOmniauth do
-  describe '#can_be_merged?' do
+  describe '#can_merge?' do
     using RSpec::Parameterized::TableSyntax
 
     subject(:omniauth) { described_class.new }
@@ -34,6 +34,7 @@ describe IdFranceconnect::FranceconnectOmniauth do
       'Jean Philippe Arnaud' | 'Philippe' | nil | nil | true
       'Jean Philippe Arnaud' | 'Philipe'  | nil | nil | true
       'Jean Philippe Arnaud' | 'Philip'   | nil | nil | false
+      'Jean Philippe Arnaud' | 'Philipe John Smith' | nil | nil | true
     end
 
     with_them do
@@ -41,7 +42,7 @@ describe IdFranceconnect::FranceconnectOmniauth do
         user = User.new(first_name: user_first_name, last_name: user_last_name)
         user_attrs = { first_name: attrs_first_name, last_name: attrs_last_name }
 
-        expect(omniauth.can_be_merged?(user, user_attrs)).to eq(should_be_merged)
+        expect(omniauth.can_merge?(user, user_attrs)).to eq(should_be_merged)
       end
     end
   end

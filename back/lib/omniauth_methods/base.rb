@@ -24,8 +24,14 @@ module OmniauthMethods
       true
     end
 
-    def can_be_merged?(_user, _user_attrs)
+    def can_merge?(_user, _user_attrs)
       true
+    end
+
+    # It never runs if #can_merge? always returns true.
+    # So, override only if you need to override #can_merge?
+    def merging_error_code
+      raise NotImplementedError
     end
   end
 end

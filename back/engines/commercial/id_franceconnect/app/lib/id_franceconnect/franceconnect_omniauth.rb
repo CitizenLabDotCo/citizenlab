@@ -77,11 +77,15 @@ module IdFranceconnect
       %i[first_name last_name birthyear remote_avatar_url]
     end
 
-    def can_be_merged?(user, user_attrs)
+    def can_merge?(user, user_attrs)
       matcher = IdFranceconnect::AttributesMatcher
 
       matcher.match?(user.first_name, user_attrs[:first_name]) ||
         matcher.match?(user.last_name, user_attrs[:last_name])
+    end
+
+    def merging_error_code
+      'france_connect_merging_failed'
     end
 
     private
