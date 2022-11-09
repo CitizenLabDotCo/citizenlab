@@ -515,7 +515,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "All Groups",
   "app.containers.AdminPage.DashboardPage.allProjects": "Toate proiectele",
   "app.containers.AdminPage.DashboardPage.allTime": "All Time",
-  "app.containers.AdminPage.DashboardPage.allTopics": "Toate subiectele",
   "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatic location detection underway. Please wait until the processing is complete.",
   "app.containers.AdminPage.DashboardPage.comments": "Comentarii",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Comentarii",
