@@ -15,7 +15,7 @@ module IdOostendeRrn
       when 'qa'
         'wapaza-wijkprikkelsapi-01.azurewebsites.net'
       when 'production'
-        'wapaza-wijkprikkelsapi-01.azurewebsites.net'
+        'wapazp-wijkprikkelsapi-01.azurewebsites.net'
       else
         raise "Unsupported environment #{environment} for IdOostendeRrn::WijkBudgetApi.new"
       end
