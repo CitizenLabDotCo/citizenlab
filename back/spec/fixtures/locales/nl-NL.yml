@@ -5,6 +5,8 @@ nl:
     home:
       title: Home
   form_builder:
+    default_question_page:
+      title: 'Pagina 1'
     default_select_field:
       title: Standaardvraag
       option1: Eerste optie

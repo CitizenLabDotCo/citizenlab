@@ -18,6 +18,11 @@ module ParticipationMethod
 
     def create_default_form!
       form = CustomForm.create(participation_context: participation_context)
+      CustomField.create(
+        resource: form,
+        input_type: 'page',
+        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_question_page.title')
+      )
       field = CustomField.create(
         resource: form,
         input_type: 'select',
