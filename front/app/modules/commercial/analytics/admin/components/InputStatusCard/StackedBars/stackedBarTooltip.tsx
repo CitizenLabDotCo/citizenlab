@@ -9,11 +9,11 @@ import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 // import { colors } from 'utils/styleUtils';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { StackedBarsRow } from '../../hooks/usePostsFeedback/typings';
+import { StackedBarsRow } from '../../../hooks/usePostsFeedback/typings';
 
 export const stackedBarTooltip =
   (
