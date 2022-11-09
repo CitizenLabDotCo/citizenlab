@@ -1143,6 +1143,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.open": "Open",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses": "Open for responses",
   "app.containers.AdminPage.ProjectEdit.survey.optional": "Optional",
+  "app.containers.AdminPage.ProjectEdit.survey.page": "Page",
   "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Question description (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Question title",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Range",
