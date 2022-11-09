@@ -3,6 +3,7 @@ import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 
 // components
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import Outlet from 'components/Outlet';
 import ChartFilters from './ChartFilters';
@@ -22,6 +23,7 @@ import tracks from '../tracks';
 
 // i18n
 import messages from '../messages';
+import overviewMessages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -164,54 +166,61 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             onChangeResolution={this.handleChangeResolution}
           />
           <GraphsContainer>
-            <LineBarChart
-              graphUnit="users"
-              graphUnitMessageKey="users"
-              graphTitle={formatMessage(messages.usersByTimeTitle)}
-              startAt={startAt}
-              endAt={endAt}
-              xlsxEndpoint={usersByTimeXlsxEndpoint}
-              lineStream={usersByTimeCumulativeStream}
-              barStream={usersByTimeStream}
-              className="e2e-active-users-chart"
-              {...this.state}
-            />
-            <BarChartActiveUsersByTime
-              graphUnit="users"
-              graphUnitMessageKey="activeUsers"
-              graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
-              startAt={startAt}
-              endAt={endAt}
-              xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
-              stream={activeUsersByTimeStream}
-              infoMessage={infoMessage}
-              className="e2e-users-by-time-cumulative-chart"
-              {...this.state}
-            />
-            <LineBarChart
-              graphTitle={formatMessage(messages.inputs)}
-              graphUnit="ideas"
-              graphUnitMessageKey="ideas"
-              startAt={startAt}
-              endAt={endAt}
-              xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-              className="e2e-ideas-chart"
-              lineStream={ideasByTimeCumulativeStream}
-              barStream={ideasByTimeStream}
-              {...this.state}
-            />
-            <LineBarChart
-              graphTitle={formatMessage(messages.commentsByTimeTitle)}
-              graphUnit="comments"
-              graphUnitMessageKey="comments"
-              startAt={startAt}
-              endAt={endAt}
-              xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
-              className="e2e-comments-chart"
-              lineStream={commentsByTimeCumulativeStream}
-              barStream={commentsByTimeStream}
-              {...this.state}
-            />
+            <Box width="100%" display="flex">
+              <LineBarChart
+                graphUnit="users"
+                graphUnitMessageKey="users"
+                graphTitle={formatMessage(messages.usersByTimeTitle)}
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={usersByTimeXlsxEndpoint}
+                lineStream={usersByTimeCumulativeStream}
+                barStream={usersByTimeStream}
+                className="e2e-active-users-chart"
+                {...this.state}
+              />
+              <BarChartActiveUsersByTime
+                graphUnit="users"
+                graphUnitMessageKey="activeUsers"
+                graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+                stream={activeUsersByTimeStream}
+                infoMessage={infoMessage}
+                className="e2e-users-by-time-cumulative-chart"
+                {...this.state}
+              />
+            </Box>
+            <Title ml="12px" mt="40px" variant="h2" color="primary">
+              {formatMessage(overviewMessages.projectsAndParticipation)}
+            </Title>
+            <Box width="100%" display="flex">
+              <LineBarChart
+                graphTitle={formatMessage(messages.inputs)}
+                graphUnit="ideas"
+                graphUnitMessageKey="ideas"
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
+                className="e2e-ideas-chart"
+                lineStream={ideasByTimeCumulativeStream}
+                barStream={ideasByTimeStream}
+                {...this.state}
+              />
+              <LineBarChart
+                graphTitle={formatMessage(messages.commentsByTimeTitle)}
+                graphUnit="comments"
+                graphUnitMessageKey="comments"
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
+                className="e2e-comments-chart"
+                lineStream={commentsByTimeCumulativeStream}
+                barStream={commentsByTimeStream}
+                {...this.state}
+              />
+            </Box>
             <Column>
               <LineBarChartVotesByTime
                 className="fullWidth e2e-votes-chart"
@@ -229,13 +238,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
             <Column>
-              <Outlet
-                id="app.containers.Admin.dashboard.summary.inputStatus"
-                projectId={currentProjectFilter}
-                startAtMoment={startAtMoment}
-                endAtMoment={endAtMoment}
-                resolution={resolution}
-              />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
                 onResourceByTopicChange={this.onResourceByTopicChange}
@@ -245,6 +247,22 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
             </Column>
+
+            <Title ml="12px" mt="40px" variant="h2" color="primary">
+              {formatMessage(overviewMessages.management)}
+            </Title>
+
+            <Box width="100%">
+              <Box width="50%">
+                <Outlet
+                  id="app.containers.Admin.dashboard.summary.inputStatus"
+                  projectId={currentProjectFilter}
+                  startAtMoment={startAtMoment}
+                  endAtMoment={endAtMoment}
+                  resolution={resolution}
+                />
+              </Box>
+            </Box>
           </GraphsContainer>
         </>
       );
