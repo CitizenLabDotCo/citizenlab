@@ -20,7 +20,7 @@
     },
     "fact" : {
       "type" : "string",
-      "enum" : ["post", "participation", "visit", "registration", "email_delivery"]
+      "enum" : <%= Analytics::Query.fact_names.inspect %>
     },
     "filters" : {
       "type" : "object",

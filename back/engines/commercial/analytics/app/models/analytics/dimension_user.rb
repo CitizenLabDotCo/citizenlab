@@ -4,8 +4,9 @@
 #
 # Table name: analytics_dimension_users
 #
-#  id   :uuid             primary key
-#  role :text
+#  id            :uuid             primary key
+#  role          :text
+#  invite_status :string
 #
 module Analytics
   class DimensionUser < Analytics::ApplicationRecordView
