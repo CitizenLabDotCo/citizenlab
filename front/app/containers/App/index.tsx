@@ -80,7 +80,6 @@ import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 
 const Container = styled.div<{
   disableScroll?: boolean;
-  isModalOpen?: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -92,7 +91,6 @@ const Container = styled.div<{
   // be able to disable scrolling on the page behind the modal
   ${(props: any) =>
     props.disableScroll &&
-    props.isModalOpen &&
     `
       height: 100%;
       overflow: hidden;
@@ -527,8 +525,10 @@ class App extends PureComponent<Props, State> {
             >
               <GlobalStyle />
               <Container
-                disableScroll={fullscreenModalEnabled}
-                isModalOpen={signUpInModalOpened}
+                // when the fullscreen modal is enabled on a platform and
+                // is currently open, we want to disable scrolling on the
+                // app sitting below it (CL-1101)
+                disableScroll={fullscreenModalEnabled && signUpInModalOpened}
               >
                 <Meta />
                 <ErrorBoundary>
