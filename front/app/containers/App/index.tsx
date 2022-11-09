@@ -500,6 +500,9 @@ class App extends PureComponent<Props, State> {
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isDesktopUser = windowSize && isDesktop(windowSize);
+    const fullScreenModalEnabledAndOpen =
+      fullscreenModalEnabled && signUpInModalOpened;
+
     const theme = getTheme(tenant);
     const showFooter =
       !isAdminPage &&
@@ -597,7 +600,7 @@ class App extends PureComponent<Props, State> {
                     <PlatformFooter />
                   </Suspense>
                 )}
-                {showMobileNav && (
+                {showMobileNav && !fullScreenModalEnabledAndOpen && (
                   <MobileNavbar setRef={this.setMobileNavigationRef} />
                 )}
                 <ErrorBoundary>
