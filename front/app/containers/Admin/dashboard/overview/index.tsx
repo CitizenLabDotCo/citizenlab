@@ -239,6 +239,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 {...this.state}
               />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.events"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
             </Column>
             <Column>
               {!ideasByStatusChartHidden && (
