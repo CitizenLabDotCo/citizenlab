@@ -64,11 +64,7 @@ export const ModalContentContainer = styled.div<{
     padding: ${({ padding }) => padding || '20px'};
   `}
 
-  ${({ fullScreen }) =>
-    fullScreen &&
-    `
-      max-width: 580px;
-    `}
+  ${({ fullScreen }) => fullScreen && 'max-width: 580px;'}
 `;
 
 const StyledCloseIconButton = styled(CloseIconButton)`
@@ -100,6 +96,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   `}
 `;
 
+// copy of the styled FocusOn container below
 const StyledNonFocusableContainer = styled.div<{
   width: number | string;
   fullScreen?: boolean;
@@ -113,8 +110,8 @@ const StyledNonFocusableContainer = styled.div<{
   ${({ fullScreen }) =>
     fullScreen &&
     `
-    height: calc(100vh - 78px);
-    max-width: 100%;
+      height: calc(100vh - 78px);
+      max-width: 100%;
   `}
 `;
 
@@ -133,7 +130,7 @@ const StyledFocusOn = styled(FocusOn)<{
     `
       height: calc(100vh - 78px);
       max-width: 100%;
-    `}
+  `}
 `;
 
 const ModalContainer = styled(clickOutside)<{
@@ -160,22 +157,17 @@ const ModalContainer = styled(clickOutside)<{
   ${({ fullScreen }) =>
     fullScreen &&
     `
-    margin: 0;
-    align-items: center;
-    max-height: 100%;
-    border-radius: 0;
-    border-top: 2px solid ${colors.borderLight};
+      margin: 0;
+      align-items: center;
+      max-height: 100%;
+      border-radius: 0;
+      border-top: 2px solid ${colors.borderLight};
   `}
 
   /* tall desktops screens */
   @media (min-height: 1200px) {
     margin-top: 120px;
-
-    ${({ fullScreen }) =>
-      fullScreen &&
-      `
-        margin-top: 0;
-      `}
+    ${({ fullScreen }) => fullScreen && 'margin-top: 0;'}
   }
 
   ${media.phone`
@@ -215,13 +207,14 @@ const Overlay = styled.div<{ fullScreen?: boolean }>`
   overflow: hidden;
   z-index: 1000001;
   will-change: opacity, transform;
+  z-index: 30;
 
   ${({ fullScreen }) =>
     fullScreen &&
     `
       margin-top: 78px;
       padding: 0px;
-    `}
+  `}
 
   ${media.desktop`
     justify-content: center;
@@ -267,8 +260,9 @@ const Overlay = styled.div<{ fullScreen?: boolean }>`
         ${({ fullScreen }) =>
           fullScreen &&
           `
-        transition: opacity 0ms ${mobileEasing},
-        transform 0ms ${mobileEasing};`}
+            transition: opacity 0ms ${mobileEasing},
+            transform 0ms ${mobileEasing};
+        `}
       }
     }
   }
@@ -545,6 +539,8 @@ class Modal extends PureComponent<Props, State> {
     } else if (this.props.padding) {
       padding = this.props.padding;
     }
+
+    console.log({ fullScreen });
 
     if (modalPortalElement && width) {
       return createPortal(

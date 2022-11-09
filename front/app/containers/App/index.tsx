@@ -78,7 +78,6 @@ import { Locale } from 'typings';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 
-// disable scroll if the modal is fullscreen and currently open
 const Container = styled.div<{
   fullScreenModal?: boolean;
   isModalOpen?: boolean;
@@ -89,6 +88,8 @@ const Container = styled.div<{
   position: relative;
   background: #fff;
 
+  // if the platform has fullscreen login modal enabled and the modal is open,
+  // disable scrolling on the page behind the modal
   ${(props: any) =>
     props.fullScreenModal &&
     props.isModalOpen &&
@@ -514,6 +515,10 @@ class App extends PureComponent<Props, State> {
       !isIdeaEditPage &&
       !isInitiativeEditPage;
     const { pathname } = removeLocale(location.pathname);
+
+    // change this to check for FranceConnect login
+    const useFullScreenModal = true;
+
     return (
       <>
         {tenant && visible && (
@@ -523,7 +528,7 @@ class App extends PureComponent<Props, State> {
             >
               <GlobalStyle />
               <Container
-                fullScreenModal={true}
+                fullScreenModal={useFullScreenModal}
                 isModalOpen={signUpInModalOpened}
               >
                 <Meta />
