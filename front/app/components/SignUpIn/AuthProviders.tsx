@@ -148,7 +148,7 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
     return (
       <Container className={className}>
         {franceconnectLoginEnabled &&
-          (metaData.error?.code === 'france_connect_merging_failed' ? (
+          (metaData.error?.code === 'franceconnect_merging_failed' ? (
             <Error
               text={
                 <FormattedMessage

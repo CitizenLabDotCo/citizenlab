@@ -85,7 +85,7 @@ module IdFranceconnect
     end
 
     def merging_error_code
-      'france_connect_merging_failed'
+      'franceconnect_merging_failed'
     end
 
     private

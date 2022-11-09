@@ -17,7 +17,7 @@ import { openSignUpInModal } from './events';
 
 export type TSignUpInFlow = 'signup' | 'signin';
 
-export type TSignUpInError = 'general' | 'france_connect_merging_failed';
+export type TSignUpInError = 'general' | 'franceconnect_merging_failed';
 interface ISignUpInError {
   code: TSignUpInError;
 }

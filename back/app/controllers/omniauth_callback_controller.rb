@@ -55,9 +55,9 @@ class OmniauthCallbackController < ApplicationController
         #
         # `sso_pathname: '/'` - when sso_pathname is `/en/sign-in`, it's not redirected to /en/sign-in and the error message is not shown
         # On the FE, this hack can be tested accessing this URL
-        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2F&error_code=france_connect_merging_failed
+        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2F&error_code=franceconnect_merging_failed
         # Note, that the modal is not shown with this URL
-        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=france_connect_merging_failed
+        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
         #
         # Probaby, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
         failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
