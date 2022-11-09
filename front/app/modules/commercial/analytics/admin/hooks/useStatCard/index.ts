@@ -16,8 +16,8 @@ import {
 } from './typings';
 
 export default function useStatCard({
-  query,
-  parseChartData,
+  queryHandler,
+  dataParser,
   projectId,
   startAtMoment,
   endAtMoment,
@@ -29,7 +29,7 @@ export default function useStatCard({
   const { formatMessage } = useIntl();
   useEffect(() => {
     const { observable } = analyticsStream<SingleCountResponse>(
-      query({ projectId, startAtMoment, endAtMoment, resolution })
+      queryHandler({ projectId, startAtMoment, endAtMoment, resolution })
     );
     const subscription = observable.subscribe(
       (response: SingleCountResponse | NilOrError) => {
@@ -37,11 +37,7 @@ export default function useStatCard({
           setStatCard(response);
           return;
         }
-        const chartData = parseChartData(
-          response.data,
-          formatMessage,
-          resolution
-        );
+        const chartData = dataParser(response.data, formatMessage, resolution);
         const xlsxData = parseExcelData(chartData);
 
         setStatCard({
@@ -52,7 +48,7 @@ export default function useStatCard({
     );
 
     return () => subscription.unsubscribe();
-  }, [parseChartData, formatMessage, resolution]);
+  }, [dataParser, formatMessage, resolution]);
 
   return statCard;
 }

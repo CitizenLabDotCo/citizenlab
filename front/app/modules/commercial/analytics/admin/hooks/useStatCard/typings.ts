@@ -24,9 +24,19 @@ export interface StatCardData {
 
 export type StatCardProps = ProjectId & Dates & Resolution;
 
+export interface StatCardTemplateProps extends StatCardProps {
+  config: StatCardConfig;
+}
+
 export interface StatCardQueryParameters extends StatCardProps {
-  query: StatCardQuery;
-  parseChartData: ChartDataParser;
+  queryHandler: StatCardQueryHandler;
+  dataParser: StatCardDataParser;
+}
+
+export interface StatCardConfig {
+  queryHandler: StatCardQueryHandler;
+  dataParser: StatCardDataParser;
+  titleGetter: StatCardTitleGetter;
 }
 
 // Query response
@@ -39,7 +49,7 @@ export type SingleCountResponse = {
 };
 
 // Functions to be implemented on each StatCard
-export interface ChartDataParser {
+export interface StatCardDataParser {
   (
     responseData,
     formatMessage: WrappedComponentProps['intl']['formatMessage'],
@@ -47,6 +57,10 @@ export interface ChartDataParser {
   ): StatCardChartData;
 }
 
-export interface StatCardQuery {
+export interface StatCardQueryHandler {
   ({ projectId, startAtMoment, endAtMoment, resolution }: StatCardProps): Query;
+}
+
+export interface StatCardTitleGetter {
+  (formatMessage: WrappedComponentProps['intl']['formatMessage']): string;
 }

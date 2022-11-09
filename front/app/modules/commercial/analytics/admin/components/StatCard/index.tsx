@@ -13,29 +13,30 @@ import useStatCard from '../../hooks/useStatCard';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { StatCardQueryParameters } from '../../hooks/useStatCard/typings';
+import { StatCardTemplateProps } from '../../hooks/useStatCard/typings';
+import { useIntl } from 'utils/cl-intl';
 
 const StatCard = ({
-  query,
-  parseChartData,
+  config,
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
-}: StatCardQueryParameters) => {
+}: StatCardTemplateProps) => {
   const data = useStatCard({
-    query,
-    parseChartData,
+    queryHandler: config.queryHandler,
+    dataParser: config.dataParser,
     projectId,
     startAtMoment,
     endAtMoment,
     resolution,
   });
 
-  // TODO: How do we get the title if data object is error
+  const { formatMessage } = useIntl();
   if (isNilOrError(data)) {
+    const cardTitle = config.titleGetter(formatMessage);
     return (
-      <GraphCard title="title">
+      <GraphCard title={cardTitle}>
         <EmptyState />
       </GraphCard>
     );
@@ -45,16 +46,24 @@ const StatCard = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
+  // TODO: Add tooltips
   const displayStats: ReactElement[] = [];
-  chartData.stats.forEach((stat) => {
+  chartData.stats.map((stat, index, arr) => {
     displayStats.push(
-      // TODO: Sort out the right border here
-      <Box pr="20px" width="100%" borderRight={`1px solid ${colors.divider}`}>
+      <Box
+        pr="20px"
+        pl="20px"
+        width="100%"
+        borderRight={
+          index !== arr.length - 1 ? `1px solid ${colors.divider}` : '0'
+        }
+      >
         <Statistic
           name={stat.label}
           value={stat.value}
-          bottomLabel={chartData.periodLabel}
-          bottomLabelValue={stat.lastPeriod}
+          textAlign="center"
+          bottomLabel={stat.lastPeriod ? chartData.periodLabel : undefined}
+          bottomLabelValue={stat.lastPeriod ? stat.lastPeriod : undefined}
         />
       </Box>
     );
