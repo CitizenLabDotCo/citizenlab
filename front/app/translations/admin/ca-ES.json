@@ -1661,7 +1661,6 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Qui pot veure aquest projecte?",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "Aneu al Gestor d'entrades",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "Entrades",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate": "Taxa de conversió",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Noves inscripcions",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Inscripcions",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total d'inscripcions",
