@@ -205,8 +205,8 @@ const Overlay = styled.div<{ fullScreen?: boolean }>`
   padding-left: 30px;
   padding-right: 30px;
   overflow: hidden;
-  z-index: 1000001;
   will-change: opacity, transform;
+  z-index: ${({ fullScreen }) => (fullScreen ? '400' : '1000001')};
 
   ${({ fullScreen }) =>
     fullScreen &&
@@ -538,8 +538,6 @@ class Modal extends PureComponent<Props, State> {
     } else if (this.props.padding) {
       padding = this.props.padding;
     }
-
-    console.log({ fullScreen });
 
     if (modalPortalElement && width) {
       return createPortal(
