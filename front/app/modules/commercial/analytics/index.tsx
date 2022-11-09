@@ -1,8 +1,11 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const Tab = React.lazy(() => import('./admin/components/Tab'));
 
-const InputStatus = React.lazy(() => import('./admin/containers/InputStatus'));
+const InputStatusCard = React.lazy(
+  () => import('./admin/components/InputStatusCard')
+);
+
+const Tab = React.lazy(() => import('./admin/components/Tab'));
 const VisitorsContainer = React.lazy(
   () => import('./admin/containers/Visitors')
 );
@@ -17,7 +20,7 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.dashboard.summary.inputStatus': InputStatus,
+    'app.containers.Admin.dashboard.summary.inputStatus': InputStatusCard,
     'app.containers.Admin.dashboards.tabs': Tab,
   },
 };

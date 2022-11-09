@@ -182,7 +182,6 @@ export interface OutletsPropertyMap {
     startAtMoment: Moment | null | undefined;
     endAtMoment: Moment | null | undefined;
     resolution: IResolution;
-    onMount: () => void;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
