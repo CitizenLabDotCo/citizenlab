@@ -11,6 +11,7 @@ import { TSignUpStep } from 'components/SignUpIn/SignUp';
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -52,8 +53,9 @@ const SignUpInModal = memo<Props>(
 
     const opened = !!metaData?.inModal;
 
-    // testing
-    const useFullScreen = true;
+    // full screen login modal should be enabled on all platforms
+    // with franceconnect_login enabled (CL-1101)
+    const useFullScreen = useFeatureFlag({ name: 'franceconnect_login' });
 
     const hasParticipationConditions =
       !isNilOrError(participationConditions) &&

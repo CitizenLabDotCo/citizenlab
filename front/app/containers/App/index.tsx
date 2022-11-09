@@ -125,6 +125,7 @@ interface InputProps {}
 
 interface DataProps {
   redirectsEnabled: GetFeatureFlagChildProps;
+  fullscreenModalEnabled: GetFeatureFlagChildProps;
   windowSize: GetWindowSizeChildProps;
 }
 
@@ -479,7 +480,8 @@ class App extends PureComponent<Props, State> {
   };
 
   render() {
-    const { location, children, windowSize } = this.props;
+    const { location, children, windowSize, fullscreenModalEnabled } =
+      this.props;
     const {
       previousPathname,
       tenant,
@@ -516,9 +518,6 @@ class App extends PureComponent<Props, State> {
       !isInitiativeEditPage;
     const { pathname } = removeLocale(location.pathname);
 
-    // change this to check for FranceConnect login
-    const useFullScreenModal = true;
-
     return (
       <>
         {tenant && visible && (
@@ -528,7 +527,7 @@ class App extends PureComponent<Props, State> {
             >
               <GlobalStyle />
               <Container
-                fullScreenModal={useFullScreenModal}
+                fullScreenModal={fullscreenModalEnabled}
                 isModalOpen={signUpInModalOpened}
               >
                 <Meta />
@@ -615,6 +614,8 @@ class App extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
+  // CL-1101, FranceConnect platforms have full screen login experience
+  fullscreenModalEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 const AppWithHoC = withRouter(App);
