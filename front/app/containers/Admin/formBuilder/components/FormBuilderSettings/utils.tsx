@@ -23,7 +23,7 @@ export function getAdditionalSettings(
         />
       );
     case 'page':
-      return <PageSettings field={field} />;
+      return PageSettings(field);
     case 'linear_scale':
       return (
         <LinearScaleSettings

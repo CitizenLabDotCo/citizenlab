@@ -57,7 +57,7 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           <QuillMultilocWithLocaleSwitcherComponent
             {...field}
             {...rest}
-            id={name}
+            id={name.includes('.') ? 'quill-multiloc-editor' : name}
             valueMultiloc={{ ...defaultValue, ...field.value }}
           />
         )}

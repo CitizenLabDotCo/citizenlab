@@ -43,6 +43,7 @@ import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import validateElementTitle from 'utils/yup/validateElementTitle';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -82,7 +83,7 @@ export const FormEdit = ({
   const schema = object().shape({
     customFields: array().of(
       object().shape({
-        title_multiloc: validateAtLeastOneLocale(
+        title_multiloc: validateElementTitle(
           formatMessage(messages.emptyTitleError)
         ),
         description_multiloc: object(),
