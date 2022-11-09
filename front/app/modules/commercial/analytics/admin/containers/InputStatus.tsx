@@ -5,7 +5,7 @@ import { Moment } from 'moment';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import PostFeedbackCard from '../components/PostFeedbackCard';
+import InputStatusCard from '../components/InputStatusCard';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -28,5 +28,5 @@ export default ({ onMount, ...otherProps }: Props) => {
 
   if (!analyticsActive) return null;
 
-  return <PostFeedbackCard {...otherProps} />;
+  return <InputStatusCard {...otherProps} />;
 };

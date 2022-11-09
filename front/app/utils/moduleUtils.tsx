@@ -177,7 +177,7 @@ export interface OutletsPropertyMap {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
-  'app.containers.Admin.dashboard.summary.postStatus': {
+  'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
     endAtMoment: Moment | null | undefined;
