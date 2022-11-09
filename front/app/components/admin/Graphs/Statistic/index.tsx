@@ -20,56 +20,58 @@ const Statistic = ({
   tooltipContent,
   textAlign = 'left',
 }: Props) => (
-  <Box>
-    <Text textAlign={textAlign} m="0">
-      <Box>
-        <Text color="primary" fontSize="s" mt="0px" mb="0px" display="inline">
-          {name}
+  <Box
+    {...(textAlign === 'left'
+      ? {}
+      : { display: 'flex', flexDirection: 'column', alignItems: 'center' })}
+  >
+    <Box>
+      <Text color="primary" fontSize="s" mt="0px" mb="0px" display="inline">
+        {name}
+      </Text>
+
+      {tooltipContent && (
+        <Box ml="8px" display="inline">
+          <IconTooltip
+            content={tooltipContent}
+            theme="light"
+            transform="translate(0,-2)"
+            display="inline"
+          />
+        </Box>
+      )}
+    </Box>
+
+    <Text color="textPrimary" fontSize="xl" mt="2px" mb="0px">
+      {value}
+    </Text>
+    {bottomLabel && (
+      <Box mt="3px">
+        <Text
+          color="textSecondary"
+          fontSize="s"
+          mt="0px"
+          mb="0px"
+          display="inline"
+        >
+          {bottomLabel}
         </Text>
 
-        {tooltipContent && (
-          <Box ml="8px" display="inline">
-            <IconTooltip
-              content={tooltipContent}
-              theme="light"
-              transform="translate(0,-2)"
-              display="inline"
-            />
-          </Box>
-        )}
-      </Box>
-
-      <Text color="textPrimary" fontSize="xl" mt="2px" mb="0px">
-        {value}
-      </Text>
-      {bottomLabel && (
-        <Box mt="3px">
+        {bottomLabelValue && (
           <Text
             color="textSecondary"
+            display="inline"
+            fontWeight="bold"
             fontSize="s"
             mt="0px"
             mb="0px"
-            display="inline"
+            ml="4px"
           >
-            {bottomLabel}
+            {bottomLabelValue}
           </Text>
-
-          {bottomLabelValue && (
-            <Text
-              color="textSecondary"
-              display="inline"
-              fontWeight="bold"
-              fontSize="s"
-              mt="0px"
-              mb="0px"
-              ml="4px"
-            >
-              {bottomLabelValue}
-            </Text>
-          )}
-        </Box>
-      )}
-    </Text>
+        )}
+      </Box>
+    )}
   </Box>
 );
 
