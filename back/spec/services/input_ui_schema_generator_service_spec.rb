@@ -310,15 +310,13 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
     end
 
-    context 'for a continuous native survey project' do
+    context 'for a continuous native survey project without pages' do
       let(:project) { create(:continuous_native_survey_project) }
       let(:form) { create :custom_form, participation_context: project }
-      # Create a page to describe that it is not included in the schema.
-      let!(:page_field) { create(:custom_field_page, resource: form) }
       let!(:field) { create :custom_field, resource: form }
 
       it 'has an empty extra category label, so that the category label is suppressed in the UI' do
-        en_ui_schema = generator.generate_for([page_field, field])['en']
+        en_ui_schema = generator.generate_for([field])['en']
         expect(en_ui_schema).to eq({
           type: 'Categorization',
           options: {
@@ -340,6 +338,114 @@ RSpec.describe InputUiSchemaGeneratorService do
               }
             }]
           }]
+        })
+      end
+    end
+
+    context 'for a continuous native survey project with pages' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create :custom_form, participation_context: project }
+      let!(:page1) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'about_you',
+          title_multiloc: { 'en' => 'About you' },
+          description_multiloc: { 'en' => 'Please fill in some <strong>personal details</strong>.' }
+        )
+      end
+      let!(:field_in_page1) do
+        create(
+          :custom_field,
+          resource: form,
+          key: 'what_is_your_age',
+          title_multiloc: { 'en' => 'What is your age?' },
+          description_multiloc: { 'en' => 'Enter a number.' }
+        )
+      end
+      let!(:page2) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'about_your_cycling_habits',
+          title_multiloc: { 'en' => 'About your cycling habits' },
+          description_multiloc: { 'en' => 'Please indicate how you use <strong>a bike</strong>.' }
+        )
+      end
+      let!(:field_in_page2) do
+        create(
+          :custom_field,
+          resource: form,
+          key: 'do_you_own_a_bike',
+          title_multiloc: { 'en' => 'Do you own a bike?' },
+          description_multiloc: { 'en' => 'Enter Yes or No.' }
+        )
+      end
+      let!(:page3) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'this_is_the_end_of_the_survey',
+          title_multiloc: { 'en' => 'This is the end of the survey' },
+          description_multiloc: { 'en' => 'Thank you for participating 🚀' }
+        )
+      end
+
+      it 'has a category for each page' do
+        en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
+        expect(en_ui_schema).to eq({
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: 'idea'
+          },
+          elements: [
+            {
+              type: 'Page',
+              options: {
+                id: 'page_1',
+                title: 'About you',
+                description: 'Please fill in some <strong>personal details</strong>.'
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page1.key}",
+                label: 'What is your age?',
+                options: {
+                  description: 'Enter a number.',
+                  isAdminField: false,
+                  transform: 'trim_on_blur'
+                }
+              }]
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'page_2',
+                title: 'About your cycling habits',
+                description: 'Please indicate how you use <strong>a bike</strong>.'
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page2.key}",
+                label: 'Do you own a bike?',
+                options: {
+                  description: 'Enter Yes or No.',
+                  isAdminField: false,
+                  transform: 'trim_on_blur'
+                }
+              }]
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'page_3',
+                title: 'This is the end of the survey',
+                description: 'Thank you for participating 🚀'
+              },
+              elements: []
+            }
+          ]
         })
       end
     end
@@ -559,6 +665,29 @@ RSpec.describe InputUiSchemaGeneratorService do
           ]
         })
       end
+    end
+  end
+
+  describe '#visit_page' do
+    let(:field) do
+      create(
+        :custom_field,
+        input_type: 'page',
+        key: field_key,
+        title_multiloc: { 'en' => 'Page field title' },
+        description_multiloc: { 'en' => 'Page field description' }
+      )
+    end
+
+    it 'returns the schema for the given field, without id, and without elements' do
+      expect(generator.visit_page(field)).to eq({
+        type: 'Page',
+        options: {
+          title: 'Page field title',
+          description: 'Page field description'
+        },
+        elements: []
+      })
     end
   end
 end

@@ -89,6 +89,10 @@ class CustomField < ApplicationRecord
     key == 'domicile' && code == 'domicile'
   end
 
+  def page?
+    input_type == 'page'
+  end
+
   def accept(visitor)
     case input_type
     when 'text'
