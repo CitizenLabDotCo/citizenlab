@@ -10,7 +10,7 @@ export interface Query {
 
 export interface QuerySchema {
   fields?: string | string[];
-  fact: 'post' | 'participation' | 'visit' | 'registration';
+  fact: 'post' | 'participation' | 'visit' | 'registration' | 'email_delivery';
   filters?: {
     [k: string]:
       | string
