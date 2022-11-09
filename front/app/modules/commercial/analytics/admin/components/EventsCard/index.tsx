@@ -2,9 +2,9 @@ import React from 'react';
 
 import { StatCardProps } from '../../hooks/useStatCard/typings';
 import StatCard from '../StatCard';
-import { invitationsConfig } from './config';
+import { eventsConfig } from './config';
 
-const InvitationsCard = ({
+const EventsCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
@@ -12,7 +12,7 @@ const InvitationsCard = ({
 }: StatCardProps) => {
   return (
     <StatCard
-      config={invitationsConfig}
+      config={eventsConfig}
       projectId={projectId}
       startAtMoment={startAtMoment}
       endAtMoment={endAtMoment}
@@ -21,4 +21,4 @@ const InvitationsCard = ({
   );
 };
 
-export default InvitationsCard;
+export default EventsCard;

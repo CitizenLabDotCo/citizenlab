@@ -10,11 +10,9 @@ const ProposalsCard = ({
   endAtMoment,
   resolution,
 }: StatCardProps) => {
-  const config = proposalsConfig;
-
   return (
     <StatCard
-      config={config}
+      config={proposalsConfig}
       projectId={projectId}
       startAtMoment={startAtMoment}
       endAtMoment={endAtMoment}

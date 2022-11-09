@@ -1,9 +1,9 @@
 import React from 'react';
 
 // components
-import InvitationsCard from '../components/InvitationsCard';
 import { StatCardProps } from '../hooks/useStatCard/typings';
+import EventsCard from '../components/EventsCard';
 
 export default ({ ...props }: StatCardProps) => {
-  return <InvitationsCard {...props} />;
+  return <EventsCard {...props} />;
 };

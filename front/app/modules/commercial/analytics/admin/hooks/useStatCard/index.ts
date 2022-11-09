@@ -48,7 +48,15 @@ export default function useStatCard({
     );
 
     return () => subscription.unsubscribe();
-  }, [dataParser, formatMessage, resolution]);
+  }, [
+    dataParser,
+    queryHandler,
+    projectId,
+    startAtMoment,
+    endAtMoment,
+    formatMessage,
+    resolution,
+  ]);
 
   return statCard;
 }

@@ -9,9 +9,8 @@ import { StatCardProps } from '../hooks/useStatCard/typings';
 
 export default ({ ...props }: StatCardProps) => {
   const proposalsActive = useFeatureFlag({ name: 'initiatives' });
-  const analyticsActive = useFeatureFlag({ name: 'analytics' });
 
-  if (!proposalsActive || !analyticsActive) return null;
+  if (!proposalsActive) return null;
 
   return <ProposalsCard {...props} />;
 };
