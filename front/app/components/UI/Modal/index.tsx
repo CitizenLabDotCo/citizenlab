@@ -207,7 +207,6 @@ const Overlay = styled.div<{ fullScreen?: boolean }>`
   overflow: hidden;
   z-index: 1000001;
   will-change: opacity, transform;
-  z-index: 30;
 
   ${({ fullScreen }) =>
     fullScreen &&
