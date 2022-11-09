@@ -4,8 +4,7 @@ import moment, { Moment } from 'moment';
 
 // components
 import ChartFilters from './ChartFilters';
-import { GraphsContainer, ControlBar } from 'components/admin/GraphWrappers';
-import TimeControl from '../components/TimeControl';
+import { GraphsContainer } from 'components/admin/GraphWrappers';
 import Outlet from 'components/Outlet';
 
 // tracking
@@ -63,16 +62,11 @@ export class UsersDashboard extends PureComponent<Props & Tracks, State> {
 
     return (
       <>
-        <ControlBar>
-          <TimeControl
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            onChange={this.handleChangeTimeRange}
-          />
-        </ControlBar>
-
         <ChartFilters
+          startAtMoment={startAtMoment}
+          endAtMoment={endAtMoment}
           currentGroupFilter={currentGroupFilter}
+          onChangeTimeRange={this.handleChangeTimeRange}
           onGroupFilter={this.handleOnGroupFilter}
         />
 
