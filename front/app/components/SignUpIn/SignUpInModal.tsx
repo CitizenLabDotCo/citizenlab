@@ -11,7 +11,6 @@ import { TSignUpStep } from 'components/SignUpIn/SignUp';
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -34,10 +33,17 @@ interface Props {
   onMounted?: () => void;
   onDeclineInvitation?: () => void;
   onOpened?: (opened: boolean) => void;
+  fullScreenModal?: boolean;
 }
 
 const SignUpInModal = memo<Props>(
-  ({ className, onMounted, onDeclineInvitation, onOpened }) => {
+  ({
+    className,
+    onMounted,
+    onDeclineInvitation,
+    onOpened,
+    fullScreenModal,
+  }) => {
     const isMounted = useIsMounted();
     const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
       undefined
@@ -52,10 +58,6 @@ const SignUpInModal = memo<Props>(
     );
 
     const opened = !!metaData?.inModal;
-
-    // full screen login modal should be enabled on all platforms
-    // with franceconnect_login enabled (CL-1101)
-    const useFullScreen = useFeatureFlag({ name: 'franceconnect_login' });
 
     const hasParticipationConditions =
       !isNilOrError(participationConditions) &&
@@ -134,7 +136,7 @@ const SignUpInModal = memo<Props>(
 
     return (
       <Modal
-        fullScreen={useFullScreen}
+        fullScreen={fullScreenModal}
         width={modalWidth}
         padding="0px"
         opened={opened}
@@ -146,7 +148,7 @@ const SignUpInModal = memo<Props>(
             <SignUpIn
               metaData={metaData}
               onSignUpInCompleted={onSignUpInCompleted}
-              fullScreen={useFullScreen}
+              fullScreen={fullScreenModal}
             />
           )}
         </Container>

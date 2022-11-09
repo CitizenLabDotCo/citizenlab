@@ -79,7 +79,7 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 
 const Container = styled.div<{
-  fullScreenModal?: boolean;
+  disableScroll?: boolean;
   isModalOpen?: boolean;
 }>`
   display: flex;
@@ -88,10 +88,10 @@ const Container = styled.div<{
   position: relative;
   background: #fff;
 
-  // if the platform has fullscreen login modal enabled and the modal is open,
-  // disable scrolling on the page behind the modal
+  // for instances with e.g. a fullscreen modal, we want to
+  // be able to disable scrolling on the page behind the modal
   ${(props: any) =>
-    props.fullScreenModal &&
+    props.disableScroll &&
     props.isModalOpen &&
     `
       height: 100%;
@@ -527,7 +527,7 @@ class App extends PureComponent<Props, State> {
             >
               <GlobalStyle />
               <Container
-                fullScreenModal={fullscreenModalEnabled}
+                disableScroll={fullscreenModalEnabled}
                 isModalOpen={signUpInModalOpened}
               >
                 <Meta />
@@ -557,6 +557,7 @@ class App extends PureComponent<Props, State> {
                     onMounted={this.handleSignUpInModalMounted}
                     onOpened={this.updateModalOpened}
                     onDeclineInvitation={this.handleDeclineInvitation}
+                    fullScreenModal={fullscreenModalEnabled}
                   />
                 </ErrorBoundary>
                 <Outlet
