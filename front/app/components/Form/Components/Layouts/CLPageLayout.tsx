@@ -42,6 +42,25 @@ const FormSectionTitleStyled = styled.h2`
   margin-bottom: 30px;
 `;
 
+const StyledBox = styled(Box)`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  width: 100%;
+
+  ${media.phone`
+    flex-direction: column;
+  `}
+`;
+
+const PreviousButton = styled(Button)`
+  margin-right: 16px;
+
+  ${media.phone`
+    margin-right: 0;
+  `}
+`;
+
 export interface PageType extends Layout {
   type: 'Page';
   /**
@@ -78,6 +97,8 @@ const CLPageLayout = memo(
       setShowSubmitButton(false);
     }, []);
 
+    const showSubmit = currentStep === uiCategories.length - 1;
+
     return (
       <Box
         width="100%"
@@ -108,15 +129,10 @@ const CLPageLayout = memo(
             )
           );
         })}
-        <Box
-          display="flex"
-          width="100%"
-          flexDirection="column"
-          justifyContent="center"
-        >
+        <StyledBox>
           <Button
             onClick={() => {
-              if (currentStep === uiCategories.length - 1) {
+              if (showSubmit) {
                 onSubmit();
               } else {
                 setCurrentStep(currentStep + 1);
@@ -125,25 +141,28 @@ const CLPageLayout = memo(
             mb="20px"
             icon="chevron-right"
             iconPos="right"
+            buttonStyle={showSubmit ? 'success' : 'primary'}
+            width="100%"
           >
             <FormattedMessage
-              {...(currentStep === uiCategories.length - 1
-                ? messages.submitSurvey
-                : messages.next)}
+              {...(showSubmit ? messages.submitSurvey : messages.next)}
             />
           </Button>
           {currentStep !== 0 && (
-            <Button
+            <PreviousButton
               onClick={() => {
                 setCurrentStep(currentStep - 1);
               }}
               mb="20px"
               icon="chevron-left"
+              bgColor="white"
+              buttonStyle="secondary-outlined"
+              width="100%"
             >
               <FormattedMessage {...messages.previous} />
-            </Button>
+            </PreviousButton>
           )}
-        </Box>
+        </StyledBox>
       </Box>
     );
   }
