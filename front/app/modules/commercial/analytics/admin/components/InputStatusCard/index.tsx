@@ -28,7 +28,7 @@ import { isNilOrError } from 'utils/helperUtils';
 interface Props {
   projectId: string | undefined;
   startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
+  endAtMoment: Moment | null;
   resolution: IResolution;
 }
 
