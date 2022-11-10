@@ -23,7 +23,6 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
