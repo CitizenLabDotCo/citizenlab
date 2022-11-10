@@ -147,5 +147,30 @@ describe MultiTenancy::Templates::Serializer do
         expect(new_survey_phase.ideas.first.custom_field_values[new_field2.key]).to eq 'My value'
       end
     end
+
+    it 'successfully exports custom field text images' do
+      description_multiloc = {
+        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+      }
+      field = create :custom_field, :for_custom_form, description_multiloc: description_multiloc
+      field.update! description_multiloc: TextImageService.new.swap_data_images(field, :description_multiloc)
+
+      serializer = described_class.new Tenant.current
+      template = serializer.run
+
+      expect(template['models']['custom_field'].size).to eq 1
+      expect(template['models']['custom_field'].first).to match hash_including(
+        'key' => field.key,
+        'input_type' => field.input_type,
+        'title_multiloc' => field.title_multiloc,
+        'description_multiloc' => field.description_multiloc,
+        'text_images_attributes' => [
+          hash_including(
+            'imageable_field' => 'description_multiloc',
+            'remote_image_url' => match(%r{/uploads/#{uuid_regex}/text_image/image/#{uuid_regex}/#{uuid_regex}.gif})
+          )
+        ]
+      )
+    end
   end
 end
