@@ -117,6 +117,7 @@ const Form = memo(
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
+    const [showSubmitButton, setShowSubmitButton] = useState(true);
     const safeApiErrorMessages = useCallback(
       () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
       [getApiErrorMessage]
@@ -246,6 +247,8 @@ const Form = memo(
                 showAllErrors,
                 inputId,
                 getApiErrorMessage: safeApiErrorMessages(),
+                onSubmit: handleSubmit,
+                setShowSubmitButton,
               }}
             >
               <JsonForms
@@ -266,18 +269,22 @@ const Form = memo(
             </FormContext.Provider>
           </APIErrorsContext.Provider>
         </Box>
-        {layoutType === 'fullpage' ? (
-          <ButtonBar
-            onSubmit={handleSubmit}
-            apiErrors={Boolean(
-              apiErrors?.values?.length && apiErrors?.values?.length > 0
+        {showSubmitButton && (
+          <>
+            {layoutType === 'fullpage' ? (
+              <ButtonBar
+                onSubmit={handleSubmit}
+                apiErrors={Boolean(
+                  apiErrors?.values?.length && apiErrors?.values?.length > 0
+                )}
+                processing={loading}
+              />
+            ) : submitOnEvent ? (
+              <InvisibleSubmitButton onClick={handleSubmit} />
+            ) : (
+              <Button onClick={handleSubmit}>Button</Button>
             )}
-            processing={loading}
-          />
-        ) : submitOnEvent ? (
-          <InvisibleSubmitButton onClick={handleSubmit} />
-        ) : (
-          <Button onClick={handleSubmit}>Button</Button>
+          </>
         )}
       </Box>
     );

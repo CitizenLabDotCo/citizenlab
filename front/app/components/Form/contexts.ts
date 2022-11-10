@@ -8,8 +8,12 @@ export const FormContext = createContext<{
   showAllErrors: boolean;
   inputId: string | undefined;
   getApiErrorMessage: ApiErrorGetter;
+  onSubmit: () => void;
+  setShowSubmitButton: (showSubmitButton: boolean) => void;
 }>({
   showAllErrors: false,
   getApiErrorMessage: () => undefined,
+  onSubmit: async () => undefined,
+  setShowSubmitButton: () => undefined,
   inputId: undefined,
 });

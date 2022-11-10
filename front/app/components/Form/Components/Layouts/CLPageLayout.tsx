@@ -1,7 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect, useContext } from 'react';
 import {
   and,
-  //   Categorization,
   isCategorization,
   Layout,
   LayoutProps,
@@ -13,9 +12,13 @@ import {
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
+import Button from 'components/UI/Button';
 import styled from 'styled-components';
 import { FormElement } from 'components/IdeaForm';
 import isEmpty from 'lodash/isEmpty';
+import { FormContext } from 'components/Form/contexts';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -67,6 +70,14 @@ export interface PageCategorization extends UISchemaElement {
 const CLPageLayout = memo(
   // here we can cast types because the tester made sure we only get categorization layouts
   ({ schema, uischema, path, renderers, cells, enabled }: LayoutProps) => {
+    const { setShowSubmitButton, onSubmit } = useContext(FormContext);
+    const [currentStep, setCurrentStep] = useState<number>(0);
+    const uiCategories = (uischema as PageCategorization).elements;
+
+    useEffect(() => {
+      setShowSubmitButton(false);
+    }, []);
+
     return (
       <Box
         width="100%"
@@ -76,23 +87,63 @@ const CLPageLayout = memo(
         padding="0 20px 30px 20px"
         margin="auto"
       >
-        {(uischema as PageCategorization).elements.map((e, index) => (
-          <StyledFormSection key={index}>
-            <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
-            {e.elements.map((e, index) => (
-              <FormElement key={index}>
-                <JsonFormsDispatch
-                  renderers={renderers}
-                  cells={cells}
-                  uischema={e}
-                  schema={schema}
-                  path={path}
-                  enabled={enabled}
-                />
-              </FormElement>
-            ))}
-          </StyledFormSection>
-        ))}
+        {uiCategories.map((e, index) => {
+          return (
+            currentStep === index && (
+              <StyledFormSection key={index}>
+                <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
+                {e.elements.map((e, index) => (
+                  <FormElement key={index}>
+                    <JsonFormsDispatch
+                      renderers={renderers}
+                      cells={cells}
+                      uischema={e}
+                      schema={schema}
+                      path={path}
+                      enabled={enabled}
+                    />
+                  </FormElement>
+                ))}
+              </StyledFormSection>
+            )
+          );
+        })}
+        <Box
+          display="flex"
+          width="100%"
+          flexDirection="column"
+          justifyContent="center"
+        >
+          <Button
+            onClick={() => {
+              if (currentStep === uiCategories.length - 1) {
+                onSubmit();
+              } else {
+                setCurrentStep(currentStep + 1);
+              }
+            }}
+            mb="20px"
+            icon="chevron-right"
+            iconPos="right"
+          >
+            <FormattedMessage
+              {...(currentStep === uiCategories.length - 1
+                ? messages.submitSurvey
+                : messages.next)}
+            />
+          </Button>
+          {currentStep !== 0 && (
+            <Button
+              onClick={() => {
+                setCurrentStep(currentStep - 1);
+              }}
+              mb="20px"
+              icon="chevron-left"
+            >
+              <FormattedMessage {...messages.previous} />
+            </Button>
+          )}
+        </Box>
       </Box>
     );
   }
@@ -101,7 +152,7 @@ const CLPageLayout = memo(
 export default withJsonFormsLayoutProps(CLPageLayout);
 
 export const clPageTester: RankedTester = rankWith(
-  1,
+  5,
   and(uiTypeIs('Categorization'), (uischema) => {
     const hasCategory = (element: PageCategorization): boolean => {
       if (isEmpty(element.elements)) {

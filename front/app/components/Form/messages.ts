@@ -31,4 +31,17 @@ export default defineMessages({
     defaultMessage:
       "You can't edit this field because it contains verified informtion",
   },
+  previous: {
+    id: 'app.components.form.ErrorDisplay.previous',
+    defaultMessage: 'Previous',
+  },
+  next: {
+    id: 'app.components.form.ErrorDisplay.previous',
+    defaultMessage: 'Next',
+  },
+  // TODO: Move this somewhere else
+  submitSurvey: {
+    id: 'app.components.form.ErrorDisplay.submitSurvey',
+    defaultMessage: 'Submit survey',
+  },
 });
