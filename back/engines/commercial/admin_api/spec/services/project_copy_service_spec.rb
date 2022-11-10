@@ -91,7 +91,7 @@ describe AdminApi::ProjectCopyService do
         'text_images_attributes' => [
           hash_including(
             'imageable_field' => 'description_multiloc',
-            # 'remote_image_url' => match(/\*/) # /uploads/dac4c4a3-3771-4ca2-8f77-2bf0e78bd0b1/text_image/image/bde5af51-4315-409b-b60c-7401d85e58a9/302057fd-9948-4001-b165-8415008f90a8.gif
+            'remote_image_url' => match(%r{/uploads/#{uuid_regex}/text_image/image/#{uuid_regex}/#{uuid_regex}.gif})
           )
         ]
       )
