@@ -196,7 +196,10 @@ const FormFields = ({
                         field.input_type !== 'page' && (
                           <Box ml="12px">
                             {' '}
-                            <Badge className="inverse" color={colors.grey700}>
+                            <Badge
+                              className="inverse"
+                              color={colors.coolGrey600}
+                            >
                               <FormattedMessage
                                 {...getTranslatedFieldType(field.input_type)}
                               />
