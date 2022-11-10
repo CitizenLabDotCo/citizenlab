@@ -1,10 +1,10 @@
 # Changelog
 
+## 2022-11-08
+
 ### Changed
 
 - [CL-1776] Remove feedback icon in Bottom Right
-
-## 2022-11-08
 
 ### Added
 
