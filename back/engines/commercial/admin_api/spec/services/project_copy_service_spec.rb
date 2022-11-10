@@ -72,5 +72,29 @@ describe AdminApi::ProjectCopyService do
         expect(new_survey_phase.ideas.first.custom_field_values[new_field2.key]).to eq 'My value'
       end
     end
+
+    it 'successfully exports custom field text images' do
+      description_multiloc = {
+        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+      }
+      field = create :custom_field, :for_custom_form, description_multiloc: description_multiloc
+      field.update! description_multiloc: TextImageService.new.swap_data_images(field, :description_multiloc)
+
+      template = service.export field.resource.participation_context
+
+      expect(template['models']['custom_field'].size).to eq 1
+      expect(template['models']['custom_field'].first).to match hash_including(
+        'key' => field.key,
+        'input_type' => field.input_type,
+        'title_multiloc' => field.title_multiloc,
+        'description_multiloc' => field.description_multiloc,
+        'text_images_attributes' => [
+          hash_including(
+            'imageable_field' => 'description_multiloc',
+            # 'remote_image_url' => match(/\*/) # /uploads/dac4c4a3-3771-4ca2-8f77-2bf0e78bd0b1/text_image/image/bde5af51-4315-409b-b60c-7401d85e58a9/302057fd-9948-4001-b165-8415008f90a8.gif
+          )
+        ]
+      )
+    end
   end
 end
