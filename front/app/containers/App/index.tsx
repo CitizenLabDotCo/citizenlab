@@ -167,12 +167,12 @@ class App extends PureComponent<Props, State> {
       userDeletedSuccessfullyModalOpened: false,
       userSuccessfullyDeleted: false,
       signUpInModalMounted: false,
-      signUpInModalOpened: false,
+      signUpInModalOpened: false, // we need to apply CSS when modal is opened
       verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
       locale: null,
-      signUpInModalClosed: false,
+      signUpInModalClosed: false, // we need to know if modal was closed not to reopen it again. See ccd951c4ee
     };
     this.subscriptions = [];
   }
