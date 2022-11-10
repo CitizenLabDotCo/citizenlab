@@ -11,6 +11,20 @@ import { TOnContinueFunction } from 'components/SignUpIn/AuthProviderButton';
 // typings
 import { TSignUpInFlow } from 'components/SignUpIn';
 
+// styling
+import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
+
+const Container = styled.div`
+  display: flex;
+  gap: 2px;
+  flex-direction: column;
+`;
+
+const SignUpSubHeader = styled.span`
+  font-size: ${fontSizes.s}px;
+`;
+
 interface Props {
   flow: TSignUpInFlow;
   onContinue: TOnContinueFunction;
@@ -31,11 +45,24 @@ const ViennaSamlButton = ({ onContinue, flow }: Props) => {
   return (
     <StyledAuthProviderButton
       authProvider="id_vienna_saml"
+      icon="vienna"
       onContinue={handleOnContinue}
       flow={flow}
       showConsentOnFlow={'signin'}
     >
-      <FormattedMessage {...messages.continueWithStandardPortal} />
+      <Container>
+        <FormattedMessage
+          {...(flow === 'signin'
+            ? messages.signInWithStandardPortal
+            : messages.signUpWithStandardPortal)}
+        />
+
+        {flow === 'signup' && (
+          <SignUpSubHeader>
+            <FormattedMessage {...messages.signUpWithStandardPortalSubHeader} />
+          </SignUpSubHeader>
+        )}
+      </Container>
     </StyledAuthProviderButton>
   );
 };
