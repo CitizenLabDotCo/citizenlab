@@ -61,39 +61,31 @@ export const eventsConfig: StatCardConfig = {
     startAtMoment,
     endAtMoment,
   }: StatCardProps): Query => {
+    // const todayMoment = moment();
+
     const queryBase = (
       startMoment: Moment | null | undefined,
       endMoment: Moment | null,
-      dateType: 'start' | 'end' = 'start'
+      dateType: 'start' | 'end' = 'start',
+      pending = false
     ): QuerySchema => {
+      const notCompleteFilter = pending ? { dimension_date_end_id: null } : {};
+
       const querySchema: QuerySchema = {
         fact: 'event',
         aggregations: {
           all: 'count',
         },
-        filters: {},
       };
 
-      // TODO: Need fresh eyes on this - cannot get filters working with current types
-      const dateFilter = getDateFilter(
-        `dimension_date_${dateType}`,
-        startMoment,
-        endMoment
-      );
-      const projectFilter = getProjectFilter('dimension_project', projectId);
-      console.log(dateFilter, projectFilter, dateType);
-      //
-      // console.log(startMoment, endMoment, dateType);
-      //
-      // (startMoment && endMoment) &&
-      //   querySchema.filters = { ...dateFilter };
-      //
-      //   console.log('date');
-      // //   querySchema.filters = {
-      // //   ...dateFilter,
-      // //   ...projectFilter,
-      // //   };
-      // }
+      const filters = {
+        ...notCompleteFilter,
+        ...getDateFilter(`dimension_date_${dateType}`, startMoment, endMoment),
+        ...getProjectFilter('dimension_project', projectId),
+      };
+      if (Object.keys(filters).length !== 0) {
+        querySchema.filters = filters;
+      }
 
       return querySchema;
     };
@@ -102,7 +94,8 @@ export const eventsConfig: StatCardConfig = {
     const queryUpcoming: QuerySchema = queryBase(
       startAtMoment,
       endAtMoment,
-      'start'
+      'start',
+      true
     );
     const queryCompleted: QuerySchema = queryBase(
       startAtMoment,
@@ -112,8 +105,10 @@ export const eventsConfig: StatCardConfig = {
 
     // Remove the upcoming query if there are start and end date filters
     let returnQuery = [queryTotal, queryUpcoming, queryCompleted];
-    if (startAtMoment && endAtMoment)
+    if (startAtMoment && endAtMoment) {
       returnQuery = [queryTotal, queryCompleted];
+    }
+    console.log(JSON.stringify({ query: returnQuery }));
     return {
       query: returnQuery,
     };

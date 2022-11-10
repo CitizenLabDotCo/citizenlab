@@ -42,7 +42,6 @@ export interface PostFeedback {
   progressBarsData: ProgressBarsRow[];
   stackedBarsData: [StackedBarsRow];
   pieCenterValue: string;
-  pieCenterLabel: string;
   days: number;
   stackedBarColumns: string[];
   statusColorById: Record<string, string>;

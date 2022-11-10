@@ -178,12 +178,11 @@ export interface OutletsPropertyMap {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
-  'app.containers.Admin.dashboard.summary.postStatus': {
+  'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
     endAtMoment: Moment | null;
     resolution: IResolution;
-    onMount: () => void;
   };
   'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
