@@ -14,6 +14,7 @@ interface Props {
   className?: string;
   iconWidth?: string;
   iconHeight?: string;
+  fullScreen?: boolean;
 }
 
 const CloseIconButton = ({
@@ -25,11 +26,12 @@ const CloseIconButton = ({
   className,
   iconWidth = '24px',
   iconHeight = '24px',
+  fullScreen = false,
 }: Props & WrappedComponentProps) => {
   return (
     <IconButton
       className={className ?? ''}
-      iconName="close"
+      iconName={fullScreen ? 'arrow-left' : 'close'}
       onClick={onClick}
       a11y_buttonActionMessage={formatMessage(
         a11y_buttonActionMessage

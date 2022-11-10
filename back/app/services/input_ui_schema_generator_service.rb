@@ -11,6 +11,27 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     end
   end
 
+  def generate_for(fields)
+    uses_pages = fields.any?(&:page?)
+    return super(fields) unless uses_pages
+
+    generate_with_pages(fields)
+  end
+
+  def visit_page(field)
+    {
+      type: 'Page',
+      options: {
+        # No id yet. It will be set after invoking this method.
+        title: multiloc_service.t(field.title_multiloc),
+        description: multiloc_service.t(field.description_multiloc)
+      },
+      elements: [
+        # No elements yet. They will be added after invoking this method.
+      ]
+    }
+  end
+
   protected
 
   def default_options(field)
@@ -24,6 +45,49 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def description_option(field)
     @descriptions ||= {}
     @descriptions[field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
+  end
+
+  def generate_with_pages(fields)
+    locales.index_with do |locale|
+      I18n.with_locale(locale) do
+        generate_pages_for_current_locale fields
+      end
+    end
+  end
+
+  def schema_elements_for(fields)
+    current_page_schema = nil
+    current_page_index = 0
+    fields.each_with_object([]) do |field, accu|
+      field_schema = visit field
+      if field.page?
+        current_page_index += 1
+        field_schema[:options][:id] = "page_#{current_page_index}"
+        accu << field_schema
+        current_page_schema = field_schema
+      elsif current_page_schema
+        current_page_schema[:elements] << field_schema
+      else
+        accu << field_schema
+      end
+    end
+  end
+
+  def categorization_schema_with(input_term, elements)
+    {
+      type: 'Categorization',
+      options: {
+        formId: 'idea-form',
+        inputTerm: input_term
+      },
+      elements: elements
+    }
+  end
+
+  def generate_pages_for_current_locale(fields)
+    participation_context = fields.first.resource.participation_context
+    input_term = participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM
+    categorization_schema_with(input_term, schema_elements_for(fields))
   end
 
   def generate_for_current_locale(fields)
@@ -42,14 +106,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       category_for(attachments_fields, 'attachments', 'custom_forms.categories.attachements.title'),
       category_for(custom_fields, 'extra', participation_method.extra_fields_category_translation_key)
     ].compact
-    {
-      type: 'Categorization',
-      options: {
-        formId: 'idea-form',
-        inputTerm: input_term
-      },
-      elements: elements
-    }
+    categorization_schema_with(input_term, elements)
   end
 
   private
@@ -65,7 +122,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       type: 'Category',
       label: (I18n.t(translation_key) if translation_key),
       options: { id: category_id },
-      elements: fields.map { |field| visit field }
+      elements: fields.filter_map { |field| visit field }
     }
   end
 end

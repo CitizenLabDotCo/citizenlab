@@ -5,7 +5,7 @@ require 'rails_helper'
 class UiSchemaGeneratorServiceSubclass < UiSchemaGeneratorService
   def generate_for_current_locale(fields)
     {
-      elements: fields.map { |field| visit field }
+      elements: fields.filter_map { |field| visit field }
     }
   end
 end
@@ -16,6 +16,8 @@ RSpec.describe UiSchemaGeneratorService do
   let(:field_key) { 'field_key' }
 
   describe '#generate_for' do
+    # Create a page to describe that it is not included in the schema.
+    let!(:page_field) { create(:custom_field_page) }
     let(:field1) do
       create(
         :custom_field,
@@ -35,7 +37,7 @@ RSpec.describe UiSchemaGeneratorService do
     end
 
     it 'returns the schema for the given fields' do
-      expect(UiSchemaGeneratorServiceSubclass.new.generate_for([field1, field2])).to eq({
+      expect(UiSchemaGeneratorServiceSubclass.new.generate_for([page_field, field1, field2])).to eq({
         'en' => {
           elements: [
             {
@@ -519,6 +521,14 @@ RSpec.describe UiSchemaGeneratorService do
           maximum_label: 'Strongly agree'
         }
       })
+    end
+  end
+
+  describe '#visit_page' do
+    let(:field) { create :custom_field_page }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_page(field)).to be_nil
     end
   end
 end
