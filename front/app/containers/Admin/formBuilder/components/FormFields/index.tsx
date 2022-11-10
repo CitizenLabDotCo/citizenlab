@@ -115,7 +115,7 @@ const FormFields = ({
       (customField) => customField.input_type !== 'page'
     );
     // Return question title
-    return `Question ${filteredQuestion.indexOf(field) + 1}`;
+    return `Q${filteredQuestion.indexOf(field) + 1}`;
   };
 
   return (
