@@ -24,7 +24,7 @@ module OmniauthMethods
       true
     end
 
-    def can_merge?(_user, _user_attrs)
+    def can_merge?(_user, _user_attrs, _sso_verification_param_value)
       true
     end
 

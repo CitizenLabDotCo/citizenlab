@@ -42,7 +42,9 @@ describe IdFranceconnect::FranceconnectOmniauth do
         user = User.new(first_name: user_first_name, last_name: user_last_name)
         user_attrs = { first_name: attrs_first_name, last_name: attrs_last_name }
 
-        expect(omniauth.can_merge?(user, user_attrs)).to eq(should_be_merged)
+        expect(omniauth.can_merge?(user, user_attrs, nil)).to eq(should_be_merged)
+        expect(omniauth.can_merge?(user, user_attrs, '1')).to eq(should_be_merged)
+        expect(omniauth.can_merge?(user, user_attrs, 'true')).to be(true)
       end
     end
   end
