@@ -112,7 +112,6 @@ const ConfigMultiselectWithLocaleSwitcher = ({
             const validatedValues = choices.map((choice) => ({
               title_multiloc: choice.title_multiloc,
             }));
-            debugger;
 
             return (
               <Box
