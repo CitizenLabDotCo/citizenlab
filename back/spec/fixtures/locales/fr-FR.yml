@@ -5,8 +5,6 @@ fr:
     home:
       title: Accueil
   form_builder:
-    default_question_page:
-      title: 'Page 1'
     default_select_field:
       title: Question par défaut
       option1: Première option

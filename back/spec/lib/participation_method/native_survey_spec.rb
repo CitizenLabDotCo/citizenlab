@@ -29,11 +29,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect(participation_context.custom_form.custom_fields.size).to eq 2
 
       question_page = participation_context.custom_form.custom_fields[0]
-      expect(question_page.title_multiloc).to match({
-        'en' => 'Page 1',
-        'fr-FR' => 'Page 1',
-        'nl-NL' => 'Pagina 1'
-      })
+      expect(question_page.title_multiloc).to eq({})
       expect(question_page.description_multiloc).to eq({})
 
       field = participation_context.custom_form.custom_fields[1]

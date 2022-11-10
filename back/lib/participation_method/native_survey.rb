@@ -21,7 +21,7 @@ module ParticipationMethod
       CustomField.create(
         resource: form,
         input_type: 'page',
-        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_question_page.title')
+        key: 'page_1'
       )
       field = CustomField.create(
         resource: form,

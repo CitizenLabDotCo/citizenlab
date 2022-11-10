@@ -201,8 +201,6 @@ en:
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
   form_builder:
-    default_question_page:
-      title: 'Page 1'
     default_select_field:
       title: 'Your question'
       option1: 'Option 1'
