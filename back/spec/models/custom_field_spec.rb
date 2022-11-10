@@ -101,6 +101,9 @@ RSpec.describe CustomField, type: :model do
       non_page_field.title_multiloc = nil
       expect(non_page_field.valid?).to be false
       expect(non_page_field.errors.details).to eq({ title_multiloc: [{ error: :blank }, { error: 'is not a translation hash' }] })
+
+      non_page_field.title_multiloc = { 'en' => 'Here is the title' }
+      expect(non_page_field.valid?).to be true
     end
 
     it 'does not happen when the field is a page' do
