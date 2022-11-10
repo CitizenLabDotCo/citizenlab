@@ -18,8 +18,7 @@ module ReportBuilder
     has_one(
       :layout,
       class_name: 'ContentBuilder::Layout', as: :content_buildable,
-      dependent: :destroy,
-      required: true
+      dependent: :destroy
     )
 
     validates :name, presence: true, uniqueness: true
