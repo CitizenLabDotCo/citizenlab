@@ -44,7 +44,7 @@ class OmniauthCallbackController < ApplicationController
     provider = auth['provider']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
-    @identity = Identity.find_or_create_with_omniauth(auth, authver_method)
+    @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
 
     @user = @identity.user
 
