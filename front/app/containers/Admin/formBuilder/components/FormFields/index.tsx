@@ -63,8 +63,9 @@ const FormFields = ({
     watch,
     formState: { errors },
   } = useFormContext();
-  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const locale = useLocale();
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
+
   if (isNilOrError(locale)) {
     return null;
   }
@@ -100,22 +101,22 @@ const FormFields = ({
     return 'teal300';
   };
 
-  const getPageIndex = (formCustomFields, field) => {
-    // Filter out questions
-    const filteredPages = formCustomFields.filter(
-      (customField) => customField.input_type === 'page'
-    );
-    // Return page title
-    return `Page ${filteredPages.indexOf(field) + 1}`;
-  };
-
-  const getQuestionIndex = (formCustomFields, field) => {
-    // Filter out pages
-    const filteredQuestion = formCustomFields.filter(
-      (customField) => customField.input_type !== 'page'
-    );
-    // Return question title
-    return `Q${filteredQuestion.indexOf(field) + 1}`;
+  const getIndexForTitle = (formCustomFields, field) => {
+    if (field.input_type === 'page') {
+      // Filter out questions
+      const filteredPages = formCustomFields.filter(
+        (customField) => customField.input_type === 'page'
+      );
+      // Return page index
+      return ` ${filteredPages.indexOf(field) + 1}`;
+    } else {
+      // Filter out pages
+      const filteredQuestion = formCustomFields.filter(
+        (customField) => customField.input_type !== 'page'
+      );
+      // Return question index
+      return ` ${filteredQuestion.indexOf(field) + 1}`;
+    }
   };
 
   return (
@@ -177,9 +178,18 @@ const FormFields = ({
                         fontWeight="bold"
                         mr="12px"
                       >
-                        {field.input_type === 'page'
-                          ? getPageIndex(formCustomFields, field)
-                          : getQuestionIndex(formCustomFields, field)}
+                        {field.input_type === 'page' && (
+                          <>
+                            <FormattedMessage {...messages.page} />
+                            {getIndexForTitle(formCustomFields, field)}
+                          </>
+                        )}
+                        {field.input_type !== 'page' && (
+                          <>
+                            <FormattedMessage {...messages.question} />
+                            {getIndexForTitle(formCustomFields, field)}
+                          </>
+                        )}
                       </Text>
                       <Text
                         as="span"
