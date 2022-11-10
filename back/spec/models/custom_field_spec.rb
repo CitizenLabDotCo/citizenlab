@@ -81,6 +81,48 @@ RSpec.describe CustomField, type: :model do
     end
   end
 
+  describe 'title_multiloc validation' do
+    let(:form) { create :custom_form }
+
+    it 'happens when the field is not a page' do
+      non_page_field = described_class.new(
+        resource: form,
+        input_type: 'text',
+        key: 'field_key',
+        title_multiloc: { 'en' => '' }
+      )
+      expect(non_page_field.valid?).to be false
+      expect(non_page_field.errors.details).to eq({ title_multiloc: [{ error: :blank }] })
+
+      non_page_field.title_multiloc = {}
+      expect(non_page_field.valid?).to be false
+      expect(non_page_field.errors.details).to eq({ title_multiloc: [{ error: :blank }, { error: :blank }] })
+
+      non_page_field.title_multiloc = nil
+      expect(non_page_field.valid?).to be false
+      expect(non_page_field.errors.details).to eq({ title_multiloc: [{ error: :blank }, { error: 'is not a translation hash' }] })
+
+      non_page_field.title_multiloc = { 'en' => 'Here is the title' }
+      expect(non_page_field.valid?).to be true
+    end
+
+    it 'does not happen when the field is a page' do
+      page_field = described_class.new(
+        resource: form,
+        input_type: 'page',
+        key: 'field_key',
+        title_multiloc: { 'en' => '' }
+      )
+      expect(page_field.valid?).to be true
+
+      page_field.title_multiloc = {}
+      expect(page_field.valid?).to be true
+
+      page_field.title_multiloc = nil
+      expect(page_field.valid?).to be true
+    end
+  end
+
   context 'hooks' do
     it 'generates a key on creation, if not specified' do
       cf = create(:custom_field, key: nil)

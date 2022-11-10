@@ -45,7 +45,7 @@ class CustomField < ApplicationRecord
   validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
                                                                                                   message: 'only letters, numbers and underscore' }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: { presence: true }
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
