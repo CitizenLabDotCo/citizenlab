@@ -347,12 +347,12 @@ describe JsonFormsService do
         description_multiloc = {
           'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
         }
-        field = create :custom_field, :for_custom_form, description_multiloc: description_multiloc
+        field = create :custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc
         expect_any_instance_of(TextImageService).to(
           receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
         )
 
-        ui_schema = service.input_ui_and_json_multiloc_schemas([field], create(:admin))[:ui_schema_multiloc]
+        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil)[:ui_schema_multiloc]
         expect(ui_schema['en'][:elements][0][:elements][0][:options][:description]).to eq 'Description with text images'
       end
     end

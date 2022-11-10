@@ -147,7 +147,10 @@ class CustomField < ApplicationRecord
 
   def sanitize_description_multiloc
     service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc description_multiloc, %i[decoration link list title image]
+    self.description_multiloc = service.sanitize_multiloc(
+      description_multiloc,
+      %i[title alignment list decoration link image video]
+    )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
   end
