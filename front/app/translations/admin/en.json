@@ -1666,7 +1666,7 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalActiveUsers": "Total active users",
   "app.modules.commercial.analytics.admin.components.Events.completed": "Completed",
   "app.modules.commercial.analytics.admin.components.Events.events": "Events",
-  "app.modules.commercial.analytics.admin.components.Events.totalEvents": "Total invites sent",
+  "app.modules.commercial.analytics.admin.components.Events.totalEvents": "Total events added",
   "app.modules.commercial.analytics.admin.components.Events.upcoming": "Upcoming",
   "app.modules.commercial.analytics.admin.components.Invitations.accepted": "Accepted",
   "app.modules.commercial.analytics.admin.components.Invitations.invitations": "Invitations",

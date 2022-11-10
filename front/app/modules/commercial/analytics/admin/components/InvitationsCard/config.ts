@@ -7,6 +7,7 @@ import {
 } from '../../utils/resolution';
 import { formatCountValue } from '../../utils/parse';
 import { getDateFilter, getProjectFilter } from '../../utils/query';
+import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 // Typings
 import {
@@ -42,9 +43,7 @@ export const invitationsConfig: StatCardConfig = {
 
     const cardData: StatCardChartData = {
       cardTitle: formatMessage(messages.invitations),
-      fileName: formatMessage(messages.invitations)
-        .toLowerCase()
-        .replace(' ', '_'),
+      fileName: underscoreCase(formatMessage(messages.invitations)),
       periodLabel: getTimePeriodTranslationByResolution(
         formatMessage,
         resolution
@@ -89,13 +88,10 @@ export const invitationsConfig: StatCardConfig = {
         inviteStatus === 'accepted'
           ? 'dimension_date_accepted'
           : 'dimension_date_invited';
-
-      const inviteStatusFilter = () => {
-        if (inviteStatus === null) {
-          return {};
-        }
-        return { 'dimension_user.invite_status': inviteStatus };
-      };
+      const inviteStatusFilter =
+        inviteStatus === null
+          ? {}
+          : { 'dimension_user.invite_status': inviteStatus };
 
       return {
         fact: 'registration',
@@ -129,6 +125,18 @@ export const invitationsConfig: StatCardConfig = {
       lastPeriodMoment,
       todayMoment,
       'accepted'
+    );
+
+    console.log(
+      JSON.stringify({
+        query: [
+          queryTotal,
+          queryTotalLastPeriod,
+          queryPending,
+          queryAccepted,
+          queryAcceptedLastPeriod,
+        ],
+      })
     );
 
     // Don't return the pending query if there are start and end date filters

@@ -4,9 +4,11 @@ import { StatCardChartData } from './typings';
 export const parseExcelData = (data: StatCardChartData): XlsxData => {
   const xlsxDataSheet = {};
   data.stats.forEach((stat) => {
-    xlsxDataSheet[stat.label] = stat.value;
+    const label = underscoreCase(stat.label);
+    xlsxDataSheet[label] = stat.value;
     stat.lastPeriod &&
-      (xlsxDataSheet[`${stat.label}_${data.periodLabel}`] = stat.lastPeriod);
+      (xlsxDataSheet[`${label}_${underscoreCase(data.periodLabel)}`] =
+        stat.lastPeriod);
   });
 
   const xlsxData = {
@@ -14,4 +16,11 @@ export const parseExcelData = (data: StatCardChartData): XlsxData => {
   };
 
   return xlsxData;
+};
+
+export const underscoreCase = (label: string | undefined): string => {
+  if (label) {
+    return label.toLowerCase().replaceAll(' ', '_').replaceAll(':', '');
+  }
+  return '';
 };

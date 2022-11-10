@@ -7,7 +7,7 @@ export default defineMessages({
   },
   totalEvents: {
     id: 'app.modules.commercial.analytics.admin.components.Events.totalEvents',
-    defaultMessage: 'Total invites sent',
+    defaultMessage: 'Total events added',
   },
   upcoming: {
     id: 'app.modules.commercial.analytics.admin.components.Events.upcoming',

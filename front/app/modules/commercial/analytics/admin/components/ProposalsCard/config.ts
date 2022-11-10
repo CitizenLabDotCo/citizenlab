@@ -17,6 +17,7 @@ import {
 import { Query, QuerySchema } from '../../services/analyticsFacts';
 import moment, { Moment } from 'moment';
 import { WrappedComponentProps } from 'react-intl';
+import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 export const proposalsConfig: StatCardConfig = {
   // Card title
@@ -31,9 +32,7 @@ export const proposalsConfig: StatCardConfig = {
     const [total, totalPeriod, successful, successfulPeriod] = responseData;
     return {
       cardTitle: formatMessage(messages.proposals),
-      fileName: formatMessage(messages.proposals)
-        .toLowerCase()
-        .replace(' ', '_'),
+      fileName: underscoreCase(formatMessage(messages.proposals)),
       periodLabel: getTimePeriodTranslationByResolution(
         formatMessage,
         resolution

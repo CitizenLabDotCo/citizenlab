@@ -11,8 +11,9 @@ import {
   StatCardConfig,
 } from '../../hooks/useStatCard/typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { WrappedComponentProps } from 'react-intl';
+import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 export const eventsConfig: StatCardConfig = {
   // Card title
@@ -35,7 +36,7 @@ export const eventsConfig: StatCardConfig = {
 
     const cardData: StatCardChartData = {
       cardTitle: formatMessage(messages.events),
-      fileName: formatMessage(messages.events).toLowerCase().replace(' ', '_'),
+      fileName: underscoreCase(formatMessage(messages.events)),
       stats: [],
     };
     cardData.stats.push({
@@ -61,16 +62,11 @@ export const eventsConfig: StatCardConfig = {
     startAtMoment,
     endAtMoment,
   }: StatCardProps): Query => {
-    // const todayMoment = moment();
-
     const queryBase = (
       startMoment: Moment | null | undefined,
       endMoment: Moment | null,
-      dateType: 'start' | 'end' = 'start',
-      pending = false
+      dateType: 'start' | 'end' | 'created'
     ): QuerySchema => {
-      const notCompleteFilter = pending ? { dimension_date_end_id: null } : {};
-
       const querySchema: QuerySchema = {
         fact: 'event',
         aggregations: {
@@ -79,7 +75,6 @@ export const eventsConfig: StatCardConfig = {
       };
 
       const filters = {
-        ...notCompleteFilter,
         ...getDateFilter(`dimension_date_${dateType}`, startMoment, endMoment),
         ...getProjectFilter('dimension_project', projectId),
       };
@@ -90,16 +85,24 @@ export const eventsConfig: StatCardConfig = {
       return querySchema;
     };
 
-    const queryTotal: QuerySchema = queryBase(startAtMoment, endAtMoment);
-    const queryUpcoming: QuerySchema = queryBase(
+    const queryTotal: QuerySchema = queryBase(
       startAtMoment,
       endAtMoment,
-      'start',
-      true
+      'created'
+    );
+
+    const todayMoment = moment();
+    const wayPastMoment = moment().set('year', 2010);
+    const wayForwardMoment = moment().set('year', 2030);
+
+    const queryUpcoming: QuerySchema = queryBase(
+      todayMoment,
+      wayForwardMoment,
+      'start'
     );
     const queryCompleted: QuerySchema = queryBase(
-      startAtMoment,
-      endAtMoment,
+      startAtMoment ? startAtMoment : wayPastMoment,
+      endAtMoment ? endAtMoment : todayMoment,
       'end'
     );
 
@@ -108,7 +111,6 @@ export const eventsConfig: StatCardConfig = {
     if (startAtMoment && endAtMoment) {
       returnQuery = [queryTotal, queryCompleted];
     }
-    console.log(JSON.stringify({ query: returnQuery }));
     return {
       query: returnQuery,
     };
