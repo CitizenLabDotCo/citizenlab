@@ -338,6 +338,13 @@ PATH
     remove_vendor_branding (0.1.0)
 
 PATH
+  remote: engines/commercial/report_builder
+  specs:
+    report_builder (0.1.0)
+      content_builder
+      rails (~> 6.1)
+
+PATH
   remote: engines/commercial/smart_groups
   specs:
     smart_groups (0.1.0)
@@ -1283,6 +1290,7 @@ DEPENDENCIES
   rails_semantic_logger
   redcarpet
   remove_vendor_branding!
+  report_builder!
   rest-client
   rgeo-geojson
   rinku (~> 2)
