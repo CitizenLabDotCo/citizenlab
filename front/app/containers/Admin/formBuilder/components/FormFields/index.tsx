@@ -191,7 +191,7 @@ const FormFields = ({
                         <T value={field.title_multiloc} />
                       </Text>
                     </Box>
-                    <Box pr="24px">
+                    <Box pr="24px" display="flex">
                       {!isNilOrError(field.input_type) &&
                         field.input_type !== 'page' && (
                           <Box ml="12px">
