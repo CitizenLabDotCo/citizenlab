@@ -553,8 +553,6 @@
   "app.components.form.submit": "إرسال",
   "app.components.form.submitApiError": "حدثت مشكلة أثناء إرسال النموذج. يرجى التحقق بحثًا عن أي أخطاء وإعادة المحاولة.",
   "app.components.pageForm.takenSlugError": "معرِّف الصفحة هذا مستخدم فعلاً. يرجى اختيار واحد مختلف.",
-  "app.components.sendFeedback": "ملاحظاتك حول المنصة",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "الميزانية المذكورة كبيرة جدًا",
   "app.container.IdeaForm.budgetIsZeroError": "يُرجى تقديم ميزانية أكبر من 0",
   "app.container.IdeaForm.budgetLabel": "الميزانية",

@@ -171,14 +171,16 @@ resource 'Phases' do
           phase_in_db = Phase.find(phase_id)
 
           # A new native survey phase has a default form.
-          expect(phase_in_db.custom_form.custom_fields.size).to eq 1
-          field = phase_in_db.custom_form.custom_fields.first
-          expect(field.title_multiloc).to match({
+          expect(phase_in_db.custom_form.custom_fields.size).to eq 2
+          field1 = phase_in_db.custom_form.custom_fields[0]
+          expect(field1.input_type).to eq 'page'
+          field2 = phase_in_db.custom_form.custom_fields[1]
+          expect(field2.title_multiloc).to match({
             'en' => an_instance_of(String),
             'fr-FR' => an_instance_of(String),
             'nl-NL' => an_instance_of(String)
           })
-          options = field.options
+          options = field2.options
           expect(options.size).to eq 2
           expect(options[0].key).to eq 'option1'
           expect(options[1].key).to eq 'option2'
@@ -795,6 +797,9 @@ resource 'Phases' do
         let(:active_phase) { project.phases.first }
         let(:form) { create(:custom_form, participation_context: active_phase) }
         let(:id) { active_phase.id }
+
+        # Create a page to describe that it is not included in the export.
+        let!(:page_field) { create(:custom_field_page, resource: form) }
         let(:multiselect_field) do
           create(
             :custom_field_multiselect,

@@ -553,8 +553,6 @@
   "app.components.form.submit": "Trimite",
   "app.components.form.submitApiError": "A existat o problemă la trimiterea formularului. Vă rugăm să verificați dacă există erori și să încercați din nou.",
   "app.components.pageForm.takenSlugError": "Acest slug este deja luat, alegeți unul diferit",
-  "app.components.sendFeedback": "Feedback-ul dvs. despre platformă",
-  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Bugetul propus este prea mare",
   "app.container.IdeaForm.budgetIsZeroError": "Vă rugăm să furnizați un buget mai mare decât 0",
   "app.container.IdeaForm.budgetLabel": "Buget",

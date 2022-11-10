@@ -105,6 +105,11 @@ module.exports = {
             message:
               "Import lodash functions from 'lodash-es' instead of 'lodash'",
           },
+          {
+            name: '@testing-library/react',
+            message:
+              "Import React testing library exports from 'utils/testUtils/rtl' instead",
+          },
         ],
       },
     ],

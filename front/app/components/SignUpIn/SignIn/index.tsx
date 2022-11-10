@@ -37,10 +37,18 @@ export interface Props {
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   className?: string;
+  fullScreen?: boolean;
 }
 
 const SignIn = memo<Props>(
-  ({ metaData, customHeader, onSignInCompleted, onGoToSignUp, className }) => {
+  ({
+    metaData,
+    customHeader,
+    onSignInCompleted,
+    onGoToSignUp,
+    className,
+    fullScreen,
+  }) => {
     const [activeStep, setActiveStep] =
       useState<TSignInSteps>('auth-providers');
 
@@ -96,6 +104,7 @@ const SignIn = memo<Props>(
 
         <StyledModalContentContainer
           inModal={!!metaData.inModal}
+          fullScreen={fullScreen}
           headerHeight="68px"
           className="signupincontentcontainer"
         >
