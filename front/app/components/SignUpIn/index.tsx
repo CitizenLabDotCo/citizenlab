@@ -17,12 +17,17 @@ import { openSignUpInModal } from './events';
 
 export type TSignUpInFlow = 'signup' | 'signin';
 
+export type TSignUpInError = 'general' | 'franceconnect_merging_failed';
+interface ISignUpInError {
+  code: TSignUpInError;
+}
+
 export interface ISignUpInMetaData {
   flow: TSignUpInFlow;
   pathname: string;
   verification?: boolean;
   verificationContext?: ContextShape;
-  error?: boolean;
+  error?: ISignUpInError;
   isInvitation?: boolean;
   token?: string;
   inModal?: boolean;

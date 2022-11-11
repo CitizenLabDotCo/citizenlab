@@ -1,5 +1,10 @@
 # Changelog
 
+## 2022-11-11
+
+### Changed
+- [CL-1839] Merge FranceConnect account based on names
+ 
 ## 2022-11-10
 
 ### Changed
