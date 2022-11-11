@@ -82,7 +82,10 @@ const Consent = memo(
       return (
         <Container className={className}>
           <ConsentText>
-            <FormattedMessage {...messages.viennaConsentHeader} />
+            <FormattedMessage
+              {...messages.viennaConsentHeader}
+              values={{ br: <br /> }}
+            />
             <ul>
               <li>{formatMessage(messages.viennaConsentEmail)}</li>
               <li>{formatMessage(messages.viennaConsentFirstName)}</li>
