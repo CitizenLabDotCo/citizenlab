@@ -144,7 +144,7 @@ const CustomPageSettingsForm = ({
                   : formatMessage(messages.messageCreatedSuccess)
               }
             />
-            <Box mb="20px">
+            <Box mb="30px">
               <InputMultilocWithLocaleSwitcher
                 name="title_multiloc"
                 label={formatMessage(messages.titleLabel)}
@@ -152,7 +152,7 @@ const CustomPageSettingsForm = ({
               />
             </Box>
             {showNavBarItemTitle && (
-              <Box mb="20px">
+              <Box mb="30px">
                 <InputMultilocWithLocaleSwitcher
                   label={formatMessage(messages.navbarItemTitle)}
                   type="text"
@@ -164,20 +164,22 @@ const CustomPageSettingsForm = ({
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
             {/* // should be behind a feature flag */}
-            <Box mb="30px">
+            <Box>
               <Box display="flex" justifyContent="flex-start">
                 <Text>Linked Projects</Text>
                 <IconTooltip ml="40px" content="Link some projects" />
               </Box>
-              <Tabs
-                name="linkedProjectsType"
-                items={linkedProjectsTabs}
-                onClick={(e) => {
-                  console.log(e);
-                }}
-              />
+              <Box mb="30px">
+                <Tabs
+                  name="linkedProjectsType"
+                  items={linkedProjectsTabs}
+                  onClick={(e) => {
+                    console.log(e);
+                  }}
+                />
+              </Box>
               {methods.getValues('linkedProjectsType') === 'byTag' && (
-                <Box mb="20px">
+                <Box mb="30px">
                   <MultipleSelect
                     name="tag_ids"
                     placeholder={'add tags'}
