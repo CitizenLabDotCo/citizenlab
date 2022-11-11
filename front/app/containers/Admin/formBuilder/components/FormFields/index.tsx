@@ -13,7 +13,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { List, SortableRow } from 'components/admin/ResourceList';
-import { Box, Badge, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Badge,
+  Text,
+  colors,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
 // styling
@@ -107,14 +113,14 @@ const FormFields = ({
       const filteredPages = formCustomFields.filter(
         (customField) => customField.input_type === 'page'
       );
-      // Return page index
+      // Return page title
       return ` ${filteredPages.indexOf(field) + 1}`;
     } else {
       // Filter out pages
       const filteredQuestion = formCustomFields.filter(
         (customField) => customField.input_type !== 'page'
       );
-      // Return question index
+      // Return question title
       return ` ${filteredQuestion.indexOf(field) + 1}`;
     }
   };
@@ -138,12 +144,10 @@ const FormFields = ({
 
             return (
               <FormFieldsContainer
-                mx={isFieldSelected(field.id) ? '1px' : '0px'}
                 role={'button'}
                 key={field.id}
-                style={{ outline: outlineStyle }}
+                style={{ outline: outlineStyle, outlineOffset: '-1px' }}
                 data-cy={`e2e-field-${fieldIdentifier}`}
-                height={field.input_type === 'page' ? '54px' : 'auto'}
                 background={getFieldBackgroundColor(field)}
                 onClick={() => {
                   isEditingDisabled
@@ -152,6 +156,8 @@ const FormFields = ({
                 }}
               >
                 <SortableRow
+                  iconFill={getTitleColor(field)}
+                  iconMargin="0px 0px 0px 24px"
                   id={field.id}
                   index={index}
                   moveRow={handleDragRow}
@@ -164,11 +170,7 @@ const FormFields = ({
                     justifyContent="space-between"
                     className="expand"
                   >
-                    <Box
-                      display="flex"
-                      mb={field.input_type === 'page' ? '12px' : 'auto'}
-                      alignItems="center"
-                    >
+                    <Box display="flex" alignItems="center">
                       <Text
                         as="span"
                         color={getIndexTitleColor(field)}
@@ -176,7 +178,7 @@ const FormFields = ({
                         mt="auto"
                         mb="auto"
                         fontWeight="bold"
-                        mr="12px"
+                        mx="12px"
                       >
                         {field.input_type === 'page' && (
                           <>

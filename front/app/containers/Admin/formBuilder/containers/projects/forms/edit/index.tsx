@@ -214,7 +214,12 @@ export const FormEdit = ({
                       redirectToSurveyPage
                     />
                   )}
-                  <Box bgColor="white" minHeight="300px">
+                  <Box
+                    borderRadius="3px"
+                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
+                    bgColor="white"
+                    minHeight="300px"
+                  >
                     <FormFields
                       onEditField={setSelectedField}
                       handleDragRow={handleDragRow}
