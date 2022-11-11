@@ -317,7 +317,8 @@ const SignUp = ({
         ref={modalContentRef}
         fullScreen={fullScreen}
       >
-        {error ? (
+        {error &&
+        (metaData?.error ? metaData?.error?.code === 'general' : true) ? (
           <Error text={error} animate={false} marginBottom="30px" />
         ) : (
           <>

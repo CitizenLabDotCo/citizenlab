@@ -9,6 +9,7 @@ import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Outlet from 'components/Outlet';
+import Error from 'components/UI/Error';
 
 // resources
 import GetAppConfiguration, {
@@ -146,19 +147,32 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
 
     return (
       <Container className={className}>
-        {franceconnectLoginEnabled && (
-          <FranceConnectButton
-            onClick={handleOnFranceConnectSelected}
-            logoAlt={formatMessage(messages.signUpButtonAltText, {
-              loginMechanismName: 'FranceConnect',
-            })}
-          />
-        )}
+        {franceconnectLoginEnabled &&
+          (metaData.error?.code === 'franceconnect_merging_failed' ? (
+            <Error
+              text={
+                <FormattedMessage
+                  {...messages.franceConnectMergingFailed}
+                  values={{ br: <br /> }}
+                />
+              }
+              animate={false}
+              marginBottom="30px"
+            />
+          ) : (
+            <FranceConnectButton
+              onClick={handleOnFranceConnectSelected}
+              logoAlt={formatMessage(messages.signUpButtonAltText, {
+                loginMechanismName: 'FranceConnect',
+              })}
+            />
+          ))}
 
         {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
           azureAdLoginEnabled) &&
-          franceconnectLoginEnabled && <Or />}
+          franceconnectLoginEnabled &&
+          !metaData.error && <Or />}
 
         {isPasswordSigninOrSignupAllowed && (
           <StyledAuthProviderButton
