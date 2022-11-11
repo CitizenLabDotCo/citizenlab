@@ -7,10 +7,7 @@ import { CLError } from 'typings';
 import TabsComponent, { Props as TabsComponentProps } from 'components/UI/Tabs';
 
 interface Props
-  extends Omit<
-    TabsComponentProps,
-    'id' | 'password' | 'onChange' | 'errors' | 'selectedValue'
-  > {
+  extends Omit<TabsComponentProps, 'id' | 'errors' | 'selectedValue'> {
   name: string;
 }
 
