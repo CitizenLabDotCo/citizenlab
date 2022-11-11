@@ -1,12 +1,13 @@
-import React from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
+import React from 'react';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
-import { StyledAuthProviderButton } from 'components/SignUpIn/AuthProviders';
+// components
 import { TOnContinueFunction } from 'components/SignUpIn/AuthProviderButton';
+import { StyledAuthProviderButton } from 'components/SignUpIn/AuthProviders';
 import ViennaIcon from './ViennaIcon';
 
 // typings
@@ -18,8 +19,17 @@ import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
+  gap: 10px;
+`;
+
+const TextContainer = styled.div`
+  display: flex;
   gap: 2px;
   flex-direction: column;
+`;
+
+const StyledViennaIcon = styled(ViennaIcon)`
+  flex-shrink: 0;
 `;
 
 const SignUpSubHeader = styled.span`
@@ -50,19 +60,23 @@ const ViennaSamlButton = ({ onContinue, flow }: Props) => {
       flow={flow}
       showConsentOnFlow={'signin'}
     >
-      <ViennaIcon />
       <Container>
-        <FormattedMessage
-          {...(flow === 'signin'
-            ? messages.signInWithStandardPortal
-            : messages.signUpWithStandardPortal)}
-        />
+        <StyledViennaIcon />
+        <TextContainer>
+          <FormattedMessage
+            {...(flow === 'signin'
+              ? messages.signInWithStandardPortal
+              : messages.signUpWithStandardPortal)}
+          />
 
-        {flow === 'signup' && (
-          <SignUpSubHeader>
-            <FormattedMessage {...messages.signUpWithStandardPortalSubHeader} />
-          </SignUpSubHeader>
-        )}
+          {flow === 'signup' && (
+            <SignUpSubHeader>
+              <FormattedMessage
+                {...messages.signUpWithStandardPortalSubHeader}
+              />
+            </SignUpSubHeader>
+          )}
+        </TextContainer>
       </Container>
     </StyledAuthProviderButton>
   );
