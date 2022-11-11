@@ -1225,6 +1225,7 @@
   "app.containers.SignUp.emptyLastNameError": "Geben Sie Ihren Familienname ein",
   "app.containers.SignUp.emptyTokenError": "Geben Sie Ihren Einladungscode ein",
   "app.containers.SignUp.firstNamesLabel": "Vorname",
+  "app.containers.SignUp.franceConnectMergingFailed": "Es existiert bereits ein Konto mit dieser E-Mail-Adresse.{br}{br}Sie können nicht über FranceConnect auf die Plattform zugreifen, da die persönlichen Daten nicht übereinstimmen. Um sich über FranceConnect anzumelden, müssen Sie zunächst Ihren Vor- oder Nachnamen auf dieser Plattform ändern, damit er mit Ihren offiziellen Angaben übereinstimmt.{br}{br}Sie können sich wie gewohnt unten einloggen.",
   "app.containers.SignUp.goToLogIn": "Sie haben bereits ein Konto? {goToOtherFlowLink}",
   "app.containers.SignUp.goToSignUp": "Sie haben kein Konto? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Schritt {activeStepNumber} von {totalStepsCount}: {stepName}",
