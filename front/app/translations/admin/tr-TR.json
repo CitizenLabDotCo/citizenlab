@@ -1142,6 +1142,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.open": "Açık",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses": "Open for responses",
   "app.containers.AdminPage.ProjectEdit.survey.optional": "İsteğe bağlı",
+  "app.containers.AdminPage.ProjectEdit.survey.page": "Page",
+  "app.containers.AdminPage.ProjectEdit.survey.question": "Soru",
   "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Question description (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Soru başlığı",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Aralık",
