@@ -357,7 +357,7 @@ ar:
     official_feedback_on_commented_idea:
       by_author: 'بواسطة %{authorName}'
       updated: 'كتب %{officialName}:'
-      cta_view: 'اذهب إلى الفكرة'
+      cta_view: 'اذهب إلى هذه الفكرة'
       event_description: 'أعطى %{officialName} تحديثًا على الفكرة ''%{ideaTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{officialName}.'
       main_header: 'هناك تحديث على فكرة قد علقت عليها'
       subject: 'تلقت فكرة كنت قد علقت عليها تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
