@@ -1081,7 +1081,7 @@
   "app.containers.AdminPage.ProjectEdit.projectFolderHeaderImageLabelTooltip": "Aquesta és la imatge que es mostra a la capçalera de la pàgina de la carpeta. Les dimensions ideals per a aquesta imatge són una amplada entre 1480 i 1280 píxels, i una alçada de 250 píxels.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Voleu afegir un projecte a una carpeta?",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Els gestors de projectes poden editar projectes, gestionar publicacions i enviar correus electrònics als participants. Podeu {moderationInfoCenterLink} per trobar més informació sobre els drets assignats als gestors de projectes.",
-  "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": "Some participation methods aren’t available for existing projects. A new project will have to be created in these cases.",
+  "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": "Alguns mètodes de participació no estan disponibles per als projectes existents. En aquests casos s'haurà de crear un nou projecte.",
   "app.containers.AdminPage.ProjectEdit.projectName": "Nom del projecte",
   "app.containers.AdminPage.ProjectEdit.projectTypeTitle": "Tipus de projecte",
   "app.containers.AdminPage.ProjectEdit.projectTypeTooltip": "Els projectes amb una cronologia tenen un inici i un final clars i poden tenir diferents fases. Els projectes sense cronograma són continus.",
