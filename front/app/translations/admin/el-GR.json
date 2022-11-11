@@ -1142,6 +1142,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.open": "Ανοικτό",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses": "Ανοιχτό για απαντήσεις",
   "app.containers.AdminPage.ProjectEdit.survey.optional": "Προαιρετικό",
+  "app.containers.AdminPage.ProjectEdit.survey.page": "Page",
+  "app.containers.AdminPage.ProjectEdit.survey.question": "Ερώτηση",
   "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Περιγραφή ερώτησης (προαιρετική)",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Τίτλος ερώτησης",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Εύρος",
