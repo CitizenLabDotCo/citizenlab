@@ -37,9 +37,7 @@ export interface ICustomPageEnabledSettings {
   top_info_section_enabled: boolean;
   events_widget_enabled: boolean;
   files_section_enabled: boolean;
-
-  // for a subsequent iteration
-  // projects_enabled: boolean;
+  projects_enabled: boolean;
 }
 
 export interface ICustomPageAttributes extends ICustomPageEnabledSettings {

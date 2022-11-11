@@ -57,31 +57,27 @@ const CustomPagesEditContent = () => {
       tooltipMessageDescriptor: sectionToggleMessages.topInfoSectionTooltip,
       linkToPath: 'top-info-section',
     },
-    // next iteration!
-    // {
-    //   name: 'projects_enabled',
-    //   titleMessageDescriptor: sectionToggleMessages.projectsList,
-    //   tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
-    //   linkToPath: 'projects',
-    // },
-    // next iteration!
-    // {
-    //   name: 'events_widget_enabled',
-    //   titleMessageDescriptor: sectionToggleMessages.eventsList,
-    //   tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
-    // },
-    // next iteration!
-    // {
-    //   name: 'bottom_info_section_enabled',
-    //   titleMessageDescriptor: sectionToggleMessages.bottomInfoSection,
-    //   tooltipMessageDescriptor: sectionToggleMessages.bottomInfoSectionTooltip,
-    //   linkToPath: 'bottom-info-section',
-    // },
     {
       name: 'files_section_enabled',
       titleMessageDescriptor: sectionToggleMessages.attachmentsSection,
       tooltipMessageDescriptor: sectionToggleMessages.attachmentsSectionTooltip,
       linkToPath: 'attachments',
+    },
+    {
+      name: 'projects_enabled',
+      titleMessageDescriptor: sectionToggleMessages.projectsList,
+      tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
+    },
+    {
+      name: 'events_widget_enabled',
+      titleMessageDescriptor: sectionToggleMessages.eventsList,
+      tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
+    },
+    {
+      name: 'bottom_info_section_enabled',
+      titleMessageDescriptor: sectionToggleMessages.bottomInfoSection,
+      tooltipMessageDescriptor: sectionToggleMessages.bottomInfoSectionTooltip,
+      linkToPath: 'bottom-info-section',
     },
   ];
 
