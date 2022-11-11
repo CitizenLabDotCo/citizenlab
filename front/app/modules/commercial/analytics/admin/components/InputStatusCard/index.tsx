@@ -21,16 +21,10 @@ import { useIntl } from 'utils/cl-intl';
 import usePostsFeedback from '../../hooks/usePostsFeedback';
 
 // typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Moment } from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
+import { ProjectId, Dates, Resolution } from '../../typings';
 
-interface Props {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
 const Container = styled.div`
   width: 100%;
