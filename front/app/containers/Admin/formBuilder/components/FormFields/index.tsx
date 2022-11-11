@@ -13,13 +13,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { List, SortableRow } from 'components/admin/ResourceList';
-import {
-  Box,
-  Badge,
-  Text,
-  colors,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { Box, Badge, Text, colors } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
 // styling
