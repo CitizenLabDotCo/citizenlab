@@ -39,12 +39,14 @@ export const projectStatusConfig: StatCardConfig = {
   dataParser: (responseData, labels: ProjectStatusCardLabels): StatCardData => {
     // Upcoming is not available if 3 stat arrays are not returned
     let total;
-    let upcoming;
-    let completed;
-    if (responseData.length === 3) {
-      [total, upcoming, completed] = responseData;
+    let active;
+    let archived;
+    let finished;
+    let draft;
+    if (responseData.length === 5) {
+      [total, active, archived, finished, draft] = responseData;
     } else {
-      [total, completed] = responseData;
+      [archived, finished, draft] = responseData;
     }
 
     const cardData: StatCardData = {
@@ -52,7 +54,7 @@ export const projectStatusConfig: StatCardConfig = {
       fileName: underscoreCase(labels.projects),
       stats: [],
     };
-    if (upcoming) {
+    if (total) {
       cardData.stats.push({
         label: labels.totalProjects,
         value: formatCountValue(total[0].count),
@@ -60,19 +62,20 @@ export const projectStatusConfig: StatCardConfig = {
       });
       cardData.stats.push({
         label: labels.active,
-        value: formatCountValue(total[0].count),
+        value: formatCountValue(active[0].count),
         toolTip: labels.activeToolTip,
       });
     }
     cardData.stats.push({
       label: labels.archived,
-      value: formatCountValue(upcoming[0].count),
+      value: formatCountValue(archived[0].count),
     });
     cardData.stats.push({
       label: labels.finished,
-      value: formatCountValue(completed[0].count),
+      value: formatCountValue(finished[0].count),
       toolTip: labels.finishedToolTip,
     });
+    console.log(draft); // Need to handle draft this differently
 
     return cardData;
   },
@@ -116,21 +119,37 @@ export const projectStatusConfig: StatCardConfig = {
     const wayPastMoment = moment().set('year', 2010);
     const wayForwardMoment = moment().set('year', 2030);
 
-    const queryUpcoming: QuerySchema = queryBase(
+    const queryActive: QuerySchema = queryBase(
       todayMoment,
       wayForwardMoment,
       'start'
     );
-    const queryCompleted: QuerySchema = queryBase(
+    const queryArchived: QuerySchema = queryBase(
+      startAtMoment ? startAtMoment : wayPastMoment,
+      endAtMoment ? endAtMoment : todayMoment,
+      'end'
+    );
+    const queryFinished: QuerySchema = queryBase(
+      startAtMoment ? startAtMoment : wayPastMoment,
+      endAtMoment ? endAtMoment : todayMoment,
+      'end'
+    );
+    const queryDraft: QuerySchema = queryBase(
       startAtMoment ? startAtMoment : wayPastMoment,
       endAtMoment ? endAtMoment : todayMoment,
       'end'
     );
 
-    // Remove the upcoming query if there are start and end date filters
-    let returnQuery = [queryTotal, queryUpcoming, queryCompleted];
+    // Remove the total and active queries if there are start and end date filters
+    let returnQuery = [
+      queryTotal,
+      queryActive,
+      queryArchived,
+      queryFinished,
+      queryDraft,
+    ];
     if (startAtMoment && endAtMoment) {
-      returnQuery = [queryTotal, queryCompleted];
+      returnQuery = [queryArchived, queryFinished, queryDraft];
     }
     return {
       query: returnQuery,
