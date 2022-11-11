@@ -138,23 +138,23 @@
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Hva er ideen din?
         question:
-          title: What is your question ?
+          title: Hva er spørsmålet ditt?
         contribution:
-          title: What is your contribution ?
+          title: Hva er ditt bidrag?
         project:
-          title: What is your project ?
+          title: Hva er prosjektet ditt?
         issue:
-          title: What is your issue ?
+          title: Hva er problemet ditt?
         option:
-          title: What is your option ?
+          title: Hva er alternativet ditt?
       details:
         title: Detaljer
       attachements:
-        title: Images and Attachements
+        title: Bilder og vedlegg
       extra:
-        title: Additional information
+        title: Tilleggsinformasjon
   custom_field_options:
     gender:
       male: Mann
