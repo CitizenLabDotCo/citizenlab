@@ -108,32 +108,34 @@ const SignIn = memo<Props>(
           headerHeight="68px"
           className="signupincontentcontainer"
         >
-          {metaData.error ? (
-            <Error
-              text={<FormattedMessage {...messages.somethingWentWrongText} />}
-              animate={false}
-              marginBottom="30px"
-            />
-          ) : (
-            <>
-              {activeStep === 'auth-providers' && (
-                <AuthProviders
-                  metaData={metaData}
-                  onAuthProviderSelected={handleOnAuthProviderSelected}
-                  goToOtherFlow={handleGoToSignUpFlow}
-                />
-              )}
+          <>
+            {metaData.error?.code === 'general' ? (
+              <Error
+                text={<FormattedMessage {...messages.somethingWentWrongText} />}
+                animate={false}
+                marginBottom="30px"
+              />
+            ) : (
+              <>
+                {activeStep === 'auth-providers' && (
+                  <AuthProviders
+                    metaData={metaData}
+                    onAuthProviderSelected={handleOnAuthProviderSelected}
+                    goToOtherFlow={handleGoToSignUpFlow}
+                  />
+                )}
 
-              {activeStep === 'password-signin' && (
-                <PasswordSignin
-                  metaData={metaData}
-                  onSignInCompleted={handleOnSignInCompleted}
-                  onGoToLogInOptions={handleGoToLogInOptions}
-                  onGoToSignUp={onGoToSignUp}
-                />
-              )}
-            </>
-          )}
+                {activeStep === 'password-signin' && (
+                  <PasswordSignin
+                    metaData={metaData}
+                    onSignInCompleted={handleOnSignInCompleted}
+                    onGoToLogInOptions={handleGoToLogInOptions}
+                    onGoToSignUp={onGoToSignUp}
+                  />
+                )}
+              </>
+            )}
+          </>
         </StyledModalContentContainer>
       </Container>
     );

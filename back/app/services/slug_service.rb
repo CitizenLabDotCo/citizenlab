@@ -58,7 +58,7 @@ class SlugService
   end
 
   def slugify(str)
-    if latinish? str
+    if TextUtils.latinish?(str)
       # `parametrize` transliterates (replaces ü with u) text.
       # It's more convenient, because URL looks the same everywhere (browser, text editor).
       # But proper transliteration is difficult (it should be configured for each language).
@@ -70,12 +70,5 @@ class SlugService
         .gsub(/[^\p{L}\p{N}]+/, '-') # replace all characters that are not letters or numbers
         .gsub(/\A-+|-+\z/, '') # remove leading and trailing dashes
     end
-  end
-
-  private
-
-  def latinish?(str)
-    # When it contains a character A-Z or a-z.
-    str =~ /\A.*[A-Za-z]+.*\z/
   end
 end

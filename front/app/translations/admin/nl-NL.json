@@ -1748,7 +1748,7 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Weet je zeker dat je deze pagina wilt verwijderen? Dit kan niet ongedaan gemaakt worden. Je kunt de pagina ook uit de navigatiebalk verwijderen als je nog niet klaar bent om deze te verwijderen.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Weet je zeker dat je deze pagina wilt verwijderen? Dit kan niet ongedaan gemaakt worden.",
   "app.modules.navbar.admin.containers.pageHeader": "Pagina's en menu",
-  "app.modules.navbar.admin.containers.pageSubtitle": "Je navigatiebalk kan maximaal vijf pagina's weergeven naast de startpagina en de projectenpagina's. Je kunt menu-items hernoemen, opnieuw ordenen en nieuwe pagina's toevoegen met uw eigen inhoud.",
+  "app.modules.navbar.admin.containers.pageSubtitle": "Je navigatiebalk kan maximaal vijf pagina's weergeven naast de startpagina en de projectenpagina. Je kunt menu-items een andere naam geven, anders ordenen en nieuwe pagina's toevoegen met je eigen inhoud.",
   "app.modules.project_management.admin.components.permissionsTab": "Toegangsrechten",
   "components.admin.ServerError.genericServerError": "Er ging iets fout bij het laden van deze pagina, probeer het later opnieuw."
 }

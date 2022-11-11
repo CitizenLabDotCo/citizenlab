@@ -1225,6 +1225,7 @@
   "app.containers.SignUp.emptyLastNameError": "Entrez votre nom",
   "app.containers.SignUp.emptyTokenError": "Entrez votre code d'invitation",
   "app.containers.SignUp.firstNamesLabel": "Prénom",
+  "app.containers.SignUp.franceConnectMergingFailed": "Un compte d’utilisateur avec cette adresse mail existe déjà.{br}{br}Vous ne pouvez pas accéder à la plateforme en utilisant FranceConnect, puisque les informations personnelles ne correspondent pas au compte. Pour vous identifier en utilisant FranceConnect, il faudrait d’abord changer le nom et prénom sur la plateforme pour qu’ils correspondent aux informations officielles.{br}{br}Vous pouvez vous connectez en suivant le champ ci-dessous.",
   "app.containers.SignUp.goToLogIn": "Vous avez déjà un compte ? {goToOtherFlowLink}",
   "app.containers.SignUp.goToSignUp": "Vous n'avez pas de compte ? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Etape {activeStepNumber} sur {totalStepsCount}: {stepName}",

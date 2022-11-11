@@ -23,7 +23,7 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     pathname: metaData?.pathname || window.location.pathname,
     verification: metaData?.verification,
     verificationContext: metaData?.verificationContext,
-    error: !!metaData?.error,
+    error: metaData?.error,
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,
     inModal: true,
