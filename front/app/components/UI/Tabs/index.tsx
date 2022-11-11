@@ -75,7 +75,7 @@ export interface ITabItem {
   icon?: IconNames;
 }
 
-interface Props {
+export interface Props {
   items: ITabItem[];
   selectedValue: string;
   selectedTabBgColor?: string;
@@ -106,6 +106,7 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
           onMouseDown={removeFocusAfterMouseClick}
           onClick={handleTabOnClick}
           data-itemvalue={item.name}
+          type="button"
         >
           <TabText>{item.label}</TabText>
           {item.icon && <TabIcon name={item.icon} />}

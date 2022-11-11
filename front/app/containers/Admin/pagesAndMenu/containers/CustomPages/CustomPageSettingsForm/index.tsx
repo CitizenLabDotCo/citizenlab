@@ -15,7 +15,8 @@ import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/Section
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import SlugInput from 'components/HookForm/SlugInput';
-import { Box } from '@citizenlab/cl2-component-library';
+import Tabs from 'components/HookForm/Tabs';
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -32,15 +33,31 @@ export interface FormValues {
   title_multiloc: Multiloc;
   nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
+  linkedProjectsType: string;
 }
 
 type TMode = 'new' | 'edit';
 interface Props {
-  defaultValues?: FormValues;
+  defaultValues?: Partial<FormValues>;
   showNavBarItemTitle?: boolean;
   mode: TMode;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
+
+const linkedProjectsTabs = [
+  {
+    name: 'none',
+    label: 'none',
+  },
+  {
+    name: 'byTag',
+    label: 'By Tag',
+  },
+  {
+    name: 'byArea',
+    label: 'By Area',
+  },
+];
 
 const CustomPageSettingsForm = ({
   defaultValues,
@@ -64,6 +81,7 @@ const CustomPageSettingsForm = ({
         .matches(slugRegEx, formatMessage(messages.slugRegexError))
         .required(formatMessage(messages.slugRequiredError)),
     }),
+    linkedProjectsType: string().required(),
   });
 
   const methods = useForm({
@@ -115,6 +133,20 @@ const CustomPageSettingsForm = ({
             {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
+            {/* // should be behind a feature flag */}
+            <Box mb="20px">
+              <Box display="flex" justifyContent="flex-start">
+                <Text>Linked Projects</Text>
+                <IconTooltip ml="40px" content="Link some projects" />
+              </Box>
+              <Tabs
+                name="linkedProjectsType"
+                items={linkedProjectsTabs}
+                onClick={(e) => {
+                  console.log(e);
+                }}
+              />
+            </Box>
             <Box display="flex">
               <Button
                 data-cy="e2e-submit-custom-page"

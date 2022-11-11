@@ -36,6 +36,7 @@ const EditCustomPageSettings = () => {
               customPage.attributes.nav_bar_item_title_multiloc,
           }),
           slug: customPage.attributes.slug,
+          linkedProjectsType: 'none',
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}

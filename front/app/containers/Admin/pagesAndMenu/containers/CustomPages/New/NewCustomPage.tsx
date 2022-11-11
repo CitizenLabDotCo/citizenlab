@@ -16,7 +16,15 @@ const NewCustomPage = () => {
     );
   };
 
-  return <CustomPageSettingsForm mode="new" onSubmit={handleOnSubmit} />;
+  return (
+    <CustomPageSettingsForm
+      mode="new"
+      onSubmit={handleOnSubmit}
+      defaultValues={{
+        linkedProjectsType: 'none',
+      }}
+    />
+  );
 };
 
 export default NewCustomPage;
