@@ -8,7 +8,7 @@ import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 // Typings
 import {
-  StatCardChartData,
+  StatCardData,
   StatCardProps,
   StatCardConfig,
 } from '../../hooks/useStatCard/typings';
@@ -32,10 +32,7 @@ export const proposalsConfig: StatCardConfig = {
   title: messages.proposals,
 
   // Create the data object
-  dataParser: (
-    responseData,
-    labels: ProposalsCardLabels
-  ): StatCardChartData => {
+  dataParser: (responseData, labels: ProposalsCardLabels): StatCardData => {
     const [total, totalPeriod, successful, successfulPeriod] = responseData;
     return {
       cardTitle: labels.proposals,

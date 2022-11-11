@@ -7,7 +7,7 @@ import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 // Typings
 import {
-  StatCardChartData,
+  StatCardData,
   StatCardProps,
   StatCardConfig,
 } from '../../hooks/useStatCard/typings';
@@ -31,7 +31,7 @@ export const eventsConfig: StatCardConfig = {
   title: messages.events,
 
   // Create the data object
-  dataParser: (responseData, labels: EventsCardLabels): StatCardChartData => {
+  dataParser: (responseData, labels: EventsCardLabels): StatCardData => {
     // Upcoming is not available if 3 stat arrays are not returned
     let total;
     let upcoming;
@@ -42,7 +42,7 @@ export const eventsConfig: StatCardConfig = {
       [total, completed] = responseData;
     }
 
-    const cardData: StatCardChartData = {
+    const cardData: StatCardData = {
       cardTitle: labels.events,
       fileName: underscoreCase(labels.events),
       stats: [],

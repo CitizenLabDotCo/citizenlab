@@ -1,7 +1,7 @@
 import { Query } from '../../services/analyticsFacts';
 import moment from 'moment';
 import { ProposalsCardLabels, proposalsConfig } from './config';
-import { StatCardChartData } from '../../hooks/useStatCard/typings';
+import { StatCardData } from '../../hooks/useStatCard/typings';
 
 describe('Proposals card data parsing', () => {
   beforeAll(() => {
@@ -11,8 +11,8 @@ describe('Proposals card data parsing', () => {
     });
   });
 
-  it('Transforms data correctly into chart data', () => {
-    const expectedChartData: StatCardChartData = {
+  it('Transforms data correctly into data format required by the component', () => {
+    const expectedCardData: StatCardData = {
       cardTitle: 'Proposals',
       fileName: 'proposals',
       periodLabel: '30 days',
@@ -46,7 +46,7 @@ describe('Proposals card data parsing', () => {
     //
     // console.log(data);
 
-    expect(data).toEqual(expectedChartData);
+    expect(data).toEqual(expectedCardData);
   });
 
   it('Creates the correct query when date & project filters applied', () => {

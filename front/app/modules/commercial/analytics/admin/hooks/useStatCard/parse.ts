@@ -1,11 +1,11 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { StatCardChartData, StatCardLabels } from './typings';
+import { StatCardData, StatCardLabels } from './typings';
 import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
 import { FormatMessage } from '../../../../../../typings';
 import { IResolution } from '../../../../../../components/admin/ResolutionControl';
 import { MessageDescriptor } from 'react-intl';
 
-export const parseExcelData = (data: StatCardChartData): XlsxData => {
+export const parseExcelData = (data: StatCardData): XlsxData => {
   const xlsxDataSheet = {};
   data.stats.forEach((stat) => {
     const label = underscoreCase(stat.label);

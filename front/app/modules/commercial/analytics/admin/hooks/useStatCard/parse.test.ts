@@ -1,10 +1,10 @@
 import { parseExcelData } from './parse';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { StatCardChartData } from './typings';
+import { StatCardData } from './typings';
 
 describe('Stat card Excel parsing', () => {
   it('Transforms data correctly into XLS data', () => {
-    const chartData: StatCardChartData = {
+    const statCardData: StatCardData = {
       cardTitle: 'Card Title',
       fileName: 'card_title',
       periodLabel: '30 Days',
@@ -24,6 +24,6 @@ describe('Stat card Excel parsing', () => {
       ],
     };
 
-    expect(parseExcelData(chartData)).toEqual(expectedXlsData);
+    expect(parseExcelData(statCardData)).toEqual(expectedXlsData);
   });
 });

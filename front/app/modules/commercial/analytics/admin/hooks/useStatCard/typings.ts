@@ -10,15 +10,15 @@ export interface StatCardStat {
   toolTip?: string;
 }
 
-export interface StatCardChartData {
+export interface StatCardData {
   cardTitle: string;
   fileName: string;
   periodLabel?: string;
   stats: StatCardStat[];
 }
 
-export interface StatCardData {
-  cardData: StatCardChartData;
+export interface StatCardDataSet {
+  cardData: StatCardData;
   xlsxData: XlsxData;
 }
 
@@ -54,7 +54,7 @@ export type SingleCountResponse = {
 
 // Functions to be implemented on each StatCard
 export interface StatCardDataParser {
-  (responseData, formatLabels): StatCardChartData;
+  (responseData, formatLabels): StatCardData;
 }
 
 export interface StatCardQueryHandler {

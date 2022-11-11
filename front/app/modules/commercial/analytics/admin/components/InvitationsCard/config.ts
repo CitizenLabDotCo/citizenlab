@@ -8,7 +8,7 @@ import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 // Typings
 import {
-  StatCardChartData,
+  StatCardData,
   StatCardProps,
   StatCardConfig,
 } from '../../hooks/useStatCard/typings';
@@ -32,10 +32,7 @@ export const invitationsConfig: StatCardConfig = {
   title: messages.invitations,
 
   // Create the data object
-  dataParser: (
-    responseData,
-    labels: InvitationsCardLabels
-  ): StatCardChartData => {
+  dataParser: (responseData, labels: InvitationsCardLabels): StatCardData => {
     // Pending stat is not available if 5 stat arrays are not returned
     let total;
     let totalPeriod;
@@ -48,7 +45,7 @@ export const invitationsConfig: StatCardConfig = {
       [total, totalPeriod, accepted, acceptedPeriod] = responseData;
     }
 
-    const cardData: StatCardChartData = {
+    const cardData: StatCardData = {
       cardTitle: labels.invitations,
       fileName: underscoreCase(labels.invitations),
       periodLabel: labels.periodLabel,

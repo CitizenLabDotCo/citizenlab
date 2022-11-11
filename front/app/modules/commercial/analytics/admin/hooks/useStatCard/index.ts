@@ -11,7 +11,7 @@ import { useIntl } from 'utils/cl-intl';
 // typings
 import {
   SingleCountResponse,
-  StatCardData,
+  StatCardDataSet,
   StatCardQueryParameters,
 } from './typings';
 
@@ -24,7 +24,7 @@ export default function useStatCard({
   endAtMoment,
   resolution,
 }: StatCardQueryParameters) {
-  const [statCard, setStatCard] = useState<StatCardData | NilOrError>(
+  const [statCard, setStatCard] = useState<StatCardDataSet | NilOrError>(
     undefined
   );
   const { formatMessage } = useIntl();
@@ -43,11 +43,11 @@ export default function useStatCard({
           formatMessage,
           resolution
         );
-        const chartData = dataParser(response.data, formattedLabels);
-        const xlsxData = parseExcelData(chartData);
+        const cardData = dataParser(response.data, formattedLabels);
+        const xlsxData = parseExcelData(cardData);
 
         setStatCard({
-          cardData: chartData,
+          cardData,
           xlsxData,
         });
       }
