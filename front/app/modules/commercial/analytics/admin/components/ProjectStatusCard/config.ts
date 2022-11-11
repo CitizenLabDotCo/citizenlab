@@ -12,7 +12,6 @@ import {
   StatCardConfig,
 } from '../../hooks/useStatCard/typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
-import moment, { Moment } from 'moment';
 
 // Type helps to keep this file and tests type safe although useStatCard returns a more generic object
 export interface ProjectStatusCardLabels {
@@ -91,19 +90,20 @@ export const projectStatusConfig: StatCardConfig = {
     endAtMoment,
   }: StatCardProps): Query => {
     const queryBase = (
-      startMoment: Moment | null | undefined,
-      endMoment: Moment | null,
-      dateType: 'start' | 'end' | 'created'
+      status?: 'active' | 'archived' | 'finished' | 'draft'
     ): QuerySchema => {
       const querySchema: QuerySchema = {
-        fact: 'event',
+        fact: 'project_status',
         aggregations: {
           all: 'count',
         },
       };
 
+      const statusFilter = status === undefined ? {} : { status };
+
       const filters = {
-        ...getDateFilter(`dimension_date_${dateType}`, startMoment, endMoment),
+        ...statusFilter,
+        ...getDateFilter(`dimension_date`, startAtMoment, endAtMoment),
         ...getProjectFilter('dimension_project', projectId),
       };
       if (Object.keys(filters).length !== 0) {
@@ -113,36 +113,11 @@ export const projectStatusConfig: StatCardConfig = {
       return querySchema;
     };
 
-    const queryTotal: QuerySchema = queryBase(
-      startAtMoment,
-      endAtMoment,
-      'created'
-    );
-
-    const todayMoment = moment();
-    const wayPastMoment = moment().set('year', 2010);
-    const wayForwardMoment = moment().set('year', 2030);
-
-    const queryActive: QuerySchema = queryBase(
-      todayMoment,
-      wayForwardMoment,
-      'start'
-    );
-    const queryArchived: QuerySchema = queryBase(
-      startAtMoment ? startAtMoment : wayPastMoment,
-      endAtMoment ? endAtMoment : todayMoment,
-      'end'
-    );
-    const queryFinished: QuerySchema = queryBase(
-      startAtMoment ? startAtMoment : wayPastMoment,
-      endAtMoment ? endAtMoment : todayMoment,
-      'end'
-    );
-    const queryDraft: QuerySchema = queryBase(
-      startAtMoment ? startAtMoment : wayPastMoment,
-      endAtMoment ? endAtMoment : todayMoment,
-      'end'
-    );
+    const queryTotal: QuerySchema = queryBase();
+    const queryActive: QuerySchema = queryBase('active');
+    const queryArchived: QuerySchema = queryBase('archived');
+    const queryFinished: QuerySchema = queryBase('finished');
+    const queryDraft: QuerySchema = queryBase('draft');
 
     // Remove the total and active queries if there are start and end date filters
     let returnQuery = [
@@ -155,6 +130,11 @@ export const projectStatusConfig: StatCardConfig = {
     if (startAtMoment && endAtMoment) {
       returnQuery = [queryArchived, queryFinished, queryDraft];
     }
+    console.log(
+      JSON.stringify({
+        query: returnQuery,
+      })
+    );
     return {
       query: returnQuery,
     };
