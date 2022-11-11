@@ -154,11 +154,16 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
             })}
           />
         )}
-
         {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
           azureAdLoginEnabled) &&
           franceconnectLoginEnabled && <Or />}
+
+        <Outlet
+          id="app.components.SignUpIn.AuthProviders.ContainerStart"
+          flow={flow}
+          onContinue={onAuthProviderSelected}
+        />
 
         {isPasswordSigninOrSignupAllowed && (
           <StyledAuthProviderButton
@@ -219,11 +224,6 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
             />
           </StyledAuthProviderButton>
         )}
-        <Outlet
-          id="app.components.SignUpIn.AuthProviders.ContainerEnd"
-          flow={flow}
-          onContinue={onAuthProviderSelected}
-        />
 
         <Options>
           <Option>

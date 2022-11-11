@@ -5,7 +5,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.SignUpIn.AuthProviders.ContainerEnd': (props) => {
+    'app.components.SignUpIn.AuthProviders.ContainerStart': (props) => {
       return (
         <FeatureFlag name="vienna_citizen_login">
           <ViennaSamlButton {...props} />
