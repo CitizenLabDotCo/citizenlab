@@ -42,6 +42,10 @@ class StaticPage < ApplicationRecord
   has_one :nav_bar_item, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
+
+  has_and_belongs_to_many :topics
+  has_and_belongs_to_many :areas
+
   accepts_nested_attributes_for :nav_bar_item
   accepts_nested_attributes_for :text_images
 
@@ -51,6 +55,7 @@ class StaticPage < ApplicationRecord
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
+  before_validation :destroy_obsolete_associations
 
   before_destroy :confirm_is_custom, prepend: true
 
@@ -78,13 +83,14 @@ class StaticPage < ApplicationRecord
 
   validates :projects_enabled, inclusion: [true, false]
   with_options if: -> { projects_enabled == true } do
-    validates :projects_filter_type, presence: true, inclusion: %w[area topics]
+    validates :projects_filter_type, presence: true, inclusion: %w[areas topics]
   end
 
   validates :events_widget_enabled, inclusion: [true, false]
 
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
+  validates :areas, length: { is: 1 }, if: -> { projects_filter_type == 'areas' }
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
@@ -135,5 +141,9 @@ class StaticPage < ApplicationRecord
     self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
     self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
     self[attribute] = @service.linkify_multiloc(self[attribute])
+  end
+
+  def destroy_obsolete_associations
+    public_send(projects_filter_type_was).destroy_all if projects_filter_type_changed? && projects_filter_type_was.present?
   end
 end
