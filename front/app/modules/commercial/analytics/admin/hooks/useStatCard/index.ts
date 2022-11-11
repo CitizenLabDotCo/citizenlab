@@ -55,6 +55,7 @@ export default function useStatCard({
 
     return () => subscription.unsubscribe();
   }, [
+    messages,
     dataParser,
     queryHandler,
     projectId,

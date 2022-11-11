@@ -22,5 +22,4 @@ resource 'Analytics - FactPosts model' do
     #                                        { 'dimension_date_registration.month': '2022-10', count: 1 }
     #                                      ])
   end
-
 end
