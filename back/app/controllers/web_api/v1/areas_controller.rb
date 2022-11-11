@@ -52,14 +52,12 @@ class WebApi::V1::AreasController < ApplicationController
 
   def destroy
     @side_fx_service.before_destroy(@area, current_user)
-    area = @area.destroy
-    if area
-      @side_fx_service.after_destroy(area, current_user)
+    if @area.destroy
+      @side_fx_service.after_destroy(@area, current_user)
       head :ok
-      return
+    else
+      render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
-
-    render json: { errors: @area.errors.details }, status: :unprocessable_entity
   end
 
   def reorder
