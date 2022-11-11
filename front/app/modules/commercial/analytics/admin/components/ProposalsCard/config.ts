@@ -11,10 +11,18 @@ import {
   StatCardChartData,
   StatCardProps,
   StatCardConfig,
-  StatCardLabels,
 } from '../../hooks/useStatCard/typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
 import moment, { Moment } from 'moment';
+
+// Type helps to keep this file and tests type safe although useStatCard returns a more generic object
+export interface ProposalsCardLabels {
+  proposals: string;
+  periodLabel: string;
+  totalProposals: string;
+  successfulProposals: string;
+  successfulProposalsToolTip: string;
+}
 
 export const proposalsConfig: StatCardConfig = {
   // Pass in the messages object
@@ -24,9 +32,11 @@ export const proposalsConfig: StatCardConfig = {
   title: messages.proposals,
 
   // Create the data object
-  dataParser: (responseData, labels: StatCardLabels): StatCardChartData => {
+  dataParser: (
+    responseData,
+    labels: ProposalsCardLabels
+  ): StatCardChartData => {
     const [total, totalPeriod, successful, successfulPeriod] = responseData;
-
     return {
       cardTitle: labels.proposals,
       fileName: underscoreCase(labels.proposals),

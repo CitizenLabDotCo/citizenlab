@@ -14,6 +14,15 @@ import {
 import { Query, QuerySchema } from '../../services/analyticsFacts';
 import moment, { Moment } from 'moment';
 
+// Type helps to keep this file and tests type safe although useStatCard returns a more generic object
+export interface EventsCardLabels {
+  events: string;
+  periodLabel: string;
+  totalEvents: string;
+  upcoming: string;
+  completed: string;
+}
+
 export const eventsConfig: StatCardConfig = {
   // Pass in the messages object
   messages,
@@ -22,7 +31,7 @@ export const eventsConfig: StatCardConfig = {
   title: messages.events,
 
   // Create the data object
-  dataParser: (responseData, labels): StatCardChartData => {
+  dataParser: (responseData, labels: EventsCardLabels): StatCardChartData => {
     // Upcoming is not available if 3 stat arrays are not returned
     let total;
     let upcoming;

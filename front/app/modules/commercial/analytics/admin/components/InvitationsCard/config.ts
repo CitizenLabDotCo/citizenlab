@@ -15,6 +15,15 @@ import {
 import { Query, QuerySchema } from '../../services/analyticsFacts';
 import moment, { Moment } from 'moment';
 
+// Type helps to keep this file and tests type safe although useStatCard returns a more generic object
+export interface InvitationsCardLabels {
+  invitations: string;
+  periodLabel: string;
+  totalInvites: string;
+  pending: string;
+  accepted: string;
+}
+
 export const invitationsConfig: StatCardConfig = {
   // Pass in the messages object
   messages,
@@ -23,7 +32,10 @@ export const invitationsConfig: StatCardConfig = {
   title: messages.invitations,
 
   // Create the data object
-  dataParser: (responseData, labels): StatCardChartData => {
+  dataParser: (
+    responseData,
+    labels: InvitationsCardLabels
+  ): StatCardChartData => {
     // Pending stat is not available if 5 stat arrays are not returned
     let total;
     let totalPeriod;
