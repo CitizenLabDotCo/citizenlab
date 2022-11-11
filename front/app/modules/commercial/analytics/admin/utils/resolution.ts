@@ -56,7 +56,7 @@ export const getTimePeriodTranslationByResolution = (
   return formatMessage(messages[RESOLUTION_TO_MESSAGE_KEY[resolution]]);
 };
 
-export const getTimePeriodMoment = (resolution: IResolution) => {
+export const getTimePeriodMoment = (resolution: IResolution = 'month') => {
   let days = 30;
   if (resolution === 'week') days = 7;
   if (resolution === 'day') days = 1;

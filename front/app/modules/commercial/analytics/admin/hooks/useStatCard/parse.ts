@@ -1,5 +1,9 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { StatCardChartData } from './typings';
+import { StatCardChartData, StatCardLabels } from './typings';
+import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
+import { FormatMessage } from '../../../../../../typings';
+import { IResolution } from '../../../../../../components/admin/ResolutionControl';
+import { MessageDescriptor } from 'react-intl';
 
 export const parseExcelData = (data: StatCardChartData): XlsxData => {
   const xlsxDataSheet = {};
@@ -23,4 +27,21 @@ export const underscoreCase = (label: string | undefined): string => {
     return label.toLowerCase().replaceAll(' ', '_').replaceAll(':', '');
   }
   return '';
+};
+
+export const formatLabels = (
+  messages: Record<string, MessageDescriptor>,
+  formatMessage: FormatMessage,
+  resolution: IResolution
+): StatCardLabels => {
+  const labels = {
+    periodLabel: getTimePeriodTranslationByResolution(
+      formatMessage,
+      resolution
+    ),
+  };
+  Object.entries(messages).forEach(([name, value]) => {
+    labels[name] = formatMessage(value);
+  });
+  return labels;
 };

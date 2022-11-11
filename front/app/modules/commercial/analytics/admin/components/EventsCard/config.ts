@@ -3,6 +3,7 @@ import messages from './messages';
 // Utils
 import { formatCountValue } from '../../utils/parse';
 import { getDateFilter, getProjectFilter } from '../../utils/query';
+import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 // Typings
 import {
@@ -12,18 +13,16 @@ import {
 } from '../../hooks/useStatCard/typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
 import moment, { Moment } from 'moment';
-import { WrappedComponentProps } from 'react-intl';
-import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 export const eventsConfig: StatCardConfig = {
+  // Pass in the messages object
+  messages,
+
   // Card title
   title: messages.events,
 
   // Create the data object
-  dataParser: (
-    responseData,
-    formatMessage: WrappedComponentProps['intl']['formatMessage']
-  ): StatCardChartData => {
+  dataParser: (responseData, labels): StatCardChartData => {
     // Upcoming is not available if 3 stat arrays are not returned
     let total;
     let upcoming;
@@ -35,21 +34,21 @@ export const eventsConfig: StatCardConfig = {
     }
 
     const cardData: StatCardChartData = {
-      cardTitle: formatMessage(messages.events),
-      fileName: underscoreCase(formatMessage(messages.events)),
+      cardTitle: labels.events,
+      fileName: underscoreCase(labels.events),
       stats: [],
     };
     cardData.stats.push({
-      label: formatMessage(messages.totalEvents),
+      label: labels.totalEvents,
       value: formatCountValue(total[0].count),
     });
     upcoming &&
       cardData.stats.push({
-        label: formatMessage(messages.upcoming),
+        label: labels.upcoming,
         value: formatCountValue(upcoming[0].count),
       });
     cardData.stats.push({
-      label: formatMessage(messages.completed),
+      label: labels.completed,
       value: formatCountValue(completed[0].count),
     });
 

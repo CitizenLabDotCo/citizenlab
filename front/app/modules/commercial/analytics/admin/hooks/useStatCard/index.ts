@@ -5,7 +5,7 @@ import { analyticsStream } from '../../services/analyticsFacts';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { parseExcelData } from './parse';
+import { formatLabels, parseExcelData } from './parse';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
@@ -16,6 +16,7 @@ import {
 } from './typings';
 
 export default function useStatCard({
+  messages,
   queryHandler,
   dataParser,
   projectId,
@@ -37,7 +38,12 @@ export default function useStatCard({
           setStatCard(response);
           return;
         }
-        const chartData = dataParser(response.data, formatMessage, resolution);
+        const formattedLabels = formatLabels(
+          messages,
+          formatMessage,
+          resolution
+        );
+        const chartData = dataParser(response.data, formattedLabels);
         const xlsxData = parseExcelData(chartData);
 
         setStatCard({

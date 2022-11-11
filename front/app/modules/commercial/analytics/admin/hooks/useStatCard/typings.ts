@@ -1,6 +1,6 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Dates, ProjectId, Resolution } from '../../typings';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import { Query } from '../../services/analyticsFacts';
 
 export interface StatCardStat {
@@ -22,6 +22,8 @@ export interface StatCardData {
   xlsxData: XlsxData;
 }
 
+export type StatCardLabels = Record<string, string>;
+
 export type StatCardProps = ProjectId & Dates & Resolution;
 
 export interface StatCardTemplateProps extends StatCardProps {
@@ -29,11 +31,13 @@ export interface StatCardTemplateProps extends StatCardProps {
 }
 
 export interface StatCardQueryParameters extends StatCardProps {
+  messages: Record<string, MessageDescriptor>;
   queryHandler: StatCardQueryHandler;
   dataParser: StatCardDataParser;
 }
 
 export interface StatCardConfig {
+  messages: Record<string, MessageDescriptor>;
   title: MessageDescriptor;
   queryHandler: StatCardQueryHandler;
   dataParser: StatCardDataParser;
@@ -50,11 +54,7 @@ export type SingleCountResponse = {
 
 // Functions to be implemented on each StatCard
 export interface StatCardDataParser {
-  (
-    responseData,
-    formatMessage: WrappedComponentProps['intl']['formatMessage'],
-    resolution?
-  ): StatCardChartData;
+  (responseData, formatLabels): StatCardChartData;
 }
 
 export interface StatCardQueryHandler {

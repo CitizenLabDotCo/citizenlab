@@ -1,53 +1,47 @@
 import messages from './messages';
 
 // Utils
-import {
-  getTimePeriodMoment,
-  getTimePeriodTranslationByResolution,
-} from '../../utils/resolution';
+import { getTimePeriodMoment } from '../../utils/resolution';
 import { formatCountValue } from '../../utils/parse';
 import { getDateFilter, getProjectFilter } from '../../utils/query';
+import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 // Typings
 import {
   StatCardChartData,
   StatCardProps,
   StatCardConfig,
+  StatCardLabels,
 } from '../../hooks/useStatCard/typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
 import moment, { Moment } from 'moment';
-import { WrappedComponentProps } from 'react-intl';
-import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 export const proposalsConfig: StatCardConfig = {
+  // Pass in the messages object
+  messages,
+
   // Card title
   title: messages.proposals,
 
   // Create the data object
-  dataParser: (
-    responseData,
-    formatMessage: WrappedComponentProps['intl']['formatMessage'],
-    resolution
-  ): StatCardChartData => {
+  dataParser: (responseData, labels: StatCardLabels): StatCardChartData => {
     const [total, totalPeriod, successful, successfulPeriod] = responseData;
+
     return {
-      cardTitle: formatMessage(messages.proposals),
-      fileName: underscoreCase(formatMessage(messages.proposals)),
-      periodLabel: getTimePeriodTranslationByResolution(
-        formatMessage,
-        resolution
-      ),
+      cardTitle: labels.proposals,
+      fileName: underscoreCase(labels.proposals),
+      periodLabel: labels.periodLabel,
       stats: [
         {
-          label: formatMessage(messages.totalProposals),
+          label: labels.totalProposals,
           value: formatCountValue(total[0].count),
           lastPeriod: formatCountValue(totalPeriod[0].count),
         },
         {
-          label: formatMessage(messages.successfulProposals),
+          label: labels.successfulProposals,
           value: formatCountValue(successful[0].count),
           lastPeriod: formatCountValue(successfulPeriod[0].count),
-          toolTip: formatMessage(messages.successfulProposalsToolTip),
+          toolTip: labels.successfulProposalsToolTip,
         },
       ],
     };

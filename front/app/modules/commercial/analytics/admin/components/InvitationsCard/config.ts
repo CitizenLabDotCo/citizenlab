@@ -1,10 +1,7 @@
 import messages from './messages';
 
 // Utils
-import {
-  getTimePeriodMoment,
-  getTimePeriodTranslationByResolution,
-} from '../../utils/resolution';
+import { getTimePeriodMoment } from '../../utils/resolution';
 import { formatCountValue } from '../../utils/parse';
 import { getDateFilter, getProjectFilter } from '../../utils/query';
 import { underscoreCase } from '../../hooks/useStatCard/parse';
@@ -17,18 +14,16 @@ import {
 } from '../../hooks/useStatCard/typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
 import moment, { Moment } from 'moment';
-import { WrappedComponentProps } from 'react-intl';
 
 export const invitationsConfig: StatCardConfig = {
+  // Pass in the messages object
+  messages,
+
   // Card title
   title: messages.invitations,
 
   // Create the data object
-  dataParser: (
-    responseData,
-    formatMessage: WrappedComponentProps['intl']['formatMessage'],
-    resolution
-  ): StatCardChartData => {
+  dataParser: (responseData, labels): StatCardChartData => {
     // Pending stat is not available if 5 stat arrays are not returned
     let total;
     let totalPeriod;
@@ -42,26 +37,23 @@ export const invitationsConfig: StatCardConfig = {
     }
 
     const cardData: StatCardChartData = {
-      cardTitle: formatMessage(messages.invitations),
-      fileName: underscoreCase(formatMessage(messages.invitations)),
-      periodLabel: getTimePeriodTranslationByResolution(
-        formatMessage,
-        resolution
-      ),
+      cardTitle: labels.invitations,
+      fileName: underscoreCase(labels.invitations),
+      periodLabel: labels.periodLabel,
       stats: [],
     };
     cardData.stats.push({
-      label: formatMessage(messages.totalInvites),
+      label: labels.totalInvites,
       value: formatCountValue(total[0].count),
       lastPeriod: formatCountValue(totalPeriod[0].count),
     });
     pending &&
       cardData.stats.push({
-        label: formatMessage(messages.pending),
+        label: labels.pending,
         value: formatCountValue(pending[0].count),
       });
     cardData.stats.push({
-      label: formatMessage(messages.accepted),
+      label: labels.accepted,
       value: formatCountValue(accepted[0].count),
       lastPeriod: formatCountValue(acceptedPeriod[0].count),
     });
@@ -125,18 +117,6 @@ export const invitationsConfig: StatCardConfig = {
       lastPeriodMoment,
       todayMoment,
       'accepted'
-    );
-
-    console.log(
-      JSON.stringify({
-        query: [
-          queryTotal,
-          queryTotalLastPeriod,
-          queryPending,
-          queryAccepted,
-          queryAcceptedLastPeriod,
-        ],
-      })
     );
 
     // Don't return the pending query if there are start and end date filters

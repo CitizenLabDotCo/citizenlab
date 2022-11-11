@@ -24,6 +24,7 @@ const StatCard = ({
   resolution,
 }: StatCardTemplateProps) => {
   const data = useStatCard({
+    messages: config.messages,
     queryHandler: config.queryHandler,
     dataParser: config.dataParser,
     projectId,
