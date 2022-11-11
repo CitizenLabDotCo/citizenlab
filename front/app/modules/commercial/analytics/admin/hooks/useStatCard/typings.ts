@@ -28,6 +28,7 @@ export type StatCardProps = ProjectId & Dates & Resolution;
 
 export interface StatCardTemplateProps extends StatCardProps {
   config: StatCardConfig;
+  showExportMenu?: boolean;
 }
 
 export interface StatCardQueryParameters extends StatCardProps {

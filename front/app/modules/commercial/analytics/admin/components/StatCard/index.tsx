@@ -22,6 +22,7 @@ const StatCard = ({
   startAtMoment,
   endAtMoment,
   resolution,
+  showExportMenu = true,
 }: StatCardTemplateProps) => {
   const data = useStatCard({
     messages: config.messages,
@@ -47,7 +48,6 @@ const StatCard = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  // TODO: Add tooltips
   const displayStats: ReactElement[] = [];
   cardData.stats.map((stat, index, arr) => {
     displayStats.push(
@@ -71,18 +71,19 @@ const StatCard = ({
     );
   });
 
-  return (
-    <GraphCard
-      title={cardData.cardTitle}
-      exportMenu={{
+  const exportMenu = showExportMenu
+    ? {
         name: cardData.fileName,
         xlsx: { data: xlsxData },
         currentProjectFilter: projectId,
         startAt,
         endAt,
         resolution,
-      }}
-    >
+      }
+    : undefined;
+
+  return (
+    <GraphCard title={cardData.cardTitle} exportMenu={exportMenu}>
       <Box width="100%" display="flex" flexDirection="row" pl="20px">
         {displayStats}
       </Box>
