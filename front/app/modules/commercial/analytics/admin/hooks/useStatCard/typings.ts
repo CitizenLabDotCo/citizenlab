@@ -8,6 +8,7 @@ export interface StatCardStat {
   label: string;
   lastPeriod?: string;
   toolTip?: string;
+  display?: 'corner' | 'column';
 }
 
 export interface StatCardData {

@@ -48,27 +48,32 @@ const StatCard = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  const displayStats: ReactElement[] = [];
+  const columnStats: ReactElement[] = [];
+  let cornerStat: string | undefined = undefined;
   cardData.stats.map((stat, index, arr) => {
-    displayStats.push(
-      <Box
-        pr="20px"
-        pl="20px"
-        width="100%"
-        borderRight={
-          index !== arr.length - 1 ? `1px solid ${colors.divider}` : '0'
-        }
-      >
-        <Statistic
-          name={stat.label}
-          value={stat.value}
-          textAlign="center"
-          bottomLabel={stat.lastPeriod ? cardData.periodLabel : undefined}
-          bottomLabelValue={stat.lastPeriod}
-          tooltipContent={stat.toolTip}
-        />
-      </Box>
-    );
+    if (stat.display === 'corner') {
+      cornerStat = `${stat.label}: ${stat.value}`;
+    } else {
+      columnStats.push(
+        <Box
+          pr="20px"
+          pl="20px"
+          width="100%"
+          borderRight={
+            index !== arr.length - 1 ? `1px solid ${colors.divider}` : '0'
+          }
+        >
+          <Statistic
+            name={stat.label}
+            value={stat.value}
+            textAlign="center"
+            bottomLabel={stat.lastPeriod ? cardData.periodLabel : undefined}
+            bottomLabelValue={stat.lastPeriod}
+            tooltipContent={stat.toolTip}
+          />
+        </Box>
+      );
+    }
   });
 
   const exportMenu = showExportMenu
@@ -83,9 +88,13 @@ const StatCard = ({
     : undefined;
 
   return (
-    <GraphCard title={cardData.cardTitle} exportMenu={exportMenu}>
+    <GraphCard
+      title={cardData.cardTitle}
+      exportMenu={exportMenu}
+      topRightStat={cornerStat}
+    >
       <Box width="100%" display="flex" flexDirection="row" pl="20px">
-        {displayStats}
+        {columnStats}
       </Box>
     </GraphCard>
   );

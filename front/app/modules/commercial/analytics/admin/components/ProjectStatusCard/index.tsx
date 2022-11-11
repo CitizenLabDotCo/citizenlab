@@ -17,6 +17,7 @@ const ProjectStatusCard = ({
       startAtMoment={startAtMoment}
       endAtMoment={endAtMoment}
       resolution={resolution}
+      showExportMenu={false}
     />
   );
 };

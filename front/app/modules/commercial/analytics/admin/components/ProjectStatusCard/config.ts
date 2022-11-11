@@ -75,7 +75,11 @@ export const projectStatusConfig: StatCardConfig = {
       value: formatCountValue(finished[0].count),
       toolTip: labels.finishedToolTip,
     });
-    console.log(draft); // Need to handle draft this differently
+    cardData.stats.push({
+      label: labels.draftProjects,
+      value: formatCountValue(draft[0].count),
+      display: 'corner',
+    });
 
     return cardData;
   },
