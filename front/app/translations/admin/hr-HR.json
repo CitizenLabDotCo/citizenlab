@@ -1142,6 +1142,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.open": "Otvori",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses": "Otvoreno za odgovore",
   "app.containers.AdminPage.ProjectEdit.survey.optional": "Opcijski",
+  "app.containers.AdminPage.ProjectEdit.survey.page": "Page",
+  "app.containers.AdminPage.ProjectEdit.survey.question": "Pitanje",
   "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Opis pitanja (opcija)",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Naslov pitanja",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Raspon",
