@@ -7,6 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import { StyledAuthProviderButton } from 'components/SignUpIn/AuthProviders';
 import { TOnContinueFunction } from 'components/SignUpIn/AuthProviderButton';
+import ViennaIcon from './ViennaIcon';
 
 // typings
 import { TSignUpInFlow } from 'components/SignUpIn';
@@ -45,11 +46,11 @@ const ViennaSamlButton = ({ onContinue, flow }: Props) => {
   return (
     <StyledAuthProviderButton
       authProvider="id_vienna_saml"
-      icon="vienna"
       onContinue={handleOnContinue}
       flow={flow}
       showConsentOnFlow={'signin'}
     >
+      <ViennaIcon />
       <Container>
         <FormattedMessage
           {...(flow === 'signin'
