@@ -1,9 +1,10 @@
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 
 // utils
-import { timeSeriesParser } from '../../utils/timeSeries';
+import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
 import { roundPercentage } from 'utils/math';
-import { RESOLUTION_TO_MESSAGE_KEY } from '../useVisitors/parse';
+import { keys } from 'utils/helperUtils';
+import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 
 // typings
 import {
@@ -30,24 +31,13 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   };
 };
 
-const getDate = (row: TimeSeriesResponseRow) => {
-  if ('dimension_date_registration.month' in row) {
-    return moment(row['dimension_date_registration.month']);
-  }
-
-  if ('dimension_date_registration.week' in row) {
-    return moment(row['dimension_date_registration.week']);
-  }
-
-  return moment(row['dimension_date_registration.date']);
-};
-
+const getDate = dateGetter('dimension_date_registration');
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: TimeSeriesResponseRow[],
+  responseTimeSeries: Response['data'][0],
   startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null | undefined,
+  endAtMoment: Moment | null,
   resolution: IResolution
 ): TimeSeries | null => {
   return _parseTimeSeries(
@@ -64,31 +54,31 @@ export const parseStats = (data: Response['data']): Stats => {
   const visitsWholePeriod = data[3][0];
   const visitsLastPeriod = data[4][0];
 
-  const conversionRateWholePeriod = getConversionRate(
-    registrationsWholePeriod.count,
-    visitsWholePeriod.count_visitor_id
+  const registrationRateWholePeriod = getConversionRate(
+    registrationsWholePeriod?.count ?? 0,
+    visitsWholePeriod?.count_visitor_id ?? 0
   );
 
-  const conversionRateLastPeriod = getConversionRate(
-    registrationsLastPeriod.count,
-    visitsLastPeriod.count_visitor_id
+  const registrationRateLastPeriod = getConversionRate(
+    registrationsLastPeriod?.count ?? 0,
+    visitsLastPeriod?.count_visitor_id ?? 0
   );
 
   return {
     registrations: {
-      value: registrationsWholePeriod.count.toString(),
-      lastPeriod: registrationsLastPeriod.count.toString(),
+      value: (registrationsWholePeriod?.count ?? 0).toString(),
+      lastPeriod: (registrationsWholePeriod?.count ?? 0).toString(),
     },
-    conversionRate: {
-      value: conversionRateWholePeriod,
-      lastPeriod: conversionRateLastPeriod,
+    registrationRate: {
+      value: registrationRateWholePeriod,
+      lastPeriod: registrationRateLastPeriod,
     },
   };
 };
 
-const getConversionRate = (registrations: number, visits: number) => {
-  if (visits <= 0) return `0%`;
-  return `${Math.min(100, roundPercentage(registrations, visits))}%`;
+export const getConversionRate = (from: number, to: number) => {
+  if (to <= 0) return `0%`;
+  return `${Math.min(100, roundPercentage(from, to))}%`;
 };
 
 export const parseExcelData = (
@@ -98,12 +88,11 @@ export const parseExcelData = (
   translations: Translations
 ) => {
   const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
-  const statsKeys: (keyof Stats)[] = ['registrations', 'conversionRate'];
 
-  const statsData = statsKeys.map((statistic) => ({
-    [translations.statistic]: translations[statistic],
-    [translations.total]: stats[statistic].value,
-    [lastPeriod]: stats[statistic].lastPeriod,
+  const statsData = keys(stats).map((key) => ({
+    [translations.statistic]: translations[key],
+    [translations.total]: stats[key].value,
+    [lastPeriod]: stats[key].lastPeriod,
   }));
 
   const timeSeriesData = timeSeries?.map((row) => ({
@@ -113,8 +102,6 @@ export const parseExcelData = (
 
   return {
     [translations.stats]: statsData,
-    ...(timeSeriesData
-      ? { [translations.timeSeries]: timeSeriesData }
-      : undefined),
+    [translations.timeSeries]: timeSeriesData ?? [],
   };
 };

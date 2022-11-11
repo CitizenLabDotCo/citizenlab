@@ -28,11 +28,13 @@ export default function useRegistrations({
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
-  const [deducedResolution, setDeducedResolution] =
-    useState<IResolution>(resolution);
+
   const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
+
+  const [deducedResolution, setDeducedResolution] =
+    useState<IResolution>(resolution);
 
   useEffect(() => {
     const observable = analyticsStream<Response>(

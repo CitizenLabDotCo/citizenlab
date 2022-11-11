@@ -1,17 +1,8 @@
-import { Moment } from 'moment';
+import { ProjectId, Dates, Pagination } from '../../typings';
 import { ReferrerTypeName } from '../useVisitorReferrerTypes/typings';
 import { ILinks } from 'typings';
 
-export interface QueryParameters extends QueryParametersWithoutPagination {
-  pageSize: number;
-  pageNumber: number;
-}
-
-export interface QueryParametersWithoutPagination {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-}
+export type QueryParameters = ProjectId & Dates & Pagination;
 
 // Responses
 export interface ReferrerListResponse {

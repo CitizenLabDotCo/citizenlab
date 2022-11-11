@@ -1661,7 +1661,6 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Ko može videti ovaj projekat?",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "Idi na menadžera unosa",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "Unosi",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate": "Stopa konverzije",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nove registracije",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registracije",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Ukupno registracija",

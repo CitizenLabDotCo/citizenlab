@@ -21,7 +21,7 @@ const Visitors = () => {
     undefined
   );
   const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
-  const [projectFilter, setProjectFilter] = useState<string | undefined>();
+  const [projectId, setProjectId] = useState<string | undefined>();
   const [resolution, setResolution] = useState<IResolution>('month');
 
   const handleChangeTimeRange = (
@@ -35,7 +35,7 @@ const Visitors = () => {
   };
 
   const handleProjectFilter = ({ value }: IOption) => {
-    setProjectFilter(value);
+    setProjectId(value);
   };
 
   return (
@@ -44,7 +44,7 @@ const Visitors = () => {
         <ChartFilters
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
-          currentProjectFilter={projectFilter}
+          currentProjectFilter={projectId}
           resolution={resolution}
           onChangeTimeRange={handleChangeTimeRange}
           onProjectFilter={handleProjectFilter}
@@ -53,9 +53,9 @@ const Visitors = () => {
       </Box>
 
       <Charts
+        projectId={projectId}
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        projectFilter={projectFilter}
         resolution={resolution}
       />
     </>

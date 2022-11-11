@@ -28,7 +28,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { QueryParametersWithoutPagination } from '../../hooks/useVisitorReferrers/typings';
+import { ProjectId, Dates } from '../../typings';
 
 const Percentage = ({ children }) => (
   <Text
@@ -43,9 +43,10 @@ const Percentage = ({ children }) => (
   </Text>
 );
 
-interface Props extends QueryParametersWithoutPagination {
-  onOpenModal?: () => void;
-}
+type Props = ProjectId &
+  Dates & {
+    onOpenModal?: () => void;
+  };
 
 const TableComponent = ({
   projectId,

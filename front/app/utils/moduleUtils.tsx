@@ -180,7 +180,7 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
     resolution: IResolution;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;

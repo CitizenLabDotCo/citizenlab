@@ -1661,7 +1661,6 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Bu projeyi kimler görebilir?",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "Girdi Yöneticisine git",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "Girdiler",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate": "Conversion rate",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "New registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Kayıtlar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total registrations",

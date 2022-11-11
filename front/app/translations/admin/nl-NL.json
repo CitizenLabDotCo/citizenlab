@@ -1661,7 +1661,6 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Wie kan dit project zien?",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "Ga naar alle bijdragen",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "Invoeren",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate": "Conversieratio",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nieuwe registraties",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registraties",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Totale registraties",

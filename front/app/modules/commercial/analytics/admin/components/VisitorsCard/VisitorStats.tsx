@@ -6,8 +6,8 @@ import Statistic from 'components/admin/Graphs/Statistic';
 
 // i18n
 import messages from './messages';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
+import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -18,15 +18,9 @@ import { Stats } from '../../hooks/useVisitors/typings';
 
 interface Props {
   stats: Stats | NilOrError;
-  projectFilter: string | undefined;
+  projectId: string | undefined;
   resolution: IResolution;
 }
-
-export const BOTTOM_LABEL_COPY: Record<IResolution, MessageDescriptor> = {
-  month: messages.last30Days,
-  week: messages.last7Days,
-  day: messages.yesterday,
-};
 
 const EMPTY_STAT = { value: '-', lastPeriod: '-' };
 const EMPTY_DATA: Stats = {
@@ -36,15 +30,14 @@ const EMPTY_DATA: Stats = {
   pageViews: EMPTY_STAT,
 };
 
-const VisitorStats = ({
-  stats,
-  projectFilter,
-  resolution,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const VisitorStats = ({ stats, projectId, resolution }: Props) => {
+  const { formatMessage } = useIntl();
   const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
 
-  const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
+  const bottomLabel = getTimePeriodTranslationByResolution(
+    formatMessage,
+    resolution
+  );
 
   return (
     <>
@@ -63,7 +56,7 @@ const VisitorStats = ({
             bottomLabel={bottomLabel}
             bottomLabelValue={shownStats.visitDuration.lastPeriod}
             tooltipContent={
-              projectFilter
+              projectId
                 ? formatMessage(messages.durationStatTooltipMessage)
                 : undefined
             }
@@ -85,7 +78,7 @@ const VisitorStats = ({
             bottomLabel={bottomLabel}
             bottomLabelValue={shownStats.pageViews.lastPeriod}
             tooltipContent={
-              projectFilter
+              projectId
                 ? formatMessage(messages.pageViewsStatTooltipMessage)
                 : undefined
             }
@@ -96,4 +89,4 @@ const VisitorStats = ({
   );
 };
 
-export default injectIntl(VisitorStats);
+export default VisitorStats;

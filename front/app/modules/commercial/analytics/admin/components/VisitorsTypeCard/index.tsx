@@ -18,30 +18,24 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Moment } from 'moment';
+import { ProjectId, Dates, Resolution } from '../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
-interface Props {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  projectFilter: string | undefined;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
 const VisitorsCard = ({
+  projectId,
   startAtMoment,
   endAtMoment,
-  projectFilter,
   resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
   const { pieData, xlsxData } = useVisitorTypes({
+    projectId,
     startAtMoment,
     endAtMoment,
-    projectId: projectFilter,
   });
 
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
@@ -84,7 +78,7 @@ const VisitorsCard = ({
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
-        currentProjectFilter: projectFilter,
+        currentProjectFilter: projectId,
         resolution,
       }}
     >

@@ -1,6 +1,8 @@
 // i18n
 import messages from './messages';
+import moduleMessages from '../../messages';
 import cardMessages from '../../components/VisitorsCard/messages';
+import { getTimePeriodTranslations } from '../../utils/resolution';
 
 // typings
 import { FormatMessage } from 'typings';
@@ -23,16 +25,14 @@ export interface Translations {
 export const getTranslations = (
   formatMessage: FormatMessage
 ): Translations => ({
-  stats: formatMessage(messages.stats),
+  stats: formatMessage(moduleMessages.stats),
   timeSeries: formatMessage(messages.timeSeries),
-  statistic: formatMessage(messages.statistic),
-  total: formatMessage(messages.total),
-  date: formatMessage(messages.date),
+  statistic: formatMessage(moduleMessages.statistic),
+  total: formatMessage(moduleMessages.total),
+  date: formatMessage(moduleMessages.date),
   visitors: formatMessage(cardMessages.visitors),
   visits: formatMessage(cardMessages.visits),
   visitDuration: formatMessage(cardMessages.visitDuration),
   pageViews: formatMessage(cardMessages.pageViews),
-  last30Days: formatMessage(cardMessages.last30Days),
-  last7Days: formatMessage(cardMessages.last7Days),
-  yesterday: formatMessage(cardMessages.yesterday),
+  ...getTimePeriodTranslations(formatMessage),
 });

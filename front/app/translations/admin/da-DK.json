@@ -1661,7 +1661,6 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Hvem kan se dette projekt?",
   "app.modules.commercial.analytics.admin.components.PostFeedback.goToInputManager": "Gå til Input Manager",
   "app.modules.commercial.analytics.admin.components.PostFeedback.inputs": "Indgange",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.conversionRate": "Omregningssats",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nye registreringer",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registreringer",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Registreringer i alt",

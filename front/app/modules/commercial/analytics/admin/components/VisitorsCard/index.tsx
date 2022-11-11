@@ -14,30 +14,24 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { ProjectId, Dates, Resolution } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  projectFilter: string | undefined;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
 const VisitorsCard = ({
+  projectId,
   startAtMoment,
   endAtMoment,
-  projectFilter,
   resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
   const { deducedResolution, stats, timeSeries, xlsxData } = useVisitors({
+    projectId,
     startAtMoment,
     endAtMoment,
-    projectId: projectFilter,
     resolution,
   });
 
@@ -55,27 +49,29 @@ const VisitorsCard = ({
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
-        currentProjectFilter: projectFilter,
+        currentProjectFilter: projectId,
         resolution: deducedResolution,
       }}
     >
-      <Box width="100%" display="flex" flexDirection="row">
-        <Box display="flex" flexDirection="row" pl="20px">
+      <Box px="20px" width="100%" display="flex" flexDirection="row">
+        <Box display="flex" flexDirection="row">
           <VisitorStats
             stats={stats}
-            projectFilter={projectFilter}
+            projectId={projectId}
             resolution={deducedResolution}
           />
         </Box>
 
-        <Box flexGrow={1} display="flex" justifyContent="center">
-          <Chart
-            timeSeries={timeSeries}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={deducedResolution}
-            innerRef={graphRef}
-          />
+        <Box flexGrow={1} display="flex" justifyContent="flex-end">
+          <Box pt="8px" width="95%" maxWidth="800px" height="250px">
+            <Chart
+              timeSeries={timeSeries}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={deducedResolution}
+              innerRef={graphRef}
+            />
+          </Box>
         </Box>
       </Box>
     </GraphCard>
