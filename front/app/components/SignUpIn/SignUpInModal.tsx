@@ -31,11 +31,13 @@ const Container = styled.div``;
 interface Props {
   className?: string;
   onMounted?: () => void;
-  onDeclineInvitation?: () => void;
+  onClosed: () => void;
+  onOpened?: (opened: boolean) => void;
+  fullScreenModal?: boolean;
 }
 
 const SignUpInModal = memo<Props>(
-  ({ className, onMounted, onDeclineInvitation }) => {
+  ({ className, onMounted, onClosed, onOpened, fullScreenModal }) => {
     const isMounted = useIsMounted();
     const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
       undefined
@@ -67,6 +69,12 @@ const SignUpInModal = memo<Props>(
     }, [onMounted, isMounted]);
 
     useEffect(() => {
+      if (onOpened) {
+        onOpened(opened);
+      }
+    }, [opened, onOpened]);
+
+    useEffect(() => {
       const subscriptions = [
         openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
           setMetaData(newMetaData);
@@ -95,15 +103,15 @@ const SignUpInModal = memo<Props>(
         trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
       }
 
-      if (onDeclineInvitation && metaData?.isInvitation) {
-        onDeclineInvitation();
-      }
+      onClosed();
 
       closeSignUpInModal();
     };
 
     const onSignUpInCompleted = () => {
       closeSignUpInModal();
+      onClosed();
+
       const requiresVerification = !!metaData?.verification;
 
       const authUserIsVerified =
@@ -122,6 +130,7 @@ const SignUpInModal = memo<Props>(
 
     return (
       <Modal
+        fullScreen={fullScreenModal}
         width={modalWidth}
         padding="0px"
         opened={opened}
@@ -133,6 +142,7 @@ const SignUpInModal = memo<Props>(
             <SignUpIn
               metaData={metaData}
               onSignUpInCompleted={onSignUpInCompleted}
+              fullScreen={fullScreenModal}
             />
           )}
         </Container>

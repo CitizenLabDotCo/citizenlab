@@ -1,8 +1,28 @@
 # Changelog
 
+## 2022-11-10
+
+### Changed
+
+- [CL-1101] Make the login and signup flows fullscreen for platforms with FranceConnect login enabled
+
+## 2022-11-08
+
+### Changed
+
+- [CL-1776] Remove feedback icon in Bottom Right
+
+### Added
+
+- Added support for Balancing Act embed in content builder
+
+### Fixed
+
+- [CL-1923] Disabled switching from existing participation method to in-platform survey. Warning message added for additional clarity.
+
 ## 2022-11-04
 
-#### Fixed
+### Fixed
 
 - [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
 

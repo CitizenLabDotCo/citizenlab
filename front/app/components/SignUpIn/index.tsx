@@ -17,12 +17,17 @@ import { openSignUpInModal } from './events';
 
 export type TSignUpInFlow = 'signup' | 'signin';
 
+export type TSignUpInError = 'general' | 'franceconnect_merging_failed';
+interface ISignUpInError {
+  code: TSignUpInError;
+}
+
 export interface ISignUpInMetaData {
   flow: TSignUpInFlow;
   pathname: string;
   verification?: boolean;
   verificationContext?: ContextShape;
-  error?: boolean;
+  error?: ISignUpInError;
   isInvitation?: boolean;
   token?: string;
   inModal?: boolean;
@@ -37,6 +42,7 @@ interface Props {
   customSignUpHeader?: JSX.Element;
   onSignUpInCompleted: () => void;
   className?: string;
+  fullScreen?: boolean;
 }
 
 function getNewFlow(flow: TSignUpInFlow) {
@@ -54,6 +60,7 @@ const SignUpIn = ({
   customSignUpHeader,
   onSignUpInCompleted,
   className,
+  fullScreen,
 }: Props) => {
   const appConfiguration = useAppConfiguration();
 
@@ -74,6 +81,7 @@ const SignUpIn = ({
             customHeader={customSignUpHeader}
             onSignUpCompleted={onSignUpInCompleted}
             onGoToSignIn={onToggleSelectedMethod}
+            fullScreen={fullScreen}
           />
         ) : (
           <SignIn
@@ -81,6 +89,7 @@ const SignUpIn = ({
             customHeader={customSignInHeader}
             onSignInCompleted={onSignUpInCompleted}
             onGoToSignUp={onToggleSelectedMethod}
+            fullScreen={fullScreen}
           />
         )}
       </Box>
