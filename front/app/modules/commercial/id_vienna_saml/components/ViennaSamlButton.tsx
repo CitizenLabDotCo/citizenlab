@@ -28,10 +28,6 @@ const TextContainer = styled.div`
   flex-direction: column;
 `;
 
-const StyledViennaIcon = styled(ViennaIcon)`
-  flex-shrink: 0;
-`;
-
 const SignUpSubHeader = styled.span`
   font-size: ${fontSizes.s}px;
 `;
@@ -61,7 +57,7 @@ const ViennaSamlButton = ({ onContinue, flow }: Props) => {
       showConsentOnFlow={'signin'}
     >
       <Container>
-        <StyledViennaIcon />
+        <ViennaIcon />
         <TextContainer>
           <FormattedMessage
             {...(flow === 'signin'
