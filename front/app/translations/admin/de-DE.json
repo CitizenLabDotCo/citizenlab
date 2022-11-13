@@ -1142,7 +1142,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.open": "Geöffnet",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses": "Umfrage geöffnet",
   "app.containers.AdminPage.ProjectEdit.survey.optional": "Optional",
-  "app.containers.AdminPage.ProjectEdit.survey.page": "Page",
+  "app.containers.AdminPage.ProjectEdit.survey.page": "Seite",
   "app.containers.AdminPage.ProjectEdit.survey.question": "Frage",
   "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Beschreibung der Frage (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Titel der Frage",
