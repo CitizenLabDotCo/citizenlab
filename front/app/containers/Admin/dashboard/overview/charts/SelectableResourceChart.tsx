@@ -187,10 +187,10 @@ const SelectableResourceChart = ({
   }, []);
 
   const buttonClassname =
-    showMore == null ? '' : showMore == true ? 'active' : 'inactive';
+    showMore === null ? '' : showMore === true ? 'active' : 'inactive';
   const containerClassname =
-    showMore != null
-      ? showMore == true
+    showMore !== null
+      ? showMore === true
         ? 'maxHeight hasShowmore'
         : 'hasShowmore'
       : '';
