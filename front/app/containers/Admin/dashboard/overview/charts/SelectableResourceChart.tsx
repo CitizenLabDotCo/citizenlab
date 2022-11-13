@@ -53,6 +53,8 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 const GraphCardTitle = styled.h3`
   margin: 0;
   margin-right: 15px;
+  font-size: 25px;
+  font-weight: bold;
 
   ${media.tablet`
     margin-bottom: 15px;
