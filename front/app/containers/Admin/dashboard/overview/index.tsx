@@ -192,7 +192,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
             </Box>
-            <Title ml="12px" mt="40px" variant="h2" color="primary">
+            <Title
+              ml="12px"
+              mt="40px"
+              variant="h2"
+              color="primary"
+              fontWeight="normal"
+            >
               {formatMessage(overviewMessages.projectsAndParticipation)}
             </Title>
             <Box width="100%" display="flex">
@@ -248,7 +254,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
 
-            <Title ml="12px" mt="40px" variant="h2" color="primary">
+            <Title
+              ml="12px"
+              mt="40px"
+              variant="h2"
+              color="primary"
+              fontWeight="normal"
+            >
               {formatMessage(overviewMessages.management)}
             </Title>
 
