@@ -70,21 +70,24 @@ const SHiddenLabel = styled(HiddenLabel)`
 `;
 
 export const GraphCardClipper = styled.div`
-  &.max-height {
+  &.maxHeight {
     height: 300px;
     overflow: hidden;
     margin-bottom: 44px;
   }
+  &.hasShowmore {
+    margin-bottom: 24px;
+  }
 `;
 
 export const GraphCardShowMore = styled.button`
+  padding: 24px 0 35px;
   width: 100%;
-  margin-top: 20px;
   color: ${colors.coolGrey600};
+  position: absolute;
+  bottom: 0;
+  left: 0;
   &.active {
-    position: absolute;
-    bottom: 0;
-    left: 0;
     padding: 100px 0 24px;
     background-image: linear-gradient(transparent, white 50%, white);
   }
@@ -185,7 +188,12 @@ const SelectableResourceChart = ({
 
   const buttonClassname =
     showMore == null ? '' : showMore == true ? 'active' : 'inactive';
-  const containerClassname = showMore == true ? 'max-height' : '';
+  const containerClassname =
+    showMore != null
+      ? showMore == true
+        ? 'maxHeight hasShowmore'
+        : 'hasShowmore'
+      : '';
 
   return (
     <GraphCard className={className}>
