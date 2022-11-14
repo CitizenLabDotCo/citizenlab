@@ -128,7 +128,12 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
         borderTop={`1px solid ${colors.divider}`}
         pt="36px"
       >
-        <Button buttonStyle="secondary" onClick={onClose} minWidth="160px">
+        <Button
+          id="e2e-settings-done-button"
+          buttonStyle="secondary"
+          onClick={onClose}
+          minWidth="160px"
+        >
           <FormattedMessage {...messages.done} />
         </Button>
         <Button
