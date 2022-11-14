@@ -25,7 +25,9 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
     :bottom_info_section_multiloc,
     :header_bg,
     :pinned_admin_publication_ids,
-    :static_page_file_ids
+    :static_page_file_ids,
+    :topic_ids,
+    :area_ids
 
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
