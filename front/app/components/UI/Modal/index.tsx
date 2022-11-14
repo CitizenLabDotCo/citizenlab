@@ -73,10 +73,12 @@ export const ModalContentContainer = styled.div<{
   `}
 `;
 
-const StyledCloseIconButton = styled(CloseIconButton)`
+const StyledCloseIconButton = styled(CloseIconButton)<{
+  fullScreen?: boolean;
+}>`
   position: absolute;
   top: 19px;
-  right: 25px;
+  ${({ fullScreen }) => (fullScreen ? 'left: 25px;' : 'right: 25px;')};
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -578,6 +580,7 @@ class Modal extends PureComponent<Props, State> {
                 role="dialog"
               >
                 <StyledCloseIconButton
+                  fullScreen={fullScreen}
                   className="e2e-modal-close-button"
                   onClick={this.clickCloseButton}
                   iconColor={colors.textSecondary}
