@@ -25,49 +25,49 @@ export const schema = {
         },
       ],
     },
-    // areas: {
-    //   type: 'string',
-    //   oneOf: [
-    //     {
-    //       const: 'kyanja',
-    //       title: 'Kyanja',
-    //     },
-    //     {
-    //       const: 'naalya',
-    //       title: 'Naalya',
-    //     },
-    //     {
-    //       const: 'bugoloobi',
-    //       title: 'Bugoloobi',
-    //     },
-    //   ],
-    // },
-    // favorite_color: {
-    //   type: 'array',
-    //   uniqueItems: true,
-    //   minItems: 0,
-    //   items: {
-    //     type: 'string',
-    //     oneOf: [
-    //       {
-    //         const: 'blue',
-    //         title: 'Blue',
-    //       },
-    //       {
-    //         const: 'red',
-    //         title: 'Red',
-    //       },
-    //     ],
-    //   },
-    // },
-    // linear_scale: {
-    //   type: 'number',
-    //   minimum: 1,
-    //   maximum: 5,
-    // },
-    // number: {
-    //   type: 'number',
-    // },
+    areas: {
+      type: 'string',
+      oneOf: [
+        {
+          const: 'kyanja',
+          title: 'Kyanja',
+        },
+        {
+          const: 'naalya',
+          title: 'Naalya',
+        },
+        {
+          const: 'bugoloobi',
+          title: 'Bugoloobi',
+        },
+      ],
+    },
+    favorite_color: {
+      type: 'array',
+      uniqueItems: true,
+      minItems: 0,
+      items: {
+        type: 'string',
+        oneOf: [
+          {
+            const: 'blue',
+            title: 'Blue',
+          },
+          {
+            const: 'red',
+            title: 'Red',
+          },
+        ],
+      },
+    },
+    linear_scale: {
+      type: 'number',
+      minimum: 1,
+      maximum: 5,
+    },
+    number: {
+      type: 'number',
+    },
     location_description: {
       type: 'string',
     },

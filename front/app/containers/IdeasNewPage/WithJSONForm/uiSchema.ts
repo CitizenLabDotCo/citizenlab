@@ -36,73 +36,73 @@ export const uiSchema = {
             isAdminField: false,
           },
         },
-        // {
-        //   type: 'Control',
-        //   scope: '#/properties/areas',
-        //   label: 'Areas',
-        //   options: {
-        //     description: '',
-        //     isAdminField: false,
-        //   },
-        // },
-        // {
-        //   type: 'Control',
-        //   scope: '#/properties/favorite_color',
-        //   label: 'Favorite color',
-        //   options: {
-        //     description: '',
-        //     isAdminField: false,
-        //   },
-        //   rule: {
-        //     effect: 'SHOW',
-        //     condition: {
-        //       scope: '#/properties/multiple_choice',
-        //       schema: {
-        //         enum: ['pineapplesl'],
-        //       },
-        //     },
-        //   },
-        //   ruleArray: [
-        //     {
-        //       effect: 'SHOW',
-        //       condition: {
-        //         scope: '#/properties/multiple_choice',
-        //         schema: {
-        //           enum: ['pineapples'],
-        //         },
-        //       },
-        //     },
-        //     {
-        //       effect: 'SHOW',
-        //       condition: {
-        //         scope: '#/properties/areas',
-        //         schema: {
-        //           enum: ['kyanja'],
-        //         },
-        //       },
-        //     },
-        //   ],
-        // },
-        // {
-        //   type: 'Control',
-        //   scope: '#/properties/linear_scale',
-        //   label: 'Linear scale',
-        //   options: {
-        //     description: '',
-        //     isAdminField: false,
-        //     minimum_label: '',
-        //     maximum_label: '',
-        //   },
-        // },
-        // {
-        //   type: 'Control',
-        //   scope: '#/properties/number',
-        //   label: 'Number',
-        //   options: {
-        //     description: '',
-        //     isAdminField: false,
-        //   },
-        // },
+        {
+          type: 'Control',
+          scope: '#/properties/areas',
+          label: 'Areas',
+          options: {
+            description: '',
+            isAdminField: false,
+          },
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/favorite_color',
+          label: 'Favorite color',
+          options: {
+            description: '',
+            isAdminField: false,
+          },
+          rule: {
+            effect: 'SHOW',
+            condition: {
+              scope: '#/properties/multiple_choice',
+              schema: {
+                enum: ['pineapplesl'],
+              },
+            },
+          },
+          ruleArray: [
+            {
+              effect: 'SHOW',
+              condition: {
+                scope: '#/properties/multiple_choice',
+                schema: {
+                  enum: ['pineapples'],
+                },
+              },
+            },
+            {
+              effect: 'SHOW',
+              condition: {
+                scope: '#/properties/areas',
+                schema: {
+                  enum: ['kyanja'],
+                },
+              },
+            },
+          ],
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/linear_scale',
+          label: 'Linear scale',
+          options: {
+            description: '',
+            isAdminField: false,
+            minimum_label: '',
+            maximum_label: '',
+          },
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/number',
+          label: 'Number',
+          options: {
+            description: '',
+            isAdminField: false,
+          },
+        },
       ],
     },
     {

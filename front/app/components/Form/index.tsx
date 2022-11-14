@@ -48,8 +48,6 @@ const Title = styled.h1`
   text-align: center;
   margin: 0;
   padding: 0;
-  padding-top: 60px;
-  padding-bottom: 40px;
 
   ${media.tablet`
     font-size: ${fontSizes.xxxl}px;

@@ -22,11 +22,6 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import GoBackButton from 'containers/IdeasShow/GoBackButton';
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Modal from 'components/UI/Modal';
-import { FormattedMessage } from 'utils/cl-intl';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
@@ -39,6 +34,8 @@ import { getMethodConfig } from 'utils/participationMethodUtils';
 // Test schemas to be removed
 import { schema as iSchema } from './schema';
 import { uiSchema as iUiSchema } from './uiSchema';
+import ProjectActionBar from 'containers/ProjectsShowPage/shared/header/ProjectActionBar';
+import { Heading } from 'containers/IdeasNewPage/WithJSONForm/Heading';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -46,13 +43,6 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const project = useProject({ projectSlug: params.slug });
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id');
-  const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const openModal = () => {
-    setShowLeaveModal(true);
-  };
-  const closeModal = () => {
-    setShowLeaveModal(false);
-  };
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -205,96 +195,10 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     return null;
   }
 
-  const userCanEditProject =
+  const canUserEditProject =
     !isNilOrError(authUser) &&
     canModerateProject(project.id, { data: authUser });
   const isSurvey = config.postType === 'nativeSurvey';
-  const canEditSurvey = userCanEditProject && isSurvey;
-
-  const linkToSurveyBuilder = phaseId
-    ? `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`
-    : `/admin/projects/${project.id}/native-survey/edit`;
-
-  const TitleComponent = (
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Box
-        display="flex"
-        width="100%"
-        flexDirection="row"
-        justifyContent={canEditSurvey ? 'flex-end' : 'space-between'}
-        mb="14px"
-        alignItems="center"
-        maxWidth="700px"
-        px="20px"
-      >
-        {isSurvey ? (
-          <Box
-            data-cy="e2e-edit-survey-link"
-            display="flex"
-            flexDirection="row"
-          >
-            {canEditSurvey && (
-              <Button
-                icon="edit"
-                linkTo={linkToSurveyBuilder}
-                buttonStyle="text"
-                textDecorationHover="underline"
-                hidden={!userCanEditProject}
-                padding="0"
-              >
-                <FormattedMessage {...messages.editSurvey} />
-              </Button>
-            )}
-            <Button icon="close" buttonStyle="text" onClick={openModal} />
-          </Box>
-        ) : (
-          <GoBackButton insideModal={false} projectId={project.id} />
-        )}
-      </Box>
-
-      <Box>{config.getFormTitle({ project, phases, phaseFromUrl })}</Box>
-      <Modal opened={showLeaveModal} close={closeModal}>
-        <Box display="flex" flexDirection="column" width="100%" p="20px">
-          <Box mb="40px">
-            <Title variant="h3" color="primary">
-              <FormattedMessage {...messages.leaveSurveyConfirmationQuestion} />
-            </Title>
-            <Text color="primary" fontSize="l">
-              <FormattedMessage {...messages.leaveSurveyMessage} />
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <Button
-              icon="delete"
-              data-cy="e2e-confirm-delete-survey-results"
-              buttonStyle="delete"
-              width="auto"
-              mr="20px"
-              onClick={() => {
-                clHistory.push(`/projects/${project.attributes.slug}`);
-              }}
-            >
-              <FormattedMessage {...messages.confirmLeaveSurveyButtonText} />
-            </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
-              <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
-    </Box>
-  );
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
@@ -305,6 +209,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       config ? (
         <>
           <IdeasNewMeta />
+          <ProjectActionBar projectId={project.id} />
           <Form
             // schema={schema}
             // uiSchema={uiSchema}
@@ -315,7 +220,18 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
-            title={TitleComponent}
+            title={
+              <Heading
+                project={project}
+                titleText={config.getFormTitle({
+                  project,
+                  phases,
+                  phaseFromUrl,
+                })}
+                isSurvey={isSurvey}
+                canUserEditProject={canUserEditProject}
+              />
+            }
             config={'input'}
           />
         </>
