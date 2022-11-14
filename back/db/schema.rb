@@ -1160,7 +1160,7 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
     t.boolean "top_info_section_enabled", default: false, null: false
     t.boolean "files_section_enabled", default: false, null: false
     t.boolean "projects_enabled", default: false, null: false
-    t.string "projects_filter_type", default: "none", null: false
+    t.string "projects_filter_type", default: "no_filter", null: false
     t.boolean "events_widget_enabled", default: false, null: false
     t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false

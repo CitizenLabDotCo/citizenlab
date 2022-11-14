@@ -23,7 +23,7 @@
 #  top_info_section_enabled     :boolean          default(FALSE), not null
 #  files_section_enabled        :boolean          default(FALSE), not null
 #  projects_enabled             :boolean          default(FALSE), not null
-#  projects_filter_type         :string           default("none"), not null
+#  projects_filter_type         :string           default("no_filter"), not null
 #  events_widget_enabled        :boolean          default(FALSE), not null
 #  bottom_info_section_enabled  :boolean          default(FALSE), not null
 #  bottom_info_section_multiloc :jsonb            not null
