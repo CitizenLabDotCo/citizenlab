@@ -19,8 +19,8 @@ export interface IStatusCounts extends IStatusCountsBase {
 }
 
 export default function useAdminPublicationsStatusCounts({
-  topicFilter,
-  areaFilter,
+  topicIds,
+  areaIds,
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
@@ -28,8 +28,8 @@ export default function useAdminPublicationsStatusCounts({
   const [counts, setCounts] = useState<
     IStatusCounts | undefined | null | Error
   >(undefined);
-  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
-  const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [topics, setTopics] = useState<string[] | undefined>(topicIds);
+  const [areas, setAreas] = useState<string[] | undefined>(areaIds);
   const [search, setSearch] = useState<string | null>(null);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]

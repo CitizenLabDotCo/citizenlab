@@ -11,9 +11,12 @@ import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
 export interface BaseProps {
-  topicFilter?: string[];
-  areaFilter?: string[];
+  // Only include projects from topic(s)
+  topicIds?: string[];
+  // Only include projects from area(s)
+  areaIds?: string[];
   publicationStatusFilter: PublicationStatus[];
+  // Don't include projects that are inside folders
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
   search?: string;
@@ -63,8 +66,8 @@ export interface IUseAdminPublicationsOutput {
 
 export default function useAdminPublications({
   pageSize = 1000,
-  topicFilter,
-  areaFilter,
+  topicIds,
+  areaIds,
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
@@ -78,8 +81,8 @@ export default function useAdminPublications({
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [search, setSearch] = useState<string | null>(null);
-  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
-  const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [topics, setTopics] = useState<string[] | undefined>(topicIds);
+  const [areas, setAreas] = useState<string[] | undefined>(areaIds);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
