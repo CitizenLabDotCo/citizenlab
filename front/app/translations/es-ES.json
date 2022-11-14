@@ -1225,6 +1225,7 @@
   "app.containers.SignUp.emptyLastNameError": "Introduzca su apellido",
   "app.containers.SignUp.emptyTokenError": "Introduzca su código de invitación",
   "app.containers.SignUp.firstNamesLabel": "Nombre",
+  "app.containers.SignUp.franceConnectMergingFailed": "An account already exists with this email address.{br}{br}You cannot access the platform using FranceConnect as the personal details do not match. To log in using FranceConnect, you will have to first change your first name or last name on this platform to match your official details.{br}{br}You can log in as you normally do below.",
   "app.containers.SignUp.goToLogIn": "¿Ya tienes una cuenta? {goToOtherFlowLink}",
   "app.containers.SignUp.goToSignUp": "¿No tienes una cuenta? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Paso {activeStepNumber} de {totalStepsCount}: {stepName}",

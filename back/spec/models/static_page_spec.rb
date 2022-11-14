@@ -35,7 +35,23 @@ RSpec.describe StaticPage, type: :model do
       subject { described_class.new(projects_enabled: true) }
 
       it { is_expected.to validate_presence_of(:projects_filter_type) }
-      it { is_expected.to validate_inclusion_of(:projects_filter_type).in_array(%w[area topics]) }
+    end
+
+    context 'when projects_filter_type is areas' do
+      it 'cannot have zero areas' do
+        valid = build(:static_page, projects_filter_type: 'areas', areas: []).valid?
+        expect(valid).to be(false)
+      end
+
+      it 'cannot have two areas' do
+        valid = build(:static_page, projects_filter_type: 'areas', areas: [build(:area), build(:area)]).valid?
+        expect(valid).to be(false)
+      end
+
+      it 'can have one area' do
+        valid = build(:static_page, projects_filter_type: 'areas', areas: [build(:area)]).valid?
+        expect(valid).to be(true)
+      end
     end
   end
 
@@ -55,6 +71,19 @@ RSpec.describe StaticPage, type: :model do
 
     it 'prevents destruction of static page with :code other than \'custom\'' do
       expect { static_page.destroy! }.to raise_error ActiveRecord::RecordNotDestroyed
+    end
+  end
+
+  describe 'before validate' do
+    subject(:static_page) { create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [topic]) }
+
+    let(:topic) { create(:topic) }
+
+    it 'destroys unused associations' do
+      expect(static_page.topics).to be_present
+      static_page.update!(projects_filter_type: 'areas', areas: [build(:area)])
+      expect(static_page.topics).to be_empty
+      expect(topic).to be_persisted
     end
   end
 
