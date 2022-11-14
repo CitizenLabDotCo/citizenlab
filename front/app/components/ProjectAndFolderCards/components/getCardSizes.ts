@@ -1,4 +1,4 @@
-import { TCardSize } from './ProjectsList';
+import { TCardSize } from './ProjectsPerPublicationStatusTabs';
 import { viewportWidths } from 'utils/styleUtils';
 
 export default function getCardSizes(

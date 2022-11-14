@@ -9,7 +9,7 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { TLayout } from '..';
-import { PublicationTab } from '../';
+import { PublicationTab } from '..';
 
 // utils
 import getCardSizes from './getCardSizes';
@@ -28,7 +28,7 @@ interface Props extends BaseProps {
   availableTabs: PublicationTab[];
 }
 
-const ProjectsList = ({
+const ProjectsPerPublicationStatusTabs = ({
   currentTab,
   availableTabs,
   list,
@@ -52,9 +52,9 @@ const ProjectsList = ({
 
   return (
     <>
-      {/* 
-        We are rendering all three tab panels here even, though 
-        the tabs are hidden if they're not the currently selected 
+      {/*
+        We are rendering all three tab panels here even, though
+        the tabs are hidden if they're not the currently selected
         tab. This is to make the tab system work well for screen readers.
         See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
       */}
@@ -73,4 +73,4 @@ const ProjectsList = ({
   );
 };
 
-export default ProjectsList;
+export default ProjectsPerPublicationStatusTabs;
