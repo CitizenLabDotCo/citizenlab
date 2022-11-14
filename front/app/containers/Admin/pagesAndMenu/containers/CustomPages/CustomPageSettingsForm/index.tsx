@@ -45,6 +45,8 @@ export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
   projects_filter_type: ProjectsFilterTypes;
+  topic_ids: string[];
+  area_id: string;
 }
 
 type TMode = 'new' | 'edit';
@@ -178,7 +180,7 @@ const CustomPageSettingsForm = ({
               {methods.getValues('projects_filter_type') === 'topics' && (
                 <Box mb="30px">
                   <MultipleSelect
-                    name="tag_ids"
+                    name="topic_ids"
                     options={mapFilterEntityToOptions(topics)}
                     label={
                       <>
@@ -192,7 +194,7 @@ const CustomPageSettingsForm = ({
               {methods.getValues('projects_filter_type') === 'areas' && (
                 <Box mb="20px">
                   <Select
-                    name="selected_area"
+                    name="area_id"
                     options={mapFilterEntityToOptions(areas)}
                     label={<>{formatMessage(messages.selectedAreasLabel)}</>}
                     labelTooltipText="choose an area"
