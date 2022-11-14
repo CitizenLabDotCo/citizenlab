@@ -23,6 +23,7 @@ import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 // hooks
 import useTopics from 'hooks/useTopics';
 import useAreas from 'hooks/useAreas';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -35,7 +36,9 @@ import { injectIntl } from 'utils/cl-intl';
 // types
 import { Multiloc } from 'typings';
 import { IAreaData } from 'services/areas';
+import { ITopicData } from 'services/topics';
 import { ProjectsFilterTypes } from 'services/customPages';
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -74,6 +77,7 @@ const CustomPageSettingsForm = ({
   onSubmit,
   defaultValues,
 }: Props & WrappedComponentProps) => {
+  const localize = useLocalize();
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
@@ -107,26 +111,21 @@ const CustomPageSettingsForm = ({
     }
   };
 
-  const mapAreasToOptions = (areas: IAreaData[]) => {
-    return areas.map((area) => {
+  const mapFilterEntityToOptions = (input: IAreaData[] | ITopicData[]) => {
+    return input.map((entity) => {
       return {
-        value: area.id,
-        label: area.attributes.title_multiloc.en || 'test',
-      };
-    });
-  };
-
-  const mapTopicsToOptions = (topics) => {
-    return topics.map((topic) => {
-      return {
-        value: topic.id,
-        label: topic.attributes.title_multiloc.en || 'test',
+        value: entity.id,
+        label: localize(entity.attributes.title_multiloc),
       };
     });
   };
 
   const areas = useAreas();
   const topics = useTopics();
+
+  if (isNilOrError(areas) || isNilOrError(topics)) {
+    return null;
+  }
 
   return (
     <FormProvider {...methods}>
@@ -176,7 +175,7 @@ const CustomPageSettingsForm = ({
                   <MultipleSelect
                     name="tag_ids"
                     placeholder={'add tags'}
-                    options={mapTopicsToOptions(topics)}
+                    options={mapFilterEntityToOptions(topics)}
                     label={
                       <>
                         Add some tags
@@ -190,7 +189,7 @@ const CustomPageSettingsForm = ({
                 <Box mb="20px">
                   <Select
                     name="selected_area"
-                    options={mapAreasToOptions(areas)}
+                    options={mapFilterEntityToOptions(areas)}
                     label={
                       <>
                         select area
