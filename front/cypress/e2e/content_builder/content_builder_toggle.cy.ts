@@ -46,7 +46,7 @@ describe('Content builder toggle', () => {
     );
     // Submit project
     cy.get('.e2e-submit-wrapper-button').click();
-    cy.wait(2000);
+    cy.wait(4000);
     cy.contains('Your form has been saved!').should('be.visible');
 
     // Go to project page
