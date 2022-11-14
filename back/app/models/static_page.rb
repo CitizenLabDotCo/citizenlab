@@ -91,6 +91,7 @@ class StaticPage < ApplicationRecord
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
   validates :areas, length: { is: 1 }, if: -> { projects_filter_type == 'areas' }
+  validates :topics, length: { minimum: 1 }, if: -> { projects_filter_type == 'topics' }
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
@@ -144,6 +145,8 @@ class StaticPage < ApplicationRecord
   end
 
   def destroy_obsolete_associations
+    return if projects_filter_type_was == 'none'
+
     public_send(projects_filter_type_was).destroy_all if projects_filter_type_changed? && projects_filter_type_was.present?
   end
 end
