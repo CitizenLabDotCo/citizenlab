@@ -100,7 +100,7 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
 
   ${media.phone`
     top: 13px;
-    right: 15px;
+    ${({ fullScreen }) => (fullScreen ? 'left: 15px;' : 'right: 15px;')};
   `}
 `;
 
