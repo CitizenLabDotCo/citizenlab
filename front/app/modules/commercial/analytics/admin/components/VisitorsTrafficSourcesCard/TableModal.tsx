@@ -10,12 +10,13 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { QueryParametersWithoutPagination } from '../../hooks/useVisitorReferrers/typings';
+import { ProjectId, Dates } from '../../typings';
 
-interface Props extends QueryParametersWithoutPagination {
-  open: boolean;
-  onClose: () => void;
-}
+type Props = ProjectId &
+  Dates & {
+    open: boolean;
+    onClose: () => void;
+  };
 
 const TableModal = ({ open, onClose, ...tableProps }: Props) => (
   <Modal
