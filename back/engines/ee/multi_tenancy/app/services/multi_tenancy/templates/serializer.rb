@@ -149,40 +149,40 @@ module MultiTenancy
       end
 
       def yml_custom_fields
-        CustomField.all.map do |c|
+        CustomField.all.map do |field|
           yml_custom_field = {
-            'resource_ref' => c.resource_id && lookup_ref(c.resource_id, :custom_form),
-            'key' => c.key,
-            'input_type' => c.input_type,
-            'title_multiloc' => c.title_multiloc,
-            'description_multiloc' => c.description_multiloc,
-            'ordering' => c.ordering,
-            'created_at' => c.created_at.to_s,
-            'updated_at' => c.updated_at.to_s,
-            'enabled' => c.enabled,
-            'code' => c.code,
-            'maximum' => c.maximum,
-            'minimum_label_multiloc' => c.minimum_label_multiloc,
-            'maximum_label_multiloc' => c.maximum_label_multiloc,
-            'text_images_attributes' => c.text_images.map do |ti|
+            'resource_ref' => field.resource_id && lookup_ref(field.resource_id, :custom_form),
+            'key' => field.key,
+            'input_type' => field.input_type,
+            'title_multiloc' => field.title_multiloc,
+            'description_multiloc' => field.description_multiloc,
+            'ordering' => field.ordering,
+            'created_at' => field.created_at.to_s,
+            'updated_at' => field.updated_at.to_s,
+            'enabled' => field.enabled,
+            'code' => field.code,
+            'maximum' => field.maximum,
+            'minimum_label_multiloc' => field.minimum_label_multiloc,
+            'maximum_label_multiloc' => field.maximum_label_multiloc,
+            'text_images_attributes' => field.text_images.map do |text_image|
               {
-                'imageable_field' => ti.imageable_field,
-                'remote_image_url' => ti.image_url,
-                'text_reference' => ti.text_reference,
-                'created_at' => ti.created_at.to_s,
-                'updated_at' => ti.updated_at.to_s
+                'imageable_field' => text_image.imageable_field,
+                'remote_image_url' => text_image.image_url,
+                'text_reference' => text_image.text_reference,
+                'created_at' => text_image.created_at.to_s,
+                'updated_at' => text_image.updated_at.to_s
               }
             end
           }
-          if c.resource_type == User.name
-            yml_custom_field['resource_type'] = c.resource_type
+          if field.resource_type == User.name
+            yml_custom_field['resource_type'] = field.resource_type
             # No user custom fields are required anymore because
             # the user choices cannot be remembered.
           else
-            yml_custom_field['resource_ref'] = c.resource_id && lookup_ref(c.resource_id, :custom_form)
-            yml_custom_field['required'] = c.required
+            yml_custom_field['resource_ref'] = field.resource_id && lookup_ref(field.resource_id, :custom_form)
+            yml_custom_field['required'] = field.required
           end
-          store_ref yml_custom_field, c.id, :custom_field
+          store_ref yml_custom_field, field.id, :custom_field
           yml_custom_field
         end
       end
