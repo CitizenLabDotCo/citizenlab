@@ -35,43 +35,44 @@ import { injectIntl } from 'utils/cl-intl';
 // types
 import { Multiloc } from 'typings';
 import { IAreaData } from 'services/areas';
+import { ProjectsFilterTypes } from 'services/customPages';
 
 export interface FormValues {
   title_multiloc: Multiloc;
   nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
-  linkedProjectsType: string;
+  projects_filter_type: ProjectsFilterTypes;
 }
 
 type TMode = 'new' | 'edit';
 interface Props {
-  defaultValues?: Partial<FormValues>;
+  defaultValues?: FormValues;
   showNavBarItemTitle?: boolean;
   mode: TMode;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
-const linkedProjectsTabs = [
+const projectsFilterTabs: { name: ProjectsFilterTypes; label: string }[] = [
   {
-    name: 'none',
+    name: 'no_filter',
     label: 'None',
   },
   {
-    name: 'byTag',
+    name: 'topics',
     label: 'By Tag',
   },
   {
-    name: 'byArea',
+    name: 'areas',
     label: 'By Area',
   },
 ];
 
 const CustomPageSettingsForm = ({
-  defaultValues,
   showNavBarItemTitle,
   intl: { formatMessage },
   mode,
   onSubmit,
+  defaultValues,
 }: Props & WrappedComponentProps) => {
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   const schema = object({
@@ -88,7 +89,7 @@ const CustomPageSettingsForm = ({
         .matches(slugRegEx, formatMessage(messages.slugRegexError))
         .required(formatMessage(messages.slugRequiredError)),
     }),
-    linkedProjectsType: string().required(),
+    projects_filter_type: string().required(),
   });
 
   const methods = useForm({
@@ -126,8 +127,6 @@ const CustomPageSettingsForm = ({
 
   const areas = useAreas();
   const topics = useTopics();
-
-  console.log([areas, topics]);
 
   return (
     <FormProvider {...methods}>
@@ -170,9 +169,9 @@ const CustomPageSettingsForm = ({
                 <IconTooltip ml="40px" content="Link some projects" />
               </Box>
               <Box mb="30px">
-                <Tabs name="linkedProjectsType" items={linkedProjectsTabs} />
+                <Tabs name="projects_filter_type" items={projectsFilterTabs} />
               </Box>
-              {methods.getValues('linkedProjectsType') === 'byTag' && (
+              {methods.getValues('projects_filter_type') === 'topics' && (
                 <Box mb="30px">
                   <MultipleSelect
                     name="tag_ids"
@@ -187,7 +186,7 @@ const CustomPageSettingsForm = ({
                   />
                 </Box>
               )}
-              {methods.getValues('linkedProjectsType') === 'byArea' && (
+              {methods.getValues('projects_filter_type') === 'areas' && (
                 <Box mb="20px">
                   <Select
                     name="selected_area"
