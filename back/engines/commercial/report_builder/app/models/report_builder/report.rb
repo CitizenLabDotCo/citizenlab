@@ -20,6 +20,7 @@ module ReportBuilder
       class_name: 'ContentBuilder::Layout', as: :content_buildable,
       dependent: :destroy
     )
+    accepts_nested_attributes_for :layout
 
     validates :name, presence: true, uniqueness: true
   end
