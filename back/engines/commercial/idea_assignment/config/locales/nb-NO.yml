@@ -3,7 +3,7 @@
     campaign_type_description:
       "idea_assigned_to_you": En idé tildelt meg
     admin_campaign_type_description:
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
+      "idea_assigned_to_you": Tildeling av en idé – administratorer og prosjektledere
     idea_assigned_to_you:
       by_author: 'av %{authorName}'
       cta_reply_to: 'Gi en tilbakemelding til %{authorName}'

@@ -49,54 +49,54 @@
       "user_digest": Ukentlig oversikt
       "your_proposed_initiatives_digest": Ukentlig oversikt over dine forslag
     admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
+      "manual": Offisiell melding – alle brukere
+      "admin_rights_received": Administratorrettigheter mottatt – administratorer
+      "comment_deleted_by_admin": Sletting av kommentaren – alle brukere
+      "comment_marked_as_spam": Rapport om søppelpostkommentar – administratorer og prosjektledere
+      "comment_on_your_comment": Svar på kommentaren – alle brukere
+      "comment_on_your_idea": Kommenter på ideen – alle brukere
+      "comment_on_your_initiative": Kommenter på forslaget – alle brukere
+      "first_idea_published": Publisering av din første idé – alle brukere
+      "idea_marked_as_spam": Rapport om søppelpost i ideer – administratorer og prosjektledere
+      "idea_published": Publisering av ideen – alle brukere
+      "initiative_assigned_to_you": Tildeling av et forslag – administratorer
+      "initiative_marked_as_spam": Rapport om søppelpost i forslag – administratorer
+      "initiative_published": Publisering av forslaget – alle brukere
+      "invite_received": Invitasjon – alle brukere
+      "invite_reminder": Invitasjonspåminnelse – alle brukere
+      "mention_in_comment": Omtale i en kommentar – alle brukere
+      "mention_in_official_feedback": Omtale i en oppdatering – alle brukere
+      "new_comment_for_admin": Ny kommentar – administratorer og prosjektledere
+      "new_comment_on_commented_idea": Ny kommentar på en idé du har kommentert på – alle brukere
+      "new_comment_on_commented_initiative": Ny kommentar på et forslag du har kommentert – alle brukere
+      "new_comment_on_voted_idea": Ny kommentar på en idé du har stemt på – alle brukere
+      "new_comment_on_voted_initiative": Ny kommentar på et forslag du har stemt på – alle brukere
+      "new_idea_for_admin": Ny idé – administratorer og prosjektledere
+      "new_initiative_for_admin": Nytt forslag – administratorer
+      "official_feedback_on_commented_idea": Oppdatering på en idé du har kommentert – alle brukere
+      "official_feedback_on_commented_initiative": Oppdatering på et forslag du har kommentert – alle brukere
+      "official_feedback_on_voted_idea": Oppdatering på en idé du har stemt på – alle brukere
+      "official_feedback_on_voted_initiative": Oppdatering på et forslag du har stemt på – alle brukere
+      "official_feedback_on_your_idea": Oppdatering på ideen din – alle brukere
+      "official_feedback_on_your_initiative": Oppdatering på forslaget ditt – alle brukere
+      "password_reset": Tilbakestilling av passord – alle brukere
+      "project_moderation_rights_received": Prosjektmodereringsrettigheter mottatt – prosjektledere
       "project_folder_moderation_rights_received": Mappeadministrator-rettigheter mottatt
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": Welcome email to new users - all users
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "project_phase_started": Ny prosjektfase – alle brukere
+      "project_phase_upcoming": Kommende ny prosjektfase – administratorer og prosjektledere
+      "status_change_of_commented_idea": Statusendring av en idé du har kommentert på – alle brukere
+      "status_change_of_commented_initiative": Statusendring av et forslag du har kommentert på – alle brukere
+      "status_change_of_voted_idea": Statusendring for en idé du har stemt på – alle brukere
+      "status_change_of_voted_initiative": Statusendring for et forslag du har stemt på – alle brukere
+      "status_change_of_your_idea": Statusendring for ideen din – alle brukere
+      "status_change_of_your_initiative": Statusendring for forslaget ditt – alle brukere
+      "threshold_reached_for_admin": Et forslag har nådd stemmeterskelen – administratorer
+      "welcome": Velkomst-e-postmelding til nye brukere – alle brukere
+      "admin_digest": Ukentlig oversikt – administratorer
+      "moderator_digest": Ukentlig oversikt – prosjektledere
+      "assignee_digest": Ukentlig oversikt over tildelte ideer – administratorer og prosjektledere
+      "user_digest": Ukentlig oversikt – alle brukere
+      "your_proposed_initiatives_digest": Ukentlig oversikt over dine egne forslag – alle brukere
     footer:
       "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
@@ -419,7 +419,7 @@
       cta_view_phase: 'Oppdag den nye fasen'
       event_description: 'Prosjektet har gått over i en ny fase på plattformen til %{organizationName}. Klikk på linken nedenfor for å lære mer!'
       main_header: 'En ny fase har startet for prosjektet %{projectName}'''
-      subtitle: 'About ''%{projectName}'''
+      subtitle: 'Om «%{projectName}»'
       new_phase: 'Prosjektet har gått over i en ny fase ''%{phaseTitle}'''
       subject: '%{projectName} har gått over i en ny fase'
       preheader: 'En ny fase har startet  for %{projectName}'
@@ -427,7 +427,7 @@
       cta_view_phase: 'Sett opp den nye fasen'
       event_description: ' ''%{projectName}'' går snart over i en ny fase. Sørg for at alt er klart: Har du en god nok beskrivelse? Er de valgte ideene flyttet til fasen? Vil du informere innbyggerne om utviklingen via e-post? ?'
       main_header: '%{firstName}, et prosjekt vil snart gå over i en ny fase'
-      subtitle: 'About ''%{projectName}'''
+      subtitle: 'Om «%{projectName}»'
       new_phase: 'Prosjektet vil gå over i en ny fase ''%{phaseTitle}'''
       subject: 'Sett opp alt for den nye fasen %{projectName}'
       preheader: '%{projectName} går snart over i en ny fase'

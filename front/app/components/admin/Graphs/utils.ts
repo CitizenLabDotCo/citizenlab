@@ -32,21 +32,45 @@ export const parseMargin = (
   defaultMargin: number
 ): Margin | undefined => {
   const noLegend = !legend || !legendDimensions;
-  const rightLegend = legend?.position?.includes('right');
-  const legendOffset = noLegend
-    ? 0
-    : rightLegend
-    ? legendDimensions.width + (legend.marginLeft ?? defaultMargin)
-    : legendDimensions.height + (legend.marginTop ?? defaultMargin);
+
+  if (noLegend) {
+    return margin;
+  }
+
+  const legendPosition = getLegendPosition(legend);
+  const legendOffset = getLegendOffset(legend, legendDimensions, defaultMargin);
 
   if (margin) {
-    const bottom = !rightLegend ? (margin.bottom ?? 0) + legendOffset : 0;
-    const right = rightLegend ? (margin.right ?? 0) + legendOffset : 0;
+    const mb = margin.bottom ?? 0;
+    const mr = margin.right ?? 0;
+
+    const bottom = legendPosition === 'bottom' ? mb + legendOffset : mb;
+    const right = legendPosition === 'right' ? mr + legendOffset : mr;
 
     return { ...margin, bottom, right };
   }
 
-  if (noLegend) return;
-
-  return rightLegend ? { right: legendOffset } : { bottom: legendOffset };
+  return legendPosition === 'right'
+    ? { right: legendOffset }
+    : { bottom: legendOffset };
 };
+
+function getLegendOffset(
+  legend: Legend,
+  legendDimensions: LegendDimensions,
+  defaultMargin: number
+) {
+  const legendPosition = getLegendPosition(legend);
+
+  if (legendPosition === 'right') {
+    return legendDimensions.width + (legend.marginLeft ?? defaultMargin);
+  }
+
+  return legendDimensions.height + (legend.marginTop ?? defaultMargin);
+}
+
+function getLegendPosition(legend: Legend) {
+  return legend.position === undefined || legend.position.includes('bottom')
+    ? 'bottom'
+    : 'right';
+}
