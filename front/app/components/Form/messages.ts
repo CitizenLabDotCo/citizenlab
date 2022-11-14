@@ -36,7 +36,7 @@ export default defineMessages({
     defaultMessage: 'Previous',
   },
   next: {
-    id: 'app.components.form.ErrorDisplay.previous',
+    id: 'app.components.form.ErrorDisplay.next',
     defaultMessage: 'Next',
   },
   // TODO: Move this somewhere else
