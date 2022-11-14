@@ -23,8 +23,9 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
 import { FormattedMessage } from 'utils/cl-intl';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
@@ -45,6 +46,13 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const project = useProject({ projectSlug: params.slug });
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id');
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const openModal = () => {
+    setShowLeaveModal(true);
+  };
+  const closeModal = () => {
+    setShowLeaveModal(false);
+  };
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -240,13 +248,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             >
               <FormattedMessage {...messages.editSurvey} />
             </Button>
-            <Button
-              icon="close"
-              buttonStyle="text"
-              onClick={() => {
-                clHistory.push(`/projects/${project.attributes.slug}`);
-              }}
-            />
+            <Button icon="close" buttonStyle="text" onClick={openModal} />
           </Box>
         ) : (
           <GoBackButton insideModal={false} projectId={project.id} />
@@ -254,6 +256,40 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       </Box>
 
       <Box>{config.getFormTitle({ project, phases, phaseFromUrl })}</Box>
+      <Modal opened={showLeaveModal} close={closeModal}>
+        <Box display="flex" flexDirection="column" width="100%" p="20px">
+          <Box mb="40px">
+            <Title variant="h3" color="primary">
+              <FormattedMessage {...messages.leaveSurveyConfirmationQuestion} />
+            </Title>
+            <Text color="primary" fontSize="l">
+              <FormattedMessage {...messages.leaveSurveyMessage} />
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+          >
+            <Button
+              icon="delete"
+              data-cy="e2e-confirm-delete-survey-results"
+              buttonStyle="delete"
+              width="auto"
+              mr="20px"
+              onClick={() => {
+                clHistory.push(`/projects/${project.attributes.slug}`);
+              }}
+            >
+              <FormattedMessage {...messages.confirmLeaveSurveyButtonText} />
+            </Button>
+            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+              <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 

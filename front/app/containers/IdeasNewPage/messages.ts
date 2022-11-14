@@ -358,4 +358,20 @@ export default defineMessages({
     defaultMessage:
       'The issue description must be more than {limit} characters long',
   },
+  leaveSurveyConfirmationQuestion: {
+    id: 'app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion',
+    defaultMessage: 'Are you sure you want to leave this survey?',
+  },
+  leaveSurveyMessage: {
+    id: 'app.containers.IdeasNewPage.leaveSurveyMessage',
+    defaultMessage: 'Your answers won`t be saved.',
+  },
+  confirmLeaveSurveyButtonText: {
+    id: 'app.containers.IdeasNewPage.confirmLeaveSurveyButtonText',
+    defaultMessage: 'Yes, I want to leave the survey',
+  },
+  cancelLeaveSurveyButtonText: {
+    id: 'app.containers.IdeasNewPage.cancelLeaveSurveyButtonText',
+    defaultMessage: 'Cancel',
+  },
 });
