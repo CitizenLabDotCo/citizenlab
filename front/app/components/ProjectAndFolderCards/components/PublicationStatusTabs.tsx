@@ -28,7 +28,7 @@ interface Props extends BaseProps {
   availableTabs: PublicationTab[];
 }
 
-const ProjectsPerPublicationStatusTabs = ({
+const PublicationStatusTabs = ({
   currentTab,
   availableTabs,
   list,
@@ -73,4 +73,4 @@ const ProjectsPerPublicationStatusTabs = ({
   );
 };
 
-export default ProjectsPerPublicationStatusTabs;
+export default PublicationStatusTabs;

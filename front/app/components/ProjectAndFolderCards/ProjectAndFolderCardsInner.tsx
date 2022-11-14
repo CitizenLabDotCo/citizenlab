@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 // components
 import Topbar from './components/Topbar';
 import EmptyContainer from './components/EmptyContainer';
-import ProjectsPerPublicationStatusTabs from './components/ProjectsPerPublicationStatusTabs';
+import PublicationStatusTabs from './components/PublicationStatusTabs';
 import LoadingBox from './components/LoadingBox';
 import Footer from './components/Footer';
 
@@ -159,7 +159,7 @@ const ProjectAndFolderCardsInner = ({
       )}
 
       {!loadingInitial && hasPublications && (
-        <ProjectsPerPublicationStatusTabs
+        <PublicationStatusTabs
           currentTab={currentTab}
           availableTabs={availableTabs}
           list={list}

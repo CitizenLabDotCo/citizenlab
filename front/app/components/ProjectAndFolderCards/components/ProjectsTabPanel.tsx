@@ -7,7 +7,7 @@ import Outlet from 'components/Outlet';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { BaseProps, TCardSize } from './ProjectsPerPublicationStatusTabs';
+import { BaseProps, TCardSize } from './PublicationStatusTabs';
 import { PublicationTab } from '../';
 
 // utils
