@@ -45,7 +45,7 @@ export const projectStatusConfig: StatCardConfig = {
     if (responseData.length === 5) {
       [total, active, archived, finished, draft] = responseData;
     } else {
-      [archived, finished, draft] = responseData;
+      [archived, finished] = responseData;
     }
 
     const cardData: StatCardData = {
@@ -53,18 +53,18 @@ export const projectStatusConfig: StatCardConfig = {
       fileName: underscoreCase(labels.projects),
       stats: [],
     };
-    if (total) {
+    total &&
       cardData.stats.push({
         label: labels.totalProjects,
         value: formatCountValue(total[0].count),
         toolTip: labels.totalProjectsToolTip,
       });
+    active &&
       cardData.stats.push({
         label: labels.active,
         value: formatCountValue(active[0].count),
         toolTip: labels.activeToolTip,
       });
-    }
     cardData.stats.push({
       label: labels.archived,
       value: formatCountValue(archived[0].count),
@@ -74,11 +74,12 @@ export const projectStatusConfig: StatCardConfig = {
       value: formatCountValue(finished[0].count),
       toolTip: labels.finishedToolTip,
     });
-    cardData.stats.push({
-      label: labels.draftProjects,
-      value: formatCountValue(draft[0].count),
-      display: 'corner',
-    });
+    draft &&
+      cardData.stats.push({
+        label: labels.draftProjects,
+        value: formatCountValue(draft[0].count),
+        display: 'corner',
+      });
 
     return cardData;
   },
@@ -128,13 +129,8 @@ export const projectStatusConfig: StatCardConfig = {
       queryDraft,
     ];
     if (startAtMoment && endAtMoment) {
-      returnQuery = [queryArchived, queryFinished, queryDraft];
+      returnQuery = [queryArchived, queryFinished];
     }
-    console.log(
-      JSON.stringify({
-        query: returnQuery,
-      })
-    );
     return {
       query: returnQuery,
     };

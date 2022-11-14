@@ -59,6 +59,7 @@ const StatCard = ({
           pr="20px"
           pl="20px"
           width="100%"
+          key={index}
           borderRight={
             index !== arr.length - 1 ? `1px solid ${colors.divider}` : '0'
           }
