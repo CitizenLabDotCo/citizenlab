@@ -93,34 +93,34 @@ module AdminApi
 
     def yml_custom_fields(shift_timestamps: 0)
       custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
-      CustomField.where(resource: custom_form_ids).map do |c|
+      CustomField.where(resource: custom_form_ids).map do |field|
         yml_custom_field = {
-          'resource_ref' => c.resource_id && lookup_ref(c.resource_id, :custom_form),
-          'key' => c.key,
-          'input_type' => c.input_type,
-          'title_multiloc' => c.title_multiloc,
-          'description_multiloc' => c.description_multiloc,
-          'ordering' => c.ordering,
-          'created_at' => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
-          'updated_at' => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
-          'enabled' => c.enabled,
-          'required' => c.required,
-          'code' => c.code,
-          'hidden' => c.hidden,
-          'maximum' => c.maximum,
-          'minimum_label_multiloc' => c.minimum_label_multiloc,
-          'maximum_label_multiloc' => c.maximum_label_multiloc,
-          'text_images_attributes' => c.text_images.map do |ti|
+          'resource_ref' => field.resource_id && lookup_ref(field.resource_id, :custom_form),
+          'key' => field.key,
+          'input_type' => field.input_type,
+          'title_multiloc' => field.title_multiloc,
+          'description_multiloc' => field.description_multiloc,
+          'ordering' => field.ordering,
+          'created_at' => shift_timestamp(field.created_at, shift_timestamps)&.iso8601,
+          'updated_at' => shift_timestamp(field.updated_at, shift_timestamps)&.iso8601,
+          'enabled' => field.enabled,
+          'required' => field.required,
+          'code' => field.code,
+          'hidden' => field.hidden,
+          'maximum' => field.maximum,
+          'minimum_label_multiloc' => field.minimum_label_multiloc,
+          'maximum_label_multiloc' => field.maximum_label_multiloc,
+          'text_images_attributes' => field.text_images.map do |text_image|
             {
-              'imageable_field' => ti.imageable_field,
-              'remote_image_url' => ti.image_url,
-              'text_reference' => ti.text_reference,
-              'created_at' => ti.created_at.to_s,
-              'updated_at' => ti.updated_at.to_s
+              'imageable_field' => text_image.imageable_field,
+              'remote_image_url' => text_image.image_url,
+              'text_reference' => text_image.text_reference,
+              'created_at' => text_image.created_at.to_s,
+              'updated_at' => text_image.updated_at.to_s
             }
           end
         }
-        store_ref yml_custom_field, c.id, :custom_field
+        store_ref yml_custom_field, field.id, :custom_field
         yml_custom_field
       end
     end
@@ -224,17 +224,17 @@ module AdminApi
         kickoff_at = @project.phases.first.start_at
         shift_timestamps = (Date.parse(timeline_start_at) - kickoff_at).to_i
       end
-      @project.phases.map do |p|
-        yml_phase = yml_participation_context p, shift_timestamps: shift_timestamps
+      @project.phases.map do |phase|
+        yml_phase = yml_participation_context phase, shift_timestamps: shift_timestamps
         yml_phase.merge!({
-          'project_ref' => lookup_ref(p.project_id, :project),
-          'title_multiloc' => p.title_multiloc,
-          'description_multiloc' => p.description_multiloc,
-          'start_at' => shift_timestamp(p.start_at, shift_timestamps)&.iso8601,
-          'end_at' => shift_timestamp(p.end_at, shift_timestamps)&.iso8601,
-          'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
-          'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
-          'text_images_attributes' => p.text_images.map do |ti|
+          'project_ref' => lookup_ref(phase.project_id, :project),
+          'title_multiloc' => phase.title_multiloc,
+          'description_multiloc' => phase.description_multiloc,
+          'start_at' => shift_timestamp(phase.start_at, shift_timestamps)&.iso8601,
+          'end_at' => shift_timestamp(phase.end_at, shift_timestamps)&.iso8601,
+          'created_at' => shift_timestamp(phase.created_at, shift_timestamps)&.iso8601,
+          'updated_at' => shift_timestamp(phase.updated_at, shift_timestamps)&.iso8601,
+          'text_images_attributes' => phase.text_images.map do |ti|
             {
               'imageable_field' => ti.imageable_field,
               'remote_image_url' => ti.image_url,
@@ -244,7 +244,7 @@ module AdminApi
             }
           end
         })
-        store_ref yml_phase, p.id, :phase
+        store_ref yml_phase, phase.id, :phase
         yml_phase
       end
     end
@@ -416,27 +416,27 @@ module AdminApi
     end
 
     def yml_events(shift_timestamps: 0)
-      @project.events.map do |e|
+      @project.events.map do |event|
         yml_event = {
-          'project_ref' => lookup_ref(e.project_id, :project),
-          'title_multiloc' => e.title_multiloc,
-          'description_multiloc' => e.description_multiloc,
-          'location_multiloc' => e.location_multiloc,
-          'start_at' => shift_timestamp(e.start_at, shift_timestamps)&.iso8601,
-          'end_at' => shift_timestamp(e.end_at, shift_timestamps)&.iso8601,
-          'created_at' => shift_timestamp(e.created_at, shift_timestamps)&.iso8601,
-          'updated_at' => shift_timestamp(e.updated_at, shift_timestamps)&.iso8601,
-          'text_images_attributes' => e.text_images.map do |ti|
+          'project_ref' => lookup_ref(event.project_id, :project),
+          'title_multiloc' => event.title_multiloc,
+          'description_multiloc' => event.description_multiloc,
+          'location_multiloc' => event.location_multiloc,
+          'start_at' => shift_timestamp(event.start_at, shift_timestamps)&.iso8601,
+          'end_at' => shift_timestamp(event.end_at, shift_timestamps)&.iso8601,
+          'created_at' => shift_timestamp(event.created_at, shift_timestamps)&.iso8601,
+          'updated_at' => shift_timestamp(event.updated_at, shift_timestamps)&.iso8601,
+          'text_images_attributes' => event.text_images.map do |text_image|
             {
-              'imageable_field' => ti.imageable_field,
-              'remote_image_url' => ti.image_url,
-              'text_reference' => ti.text_reference,
-              'created_at' => ti.created_at.to_s,
-              'updated_at' => ti.updated_at.to_s
+              'imageable_field' => text_image.imageable_field,
+              'remote_image_url' => text_image.image_url,
+              'text_reference' => text_image.text_reference,
+              'created_at' => text_image.created_at.to_s,
+              'updated_at' => text_image.updated_at.to_s
             }
           end
         }
-        store_ref yml_event, e.id, :event
+        store_ref yml_event, event.id, :event
         yml_event
       end
     end
