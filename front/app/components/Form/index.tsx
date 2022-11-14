@@ -248,6 +248,7 @@ const Form = memo(
                 inputId,
                 getApiErrorMessage: safeApiErrorMessages(),
                 onSubmit: handleSubmit,
+                setShowAllErrors,
                 setShowSubmitButton,
               }}
             >

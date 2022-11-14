@@ -9,11 +9,13 @@ export const FormContext = createContext<{
   inputId: string | undefined;
   getApiErrorMessage: ApiErrorGetter;
   onSubmit: () => void;
+  setShowAllErrors: (showAllErrors: boolean) => void;
   setShowSubmitButton: (showSubmitButton: boolean) => void;
 }>({
   showAllErrors: false,
   getApiErrorMessage: () => undefined,
   onSubmit: async () => undefined,
+  setShowAllErrors: () => undefined,
   setShowSubmitButton: () => undefined,
   inputId: undefined,
 });

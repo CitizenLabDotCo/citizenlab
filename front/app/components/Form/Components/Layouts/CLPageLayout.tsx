@@ -1,24 +1,21 @@
 import React, { memo, useState, useEffect, useContext } from 'react';
-import {
-  and,
-  isCategorization,
-  Layout,
-  LayoutProps,
-  RankedTester,
-  rankWith,
-  UISchemaElement,
-  uiTypeIs,
-} from '@jsonforms/core';
+import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
 import styled from 'styled-components';
 import { FormElement } from 'components/IdeaForm';
-import isEmpty from 'lodash/isEmpty';
 import { FormContext } from 'components/Form/contexts';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import Ajv from 'ajv';
+import {
+  getSanitizedFormData,
+  getPageSchema,
+  PageCategorization,
+  isPageCategorization,
+} from 'components/Form/Components/Layouts/utils';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -61,35 +58,21 @@ const PreviousButton = styled(Button)`
   `}
 `;
 
-export interface PageType extends Layout {
-  type: 'Page';
-  /**
-   * The label associated with this category layout.
-   */
-  label: string;
-}
-/**
- * The categorization element, which may have children elements.
- * A child element may either be itself a Categorization or a Category, hence
- * the categorization element can be used to represent recursive structures like trees.
- */
-export interface PageCategorization extends UISchemaElement {
-  type: 'Categorization';
-  /**
-   * The label of this categorization.
-   */
-  label: string;
-  /**
-   * The child elements of this categorization which are either of type
-   * {@link PageType} or {@link PageCategorization}.
-   */
-  elements: (PageType | PageCategorization)[];
-}
+const customAjv = new Ajv({ useDefaults: 'empty', removeAdditional: true });
 
 const CLPageLayout = memo(
   // here we can cast types because the tester made sure we only get categorization layouts
-  ({ schema, uischema, path, renderers, cells, enabled }: LayoutProps) => {
-    const { setShowSubmitButton, onSubmit } = useContext(FormContext);
+  ({
+    schema,
+    uischema,
+    path,
+    renderers,
+    cells,
+    enabled,
+    data,
+  }: LayoutProps) => {
+    const { setShowSubmitButton, onSubmit, setShowAllErrors } =
+      useContext(FormContext);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const uiCategories = (uischema as PageCategorization).elements;
 
@@ -98,6 +81,26 @@ const CLPageLayout = memo(
     }, []);
 
     const showSubmit = currentStep === uiCategories.length - 1;
+
+    const handleNextAndSubmit = () => {
+      if (showSubmit) {
+        onSubmit();
+        return;
+      }
+
+      const currentPageCategorization = uiCategories[currentStep];
+      if (
+        customAjv.validate(
+          getPageSchema(schema, currentPageCategorization),
+          getSanitizedFormData(data)
+        )
+      ) {
+        setShowAllErrors(false);
+        setCurrentStep(currentStep + 1);
+      } else {
+        setShowAllErrors(true);
+      }
+    };
 
     return (
       <Box
@@ -131,13 +134,7 @@ const CLPageLayout = memo(
         })}
         <StyledBox>
           <Button
-            onClick={() => {
-              if (showSubmit) {
-                onSubmit();
-              } else {
-                setCurrentStep(currentStep + 1);
-              }
-            }}
+            onClick={handleNextAndSubmit}
             mb="20px"
             icon="chevron-right"
             iconPos="right"
@@ -170,21 +167,4 @@ const CLPageLayout = memo(
 
 export default withJsonFormsLayoutProps(CLPageLayout);
 
-export const clPageTester: RankedTester = rankWith(
-  5,
-  and(uiTypeIs('Categorization'), (uischema) => {
-    const hasCategory = (element: PageCategorization): boolean => {
-      if (isEmpty(element.elements)) {
-        return false;
-      }
-
-      return element.elements
-        .map((elem) =>
-          isCategorization(elem) ? hasCategory(elem) : elem.type === 'Page'
-        )
-        .reduce((prev, curr) => prev && curr, true);
-    };
-
-    return hasCategory(uischema as PageCategorization);
-  })
-);
+export const clPageTester: RankedTester = rankWith(5, isPageCategorization);
