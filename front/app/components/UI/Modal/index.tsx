@@ -78,7 +78,7 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
 }>`
   position: absolute;
   top: 19px;
-  ${({ fullScreen }) => (fullScreen ? 'left: 25px;' : 'right: 25px;')};
+  ${({ fullScreen }) => (fullScreen ? 'right: 25px;' : 'right: 25px;')};
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -100,18 +100,15 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
 
   ${media.phone`
     top: 13px;
-    ${({ fullScreen }) => (fullScreen ? 'left: 15px;' : 'right: 15px;')};
+    ${({ fullScreen }) => (fullScreen ? 'right: 15px;' : 'right: 15px;')};
   `}
 `;
 
 // copy of the styled FocusOn container below
 const StyledNonFocusableContainer = styled.div<{
-  width: number | string;
   fullScreen?: boolean;
 }>`
   width: 100%;
-  max-width: ${({ width }) =>
-    width.constructor === String ? width : `${width}px`};
   display: flex;
   justify-content: center;
 
@@ -395,7 +392,7 @@ const ModalContentContainerSwitch = ({
 }) => {
   if (fullScreen) {
     return (
-      <StyledNonFocusableContainer width={width} fullScreen={fullScreen}>
+      <StyledNonFocusableContainer fullScreen={fullScreen}>
         {children}
       </StyledNonFocusableContainer>
     );

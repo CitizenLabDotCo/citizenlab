@@ -30,7 +30,7 @@ import { ISignUpInMetaData } from 'components/SignUpIn';
 const Container = styled.div<{
   fullScreen?: boolean;
 }>`
-  ${({ fullScreen }) => fullScreen && 'width: 580px;'}
+  max-width: 580px;
 `;
 
 export type TSignInSteps = 'auth-providers' | 'password-signin';
