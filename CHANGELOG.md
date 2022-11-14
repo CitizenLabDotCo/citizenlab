@@ -1,10 +1,17 @@
 # Changelog
 
+## 2022-11-14
+
+### Fixed
+
+- [CL-1811] Correct copy for Oostende verification tooltip
+
 ## 2022-11-11
 
 ### Changed
+
 - [CL-1839] Merge FranceConnect account based on names
- 
+
 ## 2022-11-10
 
 ### Changed
