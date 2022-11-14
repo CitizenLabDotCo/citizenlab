@@ -67,7 +67,8 @@ export const ModalContentContainer = styled.div<{
   ${({ fullScreen }) =>
     fullScreen &&
     `
-      max-width: 580px;;
+      display: flex;
+      justify-content: center;
       padding-bottom: 40px !important;
   `}
 `;

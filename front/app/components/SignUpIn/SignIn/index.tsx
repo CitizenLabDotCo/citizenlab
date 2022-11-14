@@ -27,7 +27,9 @@ import styled from 'styled-components';
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
 
-const Container = styled.div``;
+const Container = styled.div`
+  max-width: 580px;
+`;
 
 export type TSignInSteps = 'auth-providers' | 'password-signin';
 
