@@ -169,7 +169,6 @@ const ModalContainer = styled(clickOutside)<{
       align-items: center;
       max-height: 100%;
       border-radius: 0;
-      border-top: 2px solid ${colors.borderLight};
   `}
 
   /* tall desktops screens */
