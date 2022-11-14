@@ -35,7 +35,6 @@ RSpec.describe StaticPage, type: :model do
       subject { described_class.new(projects_enabled: true) }
 
       it { is_expected.to validate_presence_of(:projects_filter_type) }
-      it { is_expected.to validate_inclusion_of(:projects_filter_type).in_array(%w[areas topics]) }
     end
 
     context 'when projects_filter_type is areas' do
@@ -76,12 +75,15 @@ RSpec.describe StaticPage, type: :model do
   end
 
   describe 'before validate' do
-    subject(:static_page) { create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [build(:topic)]) }
+    subject(:static_page) { create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [topic]) }
+
+    let(:topic) { create(:topic) }
 
     it 'destroys unused associations' do
       expect(static_page.topics).to be_present
-      static_page.update!(projects_filter_type: 'area', areas: [build(:area)])
+      static_page.update!(projects_filter_type: 'areas', areas: [build(:area)])
       expect(static_page.topics).to be_empty
+      expect(topic).to be_persisted
     end
   end
 
