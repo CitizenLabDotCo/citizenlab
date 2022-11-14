@@ -11,7 +11,7 @@ describe('Proposals card data parsing', () => {
     });
   });
 
-  it('Transforms data correctly into data format required by the component', () => {
+  it('Transforms data correctly into data format required by the proposals stat card', () => {
     const expectedCardData: StatCardData = {
       cardTitle: 'Proposals',
       fileName: 'proposals',
@@ -49,7 +49,7 @@ describe('Proposals card data parsing', () => {
     expect(data).toEqual(expectedCardData);
   });
 
-  it('Creates the correct query when date & project filters applied', () => {
+  it('Creates the correct proposals query when date & project filters applied', () => {
     const expectedQuery: Query = {
       query: [
         {
@@ -115,7 +115,7 @@ describe('Proposals card data parsing', () => {
     expect(query).toEqual(expectedQuery);
   });
 
-  it('Creates the correct query object with defaults', () => {
+  it('Creates the correct proposals query with default filters', () => {
     const expectedQuery: Query = {
       query: [
         {

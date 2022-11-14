@@ -125,4 +125,5 @@ const ActiveUsersCard = ({
   );
 };
 
+// ts-prune-ignore-next
 export default ActiveUsersCard;
