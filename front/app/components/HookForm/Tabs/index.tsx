@@ -7,7 +7,10 @@ import { CLError } from 'typings';
 import TabsComponent, { Props as TabsComponentProps } from 'components/UI/Tabs';
 
 interface Props
-  extends Omit<TabsComponentProps, 'id' | 'errors' | 'selectedValue'> {
+  extends Omit<
+    TabsComponentProps,
+    'id' | 'errors' | 'selectedValue' | 'onClick'
+  > {
   name: string;
 }
 
@@ -18,8 +21,6 @@ const Tabs = ({ name, ...rest }: Props) => {
     control,
     trigger,
   } = useFormContext();
-
-  const defaultValue = '';
 
   const validationError = errors[name]?.message as string | undefined;
 
@@ -33,7 +34,6 @@ const Tabs = ({ name, ...rest }: Props) => {
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
           <TabsComponent
             {...field}

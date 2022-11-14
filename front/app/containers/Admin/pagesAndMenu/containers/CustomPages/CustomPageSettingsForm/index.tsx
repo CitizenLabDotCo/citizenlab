@@ -170,13 +170,7 @@ const CustomPageSettingsForm = ({
                 <IconTooltip ml="40px" content="Link some projects" />
               </Box>
               <Box mb="30px">
-                <Tabs
-                  name="linkedProjectsType"
-                  items={linkedProjectsTabs}
-                  onClick={(e) => {
-                    console.log(e);
-                  }}
-                />
+                <Tabs name="linkedProjectsType" items={linkedProjectsTabs} />
               </Box>
               {methods.getValues('linkedProjectsType') === 'byTag' && (
                 <Box mb="30px">
