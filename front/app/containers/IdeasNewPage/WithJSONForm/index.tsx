@@ -208,7 +208,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const userCanEditProject =
     !isNilOrError(authUser) &&
     canModerateProject(project.id, { data: authUser });
-  const isSurvey = userCanEditProject && config.postType === 'nativeSurvey';
+  const isSurvey = config.postType === 'nativeSurvey';
+  const canEditSurvey = userCanEditProject && isSurvey;
 
   const linkToSurveyBuilder = phaseId
     ? `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`
@@ -226,7 +227,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
         display="flex"
         width="100%"
         flexDirection="row"
-        justifyContent={isSurvey ? 'flex-end' : 'space-between'}
+        justifyContent={canEditSurvey ? 'flex-end' : 'space-between'}
         mb="14px"
         alignItems="center"
         maxWidth="700px"
@@ -238,16 +239,18 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             display="flex"
             flexDirection="row"
           >
-            <Button
-              icon="edit"
-              linkTo={linkToSurveyBuilder}
-              buttonStyle="text"
-              textDecorationHover="underline"
-              hidden={!userCanEditProject}
-              padding="0"
-            >
-              <FormattedMessage {...messages.editSurvey} />
-            </Button>
+            {canEditSurvey && (
+              <Button
+                icon="edit"
+                linkTo={linkToSurveyBuilder}
+                buttonStyle="text"
+                textDecorationHover="underline"
+                hidden={!userCanEditProject}
+                padding="0"
+              >
+                <FormattedMessage {...messages.editSurvey} />
+              </Button>
+            )}
             <Button icon="close" buttonStyle="text" onClick={openModal} />
           </Box>
         ) : (
