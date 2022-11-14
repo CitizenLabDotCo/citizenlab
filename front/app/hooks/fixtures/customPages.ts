@@ -41,7 +41,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -85,7 +85,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -134,7 +134,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -186,7 +186,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -235,7 +235,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -288,7 +288,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -337,7 +337,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',

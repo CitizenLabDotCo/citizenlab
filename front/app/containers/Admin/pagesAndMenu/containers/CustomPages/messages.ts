@@ -67,6 +67,35 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageSettingsTab',
     defaultMessage: 'Page settings',
   },
+  linkedProjectsLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel',
+    defaultMessage: 'Linked Projects',
+  },
+  linkedProjectsTooltip: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsTooltip',
+    defaultMessage:
+      'Select which projects and related events can be displayed on the page.',
+  },
+  noFilter: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.noFilter',
+    defaultMessage: 'None',
+  },
+  byAreaFilter: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter',
+    defaultMessage: 'By Area',
+  },
+  byTagsFilter: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter',
+    defaultMessage: 'By Tag(s)',
+  },
+  selectedTagsLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedTagsLabel',
+    defaultMessage: 'Selected tags',
+  },
+  selectedAreasLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedAreasLabel',
+    defaultMessage: 'Selected area',
+  },
   editCustomPageMetaTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle',
     defaultMessage: 'Edit custom page | {orgName}',

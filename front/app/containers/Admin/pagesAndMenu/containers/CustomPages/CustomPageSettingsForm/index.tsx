@@ -18,7 +18,7 @@ import SlugInput from 'components/HookForm/SlugInput';
 import Tabs from 'components/HookForm/Tabs';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
-import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -49,26 +49,11 @@ export interface FormValues {
 
 type TMode = 'new' | 'edit';
 interface Props {
-  defaultValues?: FormValues;
+  defaultValues?: Partial<FormValues>;
   showNavBarItemTitle?: boolean;
   mode: TMode;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
-
-const projectsFilterTabs: { name: ProjectsFilterTypes; label: string }[] = [
-  {
-    name: 'no_filter',
-    label: 'None',
-  },
-  {
-    name: 'topics',
-    label: 'By Tag',
-  },
-  {
-    name: 'areas',
-    label: 'By Area',
-  },
-];
 
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
@@ -123,6 +108,21 @@ const CustomPageSettingsForm = ({
   const areas = useAreas();
   const topics = useTopics();
 
+  const projectsFilterTabs: { name: ProjectsFilterTypes; label: string }[] = [
+    {
+      name: 'no_filter',
+      label: formatMessage(messages.noFilter),
+    },
+    {
+      name: 'topics',
+      label: formatMessage(messages.byTagsFilter),
+    },
+    {
+      name: 'areas',
+      label: formatMessage(messages.byAreaFilter),
+    },
+  ];
+
   if (isNilOrError(areas) || isNilOrError(topics)) {
     return null;
   }
@@ -164,8 +164,13 @@ const CustomPageSettingsForm = ({
             {/* // should be behind a feature flag */}
             <Box>
               <Box display="flex" justifyContent="flex-start">
-                <Text>Linked Projects</Text>
-                <IconTooltip ml="40px" content="Link some projects" />
+                <Label>
+                  <span>{formatMessage(messages.linkedProjectsLabel)}</span>
+                  <IconTooltip
+                    ml="10px"
+                    content={formatMessage(messages.linkedProjectsTooltip)}
+                  />
+                </Label>
               </Box>
               <Box mb="30px">
                 <Tabs name="projects_filter_type" items={projectsFilterTabs} />
@@ -174,11 +179,10 @@ const CustomPageSettingsForm = ({
                 <Box mb="30px">
                   <MultipleSelect
                     name="tag_ids"
-                    placeholder={'add tags'}
                     options={mapFilterEntityToOptions(topics)}
                     label={
                       <>
-                        Add some tags
+                        {formatMessage(messages.selectedTagsLabel)}
                         <IconTooltip content={'add some tags'} />
                       </>
                     }
@@ -190,12 +194,8 @@ const CustomPageSettingsForm = ({
                   <Select
                     name="selected_area"
                     options={mapFilterEntityToOptions(areas)}
-                    label={
-                      <>
-                        select area
-                        <IconTooltip content={'choose an area'} />
-                      </>
-                    }
+                    label={<>{formatMessage(messages.selectedAreasLabel)}</>}
+                    labelTooltipText="choose an area"
                   />
                 </Box>
               )}

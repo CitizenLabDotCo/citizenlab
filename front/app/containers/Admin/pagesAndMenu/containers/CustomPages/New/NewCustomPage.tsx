@@ -21,7 +21,7 @@ const NewCustomPage = () => {
       mode="new"
       onSubmit={handleOnSubmit}
       defaultValues={{
-        linkedProjectsType: 'none',
+        projects_filter_type: 'no_filter',
       }}
     />
   );
