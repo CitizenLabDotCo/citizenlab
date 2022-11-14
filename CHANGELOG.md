@@ -1,6 +1,28 @@
 # Changelog
 
-## 2022-11-04
+## 2022-11-14
+
+### Fixed
+
+- [CL-1811] Correct copy for Oostende verification tooltip
+
+## 2022-11-11
+
+### Changed
+
+- [CL-1839] Merge FranceConnect account based on names
+
+## 2022-11-10
+
+### Changed
+
+- [CL-1101] Make the login and signup flows fullscreen for platforms with FranceConnect login enabled
+
+## 2022-11-08
+
+### Changed
+
+- [CL-1776] Remove feedback icon in Bottom Right
 
 ### Added
 
@@ -8,13 +30,15 @@
 
 ### Fixed
 
-- [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
+- [CL-1923] Disabled switching from existing participation method to in-platform survey. Warning message added for additional clarity.
 
-## 2022-11-03
+## 2022-11-04
 
 ### Fixed
 
--[CL-1923] Disabled switching from existing participation method to in-platform survey. Warning message added for additional clarity.
+- [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
+
+## 2022-11-03
 
 ### Fixed
 

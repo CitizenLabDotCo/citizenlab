@@ -158,18 +158,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale',
     defaultMessage: 'Linear scale',
   },
-  disabledSurveyEditingMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledSurveyEditingMessage',
+  disabledSurveyMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage',
     defaultMessage:
       "Survey content can't be edited as survey results have started coming in.",
   },
-  deleteResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResults',
-    defaultMessage: 'Delete the results',
-  },
-  deleteResultsCondition: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsCondition',
-    defaultMessage: 'if you need to make changes.',
+  deleteResultsLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink',
+    defaultMessage: 'Delete the results if you need to make changes.',
   },
   choiceCount: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount',

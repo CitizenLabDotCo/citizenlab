@@ -193,7 +193,9 @@ export function isDesktop(windowWidth: number) {
   return windowWidth > viewportWidths.tablet;
 }
 
-export const keys = <T>(obj: T) => Object.keys(obj) as Array<keyof T>;
+export const keys = <T extends object>(obj: T) =>
+  Object.keys(obj) as Array<keyof T>;
+export const get = <T, K extends keyof T>(obj: T, key: K) => obj[key];
 
 export const reduceErrors =
   <T>(setter: (data: T[] | NilOrError) => void) =>

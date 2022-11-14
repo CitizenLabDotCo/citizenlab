@@ -1,17 +1,16 @@
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Moment } from 'moment';
-import { Stat } from '../typings';
+import {
+  ProjectId,
+  Dates,
+  Resolution,
+  Stat,
+  GetTimeSeriesResponse,
+} from '../../typings';
 
-export interface QueryParameters {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-}
+export type QueryParameters = ProjectId & Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [[TotalsRow] | [], [TotalsRow] | [], TimeSeriesResponse];
+  data: [[TotalsRow] | [], [TotalsRow] | [], TimeSeriesResponse | []];
 };
 
 interface BaseRow {
@@ -24,24 +23,9 @@ interface TotalsRow extends BaseRow {
   avg_pages_visited: string | null;
 }
 
-export type TimeSeriesResponse = TimeSeriesResponseRow[];
-
-export type TimeSeriesResponseRow =
-  | TimeSeriesResponseMonth
-  | TimeSeriesResponseWeek
-  | TimeSeriesResponseDay;
-
-interface TimeSeriesResponseMonth extends BaseRow {
-  'dimension_date_last_action.month': string;
-}
-
-interface TimeSeriesResponseWeek extends BaseRow {
-  'dimension_date_last_action.week': string;
-}
-
-interface TimeSeriesResponseDay extends BaseRow {
-  'dimension_date_last_action.date': string;
-}
+type Prefix = 'dimension_date_last_action';
+export type TimeSeriesResponse = GetTimeSeriesResponse<Prefix, BaseRow>;
+export type TimeSeriesResponseRow = TimeSeriesResponse[number];
 
 // Hook return value
 export interface TimeSeriesRow {
