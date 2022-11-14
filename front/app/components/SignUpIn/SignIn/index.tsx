@@ -27,8 +27,10 @@ import styled from 'styled-components';
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
 
-const Container = styled.div`
-  max-width: 580px;
+const Container = styled.div<{
+  fullScreen?: boolean;
+}>`
+  ${({ fullScreen }) => fullScreen && 'width: 580px;'}
 `;
 
 export type TSignInSteps = 'auth-providers' | 'password-signin';
@@ -90,7 +92,11 @@ const SignIn = memo<Props>(
     }, []);
 
     return (
-      <Container id="e2e-sign-in-container" className={className}>
+      <Container
+        id="e2e-sign-in-container"
+        className={className}
+        fullScreen={fullScreen}
+      >
         <StyledHeaderContainer
           className="signupinheadercontainer"
           inModal={!!metaData.inModal}

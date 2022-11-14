@@ -585,7 +585,6 @@ class Modal extends PureComponent<Props, State> {
                   iconColor={colors.textSecondary}
                   iconColorOnHover={'#000'}
                   a11y_buttonActionMessage={messages.closeModal}
-                  fullScreen={fullScreen}
                 />
 
                 {header && (
