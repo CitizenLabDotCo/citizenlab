@@ -36,6 +36,7 @@
 #
 class StaticPage < ApplicationRecord
   CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze
+  enum projects_filter_type: { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
@@ -83,15 +84,15 @@ class StaticPage < ApplicationRecord
 
   validates :projects_enabled, inclusion: [true, false]
   with_options if: -> { projects_enabled == true } do
-    validates :projects_filter_type, presence: true, inclusion: %w[areas topics none]
+    validates :projects_filter_type, presence: true
   end
 
   validates :events_widget_enabled, inclusion: [true, false]
 
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
-  validates :areas, length: { is: 1 }, if: -> { projects_filter_type == 'areas' }
-  validates :topics, length: { minimum: 1 }, if: -> { projects_filter_type == 'topics' }
+  validates :areas, length: { is: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:areas) }
+  validates :topics, length: { minimum: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:topics) }
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
@@ -145,7 +146,7 @@ class StaticPage < ApplicationRecord
   end
 
   def destroy_obsolete_associations
-    return if projects_filter_type_was == 'none'
+    return if projects_filter_type_was == self.class.projects_filter_types.fetch(:no_filter)
 
     public_send(projects_filter_type_was).destroy_all if projects_filter_type_changed? && projects_filter_type_was.present?
   end
