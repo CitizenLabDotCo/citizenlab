@@ -183,6 +183,13 @@ export interface OutletsPropertyMap {
     endAtMoment: Moment | null;
     resolution: IResolution;
   };
+  'app.containers.Admin.dashboard.summary.emailDeliveries': {
+    projectId: string | undefined;
+    startAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
+    resolution: IResolution;
+  };
+
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;

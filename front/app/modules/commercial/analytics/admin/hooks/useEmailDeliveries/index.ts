@@ -38,13 +38,16 @@ const getAggregations = (): AggregationsConfig => ({
 });
 
 const query = ({
+  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
 }: QueryParameters): Query => {
   const totalsWholePeriodQuery: QuerySchema = {
-    fact: 'email_delivery',
+    fact: 'visit',
     filters: {
+      'dimension_user.role': ['citizen', null],
+      ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_last_action',
         startAtMoment,
@@ -55,16 +58,20 @@ const query = ({
   };
 
   const totalsLastPeriodQuery: QuerySchema = {
-    fact: 'email_delivery',
+    fact: 'visit',
     filters: {
+      'dimension_user.role': ['citizen', null],
+      ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilterLastPeriod('dimension_date_last_action', resolution),
     },
     aggregations: getAggregations(),
   };
 
   const timeSeriesQuery: QuerySchema = {
-    fact: 'email_delivery',
+    fact: 'visit',
     filters: {
+      'dimension_user.role': ['citizen', null],
+      ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_last_action',
         startAtMoment,

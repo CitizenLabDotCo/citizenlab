@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useVisitors from '../../hooks/useVisitors';
+import useEmailDeliveries from '../../hooks/useEmailDeliveries';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
-import EmailDeliveriesStats from './EmailDeliveriesStats';
+import VisitorStats from './VisitorStats';
 import Chart from './Chart';
 
 // i18n
@@ -14,32 +14,28 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { ProjectId, Dates, Resolution } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  projectFilter: string | undefined;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
 const VisitorsCard = ({
+  projectId,
   startAtMoment,
   endAtMoment,
-  projectFilter,
   resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitors({
-    startAtMoment,
-    endAtMoment,
-    projectId: projectFilter,
-    resolution,
-  });
+  const { deducedResolution, stats, timeSeries, xlsxData } = useEmailDeliveries(
+    {
+      projectId,
+      startAtMoment,
+      endAtMoment,
+      resolution,
+    }
+  );
 
   const cardTitle = formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
@@ -55,27 +51,29 @@ const VisitorsCard = ({
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
-        currentProjectFilter: projectFilter,
+        currentProjectFilter: projectId,
         resolution: deducedResolution,
       }}
     >
-      <Box width="100%" display="flex" flexDirection="row">
-        <Box display="flex" flexDirection="row" pl="20px">
-          <EmailDeliveriesStats
+      <Box px="20px" width="100%" display="flex" flexDirection="row">
+        <Box display="flex" flexDirection="row">
+          <VisitorStats
             stats={stats}
-            projectFilter={projectFilter}
+            projectId={projectId}
             resolution={deducedResolution}
           />
         </Box>
 
-        <Box flexGrow={1} display="flex" justifyContent="center">
-          <Chart
-            timeSeries={timeSeries}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={deducedResolution}
-            innerRef={graphRef}
-          />
+        <Box flexGrow={1} display="flex" justifyContent="flex-end">
+          <Box pt="8px" width="95%" maxWidth="800px" height="250px">
+            <Chart
+              timeSeries={timeSeries}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={deducedResolution}
+              innerRef={graphRef}
+            />
+          </Box>
         </Box>
       </Box>
     </GraphCard>

@@ -245,6 +245,15 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
             </Column>
+            <Column>
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.emailDeliveries"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+            </Column>
           </GraphsContainer>
         </>
       );
