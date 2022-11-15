@@ -19,8 +19,14 @@ import {
 } from './utils';
 
 // components
-import { List, SortableRow } from 'components/admin/ResourceList';
-import { Box, Badge, Text, colors } from '@citizenlab/cl2-component-library';
+import { List } from 'components/admin/ResourceList';
+import {
+  Box,
+  Badge,
+  Text,
+  colors,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
 // styling
@@ -32,6 +38,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
+import { SortableRow2 } from 'components/admin/ResourceList/SortableRow2';
 
 // Assign field badge text
 const getTranslatedFieldType = (field) => {
@@ -112,22 +119,26 @@ const FormFields = ({
                     : onEditField({ ...field, index });
                 }}
               >
-                <SortableRow
-                  iconFill={getTitleColor(selectedFieldId, field)}
-                  iconMargin="0px 0px 0px 24px"
+                <SortableRow2
+                  rowHeight={field.input_type === 'page' ? '50px' : '70px'}
                   id={field.id}
+                  text={''}
                   index={index}
                   moveRow={handleDragRow}
-                  dropRow={() => {
-                    // Do nothing, no need to handle dropping a row for now
-                  }}
                 >
                   <Box
                     display="flex"
                     justifyContent="space-between"
                     className="expand"
+                    width="100%"
                   >
                     <Box display="flex" alignItems="center">
+                      <Icon
+                        ml="28px"
+                        width="12px"
+                        fill={getIndexTitleColor(selectedFieldId, field)}
+                        name="sort"
+                      />
                       <Text
                         as="span"
                         color={getIndexTitleColor(selectedFieldId, field)}
@@ -156,10 +167,15 @@ const FormFields = ({
                         <T value={field.title_multiloc} />
                       </Text>
                     </Box>
-                    <Box pr="24px" display="flex">
+                    <Box
+                      pr="24px"
+                      display="flex"
+                      height="100%"
+                      alignContent="center"
+                    >
                       {!isNilOrError(field.input_type) &&
                         field.input_type !== 'page' && (
-                          <Box ml="12px">
+                          <Box my="auto" ml="12px">
                             {' '}
                             <Badge
                               className="inverse"
@@ -172,7 +188,7 @@ const FormFields = ({
                           </Box>
                         )}
                       {field.required && (
-                        <Box ml="12px">
+                        <Box mt="auto" mb="auto" ml="12px">
                           {' '}
                           <Badge className="inverse" color={colors.error}>
                             <FormattedMessage {...messages.required} />
@@ -181,7 +197,7 @@ const FormFields = ({
                       )}
                     </Box>
                   </Box>
-                </SortableRow>
+                </SortableRow2>
               </FormFieldsContainer>
             );
           })}
