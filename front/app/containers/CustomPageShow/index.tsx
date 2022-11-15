@@ -17,6 +17,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useCustomPage from 'hooks/useCustomPage';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
+import useEvents from 'hooks/useEvents';
 
 // utils
 import { isError, isNil, isNilOrError } from 'utils/helperUtils';
@@ -65,6 +66,14 @@ const CustomPageShow = () => {
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
+  });
+  const { events } = useEvents({
+    projectPublicationStatuses: ['published'],
+    currentAndFutureOnly: true,
+    pageSize: 3,
+    sort: 'oldest',
+    // to be added
+    // projectIds:
   });
 
   // when neither have loaded
@@ -125,7 +134,9 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-        {pageAttributes.events_widget_enabled && <EventsWidget />}
+        {pageAttributes.events_widget_enabled && (
+          <EventsWidget events={events} />
+        )}
       </Content>
     </Container>
   );
