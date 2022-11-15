@@ -96,6 +96,14 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedAreasLabel',
     defaultMessage: 'Selected area',
   },
+  atLeastOneTag: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag',
+    defaultMessage: 'Please select at least one tag',
+  },
+  selectAnArea: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectAnArea',
+    defaultMessage: 'Please select an area',
+  },
   editCustomPageMetaTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle',
     defaultMessage: 'Edit custom page | {orgName}',

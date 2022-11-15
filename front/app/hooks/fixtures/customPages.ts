@@ -7,6 +7,12 @@ const PAGES: ICustomPageData[] = [
       nav_bar_item: {
         data: null,
       },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
+      },
     },
     attributes: {
       title_multiloc: {
@@ -99,6 +105,12 @@ const PAGES: ICustomPageData[] = [
       nav_bar_item: {
         data: null,
       },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
+      },
     },
   },
   {
@@ -152,6 +164,12 @@ const PAGES: ICustomPageData[] = [
           type: 'nav_bar_item',
         },
       },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
+      },
     },
   },
   {
@@ -201,6 +219,12 @@ const PAGES: ICustomPageData[] = [
     relationships: {
       nav_bar_item: {
         data: null,
+      },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
       },
     },
   },
@@ -255,6 +279,12 @@ const PAGES: ICustomPageData[] = [
           type: 'nav_bar_item',
         },
       },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
+      },
     },
   },
 
@@ -306,6 +336,12 @@ const PAGES: ICustomPageData[] = [
       nav_bar_item: {
         data: null,
       },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
+      },
     },
   },
   {
@@ -355,6 +391,12 @@ const PAGES: ICustomPageData[] = [
     relationships: {
       nav_bar_item: {
         data: null,
+      },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
       },
     },
   },

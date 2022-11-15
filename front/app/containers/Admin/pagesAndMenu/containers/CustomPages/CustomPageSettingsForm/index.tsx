@@ -5,7 +5,7 @@ import Feedback from 'components/HookForm/Feedback';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string } from 'yup';
+import { array, object, string } from 'yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { slugRegEx } from 'utils/textUtils';
 // import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -57,6 +57,12 @@ interface Props {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
+const projectsFilterTypesArray: ProjectsFilterTypes[] = [
+  'no_filter',
+  'topics',
+  'areas',
+];
+
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   intl: { formatMessage },
@@ -80,7 +86,15 @@ const CustomPageSettingsForm = ({
         .matches(slugRegEx, formatMessage(messages.slugRegexError))
         .required(formatMessage(messages.slugRequiredError)),
     }),
-    projects_filter_type: string().required(),
+    projects_filter_type: string().oneOf(projectsFilterTypesArray).required(),
+    topic_ids: array().when('projects_filter_type', {
+      is: (value: ProjectsFilterTypes) => value === 'topics',
+      then: array().of(string()).min(1, formatMessage(messages.atLeastOneTag)),
+    }),
+    area_id: string().when('projects_filter_type', {
+      is: (value: ProjectsFilterTypes) => value === 'areas',
+      then: string().required(formatMessage(messages.selectAnArea)),
+    }),
   });
 
   const methods = useForm({
@@ -177,7 +191,7 @@ const CustomPageSettingsForm = ({
               <Box mb="30px">
                 <Tabs name="projects_filter_type" items={projectsFilterTabs} />
               </Box>
-              {methods.getValues('projects_filter_type') === 'topics' && (
+              {methods.watch('projects_filter_type') === 'topics' && (
                 <Box mb="30px">
                   <MultipleSelect
                     name="topic_ids"
@@ -191,7 +205,7 @@ const CustomPageSettingsForm = ({
                   />
                 </Box>
               )}
-              {methods.getValues('projects_filter_type') === 'areas' && (
+              {methods.watch('projects_filter_type') === 'areas' && (
                 <Box mb="20px">
                   <Select
                     name="area_id"
