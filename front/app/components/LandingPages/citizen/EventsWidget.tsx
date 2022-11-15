@@ -1,11 +1,11 @@
 import React from 'react';
 
 // components
-import TopBar from './TopBar';
 import EventCard from 'components/EventCard';
 import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import VerticalCenterer from 'components/VerticalCenterer';
+import Link from 'utils/cl-router/Link';
 
 // hooks
 import useEvents from 'hooks/useEvents';
@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 
 // other
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
@@ -67,6 +67,43 @@ const StyledEventCard = styled(EventCard)`
   padding: 20px;
 `;
 
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #d1d1d1;
+  margin-bottom: 30px;
+
+  ${media.phone`
+    margin-bottom: 21px;
+  `}
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+`;
+
+const Title = styled.h2`
+  color: ${({ theme }) => theme.colors.tenantText};
+  font-size: ${fontSizes.xl}px;
+  font-weight: 500;
+  line-height: normal;
+  padding: 0;
+  margin: 0;
+
+  ${media.phone`
+    text-align: center;
+    margin: 0;
+  `};
+`;
+
+const EventPageLink = styled(Link)`
+  color: ${colors.textSecondary};
+  margin-top: auto;
+`;
+
 const EventsWidget = () => {
   const { formatMessage } = useIntl();
   const { events } = useEvents({
@@ -81,7 +118,12 @@ const EventsWidget = () => {
 
   return (
     <EventsWidgetContainer data-testid="e2e-events-widget-container">
-      <TopBar />
+      <Header>
+        <Title>{formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
+        <EventPageLink to="/events">
+          {formatMessage(messages.viewAllEventsText)}
+        </EventPageLink>
+      </Header>
 
       {eventsLoading && <EventsSpinner />}
       {eventsError && (
