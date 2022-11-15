@@ -7,7 +7,9 @@ import LoadingBox from 'components/ProjectAndFolderCards/components/LoadingBox';
 import SignedInHeader from './SignedInHeader';
 import SignedOutHeader from './SignedOutHeader';
 const MainContent = lazy(() => import('./MainContent'));
-const HomepageInfoSection = lazy(() => import('./HomepageInfoSection'));
+const InfoSection = lazy(
+  () => import('components/LandingPages/citizen/InfoSection')
+);
 const Footer = lazy(() => import('./Footer'));
 
 // hooks
@@ -37,7 +39,7 @@ const HomePage = () => {
             {!isNilOrError(homepageSettings) &&
               homepageSettings.attributes.top_info_section_enabled && (
                 // top info section
-                <HomepageInfoSection
+                <InfoSection
                   multilocContent={
                     homepageSettings.attributes.top_info_section_multiloc
                   }
@@ -48,7 +50,7 @@ const HomePage = () => {
             {!isNilOrError(homepageSettings) &&
               homepageSettings.attributes.bottom_info_section_enabled && (
                 // bottom info section
-                <HomepageInfoSection
+                <InfoSection
                   multilocContent={
                     homepageSettings.attributes.bottom_info_section_multiloc
                   }
