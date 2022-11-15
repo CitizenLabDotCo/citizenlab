@@ -47,27 +47,35 @@ export const Heading = ({
     setShowLeaveModal(false);
   };
   const isSurveyOnMobile = isSmallerThanXlPhone && isSurvey;
+  let headingTextColor:
+    | keyof typeof colors
+    | 'tenantPrimary'
+    | 'tenantSecondary'
+    | 'tenantText' = 'tenantText';
+  if (isSurveyOnMobile) {
+    headingTextColor = 'white';
+  } else if (isSurvey) {
+    headingTextColor = 'primary';
+  }
 
   return (
     <>
       <Box
         width="100%"
         display="flex"
-        flexDirection={isSmallerThanXlPhone ? 'row-reverse' : 'column'}
+        flexDirection={isSurveyOnMobile ? 'row-reverse' : 'column'}
         justifyContent="center"
         alignItems="center"
         background={isSurveyOnMobile ? colors.primary : undefined}
-        pt={isSmallerThanXlPhone ? '0px' : '60px'}
-        pb={isSmallerThanXlPhone ? '0px' : '40px'}
-        mb={isSmallerThanXlPhone ? '20px' : '0px'}
-        height={isSmallerThanXlPhone ? '64px' : undefined}
-        position={isSmallerThanXlPhone ? 'fixed' : undefined}
-        top={isSmallerThanXlPhone ? '0px' : undefined}
+        pt={isSurveyOnMobile ? '0px' : '40px'}
+        height={isSurveyOnMobile ? '64px' : undefined}
+        position={isSurveyOnMobile ? 'fixed' : undefined}
+        top={isSurveyOnMobile ? '0px' : undefined}
         zIndex="3"
       >
         <Box
           display="flex"
-          width={isSmallerThanXlPhone ? undefined : '100%'}
+          width={isSurveyOnMobile ? undefined : '100%'}
           flexDirection="row"
           justifyContent={canEditSurvey ? 'flex-end' : 'space-between'}
           mb={isSurveyOnMobile ? '0px' : '14px'}
@@ -108,7 +116,13 @@ export const Heading = ({
         </Box>
 
         <Box width="100%">
-          <Text color={isSurveyOnMobile ? 'white' : undefined}>
+          <Text
+            color={headingTextColor}
+            variant="bodyL"
+            fontWeight="bold"
+            fontSize={isSurveyOnMobile ? 'xl' : 'xxxxl'}
+            my={isSurveyOnMobile ? undefined : '0px'}
+          >
             {titleText}
           </Text>
         </Box>
@@ -149,7 +163,9 @@ export const Heading = ({
           </Box>
         </Modal>
       </Box>
-      <Box mt={`${stylingConsts.menuHeight}px`} display="flex" />
+      {isSurveyOnMobile && (
+        <Box mt={`${stylingConsts.menuHeight}px`} display="flex" />
+      )}
     </>
   );
 };
