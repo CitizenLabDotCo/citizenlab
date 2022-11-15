@@ -443,6 +443,7 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
           position="fixed"
           bgColor={colors.background}
           h="100vh"
+          overflowY="scroll"
         >
           <Box top="0px">
             <IdeasNewPageWithJSONForm {...inputProps} />
