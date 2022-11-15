@@ -104,7 +104,11 @@ const EventPageLink = styled(Link)`
   margin-top: auto;
 `;
 
-const EventsWidget = () => {
+interface Props {
+  id?: string;
+}
+
+const EventsWidget = ({ id }: Props) => {
   const { formatMessage } = useIntl();
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
@@ -117,7 +121,7 @@ const EventsWidget = () => {
   const eventsError = isError(events);
 
   return (
-    <EventsWidgetContainer data-testid="e2e-events-widget-container">
+    <EventsWidgetContainer data-testid={id}>
       <Header>
         <Title>{formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
         <EventPageLink to="/events">

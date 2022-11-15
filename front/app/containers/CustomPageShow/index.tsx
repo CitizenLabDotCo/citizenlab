@@ -29,6 +29,7 @@ import { injectIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { fontSizes, isRtl, media } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -124,6 +125,7 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
+        {pageAttributes.events_widget_enabled && <EventsWidget />}
       </Content>
     </Container>
   );
