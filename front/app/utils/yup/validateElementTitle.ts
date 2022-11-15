@@ -7,9 +7,8 @@ const validateElementTitle = (message: string) => {
       return schema.test('input type is page', message, () => {
         return true;
       });
-    } else {
-      return validateMultilocForEveryLocale(message);
     }
+    return validateMultilocForEveryLocale(message);
   });
 };
 

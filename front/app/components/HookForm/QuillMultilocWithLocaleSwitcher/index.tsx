@@ -47,6 +47,7 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const apiError =
     (errors[name]?.error as string | undefined) &&
     ([errors[name]] as unknown as CLError[]);
+
   return (
     <>
       <Controller
@@ -57,7 +58,7 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           <QuillMultilocWithLocaleSwitcherComponent
             {...field}
             {...rest}
-            id={name.includes('.') ? 'quill-multiloc-editor' : name}
+            id={name.replace(/\./g, '_')}
             valueMultiloc={{ ...defaultValue, ...field.value }}
           />
         )}

@@ -10,6 +10,13 @@ import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import {
+  isFieldSelected,
+  getFieldBackgroundColor,
+  getTitleColor,
+  getIndexForTitle,
+  getIndexTitleColor,
+} from './utils';
 
 // components
 import { List, SortableRow } from 'components/admin/ResourceList';
@@ -19,9 +26,8 @@ import T from 'components/T';
 // styling
 import styled from 'styled-components';
 
-// Hooks
+// hooks and services
 import useLocale from 'hooks/useLocale';
-
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
@@ -76,49 +82,6 @@ const FormFields = ({
     }
   `;
 
-  const isFieldSelected = (fieldId) => {
-    return selectedFieldId === fieldId;
-  };
-
-  const getFieldBackgroundColor = (field) => {
-    if (field.input_type === 'page') {
-      return isFieldSelected(field.id) ? colors.primary : colors.background;
-    }
-    return undefined;
-  };
-
-  const getTitleColor = (field) => {
-    if (field.input_type === 'page' && isFieldSelected(field.id)) {
-      return 'white';
-    }
-    return 'grey800';
-  };
-
-  const getIndexTitleColor = (field) => {
-    if (field.input_type === 'page' && isFieldSelected(field.id)) {
-      return 'white';
-    }
-    return 'teal300';
-  };
-
-  const getIndexForTitle = (formCustomFields, field) => {
-    if (field.input_type === 'page') {
-      // Filter out questions
-      const filteredPages = formCustomFields.filter(
-        (customField) => customField.input_type === 'page'
-      );
-      // Return page title
-      return ` ${filteredPages.indexOf(field) + 1}`;
-    } else {
-      // Filter out pages
-      const filteredQuestion = formCustomFields.filter(
-        (customField) => customField.input_type !== 'page'
-      );
-      // Return question title
-      return ` ${filteredQuestion.indexOf(field) + 1}`;
-    }
-  };
-
   return (
     <DndProvider backend={HTML5Backend}>
       <Box py="32px" height="100%" overflowY="auto">
@@ -129,7 +92,7 @@ const FormFields = ({
             if (hasErrors) {
               outlineStyle = `1px solid ${colors.error}`;
             } else if (
-              isFieldSelected(field.id) &&
+              isFieldSelected(selectedFieldId, field.id) &&
               field.input_type !== 'page'
             ) {
               outlineStyle = `1px solid ${colors.teal300}`;
@@ -142,7 +105,7 @@ const FormFields = ({
                 key={field.id}
                 style={{ outline: outlineStyle, outlineOffset: '-1px' }}
                 data-cy={`e2e-field-${fieldIdentifier}`}
-                background={getFieldBackgroundColor(field)}
+                background={getFieldBackgroundColor(selectedFieldId, field)}
                 onClick={() => {
                   isEditingDisabled
                     ? undefined
@@ -150,7 +113,7 @@ const FormFields = ({
                 }}
               >
                 <SortableRow
-                  iconFill={getTitleColor(field)}
+                  iconFill={getTitleColor(selectedFieldId, field)}
                   iconMargin="0px 0px 0px 24px"
                   id={field.id}
                   index={index}
@@ -167,32 +130,28 @@ const FormFields = ({
                     <Box display="flex" alignItems="center">
                       <Text
                         as="span"
-                        color={getIndexTitleColor(field)}
+                        color={getIndexTitleColor(selectedFieldId, field)}
                         fontSize="base"
                         mt="auto"
                         mb="auto"
                         fontWeight="bold"
                         mx="12px"
                       >
-                        {field.input_type === 'page' && (
-                          <>
-                            <FormattedMessage {...messages.page} />
-                            {getIndexForTitle(formCustomFields, field)}
-                          </>
-                        )}
-                        {field.input_type !== 'page' && (
-                          <>
-                            <FormattedMessage {...messages.question} />
-                            {getIndexForTitle(formCustomFields, field)}
-                          </>
-                        )}
+                        <>
+                          <FormattedMessage
+                            {...(field.input_type === 'page'
+                              ? messages.page
+                              : messages.question)}
+                          />
+                          {getIndexForTitle(formCustomFields, field)}
+                        </>
                       </Text>
                       <Text
                         as="span"
                         fontSize="base"
                         mt="auto"
                         mb="auto"
-                        color={getTitleColor(field)}
+                        color={getTitleColor(selectedFieldId, field)}
                       >
                         <T value={field.title_multiloc} />
                       </Text>
