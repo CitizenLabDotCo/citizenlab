@@ -364,7 +364,7 @@ export default defineMessages({
   },
   leaveSurveyMessage: {
     id: 'app.containers.IdeasNewPage.leaveSurveyMessage',
-    defaultMessage: 'Your answers won`t be saved.',
+    defaultMessage: "Your answers won't be saved.",
   },
   confirmLeaveSurveyButtonText: {
     id: 'app.containers.IdeasNewPage.confirmLeaveSurveyButtonText',
