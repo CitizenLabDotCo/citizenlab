@@ -198,6 +198,7 @@ const AdminPublicationsNavbarItem = ({
           left="10px"
           opened={projectsDropdownOpened}
           onClickOutside={toggleProjectsDropdown}
+          zIndex="500"
           content={
             <ProjectsList id="e2e-projects-dropdown-content">
               {adminPublications.map((item: IAdminPublicationContent) => (

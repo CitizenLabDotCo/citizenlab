@@ -4,7 +4,6 @@ import React, { useMemo } from 'react';
 import { colors } from 'components/admin/Graphs/styling';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import LineChart from 'components/admin/Graphs/LineChart';
 import renderTooltip from './renderTooltip';
 
@@ -18,27 +17,42 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { ProjectId, Dates, Resolution, Layout } from '../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../../hooks/useRegistrations/typings';
+import { Margin } from 'components/admin/Graphs/typings';
 
-interface Props {
-  timeSeries: TimeSeries | NilOrError;
-  projectFilter?: string;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-  resolution: IResolution;
-  innerRef: React.RefObject<any>;
-}
+type Props = ProjectId &
+  Dates &
+  Resolution & {
+    timeSeries: TimeSeries | NilOrError;
+    innerRef: React.RefObject<any>;
+    layout?: Layout;
+  };
+
+export const MARGINS: Record<Layout, Margin | undefined> = {
+  wide: { top: 10 },
+  narrow: {
+    top: 10,
+    left: -25,
+    right: 35,
+  },
+};
+
+const emptyLineConfig = { strokeWidths: [0] };
+const lineConfig = {
+  strokes: [colors.categorical01],
+  activeDot: { r: 4 },
+};
 
 const Chart = ({
   timeSeries,
-  projectFilter,
+  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
   innerRef,
+  layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -64,53 +78,28 @@ const Chart = ({
     return null;
   }
 
-  return (
-    <Box pt="8px" width="90%" maxWidth="900px" height="250px">
-      {(isNilOrError(timeSeries) || projectFilter) && (
-        <LineChart
-          width="100%"
-          height="100%"
-          data={emptyData}
-          mapping={{
-            x: 'date',
-            y: ['registrations'],
-          }}
-          lines={{
-            strokeWidths: [0],
-          }}
-          grid={{ vertical: true }}
-          xaxis={{ tickFormatter: formatTick }}
-          legend={{
-            marginTop: 16,
-            items: legendItems,
-          }}
-        />
-      )}
+  const noData = isNilOrError(timeSeries) || !!projectId;
 
-      {!isNilOrError(timeSeries) && !projectFilter && (
-        <LineChart
-          width="100%"
-          height="100%"
-          data={timeSeries}
-          mapping={{
-            x: 'date',
-            y: ['registrations'],
-          }}
-          lines={{
-            strokes: [colors.categorical01],
-            activeDot: { r: 4 },
-          }}
-          grid={{ vertical: true }}
-          xaxis={{ tickFormatter: formatTick }}
-          tooltip={renderTooltip(resolution)}
-          legend={{
-            marginTop: 16,
-            items: legendItems,
-          }}
-          innerRef={innerRef}
-        />
-      )}
-    </Box>
+  return (
+    <LineChart
+      width="100%"
+      height="100%"
+      data={noData ? emptyData : timeSeries}
+      mapping={{
+        x: 'date',
+        y: ['registrations'],
+      }}
+      margin={MARGINS[layout]}
+      lines={noData ? emptyLineConfig : lineConfig}
+      grid={{ vertical: true }}
+      xaxis={{ tickFormatter: formatTick }}
+      tooltip={noData ? undefined : renderTooltip(resolution)}
+      legend={{
+        marginTop: 16,
+        items: legendItems,
+      }}
+      innerRef={noData ? undefined : innerRef}
+    />
   );
 };
 

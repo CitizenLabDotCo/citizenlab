@@ -177,12 +177,11 @@ export interface OutletsPropertyMap {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
-  'app.containers.Admin.dashboard.summary.postStatus': {
+  'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
     resolution: IResolution;
-    onMount: () => void;
   };
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { LabelList } from 'recharts';
-import { StackedBarsRow } from '../../hooks/usePostsFeedback/typings';
+import { StackedBarsRow } from '../../../hooks/usePostsFeedback/typings';
 
 export const accumulate = (values: number[]) => {
   const { cumulativeValues } = values.reduce(
