@@ -22,6 +22,7 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import { Heading } from 'containers/IdeasNewPage/WithJSONForm/Heading';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
@@ -30,12 +31,6 @@ import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig } from 'utils/participationMethodUtils';
-
-// Test schemas to be removed
-import { schema as iSchema } from './schema';
-import { uiSchema as iUiSchema } from './uiSchema';
-import ProjectActionBar from 'containers/ProjectsShowPage/shared/header/ProjectActionBar';
-import { Heading } from 'containers/IdeasNewPage/WithJSONForm/Heading';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -209,12 +204,9 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       config ? (
         <>
           <IdeasNewMeta />
-          <ProjectActionBar projectId={project.id} />
           <Form
-            // schema={schema}
-            // uiSchema={uiSchema}
-            schema={iSchema}
-            uiSchema={iUiSchema}
+            schema={schema}
+            uiSchema={uiSchema}
             onSubmit={onSubmit}
             initialFormData={initialFormData}
             getAjvErrorMessage={getAjvErrorMessage}
