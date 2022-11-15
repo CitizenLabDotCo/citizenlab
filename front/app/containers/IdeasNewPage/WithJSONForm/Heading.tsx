@@ -141,7 +141,7 @@ export const Heading = ({
                 />
               </Title>
               <Text color="primary" fontSize="l">
-                <FormattedMessage {...messages.leaveSurveyMessage} />
+                <FormattedMessage {...messages.leaveSurveyText} />
               </Text>
             </Box>
             <Box

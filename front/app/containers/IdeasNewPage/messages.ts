@@ -366,8 +366,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion',
     defaultMessage: 'Are you sure you want to leave this survey?',
   },
-  leaveSurveyMessage: {
-    id: 'app.containers.IdeasNewPage.leaveSurveyMessage',
+  leaveSurveyText: {
+    id: 'app.containers.IdeasNewPage.leaveSurveyText',
     defaultMessage: "Your answers won't be saved.",
   },
   confirmLeaveSurveyButtonText: {
