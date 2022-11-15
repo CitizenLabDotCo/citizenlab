@@ -823,7 +823,7 @@
   "app.containers.IdeasNewPage.issueFormTitle": "Add new comment",
   "app.containers.IdeasNewPage.issueMetaTitle": "Add new comment | {projectName}",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Are you sure you want to leave this survey?",
-  "app.containers.IdeasNewPage.leaveSurveyMessage": "Your answers won`t be saved.",
+  "app.containers.IdeasNewPage.leaveSurveyText": "Your answers won't be saved.",
   "app.containers.IdeasNewPage.optionFormTitle": "Add new option",
   "app.containers.IdeasNewPage.optionMetaTitle": "Add new option | {projectName}",
   "app.containers.IdeasNewPage.or": "Or",
