@@ -126,7 +126,7 @@ const CustomPageShow = () => {
           )}
         {pageAttributes.bottom_info_section_enabled && (
           <InfoSection
-            multilocContent={pageAttributes.top_info_section_multiloc}
+            multilocContent={pageAttributes.bottom_info_section_multiloc}
           />
         )}
       </Content>
