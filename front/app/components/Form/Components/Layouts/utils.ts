@@ -73,18 +73,18 @@ export const getPageSchema = (
 export const isPageCategorization: Tester = and(
   uiTypeIs('Categorization'),
   (uischema) => {
-    const hasCategory = (element: PageCategorization): boolean => {
+    const hasPage = (element: PageCategorization): boolean => {
       if (isEmpty(element.elements)) {
         return false;
       }
 
       return element.elements
         .map((elem) =>
-          isCategorization(elem) ? hasCategory(elem) : elem.type === 'Page'
+          isCategorization(elem) ? hasPage(elem) : elem.type === 'Page'
         )
         .reduce((prev, curr) => prev && curr, true);
     };
 
-    return hasCategory(uischema as PageCategorization);
+    return hasPage(uischema as PageCategorization);
   }
 );
