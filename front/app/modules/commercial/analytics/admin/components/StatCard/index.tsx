@@ -48,33 +48,38 @@ const StatCard = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  const columnStats: ReactElement[] = [];
+  // Extract the corner stat if there is one (can only deal with one!)
   let cornerStat: string | undefined = undefined;
-  cardData.stats.map((stat, index, arr) => {
+  cardData.stats.forEach((stat, index) => {
     if (stat.display === 'corner') {
       cornerStat = `${stat.label}: ${stat.value}`;
-    } else {
-      columnStats.push(
-        <Box
-          pr="20px"
-          pl="20px"
-          width="100%"
-          key={index}
-          borderRight={
-            index !== arr.length - 1 ? `1px solid ${colors.divider}` : '0'
-          }
-        >
-          <Statistic
-            name={stat.label}
-            value={stat.value}
-            textAlign="center"
-            bottomLabel={stat.lastPeriod ? cardData.periodLabel : undefined}
-            bottomLabelValue={stat.lastPeriod}
-            tooltipContent={stat.toolTip}
-          />
-        </Box>
-      );
+      cardData.stats.splice(index, 1);
     }
+  });
+
+  // Format the stat columns
+  const columnStats: ReactElement[] = [];
+  cardData.stats.forEach((stat, index, arr) => {
+    columnStats.push(
+      <Box
+        pr="20px"
+        pl="20px"
+        width="100%"
+        key={index}
+        borderRight={
+          index !== arr.length - 1 ? `1px solid ${colors.divider}` : '0'
+        }
+      >
+        <Statistic
+          name={stat.label}
+          value={stat.value}
+          textAlign="center"
+          bottomLabel={stat.lastPeriod ? cardData.periodLabel : undefined}
+          bottomLabelValue={stat.lastPeriod}
+          tooltipContent={stat.toolTip}
+        />
+      </Box>
+    );
   });
 
   const exportMenu = showExportMenu
