@@ -56,7 +56,7 @@ export type SingleCountResponse = {
 
 // Functions to be implemented on each StatCard
 export interface StatCardDataParser {
-  (responseData, formatLabels): StatCardData;
+  (responseData, formatLabels, projectId: string | undefined): StatCardData;
 }
 
 export interface StatCardQueryHandler {

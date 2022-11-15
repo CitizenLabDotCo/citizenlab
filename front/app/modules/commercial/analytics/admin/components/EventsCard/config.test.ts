@@ -41,7 +41,7 @@ describe('Events card data parsing', () => {
       completed: 'Completed',
     };
 
-    const data = eventsConfig.dataParser(responseData, labels);
+    const data = eventsConfig.dataParser(responseData, labels, undefined);
 
     expect(data).toEqual(expectedCardData);
   });
@@ -72,7 +72,7 @@ describe('Events card data parsing', () => {
       completed: 'Completed',
     };
 
-    const data = eventsConfig.dataParser(responseData, labels);
+    const data = eventsConfig.dataParser(responseData, labels, undefined);
 
     expect(data).toEqual(expectedCardData);
   });

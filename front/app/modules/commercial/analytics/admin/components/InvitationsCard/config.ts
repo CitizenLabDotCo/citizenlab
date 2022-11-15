@@ -3,7 +3,7 @@ import messages from './messages';
 // Utils
 import { getTimePeriodMoment } from '../../utils/resolution';
 import { formatCountValue } from '../../utils/parse';
-import { getDateFilter, getProjectFilter } from '../../utils/query';
+import { getDateFilter } from '../../utils/query';
 import { underscoreCase } from '../../hooks/useStatCard/parse';
 
 // Typings
@@ -32,7 +32,19 @@ export const invitationsConfig: StatCardConfig = {
   title: messages.invitations,
 
   // Create the data object
-  dataParser: (responseData, labels: InvitationsCardLabels): StatCardData => {
+  dataParser: (
+    responseData,
+    labels: InvitationsCardLabels,
+    projectId
+  ): StatCardData => {
+    // Cannot filter by project ID on invitations, so set all responses to zero
+    if (projectId) {
+      // eslint-disable-next-line no-param-reassign
+      responseData = responseData.map(() => {
+        return [{ count: 0 }];
+      });
+    }
+
     // Pending stat is not available if 5 stat arrays are not returned
     let total;
     let totalPeriod;
@@ -72,11 +84,12 @@ export const invitationsConfig: StatCardConfig = {
 
   // Analytics API query
   queryHandler: ({
-    projectId,
+    // projectId,
     startAtMoment,
     endAtMoment,
     resolution,
   }: StatCardProps): Query => {
+    // console.log(projectId);
     const todayMoment = moment();
     const lastPeriodMoment = getTimePeriodMoment(resolution);
 
@@ -101,7 +114,6 @@ export const invitationsConfig: StatCardConfig = {
         },
         filters: {
           ...inviteStatusFilter,
-          ...getProjectFilter('dimension_project', projectId),
           ...getDateFilter(dateDimension, startMoment, endMoment),
         },
       };

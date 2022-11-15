@@ -43,7 +43,7 @@ export default function useStatCard({
           formatMessage,
           resolution
         );
-        const cardData = dataParser(response.data, formattedLabels);
+        const cardData = dataParser(response.data, formattedLabels, projectId);
         const xlsxData = parseExcelData(cardData);
 
         setStatCard({

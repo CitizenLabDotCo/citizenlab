@@ -50,7 +50,7 @@ describe('Invitations card data parsing', () => {
       accepted: 'Accepted',
     };
 
-    const data = invitationsConfig.dataParser(responseData, labels);
+    const data = invitationsConfig.dataParser(responseData, labels, undefined);
 
     expect(data).toEqual(expectedCardData);
   });
@@ -89,7 +89,50 @@ describe('Invitations card data parsing', () => {
       accepted: 'Accepted',
     };
 
-    const data = invitationsConfig.dataParser(responseData, labels);
+    const data = invitationsConfig.dataParser(responseData, labels, undefined);
+
+    expect(data).toEqual(expectedCardData);
+  });
+
+  it('Always returns zero values if a project filter is present', () => {
+    const expectedCardData: StatCardData = {
+      cardTitle: 'Invitations',
+      fileName: 'invitations',
+      periodLabel: 'Yesterday',
+      stats: [
+        {
+          label: 'Total',
+          value: '-',
+          lastPeriod: '-',
+        },
+        {
+          label: 'Accepted',
+          value: '-',
+          lastPeriod: '-',
+        },
+      ],
+    };
+
+    const responseData = [
+      [{ count: 4 }],
+      [{ count: 3 }],
+      [{ count: 2 }],
+      [{ count: 1 }],
+    ];
+
+    const labels: InvitationsCardLabels = {
+      invitations: 'Invitations',
+      periodLabel: 'Yesterday',
+      totalInvites: 'Total',
+      pending: 'Pending',
+      accepted: 'Accepted',
+    };
+
+    const data = invitationsConfig.dataParser(
+      responseData,
+      labels,
+      'PROJECT_ID'
+    );
 
     expect(data).toEqual(expectedCardData);
   });
@@ -169,7 +212,6 @@ describe('Invitations card data parsing', () => {
             all: 'count',
           },
           filters: {
-            'dimension_project.id': 'PROJECT_ID',
             'dimension_date_invited.date': {
               from: '2020-10-31',
               to: '2021-10-31',
@@ -182,7 +224,6 @@ describe('Invitations card data parsing', () => {
             all: 'count',
           },
           filters: {
-            'dimension_project.id': 'PROJECT_ID',
             'dimension_date_invited.date': {
               from: '2022-10-24',
               to: '2022-10-31',
@@ -196,7 +237,6 @@ describe('Invitations card data parsing', () => {
           },
           filters: {
             'dimension_user.invite_status': 'accepted',
-            'dimension_project.id': 'PROJECT_ID',
             'dimension_date_accepted.date': {
               from: '2020-10-31',
               to: '2021-10-31',
@@ -210,7 +250,6 @@ describe('Invitations card data parsing', () => {
           },
           filters: {
             'dimension_user.invite_status': 'accepted',
-            'dimension_project.id': 'PROJECT_ID',
             'dimension_date_accepted.date': {
               from: '2022-10-24',
               to: '2022-10-31',
