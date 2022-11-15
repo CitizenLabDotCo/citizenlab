@@ -19,21 +19,27 @@ module ReportBuilder
 
         def create
           report = authorize(ReportBuilder::Report.new(create_params))
+          side_fx_service.before_create(report, current_user)
           return send_unprocessable_entity(report) unless report.save
 
+          side_fx_service.after_create(report, current_user)
           render json: serialize_report(report), status: :created
         end
 
         def update
+          side_fx_service.before_update(report, current_user)
           return send_unprocessable_entity(report) unless report.update(update_params)
 
+          side_fx_service.after_update(report, current_user)
           render json: serialize_report(report), status: :ok
         end
 
         def destroy
+          side_fx_service.before_destroy(report, current_user)
           report.destroy
 
-          if layout.destroyed?
+          if report.destroyed?
+            side_fx_service.after_destroy(report, current_user)
             head :no_content
           else
             head :internal_server_error
@@ -84,6 +90,10 @@ module ReportBuilder
         def serialize_report(report)
           options = { params: fastjson_params, include: [:layout] }
           ReportSerializer.new(report, options).serialized_json
+        end
+
+        def side_fx_service
+          @side_fx_service ||= ::ReportBuilder::SideFxReportService.new
         end
       end
     end
