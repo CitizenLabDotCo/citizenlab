@@ -1129,6 +1129,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Antwoordmogelijkheden",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Labels",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Kies optionele labels voor je minimale en maximale waarden.",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.description": "Descriptio (optional)",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.title": "Title (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.selectRangeTooltip": "Kies de maximale waarde voor uw schaal.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.toLabel": "om",
   "app.containers.AdminPage.ProjectEdit.survey.informationText": "Antwoorden op vragen met korte en lange antwoorden zijn momenteel alleen beschikbaar in de enquêtedownload",
