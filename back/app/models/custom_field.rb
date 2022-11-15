@@ -35,6 +35,8 @@ class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
@@ -151,7 +153,10 @@ class CustomField < ApplicationRecord
 
   def sanitize_description_multiloc
     service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc description_multiloc, %i[decoration link list title]
+    self.description_multiloc = service.sanitize_multiloc(
+      description_multiloc,
+      %i[title alignment list decoration link image video]
+    )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
   end

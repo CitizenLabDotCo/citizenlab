@@ -24,7 +24,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       options: {
         # No id yet. It will be set after invoking this method.
         title: multiloc_service.t(field.title_multiloc),
-        description: multiloc_service.t(field.description_multiloc)
+        description: description_option(field)
       },
       elements: [
         # No elements yet. They will be added after invoking this method.
@@ -35,7 +35,14 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   protected
 
   def default_options(field)
-    super.merge(isAdminField: admin_field?(field))
+    super.merge(isAdminField: admin_field?(field)).tap do |options|
+      options[:description] = description_option field
+    end
+  end
+
+  def description_option(field)
+    @descriptions ||= {}
+    @descriptions[field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
   end
 
   def generate_with_pages(fields)

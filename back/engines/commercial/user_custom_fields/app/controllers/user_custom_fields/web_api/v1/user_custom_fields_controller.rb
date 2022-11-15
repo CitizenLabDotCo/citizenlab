@@ -54,6 +54,7 @@ module UserCustomFields
     def update
       @custom_field.assign_attributes custom_field_params(@custom_field)
       authorize @custom_field, policy_class: UserCustomFieldPolicy
+      SideFxCustomFieldService.new.before_update @custom_field, current_user
       if @custom_field.save
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
         render json: serialize_custom_fields(@custom_field.reload, params: fastjson_params), status: :ok
