@@ -105,9 +105,9 @@ resource 'StaticPages' do
 
       describe 'updating topics' do
         let(:projects_filter_type) { 'topics' }
-        let(:topic_1) { create(:topic) }
-        let(:topic_2) { create(:topic) }
-        let(:topic_ids) { [topic_1.id, topic_2.id] }
+        let(:topic1) { create(:topic) }
+        let(:topic2) { create(:topic) }
+        let(:topic_ids) { [topic1.id, topic2.id] }
 
         example_request 'set topics for projects list' do
           json_response = json_parse(response_body)
@@ -134,9 +134,9 @@ resource 'StaticPages' do
 
       describe 'updating areas' do
         let(:projects_filter_type) { 'areas' }
-        let(:area_1) { create(:area) }
-        let(:area_2) { create(:area) }
-        let(:area_ids) { [area_1.id] }
+        let(:area1) { create(:area) }
+        let(:area2) { create(:area) }
+        let(:area_ids) { [area1.id] }
 
         example_request 'set an area for projects list' do
           json_response = json_parse(response_body)
@@ -161,7 +161,7 @@ resource 'StaticPages' do
         end
 
         context 'when when more than one area ids in request' do
-          let(:area_ids) { [area_1.id, area_2.id] }
+          let(:area_ids) { [area1.id, area2.id] }
 
           example_request 'attempt to update page' do
             expect(response_status).to eq 422
