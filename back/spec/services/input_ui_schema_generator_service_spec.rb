@@ -538,7 +538,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         )
       end
 
-      it 'incudes rules for logic' do
+      it 'includes rules for logic' do
         en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
         expect(en_ui_schema).to eq({
           type: 'Categorization',
