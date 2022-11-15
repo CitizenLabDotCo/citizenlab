@@ -2,10 +2,16 @@
 
 class CustomFormLogic < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[source_field_id target_field_id]
-  # TODO: order scope for source and target fields
 
   belongs_to :source_field, class_name: 'CustomField'
   belongs_to :target_field, class_name: 'CustomField'
+
+  scope :ordered_on_target, lambda {
+    joins(:source_field).order('custom_fields.ordering', 'custom_form_logics.ordering')
+  }
+  scope :ordered_on_source, lambda {
+    joins(:target_field).order('custom_fields.ordering', 'custom_form_logics.ordering')
+  }
 
   # TODO: validations
   # - source and target fields present

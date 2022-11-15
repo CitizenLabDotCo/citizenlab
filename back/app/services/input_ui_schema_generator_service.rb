@@ -136,19 +136,23 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         page_elements.each do |page_element|
           page_index = page_element.dig(:options, :id).split('_').last.to_i - 1
           page_field = ordered_pages[page_index]
-          next if page_field.target_logics.empty?
-
-          page_element[:ruleArray] = page_field.target_logics.map do |logic|
-            {
-              effect: logic.action,
-              condition: {
-                scope: "#/properties/#{logic.source_field.key}",
-                schema: logic.ui_schema_rule
-              }
-            }
-          end
+          add_rule_array page_element, page_field
         end
       end
+    end
+  end
+
+  def add_rule_array(page_element, page_field)
+    return if page_field.target_logics.empty?
+
+    page_element[:ruleArray] = page_field.target_logics.map do |logic|
+      {
+        effect: logic.action,
+        condition: {
+          scope: "#/properties/#{logic.source_field.key}",
+          schema: logic.ui_schema_rule
+        }
+      }
     end
   end
 end
