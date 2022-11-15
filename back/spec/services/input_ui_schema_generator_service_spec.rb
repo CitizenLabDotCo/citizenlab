@@ -457,7 +457,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         create(
           :custom_field_page,
           resource: form,
-          key: 'page_1',
+          key: 'page1',
           title_multiloc: { 'en' => '' },
           description_multiloc: { 'en' => '' }
         )
@@ -537,7 +537,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: '',
                   isAdminField: false,
-                  transform: 'trim_on_blur'
+                  maximum_label: '',
+                  minimum_label: ''
                 }
               }]
             },
@@ -554,8 +555,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 label: 'When considering travel near your home, how often do you choose to CYCLE?',
                 options: {
                   description: '',
-                  isAdminField: false,
-                  transform: 'trim_on_blur'
+                  isAdminField: false
                 }
               }],
               ruleArray: [
@@ -564,11 +564,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                   condition: {
                     scope: "#/properties/#{field_in_page1.key}",
                     schema: {
-                      enum: [1],
-                    },
-                  },
-                },
-              ],
+                      enum: [1]
+                    }
+                  }
+                }
+              ]
             },
             {
               type: 'Page',
@@ -584,20 +584,20 @@ RSpec.describe InputUiSchemaGeneratorService do
                   condition: {
                     scope: "#/properties/#{field_in_page1.key}",
                     schema: {
-                      enum: [1],
-                    },
-                  },
+                      enum: [1]
+                    }
+                  }
                 },
                 {
                   effect: 'HIDE',
                   condition: {
                     scope: "#/properties/#{field_in_page2.key}",
                     schema: {
-                      enum: ['never'],
-                    },
-                  },
-                },
-              ],
+                      enum: ['never']
+                    }
+                  }
+                }
+              ]
             }
           ]
         })
