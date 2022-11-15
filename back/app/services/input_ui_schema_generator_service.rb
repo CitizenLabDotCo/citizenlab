@@ -54,6 +54,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def schema_elements_for(fields)
+    form_logic = FormLogicService.new(fields)
     current_page_schema = nil
     current_page_index = 0
     fields.each_with_object([]) do |field, accu|
@@ -61,6 +62,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       if field.page?
         current_page_index += 1
         field_schema[:options][:id] = "page_#{current_page_index}"
+        rules = form_logic.ui_schema_rules_for(field)
+        field_schema[:ruleArray] = rules if rules.present?
         accu << field_schema
         current_page_schema = field_schema
       elsif current_page_schema
