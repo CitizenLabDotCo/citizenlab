@@ -1129,6 +1129,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Svarsval",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Etiketter",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Välj valfria etiketter för dina minimi- och maximivärden.",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.description": "Descriptio (optional)",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.title": "Title (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.selectRangeTooltip": "Välj minimivärdet för din skala.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.toLabel": "till",
   "app.containers.AdminPage.ProjectEdit.survey.informationText": "Svar på frågor med korta och långa svar är för närvarande endast tillgängliga när undersökningen laddas ner.",
