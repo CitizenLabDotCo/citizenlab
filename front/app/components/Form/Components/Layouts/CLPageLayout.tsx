@@ -16,6 +16,7 @@ import {
   PageCategorization,
   isPageCategorization,
 } from 'components/Form/Components/Layouts/utils';
+import { useTheme } from 'styled-components';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -75,6 +76,7 @@ const CLPageLayout = memo(
       useContext(FormContext);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const uiCategories = (uischema as PageCategorization).elements;
+    const theme: any = useTheme();
 
     useEffect(() => {
       setShowSubmitButton(false);
@@ -138,7 +140,8 @@ const CLPageLayout = memo(
             mb="20px"
             icon="chevron-right"
             iconPos="right"
-            buttonStyle={showSubmit ? 'success' : 'primary'}
+            key={currentStep.toString()}
+            bgColor={showSubmit ? theme.colors.green500 : theme.colors.primary}
             width="100%"
           >
             <FormattedMessage
