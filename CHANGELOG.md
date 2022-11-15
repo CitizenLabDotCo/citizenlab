@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- [CL-1763] Norwegian translations of navbar & default pages now applied
+
 ## 2022-11-14
 
 ### Fixed
