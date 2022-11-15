@@ -64,7 +64,12 @@ export const ModalContentContainer = styled.div<{
     padding: ${({ padding }) => padding || '20px'};
   `}
 
-  ${({ fullScreen }) => fullScreen && 'max-width: 580px;'}
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+      max-width: 580px;;
+      padding-bottom: 40px !important;
+  `}
 `;
 
 const StyledCloseIconButton = styled(CloseIconButton)`

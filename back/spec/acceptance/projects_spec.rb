@@ -424,14 +424,16 @@ resource 'Projects' do
           project_in_db = Project.find(project_id)
 
           # A new native survey project has a default form.
-          expect(project_in_db.custom_form.custom_fields.size).to eq 1
-          field = project_in_db.custom_form.custom_fields.first
-          expect(field.title_multiloc).to match({
+          expect(project_in_db.custom_form.custom_fields.size).to eq 2
+          field1 = project_in_db.custom_form.custom_fields[0]
+          expect(field1.input_type).to eq 'page'
+          field2 = project_in_db.custom_form.custom_fields[1]
+          expect(field2.title_multiloc).to match({
             'en' => an_instance_of(String),
             'fr-FR' => an_instance_of(String),
             'nl-NL' => an_instance_of(String)
           })
-          options = field.options
+          options = field2.options
           expect(options.size).to eq 2
           expect(options[0].key).to eq 'option1'
           expect(options[1].key).to eq 'option2'

@@ -1,8 +1,11 @@
-import { FormatMessage } from 'typings';
-import visitorsMessages from '../useVisitors/messages';
+// i18n
 import messages from './messages';
+import moduleMessages from '../../messages';
 import cardMessages from '../../components/RegistrationsCard/messages';
-import visitorsCardMessages from '../../components/VisitorsCard/messages';
+import { getTimePeriodTranslations } from '../../utils/resolution';
+
+// typings
+import { FormatMessage } from 'typings';
 
 export interface Translations {
   stats: string;
@@ -10,7 +13,7 @@ export interface Translations {
   date: string;
   registrations: string;
   statistic: string;
-  conversionRate: string;
+  registrationRate: string;
   total: string;
   last30Days: string;
   last7Days: string;
@@ -20,14 +23,12 @@ export interface Translations {
 export const getTranslations = (
   formatMessage: FormatMessage
 ): Translations => ({
-  stats: formatMessage(visitorsMessages.stats),
+  stats: formatMessage(moduleMessages.stats),
   timeSeries: formatMessage(messages.timeSeries),
-  date: formatMessage(visitorsMessages.date),
+  date: formatMessage(moduleMessages.date),
   registrations: formatMessage(cardMessages.registrations),
-  statistic: formatMessage(visitorsMessages.statistic),
-  conversionRate: formatMessage(cardMessages.conversionRate),
-  total: formatMessage(visitorsMessages.total),
-  last30Days: formatMessage(visitorsCardMessages.last30Days),
-  last7Days: formatMessage(visitorsCardMessages.last7Days),
-  yesterday: formatMessage(visitorsCardMessages.yesterday),
+  statistic: formatMessage(moduleMessages.statistic),
+  registrationRate: formatMessage(cardMessages.registrationRate),
+  total: formatMessage(moduleMessages.total),
+  ...getTimePeriodTranslations(formatMessage),
 });
