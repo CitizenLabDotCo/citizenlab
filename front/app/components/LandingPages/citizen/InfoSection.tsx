@@ -1,5 +1,5 @@
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 import T from 'components/T';
@@ -7,7 +7,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { isEmptyMultiloc } from 'utils/helperUtils';
-import { media } from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
 const StyledQuillEditedContent = styled(QuillEditedContent)`
