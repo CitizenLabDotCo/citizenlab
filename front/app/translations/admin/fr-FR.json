@@ -1129,6 +1129,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Options de réponses",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Étiquettes",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Choisissez des étiquettes facultatives pour vos valeurs minimales et maximales.",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.description": "Descriptio (optional)",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.title": "Title (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.selectRangeTooltip": "Choisissez la valeur maximale de votre échelle.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.toLabel": "à",
   "app.containers.AdminPage.ProjectEdit.survey.informationText": "Les réponses aux questions à réponse courte et longue ne sont actuellement disponibles que dans le téléchargement de l'enquête",
