@@ -52,12 +52,11 @@ class WebApi::V1::AreasController < ApplicationController
 
   def destroy
     @side_fx_service.before_destroy(@area, current_user)
-    area = @area.destroy
-    if area.destroyed?
-      @side_fx_service.after_destroy(area, current_user)
+    if @area.destroy
+      @side_fx_service.after_destroy(@area, current_user)
       head :ok
     else
-      head :internal_server_error
+      render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
   end
 

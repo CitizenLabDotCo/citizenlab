@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class WebApi::V1::AreaSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :description_multiloc, :ordering
+  attributes :title_multiloc, :description_multiloc, :ordering, :static_page_ids
 end
