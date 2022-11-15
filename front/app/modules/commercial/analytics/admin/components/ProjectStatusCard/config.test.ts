@@ -64,7 +64,11 @@ describe('Project status card data parsing', () => {
       draftProjects: 'Draft',
     };
 
-    const data = projectStatusConfig.dataParser(responseData, labels);
+    const data = projectStatusConfig.dataParser(
+      responseData,
+      labels,
+      undefined
+    );
 
     expect(data).toEqual(expectedCardData);
   });
@@ -101,7 +105,11 @@ describe('Project status card data parsing', () => {
       draftProjects: 'Draft',
     };
 
-    const data = projectStatusConfig.dataParser(responseData, labels);
+    const data = projectStatusConfig.dataParser(
+      responseData,
+      labels,
+      undefined
+    );
 
     expect(data).toEqual(expectedCardData);
   });
