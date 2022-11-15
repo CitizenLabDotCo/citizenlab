@@ -78,7 +78,7 @@ const CLPageLayout = memo(
 
     useEffect(() => {
       setShowSubmitButton(false);
-    }, []);
+    }, [setShowSubmitButton]);
 
     const showSubmit = currentStep === uiCategories.length - 1;
 
