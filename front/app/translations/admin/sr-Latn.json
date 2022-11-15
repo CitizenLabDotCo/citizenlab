@@ -1129,6 +1129,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Opcije odgovora",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Oznake",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Izaberite opcionalne oznake za svoje minimalne i maksimalne vrednosti.",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.description": "Descriptio (optional)",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.title": "Title (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.selectRangeTooltip": "Izaberite maksimalnu vrednost vaše skale.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.toLabel": "do",
   "app.containers.AdminPage.ProjectEdit.survey.informationText": "Odgovori na pitanja sa kratkim i dugačkim odgovorima trenutno su dostupni samo u preuzimanju ankete",
