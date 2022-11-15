@@ -41,6 +41,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
+      projects_enabled: true,
       projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
@@ -85,6 +86,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
+      projects_enabled: true,
       projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
@@ -134,6 +136,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
+      projects_enabled: true,
       projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
@@ -186,6 +189,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
+      projects_enabled: true,
       projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
@@ -235,6 +239,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
+      projects_enabled: true,
       projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
@@ -288,6 +293,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
+      projects_enabled: true,
       projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
@@ -337,6 +343,7 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
+      projects_enabled: true,
       projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
