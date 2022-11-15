@@ -7,7 +7,7 @@ import { updateCustomPage } from 'services/customPages';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 import streams from 'utils/streams';
 import { apiEndpoint as navbarItemsEndpoint } from 'services/navbar';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 
 const EditCustomPageSettings = () => {
   const { customPageId } = useParams() as { customPageId: string };
