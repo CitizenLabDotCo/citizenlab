@@ -23,42 +23,40 @@ const HomePage = () => {
 
   if (!isNilOrError(homepageSettings)) {
     return (
-      <>
-        <Container id="e2e-landing-page">
-          {!isNilOrError(authUser) ? (
-            <SignedInHeader homepageSettings={homepageSettings} />
-          ) : (
-            <Fragment name="signed-out-header">
-              <SignedOutHeader />
-            </Fragment>
-          )}
+      <Container id="e2e-landing-page">
+        {!isNilOrError(authUser) ? (
+          <SignedInHeader homepageSettings={homepageSettings} />
+        ) : (
+          <Fragment name="signed-out-header">
+            <SignedOutHeader />
+          </Fragment>
+        )}
 
-          <Content>
-            <Suspense fallback={<LoadingBox />}>
-              {homepageSettings.attributes.top_info_section_enabled && (
-                // top info section
-                <HomepageInfoSection
-                  multilocContent={
-                    homepageSettings.attributes.top_info_section_multiloc
-                  }
-                  fragmentName="pages/homepage_info/top-content"
-                />
-              )}
-              <MainContent />
-              {homepageSettings.attributes.bottom_info_section_enabled && (
-                // bottom info section
-                <HomepageInfoSection
-                  multilocContent={
-                    homepageSettings.attributes.bottom_info_section_multiloc
-                  }
-                  fragmentName="pages/homepage_info/content"
-                />
-              )}
-              <Footer />
-            </Suspense>
-          </Content>
-        </Container>
-      </>
+        <Content>
+          <Suspense fallback={<LoadingBox />}>
+            {homepageSettings.attributes.top_info_section_enabled && (
+              // top info section
+              <HomepageInfoSection
+                multilocContent={
+                  homepageSettings.attributes.top_info_section_multiloc
+                }
+                fragmentName="pages/homepage_info/top-content"
+              />
+            )}
+            <MainContent />
+            {homepageSettings.attributes.bottom_info_section_enabled && (
+              // bottom info section
+              <HomepageInfoSection
+                multilocContent={
+                  homepageSettings.attributes.bottom_info_section_multiloc
+                }
+                fragmentName="pages/homepage_info/content"
+              />
+            )}
+            <Footer />
+          </Suspense>
+        </Content>
+      </Container>
     );
   }
 
