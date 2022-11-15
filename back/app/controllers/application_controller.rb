@@ -35,6 +35,10 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def send_unprocessable_entity(record)
+    render json: { errors: record.errors.details }, status: :unprocessable_entity
+  end
+
   def send_no_content(status = 204)
     head status
   end

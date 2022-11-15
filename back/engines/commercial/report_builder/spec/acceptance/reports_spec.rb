@@ -97,6 +97,12 @@ resource 'Reports' do
         report = ReportBuilder::Report.find(response_data[:id])
         expect(report.layout.enabled).to be(true)
       end
+
+      example '[error] Create a report without name' do
+        do_request(report: { name: '' })
+        assert_status 422
+        expect(json_response_body).to eq({ errors: { name: [{ error: 'blank' }] } })
+      end
     end
 
     include_examples 'not authorized to visitors'

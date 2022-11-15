@@ -18,21 +18,26 @@ module ReportBuilder
         end
 
         def create
-          report = ReportBuilder::Report.new(create_params)
-          authorize(report)
+          report = authorize(ReportBuilder::Report.new(create_params))
+          return send_unprocessable_entity(report) unless report.save
 
-          report.save!
           render json: serialize_report(report), status: :created
         end
 
         def update
-          report.update!(update_params)
+          return send_unprocessable_entity(report) unless report.update(update_params)
+
           render json: serialize_report(report), status: :ok
         end
 
         def destroy
-          report.destroy!
-          head :no_content
+          report.destroy
+
+          if layout.destroyed?
+            head :no_content
+          else
+            head :internal_server_error
+          end
         end
 
         private
