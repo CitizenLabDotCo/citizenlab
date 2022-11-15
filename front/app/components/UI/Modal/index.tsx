@@ -78,7 +78,6 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
 }>`
   position: absolute;
   top: 19px;
-  ${({ fullScreen }) => (fullScreen ? 'right: 25px;' : 'right: 25px;')};
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -98,9 +97,12 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
     left: 25px;
   `}
 
+  ${({ fullScreen }) => (fullScreen ? 'left: 25px;' : 'right: 25px;')};
+
   ${media.phone`
     top: 13px;
-    ${({ fullScreen }) => (fullScreen ? 'right: 15px;' : 'right: 15px;')};
+    ${({ fullScreen }) => (fullScreen ? 'left: auto;' : '')};
+    right: 15px;
   `}
 `;
 
