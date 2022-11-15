@@ -48,9 +48,19 @@ const StatCard = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  const displayStats: ReactElement[] = [];
-  cardData.stats.map((stat, index, arr) => {
-    displayStats.push(
+  // Extract the corner stat if there is one (can only deal with one!)
+  let cornerStat: string | undefined = undefined;
+  cardData.stats.forEach((stat, index) => {
+    if (stat.display === 'corner') {
+      cornerStat = `${stat.label}: ${stat.value}`;
+      cardData.stats.splice(index, 1);
+    }
+  });
+
+  // Format the stat columns
+  const columnStats: ReactElement[] = [];
+  cardData.stats.forEach((stat, index, arr) => {
+    columnStats.push(
       <Box
         pr="20px"
         pl="20px"
@@ -84,9 +94,13 @@ const StatCard = ({
     : undefined;
 
   return (
-    <GraphCard title={cardData.cardTitle} exportMenu={exportMenu}>
+    <GraphCard
+      title={cardData.cardTitle}
+      exportMenu={exportMenu}
+      topRightStat={cornerStat}
+    >
       <Box width="100%" display="flex" flexDirection="row" pl="20px">
-        {displayStats}
+        {columnStats}
       </Box>
     </GraphCard>
   );

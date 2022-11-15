@@ -234,6 +234,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAtMoment={endAtMoment}
                 resolution={resolution}
               />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.projectStatus"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
             </Column>
             <Column>
               <Outlet
