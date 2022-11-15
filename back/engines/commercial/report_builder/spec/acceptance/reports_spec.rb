@@ -81,7 +81,8 @@ resource 'Reports' do
     describe 'when authorized' do
       before { admin_header_token }
 
-      example_request 'Create a report' do
+      example 'Create a report' do
+        do_request
         assert_status 201
 
         expect(response_data).to match(
@@ -96,12 +97,38 @@ resource 'Reports' do
 
         report = ReportBuilder::Report.find(response_data[:id])
         expect(report.layout.enabled).to be(true)
+        expect(report.layout.code).to eq('report')
       end
 
       example '[error] Create a report without name' do
         do_request(report: { name: '' })
         assert_status 422
         expect(json_response_body).to eq({ errors: { name: [{ error: 'blank' }] } })
+      end
+
+      describe 'side effects', document: false do
+        let(:side_fx_service) do
+          instance_spy(ReportBuilder::SideFxReportService, 'side_fx_service')
+        end
+
+        before do
+          allow_any_instance_of(ReportBuilder::WebApi::V1::ReportsController)
+            .to receive(:side_fx_service).and_return(side_fx_service)
+        end
+
+        example 'runs the before/after_create hooks when the report is successfully created' do
+          do_request
+
+          expect(side_fx_service).to have_received(:before_create)
+          expect(side_fx_service).to have_received(:after_create)
+        end
+
+        example 'only runs the before_create hook when the report creation fails' do
+          do_request(report: { name: nil })
+
+          expect(side_fx_service).to have_received(:before_create)
+          expect(side_fx_service).not_to have_received(:after_create)
+        end
       end
     end
 
@@ -154,6 +181,31 @@ resource 'Reports' do
           )
         end
       end
+
+      describe 'side effects', document: false do
+        let(:side_fx_service) do
+          instance_spy(ReportBuilder::SideFxReportService, 'side_fx_service')
+        end
+
+        before do
+          allow_any_instance_of(ReportBuilder::WebApi::V1::ReportsController)
+            .to receive(:side_fx_service).and_return(side_fx_service)
+        end
+
+        example 'runs the before/after_update hooks when the report is successfully updated' do
+          do_request(report: { name: 'better-name' })
+
+          expect(side_fx_service).to have_received(:before_update)
+          expect(side_fx_service).to have_received(:after_update)
+        end
+
+        example 'only runs the before_update hook when the report update fails' do
+          do_request(report: { name: nil })
+
+          expect(side_fx_service).to have_received(:before_update)
+          expect(side_fx_service).not_to have_received(:after_update)
+        end
+      end
     end
 
     include_examples 'not authorized to visitors'
@@ -170,6 +222,33 @@ resource 'Reports' do
       example_request 'Delete one report by id' do
         assert_status 204
         expect { ReportBuilder::Report.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      describe 'side effects', document: false do
+        let(:side_fx_service) do
+          instance_spy(ReportBuilder::SideFxReportService, 'side_fx_service')
+        end
+
+        before do
+          allow_any_instance_of(ReportBuilder::WebApi::V1::ReportsController)
+            .to receive(:side_fx_service).and_return(side_fx_service)
+        end
+
+        example 'runs the before/after_destroy hooks when the report is successfully deleted' do
+          do_request
+
+          expect(side_fx_service).to have_received(:before_destroy)
+          expect(side_fx_service).to have_received(:after_destroy)
+        end
+
+        example 'only runs the before_destroy hook when the report deletion fails' do
+          allow_any_instance_of(ReportBuilder::Report).to receive(:destroy).and_return(false)
+
+          do_request
+
+          expect(side_fx_service).to have_received(:before_destroy)
+          expect(side_fx_service).not_to have_received(:after_destroy)
+        end
       end
     end
 

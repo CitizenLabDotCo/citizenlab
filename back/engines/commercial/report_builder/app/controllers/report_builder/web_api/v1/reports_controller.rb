@@ -36,9 +36,7 @@ module ReportBuilder
 
         def destroy
           side_fx_service.before_destroy(report, current_user)
-          report.destroy
-
-          if report.destroyed?
+          if report.destroy
             side_fx_service.after_destroy(report, current_user)
             head :no_content
           else
