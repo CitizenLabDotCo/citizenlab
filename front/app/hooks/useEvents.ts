@@ -27,10 +27,9 @@ const sortEvents = (_events: IEventData[], sort: sort) => {
     : events.sort((a, b) => (getStart(b) < getStart(a) ? 1 : -1));
 };
 
+export type TEvents = IEventData[] | undefined | null | Error;
 export default function useEvents(parameters: InputParameters) {
-  const [events, setEvents] = useState<IEventData[] | undefined | null | Error>(
-    undefined
-  );
+  const [events, setEvents] = useState<TEvents>(undefined);
   const [projectIds, setProjectIds] = useState<string[]>(
     parameters.projectIds ?? []
   );

@@ -8,7 +8,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import Link from 'utils/cl-router/Link';
 
 // hooks
-import useEvents from 'hooks/useEvents';
+import { TEvents } from 'hooks/useEvents';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -106,16 +106,11 @@ const EventPageLink = styled(Link)`
 
 interface Props {
   id?: string;
+  events: TEvents;
 }
 
-const EventsWidget = ({ id }: Props) => {
+const EventsWidget = ({ id, events }: Props) => {
   const { formatMessage } = useIntl();
-  const { events } = useEvents({
-    projectPublicationStatuses: ['published'],
-    currentAndFutureOnly: true,
-    pageSize: 3,
-    sort: 'oldest',
-  });
 
   const eventsLoading = isNil(events);
   const eventsError = isError(events);
