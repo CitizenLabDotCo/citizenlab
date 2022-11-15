@@ -1129,6 +1129,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Antwortmöglichkeiten",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Beschriftungen",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Wählen Sie optionale Beschriftungen für Ihre Mindest- und Höchstwerte.",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.description": "Descriptio (optional)",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.title": "Title (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.selectRangeTooltip": "Wählen Sie den Höchstwert für Ihre Skala.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.toLabel": "bis",
   "app.containers.AdminPage.ProjectEdit.survey.informationText": "Die Antworten auf die Fragen mit kurzen und langen Antworten sind derzeit nur im Download der Umfrage verfügbar",
