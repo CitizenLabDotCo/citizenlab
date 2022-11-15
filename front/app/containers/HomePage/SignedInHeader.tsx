@@ -286,7 +286,7 @@ export const StyledAvatar = styled(Avatar)`
 
 export interface InputProps {
   className?: string;
-  homepageSettings: Error | IHomepageSettingsData | null;
+  homepageSettings: IHomepageSettingsData;
 }
 
 interface DataProps {

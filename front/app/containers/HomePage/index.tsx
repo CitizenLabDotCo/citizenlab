@@ -21,21 +21,21 @@ const HomePage = () => {
   const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
 
-  return (
-    <>
-      <Container id="e2e-landing-page">
-        {!isNilOrError(authUser) ? (
-          <SignedInHeader homepageSettings={homepageSettings} />
-        ) : (
-          <Fragment name="signed-out-header">
-            <SignedOutHeader />
-          </Fragment>
-        )}
+  if (!isNilOrError(homepageSettings)) {
+    return (
+      <>
+        <Container id="e2e-landing-page">
+          {!isNilOrError(authUser) ? (
+            <SignedInHeader homepageSettings={homepageSettings} />
+          ) : (
+            <Fragment name="signed-out-header">
+              <SignedOutHeader />
+            </Fragment>
+          )}
 
-        <Content>
-          <Suspense fallback={<LoadingBox />}>
-            {!isNilOrError(homepageSettings) &&
-              homepageSettings.attributes.top_info_section_enabled && (
+          <Content>
+            <Suspense fallback={<LoadingBox />}>
+              {homepageSettings.attributes.top_info_section_enabled && (
                 // top info section
                 <HomepageInfoSection
                   multilocContent={
@@ -44,9 +44,8 @@ const HomePage = () => {
                   fragmentName="pages/homepage_info/top-content"
                 />
               )}
-            <MainContent />
-            {!isNilOrError(homepageSettings) &&
-              homepageSettings.attributes.bottom_info_section_enabled && (
+              <MainContent />
+              {homepageSettings.attributes.bottom_info_section_enabled && (
                 // bottom info section
                 <HomepageInfoSection
                   multilocContent={
@@ -55,12 +54,15 @@ const HomePage = () => {
                   fragmentName="pages/homepage_info/content"
                 />
               )}
-            <Footer />
-          </Suspense>
-        </Content>
-      </Container>
-    </>
-  );
+              <Footer />
+            </Suspense>
+          </Content>
+        </Container>
+      </>
+    );
+  }
+
+  return null;
 };
 
 export default HomePage;
