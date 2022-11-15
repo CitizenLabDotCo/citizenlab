@@ -450,6 +450,184 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
     end
 
+    context 'for a continuous native survey project with pages and logic' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create :custom_form, participation_context: project }
+      let!(:page1) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page1',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:field_in_page1) do
+        create(
+          :custom_field,
+          resource: form,
+          input_type: 'linear_scale',
+          key: 'how_old_are_you',
+          title_multiloc: { 'en' => 'Hold old are you?' },
+          description_multiloc: { 'en' => '' },
+          maximum: 7,
+          logic: {
+            rules: [
+              {
+                if: 1,
+                then: [
+                  {
+                    effect: 'hide',
+                    target_id: page2.id
+                  },
+                  {
+                    effect: 'hide',
+                    target_id: page3.id
+                  }
+                ]
+              }
+            ]
+          }
+        )
+      end
+      let!(:page2) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page2',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:field_in_page2) do
+        create(
+          :custom_field,
+          resource: form,
+          input_type: 'select',
+          key: 'how_often_do_you_choose_to_cycle',
+          title_multiloc: { 'en' => 'When considering travel near your home, how often do you choose to CYCLE?' },
+          description_multiloc: { 'en' => '' },
+          logic: {
+            rules: [
+              {
+                if: 'never',
+                then: [
+                  {
+                    effect: 'hide',
+                    target_id: page3.id
+                  }
+                ]
+              }
+            ]
+          }
+        )
+      end
+      let!(:every_day_option) do
+        create(:custom_field_option, custom_field: field_in_page2, key: 'every_day', title_multiloc: { 'en' => 'Every day' })
+      end
+      let!(:never_option) do
+        create(:custom_field_option, custom_field: field_in_page2, key: 'never', title_multiloc: { 'en' => 'Never' })
+      end
+      let!(:page3) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page3',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+
+      it 'includes rules for logic' do
+        en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
+        expect(en_ui_schema).to eq({
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: 'idea'
+          },
+          elements: [
+            {
+              type: 'Page',
+              options: {
+                id: 'page_1',
+                title: '',
+                description: ''
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page1.key}",
+                label: 'Hold old are you?',
+                options: {
+                  description: '',
+                  isAdminField: false,
+                  maximum_label: '',
+                  minimum_label: ''
+                }
+              }]
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'page_2',
+                title: '',
+                description: ''
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page2.key}",
+                label: 'When considering travel near your home, how often do you choose to CYCLE?',
+                options: {
+                  description: '',
+                  isAdminField: false
+                }
+              }],
+              ruleArray: [
+                {
+                  effect: 'HIDE',
+                  condition: {
+                    scope: "#/properties/#{field_in_page1.key}",
+                    schema: {
+                      enum: [1]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'page_3',
+                title: '',
+                description: ''
+              },
+              elements: [],
+              ruleArray: [
+                {
+                  effect: 'HIDE',
+                  condition: {
+                    scope: "#/properties/#{field_in_page1.key}",
+                    schema: {
+                      enum: [1]
+                    }
+                  }
+                },
+                {
+                  effect: 'HIDE',
+                  condition: {
+                    scope: "#/properties/#{field_in_page2.key}",
+                    schema: {
+                      enum: ['never']
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        })
+      end
+    end
+
     context 'for a timeline project' do
       let(:timeline_fields) do
         project_with_current_phase = create(:project_with_current_phase, input_term: 'contribution')
