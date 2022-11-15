@@ -17,11 +17,6 @@ export interface PageType extends Layout {
   label: string;
 }
 
-/**
- * The categorization element, which may have children elements.
- * A child element may either be itself a Categorization or a Page, hence
- * the categorization element can be used to represent recursive structures like trees.
- */
 export interface PageCategorization extends UISchemaElement {
   type: 'Categorization';
   /**
@@ -30,9 +25,9 @@ export interface PageCategorization extends UISchemaElement {
   label: string;
   /**
    * The child elements of this categorization which are either of type
-   * {@link PageType} or {@link PageCategorization}.
+   * {@link PageType}.
    */
-  elements: (PageType | PageCategorization)[];
+  elements: PageType[];
 }
 
 export const getSanitizedFormData = (data) => {
