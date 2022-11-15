@@ -11,8 +11,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import useEvents from 'hooks/useEvents';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -68,7 +67,8 @@ const StyledEventCard = styled(EventCard)`
   padding: 20px;
 `;
 
-export default injectIntl<WrappedComponentProps>(({ intl }) => {
+const EventsWidget = () => {
+  const { formatMessage } = useIntl();
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,
@@ -91,7 +91,7 @@ export default injectIntl<WrappedComponentProps>(({ intl }) => {
       {!isNilOrError(events) && events.length === 0 && (
         <VerticalCenterer>
           <NoEventsText>
-            {intl.formatMessage(messages.noUpcomingOrOngoingEvents)}
+            {formatMessage(messages.noUpcomingOrOngoingEvents)}
           </NoEventsText>
         </VerticalCenterer>
       )}
@@ -111,4 +111,6 @@ export default injectIntl<WrappedComponentProps>(({ intl }) => {
       )}
     </EventsWidgetContainer>
   );
-});
+};
+
+export default EventsWidget;
