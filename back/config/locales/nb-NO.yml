@@ -1,4 +1,4 @@
-nb:
+"no":
   symbols:
     outside: annet sted
   idea_statuses:
@@ -120,7 +120,7 @@ nb:
         title: Emner
         description:
       location:
-        title: Lokalitet
+        title: Sted
         description:
       proposed_budget:
         title: Proposed Budget
@@ -159,7 +159,7 @@ nb:
     gender:
       male: Mann
       female: Kvinne
-      unspecified: Uspesifisert
+      unspecified: Annet
     domicile:
       outside: Et annet sted
     education:
