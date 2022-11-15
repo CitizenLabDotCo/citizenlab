@@ -1,61 +1,41 @@
 import React, { memo, useState, useEffect, useContext } from 'react';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
-import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
+import Ajv from 'ajv';
+
+// Components
+import {
+  Box,
+  Title,
+  useBreakpoint,
+  media,
+} from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
-import styled from 'styled-components';
-import { FormElement } from 'components/IdeaForm';
+
+// Context
 import { FormContext } from 'components/Form/contexts';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import Ajv from 'ajv';
+
+// Utils
 import {
   getSanitizedFormData,
   getPageSchema,
   PageCategorization,
   isPageCategorization,
 } from 'components/Form/Components/Layouts/utils';
-import { useTheme } from 'styled-components';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
   width: 100%;
 
   ${media.phone`
-    padding-left: 25px;
-    padding-right: 25px;
-  `}
-
-  ${media.phone`
     padding-left: 18px;
     padding-right: 18px;
-  `}
-`;
-
-const FormSectionTitleStyled = styled.h2`
-  font-size: ${fontSizes.xl}px;
-  font-weight: 600;
-  line-height: 28px;
-  margin-bottom: 30px;
-`;
-
-const StyledBox = styled(Box)`
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  width: 100%;
-
-  ${media.phone`
-    flex-direction: column;
-  `}
-`;
-
-const PreviousButton = styled(Button)`
-  margin-right: 16px;
-
-  ${media.phone`
-    margin-right: 0;
   `}
 `;
 
@@ -72,11 +52,13 @@ const CLPageLayout = memo(
     enabled,
     data,
   }: LayoutProps) => {
-    const { setShowSubmitButton, onSubmit, setShowAllErrors } =
+    const { setShowSubmitButton, onSubmit, setShowAllErrors, formSubmitText } =
       useContext(FormContext);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const uiCategories = (uischema as PageCategorization).elements;
     const theme: any = useTheme();
+    const isSmallerThanXlPhone = useBreakpoint('phone');
+    const submitText = formSubmitText || messages.submit;
 
     useEffect(() => {
       setShowSubmitButton(false);
@@ -117,9 +99,11 @@ const CLPageLayout = memo(
           return (
             currentStep === index && (
               <StyledFormSection key={index}>
-                <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
+                <Title fontSize="xl" mb="32px">
+                  {e.label}
+                </Title>
                 {e.elements.map((e, index) => (
-                  <FormElement key={index}>
+                  <Box width="100%" mb="40px" key={index}>
                     <JsonFormsDispatch
                       renderers={renderers}
                       cells={cells}
@@ -128,13 +112,18 @@ const CLPageLayout = memo(
                       path={path}
                       enabled={enabled}
                     />
-                  </FormElement>
+                  </Box>
                 ))}
               </StyledFormSection>
             )
           );
         })}
-        <StyledBox>
+        <Box
+          display="flex"
+          flexDirection={isSmallerThanXlPhone ? 'column' : 'row-reverse'}
+          justifyContent="space-between"
+          width="100%"
+        >
           <Button
             onClick={handleNextAndSubmit}
             mb="20px"
@@ -144,12 +133,10 @@ const CLPageLayout = memo(
             bgColor={showSubmit ? theme.colors.green500 : theme.colors.primary}
             width="100%"
           >
-            <FormattedMessage
-              {...(showSubmit ? messages.submitSurvey : messages.next)}
-            />
+            <FormattedMessage {...(showSubmit ? submitText : messages.next)} />
           </Button>
           {currentStep !== 0 && (
-            <PreviousButton
+            <Button
               onClick={() => {
                 setCurrentStep(currentStep - 1);
               }}
@@ -158,11 +145,12 @@ const CLPageLayout = memo(
               bgColor="white"
               buttonStyle="secondary-outlined"
               width="100%"
+              marginRight={isSmallerThanXlPhone ? '0px' : '16px'}
             >
               <FormattedMessage {...messages.previous} />
-            </PreviousButton>
+            </Button>
           )}
-        </StyledBox>
+        </Box>
       </Box>
     );
   }

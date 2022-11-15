@@ -39,9 +39,4 @@ export default defineMessages({
     id: 'app.components.form.ErrorDisplay.next',
     defaultMessage: 'Next',
   },
-  // TODO: Move this somewhere else
-  submitSurvey: {
-    id: 'app.components.form.ErrorDisplay.submitSurvey',
-    defaultMessage: 'Submit survey',
-  },
 });

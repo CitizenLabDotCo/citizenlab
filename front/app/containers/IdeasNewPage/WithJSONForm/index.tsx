@@ -225,6 +225,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
               />
             }
             config={'input'}
+            formSubmitText={isSurvey ? messages.submitSurvey : undefined}
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (

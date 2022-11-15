@@ -34,6 +34,10 @@ export default defineMessages({
     defaultMessage:
       'There was an issue submitting the form. Please check for any errors and try again.',
   },
+  submitSurvey: {
+    id: 'app.components.form.ErrorDisplay.submitSurvey',
+    defaultMessage: 'Submit survey',
+  },
   or: {
     id: 'app.containers.IdeasNewPage.or',
     defaultMessage: 'Or',

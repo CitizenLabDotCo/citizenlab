@@ -30,7 +30,7 @@ import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors, Message } from 'typings';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
@@ -93,6 +93,7 @@ interface Props {
    * Idea id for update form, used to load and udpate image and files.
    */
   inputId?: string;
+  formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input';
 }
 
@@ -104,6 +105,7 @@ const Form = memo(
     onSubmit,
     title,
     inputId,
+    formSubmitText,
     submitOnEvent,
     onChange,
     getAjvErrorMessage,
@@ -248,6 +250,7 @@ const Form = memo(
                 onSubmit: handleSubmit,
                 setShowAllErrors,
                 setShowSubmitButton,
+                formSubmitText,
               }}
             >
               <JsonForms

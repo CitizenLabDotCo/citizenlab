@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
-import messages from '../messages';
-
+// Components
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
 import {
   Box,
@@ -13,10 +13,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { colors } from 'utils/styleUtils';
+import messages from '../messages';
+
+// Types
 import { IProjectData } from 'services/projects';
-import { useSearchParams } from 'react-router-dom';
+
+// Styles
+import { colors } from 'utils/styleUtils';
 
 type Props = {
   project: IProjectData;
