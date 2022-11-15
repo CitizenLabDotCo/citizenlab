@@ -14,6 +14,12 @@ class AdminPublicationsFilteringService
 
   # NOTE: This service is very fragile and the ORDER of filters matters for the Front-End, do not change it.
 
+  add_filter('only_projects') do |scope, options|
+    next scope unless ['true', true, '1'].include? options[:only_projects]
+
+    scope.where(publication_type: Project.name)
+  end
+
   add_filter('remove_not_allowed_parents') do |visible_publications, options|
     next visible_publications unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
