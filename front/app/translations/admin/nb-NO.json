@@ -1129,6 +1129,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Svarvalg",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Etiketter",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Velg valgfrie etiketter for minimums- og maksimumsverdiene.",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.description": "Descriptio (optional)",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.title": "Title (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.selectRangeTooltip": "Velg maksimumsverdien for skalaen.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.toLabel": "til",
   "app.containers.AdminPage.ProjectEdit.survey.informationText": "Svar på korte og lange svarspørsmål er for øyeblikket bare tilgjengelig i nedlastingen av spørreundersøkelsen",
