@@ -1,6 +1,5 @@
 import { object } from 'yup';
 import validateAtLeastOneLocale from './validateAtLeastOneLocale';
-import validateMultilocForEveryLocale from './validateMultilocForEveryLocale';
 
 const validateElementTitle = (message: string) => {
   return object().when('input_type', (input_type: string, schema) => {
