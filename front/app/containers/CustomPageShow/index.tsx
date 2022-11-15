@@ -31,6 +31,7 @@ import { injectIntl } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { fontSizes, isRtl, media } from 'utils/styleUtils';
+import useAdminPublications from 'hooks/useAdminPublications';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -67,13 +68,28 @@ const CustomPageShow = () => {
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
+  const topicIds = !isNilOrError(page)
+    ? page.relationships.topics?.data.map((topic) => topic.id)
+    : null;
+  const areaIds = !isNilOrError(page)
+    ? page.relationships.areas?.data.map((area) => area.id)
+    : null;
+  const adminPublications = useAdminPublications({
+    topicFilter: topicIds,
+    areaFilter: areaIds,
+    publicationStatusFilter: ['published', 'archived'],
+  });
+  const projectIds = !isNilOrError(adminPublications.list)
+    ? adminPublications.list.map(
+        (adminPublication) => adminPublication.relationships.publication.data.id
+      )
+    : null;
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,
     pageSize: 3,
     sort: 'oldest',
-    // to be added
-    // projectIds:
+    projectIds,
   });
 
   // when neither have loaded

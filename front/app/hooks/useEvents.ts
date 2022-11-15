@@ -6,7 +6,7 @@ import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
 type sort = 'newest' | 'oldest';
 
 interface InputParameters {
-  projectIds?: string[];
+  projectIds?: string[] | null;
   currentAndFutureOnly?: boolean;
   pastOnly?: boolean;
   currentPage?: number;

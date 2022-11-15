@@ -19,6 +19,12 @@ export interface ICustomPageData {
     nav_bar_item: {
       data: IRelationship | null;
     };
+    areas?: {
+      data: IRelationship[];
+    };
+    topics?: {
+      data: IRelationship[];
+    };
   };
 }
 

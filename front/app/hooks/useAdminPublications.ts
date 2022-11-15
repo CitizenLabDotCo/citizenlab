@@ -11,8 +11,9 @@ import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
 export interface BaseProps {
-  topicFilter?: string[];
-  areaFilter?: string[];
+  // to rename
+  topicFilter?: string[] | null;
+  areaFilter?: string[] | null;
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
@@ -78,8 +79,8 @@ export default function useAdminPublications({
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [search, setSearch] = useState<string | null>(null);
-  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
-  const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [topics, setTopics] = useState<string[] | null>(topicFilter || null);
+  const [areas, setAreas] = useState<string[] | null>(areaFilter || null);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
