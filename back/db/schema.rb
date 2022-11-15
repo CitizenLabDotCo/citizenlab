@@ -1706,6 +1706,19 @@ ActiveRecord::Schema.define(version: 2022_11_15_113353) do
      FROM (email_campaigns_deliveries ecd
        JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
   SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc,
+      idea_statuses.code,
+      idea_statuses.color
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc,
+      initiative_statuses.code,
+      initiative_statuses.color
+     FROM initiative_statuses;
+  SQL
   create_view "analytics_fact_registrations", sql_definition: <<-SQL
       SELECT u.id,
       u.id AS dimension_user_id,
@@ -1720,19 +1733,6 @@ ActiveRecord::Schema.define(version: 2022_11_15_113353) do
       COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
       users.invite_status
      FROM users;
-  SQL
-  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
-      SELECT idea_statuses.id,
-      idea_statuses.title_multiloc,
-      idea_statuses.code,
-      idea_statuses.color
-     FROM idea_statuses
-  UNION ALL
-   SELECT initiative_statuses.id,
-      initiative_statuses.title_multiloc,
-      initiative_statuses.code,
-      initiative_statuses.color
-     FROM initiative_statuses;
   SQL
   create_view "analytics_fact_events", sql_definition: <<-SQL
       SELECT events.id,
