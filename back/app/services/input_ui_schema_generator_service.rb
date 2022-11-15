@@ -12,10 +12,12 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_for(fields)
+    fields = CustomField.where(id: fields).includes(source_logics: [:target_field], target_logics: [:source_field]) # TODO: This gives issues with built-in fields
     uses_pages = fields.any?(&:page?)
     return super(fields) unless uses_pages
 
-    generate_with_pages(fields)
+    ui_schema = generate_with_pages(fields)
+    add_logic_rules ui_schema, fields
   end
 
   def visit_page(field)
@@ -122,5 +124,31 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       options: { id: category_id },
       elements: fields.filter_map { |field| visit field }
     }
+  end
+
+  def add_logic_rules(ui_schema, fields)
+    ordered_pages = fields.select(&:page?).sort_by(&:ordering)
+    ui_schema.tap do |schema|
+      schema.each_value do |locale_schema|
+        page_elements = locale_schema[:elements].select do |element|
+          element[:type] == 'Page'
+        end
+        page_elements.each do |page_element|
+          page_index = page_element.dig(:options, :id).split('_').last.to_i - 1
+          page_field = ordered_pages[page_index]
+          next if page_field.target_logics.empty?
+
+          page_element[:ruleArray] = page_field.target_logics.map do |logic|
+            {
+              effect: logic.action,
+              condition: {
+                scope: "#/properties/#{logic.source_field.key}",
+                schema: logic.ui_schema_rule
+              }
+            }
+          end
+        end
+      end
+    end
   end
 end
