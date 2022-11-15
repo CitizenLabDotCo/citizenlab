@@ -31,7 +31,7 @@ export default defineMessages({
     defaultMessage: 'Finished',
   },
   finishedToolTip: {
-    id: 'app.modules.commercial.analytics.admin.components.ProjectStatus.finished',
+    id: 'app.modules.commercial.analytics.admin.components.ProjectStatus.finishedToolTip',
     defaultMessage:
       'All archived projects and active timeline projects that have finished are counted here',
   },
