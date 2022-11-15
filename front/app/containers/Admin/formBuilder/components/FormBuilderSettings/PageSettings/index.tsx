@@ -23,14 +23,14 @@ const PageSettings = ({ field }: Props) => {
         <InputMultilocWithLocaleSwitcher
           id="e2e-page-title-multiloc"
           name={`customFields.${field.index}.title_multiloc`}
-          label={<FormattedMessage {...messages.title} />}
+          label={<FormattedMessage {...messages.titleLabel} />}
           type="text"
         />
       </SectionField>
       <SectionField>
         <QuillMultilocWithLocaleSwitcher
           name={`customFields.${field.index}.description_multiloc`}
-          label={<FormattedMessage {...messages.description} />}
+          label={<FormattedMessage {...messages.descriptionLabel} />}
         />
       </SectionField>
     </>
