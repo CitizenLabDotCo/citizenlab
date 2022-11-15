@@ -17,10 +17,9 @@ const StyledContentContainer = styled(ContentContainer)`
   margin-right: auto;
 `;
 
-export default () => (
+const EventsPage = () => (
   <>
     <EventsPageMeta />
-
     <Box as="main">
       <SectionContainer>
         <StyledContentContainer id="e2e-events-container">
@@ -31,3 +30,5 @@ export default () => (
     </Box>
   </>
 );
+
+export default EventsPage;
