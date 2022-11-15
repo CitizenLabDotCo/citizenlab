@@ -35,6 +35,8 @@ class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
+  has_many :source_logics, foreign_key: :source_field_id, class_name: 'CustomFormLogic', dependent: :destroy, inverse_of: :source_field
+  has_many :target_logics, foreign_key: :target_field_id, class_name: 'CustomFormLogic', dependent: :destroy, inverse_of: :target_field
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   belongs_to :resource, polymorphic: true, optional: true

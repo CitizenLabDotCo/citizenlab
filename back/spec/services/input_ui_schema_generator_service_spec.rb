@@ -512,6 +512,30 @@ RSpec.describe InputUiSchemaGeneratorService do
         # Create logic
         # Use 1 in logic for field_in_page1
         # Use "never" in logic for field_in_page2
+        create(
+          :custom_form_logic,
+          source_field: field_in_page1,
+          target_field: page2,
+          condition_value_number: 1,
+          condition_operator: 'EQUALITY',
+          action: 'HIDE'
+        )
+        create(
+          :custom_form_logic,
+          source_field: field_in_page1,
+          target_field: page3,
+          condition_value_number: 1,
+          condition_operator: 'EQUALITY',
+          action: 'HIDE'
+        )
+        create(
+          :custom_form_logic,
+          source_field: field_in_page2,
+          target_field: page3,
+          condition_value_select: [never_option.key],
+          condition_operator: 'EQUALITY',
+          action: 'HIDE'
+        )
       end
 
       it 'incudes rules for logic' do

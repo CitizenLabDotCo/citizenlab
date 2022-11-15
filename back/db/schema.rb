@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_07_124858) do
+ActiveRecord::Schema.define(version: 2022_11_15_125553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -251,6 +251,20 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
     t.jsonb "minimum_label_multiloc", default: {}, null: false
     t.jsonb "maximum_label_multiloc", default: {}, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
+  end
+
+  create_table "custom_form_logics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "source_field_id", null: false
+    t.uuid "target_field_id", null: false
+    t.jsonb "condition_value_select"
+    t.integer "condition_value_number"
+    t.string "condition_operator"
+    t.string "action"
+    t.integer "ordering", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["source_field_id"], name: "index_custom_form_logics_on_source_field_id"
+    t.index ["target_field_id"], name: "index_custom_form_logics_on_target_field_id"
   end
 
   create_table "custom_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1325,6 +1339,8 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
   add_foreign_key "baskets_ideas", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "custom_field_options", "custom_fields"
+  add_foreign_key "custom_form_logics", "custom_fields", column: "source_field_id"
+  add_foreign_key "custom_form_logics", "custom_fields", column: "target_field_id"
   add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
   add_foreign_key "email_campaigns_campaigns", "users", column: "author_id"
   add_foreign_key "email_campaigns_campaigns_groups", "email_campaigns_campaigns", column: "campaign_id"
