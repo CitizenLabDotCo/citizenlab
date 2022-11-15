@@ -445,9 +445,7 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
           h="100vh"
           overflowY="scroll"
         >
-          <Box top="0px">
-            <IdeasNewPageWithJSONForm {...inputProps} />
-          </Box>
+          <IdeasNewPageWithJSONForm {...inputProps} />
         </Box>,
         portalElement
       )

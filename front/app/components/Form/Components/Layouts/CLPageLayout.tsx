@@ -42,7 +42,6 @@ const StyledFormSection = styled(FormSection)`
 const customAjv = new Ajv({ useDefaults: 'empty', removeAdditional: true });
 
 const CLPageLayout = memo(
-  // here we can cast types because the tester made sure we only get categorization layouts
   ({
     schema,
     uischema,
@@ -59,12 +58,12 @@ const CLPageLayout = memo(
     const theme: any = useTheme();
     const isSmallerThanXlPhone = useBreakpoint('phone');
     const submitText = formSubmitText || messages.submit;
+    const showSubmit = currentStep === uiCategories.length - 1;
+    const hasPreviousPage = currentStep !== 0;
 
     useEffect(() => {
       setShowSubmitButton(false);
     }, [setShowSubmitButton]);
-
-    const showSubmit = currentStep === uiCategories.length - 1;
 
     const handleNextAndSubmit = () => {
       if (showSubmit) {
@@ -135,7 +134,7 @@ const CLPageLayout = memo(
           >
             <FormattedMessage {...(showSubmit ? submitText : messages.next)} />
           </Button>
-          {currentStep !== 0 && (
+          {hasPreviousPage && (
             <Button
               onClick={() => {
                 setCurrentStep(currentStep - 1);

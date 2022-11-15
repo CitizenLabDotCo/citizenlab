@@ -91,7 +91,6 @@ export const Heading = ({
         >
           {isSurvey ? (
             <Box
-              data-cy="e2e-edit-survey-link"
               display="flex"
               flexDirection="row"
               alignItems="center"
@@ -99,6 +98,7 @@ export const Heading = ({
             >
               {showEditSurveyButton && (
                 <Button
+                  data-cy="e2e-edit-survey-link"
                   icon="edit"
                   linkTo={linkToSurveyBuilder}
                   buttonStyle="text"
