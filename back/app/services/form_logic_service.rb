@@ -46,7 +46,6 @@ class FormLogicService
             accu[target_id] << ui_schema_rule_for(effect, field, value)
           when 'submit_survey'
             # TODO
-          # else ignore missing and unknown effects
           end
         end
       end
