@@ -19,7 +19,6 @@ const Tabs = ({ name, ...rest }: Props) => {
     setValue,
     formState: { errors },
     control,
-    trigger,
   } = useFormContext();
 
   const validationError = errors[name]?.message as string | undefined;
@@ -41,7 +40,6 @@ const Tabs = ({ name, ...rest }: Props) => {
             selectedValue={field.value}
             onClick={(newValue) => {
               setValue(name, newValue);
-              trigger();
             }}
           />
         )}
