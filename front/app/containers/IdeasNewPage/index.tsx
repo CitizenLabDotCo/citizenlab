@@ -428,12 +428,10 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
   const project = useProject({ projectSlug: inputProps.params.slug });
   const portalElement = document?.getElementById('modal-portal');
   const isSmallerThanXlPhone = useBreakpoint('phone');
+  const isSurvey = project?.attributes.participation_method === 'native_survey';
 
-  if (
-    isDynamicIdeaFormEnabled ||
-    project?.attributes.participation_method === 'native_survey'
-  ) {
-    return portalElement && isSmallerThanXlPhone ? (
+  if (isDynamicIdeaFormEnabled || isSurvey) {
+    return portalElement && isSmallerThanXlPhone && isSurvey ? (
       createPortal(
         <Box
           display="flex"
