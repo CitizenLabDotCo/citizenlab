@@ -141,6 +141,7 @@ module IdeaCustomFields
       authorize custom_field, policy_class: IdeaCustomFieldPolicy
       already_existed = custom_field.persisted?
 
+      SideFxCustomFieldService.new.before_update custom_field, current_user
       if custom_field.save
         if already_existed
           SideFxCustomFieldService.new.after_update(custom_field, current_user)
