@@ -10,11 +10,12 @@ export interface Query {
 
 export interface QuerySchema {
   fields?: string | string[];
-  fact: 'post' | 'participation' | 'visit' | 'registration';
+  fact: 'post' | 'participation' | 'visit' | 'registration' | 'event';
   filters?: {
     [k: string]:
       | string
       | unknown[]
+      | unknown
       | {
           from: number | string;
           to: number | string;

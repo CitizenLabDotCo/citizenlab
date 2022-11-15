@@ -9,6 +9,9 @@ const Tab = React.lazy(() => import('./admin/components/Tab'));
 const VisitorsContainer = React.lazy(
   () => import('./admin/containers/Visitors')
 );
+const Proposals = React.lazy(() => import('./admin/containers/Proposals'));
+const Invitations = React.lazy(() => import('./admin/containers/Invitations'));
+const Events = React.lazy(() => import('./admin/containers/Events'));
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -22,6 +25,9 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.dashboard.summary.inputStatus': InputStatusCard,
     'app.containers.Admin.dashboards.tabs': Tab,
+    'app.containers.Admin.dashboard.summary.proposals': Proposals,
+    'app.containers.Admin.dashboard.summary.invitations': Invitations,
+    'app.containers.Admin.dashboard.summary.events': Events,
   },
 };
 
