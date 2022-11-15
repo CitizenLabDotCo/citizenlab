@@ -470,7 +470,24 @@ RSpec.describe InputUiSchemaGeneratorService do
           key: 'how_old_are_you',
           title_multiloc: { 'en' => 'Hold old are you?' },
           description_multiloc: { 'en' => '' },
-          maximum: 7
+          maximum: 7,
+          logic: {
+            rules: [
+              {
+                if: 1,
+                then: [
+                  {
+                    effect: 'hide',
+                    target_id: page2.id
+                  },
+                  {
+                    effect: 'hide',
+                    target_id: page3.id
+                  }
+                ]
+              }
+            ]
+          }
         )
       end
       let!(:page2) do
@@ -489,7 +506,20 @@ RSpec.describe InputUiSchemaGeneratorService do
           input_type: 'select',
           key: 'how_often_do_you_choose_to_cycle',
           title_multiloc: { 'en' => 'When considering travel near your home, how often do you choose to CYCLE?' },
-          description_multiloc: { 'en' => '' }
+          description_multiloc: { 'en' => '' },
+          logic: {
+            rules: [
+              {
+                if: 'never',
+                then: [
+                  {
+                    effect: 'hide',
+                    target_id: page3.id
+                  }
+                ]
+              }
+            ]
+          }
         )
       end
       let!(:every_day_option) do
@@ -506,12 +536,6 @@ RSpec.describe InputUiSchemaGeneratorService do
           title_multiloc: { 'en' => '' },
           description_multiloc: { 'en' => '' }
         )
-      end
-
-      before do
-        # Create logic
-        # Use 1 in logic for field_in_page1
-        # Use "never" in logic for field_in_page2
       end
 
       it 'incudes rules for logic' do
