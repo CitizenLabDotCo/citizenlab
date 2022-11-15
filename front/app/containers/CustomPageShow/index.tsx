@@ -135,7 +135,9 @@ const CustomPageShow = () => {
             </AttachmentsContainer>
           )}
         {pageAttributes.events_widget_enabled && (
-          <EventsWidget events={events} />
+          <ContentContainer>
+            <EventsWidget events={events} />
+          </ContentContainer>
         )}
       </Content>
     </Container>
