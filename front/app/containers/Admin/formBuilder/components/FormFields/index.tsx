@@ -10,28 +10,28 @@ import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import {
+  isFieldSelected,
+  getFieldBackgroundColor,
+  getTitleColor,
+  getIndexForTitle,
+  getIndexTitleColor,
+} from './utils';
 
 // components
-import Button from 'components/UI/Button';
 import { List, SortableRow } from 'components/admin/ResourceList';
-import { Box, Badge, Text } from '@citizenlab/cl2-component-library';
+import { Box, Badge, Text, colors } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
-// Hooks
+// hooks and services
 import useLocale from 'hooks/useLocale';
-
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
-
-const StyledBadge = styled(Badge)`
-  margin-left: 12px;
-`;
 
 // Assign field badge text
 const getTranslatedFieldType = (field) => {
@@ -41,6 +41,8 @@ const getTranslatedFieldType = (field) => {
     case 'multiselect':
     case 'select':
       return messages.multipleChoice;
+    case 'page':
+      return messages.page;
     case 'number':
       return messages.number;
     case 'linear_scale':
@@ -67,33 +69,52 @@ const FormFields = ({
     watch,
     formState: { errors },
   } = useFormContext();
-  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const locale = useLocale();
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
+
   if (isNilOrError(locale)) {
     return null;
   }
 
+  const FormFieldsContainer = styled(Box)`
+    &:hover {
+      cursor: pointer;
+    }
+  `;
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <Box p="32px" height="100%" overflowY="auto">
+      <Box py="32px" height="100%" overflowY="auto">
         <List key={formCustomFields.length}>
           {formCustomFields.map((field, index) => {
             const hasErrors = !!errors.customFields?.[index];
             let outlineStyle = 'none';
             if (hasErrors) {
               outlineStyle = `1px solid ${colors.error}`;
-            } else if (selectedFieldId === field.id) {
-              outlineStyle = `1px solid ${colors.primary}`;
+            } else if (
+              isFieldSelected(selectedFieldId, field.id) &&
+              field.input_type !== 'page'
+            ) {
+              outlineStyle = `1px solid ${colors.teal300}`;
             }
             const fieldIdentifier = snakeCase(field.title_multiloc[locale]);
 
             return (
-              <Box
+              <FormFieldsContainer
+                role={'button'}
                 key={field.id}
-                style={{ outline: outlineStyle }}
+                style={{ outline: outlineStyle, outlineOffset: '-1px' }}
                 data-cy={`e2e-field-${fieldIdentifier}`}
+                background={getFieldBackgroundColor(selectedFieldId, field)}
+                onClick={() => {
+                  isEditingDisabled
+                    ? undefined
+                    : onEditField({ ...field, index });
+                }}
               >
                 <SortableRow
+                  iconFill={getTitleColor(selectedFieldId, field)}
+                  iconMargin="0px 0px 0px 24px"
                   id={field.id}
                   index={index}
                   moveRow={handleDragRow}
@@ -101,38 +122,67 @@ const FormFields = ({
                     // Do nothing, no need to handle dropping a row for now
                   }}
                 >
-                  <Box display="flex" className="expand">
-                    <Box as="span" display="flex" alignItems="center">
-                      <Text fontSize="base" my="0px" color="primary">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    className="expand"
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Text
+                        as="span"
+                        color={getIndexTitleColor(selectedFieldId, field)}
+                        fontSize="base"
+                        mt="auto"
+                        mb="auto"
+                        fontWeight="bold"
+                        mx="12px"
+                      >
+                        <>
+                          <FormattedMessage
+                            {...(field.input_type === 'page'
+                              ? messages.page
+                              : messages.question)}
+                          />
+                          {getIndexForTitle(formCustomFields, field)}
+                        </>
+                      </Text>
+                      <Text
+                        as="span"
+                        fontSize="base"
+                        mt="auto"
+                        mb="auto"
+                        color={getTitleColor(selectedFieldId, field)}
+                      >
                         <T value={field.title_multiloc} />
                       </Text>
                     </Box>
-                    {!isNilOrError(field.input_type) && (
-                      <StyledBadge className="inverse" color={colors.grey700}>
-                        <FormattedMessage
-                          {...getTranslatedFieldType(field.input_type)}
-                        />
-                      </StyledBadge>
-                    )}
-                    {field.required && (
-                      <StyledBadge className="inverse" color={colors.error}>
-                        <FormattedMessage {...messages.required} />
-                      </StyledBadge>
-                    )}
+                    <Box pr="24px" display="flex">
+                      {!isNilOrError(field.input_type) &&
+                        field.input_type !== 'page' && (
+                          <Box ml="12px">
+                            {' '}
+                            <Badge
+                              className="inverse"
+                              color={colors.coolGrey600}
+                            >
+                              <FormattedMessage
+                                {...getTranslatedFieldType(field.input_type)}
+                              />
+                            </Badge>
+                          </Box>
+                        )}
+                      {field.required && (
+                        <Box ml="12px">
+                          {' '}
+                          <Badge className="inverse" color={colors.error}>
+                            <FormattedMessage {...messages.required} />
+                          </Badge>
+                        </Box>
+                      )}
+                    </Box>
                   </Box>
-                  <Button
-                    buttonStyle="secondary"
-                    icon="edit"
-                    disabled={isEditingDisabled}
-                    onClick={() => {
-                      onEditField({ ...field, index });
-                    }}
-                    data-cy={`e2e-edit-${fieldIdentifier}`}
-                  >
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
                 </SortableRow>
-              </Box>
+              </FormFieldsContainer>
             );
           })}
         </List>

@@ -99,6 +99,12 @@ const FormBuilderToolbox = ({
 
         <DraggableElement>
           <ToolboxItem
+            icon="page"
+            label={formatMessage(messages.page)}
+            onClick={() => addField('page')}
+            data-cy="e2e-page"
+          />
+          <ToolboxItem
             icon="survey-short-answer"
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addField('text')}
