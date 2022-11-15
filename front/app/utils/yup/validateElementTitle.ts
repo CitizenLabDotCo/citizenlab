@@ -1,4 +1,5 @@
 import { object } from 'yup';
+import validateAtLeastOneLocale from './validateAtLeastOneLocale';
 import validateMultilocForEveryLocale from './validateMultilocForEveryLocale';
 
 const validateElementTitle = (message: string) => {
@@ -8,7 +9,7 @@ const validateElementTitle = (message: string) => {
         return true;
       });
     }
-    return validateMultilocForEveryLocale(message);
+    return validateAtLeastOneLocale(message);
   });
 };
 
