@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_07_124858) do
+ActiveRecord::Schema.define(version: 2022_11_15_113353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -250,6 +250,7 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
     t.integer "maximum"
     t.jsonb "minimum_label_multiloc", default: {}, null: false
     t.jsonb "maximum_label_multiloc", default: {}, null: false
+    t.jsonb "logic", default: {}, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
@@ -1705,19 +1706,6 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
      FROM (email_campaigns_deliveries ecd
        JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
   SQL
-  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
-      SELECT idea_statuses.id,
-      idea_statuses.title_multiloc,
-      idea_statuses.code,
-      idea_statuses.color
-     FROM idea_statuses
-  UNION ALL
-   SELECT initiative_statuses.id,
-      initiative_statuses.title_multiloc,
-      initiative_statuses.code,
-      initiative_statuses.color
-     FROM initiative_statuses;
-  SQL
   create_view "analytics_fact_registrations", sql_definition: <<-SQL
       SELECT u.id,
       u.id AS dimension_user_id,
@@ -1732,6 +1720,19 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
       COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
       users.invite_status
      FROM users;
+  SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc,
+      idea_statuses.code,
+      idea_statuses.color
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc,
+      initiative_statuses.code,
+      initiative_statuses.color
+     FROM initiative_statuses;
   SQL
   create_view "analytics_fact_events", sql_definition: <<-SQL
       SELECT events.id,
