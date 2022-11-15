@@ -27,6 +27,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import messages from '../messages';
@@ -38,7 +39,6 @@ import { Multiloc } from 'typings';
 import { IAreaData } from 'services/areas';
 import { ITopicData } from 'services/topics';
 import { ProjectsFilterTypes } from 'services/customPages';
-import { isNilOrError } from 'utils/helperUtils';
 
 export interface FormValues {
   title_multiloc: Multiloc;
