@@ -55,10 +55,9 @@ export const getIndexForTitle = (
       (customField) => customField.input_type === 'page'
     );
     return ` ${filteredPages.indexOf(field) + 1}`;
-  } else {
-    const filteredQuestion = formCustomFields.filter(
-      (customField) => customField.input_type !== 'page'
-    );
-    return ` ${filteredQuestion.indexOf(field) + 1}`;
   }
+  const filteredQuestion = formCustomFields.filter(
+    (customField) => customField.input_type !== 'page'
+  );
+  return ` ${filteredQuestion.indexOf(field) + 1}`;
 };
