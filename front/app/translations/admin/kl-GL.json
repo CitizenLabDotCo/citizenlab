@@ -1129,6 +1129,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Akissuteqarnissamut periarfissat",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Labels",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Choose optional labels for your minimum and maximum values.",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.description": "Descriptio (optional)",
+  "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.labels.title": "Title (optional)",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.selectRangeTooltip": "Choose the maximum value for your scale.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.toLabel": "to",
   "app.containers.AdminPage.ProjectEdit.survey.informationText": "Responses to short and long answer questions are currently only available in the survey download",
