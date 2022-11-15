@@ -42,7 +42,7 @@ describe('Proposals card data parsing', () => {
       successfulProposalsToolTip: 'Success tool tip',
     };
 
-    const data = proposalsConfig.dataParser(responseData, labels);
+    const data = proposalsConfig.dataParser(responseData, labels, undefined);
     //
     // console.log(data);
 
