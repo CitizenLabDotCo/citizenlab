@@ -12,23 +12,29 @@ import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const PageSettings = (field: IFlatCustomFieldWithIndex) => (
-  <>
-    <SectionField>
-      <InputMultilocWithLocaleSwitcher
-        id="e2e-page-title-multiloc"
-        name={`customFields.${field.index}.title_multiloc`}
-        label={<FormattedMessage {...messages.title} />}
-        type="text"
-      />
-    </SectionField>
-    <SectionField>
-      <QuillMultilocWithLocaleSwitcher
-        name={`customFields.${field.index}.description_multiloc`}
-        label={<FormattedMessage {...messages.description} />}
-      />
-    </SectionField>
-  </>
-);
+type Props = {
+  field: IFlatCustomFieldWithIndex;
+};
+
+const PageSettings = ({ field }: Props) => {
+  return (
+    <>
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          id="e2e-page-title-multiloc"
+          name={`customFields.${field.index}.title_multiloc`}
+          label={<FormattedMessage {...messages.title} />}
+          type="text"
+        />
+      </SectionField>
+      <SectionField>
+        <QuillMultilocWithLocaleSwitcher
+          name={`customFields.${field.index}.description_multiloc`}
+          label={<FormattedMessage {...messages.description} />}
+        />
+      </SectionField>
+    </>
+  );
+};
 
 export default PageSettings;
