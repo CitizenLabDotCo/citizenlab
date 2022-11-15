@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import CustomPageSettingsForm from './';
+import { ProjectsFilterTypes } from 'services/customPages';
 
 const titleEN = 'title en';
 const titleNL = 'title nl';
@@ -10,6 +11,8 @@ const editedTitleNL = 'edited title nl';
 const slug = 'title-en';
 
 jest.mock('utils/cl-intl');
+jest.mock('hooks/useAreas', () => jest.fn(() => []));
+jest.mock('hooks/useTopics', () => jest.fn(() => []));
 jest.mock('hooks/useLocale');
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])
@@ -25,6 +28,7 @@ describe('CustomPageSettingsForm', () => {
       onSubmit: jest.fn(),
       defaultValues: {
         title_multiloc: { en: '', 'nl-NL': '' },
+        projects_filter_type: 'no_filter' as ProjectsFilterTypes,
       },
     };
 
@@ -57,6 +61,7 @@ describe('CustomPageSettingsForm', () => {
       await waitFor(() => {
         expect(defaultProps.onSubmit).toHaveBeenCalledWith({
           title_multiloc: { en: titleEN, 'nl-NL': titleNL },
+          projects_filter_type: 'no_filter',
         });
         expect(
           screen.getByTestId('feedbackSuccessMessage')
@@ -84,6 +89,7 @@ describe('CustomPageSettingsForm', () => {
       onSubmit: jest.fn(),
       defaultValues: {
         title_multiloc: { en: titleEN, 'nl-NL': titleNL },
+        projects_filter_type: 'no_filter' as ProjectsFilterTypes,
         slug,
       },
     };
@@ -125,6 +131,7 @@ describe('CustomPageSettingsForm', () => {
       await waitFor(() => {
         expect(defaultProps.onSubmit).toHaveBeenCalledWith({
           title_multiloc: { en: editedTitleEN, 'nl-NL': editedTitleNL },
+          projects_filter_type: 'no_filter',
           slug: 'new-slug',
         });
         expect(

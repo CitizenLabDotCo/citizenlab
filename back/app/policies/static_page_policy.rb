@@ -57,8 +57,8 @@ class StaticPagePolicy < ApplicationPolicy
       { bottom_info_section_multiloc: CL2_SUPPORTED_LOCALES },
       :header_bg,
       { pinned_admin_publication_ids: [] },
-      { areas: [] },
-      { topics: [] }
+      { area_ids: [] },
+      { topic_ids: [] }
     ]
   end
 end

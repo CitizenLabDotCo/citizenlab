@@ -26,7 +26,7 @@ const TabIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
-const Tab = styled.button<{ index: number }>`
+const Tab = styled.button`
   display: flex;
   align-items: center;
   margin: 0;
@@ -35,7 +35,6 @@ const Tab = styled.button<{ index: number }>`
   background: #fff;
   border-radius: 0;
   border: solid 1px #aaa;
-  z-index: ${({ index }) => index};
   cursor: pointer;
   transition: all 80ms ease-out;
 
@@ -75,7 +74,7 @@ export interface ITabItem {
   icon?: IconNames;
 }
 
-interface Props {
+export interface Props {
   items: ITabItem[];
   selectedValue: string;
   selectedTabBgColor?: string;
@@ -95,7 +94,6 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
       {items.map((item: ITabItem, index) => (
         <Tab
           id={item.name}
-          index={index + 1}
           role="tab"
           aria-selected={selectedValue === item.name}
           aria-controls={item.name}
@@ -106,6 +104,7 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
           onMouseDown={removeFocusAfterMouseClick}
           onClick={handleTabOnClick}
           data-itemvalue={item.name}
+          type="button"
         >
           <TabText>{item.label}</TabText>
           {item.icon && <TabIcon name={item.icon} />}

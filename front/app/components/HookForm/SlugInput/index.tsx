@@ -1,6 +1,5 @@
 import React from 'react';
 import Input from 'components/HookForm/Input';
-import { SectionField } from 'components/admin/Section';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -24,7 +23,7 @@ const SlugInput = ({ slug, pathnameWithoutSlug }: Props) => {
       : null;
 
     return (
-      <SectionField>
+      <>
         <Box mb="16px">
           <Warning>
             <FormattedMessage {...messages.brokenURLWarning} />
@@ -43,7 +42,7 @@ const SlugInput = ({ slug, pathnameWithoutSlug }: Props) => {
           </b>
           : {previewUrl}
         </Text>
-      </SectionField>
+      </>
     );
   }
 

@@ -19,6 +19,12 @@ export interface ICustomPageData {
     nav_bar_item: {
       data: IRelationship | null;
     };
+    topics: {
+      data: IRelationship[];
+    };
+    areas: {
+      data: IRelationship[];
+    };
   };
 }
 
@@ -40,6 +46,8 @@ export interface ICustomPageEnabledSettings {
   projects_enabled: boolean;
 }
 
+export type ProjectsFilterTypes = 'no_filter' | 'areas' | 'topics';
+
 export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;
   top_info_section_multiloc: Multiloc;
@@ -59,8 +67,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   code: TPageCode;
   // not sure about these
 
-  // for a subsequent iteration
-  projects_filter_type: 'area' | 'projects';
+  projects_filter_type: ProjectsFilterTypes;
   nav_bar_item_title_multiloc: Multiloc;
 
   created_at: string;

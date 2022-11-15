@@ -16,7 +16,15 @@ const NewCustomPage = () => {
     );
   };
 
-  return <CustomPageSettingsForm mode="new" onSubmit={handleOnSubmit} />;
+  return (
+    <CustomPageSettingsForm
+      mode="new"
+      onSubmit={handleOnSubmit}
+      defaultValues={{
+        projects_filter_type: 'no_filter',
+      }}
+    />
+  );
 };
 
 export default NewCustomPage;
