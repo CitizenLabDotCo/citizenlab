@@ -33,7 +33,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   updateFormCustomFields,
-  isFlatCustomFieldWithIndex,
+  isNewCustomFieldObject,
 } from 'services/formCustomFields';
 
 // hooks
@@ -132,7 +132,7 @@ export const FormEdit = ({
       index: !isNilOrError(fields) ? fields.length : 0,
     };
 
-    if (isFlatCustomFieldWithIndex(newField)) {
+    if (isNewCustomFieldObject(newField)) {
       append(newField);
       setSelectedField(newField);
     }

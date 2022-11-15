@@ -75,7 +75,7 @@ const properties = [
   'index',
 ];
 
-const objectHasProperties = (
+const doesOjectHaveProperties = (
   element: unknown,
   propertyNames: string[]
 ): boolean => {
@@ -88,10 +88,10 @@ const objectHasProperties = (
   return hasProperties;
 };
 
-export const isFlatCustomFieldWithIndex = (
+export const isNewCustomFieldObject = (
   element: unknown
 ): element is IFlatCustomFieldWithIndex =>
-  objectHasProperties(element, properties);
+  doesOjectHaveProperties(element, properties);
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
