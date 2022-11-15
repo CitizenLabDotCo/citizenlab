@@ -11,6 +11,7 @@ import TopInfoSection from './TopInfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from 'components/PageNotFound';
 import { Box } from '@citizenlab/cl2-component-library';
+import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -18,6 +19,7 @@ import useCustomPage from 'hooks/useCustomPage';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
 import useEvents from 'hooks/useEvents';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isError, isNil, isNilOrError } from 'utils/helperUtils';
@@ -29,8 +31,6 @@ import { injectIntl } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { fontSizes, isRtl, media } from 'utils/styleUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
