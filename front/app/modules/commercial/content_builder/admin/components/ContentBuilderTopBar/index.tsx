@@ -8,7 +8,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
 import Container from './components/Container';
-import GoBackButton from 'components/UI/GoBackButton';
+import GoBackButton from './components/GoBackButton';
 import SaveButton from './components/SaveButton';
 import Button from 'components/UI/Button';
 
@@ -115,16 +115,7 @@ const ContentBuilderTopBar = ({
 
   return (
     <Container>
-      <Box
-        p="15px"
-        w="210px"
-        h="100%"
-        borderRight={`1px solid ${colors.grey500}`}
-        display="flex"
-        alignItems="center"
-      >
-        <GoBackButton onClick={goBack} />
-      </Box>
+      <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           {isNilOrError(project) ? (
