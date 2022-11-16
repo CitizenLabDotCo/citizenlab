@@ -238,7 +238,9 @@ const Form = memo(
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
           flex="1"
-          marginBottom={layoutType === 'fullpage' ? '32px' : 'auto'}
+          marginBottom={
+            layoutType === 'fullpage' && showSubmitButton ? '32px' : 'auto'
+          }
         >
           {title && <Title>{title}</Title>}
           <APIErrorsContext.Provider value={apiErrors}>

@@ -32,10 +32,11 @@ import {
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
   width: 100%;
+  padding-top: 0px;
 
   ${media.phone`
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 16px;
+    padding-right: 16px;
   `}
 `;
 
