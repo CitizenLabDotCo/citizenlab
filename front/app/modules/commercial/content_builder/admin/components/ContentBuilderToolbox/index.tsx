@@ -1,8 +1,5 @@
 import React from 'react';
 
-// craft
-import { useEditor } from '@craftjs/core';
-
 // Router
 import { useParams } from 'react-router-dom';
 
@@ -13,7 +10,7 @@ import { WrappedComponentProps } from 'react-intl';
 // components
 import Container from 'components/ContentBuilder/Toolbox/Container';
 import SectionTitle from 'components/ContentBuilder/Toolbox/SectionTitle';
-import ToolboxItem from './ToolboxItem';
+import DraggableElement from 'components/ContentBuilder/Toolbox/DraggableElement';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
@@ -29,15 +26,8 @@ import ImageTextCards from '../CraftSections/ImageTextCards';
 // intl
 import messages from '../../messages';
 
-// styles
-import styled from 'styled-components';
-
 // types
 import { Locale } from 'typings';
-
-const DraggableElement = styled.div`
-  cursor: move;
-`;
 
 type ContentBuilderToolboxProps = {
   selectedLocale: Locale;
@@ -48,10 +38,6 @@ const ContentBuilderToolbox = ({
   intl: { formatMessage },
 }: ContentBuilderToolboxProps) => {
   const { projectId } = useParams() as { projectId: string };
-  const {
-    connectors,
-    actions: { selectNode },
-  } = useEditor();
 
   return (
     <Container>
@@ -60,208 +46,96 @@ const ContentBuilderToolbox = ({
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-image-text-cards"
-        ref={(ref) =>
-          ref &&
-          connectors.create(ref, <ImageTextCards />, {
-            onCreate: (node) => {
-              selectNode(node.rootNodeId);
-            },
-          })
-        }
-      >
-        <ToolboxItem
-          icon="section-image-text"
-          label={formatMessage(messages.imageTextCards)}
-        />
-      </DraggableElement>
+        component={<ImageTextCards />}
+        icon="section-image-text"
+        label={formatMessage(messages.imageTextCards)}
+      />
       <DraggableElement
         id="e2e-draggable-info-accordions"
-        ref={(ref) =>
-          ref &&
-          connectors.create(ref, <InfoWithAccordions projectId={projectId} />, {
-            onCreate: (node) => {
-              selectNode(node.rootNodeId);
-            },
-          })
-        }
-      >
-        <ToolboxItem
-          icon="section-info-accordion"
-          label={formatMessage(messages.infoWithAccordions)}
-        />
-      </DraggableElement>
+        component={<InfoWithAccordions projectId={projectId} />}
+        icon="section-info-accordion"
+        label={formatMessage(messages.infoWithAccordions)}
+      />
       <SectionTitle>
         <FormattedMessage {...messages.layout} />
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-two-column"
-        ref={(ref) =>
-          ref &&
-          connectors.create(
-            ref,
-            <TwoColumn columnLayout="1-1" id="twoColumn" />,
-            {
-              onCreate: (node) => {
-                selectNode(node.rootNodeId);
-              },
-            }
-          )
-        }
-      >
-        <ToolboxItem
-          icon="layout-2column-1"
-          label={formatMessage(messages.twoColumn)}
-        />
-      </DraggableElement>
+        component={<TwoColumn columnLayout="1-1" id="twoColumn" />}
+        icon="layout-2column-1"
+        label={formatMessage(messages.twoColumn)}
+      />
       <DraggableElement
         id="e2e-draggable-three-column"
-        ref={(ref) =>
-          ref &&
-          connectors.create(ref, <ThreeColumn />, {
-            onCreate: (node) => {
-              selectNode(node.rootNodeId);
-            },
-          })
-        }
-      >
-        <ToolboxItem
-          icon="layout-3column"
-          label={formatMessage(messages.threeColumn)}
-        />
-      </DraggableElement>
+        component={<ThreeColumn />}
+        icon="layout-3column"
+        label={formatMessage(messages.threeColumn)}
+      />
       <DraggableElement
         id="e2e-draggable-white-space"
-        ref={(ref) =>
-          ref &&
-          connectors.create(ref, <WhiteSpace size="small" />, {
-            onCreate: (node) => {
-              selectNode(node.rootNodeId);
-            },
-          })
-        }
-      >
-        <ToolboxItem
-          icon="layout-white-space"
-          label={formatMessage(messages.whiteSpace)}
-        />
-      </DraggableElement>
+        component={<WhiteSpace size="small" />}
+        icon="layout-white-space"
+        label={formatMessage(messages.whiteSpace)}
+      />
       <SectionTitle>
         <FormattedMessage {...messages.content} />
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-text"
-        ref={(ref) =>
-          ref &&
-          connectors.create(
-            ref,
-            <Text text={formatMessage(messages.textValue)} />,
-            {
-              onCreate: (node) => {
-                selectNode(node.rootNodeId);
-              },
-            }
-          )
-        }
-      >
-        <ToolboxItem icon="text" label={formatMessage(messages.text)} />
-      </DraggableElement>
+        component={<Text text={formatMessage(messages.textValue)} />}
+        icon="text"
+        label={formatMessage(messages.text)}
+      />
       <DraggableElement
         id="e2e-draggable-button"
-        ref={(ref) =>
-          ref &&
-          connectors.create(
-            ref,
-            <Button
-              text={formatMessage(messages.button)}
-              url={''}
-              type={'primary'}
-              alignment={'left'}
-            />,
-            {
-              onCreate: (node) => {
-                selectNode(node.rootNodeId);
-              },
-            }
-          )
+        component={
+          <Button
+            text={formatMessage(messages.button)}
+            url={''}
+            type={'primary'}
+            alignment={'left'}
+          />
         }
-      >
-        <ToolboxItem icon="button" label={formatMessage(messages.button)} />
-      </DraggableElement>
+        icon="button"
+        label={formatMessage(messages.button)}
+      />
       <DraggableElement
         id="e2e-draggable-image"
-        ref={(ref) => {
-          ref &&
-            connectors.create(ref, <Image alt="" />, {
-              onCreate: (node) => {
-                selectNode(node.rootNodeId);
-              },
-            });
-        }}
-      >
-        <ToolboxItem icon="image" label={formatMessage(messages.image)} />
-      </DraggableElement>
+        component={<Image alt="" />}
+        icon="image"
+        label={formatMessage(messages.image)}
+      />
       <DraggableElement
         id="e2e-draggable-iframe"
-        ref={(ref) =>
-          ref &&
-          connectors.create(
-            ref,
-            <Iframe
-              url=""
-              height={500}
-              hasError={false}
-              selectedLocale={selectedLocale}
-            />,
-            {
-              onCreate: (node) => {
-                selectNode(node.rootNodeId);
-              },
-            }
-          )
+        component={
+          <Iframe
+            url=""
+            height={500}
+            hasError={false}
+            selectedLocale={selectedLocale}
+          />
         }
-      >
-        <ToolboxItem icon="code" label={formatMessage(messages.url)} />
-      </DraggableElement>
+        icon="code"
+        label={formatMessage(messages.url)}
+      />
       <DraggableElement
         id="e2e-draggable-about-box"
-        ref={(ref) =>
-          ref &&
-          connectors.create(ref, <AboutBox projectId={projectId} />, {
-            onCreate: (node) => {
-              selectNode(node.rootNodeId);
-            },
-          })
-        }
-      >
-        <ToolboxItem
-          icon="info-solid"
-          label={formatMessage(messages.aboutBox)}
-        />
-      </DraggableElement>
+        component={<AboutBox projectId={projectId} />}
+        icon="info-solid"
+        label={formatMessage(messages.aboutBox)}
+      />
       <DraggableElement
         id="e2e-draggable-accordion"
-        ref={(ref) =>
-          ref &&
-          connectors.create(
-            ref,
-            <Accordion
-              title={formatMessage(messages.accordionTitleValue)}
-              text={formatMessage(messages.accordionTextValue)}
-              openByDefault={false}
-            />,
-            {
-              onCreate: (node) => {
-                selectNode(node.rootNodeId);
-              },
-            }
-          )
+        component={
+          <Accordion
+            title={formatMessage(messages.accordionTitleValue)}
+            text={formatMessage(messages.accordionTextValue)}
+            openByDefault={false}
+          />
         }
-      >
-        <ToolboxItem
-          icon="accordion"
-          label={formatMessage(messages.accordion)}
-        />
-      </DraggableElement>
+        icon="accordion"
+        label={formatMessage(messages.accordion)}
+      />
     </Container>
   );
 };
