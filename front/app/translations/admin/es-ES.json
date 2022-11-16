@@ -1144,7 +1144,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.open": "Abrir",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses": "Abierto a respuestas",
   "app.containers.AdminPage.ProjectEdit.survey.optional": "Opcional",
-  "app.containers.AdminPage.ProjectEdit.survey.page": "Page",
+  "app.containers.AdminPage.ProjectEdit.survey.page": "Página",
   "app.containers.AdminPage.ProjectEdit.survey.question": "Pregunta",
   "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Descripción de la pregunta (opcional)",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Título de la pregunta",
