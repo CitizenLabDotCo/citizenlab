@@ -12,8 +12,8 @@ import { WrappedComponentProps } from 'react-intl';
 
 // components
 import Container from 'components/ContentBuilder/Toolbox/Container';
+import SectionTitle from 'components/ContentBuilder/Toolbox/SectionTitle';
 import ToolboxItem from './ToolboxItem';
-import { Title } from '@citizenlab/cl2-component-library';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
@@ -55,17 +55,9 @@ const ContentBuilderToolbox = ({
 
   return (
     <Container>
-      <Title
-        fontWeight="normal"
-        mb="4px"
-        mt="24px"
-        ml="10px"
-        variant="h6"
-        as="h3"
-        color="textSecondary"
-      >
+      <SectionTitle>
         <FormattedMessage {...messages.sections} />
-      </Title>
+      </SectionTitle>
       <DraggableElement
         id="e2e-draggable-image-text-cards"
         ref={(ref) =>
@@ -98,17 +90,9 @@ const ContentBuilderToolbox = ({
           label={formatMessage(messages.infoWithAccordions)}
         />
       </DraggableElement>
-      <Title
-        fontWeight="normal"
-        mb="4px"
-        mt="24px"
-        ml="10px"
-        variant="h6"
-        as="h3"
-        color="textSecondary"
-      >
+      <SectionTitle>
         <FormattedMessage {...messages.layout} />
-      </Title>
+      </SectionTitle>
       <DraggableElement
         id="e2e-draggable-two-column"
         ref={(ref) =>
@@ -161,17 +145,9 @@ const ContentBuilderToolbox = ({
           label={formatMessage(messages.whiteSpace)}
         />
       </DraggableElement>
-      <Title
-        fontWeight="normal"
-        mb="4px"
-        mt="24px"
-        ml="10px"
-        variant="h6"
-        as="h3"
-        color="textSecondary"
-      >
+      <SectionTitle>
         <FormattedMessage {...messages.content} />
-      </Title>
+      </SectionTitle>
       <DraggableElement
         id="e2e-draggable-text"
         ref={(ref) =>
