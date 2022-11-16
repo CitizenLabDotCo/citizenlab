@@ -17,8 +17,14 @@ const EditCustomPageSettings = () => {
     const hasNavbarItem = !!customPage.relationships.nav_bar_item.data?.id;
 
     const handleOnSubmit = async (formValues: FormValues) => {
-      // The BE accepts an array not one string value
-      const newFormValues = { ...formValues, area_ids: [formValues.area_id] };
+      // the form returns one area_id as a string,
+      // the backend expects an array of area_ids
+      const newFormValues = {
+        ...formValues,
+        ...(formValues.projects_filter_type === 'areas' && {
+          area_ids: [formValues.area_id],
+        }),
+      };
       await updateCustomPage(customPageId, omit(newFormValues, 'area_id'));
       // navbar items are a separate stream, so manually refresh on title update
       // to reflect changes in the user's navbar
@@ -29,8 +35,13 @@ const EditCustomPageSettings = () => {
       }
     };
 
-    const topicIds = customPage.relationships.topics.data.map((d) => d.id);
-    const areaIds = customPage.relationships.areas.data.map((d) => d.id);
+    const topicIds = customPage.relationships.topics.data.map(
+      (topicRelationship) => topicRelationship.id
+    );
+    const areaIds = customPage.relationships.areas.data.map(
+      (areaRelationship) => areaRelationship.id
+    );
+
     return (
       <CustomPageSettingsForm
         mode="edit"
