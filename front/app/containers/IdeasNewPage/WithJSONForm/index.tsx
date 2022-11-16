@@ -22,10 +22,7 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import GoBackButton from 'containers/IdeasShow/GoBackButton';
-import { Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { FormattedMessage } from 'utils/cl-intl';
+import { Heading } from 'containers/IdeasNewPage/WithJSONForm/Heading';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
@@ -193,54 +190,10 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     return null;
   }
 
-  const userCanEditProject =
+  const canUserEditProject =
     !isNilOrError(authUser) &&
     canModerateProject(project.id, { data: authUser });
-  const showEditSurveyButton =
-    userCanEditProject && config.postType === 'nativeSurvey';
-
-  const linkToSurveyBuilder = phaseId
-    ? `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`
-    : `/admin/projects/${project.id}/native-survey/edit`;
-
-  const TitleComponent = (
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Box
-        display="flex"
-        width="100%"
-        flexDirection="row"
-        justifyContent="space-between"
-        mb="14px"
-        alignItems="center"
-        maxWidth="700px"
-        px="20px"
-      >
-        <GoBackButton insideModal={false} projectId={project.id} />
-        <Box data-cy="e2e-edit-survey-link">
-          {showEditSurveyButton && (
-            <Button
-              icon="edit"
-              linkTo={linkToSurveyBuilder}
-              buttonStyle="text"
-              textDecorationHover="underline"
-              hidden={!userCanEditProject}
-              padding="0"
-            >
-              <FormattedMessage {...messages.editSurvey} />
-            </Button>
-          )}
-        </Box>
-      </Box>
-
-      <Box>{config.getFormTitle({ project, phases, phaseFromUrl })}</Box>
-    </Box>
-  );
+  const isSurvey = config.postType === 'nativeSurvey';
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
@@ -259,8 +212,20 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
-            title={TitleComponent}
+            title={
+              <Heading
+                project={project}
+                titleText={config.getFormTitle({
+                  project,
+                  phases,
+                  phaseFromUrl,
+                })}
+                isSurvey={isSurvey}
+                canUserEditProject={canUserEditProject}
+              />
+            }
             config={'input'}
+            formSubmitText={isSurvey ? messages.submitSurvey : undefined}
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (
