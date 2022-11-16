@@ -79,50 +79,52 @@ export const Heading = ({
         top={isSurveyOnMobile ? '0px' : undefined}
         zIndex="3"
       >
-        <Box
-          display="flex"
-          width={isSurveyOnMobile ? undefined : '100%'}
-          flexDirection="row"
-          justifyContent={canEditSurvey ? 'flex-end' : 'space-between'}
-          mb={isSurveyOnMobile ? '0px' : '14px'}
-          alignItems="center"
-          maxWidth="700px"
-          px="20px"
-        >
-          {isSurvey ? (
-            <Box
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {showEditSurveyButton && (
+        {!isSmallerThanXlPhone && (
+          <Box
+            display="flex"
+            width="100%"
+            flexDirection="row"
+            justifyContent={canEditSurvey ? 'flex-end' : 'space-between'}
+            mb="14px"
+            alignItems="center"
+            maxWidth="700px"
+            px="20px"
+          >
+            {isSurvey ? (
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+              >
+                {showEditSurveyButton && (
+                  <Button
+                    data-cy="e2e-edit-survey-link"
+                    icon="edit"
+                    linkTo={linkToSurveyBuilder}
+                    buttonStyle="text"
+                    textDecorationHover="underline"
+                    hidden={!canUserEditProject}
+                  >
+                    <FormattedMessage {...messages.editSurvey} />
+                  </Button>
+                )}
                 <Button
-                  data-cy="e2e-edit-survey-link"
-                  icon="edit"
-                  linkTo={linkToSurveyBuilder}
+                  icon="close"
                   buttonStyle="text"
-                  textDecorationHover="underline"
-                  hidden={!canUserEditProject}
-                  padding="0"
-                >
-                  <FormattedMessage {...messages.editSurvey} />
-                </Button>
-              )}
-              <Button
-                icon="close"
-                buttonStyle="text"
-                iconColor={isSurveyOnMobile ? 'white' : undefined}
-                onClick={openModal}
-              />
-            </Box>
-          ) : (
-            <GoBackButton insideModal={false} projectId={project.id} />
-          )}
-        </Box>
+                  padding="0px"
+                  onClick={openModal}
+                />
+              </Box>
+            ) : (
+              <GoBackButton insideModal={false} projectId={project.id} />
+            )}
+          </Box>
+        )}
 
         <Box width="100%">
           <Text
+            width="100%"
             color={headingTextColor}
             variant="bodyL"
             fontWeight="bold"
@@ -170,7 +172,26 @@ export const Heading = ({
         </Modal>
       </Box>
       {isSurveyOnMobile && (
-        <Box mt={`${stylingConsts.menuHeight}px`} display="flex" />
+        <>
+          <Box
+            top="0px"
+            zIndex="5"
+            display="flex"
+            flexDirection="row"
+            position="fixed"
+            height="64px"
+            justifyContent="flex-end"
+            width="100%"
+          >
+            <Button
+              icon="close"
+              buttonStyle="text"
+              iconColor="white"
+              onClick={openModal}
+            />
+          </Box>
+          <Box mt={`${stylingConsts.menuHeight}px`} display="flex" />
+        </>
       )}
     </>
   );
