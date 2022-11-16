@@ -9,19 +9,19 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // components
 import Container from './components/Container';
 import GoBackButton from './components/GoBackButton';
+import PreviewToggle from './components/PreviewToggle';
 import SaveButton from './components/SaveButton';
 import Button from 'components/UI/Button';
-
-// styling
-import { colors } from 'utils/styleUtils';
 import {
   Box,
   Spinner,
   Text,
   Title,
-  Toggle,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
+
+// styling
+import { colors } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -113,6 +113,10 @@ const ContentBuilderTopBar = ({
     onSelectLocale({ locale, editorData });
   };
 
+  const handleTogglePreview = () => {
+    setPreviewEnabled((previewEnabled) => !previewEnabled);
+  };
+
   return (
     <Container>
       <GoBackButton onClick={goBack} />
@@ -148,11 +152,9 @@ const ContentBuilderTopBar = ({
           </Box>
         )}
         <Box ml="24px" />
-        <Toggle
-          id="e2e-preview-toggle"
-          label={<FormattedMessage {...messages.preview} />}
+        <PreviewToggle
           checked={previewEnabled}
-          onChange={() => setPreviewEnabled(!previewEnabled)}
+          onChange={handleTogglePreview}
         />
         <Button
           id="e2e-view-project-button"
