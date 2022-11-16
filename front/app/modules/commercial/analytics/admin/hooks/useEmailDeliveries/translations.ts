@@ -1,8 +1,7 @@
 // i18n
 import messages from './messages';
 import moduleMessages from '../../messages';
-import cardMessages from '../../components/VisitorsCard/messages';
-import { getTimePeriodTranslations } from '../../utils/resolution';
+import cardMessages from '../../components/EmailDeliveriesCard/messages';
 
 // typings
 import { FormatMessage } from 'typings';
@@ -13,13 +12,10 @@ export interface Translations {
   statistic: string;
   total: string;
   date: string;
-  visitors: string;
-  visits: string;
-  visitDuration: string;
-  pageViews: string;
-  last30Days: string;
-  last7Days: string;
-  yesterday: string;
+  custom: string;
+  customCampaigns: string;
+  automated: string;
+  automatedCampaigns: string;
 }
 
 export const getTranslations = (
@@ -28,11 +24,10 @@ export const getTranslations = (
   stats: formatMessage(moduleMessages.stats),
   timeSeries: formatMessage(messages.timeSeries),
   statistic: formatMessage(moduleMessages.statistic),
-  total: formatMessage(moduleMessages.total),
   date: formatMessage(moduleMessages.date),
-  visitors: formatMessage(cardMessages.visitors),
-  visits: formatMessage(cardMessages.visits),
-  visitDuration: formatMessage(cardMessages.visitDuration),
-  pageViews: formatMessage(cardMessages.pageViews),
-  ...getTimePeriodTranslations(formatMessage),
+  total: formatMessage(cardMessages.totalEmailsSent),
+  custom: formatMessage(cardMessages.customEmails),
+  customCampaigns: formatMessage(cardMessages.customCampaigns),
+  automated: formatMessage(cardMessages.automatedEmails),
+  automatedCampaigns: formatMessage(cardMessages.automatedCampaigns),
 });

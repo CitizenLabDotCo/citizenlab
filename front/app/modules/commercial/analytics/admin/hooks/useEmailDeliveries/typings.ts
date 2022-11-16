@@ -1,45 +1,61 @@
 import {
-  ProjectId,
   Dates,
   Resolution,
-  Stat,
+  // Stat,
   GetTimeSeriesResponse,
 } from '../../typings';
 
-export type QueryParameters = ProjectId & Dates & Resolution;
+export type QueryParameters = Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [[TotalsRow] | [], [TotalsRow] | [], TimeSeriesResponse | []];
+  data: [
+    [StatRow] | [],
+    [StatRow] | [],
+    [StatRow] | [],
+    TimeSeriesResponse | []
+  ];
 };
 
-interface BaseRow {
+export interface BaseRow {
   count: number;
-  count_visitor_id: number;
+  automated: boolean;
 }
 
-interface TotalsRow extends BaseRow {
-  avg_duration: string | null;
-  avg_pages_visited: string | null;
+interface StatRow {
+  count: string | null;
+  count_campaign_id?: string | null;
 }
 
-type Prefix = 'dimension_date_last_action';
+type Prefix = 'dimension_date_sent';
 export type TimeSeriesResponse = GetTimeSeriesResponse<Prefix, BaseRow>;
 export type TimeSeriesResponseRow = TimeSeriesResponse[number];
+
+interface PreparedBaseRow {
+  automated: number;
+  custom: number;
+}
+
+export type PreparedTimeSeriesResponse = GetTimeSeriesResponse<
+  Prefix,
+  PreparedBaseRow
+>;
+export type PreparedTimeSeriesResponseRow = PreparedTimeSeriesResponse[number];
 
 // Hook return value
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */
   date: string;
-  visits: number;
-  visitors: number;
+  automated: number;
+  custom: number;
 }
 
 export type TimeSeries = TimeSeriesRow[];
 
 export interface Stats {
-  visitors: Stat;
-  visits: Stat;
-  visitDuration: Stat;
-  pageViews: Stat;
+  total: string | null | undefined;
+  custom: string | null | undefined;
+  customCampaigns: string | null | undefined;
+  automated: string | null | undefined;
+  automatedCampaigns: string | null | undefined;
 }

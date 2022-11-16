@@ -16,10 +16,10 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
 // typings
-import { TimeSeriesRow } from '../../../hooks/useVisitors/typings';
+import { TimeSeriesRow } from '../../../hooks/useEmailDeliveries/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-type DataKey = 'visitors' | 'visits';
+type DataKey = 'automated' | 'custom';
 
 interface CustomTooltipProps {
   label?: string;
@@ -33,8 +33,8 @@ interface CustomTooltipProps {
 }
 
 const MESSAGES_MAP: Record<DataKey, MessageDescriptor> = {
-  visitors: messages.visitors,
-  visits: messages.visits,
+  automated: messages.automatedEmails,
+  custom: messages.customEmails,
 };
 
 const CustomTooltip = ({ label, payload, resolution }: CustomTooltipProps) => {

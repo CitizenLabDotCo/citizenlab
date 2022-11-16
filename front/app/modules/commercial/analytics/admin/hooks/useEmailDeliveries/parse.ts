@@ -1,10 +1,9 @@
 import { Moment } from 'moment';
 
 // utils
-import { round } from 'lodash-es';
+import { groupBy } from 'lodash-es';
 import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
 import { keys } from 'utils/helperUtils';
-import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -14,86 +13,85 @@ import {
   TimeSeries,
   TimeSeriesResponseRow,
   TimeSeriesRow,
+  PreparedTimeSeriesResponse,
+  PreparedTimeSeriesResponseRow,
 } from './typings';
 import { Translations } from './translations';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
-  visitors: 0,
-  visits: 0,
+  automated: 0,
+  custom: 0,
 });
 
-const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
+const parseRow = (
+  date: Moment,
+  row?: PreparedTimeSeriesResponseRow
+): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    visitors: row.count_visitor_id,
-    visits: row.count,
+    automated: row.automated,
+    custom: row.custom,
     date: getDate(row).format('YYYY-MM-DD'),
   };
 };
 
-const getDate = dateGetter('dimension_date_last_action');
+const getDate = dateGetter('dimension_date_sent');
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: Response['data'][2],
+  timeSeriesQuery: PreparedTimeSeriesResponse,
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
 ): TimeSeries | null => {
   return _parseTimeSeries(
-    responseTimeSeries,
+    timeSeriesQuery,
     startAtMoment,
     endAtMoment,
     resolution
   );
 };
 
-export const parseStats = ([
-  totalsWholePeriodRows,
-  totalsLastPeriodRows,
-]: Response['data']): Stats => {
-  const wholePeriod = totalsWholePeriodRows[0];
-  const lastPeriod = totalsLastPeriodRows[0];
-
-  return {
-    visitors: {
-      value: wholePeriod?.count_visitor_id.toLocaleString() ?? '0',
-      lastPeriod: lastPeriod?.count_visitor_id.toLocaleString() ?? '0',
-    },
-    visits: {
-      value: wholePeriod?.count.toLocaleString() ?? '0',
-      lastPeriod: lastPeriod?.count.toLocaleString() ?? '0',
-    },
-    visitDuration: {
-      value: parseVisitDuration(wholePeriod?.avg_duration),
-      lastPeriod: parseVisitDuration(lastPeriod?.avg_duration),
-    },
-    pageViews: {
-      value: parsePageViews(wholePeriod?.avg_pages_visited),
-      lastPeriod: parsePageViews(lastPeriod?.avg_pages_visited),
-    },
-  };
+export const mergeTimeSeries = (timeSeriesQuery, dateColumn: string) => {
+  const groupedTimeSerie = groupBy(timeSeriesQuery, dateColumn);
+  return Object.values(groupedTimeSerie).map((values) => ({
+    [dateColumn]: values[0][dateColumn],
+    automated:
+      values.find((row: TimeSeriesResponseRow) => row.automated == true)
+        ?.count ?? 0,
+    custom:
+      values.find((row: TimeSeriesResponseRow) => row.automated == false)
+        ?.count ?? 0,
+  }));
 };
+
+export const parseStats = ([
+  totalEmailsDeliveries,
+  customEmailsDeliveries,
+  automatedEmailsDeliveries,
+]: Response['data']): Stats => ({
+  total: totalEmailsDeliveries[0]?.count,
+  custom: customEmailsDeliveries[0]?.count,
+  customCampaigns: customEmailsDeliveries[0]?.count_campaign_id,
+  automated: automatedEmailsDeliveries[0]?.count,
+  automatedCampaigns: automatedEmailsDeliveries[0]?.count_campaign_id,
+});
 
 export const parseExcelData = (
   stats: Stats,
   timeSeries: TimeSeries | null,
-  translations: Translations,
-  resolution: IResolution
+  translations: Translations
 ) => {
-  const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
-
   const statsData = keys(stats).map((key) => ({
     [translations.statistic]: translations[key],
-    [translations.total]: stats[key].value,
-    [lastPeriod]: stats[key].lastPeriod,
+    [translations.total]: stats[key],
   }));
 
   const timeSeriesData = timeSeries?.map((row) => ({
-    [translations.visits]: row.visits,
-    [translations.visitors]: row.visitors,
+    [translations.custom]: row.custom,
+    [translations.automated]: row.automated,
     [translations.date]: row.date,
   }));
 
@@ -101,14 +99,4 @@ export const parseExcelData = (
     [translations.stats]: statsData,
     [translations.timeSeries]: timeSeriesData ?? [],
   };
-};
-
-const parsePageViews = (pageViews: string | null | undefined) => {
-  if (!pageViews) return '-';
-  return round(+pageViews, 2).toString();
-};
-
-const parseVisitDuration = (seconds: string | null | undefined) => {
-  if (!seconds) return '-';
-  return new Date(+seconds * 1000).toISOString().substring(11, 19);
 };

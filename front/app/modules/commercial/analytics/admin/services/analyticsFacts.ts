@@ -15,6 +15,7 @@ export interface QuerySchema {
     [k: string]:
       | string
       | unknown[]
+      | unknown
       | {
           from: number | string;
           to: number | string;

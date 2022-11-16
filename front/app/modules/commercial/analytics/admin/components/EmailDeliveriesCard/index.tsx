@@ -6,7 +6,7 @@ import useEmailDeliveries from '../../hooks/useEmailDeliveries';
 // components
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
-import VisitorStats from './VisitorStats';
+import EmailDeliveriesStats from './EmailDeliveriesStats';
 import Chart from './Chart';
 
 // i18n
@@ -19,7 +19,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 type Props = ProjectId & Dates & Resolution;
 
-const VisitorsCard = ({
+const EmailDeliveriesCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
@@ -30,21 +30,19 @@ const VisitorsCard = ({
 
   const { deducedResolution, stats, timeSeries, xlsxData } = useEmailDeliveries(
     {
-      projectId,
       startAtMoment,
       endAtMoment,
       resolution,
     }
   );
 
-  const cardTitle = formatMessage(messages.visitors);
+  const cardTitle = formatMessage(messages.emails);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
   return (
     <GraphCard
       title={cardTitle}
-      infoTooltipContent={formatMessage(messages.cardTitleTooltipMessage)}
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
@@ -57,11 +55,7 @@ const VisitorsCard = ({
     >
       <Box px="20px" width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row">
-          <VisitorStats
-            stats={stats}
-            projectId={projectId}
-            resolution={deducedResolution}
-          />
+          <EmailDeliveriesStats stats={stats} />
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="flex-end">
@@ -80,4 +74,4 @@ const VisitorsCard = ({
   );
 };
 
-export default VisitorsCard;
+export default EmailDeliveriesCard;

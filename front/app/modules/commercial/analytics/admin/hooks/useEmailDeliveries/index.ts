@@ -5,7 +5,6 @@ import {
   analyticsStream,
   Query,
   QuerySchema,
-  AggregationsConfig,
 } from '../../services/analyticsFacts';
 
 // i18n
@@ -13,85 +12,93 @@ import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
 // parse
-import { parseStats, parseTimeSeries, parseExcelData } from './parse';
+import {
+  parseStats,
+  parseTimeSeries,
+  mergeTimeSeries,
+  parseExcelData,
+} from './parse';
 
 // utils
-import {
-  getProjectFilter,
-  getDateFilter,
-  getDateFilterLastPeriod,
-  getInterval,
-} from '../../utils/query';
+import { getDateFilter, getInterval } from '../../utils/query';
 import { deduceResolution } from './utils';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { QueryParameters, Response, Stats, TimeSeries } from './typings';
+import {
+  QueryParameters,
+  Response,
+  Stats,
+  TimeSeries,
+  PreparedTimeSeriesResponse,
+} from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-const getAggregations = (): AggregationsConfig => ({
-  all: 'count',
-  visitor_id: 'count',
-  duration: 'avg',
-  pages_visited: 'avg',
-});
-
 const query = ({
-  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
 }: QueryParameters): Query => {
-  const totalsWholePeriodQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter(
-        'dimension_date_last_action',
-        startAtMoment,
-        endAtMoment
-      ),
+  const dateFilter = getDateFilter(
+    'dimension_date_sent',
+    startAtMoment,
+    endAtMoment
+  );
+
+  const totalEmailsDeliveriesQuery: QuerySchema = {
+    fact: 'email_delivery',
+    filters: dateFilter,
+    aggregations: {
+      all: 'count',
     },
-    aggregations: getAggregations(),
   };
 
-  const totalsLastPeriodQuery: QuerySchema = {
-    fact: 'visit',
+  const customEmailsDeliveriesQuery: QuerySchema = {
+    fact: 'email_delivery',
     filters: {
-      'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilterLastPeriod('dimension_date_last_action', resolution),
+      ...dateFilter,
+      automated: false,
     },
-    aggregations: getAggregations(),
+    aggregations: {
+      all: 'count',
+      campaign_id: 'count',
+    },
+  };
+
+  const automatedEmailsDeliveriesQuery: QuerySchema = {
+    fact: 'email_delivery',
+    filters: {
+      ...dateFilter,
+      automated: true,
+    },
+    aggregations: {
+      all: 'count',
+      campaign_id: 'count',
+    },
   };
 
   const timeSeriesQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter(
-        'dimension_date_last_action',
-        startAtMoment,
-        endAtMoment
-      ),
-    },
-    groups: `dimension_date_last_action.${getInterval(resolution)}`,
+    fact: 'email_delivery',
+    filters: { dateFilter },
+    groups: [`dimension_date_sent.${getInterval(resolution)}`, 'automated'],
     aggregations: {
       all: 'count',
-      visitor_id: 'count',
+      'dimension_date_sent.date': 'first',
     },
   };
 
   return {
-    query: [totalsWholePeriodQuery, totalsLastPeriodQuery, timeSeriesQuery],
+    query: [
+      totalEmailsDeliveriesQuery,
+      customEmailsDeliveriesQuery,
+      automatedEmailsDeliveriesQuery,
+      timeSeriesQuery,
+    ],
   };
 };
 
 export default function useVisitorsData({
-  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -107,7 +114,6 @@ export default function useVisitorsData({
   useEffect(() => {
     const observable = analyticsStream<Response>(
       query({
-        projectId,
         startAtMoment,
         endAtMoment,
         resolution,
@@ -123,32 +129,34 @@ export default function useVisitorsData({
           setDeducedResolution(resolution);
           return;
         }
-
+        const preparedTimeSeries = mergeTimeSeries(
+          response.data[3],
+          `dimension_date_sent.${getInterval(resolution)}`
+        );
         const translations = getTranslations(formatMessage);
 
         const deducedResolution =
-          deduceResolution(response.data[2]) ?? resolution;
+          deduceResolution(preparedTimeSeries as PreparedTimeSeriesResponse) ??
+          resolution;
         setDeducedResolution(deducedResolution);
 
         const stats = parseStats(response.data);
         setStats(stats);
 
         const timeSeries = parseTimeSeries(
-          response.data[2],
+          preparedTimeSeries as PreparedTimeSeriesResponse,
           startAtMoment,
           endAtMoment,
           deducedResolution
         );
         setTimeSeries(timeSeries);
 
-        setXlsxData(
-          parseExcelData(stats, timeSeries, translations, deducedResolution)
-        );
+        setXlsxData(parseExcelData(stats, timeSeries, translations));
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
+  }, [startAtMoment, endAtMoment, resolution, formatMessage]);
 
   return { deducedResolution, stats, timeSeries, xlsxData };
 }

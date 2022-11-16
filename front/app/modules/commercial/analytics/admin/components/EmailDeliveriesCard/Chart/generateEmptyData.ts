@@ -1,5 +1,5 @@
 // utils
-import { getEmptyRow } from '../../../hooks/useVisitors/parse';
+import { getEmptyRow } from '../../../hooks/useEmailDeliveries/parse';
 import { emptyDateRange } from '../../../utils/timeSeries';
 
 // typings
@@ -13,6 +13,6 @@ export const generateEmptyData = (
 ) => {
   return emptyDateRange(startAtMoment, endAtMoment, resolution, (date, i) => ({
     ...getEmptyRow(date),
-    ...(i === 0 ? { visitors: 10, visits: 10 } : {}),
+    ...(i === 0 ? { custom: 0, automated: 0 } : {}),
   }));
 };
