@@ -1,14 +1,10 @@
 import React, { memo } from 'react';
-import { ITopicData } from 'services/topics';
-import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 
 // components
 import { Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
-import { colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // resources
@@ -17,9 +13,16 @@ import useCustomPage from 'hooks/useCustomPage';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// types
+import { ITopicData } from 'services/topics';
 
 const Buttons = styled.div`
   display: flex;
@@ -116,9 +119,7 @@ const CustomTopicRow = memo((props: Props) => {
                 </Text>
                 <ul>
                   {staticPages.map((staticPage) => {
-                    if (staticPage == null) {
-                      return null;
-                    }
+                    if (staticPage == null) return null;
 
                     return (
                       <li>

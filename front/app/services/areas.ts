@@ -21,6 +21,7 @@ export interface IAreaData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     ordering: number;
+    static_page_ids: string[];
   };
 }
 
