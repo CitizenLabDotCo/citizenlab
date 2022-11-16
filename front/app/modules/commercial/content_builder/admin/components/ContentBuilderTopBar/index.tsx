@@ -16,7 +16,6 @@ import Button from 'components/UI/Button';
 import { colors } from 'utils/styleUtils';
 import {
   Box,
-  stylingConsts,
   Spinner,
   Text,
   Title,
