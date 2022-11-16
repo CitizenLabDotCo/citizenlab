@@ -4,7 +4,7 @@ import React from 'react';
 import { Toggle } from '@citizenlab/cl2-component-library';
 
 // i18n
-import messages from '../messages';
+import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {

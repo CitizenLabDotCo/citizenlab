@@ -7,10 +7,10 @@ import { useEditor, SerializedNodes } from '@craftjs/core';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
-import Container from './components/Container';
-import GoBackButton from './components/GoBackButton';
-import PreviewToggle from './components/PreviewToggle';
-import SaveButton from './components/SaveButton';
+import Container from 'components/ContentBuilder/TopBar/Container';
+import GoBackButton from 'components/ContentBuilder/TopBar/GoBackButton';
+import PreviewToggle from 'components/ContentBuilder/TopBar/PreviewToggle';
+import SaveButton from 'components/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 import {
   Box,
@@ -32,7 +32,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useParams } from 'react-router-dom';
 
 // services
 import {
@@ -54,10 +54,9 @@ type ContentBuilderTopBarProps = {
     locale: Locale;
     editorData: SerializedNodes;
   }) => void;
-} & WithRouterProps;
+};
 
 const ContentBuilderTopBar = ({
-  params: { projectId },
   previewEnabled,
   setPreviewEnabled,
   selectedLocale,
@@ -66,6 +65,7 @@ const ContentBuilderTopBar = ({
   localesWithError,
   hasPendingState,
 }: ContentBuilderTopBarProps) => {
+  const { projectId } = useParams() as { projectId: string };
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
@@ -177,4 +177,4 @@ const ContentBuilderTopBar = ({
   );
 };
 
-export default withRouter(ContentBuilderTopBar);
+export default ContentBuilderTopBar;
