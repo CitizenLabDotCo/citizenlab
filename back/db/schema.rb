@@ -1734,34 +1734,6 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
       users.invite_status
      FROM users;
   SQL
-  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
-      SELECT idea_statuses.id,
-      idea_statuses.title_multiloc,
-      idea_statuses.code,
-      idea_statuses.color
-     FROM idea_statuses
-  UNION ALL
-   SELECT initiative_statuses.id,
-      initiative_statuses.title_multiloc,
-      initiative_statuses.code,
-      initiative_statuses.color
-     FROM initiative_statuses;
-  SQL
-  create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
-      SELECT ecd.id,
-      (ecd.sent_at)::date AS dimension_date_sent_id,
-      ecd.campaign_id,
-      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
-     FROM (email_campaigns_deliveries ecd
-       JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
-  SQL
-  create_view "analytics_fact_events", sql_definition: <<-SQL
-      SELECT events.id,
-      events.project_id AS dimension_project_id,
-      (events.start_at)::date AS dimension_date_start_id,
-      (events.end_at)::date AS dimension_date_end_id
-     FROM events;
-  SQL
   create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
       WITH last_project_statuses AS (
            SELECT DISTINCT ON (activities.item_id) activities.item_id AS project_id,
@@ -1808,5 +1780,13 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
       (project_statuses."timestamp")::date AS dimension_date_id
      FROM project_statuses
     ORDER BY project_statuses."timestamp" DESC;
+  SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.created_at)::date AS dimension_date_created_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
   SQL
 end
