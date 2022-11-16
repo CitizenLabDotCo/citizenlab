@@ -148,7 +148,7 @@ export const Heading = ({
             </Box>
             <Box
               display="flex"
-              flexDirection="row"
+              flexDirection={isSmallerThanXlPhone ? 'column' : 'row'}
               width="100%"
               alignItems="center"
             >
@@ -156,15 +156,16 @@ export const Heading = ({
                 icon="delete"
                 data-cy="e2e-confirm-delete-survey-results"
                 buttonStyle="delete"
-                width="auto"
-                mr="20px"
+                width="100%"
+                mb={isSmallerThanXlPhone ? '16px' : undefined}
+                mr={!isSmallerThanXlPhone ? '20px' : undefined}
                 onClick={() => {
                   clHistory.push(`/projects/${project.attributes.slug}`);
                 }}
               >
                 <FormattedMessage {...messages.confirmLeaveSurveyButtonText} />
               </Button>
-              <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+              <Button buttonStyle="secondary" width="100%" onClick={closeModal}>
                 <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
               </Button>
             </Box>
