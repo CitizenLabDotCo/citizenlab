@@ -79,7 +79,9 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
 export const customPagesEndpoint = `${API_PATH}/static_pages`;
 
 export function createCustomPage(pageData: { title_multiloc: Multiloc }) {
-  return streams.add<ICustomPage>(customPagesEndpoint, pageData);
+  return streams.add<ICustomPage>(customPagesEndpoint, {
+    static_page: pageData,
+  });
 }
 
 export function customPageByIdStream(customPageId: string) {

@@ -15,7 +15,7 @@ const NewCustomPage = () => {
         area_ids: [formValues.area_id],
       }),
     };
-    console.log(omit(newFormValues, 'area_id'));
+
     const { data } = await createCustomPage(omit(newFormValues, 'area_id'));
 
     // Without the redirect was too sudden
