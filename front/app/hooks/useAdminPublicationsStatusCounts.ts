@@ -28,19 +28,19 @@ export default function useAdminPublicationsStatusCounts({
   const [counts, setCounts] = useState<
     IStatusCounts | undefined | null | Error
   >(undefined);
-  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
-  const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [topics, setTopics] = useState<string[] | null>(topicFilter || null);
+  const [areas, setAreas] = useState<string[] | null>(areaFilter || null);
   const [search, setSearch] = useState<string | null>(null);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
 
   const onChangeTopics = useCallback((topics: string[]) => {
-    topics.length === 0 ? setTopics(undefined) : setTopics(topics);
+    topics.length === 0 ? setTopics(null) : setTopics(topics);
   }, []);
 
   const onChangeAreas = useCallback((areas: string[]) => {
-    areas.length === 0 ? setAreas(undefined) : setAreas(areas);
+    areas.length === 0 ? setAreas(null) : setAreas(areas);
   }, []);
 
   const onChangeSearch = useCallback((search: string | null) => {
