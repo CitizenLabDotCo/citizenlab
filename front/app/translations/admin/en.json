@@ -983,6 +983,7 @@
   "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "When enabled it's impossible to see who voted on what. Users still need an account and can only vote once.",
   "app.containers.AdminPage.ProjectEdit.archived": "Archived",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archived",
+  "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "This area cannot be deleted because it is being used to display projects on the following more custom page(s). You will need to unlink the area from the page, or delete the page before you can delete the area.",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "All Areas",
   "app.containers.AdminPage.ProjectEdit.areasAllLabelDescription": "The project will show on every area filter.",
   "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Area filter",
