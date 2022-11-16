@@ -28,6 +28,7 @@ import useLocalize from 'hooks/useLocalize';
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { omit } from 'lodash-es';
 
 // intl
 import messages from '../messages';
@@ -45,8 +46,8 @@ export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
   projects_filter_type: ProjectsFilterTypes;
-  topic_ids: string[];
-  area_id: string;
+  topic_ids?: string[];
+  area_id?: string | null;
 }
 
 type TMode = 'new' | 'edit';
@@ -91,10 +92,14 @@ const CustomPageSettingsForm = ({
       is: (value: ProjectsFilterTypes) => value === 'topics',
       then: array().of(string()).min(1, formatMessage(messages.atLeastOneTag)),
     }),
-    area_id: string().when('projects_filter_type', {
-      is: (value: ProjectsFilterTypes) => value === 'areas',
-      then: string().required(formatMessage(messages.selectAnArea)),
-    }),
+    area_id: string()
+      .nullable()
+      .when('projects_filter_type', {
+        is: (value: ProjectsFilterTypes) => value === 'areas',
+        then: string()
+          .nullable()
+          .required(formatMessage(messages.selectAnArea)),
+      }),
   });
 
   const methods = useForm({
@@ -102,11 +107,31 @@ const CustomPageSettingsForm = ({
     defaultValues,
     resolver: yupResolver(schema),
   });
+
   const slug = methods.watch('slug');
 
   const onFormSubmit = async (formValues: FormValues) => {
+    let newFormValues = { ...formValues };
+
+    // remove values for filter selections other than the final one
+    // if by areas filter or by no filter, don't send topic_ids
+    if (
+      newFormValues.projects_filter_type === 'areas' ||
+      newFormValues.projects_filter_type === 'no_filter'
+    ) {
+      newFormValues = omit(newFormValues, 'topic_ids');
+    }
+
+    // if by topics or by no filter, don't send area_id
+    if (
+      newFormValues.projects_filter_type === 'topics' ||
+      newFormValues.projects_filter_type === 'no_filter'
+    ) {
+      newFormValues = omit(newFormValues, 'area_id');
+    }
+
     try {
-      await onSubmit(formValues);
+      await onSubmit(newFormValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
