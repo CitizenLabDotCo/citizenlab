@@ -1144,7 +1144,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.open": "Åbn",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses": "Åben for svar",
   "app.containers.AdminPage.ProjectEdit.survey.optional": "Valgfrit",
-  "app.containers.AdminPage.ProjectEdit.survey.page": "Page",
+  "app.containers.AdminPage.ProjectEdit.survey.page": "Side",
   "app.containers.AdminPage.ProjectEdit.survey.question": "Spørgsmål",
   "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Beskrivelse af spørgsmålet (valgfrit)",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Spørgsmålets titel",
