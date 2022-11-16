@@ -5,7 +5,7 @@ import Feedback from 'components/HookForm/Feedback';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string } from 'yup';
+import { array, object, string } from 'yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { slugRegEx } from 'utils/textUtils';
 // import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -15,10 +15,19 @@ import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/Section
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import SlugInput from 'components/HookForm/SlugInput';
-import { Box } from '@citizenlab/cl2-component-library';
+import Tabs from 'components/HookForm/Tabs';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
+import Select from 'components/HookForm/Select';
+import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
+
+// hooks
+import useTopics from 'hooks/useTopics';
+import useAreas from 'hooks/useAreas';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import messages from '../messages';
@@ -27,28 +36,41 @@ import { injectIntl } from 'utils/cl-intl';
 
 // types
 import { Multiloc } from 'typings';
+import { IAreaData } from 'services/areas';
+import { ITopicData } from 'services/topics';
+import { ProjectsFilterTypes } from 'services/customPages';
 
 export interface FormValues {
   title_multiloc: Multiloc;
   nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
+  projects_filter_type: ProjectsFilterTypes;
+  topic_ids: string[];
+  area_id: string;
 }
 
 type TMode = 'new' | 'edit';
 interface Props {
-  defaultValues?: FormValues;
+  defaultValues?: Partial<FormValues>;
   showNavBarItemTitle?: boolean;
   mode: TMode;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
+const projectsFilterTypesArray: ProjectsFilterTypes[] = [
+  'no_filter',
+  'topics',
+  'areas',
+];
+
 const CustomPageSettingsForm = ({
-  defaultValues,
   showNavBarItemTitle,
   intl: { formatMessage },
   mode,
   onSubmit,
+  defaultValues,
 }: Props & WrappedComponentProps) => {
+  const localize = useLocalize();
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
@@ -63,6 +85,15 @@ const CustomPageSettingsForm = ({
       slug: string()
         .matches(slugRegEx, formatMessage(messages.slugRegexError))
         .required(formatMessage(messages.slugRequiredError)),
+    }),
+    projects_filter_type: string().oneOf(projectsFilterTypesArray).required(),
+    topic_ids: array().when('projects_filter_type', {
+      is: (value: ProjectsFilterTypes) => value === 'topics',
+      then: array().of(string()).min(1, formatMessage(messages.atLeastOneTag)),
+    }),
+    area_id: string().when('projects_filter_type', {
+      is: (value: ProjectsFilterTypes) => value === 'areas',
+      then: string().required(formatMessage(messages.selectAnArea)),
     }),
   });
 
@@ -81,6 +112,37 @@ const CustomPageSettingsForm = ({
     }
   };
 
+  const mapFilterEntityToOptions = (input: IAreaData[] | ITopicData[]) => {
+    return input.map((entity) => {
+      return {
+        value: entity.id,
+        label: localize(entity.attributes.title_multiloc),
+      };
+    });
+  };
+
+  const areas = useAreas();
+  const topics = useTopics();
+
+  const projectsFilterTabs: { name: ProjectsFilterTypes; label: string }[] = [
+    {
+      name: 'no_filter',
+      label: formatMessage(messages.noFilter),
+    },
+    {
+      name: 'topics',
+      label: formatMessage(messages.byTagsFilter),
+    },
+    {
+      name: 'areas',
+      label: formatMessage(messages.byAreaFilter),
+    },
+  ];
+
+  if (isNilOrError(areas) || isNilOrError(topics)) {
+    return null;
+  }
+
   return (
     <FormProvider {...methods}>
       <form
@@ -96,7 +158,7 @@ const CustomPageSettingsForm = ({
                   : formatMessage(messages.messageCreatedSuccess)
               }
             />
-            <Box mb="20px">
+            <Box mb="30px">
               <InputMultilocWithLocaleSwitcher
                 name="title_multiloc"
                 label={formatMessage(messages.titleLabel)}
@@ -104,7 +166,7 @@ const CustomPageSettingsForm = ({
               />
             </Box>
             {showNavBarItemTitle && (
-              <Box mb="20px">
+              <Box mb="30px">
                 <InputMultilocWithLocaleSwitcher
                   label={formatMessage(messages.navbarItemTitle)}
                   type="text"
@@ -115,6 +177,45 @@ const CustomPageSettingsForm = ({
             {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
+            {/* // should be behind a feature flag */}
+            <Box>
+              <Box display="flex" justifyContent="flex-start">
+                <Label>
+                  <span>{formatMessage(messages.linkedProjectsLabel)}</span>
+                  <IconTooltip
+                    ml="10px"
+                    content={formatMessage(messages.linkedProjectsTooltip)}
+                  />
+                </Label>
+              </Box>
+              <Box mb="30px">
+                <Tabs name="projects_filter_type" items={projectsFilterTabs} />
+              </Box>
+              {methods.watch('projects_filter_type') === 'topics' && (
+                <Box mb="30px">
+                  <MultipleSelect
+                    name="topic_ids"
+                    options={mapFilterEntityToOptions(topics)}
+                    label={
+                      <>
+                        {formatMessage(messages.selectedTagsLabel)}
+                        <IconTooltip content={'add some tags'} />
+                      </>
+                    }
+                  />
+                </Box>
+              )}
+              {methods.watch('projects_filter_type') === 'areas' && (
+                <Box mb="20px">
+                  <Select
+                    name="area_id"
+                    options={mapFilterEntityToOptions(areas)}
+                    label={<>{formatMessage(messages.selectedAreasLabel)}</>}
+                    labelTooltipText="choose an area"
+                  />
+                </Box>
+              )}
+            </Box>
             <Box display="flex">
               <Button
                 data-cy="e2e-submit-custom-page"

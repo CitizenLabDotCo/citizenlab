@@ -8,9 +8,16 @@ jest.mock('hooks/useAppConfiguration', () => () => ({
   attributes: { name: 'orgName', host: 'localhost' },
 }));
 
+jest.mock('hooks/useAreas', () => jest.fn(() => []));
+jest.mock('hooks/useTopics', () => jest.fn(() => []));
+
 jest.mock('hooks/useCustomPage', () =>
   jest.fn(() => ({
-    relationships: { nav_bar_item: { data: { id: '123' } } },
+    relationships: {
+      nav_bar_item: { data: { id: '123' } },
+      topics: { data: [] },
+      areas: { data: [] },
+    },
     attributes: {
       title_multiloc: { en: 'title' },
       nav_bar_item_title_multiloc: { en: 'user generated content' },

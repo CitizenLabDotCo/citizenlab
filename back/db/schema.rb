@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_07_124858) do
+ActiveRecord::Schema.define(version: 2022_11_14_094435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -154,6 +154,15 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
     t.uuid "project_id"
     t.index ["area_id"], name: "index_areas_projects_on_area_id"
     t.index ["project_id"], name: "index_areas_projects_on_project_id"
+  end
+
+  create_table "areas_static_pages", force: :cascade do |t|
+    t.uuid "area_id"
+    t.uuid "static_page_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["area_id"], name: "index_areas_static_pages_on_area_id"
+    t.index ["static_page_id"], name: "index_areas_static_pages_on_static_page_id"
   end
 
   create_table "baskets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1151,13 +1160,22 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
     t.boolean "top_info_section_enabled", default: false, null: false
     t.boolean "files_section_enabled", default: false, null: false
     t.boolean "projects_enabled", default: false, null: false
-    t.string "projects_filter_type"
+    t.string "projects_filter_type", default: "no_filter", null: false
     t.boolean "events_widget_enabled", default: false, null: false
     t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.string "header_bg"
     t.index ["code"], name: "index_static_pages_on_code"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
+  end
+
+  create_table "static_pages_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "topic_id"
+    t.uuid "static_page_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["static_page_id"], name: "index_static_pages_topics_on_static_page_id"
+    t.index ["topic_id"], name: "index_static_pages_topics_on_topic_id"
   end
 
   create_table "surveys_responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1320,6 +1338,8 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
   add_foreign_key "areas_initiatives", "initiatives"
   add_foreign_key "areas_projects", "areas"
   add_foreign_key "areas_projects", "projects"
+  add_foreign_key "areas_static_pages", "areas"
+  add_foreign_key "areas_static_pages", "static_pages"
   add_foreign_key "baskets", "users"
   add_foreign_key "baskets_ideas", "baskets"
   add_foreign_key "baskets_ideas", "ideas"
@@ -1397,6 +1417,8 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
+  add_foreign_key "static_pages_topics", "static_pages"
+  add_foreign_key "static_pages_topics", "topics"
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
@@ -1697,27 +1719,6 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
   SQL
-  create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
-      SELECT ecd.id,
-      (ecd.sent_at)::date AS dimension_date_sent_id,
-      ecd.campaign_id,
-      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
-     FROM (email_campaigns_deliveries ecd
-       JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
-  SQL
-  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
-      SELECT idea_statuses.id,
-      idea_statuses.title_multiloc,
-      idea_statuses.code,
-      idea_statuses.color
-     FROM idea_statuses
-  UNION ALL
-   SELECT initiative_statuses.id,
-      initiative_statuses.title_multiloc,
-      initiative_statuses.code,
-      initiative_statuses.color
-     FROM initiative_statuses;
-  SQL
   create_view "analytics_fact_registrations", sql_definition: <<-SQL
       SELECT u.id,
       u.id AS dimension_user_id,
@@ -1732,6 +1733,27 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
       COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
       users.invite_status
      FROM users;
+  SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc,
+      idea_statuses.code,
+      idea_statuses.color
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc,
+      initiative_statuses.code,
+      initiative_statuses.color
+     FROM initiative_statuses;
+  SQL
+  create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
+      SELECT ecd.id,
+      (ecd.sent_at)::date AS dimension_date_sent_id,
+      ecd.campaign_id,
+      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
+     FROM (email_campaigns_deliveries ecd
+       JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
   SQL
   create_view "analytics_fact_events", sql_definition: <<-SQL
       SELECT events.id,

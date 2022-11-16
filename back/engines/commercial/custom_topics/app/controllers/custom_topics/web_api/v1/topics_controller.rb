@@ -50,12 +50,11 @@ module CustomTopics
 
         def destroy
           SideFxTopicService.new.before_destroy(@topic, current_user)
-          topic = @topic.destroy
-          if topic.destroyed?
-            SideFxTopicService.new.after_destroy(topic, current_user)
+          if @topic.destroy
+            SideFxTopicService.new.after_destroy(@topic, current_user)
             head :ok
           else
-            head :internal_server_error
+            render json: { errors: @topic.errors.details }, status: :unprocessable_entity
           end
         end
 

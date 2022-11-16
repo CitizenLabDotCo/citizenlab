@@ -7,7 +7,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
-import TopInfoSection from './TopInfoSection';
+import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from 'components/PageNotFound';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -139,7 +139,7 @@ const CustomPageShow = () => {
           </ContentContainer>
         )}
         {pageAttributes.top_info_section_enabled && (
-          <TopInfoSection
+          <InfoSection
             multilocContent={pageAttributes.top_info_section_multiloc}
           />
         )}
@@ -154,6 +154,11 @@ const CustomPageShow = () => {
           <ContentContainer>
             <EventsWidget events={events} />
           </ContentContainer>
+        )}
+        {pageAttributes.bottom_info_section_enabled && (
+          <InfoSection
+            multilocContent={pageAttributes.bottom_info_section_multiloc}
+          />
         )}
       </Content>
     </Container>

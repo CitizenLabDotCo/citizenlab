@@ -23,9 +23,7 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
     :events_widget_enabled,
     :bottom_info_section_enabled,
     :bottom_info_section_multiloc,
-    :header_bg,
-    :pinned_admin_publication_ids,
-    :static_page_file_ids
+    :header_bg
 
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
@@ -60,4 +58,6 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   has_one :nav_bar_item
   has_many :static_page_files
   has_many :text_images
+  has_many :topics
+  has_many :areas
 end
