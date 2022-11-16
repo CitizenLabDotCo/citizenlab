@@ -52,6 +52,9 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
     case 'select':
       translatedStringKey = messages.multipleChoice;
       break;
+    case 'page':
+      translatedStringKey = messages.page;
+      break;
     case 'number':
       translatedStringKey = messages.number;
       break;
@@ -87,39 +90,50 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           <FormattedMessage {...translatedStringKey} />
         </Title>
       )}
-      <SectionField id="e2e-required-toggle">
-        <Toggle
-          name={`customFields.${field.index}.required`}
-          label={
-            <Text as="span" color="primary" variant="bodyM" my="0px">
-              <FormattedMessage {...messages.requiredToggleLabel} />
-            </Text>
-          }
-        />
-      </SectionField>
-      <SectionField>
-        <InputMultilocWithLocaleSwitcher
-          id="e2e-title-multiloc"
-          name={`customFields.${field.index}.title_multiloc`}
-          label={<FormattedMessage {...messages.questionTitle} />}
-          type="text"
-        />
-      </SectionField>
-      <SectionField>
-        <InputMultilocWithLocaleSwitcher
-          name={`customFields.${field.index}.description_multiloc`}
-          label={<FormattedMessage {...messages.questionDescriptionOptional} />}
-          type="text"
-        />
-      </SectionField>
-      {getAdditionalSettings(field.input_type, locales, field.index)}
+      {field.input_type !== 'page' && (
+        <>
+          <SectionField id="e2e-required-toggle">
+            <Toggle
+              name={`customFields.${field.index}.required`}
+              label={
+                <Text as="span" color="primary" variant="bodyM" my="0px">
+                  <FormattedMessage {...messages.requiredToggleLabel} />
+                </Text>
+              }
+            />
+          </SectionField>
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              id="e2e-title-multiloc"
+              name={`customFields.${field.index}.title_multiloc`}
+              label={<FormattedMessage {...messages.questionTitle} />}
+              type="text"
+            />
+          </SectionField>
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              name={`customFields.${field.index}.description_multiloc`}
+              label={
+                <FormattedMessage {...messages.questionDescriptionOptional} />
+              }
+              type="text"
+            />
+          </SectionField>
+        </>
+      )}
+      {getAdditionalSettings(field, locales)}
       <Box
         display="flex"
         justifyContent="space-between"
         borderTop={`1px solid ${colors.divider}`}
         pt="36px"
       >
-        <Button buttonStyle="secondary" onClick={onClose} minWidth="160px">
+        <Button
+          id="e2e-settings-done-button"
+          buttonStyle="secondary"
+          onClick={onClose}
+          minWidth="160px"
+        >
           <FormattedMessage {...messages.done} />
         </Button>
         <Button
