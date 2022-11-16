@@ -4,8 +4,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
 import Container from 'components/ContentBuilder/Toolbox/Container';
