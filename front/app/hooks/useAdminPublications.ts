@@ -12,8 +12,8 @@ import { IRelationship } from 'typings';
 
 export interface BaseProps {
   // to rename
-  topicFilter?: string[] | null;
-  areaFilter?: string[] | null;
+  topicFilter?: string[];
+  areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
@@ -79,8 +79,8 @@ export default function useAdminPublications({
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [search, setSearch] = useState<string | null>(null);
-  const [topics, setTopics] = useState<string[] | null>(topicFilter || null);
-  const [areas, setAreas] = useState<string[] | null>(areaFilter || null);
+  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
+  const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);

@@ -58,9 +58,8 @@ export interface IAdminPublications {
 
 interface IQueryParametersBase {
   depth?: number;
-  // to check null type
-  topics?: string[] | null;
-  areas?: string[] | null;
+  topics?: string[];
+  areas?: string[];
   publication_statuses: PublicationStatus[];
   remove_not_allowed_parents: boolean;
 }
