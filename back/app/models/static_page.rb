@@ -96,6 +96,13 @@ class StaticPage < ApplicationRecord
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
+  class << self
+    def associations_project_filter_types
+      no_filter = projects_filter_types.fetch(:no_filter)
+      projects_filter_types.except(no_filter)
+    end
+  end
+
   def custom?
     code == 'custom'
   end
@@ -146,8 +153,8 @@ class StaticPage < ApplicationRecord
   end
 
   def destroy_obsolete_associations
-    return if projects_filter_type_was == self.class.projects_filter_types.fetch(:no_filter)
-
-    public_send(projects_filter_type_was).destroy_all if projects_filter_type_changed? && projects_filter_type_was.present?
+    (self.class.associations_project_filter_types.values - [projects_filter_type]).each do |association|
+      public_send(association).destroy_all
+    end
   end
 end
