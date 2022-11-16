@@ -26,7 +26,6 @@ import { isError, isNil, isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
-import { injectIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -165,4 +164,4 @@ const CustomPageShow = () => {
   );
 };
 
-export default injectIntl(CustomPageShow);
+export default CustomPageShow;
