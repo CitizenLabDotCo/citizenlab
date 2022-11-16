@@ -17,13 +17,17 @@ import { useIntl } from 'utils/cl-intl';
 import { ProjectId, Dates, Resolution } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = ProjectId & Dates & Resolution;
+interface Title {
+  title: string | undefined;
+}
+type Props = ProjectId & Dates & Resolution & Title;
 
 const VisitorsCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
+  title,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -35,7 +39,7 @@ const VisitorsCard = ({
     resolution,
   });
 
-  const cardTitle = formatMessage(messages.visitors);
+  const cardTitle = title ? title : formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 

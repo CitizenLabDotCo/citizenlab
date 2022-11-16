@@ -19,6 +19,7 @@ import WhiteSpace from '../CraftComponents/WhiteSpace';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 import Button from '../CraftComponents/Button';
+import VisitorsTimelineWidget from '../CraftReports/VisitorsTimelineWidget';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -47,6 +48,8 @@ const Editor: React.FC<EditorProps> = ({
         InfoWithAccordions,
         ImageTextCards,
         Button,
+        /* Reports */
+        VisitorsTimelineWidget,
       }}
       indicator={{
         success: 'rgb(98, 196, 98)',

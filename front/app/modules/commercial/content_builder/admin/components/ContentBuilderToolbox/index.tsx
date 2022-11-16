@@ -24,6 +24,7 @@ import WhiteSpace from '../CraftComponents/WhiteSpace';
 import Button from '../CraftComponents/Button';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
+import VisitorsTimelineWidget from '../CraftReports/VisitorsTimelineWidget';
 
 // intl
 import messages from '../../messages';
@@ -302,6 +303,28 @@ const ContentBuilderToolbox = ({
             icon="accordion"
             label={formatMessage(messages.accordion)}
           />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-visitors-timeline-widget"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <VisitorsTimelineWidget
+                title={'Visitors timeline'}
+                projectFilter={undefined}
+                startAtMoment={undefined}
+                endAtMoment={undefined}
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem icon="chart-bar" label="Visitors timeline" />
         </DraggableElement>
       </Box>
     </Box>
