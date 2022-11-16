@@ -154,7 +154,7 @@ const FormFields = ({
                               ? messages.page
                               : messages.question)}
                           />
-                          {getIndexForTitle(formCustomFields, field)}
+                          {/* {getIndexForTitle(formCustomFields, field)} */}
                         </>
                       </Text>
                       <Text

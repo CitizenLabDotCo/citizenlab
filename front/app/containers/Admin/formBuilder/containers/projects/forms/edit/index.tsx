@@ -111,7 +111,7 @@ export const FormEdit = ({
     formState: { isSubmitting, errors },
   } = methods;
 
-  const { fields, append, remove, move } = useFieldArray({
+  const { fields, append, remove, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -136,10 +136,15 @@ export const FormEdit = ({
   };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    move(fromIndex, toIndex);
-    if (!isNilOrError(selectedField)) {
-      setSelectedField({ ...selectedField, index: toIndex });
-    }
+    const fieldsCopy = fields;
+    const elements = fieldsCopy.splice(fromIndex, 2);
+    elements
+      .reverse()
+      .map((element, i) => fieldsCopy.splice(toIndex, 0, element));
+
+    console.log(fieldsCopy);
+    replace([]);
+    replace(fieldsCopy);
   };
 
   const hasErrors = !!Object.keys(errors).length;
