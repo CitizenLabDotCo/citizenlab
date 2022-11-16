@@ -102,13 +102,10 @@ resource 'AdminPublication' do
         do_request(only_projects: 'true')
         expect(status).to eq(200)
         json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 8
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
         if CitizenLab.ee?
-          expect(json_response[:data].size).to eq 8
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
-        else
-          expect(json_response[:data].size).to eq 8
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
         end
       end
 
