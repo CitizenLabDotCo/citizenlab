@@ -3,9 +3,9 @@ import React from 'react';
 // Router
 import { useParams } from 'react-router-dom';
 
-// intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // components
 import Container from 'components/ContentBuilder/Toolbox/Container';
@@ -31,12 +31,12 @@ import { Locale } from 'typings';
 
 type ContentBuilderToolboxProps = {
   selectedLocale: Locale;
-} & WrappedComponentProps;
+};
 
 const ContentBuilderToolbox = ({
   selectedLocale,
-  intl: { formatMessage },
 }: ContentBuilderToolboxProps) => {
+  const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
   return (
@@ -140,4 +140,4 @@ const ContentBuilderToolbox = ({
   );
 };
 
-export default injectIntl(ContentBuilderToolbox);
+export default ContentBuilderToolbox;
