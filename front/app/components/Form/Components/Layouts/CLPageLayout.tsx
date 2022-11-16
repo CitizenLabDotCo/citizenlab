@@ -7,12 +7,12 @@ import Ajv from 'ajv';
 // Components
 import {
   Box,
+  Button,
   Title,
   useBreakpoint,
   media,
 } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
-import Button from 'components/UI/Button';
 
 // Context
 import { FormContext } from 'components/Form/contexts';
@@ -54,11 +54,11 @@ const CLPageLayout = memo(
     const { setShowSubmitButton, onSubmit, setShowAllErrors, formSubmitText } =
       useContext(FormContext);
     const [currentStep, setCurrentStep] = useState<number>(0);
-    const uiCategories = (uischema as PageCategorization).elements;
+    const uiPages = (uischema as PageCategorization).elements;
     const theme: any = useTheme();
     const isSmallerThanXlPhone = useBreakpoint('phone');
     const submitText = formSubmitText || messages.submit;
-    const showSubmit = currentStep === uiCategories.length - 1;
+    const showSubmit = currentStep === uiPages.length - 1;
     const hasPreviousPage = currentStep !== 0;
 
     useEffect(() => {
@@ -71,7 +71,7 @@ const CLPageLayout = memo(
         return;
       }
 
-      const currentPageCategorization = uiCategories[currentStep];
+      const currentPageCategorization = uiPages[currentStep];
       if (
         customAjv.validate(
           getPageSchema(schema, currentPageCategorization),
@@ -94,19 +94,19 @@ const CLPageLayout = memo(
         padding="0 20px 30px 20px"
         margin="auto"
       >
-        {uiCategories.map((e, index) => {
+        {uiPages.map((page, index) => {
           return (
             currentStep === index && (
               <StyledFormSection key={index}>
                 <Title fontSize="xl" mb="32px">
-                  {e.label}
+                  {page.label}
                 </Title>
-                {e.elements.map((e, index) => (
+                {page.elements.map((elementUiSchema, index) => (
                   <Box width="100%" mb="40px" key={index}>
                     <JsonFormsDispatch
                       renderers={renderers}
                       cells={cells}
-                      uischema={e}
+                      uischema={elementUiSchema}
                       schema={schema}
                       path={path}
                       enabled={enabled}
