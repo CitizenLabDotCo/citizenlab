@@ -32,6 +32,7 @@ export interface ITopicData {
     icon: string;
     ordering: number;
     code: Code;
+    static_page_ids: string[];
   };
 }
 
