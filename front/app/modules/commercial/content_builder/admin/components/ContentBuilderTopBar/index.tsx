@@ -7,6 +7,7 @@ import { useEditor, SerializedNodes } from '@craftjs/core';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
+import Container from './components/Container';
 import GoBackButton from 'components/UI/GoBackButton';
 import SaveButton from './components/SaveButton';
 import Button from 'components/UI/Button';
@@ -114,16 +115,7 @@ const ContentBuilderTopBar = ({
   };
 
   return (
-    <Box
-      position="fixed"
-      zIndex="3"
-      alignItems="center"
-      w="100%"
-      h={`${stylingConsts.menuHeight}px`}
-      display="flex"
-      background={`${colors.white}`}
-      borderBottom={`1px solid ${colors.grey500}`}
-    >
+    <Container>
       <Box
         p="15px"
         w="210px"
@@ -189,7 +181,7 @@ const ContentBuilderTopBar = ({
           onClick={handleSave}
         />
       </Box>
-    </Box>
+    </Container>
   );
 };
 
