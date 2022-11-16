@@ -8,6 +8,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
+import SaveButton from './components/SaveButton';
 import Button from 'components/UI/Button';
 
 // styling
@@ -182,16 +183,11 @@ const ContentBuilderTopBar = ({
         >
           <FormattedMessage {...messages.viewProject} />
         </Button>
-        <Button
-          disabled={disableSave || hasPendingState}
-          id="e2e-content-builder-topbar-save"
-          buttonStyle="primary"
+        <SaveButton
+          disabled={!!(disableSave || hasPendingState)}
           processing={loading}
           onClick={handleSave}
-          data-testid="contentBuilderTopBarSaveButton"
-        >
-          <FormattedMessage {...messages.contentBuilderSave} />
-        </Button>
+        />
       </Box>
     </Box>
   );
