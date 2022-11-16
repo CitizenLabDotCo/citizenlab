@@ -175,7 +175,7 @@ module Analytics
         dimension_date_last_action_id: timestamp_to_date(last_action_timestamp),
         duration: visit_json['visitDuration']&.to_i,
         pages_visited: pages_visited(visit_json['actionDetails']),
-        returning_visitor: visit_json['visitorType'] == 'returningCustomer',
+        returning_visitor: visit_json['visitorType'].start_with?('returning'),
         referrer_name: visit_json['referrerName'].presence,
         referrer_url: visit_json['referrerUrl'].presence,
         matomo_visit_id: visit_json['idVisit'],
