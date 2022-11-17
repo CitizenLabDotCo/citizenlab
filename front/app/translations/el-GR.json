@@ -1225,6 +1225,7 @@
   "app.containers.SignUp.emptyLastNameError": "Εισάγετε το επώνυμό σας",
   "app.containers.SignUp.emptyTokenError": "Εισάγετε τον κωδικό πρόσκλησής σας",
   "app.containers.SignUp.firstNamesLabel": "Μικρό όνομα",
+  "app.containers.SignUp.franceConnectMergingFailed": "Υπάρχει ήδη λογαριασμός με αυτή τη διεύθυνση email.{br}{br}Δεν μπορείτε να αποκτήσετε πρόσβαση στην πλατφόρμα μέσω του FranceConnect, καθώς τα προσωπικά στοιχεία δεν ταιριάζουν. Για να συνδεθείτε χρησιμοποιώντας το FranceConnect, θα πρέπει πρώτα να αλλάξετε το μικρό σας όνομα ή το επώνυμό σας σε αυτή την πλατφόρμα ώστε να ταιριάζει με τα επίσημα στοιχεία σας.{br}{br}Μπορείτε να συνδεθείτε όπως κάνετε συνήθως παρακάτω.",
   "app.containers.SignUp.goToLogIn": "Έχετε ήδη λογαριασμό; {goToOtherFlowLink}",
   "app.containers.SignUp.goToSignUp": "Δεν έχετε λογαριασμό; {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Βήμα {activeStepNumber} από {totalStepsCount}: {stepName}",
