@@ -17,7 +17,7 @@ class WebApi::V1::AreasController < ApplicationController
         @areas.includes([static_pages: :nav_bar_item]),
         WebApi::V1::AreaSerializer,
         include: [:static_pages],
-        params: fastjson_params(params)
+        params: fastjson_params(include_static_pages: true)
       )
       return
     end

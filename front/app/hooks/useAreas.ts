@@ -19,7 +19,7 @@ export default function useAreas({
     const queryParameters = {
       for_homepage_filter: forHomepageFilter,
       ...(includeStaticPages && {
-        include: 'static_pages',
+        include_static_pages: true,
       }),
     };
 
