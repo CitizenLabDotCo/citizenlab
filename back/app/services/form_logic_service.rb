@@ -9,6 +9,24 @@ class FormLogicService
     target_field_rules[field.id]
   end
 
+  def replace_temp_ids!(temp_ids_to_ids_mapping)
+    fields.each do |field|
+      next if field.logic.blank?
+
+      logic = field.logic
+      rules = logic.fetch('rules', [])
+      rules.each do |rule|
+        rule['then'].each do |action|
+          target_id = action['target_id']
+          if temp_ids_to_ids_mapping.include?(target_id)
+            action['target_id'] = temp_ids_to_ids_mapping[target_id]
+          end
+        end
+      end
+      field.update! logic: logic
+    end
+  end
+
   private
 
   attr_reader :fields

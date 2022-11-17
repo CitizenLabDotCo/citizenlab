@@ -95,6 +95,7 @@ module IdeaCustomFields
           field.destroy!
           SideFxCustomFieldService.new.after_destroy(field, current_user)
         end
+        temp_ids_to_ids_mapping = {}
         update_all_params.each_with_index do |field_params, index|
           options_params = field_params.delete :options
           if field_params[:id]
@@ -107,9 +108,12 @@ module IdeaCustomFields
             end
             SideFxCustomFieldService.new.after_update(field, current_user)
           else
-            field = CustomField.new field_params.merge(resource: @custom_form)
+            update_params = field_params.except('temp_id')
+            field = CustomField.new update_params.merge(resource: @custom_form)
             SideFxCustomFieldService.new.before_create(field, current_user)
-            unless field.save
+            if field.save
+              temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
+            else
               errors[index.to_s] = field.errors.details
               next
             end
@@ -118,6 +122,9 @@ module IdeaCustomFields
           update_options field, options_params, errors, index if options_params
           field.move_to_bottom
         end
+        fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
+        FormLogicService.new(fields).replace_temp_ids!(temp_ids_to_ids_mapping)
+        # TODO: do validation of all logic in the form
         raise UpdateAllFailedError, errors if errors.present?
       end
     end
@@ -205,24 +212,31 @@ module IdeaCustomFields
     end
 
     def update_all_params
-      custom_fields_params = params.fetch :custom_fields, []
-      return [] if custom_fields_params.empty?
-
-      custom_fields_params
-        .map do |field|
-          field.permit(
-            :id,
-            :input_type,
-            :required,
-            :enabled,
-            :maximum,
-            { title_multiloc: CL2_SUPPORTED_LOCALES,
-              description_multiloc: CL2_SUPPORTED_LOCALES,
-              minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
-              maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
-              options: [:id, { title_multiloc: CL2_SUPPORTED_LOCALES }] }
-          )
+      @update_all_params ||= begin
+        custom_fields_params = params.fetch :custom_fields, []
+        if custom_fields_params.empty?
+          []
+        else
+          custom_fields_params.map do |field|
+            field.permit(
+              :id,
+              :temp_id,
+              :input_type,
+              :required,
+              :enabled,
+              :maximum,
+              {
+                title_multiloc: CL2_SUPPORTED_LOCALES,
+                description_multiloc: CL2_SUPPORTED_LOCALES,
+                minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
+                maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
+                options: [:id, { title_multiloc: CL2_SUPPORTED_LOCALES }],
+                logic: {}
+              }
+            )
+          end
         end
+      end
     end
 
     def set_custom_form

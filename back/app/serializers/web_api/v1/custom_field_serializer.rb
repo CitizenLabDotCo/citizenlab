@@ -15,5 +15,9 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.input_type == 'linear_scale'
   }
 
+  attribute :logic, if: proc { |object, _params|
+    !object.page?
+  }
+
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
 end
