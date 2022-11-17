@@ -116,10 +116,6 @@ export default defineMessages({
     defaultMessage:
       'https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
   },
-  accordion: {
-    id: 'app.containers.admin.ContentBuilder.accordion',
-    defaultMessage: 'Accordion',
-  },
   button: {
     id: 'app.containers.admin.ContentBuilder.button',
     defaultMessage: 'Button',
@@ -149,27 +145,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.textValue',
     defaultMessage:
       'This is some text. You can edit and format it by using the editor in the panel on the right.',
-  },
-  accordionTitleValue: {
-    id: 'app.containers.admin.ContentBuilder.accordionTitleValue',
-    defaultMessage: 'Accordion title',
-  },
-  accordionTitleLabel: {
-    id: 'app.containers.admin.ContentBuilder.accordionTitleLabel',
-    defaultMessage: 'Title',
-  },
-  accordionTextLabel: {
-    id: 'app.containers.admin.ContentBuilder.accordionTextLabel',
-    defaultMessage: 'Text',
-  },
-  accordionTextValue: {
-    id: 'app.containers.admin.ContentBuilder.accordionTextValue',
-    defaultMessage:
-      'This is expandable accordion content. You can edit and format it by using the editor in the panel on the right.',
-  },
-  accordionDefaultOpenLabel: {
-    id: 'app.containers.admin.ContentBuilder.accordionDefaultOpenLabel',
-    defaultMessage: 'Open by default',
   },
   delete: {
     id: 'app.containers.admin.ContentBuilder.delete',

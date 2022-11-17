@@ -14,6 +14,7 @@ import Container from '../../CraftComponents/Container';
 
 // intl
 import messages from '../../../messages';
+import accordionMessages from '../../CraftComponents/Accordion/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
@@ -39,18 +40,18 @@ const InfoWithAccordions: UserComponent = ({
       <TwoColumn columnLayout="2-1">
         <Element id="left" is={Container} canvas>
           <Accordion
-            title={formatMessage(messages.accordionTitleValue)}
-            text={formatMessage(messages.accordionTextValue)}
+            title={formatMessage(accordionMessages.accordionTitleValue)}
+            text={formatMessage(accordionMessages.accordionTextValue)}
             openByDefault={false}
           />
           <Accordion
-            title={formatMessage(messages.accordionTitleValue)}
-            text={formatMessage(messages.accordionTextValue)}
+            title={formatMessage(accordionMessages.accordionTitleValue)}
+            text={formatMessage(accordionMessages.accordionTextValue)}
             openByDefault={false}
           />
           <Accordion
-            title={formatMessage(messages.accordionTitleValue)}
-            text={formatMessage(messages.accordionTextValue)}
+            title={formatMessage(accordionMessages.accordionTitleValue)}
+            text={formatMessage(accordionMessages.accordionTextValue)}
             openByDefault={false}
           />
         </Element>

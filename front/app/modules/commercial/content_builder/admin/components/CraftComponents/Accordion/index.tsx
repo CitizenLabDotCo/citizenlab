@@ -18,7 +18,7 @@ import {
 import { useTheme } from 'styled-components';
 
 // intl
-import messages from '../../../messages';
+import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 
 const Accordion = ({ text, title, openByDefault }) => {

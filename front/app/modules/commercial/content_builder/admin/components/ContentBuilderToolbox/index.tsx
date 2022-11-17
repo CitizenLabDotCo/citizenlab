@@ -4,6 +4,8 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // i18n
+import messages from '../../messages';
+import accordionMessages from '../CraftComponents/Accordion/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
@@ -21,9 +23,6 @@ import WhiteSpace from '../CraftComponents/WhiteSpace';
 import Button from '../CraftComponents/Button';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
-
-// intl
-import messages from '../../messages';
 
 // types
 import { Locale } from 'typings';
@@ -127,8 +126,8 @@ const ContentBuilderToolbox = ({
         id="e2e-draggable-accordion"
         component={
           <Accordion
-            title={formatMessage(messages.accordionTitleValue)}
-            text={formatMessage(messages.accordionTextValue)}
+            title={formatMessage(accordionMessages.accordionTitleValue)}
+            text={formatMessage(accordionMessages.accordionTextValue)}
             openByDefault={false}
           />
         }

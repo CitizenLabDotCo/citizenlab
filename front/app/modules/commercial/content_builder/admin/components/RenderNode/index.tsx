@@ -41,36 +41,37 @@ type ComponentNamesType =
   | typeof IMAGE_TEXT_CARDS
   | typeof BUTTON;
 
-export const getComponentNameMessage = (name: ComponentNamesType) => {
-  switch (name) {
-    case CONTAINER:
-      return messages.oneColumn;
-    case TWO_COLUMNS:
-      return messages.twoColumn;
-    case THREE_COLUMNS:
-      return messages.threeColumn;
-    case TEXT:
-      return messages.text;
-    case IMAGE:
-      return messages.image;
-    case IFRAME:
-      return messages.url;
-    case ABOUT_BOX:
-      return messages.aboutBox;
-    case ACCORDION:
-      return messages.accordion;
-    case WHITE_SPACE:
-      return messages.whiteSpace;
-    case INFO_WITH_ACCORDIONS:
-      return messages.infoWithAccordions;
-    case IMAGE_TEXT_CARDS:
-      return messages.imageTextCards;
-    case BUTTON:
-      return messages.button;
-    default:
-      return messages.default;
-  }
-};
+// export const getComponentNameMessage = (name: ComponentNamesType) => {
+//   switch (name) {
+//     case CONTAINER:
+//       return messages.oneColumn;
+//     case TWO_COLUMNS:
+//       return messages.twoColumn;
+//     case THREE_COLUMNS:
+//       return messages.threeColumn;
+//     case TEXT:
+//       return messages.text;
+//     case IMAGE:
+//       return messages.image;
+//     case IFRAME:
+//       return messages.url;
+//     case ABOUT_BOX:
+//       return messages.aboutBox;
+//     case ACCORDION:
+//       return messages.accordion;
+//     case WHITE_SPACE:
+//       return messages.whiteSpace;
+//     case INFO_WITH_ACCORDIONS:
+//       return messages.infoWithAccordions;
+//     case IMAGE_TEXT_CARDS:
+//       return messages.imageTextCards;
+//     case BUTTON:
+//       return messages.button;
+//     default:
+//       return messages.default;
+//   }
+// };
+export const getComponentNameMessage = (_: any): any => {};
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
