@@ -101,7 +101,7 @@ const ContentBuilderToolbox = ({
         id="e2e-draggable-image"
         component={<Image alt="" />}
         icon="image"
-        label={formatMessage(messages.image)}
+        label={formatMessage(Image.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-iframe"

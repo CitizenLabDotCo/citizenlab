@@ -17,9 +17,9 @@ import { UploadFile } from 'typings';
 
 // craft
 import { useEditor, useNode } from '@craftjs/core';
-import messages from '../../../messages';
 
-// intl
+// i18n
+import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 
 // events
@@ -154,6 +154,9 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
 Image.craft = {
   related: {
     settings: ImageSettings,
+  },
+  custom: {
+    title: messages.image,
   },
 };
 
