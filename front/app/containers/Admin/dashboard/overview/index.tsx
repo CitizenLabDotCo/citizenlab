@@ -217,7 +217,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 startAt={startAt}
                 endAt={endAt}
                 xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-                className="e2e-ideas-chart"
+                className="e2e-ideas-chart fullWidth"
                 lineStream={ideasByTimeCumulativeStream}
                 barStream={ideasByTimeStream}
                 {...this.state}
@@ -229,7 +229,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 startAt={startAt}
                 endAt={endAt}
                 xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
-                className="e2e-comments-chart"
+                className="e2e-comments-chart fullWidth"
                 lineStream={commentsByTimeCumulativeStream}
                 barStream={commentsByTimeStream}
                 {...this.state}
