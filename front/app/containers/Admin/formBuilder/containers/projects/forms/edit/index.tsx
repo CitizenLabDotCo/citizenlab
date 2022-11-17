@@ -158,9 +158,16 @@ export const FormEdit = ({
   };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    const fieldsCopy = fields;
+    console.log('----- handleDragRow -----');
 
-    if (fieldsCopy[fromIndex].input_type !== 'page') {
+    const fieldsCopy = fields;
+    const tempArray = JSON.parse(JSON.stringify(fields));
+
+    console.log('FromIndex: ', fromIndex);
+    console.log('ToIndex: ', toIndex);
+
+    if (tempArray[fromIndex].input_type !== 'page') {
+      console.log('Getting caught here!');
       move(fromIndex, toIndex);
     } else {
       replace([]);
@@ -170,43 +177,41 @@ export const FormEdit = ({
         fromIndex,
         fromIndex + numberChildren(fields, fromIndex)
       );
-      console.log('ELEMENTS TO MOVE: ', elements);
 
       // Save the insert field which "toIndex" represents
       const insertAtField = fieldsCopy[toIndex];
-      console.log('FIELD TO INSERT AT: ', insertAtField);
 
       // Remove the page + children from original position in the fields array
       // Now, this array should contain all elements except the page/children we are moving
       fieldsCopy.splice(fromIndex, numberChildren(fields, fromIndex));
-      console.log('FIELDS WITH ELEMENTS REMOVED: ', fieldsCopy);
 
       // Calculate the new index we want to insert the elements at
       const newInsertIndex = fieldsCopy.indexOf(insertAtField);
-      console.log(
-        'INDEX OF THE TARGET FIELD: ',
-        fieldsCopy.indexOf(insertAtField)
-      );
 
-      console.log(
-        'NUM CHILDREN TARGET: ',
-        numberChildren(fieldsCopy, newInsertIndex)
-      );
-      const numChildTarget = numberChildren(fieldsCopy, newInsertIndex);
+      const numberElement = numberChildren(fieldsCopy, newInsertIndex);
 
       // Insert them at the index of insertAtField
       if (toIndex > fromIndex) {
+        // Moving a page further down the list
         elements.reverse().map((element, _i) => {
-          fieldsCopy.splice(newInsertIndex + numChildTarget, 0, element);
+          console.log('Down Again');
+          console.log('fromIndex: ', fromIndex);
+          console.log('toIndex: ', toIndex);
+          console.log('newInsertIndex: ', newInsertIndex);
+          console.log('numChildTarget: ', numberElement);
+          fieldsCopy.splice(newInsertIndex + numberElement, 0, element);
         });
       } else {
+        // Moving a page up the list
         elements.reverse().map((element, _i) => {
+          console.log('Up Again');
           fieldsCopy.splice(newInsertIndex, 0, element);
         });
       }
 
       replace([]);
       replace(fieldsCopy);
+      console.log('----------------------------------');
     }
 
     if (!isNilOrError(selectedField)) {
