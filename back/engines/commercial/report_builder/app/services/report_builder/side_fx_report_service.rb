@@ -2,7 +2,6 @@
 
 module ReportBuilder
   class SideFxReportService < ::BaseSideFxService
-
     def before_create(report, user)
       layout_side_fx_service.before_create(report.layout, user)
     end
@@ -24,7 +23,6 @@ module ReportBuilder
     def before_destroy(report, user)
       layout_side_fx_service.before_destroy(report.layout, user)
     end
-
 
     def after_destroy(frozen_report, user)
       super(frozen_report, user)
