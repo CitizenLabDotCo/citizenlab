@@ -75,15 +75,35 @@ RSpec.describe StaticPage, type: :model do
   end
 
   describe 'before validate' do
-    subject(:static_page) { create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [topic]) }
-
     let(:topic) { create(:topic) }
 
     it 'destroys unused associations' do
+      static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [topic])
       expect(static_page.topics).to be_present
       static_page.update!(projects_filter_type: 'areas', areas: [build(:area)])
       expect(static_page.topics).to be_empty
       expect(topic).to be_persisted
+    end
+
+    it 'does not destroy association if validation failed' do
+      static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [topic])
+      expect(static_page.topics).to be_present
+      updated = static_page.update(projects_filter_type: 'areas', areas: [])
+
+      expect(updated).to be(false)
+      expect(static_page.reload.topics).to be_present
+    end
+
+    it 'saves only association from projects_filter_type' do
+      area = create(:area)
+
+      static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [topic], areas: [area])
+      expect(static_page.reload.topics).to be_present
+      expect(static_page.reload.areas).to be_empty
+
+      static_page.update(projects_filter_type: 'no_filter', topics: [topic], areas: [area])
+      expect(static_page.reload.topics).to be_empty
+      expect(static_page.reload.areas).to be_empty
     end
   end
 

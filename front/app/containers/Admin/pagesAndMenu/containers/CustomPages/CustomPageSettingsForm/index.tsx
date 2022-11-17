@@ -45,8 +45,8 @@ export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
   projects_filter_type: ProjectsFilterTypes;
-  topic_ids: string[];
-  area_id: string;
+  topic_ids?: string[];
+  area_id?: string | null;
 }
 
 type TMode = 'new' | 'edit';
@@ -91,10 +91,14 @@ const CustomPageSettingsForm = ({
       is: (value: ProjectsFilterTypes) => value === 'topics',
       then: array().of(string()).min(1, formatMessage(messages.atLeastOneTag)),
     }),
-    area_id: string().when('projects_filter_type', {
-      is: (value: ProjectsFilterTypes) => value === 'areas',
-      then: string().required(formatMessage(messages.selectAnArea)),
-    }),
+    area_id: string()
+      .nullable()
+      .when('projects_filter_type', {
+        is: (value: ProjectsFilterTypes) => value === 'areas',
+        then: string()
+          .nullable()
+          .required(formatMessage(messages.selectAnArea)),
+      }),
   });
 
   const methods = useForm({
@@ -102,6 +106,7 @@ const CustomPageSettingsForm = ({
     defaultValues,
     resolver: yupResolver(schema),
   });
+
   const slug = methods.watch('slug');
 
   const onFormSubmit = async (formValues: FormValues) => {
