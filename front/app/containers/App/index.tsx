@@ -147,7 +147,7 @@ interface State {
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
   locale: Locale | null;
-  invitationDeclined: boolean;
+  signUpInModalClosed: boolean;
 }
 
 class App extends PureComponent<Props, State> {
@@ -167,12 +167,12 @@ class App extends PureComponent<Props, State> {
       userDeletedSuccessfullyModalOpened: false,
       userSuccessfullyDeleted: false,
       signUpInModalMounted: false,
-      signUpInModalOpened: false,
+      signUpInModalOpened: false, // we need to apply CSS when modal is opened
       verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
       locale: null,
-      invitationDeclined: false,
+      signUpInModalClosed: false, // we need to know if modal was closed not to reopen it again. See ccd951c4ee
     };
     this.subscriptions = [];
   }
@@ -356,12 +356,12 @@ class App extends PureComponent<Props, State> {
 
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
-    const { invitationDeclined } = this.state;
+    const { signUpInModalClosed } = this.state;
 
     openSignUpInModalIfNecessary(
       authUser,
-      isAuthError,
-      isInvitation && !invitationDeclined,
+      isAuthError && !signUpInModalClosed,
+      isInvitation && !signUpInModalClosed,
       signUpInModalMounted,
       search
     );
@@ -473,8 +473,8 @@ class App extends PureComponent<Props, State> {
     this.setState({ signUpInModalMounted: true });
   };
 
-  handleDeclineInvitation = () => {
-    this.setState({ invitationDeclined: true });
+  handleSignUpInModalClosed = () => {
+    this.setState({ signUpInModalClosed: true });
   };
 
   render() {
@@ -559,7 +559,7 @@ class App extends PureComponent<Props, State> {
                   <SignUpInModal
                     onMounted={this.handleSignUpInModalMounted}
                     onOpened={this.updateModalOpened}
-                    onDeclineInvitation={this.handleDeclineInvitation}
+                    onClosed={this.handleSignUpInModalClosed}
                     fullScreenModal={fullscreenModalEnabled}
                   />
                 </ErrorBoundary>

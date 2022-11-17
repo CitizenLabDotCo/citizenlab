@@ -2,7 +2,8 @@
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 
 // typings
-import { QueryParameters, QueryParametersWithoutPagination } from './typings';
+// import { QueryParameters, QueryParametersWithoutPagination } from './typings';
+import { ProjectId, Dates, Pagination } from '../../typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
 
 export const referrersListQuery = ({
@@ -11,7 +12,7 @@ export const referrersListQuery = ({
   endAtMoment,
   pageNumber,
   pageSize,
-}: QueryParameters): Query => {
+}: ProjectId & Dates & Pagination): Query => {
   const referrersListQuery: QuerySchema = {
     fact: 'visit',
     filters: {
@@ -43,7 +44,7 @@ export const referrersTotalQuery = ({
   projectId,
   startAtMoment,
   endAtMoment,
-}: QueryParametersWithoutPagination): Query => {
+}: ProjectId & Dates): Query => {
   const referrersTotalQuery: QuerySchema = {
     fact: 'visit',
     filters: {
