@@ -31,7 +31,7 @@ import Modal, {
 import { isNilOrError } from 'utils/helperUtils';
 
 const AllTopics = () => {
-  const topics = useTopics();
+  const topics = useTopics({ includeStaticPages: true });
 
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);

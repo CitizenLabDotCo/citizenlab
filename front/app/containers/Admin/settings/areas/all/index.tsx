@@ -66,29 +66,6 @@ const AreaRow = ({
     return null;
   });
 
-  const staticPageContent = (
-    <>
-      <FormattedMessage {...messages.areaIsLinkedToStaticPage} />
-      <ul>
-        {staticPages.map((staticPage) => {
-          if (staticPage == null) {
-            return null;
-          }
-
-          return (
-            <li key={staticPage.id}>
-              <StyledLink
-                to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
-              >
-                {localize(staticPage?.attributes.title_multiloc)}
-              </StyledLink>
-            </li>
-          );
-        })}
-      </ul>
-    </>
-  );
-
   return (
     <SortableRow
       id={item.id}
@@ -105,7 +82,26 @@ const AreaRow = ({
           <IconTooltip
             iconColor={colors.error}
             icon="info-outline"
-            content={staticPageContent}
+            content={
+              <>
+                <FormattedMessage {...messages.areaIsLinkedToStaticPage} />
+                <ul>
+                  {staticPages.map((staticPage) => {
+                    if (staticPage == null) return null;
+
+                    return (
+                      <li key={staticPage.id}>
+                        <StyledLink
+                          to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
+                        >
+                          {localize(staticPage?.attributes.title_multiloc)}
+                        </StyledLink>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            }
           />
         </Box>
       )}

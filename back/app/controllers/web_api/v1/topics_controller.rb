@@ -22,6 +22,16 @@ class WebApi::V1::TopicsController < ApplicationController
 
     @topics = paginate @topics
 
+    if params[:include_static_pages]
+      render json: linked_json(
+        @topics.includes[:static_pages],
+        WebApi::V1::TopicSerializer,
+        include: [:static_pages],
+        params: fastjson_params(params)
+      )
+      return
+    end
+
     render json: linked_json(@topics, WebApi::V1::TopicSerializer, params: fastjson_params)
   end
 

@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
+import { Row } from 'components/admin/ResourceList';
 
 // components
-import { Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { IconTooltip, colors } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // resources
@@ -30,6 +30,7 @@ const Buttons = styled.div`
 `;
 
 export const StyledLink = styled(Link)`
+  color: ${colors.white} !important;
   text-decoration: underline;
 
   &:hover {
@@ -72,6 +73,34 @@ const CustomTopicRow = memo((props: Props) => {
             </RowContentInner>
           </RowContent>
           <Buttons>
+            {static_page_ids.length > 0 && (
+              <IconTooltip
+                mr="20px"
+                iconColor={colors.error}
+                icon="info-outline"
+                content={
+                  <>
+                    <FormattedMessage {...messages.tagIsLinkedToStaticPage} />
+                    <ul>
+                      {staticPages.map((staticPage) => {
+                        if (staticPage == null) return null;
+
+                        return (
+                          <li key={staticPage.id}>
+                            <StyledLink
+                              to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
+                            >
+                              {localize(staticPage?.attributes.title_multiloc)}
+                            </StyledLink>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </>
+                }
+              />
+            )}
+
             <Button
               linkTo={`/admin/settings/topics/${topic.id}/edit`}
               buttonStyle="secondary"
@@ -80,7 +109,6 @@ const CustomTopicRow = memo((props: Props) => {
             >
               <FormattedMessage {...messages.editButtonLabel} />
             </Button>
-
             <Button
               disabled={static_page_ids && static_page_ids.length > 0}
               onClick={handleDeleteClick(topic.id)}
@@ -92,52 +120,6 @@ const CustomTopicRow = memo((props: Props) => {
             </Button>
           </Buttons>
         </Row>
-        {static_page_ids.length > 0 && (
-          <Box
-            bgColor={colors.tealLight}
-            borderRadius="3px"
-            px="12px"
-            py="4px"
-            mb="12px"
-            role="alert"
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box display="flex" alignItems="center">
-              <Box width="5%">
-                <Icon
-                  name="info-outline"
-                  width="24px"
-                  height="24px"
-                  fill={colors.teal700}
-                />
-              </Box>
-              <Box width="95%">
-                <Text color="teal700">
-                  <FormattedMessage {...messages.tagIsLinkedToStaticPage} />
-                </Text>
-                <ul>
-                  {staticPages.map((staticPage) => {
-                    if (staticPage == null) return null;
-
-                    return (
-                      <li>
-                        <StyledLink
-                          to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
-                        >
-                          <Text color="teal700">
-                            {localize(staticPage?.attributes.title_multiloc)}
-                          </Text>
-                        </StyledLink>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </Box>
-            </Box>
-          </Box>
-        )}
       </>
     );
   }

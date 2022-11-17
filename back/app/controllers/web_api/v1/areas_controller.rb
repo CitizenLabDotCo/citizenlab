@@ -12,22 +12,17 @@ class WebApi::V1::AreasController < ApplicationController
     @areas = @areas.order(created_at: :desc)
     @areas = paginate @areas
 
-    include_static_pages = params[:include]&.split(',')&.include?('static_pages')
-
-    if include_static_pages
+    if params[:include_static_pages]
       render json: linked_json(
         @areas.includes([static_pages: :nav_bar_item]),
         WebApi::V1::AreaSerializer,
         include: [:static_pages],
-        params: fastjson_params(include_static_pages: include_static_pages)
+        params: fastjson_params(params)
       )
-    else
-      render json: linked_json(
-        @areas,
-        WebApi::V1::AreaSerializer,
-        params: fastjson_params
-      )
+      return
     end
+
+    render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: fastjson_params)
   end
 
   def show
