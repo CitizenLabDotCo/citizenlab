@@ -1225,6 +1225,7 @@
   "app.containers.SignUp.emptyLastNameError": "Introduïu el vostre cognom",
   "app.containers.SignUp.emptyTokenError": "Introduïu el vostre codi d'invitació",
   "app.containers.SignUp.firstNamesLabel": "Nom",
+  "app.containers.SignUp.franceConnectMergingFailed": "Ja existeix un compte amb aquesta adreça electrònica.{br}{br}No podeu accedir a la plataforma mitjançant FranceConnect perquè les dades personals no coincideixen. Per iniciar la sessió amb FranceConnect, primer haureu de canviar el vostre nom o cognom en aquesta plataforma perquè coincideixi amb les vostres dades oficials.{br}{br}Podeu iniciar la sessió com ho feu normalment a continuació.",
   "app.containers.SignUp.goToLogIn": "Ja teniu un compte? {goToOtherFlowLink}",
   "app.containers.SignUp.goToSignUp": "No teniu un compte? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Pas {activeStepNumber} de {totalStepsCount}: {stepName}",
