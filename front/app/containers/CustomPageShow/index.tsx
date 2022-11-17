@@ -18,7 +18,6 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useCustomPage from 'hooks/useCustomPage';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
-import useEvents from 'hooks/useEvents';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 import useAdminPublications from 'hooks/useAdminPublications';
@@ -80,14 +79,7 @@ const CustomPageShow = () => {
     ? adminPublications.list.map(
         (adminPublication) => adminPublication.relationships.publication.data.id
       )
-    : null;
-  const { events } = useEvents({
-    projectPublicationStatuses: ['published'],
-    currentAndFutureOnly: true,
-    pageSize: 3,
-    sort: 'oldest',
-    projectIds,
-  });
+    : [];
 
   // when neither have loaded
   if (isNil(page) || isNilOrError(appConfiguration)) {
@@ -149,7 +141,7 @@ const CustomPageShow = () => {
           )}
         {pageAttributes.events_widget_enabled && (
           <ContentContainer>
-            <EventsWidget events={events} />
+            <EventsWidget projectIds={projectIds} />
           </ContentContainer>
         )}
         {pageAttributes.bottom_info_section_enabled && (

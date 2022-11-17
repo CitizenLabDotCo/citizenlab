@@ -8,7 +8,6 @@ import SectionToggle, {
   Props as SectionToggleProps,
 } from './admin/SectionToggle';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useEvents from 'hooks/useEvents';
 
 // The events section toggle should be rendered if the customer is Allowed to use the feature
 const RenderOnFeatureAllowed = ({ children }) => {
@@ -43,19 +42,9 @@ const configuration: ModuleConfiguration = {
       );
     },
     'app.containers.HomePage.EventsWidget': () => {
-      const { events } = useEvents({
-        projectPublicationStatuses: ['published'],
-        currentAndFutureOnly: true,
-        pageSize: 3,
-        sort: 'oldest',
-      });
-
       return (
         <RenderOnAllowedAndEnabled>
-          <EventsWidget
-            id="e2e-homepage-events-widget-container"
-            events={events}
-          />
+          <EventsWidget id="e2e-homepage-events-widget-container" />
         </RenderOnAllowedAndEnabled>
       );
     },

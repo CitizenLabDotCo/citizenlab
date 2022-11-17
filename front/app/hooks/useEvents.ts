@@ -81,6 +81,9 @@ export default function useEvents(parameters: InputParameters) {
       streamParams.queryParameters['page[size]'] = pageSize;
     }
 
+    if (projectIds && projectIds.length === 0) {
+      return;
+    }
     const subscription = eventsStream(streamParams).observable.subscribe(
       (response) => {
         if (isNilOrError(response)) {
