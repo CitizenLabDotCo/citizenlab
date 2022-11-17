@@ -1,5 +1,4 @@
 import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
@@ -29,7 +28,7 @@ import AreaTermConfig from './AreaTermConfig';
 import messages from '../messages';
 import T from 'components/T';
 import useLocalize from 'hooks/useLocalize';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 export const StyledLink = styled(Link)`
   color: ${colors.white} !important;
@@ -40,11 +39,7 @@ export const StyledLink = styled(Link)`
   }
 `;
 
-interface InputProps {}
-
-interface Props extends InputProps, WrappedComponentProps {}
-
-const AreaRow = ({
+const AreaListRow = ({
   item,
   handleDragRow,
   handleDropRow,
@@ -125,12 +120,12 @@ const AreaRow = ({
   );
 };
 
-const AreaList = (props: Props) => {
+const AreaList = () => {
+  const { formatMessage } = useIntl();
+
   const handleDeleteClick =
     (areaId: string) => (event: React.FormEvent<any>) => {
-      const deleteMessage = props.intl.formatMessage(
-        messages.areaDeletionConfirmation
-      );
+      const deleteMessage = formatMessage(messages.areaDeletionConfirmation);
       event.preventDefault();
 
       if (window.confirm(deleteMessage)) {
@@ -177,7 +172,7 @@ const AreaList = (props: Props) => {
           <>
             {itemsList.map((item: IAreaData, index: number) => {
               return (
-                <AreaRow
+                <AreaListRow
                   key={item.id}
                   isLastItem={index === itemsList.length - 1}
                   item={item}
