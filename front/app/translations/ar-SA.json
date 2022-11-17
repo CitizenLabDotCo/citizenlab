@@ -1225,6 +1225,7 @@
   "app.containers.SignUp.emptyLastNameError": "أدخل اسمك الأخير",
   "app.containers.SignUp.emptyTokenError": "أدخل رمز الدعوة",
   "app.containers.SignUp.firstNamesLabel": "الاسم الأول",
+  "app.containers.SignUp.franceConnectMergingFailed": "يوجد بالفعل حساب يحمل عنوان البريد الإلكتروني هذا.{br}{br}لا يمكنك الوصول إلى المنصة باستخدام FranceConnect بسبب عدم تطابق البيانات الشخصية. لتسجيل الدخول باستخدام FranceConnect, سيتعين عليك تغيير اسمك الأول أو اسمك الأخير في هذه المنصة ليطابق بياناتك الرسمية.{br}{br}يمكنك تسجيل الدخول كالمعتاد أدناه.",
   "app.containers.SignUp.goToLogIn": "ألديك حساب بالفعل؟ {goToOtherFlowLink}",
   "app.containers.SignUp.goToSignUp": "أليس لديك حساب؟ {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "الخطوة {activeStepNumber} من أصل {totalStepsCount}: {stepName}",
