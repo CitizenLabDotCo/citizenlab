@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- [CL-2052] Fix Sentry error related to failed authentication
+
 ## 2022-11-16
 
 ### Fixed
