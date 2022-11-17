@@ -27,9 +27,30 @@ class FormLogicService
     end
   end
 
+  def valid?
+    fields.all? do |field|
+      valid_structure? field.logic
+    end
+  end
+
   private
 
+  EFFECTS = %w[show hide submit_survey]
+
   attr_reader :fields
+
+  def valid_structure?(logic)
+    return true if logic == {}
+    return false unless logic.keys == ['rules']
+
+    logic['rules'].all? do |rule|
+      rule.keys == %w[if then] && rule['then'].all? do |action|
+        allowed_then_keys = %w[effect]
+        allowed_then_keys << 'target_id' if action['effect'] != 'submit_survey'
+        action.keys == allowed_then_keys && EFFECTS.include?(action['effect'])
+      end
+    end
+  end
 
   def ui_schema_rule_for(effect, field, value)
     {
