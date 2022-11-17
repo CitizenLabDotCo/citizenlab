@@ -139,6 +139,7 @@ TwoColumn.craft = {
   },
   custom: {
     title: messages.twoColumn,
+    hasChildren: true,
   },
 };
 

@@ -223,6 +223,7 @@ Button.craft = {
   },
   custom: {
     title: messages.button,
+    noPointerEvents: true,
   },
 };
 

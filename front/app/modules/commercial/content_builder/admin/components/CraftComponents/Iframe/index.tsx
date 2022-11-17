@@ -166,6 +166,7 @@ Iframe.craft = {
   },
   custom: {
     title: messages.url,
+    noPointerEvents: true,
   },
 };
 

@@ -13,6 +13,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Container from 'components/ContentBuilder/Toolbox/Container';
 import SectionTitle from 'components/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/ContentBuilder/Toolbox/DraggableElement';
+
+// widgets
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';

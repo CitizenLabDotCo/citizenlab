@@ -18,6 +18,7 @@ const AboutBox = ({ projectId }: { projectId: string }) => {
 AboutBox.craft = {
   custom: {
     title: messages.aboutBox,
+    noPointerEvents: true,
   },
 };
 

@@ -14,65 +14,6 @@ import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from '../../messages';
 
-const CONTAINER = 'Container';
-const TWO_COLUMNS = 'TwoColumn';
-const THREE_COLUMNS = 'ThreeColumn';
-const TEXT = 'Text';
-const IMAGE = 'Image';
-const IFRAME = 'Iframe';
-const ABOUT_BOX = 'AboutBox';
-const ACCORDION = 'Accordion';
-const WHITE_SPACE = 'WhiteSpace';
-const INFO_WITH_ACCORDIONS = 'InfoWithAccordions';
-const IMAGE_TEXT_CARDS = 'ImageTextCards';
-const BUTTON = 'Button';
-
-type ComponentNamesType =
-  | typeof CONTAINER
-  | typeof TWO_COLUMNS
-  | typeof THREE_COLUMNS
-  | typeof TEXT
-  | typeof IMAGE
-  | typeof IFRAME
-  | typeof ABOUT_BOX
-  | typeof ACCORDION
-  | typeof WHITE_SPACE
-  | typeof INFO_WITH_ACCORDIONS
-  | typeof IMAGE_TEXT_CARDS
-  | typeof BUTTON;
-
-// export const getComponentNameMessage = (name: ComponentNamesType) => {
-//   switch (name) {
-//     case CONTAINER:
-//       return messages.oneColumn;
-//     case TWO_COLUMNS:
-//       return messages.twoColumn;
-//     case THREE_COLUMNS:
-//       return messages.threeColumn;
-//     case TEXT:
-//       return messages.text;
-//     case IMAGE:
-//       return messages.image;
-//     case IFRAME:
-//       return messages.url;
-//     case ABOUT_BOX:
-//       return messages.aboutBox;
-//     case ACCORDION:
-//       return messages.accordion;
-//     case WHITE_SPACE:
-//       return messages.whiteSpace;
-//     case INFO_WITH_ACCORDIONS:
-//       return messages.infoWithAccordions;
-//     case IMAGE_TEXT_CARDS:
-//       return messages.imageTextCards;
-//     case BUTTON:
-//       return messages.button;
-//     default:
-//       return messages.default;
-//   }
-// };
-export const getComponentNameMessage = (_: any): any => messages.default;
-
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
     isRoot
@@ -92,13 +33,15 @@ const RenderNode = ({ render }) => {
     isHover,
     hasError,
     title,
+    noPointerEvents,
     connectors: { connect, drag },
   } = useNode((node) => ({
     props: node.data.props,
     isHover: node.events.hovered,
-    name: node.data.name as ComponentNamesType,
+    name: node.data.name as string,
     hasError: node.data.props.hasError,
-    title: node.data.custom.title as MessageDescriptor,
+    title: node.data.custom?.title as MessageDescriptor | undefined,
+    noPointerEvents: node.data.custom?.noPointerEvents as boolean | undefined,
   }));
 
   const {
@@ -116,10 +59,8 @@ const RenderNode = ({ render }) => {
   });
 
   const parentNode = parentId && node(parentId).get();
-  const parentNodeName = parentNode && parentNode.data.name;
-
   const isChildOfComplexComponent =
-    parentNodeName === TWO_COLUMNS || parentNodeName === THREE_COLUMNS;
+    parentNode === '' ? false : !!parentNode?.data.custom?.hasChildren;
 
   // Handle multi-column hover state
   useEffect(() => {
@@ -139,7 +80,7 @@ const RenderNode = ({ render }) => {
   useEffect(() => {
     if (
       isActive &&
-      name === CONTAINER &&
+      name === 'Container' &&
       parentNode &&
       isChildOfComplexComponent
     ) {
@@ -154,14 +95,15 @@ const RenderNode = ({ render }) => {
     selectNode,
   ]);
 
-  const isSelectable = title !== messages.default;
+  const isSelectable = title !== undefined;
+
   const nodeLabelIsVisible =
     isActive &&
     isSelectable &&
     id !== ROOT_NODE &&
     isDeletable &&
-    name !== CONTAINER;
-  const nodeIsHovered = isHover && id !== ROOT_NODE && name !== CONTAINER;
+    name !== 'Container';
+  const nodeIsHovered = isHover && id !== ROOT_NODE && name !== 'Container';
   const solidBorderIsVisible =
     isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
 
@@ -208,10 +150,7 @@ const RenderNode = ({ render }) => {
       )}
       <div
         style={{
-          pointerEvents:
-            name === IFRAME || name === ABOUT_BOX || name === BUTTON
-              ? 'none'
-              : 'auto',
+          pointerEvents: noPointerEvents ? 'none' : 'auto',
           width: '100%',
         }}
       >

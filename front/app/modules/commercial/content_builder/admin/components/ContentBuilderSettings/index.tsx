@@ -12,7 +12,6 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 // craft
 import { useEditor } from '@craftjs/core';
 import { ROOT_NODE } from '@craftjs/utils';
-import { getComponentNameMessage } from '../RenderNode';
 
 // intl
 import messages from '../../messages';
@@ -39,6 +38,7 @@ const ContentBuilderSettings = () => {
       selected = {
         id: currentNodeId,
         name: state.nodes[currentNodeId].data.name,
+        title: state.nodes[currentNodeId].data.custom.title,
         settings:
           state.nodes[currentNodeId].related &&
           state.nodes[currentNodeId].related.settings,
@@ -78,7 +78,7 @@ const ContentBuilderSettings = () => {
         iconColorOnHover={'#000'}
       />
       <Title variant="h2">
-        <FormattedMessage {...getComponentNameMessage(selected.name)} />
+        <FormattedMessage {...selected.title} />
       </Title>
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (

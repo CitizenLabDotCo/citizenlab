@@ -45,6 +45,7 @@ ThreeColumn.craft = {
   },
   custom: {
     title: messages.threeColumn,
+    hasChildren: true,
   },
 };
 
