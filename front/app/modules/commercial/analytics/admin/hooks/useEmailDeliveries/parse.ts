@@ -59,10 +59,10 @@ export const mergeTimeSeries = (timeSeriesQuery, dateColumn: string) => {
   return Object.values(groupedTimeSerie).map((values) => ({
     [dateColumn]: values[0][dateColumn],
     automated:
-      values.find((row: TimeSeriesResponseRow) => row.automated == true)
+      values.find((row: TimeSeriesResponseRow) => row.automated === true)
         ?.count ?? 0,
     custom:
-      values.find((row: TimeSeriesResponseRow) => row.automated == false)
+      values.find((row: TimeSeriesResponseRow) => row.automated === false)
         ?.count ?? 0,
   }));
 };
