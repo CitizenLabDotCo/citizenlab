@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.oneColumnLayout',
     defaultMessage: '1 column',
   },
-  error: {
-    id: 'app.containers.admin.ContentBuilder.error',
-    defaultMessage: 'error',
-  },
   errorMessage: {
     id: 'app.containers.admin.ContentBuilder.errorMessage',
     defaultMessage:

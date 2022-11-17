@@ -6,7 +6,7 @@ import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import RenderNode from '../RenderNode';
+import RenderNode from 'components/ContentBuilder/RenderNode';
 import Container from 'components/ContentBuilder/Widgets/Container';
 
 // widgets
