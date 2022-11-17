@@ -28,12 +28,30 @@ export default function useAdminPublicationsStatusCounts({
   const [counts, setCounts] = useState<
     IStatusCounts | undefined | null | Error
   >(undefined);
-  const [topics, setTopics] = useState<string[] | null>(topicFilter || null);
-  const [areas, setAreas] = useState<string[] | null>(areaFilter || null);
+  const [topics, setTopics] = useState<string[] | null>(null);
+  const [areas, setAreas] = useState<string[] | null>(null);
   const [search, setSearch] = useState<string | null>(null);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
+
+  // topicFilter and areaFilter are usually based off other
+  // requests, and will initially be null/undefined.
+  // Without the useEffect, they don't get updated.
+  // In fact, we should have a useEffect for each
+  // parameter, but others are hard-coded (not waiting for requests),
+  // which is why they're not problematic.
+  useEffect(() => {
+    if (topicFilter !== undefined) {
+      setTopics(topicFilter);
+    }
+  }, [JSON.stringify(topicFilter)]);
+
+  useEffect(() => {
+    if (areaFilter !== undefined) {
+      setAreas(areaFilter);
+    }
+  }, [JSON.stringify(areaFilter)]);
 
   const onChangeTopics = useCallback((topics: string[]) => {
     topics.length === 0 ? setTopics(null) : setTopics(topics);
@@ -50,8 +68,8 @@ export default function useAdminPublicationsStatusCounts({
   useEffect(() => {
     const queryParameters = {
       depth: rootLevelOnly ? 0 : undefined,
-      topics,
-      areas,
+      ...(topics && { topics }),
+      ...(areas && { areas }),
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
       search,

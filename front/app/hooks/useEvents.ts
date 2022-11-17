@@ -9,7 +9,6 @@ interface InputParameters {
   projectIds?: string[] | null;
   currentAndFutureOnly?: boolean;
   pastOnly?: boolean;
-  currentPage?: number;
   pageSize?: number;
   sort?: sort;
   projectPublicationStatuses?: string[];
@@ -27,17 +26,19 @@ const sortEvents = (_events: IEventData[], sort: sort) => {
     : events.sort((a, b) => (getStart(b) < getStart(a) ? 1 : -1));
 };
 
-export type TEvents = IEventData[] | undefined | null | Error;
+export type TEvents = IEventData[] | null | Error;
 export default function useEvents(parameters: InputParameters) {
-  const [events, setEvents] = useState<TEvents>(undefined);
-  const [projectIds, setProjectIds] = useState<string[]>(
-    parameters.projectIds ?? []
-  );
-  const [currentPage, setCurrentPage] = useState<number>(
-    parameters.currentPage ?? 1
-  );
+  const [events, setEvents] = useState<TEvents>(null);
+  const [projectIds, setProjectIds] = useState<string[] | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [pageSize] = useState(parameters.pageSize ?? DEFAULT_PAGE_SIZE);
+
+  useEffect(() => {
+    if (parameters.projectIds !== undefined) {
+      setProjectIds(parameters.projectIds);
+    }
+  }, [JSON.stringify(parameters.projectIds)]);
 
   const onProjectIdsChange = (projectIds: string[]) => {
     setProjectIds([...projectIds]);
@@ -48,10 +49,12 @@ export default function useEvents(parameters: InputParameters) {
   };
 
   useEffect(() => {
-    setEvents(undefined);
+    setEvents(null);
 
     const streamParams: IEventsStreamParams = {
-      queryParameters: { project_ids: projectIds },
+      queryParameters: {
+        ...(projectIds && { project_ids: projectIds }),
+      },
     };
 
     if (parameters.projectPublicationStatuses) {
