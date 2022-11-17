@@ -124,7 +124,11 @@ module IdeaCustomFields
         end
         fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
         FormLogicService.new(fields).replace_temp_ids!(temp_ids_to_ids_mapping)
-        # TODO: do validation of all logic in the form
+        unless FormLogicService.new(fields).valid?
+          # fields.each_with_index do |field, index|
+          #   errors[index.to_s] = field.errors.details
+          # end
+        end
         raise UpdateAllFailedError, errors if errors.present?
       end
     end
