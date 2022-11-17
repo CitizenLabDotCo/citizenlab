@@ -10,7 +10,8 @@ import {
 import Error from 'components/UI/Error';
 
 // intl
-import messages from '../../../messages';
+import messages from './messages';
+import moduleMessages from '../../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // craft
@@ -99,7 +100,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           id="e2e-content-builder-iframe-url-input"
           labelTooltipText={formatMessage(messages.embedIframeUrlLabelTooltip)}
           label={formatMessage(messages.embedIframeUrlLabel)}
-          placeholder={formatMessage(messages.urlPlaceholder)}
+          placeholder={formatMessage(moduleMessages.urlPlaceholder)}
           type="text"
           value={url}
           onChange={(value) => {
@@ -162,6 +163,9 @@ Iframe.craft = {
   },
   related: {
     settings: IframeSettings,
+  },
+  custom: {
+    title: messages.url,
   },
 };
 

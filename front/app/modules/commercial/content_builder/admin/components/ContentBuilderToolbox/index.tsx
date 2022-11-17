@@ -114,7 +114,7 @@ const ContentBuilderToolbox = ({
           />
         }
         icon="code"
-        label={formatMessage(messages.url)}
+        label={formatMessage(Iframe.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-about-box"
