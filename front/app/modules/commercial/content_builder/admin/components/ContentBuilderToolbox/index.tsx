@@ -68,7 +68,7 @@ const ContentBuilderToolbox = ({
         id="e2e-draggable-three-column"
         component={<ThreeColumn />}
         icon="layout-3column"
-        label={formatMessage(messages.threeColumn)}
+        label={formatMessage(ThreeColumn.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-white-space"

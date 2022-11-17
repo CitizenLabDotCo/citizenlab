@@ -37,10 +37,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.twoColumnLayoutVariant2-1',
     defaultMessage: '2 columns with 60% and 30% width respectively',
   },
-  threeColumn: {
-    id: 'app.containers.admin.ContentBuilder.threeColumnLayout',
-    defaultMessage: '3 column',
-  },
   error: {
     id: 'app.containers.admin.ContentBuilder.error',
     defaultMessage: 'error',
@@ -57,11 +53,6 @@ export default defineMessages({
   infoWithAccordions: {
     id: 'app.containers.admin.ContentBuilder.infoWithAccordions',
     defaultMessage: 'Info & accordions',
-  },
-  textValue: {
-    id: 'app.containers.admin.ContentBuilder.textValue',
-    defaultMessage:
-      'This is some text. You can edit and format it by using the editor in the panel on the right.',
   },
   delete: {
     id: 'app.containers.admin.ContentBuilder.delete',

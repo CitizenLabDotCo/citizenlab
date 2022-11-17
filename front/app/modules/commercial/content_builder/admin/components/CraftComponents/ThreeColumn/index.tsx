@@ -4,10 +4,13 @@ import React from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // craft
-import { UserComponent, Element } from '@craftjs/core';
+import { Element } from '@craftjs/core';
 import Container from '../Container';
 
-const ThreeColumn: UserComponent = () => {
+// i18n
+import messages from './messages';
+
+const ThreeColumn = () => {
   const isLargeTablet = useBreakpoint('tablet');
 
   return (
@@ -39,6 +42,9 @@ const ThreeColumnSettings = () => {
 ThreeColumn.craft = {
   related: {
     settings: ThreeColumnSettings,
+  },
+  custom: {
+    title: messages.threeColumn,
   },
 };
 
