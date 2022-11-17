@@ -601,6 +601,171 @@ resource 'Idea Custom Fields' do
           })
         end
 
+        example 'Reorder a page with logic' do
+          page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
+          field_to_update = create(
+            :custom_field_linear_scale,
+            resource: custom_form,
+            title_multiloc: { 'en' => 'Question 1 on page 1' },
+            logic: {
+              rules: [
+                {
+                  if: 1,
+                  then: [
+                    {
+                      effect: 'hide',
+                      target_id: page2.id
+                    }
+                  ]
+                }
+              ]
+            }
+          )
+
+          request = {
+            custom_fields: [
+              {
+                id: page1.id,
+                input_type: 'page',
+                title_multiloc: page1.title_multiloc,
+                description_multiloc: page1.description_multiloc,
+                required: false,
+                enabled: true
+              },
+              {
+                id: field_to_update.id,
+                input_type: 'linear_scale',
+                title_multiloc: { 'en' => 'Question 1 on page 1' },
+                required: false,
+                enabled: true,
+                maximum: 5,
+                minimum_label_multiloc: { 'en' => 'Strongly disagree' },
+                maximum_label_multiloc: { 'en' => 'Strongly agree' },
+                logic: {
+                  rules: [
+                    {
+                      if: 1,
+                      then: [
+                        {
+                          effect: 'hide',
+                          target_id: page2.id
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                id: page3.id,
+                input_type: 'page',
+                title_multiloc: page3.title_multiloc,
+                description_multiloc: page3.description_multiloc,
+                required: false,
+                enabled: true
+              },
+              {
+                id: page2.id,
+                input_type: 'page',
+                title_multiloc: page2.title_multiloc,
+                description_multiloc: page2.description_multiloc,
+                required: false,
+                enabled: true
+              }
+            ]
+          }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 4
+          expect(json_response[:data][0]).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
+              description_multiloc: page1.description_multiloc.symbolize_keys,
+              enabled: true,
+              input_type: 'page',
+              key: page1.key,
+              ordering: 0,
+              required: false,
+              title_multiloc: page1.title_multiloc.symbolize_keys,
+              updated_at: an_instance_of(String)
+            },
+            id: page1.id,
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
+          })
+          expect(json_response[:data][1]).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
+              description_multiloc: field_to_update.description_multiloc.symbolize_keys,
+              enabled: true,
+              input_type: 'linear_scale',
+              key: field_to_update.key,
+              ordering: 1,
+              required: false,
+              title_multiloc: field_to_update.title_multiloc.symbolize_keys,
+              updated_at: an_instance_of(String),
+              maximum: 5,
+              minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
+              maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+              logic: {
+                rules: [
+                  {
+                    if: 1,
+                    then: [
+                      {
+                        effect: 'hide',
+                        target_id: page2.id
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            id: field_to_update.id,
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
+          })
+          expect(json_response[:data][2]).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
+              description_multiloc: page3.description_multiloc.symbolize_keys,
+              enabled: true,
+              input_type: 'page',
+              key: page3.key,
+              ordering: 2,
+              required: false,
+              title_multiloc: page3.title_multiloc.symbolize_keys,
+              updated_at: an_instance_of(String)
+            },
+            id: page3.id,
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
+          })
+          expect(json_response[:data][3]).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
+              description_multiloc: page2.description_multiloc.symbolize_keys,
+              enabled: true,
+              input_type: 'page',
+              key: page2.key,
+              ordering: 3,
+              required: false,
+              title_multiloc: page2.title_multiloc.symbolize_keys,
+              updated_at: an_instance_of(String)
+            },
+            id: page2.id,
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
+          })
+        end
+
         example 'Remove logic from a field' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
           page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
