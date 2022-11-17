@@ -29,7 +29,13 @@ class FormLogicService
 
   def valid?
     fields.all? do |field|
-      valid_structure? field.logic
+      next false unless valid_structure? field.logic
+      next true if field.logic.blank?
+
+      valid_target_ids?(field.logic) &&
+        target_after_source?(field) &&
+        target_is_page?(field.logic) &&
+        source_is_not_page?(field)
     end
   end
 
@@ -50,6 +56,42 @@ class FormLogicService
         action.keys == allowed_then_keys && EFFECTS.include?(action['effect'])
       end
     end
+  end
+
+  def valid_target_ids?(logic)
+    logic['rules'].all? do |rule|
+      rule['then'].all? do |action|
+        next true unless action['target_id']
+
+        fields.map(&:id).include? action['target_id']
+      end
+    end
+  end
+
+  def target_after_source?(field)
+    field.logic['rules'].all? do |rule|
+      rule['then'].all? do |action|
+        next true unless action['target_id']
+
+        target_field = fields.find { |find_field| find_field.id == action['target_id'] }
+        target_field.ordering > field.ordering
+      end
+    end
+  end
+
+  def target_is_page?(logic)
+    logic['rules'].all? do |rule|
+      rule['then'].all? do |action|
+        next true unless action['target_id']
+
+        target_field = fields.find { |field| field.id == action['target_id'] }
+        target_field.page?
+      end
+    end
+  end
+
+  def source_is_not_page?(field)
+    !field.page?
   end
 
   def ui_schema_rule_for(effect, field, value)
