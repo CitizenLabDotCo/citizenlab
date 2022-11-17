@@ -14,7 +14,7 @@ import { useEditor } from '@craftjs/core';
 import { ROOT_NODE } from '@craftjs/utils';
 
 // intl
-import messages from '../../messages';
+import messages from '../messages';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // events

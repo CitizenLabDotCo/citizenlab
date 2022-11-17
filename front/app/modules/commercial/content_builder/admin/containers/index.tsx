@@ -18,7 +18,7 @@ import Editor from '../components/Editor';
 import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 import ContentBuilderFrame from '../components/ContentBuilderFrame';
-import ContentBuilderSettings from '../components/ContentBuilderSettings';
+import ContentBuilderSettings from 'components/ContentBuilder/Settings';
 
 // hooks
 import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
