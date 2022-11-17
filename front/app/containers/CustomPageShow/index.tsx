@@ -20,17 +20,15 @@ import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
 import useEvents from 'hooks/useEvents';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+import useAdminPublications from 'hooks/useAdminPublications';
 
 // utils
 import { isError, isNil, isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import useLocalize from 'hooks/useLocalize';
-
 // styling
 import styled from 'styled-components';
 import { fontSizes, isRtl, media } from 'utils/styleUtils';
-import useAdminPublications from 'hooks/useAdminPublications';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
