@@ -135,16 +135,83 @@ export const FormEdit = ({
     setSelectedField(newField as IFlatCustomFieldWithIndex);
   };
 
+  const numberChildren = (fields: any, fieldIndex: number) => {
+    const draggedElement = fields[fieldIndex];
+    if (draggedElement.input_type === 'page') {
+      let endIndex = fieldIndex + 1;
+      let count = 1;
+      while (endIndex !== fields.length) {
+        if (
+          fields[endIndex].input_type === 'page' ||
+          endIndex === fields.length - 1
+        ) {
+          if (endIndex === fields.length - 1) {
+            count++;
+          }
+          return count;
+        }
+        count++;
+        endIndex++;
+      }
+    }
+    return 1;
+  };
+
   const handleDragRow = (fromIndex: number, toIndex: number) => {
     const fieldsCopy = fields;
-    const elements = fieldsCopy.splice(fromIndex, 2);
-    elements
-      .reverse()
-      .map((element, i) => fieldsCopy.splice(toIndex, 0, element));
 
-    console.log(fieldsCopy);
-    replace([]);
-    replace(fieldsCopy);
+    if (fieldsCopy[fromIndex].input_type !== 'page') {
+      move(fromIndex, toIndex);
+    } else {
+      replace([]);
+
+      // Get page + children we're moving
+      const elements = fieldsCopy.slice(
+        fromIndex,
+        fromIndex + numberChildren(fields, fromIndex)
+      );
+      console.log('ELEMENTS TO MOVE: ', elements);
+
+      // Save the insert field which "toIndex" represents
+      const insertAtField = fieldsCopy[toIndex];
+      console.log('FIELD TO INSERT AT: ', insertAtField);
+
+      // Remove the page + children from original position in the fields array
+      // Now, this array should contain all elements except the page/children we are moving
+      fieldsCopy.splice(fromIndex, numberChildren(fields, fromIndex));
+      console.log('FIELDS WITH ELEMENTS REMOVED: ', fieldsCopy);
+
+      // Calculate the new index we want to insert the elements at
+      const newInsertIndex = fieldsCopy.indexOf(insertAtField);
+      console.log(
+        'INDEX OF THE TARGET FIELD: ',
+        fieldsCopy.indexOf(insertAtField)
+      );
+
+      console.log(
+        'NUM CHILDREN TARGET: ',
+        numberChildren(fieldsCopy, newInsertIndex)
+      );
+      const numChildTarget = numberChildren(fieldsCopy, newInsertIndex);
+
+      // Insert them at the index of insertAtField
+      if (toIndex > fromIndex) {
+        elements.reverse().map((element, _i) => {
+          fieldsCopy.splice(newInsertIndex + numChildTarget, 0, element);
+        });
+      } else {
+        elements.reverse().map((element, _i) => {
+          fieldsCopy.splice(newInsertIndex, 0, element);
+        });
+      }
+
+      replace([]);
+      replace(fieldsCopy);
+    }
+
+    if (!isNilOrError(selectedField)) {
+      setSelectedField({ ...selectedField, index: toIndex });
+    }
   };
 
   const hasErrors = !!Object.keys(errors).length;
