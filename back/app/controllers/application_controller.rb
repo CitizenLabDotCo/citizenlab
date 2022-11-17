@@ -19,10 +19,6 @@ class ApplicationController < ActionController::API
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  def send_success(data = nil, status = 200)
-    render json: data, status: status
-  end
-
   def send_error(error = nil, status = 400)
     render json: error, status: status
   end
@@ -37,10 +33,6 @@ class ApplicationController < ActionController::API
 
   def send_unprocessable_entity(record)
     render json: { errors: record.errors.details }, status: :unprocessable_entity
-  end
-
-  def send_no_content(status = 204)
-    head status
   end
 
   def transaction_error(exception)
