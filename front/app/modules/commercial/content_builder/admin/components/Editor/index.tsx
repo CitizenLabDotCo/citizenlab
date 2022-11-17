@@ -1,12 +1,11 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
+import { SerializedNodes } from '@craftjs/core';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import RenderNode from 'components/ContentBuilder/RenderNode';
+import BaseEditor from 'components/ContentBuilder/Editor';
 import Container from 'components/ContentBuilder/Widgets/Container';
 
 // widgets
@@ -26,7 +25,7 @@ type EditorProps = {
   children?: React.ReactNode;
   isPreview: boolean;
   onNodesChange?: (nodes: SerializedNodes) => void;
-} & WithRouterProps;
+};
 
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,
@@ -34,7 +33,7 @@ const Editor: React.FC<EditorProps> = ({
   children,
 }) => {
   return (
-    <CraftEditor
+    <BaseEditor
       resolver={{
         Box,
         Container,
@@ -50,20 +49,12 @@ const Editor: React.FC<EditorProps> = ({
         ImageTextCards,
         Button,
       }}
-      indicator={{
-        success: 'rgb(98, 196, 98)',
-        error: 'red',
-        transition: 'none',
-      }}
-      onRender={isPreview ? undefined : RenderNode}
-      enabled={isPreview ? false : true}
-      onNodesChange={(data) =>
-        onNodesChange && onNodesChange(data.getSerializedNodes())
-      }
+      isPreview={isPreview}
+      onNodesChange={onNodesChange}
     >
       {children}
-    </CraftEditor>
+    </BaseEditor>
   );
 };
 
-export default withRouter(Editor);
+export default Editor;
