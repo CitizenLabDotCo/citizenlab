@@ -157,8 +157,8 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
   end
 
   create_table "areas_static_pages", force: :cascade do |t|
-    t.uuid "area_id"
-    t.uuid "static_page_id"
+    t.uuid "area_id", null: false
+    t.uuid "static_page_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["area_id"], name: "index_areas_static_pages_on_area_id"
@@ -1170,8 +1170,8 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
   end
 
   create_table "static_pages_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "topic_id"
-    t.uuid "static_page_id"
+    t.uuid "topic_id", null: false
+    t.uuid "static_page_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["static_page_id"], name: "index_static_pages_topics_on_static_page_id"
