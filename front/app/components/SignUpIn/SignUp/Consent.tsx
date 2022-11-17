@@ -5,7 +5,7 @@ import Link from 'utils/cl-router/Link';
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
 import { AuthProvider } from '../AuthProviders';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -23,7 +23,7 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-const ConsentText = styled.div`
+const ConsentText = styled(Text)`
   color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
