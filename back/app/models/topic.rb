@@ -29,15 +29,15 @@ class Topic < ApplicationRecord
   has_many :ideas, through: :ideas_topics
   has_many :initiatives_topics, dependent: :destroy
   has_many :initiatives, through: :initiatives_topics
-  has_and_belongs_to_many :static_pages
+
+  has_many :static_pages_topics, dependent: :restrict_with_error
+  has_many :static_pages, through: :static_pages_topics
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validates :code, inclusion: { in: ->(_record) { codes } }
 
   before_validation :strip_title
-
-  before_destroy :validate_empty_static_pages
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
   scope :defaults, -> { where(code: DEFAULT_CODES) }
@@ -48,13 +48,6 @@ class Topic < ApplicationRecord
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
-  end
-
-  def validate_empty_static_pages
-    return unless static_pages.exists?
-
-    errors.add(:static_pages, 'linked_static_pages_exist')
-    throw :abort
   end
 end
 
