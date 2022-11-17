@@ -15,7 +15,8 @@ import { darken } from 'polished';
 import { useTheme } from 'styled-components';
 
 // intl
-import messages from '../../../messages';
+import messages from './messages';
+import moduleMessages from '../../../messages';
 import { injectIntl } from 'utils/cl-intl';
 
 type ButtonProps = {
@@ -112,7 +113,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
               {formatMessage(messages.buttonUrl)}
             </Title>
           }
-          placeholder={formatMessage(messages.urlPlaceholder)}
+          placeholder={formatMessage(moduleMessages.urlPlaceholder)}
           type="text"
           value={url}
           onChange={(value) => {
@@ -219,6 +220,9 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
 Button.craft = {
   related: {
     settings: ButtonSettings,
+  },
+  custom: {
+    title: messages.button,
   },
 };
 

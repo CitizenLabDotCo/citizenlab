@@ -88,14 +88,14 @@ const ContentBuilderToolbox = ({
         id="e2e-draggable-button"
         component={
           <Button
-            text={formatMessage(messages.button)}
+            text={formatMessage(Button.craft.custom.title)}
             url={''}
             type={'primary'}
             alignment={'left'}
           />
         }
         icon="button"
-        label={formatMessage(messages.button)}
+        label={formatMessage(Button.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-image"
