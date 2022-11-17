@@ -3,15 +3,7 @@ import { WrappedComponentProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-import useAreas from 'hooks/useAreas';
-import { reorderArea, IAreaData, deleteArea } from 'services/areas';
-
-import messages from '../messages';
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-
-import useLocalize from 'hooks/useLocalize';
-
+// components
 import {
   SortableList,
   SortableRow,
@@ -24,10 +16,20 @@ import {
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import AreaTermConfig from './AreaTermConfig';
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
+
+// resources
+import useAreas from 'hooks/useAreas';
+import { reorderArea, IAreaData, deleteArea } from 'services/areas';
 import useCustomPage from 'hooks/useCustomPage';
+import AreaTermConfig from './AreaTermConfig';
+
+// i18n
+import messages from '../messages';
+import T from 'components/T';
+import useLocalize from 'hooks/useLocalize';
+import { FormattedMessage } from 'utils/cl-intl';
 
 export const StyledLink = styled(Link)`
   color: ${colors.white} !important;
@@ -53,6 +55,7 @@ const AreaRow = ({
   const localize = useLocalize();
 
   if (isNilOrError(item)) return null;
+
   const { static_page_ids } = item.attributes;
 
   const staticPages = static_page_ids.map((customPageId) => {
@@ -73,7 +76,7 @@ const AreaRow = ({
           }
 
           return (
-            <li>
+            <li key={staticPage.id}>
               <StyledLink
                 to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
               >
@@ -88,7 +91,6 @@ const AreaRow = ({
 
   return (
     <SortableRow
-      key={item.id}
       id={item.id}
       index={index}
       isLastItem={isLastItem}
@@ -144,7 +146,7 @@ const AreaList = (props: Props) => {
     reorderArea(areaId, newOrder);
   };
 
-  const areas = useAreas();
+  const areas = useAreas({ includeStaticPages: true });
 
   if (isNilOrError(areas)) return null;
 
@@ -178,13 +180,15 @@ const AreaList = (props: Props) => {
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>
             {itemsList.map((item: IAreaData, index: number) => {
-              console.log({ item });
               return (
                 <AreaRow
+                  key={item.id}
                   isLastItem={index === itemsList.length - 1}
                   item={item}
                   index={index}
-                  handleDeleteClick={handleDeleteClick}
+                  handleDeleteClick={() => {
+                    handleDeleteClick(item.id);
+                  }}
                   handleDropRow={handleDropRow}
                   handleDragRow={handleDragRow}
                 />

@@ -84,6 +84,6 @@ export default defineMessages({
   areaIsLinkedToStaticPage: {
     id: 'app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage',
     defaultMessage:
-      'This area cannot be deleted because it is being used to display projects on the following more custom page(s). You will need to unlink the area from the page, or delete the page before you can delete the area.',
+      'This area cannot be deleted because it is being used to display projects on the following custom page(s). You will need to unlink the area from the page, or delete the page before you can delete the area.',
   },
 });
