@@ -41,10 +41,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.threeColumnLayout',
     defaultMessage: '3 column',
   },
-  text: {
-    id: 'app.containers.admin.ContentBuilder.text',
-    defaultMessage: 'Text',
-  },
   error: {
     id: 'app.containers.admin.ContentBuilder.error',
     defaultMessage: 'error',

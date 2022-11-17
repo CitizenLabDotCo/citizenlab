@@ -8,6 +8,9 @@ import QuillEditor from 'components/UI/QuillEditor';
 import { useNode } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
+// i18n
+import messages from './messages';
+
 // hooks
 import { useTheme } from 'styled-components';
 
@@ -53,6 +56,9 @@ Text.craft = {
   },
   related: {
     settings: TextSettings,
+  },
+  custom: {
+    title: messages.text,
   },
 };
 

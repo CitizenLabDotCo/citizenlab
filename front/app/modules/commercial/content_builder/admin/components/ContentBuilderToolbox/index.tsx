@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 // i18n
 import messages from '../../messages';
 import accordionMessages from '../CraftComponents/Accordion/messages';
+import textMessages from '../CraftComponents/Text/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
@@ -80,9 +81,9 @@ const ContentBuilderToolbox = ({
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-text"
-        component={<Text text={formatMessage(messages.textValue)} />}
+        component={<Text text={formatMessage(textMessages.textValue)} />}
         icon="text"
-        label={formatMessage(messages.text)}
+        label={formatMessage(Text.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-button"
