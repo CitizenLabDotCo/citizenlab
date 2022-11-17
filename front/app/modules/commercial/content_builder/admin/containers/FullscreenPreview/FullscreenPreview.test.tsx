@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import { EditModePreview } from './EditModePreview';
+import { EditModePreview } from '.';
 
 let mockLocale = 'en';
 jest.mock('services/locale');

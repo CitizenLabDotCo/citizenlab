@@ -9,7 +9,7 @@ import useProject from 'hooks/useProject';
 import { useParams } from 'react-router-dom';
 
 // components
-import Editor from '../Editor';
+import Editor from '../../components/Editor';
 import ContentBuilderFrame from 'components/ContentBuilder/Frame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';

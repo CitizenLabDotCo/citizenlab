@@ -2,10 +2,10 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const ContentBuilderComponent = React.lazy(() => import('./admin/containers'));
-const ContentBuilderEditModePreview = React.lazy(
+const FullscreenPreview = React.lazy(
   () =>
     import(
-      'modules/commercial/content_builder/admin/components/ContentBuilderEditModePreview/EditModePreview'
+      'modules/commercial/content_builder/admin/containers/FullscreenPreview'
     )
 );
 
@@ -32,7 +32,7 @@ const configuration: ModuleConfiguration = {
       },
       {
         path: 'content-builder/projects/:projectId/preview',
-        element: <ContentBuilderEditModePreview />,
+        element: <FullscreenPreview />,
       },
     ],
   },
