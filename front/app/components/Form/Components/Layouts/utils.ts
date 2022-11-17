@@ -14,7 +14,11 @@ export interface PageType extends Layout {
   /**
    * The label associated with this category layout.
    */
-  label: string;
+
+  options: {
+    title: string;
+    description: string;
+  };
 }
 
 export interface PageCategorization extends UISchemaElement {
