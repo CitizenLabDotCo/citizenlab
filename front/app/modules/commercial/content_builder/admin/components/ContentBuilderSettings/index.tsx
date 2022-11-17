@@ -15,7 +15,7 @@ import { ROOT_NODE } from '@craftjs/utils';
 
 // intl
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -30,18 +30,27 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   right: 8px;
 `;
 
+interface Selected {
+  id: string;
+  name: string;
+  title: MessageDescriptor | undefined;
+  settings: React.ElementType<any> | undefined;
+  isDeletable: boolean;
+}
+
 const ContentBuilderSettings = () => {
   const { actions, selected, isEnabled } = useEditor((state, query) => {
     const currentNodeId: string = query.getEvent('selected').last();
-    let selected;
+    let selected: Selected | undefined;
+
     if (currentNodeId) {
       selected = {
         id: currentNodeId,
         name: state.nodes[currentNodeId].data.name,
-        title: state.nodes[currentNodeId].data.custom.title,
-        settings:
-          state.nodes[currentNodeId].related &&
-          state.nodes[currentNodeId].related.settings,
+        title: state.nodes[currentNodeId].data.custom?.title as
+          | MessageDescriptor
+          | undefined,
+        settings: state.nodes[currentNodeId].related?.settings,
         isDeletable: query.node(currentNodeId).isDeletable(),
       };
     }
@@ -77,9 +86,11 @@ const ContentBuilderSettings = () => {
         iconColor={colors.textSecondary}
         iconColorOnHover={'#000'}
       />
-      <Title variant="h2">
-        <FormattedMessage {...selected.title} />
-      </Title>
+      {selected.title && (
+        <Title variant="h2">
+          <FormattedMessage {...selected.title} />
+        </Title>
+      )}
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (
         <Box display="flex">
