@@ -6,19 +6,21 @@ import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import Container from '../CraftComponents/Container';
-import Text from '../CraftComponents/Text';
-import TwoColumn from '../CraftComponents/TwoColumn';
-import ThreeColumn from '../CraftComponents/ThreeColumn';
-import Image from '../CraftComponents/Image';
 import RenderNode from '../RenderNode';
-import Iframe from '../CraftComponents/Iframe';
-import AboutBox from '../CraftComponents/AboutBox';
-import Accordion from '../CraftComponents/Accordion';
-import WhiteSpace from '../CraftComponents/WhiteSpace';
+import Container from 'components/ContentBuilder/Widgets/Container';
+
+// widgets
+import Text from 'components/ContentBuilder/Widgets/Text';
+import TwoColumn from 'components/ContentBuilder/Widgets/TwoColumn';
+import ThreeColumn from 'components/ContentBuilder/Widgets/ThreeColumn';
+import Image from 'components/ContentBuilder/Widgets/Image';
+import Iframe from 'components/ContentBuilder/Widgets/Iframe';
+import AboutBox from 'components/ContentBuilder/Widgets/AboutBox';
+import Accordion from 'components/ContentBuilder/Widgets/Accordion';
+import WhiteSpace from 'components/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
-import Button from '../CraftComponents/Button';
+import Button from 'components/ContentBuilder/Widgets/Button';
 
 type EditorProps = {
   children?: React.ReactNode;

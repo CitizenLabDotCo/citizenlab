@@ -5,16 +5,18 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { UserComponent, Element } from '@craftjs/core';
-import TwoColumn from '../../CraftComponents/TwoColumn';
-import Container from '../../CraftComponents/Container';
-import Image from '../../CraftComponents/Image';
-import Text from '../../CraftComponents/Text';
+
+// widgets
+import TwoColumn from 'components/ContentBuilder/Widgets/TwoColumn';
+import Container from 'components/ContentBuilder/Widgets/Container';
+import Image from 'components/ContentBuilder/Widgets/Image';
+import Text from 'components/ContentBuilder/Widgets/Text';
+import WhiteSpace from 'components/ContentBuilder/Widgets/WhiteSpace';
 
 // intl
-import textMessages from '../../CraftComponents/Text/messages';
+import textMessages from 'components/ContentBuilder/Widgets/Text/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import WhiteSpace from '../../CraftComponents/WhiteSpace';
 
 const ImageTextCards: UserComponent = ({
   intl: { formatMessage },

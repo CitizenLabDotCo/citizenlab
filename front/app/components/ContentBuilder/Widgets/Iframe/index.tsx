@@ -11,7 +11,7 @@ import Error from 'components/UI/Error';
 
 // intl
 import messages from './messages';
-import moduleMessages from '../../../messages';
+import sharedMessages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // craft
@@ -19,7 +19,7 @@ import { useNode } from '@craftjs/core';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { CONTENT_BUILDER_ERROR_EVENT } from '../../../containers';
+import { CONTENT_BUILDER_ERROR_EVENT } from 'components/ContentBuilder/constants';
 
 // types
 import { Locale } from 'typings';
@@ -100,7 +100,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           id="e2e-content-builder-iframe-url-input"
           labelTooltipText={formatMessage(messages.embedIframeUrlLabelTooltip)}
           label={formatMessage(messages.embedIframeUrlLabel)}
-          placeholder={formatMessage(moduleMessages.urlPlaceholder)}
+          placeholder={formatMessage(sharedMessages.urlPlaceholder)}
           type="text"
           value={url}
           onChange={(value) => {

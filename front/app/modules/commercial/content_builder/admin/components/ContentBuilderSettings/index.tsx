@@ -19,7 +19,7 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from '../../containers';
+import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/ContentBuilder/constants';
 
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);

@@ -5,8 +5,8 @@ import { useParams } from 'react-router-dom';
 
 // i18n
 import messages from '../../messages';
-import accordionMessages from '../CraftComponents/Accordion/messages';
-import textMessages from '../CraftComponents/Text/messages';
+import accordionMessages from 'components/ContentBuilder/Widgets/Accordion/messages';
+import textMessages from 'components/ContentBuilder/Widgets/Text/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
@@ -15,15 +15,15 @@ import SectionTitle from 'components/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/ContentBuilder/Toolbox/DraggableElement';
 
 // widgets
-import Text from '../CraftComponents/Text';
-import TwoColumn from '../CraftComponents/TwoColumn';
-import ThreeColumn from '../CraftComponents/ThreeColumn';
-import Image from '../CraftComponents/Image';
-import Iframe from '../CraftComponents/Iframe';
-import AboutBox from '../CraftComponents/AboutBox';
-import Accordion from '../CraftComponents/Accordion';
-import WhiteSpace from '../CraftComponents/WhiteSpace';
-import Button from '../CraftComponents/Button';
+import Text from 'components/ContentBuilder/Widgets/Text';
+import TwoColumn from 'components/ContentBuilder/Widgets/TwoColumn';
+import ThreeColumn from 'components/ContentBuilder/Widgets/ThreeColumn';
+import Image from 'components/ContentBuilder/Widgets/Image';
+import Iframe from 'components/ContentBuilder/Widgets/Iframe';
+import AboutBox from 'components/ContentBuilder/Widgets/AboutBox';
+import Accordion from 'components/ContentBuilder/Widgets/Accordion';
+import WhiteSpace from 'components/ContentBuilder/Widgets/WhiteSpace';
+import Button from 'components/ContentBuilder/Widgets/Button';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 

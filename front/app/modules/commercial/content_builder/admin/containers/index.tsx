@@ -32,6 +32,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import eventEmitter from 'utils/eventEmitter';
+import {
+  CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
+  CONTENT_BUILDER_ERROR_EVENT,
+  IMAGE_UPLOADING_EVENT,
+} from 'components/ContentBuilder/constants';
 
 // intl
 import messages from '../messages';
@@ -51,11 +56,6 @@ type ContentBuilderErrors = Record<
   string,
   { hasError: boolean; selectedLocale: Locale }
 >;
-
-export const IMAGE_UPLOADING_EVENT = 'imageUploading';
-export const CONTENT_BUILDER_ERROR_EVENT = 'contentBuilderError';
-export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
-  'deleteContentBuilderElement';
 
 export const ContentBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);

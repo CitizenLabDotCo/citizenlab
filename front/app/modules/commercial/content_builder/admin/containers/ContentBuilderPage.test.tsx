@@ -1,11 +1,11 @@
 import React from 'react';
 import { screen, render, act } from 'utils/testUtils/rtl';
 
+import { ContentBuilderPage } from './';
 import {
-  ContentBuilderPage,
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
-} from './';
+} from 'components/ContentBuilder/constants';
 
 import { IContentBuilderLayoutData } from '../../services/contentBuilder';
 import eventEmitter from 'utils/eventEmitter';

@@ -68,8 +68,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel',
     defaultMessage: 'Close settings panel',
   },
-  urlPlaceholder: {
-    id: 'app.containers.admin.ContentBuilder.urlPlaceholder',
-    defaultMessage: 'https://example.com',
-  },
 });

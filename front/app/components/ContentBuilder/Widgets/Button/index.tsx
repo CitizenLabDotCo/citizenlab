@@ -16,7 +16,7 @@ import { useTheme } from 'styled-components';
 
 // intl
 import messages from './messages';
-import moduleMessages from '../../../messages';
+import sharedMessages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 
 type ButtonProps = {
@@ -113,7 +113,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
               {formatMessage(messages.buttonUrl)}
             </Title>
           }
-          placeholder={formatMessage(moduleMessages.urlPlaceholder)}
+          placeholder={formatMessage(sharedMessages.urlPlaceholder)}
           type="text"
           value={url}
           onChange={(value) => {
