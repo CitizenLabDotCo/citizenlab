@@ -13,6 +13,7 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // Context
 import { FormContext } from 'components/Form/contexts';
@@ -99,9 +100,21 @@ const CLPageLayout = memo(
           return (
             currentStep === index && (
               <StyledFormSection key={index}>
-                <Title fontSize="xl" mb="32px">
-                  {page.label}
+                <Title variant="h2" mb="32px" color="tenantText">
+                  {page.options.title}
                 </Title>
+                <Box mb="16px">
+                  <QuillEditedContent
+                    fontWeight={400}
+                    textColor={theme.colors.tenantText}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: page.options.description,
+                      }}
+                    />
+                  </QuillEditedContent>
+                </Box>
                 {page.elements.map((elementUiSchema, index) => (
                   <Box width="100%" mb="40px" key={index}>
                     <JsonFormsDispatch
