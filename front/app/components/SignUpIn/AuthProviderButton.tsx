@@ -185,7 +185,7 @@ const AuthProviderButton = memo<Props>(
     );
 
     const isContinueEnabled =
-      authProvider === 'id_vienna_saml' ? true : tacAccepted && privacyAccepted;
+      authProvider === 'id_vienna_saml' || (tacAccepted && privacyAccepted);
 
     return (
       <Container className={className} id={id}>
