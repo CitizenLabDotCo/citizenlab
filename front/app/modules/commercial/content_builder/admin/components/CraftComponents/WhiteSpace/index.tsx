@@ -11,13 +11,18 @@ import {
 import Divider from 'components/admin/Divider';
 
 // craft
-import { useNode, UserComponent } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
+import messages from './messages';
 
-const WhiteSpace: UserComponent = ({ size, withDivider }) => {
+interface Props {
+  size?: 'small' | 'medium' | 'large';
+  withDivider?: boolean;
+}
+
+const WhiteSpace = ({ size, withDivider }: Props) => {
   const isPhone = useBreakpoint('phone');
 
   const calculatePaddingY = () => {
@@ -107,6 +112,9 @@ WhiteSpace.craft = {
   },
   related: {
     settings: WhiteSpaceSettings,
+  },
+  custom: {
+    title: messages.whiteSpace,
   },
 };
 
