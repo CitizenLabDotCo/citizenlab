@@ -274,12 +274,14 @@ resource 'Idea Custom Fields' do
 
         example 'Replace logic of a field' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
-          page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
           field_to_update = create(
             :custom_field_linear_scale,
             resource: custom_form,
-            title_multiloc: { 'en' => 'Question 1 on page 1' },
+            title_multiloc: { 'en' => 'Question 1 on page 1' }
+          )
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
+          field_to_update.update!(
             logic: {
               rules: [
                 {
@@ -294,7 +296,6 @@ resource 'Idea Custom Fields' do
               ]
             }
           )
-
           request = {
             custom_fields: [
               {
@@ -439,11 +440,13 @@ resource 'Idea Custom Fields' do
 
         example 'Update logic referring to a new page' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
           field_to_update = create(
             :custom_field_linear_scale,
             resource: custom_form,
-            title_multiloc: { 'en' => 'Question 1 on page 1' },
+            title_multiloc: { 'en' => 'Question 1 on page 1' }
+          )
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          field_to_update.update!(
             logic: {
               rules: [
                 {
@@ -458,7 +461,6 @@ resource 'Idea Custom Fields' do
               ]
             }
           )
-
           request = {
             custom_fields: [
               {
@@ -603,12 +605,14 @@ resource 'Idea Custom Fields' do
 
         example 'Reorder a page with logic' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
-          page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
           field_to_update = create(
             :custom_field_linear_scale,
             resource: custom_form,
-            title_multiloc: { 'en' => 'Question 1 on page 1' },
+            title_multiloc: { 'en' => 'Question 1 on page 1' }
+          )
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
+          field_to_update.update!(
             logic: {
               rules: [
                 {
@@ -676,7 +680,6 @@ resource 'Idea Custom Fields' do
             ]
           }
           do_request request
-
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 4
@@ -768,11 +771,13 @@ resource 'Idea Custom Fields' do
 
         example 'Remove logic from a field' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
           field_to_update = create(
             :custom_field_linear_scale,
             resource: custom_form,
-            title_multiloc: { 'en' => 'Question 1 on page 1' },
+            title_multiloc: { 'en' => 'Question 1 on page 1' }
+          )
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          field_to_update.update!(
             logic: {
               rules: [
                 {
@@ -787,7 +792,6 @@ resource 'Idea Custom Fields' do
               ]
             }
           )
-
           request = {
             custom_fields: [
               {
@@ -883,11 +887,13 @@ resource 'Idea Custom Fields' do
 
         example 'Delete logic referring to a deleted page' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
           field_to_update = create(
             :custom_field_linear_scale,
             resource: custom_form,
-            title_multiloc: { 'en' => 'Question 1 on page 1' },
+            title_multiloc: { 'en' => 'Question 1 on page 1' }
+          )
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          field_to_update.update!(
             logic: {
               rules: [
                 {
@@ -973,11 +979,13 @@ resource 'Idea Custom Fields' do
 
         example 'Delete field with logic referring to a deleted page' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
-          create(
+          field_to_delete = create(
             :custom_field_linear_scale,
             resource: custom_form,
-            title_multiloc: { 'en' => 'Question 1 on page 1' },
+            title_multiloc: { 'en' => 'Question 1 on page 1' }
+          )
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          field_to_delete.update!(
             logic: {
               rules: [
                 {
@@ -1031,12 +1039,14 @@ resource 'Idea Custom Fields' do
 
         example 'Delete one rule of field logic with multiple rules' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
-          page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
           field_to_update = create(
             :custom_field_linear_scale,
             resource: custom_form,
-            title_multiloc: { 'en' => 'Question 1 on page 1' },
+            title_multiloc: { 'en' => 'Question 1 on page 1' }
+          )
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
+          field_to_update.update!(
             logic: {
               rules: [
                 {
@@ -1451,12 +1461,14 @@ resource 'Idea Custom Fields' do
 
         example 'Add extra rule to field logic' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
-          page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
           field_to_update = create(
             :custom_field_linear_scale,
             resource: custom_form,
-            title_multiloc: { 'en' => 'Question 1 on page 1' },
+            title_multiloc: { 'en' => 'Question 1 on page 1' }
+          )
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
+          field_to_update.update!(
             logic: {
               rules: [
                 {
