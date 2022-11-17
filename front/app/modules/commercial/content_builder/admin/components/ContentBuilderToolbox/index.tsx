@@ -120,7 +120,7 @@ const ContentBuilderToolbox = ({
         id="e2e-draggable-about-box"
         component={<AboutBox projectId={projectId} />}
         icon="info-solid"
-        label={formatMessage(messages.aboutBox)}
+        label={formatMessage(AboutBox.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-accordion"
@@ -132,7 +132,7 @@ const ContentBuilderToolbox = ({
           />
         }
         icon="accordion"
-        label={formatMessage(messages.accordion)}
+        label={formatMessage(Accordion.craft.custom.title)}
       />
     </Container>
   );

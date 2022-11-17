@@ -101,6 +101,9 @@ Accordion.craft = {
   related: {
     settings: AccordionSettings,
   },
+  custom: {
+    title: messages.accordion,
+  },
 };
 
 export default Accordion;

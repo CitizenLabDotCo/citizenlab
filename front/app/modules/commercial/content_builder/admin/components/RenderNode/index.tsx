@@ -11,7 +11,7 @@ import { colors } from 'utils/styleUtils';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from '../../messages';
 
 const CONTAINER = 'Container';
@@ -71,7 +71,7 @@ type ComponentNamesType =
 //       return messages.default;
 //   }
 // };
-export const getComponentNameMessage = (_: any): any => {};
+export const getComponentNameMessage = (_: any): any => messages.default;
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
@@ -91,12 +91,14 @@ const RenderNode = ({ render }) => {
     name,
     isHover,
     hasError,
+    title,
     connectors: { connect, drag },
   } = useNode((node) => ({
     props: node.data.props,
     isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
     hasError: node.data.props.hasError,
+    title: node.data.custom.title as MessageDescriptor,
   }));
 
   const {
@@ -152,7 +154,7 @@ const RenderNode = ({ render }) => {
     selectNode,
   ]);
 
-  const isSelectable = getComponentNameMessage(name) !== messages.default;
+  const isSelectable = title !== messages.default;
   const nodeLabelIsVisible =
     isActive &&
     isSelectable &&
@@ -195,7 +197,7 @@ const RenderNode = ({ render }) => {
           top="-28px"
           left="-1px"
         >
-          <FormattedMessage {...getComponentNameMessage(name)} />
+          <FormattedMessage {...title} />
           {hasError && (
             <>
               <span> - </span>
