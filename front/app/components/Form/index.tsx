@@ -30,7 +30,7 @@ import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors, Message } from 'typings';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
@@ -48,8 +48,6 @@ const Title = styled.h1`
   text-align: center;
   margin: 0;
   padding: 0;
-  padding-top: 60px;
-  padding-bottom: 40px;
 
   ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
@@ -95,6 +93,7 @@ interface Props {
    * Idea id for update form, used to load and udpate image and files.
    */
   inputId?: string;
+  formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input';
 }
 
@@ -106,6 +105,7 @@ const Form = memo(
     onSubmit,
     title,
     inputId,
+    formSubmitText,
     submitOnEvent,
     onChange,
     getAjvErrorMessage,
@@ -117,6 +117,7 @@ const Form = memo(
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
+    const [showSubmitButton, setShowSubmitButton] = useState(true);
     const safeApiErrorMessages = useCallback(
       () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
       [getApiErrorMessage]
@@ -237,7 +238,9 @@ const Form = memo(
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
           flex="1"
-          marginBottom={layoutType === 'fullpage' ? '32px' : 'auto'}
+          marginBottom={
+            layoutType === 'fullpage' && showSubmitButton ? '32px' : 'auto'
+          }
         >
           {title && <Title>{title}</Title>}
           <APIErrorsContext.Provider value={apiErrors}>
@@ -246,6 +249,10 @@ const Form = memo(
                 showAllErrors,
                 inputId,
                 getApiErrorMessage: safeApiErrorMessages(),
+                onSubmit: handleSubmit,
+                setShowAllErrors,
+                setShowSubmitButton,
+                formSubmitText,
               }}
             >
               <JsonForms
@@ -266,18 +273,22 @@ const Form = memo(
             </FormContext.Provider>
           </APIErrorsContext.Provider>
         </Box>
-        {layoutType === 'fullpage' ? (
-          <ButtonBar
-            onSubmit={handleSubmit}
-            apiErrors={Boolean(
-              apiErrors?.values?.length && apiErrors?.values?.length > 0
+        {showSubmitButton && (
+          <>
+            {layoutType === 'fullpage' ? (
+              <ButtonBar
+                onSubmit={handleSubmit}
+                apiErrors={Boolean(
+                  apiErrors?.values?.length && apiErrors?.values?.length > 0
+                )}
+                processing={loading}
+              />
+            ) : submitOnEvent ? (
+              <InvisibleSubmitButton onClick={handleSubmit} />
+            ) : (
+              <Button onClick={handleSubmit}>Button</Button>
             )}
-            processing={loading}
-          />
-        ) : submitOnEvent ? (
-          <InvisibleSubmitButton onClick={handleSubmit} />
-        ) : (
-          <Button onClick={handleSubmit}>Button</Button>
+          </>
         )}
       </Box>
     );

@@ -172,6 +172,8 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      pt="60px"
+      pb="40px"
     >
       <GoBackToIdeaPage idea={idea} />
 
