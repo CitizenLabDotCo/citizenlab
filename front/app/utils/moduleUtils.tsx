@@ -66,6 +66,7 @@ import {
   Multiloc,
 } from 'typings';
 import { IntlFormatters } from 'react-intl';
+import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -180,9 +181,13 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
     resolution: IResolution;
   };
+  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
+  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
+  'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
+  'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;

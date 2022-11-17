@@ -1225,6 +1225,7 @@
   "app.containers.SignUp.emptyLastNameError": "Indtast dit efternavn",
   "app.containers.SignUp.emptyTokenError": "Indtast din invitationskode",
   "app.containers.SignUp.firstNamesLabel": "Fornavn",
+  "app.containers.SignUp.franceConnectMergingFailed": "Der findes allerede en konto med denne e-mail-adresse.{br}{br}Du kan ikke få adgang til platformen via FranceConnect, da de personlige oplysninger ikke stemmer overens. For at logge ind via FranceConnect skal du først ændre dit fornavn eller efternavn på denne platform, så det passer til dine officielle oplysninger.{br}{br}Du kan logge ind som du plejer nedenfor.",
   "app.containers.SignUp.goToLogIn": "Har du allerede en konto? {goToOtherFlowLink}",
   "app.containers.SignUp.goToSignUp": "Har du ikke en konto? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Trin {activeStepNumber} af {totalStepsCount}: {stepName}",

@@ -1,5 +1,24 @@
 # Changelog
 
+## 2022-11-16
+
+### Fixed
+
+- [CL-1763] Norwegian translations of navbar & default pages now applied
+- [CL-2036] Fixed new vs returning visitors Matomo import
+
+## 2022-11-14
+
+### Fixed
+
+- [CL-1811] Correct copy for Oostende verification tooltip
+
+## 2022-11-11
+
+### Changed
+
+- [CL-1839] Merge FranceConnect account based on names
+
 ## 2022-11-10
 
 ### Changed
