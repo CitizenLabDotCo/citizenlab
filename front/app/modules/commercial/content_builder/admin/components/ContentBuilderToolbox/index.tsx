@@ -60,9 +60,9 @@ const ContentBuilderToolbox = ({
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-two-column"
-        component={<TwoColumn columnLayout="1-1" id="twoColumn" />}
+        component={<TwoColumn columnLayout="1-1" />}
         icon="layout-2column-1"
-        label={formatMessage(messages.twoColumn)}
+        label={formatMessage(TwoColumn.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-three-column"

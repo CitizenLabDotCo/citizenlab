@@ -21,22 +21,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.oneColumnLayout',
     defaultMessage: '1 column',
   },
-  twoColumn: {
-    id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
-    defaultMessage: '2 column',
-  },
-  twoEvenColumn: {
-    id: 'app.containers.admin.ContentBuilder.twoEvenColumnLayout',
-    defaultMessage: '2 even columns',
-  },
-  twoColumnVariant1and2: {
-    id: 'app.containers.admin.ContentBuilder.twoColumnLayoutVariant1-2',
-    defaultMessage: '2 columns with 30% and 60% width respectively',
-  },
-  twoColumnVariant2and1: {
-    id: 'app.containers.admin.ContentBuilder.twoColumnLayoutVariant2-1',
-    defaultMessage: '2 columns with 60% and 30% width respectively',
-  },
   error: {
     id: 'app.containers.admin.ContentBuilder.error',
     defaultMessage: 'error',
@@ -79,10 +63,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.layoutBuilderWarning',
     defaultMessage:
       'Using the Content Builder will let you use more advanced layout options. For languages where no content is available in the content builder, the regular project description content will be displayed instead.',
-  },
-  columnLayoutRadioLabel: {
-    id: 'app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel',
-    defaultMessage: 'Column layout',
   },
   whiteSpace: {
     id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',

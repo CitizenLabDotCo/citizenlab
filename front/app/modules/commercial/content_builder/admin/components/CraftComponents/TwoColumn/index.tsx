@@ -10,16 +10,16 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // craft
-import { useNode, UserComponent, Element } from '@craftjs/core';
+import { useNode, Element } from '@craftjs/core';
 import Container from '../Container';
 
 // Intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
+import messages from './messages';
 
 type TwoColumnProps = {
   columnLayout: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 const StyledBox = styled(Box)`
@@ -40,10 +40,7 @@ const StyledBox = styled(Box)`
       : '1fr 2fr'};
 `;
 
-export const TwoColumn: UserComponent = ({
-  columnLayout,
-  children,
-}: TwoColumnProps) => {
+export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   return (
     <StyledBox id="e2e-two-column" columnLayout={columnLayout}>
       {children || (
@@ -139,6 +136,9 @@ TwoColumn.craft = {
   },
   related: {
     settings: TwoColumnSettings,
+  },
+  custom: {
+    title: messages.twoColumn,
   },
 };
 
