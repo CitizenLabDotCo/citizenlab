@@ -40,7 +40,7 @@ module MultiTenancy
       end
     ensure
       # This check is necessary because loading a data template with users can cause the
-      # ongoing deletion of a tenant to fail. The reason is that before deleting a
+      # concurrent deletion of a tenant to fail. The reason is that before deleting a
       # tenant, the deletion process removes all users and their PII individually. Once
       # all users have been removed, the tenant can be safely deleted. However, loading
       # a data template can potentially add new users and prevent the tenant from being
