@@ -46,7 +46,7 @@ module MultiTenancy
       # a data template can potentially add new users and prevent the tenant from being
       # deleted. Since there are no ways to interrupt the loading process, we wait until
       # it's finished, and then try to delete the tenant again if necessary.
-      MultiTenancy::Tenants::DeleteJob.perform_later(tenant) if tenant.reload.deleted?
+      ::MultiTenancy::Tenants::DeleteJob.perform_later(tenant) if tenant.reload.deleted?
     end
 
     def before_update(tenant, current_user = nil) end
