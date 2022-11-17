@@ -1057,7 +1057,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Nou Projecte",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Més recent",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "No és una quantitat vàlida",
-  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "Cap carpeta",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "No s'han trobat plantilles",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Introduïu el títol del projecte",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "No és un número vàlid",
