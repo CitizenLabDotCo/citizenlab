@@ -36,12 +36,12 @@ import {
   usersByTimeCumulativeStream,
   activeUsersByTimeStream,
   usersByTimeStream,
-  // commentsByTimeStream,
+  commentsByTimeStream,
   ideasByTimeCumulativeStream,
-  // commentsByTimeCumulativeStream,
+  commentsByTimeCumulativeStream,
   activeUsersByTimeXlsxEndpoint,
   ideasByTimeCumulativeXlsxEndpoint,
-  // commentsByTimeCumulativeXlsxEndpoint,
+  commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
   usersByTimeXlsxEndpoint,
 } from 'services/stats';
@@ -220,6 +220,18 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 className="e2e-ideas-chart"
                 lineStream={ideasByTimeCumulativeStream}
                 barStream={ideasByTimeStream}
+                {...this.state}
+              />
+              <LineBarChart
+                graphTitle={formatMessage(messages.commentsByTimeTitle)}
+                graphUnit="comments"
+                graphUnitMessageKey="comments"
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
+                className="e2e-comments-chart"
+                lineStream={commentsByTimeCumulativeStream}
+                barStream={commentsByTimeStream}
                 {...this.state}
               />
               <LineBarChartVotesByTime
