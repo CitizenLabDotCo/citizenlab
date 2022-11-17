@@ -16,15 +16,16 @@ import { TSignUpInFlow } from 'components/SignUpIn';
 // styling
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+import { Box } from '@citizenlab/cl2-component-library';
 
-const Container = styled.div`
+const Container = styled(Box)`
   display: flex;
-  gap: 10px;
+  gap: 12px;
 `;
 
-const TextContainer = styled.div`
+const TextContainer = styled(Box)`
   display: flex;
-  gap: 2px;
+  gap: 4px;
   flex-direction: column;
 `;
 
