@@ -1225,6 +1225,7 @@
   "app.containers.SignUp.emptyLastNameError": "Introduceți numele dvs. de familie",
   "app.containers.SignUp.emptyTokenError": "Introduceți codul de invitație",
   "app.containers.SignUp.firstNamesLabel": "Prenume",
+  "app.containers.SignUp.franceConnectMergingFailed": "Există deja un cont cu această adresă de e-mail.{br}{br}Nu puteți accesa platforma folosind FranceConnect deoarece datele personale nu corespund. Pentru a vă conecta folosind FranceConnect, va trebui mai întâi să vă schimbați numele sau prenumele pe această platformă pentru a corespunde detaliilor oficiale.{br}{br}Vă puteți conecta așa cum o faceți în mod normal mai jos.",
   "app.containers.SignUp.goToLogIn": "Ai deja un cont? {goToOtherFlowLink}",
   "app.containers.SignUp.goToSignUp": "Nu ai un cont? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Pasul {activeStepNumber} din {totalStepsCount}: {stepName}",
