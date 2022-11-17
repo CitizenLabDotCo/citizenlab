@@ -11,7 +11,7 @@ import Image from '../../CraftComponents/Image';
 import Text from '../../CraftComponents/Text';
 
 // intl
-import messages from '../../../messages';
+import textMessages from '../../CraftComponents/Text/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import WhiteSpace from '../../CraftComponents/WhiteSpace';
@@ -26,7 +26,7 @@ const ImageTextCards: UserComponent = ({
           <Image alt="" />
         </Element>
         <Element id="right" is={Container} canvas>
-          <Text text={formatMessage(messages.textValue)} />
+          <Text text={formatMessage(textMessages.textValue)} />
         </Element>
       </TwoColumn>
       <WhiteSpace size="small" />
@@ -35,7 +35,7 @@ const ImageTextCards: UserComponent = ({
           <Image alt="" />
         </Element>
         <Element id="right" is={Container} canvas>
-          <Text text={formatMessage(messages.textValue)} />
+          <Text text={formatMessage(textMessages.textValue)} />
         </Element>
       </TwoColumn>
       <WhiteSpace size="small" />
@@ -44,7 +44,7 @@ const ImageTextCards: UserComponent = ({
           <Image alt="" />
         </Element>
         <Element id="right" is={Container} canvas>
-          <Text text={formatMessage(messages.textValue)} />
+          <Text text={formatMessage(textMessages.textValue)} />
         </Element>
       </TwoColumn>
     </Element>

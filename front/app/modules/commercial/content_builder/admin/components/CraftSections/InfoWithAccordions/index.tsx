@@ -13,8 +13,8 @@ import Accordion from '../../CraftComponents/Accordion';
 import Container from '../../CraftComponents/Container';
 
 // intl
-import messages from '../../../messages';
 import accordionMessages from '../../CraftComponents/Accordion/messages';
+import textMessages from '../../CraftComponents/Text/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
@@ -30,7 +30,7 @@ const InfoWithAccordions: UserComponent = ({
     <Element id="info-with-accordions" is={Box} canvas>
       <TwoColumn columnLayout="2-1">
         <Element id="left" is={Container} canvas>
-          <Text text={formatMessage(messages.textValue)} />
+          <Text text={formatMessage(textMessages.textValue)} />
         </Element>
         <Element id="right" is={Container} canvas>
           <AboutBox projectId={projectId} />
