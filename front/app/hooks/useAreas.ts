@@ -12,7 +12,11 @@ export default function useAreas({ forHomepageFilter }: Props = {}) {
   );
 
   useEffect(() => {
-    const queryParameters = { for_homepage_filter: forHomepageFilter };
+    const queryParameters = {
+      for_homepage_filter: forHomepageFilter,
+      include: 'static_pages',
+    };
+    // const queryParameters = { for_homepage_filter: forHomepageFilter };
 
     const subscription = areasStream({ queryParameters }).observable.subscribe(
       (areas) => {
