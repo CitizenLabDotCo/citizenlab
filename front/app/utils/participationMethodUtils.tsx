@@ -9,7 +9,7 @@ import {
   ParticipationMethod,
   getInputTerm,
 } from 'services/participationContexts';
-import { IPhaseData } from 'services/phases';
+import { getCurrentPhase, IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
 
 // components
@@ -292,6 +292,34 @@ export function getAllParticipationMethods(
     throw `Unknown process_type ${project.attributes.process_type}`;
   }
 }
+
+/** Given the project and its phases, it returns the participation method
+ * used in the project, or current phase if phases are provided and phaseId is not provided.
+ * If the phaseId is provided, then it returns the participation method of the phase whose
+ * phaseId is the same as the provided phaseId
+ */
+export const getParticipationMethod = (
+  project: IProjectData | null,
+  phases: Error | IPhaseData[] | null | undefined | null,
+  phaseId?: string
+): ParticipationMethod | undefined => {
+  if (isNilOrError(project)) {
+    return undefined;
+  }
+  const { process_type, participation_method: projectParticipationMethod } =
+    project.attributes;
+
+  if (process_type === 'continuous') {
+    return projectParticipationMethod;
+  } else if (process_type === 'timeline') {
+    const phase =
+      (!isNilOrError(phases) ? phases : []).find(
+        (phase) => phase.id === phaseId
+      ) || getCurrentPhase(phases);
+    return phase?.attributes.participation_method;
+  }
+  throw `Unknown process_type ${project.attributes.process_type}`;
+};
 
 /** Returns the phase for a given phaseID */
 export function getPhase(
