@@ -1057,7 +1057,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Novi projekat",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Najskorije",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Nije validan iznos",
-  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "Nema fascikle",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Nisu pronađeni šabloni",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Ovo ne može biti prazno",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Molimo vas navedite maksimalan broj dozvoljenih glasova po korisniku",
