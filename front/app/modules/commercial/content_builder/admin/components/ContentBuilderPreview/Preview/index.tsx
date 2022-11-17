@@ -7,7 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // components
 import Editor from '../../Editor';
-import ContentBuilderFrame from '../../ContentBuilderFrame';
+import ContentBuilderFrame from 'components/ContentBuilder/Frame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
 import { isNilOrError } from 'utils/helperUtils';

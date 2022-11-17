@@ -17,7 +17,7 @@ import ContentBuilderEditModePreview from '../components/ContentBuilderEditModeP
 import Editor from '../components/Editor';
 import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
-import ContentBuilderFrame from '../components/ContentBuilderFrame';
+import ContentBuilderFrame from 'components/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/ContentBuilder/Settings';
 
 // hooks
