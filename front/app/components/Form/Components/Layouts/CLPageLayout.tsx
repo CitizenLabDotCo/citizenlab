@@ -97,7 +97,6 @@ const CLPageLayout = memo(
         margin="auto"
       >
         {uiPages.map((page, index) => {
-          debugger;
           return (
             currentStep === index && (
               <StyledFormSection key={index}>
