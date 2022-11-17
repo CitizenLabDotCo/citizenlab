@@ -116,10 +116,6 @@ export default defineMessages({
     defaultMessage:
       'https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
   },
-  aboutBox: {
-    id: 'app.containers.admin.ContentBuilder.aboutBox',
-    defaultMessage: 'About Box',
-  },
   accordion: {
     id: 'app.containers.admin.ContentBuilder.accordion',
     defaultMessage: 'Accordion',
