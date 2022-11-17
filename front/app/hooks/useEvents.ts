@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
+import { PublicationStatus } from 'services/projects';
 
 type sort = 'newest' | 'oldest';
 
@@ -11,7 +12,7 @@ interface InputParameters {
   pastOnly?: boolean;
   pageSize?: number;
   sort?: sort;
-  projectPublicationStatuses?: string[];
+  projectPublicationStatuses?: PublicationStatus[];
 }
 
 const DEFAULT_PAGE_SIZE = 10;
