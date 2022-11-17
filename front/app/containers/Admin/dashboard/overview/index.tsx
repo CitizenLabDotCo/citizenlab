@@ -298,17 +298,21 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             >
               {formatMessage(overviewMessages.management)}
             </Title>
-
-            <Box width="100%">
-              <Box width="50%">
-                <Outlet
-                  id="app.containers.Admin.dashboard.summary.inputStatus"
-                  projectId={currentProjectFilter}
-                  startAtMoment={startAtMoment}
-                  endAtMoment={endAtMoment}
-                  resolution={resolution}
-                />
-              </Box>
+            <Box width="100%" display="flex">
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.inputStatus"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.emailDeliveries"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
             </Box>
           </GraphsContainer>
         </>
