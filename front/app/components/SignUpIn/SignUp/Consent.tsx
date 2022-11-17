@@ -95,36 +95,18 @@ const Consent = memo(
             <FormattedMessage {...messages.viennaConsentFooter} />
           </ConsentText>
 
-          <Box id="vienna-terms-and-conditions">
-            <Checkbox
-              size="20px"
-              checked={termsAndConditionsAccepted}
-              onChange={handleTermsAndConditionsOnChange}
-              label={
-                <ConsentText>
-                  <FormattedMessage
-                    {...messages.iHaveReadAndAgreeToVienna}
-                    values={{
-                      link: (
-                        <Link target="_blank" to="/pages/terms-and-conditions">
-                          <FormattedMessage
-                            {...messages.theTermsAndConditions}
-                          />
-                        </Link>
-                      ),
-                    }}
-                  />
-                </ConsentText>
-              }
+          <ConsentText>
+            <FormattedMessage
+              {...messages.iHaveReadAndAgreeToVienna}
+              values={{
+                link: (
+                  <Link target="_blank" to="/pages/terms-and-conditions">
+                    <FormattedMessage {...messages.theTermsAndConditions} />
+                  </Link>
+                ),
+              }}
             />
-            <Error
-              text={
-                termsAndConditionsError
-                  ? formatMessage(messages.tacError)
-                  : null
-              }
-            />
-          </Box>
+          </ConsentText>
         </Container>
       );
     } else {
