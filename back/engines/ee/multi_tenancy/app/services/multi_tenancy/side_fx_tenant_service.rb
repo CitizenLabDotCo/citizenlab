@@ -28,6 +28,7 @@ module MultiTenancy
       LogActivityJob.perform_later(tenant, 'template_loaded', current_user, Time.now.to_i, payload: {
         tenant_template: template
       })
+
       tenant.switch do
         TenantService.new.finalize_creation tenant
         LogActivityJob.perform_later tenant, 'creation_finalized', current_user, tenant.creation_finalized_at.to_i
@@ -37,6 +38,15 @@ module MultiTenancy
         })
         raise e
       end
+    ensure
+      # This check is necessary because loading a data template with users can cause the
+      # concurrent deletion of a tenant to fail. The reason is that before deleting a
+      # tenant, the deletion process removes all users and their PII individually. Once
+      # all users have been removed, the tenant can be safely deleted. However, loading
+      # a data template can potentially add new users and prevent the tenant from being
+      # deleted. Since there are no ways to interrupt the loading process, we wait until
+      # it's finished, and then try to delete the tenant again if necessary.
+      ::MultiTenancy::Tenants::DeleteJob.perform_later(tenant) if tenant.reload.deleted?
     end
 
     def before_update(tenant, current_user = nil) end
