@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
+import React, { useState } from 'react';
 
 // hooks
 import useContentBuilderLayout from '../../../hooks/useContentBuilder';
@@ -9,6 +7,7 @@ import useProject from 'hooks/useProject';
 import { useParams } from 'react-router-dom';
 
 // components
+import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import Editor from '../../components/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
@@ -20,7 +19,7 @@ import { PROJECT_DESCRIPTION_CODE } from '../../../services/contentBuilder';
 // types
 import { SerializedNodes } from '@craftjs/core';
 
-export const EditModePreview = () => {
+export const FullScreenPreview = () => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const [selectedLocale, setSelectedLocale] = useState<string | undefined>();
   const { projectId } = useParams() as { projectId: string };
@@ -31,22 +30,6 @@ export const EditModePreview = () => {
     projectId,
     code: PROJECT_DESCRIPTION_CODE,
   });
-
-  useEffect(() => {
-    const handleMessage = (e: MessageEvent) => {
-      // Make sure there is a root node in the draft data
-      if (e.origin === window.location.origin && e.data.ROOT) {
-        setDraftData(e.data);
-      }
-      if (e.origin === window.location.origin && e.data.selectedLocale) {
-        setSelectedLocale(e.data.selectedLocale);
-      }
-    };
-    window.addEventListener('message', handleMessage);
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, []);
 
   if (isNilOrError(platformLocale) || isNilOrError(project)) {
     return null;
@@ -62,41 +45,23 @@ export const EditModePreview = () => {
   const editorData = draftData || savedEditorData;
 
   return (
-    <FocusOn>
-      <Box
-        display="flex"
-        flexDirection="column"
-        w="100%"
-        zIndex="10000"
-        position="fixed"
-        height="100vh"
-        bgColor="#fff"
-        overflowY="auto"
-        data-testid="contentBuilderEditModePreviewContent"
-      >
-        <Box p="20px">
-          <Title color="tenantText" variant="h1">
-            {project.attributes.title_multiloc[locale]}
-          </Title>
-          {isLoadingContentBuilderLayout && <Spinner />}
-          {!isLoadingContentBuilderLayout && editorData && (
-            <Box>
-              <Editor isPreview={true}>
-                <ContentBuilderFrame editorData={editorData} />
-              </Editor>
-            </Box>
-          )}
+    <FullScreenWrapper
+      onUpdateDraftData={setDraftData}
+      onUpdateLocale={setSelectedLocale}
+    >
+      <Title color="tenantText" variant="h1">
+        {project.attributes.title_multiloc[locale]}
+      </Title>
+      {isLoadingContentBuilderLayout && <Spinner />}
+      {!isLoadingContentBuilderLayout && editorData && (
+        <Box>
+          <Editor isPreview={true}>
+            <ContentBuilderFrame editorData={editorData} />
+          </Editor>
         </Box>
-      </Box>
-    </FocusOn>
+      )}
+    </FullScreenWrapper>
   );
 };
 
-const EditModePreviewModal = () => {
-  const modalPortalElement = document.getElementById('modal-portal');
-
-  return modalPortalElement
-    ? createPortal(<EditModePreview />, modalPortalElement)
-    : null;
-};
-export default EditModePreviewModal;
+export default FullScreenPreview;
