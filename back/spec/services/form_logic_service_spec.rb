@@ -8,12 +8,8 @@ describe FormLogicService do
   let(:fields) { [field, target_page] }
   let(:logic) { {} }
 
-  # - source and target fields same custom form
-  # - source field cannot be page, target field must be page
-  # - source field before target field
-  # - condition_operator present and inclusion from list
+  # TODO
   # - one value attribute present, others nil
-  # - action present and inclusion from list
 
   describe '#valid?' do
     let(:field) do
@@ -62,37 +58,39 @@ describe FormLogicService do
       end
     end
 
-    [ # TODO: replace target ids
-      { 'bad' => [] },
-      { 'rules' => [], 'bad' => [] },
-      { 'rules' => [{}] },
-      { 'rules' => [{ 'test' => {} }] },
-      { 'rules' => [{ 'if' => 123, 'then' => [{}], 'bad' => {} }] },
-      { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show' }] }] },
-      { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => '123', 'bad' => 'bad' }] }] },
-      { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'bad', 'target_id' => '123' }] }] },
-      { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'submit_survey', 'target_id' => '123' }] }] },
-      { 'rules' => [
-        {
-          'if' => 123,
-          'then' => [
-            { 'effect' => 'show', 'target_id' => '123' },
-            { 'effect' => 'hide', 'target_id' => '456' }
-          ]
-        },
-        {
-          'if' => 456,
-          'then' => [
-            { 'effect' => 'show', 'target_id' => '666' },
-            { 'effect' => 'hide' }
-          ]
-        }
-      ] }
-    ].each do |bad_logic|
-      context "when logic has bad structure #{bad_logic}" do
-        let(:logic) { bad_logic }
+    context 'returns false when logic has a bad structure' do
+      let(:target_page2) { create :custom_field_page, :for_custom_form, resource: field.resource }
+      let(:fields) { [field, target_page, target_page2] }
 
-        it 'returns false' do
+      it 'returns false' do
+        [
+          { 'bad' => [] },
+          { 'rules' => [], 'bad' => [] },
+          { 'rules' => [{}] },
+          { 'rules' => [{ 'test' => {} }] },
+          { 'rules' => [{ 'if' => 123, 'then' => [{}], 'bad' => {} }] },
+          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show' }] }] },
+          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => target_page.id, 'bad' => 'bad' }] }] },
+          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'bad', 'target_id' => target_page.id }] }] },
+          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'submit_survey', 'target_id' => target_page.id }] }] },
+          { 'rules' => [
+            {
+              'if' => 123,
+              'then' => [
+                { 'effect' => 'show', 'target_id' => '123' },
+                { 'effect' => 'hide', 'target_id' => '456' }
+              ]
+            },
+            {
+              'if' => 456,
+              'then' => [
+                { 'effect' => 'show', 'target_id' => '666' },
+                { 'effect' => 'hide' }
+              ]
+            }
+          ] }
+        ].each do |bad_logic|
+          field.update! logic: bad_logic
           expect(form_logic.valid?).to be false
           # expect(field.errors.details).to eq "todo"
         end
