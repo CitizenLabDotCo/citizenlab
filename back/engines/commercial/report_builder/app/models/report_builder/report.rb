@@ -21,6 +21,7 @@
 #
 module ReportBuilder
   class Report < ::ApplicationRecord
+    belongs_to :owner, class_name: 'User'
     has_one(
       :layout,
       class_name: 'ContentBuilder::Layout', as: :content_buildable,
