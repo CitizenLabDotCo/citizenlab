@@ -5,7 +5,7 @@ import Link from 'utils/cl-router/Link';
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
 import { AuthProvider } from '../AuthProviders';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -23,11 +23,11 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-const ConsentText = styled(Text)`
+const ConsentText = styled.div`
   color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
-  font-weight: ${(props: any) => props.fontWeight || 300};
+  font-weight: ${(props: any) => props.fontWeight};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -45,6 +45,10 @@ const ConsentText = styled(Text)`
       text-decoration: underline;
     }
   }
+`;
+
+const BoldConsentText = styled(ConsentText)`
+  font-weight: bold;
 `;
 
 interface Props {
@@ -95,7 +99,7 @@ const Consent = memo(
             <FormattedMessage {...messages.viennaConsentFooter} />
           </ConsentText>
 
-          <ConsentText fontWeight="bold">
+          <BoldConsentText>
             <FormattedMessage
               {...messages.iHaveReadAndAgreeToVienna}
               values={{
@@ -106,7 +110,7 @@ const Consent = memo(
                 ),
               }}
             />
-          </ConsentText>
+          </BoldConsentText>
         </Container>
       );
     } else {
