@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_10_105544) do
+ActiveRecord::Schema.define(version: 2022_11_18_094022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1110,9 +1110,11 @@ ActiveRecord::Schema.define(version: 2022_11_10_105544) do
 
   create_table "report_builder_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
+    t.uuid "owner_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_report_builder_reports_on_name", unique: true
+    t.index ["owner_id"], name: "index_report_builder_reports_on_owner_id"
   end
 
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1402,6 +1404,7 @@ ActiveRecord::Schema.define(version: 2022_11_10_105544) do
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
+  add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
