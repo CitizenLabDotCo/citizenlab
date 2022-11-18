@@ -139,7 +139,7 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-        {pageAttributes.events_widget_enabled && projectIds && (
+        {pageAttributes.events_widget_enabled && (
           <ContentContainer>
             <CustomPageEvents projectIds={projectIds} />
           </ContentContainer>
