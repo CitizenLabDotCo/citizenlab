@@ -6,11 +6,11 @@ import useLocalize from 'hooks/useLocalize';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 
 // components
-import Container from 'components/ContentBuilder/TopBar/Container';
-import GoBackButton from 'components/ContentBuilder/TopBar/GoBackButton';
-import LocaleSwitcher from 'components/ContentBuilder/TopBar/LocaleSwitcher';
-import PreviewToggle from 'components/ContentBuilder/TopBar/PreviewToggle';
-import SaveButton from 'components/ContentBuilder/TopBar/SaveButton';
+import Container from 'components/admin/ContentBuilder/TopBar/Container';
+import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
+import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
+import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
+import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
 
