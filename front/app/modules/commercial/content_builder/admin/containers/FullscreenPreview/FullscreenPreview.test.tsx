@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import { EditModePreview } from '.';
+import FullScreenPreview from '.';
 
 let mockLocale = 'en';
 jest.mock('services/locale');
@@ -46,9 +46,20 @@ jest.mock('hooks/useProject', () => {
   }));
 });
 
+jest.mock('react-dom', () => ({
+  ...jest.requireActual('react-dom'),
+  createPortal: (content) => content,
+}));
+
+const getElementById = document.getElementById.bind(document);
+document.getElementById = (id, ...args) => {
+  if (id === 'modal-portal') return true;
+  return getElementById(id, ...args);
+};
+
 describe('Preview Content', () => {
   it('should render', () => {
-    render(<EditModePreview />);
+    render(<FullScreenPreview />);
     expect(
       screen.getByTestId('contentBuilderEditModePreviewContent')
     ).toBeInTheDocument();
@@ -57,14 +68,14 @@ describe('Preview Content', () => {
 
   it('should show correct title with a different locale', () => {
     mockLocale = 'fr-FR';
-    render(<EditModePreview />);
+    render(<FullScreenPreview />);
 
     expect(screen.getByText('Test Projet')).toBeInTheDocument();
   });
 
   it('shows loading state correctly', () => {
     mockContentBuilderLayoutData = undefined;
-    render(<EditModePreview />);
+    render(<FullScreenPreview />);
 
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
