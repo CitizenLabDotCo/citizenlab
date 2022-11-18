@@ -9,11 +9,9 @@ const FullscreenPreview = React.lazy(
     )
 );
 
-const ContentBuilderPreview = React.lazy(
+const ContentViewer = React.lazy(
   () =>
-    import(
-      'modules/commercial/content_builder/admin/components/ContentBuilderPreview'
-    )
+    import('modules/commercial/content_builder/admin/components/ContentViewer')
 );
 
 const ContentBuilderToggle = React.lazy(
@@ -45,7 +43,7 @@ const configuration: ModuleConfiguration = {
     'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': (
       props
     ) => {
-      return <ContentBuilderPreview {...props} />;
+      return <ContentViewer {...props} />;
     },
   },
 };
