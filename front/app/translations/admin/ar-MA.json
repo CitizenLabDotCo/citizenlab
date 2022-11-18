@@ -1260,7 +1260,6 @@
   "app.containers.AdminPage.widgets.titleStyle": "النمط",
   "app.containers.AdminPage.widgets.titleWidgets": "عنصر الواجهة",
   "app.containers.ContentBuilder.PageTitle": "Project Description",
-  "app.containers.ContentBuilder.Save": "حفظ",
   "app.containers.IdeasShow.bodyTitle": "الوصف",
   "app.containers.IdeasShow.postedIn": "تم النشر في {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "الميزانية المُقترحة",
