@@ -32,14 +32,13 @@ class FormLogicService
     fields.all? do |field|
       next false unless valid_structure? field.logic
       next true if field.logic.blank?
+      next false unless source_is_not_page? field
 
-      # Order is important here, because `target_after_source?` and `target_is_page?`
-      # rely on `valid_target_ids?` to return true. In those methods,
-      # `field_index[action['target_id']]` will always return a field.
-      valid_target_ids?(field.logic) &&
-        target_after_source?(field) &&
-        target_is_page?(field.logic) &&
-        source_is_not_page?(field)
+      field.logic['rules'].all? do |rule|
+        rule['then'].all? do |action|
+          valid_target? action, field
+        end
+      end
     end
   end
 
@@ -62,36 +61,29 @@ class FormLogicService
     end
   end
 
-  def valid_target_ids?(logic)
-    logic['rules'].all? do |rule|
-      rule['then'].all? do |action|
-        next true unless action['target_id']
+  def valid_target?(action, source_field)
+    return true unless action['target_id']
 
-        field_index.key? action['target_id']
-      end
-    end
+    # Order is important here, because `target_after_source?` and `target_is_page?`
+    # rely on `valid_target_ids?` to return true. In those methods,
+    # `field_index[action['target_id']]` will always return a field.
+    valid_target_ids?(action) &&
+      target_after_source?(action, source_field) &&
+      target_is_page?(action)
   end
 
-  def target_after_source?(source_field)
-    source_field.logic['rules'].all? do |rule|
-      rule['then'].all? do |action|
-        next true unless action['target_id']
-
-        target_field = field_index[action['target_id']]
-        target_field.ordering > source_field.ordering
-      end
-    end
+  def valid_target_ids?(action)
+    field_index.key? action['target_id']
   end
 
-  def target_is_page?(logic)
-    logic['rules'].all? do |rule|
-      rule['then'].all? do |action|
-        next true unless action['target_id']
+  def target_after_source?(action, source_field)
+    target_field = field_index[action['target_id']]
+    target_field.ordering > source_field.ordering
+  end
 
-        target_field = field_index[action['target_id']]
-        target_field.page?
-      end
-    end
+  def target_is_page?(action)
+    target_field = field_index[action['target_id']]
+    target_field.page?
   end
 
   def source_is_not_page?(field)

@@ -5,9 +5,6 @@ require 'rails_helper'
 describe FormLogicService do
   subject(:form_logic) { described_class.new fields }
 
-  # TODO
-  # - one value attribute present, others nil
-
   describe '#valid?' do
     let(:form) { create(:custom_form) }
     let(:fields) do
