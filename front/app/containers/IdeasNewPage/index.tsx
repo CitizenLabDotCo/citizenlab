@@ -51,6 +51,8 @@ import GetAppConfiguration, {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { UploadFile } from 'typings';
 import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
+import { getParticipationMethod } from 'utils/participationMethodUtils';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -424,11 +426,15 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
   const isDynamicIdeaFormEnabled = useFeatureFlag({
     name: 'dynamic_idea_form',
   });
-
-  const project = useProject({ projectSlug: inputProps.params.slug });
-  const portalElement = document?.getElementById('modal-portal');
   const isSmallerThanXlPhone = useBreakpoint('phone');
-  const isSurvey = project?.attributes.participation_method === 'native_survey';
+  const project = useProject({ projectSlug: inputProps.params.slug });
+  const phases = usePhases(project?.id);
+  const { phase_id } = parse(location.search, {
+    ignoreQueryPrefix: true,
+  }) as { [key: string]: string };
+  const participationMethod = getParticipationMethod(project, phases, phase_id);
+  const portalElement = document?.getElementById('modal-portal');
+  const isSurvey = participationMethod === 'native_survey';
 
   if (isDynamicIdeaFormEnabled || isSurvey) {
     return portalElement && isSmallerThanXlPhone && isSurvey ? (
