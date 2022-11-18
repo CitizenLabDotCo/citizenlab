@@ -87,6 +87,7 @@ export const GraphCardShowMore = styled.button`
   position: absolute;
   bottom: 0;
   left: 0;
+  cursor: pointer;
   &.active {
     padding: 100px 0 24px;
     background-image: linear-gradient(transparent, white 50%, white);
