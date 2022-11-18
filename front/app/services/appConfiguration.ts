@@ -67,6 +67,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  advanced_custom_pages: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
