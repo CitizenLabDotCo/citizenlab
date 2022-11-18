@@ -1488,7 +1488,6 @@
   "app.errors.unparseable_excel": "Το επιλεγμένο αρχείο Excel δεν μπόρεσε να επεξεργαστεί.",
   "app.errors.view_name_taken": "Μια προβολή με αυτό το όνομα υπάρχει ήδη",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Το ακατάλληλο περιεχόμενο εντοπίστηκε αυτόματα σε μια δημοσίευση ή ένα σχόλιο",
-  "app.modules.commercial.id_vienna_saml.components.continueWithStandardPortal": "Συνεχίστε με το StandardPortal",
   "app.modules.id_cow.cancel": "Ακύρωση",
   "app.modules.id_cow.emptyFieldError": "Αυτό το πεδίο δεν μπορεί να είναι κενό.",
   "app.modules.id_cow.helpAltText": "Δείχνει πού μπορείτε να βρείτε τον σειριακό αριθμό ταυτότητας σε ένα δελτίο ταυτότητας",

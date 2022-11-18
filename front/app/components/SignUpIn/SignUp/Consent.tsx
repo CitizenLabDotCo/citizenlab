@@ -5,7 +5,7 @@ import Link from 'utils/cl-router/Link';
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
 import { AuthProvider } from '../AuthProviders';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -23,11 +23,11 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-const ConsentText = styled.div`
+const ConsentText = styled(Text)`
   color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
-  font-weight: 300;
+  font-weight: ${(props: any) => props.fontWeight || 300};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -82,7 +82,10 @@ const Consent = memo(
       return (
         <Container className={className}>
           <ConsentText>
-            <FormattedMessage {...messages.viennaConsentHeader} />
+            <FormattedMessage
+              {...messages.viennaConsentHeader}
+              values={{ br: <br /> }}
+            />
             <ul>
               <li>{formatMessage(messages.viennaConsentEmail)}</li>
               <li>{formatMessage(messages.viennaConsentFirstName)}</li>
@@ -92,36 +95,18 @@ const Consent = memo(
             <FormattedMessage {...messages.viennaConsentFooter} />
           </ConsentText>
 
-          <Box id="vienna-terms-and-conditions">
-            <Checkbox
-              size="20px"
-              checked={termsAndConditionsAccepted}
-              onChange={handleTermsAndConditionsOnChange}
-              label={
-                <ConsentText>
-                  <FormattedMessage
-                    {...messages.iHaveReadAndAgreeToVienna}
-                    values={{
-                      link: (
-                        <Link target="_blank" to="/pages/terms-and-conditions">
-                          <FormattedMessage
-                            {...messages.theTermsAndConditions}
-                          />
-                        </Link>
-                      ),
-                    }}
-                  />
-                </ConsentText>
-              }
+          <ConsentText fontWeight="bold">
+            <FormattedMessage
+              {...messages.iHaveReadAndAgreeToVienna}
+              values={{
+                link: (
+                  <Link target="_blank" to="/pages/terms-and-conditions">
+                    <FormattedMessage {...messages.theTermsAndConditions} />
+                  </Link>
+                ),
+              }}
             />
-            <Error
-              text={
-                termsAndConditionsError
-                  ? formatMessage(messages.tacError)
-                  : null
-              }
-            />
-          </Box>
+          </ConsentText>
         </Container>
       );
     } else {

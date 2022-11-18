@@ -1488,7 +1488,6 @@
   "app.errors.unparseable_excel": "Fișierul Excel selectat nu a putut fi procesat.",
   "app.errors.view_name_taken": "O vizualizare cu acest nume există deja",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Conținutul nepotrivit a fost detectat automat într-o postare sau comentariu",
-  "app.modules.commercial.id_vienna_saml.components.continueWithStandardPortal": "Continuați cu StandardPortal",
   "app.modules.id_cow.cancel": "Anulare",
   "app.modules.id_cow.emptyFieldError": "Acest câmp nu poate fi gol.",
   "app.modules.id_cow.helpAltText": "Arată unde se găsește numărul de serie al cărții de identitate pe o carte de identitate",

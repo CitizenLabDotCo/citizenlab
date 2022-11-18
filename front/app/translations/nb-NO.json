@@ -1488,7 +1488,6 @@
   "app.errors.unparseable_excel": "Den valgte Excel-filen kunne ikke behandles.",
   "app.errors.view_name_taken": "En visning med dette navnet eksisterer allerede",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Uakseptablet innhold ble oppdaget ved automatisk gjennomgang av en post eller kommentar",
-  "app.modules.commercial.id_vienna_saml.components.continueWithStandardPortal": "Fortsett med StandardPortal",
   "app.modules.id_cow.cancel": "Avbryt",
   "app.modules.id_cow.emptyFieldError": "Dette kan ikke være tomt",
   "app.modules.id_cow.helpAltText": "Viser hvor en finner ID serienummer på et identitetskort",
