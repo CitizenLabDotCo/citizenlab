@@ -219,7 +219,7 @@ resource 'Idea Custom Fields' do
         let(:custom_form) { create :custom_form, participation_context: context }
         let(:project_id) { context.id }
 
-        example '[error] Invalid data' do
+        example '[error] Invalid data in fields' do
           field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
           request = {
             custom_fields: [
@@ -242,9 +242,23 @@ resource 'Idea Custom Fields' do
                 enabled: false,
                 options: [
                   {
-                    title_multiloc: { 'en' => '' }
+                    title_multiloc: { 'en' => '' },
+                    key: 'cat'
                   }
-                ]
+                ],
+                logic: {
+                  rules: [
+                    {
+                      if: 'cat',
+                      then: [
+                        {
+                          effect: 'show'
+                          # Missing target_id
+                        }
+                      ]
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -268,6 +282,45 @@ resource 'Idea Custom Fields' do
                   title_multiloc: [{ error: 'blank' }]
                 }
               }
+              # Logic errors are not included
+            }
+          })
+        end
+
+        example '[error] Invalid logic' do
+          field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
+          request = {
+            custom_fields: [
+              {
+                id: field_to_update.id,
+                title_multiloc: { 'en' => 'New title' },
+                required: true,
+                enabled: true,
+                logic: {
+                  rules: [
+                    {
+                      if: field_to_update.options.first.key,
+                      then: [
+                        {
+                          effect: 'show'
+                          # Missing target_id
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+          do_request request
+
+          assert_status 422
+          json_response = json_parse(response_body)
+          expect(json_response[:errors]).to eq({
+            '0': {
+              logic: [
+                { error: 'invalid_structure' }
+              ]
             }
           })
         end

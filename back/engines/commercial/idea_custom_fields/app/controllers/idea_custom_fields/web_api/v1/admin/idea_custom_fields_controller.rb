@@ -122,12 +122,14 @@ module IdeaCustomFields
           update_options field, options_params, errors, index if options_params
           field.move_to_bottom
         end
+        raise UpdateAllFailedError, errors if errors.present?
+
         fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
         FormLogicService.new(fields).replace_temp_ids!(temp_ids_to_ids_mapping)
         unless FormLogicService.new(fields).valid?
-          # fields.each_with_index do |field, index|
-          #   errors[index.to_s] = field.errors.details
-          # end
+          fields.each_with_index do |field, index|
+            errors[index.to_s] = field.errors.details
+          end
         end
         raise UpdateAllFailedError, errors if errors.present?
       end
