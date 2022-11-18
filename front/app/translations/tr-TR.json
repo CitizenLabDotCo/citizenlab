@@ -1488,7 +1488,6 @@
   "app.errors.unparseable_excel": "Seçilen Excel dosyası işlenemedi.",
   "app.errors.view_name_taken": "Bu ada sahip bir görünüm zaten var",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Bir yayın veya yorumda uygunsuz içerik otomatik olarak tespit edildi",
-  "app.modules.commercial.id_vienna_saml.components.continueWithStandardPortal": "Continue with StandardPortal",
   "app.modules.id_cow.cancel": "İptal",
   "app.modules.id_cow.emptyFieldError": "Bu alan boş bırakılamaz.",
   "app.modules.id_cow.helpAltText": "Kimlik seri numarasının kimliğin neresinde bulunacağını gösterir",
