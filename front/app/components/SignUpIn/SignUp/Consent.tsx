@@ -27,7 +27,7 @@ const ConsentText = styled(Text)`
   color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
-  font-weight: 300;
+  font-weight: ${(props: any) => props.fontWeight || 300};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -95,7 +95,7 @@ const Consent = memo(
             <FormattedMessage {...messages.viennaConsentFooter} />
           </ConsentText>
 
-          <ConsentText>
+          <ConsentText fontWeight="bold">
             <FormattedMessage
               {...messages.iHaveReadAndAgreeToVienna}
               values={{
