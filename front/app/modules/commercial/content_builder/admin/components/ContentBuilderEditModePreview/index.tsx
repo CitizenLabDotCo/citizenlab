@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // craft
-import EditModePreview from 'components/ContentBuilder/EditModePreview';
+import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
 // hooks
 import useLocale from 'hooks/useLocale';

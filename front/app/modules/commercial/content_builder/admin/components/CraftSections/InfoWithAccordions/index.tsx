@@ -5,16 +5,16 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { UserComponent, Element } from '@craftjs/core';
-import TwoColumn from 'components/ContentBuilder/Widgets/TwoColumn';
-import Text from 'components/ContentBuilder/Widgets/Text';
-import AboutBox from 'components/ContentBuilder/Widgets/AboutBox';
-import WhiteSpace from 'components/ContentBuilder/Widgets/WhiteSpace';
-import Accordion from 'components/ContentBuilder/Widgets/Accordion';
-import Container from 'components/ContentBuilder/Widgets/Container';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import Accordion from 'components/admin/ContentBuilder/Widgets/Accordion';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // intl
-import accordionMessages from 'components/ContentBuilder/Widgets/Accordion/messages';
-import textMessages from 'components/ContentBuilder/Widgets/Text/messages';
+import accordionMessages from 'components/admin/ContentBuilder/Widgets/Accordion/messages';
+import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 

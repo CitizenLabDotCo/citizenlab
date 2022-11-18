@@ -17,8 +17,8 @@ import ContentBuilderEditModePreview from '../components/ContentBuilderEditModeP
 import Editor from '../components/Editor';
 import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
-import ContentBuilderFrame from 'components/ContentBuilder/Frame';
-import ContentBuilderSettings from 'components/ContentBuilder/Settings';
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
 // hooks
 import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
@@ -36,7 +36,7 @@ import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
-} from 'components/ContentBuilder/constants';
+} from 'components/admin/ContentBuilder/constants';
 
 // intl
 import messages from '../messages';

@@ -7,10 +7,10 @@ import { useEditor, SerializedNodes } from '@craftjs/core';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
-import Container from 'components/ContentBuilder/TopBar/Container';
-import GoBackButton from 'components/ContentBuilder/TopBar/GoBackButton';
-import PreviewToggle from 'components/ContentBuilder/TopBar/PreviewToggle';
-import SaveButton from 'components/ContentBuilder/TopBar/SaveButton';
+import Container from 'components/admin/ContentBuilder/TopBar/Container';
+import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
+import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
+import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 import {
   Box,

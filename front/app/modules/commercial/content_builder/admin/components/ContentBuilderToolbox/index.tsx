@@ -5,25 +5,25 @@ import { useParams } from 'react-router-dom';
 
 // i18n
 import messages from '../../messages';
-import accordionMessages from 'components/ContentBuilder/Widgets/Accordion/messages';
-import textMessages from 'components/ContentBuilder/Widgets/Text/messages';
+import accordionMessages from 'components/admin/ContentBuilder/Widgets/Accordion/messages';
+import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
-import Container from 'components/ContentBuilder/Toolbox/Container';
-import SectionTitle from 'components/ContentBuilder/Toolbox/SectionTitle';
-import DraggableElement from 'components/ContentBuilder/Toolbox/DraggableElement';
+import Container from 'components/admin/ContentBuilder/Toolbox/Container';
+import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
+import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 
 // widgets
-import Text from 'components/ContentBuilder/Widgets/Text';
-import TwoColumn from 'components/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/ContentBuilder/Widgets/ThreeColumn';
-import Image from 'components/ContentBuilder/Widgets/Image';
-import Iframe from 'components/ContentBuilder/Widgets/Iframe';
-import AboutBox from 'components/ContentBuilder/Widgets/AboutBox';
-import Accordion from 'components/ContentBuilder/Widgets/Accordion';
-import WhiteSpace from 'components/ContentBuilder/Widgets/WhiteSpace';
-import Button from 'components/ContentBuilder/Widgets/Button';
+import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
+import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
+import Accordion from 'components/admin/ContentBuilder/Widgets/Accordion';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import Button from 'components/admin/ContentBuilder/Widgets/Button';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 
