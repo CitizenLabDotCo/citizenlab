@@ -19,7 +19,8 @@ import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 
 // other
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
-import messages from 'containers/EventsPage/messages';
+import messages from './messages';
+import eventsPageMessages from 'containers/EventsPage/messages';
 
 const EventsWidgetContainer = styled.div`
   padding: 48px 0 124px 0;
@@ -126,13 +127,13 @@ const EventsWidget = ({ id, events }: Props) => {
 
       {eventsLoading && <EventsSpinner />}
       {eventsError && (
-        <EventsMessage message={messages.errorWhenFetchingEvents} />
+        <EventsMessage message={eventsPageMessages.errorWhenFetchingEvents} />
       )}
 
       {!isNilOrError(events) && events.length === 0 && (
         <VerticalCenterer>
           <NoEventsText>
-            {formatMessage(messages.noUpcomingOrOngoingEvents)}
+            {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
           </NoEventsText>
         </VerticalCenterer>
       )}
