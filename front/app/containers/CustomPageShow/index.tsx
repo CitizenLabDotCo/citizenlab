@@ -7,7 +7,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
-import CustomPageEvents from './CustomPageEvents';
+import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from 'components/PageNotFound';
@@ -139,11 +139,27 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-        {pageAttributes.events_widget_enabled && (
-          <ContentContainer>
-            <CustomPageEvents projectIds={projectIds} />
-          </ContentContainer>
-        )}
+        {
+          // We only want to render the events component when projectIds is not null and has at least 1 project.
+          // This prevents the component from flashing while we wait for projectIds.
+          //
+          // If it's null, the projectIds parameter doesn't get added, which
+          // means it's undefined and we fetch *all* events.
+          //
+          // If a custom page gets created with a tag or area that has no projects,
+          // projectIds is [] (via adminPublications.list mapping CustomPageShow).
+          // That's the same as projectIds = undefined, which means *all* events.
+          //
+          // Just adding this length check to useEvents where we add projectIds wouldn't work.
+          // The component would still render with all events (if we don't specify the projectsIds parameter.)
+        }
+        {pageAttributes.events_widget_enabled &&
+          projectIds &&
+          projectIds.length > 0 && (
+            <ContentContainer>
+              <EventsWidget projectIds={projectIds} />
+            </ContentContainer>
+          )}
         {pageAttributes.bottom_info_section_enabled && (
           <InfoSection
             multilocContent={pageAttributes.bottom_info_section_multiloc}

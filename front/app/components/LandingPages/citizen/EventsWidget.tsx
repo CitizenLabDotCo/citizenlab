@@ -1,23 +1,13 @@
 import React from 'react';
-
-// components
 import EventCard from 'components/EventCard';
 import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import VerticalCenterer from 'components/VerticalCenterer';
 import Link from 'utils/cl-router/Link';
-
-// hooks
-import { TEvents } from 'hooks/useEvents';
-
-// i18n
+import useEvents from 'hooks/useEvents';
 import { useIntl } from 'utils/cl-intl';
-
-// styling
 import styled from 'styled-components';
 import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-
-// other
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
 import messages from './messages';
 import eventsPageMessages from 'containers/EventsPage/messages';
@@ -107,11 +97,18 @@ const EventPageLink = styled(Link)`
 
 interface Props {
   id?: string;
-  events: TEvents;
+  projectIds?: string[];
 }
 
-const EventsWidget = ({ id, events }: Props) => {
+const EventsWidget = ({ id, projectIds }: Props) => {
   const { formatMessage } = useIntl();
+  const { events } = useEvents({
+    projectPublicationStatuses: ['published'],
+    currentAndFutureOnly: true,
+    pageSize: 3,
+    sort: 'oldest',
+    ...(projectIds && { projectIds }),
+  });
 
   const eventsLoading = isNil(events);
   const eventsError = isError(events);
