@@ -118,8 +118,6 @@ const AreaListRow = ({
   handleDeleteClick,
 }) => {
   const localize = useLocalize();
-  if (isNilOrError(item)) return null;
-
   const { static_page_ids } = item.attributes;
   const staticPages = useCustomPages({ ids: static_page_ids });
 

@@ -30,7 +30,7 @@ export default function useAreas({
     );
 
     return () => subscription.unsubscribe();
-  }, [forHomepageFilter]);
+  }, [forHomepageFilter, includeStaticPages]);
 
   return areas;
 }
