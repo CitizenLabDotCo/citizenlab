@@ -184,6 +184,12 @@ export interface OutletsPropertyMap {
     endAtMoment: Moment | null;
     resolution: IResolution;
   };
+  'app.containers.Admin.dashboard.summary.emailDeliveries': {
+    projectId: string | undefined;
+    startAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
+    resolution: IResolution;
+  };
   'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
   'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
