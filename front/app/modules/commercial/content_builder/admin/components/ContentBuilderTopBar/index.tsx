@@ -4,24 +4,15 @@ import React, { useState } from 'react';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
 import Container from 'components/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/ContentBuilder/TopBar/GoBackButton';
+import LocaleSwitcher from 'components/ContentBuilder/TopBar/LocaleSwitcher';
 import PreviewToggle from 'components/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
-import {
-  Box,
-  Spinner,
-  Text,
-  Title,
-  LocaleSwitcher,
-} from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
+import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -70,19 +61,8 @@ const ContentBuilderTopBar = ({
   const { query } = useEditor();
   const localize = useLocalize();
   const project = useProject({ projectId });
-  const locales = useAppConfigurationLocales();
 
-  if (isNilOrError(locales)) {
-    return null;
-  }
   const disableSave = localesWithError.length > 0;
-
-  const localesValues = locales.reduce((acc, locale) => {
-    return {
-      ...acc,
-      [locale]: localesWithError.includes(locale) ? '' : 'NON-EMPTY-VALUE',
-    };
-  }, {});
 
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/description`);
@@ -135,22 +115,11 @@ const ContentBuilderTopBar = ({
             </>
           )}
         </Box>
-        {selectedLocale && locales.length > 1 && (
-          <Box
-            borderLeft={`1px solid ${colors.divider}`}
-            borderRight={`1px solid ${colors.divider}`}
-            h="100%"
-            p="24px"
-          >
-            <LocaleSwitcher
-              data-testid="contentBuilderLocaleSwitcher"
-              locales={locales}
-              selectedLocale={selectedLocale}
-              onSelectedLocaleChange={handleSelectLocale}
-              values={{ localesValues }}
-            />
-          </Box>
-        )}
+        <LocaleSwitcher
+          selectedLocale={selectedLocale}
+          localesWithError={localesWithError}
+          onSelectLocale={handleSelectLocale}
+        />
         <Box ml="24px" />
         <PreviewToggle
           checked={previewEnabled}
