@@ -30,13 +30,56 @@ class FormLogicService
 
   def valid?
     fields.all? do |field|
-      next false unless valid_structure? field.logic
+      unless valid_structure? field.logic
+        field.errors.add(:logic, :invalid_structure, message: 'has invalid structure')
+        next false
+      end
       next true if field.logic.blank?
-      next false unless source_is_not_page? field
+
+      if field.page?
+        field.errors.add(
+          :logic,
+          :page_not_allowed_as_source,
+          message: 'is not allowed on pages'
+        )
+        next false
+      end
 
       field.logic['rules'].all? do |rule|
         rule['then'].all? do |action|
-          valid_target? action, field
+          next true unless action['target_id']
+
+          # Order is important here, because `target_after_source?` and `target_is_page?`
+          # rely on `valid_target_ids?` to return true. In those methods,
+          # `field_index[action['target_id']]` will always return a field.
+          unless valid_target_id?(action)
+            field.errors.add(
+              :logic,
+              :invalid_target_id,
+              message: 'has invalid target_id',
+              value: action['target_id']
+            )
+            next false
+          end
+          unless target_after_source?(action, field)
+            field.errors.add(
+              :logic,
+              :target_before_source_not_allowed,
+              message: 'has target before source',
+              value: action['target_id']
+            )
+            next false
+          end
+
+          next true if target_is_page?(action)
+
+          field.errors.add(
+            :logic,
+            :only_page_allowed_as_target,
+            message: 'has target that is not a page',
+            value: action['target_id']
+          )
+          false
         end
       end
     end
@@ -61,18 +104,7 @@ class FormLogicService
     end
   end
 
-  def valid_target?(action, source_field)
-    return true unless action['target_id']
-
-    # Order is important here, because `target_after_source?` and `target_is_page?`
-    # rely on `valid_target_ids?` to return true. In those methods,
-    # `field_index[action['target_id']]` will always return a field.
-    valid_target_ids?(action) &&
-      target_after_source?(action, source_field) &&
-      target_is_page?(action)
-  end
-
-  def valid_target_ids?(action)
+  def valid_target_id?(action)
     field_index.key? action['target_id']
   end
 
@@ -84,10 +116,6 @@ class FormLogicService
   def target_is_page?(action)
     target_field = field_index[action['target_id']]
     target_field.page?
-  end
-
-  def source_is_not_page?(field)
-    !field.page?
   end
 
   def ui_schema_rule_for(effect, field, value)

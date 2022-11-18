@@ -32,19 +32,19 @@ describe FormLogicService do
         [
           {},
           { 'rules' => [] },
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id }] }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'hide', 'target_id' => target_page1.id }] }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'submit_survey' }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'hide', 'target_id' => target_page1.id }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'submit_survey' }] }] },
           { 'rules' => [
             {
-              'if' => 123,
+              'if' => 1,
               'then' => [
                 { 'effect' => 'show', 'target_id' => target_page1.id },
                 { 'effect' => 'hide', 'target_id' => target_page2.id }
               ]
             },
             {
-              'if' => 456,
+              'if' => 2,
               'then' => [
                 { 'effect' => 'show', 'target_id' => target_page3.id },
                 { 'effect' => 'hide', 'target_id' => target_page4.id }
@@ -63,16 +63,16 @@ describe FormLogicService do
 
     context 'when all logic in multiple fields have good structure' do
       let(:logic_for_field1) do
-        { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id }] }] }
+        { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id }] }] }
       end
       let(:logic_for_field2) do
         { 'rules' => [
           {
-            'if' => 123,
+            'if' => 1,
             'then' => [{ 'effect' => 'submit_survey' }]
           },
           {
-            'if' => 456,
+            'if' => 2,
             'then' => [
               { 'effect' => 'show', 'target_id' => target_page3.id },
               { 'effect' => 'hide', 'target_id' => target_page4.id }
@@ -98,21 +98,21 @@ describe FormLogicService do
           { 'rules' => [], 'bad' => [] },
           { 'rules' => [{}] },
           { 'rules' => [{ 'test' => {} }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [{}], 'bad' => {} }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show' }] }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id, 'bad' => 'bad' }] }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'bad', 'target_id' => target_page1.id }] }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'submit_survey', 'target_id' => target_page1.id }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [{}], 'bad' => {} }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'show' }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id, 'bad' => 'bad' }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'bad', 'target_id' => target_page1.id }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'submit_survey', 'target_id' => target_page1.id }] }] },
           { 'rules' => [
             {
-              'if' => 123,
+              'if' => 1,
               'then' => [
                 { 'effect' => 'show', 'target_id' => '123' },
                 { 'effect' => 'hide', 'target_id' => '456' }
               ]
             },
             {
-              'if' => 456,
+              'if' => 2,
               'then' => [
                 { 'effect' => 'show', 'target_id' => '666' },
                 { 'effect' => 'hide' }
@@ -122,23 +122,28 @@ describe FormLogicService do
         ].each do |bad_logic|
           field1.update! logic: bad_logic
           expect(form_logic.valid?).to be false
-          # expect(field1.errors.details).to eq "todo"
+          expect(field1.errors.messages.to_h).to eq({
+            logic: ['has invalid structure']
+          })
+          expect(field1.errors.details).to eq({
+            logic: [{ error: :invalid_structure }]
+          })
         end
       end
     end
 
     context 'when some logic in multiple fields has bad structure' do
       let(:logic_for_field1) do
-        { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id }] }] }
+        { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id }] }] }
       end
       let(:logic_for_field2) do
         { 'rules' => [
           {
-            'if' => 123,
+            'if' => 1,
             'then' => [{ 'effect' => 'submit_survey' }]
           },
           {
-            'if' => 456,
+            'if' => 2,
             'then' => [
               { 'effect' => 'show' }, # Missing target ID
               { 'effect' => 'hide', 'target_id' => target_page4.id }
@@ -153,73 +158,101 @@ describe FormLogicService do
 
         expect(form_logic.valid?).to be false
         expect(field1.errors).to be_empty
-        # expect(field2.errors.details).to eq "todo"
+        expect(field2.errors.messages.to_h).to eq({
+          logic: ['has invalid structure']
+        })
+        expect(field2.errors.details).to eq({
+          logic: [{ error: :invalid_structure }]
+        })
       end
     end
 
     context 'when logic has invalid target IDs' do
       it 'returns false' do
+        invalid_target_id = create(:custom_field_page).id
         [
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => create(:custom_field_page).id }] }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'show', 'target_id' => invalid_target_id }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [
             { 'effect' => 'show', 'target_id' => target_page1.id },
-            { 'effect' => 'hide', 'target_id' => create(:custom_field_page).id }
+            { 'effect' => 'hide', 'target_id' => invalid_target_id }
           ] }] },
           { 'rules' => [
-            { 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id }] },
-            { 'if' => 321, 'then' => [{ 'effect' => 'show', 'target_id' => create(:custom_field_page).id }] }
+            { 'if' => 1, 'then' => [{ 'effect' => 'show', 'target_id' => target_page1.id }] },
+            { 'if' => 2, 'then' => [{ 'effect' => 'show', 'target_id' => invalid_target_id }] }
           ] }
         ].each do |bad_logic|
           field1.update! logic: bad_logic
 
           expect(form_logic.valid?).to be false
-          # expect(field1.errors.details).to eq "todo"
+          expect(field1.errors.messages.to_h).to eq({
+            logic: ['has invalid target_id']
+          })
+          expect(field1.errors.details).to eq({
+            logic: [{ error: :invalid_target_id, value: invalid_target_id }]
+          })
         end
       end
     end
 
-    context 'when logic has target pages that occur before the source field1' do
+    context 'when logic has target pages that occur before the source field' do
       it 'returns false' do
+        invalid_target_id = front_page.id
         [
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => front_page.id }] }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'show', 'target_id' => invalid_target_id }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [
             { 'effect' => 'show', 'target_id' => target_page1.id },
-            { 'effect' => 'hide', 'target_id' => front_page.id }
+            { 'effect' => 'hide', 'target_id' => invalid_target_id }
           ] }] }
         ].each do |bad_logic|
           field1.update! logic: bad_logic
 
           expect(form_logic.valid?).to be false
-          # expect(field1.errors.details).to eq "todo"
+          expect(field1.errors.messages.to_h).to eq({
+            logic: ['has target before source']
+          })
+          expect(field1.errors.details).to eq({
+            logic: [{ error: :target_before_source_not_allowed, value: invalid_target_id }]
+          })
         end
       end
     end
 
     context 'when logic has target fields that are not pages' do
       it 'returns false' do
+        invalid_target_id = field2.id
         [
-          { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => field2.id }] }] },
-          { 'rules' => [{ 'if' => 123, 'then' => [
+          { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'show', 'target_id' => invalid_target_id }] }] },
+          { 'rules' => [{ 'if' => 1, 'then' => [
             { 'effect' => 'show', 'target_id' => target_page1.id },
-            { 'effect' => 'hide', 'target_id' => field2.id }
+            { 'effect' => 'hide', 'target_id' => invalid_target_id }
           ] }] }
         ].each do |bad_logic|
           field1.update! logic: bad_logic
 
           expect(form_logic.valid?).to be false
-          # expect(field1.errors.details).to eq "todo"
+          expect(field1.errors.messages.to_h).to eq({
+            logic: ['has target that is not a page']
+          })
+          expect(field1.errors.details).to eq({
+            logic: [{ error: :only_page_allowed_as_target, value: invalid_target_id }]
+          })
         end
       end
     end
 
-    context 'when the source field1 is a page' do
+    context 'when the source field is a page' do
       it 'returns false' do
         front_page.update!(
-          logic: { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => target_page2.id }] }] }
+          logic: { 'rules' => [{ 'if' => 1, 'then' => [{ 'effect' => 'show', 'target_id' => target_page2.id }] }] }
         )
 
         expect(form_logic.valid?).to be false
-        # expect(field1.errors.details).to eq "todo"
+        expect(front_page.errors.messages.to_h).to eq({
+          logic: ['is not allowed on pages']
+        })
+        expect(front_page.errors.details).to eq({
+          logic: [{ error: :page_not_allowed_as_source }]
+        })
       end
     end
   end
