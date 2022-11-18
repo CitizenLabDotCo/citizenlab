@@ -22,7 +22,9 @@ class WebApi::V1::TopicsController < ApplicationController
 
     @topics = paginate @topics
 
-    if params[:include_static_pages]
+    include_static_pages = params[:include]&.split(',')&.include?('static_pages')
+
+    if include_static_pages
       render json: linked_json(
         @topics.includes(:static_pages),
         WebApi::V1::TopicSerializer,
