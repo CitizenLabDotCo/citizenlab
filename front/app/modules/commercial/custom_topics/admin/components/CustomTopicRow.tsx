@@ -8,7 +8,7 @@ import { IconTooltip, colors } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // resources
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPages from 'hooks/useCustomPages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -50,14 +50,7 @@ const CustomTopicRow = memo((props: Props) => {
 
   if (!isNilOrError(topic)) {
     const { static_page_ids } = topic.attributes;
-
-    const staticPages = static_page_ids.map((customPageId) => {
-      const result = useCustomPage({ customPageId });
-      if (!isNilOrError(result)) {
-        return result;
-      }
-      return null;
-    });
+    const staticPages = useCustomPages({ ids: static_page_ids });
 
     return (
       <>
@@ -73,7 +66,7 @@ const CustomTopicRow = memo((props: Props) => {
             </RowContentInner>
           </RowContent>
           <Buttons>
-            {static_page_ids.length > 0 && (
+            {static_page_ids.length > 0 && !isNilOrError(staticPages) && (
               <IconTooltip
                 mr="20px"
                 iconColor={colors.error}

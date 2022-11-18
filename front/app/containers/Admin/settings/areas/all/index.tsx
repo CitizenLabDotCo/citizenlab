@@ -21,7 +21,7 @@ import Link from 'utils/cl-router/Link';
 // resources
 import useAreas from 'hooks/useAreas';
 import { reorderArea, IAreaData, deleteArea } from 'services/areas';
-import useCustomPage from 'hooks/useCustomPage';
+import useCustomPages from 'hooks/useCustomPages';
 import AreaTermConfig from './AreaTermConfig';
 
 // i18n
@@ -48,18 +48,10 @@ const AreaListRow = ({
   handleDeleteClick,
 }) => {
   const localize = useLocalize();
-
   if (isNilOrError(item)) return null;
 
   const { static_page_ids } = item.attributes;
-
-  const staticPages = static_page_ids.map((customPageId) => {
-    const result = useCustomPage({ customPageId });
-    if (!isNilOrError(result)) {
-      return result;
-    }
-    return null;
-  });
+  const staticPages = useCustomPages({ ids: static_page_ids });
 
   return (
     <SortableRow
@@ -72,7 +64,7 @@ const AreaListRow = ({
       <TextCell className="expand">
         <T value={item.attributes.title_multiloc} />
       </TextCell>
-      {item.attributes.static_page_ids.length > 0 && (
+      {static_page_ids.length > 0 && !isNilOrError(staticPages) && (
         <Box>
           <IconTooltip
             iconColor={colors.error}
@@ -177,9 +169,7 @@ const AreaList = () => {
                   isLastItem={index === itemsList.length - 1}
                   item={item}
                   index={index}
-                  handleDeleteClick={() => {
-                    handleDeleteClick(item.id);
-                  }}
+                  handleDeleteClick={handleDeleteClick}
                   handleDropRow={handleDropRow}
                   handleDragRow={handleDragRow}
                 />

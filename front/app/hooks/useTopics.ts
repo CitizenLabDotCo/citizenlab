@@ -41,7 +41,7 @@ export default function useTopics(parameters: Parameters = {}) {
     sort,
     for_homepage_filter: forHomepageFilter,
     ...(includeStaticPages && {
-      include: ['static_pages'],
+      include: 'static_pages',
     }),
   };
 
