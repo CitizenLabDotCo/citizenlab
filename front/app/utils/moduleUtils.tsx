@@ -371,7 +371,7 @@ export interface OutletsPropertyMap {
     customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
   };
-  'app.components.SignUpIn.AuthProviders.ContainerEnd': {
+  'app.components.SignUpIn.AuthProviders.ContainerStart': {
     flow: TSignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
