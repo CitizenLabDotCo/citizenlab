@@ -76,14 +76,12 @@ const CustomTopicRow = memo((props: Props) => {
                     <FormattedMessage {...messages.tagIsLinkedToStaticPage} />
                     <ul>
                       {staticPages.map((staticPage) => {
-                        if (staticPage == null) return null;
-
                         return (
                           <li key={staticPage.id}>
                             <StyledLink
                               to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
                             >
-                              {localize(staticPage?.attributes.title_multiloc)}
+                              {localize(staticPage.attributes.title_multiloc)}
                             </StyledLink>
                           </li>
                         );

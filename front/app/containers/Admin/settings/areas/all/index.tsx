@@ -15,20 +15,20 @@ import {
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, colors } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // resources
 import useAreas from 'hooks/useAreas';
-import { reorderArea, IAreaData, deleteArea } from 'services/areas';
 import useCustomPages from 'hooks/useCustomPages';
+import { reorderArea, IAreaData, deleteArea } from 'services/areas';
 import AreaTermConfig from './AreaTermConfig';
 
 // i18n
-import messages from '../messages';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import T from 'components/T';
 import useLocalize from 'hooks/useLocalize';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 export const StyledLink = styled(Link)`
   color: ${colors.white} !important;
@@ -38,79 +38,6 @@ export const StyledLink = styled(Link)`
     text-decoration: underline;
   }
 `;
-
-const AreaListRow = ({
-  item,
-  handleDragRow,
-  handleDropRow,
-  index,
-  isLastItem,
-  handleDeleteClick,
-}) => {
-  const localize = useLocalize();
-  if (isNilOrError(item)) return null;
-
-  const { static_page_ids } = item.attributes;
-  const staticPages = useCustomPages({ ids: static_page_ids });
-
-  return (
-    <SortableRow
-      id={item.id}
-      index={index}
-      isLastItem={isLastItem}
-      moveRow={handleDragRow}
-      dropRow={handleDropRow}
-    >
-      <TextCell className="expand">
-        <T value={item.attributes.title_multiloc} />
-      </TextCell>
-      {static_page_ids.length > 0 && !isNilOrError(staticPages) && (
-        <Box>
-          <IconTooltip
-            iconColor={colors.error}
-            icon="info-outline"
-            content={
-              <>
-                <FormattedMessage {...messages.areaIsLinkedToStaticPage} />
-                <ul>
-                  {staticPages.map((staticPage) => {
-                    if (staticPage == null) return null;
-
-                    return (
-                      <li key={staticPage.id}>
-                        <StyledLink
-                          to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
-                        >
-                          {localize(staticPage?.attributes.title_multiloc)}
-                        </StyledLink>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </>
-            }
-          />
-        </Box>
-      )}
-      <Button
-        onClick={handleDeleteClick(item.id)}
-        buttonStyle="text"
-        icon="delete"
-        disabled={item.attributes.static_page_ids.length > 0}
-      >
-        <FormattedMessage {...messages.deleteButtonLabel} />
-      </Button>
-
-      <Button
-        linkTo={`/admin/settings/areas/${item.id}`}
-        buttonStyle="secondary"
-        icon="edit"
-      >
-        <FormattedMessage {...messages.editButtonLabel} />
-      </Button>
-    </SortableRow>
-  );
-};
 
 const AreaList = () => {
   const { formatMessage } = useIntl();
@@ -179,6 +106,76 @@ const AreaList = () => {
         )}
       </SortableList>
     </Section>
+  );
+};
+
+const AreaListRow = ({
+  item,
+  handleDragRow,
+  handleDropRow,
+  index,
+  isLastItem,
+  handleDeleteClick,
+}) => {
+  const localize = useLocalize();
+  if (isNilOrError(item)) return null;
+
+  const { static_page_ids } = item.attributes;
+  const staticPages = useCustomPages({ ids: static_page_ids });
+
+  return (
+    <SortableRow
+      id={item.id}
+      index={index}
+      isLastItem={isLastItem}
+      moveRow={handleDragRow}
+      dropRow={handleDropRow}
+    >
+      <TextCell className="expand">
+        <T value={item.attributes.title_multiloc} />
+      </TextCell>
+      {static_page_ids.length > 0 && !isNilOrError(staticPages) && (
+        <Box>
+          <IconTooltip
+            iconColor={colors.error}
+            icon="info-outline"
+            content={
+              <>
+                <FormattedMessage {...messages.areaIsLinkedToStaticPage} />
+                <ul>
+                  {staticPages.map((staticPage) => {
+                    return (
+                      <li key={staticPage.id}>
+                        <StyledLink
+                          to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
+                        >
+                          {localize(staticPage.attributes.title_multiloc)}
+                        </StyledLink>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            }
+          />
+        </Box>
+      )}
+      <Button
+        onClick={handleDeleteClick(item.id)}
+        buttonStyle="text"
+        icon="delete"
+        disabled={static_page_ids.length > 0}
+      >
+        <FormattedMessage {...messages.deleteButtonLabel} />
+      </Button>
+      <Button
+        linkTo={`/admin/settings/areas/${item.id}`}
+        buttonStyle="secondary"
+        icon="edit"
+      >
+        <FormattedMessage {...messages.editButtonLabel} />
+      </Button>
+    </SortableRow>
   );
 };
 
