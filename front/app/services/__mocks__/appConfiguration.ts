@@ -40,6 +40,10 @@ export const getAppConfigurationData = (
         allowed: true,
         enabled: true,
       },
+      advanced_custom_pages: {
+        allowed: true,
+        enabled: true,
+      },
       participatory_budgeting: {
         allowed: true,
         enabled: true,
