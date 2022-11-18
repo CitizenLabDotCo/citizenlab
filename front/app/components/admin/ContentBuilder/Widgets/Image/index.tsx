@@ -10,7 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // image upload
-import { addContentBuilderImage } from 'modules/commercial/content_builder/services/contentBuilderImages';
+import { addContentBuilderImage } from 'services/contentBuilderImages';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
