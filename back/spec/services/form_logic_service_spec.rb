@@ -24,40 +24,7 @@ describe FormLogicService do
       )
     end
 
-    # [
-    #   {},
-    #   { 'rules' => [] },
-    #   { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'show', 'target_id' => '123' }] }] },
-    #   { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'hide', 'target_id' => '123' }] }] },
-    #   { 'rules' => [{ 'if' => 123, 'then' => [{ 'effect' => 'submit_survey' }] }] },
-    #   { 'rules' => [
-    #     {
-    #       'if' => 123,
-    #       'then' => [
-    #         { 'effect' => 'show', 'target_id' => '123' },
-    #         { 'effect' => 'hide', 'target_id' => '456' }
-    #       ]
-    #     },
-    #     {
-    #       'if' => 456,
-    #       'then' => [
-    #         { 'effect' => 'show', 'target_id' => '666' },
-    #         { 'effect' => 'hide', 'target_id' => '777' }
-    #       ]
-    #     }
-    #   ] }
-    # ].each do |good_logic|
-    #   context "when logic has good structure #{good_logic}" do
-    #     let(:logic) { good_logic }
-
-    #     it 'returns true' do
-    #       expect(form_logic.valid?).to be true
-    #       expect(field.errors).to be_empty
-    #     end
-    #   end
-    # end
-
-    context 'returns true when logic has good structure' do
+    context 'returns true when logic has a good structure' do
       let(:target_page2) { create :custom_field_page, :for_custom_form, resource: field.resource }
       let(:target_page3) { create :custom_field_page, :for_custom_form, resource: field.resource }
       let(:target_page4) { create :custom_field_page, :for_custom_form, resource: field.resource }
@@ -90,6 +57,7 @@ describe FormLogicService do
           field.update! logic: good_logic
 
           expect(form_logic.valid?).to be true
+          expect(field.errors).to be_empty
         end
       end
     end
