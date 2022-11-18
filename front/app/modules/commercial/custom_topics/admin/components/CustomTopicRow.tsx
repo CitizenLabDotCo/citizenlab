@@ -53,65 +53,63 @@ const CustomTopicRow = memo((props: Props) => {
     const staticPages = useCustomPages({ ids: static_page_ids });
 
     return (
-      <>
-        <Row
-          key={topic.id}
-          id={topic.id}
-          className="e2e-topic-field-row"
-          isLastItem={isLastItem}
-        >
-          <RowContent>
-            <RowContentInner>
-              <RowTitle value={topic.attributes.title_multiloc} />
-            </RowContentInner>
-          </RowContent>
-          <Buttons>
-            {static_page_ids.length > 0 && !isNilOrError(staticPages) && (
-              <IconTooltip
-                mr="20px"
-                iconColor={colors.error}
-                icon="info-outline"
-                content={
-                  <>
-                    <FormattedMessage {...messages.tagIsLinkedToStaticPage} />
-                    <ul>
-                      {staticPages.map((staticPage) => {
-                        return (
-                          <li key={staticPage.id}>
-                            <StyledLink
-                              to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
-                            >
-                              {localize(staticPage.attributes.title_multiloc)}
-                            </StyledLink>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </>
-                }
-              />
-            )}
+      <Row
+        key={topic.id}
+        id={topic.id}
+        className="e2e-topic-field-row"
+        isLastItem={isLastItem}
+      >
+        <RowContent>
+          <RowContentInner>
+            <RowTitle value={topic.attributes.title_multiloc} />
+          </RowContentInner>
+        </RowContent>
+        <Buttons>
+          {static_page_ids.length > 0 && !isNilOrError(staticPages) && (
+            <IconTooltip
+              mr="20px"
+              iconColor={colors.error}
+              icon="info-outline"
+              content={
+                <>
+                  <FormattedMessage {...messages.tagIsLinkedToStaticPage} />
+                  <ul>
+                    {staticPages.map((staticPage) => {
+                      return (
+                        <li key={staticPage.id}>
+                          <StyledLink
+                            to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
+                          >
+                            {localize(staticPage.attributes.title_multiloc)}
+                          </StyledLink>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              }
+            />
+          )}
 
-            <Button
-              linkTo={`/admin/settings/topics/${topic.id}/edit`}
-              buttonStyle="secondary"
-              icon="edit"
-              id="e2e-custom-topic-edit-button"
-            >
-              <FormattedMessage {...messages.editButtonLabel} />
-            </Button>
-            <Button
-              disabled={static_page_ids && static_page_ids.length > 0}
-              onClick={handleDeleteClick(topic.id)}
-              buttonStyle="text"
-              icon="delete"
-              id="e2e-custom-topic-delete-button"
-            >
-              <FormattedMessage {...messages.deleteButtonLabel} />
-            </Button>
-          </Buttons>
-        </Row>
-      </>
+          <Button
+            linkTo={`/admin/settings/topics/${topic.id}/edit`}
+            buttonStyle="secondary"
+            icon="edit"
+            id="e2e-custom-topic-edit-button"
+          >
+            <FormattedMessage {...messages.editButtonLabel} />
+          </Button>
+          <Button
+            disabled={static_page_ids.length > 0}
+            onClick={handleDeleteClick(topic.id)}
+            buttonStyle="text"
+            icon="delete"
+            id="e2e-custom-topic-delete-button"
+          >
+            <FormattedMessage {...messages.deleteButtonLabel} />
+          </Button>
+        </Buttons>
+      </Row>
     );
   }
 
