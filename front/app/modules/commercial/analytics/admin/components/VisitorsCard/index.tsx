@@ -14,20 +14,18 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { ProjectId, Dates, Resolution } from '../../typings';
+import { ProjectId, Dates, Resolution, ReportChartConfig } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
+import VisitorStatsReport from './VisitorStatsReport';
 
-interface Title {
-  title: string | undefined;
-}
-type Props = ProjectId & Dates & Resolution & Title;
+type Props = ProjectId & Dates & Resolution & ReportChartConfig;
 
 const VisitorsCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
-  title,
+  reportConfig,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -39,15 +37,15 @@ const VisitorsCard = ({
     resolution,
   });
 
-  const cardTitle = title ? title : formatMessage(messages.visitors);
+  const cardTitle = reportConfig
+    ? reportConfig.title
+    : formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  return (
-    <GraphCard
-      title={cardTitle}
-      infoTooltipContent={formatMessage(messages.cardTitleTooltipMessage)}
-      exportMenu={{
+  const exportMenu = reportConfig
+    ? undefined
+    : {
         name: cardTitle,
         svgNode: graphRef,
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
@@ -55,15 +53,31 @@ const VisitorsCard = ({
         endAt,
         currentProjectFilter: projectId,
         resolution: deducedResolution,
-      }}
+      };
+
+  const infoTooltipContent = reportConfig
+    ? undefined
+    : formatMessage(messages.cardTitleTooltipMessage);
+
+  const visitorStatBox = reportConfig ? (
+    <VisitorStatsReport stats={stats} />
+  ) : (
+    <VisitorStats
+      stats={stats}
+      projectId={projectId}
+      resolution={deducedResolution}
+    />
+  );
+
+  return (
+    <GraphCard
+      title={cardTitle}
+      infoTooltipContent={infoTooltipContent}
+      exportMenu={exportMenu}
     >
       <Box px="20px" width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row">
-          <VisitorStats
-            stats={stats}
-            projectId={projectId}
-            resolution={deducedResolution}
-          />
+          {visitorStatBox}
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="flex-end">

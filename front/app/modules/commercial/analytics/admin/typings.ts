@@ -63,3 +63,10 @@ export interface Stat {
 // Component layouts
 export type Layout = 'wide' | 'narrow';
 export type BoxLayout = Record<Layout, BoxProps>;
+
+// Report specifics
+export interface ReportChartConfig {
+  reportConfig?: {
+    title: string;
+  };
+}

@@ -281,4 +281,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel',
     defaultMessage: 'Close settings panel',
   },
+  analyticsChart: {
+    id: 'app.containers.admin.ContentBuilder.analyticsChart',
+    defaultMessage: 'Chart',
+  },
+  analyticsChartTitle: {
+    id: 'app.containers.admin.ContentBuilder.analyticsChartTitle',
+    defaultMessage: 'Title',
+  },
+  visitorTimeline: {
+    id: 'app.containers.admin.ContentBuilder.visitorTimeline',
+    defaultMessage: 'Visitor timeline',
+  },
+  trafficSources: {
+    id: 'app.containers.admin.ContentBuilder.trafficSources',
+    defaultMessage: 'Traffic sources',
+  },
 });

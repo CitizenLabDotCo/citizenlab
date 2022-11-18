@@ -14,9 +14,10 @@ interface Props {
   pieData: PieRow[];
   innerRef: React.RefObject<any>;
   onOpenModal: () => void;
+  hideReferrers?: boolean;
 }
 
-const Chart = ({ pieData, innerRef, onOpenModal }: Props) => {
+const Chart = ({ pieData, innerRef, onOpenModal, hideReferrers }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
@@ -33,6 +34,14 @@ const Chart = ({ pieData, innerRef, onOpenModal }: Props) => {
       color: row.color,
       label: `${row.name} (${row.percentage}%)`,
     })
+  );
+
+  const referrersLink = hideReferrers ? (
+    <></>
+  ) : (
+    <Box ml="20px" mt="40px">
+      <ReferrerListLink onOpenModal={onOpenModal} />
+    </Box>
   );
 
   return (
@@ -63,9 +72,7 @@ const Chart = ({ pieData, innerRef, onOpenModal }: Props) => {
         />
       </Box>
 
-      <Box ml="20px" mt="40px">
-        <ReferrerListLink onOpenModal={onOpenModal} />
-      </Box>
+      {referrersLink}
     </>
   );
 };

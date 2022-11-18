@@ -24,7 +24,7 @@ import WhiteSpace from '../CraftComponents/WhiteSpace';
 import Button from '../CraftComponents/Button';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
-import VisitorsTimelineWidget from '../CraftReports/VisitorsTimelineWidget';
+import AnalyticsChartWidget from '../CraftComponents/AnalyticsChartWidget';
 
 // intl
 import messages from '../../messages';
@@ -304,17 +304,30 @@ const ContentBuilderToolbox = ({
             label={formatMessage(messages.accordion)}
           />
         </DraggableElement>
+
+        <Title
+          fontWeight="normal"
+          mb="4px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="textSecondary"
+        >
+          CHARTS
+        </Title>
         <DraggableElement
           id="e2e-draggable-visitors-timeline-widget"
           ref={(ref) =>
             ref &&
             connectors.create(
               ref,
-              <VisitorsTimelineWidget
-                title={'Visitors timeline'}
-                projectFilter={undefined}
+              <AnalyticsChartWidget
+                chartType="VisitorsCard"
+                title={formatMessage(messages.visitorTimeline)}
+                projectId={undefined}
                 startAtMoment={undefined}
-                endAtMoment={undefined}
+                endAtMoment={null}
               />,
               {
                 onCreate: (node) => {
@@ -324,7 +337,36 @@ const ContentBuilderToolbox = ({
             )
           }
         >
-          <ToolboxItem icon="chart-bar" label="Visitors timeline" />
+          <ToolboxItem
+            icon="chart-bar"
+            label={formatMessage(messages.visitorTimeline)}
+          />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-visitors-traffic-sources-widget"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <AnalyticsChartWidget
+                chartType="VisitorsTrafficSourcesCard"
+                title={formatMessage(messages.trafficSources)}
+                projectId={undefined}
+                startAtMoment={undefined}
+                endAtMoment={null}
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem
+            icon="chart-bar"
+            label={formatMessage(messages.trafficSources)}
+          />
         </DraggableElement>
       </Box>
     </Box>

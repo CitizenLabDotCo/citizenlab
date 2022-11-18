@@ -26,6 +26,7 @@ const WHITE_SPACE = 'WhiteSpace';
 const INFO_WITH_ACCORDIONS = 'InfoWithAccordions';
 const IMAGE_TEXT_CARDS = 'ImageTextCards';
 const BUTTON = 'Button';
+const ANALYTICS_CHART = 'AnalyticsChartWidget';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -39,7 +40,8 @@ type ComponentNamesType =
   | typeof WHITE_SPACE
   | typeof INFO_WITH_ACCORDIONS
   | typeof IMAGE_TEXT_CARDS
-  | typeof BUTTON;
+  | typeof BUTTON
+  | typeof ANALYTICS_CHART;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -67,6 +69,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.imageTextCards;
     case BUTTON:
       return messages.button;
+    case ANALYTICS_CHART:
+      return messages.analyticsChart;
     default:
       return messages.default;
   }
