@@ -7,7 +7,7 @@ import { PublicationStatus } from 'services/projects';
 type sort = 'newest' | 'oldest';
 
 interface InputParameters {
-  projectIds?: string[] | null;
+  projectIds?: string[];
   currentAndFutureOnly?: boolean;
   pastOnly?: boolean;
   pageSize?: number;
@@ -36,7 +36,7 @@ export default function useEvents(parameters: InputParameters) {
   const [pageSize] = useState(parameters.pageSize ?? DEFAULT_PAGE_SIZE);
 
   useEffect(() => {
-    if (parameters.projectIds !== undefined) {
+    if (parameters.projectIds) {
       setProjectIds(parameters.projectIds);
     }
   }, [JSON.stringify(parameters.projectIds)]);
