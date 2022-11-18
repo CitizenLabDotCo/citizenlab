@@ -227,10 +227,38 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 {...this.state}
               />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.events"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.projectStatus"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
             </Column>
             <Column>
               <Outlet
                 id="app.containers.Admin.dashboard.summary.inputStatus"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.proposals"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.invitations"
                 projectId={currentProjectFilter}
                 startAtMoment={startAtMoment}
                 endAtMoment={endAtMoment}
