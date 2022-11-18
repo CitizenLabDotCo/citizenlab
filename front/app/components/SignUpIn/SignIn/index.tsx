@@ -88,11 +88,7 @@ const SignIn = memo<Props>(
     }, []);
 
     return (
-      <Container
-        id="e2e-sign-in-container"
-        className={className}
-        fullScreen={fullScreen}
-      >
+      <Container id="e2e-sign-in-container" className={className}>
         <StyledHeaderContainer
           className="signupinheadercontainer"
           inModal={!!metaData.inModal}
