@@ -7,20 +7,20 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import RenderNode from '../RenderNode';
-import Container from 'components/ContentBuilder/Widgets/Container';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // widgets
-import Text from 'components/ContentBuilder/Widgets/Text';
-import TwoColumn from 'components/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/ContentBuilder/Widgets/ThreeColumn';
-import Image from 'components/ContentBuilder/Widgets/Image';
-import Iframe from 'components/ContentBuilder/Widgets/Iframe';
-import AboutBox from 'components/ContentBuilder/Widgets/AboutBox';
-import Accordion from 'components/ContentBuilder/Widgets/Accordion';
-import WhiteSpace from 'components/ContentBuilder/Widgets/WhiteSpace';
+import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
+import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
+import Accordion from 'components/admin/ContentBuilder/Widgets/Accordion';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
-import Button from 'components/ContentBuilder/Widgets/Button';
+import Button from 'components/admin/ContentBuilder/Widgets/Button';
 
 type EditorProps = {
   children?: React.ReactNode;

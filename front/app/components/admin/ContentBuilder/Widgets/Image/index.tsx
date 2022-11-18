@@ -24,7 +24,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { IMAGE_UPLOADING_EVENT } from 'components/ContentBuilder/constants';
+import { IMAGE_UPLOADING_EVENT } from 'components/admin/ContentBuilder/constants';
 
 const Image = ({
   imageUrl,

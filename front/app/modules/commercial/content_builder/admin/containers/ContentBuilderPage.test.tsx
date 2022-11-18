@@ -5,7 +5,7 @@ import { ContentBuilderPage } from './';
 import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
-} from 'components/ContentBuilder/constants';
+} from 'components/admin/ContentBuilder/constants';
 
 import { IContentBuilderLayoutData } from '../../services/contentBuilder';
 import eventEmitter from 'utils/eventEmitter';

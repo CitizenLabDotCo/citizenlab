@@ -19,7 +19,7 @@ import { useNode } from '@craftjs/core';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { CONTENT_BUILDER_ERROR_EVENT } from 'components/ContentBuilder/constants';
+import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
 
 // types
 import { Locale } from 'typings';

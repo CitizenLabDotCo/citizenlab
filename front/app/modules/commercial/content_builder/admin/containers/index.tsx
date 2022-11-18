@@ -36,7 +36,7 @@ import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
-} from 'components/ContentBuilder/constants';
+} from 'components/admin/ContentBuilder/constants';
 
 // intl
 import messages from '../messages';

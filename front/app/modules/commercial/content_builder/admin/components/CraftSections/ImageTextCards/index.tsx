@@ -7,14 +7,14 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { UserComponent, Element } from '@craftjs/core';
 
 // widgets
-import TwoColumn from 'components/ContentBuilder/Widgets/TwoColumn';
-import Container from 'components/ContentBuilder/Widgets/Container';
-import Image from 'components/ContentBuilder/Widgets/Image';
-import Text from 'components/ContentBuilder/Widgets/Text';
-import WhiteSpace from 'components/ContentBuilder/Widgets/WhiteSpace';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // intl
-import textMessages from 'components/ContentBuilder/Widgets/Text/messages';
+import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
