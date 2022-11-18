@@ -172,35 +172,5 @@ describe FormLogicService do
         # expect(field.errors.details).to eq "todo"
       end
     end
-
-    # context 'when logic has bad structure' do
-    #   let(:logic) { { rules: [{}] } }
-    #   let(:logic) { { rules: [{ 'test' => {} }] } }
-
-    #   it 'returns false' do
-    #     expect(form_logic.valid?).to be false
-    #     # expect(field.errors.details).to eq "todo"
-    #   end
-    # end
   end
 end
-
-# good
-# {}
-# { rules: [] }
-# {
-#   rules: [
-#     {
-#       if: 1,
-#       then: [
-#         {
-#           effect: 'hide',
-#           target_id: 'adgajshgdj'
-#         }
-#       ]
-#     }
-#   ]
-# }
-# bad
-# nil
-# { rules: [{}] }
