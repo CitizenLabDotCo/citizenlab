@@ -1,5 +1,16 @@
 # Changelog
 
+### Fixed
+
+- [CL-2052] Fix Sentry error related to failed authentication
+
+## 2022-11-16
+
+### Fixed
+
+- [CL-1763] Norwegian translations of navbar & default pages now applied
+- [CL-2036] Fixed new vs returning visitors Matomo import
+
 ## 2022-11-14
 
 ### Fixed
