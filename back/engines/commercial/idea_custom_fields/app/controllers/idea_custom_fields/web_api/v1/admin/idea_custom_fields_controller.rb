@@ -125,8 +125,9 @@ module IdeaCustomFields
         raise UpdateAllFailedError, errors if errors.present?
 
         fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
-        FormLogicService.new(fields).replace_temp_ids!(temp_ids_to_ids_mapping)
-        unless FormLogicService.new(fields).valid?
+        form_logic = FormLogicService.new(fields)
+        form_logic.replace_temp_ids!(temp_ids_to_ids_mapping)
+        unless form_logic.valid?
           fields.each_with_index do |field, index|
             errors[index.to_s] = field.errors.details
           end
