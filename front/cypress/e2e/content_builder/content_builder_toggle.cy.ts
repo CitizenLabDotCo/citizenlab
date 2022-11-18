@@ -37,6 +37,9 @@ describe('Content builder toggle', () => {
   });
 
   it('shows original description by default along with any attachments if content builder is not used', () => {
+    cy.intercept(`**/projects/${projectId}`).as('saveProject');
+    cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
+
     // Attach a project file
     cy.visit(`admin/projects/${projectId}`);
     cy.scrollTo('bottom');
@@ -44,9 +47,11 @@ describe('Content builder toggle', () => {
     cy.get('#e2e-project-file-uploader').selectFile(
       'cypress/fixtures/example.pdf'
     );
+    cy.wait(4000);
     // Submit project
     cy.get('.e2e-submit-wrapper-button').click();
-    cy.wait(4000);
+    cy.wait('@saveProject');
+    cy.wait('@saveProjectFiles');
     cy.contains('Your form has been saved!').should('be.visible');
 
     // Go to project page
@@ -67,6 +72,8 @@ describe('Content builder toggle', () => {
   });
 
   it('shows attachments added to the project after description added using content builder', () => {
+    cy.intercept(`**/projects/${projectId}`).as('saveProject');
+    cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
@@ -81,6 +88,8 @@ describe('Content builder toggle', () => {
 
     // Save project after adding attachment
     cy.get('.e2e-submit-wrapper-button').click();
+    cy.wait('@saveProject');
+    cy.wait('@saveProjectFiles');
     cy.contains('Your form has been saved!').should('be.visible');
 
     cy.visit(`/admin/projects/${projectId}/description`);

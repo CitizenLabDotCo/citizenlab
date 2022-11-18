@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_10_085841) do
+ActiveRecord::Schema.define(version: 2022_11_10_105544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1740,20 +1740,13 @@ ActiveRecord::Schema.define(version: 2022_11_10_085841) do
       users.invite_status
      FROM users;
   SQL
-  create_view "analytics_fact_events", sql_definition: <<-SQL
-      SELECT events.id,
-      events.project_id AS dimension_project_id,
-      (events.start_at)::date AS dimension_date_start_id,
-      (events.end_at)::date AS dimension_date_end_id
-     FROM events;
-  SQL
   create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
       WITH last_project_statuses AS (
            SELECT DISTINCT ON (activities.item_id) activities.item_id AS project_id,
               activities.action AS status,
               activities.acted_at AS "timestamp"
              FROM activities
-            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY ((ARRAY['draft'::character varying, 'published'::character varying, 'archived'::character varying, 'deleted'::character varying])::text[])))
+            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY (ARRAY[('draft'::character varying)::text, ('published'::character varying)::text, ('archived'::character varying)::text, ('deleted'::character varying)::text])))
             ORDER BY activities.item_id, activities.acted_at DESC
           ), finished_statuses_for_continuous_projects AS (
            SELECT lps.project_id,
@@ -1793,5 +1786,13 @@ ActiveRecord::Schema.define(version: 2022_11_10_085841) do
       (project_statuses."timestamp")::date AS dimension_date_id
      FROM project_statuses
     ORDER BY project_statuses."timestamp" DESC;
+  SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.created_at)::date AS dimension_date_created_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
   SQL
 end
