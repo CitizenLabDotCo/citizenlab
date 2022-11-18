@@ -3,6 +3,7 @@
 class FormLogicService
   def initialize(fields)
     @fields = fields
+    @field_index = fields.index_by(&:id)
   end
 
   def ui_schema_rules_for(field)
@@ -32,6 +33,9 @@ class FormLogicService
       next false unless valid_structure? field.logic
       next true if field.logic.blank?
 
+      # Order is important here, because `target_after_source?` and `target_is_page?`
+      # rely on `valid_target_ids?` to return true. In those methods,
+      # `field_index[action['target_id']]` will always return a field.
       valid_target_ids?(field.logic) &&
         target_after_source?(field) &&
         target_is_page?(field.logic) &&
@@ -43,7 +47,7 @@ class FormLogicService
 
   EFFECTS = %w[show hide submit_survey]
 
-  attr_reader :fields
+  attr_reader :fields, :field_index
 
   def valid_structure?(logic)
     return true if logic == {}
@@ -63,18 +67,18 @@ class FormLogicService
       rule['then'].all? do |action|
         next true unless action['target_id']
 
-        fields.map(&:id).include? action['target_id']
+        field_index.key? action['target_id']
       end
     end
   end
 
-  def target_after_source?(field)
-    field.logic['rules'].all? do |rule|
+  def target_after_source?(source_field)
+    source_field.logic['rules'].all? do |rule|
       rule['then'].all? do |action|
         next true unless action['target_id']
 
-        target_field = fields.find { |find_field| find_field.id == action['target_id'] }
-        target_field.ordering > field.ordering
+        target_field = field_index[action['target_id']]
+        target_field.ordering > source_field.ordering
       end
     end
   end
@@ -84,7 +88,7 @@ class FormLogicService
       rule['then'].all? do |action|
         next true unless action['target_id']
 
-        target_field = fields.find { |field| field.id == action['target_id'] }
+        target_field = field_index[action['target_id']]
         target_field.page?
       end
     end
