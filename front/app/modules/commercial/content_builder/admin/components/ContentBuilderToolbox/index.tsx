@@ -7,9 +7,9 @@ import { useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
-import Container from 'components/ContentBuilder/Toolbox/Container';
-import SectionTitle from 'components/ContentBuilder/Toolbox/SectionTitle';
-import DraggableElement from 'components/ContentBuilder/Toolbox/DraggableElement';
+import Container from 'components/admin/ContentBuilder/Toolbox/Container';
+import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
+import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
