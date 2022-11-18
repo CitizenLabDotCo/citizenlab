@@ -167,6 +167,7 @@ export const GraphCardTitle = styled.h3`
   margin: 0;
   font-size: 25px;
   font-weight: bold;
+  line-height: 1.3;
 `;
 
 export const GraphCardFigureContainer = styled.div`
