@@ -54,6 +54,7 @@ module ReportBuilder
 
         def create_params
           @create_params ||= {
+            'owner' => current_user,
             'layout_attributes' => {
               'craftjs_jsonmultiloc' => {},
               'enabled' => true,

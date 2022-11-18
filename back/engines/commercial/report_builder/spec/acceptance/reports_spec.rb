@@ -79,7 +79,12 @@ resource 'Reports' do
     end
 
     describe 'when authorized' do
-      before { admin_header_token }
+      let(:user) { create(:admin) }
+
+      before do
+        token = Knock::AuthToken.new(payload: user.to_token_payload).token
+        header 'Authorization', "Bearer #{token}"
+      end
 
       example 'Create a report' do
         do_request
@@ -98,6 +103,7 @@ resource 'Reports' do
         report = ReportBuilder::Report.find(response_data[:id])
         expect(report.layout.enabled).to be(true)
         expect(report.layout.code).to eq('report')
+        expect(report.owner_id).to eq(user.id)
       end
 
       example '[error] Create a report without name' do
