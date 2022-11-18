@@ -365,7 +365,7 @@
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtrēt pēc",
   "app.components.ProjectFolderCards.components.Topbar.published": "Aktīvs",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tags",
-  "app.components.ProjectFolderCards.noProjectYet": "There are currently no open projects",
+  "app.components.ProjectFolderCards.noProjectYet": "Pašlaik nav atvērtu projektu",
   "app.components.ProjectFolderCards.noProjectsAvailable": "Projekti nav pieejami",
   "app.components.ProjectFolderCards.showMore": "Parādīt vairāk",
   "app.components.ProjectFolderCards.stayTuned": "Atgriezties vēlreiz, lai uzzinātu par jaunām iesaistīšanās iespējām",
