@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,10 +13,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // components
-import { Checkbox } from '@citizenlab/cl2-component-library';
+import { Checkbox, Td } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Category from 'modules/commercial/insights/admin/components/Category';
 
@@ -32,16 +32,8 @@ const StyledTableRow = styled.tr`
   cursor: pointer;
   height: 56px;
 
-  td {
-    padding: 12px 4px;
-    > * {
-      margin: 0;
-    }
-  }
-
   .inputTitle {
-    font-size: ${fontSizes.s}px;
-    color: ${colors.label};
+    color: ${colors.textSecondary};
   }
 
   &:hover {
@@ -93,21 +85,21 @@ const InputsTableRow = ({
       onKeyPress={handleEnterPress}
       onClick={onPreview}
     >
-      <td>
+      <Td px="4px">
         <Checkbox
           checked={selected}
           onChange={changeSelected}
           stopLabelPropagation
         />
-      </td>
-      <td>
+      </Td>
+      <Td>
         <T
           value={idea.attributes.title_multiloc}
           maxLength={30}
           className="inputTitle"
         />
-      </td>
-      <td>
+      </Td>
+      <Td>
         <CategoryList>
           {(query.category
             ? categories.filter((category) => category.id === query.category)
@@ -135,9 +127,9 @@ const InputsTableRow = ({
             />
           ))}
         </CategoryList>
-      </td>
+      </Td>
       {query.category ? (
-        <td>
+        <Td>
           <CategoryList>
             {categories
               .filter((category) => category.id !== query.category)
@@ -160,7 +152,7 @@ const InputsTableRow = ({
                 />
               ))}
           </CategoryList>
-        </td>
+        </Td>
       ) : null}
     </StyledTableRow>
   );

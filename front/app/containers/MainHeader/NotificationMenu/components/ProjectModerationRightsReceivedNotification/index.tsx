@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { stopPropagation } from 'utils/helperUtils';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 // resources
 import { IProjectModerationRightsReceivedNotificationData } from 'services/notifications';
@@ -22,9 +23,9 @@ const ProjectModerationRightsReceivedNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/admin/projects/${notification.attributes.project_id}/edit`}
+      linkTo={adminProjectsProjectPath(notification.attributes.project_id)}
       timing={notification.attributes.created_at}
-      icon="admin"
+      icon="shield-checkered"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage

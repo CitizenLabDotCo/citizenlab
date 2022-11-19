@@ -11,10 +11,12 @@ import { isNumber } from 'lodash-es';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { getInputTerm } from 'services/participationContexts';
+import { getSurveyTakingRules } from 'services/actionTakingRules';
 
 // components
 import Button from 'components/UI/Button';
@@ -33,11 +35,13 @@ import { getInputTermMessage } from 'utils/i18n';
 import styled from 'styled-components';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
-const Container = styled.div``;
+// router
+import clHistory from 'utils/cl-router/history';
+import { useLocation } from 'react-router-dom';
 
-// const AllocateBudgetButton = styled(Button)`
-//   margin-bottom: 10px;
-// `;
+import { openSignUpInModal } from 'components/SignUpIn/events';
+
+const Container = styled.div``;
 
 const SeeIdeasButton = styled(Button)`
   margin-bottom: 10px;
@@ -51,193 +55,197 @@ interface Props {
 const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
-
+  const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const [ideasPresentOutsideViewport, setIdeasPresentOutsideViewport] =
-    useState(false);
-  const [surveyPresentOutsideViewport, setSurveyPresentOutsideViewport] =
-    useState(false);
-  const [pollPresentOutsideViewport, setPollPresentOutsideViewport] =
-    useState(false);
+  const { pathname, hash: divId } = useLocation();
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
   useEffect(() => {
-    const loop = (counter: number) => {
-      if (counter < 200) {
-        setTimeout(() => {
-          const viewportHeight = Math.max(
-            document.documentElement.clientHeight || 0,
-            window.innerHeight || 0
-          );
-
-          const ideasElement = document.getElementById('project-ideas');
-          const surveyElement = document.getElementById('project-survey');
-          const pollElement = document.getElementById('project-poll');
-
-          if (ideasElement) {
-            const isIdeasInViewport =
-              ideasElement.getBoundingClientRect()?.top + 800 <= viewportHeight;
-
-            if (!isIdeasInViewport) {
-              setIdeasPresentOutsideViewport(true);
-            }
-          }
-
-          if (surveyElement) {
-            const isSurveyInViewport =
-              surveyElement.getBoundingClientRect()?.top + 400 <=
-              viewportHeight;
-
-            if (!isSurveyInViewport) {
-              setSurveyPresentOutsideViewport(true);
-            }
-          }
-
-          if (pollElement) {
-            const isPollInViewport =
-              pollElement.getBoundingClientRect()?.top + 200 <= viewportHeight;
-
-            if (!isPollInViewport) {
-              setPollPresentOutsideViewport(true);
-            }
-          }
-
-          loop(counter + 1);
-        }, 10);
-      }
-    };
-
-    loop(0);
-  }, [projectId]);
+    const element = document.getElementById(divId);
+    if (element) {
+      element.scrollIntoView();
+    }
+  }, [divId]);
 
   const scrollTo = useCallback(
     (id: string, shouldSelectCurrentPhase = true) =>
       (event: FormEvent) => {
         event.preventDefault();
 
-        currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
+        if (!isNilOrError(project)) {
+          const isOnProjectPage = pathname.endsWith(
+            `/projects/${project.attributes.slug}`
+          );
 
-        setTimeout(() => {
-          scrollToElement({ id, shouldFocus: true });
-        }, 100);
+          currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
+
+          if (isOnProjectPage) {
+            scrollToElement({ id, shouldFocus: true });
+          } else {
+            clHistory.push(`/projects/${project.attributes.slug}#${id}`);
+          }
+        }
       },
-    [currentPhase]
+    [currentPhase, project, pathname]
   );
 
-  if (!isNilOrError(project)) {
-    const { process_type, participation_method, publication_status } =
-      project.attributes;
-    const ideas_count =
-      process_type === 'continuous'
-        ? project.attributes.ideas_count
-        : currentPhase?.attributes.ideas_count;
-    const hasProjectEnded = currentPhase
-      ? pastPresentOrFuture([
-          currentPhase.attributes.start_at,
-          currentPhase.attributes.end_at,
-        ]) === 'past'
-      : false;
-    const inputTerm = getInputTerm(
-      project.attributes.process_type,
-      project,
-      phases
-    );
-
-    return (
-      <Container className={className || ''}>
-        {/* {ideasPresentOutsideViewport &&
-          ((process_type === 'continuous' &&
-            participation_method === 'budgeting') ||
-            currentPhase?.attributes.participation_method === 'budgeting') &&
-          !hasProjectEnded &&
-          isNumber(ideas_count) &&
-          ideas_count > 0 && (
-            <AllocateBudgetButton
-              id="e2e-project-allocate-budget-button"
-              buttonStyle="primary"
-              onClick={scrollTo('project-ideas')}
-              fontWeight="500"
-            >
-              <FormattedMessage {...messages.allocateBudget} />
-            </AllocateBudgetButton>
-          )} */}
-        {ideasPresentOutsideViewport &&
-          ((process_type === 'continuous' &&
-            participation_method === 'ideation') ||
-            currentPhase?.attributes.participation_method === 'ideation') &&
-          isNumber(ideas_count) &&
-          ideas_count > 0 && (
-            <SeeIdeasButton
-              id="e2e-project-see-ideas-button"
-              buttonStyle="secondary"
-              onClick={scrollTo('project-ideas')}
-              fontWeight="500"
-            >
-              <FormattedMessage
-                {...getInputTermMessage(inputTerm, {
-                  idea: messages.seeTheIdeas,
-                  option: messages.seeTheOptions,
-                  project: messages.seeTheProjects,
-                  question: messages.seeTheQuestions,
-                  issue: messages.seeTheIssues,
-                  contribution: messages.seeTheContributions,
-                })}
-              />
-            </SeeIdeasButton>
-          )}
-        {process_type === 'continuous' &&
-          participation_method === 'ideation' &&
-          publication_status !== 'archived' && (
-            <IdeaButton
-              id="project-ideabutton"
-              projectId={project.id}
-              participationContextType="project"
-              fontWeight="500"
-            />
-          )}
-        {currentPhase?.attributes.participation_method === 'ideation' &&
-          !hasProjectEnded && (
-            <IdeaButton
-              id="project-ideabutton"
-              projectId={project.id}
-              phaseId={currentPhase.id}
-              participationContextType="phase"
-              fontWeight="500"
-            />
-          )}
-        {surveyPresentOutsideViewport &&
-          ((process_type === 'continuous' &&
-            participation_method === 'survey') ||
-            currentPhase?.attributes.participation_method === 'survey') &&
-          !hasProjectEnded && (
-            <Button
-              buttonStyle="primary"
-              onClick={scrollTo('project-survey')}
-              fontWeight="500"
-            >
-              <FormattedMessage {...messages.takeTheSurvey} />
-            </Button>
-          )}
-        {pollPresentOutsideViewport &&
-          ((process_type === 'continuous' && participation_method === 'poll') ||
-            currentPhase?.attributes.participation_method === 'poll') &&
-          !hasProjectEnded && (
-            <Button
-              buttonStyle="primary"
-              onClick={scrollTo('project-poll')}
-              fontWeight="500"
-            >
-              <FormattedMessage {...messages.takeThePoll} />
-            </Button>
-          )}
-      </Container>
-    );
+  if (isNilOrError(project)) {
+    return null;
   }
 
-  return null;
+  const { enabled, disabledReason } = getSurveyTakingRules({
+    project,
+    phaseContext: currentPhase,
+    signedIn: !isNilOrError(authUser),
+  });
+  const registrationNotCompleted =
+    !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
+  const shouldVerify = !!(
+    disabledReason === 'maybeNotVerified' || disabledReason === 'notVerified'
+  );
+
+  // Using the same rules used to show the sign wrapper in survey display
+  const showSignIn =
+    shouldVerify ||
+    disabledReason === 'maybeNotPermitted' ||
+    registrationNotCompleted;
+
+  const handleTakeSurveyClick = (event: FormEvent) => {
+    if (showSignIn) {
+      openSignUpInModal({
+        flow: 'signup',
+        verification: shouldVerify,
+        verificationContext: undefined,
+        action: () => scrollTo('project-survey')(event),
+      });
+    }
+
+    if (enabled === true) {
+      scrollTo('project-survey')(event);
+    }
+  };
+
+  const { process_type, publication_status } = project.attributes;
+
+  const isProjectArchived =
+    project.attributes.publication_status === 'archived';
+  const isProcessTypeContinuous = process_type === 'continuous';
+  const participation_method = isProcessTypeContinuous
+    ? project.attributes.participation_method
+    : currentPhase?.attributes.participation_method;
+  const ideas_count = isProcessTypeContinuous
+    ? project.attributes.ideas_count
+    : currentPhase?.attributes.ideas_count;
+  const hasProjectEnded = currentPhase
+    ? pastPresentOrFuture([
+        currentPhase.attributes.start_at,
+        currentPhase.attributes.end_at,
+      ]) === 'past'
+    : false;
+  const inputTerm = getInputTerm(
+    project.attributes.process_type,
+    project,
+    phases
+  );
+
+  const isParticipationMethodIdeation = participation_method === 'ideation';
+
+  const isParticipationMethodNativeSurvey =
+    participation_method === 'native_survey' ||
+    currentPhase?.attributes.participation_method === 'native_survey';
+
+  const showSeeIdeasButton =
+    ((isProcessTypeContinuous && isParticipationMethodIdeation) ||
+      currentPhase?.attributes.participation_method === 'ideation') &&
+    isNumber(ideas_count) &&
+    ideas_count > 0;
+
+  const showIdeasButton =
+    isParticipationMethodIdeation && publication_status !== 'archived';
+
+  const showNativeSurvey =
+    isParticipationMethodNativeSurvey && publication_status !== 'archived';
+
+  const showSurvey =
+    (!isProjectArchived && phases && participation_method === 'survey') ||
+    (currentPhase?.attributes.participation_method === 'survey' &&
+      !hasProjectEnded);
+
+  const showPoll =
+    ((isProcessTypeContinuous && participation_method === 'poll') ||
+      currentPhase?.attributes.participation_method === 'poll') &&
+    !hasProjectEnded;
+
+  const isPhaseIdeation =
+    currentPhase?.attributes.participation_method === 'ideation';
+
+  const isPhaseNativeSurvey =
+    currentPhase?.attributes.participation_method === 'native_survey';
+
+  return (
+    <Container className={className || ''}>
+      {showSeeIdeasButton && (
+        <SeeIdeasButton
+          id="e2e-project-see-ideas-button"
+          buttonStyle="secondary"
+          onClick={scrollTo('project-ideas')}
+          fontWeight="500"
+        >
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.seeTheIdeas,
+              option: messages.seeTheOptions,
+              project: messages.seeTheProjects,
+              question: messages.seeTheQuestions,
+              issue: messages.seeTheIssues,
+              contribution: messages.seeTheContributions,
+            })}
+          />
+        </SeeIdeasButton>
+      )}
+      {showIdeasButton && !hasProjectEnded && (
+        <IdeaButton
+          id="project-ideabutton"
+          projectId={project.id}
+          participationContextType={isPhaseIdeation ? 'phase' : 'project'}
+          phaseId={isPhaseIdeation ? currentPhase.id : ''}
+          fontWeight="500"
+        />
+      )}
+      {showNativeSurvey && !hasProjectEnded && (
+        <IdeaButton
+          id="project-survey-button"
+          data-testid="e2e-project-survey-button"
+          projectId={project.id}
+          participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
+          phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
+          fontWeight="500"
+        />
+      )}
+      {showSurvey && (
+        <Button
+          buttonStyle="primary"
+          onClick={handleTakeSurveyClick}
+          fontWeight="500"
+          data-testid="take-survey-button"
+        >
+          <FormattedMessage {...messages.takeTheSurvey} />
+        </Button>
+      )}
+      {showPoll && (
+        <Button
+          buttonStyle="primary"
+          onClick={scrollTo('project-poll')}
+          fontWeight="500"
+        >
+          <FormattedMessage {...messages.takeThePoll} />
+        </Button>
+      )}
+    </Container>
+  );
 });
 
 export default ProjectActionButtons;

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -29,7 +29,7 @@ import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // tracking
@@ -40,7 +40,7 @@ type InputDetailsProps = {
   previewedInputId: string;
 } & NavigationProps &
   WithRouterProps &
-  InjectedIntlProps;
+  WrappedComponentProps;
 
 const Container = styled.div`
   padding: 48px;
@@ -87,14 +87,11 @@ const LoadingContainer = styled.div`
 
 const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
   #react-select-2-option-${({ options }) => options.length} {
-    background-color: ${colors.clGreenSuccessBackground};
+    background-color: ${colors.successLight};
   }
 `;
 
-const PlusIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
-`;
+const PlusIcon = styled(Icon)``;
 
 const StyledOptionLabel = styled(Box)`
   ${PlusIcon} {
@@ -269,7 +266,7 @@ const InputDetails = ({
               variant="approved"
             />
           ))}
-          {loading && <StyledSpinner color={colors.clGreen} size="24px" />}
+          {loading && <StyledSpinner color={colors.success} size="24px" />}
         </CategoryList>
         {ideaId && <Idea ideaId={ideaId} />}
       </Container>

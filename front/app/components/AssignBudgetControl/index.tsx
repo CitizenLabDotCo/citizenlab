@@ -63,9 +63,9 @@ const IdeaPageContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 20px;
-    background: ${colors.backgroundLightGrey};
+    background: ${colors.background};
   `}
 `;
 
@@ -80,7 +80,7 @@ const BudgetWithButtonWrapper = styled.div`
 const Budget = styled.div`
   width: 100%;
   height: 90px;
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.m}px;
   font-weight: 600;
   text-align: center;
@@ -280,8 +280,7 @@ const AssignBudgetControl = memo(
                 isSignedIn && !isBudgetingEnabled && !hasBudgetingDisabledReason
               }
               processing={processing}
-              bgColor={isInBasket ? colors.clRedError : colors.clGreen}
-              iconSize="18px"
+              bgColor={isInBasket ? colors.red600 : colors.success}
               icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
               className={`e2e-assign-budget-button ${
                 isInBasket ? 'in-basket' : 'not-in-basket'
@@ -295,7 +294,6 @@ const AssignBudgetControl = memo(
           return (
             <IdeaCardContainer
               className={`e2e-assign-budget ${className || ''}`}
-              aria-live="polite"
             >
               {addRemoveButton}
             </IdeaCardContainer>
@@ -308,7 +306,6 @@ const AssignBudgetControl = memo(
               className={`pbAssignBudgetControlContainer e2e-assign-budget ${
                 className || ''
               }`}
-              aria-live="polite"
             >
               <BudgetWithButtonWrapper>
                 <Budget>

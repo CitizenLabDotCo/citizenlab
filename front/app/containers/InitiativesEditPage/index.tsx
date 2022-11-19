@@ -3,7 +3,7 @@ import React from 'react';
 // libraries
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
@@ -25,10 +25,14 @@ import GetRemoteFiles, {
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // utils
 import { isNilOrError, isError } from 'utils/helperUtils';
 
 // components
+import PageNotFound from 'components/PageNotFound';
 import InitiativesEditMeta from './InitiativesEditMeta';
 import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
@@ -41,7 +45,7 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;
   min-width: 530px;
   height: 900px;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-width: 230px;
   `}
 `;
@@ -162,8 +166,16 @@ const Data = adopt<DataProps, WithRouterProps>({
   ),
 });
 
-export default withRouter((withRouterProps: WithRouterProps) => (
-  <Data {...withRouterProps}>
-    {(dataProps) => <InitiativesEditPage {...dataProps} />}
-  </Data>
-));
+export default withRouter((withRouterProps: WithRouterProps) => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
+
+  return (
+    <Data {...withRouterProps}>
+      {(dataProps) => <InitiativesEditPage {...dataProps} />}
+    </Data>
+  );
+});

@@ -1,15 +1,16 @@
 import React, { memo, useState, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { globalState } from 'services/globalState';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
 import useAuthUser from 'hooks/useAuthUser';
-import { hasPermission } from 'services/permissions';
+import { usePermission } from 'services/permissions';
 import HasPermission from 'components/HasPermission';
 
 // components
 import Sidebar from './sideBar/';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // utils
@@ -18,16 +19,13 @@ import { endsWith } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
-import { rgba } from 'polished';
-
-import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;
   background: ${colors.background};
-  color: ${colors.adminTextColor};
-  fill: ${colors.adminTextColor};
-  border-color: ${colors.adminTextColor};
+  color: ${colors.primary};
+  fill: ${colors.primary};
+  border-color: ${colors.primary};
 
   &.whiteBg {
     background: #fff;
@@ -39,14 +37,14 @@ const Container = styled.div`
   .ui a,
   .ui input,
   .ui .active td {
-    color: ${colors.adminTextColor} !important;
+    color: ${colors.primary} !important;
   }
 
   .Select-control,
   .Select-value-label,
   .Select-value-icon,
   .Select-option {
-    color: ${colors.adminTextColor} !important;
+    color: ${colors.primary} !important;
   }
 
   .ui.red {
@@ -82,44 +80,30 @@ export const RightColumn = styled.div`
     max-width: none;
   }
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     padding: 2.5rem 2.5rem;
   `}
 `;
 
-export const chartTheme = (theme) => {
-  return {
-    ...theme,
-    chartStroke: colors.clIconAccent,
-    chartStrokeGreen: colors.clGreen,
-    chartStrokeRed: colors.clRed,
-    chartFill: colors.clIconAccent,
-    barFill: colors.adminContentBackground,
-    chartLabelColor: colors.adminSecondaryTextColor,
-    barHoverColor: rgba(colors.clIconAccent, 0.25),
-    chartLabelSize: 13,
-    animationBegin: 10,
-    animationDuration: 200,
-    cartesianGridColor: '#f5f5f5',
-    newBarFill: '#073F80',
-    newLineColor: '#7FBBCA',
-    barSize: 20,
-  };
-};
-
 type Props = {
   className?: string;
-  children: React.ReactNode;
 };
 
 const AdminPage = memo<Props & WithRouterProps>(
-  ({ className, children, location: { pathname } }) => {
+  ({ className, location: { pathname } }) => {
     const authUser = useAuthUser();
 
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-    const [adminFullWidthContent, setAdminFullWidthContent] = useState(false);
+    // The check in front/app/containers/Admin/routes.tsx already should do the same.
+    // TODO: double check it and remove `userCanViewAdmin`
+    const userCanViewPath = usePermission({
+      // If we're in this component, we're sure
+      // that the path is an admin path
+      item: { type: 'route', path: pathname },
+      action: 'access',
+    });
 
     useEffect(() => {
       const subscriptions = [
@@ -135,25 +119,13 @@ const AdminPage = memo<Props & WithRouterProps>(
       };
     }, []);
 
-    const setAdminFullWidthContentToVisible = (isVisible) =>
-      setAdminFullWidthContent(isVisible);
-
-    const userCanViewAdmin = () =>
-      hasPermission({
-        action: 'access',
-        item: { type: 'route', path: '/admin' },
-      });
-
     useEffect(() => {
-      if (
-        authUser === null ||
-        (authUser !== undefined && !userCanViewAdmin())
-      ) {
+      if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
         clHistory.push('/');
       }
-    }, [authUser]);
+    }, [authUser, userCanViewPath]);
 
-    if (!userCanViewAdmin()) {
+    if (!userCanViewPath) {
       return null;
     }
 
@@ -175,30 +147,19 @@ const AdminPage = memo<Props & WithRouterProps>(
         item={{ type: 'route', path: '/admin/dashboard' }}
         action="access"
       >
-        <ThemeProvider theme={chartTheme}>
-          <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-            {!adminFullWidthContent && (
-              <>
-                <Sidebar />
-                <RightColumn
-                  className={`${fullWidth && 'fullWidth'} ${
-                    noPadding && 'noPadding'
-                  }`}
-                >
-                  {children}
-                </RightColumn>
-              </>
-            )}
-            <Outlet
-              id="app.containers.Admin.contentBuilderLayout"
-              onMount={setAdminFullWidthContentToVisible}
-              childrenToRender={children}
-            />
-          </Container>
-        </ThemeProvider>
+        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
+          <Sidebar />
+          <RightColumn
+            className={`${fullWidth && 'fullWidth'} ${
+              noPadding && 'noPadding'
+            }`}
+          >
+            <RouterOutlet />
+          </RightColumn>
+        </Container>
       </HasPermission>
     );
   }
 );
 
-export default withRouter<Props>(AdminPage);
+export default withRouter(AdminPage);

@@ -79,6 +79,40 @@ module.exports = {
     'no-multiple-empty-lines': 'off',
     'no-new-wrappers': 'error',
     'no-param-reassign': 'error',
+    'no-restricted-imports': [
+      'error',
+      {
+        paths: [
+          {
+            name: 'react-router-dom',
+            importNames: ['Link', 'useNavigate', 'NavLink'],
+            message:
+              "Import the Link or useNavigate from utils/cl-router instead of directly from 'react-router-dom'",
+          },
+          {
+            name: 'react-intl',
+            importNames: ['FormattedMessage', 'injectIntl', 'useIntl'],
+            message:
+              "Import FormattedMessage, injectIntl and useIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
+          },
+          {
+            name: 'history',
+            message:
+              "Import history from utils/cl-router/cl-history instead of directly from 'history'",
+          },
+          {
+            name: 'lodash',
+            message:
+              "Import lodash functions from 'lodash-es' instead of 'lodash'",
+          },
+          {
+            name: '@testing-library/react',
+            message:
+              "Import React testing library exports from 'utils/testUtils/rtl' instead",
+          },
+        ],
+      },
+    ],
     'no-trailing-spaces': 'off',
     'no-underscore-dangle': 'off',
     'no-var': 'error',
@@ -135,9 +169,6 @@ module.exports = {
         rulesDirectory: ['node_modules/tslint-react/rules'],
         rules: {
           'no-module-references': true,
-          'no-vanilla-formatted-messages': true,
-          'no-vanilla-lodash': true,
-          'no-vanilla-routing': true,
         },
       },
     ],

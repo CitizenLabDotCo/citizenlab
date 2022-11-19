@@ -5,7 +5,7 @@
       <img
         alt="User icon"
         width="29px"
-        src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/users-icon_w9vccy.png"
+        src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_user.png"
       />
     </mj-text>
     <mj-text font-size="16px" align="center">
@@ -19,7 +19,7 @@
       <img
         alt="Idea icon"
         width="24px"
-        src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/idea-icon_zfjmco.png"
+        src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_idea.png"
       />
     </mj-text>
     <mj-text font-size="16px" align="center">
@@ -33,7 +33,7 @@
       <img
         alt="Comment icon"
         width="26px"
-        src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/comment-icon_ouanbm.png"
+        src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_comment.png"
       />
     </mj-text>
     <mj-text font-size="16px" align="center">

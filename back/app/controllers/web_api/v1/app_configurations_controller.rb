@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AppConfigurationsController < ApplicationController
   skip_before_action :authenticate_user
 
@@ -28,9 +30,8 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   end
 
   def remove_images!(configuration, config_params)
-    configuration.remove_logo!      if config_params.include?('logo')      and config_params['logo'].nil?
-    configuration.remove_header_bg! if config_params.include?('header_bg') and config_params['header_bg'].nil?
-    configuration.remove_favicon!   if config_params.include?('favicon')   and config_params['favicon'].nil?
+    remove_image_if_requested!(configuration, config_params, 'logo')
+    remove_image_if_requested!(configuration, config_params, 'favicon')
   end
 
   def app_configuration
@@ -39,6 +40,6 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
 
   def config_params
     @config_params ||= params.require(:app_configuration)
-                             .permit(:logo, :header_bg, :favicon, homepage_info_multiloc: {}, settings: {}, style: {})
+      .permit(:logo, :favicon, settings: {}, style: {})
   end
 end

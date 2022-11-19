@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class IdeaPublishedMailer < ApplicationMailer
     protected
@@ -13,7 +15,7 @@ module EmailCampaigns
     end
 
     def header_message
-      # TODO tech debt
+      # TODO: tech debt
       if app_configuration.name == 'Stad Leuven'
         '<p style="margin-bottom: 20px;">
            Bedankt om je idee te delen. We houden je verder op de hoogte van de volgende stappen binnen dit project.

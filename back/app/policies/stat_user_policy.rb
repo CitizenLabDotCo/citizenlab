@@ -1,5 +1,6 @@
-class StatUserPolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class StatUserPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -36,7 +37,7 @@ class StatUserPolicy < ApplicationPolicy
   def active_users_by_time?
     show_stats?
   end
-  
+
   def active_users_by_time_cumulative?
     show_stats?
   end

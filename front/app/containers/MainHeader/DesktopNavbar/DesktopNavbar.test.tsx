@@ -5,7 +5,7 @@ import DesktopNavbar from '.';
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 jest.mock('hooks/useNavbarItems');
-jest.mock('hooks/usePageSlugById');
+jest.mock('hooks/useCustomPageSlugById');
 
 const mockAdminPublications = [
   {
@@ -24,16 +24,7 @@ jest.mock('hooks/useAdminPublications', () =>
   }))
 );
 
-jest.mock('react-router', () => {
-  return {
-    withRouter: (Component) => {
-      return (props) => {
-        return <Component {...props} location={{ pathname: 'en' }} />;
-      };
-    },
-    Link: (props) => <a href={props.to.pathname}>{props.children}</a>,
-  };
-});
+jest.mock('utils/cl-router/Link');
 
 describe('<DesktopNavbar />', () => {
   it('renders', () => {

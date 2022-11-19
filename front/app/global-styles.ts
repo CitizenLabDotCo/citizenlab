@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { fontSizes, isRtl } from 'utils/styleUtils';
+import { fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -16,11 +16,6 @@ const GlobalStyle = createGlobalStyle`
     &:not(.focus-visible) {
       outline: none;
     }
-  }
-
-  *::placeholder {
-    opacity: 1;
-    color: #767676;
   }
 
   html,
@@ -60,6 +55,12 @@ const GlobalStyle = createGlobalStyle`
   p,
   label {
     line-height: 1.5em;
+  }
+
+  ::placeholder,
+  :-ms-input-placeholder,
+  ::-webkit-input-placeholder {
+    color: ${colors.placeholder};
   }
 `;
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
@@ -45,8 +45,8 @@ const NavigationItemBorder = styled.div`
 `;
 
 const NavigationDropdownItem = styled.button`
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
-  fill: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
+  fill: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: ${fontSizes.base}px;
@@ -62,14 +62,14 @@ const NavigationDropdownItem = styled.button`
 
   &:hover,
   &.opened {
-    color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+    color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
     text-decoration: underline;
 
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
         theme.navbarActiveItemBorderColor
           ? rgba(theme.navbarActiveItemBorderColor, 0.3)
-          : rgba(theme.colorMain, 0.3)};
+          : rgba(theme.colors.tenantPrimary, 0.3)};
     }
   }
 
@@ -84,13 +84,14 @@ const NavigationDropdownItem = styled.button`
       width: 100%;
       z-index: -1;
       background-color: ${({ theme }) =>
-        theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
+        theme.navbarActiveItemBackgroundColor ||
+        rgba(theme.colors.tenantPrimary, 0.05)};
       pointer-events: none;
     }
 
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
-        theme.navbarActiveItemBorderColor || theme.colorMain};
+        theme.navbarActiveItemBorderColor || theme.colors.tenantPrimary};
     }
   }
   ${isRtl`
@@ -99,14 +100,9 @@ const NavigationDropdownItem = styled.button`
 `;
 
 const NavigationDropdownItemIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
   fill: inherit;
-  margin-left: 4px;
-  margin-top: 3px;
   ${isRtl`
     margin-left: 0;
-    margin-right: 4px;
   `}
 `;
 
@@ -128,7 +124,7 @@ const ProjectsListFooter = styled(Link)`
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${({ theme }) => theme.colorSecondary};
+  background: ${({ theme }) => theme.colors.tenantSecondary};
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -137,7 +133,7 @@ const ProjectsListFooter = styled(Link)`
   &:hover,
   &:focus {
     color: #fff;
-    background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
+    background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
     text-decoration: none;
   }
 `;
@@ -195,15 +191,16 @@ const AdminPublicationsNavbarItem = ({
         >
           <NavigationItemBorder />
           <T value={navigationItemTitle} />
-          <NavigationDropdownItemIcon name="dropdown" />
+          <NavigationDropdownItemIcon name="chevron-down" />
         </NavigationDropdownItem>
         <Dropdown
           top="68px"
           left="10px"
           opened={projectsDropdownOpened}
           onClickOutside={toggleProjectsDropdown}
+          zIndex="500"
           content={
-            <ProjectsList>
+            <ProjectsList id="e2e-projects-dropdown-content">
               {adminPublications.map((item: IAdminPublicationContent) => (
                 <React.Fragment key={item.publicationId}>
                   {item.publicationType === 'project' && (
@@ -225,7 +222,7 @@ const AdminPublicationsNavbarItem = ({
           footer={
             <>
               {totalProjectsListLength > 9 && (
-                <ProjectsListFooter to={linkTo}>
+                <ProjectsListFooter to={linkTo} id="e2e-all-projects-link">
                   <FormattedMessage {...messages.allProjects} />
                 </ProjectsListFooter>
               )}

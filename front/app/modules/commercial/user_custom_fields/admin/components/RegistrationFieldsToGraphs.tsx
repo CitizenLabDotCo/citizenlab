@@ -1,6 +1,5 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { map } from 'lodash-es';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -14,7 +13,7 @@ import {
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -41,23 +40,32 @@ interface DataProps {
   customFields: GetUserCustomFieldsChildProps;
 }
 
+type GraphOption = {
+  value: number;
+  name: string;
+  code: string;
+};
+
 export interface Props extends InputProps, DataProps {}
 
 export class RegistrationFieldsToGraphs extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized
+  Props & WrappedComponentProps & InjectedLocalized
 > {
   convertToGraphFormat = (data: IUsersByRegistrationField) => {
     const {
       series: { users },
       options,
     } = data;
-    const res = map(options, (value, key) => {
-      return {
-        value: users[key] || 0,
-        name: this.props.localize(value.title_multiloc),
-        code: key,
-      };
-    });
+    let res: GraphOption[] = [];
+    if (options) {
+      res = Object.entries(options)
+        .sort((a, b) => a[1].ordering - b[1].ordering)
+        .map(([key, value]) => ({
+          value: users[key] || 0,
+          name: this.props.localize(value.title_multiloc),
+          code: key,
+        }));
+    }
 
     if (users['_blank']) {
       res.push({
@@ -177,7 +185,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
 }
 
 const RegistrationFieldsToGraphsWithHoCs = localize<Props>(
-  injectIntl<Props & InjectedLocalized>(RegistrationFieldsToGraphs as any)
+  injectIntl(RegistrationFieldsToGraphs as any)
 ) as any;
 
 export default (inputProps: InputProps) => (

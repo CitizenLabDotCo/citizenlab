@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import GetPermission from 'resources/GetPermission';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 type Props = {
   canManageAutomatedCampaigns: boolean | null;
@@ -22,7 +23,7 @@ type Props = {
 interface State {}
 
 class MessagingDashboard extends React.PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & WrappedComponentProps & WithRouterProps,
   State
 > {
   tabs = () => {
@@ -45,6 +46,7 @@ class MessagingDashboard extends React.PureComponent<
       tabs.push({
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
+        statusLabel: 'Beta',
       });
     }
     if (
@@ -66,7 +68,6 @@ class MessagingDashboard extends React.PureComponent<
 
   render() {
     const {
-      children,
       intl: { formatMessage },
     } = this.props;
     const tabs = this.tabs();
@@ -76,12 +77,7 @@ class MessagingDashboard extends React.PureComponent<
         <TabbedResource
           resource={{
             title: formatMessage(messages.titleMessaging),
-            // note: update subtitle once SMS feature is live.
-            // right now it's accurate in only referring to email functionality
-            // It may even be better to make the subtitle content sensitive to each of the possible messaging features
-            // and display different copy depending on which messaging feature(s) is/are active:
-            // Manual emails / automated emails / SMS
-            subtitle: formatMessage(messages.subtitleEmails),
+            subtitle: formatMessage(messages.subtitleMessaging),
           }}
           tabs={this.tabs()}
         >
@@ -89,11 +85,13 @@ class MessagingDashboard extends React.PureComponent<
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          {isEmpty(tabs) ? (
-            <FormattedMessage {...messages.noAccess} />
-          ) : (
-            children
-          )}
+          <div id="e2e-messaging-container">
+            {isEmpty(tabs) ? (
+              <FormattedMessage {...messages.noAccess} />
+            ) : (
+              <RouterOutlet />
+            )}
+          </div>
         </TabbedResource>
       </>
     );

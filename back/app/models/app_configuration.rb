@@ -4,30 +4,24 @@
 #
 # Table name: app_configurations
 #
-#  id                     :uuid             not null, primary key
-#  name                   :string
-#  host                   :string
-#  logo                   :string
-#  header_bg              :string
-#  favicon                :string
-#  settings               :jsonb
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  style                  :jsonb
-#  homepage_info_multiloc :jsonb
+#  id         :uuid             not null, primary key
+#  name       :string
+#  host       :string
+#  logo       :string
+#  favicon    :string
+#  settings   :jsonb
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  style      :jsonb
 #
 class AppConfiguration < ApplicationRecord
   include StyleSettings
-  include CustomizableHomepageBannerSettings
 
   mount_base64_uploader :logo, LogoUploader
-  mount_base64_uploader :header_bg, AppHeaderBgUploader
   mount_base64_uploader :favicon, FaviconUploader
 
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
-
-  before_validation :sanitize_homepage_info_multiloc
 
   validates :settings, presence: true, json: {
     schema: -> { AppConfiguration::Settings.json_schema_str },
@@ -41,10 +35,8 @@ class AppConfiguration < ApplicationRecord
 
   validates :host, presence: true
   validate :validate_host_format
-  validates :homepage_info_multiloc, multiloc: { presence: false, html: true }
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
-  validate :validate_customizable_homepage_banner
 
   before_validation :validate_missing_feature_dependencies
 
@@ -130,11 +122,6 @@ class AppConfiguration < ApplicationRecord
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
-  def has_feature?(f)
-    ActiveSupport::Deprecation.warn('AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.')
-    feature_activated?(f)
-  end
-
   def closest_locale_to(locale)
     locale = locale.to_s
     locales = settings.dig('core', 'locales') || []
@@ -176,18 +163,6 @@ class AppConfiguration < ApplicationRecord
   end
 
   private
-
-  def sanitize_homepage_info_multiloc
-    return if homepage_info_multiloc.blank?
-
-    service = SanitizationService.new
-    self.homepage_info_multiloc = service.sanitize_multiloc(
-      homepage_info_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.homepage_info_multiloc = service.remove_multiloc_empty_trailing_tags homepage_info_multiloc
-    self.homepage_info_multiloc = service.linkify_multiloc homepage_info_multiloc
-  end
 
   def validate_missing_feature_dependencies
     missing_dependencies = SettingsService.new.missing_dependencies(settings, Settings.json_schema)

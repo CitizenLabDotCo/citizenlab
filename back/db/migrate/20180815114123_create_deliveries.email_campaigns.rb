@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from email_campaigns (originally 20180719131553)
 class CreateDeliveries < ActiveRecord::Migration[5.1]
   def change
@@ -9,8 +11,7 @@ class CreateDeliveries < ActiveRecord::Migration[5.1]
       t.datetime :sent_at, index: true
       t.timestamps
 
-      t.index [:campaign_id, :user_id]
+      t.index %i[campaign_id user_id]
     end
-
   end
 end

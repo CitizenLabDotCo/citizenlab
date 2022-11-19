@@ -37,7 +37,7 @@ const Container = styled(Link)`
     );
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: unset;
     flex-direction: column;
     align-items: stretch;
@@ -59,7 +59,7 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
     height: ${cardInnerHeightExtended};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     margin-bottom: 18px;
   `}
@@ -84,7 +84,7 @@ const ContentWrapper = styled.div`
     height: ${cardInnerHeightExtended};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: unset;
   `}
 `;
@@ -94,13 +94,13 @@ const Header = styled.header`
   margin: 0;
   margin-bottom: 12px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 15px;
   `}
 `;
 
 const Title = styled.h3`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: 21px;
   font-weight: 500;
   display: -webkit-box;
@@ -119,7 +119,7 @@ const Title = styled.h3`
 const Body = styled.div`
   flex-grow: 1;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 25px;
   `}
 `;
@@ -137,7 +137,7 @@ interface Props {
   title: JSX.Element | string;
   body: JSX.Element | string;
   footer: JSX.Element | null;
-  onClick: (event: MouseEvent<HTMLDivElement>) => void;
+  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
 }
 

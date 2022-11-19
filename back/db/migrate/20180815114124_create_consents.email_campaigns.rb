@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from email_campaigns (originally 20180815115832)
 class CreateConsents < ActiveRecord::Migration[5.1]
   def change
@@ -7,8 +9,7 @@ class CreateConsents < ActiveRecord::Migration[5.1]
       t.boolean :consented, null: false
       t.timestamps
 
-      t.index [:campaign_type, :user_id], unique: true
+      t.index %i[campaign_type user_id], unique: true
     end
-
   end
 end

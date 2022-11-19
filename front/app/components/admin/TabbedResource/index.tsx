@@ -1,34 +1,15 @@
 import React from 'react';
 
-import { withRouter, WithRouterProps } from 'react-router';
-import Link from 'utils/cl-router/Link';
-
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
+import { colors, isRtl } from 'utils/styleUtils';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 // typings
 import { ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import { SectionDescription } from 'components/admin/Section';
-import Title from 'components/admin/PageTitle';
-
-const ResourceHeader = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 30px;
-
-  @media print {
-    margin-bottom: 10px;
-  }
-
-  p {
-    margin-right: 40px;
-  }
-`;
+import Tab from './Tab';
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
@@ -36,57 +17,26 @@ const TabbedNav = styled.nav`
     ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 44px;
   display: flex;
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divider};
   border-bottom: 1px solid transparent;
   @media print {
     border: none;
     padding: 0;
     margin-bottom: 10px;
   }
+  ${isRtl`
+    padding-right: 44px;
+    padding-left: auto;
+    justify-content: flex-end;
+ `}
+  flex-wrap: wrap;
 `;
 
-const Tab = styled.div`
-  list-style: none;
-  cursor: pointer;
-  display: flex;
-  margin-bottom: -1px;
-
-  &:first-letter {
-    text-transform: uppercase;
-  }
-
-  &:not(:last-child) {
-    margin-right: 40px;
-  }
-
-  a {
-    color: ${colors.label};
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: 1.5rem;
-    padding: 0;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    border-bottom: 3px solid transparent;
-    transition: all 100ms ease-out;
-  }
-
-  &:not(.active):hover a {
-    color: ${colors.adminTextColor};
-    border-color: #ddd;
-  }
-
-  &.active a {
-    color: ${colors.adminTextColor};
-    border-color: ${colors.adminTextColor};
-  }
-`;
-
-const ChildWrapper = styled.div`
+const ContentWrapper = styled.div`
   margin-bottom: 60px;
   padding: 42px;
-  border: 1px solid ${colors.separation};
-  background: ${colors.adminContentBackground};
+  border: 1px solid ${colors.divider};
+  background: ${colors.white};
 
   @media print {
     border: none;
@@ -95,87 +45,69 @@ const ChildWrapper = styled.div`
   }
 `;
 
-type Props = {
+interface Props {
   resource: {
     title: string;
     subtitle?: string;
+    rightSideCTA?: JSX.Element | JSX.Element[];
   };
-  tabs?: ITab[];
+  tabs: ITab[];
+  children: React.ReactNode;
+  contentWrapper?: boolean;
+}
+
+const TabbedResource = ({
+  children,
+  resource: { title, subtitle, rightSideCTA },
+  tabs,
+  contentWrapper = true,
+}: Props) => {
+  return (
+    <>
+      <Box
+        mb="30px"
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        className="e2e-resource-header"
+      >
+        <Box>
+          <Title color="primary">{title}</Title>
+          {subtitle && (
+            <Text maxWidth="60em" color="textSecondary">
+              {subtitle}
+            </Text>
+          )}
+        </Box>
+        {rightSideCTA && <Box ml="60px">{rightSideCTA}</Box>}
+      </Box>
+
+      {tabs && tabs.length > 0 && (
+        <TabbedNav className="e2e-resource-tabs">
+          {tabs.map((tab) => {
+            return tab.feature ? (
+              <FeatureFlag key={tab.url} name={tab.feature}>
+                <Tab tab={tab} className={`intercom-admin-tab-${tab.name}`} />
+              </FeatureFlag>
+            ) : (
+              <Tab
+                key={tab.url}
+                tab={tab}
+                className={`intercom-admin-tab-${tab.name}`}
+              />
+            );
+          })}
+        </TabbedNav>
+      )}
+
+      {contentWrapper ? (
+        <ContentWrapper>{children}</ContentWrapper>
+      ) : (
+        <>{children}</>
+      )}
+    </>
+  );
 };
 
-interface State {}
-
-function getRegularExpression(tabUrl: string) {
-  return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
-}
-
-class TabbedResource extends React.PureComponent<
-  Props & WithRouterProps,
-  State
-> {
-  activeClassForTab = (tab: ITab) => {
-    const {
-      location: { pathname },
-    } = this.props;
-
-    return (
-      typeof tab.active === 'function'
-        ? tab.active(pathname)
-        : tab.active ||
-          (pathname && getRegularExpression(tab.url).test(location.pathname))
-    )
-      ? 'active'
-      : '';
-  };
-
-  render() {
-    const {
-      children,
-      resource: { title, subtitle },
-      tabs,
-    } = this.props;
-
-    return (
-      <>
-        <ResourceHeader className="e2e-resource-header">
-          <div>
-            <Title>{title}</Title>
-            {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
-          </div>
-        </ResourceHeader>
-
-        {tabs && tabs.length > 0 && (
-          <TabbedNav className="e2e-resource-tabs">
-            {tabs.map((tab) => {
-              if (tab.feature) {
-                return (
-                  <FeatureFlag key={tab.url} name={tab.feature}>
-                    <Tab
-                      key={tab.url}
-                      className={`${tab.name} ${this.activeClassForTab(tab)}`}
-                    >
-                      <Link to={tab.url}>{tab.label}</Link>
-                    </Tab>
-                  </FeatureFlag>
-                );
-              } else {
-                return (
-                  <Tab
-                    key={tab.url}
-                    className={`${tab.name} ${this.activeClassForTab(tab)}`}
-                  >
-                    <Link to={tab.url}>{tab.label}</Link>
-                  </Tab>
-                );
-              }
-            })}
-          </TabbedNav>
-        )}
-
-        <ChildWrapper>{children}</ChildWrapper>
-      </>
-    );
-  }
-}
-
-export default withRouter(TabbedResource);
+export default TabbedResource;

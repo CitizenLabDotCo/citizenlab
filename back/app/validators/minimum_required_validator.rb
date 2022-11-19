@@ -16,12 +16,13 @@ class MinimumRequiredValidator < ActiveModel::EachValidator
 
     return unless updating_required_value? || destroying_required_object?
 
-    record.errors.add(attribute, :value_required, message: 'is required and cannot be changed or deleted.')
+    record.errors.add(attribute, :invalid, message: 'is required and cannot be changed or deleted.')
   end
 
   private
 
   attr_reader :record, :attribute, :value
+
   delegate :persisted?, :changes, :class, to: :record, prefix: true
   delegate :any?, to: :record_changes, prefix: true, allow_nil: true
 
@@ -54,6 +55,6 @@ class MinimumRequiredValidator < ActiveModel::EachValidator
   end
 
   def required_values
-    options.dig(:values).map(&:to_sym)
+    options[:values].map(&:to_sym)
   end
 end

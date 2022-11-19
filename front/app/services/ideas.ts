@@ -94,9 +94,6 @@ export interface IIdeaData {
     topics?: {
       data: IRelationship[];
     };
-    areas: {
-      data: IRelationship[];
-    };
     idea_images: {
       data: IRelationship[] | null;
     };
@@ -180,7 +177,6 @@ export interface IIdeaAdd {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   topic_ids: string[] | null;
-  area_ids?: string[] | null;
   phase_ids?: string[] | null;
   location_point_geojson: GeoJSON.Point | null;
   location_description: string | null;
@@ -190,9 +186,6 @@ export interface IIdeaAdd {
 
 export interface IIdeasFilterCounts {
   idea_status_id: {
-    [key: string]: number;
-  };
-  area_id: {
     [key: string]: number;
   };
   topic_id: {
@@ -281,15 +274,18 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
     ideaId,
     { idea: object }
   );
+
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
     apiEndpoint: [
       `${API_PATH}/stats/ideas_count`,
       `${API_PATH}/ideas`,
       `${API_PATH}/ideas/${ideaId}/activities`,
+      `${API_PATH}/analytics`,
     ],
     partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
   });
+
   return response;
 }
 

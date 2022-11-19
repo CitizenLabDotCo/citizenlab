@@ -53,7 +53,7 @@ pt:
       "admin_rights_received": Direitos de administração recebidos
       "comment_deleted_by_admin": Exclusão do seu comentário - todos os usuários
       "comment_marked_as_spam": Comente o relatório de spam - administradores e gestores de projeto
-      "comment_on_your_comment": Reply on your comment - all users
+      "comment_on_your_comment": Respostas ao seu comentário - todos os usuários
       "comment_on_your_idea": Comente a sua ideia - todos os usuários
       "comment_on_your_initiative": Comente a sua ideia - todos os usuários
       "first_idea_published": Publicação da sua primeira ideia - todos os usuários
@@ -78,8 +78,8 @@ pt:
       "official_feedback_on_voted_idea": Atualização sobre uma ideia que você votou - todos os usuários
       "official_feedback_on_voted_initiative": Atualização sobre uma proposta que você votou - todos os usuários
       "official_feedback_on_your_idea": Atualização da sua ideia - todos os utilizadores
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
+      "official_feedback_on_your_initiative": Mudança de status da sua proposta - todos os usuários
+      "password_reset": Redefinição de senha - todos os usuários
       "project_moderation_rights_received": Direitos de moderação de projeto recebidos - gerentes de projeto
       "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
       "project_phase_started": Nova fase do projeto - todos os usuários
@@ -419,6 +419,7 @@ pt:
       cta_view_phase: 'Descobrir esta nova fase'
       event_description: 'Este projecto entrou numa nova fase na plataforma de %{organizationName}. Clique no link embaixo para saber mais!'
       main_header: 'Uma nova fase foi iniciada para o projeto ''%{projectName}'''
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'Este projecto entrou na fase ''%{phaseTitle}'''
       subject: '%{projectName} entrou numa nova fase'
       preheader: 'Foi iniciada uma nova fase para %{projectName}'
@@ -426,6 +427,7 @@ pt:
       cta_view_phase: 'Configurar esta nova fase'
       event_description: 'O projeto ''%{projectName}'' estará entrando em uma nova fase em breve. Certifique-se de que todo está preparado para esta fase: Existe uma descrição adequada? As idéias seleccionadas são transferidas para esta fase? Você quer informar para seus usuários sobre as carateristicas desta fase através de uma campanha de e-mail personalizada?'
       main_header: '%{firstName}, um projecto entrará numa nova fase em breve'
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'O projeto entrará na fase ''%{phaseTitle}'''
       subject: 'Prepare tudo para a nova fase de %{projectName}'
       preheader: 'Uma nova fase começará em breve para %{projectName}'

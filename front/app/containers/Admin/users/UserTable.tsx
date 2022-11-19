@@ -1,16 +1,15 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, TRole } from 'services/permissions/roles';
 import { includes, get, isArray } from 'lodash-es';
 
 // Components
-import Table from 'components/UI/Table';
-import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
+import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
 // Services
-import { IUserData, IRole, updateUser } from 'services/users';
+import { IUserData, updateUser } from 'services/users';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
@@ -30,7 +29,6 @@ import messages from './messages';
 
 // Styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   flex: 1;
@@ -39,34 +37,25 @@ const Container = styled.div`
   margin-bottom: 30px;
 `;
 
-const StyledTable = styled(Table)`
-  margin-top: 20px;
-
-  tbody tr td {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
-  tbody tr.selected {
-    background: ${colors.background};
-  }
-
-  th,
-  td {
-    padding-left: 5px;
-    padding-right: 5px;
-    overflow-wrap: break-word;
-  }
-
-  thead tr th,
-  tbody tr {
-    border: none;
-  }
-`;
-
 const StyledPagination = styled(Pagination)`
   margin-top: 12px;
 `;
+
+interface SortableThProps {
+  sortDirection: 'ascending' | 'descending' | undefined;
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
+const Uppercase = styled.span`
+  text-transform: uppercase;
+`;
+
+const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
+  <Th clickable sortDirection={sortDirection} onClick={onClick}>
+    <Uppercase>{children}</Uppercase>
+  </Th>
+);
 
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
@@ -78,11 +67,13 @@ interface Props extends InputProps, GetUsersChildProps {}
 
 interface State {}
 
+type Extra = { sortAttribute: SortAttribute };
+
 interface Tracks {
   trackPagination: () => void;
   trackToggleOneUser: () => void;
   trackAdminToggle: () => void;
-  trackSortChange: ({ extra: { sortAttribute: SortAttribute } }) => void;
+  trackSortChange: (value: { extra: Extra }) => void;
 }
 
 class UsersTable extends PureComponent<Props & Tracks, State> {
@@ -91,7 +82,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
   };
 
   handleAdminRoleOnChange = (user: IUserData) => () => {
-    let newRoles: IRole[] = [];
+    let newRoles: TRole[] = [];
     const { authUser, trackAdminToggle } = this.props;
 
     trackAdminToggle();
@@ -147,49 +138,51 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
     if (isArray(usersList) && usersCount && usersCount > 0) {
       return (
         <Container className="e2e-user-table">
-          <StyledTable>
-            <thead>
-              <tr>
-                <th />
-                <th />
-                <th>
-                  <SortableTableHeaderCell
-                    value={<FormattedMessage {...messages.name} />}
-                    onClick={this.handleSortingOnChange('last_name')}
-                    sorted={
-                      sortAttribute === 'last_name' ? sortDirection : null
-                    }
-                  />
-                </th>
-                <th>
-                  <SortableTableHeaderCell
-                    value={<FormattedMessage {...messages.email} />}
-                    onClick={this.handleSortingOnChange('email')}
-                    sorted={sortAttribute === 'email' ? sortDirection : null}
-                  />
-                </th>
-                <th>
-                  <SortableTableHeaderCell
-                    value={<FormattedMessage {...messages.since} />}
-                    onClick={this.handleSortingOnChange('created_at')}
-                    sorted={
-                      sortAttribute === 'created_at' ? sortDirection : null
-                    }
-                  />
-                </th>
-                <th>
-                  <SortableTableHeaderCell
-                    value={<FormattedMessage {...messages.admin} />}
-                    onClick={this.handleSortingOnChange('role')}
-                    sorted={sortAttribute === 'role' ? sortDirection : null}
-                  />
-                </th>
-                <th>
-                  <FormattedMessage tagName="div" {...messages.options} />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table mt="20px">
+            <Thead>
+              <Tr>
+                <Th />
+                <Th />
+                <SortableTh
+                  sortDirection={
+                    sortAttribute === 'last_name' ? sortDirection : undefined
+                  }
+                  onClick={this.handleSortingOnChange('last_name')}
+                >
+                  <FormattedMessage {...messages.name} />
+                </SortableTh>
+                <SortableTh
+                  sortDirection={
+                    sortAttribute === 'email' ? sortDirection : undefined
+                  }
+                  onClick={this.handleSortingOnChange('email')}
+                >
+                  <FormattedMessage {...messages.email} />
+                </SortableTh>
+                <SortableTh
+                  sortDirection={
+                    sortAttribute === 'created_at' ? sortDirection : undefined
+                  }
+                  onClick={this.handleSortingOnChange('created_at')}
+                >
+                  <FormattedMessage {...messages.since} />
+                </SortableTh>
+                <SortableTh
+                  sortDirection={
+                    sortAttribute === 'role' ? sortDirection : undefined
+                  }
+                  onClick={this.handleSortingOnChange('role')}
+                >
+                  <FormattedMessage {...messages.admin} />
+                </SortableTh>
+                <Th>
+                  <Uppercase>
+                    <FormattedMessage tagName="div" {...messages.options} />
+                  </Uppercase>
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
               {usersList.map((user) => (
                 <UserTableRow
                   key={user.id}
@@ -202,8 +195,8 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
                   authUser={this.props.authUser}
                 />
               ))}
-            </tbody>
-          </StyledTable>
+            </Tbody>
+          </Table>
 
           <StyledPagination
             currentPage={currentPage || 1}

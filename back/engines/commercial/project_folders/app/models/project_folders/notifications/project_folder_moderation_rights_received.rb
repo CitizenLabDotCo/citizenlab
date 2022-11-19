@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: notifications
@@ -59,7 +61,7 @@ module ProjectFolders
       validates :project_folder, presence: true
 
       ACTIVITY_TRIGGERS = { 'User' => { 'project_folder_moderation_rights_received' => true } }.freeze
-      EVENT_NAME = 'Project Folder moderation rights received'.freeze
+      EVENT_NAME = 'Project Folder moderation rights received'
 
       def self.make_notifications_on(activity)
         recipient_id      = activity.item_id

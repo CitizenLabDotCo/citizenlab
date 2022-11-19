@@ -1,10 +1,11 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
 
 // components
+import PageNotFound from 'components/PageNotFound';
 import InitiativesShow from 'containers/InitiativesShow';
 import Button from 'components/UI/Button';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
@@ -13,6 +14,9 @@ import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,7 +35,7 @@ const InitiativeNotFoundWrapper = styled.div`
   align-items: center;
   padding: 4rem;
   font-size: ${fontSizes.l}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const Container = styled.div`
@@ -58,7 +62,9 @@ interface Props extends InputProps, DataProps {}
 
 const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
 
-const InitiativesShowPage = memo<Props>(({ initiative }) => {
+const InitiativesShowPage = ({ initiative }: Props) => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
   if (isError(initiative)) {
     return (
       <InitiativeNotFoundWrapper>
@@ -68,10 +74,14 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
         <Button
           linkTo="/initiatives"
           text={goBackToListMessage}
-          icon="arrow-back"
+          icon="arrow-left"
         />
       </InitiativeNotFoundWrapper>
     );
+  }
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
   }
 
   if (!isNilOrError(initiative)) {
@@ -84,7 +94,7 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
   }
 
   return null;
-});
+};
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   initiative: ({ params, render }) => (
@@ -92,10 +102,10 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter<InputProps>(
-  (inputProps: InputProps & WithRouterProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => {
+  return (
     <Data {...inputProps}>
       {(dataProps) => <InitiativesShowPage {...inputProps} {...dataProps} />}
     </Data>
-  )
-);
+  );
+});

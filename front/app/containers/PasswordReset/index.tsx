@@ -6,6 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // router
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { parse } from 'qs';
 
 // components
 import { Success } from '@citizenlab/cl2-component-library';
@@ -24,7 +25,7 @@ import { resetPassword } from 'services/auth';
 import { CLError } from 'typings';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // style
@@ -113,14 +114,14 @@ type State = {
 };
 
 class PasswordReset extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   passwordInputElement: HTMLInputElement | null;
 
   constructor(props) {
     super(props);
-    const query = clHistory.getCurrentLocation().query;
+    const query = parse(clHistory.location.search, { ignoreQueryPrefix: true });
     const token = isString(query.token) ? query.token : null;
     this.state = {
       token,
@@ -266,6 +267,7 @@ class PasswordReset extends React.PureComponent<
               </LabelContainer>
               <PasswordInput
                 id="password"
+                autocomplete="new-password"
                 password={password}
                 placeholder={passwordPlaceholder}
                 onChange={this.handlePasswordOnChange}
@@ -282,7 +284,7 @@ class PasswordReset extends React.PureComponent<
                 ))}
 
               <StyledButton
-                size="2"
+                size="m"
                 processing={processing}
                 text={updatePassword}
                 onClick={this.handleOnSubmit}
@@ -297,7 +299,7 @@ class PasswordReset extends React.PureComponent<
   }
 }
 
-const PasswordResetWithHocs = injectIntl<Props>(PasswordReset);
+const PasswordResetWithHocs = injectIntl(PasswordReset);
 
 const Data = adopt({
   tenant: <GetAppConfiguration />,

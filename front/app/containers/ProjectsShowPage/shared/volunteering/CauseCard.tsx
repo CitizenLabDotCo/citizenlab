@@ -17,6 +17,7 @@ import Warning from 'components/UI/Warning';
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -45,7 +46,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
   `}
 `;
@@ -55,7 +56,7 @@ const Left = styled.div`
   width: 300px;
   overflow: hidden;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex: auto;
     width: auto;
     margin-bottom: 20px;
@@ -73,7 +74,7 @@ const Right = styled.div`
   margin-right: 40px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 0px;
   `}
 `;
@@ -84,7 +85,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   font-weight: 500;
   line-height: normal;
@@ -94,7 +95,7 @@ const Title = styled.h3`
 `;
 
 const Description = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
 `;
@@ -110,7 +111,7 @@ const ImageWrapper = styled.div`
 
   &.fillBackground {
     height: 225px;
-    background: ${colors.placeholderBg};
+    background: ${colors.background};
   }
 `;
 
@@ -145,9 +146,7 @@ const VolunteersCount = styled.div`
 `;
 
 const VolunteersCountIcon = styled(Icon)`
-  flex: 0 0 16px;
-  width: 16px;
-  height: 16px;
+  flex: 0 0 24px;
   fill: #fff;
   margin-right: 8px;
 `;
@@ -201,7 +200,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   }, []);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
   const signUpLink = (
     <button onClick={signUp}>
       <FormattedMessage {...messages.signUpLinkText} />
@@ -220,8 +219,8 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           <ImageWrapper>
             <StyledImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>
-              <VolunteersCountIcon name="volunteer-hand" />
-              <VolunteersCountText>
+              <VolunteersCountIcon name="volunteer" />
+              <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
                   values={{ x: cause.attributes.volunteers_count }}
@@ -231,10 +230,10 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           </ImageWrapper>
         ) : (
           <ImageWrapper className="fillBackground">
-            <PlaceholderIcon name="volunteer-hand" />
+            <PlaceholderIcon name="volunteer" />
             <VolunteersCount>
-              <VolunteersCountIcon name="volunteer-hand" />
-              <VolunteersCountText>
+              <VolunteersCountIcon name="volunteer" />
+              <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
                   values={{ x: cause.attributes.volunteers_count }}
@@ -250,10 +249,15 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           <Title>
             <T value={cause.attributes.title_multiloc} />
           </Title>
-
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.xVolunteers}
+              values={{ x: cause.attributes.volunteers_count }}
+            />
+          </ScreenReaderOnly>
           {!isEmptyMultiloc(cause.attributes.description_multiloc) && (
             <Description>
-              <QuillEditedContent textColor={theme.colorText}>
+              <QuillEditedContent textColor={theme.colors.tenantText}>
                 <T value={cause.attributes.description_multiloc} supportHtml />
               </QuillEditedContent>
             </Description>
@@ -271,7 +275,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           ) : (
             <Button
               onClick={handleOnVolunteerButtonClick}
-              icon={!isVolunteer ? 'volunteer-hand' : 'unvolunteer-hand'}
+              icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
               disabled={!authUser}
               buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
               fullWidth={smallerThanSmallTablet}

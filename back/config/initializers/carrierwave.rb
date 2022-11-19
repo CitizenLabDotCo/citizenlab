@@ -14,16 +14,16 @@ module ProcessableUriDownloader
   #
   # Before removing, please first make sure the following
   # steps succeed:
-  #   1. Download the file from 
-  #      https://res.cloudinary.com/citizenlabco/image/upload/v1630939376/Visio%CC%81n_2028_de_Metro_Plan_Estrate%CC%81gico_A_a9ylnk.pdf
+  #   1. Download the file from
+  #      https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/documents/vision_2028_de_metro_plan_estrategico.pdf
   #   2. Do not change the file name!
-  #   3. Upload it as an attachment of an idea, on a real 
+  #   3. Upload it as an attachment of an idea, on a real
   #      Citizenlab platform (not localhost).
-  #   4. Get the corresponding file URL (e.g. 
+  #   4. Get the corresponding file URL (e.g.
   #      my_idea_file.file_url). Do not use the Cloudinary
   #      URL instead (the issue is not reproducible with
   #      that URL)!
-  #   5. Create a new idea file with this URL set with 
+  #   5. Create a new idea file with this URL set with
   #      remote_file_url=.
   #   6. Use save! to save the file. You can remove this
   #      patch on success.
@@ -32,7 +32,7 @@ module ProcessableUriDownloader
   # However, they claim the issue is now solved on the
   # master branch, but this is not the case when executing
   # the steps mentioned above.
-  def process_uri uri
+  def process_uri(uri)
     URI.parse uri
   rescue URI::InvalidURIError, Addressable::URI::InvalidURIError
     raise CarrierWave::DownloadError, "couldn't parse URL: #{uri}"

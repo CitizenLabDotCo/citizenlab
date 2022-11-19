@@ -3,13 +3,12 @@ const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 const isTestBuild = process.env.TEST_BUILD === 'true';
-const buildSourceMap = !isDev && !isTestBuild;
+const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
 
 const webpack = require('webpack');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
@@ -17,11 +16,12 @@ const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var dotenv = require('dotenv').config({
   path: path.join(process.cwd(), '../.env-front'),
 });
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const argv = require('yargs').argv;
 const appLocalesMomentPairs = require(path.join(
   process.cwd(),
@@ -52,8 +52,10 @@ const config = {
     path: path.join(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].js' : '[name].[contenthash].js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js',
+    filename: isDev ? '[name].js' : '[name].[contenthash].min.js',
+    chunkFilename: isDev
+      ? '[name].chunk.js'
+      : '[name].[contenthash].chunk.min.js',
   },
 
   mode: isDev ? 'development' : 'production',
@@ -61,7 +63,7 @@ const config = {
   devtool: isDev
     ? 'eval-cheap-module-source-map'
     : !isTestBuild
-    ? 'source-map'
+    ? 'hidden-source-map'
     : false,
 
   devServer: {
@@ -87,17 +89,7 @@ const config = {
     optimization: {
       runtimeChunk: 'single',
       minimize: true,
-      splitChunks: {
-        chunks: 'all',
-      },
-      moduleIds: 'deterministic',
-      minimizer: [
-        new TerserPlugin({
-          parallel: false,
-          terserOptions: { sourceMap: true },
-        }),
-        new CssMinimizerPlugin(),
-      ],
+      minimizer: ['...', new CssMinimizerPlugin()],
     },
   }),
 
@@ -158,17 +150,19 @@ const config = {
         INTERCOM_APP_ID: JSON.stringify(process.env.INTERCOM_APP_ID),
         SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
         SENTRY_ENV: JSON.stringify(process.env.SENTRY_ENV),
+        SENTRY_AUTH_TOKEN: JSON.stringify(process.env.SENTRY_AUTH_TOKEN),
         CI: JSON.stringify(process.env.CI),
         CIRCLECI: JSON.stringify(process.env.CIRCLECI),
         CIRCLE_BUILD_NUM: JSON.stringify(process.env.CIRCLE_BUILD_NUM),
         CIRCLE_SHA1: JSON.stringify(process.env.CIRCLE_SHA1),
         CIRCLE_BRANCH: JSON.stringify(process.env.CIRCLE_BRANCH),
         GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
+        MATOMO_HOST: JSON.stringify(process.env.MATOMO_HOST),
       },
       CL_CONFIG: JSON.stringify(clConfig),
     }),
 
-    isDev && new ReactRefreshWebpackPlugin(),
+    isDev && new ReactRefreshWebpackPlugin({ overlay: false }),
 
     new ForkTsCheckerWebpackPlugin({
       async: isDev,
@@ -193,8 +187,6 @@ const config = {
 
     // new BundleAnalyzerPlugin(),
 
-    // new webpack.ProgressPlugin(),
-
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev &&
       new MomentLocalesPlugin({
@@ -209,12 +201,11 @@ const config = {
 
     !isDev &&
       new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].css',
-        chunkFilename: '[name].[contenthash].chunk.css',
+        filename: '[name].[contenthash].min.css',
+        chunkFilename: '[name].[contenthash].chunk.min.css',
       }),
 
-    process.env.CI &&
-      buildSourceMap &&
+    sourceMapToSentry &&
       new SentryCliPlugin({
         include: path.join(process.cwd(), 'build'),
         release: process.env.CIRCLE_BUILD_NUM,

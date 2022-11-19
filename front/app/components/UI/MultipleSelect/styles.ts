@@ -1,6 +1,6 @@
 import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 
-export function getSelectStyles(borderColor = colors.border) {
+export function getSelectStyles(borderColor = colors.borderDark) {
   return {
     container: (base) => ({
       ...base,
@@ -12,14 +12,14 @@ export function getSelectStyles(borderColor = colors.border) {
       ...base,
       fontSize: `${fontSizes.base}px`,
       borderWidth: '1px',
-      borderColor: isFocused ? colors.focussedBorder : `${borderColor}`,
+      borderColor: isFocused ? colors.black : `${borderColor}`,
       borderRadius: '3px',
       minHeight: '48px',
       backgroundColor: '#fff',
       boxShadow: isFocused ? defaultStyles.boxShadowFocused : 'none',
       cursor: 'pointer',
       '&:hover': {
-        borderColor: isFocused ? colors.focussedBorder : colors.hoveredBorder,
+        borderColor: colors.black,
       },
     }),
     indicatorSeparator: () => ({
@@ -27,9 +27,9 @@ export function getSelectStyles(borderColor = colors.border) {
     }),
     dropdownIndicator: (base, { isFocused }) => ({
       ...base,
-      color: isFocused ? colors.focussedBorder : `${borderColor}`,
+      color: isFocused ? colors.black : `${borderColor}`,
       '&:hover': {
-        color: isFocused ? colors.focussedBorder : colors.hoveredBorder,
+        color: colors.black,
       },
     }),
     placeholder: (base) => ({
@@ -40,8 +40,8 @@ export function getSelectStyles(borderColor = colors.border) {
       ...base,
       ':active': null,
       fontSize: `${fontSizes.base}px`,
-      color: isFocused ? colors.text : colors.label,
-      backgroundColor: isFocused ? colors.clDropdownHoverBackground : '#fff',
+      color: isFocused ? colors.textPrimary : colors.textSecondary,
+      backgroundColor: isFocused ? colors.grey300 : '#fff',
       cursor: 'pointer',
     }),
     multiValue: (base) => ({

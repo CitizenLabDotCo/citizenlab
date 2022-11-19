@@ -3,11 +3,16 @@ import React, { memo } from 'react';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -62,21 +67,9 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
 `;
 
 export const HorizontalBarChartWithoutStream: React.SFC<
-  Props & InjectedIntlProps
+  Props & WrappedComponentProps
 > = memo(({ className, graphTitleString, serie, graphUnit }) => {
-  const theme: any = useTheme();
-
   const currentChart: React.RefObject<any> = React.createRef();
-
-  const {
-    chartLabelSize,
-    chartCategorySize,
-    chartLabelColor,
-    animationBegin,
-    animationDuration,
-    newBarFill,
-    barSize,
-  } = theme;
 
   const openIdeaInANewTab = ({ slug }: { slug: string }) => {
     if (!isNilOrError(slug)) {
@@ -93,8 +86,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
           y={y}
           dx={30}
           dy={-6}
-          fill={chartLabelColor}
-          fontSize={chartCategorySize}
+          fill={legacyColors.chartLabel}
           textAnchor="left"
         >
           {value}
@@ -112,8 +104,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
           y={y}
           dx={5}
           dy={-6}
-          fill={chartLabelColor}
-          fontSize={chartCategorySize}
+          fill={legacyColors.chartLabel}
           textAnchor="right"
           fontWeight={'800'}
         >
@@ -150,9 +141,11 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 dataKey="value"
                 name="Total"
                 opacity={0}
-                barSize={['ideas', 'votes'].includes(graphUnit) ? 30 : barSize}
-                animationDuration={animationDuration}
-                animationBegin={animationBegin}
+                barSize={
+                  ['ideas', 'votes'].includes(graphUnit) ? 30 : sizes.bar
+                }
+                animationDuration={animation.duration}
+                animationBegin={animation.begin}
                 onClick={openIdeaInANewTab}
                 cursor="pointer"
               />
@@ -160,10 +153,10 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 name="Downvotes"
                 stackId={'votes'}
                 dataKey="down"
-                fill={newBarFill}
-                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : barSize}
-                animationDuration={animationDuration}
-                animationBegin={animationBegin}
+                fill={legacyColors.barFill}
+                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : sizes.bar}
+                animationDuration={animation.duration}
+                animationBegin={animation.begin}
               >
                 {graphUnit === 'ideas' &&
                   serie
@@ -174,7 +167,9 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                       return (
                         <Cell
                           key={`cell-${index}`}
-                          fill={(entry.color && entry.color) || newBarFill}
+                          fill={
+                            (entry.color && entry.color) || legacyColors.barFill
+                          }
                           opacity={0.8}
                         />
                       );
@@ -196,18 +191,20 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 name="Upvotes"
                 stackId={'votes'}
                 dataKey="up"
-                fill={newBarFill}
+                fill={legacyColors.barFill}
                 opacity={0.7}
-                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : barSize}
-                animationDuration={animationDuration}
-                animationBegin={animationBegin}
+                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : sizes.bar}
+                animationDuration={animation.duration}
+                animationBegin={animation.begin}
               >
                 {graphUnit === 'ideas' &&
                   serie.map((entry, index) => {
                     return (
                       <Cell
                         key={`cell-${index}`}
-                        fill={(entry.color && entry.color) || newBarFill}
+                        fill={
+                          (entry.color && entry.color) || legacyColors.barFill
+                        }
                         opacity={0.4}
                       />
                     );
@@ -218,14 +215,14 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 dataKey="name"
                 type="category"
                 width={150}
-                stroke={chartLabelColor}
-                fontSize={chartLabelSize}
+                stroke={legacyColors.chartLabel}
+                fontSize={sizes.chartLabel}
                 tickLine={false}
                 hide={true}
               />
               <XAxis
-                stroke={chartLabelColor}
-                fontSize={chartLabelSize}
+                stroke={legacyColors.chartLabel}
+                fontSize={sizes.chartLabel}
                 type="number"
                 tick={{ transform: 'translate(0, 7)' }}
                 hide={true}
@@ -238,8 +235,8 @@ export const HorizontalBarChartWithoutStream: React.SFC<
   );
 });
 
-const HorizontalBarChartWithoutStreamWithHoCs = injectIntl<Props>(
-  HorizontalBarChartWithoutStream as any
-);
+const HorizontalBarChartWithoutStreamWithHoCs = injectIntl<
+  Props & WrappedComponentProps
+>(HorizontalBarChartWithoutStream);
 
 export default HorizontalBarChartWithoutStreamWithHoCs;

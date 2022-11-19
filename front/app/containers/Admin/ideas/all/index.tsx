@@ -6,10 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 // resources
-import GetProjects, {
-  GetProjectsChildProps,
-  PublicationStatus,
-} from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 interface DataProps {
   projects: GetProjectsChildProps;

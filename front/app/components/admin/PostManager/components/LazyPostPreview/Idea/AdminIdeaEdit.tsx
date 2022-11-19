@@ -90,6 +90,8 @@ interface State {
   proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
+  imageFileIsChanged: boolean;
+  ideaFiles: UploadFile[];
   imageId: string | null;
   submitError: boolean;
   titleProfanityError: boolean;
@@ -97,6 +99,7 @@ interface State {
   loaded: boolean;
   processing: boolean;
   authorId: string | null;
+  attachments: UploadFile[];
 }
 
 class AdminIdeaEdit extends PureComponent<Props, State> {
@@ -115,12 +118,15 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       proposedBudget: null,
       address: null,
       imageFile: [],
+      imageFileIsChanged: false,
+      ideaFiles: [],
       imageId: null,
       submitError: false,
       titleProfanityError: false,
       descriptionProfanityError: false,
       loaded: false,
       processing: false,
+      attachments: [],
     };
     this.subscriptions = [];
   }
@@ -214,14 +220,14 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       locale,
       titleMultiloc,
       descriptionMultiloc,
+      imageFileIsChanged,
       imageId,
-      imageFile,
       authorId,
-      address: savedAddress,
       projectId,
     } = this.state;
     const {
       title,
+      imageFile,
       description,
       selectedTopics,
       address: ideaFormAddress,
@@ -232,17 +238,14 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       authorId: newAuthorId,
     } = ideaFormOutput;
     const oldImageId = imageId;
-    const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
-    const oldImageBase64 = oldImage ? oldImage.base64 : null;
-    const newImage =
-      ideaFormOutput.imageFile && ideaFormOutput.imageFile.length > 0
-        ? ideaFormOutput.imageFile[0]
-        : null;
+    const newImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
+
     const newImageBase64 = newImage ? newImage.base64 : null;
     const imageToAddPromise =
-      newImageBase64 && oldImageBase64 !== newImageBase64
+      imageFileIsChanged && newImageBase64
         ? addIdeaImage(ideaId, newImageBase64, 0)
         : Promise.resolve(null);
+
     const filesToAddPromises = ideaFiles
       .filter((file) => !file.remote)
       .map((file) => addIdeaFile(ideaId, file.base64, file.name));
@@ -253,15 +256,12 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     const finalAuthorId = newAuthorId || authorId;
     const addressDiff: ILocationInfo = {} as any;
 
-    if (ideaFormAddress !== savedAddress) {
-      const locationPoint = await geocode(ideaFormAddress);
-      addressDiff.location_description = ideaFormAddress;
+    const locationPoint = await geocode(ideaFormAddress);
+    addressDiff.location_description = ideaFormAddress;
 
-      if (locationPoint) {
-        addressDiff.location_point_geojson = locationPoint;
-      }
+    if (locationPoint) {
+      addressDiff.location_point_geojson = locationPoint;
     }
-
     const updateIdeaPromise = updateIdea(ideaId, {
       budget,
       proposed_budget: proposedBudget,
@@ -279,9 +279,8 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     });
 
     this.setState({ processing: true, submitError: false });
-
     try {
-      if (oldImageId && oldImageBase64 !== newImageBase64) {
+      if (oldImageId && imageFileIsChanged) {
         await deleteIdeaImage(ideaId, oldImageId);
       }
 
@@ -357,6 +356,22 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     }
   };
 
+  onImageFileAdd = (newImageFile: UploadFile[]) => {
+    this.setState({ imageFile: [newImageFile[0]], imageFileIsChanged: true });
+  };
+
+  onImageFileRemove = () => {
+    this.setState({ imageFile: [], imageFileIsChanged: true });
+  };
+
+  onTagsChange = (selectedTopics: string[]) => {
+    this.setState({ selectedTopics });
+  };
+
+  onAddressChange = (address: string) => {
+    this.setState({ address });
+  };
+
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
 
@@ -366,9 +381,14 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       this.setState({ descriptionMultiloc, descriptionProfanityError: false });
     }
   };
+
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.setState({ ideaFiles });
+  };
+
   render() {
     if (this.state && this.state.loaded) {
-      const { remoteIdeaFiles, goBack } = this.props;
+      const { remoteIdeaFiles, goBack, ideaId } = this.props;
       const {
         locale,
         projectId,
@@ -377,6 +397,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
         selectedTopics,
         address,
         imageFile,
+        ideaFiles,
         submitError,
         processing,
         budget,
@@ -399,9 +420,9 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
           <Container>
             <Top>
               <Button
-                icon="arrow-back"
+                icon="arrow-left"
                 buttonStyle="text"
-                textColor={colors.adminTextColor}
+                textColor={colors.primary}
                 onClick={goBack}
               >
                 <FormattedMessage {...messages.cancelEdit} />
@@ -410,6 +431,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
 
             <Content className="idea-form">
               <IdeaForm
+                ideaId={ideaId}
                 authorId={authorId}
                 projectId={projectId}
                 title={title}
@@ -419,6 +441,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
                 proposedBudget={proposedBudget}
                 address={address || ''}
                 imageFile={imageFile}
+                ideaFiles={ideaFiles}
                 onSubmit={this.handleIdeaFormOutput}
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
@@ -427,6 +450,11 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
                 hasDescriptionProfanityError={descriptionProfanityError}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
+                onImageFileAdd={this.onImageFileAdd}
+                onImageFileRemove={this.onImageFileRemove}
+                onTagsChange={this.onTagsChange}
+                onAddressChange={this.onAddressChange}
+                onIdeaFilesChange={this.onIdeaFilesChange}
               />
 
               <ButtonWrapper>
@@ -441,7 +469,6 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
           </Container>
         );
       }
-
       return null;
     }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DropDetectedCategories < ActiveRecord::Migration[6.1]
   def change
     drop_table 'insights_detected_categories', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|

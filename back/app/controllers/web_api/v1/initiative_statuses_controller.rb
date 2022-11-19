@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::InitiativeStatusesController < ApplicationController
   before_action :set_initiative_status, only: :show
   skip_before_action :authenticate_user

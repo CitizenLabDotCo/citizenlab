@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::IdeaStatusesController < ApplicationController
   before_action :set_idea_status, except: %i[index]
   skip_before_action :authenticate_user, only: %i[index show]

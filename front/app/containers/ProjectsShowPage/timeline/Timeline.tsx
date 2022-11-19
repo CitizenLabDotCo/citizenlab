@@ -7,7 +7,7 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Icon, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import PhaseDescriptions from './PhaseDescriptions';
 
 // hooks
@@ -25,7 +25,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getIsoDate } from 'utils/dateUtils';
+import { getIsoDateUtc } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
@@ -36,10 +36,24 @@ import { darken, rgba } from 'polished';
 const MIN_PHASE_WIDTH_PX = 110;
 const CONTAINER_PADDING_PX = 20;
 
-const grey = colors.label;
-const greenTransparent = rgba(colors.clGreen, 0.15);
-const green = colors.clGreen;
-const darkGreen = colors.clGreenDark;
+const grey = colors.textSecondary;
+const greenTransparent = rgba(colors.success, 0.15);
+const green = colors.success;
+const darkGreen = colors.green700;
+
+const RtlBox = styled(Box)`
+  ${isRtl`
+    flex-direction: row-reverse;
+  `};
+`;
+
+const Arrow = (props: React.SVGProps<SVGSVGElement>) => {
+  return (
+    <svg viewBox="134.282 57.93 18.666 24" aria-hidden={true} {...props}>
+      <path d="M144.617 80.289l8.1-9.719c.309-.371.309-.91 0-1.281l-8.1-9.719a1 1 0 0 1 .769-1.641h-11.104c.297 0 .578.132.769.359l9.166 11c.309.371.309.91 0 1.281l-9.166 11a1 1 0 0 1-.769.359h11.104a.999.999 0 0 1-.769-1.639z" />
+    </svg>
+  );
+};
 
 const Container = styled.div<{ isHidden: boolean }>`
   width: 100%;
@@ -62,10 +76,6 @@ const Phases = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const phaseBarHeight = '24px';
@@ -73,13 +83,13 @@ const phaseBarHeight = '24px';
 const PhaseBar = styled.button`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
-  color: ${darken(0.1, colors.label)};
+  color: ${darken(0.1, colors.textSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${darken(0.08, colors.lightGreyishBlue)};
+  background: ${darken(0.08, colors.grey200)};
   transition: background 60ms ease-out;
   position: relative;
   cursor: pointer;
@@ -89,7 +99,7 @@ const PhaseBar = styled.button`
   -moz-appearance: none;
 `;
 
-const PhaseArrow = styled(Icon)`
+const PhaseArrow = styled(Arrow)`
   width: 20px;
   height: ${phaseBarHeight};
   fill: ${colors.background};
@@ -106,7 +116,7 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
-  color: ${darken(0.1, colors.label)};
+  color: ${darken(0.1, colors.textSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
@@ -127,7 +137,7 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   margin-right: 5px;
   transition: color 80ms ease-out;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -286,7 +296,7 @@ const Timeline = ({
             <FormattedMessage {...messages.a11y_phasesOverview} />
           </ScreenReaderOnly>
           <Phases className="e2e-phases" role="tablist">
-            <Box display="flex" mb="20px">
+            <RtlBox display="flex" mb="20px">
               {phases.map((phase, phaseIndex) => {
                 const phaseNumber = phaseIndex + 1;
                 const phaseTitle = localize(phase.attributes.title_multiloc);
@@ -340,7 +350,7 @@ const Timeline = ({
                           }}
                         />
                       </ScreenReaderOnly>
-                      {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
+                      {!isLast && <PhaseArrow />}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}
@@ -351,7 +361,7 @@ const Timeline = ({
                   </PhaseContainer>
                 );
               })}
-            </Box>
+            </RtlBox>
             <PhaseDescriptions
               projectId={projectId}
               selectedPhaseId={selectedPhaseId}
@@ -368,8 +378,10 @@ const Timeline = ({
 export default Timeline;
 
 function getNumberOfDays(phase: IPhaseData) {
-  const startIsoDate = getIsoDate(phase.attributes.start_at);
-  const endIsoDate = getIsoDate(phase.attributes.end_at);
+  // we can ignore user timezone to compare start/end dates,
+  // since all we care about is the amount of time between the two
+  const startIsoDate = getIsoDateUtc(phase.attributes.start_at);
+  const endIsoDate = getIsoDateUtc(phase.attributes.end_at);
   const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
   const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
   const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;

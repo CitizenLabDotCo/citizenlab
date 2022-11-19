@@ -32,11 +32,27 @@ export interface IIdeaJsonFormSchemas {
   ui_schema_multiloc: { [key in Locale]?: Layout };
 }
 
+const getInputFormsSchemaEndpoint = (
+  projectId: string,
+  phaseId?: string | null,
+  inputId?: string | null
+) => {
+  // If we have the input id, we access the schema directly through the ideas endpoint
+  if (inputId) {
+    return `${API_PATH}/ideas/${inputId}/json_forms_schema`;
+  } else if (phaseId) {
+    return `${API_PATH}/phases/${phaseId}/custom_fields/json_forms_schema`;
+  }
+  return `${API_PATH}/projects/${projectId}/custom_fields/json_forms_schema`;
+};
+
 export function ideaJsonFormsSchemaStream(
   projectId: string,
+  phaseId?: string | null,
+  inputId?: string | null,
   streamParams: IStreamParams | null = null
 ) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/json_forms_schema`;
+  const apiEndpoint = getInputFormsSchemaEndpoint(projectId, phaseId, inputId);
   return streams.get<IIdeaJsonFormSchemas | Error>({
     apiEndpoint,
     ...streamParams,

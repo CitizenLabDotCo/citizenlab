@@ -36,6 +36,7 @@ describe 'Insights::ProcessedFlag' do
 
       it { expect { processed_flag.reload }.to raise_error(ActiveRecord::RecordNotFound) }
     end
+
     context 'when associated view is deleted' do
       subject(:processed_flag) { create(:processed_flag) }
 

@@ -28,14 +28,17 @@ jest.mock('modules/commercial/content_builder/hooks/useContentBuilder', () => {
 jest.mock('modules/commercial/content_builder/services/contentBuilder', () => ({
   addContentBuilderLayout: jest.fn(),
 }));
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/Link', () => () => (
+  <a href="www.google.com">LinkText</a>
+));
+
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
-        return <Component {...props} />;
+        return <Component {...props} params={{ projectId: 'projectId' }} />;
       };
     },
-    Link: () => 'LinkText',
   };
 });
 

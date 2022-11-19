@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // intl
 import messages from '../../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
@@ -50,7 +50,7 @@ const TableTitle = ({
   intl: { formatMessage },
   params: { viewId },
   location: { query, pathname },
-}: InjectedIntlProps & WithRouterProps) => {
+}: WrappedComponentProps & WithRouterProps) => {
   const categories = useInsightsCategories(viewId);
 
   const [renameCategoryModalOpened, setRenameCategoryModalOpened] =
@@ -109,9 +109,9 @@ const TableTitle = ({
           <>
             {selectedCategory?.attributes.name}
             <Button
-              icon="more-options"
-              iconColor={colors.label}
-              iconHoverColor={colors.label}
+              icon="dots-horizontal"
+              iconColor={colors.textSecondary}
+              iconHoverColor={colors.textSecondary}
               boxShadow="none"
               boxShadowHover="none"
               bgColor="transparent"

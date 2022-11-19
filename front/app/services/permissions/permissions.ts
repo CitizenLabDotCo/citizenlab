@@ -120,7 +120,7 @@ const usePermission = ({
     return (
       !isNilOrError(user) &&
       !isNilOrError(tenant) &&
-      rule(item, { data: user }, tenant.data, context)
+      rule(item, { data: user }, tenant, context)
     );
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;

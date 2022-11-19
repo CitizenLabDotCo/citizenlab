@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import { adopt } from 'react-adopt';
 import { Subscription, fromEvent } from 'rxjs';
@@ -51,6 +51,7 @@ const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 export const ModalContentContainer = styled.div<{
   padding?: string | undefined;
+  fullScreen?: boolean;
 }>`
   flex: 1 1 auto;
   width: 100%;
@@ -59,8 +60,15 @@ export const ModalContentContainer = styled.div<{
   -webkit-overflow-scrolling: touch;
   padding: ${({ padding }) => padding || '30px'};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: ${({ padding }) => padding || '20px'};
+  `}
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+      max-width: 580px;;
+      padding-bottom: 40px !important;
   `}
 `;
 
@@ -71,7 +79,6 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
-  background: #fff;
   transition: all 100ms ease-out;
   outline: none !important;
   padding: 10px;
@@ -88,20 +95,53 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     left: 25px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     top: 13px;
     right: 15px;
   `}
 `;
 
-const StyledFocusOn = styled(FocusOn)<{ width: number }>`
+// copy of the styled FocusOn container below
+const StyledNonFocusableContainer = styled.div<{
+  width: number | string;
+  fullScreen?: boolean;
+}>`
   width: 100%;
-  max-width: ${({ width }) => width}px;
+  max-width: ${({ width }) =>
+    width.constructor === String ? width : `${width}px`};
   display: flex;
   justify-content: center;
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+      height: calc(100vh - 78px);
+      max-width: 100%;
+  `}
 `;
 
-const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
+const StyledFocusOn = styled(FocusOn)<{
+  width: number | string;
+  fullScreen?: boolean;
+}>`
+  width: 100%;
+  max-width: ${({ width }) =>
+    width.constructor === String ? width : `${width}px`};
+  display: flex;
+  justify-content: center;
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+      height: calc(100vh - 78px);
+      max-width: 100%;
+  `}
+`;
+
+const ModalContainer = styled(clickOutside)<{
+  windowHeight: string;
+  fullScreen?: boolean;
+}>`
   width: 100%;
   max-height: 85vh;
   margin-top: 50px;
@@ -119,12 +159,23 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
     max-height: 600px;
   }
 
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+      margin: 0;
+      align-items: center;
+      max-height: 100%;
+      border-radius: 0;
+      border-top: 2px solid ${colors.borderLight};
+  `}
+
   /* tall desktops screens */
   @media (min-height: 1200px) {
     margin-top: 120px;
+    ${({ fullScreen }) => fullScreen && 'margin-top: 0;'}
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     max-width: calc(100vw - 30px);
     max-height: ${(props) => `calc(${props.windowHeight} - 30px)`};
     margin-top: 15px;
@@ -133,10 +184,18 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
       height: auto;
       max-height: 85vh;
     }
-  `}
+
+    ${({ fullScreen }) =>
+      fullScreen &&
+      `
+        margin-top: 0;
+        max-height: 100%;
+        max-width: 100%;
+      `}
+    `}
 `;
 
-const Overlay = styled.div`
+const Overlay = styled.div<{ fullScreen?: boolean }>`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -151,14 +210,21 @@ const Overlay = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   overflow: hidden;
-  z-index: 1000001;
   will-change: opacity, transform;
+  z-index: ${({ fullScreen }) => (fullScreen ? '400' : '1000001')};
 
-  ${media.biggerThanMinTablet`
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+      margin-top: 78px;
+      padding: 0px;
+  `}
+
+  ${media.desktop`
     justify-content: center;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 12px;
     padding-right: 12px;
     padding: 0px;
@@ -171,7 +237,7 @@ const Overlay = styled.div`
       opacity: 1;
       transform: translateY(${desktopTranslateY});
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         transform: translateY(${mobileTranslateY});
       `}
     }
@@ -180,7 +246,7 @@ const Overlay = styled.div`
       opacity: 1;
       transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing};
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing};
       `}
 
@@ -190,9 +256,16 @@ const Overlay = styled.div`
         transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing},
           transform ${desktopTransformTimeout}ms ${desktopEasing};
 
-        ${media.smallerThanMinTablet`
+        ${media.phone`
           transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing},
                       transform ${mobileTransformTimeout}ms ${mobileEasing};
+        `}
+
+        ${({ fullScreen }) =>
+          fullScreen &&
+          `
+            transition: opacity 0ms ${mobileEasing},
+            transform 0ms ${mobileEasing};
         `}
       }
     }
@@ -210,7 +283,7 @@ export const HeaderContainer = styled.div`
   border-bottom: solid 1px #e0e0e0;
   background: transparent;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 20px;
@@ -219,7 +292,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderTitle = styled.h1`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   line-height: normal;
@@ -227,7 +300,7 @@ export const HeaderTitle = styled.h1`
   margin-right: 45px;
   padding: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 35px;
   `}
 
@@ -236,7 +309,7 @@ export const HeaderTitle = styled.h1`
     margin: 0;
     margin-left: 45px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       margin-left: 35px;
     `}
   `}
@@ -244,7 +317,7 @@ export const HeaderTitle = styled.h1`
 
 export const HeaderSubtitle = styled.h2`
   width: 100%;
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
@@ -267,10 +340,10 @@ const FooterContainer = styled.div`
   padding-right: 30px;
   padding-top: 15px;
   padding-bottom: 15px;
-  border-top: solid 1px ${colors.separation};
+  border-top: solid 1px ${colors.divider};
   background: #fff;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 20px;
@@ -286,7 +359,7 @@ const Skip = styled.div`
   margin-top: 15px;
   cursor: pointer;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -309,6 +382,30 @@ export const Content = styled.p`
   margin-bottom: 30px;
 `;
 
+const ModalContentContainerSwitch = ({
+  fullScreen,
+  width,
+  children,
+}: {
+  fullScreen: boolean | undefined;
+  width: number | string;
+  children: ReactElement | ReactElement[];
+}) => {
+  if (fullScreen) {
+    return (
+      <StyledNonFocusableContainer width={width} fullScreen={fullScreen}>
+        {children}
+      </StyledNonFocusableContainer>
+    );
+  }
+
+  return (
+    <StyledFocusOn width={width} fullScreen={fullScreen}>
+      {children}
+    </StyledFocusOn>
+  );
+};
+
 interface DataProps {
   windowSize: GetWindowSizeChildProps;
 }
@@ -316,7 +413,7 @@ interface DataProps {
 export interface InputProps {
   opened: boolean;
   fixedHeight?: boolean;
-  width?: number;
+  width?: number | string;
   close: () => void;
   className?: string;
   header?: JSX.Element | string;
@@ -324,9 +421,9 @@ export interface InputProps {
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
   padding?: string;
-  noClose?: boolean;
   closeOnClickOutside?: boolean;
   children: React.ReactNode;
+  fullScreen?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -385,9 +482,7 @@ class Modal extends PureComponent<Props, State> {
   };
 
   closeModal = () => {
-    if (!this.props.noClose) {
-      this.props.close();
-    }
+    this.props.close();
   };
 
   handlePopstateEvent = () => {
@@ -434,11 +529,11 @@ class Modal extends PureComponent<Props, State> {
       footer,
       hasSkipButton,
       skipText,
-      noClose,
+      fullScreen,
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
-      ? windowSize <= viewportWidths.smallTablet
+      ? windowSize <= viewportWidths.tablet
       : false;
     const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
@@ -464,9 +559,14 @@ class Modal extends PureComponent<Props, State> {
           enter={true}
           exit={false}
         >
-          <Overlay id="e2e-modal-container" className={this.props.className}>
-            <StyledFocusOn width={width}>
+          <Overlay
+            id="e2e-modal-container"
+            className={this.props.className}
+            fullScreen={fullScreen}
+          >
+            <ModalContentContainerSwitch width={width} fullScreen={fullScreen}>
               <ModalContainer
+                fullScreen={fullScreen}
                 className={`modalcontent ${
                   hasFixedHeight ? 'fixedHeight' : ''
                 }`}
@@ -476,15 +576,14 @@ class Modal extends PureComponent<Props, State> {
                 aria-modal="true"
                 role="dialog"
               >
-                {!noClose && (
-                  <StyledCloseIconButton
-                    className="e2e-modal-close-button"
-                    onClick={this.clickCloseButton}
-                    iconColor={colors.label}
-                    iconColorOnHover={'#000'}
-                    a11y_buttonActionMessage={messages.closeModal}
-                  />
-                )}
+                <StyledCloseIconButton
+                  className="e2e-modal-close-button"
+                  onClick={this.clickCloseButton}
+                  iconColor={colors.textSecondary}
+                  iconColorOnHover={'#000'}
+                  a11y_buttonActionMessage={messages.closeModal}
+                  fullScreen={fullScreen}
+                />
 
                 {header && (
                   <HeaderContainer>
@@ -492,7 +591,10 @@ class Modal extends PureComponent<Props, State> {
                   </HeaderContainer>
                 )}
 
-                <ModalContentContainer padding={padding}>
+                <ModalContentContainer
+                  padding={padding}
+                  fullScreen={fullScreen}
+                >
                   {children}
                 </ModalContentContainer>
 
@@ -502,7 +604,7 @@ class Modal extends PureComponent<Props, State> {
                   <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
                 )}
               </ModalContainer>
-            </StyledFocusOn>
+            </ModalContentContainerSwitch>
           </Overlay>
         </CSSTransition>,
         modalPortalElement

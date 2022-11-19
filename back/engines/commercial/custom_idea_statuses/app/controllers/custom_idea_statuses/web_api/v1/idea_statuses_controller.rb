@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CustomIdeaStatuses
   module WebApi
     module V1
@@ -10,7 +12,7 @@ module CustomIdeaStatuses
           if @idea_status.save
             render json: ::WebApi::V1::IdeaStatusSerializer.new(@idea_status).serialized_json, status: :ok
           else
-            render json: { errors: @idea_status.errors }, status: :unprocessable_entity
+            render json: { errors: @idea_status.errors.details }, status: :unprocessable_entity
           end
         end
 
@@ -19,7 +21,7 @@ module CustomIdeaStatuses
           if @idea_status.update(idea_status_params)
             render json: ::WebApi::V1::IdeaStatusSerializer.new(@idea_status).serialized_json, status: :ok
           else
-            render json: { errors: @idea_status.errors }, status: :unprocessable_entity
+            render json: { errors: @idea_status.errors.details }, status: :unprocessable_entity
           end
         end
 
@@ -27,7 +29,7 @@ module CustomIdeaStatuses
           if @idea_status.destroy
             head :no_content
           else
-            render json: { errors: @idea_status.errors }, status: :not_allowed
+            render json: { errors: @idea_status.errors.details }, status: :not_allowed
           end
         end
 

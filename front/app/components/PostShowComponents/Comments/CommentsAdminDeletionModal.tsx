@@ -1,18 +1,26 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 // Services
 import { DeleteReasonCode } from 'services/comments';
 
 // Components
-import FormikTextArea from 'components/UI/FormikTextArea';
-import { Formik, Form } from 'formik';
-import FormikRadio from 'components/UI/FormikRadio';
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
+import { Box } from '@citizenlab/cl2-component-library';
+
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object } from 'yup';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import TextArea from 'components/HookForm/TextArea';
+import Feedback from 'components/HookForm/Feedback';
+import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // animation
@@ -22,9 +30,8 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 // Styling
 import styled from 'styled-components';
 
-const Container = styled.div`
-  padding: 30px;
-`;
+// utils
+import { keys } from 'utils/helperUtils';
 
 const ButtonsWrapper = styled.div`
   display: flex;
@@ -65,94 +72,107 @@ const DeleteReason = styled.div`
   }
 `;
 
-export interface Props {
-  onDeleteComment: (values) => void;
+type ReasonCode = keyof typeof DeleteReasonCode;
+
+type FormValues = {
+  reason_code: ReasonCode;
+  other_reason?: string;
+};
+
+type Props = {
+  onDeleteComment: (values: FormValues) => Promise<void>;
   onCloseDeleteModal: () => void;
-}
+} & WrappedComponentProps;
 
-export interface State {}
+const deleteReasonCodes = keys(DeleteReasonCode);
 
-class CommentsAdminDeletionForm extends PureComponent<Props, State> {
-  validateForm = (values) => {
-    const errors: { reason_code?: any; other_reason?: any } = {};
+const DELETE_REASON_MESSAGES: Record<ReasonCode, MessageDescriptor> = {
+  irrelevant: messages.deleteReason_irrelevant,
+  inappropriate: messages.deleteReason_inappropriate,
+  other: messages.deleteReason_other,
+};
 
-    if (!values.reason_code) {
-      errors.reason_code = 'Required';
+const CommentsAdminDeletionForm = ({
+  onDeleteComment,
+  onCloseDeleteModal,
+  intl: { formatMessage },
+}: Props) => {
+  const schema = object({
+    reason_code: string().required(formatMessage(messages.deleteReasonError)),
+    other_reason: string().when('reason_code', {
+      is: 'other',
+      then: string().required(
+        formatMessage(messages.deleteReasonDescriptionError)
+      ),
+    }),
+  });
+
+  const methods = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (values: FormValues) => {
+    try {
+      await onDeleteComment(values);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
     }
-
-    if (values.reason_code === 'other' && !values.other_reason) {
-      errors.other_reason = 'Required';
-    }
-
-    return errors;
   };
 
-  render() {
-    return (
-      <Container>
-        <Formik
-          initialValues={{ reason_code: null, other_reason: null }}
-          onSubmit={this.props.onDeleteComment}
-          validate={this.validateForm}
-        >
-          {({ values, isSubmitting, isValid }) => (
-            <Form noValidate>
-              <SectionField>
-                {Object.keys(DeleteReasonCode).map((code) => (
-                  <FormikRadio
-                    value={code}
-                    name="reason_code"
-                    id={`reason_code-${code}`}
-                    label={
-                      <FormattedMessage {...messages[`deleteReason_${code}`]} />
-                    }
-                    key={code}
-                  />
-                ))}
-              </SectionField>
+  return (
+    <Box p="30px">
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+          <Feedback />
 
-              <TransitionGroup>
-                {values.reason_code === 'other' ? (
-                  <CSSTransition
-                    classNames="reason"
-                    timeout={timeout}
-                    enter={true}
-                    exit={true}
-                  >
-                    <DeleteReason>
-                      <SectionField>
-                        <FormikTextArea name="other_reason" />
-                      </SectionField>
-                    </DeleteReason>
-                  </CSSTransition>
-                ) : null}
-              </TransitionGroup>
+          <SectionField>
+            <RadioGroup name="reason_code">
+              {deleteReasonCodes.map((code) => (
+                <Radio
+                  value={code}
+                  name="reason_code"
+                  id={`reason_code-${code}`}
+                  label={formatMessage(DELETE_REASON_MESSAGES[code])}
+                  key={code}
+                />
+              ))}
+            </RadioGroup>
+          </SectionField>
 
-              <ButtonsWrapper>
-                <Button
-                  buttonStyle="secondary"
-                  onClick={this.props.onCloseDeleteModal}
-                >
-                  <FormattedMessage
-                    {...messages.adminCommentDeletionCancelButton}
-                  />
-                </Button>
-                <Button
-                  disabled={!isValid}
-                  buttonStyle="primary"
-                  processing={isSubmitting}
-                >
-                  <FormattedMessage
-                    {...messages.adminCommentDeletionConfirmButton}
-                  />
-                </Button>
-              </ButtonsWrapper>
-            </Form>
-          )}
-        </Formik>
-      </Container>
-    );
-  }
-}
+          <TransitionGroup>
+            {methods.getValues('reason_code') === 'other' ? (
+              <CSSTransition
+                classNames="reason"
+                timeout={timeout}
+                enter={true}
+                exit={true}
+              >
+                <DeleteReason>
+                  <SectionField>
+                    <TextArea name="other_reason" />
+                  </SectionField>
+                </DeleteReason>
+              </CSSTransition>
+            ) : null}
+          </TransitionGroup>
 
-export default CommentsAdminDeletionForm;
+          <ButtonsWrapper>
+            <Button buttonStyle="secondary" onClick={onCloseDeleteModal}>
+              {formatMessage(messages.adminCommentDeletionCancelButton)}
+            </Button>
+            <Button
+              type="submit"
+              buttonStyle="primary"
+              processing={methods.formState.isSubmitting}
+            >
+              {formatMessage(messages.adminCommentDeletionConfirmButton)}
+            </Button>
+          </ButtonsWrapper>
+        </form>
+      </FormProvider>
+    </Box>
+  );
+};
+
+export default injectIntl(CommentsAdminDeletionForm);

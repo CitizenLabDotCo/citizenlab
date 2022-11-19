@@ -8,7 +8,7 @@ import Button from 'components/UI/Button';
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // Styling
@@ -30,7 +30,7 @@ export const GroupType = styled.div`
   padding-bottom: 50px;
   position: relative;
   flex: 1;
-  background: ${colors.lightGreyishBlue};
+  background: ${colors.grey200};
 `;
 
 export const IconWrapper = styled.div`
@@ -40,18 +40,18 @@ export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${transparentize(0.9, colors.adminTextColor)};
+  background: ${transparentize(0.9, colors.primary)};
 `;
 
 const ManualGroupIcon = styled(Icon).attrs({ name: 'database' })`
   width: 28px;
   height: 28px;
-  fill: ${colors.adminTextColor};
-  fill: ${colors.adminTextColor};
+  fill: ${colors.primary};
+  fill: ${colors.primary};
 `;
 
 export const GroupName = styled.p`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   margin-top: 15px;
@@ -67,18 +67,18 @@ export const GroupDescription = styled.div`
 
 export const DescriptionText = styled.div`
   max-width: 285px;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   text-align: center;
 `;
 
 export const MoreInfoLink = styled.a`
-  color: ${colors.clBlueDark};
+  color: ${colors.teal};
   text-align: center;
   text-decoration: underline;
   margin-top: 10px;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${darken(0.15, colors.teal)};
     text-decoration: underline;
   }
 `;
@@ -86,16 +86,15 @@ export const MoreInfoLink = styled.a`
 export const Step2Button = styled(Button)``;
 
 // Typings
-import { IGroupData } from 'services/groups';
+import { IGroupData, MembershipType } from 'services/groups';
 import Outlet from 'components/Outlet';
-import { MembershipType } from 'resources/GetGroups';
 
 export interface Props {
   onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;
 }
 
 const GroupCreationStep1 = memo(
-  ({ intl, onOpenStep2 }: Props & InjectedIntlProps) => {
+  ({ intl, onOpenStep2 }: Props & WrappedComponentProps) => {
     const formattedLink = intl.formatMessage(messages.readMoreLink);
 
     const createStep2Handler = (groupType: MembershipType) => () => {
@@ -137,4 +136,4 @@ const GroupCreationStep1 = memo(
   }
 );
 
-export default injectIntl<Props>(GroupCreationStep1);
+export default injectIntl(GroupCreationStep1);

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::TopicsController < ApplicationController
   before_action :set_topic, except: %i[index]
   skip_before_action :authenticate_user, only: %i[index show]

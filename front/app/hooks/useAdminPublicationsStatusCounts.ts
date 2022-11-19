@@ -30,6 +30,7 @@ export default function useAdminPublicationsStatusCounts({
   >(undefined);
   const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [search, setSearch] = useState<string | null>(null);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
@@ -42,6 +43,10 @@ export default function useAdminPublicationsStatusCounts({
     areas.length === 0 ? setAreas(undefined) : setAreas(areas);
   }, []);
 
+  const onChangeSearch = useCallback((search: string | null) => {
+    search && search.length === 0 ? setSearch(null) : setSearch(search);
+  }, []);
+
   useEffect(() => {
     const queryParameters = {
       depth: rootLevelOnly ? 0 : undefined,
@@ -49,6 +54,7 @@ export default function useAdminPublicationsStatusCounts({
       areas,
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
+      search,
     };
 
     const subscription = adminPublicationsStatusCounts({
@@ -68,6 +74,7 @@ export default function useAdminPublicationsStatusCounts({
     publicationStatuses,
     rootLevelOnly,
     removeNotAllowedParents,
+    search,
   ]);
 
   return {
@@ -75,6 +82,7 @@ export default function useAdminPublicationsStatusCounts({
     onChangeTopics,
     onChangeAreas,
     onChangePublicationStatus: setPublicationStatuses,
+    onChangeSearch,
   };
 }
 

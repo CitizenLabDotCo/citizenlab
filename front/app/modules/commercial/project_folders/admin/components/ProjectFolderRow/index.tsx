@@ -27,15 +27,13 @@ import useAdminPublications, {
 
 // services
 import { isAdmin } from 'services/permissions/roles';
-import { moderatesFolder } from '../../../permissions/roles';
+import { userModeratesFolder } from '../../../permissions/roles';
 
 // typings
-import { PublicationStatus } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
-  height: 14px;
-  width: 17px;
 `;
 
 // types & services
@@ -45,9 +43,7 @@ import PublicationStatusLabel from 'containers/Admin/projects/components/Publica
 import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
-  flex: 0 0 11px;
-  height: 11px;
-  width: 11px;
+  flex: 0 0 24px;
   margin-right: 8px;
   transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
     fill 80ms ease-out;
@@ -88,7 +84,7 @@ const ProjectRows = styled.div`
 const InFolderProjectRow = styled(ProjectRow)`
   padding-bottom: 10px;
   padding-top: 10px;
-  border-top: 1px solid ${colors.separation};
+  border-top: 1px solid ${colors.divider};
 
   &:last-child {
     padding-bottom: 0;
@@ -141,7 +137,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
                 name="chevron-right"
               />
             )}
-            <FolderIcon name="simpleFolder" />
+            <FolderIcon name="folder-outline" />
             <RowTitle
               value={publication.attributes.publication_title_multiloc}
             />
@@ -167,7 +163,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               icon="edit"
               disabled={
                 isBeingDeleted ||
-                !moderatesFolder(authUser, publication.publicationId)
+                !userModeratesFolder(authUser, publication.publicationId)
               }
             >
               <FormattedMessage {...messages.manageButtonLabel} />

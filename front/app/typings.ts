@@ -1,20 +1,31 @@
+import { TFieldName } from 'components/UI/Error';
 import {
-  appLocalePairs,
   appGraphqlLocalePairs,
+  appLocalePairs,
 } from 'containers/App/constants';
+import { FC } from 'react';
+import { TableCellProps } from 'semantic-ui-react';
+import {
+  TAppConfigurationSetting,
+  TAppConfigurationSettingWithEnabled,
+} from 'services/appConfiguration';
+import { IIdeaAction } from 'services/ideas';
+import { IProjectAction } from 'services/projects';
+import { WrappedComponentProps } from 'react-intl';
 
 declare global {
   interface Function {
     displayName?: string;
   }
   interface Window {
-    _paq: any;
-    googleMaps?: boolean;
     Intercom?: any;
-    intercomSettings: any;
+    Weglot?: any;
+    _paq: any;
     attachEvent?: any;
-    satismeter?: any;
     dataLayer?: any[];
+    googleMaps?: boolean;
+    intercomSettings: any;
+    satismeter?: any;
   }
 }
 
@@ -53,7 +64,8 @@ export interface ITab {
   label: string;
   url: string;
   active?: boolean | ((pathname: string) => boolean);
-  feature?: TAppConfigurationSetting;
+  feature?: TAppConfigurationSettingWithEnabled;
+  statusLabel?: string;
 }
 
 export type CellConfiguration<ComponentProps> = {
@@ -69,8 +81,6 @@ export interface InsertConfigurationOptions<T extends { name: string }> {
   configuration: T;
   insertAfterName?: string;
   insertBeforeName?: string;
-  reinsertAfterUpdate?: boolean;
-  removeName?: string;
 }
 
 export interface ILinks {
@@ -97,20 +107,19 @@ export interface IOption {
   disabled?: boolean;
 }
 
+export function isIOption(
+  maybeOption: {
+    value: string;
+    label: string;
+  } | null
+): maybeOption is IOption {
+  return maybeOption !== null;
+}
+
 export interface Message {
   id: string;
   defaultMessage: string;
 }
-
-import { Messages } from 'react-intl';
-import { IProjectAction } from 'services/projects';
-import { IIdeaAction } from 'services/ideas';
-import { FormikActions } from 'formik';
-import { FC } from 'react';
-import { TableCellProps } from 'semantic-ui-react';
-import { TAppConfigurationSetting } from 'services/appConfiguration';
-import { TFieldName } from 'components/UI/Error';
-export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
 
@@ -167,7 +176,7 @@ export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type IGraphPoint = {
   name: string;
   value: number;
-  code: string;
+  code?: string;
   color?: string;
   ordering?: number;
 };
@@ -182,9 +191,23 @@ export type IParticipationByTopic = ITopicSingleValue[];
 
 export type IGraphFormat = IGraphPoint[];
 
-export type FormikSubmitHandler<V> = (
-  values: V,
-  actions: FormikActions<V>
-) => void;
-
 export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+
+export type Percentage = `${number}%`;
+
+/* eslint-disable */
+type Values<T extends {}> = T[keyof T];
+type Tuplize<T extends {}[]> = Pick<
+  T,
+  Exclude<keyof T, Extract<keyof {}[], string> | number>
+>;
+type _OneOf<T extends {}> = Values<{
+  [K in keyof T]: T[K] & {
+    [M in Values<{ [L in keyof Omit<T, K>]: keyof T[L] }>]?: undefined;
+  };
+}>;
+
+export type OneOf<T extends {}[]> = _OneOf<Tuplize<T>>;
+/* eslint-enable */
+
+export type FormatMessage = WrappedComponentProps['intl']['formatMessage'];

@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
 
   rescue_from ActionController::UnpermittedParameters do |pme|
     render json: { error: { unknown_parameters: pme.params } },
-           status: :bad_request
+      status: :bad_request
   end
 
   rescue_from ClErrors::TransactionError, with: :transaction_error
@@ -56,7 +56,7 @@ class ApplicationController < ActionController::API
     payload[:tenant_host] = Current.tenant&.host
     payload[:user_id] = current_user&.id
     payload[:request_id] = request.request_id
-    payload[:"X-Amzn-Trace-Id"] = request.headers['X-Amzn-Trace-Id']
+    payload[:'X-Amzn-Trace-Id'] = request.headers['X-Amzn-Trace-Id']
   end
 
   def fastjson_params(extra_params = {})
@@ -73,7 +73,7 @@ class ApplicationController < ActionController::API
   def page_links(collection)
     # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
     pages = ApiPagination.send :pages_from, collection
-    links = pages.transform_values(&method(:build_link))
+    links = pages.transform_values { |number| build_link(number) }
     links[:self] = build_link collection.current_page
     links[:first] ||= build_link 1
     links[:last] ||= build_link [collection.total_pages, 1].max
@@ -82,6 +82,10 @@ class ApplicationController < ActionController::API
     end
 
     links
+  end
+
+  def parse_bool(value)
+    ActiveModel::Type::Boolean.new.cast(value)
   end
 
   private
@@ -97,6 +101,13 @@ class ApplicationController < ActionController::API
 
   def paginate(collection)
     collection.page(params.dig(:page, :number))
-              .per(params.dig(:page, :size))
+      .per(params.dig(:page, :size))
+  end
+
+  def remove_image_if_requested!(resource, resource_params, image_field_name)
+    return unless resource_params.key?(image_field_name) && resource_params[image_field_name].nil?
+
+    # setting the image attribute to nil will not remove the image
+    resource.public_send("remove_#{image_field_name}!")
   end
 end

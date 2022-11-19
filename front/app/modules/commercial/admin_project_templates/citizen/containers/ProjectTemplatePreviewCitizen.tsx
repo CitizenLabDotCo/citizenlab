@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { get } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -33,13 +33,13 @@ const Container = styled.div`
   padding: 50px;
   background: ${colors.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 20px;
   `}
 `;
@@ -61,7 +61,7 @@ const InfoboxContainer = styled.div`
   padding: 27px;
   margin-bottom: 25px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.clBlueDarkBg};
+  background: ${colors.teal100};
 `;
 
 const InfoboxIcon = styled(Icon)`
@@ -75,7 +75,7 @@ const InfoboxIcon = styled(Icon)`
 `;
 
 const InfoboxText = styled.div`
-  color: ${colors.clBlueDarker};
+  color: ${colors.teal700};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
@@ -88,12 +88,12 @@ const InfoboxText = styled.div`
   }
 
   a {
-    color: ${colors.clBlueDarker};
+    color: ${colors.teal700};
     font-weight: 400;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDarker)};
+      color: ${darken(0.15, colors.teal700)};
       text-decoration: underline;
     }
   }

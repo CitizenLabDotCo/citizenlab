@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import ProjectCard from 'components/ProjectCard';
 
 // hooks
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useAdminPublications from 'hooks/useAdminPublications';
 
 // style
@@ -27,13 +26,11 @@ const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
   margin: 0px;
   margin-right: ${(props) => (props.isEven ? '20px' : '0px')};
   margin-bottom: 20px;
-
   &.oneCardPerRow {
     width: 100%;
     margin-right: 0px;
   }
-
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     margin: 0;
     margin-bottom: 20px;
@@ -48,7 +45,6 @@ interface Props {
 const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
 const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
-  const { windowWidth } = useWindowSize();
   const { list: adminPublications } = useAdminPublications({
     childrenOfId: folderId,
     publicationStatusFilter: publicationStatuses,
@@ -70,12 +66,7 @@ const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
               size="small"
               isEven={index % 2 !== 1}
               hideDescriptionPreview={hideDescriptionPreview}
-              className={
-                adminPublications.length === 1 ||
-                (windowWidth > 1000 && windowWidth < 1350)
-                  ? 'oneCardPerRow'
-                  : ''
-              }
+              className={adminPublications.length === 1 ? 'oneCardPerRow' : ''}
             />
           ))}
         </Container>

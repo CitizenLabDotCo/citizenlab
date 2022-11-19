@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -26,7 +28,7 @@ resource 'Campaigns' do
     parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
 
     example_request 'List all campaigns' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
     end
@@ -49,7 +51,7 @@ resource 'Campaigns' do
     let(:id) { campaign.id }
 
     example_request 'Get one campaign by id' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq id
     end
@@ -60,7 +62,7 @@ resource 'Campaigns' do
     let(:id) { campaign.id }
 
     example_request 'Get a campaign HTML preview' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:html]).to be_present
     end
@@ -109,14 +111,14 @@ resource 'Campaigns' do
 
     let(:campaign) { create(:manual_campaign) }
     let(:id) { campaign.id }
-    let(:subject_multiloc) { { 'en' => 'New subject' }}
+    let(:subject_multiloc) { { 'en' => 'New subject' } }
     let(:body_multiloc) { { 'en' => 'New body' } }
     let(:sender) { 'organization' }
     let(:reply_to) { 'otherguy@organization.net' }
     let(:group_ids) { [create(:group).id] }
 
     example_request 'Update a campaign' do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
       expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
@@ -134,9 +136,9 @@ resource 'Campaigns' do
     example 'Delete a campaign' do
       old_count = EmailCampaigns::Campaign.count
       do_request
-      expect(response_status).to eq 200
-      expect {EmailCampaigns::Campaign.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-      expect(EmailCampaigns::Campaign.count).to eq (old_count - 1)
+      assert_status 200
+      expect { EmailCampaigns::Campaign.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect(EmailCampaigns::Campaign.count).to eq(old_count - 1)
     end
   end
 
@@ -147,7 +149,7 @@ resource 'Campaigns' do
     let(:id) { campaign.id }
 
     example_request 'Send out the campaign now' do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse response_body
       expect(json_response.dig(:data, :attributes, :deliveries_count)).to eq User.count
     end
@@ -155,9 +157,9 @@ resource 'Campaigns' do
     example '[error] Send out the campaign without an author' do
       campaign.update_columns(author_id: nil, sender: 'author')
       do_request
-      expect(response_status).to eq 422
-      json_response = json_parse(response_body)
-      expect(json_response[:errors][:author][0][:error]).to eq 'blank'
+      assert_status 422
+      json_response = json_parse response_body
+      expect(json_response).to include_response_error(:author, 'blank')
     end
   end
 
@@ -172,7 +174,7 @@ resource 'Campaigns' do
     let!(:deliveries) { create_list :delivery, 5, campaign: campaign }
 
     example_request 'Get the deliveries of a sent campaign. Includes the recipients.' do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq deliveries.size
       expect(json_response[:included].size).to eq deliveries.size
@@ -182,13 +184,16 @@ resource 'Campaigns' do
   get 'web_api/v1/campaigns/:id/stats' do
     let(:campaign) { create(:manual_campaign) }
     let!(:id) { campaign.id }
-    let!(:deliveries) { create_list(:delivery, 20,
-      campaign: campaign,
-      delivery_status: 'accepted'
-    )}
+    let!(:deliveries) do
+      create_list(
+        :delivery, 20,
+        campaign: campaign,
+        delivery_status: 'accepted'
+      )
+    end
 
     example_request 'Get the delivery statistics of a sent campaing' do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response).to match({
         sent: 20,

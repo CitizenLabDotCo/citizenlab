@@ -40,7 +40,7 @@ import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -107,7 +107,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class UserCustomFieldsForm extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   submitbuttonElement: HTMLButtonElement | null;
@@ -538,7 +538,7 @@ const Data = adopt<DataProps, InputProps>({
   userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
-const UserCustomFieldsFormWithHoc = injectIntl<Props>(UserCustomFieldsForm);
+const UserCustomFieldsFormWithHoc = injectIntl(UserCustomFieldsForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

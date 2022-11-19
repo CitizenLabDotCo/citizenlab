@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe NavBarItemService do
-  let(:service) { NavBarItemService.new }
+  let(:service) { described_class.new }
   let(:default_codes) { NavBarItem::CODES - ['custom'] }
 
   # place default when all others present in correct order with custom after

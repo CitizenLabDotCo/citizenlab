@@ -1,13 +1,14 @@
-module OmniauthMethods
-  class Facebook
+# frozen_string_literal: true
 
+module OmniauthMethods
+  class Facebook < OmniauthMethods::Base
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      if configuration.feature_activated?('facebook_login')
-        env['omniauth.strategy'].options[:client_id] = configuration.settings("facebook_login", "app_id")
-        env['omniauth.strategy'].options[:client_secret] = configuration.settings("facebook_login", "app_secret")
-        env['omniauth.strategy'].options[:info_fields] = "first_name,last_name,email,birthday,education,gender,locale,third_party_id,timezone,age_range,picture.width(640).height(640)"
-      end
+      return unless configuration.feature_activated?('facebook_login')
+
+      env['omniauth.strategy'].options[:client_id] = configuration.settings('facebook_login', 'app_id')
+      env['omniauth.strategy'].options[:client_secret] = configuration.settings('facebook_login', 'app_secret')
+      env['omniauth.strategy'].options[:info_fields] = 'first_name,last_name,email,birthday,education,gender,locale,third_party_id,timezone,age_range,picture.width(640).height(640)'
     end
 
     def profile_to_user_attrs(auth)

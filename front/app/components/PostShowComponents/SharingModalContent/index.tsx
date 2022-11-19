@@ -5,7 +5,13 @@ import { getInputTerm } from 'services/participationContexts';
 
 // components
 import SharingButtons from 'components/Sharing/SharingButtons';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Spinner,
+  Box,
+  Text,
+  Title,
+  Image,
+} from '@citizenlab/cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -22,7 +28,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { PostType } from 'resources/GetPost';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
@@ -33,82 +39,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
-import rocket from './rocket.png';
-
-const Loading = styled.div`
-  width: 100%;
-  height: 460px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Rocket = styled.img`
-  width: 40px;
-  height: 40px;
-
-  ${media.smallerThanMaxTablet`
-    width: 35px;
-    height: 35px;
-  `}
-`;
-
-const Title = styled.h1`
-  flex-shrink: 0;
-  width: 100%;
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    max-width: auto;
-    font-size: ${fontSizes.xxxl}px;
-    line-height: 36px;
-  `}
-`;
-
-const Description = styled.p`
-  flex-shrink: 0;
-  width: 100%;
-  max-width: 500px;
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.l}px;
-  line-height: 25px;
-  font-weight: 300;
-  text-align: center;
-  margin: 0;
-  margin-top: 10px;
-  margin-bottom: 50px;
-  padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.base}px;
-    line-height: 21px;
-  `}
-`;
-
-const SharingWrapper = styled.div`
-  flex-shrink: 0;
-  width: 100%;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-`;
+import rocket from 'assets/img/rocket.png';
 
 interface InputProps {
   postType: PostType;
@@ -133,7 +64,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class SharingModalContent extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized,
+  Props & WrappedComponentProps & InjectedLocalized,
   State
 > {
   componentDidMount() {
@@ -165,12 +96,9 @@ class SharingModalContent extends PureComponent<
 
   getIdeaMessages = () => {
     const { project, phases } = this.props;
-    let emailSharingSubject: ReactIntl.FormattedMessage.MessageDescriptor | null =
-      null;
-    let emailSharingBody: ReactIntl.FormattedMessage.MessageDescriptor | null =
-      null;
-    let whatsAppMessage: ReactIntl.FormattedMessage.MessageDescriptor | null =
-      null;
+    let emailSharingSubject: MessageDescriptor | null = null;
+    let emailSharingBody: MessageDescriptor | null = null;
+    let whatsAppMessage: MessageDescriptor | null = null;
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
@@ -242,50 +170,73 @@ class SharingModalContent extends PureComponent<
       whatsAppMessage
     ) {
       return (
-        <Container className={className}>
-          <Rocket src={rocket} alt="" />
-          <Title className={`e2e-${postType}-social-sharing-modal-title`}>
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          className={className}
+        >
+          <Image width="80px" height="80px" src={rocket} alt="" />
+          <Title
+            variant="h2"
+            textAlign="center"
+            className={`e2e-${postType}-social-sharing-modal-title`}
+          >
             {title}
           </Title>
-          <Description>{subtitle}</Description>
-          <SharingWrapper>
-            <SharingButtons
-              context={postType}
-              isInModal
-              url={postUrl}
-              twitterMessage={formatMessage(messages.twitterMessage, {
-                postTitle,
-              })}
-              whatsAppMessage={formatMessage(whatsAppMessage, {
-                postTitle,
-              })}
-              emailSubject={formatMessage(emailSharingSubject, { postTitle })}
-              emailBody={formatMessage(emailSharingBody, {
-                postTitle,
-                postUrl,
-              })}
-              utmParams={{
-                source: `share_${postType}`,
-                campaign: `${postType}flow`,
-                content: authUser.id,
-              }}
-            />
-          </SharingWrapper>
-        </Container>
+          <Text
+            color="textPrimary"
+            mt="12px"
+            mb="36px"
+            fontSize={'m'}
+            textAlign="center"
+          >
+            {subtitle}
+          </Text>
+          <SharingButtons
+            context={postType}
+            url={postUrl}
+            facebookMessage={formatMessage(messages.twitterMessage, {
+              postTitle,
+            })}
+            twitterMessage={formatMessage(messages.twitterMessage, {
+              postTitle,
+            })}
+            whatsAppMessage={formatMessage(whatsAppMessage, {
+              postTitle,
+            })}
+            emailSubject={formatMessage(emailSharingSubject, { postTitle })}
+            emailBody={formatMessage(emailSharingBody, {
+              postTitle,
+              postUrl,
+            })}
+            utmParams={{
+              source: `share_${postType}`,
+              campaign: `${postType}flow`,
+              content: authUser.id,
+            }}
+          />
+        </Box>
       );
     }
 
     return (
-      <Loading>
+      <Box
+        width="100%"
+        height="460px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Spinner />
-      </Loading>
+      </Box>
     );
   }
 }
 
-const SharingModalContentWithHoCs = injectIntl<Props>(
-  localize(SharingModalContent)
-);
+const SharingModalContentWithHoCs = injectIntl(localize(SharingModalContent));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

@@ -1,6 +1,7 @@
-Onboarding::Engine.routes.draw do
+# frozen_string_literal: true
 
-  namespace :web_api, :defaults => {:format => :json} do
+Onboarding::Engine.routes.draw do
+  namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       scope :onboarding_campaigns do
         get :current, controller: 'campaigns'
@@ -8,5 +9,4 @@ Onboarding::Engine.routes.draw do
       end
     end
   end
-
 end

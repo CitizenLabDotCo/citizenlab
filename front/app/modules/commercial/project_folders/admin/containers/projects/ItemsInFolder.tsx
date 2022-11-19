@@ -96,7 +96,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
                                 ),
                                 handler:
                                   removeProjectFromFolder(projectFolderId),
-                                icon: 'remove',
+                                icon: 'minus-circle',
                                 processing: processing.includes(
                                   adminPublication.publicationId
                                 ),

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class StatusChangeOfYourIdeaMailerPreview < ActionMailer::Preview
     def campaign_mail
@@ -13,12 +15,12 @@ module EmailCampaigns
           post_title_multiloc: idea.title_multiloc,
           post_body_multiloc: idea.body_multiloc,
           post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-          post_images: idea.idea_images.map{ |image|
+          post_images: idea.idea_images.map do |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
-          },
+          end,
           idea_status_id: status.id,
           idea_status_title_multiloc: status.title_multiloc,
           idea_status_code: status.code,

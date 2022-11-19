@@ -13,19 +13,11 @@ import useProjectFolder from '../../../hooks/useProjectFolder';
 import T from 'components/T';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // style
-import styled from 'styled-components';
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 400px;
-  padding: 40px 25px;
-  margin-left: auto;
-  margin-right: auto;
-`;
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   projectFolderId: string;
@@ -35,7 +27,7 @@ interface Props {
 }
 
 const ProjectFolderSharingModal = memo<
-  Props & InjectedIntlProps & InjectedLocalized
+  Props & WrappedComponentProps & InjectedLocalized
 >(({ projectFolderId, className, opened, close, intl: { formatMessage } }) => {
   const authUser = useAuthUser();
   const projectFolder = useProjectFolder({ projectFolderId });
@@ -63,10 +55,16 @@ const ProjectFolderSharingModal = memo<
         opened={opened}
         close={onClose}
         closeOnClickOutside={true}
-        noClose={false}
         header={<T value={projectFolder.attributes.title_multiloc} />}
       >
-        <Container className={className || ''}>
+        <Box
+          width="100%"
+          maxWidth="400px"
+          padding="40px 25px"
+          mx="auto"
+          style={{ textAlign: 'center' }}
+          className={className}
+        >
           {opened && (
             <>
               <T value={projectFolder.attributes.title_multiloc} maxLength={50}>
@@ -75,21 +73,33 @@ const ProjectFolderSharingModal = memo<
                     <SharingButtons
                       context="folder"
                       url={folderUrl}
+                      facebookMessage={formatMessage(messages.facebookMessage, {
+                        projectFolderName,
+                      })}
                       twitterMessage={formatMessage(messages.twitterMessage, {
                         projectFolderName,
                       })}
                       whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                         projectFolderName,
                       })}
+                      emailSubject={formatMessage(
+                        messages.emailSharingSubject,
+                        {
+                          projectFolderName: projectFolderName.toString(),
+                        }
+                      )}
+                      emailBody={formatMessage(messages.emailSharingBody, {
+                        folderUrl,
+                        projectFolderName,
+                      })}
                       utmParams={utmParams}
-                      layout="columnLayout"
                     />
                   );
                 }}
               </T>
             </>
           )}
-        </Container>
+        </Box>
       </Modal>
     );
   }

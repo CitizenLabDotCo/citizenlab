@@ -1,15 +1,26 @@
+# frozen_string_literal: true
+
 class SideFxStaticPageService
   include SideFxHelper
 
   def before_create(page, user); end
 
   def after_create(page, user)
-    page.update! body_multiloc: TextImageService.new.swap_data_images(page, :body_multiloc)
+    page.update!(
+      top_info_section_multiloc: TextImageService.new.swap_data_images(page, :top_info_section_multiloc),
+      bottom_info_section_multiloc: TextImageService.new.swap_data_images(page, :bottom_info_section_multiloc)
+    )
     LogActivityJob.perform_later(page, 'created', user, page.created_at.to_i)
   end
 
   def before_update(page, _)
-    page.body_multiloc = TextImageService.new.swap_data_images page, :body_multiloc
+    if page.top_info_section_multiloc.present?
+      page.top_info_section_multiloc = TextImageService.new.swap_data_images page, :top_info_section_multiloc
+    end
+
+    return if page.bottom_info_section_multiloc.blank?
+
+    page.bottom_info_section_multiloc = TextImageService.new.swap_data_images page, :bottom_info_section_multiloc
   end
 
   def after_update(page, user)

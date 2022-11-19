@@ -28,6 +28,14 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
+const Arrow = (props: React.SVGProps<SVGSVGElement>) => {
+  return (
+    <svg viewBox="134.282 57.93 18.666 24" aria-hidden={true} {...props}>
+      <path d="M144.617 80.289l8.1-9.719c.309-.371.309-.91 0-1.281l-8.1-9.719a1 1 0 0 1 .769-1.641h-11.104c.297 0 .578.132.769.359l9.166 11c.309.371.309.91 0 1.281l-9.166 11a1 1 0 0 1-.769.359h11.104a.999.999 0 0 1-.769-1.639z" />
+    </svg>
+  );
+};
+
 const Container = styled.div`
   width: 100%;
   max-width: 1050px;
@@ -36,7 +44,7 @@ const Container = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   border: solid 1px #e0e0e0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 30px;
   `}
 `;
@@ -55,7 +63,7 @@ const Header = styled.div`
   justify-content: space-between;
   margin-bottom: 60px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
   `}
@@ -67,13 +75,13 @@ const HeaderRight = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     margin-left: 30px;
   `}
 `;
 
 const Title = styled.h1`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.xxl}px;
   font-weight: 600;
   line-height: normal;
@@ -81,13 +89,13 @@ const Title = styled.h1`
   margin: 0;
   margin-bottom: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 5px;
   `}
 `;
 
 const Subtitle = styled.h2`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -95,13 +103,13 @@ const Subtitle = styled.h2`
   margin-top: 0;
   margin-bottom: 5px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 35px;
   `}
 `;
 
 const LinkCopied = styled.div`
-  color: ${colors.clGreenSuccess};
+  color: ${colors.success};
   display: flex;
   align-items: center;
   opacity: 0;
@@ -111,21 +119,19 @@ const LinkCopied = styled.div`
     opacity: 1;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     order: 2;
   `}
 `;
 
 const LinkCopiedIcon = styled(Icon)`
-  fill: ${colors.clGreenSuccess};
-  height: 13px;
-  margin-right: 3px;
+  fill: ${colors.success};
 `;
 
 const CopyLinkButton = styled(Button)`
   margin-left: 20px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     order: 1;
     margin-left: 0px;
     margin-right: 20px;
@@ -146,14 +152,14 @@ const MetaInfoLeft = styled.div`
 `;
 
 const Department = styled.div`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   white-space: nowrap;
   padding: 6px 12px;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${colors.separation};
+  border: solid 1px ${colors.divider};
   margin-right: 5px;
   margin-bottom: 5px;
 `;
@@ -165,7 +171,7 @@ const MetaInfoRight = styled.div`
 `;
 
 const MetaInfoRightBox = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -180,9 +186,7 @@ const MetaInfoRightBox = styled.div`
 
 const MetaInfoRightBoxIcon = styled(Icon)`
   flex: 0 0 24px;
-  fill: ${colors.label};
-  width: 24px;
-  height: 24px;
+  fill: ${colors.textSecondary};
   margin-right: 7px;
 `;
 
@@ -213,7 +217,7 @@ const PhaseBar = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${lighten(0.15, colors.label)};
+  background: ${lighten(0.15, colors.textSecondary)};
   transition: background 60ms ease-out;
   position: relative;
   border: none;
@@ -221,7 +225,7 @@ const PhaseBar = styled.button`
   -moz-appearance: none;
 `;
 
-const PhaseArrow = styled(Icon)`
+const PhaseArrow = styled(Arrow)`
   width: 20px;
   height: 25px;
   fill: #fff;
@@ -230,13 +234,13 @@ const PhaseArrow = styled(Icon)`
   right: -9px;
   z-index: 2;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     fill: ${colors.background};
   `}
 `;
 
 const PhaseText = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
@@ -289,7 +293,7 @@ const Footer = styled.div``;
 
 const SuccessCasesTitle = styled.div`
   width: 100%;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: normal;
@@ -303,7 +307,7 @@ const SuccessCase = styled.a`
   margin-right: 8px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${colors.separation};
+  border: solid 1px ${colors.divider};
   transition: all 80ms ease-out;
 
   &:hover {
@@ -410,7 +414,7 @@ const ProjectTemplatePreview = memo<Props>(
 
               <HeaderRight>
                 <LinkCopied className={linkCopied ? 'visible' : 'hidden'}>
-                  <LinkCopiedIcon name="checkmark" />
+                  <LinkCopiedIcon name="check" />
                   <FormattedMessage {...messages.copied} />
                 </LinkCopied>
                 <CopyLinkButton
@@ -436,7 +440,7 @@ const ProjectTemplatePreview = memo<Props>(
                 {data.projectTemplate.purposes &&
                   data.projectTemplate.purposes.length > 0 && (
                     <MetaInfoRightBox>
-                      <MetaInfoRightBoxIcon name="purpose" />
+                      <MetaInfoRightBoxIcon name="bullseye" />
                       <MetaInfoRightBoxText>
                         {data.projectTemplate.purposes
                           .map((purpose) => localize(purpose.titleMultiloc))
@@ -447,7 +451,7 @@ const ProjectTemplatePreview = memo<Props>(
                 {data.projectTemplate.participationLevels &&
                   data.projectTemplate.participationLevels.length > 0 && (
                     <MetaInfoRightBox className="last">
-                      <MetaInfoRightBoxIcon name="participationLevel" />
+                      <MetaInfoRightBoxIcon name="participation-level" />
                       <MetaInfoRightBoxText>
                         {data.projectTemplate.participationLevels
                           .map((participationLevel) =>
@@ -465,7 +469,7 @@ const ProjectTemplatePreview = memo<Props>(
                 <HeaderImage src={data.projectTemplate.headerImage} />
               )}
 
-              <QuillEditedContent textColor={colors.adminTextColor}>
+              <QuillEditedContent textColor={colors.primary}>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: localize(data.projectTemplate.descriptionMultilocs),
@@ -488,7 +492,7 @@ const ProjectTemplatePreview = memo<Props>(
                     >
                       <PhaseBar>
                         {index + 1}
-                        <PhaseArrow name="phase_arrow" />
+                        <PhaseArrow />
                       </PhaseBar>
                       <PhaseText>
                         <T value={phase} />

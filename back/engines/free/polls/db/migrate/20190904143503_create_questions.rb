@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateQuestions < ActiveRecord::Migration[5.2]
   def change
     create_table :polls_questions, id: :uuid do |t|
@@ -7,7 +9,7 @@ class CreateQuestions < ActiveRecord::Migration[5.2]
       t.integer :ordering
 
       t.timestamps
-      t.index ["participation_context_type", "participation_context_id"], name: "index_poll_questions_on_participation_context"
+      t.index %w[participation_context_type participation_context_id], name: 'index_poll_questions_on_participation_context'
     end
   end
 end

@@ -74,14 +74,14 @@ class SettingsService
     res
   end
 
-  def activate_feature! feature, config: nil
+  def activate_feature!(feature, config: nil)
     config ||= AppConfiguration.instance
     feature_settings = config.settings[feature] || {}
     config.settings[feature] = feature_settings.merge({ 'allowed' => true, 'enabled' => true })
     config.save!
   end
 
-  def deactivate_feature! feature, config: nil
+  def deactivate_feature!(feature, config: nil)
     config ||= AppConfiguration.instance
     feature_settings = config.settings[feature]
     feature_settings['enabled'] = false if feature_settings
@@ -100,8 +100,7 @@ class SettingsService
         color_main: '#0A5159',
         color_secondary: '#008292',
         color_text: '#333',
-        lifecycle_stage: lifecycle_stage,
-        display_header_avatars: true
+        lifecycle_stage: lifecycle_stage
       }
     }
   end

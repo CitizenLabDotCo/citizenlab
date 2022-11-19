@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -67,7 +69,7 @@ resource 'Ideas' do
 
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (ideas.size + 1)
+        expect(worksheet.count).to eq(ideas.size + 1)
       end
 
       example 'XLSX export includes assignee', pending: true do
@@ -86,7 +88,7 @@ resource 'Ideas' do
     post 'web_api/v1/ideas' do
       with_options scope: :idea do
         parameter :project_id, 'The identifier of the project that hosts the idea'
-        parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
+        parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
         parameter :assignee_id, 'The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators.', required: false

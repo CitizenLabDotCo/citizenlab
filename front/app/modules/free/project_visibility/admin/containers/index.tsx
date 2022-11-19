@@ -13,10 +13,10 @@ import { Radio } from '@citizenlab/cl2-component-library';
 import ProjectGroupsList from '../components/ProjectGroupsList';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import permissionsMessages from 'containers/Admin/projects/edit/permissions/messages';
+import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
 // services
 import { updateProject } from 'services/projects';
@@ -56,7 +56,7 @@ interface Props {
 const ProjectVisibility = ({
   projectId,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const project = useProject({ projectId });
 
   const [projectVisibility, setProjectVisibility] = useState<
@@ -91,7 +91,7 @@ const ProjectVisibility = ({
             onChange={handlePermissionTypeChange}
             currentValue={projectVisibility}
             name="permissionsType"
-            label={formatMessage(permissionsMessages.permissionsEveryoneLabel)}
+            label={formatMessage(permissionsMessages.permissionsAnyoneLabel)}
             value="public"
             id="permissions-all"
           />

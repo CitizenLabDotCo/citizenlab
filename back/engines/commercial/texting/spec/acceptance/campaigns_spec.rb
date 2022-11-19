@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -26,7 +28,7 @@ resource 'Texting campaigns' do
     end
 
     example_request 'List all texting campaigns' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
@@ -37,7 +39,7 @@ resource 'Texting campaigns' do
     let(:id) { campaign.id }
 
     example_request 'Get one campaign by id' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq id
     end
@@ -53,7 +55,7 @@ resource 'Texting campaigns' do
     let(:message) { 'Join our platform!' }
 
     example_request 'Create a campaign' do
-      expect(response_status).to eq 201
+      assert_status 201
       expect(json_response_body.dig(:data, :attributes, :phone_numbers)).to match_array(phone_numbers)
       expect(json_response_body.dig(:data, :attributes, :message)).to eq(message)
 
@@ -66,13 +68,13 @@ resource 'Texting campaigns' do
       let(:phone_numbers) { ['+123'] }
 
       example_request '[error] Does not create a campaign with invalid phone number' do
-        expect(response_status).to eq 422
+        assert_status 422
 
         expect(json_response_body.dig(:errors, :phone_numbers).first).to include(
           :min_length, :max_length, :valid_country_codes, invalid_numbers: phone_numbers, error: 'invalid'
         )
         campaign = Texting::Campaign.last
-        expect(campaign).to eq(nil)
+        expect(campaign).to be_nil
       end
     end
   end
@@ -126,7 +128,7 @@ resource 'Texting campaigns' do
       campaign.update!(phone_numbers: numbers)
 
       do_request
-      expect(response_status).to eq 422
+      assert_status 422
       expect(campaign.reload.status).to eq('draft')
     end
 
@@ -137,7 +139,7 @@ resource 'Texting campaigns' do
       config.save!
 
       do_request
-      expect(response_status).to eq 422
+      assert_status 422
       expect(campaign.reload.status).to eq('draft')
     end
   end
@@ -145,12 +147,10 @@ resource 'Texting campaigns' do
   # To test locally without stubs:
   # 1. ngrok http 4000
   # 2.
-  <<-DOC
-  Tenant.find_by(host: 'localhost').tap(&:switch!)
-  c = AppConfiguration.instance
-  c.settings['texting']['from_number'] = '+1 844 513 0718' # or other number from https://console.twilio.com/us1/develop/phone-numbers?frameUrl=%2Fconsole%2Fphone-numbers%2Fincoming%3Fx-target-region%3Dus1
-  c.update!(host: 'd635-31-179-57-73.ngrok.io')
-  DOC
+  #    Tenant.find_by(host: 'localhost').tap(&:switch!)
+  #    c = AppConfiguration.instance
+  #    c.settings['texting']['from_number'] = '+1 844 513 0718' # or other number from https://console.twilio.com/us1/develop/phone-numbers?frameUrl=%2Fconsole%2Fphone-numbers%2Fincoming%3Fx-target-region%3Dus1
+  #    c.update!(host: 'd635-31-179-57-73.ngrok.io')
   # 3. Add to .env-back: OVERRIDE_HOST=d635-31-179-57-73.ngrok.io
   # 4. Texting::SendCampaignJob.perform_now(Texting::Campaign.create!(phone_numbers: ['+YOUR_NUMBER'], message: 'Hello', status: :sending))
   # 5. See the console logs and a message on your phone

@@ -16,7 +16,7 @@ const FranceConnectButtonWrapper = styled.div`
 `;
 
 const FranceConnectTitle = styled.p`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   text-align: center;
   font-weight: bold;
@@ -24,7 +24,7 @@ const FranceConnectTitle = styled.p`
 `;
 
 const FranceConnectSubTitle = styled.p`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   text-align: center;
   margin-bottom: 2rem;
@@ -55,7 +55,7 @@ const FranceConnectButtonLink = styled.button`
 `;
 
 const SubSocialButtonLink = styled.a`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   font-weight: 300;
   text-decoration: none;

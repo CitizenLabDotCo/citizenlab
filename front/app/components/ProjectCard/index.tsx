@@ -27,7 +27,7 @@ import useProjectImages from 'hooks/useProjectImages';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -70,7 +70,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
         flex-direction: row-reverse;
     `}
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       width: 100%;
     `}
   }
@@ -81,7 +81,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       width: 100%;
     `}
   }
@@ -94,17 +94,17 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     }
 
     &.threecolumns {
-      ${media.smallerThanMaxTablet`
+      ${media.tablet`
         width: calc(50% - 13px);
       `}
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         width: 100%;
         min-height: 460px;
       `}
     }
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       min-height: 400px;
     `}
   }
@@ -123,7 +123,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     ${defaultCardHoverStyle};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     min-height: 460px;
   `}
@@ -159,12 +159,7 @@ const ProjectImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${colors.placeholderBg};
-`;
-
-const ProjectImagePlaceholderIcon = styled(Icon)`
-  height: 45px;
-  fill: #fff;
+  background: ${colors.grey300};
 `;
 
 const ProjectImage = styled(Image)`
@@ -187,7 +182,7 @@ const ProjectContent = styled.div`
     padding-left: 68px;
     padding-right: 32px;
 
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       padding-left: 20px;
       padding-right: 20px;
     `}
@@ -197,7 +192,7 @@ const ProjectContent = styled.div`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding-left: 20px;
       padding-right: 20px;
     `};
@@ -222,7 +217,7 @@ const ContentHeader = styled.div`
   justify-content: space-between;
 
   &.noContent {
-    ${media.biggerThanMinTablet`
+    ${media.desktop`
       height: ${ContentHeaderHeight + ContentHeaderBottomMargin}px;
     `}
   }
@@ -245,12 +240,12 @@ const ContentHeader = styled.div`
     padding-left: 30px;
     padding-right: 30px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
       padding-left: 20px;
       padding-right: 20px;
     `}
 
-    ${media.smallPhone`
+    ${media.phone`
       padding-left: 10px;
       padding-right: 10px;
     `}
@@ -274,7 +269,7 @@ const Countdown = styled.div`
 `;
 
 const TimeRemaining = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   margin-bottom: 7px;
@@ -292,7 +287,7 @@ const ProgressBarOverlay: any = styled.div`
   width: 0px;
   height: 100%;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.clRed};
+  background: ${colors.error};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
 
@@ -303,7 +298,7 @@ const ProgressBarOverlay: any = styled.div`
 
 const ProjectLabel = styled.div`
   // darkened to have higher chances of solid color contrast
-  color: ${({ theme }) => darken(0.05, theme.colorSecondary)};
+  color: ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
@@ -313,7 +308,7 @@ const ProjectLabel = styled.div`
   padding-top: 8px;
   padding-bottom: 8px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${({ theme }) => rgba(theme.colorSecondary, 0.1)};
+  background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
 `;
 
 const ContentBody = styled.div`
@@ -333,7 +328,7 @@ const ProjectTitle = styled.h3`
   line-height: normal;
   font-weight: 500;
   font-size: ${fontSizes.xl}px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
 
@@ -347,7 +342,7 @@ const ProjectTitle = styled.h3`
 `;
 
 const ProjectDescription = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
@@ -381,7 +376,7 @@ const ContentFooter = styled.div`
     }
 
     &:not(.large) {
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         height: 20px;
         flex-basis: 20px;
         margin: 0px;
@@ -403,7 +398,7 @@ const ContentFooterRight = styled(ContentFooterSection)``;
 
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 500;
   text-transform: uppercase;
@@ -413,7 +408,7 @@ const ContentHeaderLabel = styled.span`
 
 const ProjectMetaItems = styled.div`
   height: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
@@ -430,15 +425,13 @@ const MetaItem = styled.div`
     margin-left: 0px;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 20px;
   `};
 `;
 
 const MetaItemIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
-  fill: ${({ theme }) => theme.colorMain};
+  fill: ${({ theme }) => theme.colors.tenantPrimary};
 `;
 
 const CommentIcon = styled(MetaItemIcon)`
@@ -447,7 +440,7 @@ const CommentIcon = styled(MetaItemIcon)`
 `;
 
 const MetaItemText = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -462,7 +455,7 @@ export interface InputProps {
   className?: string;
 }
 
-interface Props extends InputProps, InjectedIntlProps {}
+interface Props extends InputProps, WrappedComponentProps {}
 
 const ProjectCard = memo<Props>(
   ({
@@ -603,7 +596,10 @@ const ProjectCard = memo<Props>(
         ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
       } else if (participationMethod === 'information') {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
-      } else if (participationMethod === 'survey') {
+      } else if (
+        participationMethod === 'survey' ||
+        participationMethod === 'native_survey'
+      ) {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
@@ -705,7 +701,12 @@ const ProjectCard = memo<Props>(
               <ProjectImage src={imageUrl} alt="" cover={true} />
             ) : (
               <ProjectImagePlaceholder>
-                <ProjectImagePlaceholderIcon name="project" />
+                <Icon
+                  name="building"
+                  width="80px"
+                  height="80px"
+                  fill={colors.white}
+                />
               </ProjectImagePlaceholder>
             )}
           </ProjectImageContainer>
@@ -744,7 +745,7 @@ const ProjectCard = memo<Props>(
                   <AvatarBubbles
                     size={32}
                     limit={3}
-                    userCountBgColor={theme.colorMain}
+                    userCountBgColor={theme.colors.tenantPrimary}
                     avatarIds={avatarIds}
                     userCount={project.attributes.participants_count}
                   />

@@ -2,9 +2,12 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
+import { parse } from 'qs';
 
 // components
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
+import GoBackButton from 'containers/IdeasShow/GoBackButton';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -42,7 +45,7 @@ const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-bottom: 80px;
     padding-right: 0;
     padding-left: 0;
@@ -50,7 +53,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -60,7 +63,7 @@ const Title = styled.h1`
   padding-top: 60px;
   padding-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}
@@ -71,6 +74,11 @@ interface InputProps {
   projectId: string;
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
+  onImageFileAdd: (imageFile: UploadFile[]) => void;
+  onImageFileRemove: () => void;
+  onTagsChange: (selectedTopics: string[]) => void;
+  onAddressChange: (address: string) => void;
+  onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
 }
 
 interface DataProps {
@@ -88,6 +96,7 @@ interface GlobalState {
   proposedBudget: number | null;
   position: string;
   imageFile: UploadFile[];
+  ideaFiles: UploadFile[];
   submitError: boolean;
   processing: boolean;
   fileOrImageError: boolean;
@@ -97,7 +106,6 @@ interface GlobalState {
 }
 
 interface State extends GlobalState {}
-
 class NewIdeaForm extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
@@ -113,6 +121,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       proposedBudget: null,
       position: '',
       imageFile: [],
+      ideaFiles: [],
       submitError: false,
       processing: false,
       fileOrImageError: false,
@@ -136,6 +145,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
           proposedBudget,
           position,
           imageFile,
+          ideaFiles,
           submitError,
           processing,
           fileOrImageError,
@@ -151,6 +161,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget,
             position,
             imageFile,
+            ideaFiles,
             submitError,
             processing,
             fileOrImageError,
@@ -158,7 +169,6 @@ class NewIdeaForm extends PureComponent<Props, State> {
             descriptionProfanityError,
             authorId,
           };
-
           this.setState(newState);
         }
       ),
@@ -206,12 +216,27 @@ class NewIdeaForm extends PureComponent<Props, State> {
       proposedBudget,
       position,
       imageFile,
+      ideaFiles,
       titleProfanityError,
       descriptionProfanityError,
       authorId,
     } = this.state;
-    const { projectId, project, phases, onTitleChange, onDescriptionChange } =
-      this.props;
+    const {
+      projectId,
+      project,
+      phases,
+      onTitleChange,
+      onDescriptionChange,
+      onImageFileAdd,
+      onImageFileRemove,
+      onTagsChange,
+      onAddressChange,
+      onIdeaFilesChange,
+    } = this.props;
+
+    const { phase_id } = parse(location.search, {
+      ignoreQueryPrefix: true,
+    }) as { [key: string]: string };
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
@@ -222,6 +247,9 @@ class NewIdeaForm extends PureComponent<Props, State> {
 
       return (
         <Container id="e2e-new-idea-form">
+          <Box mt="52px" display="flex" width="100%">
+            <GoBackButton insideModal={false} projectId={projectId} />
+          </Box>
           <Title className="e2e-idea-form-title">
             <FormattedMessage
               {...getInputTermMessage(inputTerm, {
@@ -234,7 +262,6 @@ class NewIdeaForm extends PureComponent<Props, State> {
               })}
             />
           </Title>
-
           <IdeaForm
             authorId={authorId}
             projectId={projectId}
@@ -245,11 +272,18 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget={proposedBudget}
             address={position}
             imageFile={imageFile}
+            ideaFiles={ideaFiles}
             hasTitleProfanityError={titleProfanityError}
             hasDescriptionProfanityError={descriptionProfanityError}
             onSubmit={this.handleIdeaFormOutput}
             onTitleChange={onTitleChange}
             onDescriptionChange={onDescriptionChange}
+            onImageFileAdd={onImageFileAdd}
+            onImageFileRemove={onImageFileRemove}
+            onTagsChange={onTagsChange}
+            onAddressChange={onAddressChange}
+            onIdeaFilesChange={onIdeaFilesChange}
+            phaseId={phase_id}
           />
         </Container>
       );

@@ -1,21 +1,6 @@
 # frozen_string_literal: true
 
 class XlsxService
-  include HtmlToPlainText
-
-  def multiloc_service
-    MultilocService.new
-  end
-
-  def escape_formula(text)
-    # After https://docs.servicenow.com/bundle/orlando-platform-administration/page/administer/security/reference/escape-excel-formula.html and http://rorsecurity.info/portfolio/excel-injection-via-rails-downloads
-    if '=+-@'.include?(text.first) && !text.empty?
-      "'#{text}"
-    else
-      text
-    end
-  end
-
   # Converts this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
   # into this xlsx:
@@ -32,7 +17,7 @@ class XlsxService
       wb.add_worksheet do |sheet|
         sheet.add_row headers, style: header_style(s)
         hash_array.each do |hash|
-          sheet.add_row headers.map { |header| hash[header] }
+          sheet.add_row(headers.map { |header| hash[header] })
         end
       end
     end
@@ -50,10 +35,27 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
-      (row&.cells || []).compact.map do |cell|
+      (row&.cells || []).compact.filter_map do |cell|
         [worksheet[0][cell.column]&.value, cell.value] if cell.value
-      end.compact.to_h
-    end.compact
+      end.to_h
+    end
+  end
+
+  def xlsx_from_rows(rows, sheetname: 'sheet 1')
+    header, *rows = rows
+
+    instances = rows.map { |row| header.zip(row).to_h }
+    columns = header.map do |colname|
+      { header: colname, f: ->(item) { item[colname] } }
+    end
+
+    generate_xlsx(sheetname, columns, instances)
+  end
+
+  def xlsx_from_columns(columns, sheetname: 'sheet 1')
+    header = columns.keys
+    rows = columns.values.transpose
+    xlsx_from_rows([header, *rows], sheetname: sheetname)
   end
 
   def generate_xlsx(sheetname, columns, instances)
@@ -64,13 +66,14 @@ class XlsxService
   end
 
   def generate_sheet(workbook, sheetname, columns, instances)
-    sheetname = sanitize_sheetname sheetname
+    utils = XlsxExport::Utils.new
+    sheetname = utils.sanitize_sheetname sheetname
     columns = columns.uniq { |c| c[:header] }
     workbook.styles do |s|
       workbook.add_worksheet(name: sheetname) do |sheet|
         header = columns.pluck(:header)
         column_widths = columns.pluck(:width)
-        sheet.column_widths *column_widths
+        sheet.column_widths(*column_widths)
         sheet.add_row header, style: header_style(s)
         instances.each do |instance|
           row = columns.map do |c|
@@ -78,7 +81,7 @@ class XlsxService
             if c[:skip_sanitization]
               value
             else
-              escape_formula value.to_s
+              utils.escape_formula value.to_s
             end
           end
           sheet.add_row row
@@ -93,14 +96,6 @@ class XlsxService
       { header: 'amount', f: ->(item) { item[1] } }
     ]
     generate_xlsx name, columns, serie
-  end
-
-  def generate_field_stats_xlsx(serie, key_name, value_name)
-    columns = [
-      { header: key_name,   f: ->(item) { item[0] } },
-      { header: value_name, f: ->(item) { item[1] } }
-    ]
-    generate_xlsx "#{value_name}_by_#{key_name}", columns, serie
   end
 
   def generate_res_stats_xlsx(serie, resource_name, grouped_by)
@@ -132,7 +127,7 @@ class XlsxService
       { header: 'last_name', f: ->(u) { u.last_name } },
       { header: 'profile_page', f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true },
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
-      *custom_field_columns(:itself, true)
+      *user_custom_field_columns(:itself, true)
     ]
 
     unless view_private_attributes
@@ -143,11 +138,11 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
+  def generate_idea_xlsx_columns(_ideas, view_private_attributes: false, with_tags: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'description',          f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) },                               width: 10 },
+      { header: 'description',          f: ->(i) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
@@ -166,9 +161,9 @@ class XlsxService
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },                                  skip_sanitization: true },
       { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },                                 skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") },                       skip_sanitization: true, width: 2 }
+      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     columns
   end
@@ -183,7 +178,7 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'description',          f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
+      { header: 'description',          f: ->(i) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
@@ -200,7 +195,7 @@ class XlsxService
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachmens',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Initiatives', columns, initiatives
   end
@@ -210,7 +205,7 @@ class XlsxService
       { header: 'id',                 f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'input',              f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
       { header: 'input_id',           f: ->(c) { c.post.id } },
-      { header: 'comment',            f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
+      { header: 'comment',            f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'upvotes_count',      f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',        f: ->(c) { c.author_name } },
       { header: 'author_email',       f: ->(c) { c.author&.email } },
@@ -219,25 +214,25 @@ class XlsxService
       { header: 'parent_comment_id',  f: ->(c) { c.parent_id },     skip_sanitization: true },
       { header: 'project',            f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
 
   def generate_initiative_comments_xlsx(comments, view_private_attributes: false)
     columns = [
-      { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'proposal',    f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
+      { header: 'id', f: ->(c) { c.id }, skip_sanitization: true },
+      { header: 'proposal', f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
       { header: 'proposal_id',         f: ->(c) { c.post.id } },
-      { header: 'comment',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
+      { header: 'comment',          f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
-      { header: 'author_id',            f: ->(i) { i.author_id } },
-      { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
-      { header: 'parent_comment_id',        f: ->(c) { c.parent_id },     skip_sanitization: true }
+      { header: 'author_id', f: ->(i) { i.author_id } },
+      { header: 'created_at', f: ->(c) { c.created_at }, skip_sanitization: true },
+      { header: 'parent_comment_id',        f: ->(c) { c.parent_id }, skip_sanitization: true }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
@@ -259,50 +254,57 @@ class XlsxService
 
   # @param [Symbol] record_to_user
   # @param [Boolean] view_private_attributes
-  def custom_field_columns(record_to_user, view_private_attributes)
+  def user_custom_field_columns(record_to_user, view_private_attributes)
     return [] unless view_private_attributes
 
-    areas = Area.all.index_by(&:id)
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
     user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
 
     user_custom_fields&.map do |field|
-
       column_name = multiloc_service.t(field.title_multiloc)
-      value_getter = #lambda that gets a record and returns the field value
-        if field.key == 'domicile'  # 'domicile' is a special case
-          lambda do |record|
-            user = record.send(record_to_user)
-            multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
-          end
-        elsif field.support_options? #field with option
-          lambda do |record|
-            user = record.send(record_to_user)
-
-            if user && user.custom_field_values[field.key]
-              if user.custom_field_values[field.key].kind_of?(Array)
-                user.custom_field_values[field.key].map { |key|
-                  multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
-                }.join(', ')
-              elsif user.custom_field_values[field.key].kind_of?(String)
-                multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
-              end
-            end
-          end
-        else # all other custom fields
-          lambda do |record|
-            user = record.send(record_to_user)
-
-            user && user.custom_field_values[field.key]
-          end
-        end
-
-      { header: column_name, f: value_getter }
+      { header: column_name, f: value_getter_for_user_custom_field_columns(field, record_to_user, options) }
     end
   end
 
   private
+
+  def multiloc_service
+    @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
+  end
+
+  def title_multiloc_for(record, field, options)
+    return unless record
+
+    case record.custom_field_values[field.key]
+    when Array
+      record.custom_field_values[field.key].map do |key|
+        multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
+      end.join(', ')
+    when String
+      multiloc_service.t(options[namespace(field.id, record.custom_field_values[field.key])]&.title_multiloc)
+    end
+  end
+
+  def value_getter_for_user_custom_field_columns(field, record_to_user, options)
+    if field.code == 'domicile' # 'domicile' is a special case
+      areas = Area.all.index_by(&:id)
+      lambda do |record|
+        user = record.send(record_to_user)
+        multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
+      end
+    elsif field.support_options? # field with option
+      lambda do |record|
+        user = record.send(record_to_user)
+        title_multiloc_for user, field, options
+      end
+    else # all other custom fields
+      lambda do |record|
+        user = record.send(record_to_user)
+        user && user.custom_field_values[field.key]
+      end
+    end
+  end
 
   def private_attributes
     custom_field_attrs = CustomField.with_resource_type('User')&.map do |field|
@@ -311,24 +313,14 @@ class XlsxService
     custom_field_attrs + %w[email gender birthyear domicile education Email author_email author_id assignee_email]
   end
 
-  def header_style(s)
-    s.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
-  end
-
-  def convert_to_text_long_lines html
-    convert_to_text(html).gsub(/\n/, ' ')
-  end
-
-  # Sheet names, derived from Cause titles for example, can only be 31 characters long,
-  # and cannot contain the characters \ , / , * , ? , : , [ , ].
-  # We are being strict and removing any character that is not alphanumeric or a space.
-  def sanitize_sheetname(sheetname)
-    sheetname.gsub(/[^A-Za-z0-9 ]/, '')[0..30]
+  def header_style(style)
+    style.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
   end
 
   def namespace(field_id, option_key)
-    field_id + '/' + option_key
+    "#{field_id}/#{option_key}"
   end
 end
 
-XlsxService.prepend_if_ee('Verification::Patches::XlsxService')
+XlsxService.prepend_if_ee 'IdeaCustomFields::Patches::XlsxService'
+XlsxService.prepend_if_ee 'Verification::Patches::XlsxService'

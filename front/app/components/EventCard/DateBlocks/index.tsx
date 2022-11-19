@@ -17,7 +17,7 @@ const EventDateBlocks = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex: 0 0 60px;
     width: 60x;
   `}

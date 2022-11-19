@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Insights
   class ZeroshotClassificationTasksFinder
-
     attr_reader :categories, :inputs
 
     def initialize(categories, inputs: nil)
@@ -24,7 +25,7 @@ module Insights
       return tasks if inputs.nil?
 
       tasks.joins(:tasks_inputs)
-           .where('insights_zeroshot_classification_tasks_inputs.input_id' => [inputs])
+        .where('insights_zeroshot_classification_tasks_inputs.input_id' => [inputs])
     end
   end
 end

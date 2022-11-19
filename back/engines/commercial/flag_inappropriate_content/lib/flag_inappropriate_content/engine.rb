@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   class Engine < ::Rails::Engine
     isolate_namespace FlagInappropriateContent

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ContentBuilder
   module WebApi
     module V1
@@ -29,7 +31,7 @@ module ContentBuilder
             side_fx_service.after_destroy(layout, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 
@@ -54,8 +56,8 @@ module ContentBuilder
 
         def update
           set_layout
-          side_fx_service.before_update @layout, current_user
           @layout.assign_attributes params_for_update
+          side_fx_service.before_update @layout, current_user
           if @layout.save
             side_fx_service.after_update @layout, current_user
             render json: WebApi::V1::LayoutSerializer.new(

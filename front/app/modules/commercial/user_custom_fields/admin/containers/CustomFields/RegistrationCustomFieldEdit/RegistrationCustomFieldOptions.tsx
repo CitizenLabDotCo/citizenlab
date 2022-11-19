@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+// utils
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
 // services
-import { IUserCustomFieldData } from '../../../../services/userCustomFields';
 import {
   IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
@@ -25,17 +27,15 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 // i18n
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-
-export interface Props {
-  customField: IUserCustomFieldData;
-}
+import { WrappedComponentProps } from 'react-intl';
 
 const RegistrationCustomFieldOptions = memo(
-  ({ customField, intl: { formatMessage } }: Props & InjectedIntlProps) => {
-    const userCustomFieldOptions = useUserCustomFieldOptions(customField.id);
+  ({
+    intl: { formatMessage },
+    params: { userCustomFieldId },
+  }: WrappedComponentProps & WithRouterProps) => {
+    const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
     const localize = useLocalize();
-    const userCustomFieldId = customField.id;
 
     const handleReorderCustomFieldOption = (
       customFieldOptionId: string,
@@ -131,4 +131,4 @@ const RegistrationCustomFieldOptions = memo(
   }
 );
 
-export default injectIntl(RegistrationCustomFieldOptions);
+export default withRouter(injectIntl(RegistrationCustomFieldOptions));

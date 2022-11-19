@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAppConfigurations < ActiveRecord::Migration[6.0]
   def change
     create_table :app_configurations, id: :uuid do |t|
@@ -11,4 +13,3 @@ class CreateAppConfigurations < ActiveRecord::Migration[6.0]
     end
   end
 end
-

@@ -11,7 +11,7 @@ import {
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/admin/PostManager/tracks';
 
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 
 type Props = {
   onData: (

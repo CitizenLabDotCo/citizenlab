@@ -80,7 +80,7 @@ kl:
       "official_feedback_on_your_idea": Isumassarsiavit nutarternera - atuisut tamaasa
       "official_feedback_on_your_initiative": Siunnersuutivit nutarternera - atuisut tamaasa
       "password_reset": Isissutitut kode aallaqqaataaniit aallartittussanngorlugu aaqqiguk - atuisut tamaasa
-      "project_moderation_rights_received": Project moderation rights received - project managers
+      "project_moderation_rights_received": Suliniummi nakkutilliisussatut pisinnaatitaaffilerneqarputit - suliniummi aqutsisut
       "project_folder_moderation_rights_received": Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
       "project_phase_started": Suliniummut immikkoortoq nutaaq - atuisut tamaasa
       "project_phase_upcoming": Suliniummut immikkoortussaq - administrator-it aamma suliniutinik aqutsisut
@@ -419,6 +419,7 @@ kl:
       cta_view_phase: 'Fase nutaaq paasiuk'
       event_description: 'Una suliniut %{organizationName}p platformiani fasemut nutaamut pivoq. Ataani linki tooruk paasisaqarnerorusukkuit'
       main_header: '"%{projectName}"mi fase nutaaq aallartippoq'
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'Suliniut fasemut "%{phaseTitle}" killippoq'
       subject: '%{projectName} fasemut nutaamut pivoq'
       preheader: '%{projectName}mut fase nutaaq aallartippoq'
@@ -426,6 +427,7 @@ kl:
       cta_view_phase: 'Fase una nutaaq inissititeruk'
       event_description: 'Suliaq"%{projectName}" nutaamik fasemik aallartissaaq. Uani fasemi suna tamarmi inissititerneqarsimassasoq qulakkeeruk: Nassuiarnera naammappa? Isumassarsiat imarineqareersut uunga fasemut nuunneqassappat? Uuma fasep e-mailikkut tulluarsakkakkut innuttaasunut nassuiarnissaa kissaatigiviuk?'
       main_header: '%{firstName}, suliniut ullut XXX qaangiuppata fasemut nutaamut pissaaq'
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'Suliniut fasemut ''%{phaseTitle}'' pivoq'
       subject: '%{projectName}mi fasemut nutaamut piareersarit'
       preheader: '%{projectName}mut suliniummik nutaamik aallartitsisoqarpoq '

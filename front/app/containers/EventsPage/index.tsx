@@ -4,8 +4,9 @@ import React from 'react';
 import EventsPageMeta from './EventsPageMeta';
 import SectionContainer from 'components/SectionContainer';
 import ContentContainer from 'components/ContentContainer';
-import UpcomingEvents from './UpcomingEvents';
+import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
 import PastEvents from './PastEvents';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -20,11 +21,13 @@ export default () => (
   <>
     <EventsPageMeta />
 
-    <SectionContainer>
-      <StyledContentContainer>
-        <UpcomingEvents />
-        <PastEvents />
-      </StyledContentContainer>
-    </SectionContainer>
+    <Box as="main">
+      <SectionContainer>
+        <StyledContentContainer id="e2e-events-container">
+          <CurrentAndUpcomingEvents />
+          <PastEvents />
+        </StyledContentContainer>
+      </SectionContainer>
+    </Box>
   </>
 );

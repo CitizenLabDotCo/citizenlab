@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This concern captures the logic for adding and
 # removing NavBarItems so it can be reused in the
 # different controllers that need to implement

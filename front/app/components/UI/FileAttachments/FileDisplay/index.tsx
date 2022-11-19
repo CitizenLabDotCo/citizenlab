@@ -14,15 +14,15 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { IProjectFileData } from 'services/projectFiles';
 import { IPhaseFileData } from 'services/phaseFiles';
 import { IEventFileData } from 'services/eventFiles';
-import { IPageFileData } from 'services/pageFiles';
+import { ICustomPageFileData } from 'services/pageFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.label};
-  border: 1px solid ${lighten(0.4, colors.label)};
+  color: ${colors.textSecondary};
+  border: 1px solid ${lighten(0.4, colors.textSecondary)};
   border-radius: ${(props: any) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   line-height: 24px;
@@ -31,27 +31,27 @@ const Container = styled.div`
 `;
 
 const Paperclip = styled(Icon)`
-  min-width: 10px;
-  min-height: 20px;
-  width: 10px;
-  height: 20px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 15px;
+  ${media.phone`
+    width: 40px;
+  `}
 `;
 
 const FileDownloadLink = styled.a`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   text-decoration: underline;
   display: inline-block;
   margin-right: 10px;
   hyphens: auto;
+  word-break: break-word;
 
   &:hover {
     color: #000;
     text-decoration: underline;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: auto;
   `}
 `;
@@ -64,7 +64,7 @@ const FileSize = styled.span`
   margin-left: 20px;
   white-space: nowrap;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -73,7 +73,7 @@ interface Props {
   file:
     | IProjectFileData
     | IPhaseFileData
-    | IPageFileData
+    | ICustomPageFileData
     | IEventFileData
     | IIdeaFileData;
   className?: string;

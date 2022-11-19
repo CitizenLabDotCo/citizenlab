@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 // services
 import { handleOnSSOClick } from 'services/singleSignOn';
 import { completeRegistration } from 'services/users';
@@ -35,7 +35,7 @@ import { signUpActiveStepChange } from 'components/SignUpIn/events';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
 
@@ -48,7 +48,7 @@ import styled, { useTheme } from 'styled-components';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { Multiloc, MessageDescriptor } from 'typings';
+import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
@@ -105,11 +105,11 @@ export type TDataLoadedPerOutlet = {
 
 export interface Props {
   metaData: ISignUpInMetaData;
-  windowHeight: number;
   customHeader?: JSX.Element;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
+  fullScreen?: boolean;
 }
 
 const SignUp = ({
@@ -118,46 +118,35 @@ const SignUp = ({
   onSignUpCompleted,
   onGoToSignIn,
   className,
-  windowHeight,
-}: Props & InjectedIntlProps) => {
+  fullScreen,
+}: Props & WrappedComponentProps) => {
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
   const theme: any = useTheme();
 
   const modalContentRef = useRef<HTMLDivElement>(null);
 
+  // state
   const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
     getDefaultSteps()
   );
-
   const [outletsRendered, setOutletsRendered] = useState(false);
   const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
     useState<TDataLoadedPerOutlet>({});
   const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
   const [accountCreated, setAccountCreated] = useState(false);
-
   const confirmOutletsRendered = () => setOutletsRendered(true);
-
   const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
     metaData.isInvitation ? 'password-signup' : 'auth-providers'
   );
-
   const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
     getEnabledSteps(configuration, authUser, metaData, {
       emailSignUpSelected,
       accountCreated,
     })
   );
-
-  const totalStepsCount = getNumberOfSteps(enabledSteps);
-  const activeStepNumber = activeStep
-    ? getActiveStepNumber(activeStep, enabledSteps)
-    : null;
-
   const [error, setError] = useState<string>();
   const [headerHeight, setHeaderHeight] = useState<string>('100px');
-
-  const activeStepConfiguration = activeStep ? configuration[activeStep] : null;
 
   // this transitions the current step to the next step
   useEffect(() => {
@@ -179,7 +168,6 @@ const SignUp = ({
         accountCreated,
       })
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     configuration,
     authUser,
@@ -188,7 +176,38 @@ const SignUp = ({
     accountCreated,
     outletsRendered,
     dataLoadedPerOutlet,
+    activeStep,
   ]);
+
+  // called when a step is completed
+  const onCompleteActiveStep = useCallback(
+    async (registrationData?: Record<string, any>) => {
+      if (modalContentRef?.current) {
+        modalContentRef.current.scrollTop = 0;
+      }
+
+      if (
+        activeStep &&
+        registrationCanBeCompleted(
+          activeStep,
+          configuration,
+          authUser,
+          metaData,
+          { emailSignUpSelected, accountCreated }
+        )
+      ) {
+        await completeRegistration(registrationData);
+      }
+    },
+    [
+      accountCreated,
+      activeStep,
+      authUser,
+      configuration,
+      emailSignUpSelected,
+      metaData,
+    ]
+  );
 
   // this automatically completes the 'account-created' step (see stepUtils)
   useEffect(() => {
@@ -196,30 +215,12 @@ const SignUp = ({
       onCompleteActiveStep();
       setAccountCreated(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeStep]);
+  }, [activeStep, onCompleteActiveStep]);
 
-  // called when a step is completed
-  const onCompleteActiveStep = async (
-    registrationData?: Record<string, any>
-  ) => {
-    if (modalContentRef?.current) {
-      modalContentRef.current.scrollTop = 0;
-    }
-
-    if (
-      activeStep &&
-      registrationCanBeCompleted(
-        activeStep,
-        configuration,
-        authUser,
-        metaData,
-        { emailSignUpSelected, accountCreated }
-      )
-    ) {
-      await completeRegistration(registrationData);
-    }
-  };
+  const handleFlowCompleted = useCallback(() => {
+    trackEventByName(tracks.signUpFlowCompleted);
+    onSignUpCompleted();
+  }, [onSignUpCompleted]);
 
   // this makes sure that if registration is completed,
   // but we're not in a modal, handleFlowCompleted is
@@ -232,8 +233,16 @@ const SignUp = ({
     ) {
       handleFlowCompleted();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authUser, metaData]);
+  }, [authUser, metaData, handleFlowCompleted]);
+
+  // emit event whenever activeStep changes
+  useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
+
+  useEffect(() => {
+    if (metaData?.error) {
+      setError(formatMessage(messages.somethingWentWrongText));
+    }
+  }, [metaData?.error, formatMessage]);
 
   const onResize = (_width, height) => {
     setHeaderHeight(`${Math.round(height) + 2}px`);
@@ -256,11 +265,6 @@ const SignUp = ({
       : setError(formatMessage(messages.somethingWentWrongText));
   };
 
-  const handleFlowCompleted = () => {
-    trackEventByName(tracks.signUpFlowCompleted);
-    onSignUpCompleted();
-  };
-
   const handleOnOutletData = (
     configuration: TSignUpStepConfigurationObject
   ) => {
@@ -281,20 +285,15 @@ const SignUp = ({
     setEmailSignUpSelected(false);
   };
 
-  // emit event whenever activeStep changes
-  useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
-
-  useEffect(() => {
-    if (metaData?.error) {
-      setError(formatMessage(messages.somethingWentWrongText));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metaData?.error]);
-
+  // variables
+  const totalStepsCount = getNumberOfSteps(enabledSteps);
+  const activeStepNumber = activeStep
+    ? getActiveStepNumber(activeStep, enabledSteps)
+    : null;
+  const activeStepConfiguration = activeStep ? configuration[activeStep] : null;
   const helpText = activeStepConfiguration?.helperText?.(
-    !isNilOrError(tenant) ? tenant.data : undefined
+    !isNilOrError(tenant) ? tenant : undefined
   );
-
   const stepDescription = activeStepConfiguration?.stepDescriptionMessage
     ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
     : '';
@@ -314,17 +313,18 @@ const SignUp = ({
 
       <StyledModalContentContainer
         inModal={!!metaData.inModal}
-        windowHeight={`${windowHeight}px`}
         headerHeight={headerHeight}
         ref={modalContentRef}
+        fullScreen={fullScreen}
       >
-        {error ? (
+        {error &&
+        (metaData?.error ? metaData?.error?.code === 'general' : true) ? (
           <Error text={error} animate={false} marginBottom="30px" />
         ) : (
           <>
             {helpText && (
               <SignUpHelperText
-                textColor={theme.colorText}
+                textColor={theme.colors.tenantText}
                 fontSize="base"
                 fontWeight={300}
               >

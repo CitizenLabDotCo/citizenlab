@@ -20,11 +20,14 @@ module ProjectFolders
         admin_publication&.parent&.publication_id
       end
 
+      def folder?
+        !!folder_id
+      end
+
       def saved_change_to_folder?
         admin_publication.saved_change_to_parent_id?
       end
 
-      # rubocop:disable Metrics/CyclomaticComplexity
       def folder_id=(id)
         parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)&.id
         raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
@@ -34,8 +37,6 @@ module ProjectFolders
         folder_will_change!
         admin_publication.assign_attributes(parent_id: parent_id)
       end
-
-      # rubocop:enable Metrics/CyclomaticComplexity
 
       def folder_changed?
         folder_changed

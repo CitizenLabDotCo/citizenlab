@@ -1,88 +1,143 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :custom_field do
-    resource_type { "User" }
+    resource_type { 'User' }
     sequence(:key) { |n| "field_#{n}" }
-    title_multiloc {{
-      "en" => "Did you attend"
-    }}
-    description_multiloc {{
-      "en" => "Which councils are you attending in our city?"
-    }}
+    title_multiloc do
+      {
+        'en' => 'Did you attend'
+      }
+    end
+    description_multiloc do
+      {
+        'en' => 'Which councils are you attending in our city?'
+      }
+    end
     required { false }
-    input_type { "text" }
+    input_type { 'text' }
 
     trait :for_custom_form do
       association :resource, factory: :custom_form
     end
 
     factory :custom_field_extra_custom_form do
-      title_multiloc {{
-        "en" => "An extra question"
-      }}
+      title_multiloc do
+        {
+          'en' => 'An extra question'
+        }
+      end
       required { false }
-      input_type { "select" }
+      key { 'extra_field' }
+      input_type { 'text' }
       enabled { true }
       resource { create(:custom_form) }
     end
 
     factory :custom_field_select do
-      title_multiloc {{
-        "en" => "Member of councils?"
-      }}
-      description_multiloc {{
-        "en" => "Which councils are you attending in our city?"
-      }}
+      title_multiloc do
+        {
+          'en' => 'Member of councils?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Which councils are you attending in our city?'
+        }
+      end
       required { false }
-      input_type { "select" }
+      input_type { 'select' }
       enabled { true }
+
+      trait :with_options do
+        after(:create) do |cf|
+          create :custom_field_option, custom_field: cf, key: 'option1'
+          create :custom_field_option, custom_field: cf, key: 'option2'
+        end
+      end
+    end
+
+    factory :custom_field_linear_scale do
+      title_multiloc do
+        {
+          'en' => 'We need a swimming pool.'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please indicate how strong you agree or disagree.'
+        }
+      end
+      required { false }
+      input_type { 'linear_scale' }
+      enabled { true }
+      maximum { 5 }
+      minimum_label_multiloc do
+        {
+          'en' => 'Strongly disagree'
+        }
+      end
+      maximum_label_multiloc do
+        {
+          'en' => 'Strongly agree'
+        }
+      end
     end
 
     factory :custom_field_multiselect do
-      title_multiloc {{
-        "en" => "What languages do you speak?"
-      }}
+      title_multiloc do
+        {
+          'en' => 'What languages do you speak?'
+        }
+      end
       required { false }
-      input_type { "multiselect" }
+      input_type { 'multiselect' }
       enabled { true }
     end
 
     factory :custom_field_checkbox do
-      title_multiloc {{
-        "en" => "I want to join the army"
-      }}
+      title_multiloc do
+        {
+          'en' => 'I want to join the army'
+        }
+      end
       required { true } # default should be false, right?
-      input_type { "checkbox" }
+      input_type { 'checkbox' }
       enabled { true }
     end
 
     factory :custom_field_date do
-      title_multiloc {{
-        "en" => "When did you last see a mermaid?"
-      }}
+      title_multiloc do
+        {
+          'en' => 'When did you last see a mermaid?'
+        }
+      end
       required { false }
-      input_type { "date" }
+      input_type { 'date' }
       enabled { true }
     end
 
     factory :custom_field_number do
-      title_multiloc {{
-        "en" => "How many cheese burgers can you put in your mouth without swallowing?"
-      }}
+      title_multiloc do
+        {
+          'en' => 'How many cheese burgers can you put in your mouth without swallowing?'
+        }
+      end
       required { false }
-      input_type { "number" }
+      input_type { 'number' }
       enabled { true }
     end
 
     factory :custom_field_birthyear do
       key { 'birthyear' }
-      title_multiloc { {en: 'birthyear' } }
+      title_multiloc { { en: 'birthyear' } }
       input_type { 'number' }
       code { 'birthyear' }
     end
 
     factory :custom_field_gender do
       key { 'gender' }
-      title_multiloc { {'en' => 'gender'} }
+      title_multiloc { { 'en' => 'gender' } }
       code { 'gender' }
       input_type { 'select' }
 
@@ -97,14 +152,14 @@ FactoryBot.define do
 
     factory :custom_field_domicile do
       key { 'domicile' }
-      title_multiloc { {'en' => 'domicile'} }
+      title_multiloc { { 'en' => 'domicile' } }
       code { 'domicile' }
       input_type { 'select' }
     end
 
     factory :custom_field_education do
       key { 'education' }
-      title_multiloc { {'en' => 'education'} }
+      title_multiloc { { 'en' => 'education' } }
       code { 'education' }
       input_type { 'select' }
       enabled { false }
@@ -121,6 +176,5 @@ FactoryBot.define do
         end
       end
     end
-
   end
 end

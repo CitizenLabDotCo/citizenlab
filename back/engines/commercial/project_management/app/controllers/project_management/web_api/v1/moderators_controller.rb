@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectManagement
   module WebApi
     module V1
@@ -15,7 +17,7 @@ module ProjectManagement
         end
 
         def index
-          # TODO something about authorize index (e.g. user_id nastiness)
+          # TODO: something about authorize index (e.g. user_id nastiness)
           authorize Moderator.new({ user_id: nil, project_id: params[:project_id] })
           @moderators = User.project_moderator(params[:project_id])
           @moderators = paginate @moderators
@@ -49,15 +51,15 @@ module ProjectManagement
             ::SideFxUserService.new.after_update(@moderator, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 
         def users_search
           authorize Moderator.new({ user_id: nil, project_id: params[:project_id] })
           @users = ::User.search_by_all(params[:search])
-                         .page(params.dig(:page, :number))
-                         .per(params.dig(:page, :size))
+            .page(params.dig(:page, :number))
+            .per(params.dig(:page, :size))
 
           render json: linked_json(
             @users,

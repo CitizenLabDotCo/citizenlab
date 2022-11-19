@@ -4,11 +4,15 @@ import { isEmpty, map, orderBy } from 'lodash-es';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
-import { withTheme } from 'styled-components';
+import {
+  legacyColors,
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -18,8 +22,7 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
-import { Tooltip, LabelList } from 'recharts';
+import BarChart from 'components/admin/Graphs/BarChart';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -48,17 +51,18 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 export class IdeasByStatusChart extends React.PureComponent<
-  Props & InjectedIntlProps
+  Props & WrappedComponentProps
 > {
   currentChart: React.RefObject<any>;
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props as any);
     this.currentChart = React.createRef();
   }
 
   render() {
-    const { chartFill, barSize } = this.props['theme'];
     const {
+      startAt,
+      endAt,
       currentGroupFilterLabel,
       currentGroupFilter,
       className,
@@ -72,7 +76,9 @@ export class IdeasByStatusChart extends React.PureComponent<
       serie.length <= 0;
 
     const unitName = formatMessage(messages.inputs);
-    const sortedByValue = orderBy(serie, ['value'], ['desc']);
+    const sortedByValue = noData
+      ? null
+      : (orderBy(serie, ['value'], ['desc']) as IGraphFormat);
 
     return (
       <GraphCard className={className}>
@@ -85,32 +91,37 @@ export class IdeasByStatusChart extends React.PureComponent<
               <ReportExportMenu
                 name={formatMessage(messages.inputsByStatusTitle)}
                 svgNode={this.currentChart}
-                xlsxEndpoint={ideasByStatusXlsxEndpoint}
+                xlsx={{ endpoint: ideasByStatusXlsxEndpoint }}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
           <BarChart
             height={
-              !noData && sortedByValue.length > 1
+              !noData && sortedByValue !== null && sortedByValue.length > 1
                 ? sortedByValue.length * 50
                 : 100
             }
             data={sortedByValue}
+            mapping={{
+              category: 'name',
+              length: 'value',
+              fill: ({ row: { color } }) => color ?? legacyColors.chartFill,
+              opacity: () => 0.8,
+            }}
             layout="horizontal"
             innerRef={this.currentChart}
-            margin={DEFAULT_MARGIN}
+            margin={DEFAULT_BAR_CHART_MARGIN}
             bars={{
               name: unitName,
-              fill: chartFill,
-              size: barSize,
-              opacity: 0.8,
+              size: sizes.bar,
             }}
-            mapping={{ fill: 'color' }}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} position="right" />}
-            renderTooltip={(props) => <Tooltip {...props} />}
+            labels
+            tooltip
           />
         </GraphCardInner>
       </GraphCard>
@@ -118,9 +129,7 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 }
 
-const IdeasByStatusChartWithHoCs = injectIntl<Props>(
-  withTheme(IdeasByStatusChart as any) as any
-);
+const IdeasByStatusChartWithHoCs = injectIntl(IdeasByStatusChart);
 
 const WrappedIdeasByStatusChart = (
   inputProps: InputProps & InjectedLocalized

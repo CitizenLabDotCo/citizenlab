@@ -1,17 +1,17 @@
+# frozen_string_literal: true
+
 class MentionService
-
-
   # @param [User] user
   # @return [String] mention
-  def user_to_mention user
+  def user_to_mention(user)
     "@#{user.slug}"
   end
 
   # @param [String] text
   # @return [User::ActiveRecord_Relation] users
-  def extract_expanded_mention_users text
+  def extract_expanded_mention_users(text)
     doc = Nokogiri::HTML.fragment(text)
-    expanded_mentions = doc.css("span.cl-mention-user")
+    expanded_mentions = doc.css('span.cl-mention-user')
     user_ids = expanded_mentions.map do |mention|
       mention.attr('data-user-id')
     end
@@ -21,12 +21,12 @@ class MentionService
   # @param [String] text
   # @param [User] user
   # @return [String] text with plain mentions replaced by mention tags.
-  def add_span_around text, user
+  def add_span_around(text, user)
     mention = user_to_mention(user)
     name_service = UserDisplayNameService.new(AppConfiguration.instance)
     text.gsub(
-        /#{mention}/i,
-        "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-user-slug=\"#{user.slug}\">@#{name_service.display_name(user)}</span>"
+      /#{mention}/i,
+      "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-user-slug=\"#{user.slug}\">@#{name_service.display_name(user)}</span>"
     )
   end
 
@@ -36,7 +36,7 @@ class MentionService
   #
   # @param [String] text
   # @return [Array(String, Array<String>)] the new text and ids of newly-mentioned users
-  def process_mentions text
+  def process_mentions(text)
     users_mentioned_before = extract_expanded_mention_users(text)
     cleaned_text = remove_expanded_mentions(text)
     mention_candidates = extract_mentions(cleaned_text)
@@ -56,7 +56,7 @@ class MentionService
   # @param [String] old_text
   # @param [String] new_text
   # @return [User::ActiveRecord_Relation] users
-  def new_mentioned_users old_text, new_text
+  def new_mentioned_users(old_text, new_text)
     old_users = extract_expanded_mention_users(old_text).all
     new_users = extract_expanded_mention_users(new_text).all
     new_users - old_users
@@ -66,8 +66,8 @@ class MentionService
   # @param [Post] post
   # @param [Integer] limit
   # @return [Array<User>]
-  def users_from_post query, post, limit
-    user_ids = User.joins(:comments).where(comments: {post_id: post.id}).ids.uniq # Commenters' IDs
+  def users_from_post(query, post, limit)
+    user_ids = User.joins(:comments).where(comments: { post_id: post.id }).ids.uniq # Commenters' IDs
     user_ids << post.author_id if post.author_id
     User.where(id: user_ids).by_username(query).limit(limit).to_a
   end
@@ -76,11 +76,11 @@ class MentionService
 
   # @param [String] text
   # @return [String] text without mention tags
-  def remove_expanded_mentions text
+  def remove_expanded_mentions(text)
     doc = Nokogiri::HTML.fragment(text)
-    expanded_mentions = doc.css("span.cl-mention-user")
+    expanded_mentions = doc.css('span.cl-mention-user')
     expanded_mentions.each do |el|
-      user = User.find_by(id: el.attributes["data-user-id"].inner_html)
+      user = User.find_by(id: el.attributes['data-user-id'].inner_html)
       if user
         el.replace(user_to_mention(user))
       else
@@ -92,7 +92,7 @@ class MentionService
 
   # @param [String] text
   # @return [Array<String>] list of slugs
-  def extract_mentions text
+  def extract_mentions(text)
     full_mentions = text.scan(/(@\w+-[\w-]+)/).flatten
     full_mentions.map do |fm|
       mention_to_slug(fm)
@@ -101,8 +101,7 @@ class MentionService
 
   # @param [String] mention
   # @return [String] slug
-  def mention_to_slug mention
-    mention[1..-1]
+  def mention_to_slug(mention)
+    mention[1..]
   end
-
 end

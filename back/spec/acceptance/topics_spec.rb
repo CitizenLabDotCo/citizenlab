@@ -41,7 +41,7 @@ resource 'Topics' do
     end
 
     example 'List all topics sorted by newest first' do
-      t1 = create(:topic, created_at: Time.zone.now + 1.hour)
+      t1 = create(:topic, created_at: 1.hour.from_now)
 
       do_request sort: 'new'
       json_response = json_parse(response_body)

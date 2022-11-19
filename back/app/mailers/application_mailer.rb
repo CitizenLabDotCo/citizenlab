@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationMailer < ActionMailer::Base
   default from: 'hello@citizenlab.co'
   layout 'mailer'
@@ -10,16 +12,16 @@ class ApplicationMailer < ActionMailer::Base
   delegate :first_name, to: :recipient, prefix: true
 
   helper_method :app_configuration, :app_settings, :header_title, :header_message,
-                :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
-                :text_direction
+    :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
+    :text_direction
 
   helper_method :organization_name, :recipient_name,
-                :url_service, :multiloc_service, :organization_name,
-                :loc, :localize_for_recipient, :recipient_first_name
+    :url_service, :multiloc_service, :organization_name,
+    :loc, :localize_for_recipient, :recipient_first_name
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
-                :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
-                :header_logo_only?
+    :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
+    :header_logo_only?, :remove_vendor_branding?
 
   NotImplementedError = Class.new(StandardError)
 
@@ -62,9 +64,9 @@ class ApplicationMailer < ActionMailer::Base
 
   def localize_for_recipient(multiloc_or_struct)
     multiloc = case multiloc_or_struct
-               when Hash       then multiloc_or_struct
-               when OpenStruct then multiloc_or_struct.to_h.stringify_keys
-               end
+    when Hash       then multiloc_or_struct
+    when OpenStruct then multiloc_or_struct.to_h.stringify_keys
+    end
 
     multiloc_service.t(multiloc, recipient).html_safe if multiloc
   end
@@ -139,6 +141,10 @@ class ApplicationMailer < ActionMailer::Base
     true
   end
 
+  def remove_vendor_branding?
+    app_configuration.feature_activated?('remove_vendor_branding')
+  end
+
   def organization_name
     @organization_name ||= localize_for_recipient(app_settings.core.organization_name)
   end
@@ -152,7 +158,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def logo_url
-    @logo_url ||= app_configuration.logo.versions.yield_self do |versions|
+    @logo_url ||= app_configuration.logo.versions.then do |versions|
       versions[:medium].url || versions[:small].url || versions[:large].url || ''
     end
   end
@@ -168,13 +174,13 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def text_direction
-    locale =~ /^ar.*$/ ? 'rtl' : 'ltr'
+    /^ar.*$/.match?(locale) ? 'rtl' : 'ltr'
   end
 
   def to_deep_struct(obj)
     case obj
-    when Hash  then OpenStruct.new(obj.transform_values(&method(:to_deep_struct)))
-    when Array then obj.map(&method(:to_deep_struct))
+    when Hash  then OpenStruct.new(obj.transform_values { |nested_object| to_deep_struct(nested_object) })
+    when Array then obj.map { |nested_object| to_deep_struct(nested_object) }
     else            obj
     end
   end

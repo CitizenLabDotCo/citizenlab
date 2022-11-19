@@ -1,20 +1,21 @@
 import { ScreenReaderOnly } from 'utils/a11y';
 import ContentContainer from 'components/ContentContainer';
 import styled, { withTheme } from 'styled-components';
-import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import { colors, media } from 'utils/styleUtils';
 import React, { memo } from 'react';
 import messages from './messages';
 
-interface FormSubmitFooterProps extends IMessageInfo {
+interface FormSubmitFooterProps {
   disabled?: boolean;
   processing?: boolean;
   onSubmit: () => void;
   theme: any;
   className?: string;
   error: boolean;
-  errorMessage: IMessageInfo['message'];
+  errorMessage: MessageDescriptor;
+  message: MessageDescriptor;
 }
 
 const StyledButton = styled(Button)`
@@ -33,12 +34,12 @@ const SubmitFooterContainer = styled.div`
   border-top: 1px solid #e8e8e8;
   border-bottom: 1px solid #e8e8e8;
   z-index: 1;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     align-items: center;
   `}
 `;
 const StyledContentContainer = styled(ContentContainer)`
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     max-width: 620px;
   `}
 `;
@@ -53,19 +54,18 @@ const SubmitFooterInner = styled.div`
   padding-bottom: 12px;
   background: #fff;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 10px;
   `}
 `;
 
 const ErrorContainer = styled.div`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
 `;
 export const FormSubmitFooter = withTheme(
   memo(
     ({
       message,
-      values,
       theme,
       onSubmit,
       className,
@@ -80,7 +80,7 @@ export const FormSubmitFooter = withTheme(
             <StyledButton
               fontWeight="500"
               padding="13px 22px"
-              bgColor={theme.colorMain}
+              bgColor={theme.colors.tenantPrimary}
               textColor="#FFF"
               type="submit"
               onClick={onSubmit}
@@ -89,7 +89,7 @@ export const FormSubmitFooter = withTheme(
               ariaDisabled={disabled}
               {...otherProps}
             >
-              <FormattedMessage {...message} values={values} />
+              <FormattedMessage {...message} />
             </StyledButton>
             {error && (
               <ErrorContainer className="e2e-error-form">

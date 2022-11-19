@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class MockAdminPublicationsTree
   attr_reader :empty_parents, :admin_only_parents,
-              :public_parents, :admin_only_children, :public_children, :other,
-              :draft_children_of_published_parent, :published_parent_with_draft_children
+    :public_parents, :admin_only_children, :public_children, :other,
+    :draft_children_of_published_parent, :published_parent_with_draft_children
 
   def self.call
     new.tap(&:call)
@@ -83,11 +85,11 @@ class MockAdminPublicationsTree
   def create_published_parent_with_draft_children
     publication = CitizenLab.ee? ? create(:project_folder) : create(:project, :that_can_have_children)
     @published_parent_with_draft_children = create(:admin_publication,
-                                                   publication_status: 'published',
-                                                   publication: publication)
+      publication_status: 'published',
+      publication: publication)
     children = create_list(:admin_publication, 3, :with_parent,
-                           publication_status: 'draft',
-                           parent: published_parent_with_draft_children)
+      publication_status: 'draft',
+      parent: published_parent_with_draft_children)
     @draft_children_of_published_parent = AdminPublication.where(id: children.map(&:id))
   end
 end

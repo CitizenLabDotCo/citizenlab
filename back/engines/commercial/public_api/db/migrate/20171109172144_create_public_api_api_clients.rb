@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePublicApiApiClients < ActiveRecord::Migration[5.1]
   def change
     create_table :public_api_api_clients, id: :uuid do |t|

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -6,13 +6,14 @@ import Fragment from 'components/Fragment';
 import { Image } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 
 // style
 import styled from 'styled-components';
@@ -34,55 +35,54 @@ const LogoLink = styled.a`
   cursor: pointer;
 `;
 
-const TenantLogo = injectIntl(
-  ({ src, intl: { formatMessage } }: { src: string } & InjectedIntlProps) => {
-    return (
-      <Image
-        src={src}
-        alt={formatMessage(messages.logoAltText)}
-        height="100px"
-        marginBottom="20px"
-      />
-    );
-  }
-);
-
 interface Props {}
 
-const CityLogoSection = memo(
-  ({ intl: { formatMessage } }: Props & InjectedIntlProps) => {
-    const locale = useLocale();
-    const appConfiguration = useAppConfiguration();
+const CityLogoSection = ({
+  intl: { formatMessage },
+}: Props & WrappedComponentProps) => {
+  const locale = useLocale();
+  const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
 
-    if (!isNilOrError(appConfiguration)) {
-      const currentTenantLogo =
-        appConfiguration.data.attributes.logo?.medium || null;
-      const tenantSite =
-        appConfiguration.data.attributes.settings.core.organization_site;
-      const footerLocale = `footer-city-logo-${locale}`;
+  if (!isNilOrError(appConfiguration)) {
+    const currentTenantLogo = appConfiguration.attributes.logo?.large || null;
+    const tenantSite =
+      appConfiguration.attributes.settings.core.organization_site;
+    const footerLocale = `footer-city-logo-${locale}`;
+    const localizedOrgName = localize(
+      appConfiguration.attributes.settings.core.organization_name
+    );
 
-      if (currentTenantLogo) {
-        return (
-          <Fragment
-            title={formatMessage(messages.iframeTitle)}
-            name={footerLocale}
-          >
-            <Container id="hook-footer-logo">
-              {tenantSite ? (
-                <LogoLink href={tenantSite} target="_blank">
-                  <TenantLogo src={currentTenantLogo} />
-                </LogoLink>
-              ) : (
-                <TenantLogo src={currentTenantLogo} />
-              )}
-            </Container>
-          </Fragment>
-        );
-      }
+    if (currentTenantLogo) {
+      const tenantImage = (
+        <Image
+          src={currentTenantLogo}
+          alt={localizedOrgName}
+          height="100px"
+          marginBottom="20px"
+        />
+      );
+
+      return (
+        <Fragment
+          title={formatMessage(messages.iframeTitle)}
+          name={footerLocale}
+        >
+          <Container id="hook-footer-logo">
+            {tenantSite ? (
+              <LogoLink href={tenantSite} target="_blank">
+                {tenantImage}
+              </LogoLink>
+            ) : (
+              <>{tenantImage}</>
+            )}
+          </Container>
+        </Fragment>
+      );
     }
-
-    return null;
   }
-);
+
+  return null;
+};
 
 export default injectIntl(CityLogoSection);

@@ -27,12 +27,12 @@ const IdeaIcon = styled(Icon)`
   flex: 0 0 30px;
   width: 30px;
   height: 30px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
 `;
 
 const EmptyMessage = styled.div`
   max-width: 400px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -41,25 +41,13 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageMainLine = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
   text-align: center;
   margin-top: 15px;
 `;
-
-// could be reused if we come up with better copy
-// https://citizenlab.atlassian.net/browse/EN-1859
-
-// const EmptyMessageSubLine = styled.div`
-//   color: ${colors.label};
-//   font-size: ${fontSizes.base}px;
-//   font-weight: 300;
-//   line-height: normal;
-//   text-align: center;
-//   margin-top: 10px;
-// `;
 
 const EmptyIdeas = () => {
   return (

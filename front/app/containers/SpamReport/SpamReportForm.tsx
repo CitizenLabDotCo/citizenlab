@@ -15,7 +15,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // animation
@@ -79,7 +79,7 @@ interface Props extends CRUDParams {
 interface State {}
 
 class SpamReportForm extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   constructor(props) {
@@ -150,4 +150,4 @@ class SpamReportForm extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(SpamReportForm);
+export default injectIntl(SpamReportForm);

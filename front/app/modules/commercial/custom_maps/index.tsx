@@ -1,12 +1,18 @@
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import Tab from './admin/components/Tab';
-import LeafletConfig from './shared/components/Map/LeafletConfig';
-import Legend from './shared/components/Map/Legend';
+const Tab = React.lazy(() => import('./admin/components/Tab'));
+const LeafletConfig = React.lazy(
+  () => import('./shared/components/Map/LeafletConfig')
+);
+const Legend = React.lazy(() => import('./shared/components/Map/Legend'));
 import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
-import FeatureFlag from 'components/FeatureFlag';
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
+
+const CustomMapConfigComponent = React.lazy(
+  () => import('./admin/containers/ProjectCustomMapConfigPage')
+);
 
 type RenderOnHideTabConditionProps = {
   project: IProjectData;
@@ -40,12 +46,10 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.projects': [
+    'admin.projects.project': [
       {
-        path: '/:locale/admin/projects/:projectId/map',
-        name: 'map',
-        container: () =>
-          import('./admin/containers/ProjectCustomMapConfigPage'),
+        path: 'map',
+        element: <CustomMapConfigComponent />,
       },
     ],
   },

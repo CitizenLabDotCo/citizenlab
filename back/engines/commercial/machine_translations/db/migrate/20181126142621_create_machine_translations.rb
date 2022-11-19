@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMachineTranslations < ActiveRecord::Migration[5.1]
   def change
     create_table :machine_translations_machine_translations, id: :uuid do |t|
@@ -10,8 +12,7 @@ class CreateMachineTranslations < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    add_index :machine_translations_machine_translations, [:translatable_id, :translatable_type], name: :machine_translations_translatable
-    add_index :machine_translations_machine_translations, [:translatable_id, :translatable_type, :attribute_name, :locale_to], unique: true, name: :machine_translations_lookup
-
+    add_index :machine_translations_machine_translations, %i[translatable_id translatable_type], name: :machine_translations_translatable
+    add_index :machine_translations_machine_translations, %i[translatable_id translatable_type attribute_name locale_to], unique: true, name: :machine_translations_lookup
   end
 end

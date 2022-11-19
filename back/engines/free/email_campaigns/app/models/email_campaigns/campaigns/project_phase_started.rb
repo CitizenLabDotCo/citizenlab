@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -41,10 +43,10 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::ProjectPhaseStarted' => {'created' => true}}
+      { 'Notifications::ProjectPhaseStarted' => { 'created' => true } }
     end
 
-    def filter_notification_recipient users_scope, activity:, time: nil
+    def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
 
@@ -52,7 +54,7 @@ module EmailCampaigns
       'official'
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       [{
         event_payload: {
@@ -62,8 +64,7 @@ module EmailCampaigns
           phase_end_at: notification.phase.end_at.iso8601,
           phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
           project_title_multiloc: notification.project.title_multiloc,
-          project_description_multiloc: notification.project.description_multiloc
-
+          project_description_preview_multiloc: notification.project.description_preview_multiloc
         },
         delay: 8.hours.to_i
       }]

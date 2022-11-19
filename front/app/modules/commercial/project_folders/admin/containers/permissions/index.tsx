@@ -1,10 +1,12 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
-import { WithRouterProps } from 'react-router';
 import AsyncSelect from 'react-select/async';
 import { first } from 'rxjs/operators';
 import { IOption } from 'typings';
-import { isProjectFolderModerator } from '../../../permissions/roles';
+import {
+  isProjectFolderModerator,
+  userModeratesFolder,
+} from '../../../permissions/roles';
 
 // utils
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
@@ -19,7 +21,7 @@ import {
 } from '../../../services/projectFolderModerators';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
@@ -31,6 +33,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { isAdmin } from 'services/permissions/roles';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 const Container = styled.div`
   width: 100%;
@@ -57,9 +60,9 @@ const UserSelectButton = styled(Button)`
 `;
 
 const FolderPermissions = ({
-  params: { projectFolderId },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+  params: { projectFolderId },
+}: WrappedComponentProps & WithRouterProps) => {
   const authUser = useAuthUser();
   const folderModerators = useProjectFolderModerators(projectFolderId);
 
@@ -113,7 +116,7 @@ const FolderPermissions = ({
     if (!isNilOrError(users)) {
       return users.data
         .filter(
-          (user: IUserData) => !isProjectFolderModerator(user, projectFolderId)
+          (user: IUserData) => !userModeratesFolder(user, projectFolderId)
         )
         .map((user: IUserData) => {
           return {
@@ -233,4 +236,4 @@ const FolderPermissions = ({
   );
 };
 
-export default injectIntl(FolderPermissions);
+export default withRouter(injectIntl(FolderPermissions));

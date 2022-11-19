@@ -1,11 +1,58 @@
+# frozen_string_literal: true
+
 class IdeaCustomFieldsService
-  def all_fields(custom_form, options = {})
-    default_fields(custom_form)
+  def initialize(custom_form)
+    @custom_form = custom_form
+  end
+
+  def all_fields
+    default_fields
+  end
+
+  def configurable_fields
+    disallowed_fields = %w[author_id budget]
+    all_fields.reject do |field|
+      disallowed_fields.include? field.code
+    end
+  end
+
+  def reportable_fields
+    enabled_fields.reject(&:built_in?)
+  end
+
+  def visible_fields
+    enabled_fields
+  end
+
+  def enabled_fields
+    all_fields.select(&:enabled?)
+  end
+
+  def extra_visible_fields
+    visible_fields.reject(&:built_in?)
+  end
+
+  def allowed_extra_field_keys
+    fields_with_array_keys, fields_with_simple_keys = extra_visible_fields.partition do |field|
+      field.input_type == 'multiselect'
+    end
+    [
+      *fields_with_simple_keys.map(&:key).map(&:to_sym),
+      fields_with_array_keys.map(&:key).map(&:to_sym).index_with { |_k| [] }
+    ]
   end
 
   private
 
-  def default_fields(custom_form)
+  attr_reader :custom_form
+
+  def native_survey?
+    !!custom_form&.participation_context&.native_survey?
+  end
+
+  def default_fields
+    return [] if native_survey?
+
     ml_s = MultilocService.new
     [
       CustomField.new(
@@ -19,16 +66,16 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.title.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue
-            {}
-          end,
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.title.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
+        rescue StandardError
+          {}
+        end,
         required: true,
         enabled: true,
-        ordering: 1
+        ordering: 0
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -41,16 +88,16 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.body.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue
-            {}
-          end,
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.body.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
+        rescue StandardError
+          {}
+        end,
         required: true,
         enabled: true,
-        ordering: 2
+        ordering: 1
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -63,16 +110,16 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.author_id.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue
-            {}
-          end,
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.author_id.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
+        rescue StandardError
+          {}
+        end,
         required: false,
         enabled: true,
-        ordering: 3
+        ordering: 2
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -81,20 +128,20 @@ class IdeaCustomFieldsService
         code: 'budget',
         input_type: 'number',
         title_multiloc: ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.budget.title',
-            locales: CL2_SUPPORTED_LOCALES
+          'custom_fields.ideas.budget.title',
+          locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-                                ml_s.i18n_to_multiloc(
-                                  'custom_fields.ideas.budget.description',
-                                  locales: CL2_SUPPORTED_LOCALES
-                                )
-                              rescue
-                                {}
-                              end,
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.budget.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
+        rescue StandardError
+          {}
+        end,
         required: false,
         enabled: true,
-        ordering: 4
+        ordering: 3
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -103,17 +150,17 @@ class IdeaCustomFieldsService
         code: 'proposed_budget',
         input_type: 'number',
         title_multiloc: ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.proposed_budget.title',
-            locales: CL2_SUPPORTED_LOCALES
+          'custom_fields.ideas.proposed_budget.title',
+          locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-                                ml_s.i18n_to_multiloc(
-                                  'custom_fields.ideas.proposed_budget.description',
-                                  locales: CL2_SUPPORTED_LOCALES
-                                )
-                              rescue
-                                {}
-                              end,
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.proposed_budget.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
+        rescue StandardError
+          {}
+        end,
         required: false,
         enabled: false,
         ordering: 4
@@ -129,13 +176,13 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.topic_ids.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue
-            {}
-          end,
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.topic_ids.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
+        rescue StandardError
+          {}
+        end,
         required: false,
         enabled: true,
         ordering: 5
@@ -151,39 +198,16 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.location.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue
-            {}
-          end,
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.location.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
+        rescue StandardError
+          {}
+        end,
         required: false,
         enabled: true,
         ordering: 6
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'location_point_geojson',
-        code: 'location_point_geojson',
-        input_type: 'point',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.location.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.location.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue
-            {}
-          end,
-        required: false,
-        hidden: true,
-        enabled: true,
-        ordering: 7
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -196,16 +220,16 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.images.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue
-            {}
-          end,
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.images.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
+        rescue StandardError
+          {}
+        end,
         required: false,
         enabled: true,
-        ordering: 8
+        ordering: 7
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -218,17 +242,17 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.attachments.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue
-            {}
-          end,
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.attachments.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
+        rescue StandardError
+          {}
+        end,
         required: false,
         enabled: true,
-        ordering: 9
-      ),
+        ordering: 8
+      )
     ]
   end
 end

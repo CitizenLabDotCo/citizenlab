@@ -1,11 +1,26 @@
+# frozen_string_literal: true
+
 # FranceConnect works locally with any of these identifiers
 # https://github.com/france-connect/identity-provider-example/blob/master/database.csv
 module IdFranceconnect
-  class FranceconnectOmniauth
+  class FranceconnectOmniauth < OmniauthMethods::Base
     include FranceconnectVerification
 
+    # The flow of the sso_verification param in case of FranceConnect:
+    # 1. FE sends request to BE /auth/franceconnect?token=...&pathname=...&sso_verification=true
+    #    (see front/app/modules/commercial/id_franceconnect/components/VerificationFranceConnectButton.tsx:32)
+    # 2. The request is processed by a Rack middleware (configured in id_franceconnect/config/initializers/omniauth.rb),
+    #    that calls IdFranceconnect::FranceconnectOmniauth#omniauth_setup and redirects browser to FranceConnect.
+    #    Redirect data contains IdFranceconnect::FranceconnectOmniauth#redirect_uri (points to OmniauthCallbackController)
+    #    with sso_verification=true
+    # 3. In the end of FranceConnect authentication, browser is redirected to this #redirect_uri
+    # 4. OmniauthCallbackController processes the request and so #create and #auth_callback have access to sso_verification=true in parameters
+    #
+    SSO_VERIFICATION_PARAM_NAME = 'sso_verification'
+    SSO_VERIFICATION_PARAM_VALUE = 'true'
+
     def profile_to_user_attrs(auth)
-      # Todo: Do something smart with the address auth.extra.raw_info.address.formatted
+      # TODO: Do something smart with the address auth.extra.raw_info.address.formatted
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
@@ -29,12 +44,12 @@ module IdFranceconnect
         acr_values: 'eidas1',
         client_signing_alg: :HS256, # hashing function of France Connect
         client_options: {
-          identifier: configuration.settings("franceconnect_login", "identifier"),
-          secret: configuration.settings("franceconnect_login", "secret"),
+          identifier: configuration.settings('franceconnect_login', 'identifier'),
+          secret: configuration.settings('franceconnect_login', 'secret'),
           scheme: 'https',
           host: host,
           port: 443,
-          redirect_uri: redirect_uri(configuration),
+          redirect_uri: redirect_uri(configuration, env),
           authorization_endpoint: '/api/v1/authorize',
           token_endpoint: '/api/v1/token',
           userinfo_endpoint: '/api/v1/userinfo'
@@ -44,9 +59,9 @@ module IdFranceconnect
 
     def logout_url(user)
       last_identity = user.identities
-                          .where(provider: 'franceconnect')
-                          .order(created_at: :desc)
-                          .limit(1)
+        .where(provider: 'franceconnect')
+        .order(created_at: :desc)
+        .limit(1)
                         &.first
       id_token = last_identity.auth_hash.dig('credentials', 'id_token')
 
@@ -59,10 +74,10 @@ module IdFranceconnect
     end
 
     def host
-      case AppConfiguration.instance.settings("franceconnect_login", "environment")
-      when "integration" then
+      case AppConfiguration.instance.settings('franceconnect_login', 'environment')
+      when 'integration'
         'fcp.integ01.dev-franceconnect.fr'
-      when "production" then
+      when 'production'
         'app.franceconnect.gouv.fr'
       end
     end
@@ -72,14 +87,41 @@ module IdFranceconnect
     end
 
     def updateable_user_attrs
-      [:first_name, :last_name, :birthyear, :remote_avatar_url]
+      %i[first_name last_name birthyear remote_avatar_url]
+    end
+
+    # To make this method return false and so to reproduce merging error, you need:
+    # 1. Sign up with FranceConnect using the user with email wossewodda-3728@yopmail.com from this table
+    #    https://github.com/france-connect/identity-provider-example/blob/master/database.csv
+    #    (in FranceConnect window you can choose "Demonstration eIDAS substantiel").
+    # 2. Change user's name and remove all connections with FranceConnect like that
+    #    user = User.find_by(email: 'wossewodda-3728@yopmail.com'); user.update!(first_name: 'A', last_name: 'B', password: 'democracy2.0', verified: false); user.identities.destroy_all; user.verifications.destroy_all
+    # 3. If you try to verify or sign in or sign up with FranceConnect again, you'll see the merging error.
+    #
+    def can_merge?(user, user_attrs, sso_verification_param_value)
+      return true if sso_verification_param_value == SSO_VERIFICATION_PARAM_VALUE
+
+      matcher = IdFranceconnect::AttributesMatcher
+
+      matcher.match?(user.first_name, user_attrs[:first_name]) ||
+        matcher.match?(user.last_name, user_attrs[:last_name])
+    end
+
+    def merging_error_code
+      'franceconnect_merging_failed'
     end
 
     private
 
     # @param [AppConfiguration] configuration
-    def redirect_uri(configuration)
-      "#{configuration.base_backend_uri}/auth/franceconnect/callback"
+    def redirect_uri(configuration, env)
+      result = "#{configuration.base_backend_uri}/auth/franceconnect/callback"
+
+      if env.dig('rack.request.query_hash', SSO_VERIFICATION_PARAM_NAME) == SSO_VERIFICATION_PARAM_VALUE
+        result += "?#{SSO_VERIFICATION_PARAM_NAME}=#{SSO_VERIFICATION_PARAM_VALUE}"
+      end
+
+      result
     end
   end
 end

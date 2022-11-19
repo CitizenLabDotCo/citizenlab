@@ -4,7 +4,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Text-network-analysis tasks' do
-
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
       example 'unauthorized', document: false do
@@ -32,7 +31,7 @@ resource 'Text-network-analysis tasks' do
     context 'when admin' do
       before { admin_header_token }
 
-      context "when there are pending tasks" do
+      context 'when there are pending tasks' do
         before { create_list(:tna_task_view, 2, view: view) }
 
         example_request 'returns the tasks' do
@@ -41,14 +40,13 @@ resource 'Text-network-analysis tasks' do
         end
       end
 
-      context "when there is no pending tasks" do
+      context 'when there is no pending tasks' do
         example 'returns an empty list', document: false do
           do_request
           expect(status).to eq(200)
           expect(response_data).to be_empty
         end
       end
-
     end
 
     include_examples 'unauthorized requests'

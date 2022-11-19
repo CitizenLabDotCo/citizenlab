@@ -52,12 +52,12 @@ nl:
       "manual": Officieel bericht - alle gebruikers
       "admin_rights_received": Administratierechten ontvangen - admins
       "comment_deleted_by_admin": Verwijderen van je reactie - alle gebruikers
-      "comment_marked_as_spam": Spammeldinig reactie - admins en projectbeheerders
+      "comment_marked_as_spam": Spammelding reactie - admins en projectbeheerders
       "comment_on_your_comment": Antwoord op je reactie - alle gebruikers
       "comment_on_your_idea": Reactie op jouw idee - alle gebruikers
       "comment_on_your_initiative": Reactie op jouw initiatief - alle gebruikers
       "first_idea_published": Posten van je eerste idee - alle gebruikers
-      "idea_marked_as_spam": Spammeldinig idee - admins en projectbeheerders
+      "idea_marked_as_spam": Spammelding idee - admins en projectbeheerders
       "idea_published": Posten van je idee - alle gebruikers
       "initiative_assigned_to_you": Toewijzing van een initiatief - admins
       "initiative_marked_as_spam": Initiatief spammelding - admins
@@ -417,15 +417,17 @@ nl:
       x_projects: '%{numberOfProjects} projecten'
     project_phase_started:
       cta_view_phase: 'Ontdek deze nieuwe fase'
-      event_description: 'Dit project ging een nieuwe fase in op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!'
-      main_header: 'Project ''%{projectName}'' in een nieuwe fase'
-      new_phase: 'Het project ging de fase ''%{phaseTitle}'' in'
+      event_description: 'Dit project is een nieuwe fase ingegaan op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!'
+      main_header: 'Een nieuwe fase is begonnen voor het project ''%{projectName}'''
+      subtitle: 'Over ''%{projectName}'''
+      new_phase: 'Het project is de fase ''%{phaseTitle}'' ingegaan'
       subject: '%{projectName} ging een nieuwe fase in'
       preheader: 'Een nieuwe fase is gestart voor %{projectName}'
     project_phase_upcoming:
       cta_view_phase: 'Zet deze fase klaar'
       event_description: 'Het project ''%{projectName}'' gaat binnenkort een nieuwe fase in. Zorg ervoor dat alles klaar staat: Is er een goede beschrijving? Werden geselecteerde bijdrages al naar deze fase overgeplaatst? Wil je je burgers nog informeren over bepaalde zaken via een e-mailcampagne?'
       main_header: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
+      subtitle: 'Over ''%{projectName}'''
       new_phase: 'Het project gaat de fase ''%{phaseTitle}'' in'
       subject: 'Zet alles klaar voor de nieuwe fase van %{projectName}'
       preheader: 'Een nieuwe fase gaat binnenkort van start voor %{projectName}'

@@ -22,7 +22,7 @@ import { shortenedAppLocalePairs } from 'containers/App/constants';
 import { Locale } from 'typings';
 
 const DropdownButtonText = styled.div`
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: ${fontSizes.base}px;
@@ -30,11 +30,7 @@ const DropdownButtonText = styled.div`
 `;
 
 const DropdownButtonIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
-  margin-top: 1px;
-  margin-left: 4px;
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   transition: all 100ms ease-out;
   ${isRtl`
     margin-left: 0;
@@ -70,7 +66,7 @@ const Container = styled.div`
 `;
 
 const ListItemText = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
@@ -96,7 +92,7 @@ const ListItem = styled.button`
   &:hover,
   &:focus,
   &.active {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
     ${ListItemText} {
       color: #000;
     }
@@ -131,7 +127,7 @@ const LanguageSelector = ({ className }: Props) => {
   };
 
   if (!isNilOrError(appConfig) && !isNilOrError(locale)) {
-    const tenantLocales = appConfig.data.attributes.settings.core.locales;
+    const tenantLocales = appConfig.attributes.settings.core.locales;
     const isRtl = !!locale.startsWith('ar');
 
     const selectedLocale = getSelectedLocale(locale);
@@ -143,18 +139,17 @@ const LanguageSelector = ({ className }: Props) => {
         onClick={toggleDropdown}
       >
         <DropdownButton
-          className="e2e-langage-dropdown-toggle"
+          className="e2e-language-dropdown-toggle"
           aria-expanded={dropdownOpened}
         >
           <DropdownButtonText>{selectedLocale}</DropdownButtonText>
-          <DropdownButtonIcon name="dropdown" />
+          <DropdownButtonIcon name="chevron-down" />
         </DropdownButton>
 
         <Dropdown
           width="180px"
           top="68px"
           right={!isRtl ? '0px' : undefined}
-          left={isRtl ? '0px' : undefined}
           mobileRight={!isRtl ? '5px' : undefined}
           mobileLeft={isRtl ? '5px' : undefined}
           opened={dropdownOpened}

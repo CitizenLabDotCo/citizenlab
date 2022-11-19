@@ -8,7 +8,7 @@ module GranularPermissions
           attr_writer :permissions_service
         end
       end
-      
+
       def after_create(pc, _user)
         permissions_service.update_permissions_for_scope(pc)
         super

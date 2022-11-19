@@ -1,3 +1,27 @@
+# frozen_string_literal: true
+
+# Most content of the platform is structured as a tree, composed of nodes that are either a {Project}
+# or a {ProjectFolder}.
+# ProjectFolders can be both leafs and parent nodes, Projects can only be leafs.
+# An {AdminPublication} is just an abstract name of any node in the content tree of the platform (yes, the name isn't great).
+#
+#    ┌────────────────┼──────────────┐
+#    │                │              │
+#  project          folder        folder
+#                                    │
+#                               ┌────┴──────┐
+#                               │           │
+#                            project      folder
+#                                            │
+#                                       ┌────┴──────┐
+#                                       │           │
+#                                    project      project
+#
+# The {AdminPublication} model doesn't really care about what sort of node it is, just that it forms a tree and is
+# associated with something that's content on the platform. Next to the generic tree-node attributes (parent, lft, rgt)
+# it has some properties that on our platform make sense to be defined on the level of the tree-node. For example, a
+# publication_status. It wouldn't make sense to have a tree where a parent is not published and the children are,
+# as that's inconsistent, so we modeled these on the level of the AdminPublication.
 # == Schema Information
 #
 # Table name: admin_publications
@@ -18,22 +42,24 @@
 #
 # Indexes
 #
-#  index_admin_publications_on_depth      (depth)
-#  index_admin_publications_on_lft        (lft)
-#  index_admin_publications_on_ordering   (ordering)
-#  index_admin_publications_on_parent_id  (parent_id)
-#  index_admin_publications_on_rgt        (rgt)
+#  index_admin_publications_on_depth                                (depth)
+#  index_admin_publications_on_lft                                  (lft)
+#  index_admin_publications_on_ordering                             (ordering)
+#  index_admin_publications_on_parent_id                            (parent_id)
+#  index_admin_publications_on_publication_type_and_publication_id  (publication_type,publication_id)
+#  index_admin_publications_on_rgt                                  (rgt)
 #
 class AdminPublication < ApplicationRecord
-  PUBLICATION_STATUSES = %w(draft published archived)
+  PUBLICATION_STATUSES = %w[draft published archived]
+
+  belongs_to :publication, polymorphic: true, touch: true
+  has_many :pins, inverse_of: :admin_publication, dependent: :destroy
 
   acts_as_nested_set dependent: :destroy, order_column: :ordering, counter_cache: :children_count
   acts_as_list column: :ordering, top_of_list: 0, scope: [:parent_id], add_new_at: :top
 
-  belongs_to :publication, polymorphic: true, touch: true
-
   validates :publication, presence: true
-  validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
+  validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
   validate :parent_allowed_to_have_children
 
   before_validation :set_publication_status, on: :create

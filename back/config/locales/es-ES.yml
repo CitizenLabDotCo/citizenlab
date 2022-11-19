@@ -138,23 +138,23 @@ es:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: '¿Cuál es su idea?'
         question:
-          title: What is your question ?
+          title: '¿Cuál es su pregunta?'
         contribution:
-          title: What is your contribution ?
+          title: '¿Cuál es su contribución?'
         project:
-          title: What is your project ?
+          title: '¿Cuál es su proyecto?'
         issue:
-          title: What is your issue ?
+          title: '¿Cuál es su asunto?'
         option:
-          title: What is your option ?
+          title: '¿Cuál es su opción?'
       details:
         title: Detalles
       attachements:
-        title: Images and Attachements
+        title: Imágenes y archivos adjuntos
       extra:
-        title: Additional information
+        title: Información adicional
   custom_field_options:
     gender:
       male: Hombre
@@ -181,3 +181,27 @@ es:
       message_you_reset_your_password: 'Solicitó un restablecimiento de contraseña para la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para elegir una nueva contraseña segura. El enlace caduca en 1 hora.'
       subject: '%{organizationName}: Restablecer tu contraseña'
       title_reset_your_password: 'Elige una nueva contraseña'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Latitud'
+      longitude: 'Longitud'
+      author_fullname: 'Nombre del autor'
+      author_email: 'Correo electrónico del autor'
+      author_id: 'ID del autor'
+      created_at: 'Enviado en'
+      published_at: 'Publicado en'
+      comments_count: 'Comentarios'
+      upvotes_count: 'Votos a favor'
+      downvotes_count: 'Votos en contra'
+      baskets_count: 'Cestas'
+      input_url: 'URL'
+      project: 'Proyecto'
+      status: 'Estado'
+      assignee_fullname: 'Asignado'
+      assignee_email: 'Correo electrónico del destinatario'
+  form_builder:
+    default_select_field:
+      title: 'Su pregunta'
+      option1: 'Opción 1'
+      option2: 'Opción 2'

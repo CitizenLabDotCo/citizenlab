@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 UserConfirmation::Engine.routes.draw do
   namespace :web_api do
     namespace :v1 do
@@ -8,5 +10,3 @@ UserConfirmation::Engine.routes.draw do
     end
   end
 end
-
-

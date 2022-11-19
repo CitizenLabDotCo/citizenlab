@@ -4,7 +4,7 @@ import { isNumber } from 'lodash-es';
 // libraries
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { reverseGeocode } from 'utils/locationTools';
 import { parse } from 'qs';
 
@@ -14,15 +14,18 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
 
 // components
+import PageNotFound from 'components/PageNotFound';
 import InitiativesNewMeta from './InitiativesNewMeta';
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
-import { ITopicData } from 'services/topics';
 import { ILocationInfo } from 'typings';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
@@ -125,9 +128,7 @@ export class InitiativesNewPage extends React.PureComponent<
     ) {
       return null;
     }
-    const initiativeTopics = topics.filter(
-      (topic) => !isNilOrError(topic)
-    ) as ITopicData[];
+    const initiativeTopics = topics.filter((topic) => !isNilOrError(topic));
 
     return (
       <>
@@ -156,8 +157,18 @@ const Data = adopt<DataProps>({
   postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 
-export default withRouter((inputProps: WithRouterProps) => (
-  <Data>
-    {(dataProps) => <InitiativesNewPage {...dataProps} {...inputProps} />}
-  </Data>
-));
+export default withRouter((inputProps: WithRouterProps) => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
+
+  return (
+    <Data>
+      {(dataProps: DataProps) => (
+        <InitiativesNewPage {...dataProps} {...inputProps} />
+      )}
+    </Data>
+  );
+});

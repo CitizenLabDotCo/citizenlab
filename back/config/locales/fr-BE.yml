@@ -138,23 +138,23 @@ fr-BE:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Quelle est votre idée ?
         question:
-          title: What is your question ?
+          title: Quelle est votre question ?
         contribution:
-          title: What is your contribution ?
+          title: Quelle est votre contribution ?
         project:
-          title: What is your project ?
+          title: Quel est votre projet ?
         issue:
-          title: What is your issue ?
+          title: Quel est votre problème ?
         option:
-          title: What is your option ?
+          title: Quelle est votre option ?
       details:
         title: Détails
       attachements:
-        title: Images and Attachements
+        title: Images et pièces jointes
       extra:
-        title: Additional information
+        title: Informations complémentaires
   custom_field_options:
     gender:
       male: Masculin
@@ -181,3 +181,27 @@ fr-BE:
       message_you_reset_your_password: 'Vous avez demandé une réinitialisation du mot de passe pour la plateforme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe sécurisé. Le lien expire dans 1 heure.'
       subject: '%{organizationName}: réinitialisez votre mot de passe'
       title_reset_your_password: 'Choisissez un nouveau mot de passe'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Latitude'
+      longitude: 'Longitude'
+      author_fullname: 'Nom de l''auteur'
+      author_email: 'E-mail de l''auteur'
+      author_id: 'ID de l''auteur'
+      created_at: 'Soumis le'
+      published_at: 'Publié le'
+      comments_count: 'Commentaires'
+      upvotes_count: 'Votes pour'
+      downvotes_count: 'Votes contre'
+      baskets_count: 'Paniers'
+      input_url: 'URL'
+      project: 'Projet'
+      status: 'Statut'
+      assignee_fullname: 'Attribué'
+      assignee_email: 'E-mails du destinataire'
+  form_builder:
+    default_select_field:
+      title: 'Votre question'
+      option1: 'Option 1'
+      option2: 'Option 2'

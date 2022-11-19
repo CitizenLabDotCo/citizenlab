@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.projectStartDate',
     defaultMessage: 'The start date of your project',
   },
+  projectFolder: {
+    id: 'app.components.ProjectTemplatePreview.projectFolder',
+    defaultMessage: 'Project folder',
+  },
   projectTitleError: {
     id: 'app.components.ProjectTemplatePreview.projectTitleError',
     defaultMessage: 'Please type a project title',

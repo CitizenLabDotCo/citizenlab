@@ -7,19 +7,19 @@ import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
-import SendFeedback from 'components/SendFeedback';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // services
-import { FOOTER_PAGES, TFooterPage } from 'services/pages';
+import { FOOTER_PAGES, TFooterPage } from 'services/customPages';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -30,7 +30,7 @@ const Container = styled.footer<{ insideModal?: boolean }>`
   flex-direction: column;
   align-items: stretch;
   position: relative;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 0px;
     padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
       insideModal ? 0 : mobileMenuHeight}px;
@@ -48,7 +48,7 @@ const FooterContainer = styled.div`
   background: #fff;
   border-top: solid 1px #ccc;
   overflow: hidden;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -58,7 +58,7 @@ const FooterContainer = styled.div`
 `;
 
 const PagesNav = styled.nav`
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     width: 90vw;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -72,14 +72,14 @@ const PagesNavList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-wrap: wrap;
     justify-content: center;
   `}
   & li {
     margin-right: 10px;
     &:after {
-      color: ${colors.label};
+      color: ${colors.textSecondary};
       font-size: ${fontSizes.s}px;
       font-weight: 400;
       content: '•';
@@ -96,7 +96,7 @@ const PagesNavList = styled.ul`
 `;
 
 const PagesNavListItem = styled.li`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
@@ -106,7 +106,7 @@ const PagesNavListItem = styled.li`
 `;
 
 const StyledButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -122,7 +122,7 @@ const StyledButton = styled.button`
 `;
 
 const linkStyle = css`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.s}px;
   line-height: 21px;
@@ -149,11 +149,11 @@ const StyledA = styled.a`
 const Right = styled.div`
   display: flex;
   align-items: center;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 15px;
     margin-bottom: 15px;
   `}
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     flex-direction: column;
   `}
 `;
@@ -162,10 +162,7 @@ const PoweredBy = styled.div`
   display: flex;
   align-items: center;
   outline: none;
-  padding-right: 20px;
-  margin-right: 24px;
-  border-right: 2px solid ${colors.separation};
-  ${media.smallerThanMinTablet`
+  ${media.tablet`
     flex-direction: column;
     padding: 0px;
     margin: 0px;
@@ -175,18 +172,13 @@ const PoweredBy = styled.div`
 `;
 
 const PoweredByText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   margin-right: 8px;
-  ${media.smallerThan1280px`
+  ${media.tablet`
     display: none;
-  `}
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
-  ${media.smallerThanMinTablet`
     margin-bottom: 10px;
   `}
 `;
@@ -200,15 +192,9 @@ const CitizenlabLink = styled.a`
   cursor: pointer;
 `;
 
-const StyledSendFeedback = styled(SendFeedback)`
-  ${media.smallerThanMinTablet`
-    margin-top: 20px;
-  `}
-`;
-
 const CitizenLabLogo = styled(Icon)`
   height: 28px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   &:hover {
     fill: #000;
   }
@@ -228,9 +214,12 @@ const MESSAGES_MAP: TMessagesMap = {
   'accessibility-statement': messages.accessibilityStatement,
 };
 
-const PlatformFooter = ({ className, insideModal }: Props) => {
+const PlatformFooter = ({
+  className,
+  insideModal,
+  intl: { formatMessage },
+}: Props & WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
-  const windowSize = useWindowSize();
   const customizedA11yHrefEnabled = useFeatureFlag({
     name: 'custom_accessibility_statement_link',
   });
@@ -244,8 +233,8 @@ const PlatformFooter = ({ className, insideModal }: Props) => {
       !isNilOrError(appConfiguration) &&
       customizedA11yHrefEnabled &&
       !isEmpty(
-        appConfiguration.data.attributes.settings
-          .custom_accessibility_statement_link.url
+        appConfiguration.attributes.settings.custom_accessibility_statement_link
+          .url
       )
     );
   };
@@ -255,19 +244,20 @@ const PlatformFooter = ({ className, insideModal }: Props) => {
       return null;
     }
 
-    return appConfiguration.data.attributes.settings
+    return appConfiguration.attributes.settings
       .custom_accessibility_statement_link.url;
   };
 
-  const smallerThanSmallTablet =
-    windowSize.windowWidth <= viewportWidths.smallTablet;
   const hasCustomizedA11yFooterLink = getHasCustomizedA11yFooterLink();
   const customizedA11yHref = getCustomizedA11yHref();
+  const removeVendorBranding = useFeatureFlag({
+    name: 'remove_vendor_branding',
+  });
 
   return (
     <Container insideModal={insideModal} id="hook-footer" className={className}>
       <FooterContainer>
-        <PagesNav>
+        <PagesNav aria-label={formatMessage(messages.ariaLabel)}>
           <PagesNavList>
             {FOOTER_PAGES.map((slug: TFooterPage, index) => {
               return (
@@ -309,23 +299,20 @@ const PlatformFooter = ({ className, insideModal }: Props) => {
         </PagesNav>
 
         <Right>
-          <PoweredBy>
-            <PoweredByText>
-              <FormattedMessage {...messages.poweredBy} />
-            </PoweredByText>
-            <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
-              <CitizenLabLogo
-                name="citizenlab-footer-logo"
-                title="CitizenLab"
-              />
-            </CitizenlabLink>
-          </PoweredBy>
-
-          <StyledSendFeedback showFeedbackText={smallerThanSmallTablet} />
+          {!removeVendorBranding && (
+            <PoweredBy>
+              <PoweredByText>
+                <FormattedMessage {...messages.poweredBy} />
+              </PoweredByText>
+              <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
+                <CitizenLabLogo name="cl-logo" title="CitizenLab" />
+              </CitizenlabLink>
+            </PoweredBy>
+          )}
         </Right>
       </FooterContainer>
     </Container>
   );
 };
 
-export default PlatformFooter;
+export default injectIntl(PlatformFooter);

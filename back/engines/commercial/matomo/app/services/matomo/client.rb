@@ -13,6 +13,7 @@ module Matomo
     rescue KeyError => e
       raise MissingBaseUriError if e.key == 'MATOMO_HOST'
       raise MissingAuthorizationTokenError if e.key == 'MATOMO_AUTHORIZATION_TOKEN'
+
       raise
     end
 
@@ -33,6 +34,7 @@ module Matomo
         delete_response = delete_data_subjects(visits_response.parsed_response)
         raise_if_error(delete_response)
         deletes_summary.merge!(delete_response.parsed_response) { |_key, v1, v2| v1 + v2 }
+        sleep(0.5)
         break if delete_response.parsed_response.values.sum.zero? # nb data points that were deleted
       end
 
@@ -89,12 +91,63 @@ module Matomo
       )
     end
 
+    # See https://developer.matomo.org/api-reference/reporting-api#Live
+    #
+    # @param [String] site_id
+    # @param [String,nil] period
+    # @param [String,nil] date
+    # @param [Integer,nil] min_timestamp minimum value of visits' lastActionTimestamp
+    # @param [Integer,nil] filter_limit
+    # @param [Integer,nil] filter_offset
+    # @param [String (frozen)] filter_sort_order 'asc' or 'desc'
+    def get_last_visits_details(
+      site_id,
+      period: nil,
+      date: nil,
+      min_timestamp: nil,
+      filter_limit: nil,
+      filter_offset: nil,
+      filter_sort_order: 'asc'
+    )
+      query = {
+        'module' => 'API',
+        'method' => 'Live.getLastVisitsDetails',
+        'idSite' => site_id,
+        'period' => period,
+        'date' => date,
+        'minTimestamp' => min_timestamp,
+        'filter_limit' => filter_limit,
+        'filter_offset' => filter_offset,
+        'filter_sort_order' => filter_sort_order,
+        'format' => 'JSON'
+      }.compact
+
+      HTTParty.post(
+        @index_php_uri,
+        query: query,
+        headers: headers,
+        body: authorization_body
+      )
+    end
+
     def headers
       { 'Content-Type' => 'application/x-www-form-urlencoded' }
     end
 
     def authorization_body
       { 'token_auth' => auth_token }
+    end
+
+    def raise_if_error(response)
+      return unless error?(response)
+
+      message = begin
+        response.parsed_response.fetch('message')
+      rescue StandardError
+        response.parsed_response.to_s
+      end
+
+      raise MatomoApiError, message
     end
 
     private
@@ -107,7 +160,7 @@ module Matomo
     end
 
     # We had to come up with our own encoding method because the HTTParty
-    # serializer produces: 
+    # serializer produces:
     #   `visits[][idsite]=value&visits[][idvisit]=value&...`
     # but the Matomo API expects an index:
     #   `visits[0][idsite]=value&visits[0][idvisit]=value&...`
@@ -121,13 +174,14 @@ module Matomo
     end
 
     def error?(response)
-      response.parsed_response['result'] == 'error'
-    rescue StandardError
-      false
-    end
+      return true unless response.success?
 
-    def raise_if_error(response)
-      raise MatomoApiError, response.parsed_response['message'] if error?(response)
+      # A response can be an error even if `success?` is true because Matomo API tends to
+      # return status codes of 200 even for failed requests. To be sure, we have to
+      # check if the payload contains an error message.
+      response.parsed_response['result'] == 'error'
+    rescue TypeError
+      false
     end
 
     class MatomoApiError < RuntimeError; end

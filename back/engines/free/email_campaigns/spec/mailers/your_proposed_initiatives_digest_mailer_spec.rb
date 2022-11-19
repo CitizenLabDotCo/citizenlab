@@ -19,18 +19,18 @@ RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer, type: :maile
               published_at: initiative.published_at&.iso8601,
               upvotes_count: initiative.upvotes_count,
               votes_needed: initiative.votes_needed,
-              votes_this_week: initiative.upvotes.where('created_at > ?', Time.zone.now - 1.week).count,
+              votes_this_week: initiative.upvotes.where('created_at > ?', 1.week.ago).count,
               comments_count: initiative.comments_count,
               expires_at: initiative.expires_at.iso8601,
               status_code: initiative.initiative_status.code,
               images: initiative.initiative_images.map do |image|
                 {
                   ordering: image.ordering,
-                  versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                  versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
                 }
               end,
               header_bg: {
-                versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
               }
             }
           end

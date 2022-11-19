@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from insights (originally 20210506143554)
 class CreateViews < ActiveRecord::Migration[6.0]
   def change

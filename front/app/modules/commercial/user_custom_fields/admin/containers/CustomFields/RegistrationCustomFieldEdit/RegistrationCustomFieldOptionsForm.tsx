@@ -1,98 +1,96 @@
 import React from 'react';
-import styled from 'styled-components';
-import { isEmpty, values as getValues, every } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import { Section, SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
+import { SectionField } from 'components/admin/Section';
+import { Box } from '@citizenlab/cl2-component-library';
 
-const Buttons = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const CancelButton = styled(Button)``;
+// form
+import { FormProvider, useForm } from 'react-hook-form';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Feedback from 'components/HookForm/Feedback';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object } from 'yup';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // Typings
 import { Multiloc } from 'typings';
-
-export interface Props {}
+import { useParams } from 'react-router-dom';
 
 export interface FormValues {
   title_multiloc: Multiloc;
 }
 
-class RegistrationCustomFieldOptionsForm extends React.Component<
-  InjectedFormikProps<Props & InjectedIntlProps & WithRouterProps, FormValues>
-> {
-  public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
+type Props = {
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: FormValues;
+} & WrappedComponentProps;
 
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
+const RegistrationCustomFieldOptionsForm = ({
+  intl: { formatMessage },
+  onSubmit,
+  defaultValues,
+}: Props) => {
+  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const schema = object({
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.answerOptionError)
+    ),
+  });
+
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
     }
-    return errors;
   };
 
-  handleCancelClick = (e) => {
-    e.preventDefault();
-    const { userCustomFieldId } = this.props.params;
-
-    clHistory.push(
-      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
-    );
-  };
-
-  render() {
-    const {
-      isSubmitting,
-      errors,
-      touched,
-      status,
-      intl: { formatMessage },
-    } = this.props;
-
-    return (
-      <Form>
-        <Section>
-          <SectionField>
-            <Field
-              name="title_multiloc"
-              component={FormikInputMultilocWithLocaleSwitcher}
-              label={formatMessage(messages.answerOption)}
-            />
-            {touched.title_multiloc && (
-              <Error
-                fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc as any}
-              />
-            )}
-          </SectionField>
-        </Section>
-
-        <Buttons>
-          <FormikSubmitWrapper
-            isSubmitting={isSubmitting}
-            status={status}
-            touched={touched}
+  return (
+    <FormProvider {...methods}>
+      <form
+        onSubmit={methods.handleSubmit(onFormSubmit)}
+        data-testid="customFieldsOptionsForm"
+      >
+        <SectionField>
+          <Feedback
+            successMessage={formatMessage(messages.answerOptionSuccess)}
           />
-          <CancelButton buttonStyle="text" onClick={this.handleCancelClick}>
-            {formatMessage(messages.optionCancelButton)}
-          </CancelButton>
-        </Buttons>
-      </Form>
-    );
-  }
-}
+          <InputMultilocWithLocaleSwitcher
+            name="title_multiloc"
+            label={formatMessage(messages.answerOption)}
+            type="text"
+          />
+        </SectionField>
+        <Box display="flex">
+          <Button type="submit" processing={methods.formState.isSubmitting}>
+            {formatMessage(messages.answerOptionSave)}
+          </Button>
+        </Box>
 
-export default withRouter(injectIntl(RegistrationCustomFieldOptionsForm));
+        <Box display="flex" alignItems="center">
+          <Button
+            buttonStyle="text"
+            linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`}
+          >
+            {formatMessage(messages.optionCancelButton)}
+          </Button>
+        </Box>
+      </form>
+    </FormProvider>
+  );
+};
+
+export default injectIntl(RegistrationCustomFieldOptionsForm);

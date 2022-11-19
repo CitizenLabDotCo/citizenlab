@@ -59,6 +59,7 @@ const mockProjectData3 = {
 
 const viewId = '1';
 
+jest.mock('utils/cl-router/Link');
 jest.mock('modules');
 
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({
@@ -84,16 +85,16 @@ jest.mock('hooks/useProject', () => {
 
 jest.mock('hooks/useLocale');
 
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
         return <Component {...props} params={{ viewId }} />;
       };
     },
-    Link: (props) => <a href={props.to.pathname}>{props.children}</a>,
   };
 });
+jest.mock('utils/cl-router/Link');
 
 jest.mock('utils/cl-router/history');
 

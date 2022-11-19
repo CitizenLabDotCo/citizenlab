@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::StaticPagesController < ::ApplicationController
   skip_before_action :authenticate_user, only: %i[index show by_slug]
   before_action :set_page, only: %i[show update destroy]
@@ -19,7 +21,8 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 
   def create
-    @page = StaticPage.new permitted_attributes(StaticPage)
+    @page = StaticPage.new
+    assign_attributes
     authorize @page
 
     SideFxStaticPageService.new.before_create @page, current_user
@@ -35,7 +38,7 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 
   def update
-    assign_attributes_for_update
+    assign_attributes
     authorize @page
 
     SideFxStaticPageService.new.before_update @page, current_user
@@ -48,11 +51,13 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 
   def destroy
-    page = @page.destroy
+    destroyed = @page.destroy
 
-    if page.destroyed?
-      SideFxStaticPageService.new.after_destroy page, current_user
+    if destroyed
+      SideFxStaticPageService.new.after_destroy destroyed, current_user
       head :ok
+    elsif @page.errors
+      render json: { errors: @page.errors.details }, status: :unprocessable_entity
     else
       head :internal_server_error
     end
@@ -60,7 +65,7 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
 
   private
 
-  def assign_attributes_for_update
+  def assign_attributes
     @page.assign_attributes permitted_attributes(StaticPage)
   end
 
@@ -70,4 +75,4 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 end
 
-::WebApi::V1::StaticPagesController.prepend_if_ee 'CustomizableNavbar::WebApi::V1::Patches::StaticPagesController'
+::WebApi::V1::StaticPagesController.prepend CustomizableNavbar::WebApi::V1::Patches::StaticPagesController

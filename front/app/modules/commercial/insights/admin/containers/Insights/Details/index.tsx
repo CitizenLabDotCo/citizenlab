@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -34,7 +34,7 @@ const Container = styled.div`
   top: ${stylingConsts.menuHeight + topBarHeight}px;
   left: 210px;
   bottom: 0;
-  ${media.smallerThan1280px`
+  ${media.tablet`
     left: 80px;
   `}
 `;

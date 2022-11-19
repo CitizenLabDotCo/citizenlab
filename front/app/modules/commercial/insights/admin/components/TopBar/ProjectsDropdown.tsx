@@ -9,13 +9,14 @@ import {
   Dropdown,
   DropdownListItem,
   Icon,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
@@ -26,11 +27,6 @@ import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 
 const DropdownWrapper = styled.div``;
-
-const StyledIcon = styled(Icon)`
-  width: 10px;
-  margin-left: 8px;
-`;
 
 const StyledDropdownListItem = styled(DropdownListItem)`
   &:hover {
@@ -43,7 +39,7 @@ const StyledDropdownListItem = styled(DropdownListItem)`
 const StyledLink = styled(Link)`
   font-size: ${fontSizes.s}px;
   font-weight: 500;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   text-align: left;
 `;
 
@@ -73,7 +69,7 @@ interface Props {
 const ProjectsDropdown = ({
   projectIds,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
   const toggleDropdown = () => {
@@ -96,10 +92,12 @@ const ProjectsDropdown = ({
         mr="12px"
         onClick={toggleDropdown}
       >
-        {formatMessage(messages.linkedProjects, {
-          numberOfProjects: projectIds.length,
-        })}
-        <StyledIcon name="dropdown" ariaHidden />
+        <Box as="span" display="flex" alignItems="center">
+          {formatMessage(messages.linkedProjects, {
+            numberOfProjects: projectIds.length,
+          })}
+          <Icon ml="4px" name="chevron-down" ariaHidden />
+        </Box>
       </Button>
       <Dropdown
         opened={isDropdownOpened}

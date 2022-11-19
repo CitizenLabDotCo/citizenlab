@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Volunteering
   module WebApi
     module V1
@@ -21,11 +23,11 @@ module Volunteering
         # GET projects/:project_id/volunteers/as_xlsx
         # GET phases/:phase_id/volunteers/as_xlsx
         def index_xlsx
-          authorize [:volunteering, :volunteer], :index_xlsx?
+          authorize %i[volunteering volunteer], :index_xlsx?
 
           @volunteers = policy_scope(Volunteer)
             .joins(:cause)
-            .where(volunteering_causes: {participation_context_id: @participation_context})
+            .where(volunteering_causes: { participation_context_id: @participation_context })
             .includes(:user, :cause)
 
           I18n.with_locale(current_user&.locale) do
@@ -60,7 +62,7 @@ module Volunteering
             SideFxVolunteerService.new.after_destroy(volunteer, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 
@@ -76,7 +78,7 @@ module Volunteering
           elsif params[:phase_id]
             @participation_context = Phase.find(params[:phase_id])
           else
-            head 404
+            head :not_found
           end
         end
       end

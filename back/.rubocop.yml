@@ -1,3 +1,6 @@
+inherit_from:
+  - .rubocop_todo.yml
+
 require:
   - rubocop-rails
   - rubocop-performance
@@ -5,88 +8,126 @@ require:
 
 AllCops:
   NewCops: enable
-  AutoCorrect: false
   Exclude:
   - 'db/schema.rb'
   - '**/*.builder'
   - '**/.*.*'
   - '**/bin/**/*'
+  - 'engines/ee/**/*'
 
-Metrics/BlockLength:
-  IgnoredMethods: ['describe', 'context', 'shared_examples', 'class_eval']
-  Enabled: true
-  Exclude:
-  - '**/spec/**/*'
-  - 'db/migrate/**/*'
-  # Max: 25
-Metrics/MethodLength:
-  Enabled: true
-  Max: 30
-  IgnoredMethods: ['included', 'prepended', 'extended']
-  Exclude:
-  - 'db/migrate/**/*'
-Metrics/AbcSize:
-  Enabled: true
-  IgnoredMethods: ['included', 'prepended', 'extended']
-  Exclude:
-  - 'db/migrate/**/*'
-Metrics/ClassLength:
-  Enabled: true
-  # Max: 100
 Layout/HashAlignment:
   EnforcedColonStyle: [key, table]
   EnforcedHashRocketStyle: [key, table]
-Layout/LineLength:
-  Enabled: true
-  # Max: 120
-Rails/LexicallyScopedActionFilter:
-  Enabled: true
+
 Style/Documentation:
+  # Most classes are not documented, so turn off this Cop.
+  Enabled: false
+
+Style/SymbolProc:
   Enabled: true
+  IgnoredMethods:
+    - attribute
+    - throttle
   Exclude:
-  - 'db/migrate/**/*'
-Style/EmptyElse:
-  Enabled: false
-Style/FrozenStringLiteralComment:
-  Enabled: false
-  AutoCorrect: true
-Style/GuardClause:
-  Enabled: false
-Style/MultilineBlockChain:
-  Enabled: false
-Style/NegatedIf:
-  Enabled: false
+    - 'db/migrate/**/*'
+
 Style/NumericPredicate:
-  # Zero is sometimes considered to be both 
-  # positive as well as negative, which is why I
-  # strongly disagree (this can only lead to more
-  # confusion).
+  # Turned off because `something == 0` and `something.zero?`
+  # are not the same if `something` is not a number.
   Enabled: false
-Style/SymbolArray:
-  AutoCorrect: true
-Documentation:
+
+Layout/FirstArgumentIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstParameterIndentation:
+  EnforcedStyle: consistent
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/ArrayAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: start_of_line
+
+Layout/TrailingWhitespace:
+  AllowInHeredoc: true
+
+Metrics/ClassLength:
+  Max: 300
+  CountAsOne: ['array', 'hash', 'heredoc']
+
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
+
+RSpec/MultipleExpectations:
+  # It makes little sense to disallow multiple expectations in one example,
+  # so turn off this Cop.
   Enabled: false
-Style/ClassAndModuleChildren:
+
+Style/DoubleNegation:
   Enabled: false
-RSpec/ContextWording:
+
+Rails/DynamicFindBy:
+  AllowedMethods:
+    - find_by_cimail
+    - find_by_cimail!
+    - find_by_card_id
+
+Rails/CreateTableWithTimestamps:
+  # Some migrations do not add timestamps, so they are excluded.
   Exclude:
-    - '**/spec/policies/**/*'
-RSpec/DescribeClass:
-  Exclude:
-  - '**/spec/acceptance/**/*'
-  - '**/spec/lint/**/*'
+    - 'db/migrate/20170318143940_create_join_table_projects_topics.rb'
+    - 'db/migrate/20170318144700_create_join_table_areas_projects.rb'
+    - 'db/migrate/20170318181018_create_join_table_ideas_topics.rb'
+    - 'db/migrate/20170319000059_create_join_table_areas_ideas.rb'
+    - 'db/migrate/20171010114629_create_groups_projects.rb'
+    - 'db/migrate/20171010114644_create_memberships.rb'
+    - 'db/migrate/20171031131310_create_page_links.rb'
+    - 'db/migrate/20190603100709_create_join_table_areas_initiatives.rb'
+    - 'db/migrate/20190603100803_create_join_table_initiatives_topics.rb'
+    - 'db/migrate/20191210205216_create_id_cards.id_id_card_lookup.rb'
+    - 'db/migrate/20191218161144_create_unsubscription_tokens.email_campaigns.rb'
+    - 'db/migrate/20200807132541_create_common_passwords.rb'
+    - 'db/migrate/20210619133856_create_zeroshot_classification_tables.insights.rb'
+
 RSpec/SharedContext:
   Exclude:
   - '**/spec/acceptance/**/*'
-RSpec/MultipleMemoizedHelpers:
-  Exclude:
-  - '**/spec/acceptance/**/*'
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  # We need a discussion on this because we have 347 offences against the default
+  # and 252 offences against "EnforcedStyle: indented".
+  EnforcedStyle: indented
+
+RSpec/DescribeClass:
+  IgnoredMetadata:
+    type: ['request']
+
 RSpec/EmptyExampleGroup:
+  # `context` and `describe` are found as empty example groups when
+  # `example_request`, `post`, etc are used, so exclude acceptance tests.
   Exclude:
-  - '**/spec/acceptance/**/*'
-RSpec/MultipleExpectations:
-  Enabled: false
-RSpec/ExampleLength:
-  Max: 20
-RSpec/MessageSpies:
-  Enabled: false
+    - '**/spec/acceptance/**/*'
+
+Metrics/MethodLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
+  AllowedMethods: ['included', 'prepended', 'extended']
+  Exclude:
+  - 'db/migrate/**/*'

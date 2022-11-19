@@ -1,61 +1,59 @@
-import React, { PureComponent, Suspense, lazy } from 'react';
-import { adopt } from 'react-adopt';
-import { Subscription, combineLatest } from 'rxjs';
-import { tap, first } from 'rxjs/operators';
-import { uniq, includes } from 'lodash-es';
-import { isNilOrError, isPage, endsWith, isDesktop } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
-import clHistory from 'utils/cl-router/history';
+import { configureScope } from '@sentry/react';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import 'focus-visible';
+import GlobalStyle from 'global-styles';
+import 'intersection-observer';
+import { has, includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
-import 'intersection-observer';
-import 'focus-visible';
+import { parse } from 'qs';
+import React, { lazy, PureComponent, Suspense } from 'react';
+import { adopt } from 'react-adopt';
+import { combineLatest, Subscription } from 'rxjs';
+import { first, tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
-import { configureScope } from '@sentry/browser';
-import GlobalStyle from 'global-styles';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { endsWith, isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 
 // context
 import { PreviousPathnameContext } from 'context';
+import { trackPage } from 'utils/analytics';
 
 // analytics
 const ConsentManager = lazy(() => import('components/ConsentManager'));
-import { trackPage } from 'utils/analytics';
 
 // components
-import Meta from './Meta';
+import ErrorBoundary from 'components/ErrorBoundary';
+import Outlet from 'components/Outlet';
+import ForbiddenRoute from 'components/routing/forbiddenRoute';
+import SignUpInModal from 'components/SignUpIn/SignUpInModal';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
+import Meta from './Meta';
+const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
-import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import LoadableModal from 'components/Loadable/Modal';
-import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
-import ErrorBoundary from 'components/ErrorBoundary';
-import SignUpInModal from 'components/SignUpIn/SignUpInModal';
-
-import Outlet from 'components/Outlet';
-
-import { LiveAnnouncer } from 'react-aria-live';
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
 
 // services
-import { localeStream } from 'services/locale';
-import { IUser } from 'services/users';
-import {
-  authUserStream,
-  signOut,
-  signOutAndDeleteAccountPart2,
-} from 'services/auth';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
   IAppConfigurationStyle,
 } from 'services/appConfiguration';
+import {
+  authUserStream,
+  signOut,
+  signOutAndDeleteAccount,
+} from 'services/auth';
+import { localeStream } from 'services/locale';
+import { IUser } from 'services/users';
 
 // resources
 import GetFeatureFlag, {
@@ -66,26 +64,37 @@ import GetWindowSize, {
 } from 'resources/GetWindowSize';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
 import { openSignUpInModal$ } from 'components/SignUpIn/events';
+import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
-import { media, getTheme } from 'utils/styleUtils';
+import { getTheme, media } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
 
 // utils
-import openVerificationModalIfSuccessOrError from './openVerificationModalIfSuccessOrError';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 
-const Container = styled.div`
+const Container = styled.div<{
+  disableScroll?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   align-items: stretch;
   position: relative;
   background: #fff;
+
+  // for instances with e.g. a fullscreen modal, we want to
+  // be able to disable scrolling on the page behind the modal
+  ${(props: any) =>
+    props.disableScroll &&
+    `
+      height: 100%;
+      overflow: hidden;
+    `};
 `;
 
 const InnerContainer = styled.div`
@@ -96,7 +105,7 @@ const InnerContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
     min-height: calc(100vh - ${(props) =>
       props.theme.mobileTopBarHeight}px - ${(props) =>
@@ -114,6 +123,7 @@ interface InputProps {}
 
 interface DataProps {
   redirectsEnabled: GetFeatureFlagChildProps;
+  fullscreenModalEnabled: GetFeatureFlagChildProps;
   windowSize: GetWindowSizeChildProps;
 }
 
@@ -129,14 +139,15 @@ interface State {
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
   visible: boolean;
-  userDeletedModalOpened: boolean;
-  userActuallyDeleted: boolean;
+  userDeletedSuccessfullyModalOpened: boolean;
+  userSuccessfullyDeleted: boolean;
   signUpInModalMounted: boolean;
+  signUpInModalOpened: boolean;
   verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
   locale: Locale | null;
-  invitationDeclined: boolean;
+  signUpInModalClosed: boolean;
 }
 
 class App extends PureComponent<Props, State> {
@@ -153,14 +164,15 @@ class App extends PureComponent<Props, State> {
       modalSlug: null,
       modalType: null,
       visible: true,
-      userDeletedModalOpened: false,
-      userActuallyDeleted: false,
+      userDeletedSuccessfullyModalOpened: false,
+      userSuccessfullyDeleted: false,
       signUpInModalMounted: false,
+      signUpInModalOpened: false, // we need to apply CSS when modal is opened
       verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
       locale: null,
-      invitationDeclined: false,
+      signUpInModalClosed: false, // we need to know if modal was closed not to reopen it again. See ccd951c4ee
     };
     this.subscriptions = [];
   }
@@ -171,7 +183,7 @@ class App extends PureComponent<Props, State> {
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
 
-    this.unlisten = clHistory.listenBefore((newLocation) => {
+    this.unlisten = clHistory.listen(({ location }) => {
       const newPreviousPathname = location.pathname;
       const pathsToIgnore = [
         'sign-up',
@@ -188,7 +200,7 @@ class App extends PureComponent<Props, State> {
       if (redirectsEnabled) {
         this.handleCustomRedirect();
       }
-      trackPage(newLocation.pathname);
+      trackPage(location.pathname);
     });
 
     trackPage(location.pathname);
@@ -229,6 +241,21 @@ class App extends PureComponent<Props, State> {
       }),
 
       tenant$.pipe(first()).subscribe((tenant) => {
+        if (tenant.data.attributes.settings.core.weglot_api_key) {
+          const script = document.createElement('script');
+          script.async = false;
+          script.defer = false;
+          document.head.appendChild(script);
+
+          script.onload = function () {
+            window.Weglot.initialize({
+              api_key: tenant.data.attributes.settings.core.weglot_api_key,
+            });
+          };
+
+          script.src = 'https://cdn.weglot.com/weglot.min.js';
+        }
+
         if (
           tenant.data.attributes.style &&
           tenant.data.attributes.style.customFontAdobeId
@@ -274,21 +301,23 @@ class App extends PureComponent<Props, State> {
         this.closePostPageModal();
       }),
 
-      eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
-        signOutAndDeleteAccountPart2().then((success) => {
-          if (success) {
-            this.setState({
-              userDeletedModalOpened: true,
-              userActuallyDeleted: true,
-            });
-          } else {
-            this.setState({
-              userDeletedModalOpened: true,
-              userActuallyDeleted: false,
-            });
-          }
-        });
-      }),
+      eventEmitter
+        .observeEvent('deleteProfileAndShowSuccessModal')
+        .subscribe(() => {
+          signOutAndDeleteAccount().then((success) => {
+            if (success) {
+              this.setState({
+                userDeletedSuccessfullyModalOpened: true,
+                userSuccessfullyDeleted: true,
+              });
+            } else {
+              this.setState({
+                userDeletedSuccessfullyModalOpened: true,
+                userSuccessfullyDeleted: false,
+              });
+            }
+          });
+        }),
 
       openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
         // Sometimes we need to still open the sign up/in modal
@@ -296,11 +325,16 @@ class App extends PureComponent<Props, State> {
         // But in that case, componentDidUpdate is somehow called before
         // the modal is closed which overwrites the metaData.
         // This slightly dirty hack covers that case.
-        if (metaData) return;
-
-        setTimeout(() => {
-          this.forceUpdate();
-        }, 1);
+        if (metaData) {
+          return;
+        } else {
+          // if metaData is undefined, it means we're closing
+          // the sign up/in modal.
+          this.setState({ signUpInModalMounted: false });
+          setTimeout(() => {
+            this.forceUpdate();
+          }, 1);
+        }
       }),
     ];
   }
@@ -322,12 +356,12 @@ class App extends PureComponent<Props, State> {
 
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
-    const { invitationDeclined } = this.state;
+    const { signUpInModalClosed } = this.state;
 
     openSignUpInModalIfNecessary(
       authUser,
-      isAuthError,
-      isInvitation && !invitationDeclined,
+      isAuthError && !signUpInModalClosed,
+      isInvitation && !signUpInModalClosed,
       signUpInModalMounted,
       search
     );
@@ -340,7 +374,29 @@ class App extends PureComponent<Props, State> {
       verificationModalMounted &&
       (prevState.authUser === undefined || !prevState.verificationModalMounted)
     ) {
-      openVerificationModalIfSuccessOrError(search);
+      this.openVerificationModalIfSuccessOrError(search);
+    }
+  }
+
+  openVerificationModalIfSuccessOrError(search: string) {
+    const { location } = this.props;
+    const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
+
+    if (has(urlSearchParams, 'verification_success')) {
+      window.history.replaceState(null, '', window.location.pathname);
+      openVerificationModal({ step: 'success' });
+    }
+
+    if (
+      has(urlSearchParams, 'verification_error') &&
+      urlSearchParams.verification_error === 'true'
+    ) {
+      window.history.replaceState(null, '', window.location.pathname);
+      openVerificationModal({
+        step: 'error',
+        error: location.query?.error || null,
+        context: null,
+      });
     }
   }
 
@@ -392,7 +448,11 @@ class App extends PureComponent<Props, State> {
   };
 
   closeUserDeletedModal = () => {
-    this.setState({ userDeletedModalOpened: false });
+    this.setState({ userDeletedSuccessfullyModalOpened: false });
+  };
+
+  updateModalOpened = (opened: boolean) => {
+    this.setState({ signUpInModalOpened: opened });
   };
 
   setNavbarRef = (navbarRef: HTMLElement) => {
@@ -413,12 +473,13 @@ class App extends PureComponent<Props, State> {
     this.setState({ signUpInModalMounted: true });
   };
 
-  handleDeclineInvitation = () => {
-    this.setState({ invitationDeclined: true });
+  handleSignUpInModalClosed = () => {
+    this.setState({ signUpInModalClosed: true });
   };
 
   render() {
-    const { location, children, windowSize } = this.props;
+    const { location, children, windowSize, fullscreenModalEnabled } =
+      this.props;
     const {
       previousPathname,
       tenant,
@@ -426,10 +487,11 @@ class App extends PureComponent<Props, State> {
       modalSlug,
       modalType,
       visible,
-      userDeletedModalOpened,
-      userActuallyDeleted,
+      userDeletedSuccessfullyModalOpened,
+      userSuccessfullyDeleted,
       navbarRef,
       mobileNavbarRef,
+      signUpInModalOpened,
     } = this.state;
 
     const isAdminPage = isPage('admin', location.pathname);
@@ -438,6 +500,9 @@ class App extends PureComponent<Props, State> {
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isDesktopUser = windowSize && isDesktop(windowSize);
+    const fullScreenModalEnabledAndOpen =
+      fullscreenModalEnabled && signUpInModalOpened;
+
     const theme = getTheme(tenant);
     const showFooter =
       !isAdminPage &&
@@ -452,6 +517,7 @@ class App extends PureComponent<Props, State> {
       !isInitiativeFormPage &&
       !isIdeaEditPage &&
       !isInitiativeEditPage;
+    const { pathname } = removeLocale(location.pathname);
 
     return (
       <>
@@ -460,81 +526,87 @@ class App extends PureComponent<Props, State> {
             <ThemeProvider
               theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
             >
-              <LiveAnnouncer>
-                <GlobalStyle />
-
-                <Container>
-                  <Meta />
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <PostPageFullscreenModal
-                        type={modalType}
-                        postId={modalId}
-                        slug={modalSlug}
-                        close={this.closePostPageModal}
-                        navbarRef={navbarRef}
-                        mobileNavbarRef={mobileNavbarRef}
-                      />
-                    </Suspense>
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <LoadableModal
-                      opened={userDeletedModalOpened}
-                      close={this.closeUserDeletedModal}
-                    >
-                      <LoadableUserDeleted
-                        userActuallyDeleted={userActuallyDeleted}
-                      />
-                    </LoadableModal>
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <SignUpInModal
-                      onMounted={this.handleSignUpInModalMounted}
-                      onDeclineInvitation={this.handleDeclineInvitation}
+              <GlobalStyle />
+              <Container
+                // when the fullscreen modal is enabled on a platform and
+                // is currently open, we want to disable scrolling on the
+                // app sitting below it (CL-1101)
+                disableScroll={fullscreenModalEnabled && signUpInModalOpened}
+              >
+                <Meta />
+                <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <PostPageFullscreenModal
+                      type={modalType}
+                      postId={modalId}
+                      slug={modalSlug}
+                      close={this.closePostPageModal}
+                      navbarRef={navbarRef}
+                      mobileNavbarRef={mobileNavbarRef}
                     />
-                  </ErrorBoundary>
-                  <Outlet
-                    id="app.containers.App.modals"
-                    onMounted={this.handleModalMounted}
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <UserDeletedModal
+                      modalOpened={userDeletedSuccessfullyModalOpened}
+                      closeUserDeletedModal={this.closeUserDeletedModal}
+                      userSuccessfullyDeleted={userSuccessfullyDeleted}
+                    />
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <SignUpInModal
+                    onMounted={this.handleSignUpInModalMounted}
+                    onOpened={this.updateModalOpened}
+                    onClosed={this.handleSignUpInModalClosed}
+                    fullScreenModal={fullscreenModalEnabled}
                   />
-                  <ErrorBoundary>
-                    <div id="modal-portal" />
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <div id="topbar-portal" />
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <ConsentManager />
-                    </Suspense>
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <MainHeader setRef={this.setNavbarRef} />
-                  </ErrorBoundary>
-                  <InnerContainer>
-                    <HasPermission
-                      item={{ type: 'route', path: location.pathname }}
-                      action="access"
-                    >
-                      <ErrorBoundary>{children}</ErrorBoundary>
-                      <HasPermission.No>
-                        <ForbiddenRoute />
-                      </HasPermission.No>
-                    </HasPermission>
-                  </InnerContainer>
-                  {showFooter && (
-                    <Suspense fallback={null}>
-                      <PlatformFooter />
-                    </Suspense>
-                  )}
-                  {showMobileNav && (
-                    <MobileNavbar setRef={this.setMobileNavigationRef} />
-                  )}
-                  <ErrorBoundary>
-                    <div id="mobile-nav-portal" />
-                  </ErrorBoundary>
-                </Container>
-              </LiveAnnouncer>
+                </ErrorBoundary>
+                <Outlet
+                  id="app.containers.App.modals"
+                  onMounted={this.handleModalMounted}
+                />
+                <ErrorBoundary>
+                  <div id="modal-portal" />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <div id="topbar-portal" />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <ConsentManager />
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <MainHeader setRef={this.setNavbarRef} />
+                </ErrorBoundary>
+                <InnerContainer>
+                  <HasPermission
+                    item={{
+                      type: 'route',
+                      path: pathname,
+                    }}
+                    action="access"
+                  >
+                    <ErrorBoundary>{children}</ErrorBoundary>
+                    <HasPermission.No>
+                      <ForbiddenRoute />
+                    </HasPermission.No>
+                  </HasPermission>
+                </InnerContainer>
+                {showFooter && (
+                  <Suspense fallback={null}>
+                    <PlatformFooter />
+                  </Suspense>
+                )}
+                {showMobileNav && !fullScreenModalEnabledAndOpen && (
+                  <MobileNavbar setRef={this.setMobileNavigationRef} />
+                )}
+                <ErrorBoundary>
+                  <div id="mobile-nav-portal" />
+                </ErrorBoundary>
+              </Container>
             </ThemeProvider>
           </PreviousPathnameContext.Provider>
         )}
@@ -546,6 +618,8 @@ class App extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
+  // CL-1101, FranceConnect platforms have full screen login experience
+  fullscreenModalEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 const AppWithHoC = withRouter(App);

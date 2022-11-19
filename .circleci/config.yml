@@ -93,6 +93,32 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-essential:$CIRCLE_SHA1
 
+  back-lint:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: development
+    steps:
+      - run: bundle exec rubocop -P --format simple
+
+  back-bundle-audit:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: development
+    steps:
+      # CVE-2015-9284 is "CSRF vulnerability in OmniAuth's request phase"
+      # Solution: upgrade to '>= 2.0.0'
+      # But we can't, due to unmaintained gems that don't work with Omniauth 2.0.
+      # See https://github.com/rubysec/bundler-audit
+      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
+
   back-test:
     resource_class: small
     executor:
@@ -242,7 +268,7 @@ jobs:
   front-build:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: medium+
+    resource_class: large
     working_directory: /citizenlab/front
     steps:
       - checkout:
@@ -350,6 +376,24 @@ workflows:
     jobs:
       - back-build-essential-docker-image:
           context: docker-hub-access
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - back-lint:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - back-bundle-audit:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
           filters:
             branches:
               ignore:
@@ -466,6 +510,22 @@ workflows:
             branches:
               only:
                 - production
+      - back-lint:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
+      - back-bundle-audit:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
       - back-test:
           context: docker-hub-access
           requires:
@@ -490,7 +550,9 @@ workflows:
             - front-build
             - front-detect-deadcode
             - front-lint
+            - back-lint
             - back-test
+            - back-bundle-audit
             - back-license-check
           filters:
             branches:
@@ -504,7 +566,9 @@ workflows:
             - front-build
             - front-detect-deadcode
             - front-lint
+            - back-lint
             - back-test
+            - back-bundle-audit
             - back-license-check
           filters:
             branches:

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -73,9 +74,9 @@ export default ({
   const ManageButton = (
     <RowButton
       className={`
-        e2e-admin-edit-publication
+        e2e-admin-edit-publication intercom-admin-project-edit-button
       `}
-      linkTo={`/admin/projects/${publication.publicationId}/edit`}
+      linkTo={adminProjectsProjectPath(publication.publicationId)}
       buttonStyle="secondary"
       icon="edit"
       type="button"
@@ -139,14 +140,14 @@ export default ({
                     <FormattedMessage {...messages.onlyAdminsCanView} />
                   )
                 }
-                backgroundColor={colors.clBlueDark}
+                backgroundColor={colors.teal}
                 icon="lock"
               />
             )}
           {publication.attributes?.publication_visible_to === 'admins' && (
             <StyledStatusLabel
               text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-              backgroundColor={colors.clBlueDark}
+              backgroundColor={colors.teal}
               icon="lock"
             />
           )}

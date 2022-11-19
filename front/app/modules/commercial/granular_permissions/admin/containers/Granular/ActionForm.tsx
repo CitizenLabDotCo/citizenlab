@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -10,7 +10,7 @@ import { Radio } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import permissionsMessages from 'containers/Admin/projects/edit/permissions/messages';
+import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import { IPermissionData } from 'services/actionPermissions';
 
 const StyledFieldset = styled.fieldset`
@@ -25,6 +25,7 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 interface InputProps {
   permissionData: IPermissionData;
   groupIds?: string[];
+  projectType?: 'defaultInput' | 'initiative' | 'nativeSurvey';
   onChange: (
     permittedBy: IPermissionData['attributes']['permitted_by'],
     groupIds: Props['groupIds']
@@ -37,105 +38,104 @@ interface DataProps {
 
 export interface Props extends InputProps, DataProps, InjectedLocalized {}
 
-class ActionForm extends PureComponent<Props> {
-  groupsOptions = () => {
-    const {
-      groups: { groupsList },
-    } = this.props;
+const ActionForm = ({
+  groups: { groupsList },
+  permissionData,
+  groupIds,
+  projectType,
+  onChange,
+  localize,
+}: Props) => {
+  const groupsOptions = () => {
     if (isNilOrError(groupsList)) {
       return [];
     } else {
       return groupsList.map((group) => ({
-        label: this.props.localize(group.attributes.title_multiloc),
+        label: localize(group.attributes.title_multiloc),
         value: group.id,
       }));
     }
   };
 
-  handlePermittedByUpdate =
+  const handlePermittedByUpdate =
     (value: IPermissionData['attributes']['permitted_by']) => () => {
-      const { groupIds, onChange } = this.props;
       onChange(value, groupIds);
     };
 
-  handleGroupIdsUpdate = (options: { value: string }[]) => {
-    const { permissionData, onChange } = this.props;
+  const handleGroupIdsUpdate = (options: { value: string }[]) => {
     onChange(
       permissionData.attributes.permitted_by,
       options.map((o) => o.value)
     );
   };
 
-  render() {
-    const { permissionData, groupIds } = this.props;
-    const groupsOptions = this.groupsOptions();
-
-    const {
-      id: permissionId,
-      attributes: { permitted_by: permittedBy, action },
-    } = permissionData;
-    return (
-      <form>
-        <StyledFieldset>
-          {action === 'taking_survey' && (
-            <Radio
-              name={`permittedBy-${permissionId}`}
-              value="everyone"
-              currentValue={permittedBy}
-              label={
-                <FormattedMessage
-                  {...permissionsMessages.permissionsEveryoneLabel}
-                />
-              }
-              onChange={this.handlePermittedByUpdate('everyone')}
-              id={`participation-permission-everyone-${permissionId}`}
-            />
-          )}
+  const {
+    id: permissionId,
+    attributes: { permitted_by: permittedBy, action },
+  } = permissionData;
+  return (
+    <form>
+      <StyledFieldset>
+        {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate? 
+        If separate, we will need to update code where we check for attributes.posting_idea */}
+        {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
           <Radio
             name={`permittedBy-${permissionId}`}
-            value="users"
-            currentValue={permittedBy}
-            label={<FormattedMessage {...messages.permissionsUsersLabel} />}
-            onChange={this.handlePermittedByUpdate('users')}
-            id={`participation-permission-users-${permissionId}`}
-          />
-          <Radio
-            name={`permittedBy-${permissionId}`}
-            value="admins_moderators"
+            value="everyone"
             currentValue={permittedBy}
             label={
               <FormattedMessage
-                {...permissionsMessages.permissionsAdministrators}
+                {...permissionsMessages.permissionsAnyoneLabel}
               />
             }
-            onChange={this.handlePermittedByUpdate('admins_moderators')}
-            id={`participation-permission-admins-${permissionId}`}
+            onChange={handlePermittedByUpdate('everyone')}
+            id={`participation-permission-everyone-${permissionId}`}
           />
-          <Radio
-            name={`permittedBy-${permissionId}`}
-            value="groups"
-            currentValue={permittedBy}
-            label={
-              <FormattedMessage
-                {...permissionsMessages.permissionsSelectionLabel}
-              />
-            }
-            onChange={this.handlePermittedByUpdate('groups')}
-            id={`participation-permission-certain-groups-${permissionId}`}
-          />
-          {permittedBy === 'groups' && (
-            <StyledMultipleSelect
-              value={groupIds || []}
-              options={groupsOptions}
-              onChange={this.handleGroupIdsUpdate}
-              placeholder={<FormattedMessage {...messages.selectGroups} />}
+        )}
+        <Radio
+          name={`permittedBy-${permissionId}`}
+          value="users"
+          currentValue={permittedBy}
+          label={<FormattedMessage {...messages.permissionsUsersLabel} />}
+          onChange={handlePermittedByUpdate('users')}
+          id={`participation-permission-users-${permissionId}`}
+        />
+        <Radio
+          name={`permittedBy-${permissionId}`}
+          value="admins_moderators"
+          currentValue={permittedBy}
+          label={
+            <FormattedMessage
+              {...permissionsMessages.permissionsAdministrators}
             />
-          )}
-        </StyledFieldset>
-      </form>
-    );
-  }
-}
+          }
+          onChange={handlePermittedByUpdate('admins_moderators')}
+          id={`participation-permission-admins-${permissionId}`}
+        />
+        <Radio
+          name={`permittedBy-${permissionId}`}
+          value="groups"
+          currentValue={permittedBy}
+          label={
+            <FormattedMessage
+              {...permissionsMessages.permissionsSelectionLabel}
+            />
+          }
+          onChange={handlePermittedByUpdate('groups')}
+          id={`participation-permission-certain-groups-${permissionId}`}
+        />
+        {permittedBy === 'groups' && (
+          <StyledMultipleSelect
+            value={groupIds || []}
+            options={groupsOptions()}
+            onChange={handleGroupIdsUpdate}
+            placeholder={<FormattedMessage {...messages.selectGroups} />}
+          />
+        )}
+      </StyledFieldset>
+    </form>
+  );
+};
 
 const ActionPermissionFormWithHOCs = localize<InputProps & DataProps>(
   ActionForm

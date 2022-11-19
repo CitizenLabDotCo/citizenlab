@@ -4,11 +4,21 @@ import {
   TVerificationMethodName,
 } from 'services/verificationMethods';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import VerificationBadge from './citizen/components/VerificationBadge';
-import VerificationModal from './citizen/components/VerificationModal';
-import VerificationOnboardingStep from './citizen/components/VerificationOnboardingStep';
-import VerificationSignUpStep from './citizen/components/VerificationSignUpStep';
-import VerificationStatus from './citizen/components/VerificationStatus';
+const VerificationBadge = React.lazy(
+  () => import('./citizen/components/VerificationBadge')
+);
+const VerificationModal = React.lazy(
+  () => import('./citizen/components/VerificationModal')
+);
+const VerificationOnboardingStep = React.lazy(
+  () => import('./citizen/components/VerificationOnboardingStep')
+);
+const VerificationSignUpStep = React.lazy(
+  () => import('./citizen/components/VerificationSignUpStep')
+);
+const VerificationStatus = React.lazy(
+  () => import('./citizen/components/VerificationStatus')
+);
 
 export function isLastVerificationMethod(
   verificationMethodName: TVerificationMethodName,
@@ -34,8 +44,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.App.modals': ({ onMounted }) => {
       return <VerificationModal onMounted={onMounted} />;
     },
-    'app.containers.LandingPage.onboardingCampaigns':
-      VerificationOnboardingStep,
+    'app.containers.HomePage.onboardingCampaigns': VerificationOnboardingStep,
   },
 };
 

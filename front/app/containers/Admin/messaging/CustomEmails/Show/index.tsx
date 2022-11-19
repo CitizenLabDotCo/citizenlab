@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
 
 // services & resources
@@ -19,7 +19,7 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -143,11 +143,12 @@ interface Props
   extends InputProps,
     DataProps,
     WithRouterProps,
-    InjectedIntlProps,
+    WrappedComponentProps,
     InjectedLocalized {}
 
 interface State {
   showSendConfirmationModal: boolean;
+  isCampaignSending: boolean;
 }
 
 class Show extends React.Component<Props, State> {
@@ -155,6 +156,7 @@ class Show extends React.Component<Props, State> {
     super(props);
     this.state = {
       showSendConfirmationModal: false,
+      isCampaignSending: false,
     };
   }
 
@@ -162,7 +164,9 @@ class Show extends React.Component<Props, State> {
     if (noGroupsSelected) {
       this.openSendConfirmationModal();
     } else {
-      sendCampaign(this.props.campaign.id);
+      this.setState({ isCampaignSending: true }, () => {
+        sendCampaign(this.props.campaign.id);
+      });
     }
   };
 
@@ -207,14 +211,16 @@ class Show extends React.Component<Props, State> {
   };
 
   confirmSendCampaign = (campaignId: string) => () => {
-    sendCampaign(campaignId).then(() => {
-      this.closeSendConfirmationModal();
+    this.setState({ isCampaignSending: true }, () => {
+      sendCampaign(campaignId).then(() => {
+        this.closeSendConfirmationModal();
+      });
     });
   };
 
   render() {
     const { campaign } = this.props;
-    const { showSendConfirmationModal } = this.state;
+    const { showSendConfirmationModal, isCampaignSending } = this.state;
 
     if (campaign) {
       const groupIds: string[] = campaign.relationships.groups.data.map(
@@ -238,7 +244,7 @@ class Show extends React.Component<Props, State> {
                 />
               ) : (
                 <StatusLabel
-                  backgroundColor="clGreenSuccess"
+                  backgroundColor="success"
                   text={<FormattedMessage {...messages.sent} />}
                 />
               )}
@@ -256,6 +262,8 @@ class Show extends React.Component<Props, State> {
                   icon="send"
                   iconPos="right"
                   onClick={this.handleSend(noGroupsSelected)}
+                  disabled={isCampaignSending}
+                  processing={isCampaignSending}
                 >
                   <FormattedMessage {...messages.send} />
                 </Button>
@@ -353,6 +361,8 @@ class Show extends React.Component<Props, State> {
                   onClick={this.confirmSendCampaign(this.props.campaign.id)}
                   icon="send"
                   iconPos="right"
+                  disabled={isCampaignSending}
+                  processing={isCampaignSending}
                 >
                   <FormattedMessage {...messages.sendNowButton} />
                 </Button>

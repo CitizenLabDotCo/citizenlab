@@ -96,7 +96,7 @@ ar:
       "moderator_digest": نظرة عامة أسبوعية - مديري المشاريع
       "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة - المسؤولين ومديري المشاريع
       "user_digest": نظرة عامة أسبوعية - جميع المستخدمين
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مقترحاتك الخاصة - جميع المستخدمين
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
@@ -193,7 +193,7 @@ ar:
       by_author: 'بواسطة %{authorName}'
       cta_review_initiative: 'مراجعة المُقترح'
       report_inappropriate_offensive_content: 'أجد هذا المحتوى مسيئًا أو غير لائق.'
-      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
+      report_not_an_initiative: 'هذا المحتوى ليس مقترحًا وليس مناسبًا هنا.'
       subject: 'لديك تقرير إزعاج على المنصة الخاصة بـ %{organizationName}'
       preheader: 'تصرف بناءً على تقرير الإزعاج هذا'
       reported_this_because: 'قام %{reporterFirstName} بالإبلاغ لأن:'
@@ -419,6 +419,7 @@ ar:
       cta_view_phase: 'اكتشف هذه المرحلة الجديدة'
       event_description: 'دخل هذا المشروع مرحلة جديدة على المنصة الخاصة بـ %{organizationName}. انقر على الرابط أدناه لمعرفة المزيد!'
       main_header: 'بدأت مرحلة جديدة للمشروع ''%{projectName}'''
+      subtitle: '''%{projectName}'' حول'
       new_phase: 'دخل هذا المشروع المرحلة ''%{phaseTitle}'''
       subject: 'دخل %{projectName} مرحلة جديدة'
       preheader: 'بدأت مرحلة جديدة لـ %{projectName}'
@@ -426,6 +427,7 @@ ar:
       cta_view_phase: 'قم بإعداد هذه المرحلة الجديدة'
       event_description: 'سيدخل المشروع ''%{projectName}'' مرحلة جديدة عمّا قريب. تأكد من إعداد كل شيء في هذه المرحلة: هل الوصف كافٍ؟ هل تم نقل الأفكار المحدّدة إلى هذه المرحلة؟ هل ترغب في إعلام المواطنين بتفاصيل هذه المرحلة عبر حملة بريد إلكتروني مخصصة؟'
       main_header: '%{firstName}، سيدخل أحد المشاريع مرحلة جديدة عمّا قريب'
+      subtitle: '''%{projectName}'' حول'
       new_phase: 'سيدخل المشروع المرحلة ''%{phaseTitle}'''
       subject: 'قم بإعداد كل شيء للمرحلة الجديدة الخاصة بـ %{projectName}'
       preheader: 'قريبًا ستبدأ مرحلة جديدة لـ %{projectName}'

@@ -20,7 +20,7 @@ import { transparentize } from 'polished';
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedDate, InjectedIntlProps } from 'react-intl';
+import { FormattedDate, WrappedComponentProps } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 
 // services
@@ -40,14 +40,14 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   padding: 30px;
   padding-top: 35px;
   margin-bottom: 15px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 20px;
     padding-top: 25px;
   `}
@@ -55,7 +55,7 @@ const Container = styled.div`
 
 const PostContainer = styled(Container)`
   white-space: pre-line;
-  background: ${transparentize(0.94, colors.clRedError)};
+  background: ${transparentize(0.94, colors.red600)};
   position: relative;
 `;
 
@@ -67,10 +67,10 @@ const Body = styled.div`
   margin-bottom: 30px;
 
   a {
-    color: ${colors.clBlueDarker};
+    color: ${colors.teal700};
 
     &:hover {
-      color: ${colors.clBlueDarker};
+      color: ${colors.teal700};
     }
   }
 `;
@@ -81,7 +81,7 @@ const Footer = styled.div`
 `;
 
 const Author = styled.span`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 600;
 
@@ -91,20 +91,20 @@ const Author = styled.span`
 `;
 
 const DatesPostedEdited = styled.span`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: flex-start;
   `}
 
   ${isRtl`
     justify-content: flex-end;
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         align-items: flex-end;
     `}
  `}
@@ -116,13 +116,13 @@ const DatesSpacer = styled.span`
   margin-left: 4px;
   margin-right: 4px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
 
 const DateEdited = styled.span`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-style: italic;
   `}
 `;
@@ -132,7 +132,7 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
   top: 12px;
   right: 15px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     top: 5px;
     right: 5px;
   `}
@@ -141,7 +141,7 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
     right: auto;
     left: 15px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         left: 5px;
     `}
 `}
@@ -167,7 +167,7 @@ interface State {
 }
 
 export class OfficialFeedbackPost extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   constructor(props) {
@@ -346,7 +346,7 @@ const Data = adopt<DataProps>({
   tenantLocales: <GetAppConfigurationLocales />,
 });
 
-const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
+const OfficialFeedbackPostWithIntl = injectIntl(OfficialFeedbackPost);
 
 export default (inputProps: InputProps) => (
   <Data>

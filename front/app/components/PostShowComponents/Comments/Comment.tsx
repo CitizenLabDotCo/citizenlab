@@ -19,7 +19,7 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -47,7 +47,7 @@ const BodyAndFooter = styled.div`
 `;
 
 const DeletedComment = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   display: flex;
   align-items: center;
   font-size: ${fontSizes.s}px;
@@ -56,10 +56,8 @@ const DeletedComment = styled.div`
 `;
 
 const DeletedIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
   margin-right: 12px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
 `;
 
 interface InputProps {
@@ -84,7 +82,7 @@ interface State {
   editing: boolean;
 }
 
-class Comment extends PureComponent<Props & InjectedIntlProps, State> {
+class Comment extends PureComponent<Props & WrappedComponentProps, State> {
   static defaultProps = {
     hasChildComment: false,
     last: false,
@@ -204,7 +202,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const CommentWithHoCs = injectIntl<Props>(Comment);
+const CommentWithHoCs = injectIntl(Comment);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

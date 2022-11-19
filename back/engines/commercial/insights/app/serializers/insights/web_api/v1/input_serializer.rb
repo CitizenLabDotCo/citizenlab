@@ -10,14 +10,14 @@ module Insights
 
         # [TODO] optimize DB requests
         has_many :categories do |idea, params|
-          ::Insights::CategoryAssignment.joins(:category).where(input: idea, approved: true, "category.view" => params[:view])
-                                        .map(&:category)
+          ::Insights::CategoryAssignment.joins(:category).where(input: idea, approved: true, 'category.view' => params[:view])
+            .map(&:category)
         end
 
         # [TODO] optimize DB requests
         has_many :suggested_categories, record_type: :category, serializer: CategorySerializer do |idea, params|
-          ::Insights::CategoryAssignment.joins(:category).where(input: idea, approved: false, "category.view" => params[:view])
-                                        .map(&:category)
+          ::Insights::CategoryAssignment.joins(:category).where(input: idea, approved: false, 'category.view' => params[:view])
+            .map(&:category)
         end
       end
     end

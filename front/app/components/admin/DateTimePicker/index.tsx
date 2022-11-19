@@ -165,7 +165,6 @@ class DateTimePicker extends React.PureComponent<Props, State> {
           onFocusChange={this.handleFocusChange}
           numberOfMonths={1}
           firstDayOfWeek={1}
-          displayFormat="DD/MM/YYYY"
           isOutsideRange={this.isOutsideRange}
         />
         <TimeWrapper>

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativesFinder < ApplicationFinder
   default_sort 'new'
 
@@ -23,7 +25,7 @@ class InitiativesFinder < ApplicationFinder
 
   def initiative_status_condition(status_id)
     records.left_outer_joins(:initiative_initiative_status)
-            .where(initiative_initiative_statuses: { initiative_status_id: status_id })
+      .where(initiative_initiative_statuses: { initiative_status_id: status_id })
   end
 
   def assignee_condition(assignee_id)

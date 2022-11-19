@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::UsersController < ::ApplicationController
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
   skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
@@ -17,34 +19,34 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
     @users = @users.admin if params[:can_admin].present?
 
-    if !params[:search].present?
+    if params[:search].blank?
       @users = case params[:sort]
-        when "created_at"
-          @users.order(created_at: :asc)
-        when "-created_at"
-          @users.order(created_at: :desc)
-        when "last_name"
-          @users.order(last_name: :asc)
-        when "-last_name"
-          @users.order(last_name: :desc)
-        when "email"
-          @users.order(email: :asc) if view_private_attributes?
-        when "-email"
-          @users.order(email: :desc) if view_private_attributes?
-        when "role"
-          @users.order_role(:asc)
-        when "-role"
-          @users.order_role(:desc)
-        when nil
-          @users
-        else
-          raise "Unsupported sort method"
-        end
+      when 'created_at'
+        @users.order(created_at: :asc)
+      when '-created_at'
+        @users.order(created_at: :desc)
+      when 'last_name'
+        @users.order(last_name: :asc)
+      when '-last_name'
+        @users.order(last_name: :desc)
+      when 'email'
+        @users.order(email: :asc) if view_private_attributes?
+      when '-email'
+        @users.order(email: :desc) if view_private_attributes?
+      when 'role'
+        @users.order_role(:asc)
+      when '-role'
+        @users.order_role(:desc)
+      when nil
+        @users
+      else
+        raise 'Unsupported sort method'
+      end
     end
 
     @users = paginate @users
 
-    LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
+    LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
   end
@@ -72,7 +74,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       params = fastjson_params unread_notifications: @user.notifications.unread.size
       render json: WebApi::V1::UserSerializer.new(@user, params: params).serialized_json
     else
-      head 404
+      head :not_found
     end
   end
 
@@ -87,9 +89,9 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def by_invite
-   @user = Invite.find_by!(token: params[:token])&.invitee
-   authorize @user
-   show
+    @user = Invite.find_by!(token: params[:token])&.invitee
+    authorize @user
+    show
   end
 
   def create
@@ -98,7 +100,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
 
     SideFxUserService.new.before_create(@user, current_user)
-    
+
     if @user.save
       SideFxUserService.new.after_create(@user, current_user)
       permissions = Permission.for_user(@user)
@@ -120,10 +122,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
     @user.assign_attributes user_params
 
-    if user_params.keys.include?('avatar') && user_params['avatar'] == nil
-      # setting the avatar attribute to nil will not remove the avatar
-      @user.remove_avatar!
-    end
+    remove_image_if_requested!(@user, user_params, :avatar)
+
     authorize @user
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
@@ -131,7 +131,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params(granted_permissions: permissions),
-        include: [:granted_permissions, :'granted_permissions.permission_scope']
+        include: %i[granted_permissions granted_permissions.permission_scope]
       ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -165,7 +165,8 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def ideas_count
-    render json: { count: policy_scope(@user.ideas.published).count }, status: :ok
+    ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
+    render json: { count: ideas.count }, status: :ok
   end
 
   def initiatives_count
@@ -205,10 +206,10 @@ class WebApi::V1::UsersController < ::ApplicationController
     # the custom field value updates cleared out by the
     # policy (which should stay like before instead of
     # being cleared out).
-    if current_user&.custom_field_values && params[:user][:custom_field_values]
-      (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
-        params[:user][:custom_field_values][clear_key] = nil
-      end
+    return unless current_user&.custom_field_values && params[:user][:custom_field_values]
+
+    (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
+      params[:user][:custom_field_values][clear_key] = nil
     end
   end
 

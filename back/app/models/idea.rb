@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: ideas
@@ -24,6 +26,8 @@
 #  assignee_id              :uuid
 #  assigned_at              :datetime
 #  proposed_budget          :integer
+#  custom_field_values      :jsonb            not null
+#  creation_phase_id        :uuid
 #
 # Indexes
 #
@@ -38,6 +42,7 @@
 #
 #  fk_rails_...  (assignee_id => users.id)
 #  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (creation_phase_id => phases.id)
 #  fk_rails_...  (idea_status_id => idea_statuses.id)
 #  fk_rails_...  (project_id => projects.id)
 #
@@ -46,26 +51,29 @@ class Idea < ApplicationRecord
   extend OrderAsSpecified
 
   belongs_to :project, touch: true
+  belongs_to :creation_phase, class_name: 'Phase', optional: true
   belongs_to :idea_status, optional: true
 
   counter_culture :idea_status, touch: true
-  counter_culture :project,
-    column_name: proc { |idea| idea.publication_status == 'published' ? "ideas_count" : nil },
+  counter_culture(
+    :project,
+    column_name: proc { |idea| idea.publication_status == 'published' ? 'ideas_count' : nil },
     column_names: {
-      ["ideas.publication_status = ?", 'published'] => 'ideas_count'
+      ['ideas.publication_status = ?', 'published'] => 'ideas_count'
     },
     touch: true
+  )
 
-  counter_culture :project,
+  counter_culture(
+    :project,
     column_name: 'comments_count',
     delta_magnitude: proc { |idea| idea.comments_count }
+  )
 
   belongs_to :assignee, class_name: 'User', optional: true
 
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
-  has_many :areas_ideas, dependent: :destroy
-  has_many :areas, through: :areas_ideas
   has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases, after_add: :update_phase_ideas_count, after_remove: :update_phase_ideas_count
   has_many :baskets_ideas, dependent: :destroy
@@ -78,68 +86,66 @@ class Idea < ApplicationRecord
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
-  validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, if: :proposed_budget
+  with_options unless: :draft? do |post|
+    post.before_validation :strip_title
+    post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
+    post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
+  end
+
+  with_options if: :validate_built_in_fields? do
+    validates :title_multiloc, presence: true, multiloc: { presence: true }
+    validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
+    validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
+  end
+
+  validate :validate_creation_phase
+
+  # validates :custom_field_values, json: {
+  #   schema: :schema_for_validation,
+  #   message: ->(errors) { errors }
+  # }
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
-    before_validation :set_idea_status
+    before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
+  after_create :assign_slug
   after_update :fix_comments_count_on_projects
 
-  scope :with_all_topics, (Proc.new do |topic_ids|
-    uniq_topic_ids = topic_ids.uniq
-    joins(:ideas_topics)
-    .where(ideas_topics: {topic_id: uniq_topic_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
-  end)
-
-  scope :with_some_topics, (Proc.new do |topics|
-    ideas = joins(:ideas_topics).where(ideas_topics: {topic: topics})
+  scope :with_some_topics, (proc do |topics|
+    ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
     where(id: ideas)
   end)
 
-  scope :with_all_areas, (Proc.new do |area_ids|
-    uniq_area_ids = area_ids.uniq
-    joins(:areas_ideas)
-    .where(areas_ideas: {area_id: uniq_area_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
-  end)
-
-  scope :with_some_areas, (Proc.new do |area_ids|
-    with_dups = joins(:areas_ideas).where(areas_ideas: {area_id: area_ids})
-    where(id: with_dups)
-  end)
-
-  scope :in_phase, (Proc.new do |phase_id|
+  scope :in_phase, (proc do |phase_id|
     joins(:ideas_phases)
-      .where(ideas_phases: {phase_id: phase_id})
+      .where(ideas_phases: { phase_id: phase_id })
   end)
 
-  scope :with_project_publication_status, (Proc.new do |publication_status|
+  scope :with_project_publication_status, (proc do |publication_status|
     joins(project: [:admin_publication])
-      .where(projects: {admin_publications: {publication_status: publication_status}})
+      .where(projects: { admin_publications: { publication_status: publication_status } })
   end)
 
-  scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id"))}
+  scope :order_popular, ->(direction = :desc) { order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id")) }
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
 
-  scope :order_status, -> (direction=:desc) {
+  scope :order_status, lambda { |direction = :desc|
     joins(:idea_status)
-    .order("idea_statuses.ordering #{direction}, ideas.id")
+      .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
-  scope :feedback_needed, -> {
-    joins(:idea_status).where(idea_statuses: {code: 'proposed'})
+  scope :feedback_needed, lambda {
+    joins(:idea_status).where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
   scope :order_with, lambda { |scope_name|
     case scope_name
     when 'random'   then order_random
-    when 'trending' then order_trending
     when 'popular'  then order_popular
     when 'new'      then order_new
     when '-new'     then order_new(:asc)
@@ -157,30 +163,92 @@ class Idea < ApplicationRecord
     publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
   end
 
+  def custom_form
+    if participation_method_on_creation.form_in_phase?
+      creation_phase.custom_form || CustomForm.new(participation_context: creation_phase)
+    else
+      project.custom_form || CustomForm.new(participation_context: project)
+    end
+  end
+
+  def participation_method_on_creation
+    Factory.instance.participation_method_for participation_context_on_creation
+  end
+
   private
+
+  def participation_context_on_creation
+    creation_phase || project
+  end
+
+  def schema_for_validation
+    fields = custom_form.custom_fields
+    multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
+    multiloc_schema.values.first
+  end
+
+  def validate_built_in_fields?
+    !draft? && participation_method_on_creation.validate_built_in_fields?
+  end
+
+  def assign_slug
+    return if slug # Slugs never change.
+
+    participation_method_on_creation.assign_slug self
+  end
+
+  def assign_defaults
+    participation_method_on_creation.assign_defaults self
+  end
 
   def sanitize_body_multiloc
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(
-      self.body_multiloc,
-      %i{title alignment list decoration link image video}
+      body_multiloc,
+      %i[title alignment list decoration link image video]
     )
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
-    self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
-  end
-
-  def set_idea_status
-    self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
+    self.body_multiloc = service.linkify_multiloc(body_multiloc)
   end
 
   def fix_comments_count_on_projects
-    if project_id_previously_changed?
-      Comment.counter_culture_fix_counts only: [[:idea, :project]]
-    end
+    return unless project_id_previously_changed?
+
+    Comment.counter_culture_fix_counts only: [%i[idea project]]
   end
 
   def update_phase_ideas_count(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
+  end
+
+  def validate_creation_phase
+    return unless creation_phase
+
+    if project.continuous?
+      errors.add(
+        :creation_phase,
+        :not_in_timeline_project,
+        message: 'The creation phase cannot be set for inputs in a continuous project'
+      )
+      return
+    end
+
+    if creation_phase.project_id != project_id
+      errors.add(
+        :creation_phase,
+        :invalid_project,
+        message: 'The creation phase must be a phase of the input\'s project'
+      )
+      return
+    end
+
+    return if participation_method_on_creation.form_in_phase?
+
+    errors.add(
+      :creation_phase,
+      :invalid_participation_method,
+      message: 'The creation phase cannot be set for transitive participation methods'
+    )
   end
 end
 
@@ -189,3 +257,4 @@ Idea.include_if_ee 'Insights::Concerns::Input'
 Idea.include_if_ee 'Moderation::Concerns::Moderatable'
 Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
 Idea.include_if_ee 'IdeaAssignment::Extensions::Idea'
+Idea.include_if_ee 'IdeaCustomFields::Extensions::Idea'

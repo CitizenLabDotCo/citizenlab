@@ -2,16 +2,16 @@ import React, { memo } from 'react';
 import moment from 'moment';
 
 // components
+import { Tr, Td, Icon } from '@citizenlab/cl2-component-library';
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
 import Outlet from 'components/Outlet';
-import { Icon } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import Link from 'utils/cl-router/Link';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
@@ -35,9 +35,9 @@ import {
 import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
 import { isNilOrError } from 'utils/helperUtils';
 
-const Container = styled.tr<{ bgColor: string; flagged: boolean }>`
+const Container = styled(Tr)<{ bgColor: string; flagged: boolean }>`
   background: ${({ bgColor, flagged }) =>
-    flagged ? colors.clRedErrorBackground : bgColor};
+    flagged ? colors.errorLight : bgColor};
 `;
 
 const StyledCheckbox = styled(Checkbox)`
@@ -72,18 +72,34 @@ const GoToLink = styled(Link)`
 `;
 
 const GoToIcon = styled(Icon)`
-  width: 100%;
-  height: 100%;
-  fill: ${colors.label};
-
   &:hover {
-    fill: ${colors.adminTextColor};
+    fill: ${colors.primary};
   }
 `;
 
 const StyledModerationContentCell = styled(ModerationContentCell)`
   margin-bottom: 20px;
 `;
+
+const StyledA = styled.a`
+  text-decoration: underline;
+
+  &:hover {
+    color: ${colors.grey800};
+    text-decoration: underline;
+  }
+`;
+
+interface CellProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const Cell = ({ children, className }: CellProps) => (
+  <Td className={className} style={{ verticalAlign: 'top' }}>
+    {children}
+  </Td>
+);
 
 interface Props {
   moderation: IModerationData;
@@ -97,7 +113,7 @@ const ideasPath = '/ideas';
 const initiativesPath = '/initiatives';
 const projectsPath = '/projects';
 
-const ModerationRow = memo<Props & InjectedIntlProps>(
+const ModerationRow = memo<Props & WrappedComponentProps>(
   ({
     moderation,
     selected,
@@ -121,7 +137,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
     const moderatableType = moderation.attributes.moderatable_type;
     const belongsToTypes = Object.keys(moderation.attributes.belongs_to);
     const bgColor = selected
-      ? rgba(colors.adminTextColor, 0.1)
+      ? rgba(colors.primary, 0.1)
       : moderation.attributes.moderation_status === 'read'
       ? '#f6f6f6'
       : '#fff';
@@ -187,14 +203,14 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
         flagged={hasActiveInappropriateContentFlag}
         bgColor={bgColor}
       >
-        <td className="checkbox">
+        <Cell className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
-        </td>
-        <td className="date">
+        </Cell>
+        <Cell className="date">
           {moment(moderation.attributes.created_at).format('L')}{' '}
           {moment(moderation.attributes.created_at).format('LT')}
-        </td>
-        <td className="type">
+        </Cell>
+        <Cell className="type">
           {formatMessage(
             {
               Idea: messages.post,
@@ -202,8 +218,8 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
               Initiative: messages.initiative,
             }[moderatableType]
           )}
-        </td>
-        <td className="belongsTo">
+        </Cell>
+        <Cell className="belongsTo">
           {belongsToTypes.length > 0 ? (
             belongsToTypes.map((belongsToType: TBelongsTo, index) => {
               const belongsToTypeMessage = {
@@ -230,13 +246,13 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                     <BelongsToType>
                       <FormattedMessage {...belongsToTypeMessage} />:
                     </BelongsToType>
-                    <a
+                    <StyledA
                       href={belongsToHref}
                       onClick={handleBelongsToLinkOnClick}
                       data-belongstotype={belongsToType}
                     >
                       {localize(belongsToTitleMultiloc)}
-                    </a>
+                    </StyledA>
                   </BelongsToItem>
                 );
               }
@@ -246,8 +262,8 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           ) : (
             <>-</>
           )}
-        </td>
-        <td className="content">
+        </Cell>
+        <Cell className="content">
           <StyledModerationContentCell
             contentTitle={contentTitle}
             contentBody={contentBody}
@@ -256,9 +272,9 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
             inappropriateContentFlagId={inappropriateContentFlagId}
           />
-        </td>
+        </Cell>
         {viewLink && (
-          <td>
+          <Cell>
             <Tippy
               placement="bottom-end"
               content={
@@ -277,11 +293,16 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                   onClick={handleGoToLinkOnClick}
                   data-type={moderatableType}
                 >
-                  <GoToIcon name="goTo" />
+                  <GoToIcon
+                    name="open-in-new"
+                    fill={colors.textSecondary}
+                    width="18px"
+                    height="18px"
+                  />
                 </GoToLink>
               </GoToLinkWrapper>
             </Tippy>
-          </td>
+          </Cell>
         )}
       </Container>
     );

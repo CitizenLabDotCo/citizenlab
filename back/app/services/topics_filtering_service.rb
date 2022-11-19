@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # copied from AreasFilteringService in back/app/services/areas_filtering_service.rb
 class TopicsFilteringService
   include Filterer

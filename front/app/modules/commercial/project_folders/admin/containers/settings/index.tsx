@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import styled from 'styled-components';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -89,8 +89,6 @@ const FolderSettings = ({
   );
 };
 
-const FolderSettingsWithHoCs = withRouter(FolderSettings);
-
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => (
     <GetProjectFolder projectFolderId={params.projectFolderId}>
@@ -99,8 +97,8 @@ const Data = adopt<DataProps, WithRouterProps>({
   ),
 });
 
-export default (inputProps: WithRouterProps) => (
+export default withRouter((inputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <FolderSettingsWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <FolderSettings {...inputProps} {...dataProps} />}
   </Data>
-);
+));

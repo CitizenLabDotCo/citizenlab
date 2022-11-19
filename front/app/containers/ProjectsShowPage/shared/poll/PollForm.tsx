@@ -18,7 +18,7 @@ import PollSingleChoice from './PollSingleChoice';
 import PollMultipleChoice from './PollMultipleChoice';
 
 const PollContainer = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -162,7 +162,7 @@ export class PollForm extends PureComponent<Props, State> {
           </PollContainer>
           <Button
             onClick={this.sendAnswer}
-            size="2"
+            size="m"
             fullWidth={true}
             disabled={!isValid}
             className="e2e-send-poll"

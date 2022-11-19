@@ -24,25 +24,22 @@ const NavigationIconWrapper = xStyled.div`
   justify-content: center;
   margin-right: 5px;
 
-  ${media.smallPhone`
+  ${media.phone`
     height: 20px;
     width: 20px;
   `}
 `;
 
 const NavigationIcon = xStyled(Icon)`
-  fill: ${colors.label};
-  height: 22px;
-  width: 22px;
-
+  fill: ${colors.textSecondary};
   .cl-icon-primary,
   .cl-icon-accent,
   .cl-icon-secondary {
-    fill: ${colors.label};
+    fill: ${colors.textSecondary};
   }
 `;
 
-const linkColor = colors.label;
+const linkColor = colors.textSecondary;
 const StyledLink = xStyled(Link)`
   display: flex;
   align-items: center;
@@ -68,28 +65,28 @@ const StyledLink = xStyled(Link)`
   // for touch devices
   &:active,
   &.active {
-    color: ${(props) => props.theme.colorMain};
+    color: ${(props) => props.theme.colors.tenantPrimary};
 
     ${NavigationIcon} {
-      fill: ${(props) => props.theme.colorMain};
+      fill: ${(props) => props.theme.colors.tenantPrimary};
 
       .cl-icon-primary,
       .cl-icon-accent,
       .cl-icon-secondary {
-        fill: ${(props) => props.theme.colorMain};
+        fill: ${(props) => props.theme.colors.tenantPrimary};
       }
     }
 
     &:hover {
-      color: ${(props) => darken(0.2, props.theme.colorMain)};
+      color: ${(props) => darken(0.2, props.theme.colors.tenantPrimary)};
 
       ${NavigationIcon} {
-        fill: ${(props) => darken(0.2, props.theme.colorMain)};
+        fill: ${(props) => darken(0.2, props.theme.colors.tenantPrimary)};
 
         .cl-icon-primary,
         .cl-icon-accent,
         .cl-icon-secondary {
-          fill: ${(props) => darken(0.2, props.theme.colorMain)};
+          fill: ${(props) => darken(0.2, props.theme.colors.tenantPrimary)};
         }
       }
     }
@@ -118,7 +115,7 @@ const MobileNavbarItem = ({
     <NavigationItem>
       <StyledLink
         to={linkTo}
-        activeClassName={!isFullMenuOpened ? 'active' : ''}
+        className={isFullMenuOpened ? 'active' : undefined}
         onlyActiveOnIndex={onlyActiveOnIndex}
         onClick={onClick}
       >

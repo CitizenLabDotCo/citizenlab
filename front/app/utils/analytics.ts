@@ -32,7 +32,7 @@ export interface IEvent {
   };
 }
 
-export interface IPageChange {
+interface ICustomPageChange {
   path: string;
   properties?: {
     [key: string]: any;
@@ -40,7 +40,7 @@ export interface IPageChange {
 }
 
 export const events$ = new Subject<IEvent>();
-export const pageChanges$ = new Subject<IPageChange>();
+export const pageChanges$ = new Subject<ICustomPageChange>();
 
 const destinationConsentChanged$ = eventEmitter
   .observeEvent<ISavedDestinations[]>('destinationConsentChanged')
@@ -58,6 +58,7 @@ export const initializeFor = (destination: IDestination) => {
   ]).pipe(
     filter(([consent, tenant, user]) => {
       const config = getDestinationConfig(destination);
+
       return (
         consent.eventValue[destination] &&
         (!config || isDestinationActive(config, tenant.data, user?.data))
@@ -73,7 +74,7 @@ export const bufferUntilInitialized = <T>(
   o$: Observable<T>
 ): Observable<T> => {
   return concat(
-    o$.pipe(buffer(initializeFor(destination).pipe(take(1))), mergeAll()),
+    o$.pipe(buffer(initializeFor(destination)), take(1), mergeAll()),
     o$
   );
 };

@@ -1,12 +1,18 @@
 import React from 'react';
-import { FormattedRelative } from 'react-intl';
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+
+// utils
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
+import clHistory from 'utils/cl-router/history';
+import { timeAgo } from 'utils/dateUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
-import clHistory from 'utils/cl-router/history';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.button`
   display: flex;
@@ -22,11 +28,11 @@ const Container = styled.button`
 
   &:hover,
   &:focus {
-    color: ${colors.text};
-    background-color: ${colors.clDropdownHoverBackground};
+    color: ${colors.textPrimary};
+    background-color: ${colors.grey300};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 5px;
@@ -43,9 +49,8 @@ const IconContainer = styled.div`
 `;
 
 const StyledIcon: any = styled(Icon)`
-  flex: 0 0 22px;
-  height: 22px;
-  fill: ${colors.label};
+  flex: 0 0 24px;
+  fill: ${colors.textSecondary};
   opacity: ${(props: any) => (props.isRead ? '0.4' : '1')};
 `;
 
@@ -54,7 +59,7 @@ const Body = styled.div`
 `;
 
 const Message = styled.div<{ isRead: boolean }>`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: ${(props) => (props.isRead ? 'normal' : '500')};
   text-align: left;
@@ -62,7 +67,7 @@ const Message = styled.div<{ isRead: boolean }>`
   margin-bottom: 4px;
 
   a {
-    color: ${colors.clBlueDark};
+    color: ${colors.teal};
     text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -71,7 +76,7 @@ const Message = styled.div<{ isRead: boolean }>`
     hyphens: auto;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      color: ${darken(0.15, colors.teal)};
       text-decoration: underline;
     }
   }
@@ -79,47 +84,48 @@ const Message = styled.div<{ isRead: boolean }>`
 
 const Timing = styled.span`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   text-align: left;
 `;
 
 type Props = {
-  icon?: string;
+  icon?: IconNames;
   timing?: string;
   children: any;
   linkTo: string;
   isRead: boolean;
 };
 
-class NotificationWrapper extends React.PureComponent<Props> {
-  navigate = () => {
-    const { linkTo } = this.props;
+const NotificationWrapper = ({
+  icon,
+  children,
+  timing,
+  isRead,
+  linkTo,
+}: Props) => {
+  const locale = useLocale();
+  const navigate = () => {
     if (linkTo) {
       trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
       clHistory.push(linkTo);
     }
   };
 
-  render() {
-    const { icon, children, timing, isRead } = this.props;
-
+  if (!isNilOrError(locale)) {
     return (
-      <Container role="link" onClick={this.navigate}>
+      <Container role="link" onClick={navigate}>
         <IconContainer>
           {icon && <StyledIcon name={icon} isRead={isRead} />}
         </IconContainer>
         <Body>
           <Message isRead={isRead}>{children}</Message>
-          {timing && (
-            <Timing>
-              <FormattedRelative value={timing} />
-            </Timing>
-          )}
+          {timing && <Timing>{timeAgo(Date.parse(timing), locale)}</Timing>}
         </Body>
       </Container>
     );
   }
-}
+  return null;
+};
 
 export default NotificationWrapper;

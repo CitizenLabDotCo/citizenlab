@@ -11,14 +11,14 @@ module ProjectFolders
         def resolve
           if user&.project_folder_moderator? && !user.admin?
             folder_publication_ids = ProjectFolders::Folder.where(id: user.moderated_project_folder_ids)
-                                      .includes(:admin_publication)
-                                      .pluck('admin_publications.id')
+              .includes(:admin_publication)
+              .pluck('admin_publications.id')
 
             all_ids = user.moderatable_project_ids + scope.user_groups_visible(user).not_draft.or(scope.publicly_visible.not_draft)
 
             scope.includes(:admin_publication)
-                 .where(admin_publications: { parent_id: folder_publication_ids })
-                 .or(scope.includes(:admin_publication).where(projects: { id: all_ids }))
+              .where(admin_publications: { parent_id: folder_publication_ids })
+              .or(scope.includes(:admin_publication).where(projects: { id: all_ids }))
           else
             super
           end

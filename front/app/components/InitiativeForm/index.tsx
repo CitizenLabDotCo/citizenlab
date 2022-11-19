@@ -22,8 +22,8 @@ import Link from 'utils/cl-router/Link';
 
 // intl
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { MessageDescriptor, injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
@@ -38,7 +38,7 @@ const Form = styled.form`
 `;
 
 const StyledFormSection = styled(FormSection)`
-  ${media.largePhone`
+  ${media.phone`
     padding-left: 18px;
     padding-right: 18px;
   `}
@@ -86,11 +86,14 @@ interface State {
     [key in keyof FormValues]?: boolean | undefined;
   };
   errors: {
-    [key in keyof FormValues]?: IMessageInfo | undefined;
+    [key in keyof FormValues]?: { message: MessageDescriptor } | undefined;
   };
 }
 
-class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
+class InitiativeForm extends React.Component<
+  Props & WrappedComponentProps,
+  State
+> {
   static titleMinLength = 10;
   static titleMaxLength = 72;
   static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
@@ -518,7 +521,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 id="initiative-banner-dropzone"
                 images={banner ? [banner] : null}
                 imagePreviewRatio={360 / 1440}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
                 onAdd={this.addBanner}
                 onRemove={this.removeBanner}
               />
@@ -537,7 +542,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 id="initiative-image-dropzone"
                 images={image ? [image] : null}
                 imagePreviewRatio={135 / 298}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
                 onAdd={this.addImage}
                 onRemove={this.removeImage}
               />

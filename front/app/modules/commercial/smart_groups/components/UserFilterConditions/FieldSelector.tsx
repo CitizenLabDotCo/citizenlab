@@ -18,8 +18,8 @@ import {
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -42,7 +42,7 @@ const FieldSelector = memo(
     onChange,
     field,
     fieldName,
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
     const userCustomFields = useUserCustomFields({});
 
@@ -50,7 +50,7 @@ const FieldSelector = memo(
       userCustomFields: IUserCustomFieldData[]
     ): IOption[] => {
       const labelMessages: {
-        [key in TStaticRuleType]: ReactIntl.FormattedMessage.MessageDescriptor;
+        [key in TStaticRuleType]: MessageDescriptor;
       } = {
         email: messages.field_email,
         lives_in: messages.field_lives_in,

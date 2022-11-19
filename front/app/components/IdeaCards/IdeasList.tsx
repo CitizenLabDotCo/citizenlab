@@ -5,8 +5,6 @@ import IdeaCard from 'components/IdeaCard';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { rgba } from 'polished';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
 import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'services/ideas';
@@ -17,7 +15,7 @@ const StyledIdeaCard = styled(IdeaCard)`
   width: calc(50% - 20px);
   margin: 10px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     width: 100%;
   `};
 `;
@@ -28,14 +26,12 @@ const Footer = styled.div`
   justify-content: center;
   margin-top: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
     margin-top: 0px;
   `}
 `;
-
-const ShowMoreButton = styled(Button)``;
 
 const Loading = styled.div`
   width: 100%;
@@ -43,13 +39,13 @@ const Loading = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     height: calc(100vh - 280px);
     position: sticky;
     top: 200px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 150px;
   `}
 `;
@@ -90,75 +86,69 @@ const IdeasList = ({
   hideIdeaStatus = false,
 }: Props) => {
   const theme: any = useTheme();
-  const locale = useLocale();
 
   const loadMoreIdeas = () => {
     onLoadMore();
   };
 
-  if (!isNilOrError(locale)) {
-    return (
-      <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={tabIndex}>
-        {querying ? (
-          <Loading>
-            <Spinner />
-          </Loading>
-        ) : (
-          <>
-            {hasIdeas && list && (
-              <Box
-                ml="-13px"
-                mr="-13px"
-                mt="-10px"
-                display="flex"
-                flexWrap="wrap"
-                id="e2e-ideas-list"
-              >
-                {list.map((idea) => {
-                  return (
-                    <StyledIdeaCard
-                      key={idea.id}
-                      ideaId={idea.id}
-                      participationMethod={participationMethod}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                      hideImage={hideImage}
-                      hideImagePlaceholder={hideImagePlaceholder}
-                      hideIdeaStatus={hideIdeaStatus}
-                    />
-                  );
-                })}
-              </Box>
-            )}
+  return (
+    <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={tabIndex}>
+      {querying ? (
+        <Loading>
+          <Spinner />
+        </Loading>
+      ) : (
+        <>
+          {hasIdeas && list && (
+            <Box
+              ml="-13px"
+              mr="-13px"
+              mt="-10px"
+              display="flex"
+              flexWrap="wrap"
+              id="e2e-ideas-list"
+            >
+              {list.map((idea) => {
+                return (
+                  <StyledIdeaCard
+                    key={idea.id}
+                    ideaId={idea.id}
+                    participationMethod={participationMethod}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                    hideImage={hideImage}
+                    hideImagePlaceholder={hideImagePlaceholder}
+                    hideIdeaStatus={hideIdeaStatus}
+                  />
+                );
+              })}
+            </Box>
+          )}
 
-            {hasMore && (
-              <Footer>
-                <ShowMoreButton
-                  locale={locale}
-                  id="e2e-idea-cards-show-more-button"
-                  onClick={loadMoreIdeas}
-                  buttonStyle="secondary"
-                  text={<FormattedMessage {...messages.showMore} />}
-                  processing={loadingMore}
-                  height="50px"
-                  icon="showMore"
-                  iconPos="left"
-                  textColor={theme.colorText}
-                  bgColor={rgba(theme.colorText, 0.08)}
-                  bgHoverColor={rgba(theme.colorText, 0.12)}
-                  fontWeight="500"
-                />
-              </Footer>
-            )}
+          {hasMore && (
+            <Footer>
+              <Button
+                id="e2e-idea-cards-show-more-button"
+                onClick={loadMoreIdeas}
+                buttonStyle="secondary"
+                text={<FormattedMessage {...messages.showMore} />}
+                processing={loadingMore}
+                height="50px"
+                icon="refresh"
+                iconPos="left"
+                textColor={theme.colors.tenantText}
+                bgColor={rgba(theme.colors.tenantText, 0.08)}
+                bgHoverColor={rgba(theme.colors.tenantText, 0.12)}
+                fontWeight="500"
+              />
+            </Footer>
+          )}
 
-            {!hasIdeas && <EmptyIdeas />}
-          </>
-        )}
-      </div>
-    );
-  }
-
-  return null;
+          {!hasIdeas && <EmptyIdeas />}
+        </>
+      )}
+    </div>
+  );
 };
 
 export default IdeasList;

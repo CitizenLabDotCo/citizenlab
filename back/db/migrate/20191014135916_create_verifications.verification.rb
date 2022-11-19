@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from verification (originally 20191014135520)
 class CreateVerifications < ActiveRecord::Migration[5.2]
   def change

@@ -1,3 +1,16 @@
+# frozen_string_literal: true
+
+module ConsoleMethods
+  def switch(tenant_name)
+    Apartment::Tenant.switch! tenant_name
+    "Switched to tenant #{Apartment::Tenant.current}"
+  end
+
+  def localhost
+    switch 'localhost'
+  end
+end
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -19,7 +32,7 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
 
     config.cache_store = :memory_store
@@ -44,12 +57,10 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Previewing mails from all engines.
-  config.action_mailer.preview_path = "#{Rails.root}/engines/*/*/spec/mailers/previews"
-
+  config.action_mailer.preview_path = Rails.root.join('engines/*/*/spec/mailers/previews')
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
-
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
@@ -71,10 +82,10 @@ Rails.application.configure do
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    STDOUT.sync = true
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
+    $stdout.sync = true
     config.rails_semantic_logger.add_file_appender = false
-    config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
+    config.semantic_logger.add_appender(io: $stdout, level: config.log_level, formatter: config.rails_semantic_logger.format)
   end
 
   # In development, we want to keep the logs closer to classic rails
@@ -96,4 +107,16 @@ Rails.application.configure do
     # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
     # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
   end
+
+  # rubocop:disable Rails/Output
+  console do
+    # We use Pry as our Rails console (see https://github.com/pry/pry-rails), so:
+    TOPLEVEL_BINDING.eval('self').extend(ConsoleMethods)
+    puts
+    puts 'Available methods:'
+    puts '  `switch(tenant_name)`: switch to given tenant.'
+    puts '  `localhost`: switch to localhost.'
+    puts
+  end
+  # rubocop:enable Rails/Output
 end

@@ -1,52 +1,66 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import { FacebookButton } from 'react-social';
+import { Medium } from '../utils';
+import { FacebookShareButton } from 'react-share';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
+
+// style
+import { colors } from 'utils/styleUtils';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
 
 interface Props {
-  className?: string;
-  onClick: () => void;
-  children: JSX.Element | JSX.Element[];
   url: string;
+  facebookMessage: string;
 }
 
+const StyledBox = styled(Box)`
+  display: flex;
+  background-color: ${colors.facebook};
+  border-radius: 3px;
+  height: 40px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${darken(0.1, colors.facebook)};
+  }
+`;
+
 const Facebook = ({
-  children,
-  onClick,
-  className,
+  facebookMessage,
   url,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
-  const tenant = useAppConfiguration();
-
+}: Props & WrappedComponentProps) => {
   const handleClick = () => {
-    onClick();
+    trackClick('facebook');
   };
 
-  if (!isNilOrError(tenant)) {
-    const facebookConfig = tenant.data.attributes.settings?.facebook_login;
-
-    if (facebookConfig?.allowed && facebookConfig?.app_id) {
-      return (
-        <FacebookButton
-          appId={facebookConfig.app_id}
-          url={url}
-          className={className}
-          onClick={handleClick}
-          sharer={true}
-          aria-label={formatMessage(messages.shareOnFacebook)}
-        >
-          {children}
-        </FacebookButton>
-      );
-    }
-  }
-
+  const trackClick = (medium: Medium) => () => {
+    const properties = { network: medium };
+    trackEventByName(tracks.shareButtonClicked.name, properties);
+  };
+  return (
+    <StyledBox onClick={handleClick}>
+      <FacebookShareButton
+        quote={facebookMessage}
+        url={url}
+        aria-label={formatMessage(messages.shareOnFacebook)}
+      >
+        <Icon name="facebook" width="20px" fill="white" />
+      </FacebookShareButton>
+    </StyledBox>
+  );
   return null;
 };
 

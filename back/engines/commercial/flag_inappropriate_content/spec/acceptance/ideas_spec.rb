@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Ideas' do
-
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
@@ -36,9 +36,9 @@ resource 'Ideas' do
     let(:location_description) { 'Stanley Road 4' }
 
     example 'Toxicity detection job is enqueued when creating an idea', document: false do
-      expect {
+      expect do
         do_request
-      }.to have_enqueued_job(ToxicityDetectionJob)
+      end.to have_enqueued_job(ToxicityDetectionJob)
     end
   end
 
@@ -46,7 +46,7 @@ resource 'Ideas' do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      @idea =  create(:idea, author: @user)
+      @idea = create(:idea, author: @user)
     end
 
     with_options scope: :idea do
@@ -59,28 +59,28 @@ resource 'Ideas' do
     let(:id) { @idea.id }
 
     describe do
-      let(:title_multiloc) { {'en' => 'Changed title' } }
+      let(:title_multiloc) { { 'en' => 'Changed title' } }
       let(:location_description) { 'Watkins Road 8' }
 
       example 'Toxicity detection job is enqueued when updating an idea\'s title and location description', document: false do
-        expect {
+        expect do
           do_request
-        }.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :location_description])
+        end.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: %i[title_multiloc location_description])
       end
     end
 
     describe 'when already flagged' do
-      before do 
+      before do
         create(:inappropriate_content_flag, flaggable: @idea, toxicity_label: 'insult')
       end
 
       describe do
-        let(:title_multiloc) { {'en' => 'Changed title' } }
+        let(:title_multiloc) { { 'en' => 'Changed title' } }
 
         example 'Toxicity detection job is enqueued when updating an idea\'s title and re-verifies all fields', document: false do
-          expect {
+          expect do
             do_request
-          }.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :body_multiloc, :location_description])
+          end.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: %i[title_multiloc body_multiloc location_description])
         end
       end
 
@@ -88,9 +88,9 @@ resource 'Ideas' do
         let(:budget) { 17 }
 
         example 'No toxicity detection job is enqueued when updating an idea\'s budget', document: false do
-          expect {
+          expect do
             do_request
-          }.not_to have_enqueued_job(ToxicityDetectionJob)
+          end.not_to have_enqueued_job(ToxicityDetectionJob)
         end
       end
     end
@@ -99,11 +99,10 @@ resource 'Ideas' do
       let(:budget) { 11 }
 
       example 'No toxicity detection job is enqueued when updating idea attributes without text', document: false do
-        expect {
+        expect do
           do_request
-        }.not_to have_enqueued_job(ToxicityDetectionJob)
+        end.not_to have_enqueued_job(ToxicityDetectionJob)
       end
     end
   end
-
 end

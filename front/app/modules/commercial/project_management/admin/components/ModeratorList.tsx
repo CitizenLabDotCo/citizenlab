@@ -7,7 +7,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import { isNilOrError } from 'utils/helperUtils';
 import { deleteProjectModerator } from 'modules/commercial/project_management/services/projectModerators';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
 // hooks
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const ModeratorList = memo(
-  ({ projectId, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+  ({ projectId, intl: { formatMessage } }: Props & WrappedComponentProps) => {
     const moderators = useProjectModerators(projectId);
     const authUser = useAuthUser();
 

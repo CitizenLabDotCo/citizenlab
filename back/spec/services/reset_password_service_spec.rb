@@ -28,11 +28,11 @@ describe ResetPasswordService do
     let(:invalid_token) { 'an_invalid_token_example' }
 
     it 'returns true if the token matches' do
-      expect(service.token_valid?(user, valid_token)).to eq(true)
+      expect(service.token_valid?(user, valid_token)).to be(true)
     end
 
     it 'return false if the token does not match' do
-      expect(service.token_valid?(user, invalid_token)).to eq(false)
+      expect(service.token_valid?(user, invalid_token)).to be(false)
     end
   end
 

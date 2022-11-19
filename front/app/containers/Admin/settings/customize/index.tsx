@@ -4,16 +4,13 @@ import { map, switchMap } from 'rxjs/operators';
 import { get, has, isEmpty, omitBy } from 'lodash-es';
 
 // components
+import { Section, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Branding from './Branding';
-import Header from './Header';
 import ProjectHeader from './ProjectHeader';
-import HomepageCustomizableSection from './HomepageCustomizableSection';
-import Events from './Events';
-import AllInput from './AllInput';
 
 // style
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
@@ -22,7 +19,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import sharedSettingsMessages from '../messages';
@@ -38,21 +35,17 @@ import {
   IUpdatedAppConfigurationProperties,
   TAppConfigurationSetting,
 } from 'services/appConfiguration';
-import { toggleEvents, toggleAllInput } from 'services/navbar';
 
 // typings
 import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
 
 interface Props {
-  lang: string;
   theme: any;
 }
 
 interface IAttributesDiff {
   settings?: Partial<IAppConfigurationSettings>;
-  homepage_info_multiloc?: Multiloc;
   logo?: UploadFile;
-  header_bg?: UploadFile;
   style?: IAppConfigurationStyle;
 }
 
@@ -61,21 +54,26 @@ export interface State {
   attributesDiff: IAttributesDiff;
   tenant: IAppConfiguration | null;
   logo: UploadFile[] | null;
-  header_bg: UploadFile[] | null;
   loading: boolean;
   errors: CLErrors;
   saved: boolean;
   logoError: string | null;
-  headerError: string | null;
   titleError: Multiloc;
   settings: Partial<IAppConfigurationSettings>;
   subtitleError: Multiloc;
-  newEventsNavbarItemEnabled: boolean | null;
-  newAllInputNavbarItemEnabled: boolean | null;
 }
 
+// Styles and custom components
+export const StyledSection = styled(Section)`
+  margin-bottom 20px;
+`;
+
+export const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom 30px;
+`;
+
 class SettingsCustomizeTab extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscriptions: Subscription[];
@@ -87,17 +85,13 @@ class SettingsCustomizeTab extends PureComponent<
       attributesDiff: {},
       tenant: null,
       logo: null,
-      header_bg: null,
       loading: false,
       errors: {},
       saved: false,
       logoError: null,
-      headerError: null,
       titleError: {},
       subtitleError: {},
       settings: {},
-      newEventsNavbarItemEnabled: null,
-      newAllInputNavbarItemEnabled: null,
     };
     this.subscriptions = [];
   }
@@ -111,40 +105,27 @@ class SettingsCustomizeTab extends PureComponent<
         .pipe(
           switchMap(([locale, tenant]) => {
             const logoUrl = get(tenant, 'data.attributes.logo.large', null);
-            const headerUrl = get(
-              tenant,
-              'data.attributes.header_bg.large',
-              null
-            );
             const settings = get(tenant, 'data.attributes.settings', {});
 
             const logo$ = logoUrl
               ? convertUrlToUploadFileObservable(logoUrl, null, null)
               : of(null);
-            const headerBg$ = headerUrl
-              ? convertUrlToUploadFileObservable(headerUrl, null, null)
-              : of(null);
 
-            return combineLatest([logo$, headerBg$]).pipe(
-              map(([tenantLogo, tenantHeaderBg]) => ({
+            return combineLatest([logo$]).pipe(
+              map(([tenantLogo]) => ({
                 locale,
                 tenant,
                 tenantLogo,
-                tenantHeaderBg,
                 settings,
               }))
             );
           })
         )
-        .subscribe(
-          ({ locale, tenant, tenantLogo, tenantHeaderBg, settings }) => {
-            const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
-            const header_bg = !isNilOrError(tenantHeaderBg)
-              ? [tenantHeaderBg]
-              : [];
-            this.setState({ locale, tenant, logo, header_bg, settings });
-          }
-        ),
+        .subscribe(({ locale, tenant, tenantLogo, settings }) => {
+          const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
+
+          this.setState({ locale, tenant, logo, settings });
+        }),
     ];
   }
 
@@ -161,22 +142,14 @@ class SettingsCustomizeTab extends PureComponent<
       !localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet)
         ? null
         : formatMessage(messages.noLogo);
-    const hasRemoteHeader = has(tenant, 'data.attributes.header_bg.large');
-    const localHeaderIsNotSet = !has(attributesDiff, 'header_bg');
-    const localHeaderIsNull =
-      !localHeaderIsNotSet && attributesDiff.header_bg === null;
-    const headerError =
-      !localHeaderIsNull || (hasRemoteHeader && localHeaderIsNotSet)
-        ? null
-        : formatMessage(messages.noHeader);
     const hasTitleError = !isEmpty(omitBy(this.state.titleError, isEmpty));
     const hasSubtitleError = !isEmpty(
       omitBy(this.state.subtitleError, isEmpty)
     );
 
-    this.setState({ logoError, headerError });
+    this.setState({ logoError });
 
-    return !logoError && !headerError && !hasTitleError && !hasSubtitleError;
+    return !logoError && !hasTitleError && !hasSubtitleError;
   };
 
   save = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -195,24 +168,11 @@ class SettingsCustomizeTab extends PureComponent<
           );
         }
 
-        const { newEventsNavbarItemEnabled, newAllInputNavbarItemEnabled } =
-          this.state;
-
-        if (newEventsNavbarItemEnabled !== null) {
-          await toggleEvents({ enabled: newEventsNavbarItemEnabled });
-        }
-
-        if (newAllInputNavbarItemEnabled !== null) {
-          await toggleAllInput({ enabled: newAllInputNavbarItemEnabled });
-        }
-
         this.setState({
           loading: false,
           saved: true,
           errors: {},
           attributesDiff: {},
-          newEventsNavbarItemEnabled: null,
-          newAllInputNavbarItemEnabled: null,
         });
       } catch (error) {
         if (isCLErrorJSON(error)) {
@@ -256,26 +216,7 @@ class SettingsCustomizeTab extends PureComponent<
     const { locale, tenant } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const homepageInfoPage = tenant.data.attributes.homepage_info_multiloc;
-
-      const {
-        logo,
-        header_bg,
-        attributesDiff,
-        logoError,
-        headerError,
-        titleError,
-        subtitleError,
-        errors,
-        saved,
-        newEventsNavbarItemEnabled,
-        newAllInputNavbarItemEnabled,
-      } = this.state;
-
-      const latestAppConfigStyleSettings = {
-        ...tenant.data.attributes.style,
-        ...attributesDiff.style,
-      };
+      const { logo, attributesDiff, logoError, errors, saved } = this.state;
 
       const latestAppConfigSettings = {
         ...tenant.data.attributes,
@@ -295,42 +236,10 @@ class SettingsCustomizeTab extends PureComponent<
             getSetting={getSetting}
           />
 
-          <Header
-            header_bg={header_bg}
-            headerError={headerError}
-            titleError={titleError}
-            subtitleError={subtitleError}
-            latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-            latestAppConfigSettings={latestAppConfigSettings}
-            setParentState={setState}
-            getSetting={getSetting}
-            handleSettingOnChange={this.handleSettingOnChange}
-            errors={errors}
-          />
-
           <ProjectHeader
             currentlyWorkingOnText={
               latestAppConfigCoreSettings?.['currently_working_on_text']
             }
-            setParentState={setState}
-          />
-
-          <HomepageCustomizableSection
-            homepageInfoMultiloc={
-              attributesDiff.homepage_info_multiloc || homepageInfoPage
-            }
-            homepageInfoErrors={errors.homepage_info}
-            setParentState={setState}
-          />
-
-          <Events
-            newNavbarItemEnabled={newEventsNavbarItemEnabled}
-            setParentState={setState}
-            getSetting={getSetting}
-          />
-
-          <AllInput
-            newNavbarItemEnabled={newAllInputNavbarItemEnabled}
             setParentState={setState}
           />
 
@@ -352,4 +261,4 @@ class SettingsCustomizeTab extends PureComponent<
   }
 }
 
-export default withTheme(injectIntl<Props>(SettingsCustomizeTab));
+export default withTheme(injectIntl(SettingsCustomizeTab));

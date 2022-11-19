@@ -30,12 +30,11 @@ jest.mock('hooks/useIdea', () => {
 });
 
 jest.mock('utils/cl-router/history');
-
 jest.mock('hooks/useLocale');
-
 jest.mock('utils/cl-intl');
+jest.mock('utils/cl-router/Link');
 
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
@@ -48,7 +47,6 @@ jest.mock('react-router', () => {
         );
       };
     },
-    Link: () => 'Link',
   };
 });
 

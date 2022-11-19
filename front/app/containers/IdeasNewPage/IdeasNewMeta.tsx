@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
 // resources
@@ -22,7 +22,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import { getInputTerm } from 'services/participationContexts';
@@ -39,7 +39,7 @@ interface DataProps {
 interface Props
   extends InputProps,
     DataProps,
-    InjectedIntlProps,
+    WrappedComponentProps,
     InjectedLocalized {}
 
 const IdeasNewMeta = React.memo<Props>(
@@ -122,10 +122,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   },
 });
 
-export default withRouter<InputProps>(
-  (inputProps: InputProps & WithRouterProps) => (
-    <Data {...inputProps}>
-      {(dataprops) => <IdeasNewMetaWithHoc {...inputProps} {...dataprops} />}
-    </Data>
-  )
-);
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {(dataprops) => <IdeasNewMetaWithHoc {...inputProps} {...dataprops} />}
+  </Data>
+));

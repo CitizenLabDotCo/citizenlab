@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'twilio-ruby'
 
 class Texting::Sms::Providers::Twilio

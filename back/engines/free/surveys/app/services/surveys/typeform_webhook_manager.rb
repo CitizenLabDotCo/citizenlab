@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'uri'
 
 module Surveys
-
   class TypeformWebhookManager
-
     # @param [Typeform::Api] tf_api
     # @param [String] typeform_secret_token Token used to verify that requests
     #   are coming from Typeform.
@@ -38,7 +38,7 @@ module Surveys
     def delete_all_webhooks
       [Project.is_participation_context, Phase].each do |scope|
         scope.where(participation_method: 'survey', survey_service: 'typeform')
-             .each { |pc| delete_webhook(pc.survey_embed_url, pc.id) }
+          .each { |pc| delete_webhook(pc.survey_embed_url, pc.id) }
       end
     end
 
@@ -47,7 +47,7 @@ module Surveys
     def update_all_webhooks
       [Project.is_participation_context, Phase].each do |scope|
         scope.where(participation_method: 'survey', survey_service: 'typeform')
-             .each { |pc| save_webhook(pc.survey_embed_url, pc) }
+          .each { |pc| save_webhook(pc.survey_embed_url, pc) }
       end
     end
 
@@ -56,24 +56,27 @@ module Surveys
     # Creates or updates a Typeform webhook
     def save_webhook(form_url, participation_context)
       response = @tf_api.create_or_update_webhook(
-          form_id: embed_url_to_form_id(form_url),
-          tag: participation_context.id,
-          url: webhook_url(participation_context),
-          secret: @secret
+        form_id: embed_url_to_form_id(form_url),
+        tag: participation_context.id,
+        url: webhook_url(participation_context),
+        secret: @secret
       )
-      Rails.logger.error("Failed to save typeform webhook",
+      unless response.success?
+        Rails.logger.error(
+          'Failed to save typeform webhook',
           form_url: form_url,
           participation_context_id: participation_context.id,
           participation_context_class: participation_context.class.name,
           response: response.parsed_response
-      ) unless response.success?
+        )
+      end
       response
     end
 
     def delete_webhook(form_url, webhook_id)
       @tf_api.delete_webhook(
-          form_id: embed_url_to_form_id(form_url),
-          tag: webhook_id,
+        form_id: embed_url_to_form_id(form_url),
+        tag: webhook_id
       )
     end
 

@@ -2,7 +2,6 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { cloneDeep, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { LiveMessage } from 'react-aria-live';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -31,12 +30,12 @@ import { openVerificationModal } from 'components/Verification/verificationModal
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // a11y
@@ -52,15 +51,14 @@ const Container = styled.li`
 `;
 
 const UpvoteIcon = styled(Icon)`
-  fill: ${colors.label};
-  flex: 0 0 17px;
-  width: 17px;
-  height: 17px;
-  margin-top: -2px;
+  fill: ${colors.textSecondary};
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
 `;
 
 const UpvoteButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   display: flex;
@@ -85,32 +83,36 @@ const UpvoteButton = styled.button`
   }
 
   &.enabled.voted {
-    color: ${colors.clGreen};
+    color: ${colors.success};
 
     ${UpvoteIcon} {
-      fill: ${colors.clGreen};
+      fill: ${colors.success};
     }
   }
 
   &.disabled:not(.voted) {
-    color: ${lighten(0.25, colors.label)};
+    color: ${lighten(0.25, colors.textSecondary)};
 
     ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.label)};
+      fill: ${lighten(0.25, colors.textSecondary)};
     }
   }
 
   &.disabled.voted {
-    color: ${lighten(0.25, colors.clGreen)};
+    color: ${lighten(0.25, colors.success)};
 
     ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.clGreen)};
+      fill: ${lighten(0.25, colors.success)};
     }
   }
 `;
 
 const UpvoteCount = styled.div`
   margin-left: 6px;
+  ${isRtl`
+    margin-right: 6px;
+    margin-left: auto;
+  `}
 `;
 
 interface InputProps {
@@ -136,7 +138,7 @@ interface State {
   upvoteCount: number;
 }
 
-class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
+class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -347,7 +349,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
             >
               <>
                 <UpvoteIcon
-                  name="upvote"
+                  name="vote-up"
                   className={`
                   ${voted ? 'voted' : 'notVoted'}
                   ${disabled ? 'disabled' : 'enabled'}
@@ -370,12 +372,11 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                 </UpvoteCount>
               )}
             </UpvoteButton>
-            <LiveMessage
-              message={formatMessage(messages.a11y_upvoteCount, {
+            <ScreenReaderOnly aria-live="polite">
+              {formatMessage(messages.a11y_upvoteCount, {
                 upvoteCount,
               })}
-              aria-live="polite"
-            />
+            </ScreenReaderOnly>
           </Container>
         );
       }

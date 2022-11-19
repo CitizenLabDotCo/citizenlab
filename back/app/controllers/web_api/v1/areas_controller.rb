@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AreasController < ApplicationController
   before_action :set_area, except: %i[index create]
   before_action :set_side_effects_service, only: %i[create update reorder destroy]
@@ -27,7 +29,7 @@ class WebApi::V1::AreasController < ApplicationController
       render json: WebApi::V1::AreaSerializer.new(
         @area,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -42,7 +44,7 @@ class WebApi::V1::AreasController < ApplicationController
       render json: WebApi::V1::AreaSerializer.new(
         @area,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -55,7 +57,7 @@ class WebApi::V1::AreasController < ApplicationController
       @side_fx_service.after_destroy(area, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

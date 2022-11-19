@@ -1,69 +1,21 @@
-// DATA
-export type Data = { name: string; [key: string]: any }[];
+import { Mapping, Bars } from './typings';
+import {
+  Mapping as ConvertedMapping,
+  Bars as ConvertedBars,
+} from 'components/admin/Graphs/MultiBarChart/typings';
 
-// MAPPING
-export interface Mapping {
-  length?: string;
-  fill?: string;
-}
-
-interface ParsedMapping {
-  length: string;
-  fill?: string;
-}
-
-export const parseMapping = (mapping?: Mapping): ParsedMapping => ({
-  length: 'value',
-  ...mapping,
+export const convertMapping = <Row>(
+  mapping: Mapping<Row>
+): ConvertedMapping<Row> => ({
+  category: mapping.category,
+  length: [mapping.length],
+  fill: mapping.fill,
+  opacity: mapping.opacity,
 });
 
-// LAYOUT
-export type Layout = 'horizontal' | 'vertical';
+export const convertBars = (bars?: Bars): ConvertedBars | undefined => {
+  if (!bars) return;
+  const { name, ...rest } = bars;
 
-// For some reason, in recharts a 'horizontal' bar chart
-// actually means a 'vertical' bar chart. For our own API
-// we use the correct terminology
-export const getRechartsLayout = (layout: Layout) =>
-  layout === 'vertical' ? 'horizontal' : 'vertical';
-
-// MARGIN
-export interface Margin {
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-}
-
-// BARS
-export interface BarProps {
-  name?: string;
-  size?: number;
-  fill?: string;
-  opacity?: string | number;
-  isAnimationActive?: boolean;
-}
-
-interface ParsedBarProps extends Omit<BarProps, 'fill' | 'size'> {
-  barSize?: number;
-  fill: string;
-}
-
-export const parseBarProps = (
-  defaultFill: string,
-  barProps?: BarProps
-): ParsedBarProps => {
-  const defaultBarProps = { fill: defaultFill };
-  if (!barProps) return defaultBarProps;
-
-  const { size, ...otherBarProps } = barProps;
-  return { ...defaultBarProps, barSize: size, ...otherBarProps };
+  return { names: name ? [name] : undefined, ...rest };
 };
-
-// AXES
-export interface AxisProps {
-  tickFormatter?: (value: any) => string;
-  type?: 'number' | 'category';
-  width?: number;
-  tickLine?: boolean;
-  hide?: boolean;
-}

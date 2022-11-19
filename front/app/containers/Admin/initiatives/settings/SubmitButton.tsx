@@ -2,7 +2,7 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -14,11 +14,14 @@ import messages from '../messages';
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+  ${isRtl`
+    justify-content: flex-end;
+  `}
 `;
 
 const ErrorMessage = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-weight: 400;
   line-height: normal;
   margin-left: 14px;
@@ -26,7 +29,7 @@ const ErrorMessage = styled.div`
 
 const SuccessMessage = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clGreenSuccess};
+  color: ${colors.success};
   font-weight: 400;
   line-height: normal;
   margin-left: 14px;

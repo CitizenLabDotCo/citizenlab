@@ -1,5 +1,4 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useCallback, useState, useEffect } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -9,7 +8,6 @@ import VerificationSteps from './VerificationSteps';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
-import useAuthUser from 'hooks/useAuthUser';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
@@ -36,6 +34,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
   padding-top: 40px;
+  padding-bottom: 60px;
   padding-left: 20px;
   padding-right: 20px;
 `;
@@ -45,8 +44,7 @@ export interface Props {
   onMounted: (id?: string) => void;
 }
 
-const VerificationModal = memo<Props>(({ className, onMounted }) => {
-  const authUser = useAuthUser();
+const VerificationModal = ({ className, onMounted }: Props) => {
   const { windowWidth } = useWindowSize();
 
   const isMounted = useIsMounted();
@@ -55,7 +53,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   const [error, setError] = useState<IVerificationError>(null);
   const opened = !!activeStep;
 
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   useEffect(() => {
     if (isMounted() && onMounted) {
@@ -68,11 +66,9 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
     const subscriptions = [
       openVerificationModal$.subscribe(
         ({ eventValue: { step, context, error } }) => {
-          if (!isNilOrError(authUser)) {
-            setActiveStep(step);
-            setContext(context);
-            error && setError(error);
-          }
+          setActiveStep(step);
+          setContext(context);
+          error && setError(error);
         }
       ),
       closeVerificationModal$.subscribe(() => {
@@ -83,7 +79,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
 
     return () =>
       subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }, [authUser]);
+  }, []);
 
   const onClose = useCallback(() => {
     closeVerificationModal();
@@ -131,6 +127,6 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
       </Modal>
     </ErrorBoundary>
   );
-});
+};
 
 export default VerificationModal;

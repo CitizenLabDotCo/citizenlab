@@ -226,7 +226,7 @@ mi:
       action_share_twitter: 'Inform your followers on %{twitterLink}'
       cta_view_initiative: 'Go to your proposal'
       link: link
-      main_header: 'You posted an proposal! Let''s gather support for it.'
+      main_header: 'You posted a proposal! Let''s gather support for it.'
       message_next_steps: '%{userFirstName}, your proposal has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your proposal. Find out what next steps you can take below.'
       message_get_votes: 'Reach the voting threshold:'
       preheader: 'Thank you for sharing your proposal %{initiativeTitle} for %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'

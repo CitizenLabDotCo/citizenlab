@@ -1,17 +1,19 @@
-require "rails_helper"
+# frozen_string_literal: true
+
+require 'rails_helper'
 
 describe TrendingIdeaService do
   before do
     generate_trending_ideas 5
   end
 
-  describe "filter_trending" do
-    it "filters trending ideas in accordance with the trending criterea (those that have a positive trending score)" do
+  describe 'filter_trending' do
+    it 'filters trending ideas in accordance with the trending criterea (those that have a positive trending score)' do
       trending_filter = nil
       expected_selection = nil
       travel_to Time.now do
-        trending_filter = TrendingIdeaService.new.filter_trending(Idea.all).map(&:id)
-        expected_selection = Idea.all.select{ |i| TrendingIdeaService.new.trending? i }.map(&:id)
+        trending_filter = described_class.new.filter_trending(Idea.all).map(&:id)
+        expected_selection = Idea.all.select { |i| described_class.new.trending? i }.map(&:id)
       end
       expect(trending_filter.size).to eq expected_selection.size
       expect(trending_filter.sort).to eq expected_selection.sort
@@ -20,19 +22,19 @@ describe TrendingIdeaService do
       if trending_idea ## updating idea status to rejected should filter the idea out from trending
         trending_idea.idea_status = IdeaStatus.find_by(code: 'rejected') || create(:idea_status, code: 'rejected')
         trending_idea.save
-        trending_filter_after = TrendingIdeaService.new.filter_trending(Idea.all).map(&:id)
-        expect(trending_filter.size).to eq (trending_filter_after.size + 1)
+        trending_filter_after = described_class.new.filter_trending(Idea.all).map(&:id)
+        expect(trending_filter.size).to eq(trending_filter_after.size + 1)
       end
     end
   end
 
-  describe "order_trending" do
-    it "sorts trending to untrending in accordance with the trending score" do
+  describe 'sort_trending' do
+    it 'sorts trending to untrending in accordance with the trending score' do
       trending_score_sorted =  nil
       expected_order = nil
       travel_to Time.now do
-        trending_score_sorted = TrendingIdeaService.new.sort_trending(Idea.all).map(&:id)
-        expected_order = Idea.all.sort_by{ |i| TrendingIdeaService.new.trending_score i }.map(&:id).reverse
+        trending_score_sorted = described_class.new.sort_trending(Idea.all).map(&:id)
+        expected_order = Idea.all.sort_by { |i| described_class.new.trending_score i }.map(&:id).reverse
       end
 
       # lines = []
@@ -64,31 +66,29 @@ describe TrendingIdeaService do
     end
   end
 
-
-  def generate_trending_ideas n
-    n.times do |i|
-      published_at = Faker::Time.between(from: 1.years.ago, to: DateTime.now)
+  def generate_trending_ideas(n)
+    n.times do |_i|
+      published_at = Faker::Time.between(from: 1.year.ago, to: DateTime.now)
       author = create(:user)
       idea = create(:idea, author: author, published_at: published_at)
       is_popular = (rand(3) == 0)
-      (if is_popular then rand(20) else rand(3) end).times do |i| 
+      (is_popular ? rand(20) : rand(3)).times do |_i|
         create(:vote, votable: idea, mode: 'up',
-               created_at: Faker::Time.between(from: published_at, to: DateTime.now))
+          created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
-      if (rand(2) == 0)
-        create(:vote, votable: idea, mode: 'up', 
-               user: author,
-               created_at: Faker::Time.between(from: published_at, to: DateTime.now))
+      if rand(2) == 0
+        create(:vote, votable: idea, mode: 'up',
+          user: author,
+          created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
-      (if is_popular then rand(10) else rand(3) end).times do |i| 
-        create(:vote, votable: idea, mode: 'down', 
-               created_at: Faker::Time.between(from: published_at, to: DateTime.now))
+      (is_popular ? rand(10) : rand(3)).times do |_i|
+        create(:vote, votable: idea, mode: 'down',
+          created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
-      (if is_popular then rand(10) else rand(3) end).times do |i| 
-        create(:comment, post: idea, 
-               created_at: Faker::Time.between(from: published_at, to: DateTime.now))
+      (is_popular ? rand(10) : rand(3)).times do |_i|
+        create(:comment, post: idea,
+          created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
     end
   end
-
 end

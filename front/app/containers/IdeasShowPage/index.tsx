@@ -1,8 +1,7 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
-import { adopt } from 'react-adopt';
+import { useParams } from 'react-router-dom';
 
 // components
 import IdeasShow from 'containers/IdeasShow';
@@ -10,11 +9,9 @@ import Button from 'components/UI/Button';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 import Link from 'utils/cl-router/Link';
 
-// resources
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useIdea from 'hooks/useIdea';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -33,7 +30,7 @@ const IdeaNotFoundWrapper = styled.div`
   align-items: center;
   padding: 4rem;
   font-size: ${fontSizes.l}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const Container = styled.div`
@@ -57,14 +54,14 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-left: 60px;
   padding-right: 60px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${({
       theme: { mobileMenuHeight, mobileTopBarHeight },
     }) => mobileMenuHeight + mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -75,17 +72,11 @@ const StyledSignInButton = styled(Button)`
   margin-bottom: 20px;
 `;
 
-interface InputProps {}
-
-interface DataProps {
-  idea: GetIdeaChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const IdeasShowPage = memo<Props>(({ idea }) => {
+const IdeasShowPage = () => {
+  const { slug } = useParams() as { slug: string };
+  const idea = useIdea({ ideaSlug: slug });
   const { windowWidth } = useWindowSize();
-  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+  const tablet = windowWidth <= viewportWidths.tablet;
 
   if (isError(idea)) {
     return (
@@ -107,7 +98,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
   if (!isNilOrError(idea)) {
     return (
       <Container>
-        {smallerThanMaxTablet && (
+        {tablet && (
           <StyledIdeaShowPageTopBar
             projectId={idea.relationships.project.data.id}
             ideaId={idea.id}
@@ -124,18 +115,6 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
   }
 
   return null;
-});
+};
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  idea: ({ params, render }) => (
-    <GetIdea ideaSlug={params.slug}>{render}</GetIdea>
-  ),
-});
-
-export default withRouter<InputProps>(
-  (inputProps: InputProps & WithRouterProps) => (
-    <Data {...inputProps}>
-      {(dataProps) => <IdeasShowPage {...inputProps} {...dataProps} />}
-    </Data>
-  )
-);
+export default IdeasShowPage;

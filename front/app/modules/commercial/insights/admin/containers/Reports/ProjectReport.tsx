@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import useLocalize from 'hooks/useLocalize';
+import { isEqual } from 'lodash-es';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -25,8 +26,8 @@ import {
   commentsByTimeCumulativeStream,
   commentsByTimeStream,
 } from 'services/stats';
-import { InjectedIntlProps } from 'react-intl';
 import { colors } from 'utils/styleUtils';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';
@@ -45,7 +46,7 @@ import PollReport from './PollReport';
 
 import Outlet from 'components/Outlet';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -58,8 +59,8 @@ const Phase = styled.div<{ isCurrentPhase: boolean }>`
   padding: 10px;
   border: ${(props) =>
     props.isCurrentPhase
-      ? `solid 3px ${colors.border}`
-      : `solid 1px ${colors.adminBorder}`};
+      ? `solid 3px ${colors.borderDark}`
+      : `solid 1px ${colors.borderLight}`};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
@@ -86,30 +87,51 @@ interface Props {
   project: GetProjectChildProps;
 }
 
+const PARTICIPATION_METHOD_MESSAGES: Record<
+  ParticipationMethod,
+  MessageDescriptor
+> = {
+  ideation: messages.ideationAndFeedback,
+  information: messages.information,
+  native_survey: messages.native_survey,
+  survey: messages.survey,
+  budgeting: messages.budgeting,
+  poll: messages.poll,
+  volunteering: messages.volunteering,
+};
+
+const getResolution = (start: moment.Moment, end: moment.Moment) => {
+  const timeDiff = moment.duration(end.diff(start));
+  return timeDiff
+    ? timeDiff.asMonths() > 6
+      ? 'month'
+      : timeDiff.asWeeks() > 4
+      ? 'week'
+      : 'day'
+    : 'month';
+};
+
 const ProjectReport = memo(
   ({
     project,
     phases,
     mostVotedIdeas,
     intl: { formatMessage, formatDate },
-  }: Props & InjectedIntlProps & WithRouterProps) => {
-    if (isNilOrError(project)) return null;
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+  }: Props & WrappedComponentProps & WithRouterProps) => {
     const localize = useLocalize();
 
-    const isTimelineProject = project.attributes.process_type === 'timeline';
-
     // set time boundaries
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [resolution, setResolution] = useState<IResolution>('month');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [startAt, setStartAt] = useState<string | null | undefined>(null);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [endAt, setEndAt] = useState<string | null>(null);
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const isTimelineProject = isNilOrError(project)
+      ? null
+      : project.attributes.process_type === 'timeline';
+
     useEffect(() => {
+      if (isNilOrError(project)) return;
+
       if (isTimelineProject) {
         if (!isNilOrError(phases) && phases.length > 0) {
           const startAt = phases[0].attributes.start_at;
@@ -131,16 +153,7 @@ const ProjectReport = memo(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [project, phases]);
 
-    const getResolution = (start, end) => {
-      const timeDiff = moment.duration(end.diff(start));
-      return timeDiff
-        ? timeDiff.asMonths() > 6
-          ? 'month'
-          : timeDiff.asWeeks() > 4
-          ? 'week'
-          : 'day'
-        : 'month';
-    };
+    if (isNilOrError(project)) return null;
 
     const formatDateLabel = (date) =>
       formatDate(date, {
@@ -169,16 +182,8 @@ const ProjectReport = memo(
     ) as ParticipationMethod[];
 
     const projectTitle = localize(project.attributes.title_multiloc);
-    const participationMethodMessages: {
-      [key in ParticipationMethod]: ReactIntl.FormattedMessage.MessageDescriptor;
-    } = {
-      ideation: messages.ideationAndFeedback,
-      information: messages.information,
-      survey: messages.survey,
-      budgeting: messages.budgeting,
-      poll: messages.poll,
-      volunteering: messages.volunteering,
-    };
+
+    const timeBoundariesSet = !!(startAt && endAt);
 
     return (
       <>
@@ -211,7 +216,7 @@ const ProjectReport = memo(
                         />
                       </p>
                       <FormattedMessage
-                        {...participationMethodMessages[
+                        {...PARTICIPATION_METHOD_MESSAGES[
                           phase.attributes.participation_method
                         ]}
                       />
@@ -226,7 +231,7 @@ const ProjectReport = memo(
           </Section>
         )}
 
-        {participationMethods !== ['information'] && startAt && endAt && (
+        {!isEqual(participationMethods, ['information']) && timeBoundariesSet && (
           <Section>
             <SectionTitle>
               <FormattedMessage {...messages.sectionWho} />
@@ -256,13 +261,13 @@ const ProjectReport = memo(
         )}
 
         <Section>
-          {((participationMethods.includes('ideation') && startAt && endAt) ||
+          {((participationMethods.includes('ideation') && timeBoundariesSet) ||
             participationMethods.includes('poll')) && (
             <SectionTitle>
               <FormattedMessage {...messages.sectionWhatInput} />
             </SectionTitle>
           )}
-          {participationMethods.includes('ideation') && startAt && endAt && (
+          {participationMethods.includes('ideation') && timeBoundariesSet && (
             <GraphsContainer>
               <LineBarChart
                 graphTitle={formatMessage(messages.inputs)}

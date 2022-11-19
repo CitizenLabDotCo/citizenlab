@@ -14,7 +14,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from 'components/SignUpIn/SignUp/messages';
 
@@ -43,7 +43,7 @@ const Loading = styled.div`
 const Container = styled.div`
   padding-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 15px;
   `}
 `;
@@ -54,7 +54,7 @@ const ButtonWrapper = styled.div`
   justify-content: space-between;
   margin-top: -15px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
@@ -64,7 +64,7 @@ const ButtonWrapper = styled.div`
 const SubmitButton = styled(Button)``;
 
 const SkipButton = styled(Button)`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-top: 20px;
     margin-bottom: 15px;
   `}
@@ -77,13 +77,13 @@ type InputProps = {
   step: TSignUpStep | null;
 };
 
-interface Props extends InputProps, InjectedIntlProps {}
+interface Props extends InputProps, WrappedComponentProps {}
 
 const isEnabled = (userCustomFieldsSchema: UserCustomFieldsInfos) =>
   userCustomFieldsSchema.hasRequiredFields ||
   userCustomFieldsSchema.hasCustomFields;
 
-const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
+const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
   ({ onData, onDataLoaded, intl: { formatMessage }, onCompleted, step }) => {
     const [processingSubmit, setProcessingSubmit] = useState(false);
     const [processingSkip, setProcessingSkip] = useState(false);
@@ -211,6 +211,6 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
   }
 );
 
-const CustomFieldsWithHoC = injectIntl<Props>(CustomFieldsStep);
+const CustomFieldsWithHoC = injectIntl(CustomFieldsStep);
 
 export default CustomFieldsWithHoC;

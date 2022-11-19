@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash-es';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // components
@@ -16,11 +16,14 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
-import { Tooltip, LabelList } from 'recharts';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { IStreamParams, IStream } from 'utils/streams';
@@ -56,15 +59,17 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 export class BarChartByCategory extends React.PureComponent<
-  Props & InjectedIntlProps
+  Props & WrappedComponentProps
 > {
   currentChart: React.RefObject<any>;
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props as any);
     this.currentChart = React.createRef();
   }
   render() {
     const {
+      startAt,
+      endAt,
       currentGroupFilterLabel,
       currentGroupFilter,
       xlsxEndpoint,
@@ -76,7 +81,9 @@ export class BarChartByCategory extends React.PureComponent<
     } = this.props;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     const unitName = formatMessage(messages[graphUnit]);
 
@@ -89,19 +96,25 @@ export class BarChartByCategory extends React.PureComponent<
               <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
+                xlsx={{ endpoint: xlsxEndpoint }}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
           <BarChart
             data={serie}
             innerRef={this.currentChart}
-            margin={DEFAULT_MARGIN}
+            margin={DEFAULT_BAR_CHART_MARGIN}
+            mapping={{
+              category: 'name',
+              length: 'value',
+            }}
             bars={{ name: unitName }}
-            renderLabels={(props) => <LabelList {...props} position="top" />}
-            renderTooltip={(props) => <Tooltip {...props} />}
+            labels
+            tooltip
           />
         </GraphCardInner>
       </GraphCard>
@@ -109,7 +122,7 @@ export class BarChartByCategory extends React.PureComponent<
   }
 }
 
-const BarChartByCategoryWithHoCs = injectIntl<Props>(BarChartByCategory);
+const BarChartByCategoryWithHoCs = injectIntl(BarChartByCategory);
 
 const WrappedBarChartByCategory = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

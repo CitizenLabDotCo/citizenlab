@@ -21,6 +21,7 @@ export const getAppConfigurationData = (
         allowed: true,
         enabled: true,
         locales: ['en'],
+        weglot_api_key: null,
         timezone: 'Europe/Brussels',
         organization_name: {
           en: 'Wonderville',
@@ -34,22 +35,10 @@ export const getAppConfigurationData = (
         currency: 'EUR',
         segment_destinations_blacklist: null,
         reply_to_email: 'not-support@citizenlab.co',
-        display_header_avatars: true,
       },
       customizable_homepage_banner: {
         allowed: true,
         enabled: true,
-        layout: 'full_width_banner_layout',
-        cta_signed_out_type: 'sign_up_button',
-        cta_signed_out_customized_button: {
-          text: { en: 'Click' },
-          url: 'https://www.wonder.ville/promo',
-        },
-        cta_signed_in_type: 'no_button',
-        cta_signed_in_customized_button: {
-          text: { en: 'Click' },
-          url: 'https://www.wonder.ville/promo2',
-        },
       },
       participatory_budgeting: {
         allowed: true,
@@ -59,16 +48,17 @@ export const getAppConfigurationData = (
         allowed: false,
         enabled: false,
       },
+      matomo: {
+        allowed: true,
+        enabled: true,
+        tenant_site_id: '13',
+        product_site_id: '14',
+      },
     },
     logo: {
       small: 'http://zah.cy/wof.jpg',
       medium: 'http://fepe.et/fivacsok.jpg',
       large: 'http://jostoska.gt/timihosin.jpg',
-    },
-    header_bg: {
-      small: 'http://neena.gr/owocap.jpg',
-      medium: 'http://hedopewa.mw/ra.jpg',
-      large: 'http://sarmuvov.co/uzro.jpg',
     },
     ...attributes,
   },
@@ -88,3 +78,5 @@ export const currentAppConfigurationStream = jest.fn(() => {
     observable,
   };
 });
+
+export const currentAppConfigurationEndpoint = '/web_api/v1/app_configuration';

@@ -1,15 +1,13 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-import useLocale from 'hooks/useLocale';
 
 // components
 import PageTitle from 'components/admin/PageTitle';
-import { Button } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import Divider from 'components/admin/Divider';
 
 // styles
@@ -32,18 +30,18 @@ const StyledDescription = styled.p`
 const StyledLink = styled.a`
   cursor: pointer;
   font-size: ${fontSizes.base}px;
-  color: ${colors.clBlue};
+  color: ${colors.teal};
   font-weight: 600;
   text-decoration: underline;
   &:hover {
-    color: ${darken(0.2, colors.clBlue)};
+    color: ${darken(0.2, colors.teal)};
     text-decoration: underline;
   }
 `;
 
 const InsightsContainer = styled.div`
   margin-top: 40px;
-  background-color: ${colors.adminContentBackground};
+  background-color: ${colors.white};
   padding: 60px 70px;
   font-size: ${fontSizes.base}px;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
@@ -59,7 +57,7 @@ const InsightsContainerHeader = styled.div`
   margin-bottom: 60px;
   justify-content: space-between;
   p {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
   }
   > div:first-child {
     width: 50%;
@@ -78,7 +76,7 @@ const InsightsListItem = styled.div`
   }
   p {
     font-size: ${fontSizes.xs}px;
-    color: ${colors.label};
+    color: ${colors.textSecondary};
   }
   .buttons {
     display: flex;
@@ -93,13 +91,11 @@ type InsightsList = {
   openCreateModal: () => void;
 };
 
-const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
+const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
   intl: { formatMessage, formatDate },
   data,
   openCreateModal,
 }) => {
-  const locale = useLocale();
-
   const handleDeleteClick = (viewId: string) => () => {
     const deleteMessage = formatMessage(messages.listDeleteConfirmation);
 
@@ -121,65 +117,60 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
       >
         {formatMessage(messages.link)}
       </StyledLink>
-      {!isNilOrError(locale) && (
-        <InsightsContainer>
-          <InsightsContainerHeader>
-            <div>
-              <InsightsContainerTitle>
-                {formatMessage(messages.listTitle)}
-              </InsightsContainerTitle>
-              <p>{formatMessage(messages.listDescription)}</p>
-            </div>
-            <Button
-              locale={locale}
-              bgColor={colors.adminTextColor}
-              onClick={openCreateModal}
-            >
-              {formatMessage(messages.listCreate)}
-            </Button>
-          </InsightsContainerHeader>
-          {data.map((view) => (
-            <div key={view.id} data-testid="insightsListItem">
-              <InsightsListItem>
-                <div>
-                  <h3> {view.attributes.name}</h3>
-                  <p>{formatDate(view.attributes.updated_at)}</p>
-                </div>
-                <div className="buttons">
-                  {/* <Button
-                    locale={locale}
+      <InsightsContainer>
+        <InsightsContainerHeader>
+          <div>
+            <InsightsContainerTitle>
+              {formatMessage(messages.listTitle)}
+            </InsightsContainerTitle>
+            <p>{formatMessage(messages.listDescription)}</p>
+          </div>
+          <Button
+            className="intercom-admin-create-insights-button"
+            bgColor={colors.primary}
+            onClick={openCreateModal}
+          >
+            {formatMessage(messages.listCreate)}
+          </Button>
+        </InsightsContainerHeader>
+        {data.map((view) => (
+          <div key={view.id} data-testid="insightsListItem">
+            <InsightsListItem>
+              <div>
+                <h3> {view.attributes.name}</h3>
+                <p>{formatDate(view.attributes.updated_at)}</p>
+              </div>
+              <div className="buttons">
+                {/* <Button
                     buttonStyle="white"
                     icon="copy"
-                    textColor={colors.adminTextColor}
+                    textColor={colors.primary}
                     boxShadow="none"
                   >
                     {formatMessage(messages.listDuplicate)}
                   </Button> */}
-                  <Button
-                    locale={locale}
-                    buttonStyle="white"
-                    icon="delete"
-                    textColor={colors.adminTextColor}
-                    boxShadow="none"
-                    onClick={handleDeleteClick(view.id)}
-                  >
-                    {formatMessage(messages.listDelete)}
-                  </Button>
-                  <Button
-                    locale={locale}
-                    buttonStyle="secondary"
-                    icon="edit"
-                    linkTo={`/admin/insights/${view.id}`}
-                  >
-                    {formatMessage(messages.listManage)}
-                  </Button>
-                </div>
-              </InsightsListItem>
-              <Divider />
-            </div>
-          ))}
-        </InsightsContainer>
-      )}
+                <Button
+                  buttonStyle="white"
+                  icon="delete"
+                  textColor={colors.textSecondary}
+                  boxShadow="none"
+                  onClick={handleDeleteClick(view.id)}
+                >
+                  {formatMessage(messages.listDelete)}
+                </Button>
+                <Button
+                  buttonStyle="secondary"
+                  icon="edit"
+                  linkTo={`/admin/insights/${view.id}`}
+                >
+                  {formatMessage(messages.listManage)}
+                </Button>
+              </div>
+            </InsightsListItem>
+            <Divider />
+          </div>
+        ))}
+      </InsightsContainer>
     </div>
   );
 };

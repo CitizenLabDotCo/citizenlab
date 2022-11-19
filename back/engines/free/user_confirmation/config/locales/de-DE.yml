@@ -2,12 +2,12 @@ de:
   user_confirmation:
     confirmations_mailer:
       send_confirmation_code:
-        subject: "Bestätigen Sie Ihre E-Mail-Adresse für die Beteiligungsplattform von %{organizationName}"
+        subject: "Bestätigen Sie Ihre E-Mail-Adresse für die Beteiligungsplattform %{organizationName}"
         header: "Ihr Bestätigungscode"
         header_message: "Hallo, %{firstName}!"
-        thanks_for_signing_up: "Vielen Dank, dass du dich für die Beteiligungsplattform von %{organizationName} registriert hast."
-        please_confirm_your_email_address: "Um Ihre Anmeldung abzuschließen, verifizieren Sie bitte Ihre E-Mail-Adresse."
-        copy_paste_the_link_below: "Kopieren Sie den unten stehenden Code und fügen Sie ihn in das Anmeldeformular auf der Plattform ein."
+        thanks_for_signing_up: "Vielen Dank, dass Sie sich für die Beteiligungsplattform %{organizationName} registriert haben."
+        please_confirm_your_email_address: "Um Ihre Registrierung abzuschließen, verifizieren Sie bitte Ihre E-Mail-Adresse."
+        copy_paste_the_link_below: "Kopieren Sie den unten stehenden Code und fügen Sie ihn in das Registrierungsformular auf der Plattform ein."
         the_link_is_valid_for: "Dieser Link ist 24 Stunden lang gültig. Wenn der Link abgelaufen ist, kannst du <a href=\"%{link}\">einen neuen Code anfordern</a>."
         did_you_receive_this_email_in_error: "Hast du diese E-Mail irrtümlicherweise erhalten? <a href=\"%{link}\">Lass es uns wissen</a>."
 

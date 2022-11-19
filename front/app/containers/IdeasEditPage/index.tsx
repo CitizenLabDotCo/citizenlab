@@ -11,6 +11,8 @@ import clHistory from 'utils/cl-router/history';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import IdeasEditButtonBar from './IdeasEditButtonBar';
 import IdeasEditMeta from './IdeasEditMeta';
+import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // feature flag variant
 import IdeasEditPageWithJSONForm from './WithJSONForm';
@@ -61,7 +63,7 @@ import GetAppConfiguration, {
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
@@ -80,19 +82,18 @@ const FormContainer = styled.main`
   margin-left: auto;
   margin-right: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-bottom: 80px;
   `}
 `;
 
 const Title = styled.h1`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;
   text-align: center;
-  padding-top: 40px;
   margin-bottom: 40px;
 `;
 
@@ -135,6 +136,8 @@ interface State {
   proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
+  imageFileIsChanged: boolean;
+  ideaFiles: UploadFile[];
   imageId: string | null;
   loaded: boolean;
   submitError: boolean;
@@ -160,6 +163,8 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       proposedBudget: null,
       address: null,
       imageFile: [],
+      imageFileIsChanged: false,
+      ideaFiles: [],
       imageId: null,
       loaded: false,
       submitError: false,
@@ -260,11 +265,11 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     const { project, authUser, appConfiguration } = this.props;
     const {
       locale,
+      imageFileIsChanged,
       titleMultiloc,
       descriptionMultiloc,
       ideaSlug,
       imageId,
-      imageFile,
     } = this.state;
     const {
       title,
@@ -277,15 +282,13 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       address,
     } = ideaFormOutput;
     const oldImageId = imageId;
-    const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
-    const oldImageBase64 = oldImage ? oldImage.base64 : null;
     const newImage =
       ideaFormOutput.imageFile && ideaFormOutput.imageFile.length > 0
         ? ideaFormOutput.imageFile[0]
         : null;
     const newImageBase64 = newImage ? newImage.base64 : null;
     const imageToAddPromise =
-      newImageBase64 && oldImageBase64 !== newImageBase64
+      imageFileIsChanged && newImageBase64
         ? addIdeaImage(ideaId, newImageBase64, 0)
         : Promise.resolve(null);
     const filesToAddPromises = ideaFiles
@@ -324,7 +327,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     this.setState({ submitError: false, processing: true });
 
     try {
-      if (oldImageId && oldImageBase64 !== newImageBase64) {
+      if (oldImageId && imageFileIsChanged) {
         await deleteIdeaImage(ideaId, oldImageId);
       }
 
@@ -402,6 +405,22 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     this.setState({ titleMultiloc, titleProfanityError: false });
   };
 
+  onImageFileAdd = (imageFile: UploadFile[]) => {
+    this.setState({ imageFile: [imageFile[0]], imageFileIsChanged: true });
+  };
+
+  onImageFileRemove = () => {
+    this.setState({ imageFile: [], imageFileIsChanged: true });
+  };
+
+  onTagsChange = (selectedTopics: string[]) => {
+    this.setState({ selectedTopics });
+  };
+
+  onAddressChange = (address: string) => {
+    this.setState({ address });
+  };
+
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
     const descriptionMultiloc = {
@@ -410,6 +429,12 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     };
 
     this.setState({ descriptionMultiloc, descriptionProfanityError: false });
+  };
+
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.setState({
+      ideaFiles,
+    });
   };
 
   render() {
@@ -422,6 +447,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         selectedTopics,
         address,
         imageFile,
+        ideaFiles,
         budget,
         proposedBudget,
         titleProfanityError,
@@ -451,21 +477,33 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
           <Container id="e2e-idea-edit-page">
             <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
             <FormContainer>
-              <Title>
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.formTitle,
-                    option: messages.optionFormTitle,
-                    project: messages.projectFormTitle,
-                    question: messages.questionFormTitle,
-                    issue: messages.issueFormTitle,
-                    contribution: messages.contributionFormTitle,
-                  })}
-                />
-              </Title>
+              <Box
+                width="100%"
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                mt="52px"
+              >
+                <GoBackToIdeaPage idea={idea} />
+
+                <Title>
+                  <FormattedMessage
+                    {...getInputTermMessage(inputTerm, {
+                      idea: messages.formTitle,
+                      option: messages.optionFormTitle,
+                      project: messages.projectFormTitle,
+                      question: messages.questionFormTitle,
+                      issue: messages.issueFormTitle,
+                      contribution: messages.contributionFormTitle,
+                    })}
+                  />
+                </Title>
+              </Box>
 
               <IdeaForm
                 authorId={authorId}
+                ideaId={ideaId}
                 projectId={projectId}
                 title={title}
                 description={description}
@@ -474,14 +512,20 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 proposedBudget={proposedBudget}
                 address={address || ''}
                 imageFile={imageFile}
+                ideaFiles={ideaFiles}
                 onSubmit={this.handleIdeaFormOutput}
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
                 hasTitleProfanityError={titleProfanityError}
                 hasDescriptionProfanityError={descriptionProfanityError}
+                onImageFileAdd={this.onImageFileAdd}
+                onImageFileRemove={this.onImageFileRemove}
+                onTagsChange={this.onTagsChange}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
+                onAddressChange={this.onAddressChange}
+                onIdeaFilesChange={this.onIdeaFilesChange}
               />
 
               <ButtonBarContainer>

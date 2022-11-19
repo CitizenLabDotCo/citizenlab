@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe UserPolicy do
@@ -16,7 +18,6 @@ describe UserPolicy do
       let(:subject_user) { current_user }
 
       it { is_expected.to     permit(:show)    }
-      it { is_expected.to     permit(:create)  }
       it { is_expected.to     permit(:update)  }
       it { is_expected.to     permit(:destroy) }
       it { is_expected.to     permit(:index) }
@@ -32,7 +33,6 @@ describe UserPolicy do
       let(:subject_user) { create :user }
 
       it { is_expected.to     permit(:show)    }
-      it { is_expected.to     permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.to     permit(:index) }
@@ -45,14 +45,16 @@ describe UserPolicy do
     end
 
     it 'only indexes admins and moderators of the same projects' do
-      moderator1 = create :project_moderator, projects: [create(:project), project1]
-      moderator2 = create :project_folder_moderator, project_folders: [create(:project_folder)]
-      moderator3 = create :project_folder_moderator, project_folders: [folder2]
-      moderator4 = create :project_moderator, projects: [create(:project)]
-      user = create(:comment).author
+      moderators = [
+        create(:project_moderator, projects: [create(:project), project1]),
+        create(:project_folder_moderator, project_folders: [create(:project_folder)]),
+        create(:project_folder_moderator, project_folders: [folder2]),
+        create(:project_moderator, projects: [create(:project)])
+      ]
+      create(:comment).author
       participant = create(:idea, project: project2).author
       admin = create :admin
-      expect(scope.resolve.ids).to match_array [participant.id, current_user.id, moderator1.id, moderator3.id, admin.id]
+      expect(scope.resolve.ids).to match_array [participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id]
     end
   end
 end

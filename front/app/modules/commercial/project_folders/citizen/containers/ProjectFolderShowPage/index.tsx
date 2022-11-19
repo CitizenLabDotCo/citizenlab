@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-import { moderatesFolder } from '../../../permissions/roles';
+import { userModeratesFolder } from '../../../permissions/roles';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -31,7 +31,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from '../../../services/projectFolders';
-import { PublicationStatus } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -43,11 +43,11 @@ const Container = styled.main`
   flex-direction: column;
   background: #fff;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     background: ${colors.background};
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -65,7 +65,7 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-top: 30px;
   background: #fff;
 
-  @media (min-width: 1100px) {
+  @media (min-width: 1280px) {
     padding-left: 60px;
     padding-right: 60px;
   }
@@ -87,7 +87,7 @@ const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
   height: 240px;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 140px;
   `};
 `;
@@ -98,7 +98,7 @@ const Content = styled.div`
   justify-content: flex-start;
   margin-bottom: 110px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
   `};
@@ -107,7 +107,7 @@ const Content = styled.div`
 const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     margin-bottom: 40px;
   `};
 `;
@@ -127,7 +127,7 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
     width: 500px;
   }
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     flex: 1;
     width: 100%;
     margin: 0;
@@ -144,7 +144,7 @@ const NotFoundWrapper = styled.div`
   align-items: center;
   padding: 4rem;
   font-size: ${fontSizes.l}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 const CardsWrapper = styled.div`
@@ -166,7 +166,7 @@ const ProjectFolderShowPage = memo<{
     publicationStatusFilter: publicationStatuses,
   });
   const { windowWidth } = useWindowSize();
-  const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
+  const smallerThan1280px = windowWidth ? windowWidth <= 1280 : false;
   const folderNotFound = isError(projectFolder);
 
   const loading =
@@ -176,7 +176,7 @@ const ProjectFolderShowPage = memo<{
     isUndefined(adminPublicationsList);
 
   const userCanEditFolder =
-    !isNilOrError(authUser) && moderatesFolder(authUser, projectFolder.id);
+    !isNilOrError(authUser) && userModeratesFolder(authUser, projectFolder.id);
 
   return (
     <>
@@ -190,7 +190,7 @@ const ProjectFolderShowPage = memo<{
             <Button
               linkTo="/projects"
               text={<FormattedMessage {...messages.goBackToList} />}
-              icon="arrow-back"
+              icon="arrow-left"
             />
           </NotFoundWrapper>
         ) : loading ? (
@@ -199,7 +199,7 @@ const ProjectFolderShowPage = memo<{
           </Loading>
         ) : !isNilOrError(projectFolder) && !isNilOrError(locale) ? (
           <>
-            {!smallerThan1100px ? (
+            {!smallerThan1280px ? (
               <StyledContentContainer maxWidth={maxPageWidth}>
                 {userCanEditFolder && (
                   <ButtonBar>

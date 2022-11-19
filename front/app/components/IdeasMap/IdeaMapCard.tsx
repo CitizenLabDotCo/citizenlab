@@ -59,19 +59,19 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
   top: 10px;
   right: 10px;
-  background: ${colors.lightGreyishBlue};
+  background: ${colors.grey200};
   padding: 7px 8px;
   border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
-    background: ${darken(0.1, colors.lightGreyishBlue)};
+    background: ${darken(0.1, colors.grey200)};
   }
 `;
 
 const Title = styled.h3`
   height: 46px;
   max-height: 46px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: 18px;
   font-weight: 600;
   display: -webkit-box;
@@ -86,7 +86,7 @@ const Title = styled.h3`
   word-wrap: break-word;
   word-break: break-word;
 
-  /* ${media.smallerThanMaxTablet`
+  /* ${media.tablet`
     width: calc(100% - 22px);
     margin-bottom: 25px;
   `} */
@@ -104,37 +104,29 @@ const FooterItem = styled.div`
 `;
 
 const MoneybagIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const DownvoteIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const UpvoteIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 5px;
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-left: 2px;
 `;
 
 const FooterValue = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s + 1}px;
   line-height: normal;
   font-weight: 400;
@@ -154,7 +146,7 @@ const IdeaMapCard = memo<Props>(
     const phase = usePhase(phaseId || null);
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
-    const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+    const tablet = windowWidth <= viewportWidths.tablet;
 
     const [hovered, setHovered] = useState(false);
 
@@ -172,7 +164,7 @@ const IdeaMapCard = memo<Props>(
     useEffect(() => {
       const subscriptions = [
         leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
-          if (!smallerThanMaxTablet) {
+          if (!tablet) {
             setHovered(hoverredIdeaId === ideaMarker.id);
           }
         }),
@@ -182,14 +174,14 @@ const IdeaMapCard = memo<Props>(
         subscriptions.forEach((subscription) => subscription.unsubscribe());
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [smallerThanMaxTablet]);
+    }, [tablet]);
 
     const handleOnClick = (event: React.FormEvent) => {
       event?.preventDefault();
 
       setIdeaMapCardSelected(ideaMarker.id);
 
-      if (smallerThanMaxTablet) {
+      if (tablet) {
         eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
           id: ideaMarker.id,
           slug: ideaMarker.attributes.slug,
@@ -222,7 +214,7 @@ const IdeaMapCard = memo<Props>(
       !isNilOrError(ideaMarker) &&
       !isNilOrError(project)
     ) {
-      const tenantCurrency = tenant.data.attributes.settings.core.currency;
+      const tenantCurrency = tenant.attributes.settings.core.currency;
       const ideaBudget = ideaMarker.attributes?.budget;
       const votingActionDescriptor =
         project.attributes.action_descriptor.voting_idea;
@@ -246,14 +238,14 @@ const IdeaMapCard = memo<Props>(
           role="button"
           tabIndex={0}
         >
-          {smallerThanMaxTablet && (
+          {tablet && (
             <StyledCloseIconButton
               iconWidth={'12px'}
               iconHeight={'12px'}
               onClick={handleCloseButtonClick}
               a11y_buttonActionMessage={messages.a11y_hideIdeaCard}
-              iconColor={darken(0.1, colors.label)}
-              iconColorOnHover={darken(0.2, colors.label)}
+              iconColor={darken(0.1, colors.textSecondary)}
+              iconColorOnHover={darken(0.2, colors.textSecondary)}
             />
           )}
           <Title>
@@ -271,14 +263,14 @@ const IdeaMapCard = memo<Props>(
             {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
-                  <DownvoteIcon name="upvote" />
+                  <DownvoteIcon name="vote-up" />
                   <FooterValue>
                     {ideaMarker.attributes.upvotes_count}
                   </FooterValue>
                 </FooterItem>
                 {showDownvote && (
                   <FooterItem>
-                    <UpvoteIcon name="downvote" />
+                    <UpvoteIcon name="vote-down" />
                     <FooterValue>
                       {ideaMarker.attributes.downvotes_count}
                     </FooterValue>

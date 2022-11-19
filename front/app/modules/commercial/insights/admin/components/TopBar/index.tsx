@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -17,7 +17,7 @@ import ProjectButton from './ProjectButton';
 import ProjectsDropdown from './ProjectsDropdown';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -30,7 +30,6 @@ import { deleteInsightsView } from '../../../services/insightsViews';
 
 // hooks
 import useInsightsView from '../../../hooks/useInsightsView';
-import useLocale from 'hooks/useLocale';
 
 export const topBarHeight = 60;
 
@@ -60,7 +59,7 @@ const TitleContainer = styled.div`
 
 const DropdownWrapper = styled.div`
   display: flex;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   align-items: center;
   position: relative;
   .dropdown {
@@ -72,10 +71,9 @@ const DropdownWrapper = styled.div`
 const TopBar = ({
   params,
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-  const locale = useLocale();
   const viewId = params.viewId;
   const view = useInsightsView(viewId);
 
@@ -85,7 +83,7 @@ const TopBar = ({
     }
   }, [view]);
 
-  if (isNilOrError(view) || isNilOrError(locale)) {
+  if (isNilOrError(view)) {
     return null;
   }
 
@@ -131,10 +129,9 @@ const TopBar = ({
       <DropdownWrapper>
         {formatMessage(messages.options)}
         <Button
-          locale={locale}
-          icon="more-options"
-          iconColor={colors.label}
-          iconHoverColor={colors.label}
+          icon="dots-horizontal"
+          iconColor={colors.textSecondary}
+          iconHoverColor={colors.textSecondary}
           boxShadow="none"
           boxShadowHover="none"
           bgColor="transparent"

@@ -18,8 +18,8 @@ pl:
       "invite_reminder": Przypomnienie o zaproszeniu
       "mention_in_official_feedback": Wzmianka w aktualizacji
       "new_comment_for_admin": Nowy komentarz w projekcie, który moderuję
-      "new_comment_on_commented_idea": Nowy komentarz do pomysłu, który skomentowałem
-      "new_comment_on_commented_initiative": Nowy komentarz do propozycji, którą skomentowałem
+      "new_comment_on_commented_idea": Nowy komentarz do pomysłu, który skomentowałem(am)
+      "new_comment_on_commented_initiative": Nowy komentarz do propozycji, którą skomentowałem(am)
       "new_comment_on_voted_idea": Nowy komentarz do pomysłu, nad którym głosowałem
       "new_comment_on_voted_initiative": Nowy komentarz do pomysłu, nad którym głosowałem
       "new_idea_for_admin": Nowy pomysł w projekcie, który moderuję
@@ -419,13 +419,15 @@ pl:
       cta_view_phase: 'Odkryj nowy etap'
       event_description: 'Ten projekt wszedł w nowy etap na platformie %{organizationName}. Kliknij na poniższy link, aby dowiedzieć się więcej!'
       main_header: 'Rozpoczął się nowy etap projektu "%{projectName}"'
+      subtitle: 'O ''%{projectName}'''
       new_phase: 'Projekt ten wszedł w etap "%{phaseTitle}"'
       subject: '%{projectName} wszedł w nowy etap'
       preheader: 'Rozpoczął się nowy etap projektu %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Ustawić ten nowy etap'
+      cta_view_phase: 'Sprawdź następny etap'
       event_description: 'Projekt "%{projectName}" wkrótce wejdzie w nowy etap. Upewnij się, że wszystko jest przygotowane: Czy opis jest odpowiedni? Czy wybrane pomysły zostały przeniesione do nowego etapu? Czy chcesz poinformować swoich obywateli o specyfice tego etapu poprzez specjalną kampanię e-mailową?'
       main_header: '%{firstName}, projekt wkrótce przejdzie do nowego etapu'
+      subtitle: 'O ''%{projectName}'''
       new_phase: 'Projekt wejdzie w etap "%{phaseTitle}"'
       subject: 'Skonfiguruj nowy etap %{projectName}'
       preheader: 'Wkrótce rozpocznie się nowy etap projektu dla %{projectName}'
@@ -488,8 +490,8 @@ pl:
       x_days_ago_by_author: "%{x} dni temu wg %{author}"
       trending_ideas: "Modne pomysły"
       trending_ideas_text: "Interesuje Cię, co się dzieje na platformie? Oto trzy najmodniejsze pomysły i to, co ludzie o nich mówią."
-      no_notifications: "No notifications"
-      one_notification: "1 notification"
+      no_notifications: "Brak powiadomień"
+      one_notification: "1 powiadomienie"
       multiple_notifications: "Powiadomienia: %{notifCount}"
       no_unread_notifications: "Nie masz żadnych nieprzeczytanych powiadomień. Odwiedź platformę, aby wnieść swój wkład i wygenerować nowe powiadomienia!"
       unread_notifications: "Masz nieprzeczytane powiadomienia. Odwiedź platformę, aby dowiedzieć się, co się dzieje!"

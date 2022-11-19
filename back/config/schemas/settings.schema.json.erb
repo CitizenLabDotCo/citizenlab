@@ -10,7 +10,7 @@
         "type": "object",
         "title": "Core system",
         "description": "The container for general settings. The core system should always be enabled.",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage", "display_header_avatars"],
+        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
@@ -60,11 +60,17 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [<%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l}\""}.join(",") %>]
+              "enum": [<%= CL2_SUPPORTED_LOCALES.map { |locale| "\"#{locale}\"" }.join(",") %>],
+              "enumNames": [<%= CL2_SUPPORTED_LOCALES.map { |locale| locale.to_s == 'en' ? '"en-US"' : "\"#{locale}\"" }.join(",") %>]
             },
             "uniqueItems": true,
             "minItems": 1,
             "default": ["en"]
+          },
+          "weglot_api_key": {
+            "title": "Weglot API key",
+            "description": "Set the API key of Weglot to enable automatic page translations.",
+            "type": "string"
           },
           "color_main": {
             "title": "Main Colour",
@@ -86,26 +92,6 @@
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
             "default": "#163A7D"
-          },
-          "header_title": {
-            "title": "Homepage Title",
-            "description": "The header (title) shown on the main banner of the homepage (max 45 characters).",
-            "type": "object",
-            "allOf": [{"$ref": "#/definitions/multiloc_string"}],
-            "additionalProperties": {"maxLength": 45}
-          },
-          "header_slogan": {
-            "title": "Homepage Subtitle",
-            "description": "The sub-title shown on the main banner of the homepage (max 90 characters).",
-            "type": "object",
-            "allOf": [{"$ref": "#/definitions/multiloc_string"}],
-            "additionalProperties": {"maxLength": 90}
-          },
-          "display_header_avatars": {
-            "title": "Display Header Avatars",
-            "description": "Display avatars in homepage banner.",
-            "type": "boolean",
-            "default": true
           },
           "meta_title": {
             "title": "Page Title",
@@ -135,11 +121,6 @@
             "type": "string",
             "pattern": "^$|^/.*$",
             "private": true
-          },
-          "custom_onboarding_fallback_message": {
-            "title": "Header Banner Non-CTA Text",
-            "description": "Optional text shown on a banner on the top of the homepage for signed in users. If this field and the 'Header Banner Call-to-Action Text' field are both left blank, the banner text defaults to \"{orgName} is listening to you. It's your turn to make your voice heard!\".",
-            "$ref": "#/definitions/multiloc_string"
           },
           "currently_working_on_text": {
             "title": "Project Overview Header Title",
@@ -188,13 +169,13 @@
 
       "dynamic_idea_form": {
         "type": "object",
-        "title": "Dynamic idea form (experimental)",
-        "description":  "Changes the idea form from the hard-coded version, to the experimental generated version. Don't turn this on unless you know what you're doing.",
+        "title": "Dynamic idea form",
+        "description": "Changes the idea form from the hard-coded version to the generated version.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       },
       "jsonforms_custom_fields": {
@@ -215,40 +196,9 @@
         "description": "Customizable homepage banner.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": [
-          "layout",
-          "cta_signed_out_type",
-          "cta_signed_in_type"
-        ],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-
-          "layout": {
-            "title": "Homepage banner layout",
-            "description": "Choose between different layouts for the homepage banner on the landing page.",
-            "type": "string",
-            "enum": ["full_width_banner_layout", "two_column_layout", "two_row_layout"],
-            "default": "full_width_banner_layout"
-          },
-
-          "cta_signed_out_type": {
-            "type": "string",
-            "enum": ["sign_up_button", "customized_button", "no_button"],
-            "default": "sign_up_button"
-          },
-          "cta_signed_out_customized_button": {
-            "$ref": "#/definitions/customized_button"
-          },
-
-          "cta_signed_in_type": {
-            "type": "string",
-            "enum": ["customized_button", "no_button"],
-            "default": "no_button"
-          },
-          "cta_signed_in_customized_button": {
-            "$ref": "#/definitions/customized_button"
-          }
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -258,10 +208,16 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "phone"],
+        "required-settings": ["minimum_length", "phone", "enable_signup"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "enable_signup": {
+            "type": "boolean",
+            "title": "Enable sign-up",
+            "description": "If unchecked, only login via password is allowed for existing users; sign-up via password is disabled for new users.",
+            "default": true
+          },
           "minimum_length": {
             "type": "number",
             "title": "Minimum password length",
@@ -526,7 +482,7 @@
       "initiatives": {
         "type": "object",
         "title": "Proposals",
-        "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
+        "description":  "Allow proposals. Disabling this feature removes the corresponding item from the navbar",
         "additionalProperties": false,
         "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
         "required": ["allowed", "enabled"],
@@ -639,6 +595,18 @@
         "type": "object",
         "title": "Surveymonkey Surveys",
         "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "snap_survey_surveys": {
+        "type": "object",
+        "title": "Snap Survey Surveys",
+        "description":  "Allow the embedding of Snap Survey surveys.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -786,18 +754,6 @@
         }
       },
 
-      "idea_custom_fields": {
-        "type": "object",
-        "title": "Custom Idea Fields",
-        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "disable_downvoting": {
         "type": "object",
         "title": "Downvoting Toggle",
@@ -890,7 +846,7 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": true},
           "widget_title": {"$ref": "#/definitions/multiloc_string"}
         }
       },
@@ -1000,6 +956,42 @@
             }
           }
         }
+      },
+
+      "representativeness": {
+        "type": "object",
+        "title": "Representativeness",
+        "description": "Enables the representativeness dashboard.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "native_surveys": {
+        "type": "object",
+        "title": "Allow in-platform surveys",
+        "description":  "",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "visitors_dashboard": {
+        "type": "object",
+        "title": "Visitors dashboard",
+        "description": "Enabled the visitors dashboard. Don't turn this on unless you know what you're doing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1009,6 +1001,7 @@
     "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
     "qualtrics_surveys": ["surveys"],
+    "snap_survey_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
 
@@ -1019,6 +1012,7 @@
     "id_cow": ["verification"],
     "id_franceconnect": ["verification"],
     "id_gent_rrn": ["verification"],
+    "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"]
   },
   "definitions": {

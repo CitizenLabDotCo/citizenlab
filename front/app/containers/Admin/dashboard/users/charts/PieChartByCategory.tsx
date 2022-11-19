@@ -3,15 +3,19 @@ import React from 'react';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
+
+// utils
+import renderTooltip from './renderPieChartByCategoryTooltip';
+import { roundPercentages } from 'utils/math';
 
 // styling
 import { withTheme } from 'styled-components';
+import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import {
   IGraphUnit,
   NoDataContainer,
@@ -21,17 +25,22 @@ import {
   GraphCardInner,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
+import PieChart from 'components/admin/Graphs/PieChart';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
-
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { IGraphFormat } from 'typings';
 
 interface DataProps {
   serie: IGraphFormat;
+}
+
+interface Serie extends IGraphFormat {
+  percentage: number;
 }
 
 export interface ISupportedDataTypeMap {}
@@ -58,25 +67,35 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const labelColors = ['#C37281 ', '#5D99C6', '#B0CDC4 ', '#C0C2CE'];
-
 class PieChartByCategory extends React.PureComponent<
-  Props & InjectedIntlProps
+  Props & WrappedComponentProps
 > {
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props as any);
     this.currentChart = React.createRef();
   }
 
-  formatEntry = (entry) => {
-    return `${entry.name} : ${entry.value}`;
+  makeLegends = (row, i): LegendItem => ({
+    icon: 'circle',
+    color: categoricalColorScheme({ rowIndex: i }),
+    label: `${row.name} (${row.percentage}%)`,
+  });
+
+  addPercentages = (serie): Serie | undefined => {
+    if (!serie) return;
+    const percentages = roundPercentages(serie.map((row) => row.value));
+    return serie.map((row, i) => ({
+      ...row,
+      percentage: percentages[i],
+    }));
   };
+
   render() {
-    const { colorMain, animationBegin, animationDuration } =
-      this.props['theme'];
     const {
+      startAt,
+      endAt,
       className,
       graphTitleString,
       serie,
@@ -84,6 +103,8 @@ class PieChartByCategory extends React.PureComponent<
       currentGroupFilter,
       currentGroupFilterLabel,
     } = this.props;
+
+    const percentagesSerie = this.addPercentages(serie);
 
     return (
       <GraphCard className={className}>
@@ -94,38 +115,41 @@ class PieChartByCategory extends React.PureComponent<
               <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
+                xlsx={{ endpoint: xlsxEndpoint }}
                 currentGroupFilter={currentGroupFilter}
                 currentGroupFilterLabel={currentGroupFilterLabel}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
-          {!serie ? (
+          {!percentagesSerie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
             <PieChartStyleFixesDiv>
-              <ResponsiveContainer height={175} width="100%" minWidth={175}>
-                <PieChart>
-                  <Pie
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
-                    isAnimationActive={true}
-                    data={serie}
-                    dataKey="value"
-                    innerRadius={60}
-                    fill={colorMain}
-                    label={this.formatEntry}
-                    ref={this.currentChart}
-                  >
-                    {serie.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={labelColors[index]} />
-                    ))}
-                  </Pie>
-                  <Tooltip isAnimationActive={false} />
-                </PieChart>
-              </ResponsiveContainer>
+              <PieChart
+                data={percentagesSerie}
+                width={164}
+                mapping={{
+                  angle: 'value',
+                  name: 'name',
+                }}
+                pie={{
+                  startAngle: 0,
+                  endAngle: 360,
+                  outerRadius: 60,
+                }}
+                tooltip={renderTooltip()}
+                legend={{
+                  items: percentagesSerie.map(this.makeLegends),
+                  maintainGraphSize: true,
+                  marginLeft: 50,
+                  position: 'right-center',
+                }}
+                innerRef={this.currentChart}
+              />
             </PieChartStyleFixesDiv>
           )}
         </GraphCardInner>
@@ -134,7 +158,7 @@ class PieChartByCategory extends React.PureComponent<
   }
 }
 
-const PieChartByCategoryWithHoCs = injectIntl<Props>(
+const PieChartByCategoryWithHoCs = injectIntl(
   withTheme(PieChartByCategory as any) as any
 );
 

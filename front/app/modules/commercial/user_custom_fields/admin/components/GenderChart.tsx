@@ -5,18 +5,20 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
+import renderTooltip from './renderGenderTooltip';
+import { roundPercentages } from 'utils/math';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 
 // styling
 import { withTheme } from 'styled-components';
+import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-
 import {
   NoDataContainer,
   GraphCardHeader,
@@ -25,18 +27,28 @@ import {
   GraphCardInner,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
-
-import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
+import PieChart from 'components/admin/Graphs/PieChart';
 
 // services
 import {
   usersByGenderStream,
-  IUsersByGender,
+  IUsersByRegistrationField,
   usersByGenderXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
+// typings
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+
 type State = {
-  serie: { name: string; value: number; code: string }[] | null;
+  serie:
+    | {
+        name: string;
+        value: number;
+        code: string;
+        percentage: number;
+      }[]
+    | null;
+  hoverIndex: number | undefined;
 };
 
 interface QueryProps {
@@ -50,22 +62,18 @@ interface Props extends QueryProps {
   className?: string;
 }
 
-const labelColors = {
-  male: '#5D99C6 ',
-  female: '#C37281 ',
-  unspecified: '#B0CDC4 ',
-  _blank: '#C0C2CE',
-};
+const options = ['male', 'female', 'unspecified', '_blank'];
 
-class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
+class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
   private subscriptions: Subscription[];
   private queryProps$: BehaviorSubject<QueryProps>;
   private currentChart: React.RefObject<any>;
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       serie: null,
+      hoverIndex: undefined,
     };
     this.currentChart = React.createRef();
   }
@@ -117,23 +125,37 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  convertToGraphFormat = (data: IUsersByGender) => {
-    const res = Object.keys(labelColors).map((gender) => ({
+  convertToGraphFormat = (data: IUsersByRegistrationField) => {
+    const percentages = roundPercentages(
+      options.map((gender) => data.series.users[gender])
+    );
+    const res = options.map((gender, i) => ({
       value: data.series.users[gender] || 0,
       name: this.props.intl.formatMessage(messages[gender]),
       code: gender,
+      percentage: percentages[i],
     }));
     return res.length > 0 ? res : null;
   };
 
-  formatEntry(entry) {
-    return `${entry.name} : ${entry.value}`;
-  }
+  onMouseOver = ({ rowIndex }) => {
+    this.setState({ hoverIndex: rowIndex });
+  };
+
+  onMouseOut = () => {
+    this.setState({ hoverIndex: undefined });
+  };
+
+  makeLegends = (row, i): LegendItem => ({
+    icon: 'circle',
+    color: categoricalColorScheme({ rowIndex: i }),
+    label: `${row.name} (${row.percentage}%)`,
+  });
 
   render() {
-    const { colorMain, animationDuration, animationBegin } =
-      this.props['theme'];
     const {
+      startAt,
+      endAt,
       className,
       intl: { formatMessage },
       currentGroupFilter,
@@ -152,9 +174,11 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
               <ReportExportMenu
                 name={formatMessage(messages.usersByGenderTitle)}
                 svgNode={this.currentChart}
-                xlsxEndpoint={usersByGenderXlsxEndpoint}
+                xlsx={{ endpoint: usersByGenderXlsxEndpoint }}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
@@ -164,28 +188,33 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
             </NoDataContainer>
           ) : (
             <PieChartStyleFixesDiv>
-              <ResponsiveContainer height={175} width="100%" minWidth={175}>
-                <PieChart ref={this.currentChart}>
-                  <Pie
-                    isAnimationActive={true}
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
-                    data={serie}
-                    dataKey="value"
-                    outerRadius={60}
-                    fill={colorMain}
-                    label={this.formatEntry}
-                  >
-                    {serie.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={labelColors[entry.code]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip isAnimationActive={false} />
-                </PieChart>
-              </ResponsiveContainer>
+              <PieChart
+                data={serie}
+                width={164}
+                mapping={{
+                  angle: 'value',
+                  name: 'name',
+                  opacity: ({ rowIndex }) => {
+                    if (this.state.hoverIndex === undefined) return 1;
+                    return this.state.hoverIndex === rowIndex ? 1 : 0.3;
+                  },
+                }}
+                pie={{
+                  startAngle: 0,
+                  endAngle: 360,
+                  outerRadius: 60,
+                }}
+                innerRef={this.currentChart}
+                tooltip={renderTooltip()}
+                legend={{
+                  items: serie.map(this.makeLegends),
+                  maintainGraphSize: true,
+                  marginLeft: 50,
+                  position: 'right-center',
+                }}
+                onMouseOver={this.onMouseOver}
+                onMouseOut={this.onMouseOut}
+              />
             </PieChartStyleFixesDiv>
           )}
         </GraphCardInner>
@@ -194,4 +223,4 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(withTheme(GenderChart as any) as any);
+export default withTheme(injectIntl(GenderChart as any) as any);

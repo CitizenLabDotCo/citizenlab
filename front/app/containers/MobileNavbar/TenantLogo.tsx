@@ -2,13 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 
 const Logo = styled.img`
   max-width: 100%;
@@ -22,14 +18,16 @@ interface Props {
   className?: string;
 }
 
-const TenantLogo = ({
-  className,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+const TenantLogo = ({ className }: Props) => {
   const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
 
   if (!isNilOrError(appConfiguration)) {
-    const tenantLogo = appConfiguration.data.attributes.logo?.medium;
+    const tenantLogo = appConfiguration.attributes.logo?.medium;
+    // just the org's name works fine as alt text for a11y purposes
+    const localizedOrgName = localize(
+      appConfiguration.attributes.settings.core.organization_name
+    );
 
     if (tenantLogo) {
       return (
@@ -37,7 +35,7 @@ const TenantLogo = ({
           aria-hidden
           className={className}
           src={tenantLogo}
-          alt={formatMessage(messages.mobileNavLogoAltText)}
+          alt={localizedOrgName}
         />
       );
     }
@@ -46,4 +44,4 @@ const TenantLogo = ({
   return null;
 };
 
-export default injectIntl(TenantLogo);
+export default TenantLogo;

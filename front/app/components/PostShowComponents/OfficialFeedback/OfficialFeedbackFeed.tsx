@@ -18,7 +18,7 @@ import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedDate } from 'react-intl';
+import { WrappedComponentProps, FormattedDate } from 'react-intl';
 
 const Container = styled.div`
   &.hasTopMargin {
@@ -36,7 +36,7 @@ const FeedbackHeader = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
     justify-content: left;
@@ -44,7 +44,7 @@ const FeedbackHeader = styled.div`
 `;
 
 const FeedbackTitle = styled.h2`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 600;
@@ -53,7 +53,7 @@ const FeedbackTitle = styled.h2`
 `;
 
 const FeedbackSubtitle = styled.div`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -99,7 +99,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   render() {
@@ -172,7 +172,7 @@ class OfficialFeedbackFeed extends PureComponent<
             {!querying && hasMore && (
               <LoadMoreButton
                 buttonStyle="secondary-outlined"
-                icon="showMore"
+                icon="refresh"
                 onClick={onLoadMore}
                 text={<FormattedMessage {...messages.showPreviousUpdates} />}
                 processing={loadingMore}
@@ -195,7 +195,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
+const OfficialFeedbackFeedWithIntl = injectIntl(OfficialFeedbackFeed);
 
 const WrappedOfficialFeedback = (inputProps: InputProps) => (
   <Data {...inputProps}>

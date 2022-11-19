@@ -1,7 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import SimilarIdeas from './components/SimilarIdeas';
-import FeatureFlag from 'components/FeatureFlag';
+const SimilarIdeas = React.lazy(() => import('./components/SimilarIdeas'));
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const configuration: ModuleConfiguration = {
   outlets: {

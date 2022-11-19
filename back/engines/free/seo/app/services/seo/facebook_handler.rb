@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'koala'
 
 module Seo
@@ -17,11 +19,11 @@ module Seo
       return unless access_token
 
       ::HTTParty.post('https://graph.facebook.com',
-                      query: {
-                        'id' => ERB::Util.url_encode(url),
-                        'scrape' => true,
-                        'access_token' => access_token
-                      })
+        query: {
+          'id' => ERB::Util.url_encode(url),
+          'scrape' => true,
+          'access_token' => access_token
+        })
     end
   end
 end

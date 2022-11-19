@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Dropzone from 'react-dropzone';
+import Dropzone, { Accept } from 'react-dropzone';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
@@ -9,7 +9,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -41,7 +41,7 @@ const ErrorWrapper = styled.div`
 `;
 
 const DropzoneLabelText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -51,15 +51,16 @@ const DropzoneLabelText = styled.span`
 `;
 
 const DropzoneLabelIcon = styled(Icon)`
-  flex: 0 0 30px;
-  height: 30px;
-  fill: ${colors.label};
+  flex: 0 0 40px;
+  height: 40px;
+  width: 40px;
+  fill: ${colors.textSecondary};
   margin-bottom: 4px;
   transition: all 100ms ease-out;
 `;
 
 const DropzoneImagesRemaining = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
@@ -72,7 +73,7 @@ const DropzoneInput = styled.input``;
 
 const DropzoneContent = styled.div<{ borderRadius?: string }>`
   box-sizing: border-box;
-  border: 1px dashed ${colors.border};
+  border: 1px dashed ${colors.borderDark};
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   position: relative;
@@ -165,7 +166,6 @@ const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
 `;
 
 const RemoveIcon = styled(Icon)`
-  height: 10px;
   fill: #fff;
   transition: all 100ms ease-out;
 `;
@@ -198,10 +198,10 @@ const RemoveButton = styled.button`
   }
 `;
 
-interface Props {
+export interface Props {
   id?: string;
   images: UploadFile[] | null;
-  acceptedFileTypes?: string | null | undefined;
+  acceptedFileTypes?: Accept;
   imagePreviewRatio: number;
   maxImagePreviewWidth?: string;
   maxImageFileSize?: number;
@@ -224,7 +224,10 @@ interface State {
   errorMessage: string | null;
 }
 
-class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
+class ImagesDropzone extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   static defaultProps = {
     maxNumberOfImages: 1,
     maxImageFileSize: 10000000,
@@ -242,6 +245,10 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   componentDidMount() {
     this.setUrlObjects();
     this.removeExcessImages();
+
+    if (this.props.errorMessage) {
+      this.setState({ errorMessage: this.props.errorMessage });
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -401,7 +408,6 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
           )})`
         : null;
     const maxImageSizeInMb = this.getMaxImageSizeInMb();
-    const acceptedFileTypes = this.props.acceptedFileTypes || '*';
     const label =
       this.props.label ||
       (maxNumberOfImages && maxNumberOfImages === 1
@@ -424,7 +430,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
               }
             >
               <Dropzone
-                accept={acceptedFileTypes}
+                accept={this.props.acceptedFileTypes}
                 maxSize={maxImageFileSize}
                 disabled={!!(images && maxNumberOfImages === images.length)}
                 onDrop={this.onDrop as any}
@@ -443,7 +449,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                     >
                       <DropzoneInput {...getInputProps()} id={id} />
                       <DropzoneContentInner>
-                        <DropzoneLabelIcon name="upload" ariaHidden />
+                        <DropzoneLabelIcon name="upload-image" ariaHidden />
                         <DropzoneLabelText>{label}</DropzoneLabelText>
                         {remainingImages && (
                           <DropzoneImagesRemaining>
@@ -477,6 +483,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                   objectFit={objectFit}
                 >
                   <RemoveButton
+                    type="button"
                     onMouseDown={removeFocusAfterMouseClick}
                     onClick={this.removeImage(image)}
                     className="remove-button"

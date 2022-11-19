@@ -24,7 +24,7 @@ const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background-color: #fff;
-  border-bottom: solid 1px ${lighten(0.3, colors.label)};
+  border-bottom: solid 1px ${lighten(0.3, colors.textSecondary)};
 `;
 
 const TopBarInner = styled.div`
@@ -36,7 +36,7 @@ const TopBarInner = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     padding-left: 30px;
     padding-right: 30px;
   `}
@@ -103,7 +103,6 @@ const IdeaShowPageTopBar = ({
         <Right>
           <VoteControl
             styleType="border"
-            size="2"
             ideaId={ideaId}
             disabledVoteClick={onDisabledVoteClick}
           />

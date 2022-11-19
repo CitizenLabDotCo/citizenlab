@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def create_for_current_locales
   translations = {}
   AppConfiguration.instance.settings.dig('core', 'locales').each { |locale| translations[locale] = yield }
@@ -23,14 +25,12 @@ AppConfiguration.create!(
     },
     customizable_homepage_banner: {
       allowed: true,
-      enabled: true,
-      layout: 'full_width_banner_layout',
-      cta_signed_out_type: 'sign_up_button',
-      cta_signed_in_type: 'no_button'
+      enabled: true
     },
     password_login: {
       enabled: true,
       allowed: true,
+      enable_signup: true,
       phone: false,
       minimum_length: 8
     },
@@ -83,7 +83,7 @@ AppConfiguration.create!(
     },
     typeform_surveys: {
       enabled: true,
-      allowed: true,
+      allowed: true
     },
     google_forms_surveys: {
       enabled: true,
@@ -98,6 +98,10 @@ AppConfiguration.create!(
       allowed: true
     },
     qualtrics_surveys: {
+      enabled: true,
+      allowed: true
+    },
+    snap_survey_surveys: {
       enabled: true,
       allowed: true
     },
@@ -151,7 +155,7 @@ AppConfiguration.create!(
     },
     redirects: {
       enabled: false,
-      allowed: true,
+      allowed: true
     },
     idea_custom_copy: {
       enabled: false,
@@ -168,9 +172,17 @@ AppConfiguration.create!(
     events_widget: {
       enabled: true,
       allowed: true
+    },
+    native_surveys: {
+      enabled: true,
+      allowed: true
+    },
+    user_confirmation: {
+      allowed: true,
+      enabled: false
     }
-  }
-))
+  })
+)
 
 # Creates a default admin account.
 User.create!(
@@ -386,46 +398,46 @@ end
     code: 'about',
     slug: 'information',
     title_multiloc: 'static_pages.infopage_title',
-    body_multiloc: 'static_pages.infopage_body',
+    top_info_section_multiloc: 'static_pages.infopage_body',
     text_images_attributes: [
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png',
         text_reference: 'e2c7bc7a-017d-4887-a3cb-b94185617a59'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png',
         text_reference: '392d0e47-e5f9-41ab-9ceb-affac617b8b1'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png',
         text_reference: '7b81cbc6-1e22-4511-b96d-867392471bcb'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png',
         text_reference: '02896ca6-6155-4829-8aee-0d1a65fa6193'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png',
         text_reference: 'dc653d9c-6b69-4f90-b337-25718eb5c250'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png',
         text_reference: '45163616-fc6f-45b1-a5ca-183db79f86d3'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png',
         text_reference: '27345c70-4967-48e6-a6ba-430dde6eeffb'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png',
         text_reference: '4d291006-0414-4f93-903b-fb911a00d510'
       }
     ]
@@ -434,60 +446,60 @@ end
     code: 'privacy-policy',
     slug: 'privacy-policy',
     title_multiloc: 'static_pages.privacy_policy_title',
-    body_multiloc: 'static_pages.privacy_policy_body'
+    top_info_section_multiloc: 'static_pages.privacy_policy_body'
   },
   {
     code: 'terms-and-conditions',
     slug: 'terms-and-conditions',
     title_multiloc: 'static_pages.terms_and_conditions_title',
-    body_multiloc: 'static_pages.terms_and_conditions_body'
+    top_info_section_multiloc: 'static_pages.terms_and_conditions_body'
   },
   {
     code: 'proposals',
     slug: 'initiatives',
     title_multiloc: 'static_pages.initiatives_title',
-    body_multiloc: 'static_pages.initiatives_body',
+    top_info_section_multiloc: 'static_pages.initiatives_body',
     text_images_attributes: [
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
         text_reference: '493c1992-608d-4666-90f0-20d38071353d'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
         text_reference: 'd5917ff6-985c-479b-bfb5-4b9d424f0933'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
         text_reference: 'b4e659ab-2830-48fd-b3ce-96e16856262f'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
         text_reference: '43f82d75-2aa1-41ab-8c45-9c8ba9dff49f'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
         text_reference: 'ba16670d-e551-46af-8ba4-51250fb97439'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
         text_reference: 'b4974fd9-7681-4acd-951b-a3979ffc55b0'
       },
       {
-        imageable_field: 'body_multiloc',
-        remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
+        imageable_field: 'top_info_section_multiloc',
+        remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
         text_reference: '85a9e561-4c27-4f6b-949a-d8e06905787b'
       }
     ]
   }
 ].each do |attrs|
   attrs[:title_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:title_multiloc], locales: CL2_SUPPORTED_LOCALES)
-  attrs[:body_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:body_multiloc], locales: CL2_SUPPORTED_LOCALES)
+  attrs[:top_info_section_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:top_info_section_multiloc], locales: CL2_SUPPORTED_LOCALES)
   StaticPage.create! attrs
 end
 
@@ -533,11 +545,16 @@ open_idea_project = Project.create!({
   commenting_enabled: true,
   voting_enabled: true,
   upvoting_method: 'unlimited',
-  remote_header_bg_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg'
+  remote_header_bg_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg'
 })
 
-open_idea_project.project_images.create!(remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png')
+open_idea_project.project_images.create!(remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png')
 open_idea_project.set_default_topics!
+
+# Create settings for Home Page.
+HomePage.create!({
+  header_bg: Rails.root.join('spec/fixtures/header.jpg').open
+})
 
 User.find_each do |user|
   EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)

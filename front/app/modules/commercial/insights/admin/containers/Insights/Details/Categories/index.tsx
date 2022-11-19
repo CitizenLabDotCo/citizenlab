@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,7 +24,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
@@ -33,7 +33,7 @@ import {
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
 
-type CategoryProps = WithRouterProps & InjectedIntlProps;
+type CategoryProps = WithRouterProps & WrappedComponentProps;
 
 const StyledTag = styled(Tag)`
   margin-right: 8px;
@@ -103,7 +103,7 @@ const Categories: React.FC<CategoryProps> = ({
         padding="28px"
         data-testid="insightsDetailsCategories"
       >
-        <Box mb="16px">
+        <Box mb="16px" className="intercom-insights-network-tags">
           <SectionTitle>
             {formatMessage(messages.categoriesTitle)}
             <IconTooltip
@@ -156,6 +156,7 @@ const Categories: React.FC<CategoryProps> = ({
               </Box>
             </Box>
             <Button
+              className="intercom-insights-network-manage-tags-button"
               buttonStyle="secondary"
               linkTo={`${pathname}/edit`}
               icon="categories"
@@ -170,8 +171,8 @@ const Categories: React.FC<CategoryProps> = ({
             justifyContent="space-between"
             alignItems="center"
             padding="16px 24px"
-            bgColor={colors.clBlueLightest}
-            color={colors.adminTextColor}
+            bgColor={colors.teal100}
+            color={colors.primary}
             borderRadius="3px"
             data-testid="insightsDetailsCategoriesEmpty"
           >

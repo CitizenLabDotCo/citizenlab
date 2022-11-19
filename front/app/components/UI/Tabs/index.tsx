@@ -14,17 +14,15 @@ const Container = styled.div`
 `;
 
 const TabText = styled.span`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   white-space: nowrap;
 `;
 
 const TabIcon = styled(Icon)`
-  fill: ${colors.label};
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  fill: ${colors.textSecondary};
+  flex: 0 0 24px;
   margin-left: 10px;
 `;
 
@@ -54,12 +52,12 @@ const Tab = styled.button<{ index: number }>`
   &:not(.selected):hover,
   &:not(.selected):focus {
     z-index: 10;
-    border-color: ${colors.adminTextColor};
+    border-color: ${colors.primary};
   }
 
   &.selected {
-    border-color: ${colors.adminTextColor};
-    background: ${colors.adminTextColor};
+    border-color: ${colors.primary};
+    background: ${colors.primary};
 
     ${TabText} {
       color: #fff;

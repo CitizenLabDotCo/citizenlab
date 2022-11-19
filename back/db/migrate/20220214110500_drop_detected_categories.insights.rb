@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from insights (originally 20220214110236)
 class DropDetectedCategories < ActiveRecord::Migration[6.1]
   def change

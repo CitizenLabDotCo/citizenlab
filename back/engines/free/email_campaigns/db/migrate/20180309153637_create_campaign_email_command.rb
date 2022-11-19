@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCampaignEmailCommand < ActiveRecord::Migration[5.1]
   def change
     create_table :email_campaigns_campaign_email_commands, id: :uuid do |t|

@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
-
+import { THomepageSettingKeyMap } from 'services/homepageSettings';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 export interface AppConfigurationFeature {
@@ -11,12 +11,24 @@ export interface AppConfigurationFeature {
 }
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+
+// Settings that have their enabled values in homepageSettings.
+// Their allowed value is still in appConfiguration.
+export type THomepageSetting = keyof THomepageSettingKeyMap;
+
+// All appConfig setting names except those in THomepageSetting
+export type TAppConfigurationSettingWithEnabled = Exclude<
+  TAppConfigurationSetting,
+  THomepageSetting
+>;
+
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
   locales: Locale[];
+  weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
   organization_site?: string;
@@ -28,9 +40,6 @@ export type IAppConfigurationSettingsCore = {
     | 'active'
     | 'churned'
     | 'not_applicable';
-  header_title?: Multiloc | null;
-  header_slogan?: Multiloc | null;
-  display_header_avatars: boolean;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
@@ -41,7 +50,6 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  custom_onboarding_fallback_message?: Multiloc | null;
   custom_onboarding_message?: Multiloc | null;
   custom_onboarding_button?: Multiloc | null;
   custom_onboarding_link?: string | null;
@@ -55,6 +63,10 @@ export type IAppConfigurationSettingsCore = {
 
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
+  customizable_homepage_banner: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
@@ -66,6 +78,7 @@ export interface IAppConfigurationSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
+    enable_signup: boolean;
     phone?: boolean;
     minimum_length?: number;
     phone_email_pattern?: string;
@@ -150,7 +163,9 @@ export interface IAppConfigurationSettings {
   smart_survey_surveys?: AppConfigurationFeature;
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
+  snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
+  bulk_import_ideas?: AppConfigurationFeature;
   geographic_dashboard?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
@@ -197,12 +212,13 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  events_widget?: AppConfigurationFeature & {
-    widget_title?: Multiloc;
-  };
-  customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
+  representativeness?: AppConfigurationFeature;
+  remove_vendor_branding?: AppConfigurationFeature;
+  native_surveys?: AppConfigurationFeature;
+  analytics?: AppConfigurationFeature;
+  visitors_dashboard?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -222,11 +238,8 @@ export interface IAppConfigurationStyle {
   navbarTextColor?: string;
   navbarHighlightedItemBackgroundColor?: string;
   navbarBorderColor?: string;
-  signedOutHeaderOverlayColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
-  // Number between 0 and 100, inclusive
-  signedOutHeaderOverlayOpacity?: number;
   signedInHeaderOverlayColor?: string;
   // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;
@@ -239,40 +252,13 @@ export interface IAppConfigurationStyle {
   projectNavbarIdeaButtonTextColor?: string;
 }
 
-export interface THomepageBannerLayoutMap {
-  full_with_banner_layout: 'full_width_banner_layout';
-}
-
-export type THomepageBannerLayout =
-  THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
-
-export const homepageBannerLayoutHeights = {
-  full_width_banner_layout: {
-    desktop: 450,
-    tablet: 350,
-    phone: 300,
-  },
-  two_column_layout: {
-    desktop: 532,
-    tablet: 532,
-    phone: 240,
-  },
-  two_row_layout: {
-    desktop: 280,
-    tablet: 200,
-    phone: 200,
-  },
-};
-
 export interface IAppConfigurationAttributes {
   name: string;
   host: string;
   settings: IAppConfigurationSettings;
   logo: ImageSizes | null;
-  header_bg: ImageSizes | null;
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
-  homepage_info_multiloc?: Multiloc;
 }
 
 export interface IAppConfigurationData {
@@ -292,10 +278,8 @@ export interface IUpdatedAppConfigurationProperties {
     >;
   }>;
   logo?: string;
-  header_bg?: string;
   favicon?: string;
   style?: IAppConfigurationStyle;
-  homepage_info_multiloc?: Multiloc;
 }
 
 export function currentAppConfigurationStream() {
@@ -316,8 +300,8 @@ export async function updateAppConfiguration(
   return tenant;
 }
 
-export const coreSettings = (appConfiguration: IAppConfiguration) =>
-  appConfiguration.data.attributes.settings.core;
+export const coreSettings = (appConfiguration: IAppConfigurationData) =>
+  appConfiguration.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

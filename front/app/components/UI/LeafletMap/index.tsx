@@ -21,7 +21,7 @@ const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
       height: calc(100vh - 300px);
       max-height: 700px;
 
-      ${media.smallerThan1100px`
+      ${media.tablet`
         height: calc(100vh - 180px);
       `}
     `;

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MakeNotificationsForClassJob < ApplicationJob
   queue_as :default
 
@@ -13,5 +15,4 @@ class MakeNotificationsForClassJob < ApplicationJob
       end
     end
   end
-
 end

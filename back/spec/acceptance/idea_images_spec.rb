@@ -44,7 +44,7 @@ resource 'IdeaImage' do
     end
     ValidationErrorHelper.new.error_fields(self, IdeaImage)
     let(:idea_id) { @idea.id }
-    let(:image) { encode_image_as_base64('image13.png') }
+    let(:image) { png_image_as_base64 'image13.png' }
     let(:ordering) { 1 }
 
     example_request 'Add an image to an idea' do
@@ -63,7 +63,7 @@ resource 'IdeaImage' do
     ValidationErrorHelper.new.error_fields(self, IdeaImage)
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }
-    let(:image) { encode_image_as_base64('image14.png') }
+    let(:image) { png_image_as_base64 'image14.png' }
     let(:ordering) { 2 }
 
     example_request 'Update an image for an idea' do
@@ -82,11 +82,5 @@ resource 'IdeaImage' do
       expect(response_status).to eq 200
       expect { IdeaImage.find(image_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
-  end
-
-  private
-
-  def encode_image_as_base64(filename)
-    "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
   end
 end

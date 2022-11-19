@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::Notifications::ProjectPhaseStartedSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :created_at
 

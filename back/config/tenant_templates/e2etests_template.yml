@@ -1,5 +1,7 @@
 ---
 models:
+  home_page:
+    - {}
   idea_status:
     -
       title_multiloc: idea_statuses.proposed
@@ -153,76 +155,84 @@ models:
   - &information-page
     code: about
     title_multiloc: static_pages.infopage_title
-    body_multiloc: static_pages.infopage_body
+    top_info_section_multiloc: static_pages.infopage_body
+    top_info_section_enabled: true
+    files_section_enabled: true
     slug: information
     text_images_attributes:
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png
         text_reference: e2c7bc7a-017d-4887-a3cb-b94185617a59
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png
         text_reference: 392d0e47-e5f9-41ab-9ceb-affac617b8b1
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png
         text_reference: 7b81cbc6-1e22-4511-b96d-867392471bcb
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png
         text_reference: 02896ca6-6155-4829-8aee-0d1a65fa6193
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png
         text_reference: dc653d9c-6b69-4f90-b337-25718eb5c250
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png
         text_reference: 45163616-fc6f-45b1-a5ca-183db79f86d3
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png
         text_reference: 27345c70-4967-48e6-a6ba-430dde6eeffb
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/horizontal_line_grey.png
         text_reference: 4d291006-0414-4f93-903b-fb911a00d510
   - &privacy-policy-page
     code: privacy-policy
     title_multiloc: static_pages.privacy_policy_title
-    body_multiloc: static_pages.privacy_policy_body
+    top_info_section_multiloc: static_pages.privacy_policy_body
+    top_info_section_enabled: true
     slug: privacy-policy
   - &terms-and-conditions-page
     code: terms-and-conditions
     title_multiloc: static_pages.terms_and_conditions_title
-    body_multiloc: static_pages.terms_and_conditions_body
+    top_info_section_multiloc: static_pages.terms_and_conditions_body
+    top_info_section_enabled: true
     slug: terms-and-conditions
   - &initiatives-page
     code: proposals
     title_multiloc: static_pages.initiatives_title
-    body_multiloc: static_pages.initiatives_body
+    top_info_section_multiloc: static_pages.initiatives_body
+    top_info_section_enabled: true
+    files_section_enabled: true
     slug: initiatives
     text_images_attributes:
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
         text_reference: 493c1992-608d-4666-90f0-20d38071353d
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
         text_reference: d5917ff6-985c-479b-bfb5-4b9d424f0933
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
         text_reference: b4e659ab-2830-48fd-b3ce-96e16856262f
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
         text_reference: 43f82d75-2aa1-41ab-8c45-9c8ba9dff49f
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
         text_reference: ba16670d-e551-46af-8ba4-51250fb97439
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
         text_reference: b4974fd9-7681-4acd-951b-a3979ffc55b0
-      - imageable_field: body_multiloc
-        remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
+      - imageable_field: top_info_section_multiloc
+        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
         text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
   - &faq-page
     code: faq
     title_multiloc: static_pages.faq_title
-    body_multiloc: static_pages.faq_body
+    top_info_section_multiloc: static_pages.faq_body
+    top_info_section_enabled: true
+    files_section_enabled: true
     slug: faq
-  nav_bar_items:
+  nav_bar_item:
     -
       code: home
       ordering: 0
@@ -246,82 +256,6 @@ models:
       code: custom
       ordering: 6
       static_page_ref: *faq-page
-  custom_field:
-  - &5
-    resource_type: User
-    key: gender
-    title_multiloc: custom_fields.users.gender.title
-    input_type: select
-    required: false
-    ordering: 0
-    enabled: false
-    code: gender
-  - resource_type: User
-    key: birthyear
-    title_multiloc: custom_fields.users.birthyear.title
-    input_type: number
-    required: false
-    ordering: 1
-    enabled: false
-    code: birthyear
-  - resource_type: User
-    key: domicile
-    title_multiloc: custom_fields.users.domicile.title
-    input_type: select
-    required: false
-    ordering: 2
-    enabled: false
-    code: domicile
-  - &6
-    resource_type: User
-    key: education
-    title_multiloc: custom_fields.users.education.title
-    input_type: select
-    required: false
-    ordering: 3
-    enabled: false
-    code: education
-  custom_field_option:
-  - custom_field_ref: *5
-    key: male
-    title_multiloc: custom_field_options.gender.male
-    ordering: 0
-  - custom_field_ref: *5
-    key: female
-    title_multiloc: custom_field_options.gender.female
-    ordering: 1
-  - custom_field_ref: *5
-    key: unspecified
-    title_multiloc: custom_field_options.gender.unspecified
-    ordering: 2
-  - custom_field_ref: *6
-    key: '2'
-    title_multiloc: custom_field_options.education.ISCED2
-    ordering: 0
-  - custom_field_ref: *6
-    key: '3'
-    title_multiloc: custom_field_options.education.ISCED3
-    ordering: 1
-  - custom_field_ref: *6
-    key: '4'
-    title_multiloc: custom_field_options.education.ISCED4
-    ordering: 2
-  - custom_field_ref: *6
-    key: '5'
-    title_multiloc: custom_field_options.education.ISCED5
-    ordering: 3
-  - custom_field_ref: *6
-    key: '6'
-    title_multiloc: custom_field_options.education.ISCED6
-    ordering: 4
-  - custom_field_ref: *6
-    key: '7'
-    title_multiloc: custom_field_options.education.ISCED7
-    ordering: 5
-  - custom_field_ref: *6
-    key: '8'
-    title_multiloc: custom_field_options.education.ISCED8
-    ordering: 6
   user:
   - &admin
     email: admin@citizenlab.co
@@ -718,7 +652,7 @@ models:
     description_multiloc:
       en: "<p>That's a folder alright.</p>"
       nl-BE: "<p>That's a folder alright.</p>"
-    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
     description_preview_multiloc:
@@ -737,7 +671,7 @@ models:
         for young and old.</p>"
       nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -763,7 +697,7 @@ models:
         for young and old.</p>"
       nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -789,7 +723,7 @@ models:
         for young and old.</p>"
       nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -815,7 +749,7 @@ models:
         for young and old.</p>"
       nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -841,7 +775,7 @@ models:
         for young and old.</p>"
       nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -870,7 +804,7 @@ models:
     commenting_enabled: true
     voting_enabled: true
     upvoting_method: unlimited
-    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
   - &121
     title_multiloc:
       en: Continuous ideation map
@@ -1187,6 +1121,29 @@ models:
     voting_enabled: true
     upvoting_method: unlimited
     upvoting_limited_max: 10
+  - &custom_idea_fields_project
+    title_multiloc:
+      en: Custom idea fields project
+      nl-BE: Custom idea fields project
+    description_multiloc:
+      en: "<p>Test idea custom fields. Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.</p>"
+      nl-BE: "<p>Test idea custom fields. Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.</p>"
+    description_preview_multiloc:
+      en: Test idea custom fields. Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.
+      nl-BE: Test idea custom fields. Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.
+    presentation_mode: card
+    participation_method: ideation
+    process_type: continuous
+    admin_publication_attributes:
+      publication_status: published
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    upvoting_method: unlimited
   project_file:
   - project_ref: *project1
     created_at: 2019-01-14 13:46:54 UTC
@@ -4734,13 +4691,13 @@ models:
     parent_ref: *initiative1_comment
   project_image:
   - project_ref: *76
-    remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+    remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
   - project_ref: *project1
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/223fe293-3230-4376-b910-9cb4d0639020/undraw_brainstorming_49d4_iaimmn.png
+    remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
   - project_ref: *project1
-    remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+    remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
   - project_ref: *project1
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/fcdf170e-3926-4621-9352-7e5ca1aba97c/Rugby_town_centre-2ay0y80_yza0pu.jpg
+    remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
   votes:
   - mode: down
     user_ref: *admin
@@ -7184,10 +7141,10 @@ models:
     updated_at_timediff: -1440
     votable_ref: *initiative1
   idea_image:
-  - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+  - remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
     idea_ref: *controversial_idea
   initiative_image:
-  - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+  - remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
     initiative_ref: *initiative1
   phase:
   - &project1current
@@ -15734,3 +15691,158 @@ models:
     color: "#249e0c"
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
+  custom_form:
+  - &custom_idea_fields_custom_form
+    participation_context_ref: *custom_idea_fields_project
+  custom_field:
+  - &5
+    resource_type: User
+    key: gender
+    title_multiloc: custom_fields.users.gender.title
+    input_type: select
+    required: false
+    ordering: 0
+    enabled: false
+    code: gender
+  - resource_type: User
+    key: birthyear
+    title_multiloc: custom_fields.users.birthyear.title
+    input_type: number
+    required: false
+    ordering: 1
+    enabled: false
+    code: birthyear
+  - resource_type: User
+    key: domicile
+    title_multiloc: custom_fields.users.domicile.title
+    input_type: select
+    required: false
+    ordering: 2
+    enabled: false
+    code: domicile
+  - &6
+    resource_type: User
+    key: education
+    title_multiloc: custom_fields.users.education.title
+    input_type: select
+    required: false
+    ordering: 3
+    enabled: false
+    code: education
+  - &custom_idea_number_field
+    resource_ref: *custom_idea_fields_custom_form
+    key: number_of_benches
+    input_type: number
+    title_multiloc:
+      en: Number of benches
+    description_multiloc:
+      en: How many benches do you want?
+    required: true
+    enabled: true
+  - &custom_idea_text_field
+    resource_ref: *custom_idea_fields_custom_form
+    key: park_name
+    input_type: text
+    title_multiloc:
+      en: Name for the new park
+    description_multiloc:
+      en: Propose a name for the new park
+    required: false
+    enabled: true
+  custom_field_option:
+  - custom_field_ref: *5
+    key: male
+    title_multiloc: custom_field_options.gender.male
+    ordering: 0
+  - custom_field_ref: *5
+    key: female
+    title_multiloc: custom_field_options.gender.female
+    ordering: 1
+  - custom_field_ref: *5
+    key: unspecified
+    title_multiloc: custom_field_options.gender.unspecified
+    ordering: 2
+  - custom_field_ref: *6
+    key: '2'
+    title_multiloc: custom_field_options.education.ISCED2
+    ordering: 0
+  - custom_field_ref: *6
+    key: '3'
+    title_multiloc: custom_field_options.education.ISCED3
+    ordering: 1
+  - custom_field_ref: *6
+    key: '4'
+    title_multiloc: custom_field_options.education.ISCED4
+    ordering: 2
+  - custom_field_ref: *6
+    key: '5'
+    title_multiloc: custom_field_options.education.ISCED5
+    ordering: 3
+  - custom_field_ref: *6
+    key: '6'
+    title_multiloc: custom_field_options.education.ISCED6
+    ordering: 4
+  - custom_field_ref: *6
+    key: '7'
+    title_multiloc: custom_field_options.education.ISCED7
+    ordering: 5
+  - custom_field_ref: *6
+    key: '8'
+    title_multiloc: custom_field_options.education.ISCED8
+    ordering: 6
+  analytics/dimension_date:
+    - date: '2022-09-01'
+      year: '2022'
+      month: '2022-09'
+      week: '2022-08-29'
+    - date: '2022-08-01'
+      year: '2022'
+      month: '2022-08'
+      week: '2022-08-01'
+  analytics/dimension_referrer_type:
+    - &web_ref_type
+      key: 'website'
+      name: 'Websites'
+  analytics/dimension_type:
+    - name: 'idea'
+      parent: 'post'
+  analytics/dimension_locale:
+    - name: 'en'
+    - name: 'fr-BE'
+  analytics/fact_visit:
+    - visitor_id: XX1
+      dimension_user_id:
+      dimension_referrer_type_ref: *web_ref_type
+      dimension_date_first_action_id: 2022-09-01
+      dimension_date_last_action_id: 2022-09-01
+      duration: 100
+      pages_visited: 1
+      returning_visitor: false
+      referrer_name: 'citizenlab.co'
+      referrer_url: 'https://www.citizenlab.co/a_page'
+      matomo_visit_id: 101
+      matomo_last_action_time: 2022-09-01 09:16:00 UTC
+    - visitor_id: XX1
+      dimension_user_id: ''
+      dimension_referrer_type_ref: *web_ref_type
+      dimension_date_first_action_id: 2022-09-01
+      dimension_date_last_action_id: 2022-09-01
+      duration: 200
+      pages_visited: 2
+      returning_visitor: false
+      referrer_name: 'citizenlab.co'
+      referrer_url: 'https://www.citizenlab.co/another_page'
+      matomo_visit_id: 102
+      matomo_last_action_time: 2022-09-01 17:25:00 UTC
+    - visitor_id: XX3
+      dimension_user_id: ''
+      dimension_referrer_type_ref: *web_ref_type
+      dimension_date_first_action_id: 2022-08-01
+      dimension_date_last_action_id: 2022-08-01
+      duration: 300
+      pages_visited: 3
+      returning_visitor: false
+      referrer_name: 'localcouncil.com'
+      referrer_url: 'https://www.localcouncil.com/campaign'
+      matomo_visit_id: 103
+      matomo_last_action_time: 2022-08-01 10:08:00 UTC

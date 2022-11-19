@@ -1,5 +1,6 @@
-class WebApi::V1::ImagesController < ApplicationController
+# frozen_string_literal: true
 
+class WebApi::V1::ImagesController < ApplicationController
   CONSTANTIZER = {
     'Idea' => {
       container_class: Idea,
@@ -48,10 +49,10 @@ class WebApi::V1::ImagesController < ApplicationController
         params: fastjson_params
       ).serialized_json, status: :created
     else
-      if @image.errors.details[:image].include?({error: 'processing_error'})
+      if @image.errors.details[:image].include?({ error: 'processing_error' })
         ErrorReporter.report_msg(@image.errors.details.to_s)
       end
-      render json: {errors: transform_errors_details!(@image.errors.details)}, status: :unprocessable_entity
+      render json: { errors: transform_errors_details!(@image.errors.details) }, status: :unprocessable_entity
     end
   end
 
@@ -71,11 +72,11 @@ class WebApi::V1::ImagesController < ApplicationController
     if image.destroyed?
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
-  # todo: move this to a service?
+  # TODO: move this to a service?
   #
   # @param [String] container_type
   # @param [Class] container_class
@@ -86,11 +87,11 @@ class WebApi::V1::ImagesController < ApplicationController
   # @return [void]
   def self.register_container(container_type, container_class, image_class, policy_scope_class, image_relationship, container_id)
     CONSTANTIZER[container_type] = {
-        container_class: container_class,
-        image_class: image_class,
-        policy_scope_class: policy_scope_class,
-        image_relationship: image_relationship,
-        container_id: container_id
+      container_class: container_class,
+      image_class: image_class,
+      policy_scope_class: policy_scope_class,
+      image_relationship: image_relationship,
+      container_id: container_id
     }
   end
 
@@ -113,14 +114,14 @@ class WebApi::V1::ImagesController < ApplicationController
     @container = secure_constantize(:container_class).find(container_id)
   end
 
-  def transform_errors_details! error_details
+  def transform_errors_details!(error_details)
     # carrierwave does not return the error code symbols by default
     error_details = error_details.dup
-    error_details[:image] = error_details[:image]&.uniq{|e| e[:error]}
+    error_details[:image] = error_details[:image]&.uniq { |e| e[:error] }
     error_details
   end
 
-  def secure_constantize key
+  def secure_constantize(key)
     CONSTANTIZER.fetch(params[:container_type])[key]
   end
 end

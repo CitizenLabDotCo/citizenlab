@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -27,7 +27,7 @@ import {
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // types
@@ -45,8 +45,8 @@ const InputsContainer = styled.div`
   flex: 0 0 420px;
   padding: 12px 20px 0px 20px;
   height: 100%;
-  background-color: ${colors.emailBg};
-  border-left: 1px solid ${colors.separation};
+  background-color: ${colors.grey200};
+  border-left: 1px solid ${colors.divider};
   display: flex;
   flex-direction: column;
 `;
@@ -68,7 +68,7 @@ type InputsProps = {
   hasMore: boolean | null;
   onLoadMore: () => void;
 } & WithRouterProps &
-  InjectedIntlProps;
+  WrappedComponentProps;
 
 const Inputs = ({
   params: { viewId },
@@ -172,7 +172,13 @@ const Inputs = ({
         </SectionTitle>
         {inputs.length > 0 && <Export />}
       </Box>
-      <StyledSearch onChange={onSearch} size="small" />
+      <StyledSearch
+        onChange={onSearch}
+        size="small"
+        a11y_numberOfSearchResults={
+          !isNilOrError(inputsCount) ? inputsCount.count : 0
+        }
+      />
       {selectedCategories.length > 0 && (
         <Box mb="8px">
           <Box mr="4px" as="span">
@@ -213,9 +219,10 @@ const Inputs = ({
       ) : (
         <>
           <Button
+            className="intercom-insights-network-save-as-tag-button"
             buttonStyle="white"
             mb="12px"
-            textColor={colors.label}
+            textColor={colors.textSecondary}
             icon="file-add"
             onClick={openCreateModal}
             data-testid="insightsDetailsCreateCategory"
@@ -245,7 +252,7 @@ const Inputs = ({
                 processing={loading}
                 onClick={onLoadMore}
                 buttonStyle="white"
-                textColor={colors.adminTextColor}
+                textColor={colors.primary}
                 data-testid="insightsDetailsLoadMore"
               >
                 {formatMessage(messages.inputsLoadMore)}

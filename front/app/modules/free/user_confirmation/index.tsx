@@ -1,29 +1,53 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ConfirmationSignupStep from './citizen/components/ConfirmationSignupStep';
-import ToggleUserConfirmation from './admin/components/ToggleUserConfirmation';
-import FeatureFlag from 'components/FeatureFlag';
+const ConfirmationSignupStep = React.lazy(
+  () => import('./citizen/components/ConfirmationSignupStep')
+);
+const ToggleUserConfirmation = React.lazy(
+  () => import('./admin/components/ToggleUserConfirmation')
+);
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export const CONFIRMATION_STEP_NAME = 'confirmation';
 
+const RenderOnFeatureFlag = ({ children }) => {
+  const featureFlag = useFeatureFlag({
+    name: 'user_confirmation',
+  });
+
+  return featureFlag ? <>{children}</> : null;
+};
+
+const RenderOnAllowed = ({ children }) => {
+  const allowed = useFeatureFlag({
+    name: 'user_confirmation',
+    onlyCheckAllowed: true,
+  });
+
+  return allowed ? <>{children}</> : null;
+};
+
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.SignUpIn.SignUp.step': (props) => (
-      <FeatureFlag name="user_confirmation">
-        <ConfirmationSignupStep {...props} />
-      </FeatureFlag>
-    ),
+    'app.components.SignUpIn.SignUp.step': (props) => {
+      return (
+        <RenderOnFeatureFlag>
+          <ConfirmationSignupStep {...props} />
+        </RenderOnFeatureFlag>
+      );
+    },
+
     'app.containers.Admin.settings.registrationSectionEnd': ({
       userConfirmationSetting,
       onSettingChange,
     }) => {
       return userConfirmationSetting ? (
-        <FeatureFlag onlyCheckAllowed name="user_confirmation">
+        <RenderOnAllowed>
           <ToggleUserConfirmation
             userConfirmationSetting={userConfirmationSetting}
             onSettingChange={onSettingChange}
           />
-        </FeatureFlag>
+        </RenderOnAllowed>
       ) : null;
     },
   },

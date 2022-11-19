@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { get } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -75,7 +75,7 @@ const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
         <Container className={className || ''}>
           <AdminHeader>
             {goBack ? (
-              <Button buttonStyle="text" icon="arrow-back" onClick={onGoBack}>
+              <Button buttonStyle="text" icon="arrow-left" onClick={onGoBack}>
                 <FormattedMessage {...messages.goBack} />
               </Button>
             ) : (

@@ -11,36 +11,49 @@ import {
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
-export const MODERATOR_ROUTES = [
+const MODERATOR_ROUTES = [
+  '/admin/dashboard',
   '/admin/projects',
   '/admin/messaging',
   '/admin/ideas',
+  '/admin/ideas/import',
   '/admin/workshops',
   '/admin/processing',
-  '/admin/dashboard',
   '/admin/moderation',
   '/admin/insights',
+  '/admin/content-builder',
 ];
 
 export const isModeratorRoute = (item: IRouteItem) => {
-  return MODERATOR_ROUTES.includes(item.path);
+  return MODERATOR_ROUTES.some((moderatorRoute) => {
+    // We need to check with startsWith because we
+    // wouldn't match nested routes with === checks
+    if (item.path.startsWith(moderatorRoute)) {
+      return true;
+    }
+
+    // We need this separate check because we can't let /admin
+    // be part of the MODERATOR_ROUTES because it'll return true
+    // for item.path.startsWith for every item.path value when in the admin.
+    if (item.path === '/admin') {
+      return true;
+    }
+
+    return false;
+  });
+};
+export const isAdminRoute = (path: string) => {
+  return /^\/admin/.test(path);
 };
 
-export const isModeratedProjectRoute = (
-  item: IRouteItem,
-  user: IUser | null
-) => {
-  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\//;
+const isModeratedProjectRoute = (item: IRouteItem, user: IUser | null) => {
+  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
   const matches = idRegexp.exec(item.path);
   const pathProjectId = matches && matches[1];
   return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;
 };
 
-export const isAdminRoute = (item: IRouteItem) => {
-  return /^\/admin/.test(item.path);
-};
-
-export const tenantIsChurned = (tenant: IAppConfigurationData) => {
+const tenantIsChurned = (tenant: IAppConfigurationData) => {
   return tenant.attributes.settings.core.lifecycle_stage === 'churned';
 };
 
@@ -49,7 +62,7 @@ export const canAccessRoute = (
   user: IUser | null,
   tenant: IAppConfigurationData
 ) => {
-  if (isAdminRoute(item)) {
+  if (isAdminRoute(item.path)) {
     if (isSuperAdmin(user)) {
       return true;
     }

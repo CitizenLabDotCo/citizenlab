@@ -1,9 +1,11 @@
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ProjectManagement from './admin/containers/ProjectManagement';
-import Tab from './admin/components/Tab';
-import FeatureFlag from 'components/FeatureFlag';
+const ProjectManagement = React.lazy(
+  () => import('./admin/containers/ProjectManagement')
+);
+const Tab = React.lazy(() => import('./admin/components/Tab'));
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 type RenderOnTabHideConditionProps = {
   children: ReactNode;

@@ -1,27 +1,54 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import NewProjectFolderButton from './admin/components/NewProjectFolderButton';
-import ProjectFolderRow from './admin/components/ProjectFolderRow';
-import ProjectFolderTitle from './admin/components/ProjectFolderTitle';
-import ProjectFolderSelect from './admin/components/ProjectFolderSelect';
-
-import ProjectFolderCard from './citizen/components/ProjectFolderCard';
-import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
-import ProjectFolderModerationRightsReceivedNotification from './citizen/components/ProjectFolderModerationRightsReceivedNotification';
-import CreateProject from 'containers/Admin/projects/all/CreateProject';
-import ProjectFolderGoBackButton from './citizen/components/ProjectFolderGoBackButton';
-
-import ProjectsListItem from 'containers/MainHeader/ProjectsListItem';
-
+const NewProjectFolderButton = React.lazy(
+  () => import('./admin/components/NewProjectFolderButton')
+);
+const ProjectFolderRow = React.lazy(
+  () => import('./admin/components/ProjectFolderRow')
+);
+const ProjectFolderTitle = React.lazy(
+  () => import('./admin/components/ProjectFolderTitle')
+);
+const ProjectFolderSelect = React.lazy(
+  () => import('./admin/components/ProjectFolderSelect')
+);
+const ProjectFolderCard = React.lazy(
+  () => import('./citizen/components/ProjectFolderCard')
+);
+const ProjectFolderSiteMap = React.lazy(
+  () => import('./citizen/components/ProjectFolderSiteMap')
+);
+const ProjectFolderModerationRightsReceivedNotification = React.lazy(
+  () =>
+    import(
+      './citizen/components/ProjectFolderModerationRightsReceivedNotification'
+    )
+);
+const CreateProject = React.lazy(
+  () => import('containers/Admin/projects/all/CreateProject')
+);
+const ProjectFolderGoBackButton = React.lazy(
+  () => import('./citizen/components/ProjectFolderGoBackButton')
+);
+const ProjectsListItem = React.lazy(
+  () => import('containers/MainHeader/ProjectsListItem')
+);
 import { isProjectFolderModerator } from './permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
 import { AdminPublicationType } from 'services/adminPublications';
 import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
-import FeatureFlag from 'components/FeatureFlag';
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
+import { Navigate } from 'react-router-dom';
+const FolderShowPage = lazy(
+  () => import('./citizen/containers/ProjectFolderShowPage')
+);
+const FolderSettings = lazy(() => import('./admin/containers/settings'));
+const FolderContainer = lazy(() => import('./admin/containers'));
+const FolderProjects = lazy(() => import('./admin/containers/projects'));
+const FolderPermissions = lazy(() => import('./admin/containers/permissions'));
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
@@ -129,15 +156,13 @@ const configuration: ModuleConfiguration = {
       </RenderOnPublicationType>
     ),
     'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
-      onChange,
+      onProjectAttributesDiffChange,
       projectAttrs,
-      authUser,
     }) => (
       <FeatureFlag name="project_folders">
         <ProjectFolderSelect
-          onChange={onChange}
           projectAttrs={projectAttrs}
-          authUser={authUser}
+          onProjectAttributesDiffChange={onProjectAttributesDiffChange}
         />
       </FeatureFlag>
     ),
@@ -173,34 +198,33 @@ const configuration: ModuleConfiguration = {
     citizen: [
       {
         path: 'folders/:slug',
-        name: 'Project folder page',
-        container: () => import('./citizen/containers/ProjectFolderShowPage'),
+        element: <FolderShowPage />,
       },
     ],
-    admin: [
+    ['admin.projects']: [
       {
-        path: 'projects/folders/new',
-        name: 'admin projects single project',
-        container: () => import('./admin/containers/settings'),
+        path: 'folders/new',
+        element: <FolderSettings />,
       },
       {
-        path: 'projects/folders/:projectFolderId',
-        name: 'admin projects edit folder',
-        container: () => import('./admin/containers'),
-        indexRoute: {
-          name: 'admin projects edit folder projects',
-          container: () => import('./admin/containers/projects'),
-        },
-        childRoutes: [
+        path: 'folders/:projectFolderId',
+        element: <FolderContainer />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to="projects" />,
+          },
+          {
+            path: 'projects',
+            element: <FolderProjects />,
+          },
           {
             path: 'settings',
-            name: 'admin projects edit folder settings',
-            container: () => import('./admin/containers/settings'),
+            element: <FolderSettings />,
           },
           {
             path: 'permissions',
-            name: 'admin projects edit folder permissions',
-            container: () => import('./admin/containers/permissions'),
+            element: <FolderPermissions />,
           },
         ],
       },

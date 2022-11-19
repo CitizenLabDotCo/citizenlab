@@ -32,7 +32,7 @@ import {
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 import T from 'components/T';
 
@@ -80,10 +80,10 @@ interface State {
 }
 
 class StatusChangeFormWrapper extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       mode: 'new',
@@ -209,7 +209,7 @@ class StatusChangeFormWrapper extends PureComponent<
             {...messages.statusChange}
             values={{
               initiativeTitle: (
-                <ColoredText color={colors.clBlueDark}>
+                <ColoredText color={colors.teal}>
                   <T value={initiative.attributes.title_multiloc} />
                 </ColoredText>
               ),

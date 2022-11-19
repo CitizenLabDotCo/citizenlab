@@ -1,11 +1,12 @@
-require "rails_helper"
+# frozen_string_literal: true
+
+require 'rails_helper'
 
 describe SanitizationService do
-  let(:service) { SanitizationService.new }
+  let(:service) { described_class.new }
 
-  describe "sanitize" do
-
-    it "always allows paragraphs and breaks to pass through" do
+  describe 'sanitize' do
+    it 'always allows paragraphs and breaks to pass through' do
       input = <<~HTML
         <p>paragraph<br>with<br>breaks</p>
       HTML
@@ -13,7 +14,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows titles to pass through when title feature is enabled" do
+    it 'allows titles to pass through when title feature is enabled' do
       input = <<~HTML
         <h2>title</h2>
         <h3>subtitle</h3>
@@ -22,7 +23,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows alignment to pass through when alignment feature is enabled" do
+    it 'allows alignment to pass through when alignment feature is enabled' do
       input = <<~HTML
         <p>left align</p>
         <p class="ql-align-center">center align</p>
@@ -32,7 +33,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows lists to pass through when list feature is enabled" do
+    it 'allows lists to pass through when list feature is enabled' do
       input = <<~HTML
         <ol>
           <li>numered</li>
@@ -48,7 +49,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows decoration to pass through when decoration feature is enabled" do
+    it 'allows decoration to pass through when decoration feature is enabled' do
       input = <<~HTML
         <p>
           <strong>bold text</strong>
@@ -61,7 +62,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows links to pass through when link feature is enabled" do
+    it 'allows links to pass through when link feature is enabled' do
       input = <<~HTML
         <a href="https://www.google.com" target="_blank" rel="noreferrer noopener nofollow">Link</a>
       HTML
@@ -69,7 +70,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    pending "fixes links blank target and referrer allowed" do
+    pending 'fixes links blank target and referrer allowed' do
       input = <<~HTML
         <a href="https://www.google.com" target="_blank">Link</a>
       HTML
@@ -80,7 +81,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq parsed_input
     end
 
-    it "adds nofollow to links without rel" do
+    it 'adds nofollow to links without rel' do
       input = <<~HTML
         <a href="https://www.google.com">Link</a>
       HTML
@@ -91,7 +92,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq parsed_input
     end
 
-    it "adds nofollow to links with rel but without nofollow" do
+    it 'adds nofollow to links with rel but without nofollow' do
       input = <<~HTML
         <a href="https://www.google.com" rel="noopen whatever">Link</a>
       HTML
@@ -102,7 +103,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq parsed_input
     end
 
-    it "allows images to pass through when title feature is enabled" do
+    it 'allows images to pass through when title feature is enabled' do
       input = <<~HTML
         <p>
           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display:block;margin:auto;" width="313" height="160.33516960470087" data-align="center">
@@ -112,7 +113,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "disallows images to pass through when image feature is disabled" do
+    it 'disallows images to pass through when image feature is disabled' do
       input = <<~HTML
         <p>
           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display:block;margin:auto;" width="313" height="160.33516960470087" data-align="center">
@@ -122,7 +123,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq "<p>\n  \n</p>\n"
     end
 
-    it "allows youtube video to pass through when video feature is enabled" do
+    it 'allows youtube video to pass through when video feature is enabled' do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Y1mtif1B8k0?showinfo=0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
@@ -130,7 +131,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "disallows unknown url iframe to pass through when video feature is enabled" do
+    it 'disallows unknown url iframe to pass through when video feature is enabled' do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/Y1mtif1B8k0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
@@ -138,7 +139,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq "\"\"\n"
     end
 
-    it "disallows malicious urls iframe to pass through when video feature is enabled" do
+    it 'disallows malicious urls iframe to pass through when video feature is enabled' do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/https://www.youtube.com/embed/Y1mtif1B8k0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
@@ -146,7 +147,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq "\"\"\n"
     end
 
-    it "disallows malicious urls iframe to pass through when video feature is enabled" do
+    it 'disallows malicious urls iframe to pass through when video feature is enabled' do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
@@ -154,7 +155,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq "\"\"\n"
     end
 
-    it "allows vimeo iframe to pass through when video feature is enabled" do
+    it 'allows vimeo iframe to pass through when video feature is enabled' do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://player.vimeo.com/video/76979871" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
@@ -162,23 +163,15 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows vimeo iframe to pass through when video feature is enabled" do
+    it 'allows wistia iframe to pass through when video feature is enabled' do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://vimeo.com/76979871" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://support.wistia.com/medias/26sk4lmiix" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows wistia iframe to pass through when video feature is enabled" do
-      input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//fast.wistia.net/embed/iframe/avk9twrrbn" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
-      HTML
-      features = [:video]
-      expect(service.sanitize(input, features)).to eq input
-    end
-
-    it "allows dailymotion iframe to pass through when video feature is enabled" do
+    it 'allows dailymotion iframe to pass through when video feature is enabled' do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.dailymotion.com/embed/video/x7724ry" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
@@ -186,7 +179,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows videotool.dk iframe to pass through when video feature is enabled" do
+    it 'allows videotool.dk iframe to pass through when video feature is enabled' do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://media.videotool.dk/?vn=441_2021012709502264679179376222" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
@@ -194,7 +187,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows dreambroker iframe to pass through when video feature is enabled" do
+    it 'allows dreambroker iframe to pass through when video feature is enabled' do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.dreambroker.com/channel/3lkvmi5h/iframe/33jxadml" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
@@ -202,7 +195,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "sanitizes invalid elements within invalid elements" do
+    it 'sanitizes invalid elements within invalid elements' do
       input = <<~HTML
         <p>Test</p><script> Hello! <script>This should be removed!</script></script> Bye!
       HTML
@@ -210,7 +203,7 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq "<p>Test</p> Hello! &lt;script&gt;This should be removed! Bye!\n"
     end
 
-    it "sanitizes malicious javascript" do
+    it 'sanitizes malicious javascript' do
       input = <<~HTML
         <p>
           test
@@ -220,7 +213,7 @@ describe SanitizationService do
         <iframe src="javascript:javascript:alert('ThisPlatformWasHacked!');"></iframe>
         </p>
       HTML
-      features = %i{title alignment list decoration link video}
+      features = %i[title alignment list decoration link video]
       expect(service.sanitize(input, features)).not_to include "<iframe src=\"javascript:javascript:alert('ThisPlatformWasHacked!');\"></iframe>"
     end
   end
@@ -356,15 +349,15 @@ describe SanitizationService do
     end
   end
 
-  describe "linkify" do
-    it "transforms a plan-text link to an anchor" do
-      html = "<p>https://www.google.com</p>"
+  describe 'linkify' do
+    it 'transforms a plan-text link to an anchor' do
+      html = '<p>https://www.google.com</p>'
       output = service.linkify(html)
       expect(output).to eq '<p><a href="https://www.google.com" target="_blank" rel="noreferrer noopener nofollow">https://www.google.com</a></p>'
     end
 
-    it "transforms plain-text links with one domain segment" do
-      html = "<p>http://localhost:3000/ideas</p>"
+    it 'transforms plain-text links with one domain segment' do
+      html = '<p>http://localhost:3000/ideas</p>'
       output = service.linkify(html)
       expect(output).to eq '<p><a href="http://localhost:3000/ideas" target="_blank" rel="noreferrer noopener nofollow">http://localhost:3000/ideas</a></p>'
     end
@@ -375,11 +368,10 @@ describe SanitizationService do
       expect(output).to eq html
     end
 
-    it "transforms an email to a mailto: anchor" do
-      html = "<p>hello@citizenlab.co</p>"
+    it 'transforms an email to a mailto: anchor' do
+      html = '<p>hello@citizenlab.co</p>'
       output = service.linkify(html)
       expect(output).to eq '<p><a href="mailto:hello@citizenlab.co" target="_blank" rel="noreferrer noopener nofollow">hello@citizenlab.co</a></p>'
     end
   end
-
 end

@@ -1,14 +1,15 @@
-module OmniauthMethods
-  class Google
+# frozen_string_literal: true
 
+module OmniauthMethods
+  class Google < OmniauthMethods::Base
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      if configuration.feature_activated?('google_login')
-        env['omniauth.strategy'].options[:client_id] = configuration.settings("google_login", "client_id")
-        env['omniauth.strategy'].options[:client_secret] = configuration.settings("google_login", "client_secret")
-        env['omniauth.strategy'].options[:image_size] = 640
-        env['omniauth.strategy'].options[:image_aspect_ratio] = "square"
-      end
+      return unless configuration.feature_activated?('google_login')
+
+      env['omniauth.strategy'].options[:client_id] = configuration.settings('google_login', 'client_id')
+      env['omniauth.strategy'].options[:client_secret] = configuration.settings('google_login', 'client_secret')
+      env['omniauth.strategy'].options[:image_size] = 640
+      env['omniauth.strategy'].options[:image_aspect_ratio] = 'square'
     end
 
     def profile_to_user_attrs(auth)
@@ -44,7 +45,7 @@ module OmniauthMethods
       req = Net::HTTP.new(img_url.host, img_url.port)
       req.use_ssl = true
       res = req.request_head(img_url.path)
-      res.kind_of? Net::HTTPSuccess
+      res.is_a? Net::HTTPSuccess
     end
   end
 end

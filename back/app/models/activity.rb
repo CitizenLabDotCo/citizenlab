@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: activities
@@ -14,6 +16,7 @@
 # Indexes
 #
 #  index_activities_on_acted_at  (acted_at)
+#  index_activities_on_action    (action)
 #  index_activities_on_item      (item_type,item_id)
 #  index_activities_on_user_id   (user_id)
 #

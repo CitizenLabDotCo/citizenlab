@@ -1,6 +1,7 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
 
 // components
 import Button from 'components/UI/Button';
@@ -9,7 +10,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { colors } from 'utils/styleUtils';
@@ -22,7 +23,7 @@ import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 // services
 import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';
 
-type ExportProps = WithRouterProps & InjectedIntlProps;
+type ExportProps = WithRouterProps & WrappedComponentProps;
 
 const Export = ({
   params: { viewId },
@@ -65,8 +66,9 @@ const Export = ({
   return (
     <Box data-testid="insightsExport" display="flex" justifyContent="flex-end">
       <Button
+        className="intercom-insights-network-export-all-button"
         buttonStyle="text"
-        textColor={colors.label}
+        textColor={colors.textSecondary}
         onClick={handleExportClick}
       >
         {formatMessage(messages.inputsListExportButton)}

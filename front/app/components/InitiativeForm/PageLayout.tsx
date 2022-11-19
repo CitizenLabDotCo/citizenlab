@@ -31,7 +31,7 @@ const TopLine = styled.div`
   width: 100%;
   padding: 30px 40px 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -48,7 +48,7 @@ const Header = styled.div`
   padding-left: 30px;
   padding-right: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: 50px;
     padding-bottom: 40px;
   `}
@@ -57,7 +57,7 @@ const Header = styled.div`
 const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 600px;
-  color: ${({ theme }) => theme.colorMain};
+  color: ${({ theme }) => theme.colors.tenantPrimary};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxl + 1}px;
   line-height: normal;
@@ -66,13 +66,13 @@ const HeaderTitle: any = styled.h1`
   margin: 0;
   padding: 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxl}px;
   `}
 `;
 
 const ColoredText = styled.span`
-  color: ${({ theme }) => theme.colorSecondary};
+  color: ${({ theme }) => theme.colors.tenantSecondary};
 `;
 
 const TwoColumns = styled.div`
@@ -80,7 +80,7 @@ const TwoColumns = styled.div`
   flex-direction: row;
   margin: 30px 0 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -91,13 +91,13 @@ const StyledCollapsibleTipsAndInfo = styled(CollapsibleTipsAndInfo)`
   max-width: 620px;
   margin-bottom: 20px;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 0;
     padding-right: 0;
   `}
@@ -116,7 +116,7 @@ const StyledTipsBox = styled(TipsBox)`
   padding: 40px 50px;
   margin-bottom: 110px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;

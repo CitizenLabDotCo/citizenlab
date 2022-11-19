@@ -1,28 +1,29 @@
-import React from 'react';
 import { Icon } from '@citizenlab/cl2-component-library';
-import { colors } from 'utils/styleUtils';
+import React from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
+import messages from 'containers/HomePage/messages';
 import {
+  AcceptButton,
+  AvatarAndShield,
   HeaderContentCompleteProfile,
+  Icons,
   Left,
   Right,
-  Text,
-  Icons,
-  AvatarAndShield,
-  AcceptButton,
   SkipButton,
   StyledAvatar,
-} from 'containers/LandingPage/SignedInHeader';
-import messages from 'containers/LandingPage/messages';
+  Text,
+} from 'containers/HomePage/SignedInHeader';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 const ShieldIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.white};
+  opacity: 0.5;
   width: 50px;
-  height: 56px;
+  height: 50px;
   margin-left: -3px;
 `;
 
@@ -63,7 +64,7 @@ const VerificationOnboardingStep = ({
                 padding={0}
                 borderThickness={0}
               />
-              <ShieldIcon name="verify_light" />
+              <ShieldIcon name="shield-check" />
             </AvatarAndShield>
           </Icons>
           <Text>
@@ -85,8 +86,8 @@ const VerificationOnboardingStep = ({
             text={<FormattedMessage {...messages.verifyNow} />}
             buttonStyle="primary-inverse"
             onClick={handleAccept}
-            textColor={theme.colorMain}
-            textHoverColor={theme.colorMain}
+            textColor={theme.colors.tenantPrimary}
+            textHoverColor={theme.colors.tenantPrimary}
             fontWeight="500"
             className="e2e-signed-in-header-accept-btn"
           />

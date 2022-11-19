@@ -16,16 +16,10 @@ const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
 
 const CheckMarkIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
-  flex: 0 0 ${({ size }) => Math.round((parseInt(size, 10) / 100) * 70)}px;
-  width: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 70)}px;
-  height: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 70)}px;
 `;
 
 const IndeterminateIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
-  flex: 0 0 ${({ size }) => Math.round((parseInt(size, 10) / 100) * 60)}px;
-  width: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 60)}px;
-  height: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 60)}px;
 `;
 
 const Label = styled.label<{ disabled: boolean }>`
@@ -34,10 +28,6 @@ const Label = styled.label<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -57,9 +47,9 @@ const StyledCheckbox = styled.div<{
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px
     ${({ checkedOrIndeterminate }) =>
-      checkedOrIndeterminate ? colors.clGreen : colors.separationDark};
+      checkedOrIndeterminate ? colors.success : colors.grey600};
   background: ${({ checkedOrIndeterminate }) =>
-    checkedOrIndeterminate ? colors.clGreen : '#fff'};
+    checkedOrIndeterminate ? colors.success : '#fff'};
   transition: all 120ms ease-out;
 
   ${HiddenCheckbox}.focus-visible + & {
@@ -69,9 +59,9 @@ const StyledCheckbox = styled.div<{
   &.enabled {
     &:hover {
       background: ${({ checkedOrIndeterminate }) =>
-        checkedOrIndeterminate ? darken(0.05, colors.clGreen) : '#fff'};
+        checkedOrIndeterminate ? darken(0.05, colors.success) : '#fff'};
       border-color: ${({ checkedOrIndeterminate }) =>
-        checkedOrIndeterminate ? darken(0.05, colors.clGreen) : '#000'};
+        checkedOrIndeterminate ? darken(0.05, colors.success) : '#000'};
     }
   }
 `;
@@ -130,15 +120,9 @@ export default class Checkbox extends PureComponent<Props> {
                 disabled ? 'disabled' : 'enabled'
               } e2e-checkbox`}
             >
-              {checked && (
-                <CheckMarkIcon ariaHidden name="checkmark" size={size} />
-              )}
+              {checked && <CheckMarkIcon ariaHidden name="check" size={size} />}
               {indeterminate && (
-                <IndeterminateIcon
-                  ariaHidden
-                  name="indeterminate"
-                  size={size}
-                />
+                <IndeterminateIcon ariaHidden name="minus" size={size} />
               )}
             </StyledCheckbox>
           </CheckboxContainer>

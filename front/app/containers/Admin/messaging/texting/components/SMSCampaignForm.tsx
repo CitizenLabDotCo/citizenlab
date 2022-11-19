@@ -132,8 +132,10 @@ const SMSCampaignForm = ({
     ? 'Preview SMS'
     : 'Update and preview SMS';
   const messageIsPastCharacterLimit = remainingChars < 0;
+  const messageIsEmpty =
+    isNilOrError(inputMessage) || inputMessage.length === 0;
   const hasPhoneNumbersError = !hasPhoneNumbers || hasInvalidPhoneNumbersError;
-  const hasMessageError = messageIsPastCharacterLimit;
+  const hasMessageError = messageIsPastCharacterLimit || messageIsEmpty;
   const isButtonDisabled = hasMessageError || hasPhoneNumbersError;
 
   return (
@@ -178,7 +180,7 @@ const SMSCampaignForm = ({
         <Box display="flex" justifyContent="flex-start">
           <Button
             buttonStyle="primary"
-            size="2"
+            size="m"
             type="submit"
             text={buttonCopy}
             onClick={handleOnSubmit}

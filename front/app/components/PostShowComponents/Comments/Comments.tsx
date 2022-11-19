@@ -14,12 +14,12 @@ import { commentAdded$, commentDeleted$ } from './events';
 import styled from 'styled-components';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // a11y
-import { LiveMessage } from 'react-aria-live';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   position: relative;
@@ -52,7 +52,7 @@ interface Props {
   className?: string;
 }
 
-const CommentsSection = memo<Props & InjectedIntlProps>(
+const CommentsSection = memo<Props & WrappedComponentProps>(
   ({
     postId,
     postType,
@@ -89,10 +89,9 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
 
     return (
       <Container className={`e2e-comments-container ${className}`}>
-        <LiveMessage
-          message={commentPostedMessage || commentDeletedMessage}
-          aria-live="polite"
-        />
+        <ScreenReaderOnly aria-live="polite">
+          {commentPostedMessage || commentDeletedMessage}
+        </ScreenReaderOnly>
 
         {loading && (
           <SpinnerWrapper>

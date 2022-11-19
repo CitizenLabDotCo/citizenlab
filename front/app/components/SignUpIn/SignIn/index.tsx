@@ -33,21 +33,21 @@ export type TSignInSteps = 'auth-providers' | 'password-signin';
 
 export interface Props {
   metaData: ISignUpInMetaData;
-  windowHeight: number;
   customHeader?: JSX.Element;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   className?: string;
+  fullScreen?: boolean;
 }
 
 const SignIn = memo<Props>(
   ({
     metaData,
-    windowHeight,
     customHeader,
     onSignInCompleted,
     onGoToSignUp,
     className,
+    fullScreen,
   }) => {
     const [activeStep, setActiveStep] =
       useState<TSignInSteps>('auth-providers');
@@ -104,36 +104,38 @@ const SignIn = memo<Props>(
 
         <StyledModalContentContainer
           inModal={!!metaData.inModal}
-          windowHeight={`${windowHeight}px`}
+          fullScreen={fullScreen}
           headerHeight="68px"
           className="signupincontentcontainer"
         >
-          {metaData.error ? (
-            <Error
-              text={<FormattedMessage {...messages.somethingWentWrongText} />}
-              animate={false}
-              marginBottom="30px"
-            />
-          ) : (
-            <>
-              {activeStep === 'auth-providers' && (
-                <AuthProviders
-                  metaData={metaData}
-                  onAuthProviderSelected={handleOnAuthProviderSelected}
-                  goToOtherFlow={handleGoToSignUpFlow}
-                />
-              )}
+          <>
+            {metaData.error?.code === 'general' ? (
+              <Error
+                text={<FormattedMessage {...messages.somethingWentWrongText} />}
+                animate={false}
+                marginBottom="30px"
+              />
+            ) : (
+              <>
+                {activeStep === 'auth-providers' && (
+                  <AuthProviders
+                    metaData={metaData}
+                    onAuthProviderSelected={handleOnAuthProviderSelected}
+                    goToOtherFlow={handleGoToSignUpFlow}
+                  />
+                )}
 
-              {activeStep === 'password-signin' && (
-                <PasswordSignin
-                  metaData={metaData}
-                  onSignInCompleted={handleOnSignInCompleted}
-                  onGoToLogInOptions={handleGoToLogInOptions}
-                  onGoToSignUp={onGoToSignUp}
-                />
-              )}
-            </>
-          )}
+                {activeStep === 'password-signin' && (
+                  <PasswordSignin
+                    metaData={metaData}
+                    onSignInCompleted={handleOnSignInCompleted}
+                    onGoToLogInOptions={handleGoToLogInOptions}
+                    onGoToSignUp={onGoToSignUp}
+                  />
+                )}
+              </>
+            )}
+          </>
         </StyledModalContentContainer>
       </Container>
     );

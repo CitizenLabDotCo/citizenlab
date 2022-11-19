@@ -51,7 +51,7 @@ const HeaderContentWrapper = styled.div`
 `;
 
 const Title = styled.h3<{ hasHeader: boolean }>`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   max-width: 400px;
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
@@ -98,7 +98,7 @@ interface Props {
   title: JSX.Element | string;
   body?: JSX.Element | string;
   footer?: JSX.Element | string;
-  onClick: (event: MouseEvent<HTMLDivElement>) => void;
+  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
 }
 

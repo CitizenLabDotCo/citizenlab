@@ -1,14 +1,14 @@
 // Libraries
 import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Hooks
 import useTopics from 'hooks/useTopics';
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -56,7 +56,9 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 interface Props {}
 
 const ProjectTopicSelector = memo(
-  (props: Props & InjectedIntlProps & WithRouterProps & InjectedLocalized) => {
+  (
+    props: Props & WrappedComponentProps & WithRouterProps & InjectedLocalized
+  ) => {
     const {
       intl: { formatMessage },
       localize,
@@ -141,6 +143,4 @@ const ProjectTopicSelector = memo(
   }
 );
 
-export default injectIntl<Props>(
-  withRouter(injectLocalize(ProjectTopicSelector))
-);
+export default injectIntl(withRouter(injectLocalize(ProjectTopicSelector)));

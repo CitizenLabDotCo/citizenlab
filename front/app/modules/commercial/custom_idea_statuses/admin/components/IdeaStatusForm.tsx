@@ -1,25 +1,33 @@
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash-es';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { Multiloc, Locale } from 'typings';
+import { Multiloc } from 'typings';
 import { ideaStatusCodes, TIdeaStatusCode } from 'services/ideaStatuses';
 
 // components
-import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
-import FormikRadio from 'components/UI/FormikRadio';
-import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
-import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
+import {
+  Label,
+  IconTooltip,
+  Box,
+  Button,
+} from '@citizenlab/cl2-component-library';
 
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object } from 'yup';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
+import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
+import ColorPicker from 'components/HookForm/ColorPicker';
+import Feedback from 'components/HookForm/Feedback';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 export interface FormValues {
@@ -29,16 +37,13 @@ export interface FormValues {
   description_multiloc: Multiloc;
 }
 
-export interface Props {
-  ideaStatusId: string;
-}
+export type Props = {
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: Partial<FormValues>;
+} & WrappedComponentProps;
 
 const StyledSection = styled(Section)`
   margin-bottom: 40px;
-`;
-
-const StyledFormikRadio = styled(FormikRadio)`
-  margin-bottom: 25px;
 `;
 
 const LabelText = styled.div`
@@ -60,7 +65,7 @@ const LabelText = styled.div`
   }
 
   .description {
-    color: ${colors.adminSecondaryTextColor};
+    color: ${colors.textSecondary};
   }
 `;
 
@@ -68,135 +73,130 @@ const StyledLabel = styled(Label)`
   margin-bottom: 32px;
 `;
 
-export function validate(tenantLocales: Locale[]) {
-  return function (values: FormValues) {
-    const errors: FormikErrors<FormValues> = {};
-    // the default idea statuses have titles for every possible locale,
-    // not just the tenant locale, so without filtering our the
-    // irrelevant languages, the edit form could be submitted
-    // with all titles empty for the tenant locales
-    const tenantLocalesTitleMultiloc = {};
-
-    tenantLocales.forEach((locale) => {
-      tenantLocalesTitleMultiloc[locale] = values.title_multiloc[locale];
-    });
-
-    if (every(getValues(tenantLocalesTitleMultiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
-    }
-
-    return errors;
-  };
-}
-
 const IdeaStatusForm = ({
-  isSubmitting,
-  errors,
-  touched,
-  status,
+  defaultValues,
+  onSubmit,
   intl: { formatMessage },
-}: InjectedFormikProps<Props & InjectedIntlProps, FormValues>) => {
+}: Props) => {
+  const schema = object({
+    color: string(),
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldTitleError)
+    ),
+    description_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldDescriptionError)
+    ),
+    code: string().required(),
+  });
+
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
   return (
-    <Form>
-      <StyledSection>
-        <SectionField>
-          <Label>
-            <FormattedMessage {...messages.fieldColor} />
-          </Label>
-          <Field name="color" component={FormikColorPickerInput} />
-        </SectionField>
-      </StyledSection>
-      <StyledSection>
-        <SectionField>
-          <Field
-            name="title_multiloc"
-            component={FormikInputMultilocWithLocaleSwitcher}
-            label={formatMessage(messages.fieldTitle)}
-          />
-          {touched.title_multiloc && (
-            <Error
-              fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc as any}
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+        <StyledSection>
+          <SectionField>
+            <Feedback />
+          </SectionField>
+          <SectionField>
+            <ColorPicker
+              label={formatMessage(messages.fieldColor)}
+              name="color"
             />
-          )}
-        </SectionField>
-      </StyledSection>
+          </SectionField>
+        </StyledSection>
+        <StyledSection>
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              label={formatMessage(messages.fieldTitle)}
+              type="text"
+              name="title_multiloc"
+            />
+          </SectionField>
+        </StyledSection>
 
-      <StyledSection>
-        <SectionField>
-          <Field
-            name="description_multiloc"
-            component={FormikTextAreaMultilocWithLocaleSwitcher}
-            label={formatMessage(messages.fieldDescription)}
-          />
-          {touched.description_multiloc && (
-            <Error
-              fieldName="description_multiloc"
-              apiErrors={errors.description_multiloc as any}
+        <StyledSection>
+          <SectionField>
+            <TextAreaMultilocWithLocaleSwitcher
+              label={formatMessage(messages.fieldDescription)}
+              name="description_multiloc"
             />
-          )}
-        </SectionField>
-      </StyledSection>
+          </SectionField>
+        </StyledSection>
 
-      <StyledSection>
-        <SectionField>
-          <StyledLabel>
-            <FormattedMessage {...messages.category} />
-            <IconTooltip
-              content={<FormattedMessage {...messages.categoryDescription} />}
-            />
-          </StyledLabel>
-          {ideaStatusCodes.map((code: TIdeaStatusCode, i) => (
-            <StyledFormikRadio
-              key={`code-input-${i}`}
-              label={
-                <LabelText>
-                  <span className="header">
-                    {formatMessage(
-                      {
-                        proposed: messages.proposedFieldCodeTitle,
-                        viewed: messages.viewedFieldCodeTitle,
-                        under_consideration:
-                          messages.under_considerationFieldCodeTitle,
-                        accepted: messages.acceptedFieldCodeTitle,
-                        implemented: messages.implementedFieldCodeTitle,
-                        rejected: messages.rejectedFieldCodeTitle,
-                        custom: messages.customFieldCodeTitle,
-                      }[code]
-                    )}
-                  </span>
-                  {code !== 'custom' && (
-                    <span className="description">
-                      {formatMessage(
-                        {
-                          proposed: messages.proposedFieldCodeDescription,
-                          viewed: messages.viewedFieldCodeDescription,
-                          under_consideration:
-                            messages.under_considerationFieldCodeDescription,
-                          accepted: messages.acceptedFieldCodeDescription,
-                          implemented: messages.implementedFieldCodeDescription,
-                          rejected: messages.rejectedFieldCodeDescription,
-                        }[code]
+        <StyledSection>
+          <SectionField>
+            <StyledLabel>
+              <FormattedMessage {...messages.category} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.categoryDescription} />}
+              />
+            </StyledLabel>
+            <RadioGroup name="code">
+              {ideaStatusCodes.map((code: TIdeaStatusCode, i) => (
+                <Radio
+                  key={`code-input-${i}`}
+                  label={
+                    <LabelText>
+                      <span className="header">
+                        {formatMessage(
+                          {
+                            proposed: messages.proposedFieldCodeTitle,
+                            viewed: messages.viewedFieldCodeTitle,
+                            under_consideration:
+                              messages.under_considerationFieldCodeTitle,
+                            accepted: messages.acceptedFieldCodeTitle,
+                            implemented: messages.implementedFieldCodeTitle,
+                            rejected: messages.rejectedFieldCodeTitle,
+                            custom: messages.customFieldCodeTitle,
+                          }[code]
+                        )}
+                      </span>
+                      {code !== 'custom' && (
+                        <span className="description">
+                          {formatMessage(
+                            {
+                              proposed: messages.proposedFieldCodeDescription,
+                              viewed: messages.viewedFieldCodeDescription,
+                              under_consideration:
+                                messages.under_considerationFieldCodeDescription,
+                              accepted: messages.acceptedFieldCodeDescription,
+                              implemented:
+                                messages.implementedFieldCodeDescription,
+                              rejected: messages.rejectedFieldCodeDescription,
+                            }[code]
+                          )}
+                        </span>
                       )}
-                    </span>
-                  )}
-                </LabelText>
-              }
-              id={`${code}-input`}
-              name="code"
-              value={code}
-            />
-          ))}
-          {touched.code && <Error apiErrors={errors.code as any} />}
-        </SectionField>
-      </StyledSection>
-
-      <FormikSubmitWrapper
-        isSubmitting={isSubmitting}
-        status={status}
-        touched={touched}
-      />
-    </Form>
+                    </LabelText>
+                  }
+                  id={`${code}-input`}
+                  name="code"
+                  value={code}
+                />
+              ))}
+            </RadioGroup>
+          </SectionField>
+        </StyledSection>
+        <Box display="flex">
+          <Button type="submit" processing={methods.formState.isSubmitting}>
+            {formatMessage(messages.saveStatus)}
+          </Button>
+        </Box>
+      </form>
+    </FormProvider>
   );
 };
 

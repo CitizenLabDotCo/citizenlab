@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
@@ -79,7 +79,6 @@ const Preview = ({
           padding="0px"
           buttonStyle="white"
           icon="close"
-          iconSize="12px"
           boxShadow="none"
           boxShadowHover="none"
           onClick={handleOnClose}

@@ -13,14 +13,16 @@ interface Props {
 }
 
 const StyledIcon = styled(Icon)<{ isFullMenuOpened: boolean }>`
-  width: 20px;
   margin-right: 3px;
   fill: ${({ isFullMenuOpened, theme }) =>
-    isFullMenuOpened ? theme.colorMain : colors.label};
+    isFullMenuOpened ? theme.colors.tenantPrimary : colors.textSecondary};
 
   &:hover {
     fill: ${({ isFullMenuOpened, theme }) =>
-      darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+      darken(
+        0.2,
+        isFullMenuOpened ? theme.colors.tenantPrimary : colors.textSecondary
+      )};
   }
 `;
 
@@ -33,23 +35,29 @@ const StyledButton = styled.button<{ isFullMenuOpened: boolean }>`
   justify-content: center;
   align-items: center;
   color: ${({ isFullMenuOpened, theme }) =>
-    isFullMenuOpened ? theme.colorMain : colors.label};
+    isFullMenuOpened ? theme.colors.tenantPrimary : colors.textSecondary};
 
   &:active {
-    color: ${({ theme }) => theme.colorMain};
+    color: ${({ theme }) => theme.colors.tenantPrimary};
 
     &:hover {
-      color: ${({ theme }) => darken(0.2, theme.colorMain)};
+      color: ${({ theme }) => darken(0.2, theme.colors.tenantPrimary)};
     }
   }
 
   &:hover {
     color: ${({ isFullMenuOpened, theme }) =>
-      darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+      darken(
+        0.2,
+        isFullMenuOpened ? theme.colors.tenantPrimary : colors.textSecondary
+      )};
 
     ${StyledIcon} {
       fill: ${({ isFullMenuOpened, theme }) =>
-        darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+        darken(
+          0.2,
+          isFullMenuOpened ? theme.colors.tenantPrimary : colors.textSecondary
+        )};
     }
   }
 `;
@@ -58,7 +66,10 @@ const ShowFullMenuButton = ({ onClick, isFullMenuOpened }: Props) => {
   return (
     <NavigationItem>
       <StyledButton onClick={onClick} isFullMenuOpened={isFullMenuOpened}>
-        <StyledIcon name="more-options" isFullMenuOpened={isFullMenuOpened} />
+        <StyledIcon
+          name="dots-horizontal"
+          isFullMenuOpened={isFullMenuOpened}
+        />
         <NavigationLabel>
           <FormattedMessage {...messages.showMore} />
         </NavigationLabel>

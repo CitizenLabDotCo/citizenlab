@@ -35,7 +35,7 @@ import GetWindowSize, {
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
@@ -82,7 +82,7 @@ const InitialLoading = styled.div`
   justify-content: center;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 150px;
   `}
 `;
@@ -110,7 +110,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-right: 0;
     margin-top: 20px;
   `}
@@ -126,7 +126,7 @@ const AboveContentRight = styled.div`
 `;
 
 const IdeasCount = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   white-space: nowrap;
@@ -168,7 +168,7 @@ const FiltersSidebarContainer = styled.div`
 `;
 
 const ClearFiltersText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: auto;
@@ -195,7 +195,7 @@ const ClearFiltersButton = styled.button`
 const DesktopSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -232,11 +232,11 @@ interface State {
   previouslySelectedIdeaFilters: Partial<IQueryParameters> | null;
 }
 
-class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
+class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
   desktopSearchInputClearButton: HTMLButtonElement | null = null;
   mobileSearchInputClearButton: HTMLButtonElement | null = null;
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       filtersModalOpened: false,
@@ -318,7 +318,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       const selectedIdeaFilters = {
         ...state.selectedIdeaFilters,
         idea_status: null,
-        areas: null,
         topics: null,
       };
 
@@ -332,7 +331,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         ...state.selectedIdeaFilters,
         search: null,
         idea_status: null,
-        areas: null,
         topics: null,
       };
 
@@ -370,14 +368,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   };
 
-  handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.desktopSearchInputClearButton = element;
-  };
-
-  handleMobileSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.mobileSearchInputClearButton = element;
-  };
-
   filterMessage = (<FormattedMessage {...messages.filter} />);
 
   render() {
@@ -394,10 +384,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const filtersActive =
       selectedIdeaFilters.search ||
       selectedIdeaFilters.idea_status ||
-      selectedIdeaFilters.areas ||
       selectedIdeaFilters.topics;
     const biggerThanLargeTablet = !!(
-      windowWidth && windowWidth >= viewportWidths.largeTablet
+      windowWidth && windowWidth >= viewportWidths.tablet
     );
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
     const smallerThanPhone = !!(
@@ -424,9 +413,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         </ScreenReaderOnly>
 
         <DesktopSearchInput
-          setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
           debounce={1500}
+          a11y_numberOfSearchResults={list ? list.length : 0}
         />
         <StyledIdeasStatusFilter
           selectedStatusId={selectedIdeaFilters.idea_status}
@@ -506,8 +495,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 </FullscreenModal>
 
                 <MobileSearchInput
-                  setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
+                  a11y_numberOfSearchResults={list.length}
                 />
 
                 <MobileFilterButton

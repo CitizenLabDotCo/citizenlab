@@ -20,9 +20,6 @@ import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
-//  Typings
-import { MessageDescriptor } from 'typings';
-
 // resources
 import GetInitiatives, {
   Sort,
@@ -38,7 +35,7 @@ import GetWindowSize, {
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
@@ -78,7 +75,7 @@ const InitialLoading = styled.div`
   justify-content: center;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 150px;
   `}
 `;
@@ -102,7 +99,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   margin-bottom: 22px;
   flex-direction: row-reverse;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-right: 0;
     margin-top: 20px;
   `}
@@ -117,7 +114,7 @@ const AboveContentLeft = styled.div`
 const AboveContentRight = styled.div``;
 
 const InitiativesCount = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   white-space: nowrap;
@@ -157,7 +154,7 @@ const FiltersSidebarContainer = styled.div`
 `;
 
 const ClearFiltersText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: auto;
@@ -184,7 +181,7 @@ const ClearFiltersButton = styled.button`
 const DesktopSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -223,11 +220,14 @@ interface State {
   previouslySelectedInitiativeFilters: Partial<IQueryParameters> | null;
 }
 
-class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
+class InitiativeCards extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   desktopSearchInputClearButton: HTMLButtonElement | null = null;
   mobileSearchInputClearButton: HTMLButtonElement | null = null;
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       selectedView: 'card',
@@ -384,14 +384,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ selectedView });
   };
 
-  handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.desktopSearchInputClearButton = element;
-  };
-
-  handleMobileSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.mobileSearchInputClearButton = element;
-  };
-
   filterMessage = (<FormattedMessage {...messages.filter} />);
   searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
   searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
@@ -409,9 +401,9 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { list, querying, onLoadMore, hasMore, loadingMore } = initiatives;
     const hasInitiatives = !isNilOrError(list) && list.length > 0;
     const biggerThanLargeTablet =
-      windowSize && windowSize >= viewportWidths.largeTablet;
+      windowSize && windowSize >= viewportWidths.tablet;
     const biggerThanSmallTablet =
-      windowSize && windowSize >= viewportWidths.smallTablet;
+      windowSize && windowSize >= viewportWidths.tablet;
     const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
     const filtersActive =
       selectedInitiativeFilters.search ||
@@ -443,8 +435,8 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
         <DesktopSearchInput
           placeholder={this.searchPlaceholder}
           ariaLabel={this.searchAriaLabel}
-          setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
+          a11y_numberOfSearchResults={list?.length || 0}
         />
         <StyledInitiativesStatusFilter
           selectedStatusId={selectedInitiativeFilters.initiative_status}
@@ -533,8 +525,8 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                 <MobileSearchInput
                   placeholder={this.searchPlaceholder}
                   ariaLabel={this.searchAriaLabel}
-                  setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
+                  a11y_numberOfSearchResults={list?.length || 0}
                 />
 
                 <MobileFilterButton

@@ -1,4 +1,4 @@
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import React, {
   useEffect,
   useRef,
@@ -43,7 +43,7 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 // styles
 import styled from 'styled-components';
@@ -60,14 +60,14 @@ const visibleKeywordLabelScale = 2;
 const collideForce = 10;
 
 const nodeColors = [
-  colors.clGreen,
-  colors.clBlue,
-  colors.clRed,
-  colors.adminOrangeIcons,
-  colors.adminTextColor,
+  colors.success,
+  colors.teal,
+  colors.error,
+  colors.orange,
+  colors.primary,
   colors.facebookMessenger,
   colors.facebook,
-  colors.label,
+  colors.textSecondary,
   '#0DA796',
   '#934E6F',
 ];
@@ -80,7 +80,7 @@ const Network = ({
   params: { viewId },
   intl: { formatMessage, formatDate },
   location: { query, pathname },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const [initialRender, setInitialRender] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
@@ -244,7 +244,7 @@ const Network = ({
         display="flex"
         justifyContent="center"
         alignItems="center"
-        color={colors.label}
+        color={colors.textSecondary}
       >
         <StyledMessage>
           <FormattedMessage
@@ -268,7 +268,13 @@ const Network = ({
 
   return (
     <Box ref={containerRef} h="100%" position="relative" overflow="hidden">
-      <Box mt="24px" ml="24px" position="absolute" zIndex="1000">
+      <Box
+        mt="24px"
+        ml="24px"
+        position="absolute"
+        zIndex="1000"
+        className="intercom-insights-network-keywords-map"
+      >
         <SectionTitle>
           {formatMessage(messages.networkTitle)}
           <IconTooltip
@@ -324,7 +330,7 @@ const Network = ({
       >
         <Button
           buttonStyle="white"
-          textColor={colors.adminTextColor}
+          textColor={colors.primary}
           onClick={onZoomIn}
           width="36px"
           height="36px"
@@ -333,7 +339,7 @@ const Network = ({
         </Button>
         <Button
           buttonStyle="white"
-          textColor={colors.adminTextColor}
+          textColor={colors.primary}
           onClick={onZoomOut}
           width="36px"
           height="36px"

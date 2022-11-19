@@ -97,7 +97,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
       padding="13px 22px"
       buttonStyle={buttonStyle || 'primary'}
       onClick={onNewInitiativeButtonClick}
-      icon="arrowLeft"
+      icon="arrow-right"
       iconPos="right"
       disabled={!!disabledReason}
       text={<FormattedMessage {...messages.startInitiative} />}

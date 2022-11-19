@@ -13,8 +13,8 @@ FactoryBot.define do
 
     links do
       nodes.combination(2)
-           .take(nb_links)
-           .map { |from_node, to_node| build(:text_network_link, from_node: from_node, to_node: to_node) }
+        .take(nb_links)
+        .map { |from_node, to_node| build(:text_network_link, from_node: from_node, to_node: to_node) }
     end
 
     communities do

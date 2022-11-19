@@ -8,7 +8,7 @@ import { isEqual, clone } from 'lodash-es';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import customfieldMessages from '../../../../admin/containers/CustomFields/messages';
 import T from 'components/T';
@@ -88,7 +88,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class CustomFields extends Component<Props & InjectedIntlProps, State> {
+class CustomFields extends Component<Props & WrappedComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -258,7 +258,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                     )}
                   </TextCellContent>
                   {field.attributes.required && (
-                    <StyledBadge className="inverse" color={colors.clRed}>
+                    <StyledBadge className="inverse" color={colors.error}>
                       <FormattedMessage {...customfieldMessages.required} />
                     </StyledBadge>
                   )}
@@ -317,7 +317,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
   }
 }
 
-const CustomFieldsListWithHoCs = injectIntl<Props>(CustomFields);
+const CustomFieldsListWithHoCs = injectIntl(CustomFields);
 
 export default (inputProps: InputProps) => (
   <GetUserCustomFields>

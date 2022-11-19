@@ -33,14 +33,14 @@ const TextAreaContainer = styled.div`
 
 const CharacterCount = styled.p`
   bottom: 0;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   margin: 0;
   padding: 0.5rem;
   position: absolute;
   right: 0;
 
   &.error {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
   }
 `;
 

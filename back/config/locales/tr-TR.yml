@@ -1,0 +1,207 @@
+tr:
+  symbols:
+    outside: başka bir yerde
+  idea_statuses:
+    proposed: önerilen
+    proposed_description: Bu fikir kent yönetimine önerildi
+    viewed: görüntülendi
+    viewed_description: Bu fikir kent yönetiminden biri tarafından görülmüştür
+    under_consideration: değerlendiriliyor
+    under_consideration_description: Bu fikir kent yönetimi tarafından dikkate alınmıştır
+    accepted: kabul edildi
+    accepted_description: Bu fikir kabul edildi ve kent yönetimi tarafından uygulanacak
+    implemented: uygulandı
+    implemented_description: Bu fikir kent yönetimi tarafından uygulandı
+    rejected: reddedildi
+    rejected_description: Bu fikir reddedildi
+  initiative_statuses:
+    proposed: önerilen
+    proposed_description: önerilen
+    expired: süresi dolan
+    expired_description: süresi dolan
+    threshold_reached: eşiğe ulaşan
+    threshold_reached_description: eşiğe ulaşan
+    answered: yanıtlanan
+    answered_description: yanıtlanan
+    ineligible: uygun değil
+    ineligible_description: uygun değil
+  topics:
+    nature: Doğa ve biyoçeşitlilik
+    nature_description: Doğa ve biyoçeşitlilik
+    waste: Temizlik ve atık
+    waste_description: Temizlik ve atık
+    sustainability: Sürdürülebilir kalkınma
+    sustainability_description: Sürdürülebilir kalkınma
+    mobility: Ulaşım
+    mobility_description: Ulaşım
+    technology: Enerji ve teknoloji
+    technology_description: Enerji ve teknoloji
+    economy: Çalışma, ekonomi ve turizm
+    economy_description: Çalışma, ekonomi ve turizm
+    housing: Konut
+    housing_description: Konut
+    public_space: Kamusal alanlar ve binalar
+    public_space_description: Kamusal alanlar ve binalar
+    safety: Güvenlik
+    safety_description: Güvenlik
+    education: Eğitim ve gençlik
+    education_description: Eğitim ve gençlik
+    culture: Kültür, spor ve etkinlikler
+    culture_description: Kültür, spor ve etkinlikler
+    health: Sağlık ve refah
+    health_description: Sağlık ve refah
+    inclusion: Toplumsal kapsayıcılık
+    inclusion_description: Toplumsal kapsayıcılık
+    community: Toplumsal gelişim
+    community_description: Toplumsal gelişim
+    services: Kamu hizmetleri
+    services_description: Kamu hizmetleri
+    other: Diğer
+    other_description: Diğer
+  static_pages:
+    terms_and_conditions_title: Hüküm ve koşullar
+    terms_and_conditions_body: >
+      <p>Bu hüküm ve koşullar, platforma katkıda bulunmanın kurallarını ve yönergelerini ana hatlarıyla belirtir ve yapıcı bir diyaloğun sağlanmasına yardımcı olmayı amaçlar.</p> <p>Platformu daha da geliştirmek için fikirlerinizi support@citizenlab.co adresine gönderebilirsiniz.</p> <h2>Kimler katılabilir?</h2> <p>Platform üzerinden herkes kamuya açık projeleri görüntüleyebilir. İçeriğe katkıda bulunmak istiyorsanız (örneğin, girdi göndermek veya oy kullanmak) kaydolmanız ve bir hesap oluşturmanız gerekir. E-posta adresinizi kullanarak kaydolabilirsiniz; bazı platformlar için mevcut bir Facebook veya Google hesabını kullanarak oturum açmak da mümkün olabilir. Bu hizmetlerden birini kullanırsanız adınız, e-posta adresiniz ve profil fotoğrafınız platform hesabınızla paylaşılacak ve hesabınıza eklenecektir.</p> <p>Hesabınızın oluşturulmasının size sahiplik hakkı vermediğini lütfen unutmayın. Platform  yöneticileri, bu sayfada belirtilen hüküm ve koşullara uyulmaması gibi nedenlerle hesapları reddedebilir, askıya alabilir veya silebilir.</p> <p>Hesabınız için genel koşullar şunlardır: </p> <ul> <li> <strong>Tek bir hesap oluşturabilirsiniz</strong> <p>Kişiler birden fazla hesap oluşturamaz ve tutamaz. Verdiğiniz hesap bilgileri doğru olmalıdır ve bu hesap bir platform yöneticisinin izni olmadan başkasına devredilemez. </p> </li> <li> <strong>Hesabınız ticari tanıtım için kullanılamaz</strong> <p>Hesaplar yalnızca reklam, ürün veya hizmet pazarlama vb. amaçlarla kullanılamaz.</p> </li> <li> <strong>Hesap bilgilerinizi güvenli ve gizli tutmaktan siz sorumlusunuz</strong> <p>Hesabınızı, hesabınızın parolasını ve giriş bilgilerini yalnızca siz kullanabilirsiniz. Hesap güvenliğinizi artırmak için rakamlar, küçük harfler ve büyük harflerden oluşan bir parola kullanmanız önerilir. Hesabınızda meydana gelen herhangi bir kayıp veya hasardan sorumlu değiliz ve çalınmasından (örneğin, kimlik avı yoluyla) sorumlu tutulamayız. Sizden parolanız gibi oturum açma bilgilerinizi hiçbir zaman istemeyiz. </p>  <h2>Platformdaki etkinliğiniz</h2> <p>Güvenli ve üretken katılımı sağlamak için, bu platformda yayınlanabilecek içerik türüne ilişkin bazı kısıtlamalar vardır. Platformda yayınladığınız tüm içerikler aşağıdakilerden arındırılmış olmalıdır:</p> <ul> <li> <strong>Özel veriler</strong> <p>Gizli veriler, telefon numaraları ve adresler gibi başkaları hakkındaki kişisel bilgiler, kişilerin açık izinleri ve rızaları olmadan yayınlanamaz.  </p> <li><strong>Spam / kötü amaçlı yazılım / kimlik avı / virüsler / solucanlar / Truva atları</strong> <p>Başkalarının gizliliğini ihlal etmeyi veya başkalarının tarayıcılarına veya bilgisayarlarına zarar vermeyi veya bozmayı amaçlayan kötü amaçlı içerik veya bağlantılar.</p> </li> <li> <strong>Tehditler, hakaretler ve diğer uygunsuz içerikler </strong> <p>Kişisel saldırılar ve hakaretler, tehdit edici davranışlar veya dil, ayrımcı yorumlar, küfür ve diğer saldırgan dil.</p> </li> <li><strong>Reklam ve ticari faaliyet</strong> <p>Yalnızca ticari bir hizmet veya ürünün reklamını yapmak amacıyla yayınlanan içerik.</p> </li> <li> <strong>Telif hakkıyla korunan materyaller</strong> <p>Fikri mülkiyet haklarını ihlal eden içerikler (örneğin, telif hakkıyla korunan görseller).</p> </li> <li> <strong>Yasa dışı faaliyetler</strong> <p>Herhangi bir şekilde yasa dışı faaliyetleri teşvik eden içerikler.</li></p> </ul> <p>Yukarıdakilerden herhangi birini içeren gönderiler ve diğer içerikler düzenlenebilir, silinebilir veya başka bir şekilde gönderilmesi engellenebilir ve hesap geçici olarak engellenebilir veya kalıcı olarak silinebilir. Geçici veya kalıcı olarak askıya alınmaktan kaçınmak için oluşturulan yeni veya ek hesaplar da izlenebilir ve silinebilir.</p> <h2>Geçerli yasalar</h2> <p>Bir hesabın kullanımı geçerli yasaları ihlal edemez. Bu, gizlilik mevzuatının, fikri mülkiyet haklarının, ceza kanununun vb. ihlalini içerir.</p> <p>Platformda yayınlanan ve yukarıdaki kurallara ve yasalara uymayan içerikten hiçbir şekilde sorumlu tutulamayız. İhlaller support@citizenlab.co adresine bildirilebilir ve ilgili mesajların silinmesine ve/veya ilgili hesabın askıya alınmasına veya kalıcı olarak iptal edilmesine neden olabilir.</p> <p>Platformda yayınlanan içeriğin zararlı dosyalar veya bağlantılar içermesi mümkündür. Platform üzerinden dosya indirerek veya köprülere erişerek oluşabilecek herhangi bir zararın riskini ve sorumluluğunu kendiniz üstlenirsiniz.</p> <h2>Mülkiyet hakları</h2> <p>Bu platform, içeriği, kaynak kodu, veritabanları vb. ile ilgili fikri mülkiyet hakları ile korunmaktadır. Platformda yayınladığınız tüm orijinal içerikler herkesin kullanımına açıktır ve içeriğinizin atıfta bulunularak paylaşılmasına veya uyarlanmasına izin veren Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Genel Lisansı kapsamındadır. Platformu ve herkese açık nitelikte olmayan herhangi bir içeriğini izinsiz olarak hiçbir biçimde çoğaltamaz, dağıtamaz, değiştiremez veya iletemezsiniz.</p>
+    privacy_policy_title: Gi̇zli̇li̇k Poli̇ti̇kası
+    privacy_policy_body: >
+      <p>Verilerin işlenmesinden sorumludur:</p> <p>CitizenLab NV - Anspachlaan 65 - 1000 Brüksel - Belçika</p> <p>İletişim e-posta adresi: support@citizenlab.co</p> <p>Organizasyon: //müşteri iletişim bilgilerini giriniz</p> <h2>1. GİZLİLİK POLİTİKASI</h2> <p>Bu 'Gizlilik Politikası' CitizenLab tarafından bu web sitesi aracılığıyla kuruluş adına toplanan 'Kişisel Veriler' için geçerlidir.</p> <h2>2. KİŞİSEL VERİLER NEDİR?</h2> <p>Bu Gizlilik Politikasında, Kişisel Veriler sizi tanımlamayı mümkün kılan bilgileri ifade eder. Tanımlanabilir bir kişi, doğrudan veya dolaylı olarak, özellikle bir kimlik numarasına veya fiziksel, fizyolojik, zihinsel, ekonomik, kültürel veya sosyal kimlikle bağlantılı bir veya daha fazla faktöre atıfta bulunarak tanımlanabilen kişidir. Kişisel bilgilerin tipik bir örneği adınız ve e-posta adresinizdir.</p> <h2>3. HANGİ KİŞİSEL VERİLERİ TOPLARIZ?</h2> <p>Kişisel Verilerinizi aşağıdaki üç kaynaktan toplayabiliriz:</p> <h3>3.1 Platforma kayıt işlemi sırasında sağladığınız ve bazıları isteğe bağlı olan Kişisel Veriler.</h3> <p>Sizden toplayabileceğimiz kişisel veriler şunlardır:</p> <ul> <li>Ad ve soyadı</li> <li>E-posta adresi</li> <li>Doğum yılı</li> <li>Cinsiyet</li> <li>İkamet edilen bölge</li> <li>Tercih edilen dil</li> </ul> <p>Bu liste, kuruluşun talebi üzerine genişletilebilir. Google Accounts, Facebook veya FranceConnect gibi bir 3. taraf kimlik doğrulama sağlayıcısı aracılığıyla oturum açmayı seçerseniz bu verileri onlardan alırız. Kimliğinizi COW, FranceConnect veya CSAM gibi bir 3. taraf kimlik sağlayıcısı ile doğrulamayı seçerseniz bu bilgileri onlardan alırız.</p> <h3>3.2 Platformumuzdaki katılımcı faaliyetlerinizde sağladığınız kişisel veriler.</h3> <p>Platformda gerçekleştirdiğiniz her eylem (oylama, fikir yayınlama, yorum yazma, anketi yanıtlama vb.) kaydedilir ve saklanır. Bu veriler aynı zamanda kayıt verilerinizle (3.1) bağlantılıdır, bu da kuruluşun platform profilinizi bu katılım verileriyle ilişkilendirebileceği anlamına gelir.</p> <h3>3.3 Platformumuzu ziyaret ettiğinizde topladığımız Kişisel Veriler.</h3> <p>Biz (ve bizim adımıza hareket eden üçüncü taraf bilgi işleyiciler) platformun çalışma performansını ve güvenliğini değerlendirmek için platformumuzun kullanımı hakkında bilgi toplarız. Bu amaçla, IP adresiniz ve tarayıcı ayrıntılarınız gibi sizi tanımlayabilecek teknik bilgileri toplarız. Hizmetlerimizi kullandığınızda bu tür verilerin toplanmasını kabul etmiş olursunuz.</p> <p>Hizmetlerimizi geliştirmek için kullanım verilerini de toplarız, istediğiniz zaman bu verilerin toplanmasını onay yöneticisinden devre dışı bırakabilirsiniz.</p> <h2>4. KİŞİSEL VERİLERİ NASIL KULLANIRIZ?</h2> <p>Kişisel verilerinizi aşağıdaki amaçlar için kullanabiliriz:</p> <ul> <li>Öncelikle ve en önemlisi, girdilerinizi ilgili bağlamda kuruluşa iletmek ve karar vermelerine yardımcı olmak için bu platformda toplanan tüm verilerin toplu raporlarını çıkarmak.</li> <li>Bu web sitesinde kullanıcı profilinizi oluşturmak ve tutmak.</li> <li>Kullanıcıların tanımlanmasını ve kimlik doğrulamasını yönetmek.</li> <li>Topluluğunuz hakkında bilgi vermek ve/veya platformda ilginizi çekebilecek faaliyetler olduğunda sizi bilgilendirmek. E-posta bildirimleri alma tercihlerinizi kullanıcı profilinizden istediğiniz zaman devre dışı bırakabilirsiniz.</li> <li>Hizmetlerimizi geliştirmek ve işleyişini izlemek için.</li> </ul> <p>Kişisel veriler yalnızca işlenmeleri için gereken süre boyunca saklanır ve işlenir. Ardından veriler silinir veya anonimleştirilir.</p> <h2>5. KİŞİSEL VERİLERİNİZİ KİMLERLE PAYLAŞIRIZ?</h2> <p>Kişisel verilerinizi, adına bu verileri topladığımız kuruluş ile paylaşırız. Verilerinizi bizim adımıza çalışan alt işleyicilerle paylaşırız. Kişisel verilerinizi asla başka hizmet sağlayıcılara satmayız veya kiralamayız ve Kişisel Verilerinizi GDPR ile uyumlu olmayan herhangi bir hizmet sağlayıcı ile paylaşmayız.</p> <h2>6. KİŞİSEL VERİLERİNİZİ NEREYE AKTARIRIZ?</h2> <p>Kişisel Verilerinizi yalnızca GDPR madde 44'e uygun olmaları halinde Avrupa Ekonomik Alanı dışında yerleşik hizmet sağlayıcılara aktarıyoruz.</p> <h2>7. HANGİ HAKLARA SAHİPSİNİZ?</h2> <p>Kişisel verilerinizi istediğiniz zaman görüntüleme ve Citizenlab'in kişisel verilerinizi kullanımı hakkında bilgi alma hakkına sahipsiniz.</p> <h3>7.1 Düzeltme, silme ve işlemeyi kısıtlama hakkı</h3> <p>Kişisel verilerinizi Citizenlab'e verip vermemeye karar vermekte özgürsünüz. Ayrıca, Citizenlab'den kişisel verilerinizi düzeltmesini, tamamlamasını veya kaldırmasını talep etme hakkına her zaman sahipsiniz. Kişisel verilerin sağlanmasının reddedilmesinin veya silinmesinin talep edilmesinin belirli hizmetlerin artık sunulamayacağı anlamına geldiğini kabul edersiniz. Kişisel verilerinizin işlenmesinin sınırlandırılmasını da talep edebilirsiniz. Hesabınızı platformdan kaldırmayı seçerseniz, hakkınızda toplanan kişisel veriler sunucularımızdan kaldırılacaktır. Hakkınızdaki bazı kişisel bilgiler, güvenlik ve yasal nedenlerle tuttuğumuz günlük verilerinde en çok 30 gün saklanabilir.</p> <h3>7.2 İtiraz hakkı</h3> <p>Ciddi ve meşru nedenlerle kişisel verilerinizin işlenmesine itiraz etme hakkına sahipsiniz. Ayrıca, kişisel verilerinizin doğrudan pazarlama amacıyla kullanılmasına her zaman itiraz etme hakkına sahipsiniz; bu gibi durumlarda neden belirtmek zorunda değilsiniz.</p> <h3>7.3 Veri taşınabilirliği hakkı</h3> <p>Citizenlab'e sağladığınız kişisel verileri yapılandırılmış, tipik ve makine tarafından okunabilir bir biçimde alma ve/veya farklı denetleyicilere aktarma hakkına sahipsiniz.</p> <h3>7.4 Onayı geri çekme hakkı</h3> <p>İşleme önceden verdiğiniz onaya dayandığı sürece, bu onayı geri çekme hakkına sahipsiniz.</p> <h3>7.5 Haklarınızı kullanma</h3> <p>Bu amaçla Citizenlab ile iletişime geçerek, support@citizenlab.co adresine e-posta göndererek, Anspachlaan 65, 1000 Brüksel, Belçika adresine posta göndererek veya kimlik kartınızın ön yüzünün bir kopyasını eklemeniz koşuluyla Web Sitemizdeki "Bize ulaşın" formunu kullanarak haklarınızı kullanabilirsiniz.</p> <h3>7.6 Otomatik karar verme ve profil oluşturma</h3> <p>Kişisel verilerinizin işlenmesi profil oluşturmayı içermez ve ayrıca Citizenlab tarafından otomatik karar vermeye tabi tutulmayacaktır.</p> <h3>7.7 Şikayette bulunma hakkı</h3> <p>Ülkenizdeki Kişisel Verilerin Gizliliği yetkililerine veya CitizenLab'in tabi olduğu Belçika'daki Kişisel Verilerin Gizliliği yetkililerine şikayette bulunma hakkına sahipsiniz: Drukpersstraat 35, 1000 Brüksel, Belçika, Tel +32 (0)2 274 48 00, Faks +32 (0)2 274 48 35, e-posta: contact@adp-gba.be. Bu, mahkemelerden muafiyet sağlamaz.</p> <h2>8. VERİ TOPLAMA VE İŞLEME HAKKINDA EK BİLGİLER</h2> <h3>Yasal prosedürler</h3> <p>CitizenLab ve bu verileri adına işlediğimiz Kuruluş, Kullanıcının Kişisel Verilerini yasal amaçlarla, bu Uygulamanın veya ilgili hizmetlerin yasa dışı kullanımı durumunda mahkeme veya yasal işlemlerden önceki aşamalar için kullanabilir. Kullanıcı, CitizenLab ve birlikte çalıştığımız Kuruluşun, Verilerin işlenmesi için yetkili devlet kurumlarının talebi üzerine kişisel verileri ifşa etmek zorunda kalabileceğinin farkındadır. Bu işlemenin yasal dayanağı, hüküm ve koşulların kabulü (sözleşme temeli) ve verilen rızadır.</p> <h3>Güvenlik Önlemleri</h3> <p>Citizenlab, kişisel verilerin imha edilmesini, kaybolmasını, tahrif edilmesini, değiştirilmesini, izinsiz erişimini veya üçüncü taraflara hatalı bir şekilde ifşa edilmesini ve bu verilerle ilgili diğer yasaklanmış işlemleri önlemek için teknolojik ve organizasyonel düzeyde ayarlanmış güvenlik önlemleri geliştirmiştir. Citizenlab, kişisel verilerinizin üçüncü bir tarafça yanlış veya yasa dışı kullanımından kaynaklanan doğrudan veya dolaylı kayıplardan hiçbir koşulda sorumlu tutulamaz. Giriş bilgilerinize ve parolanıza izinsiz erişimleri tamamen önlemek de dahil olmak üzere güvenlik talimatlarına her zaman uymalısınız. Web sitesinin bilgisayarınız, IP adresiniz ve kimlik bilgileriniz üzerinden kullanımından ve bunların gizliliğinden yalnızca siz sorumlusunuz.</p> <h3>Bu gizlilik politikasındaki değişiklikler</h3> <p>CitizenLab, Kullanıcıları bu sayfada bilgilendirerek bu gizlilik politikasını istediği zaman değiştirme hakkını saklı tutar. Olası değişiklikler için bu sayfayı kontrol etmenizi öneririz. Son değişikliğin tarihi sayfanın altında belirtilmiştir. Bir Kullanıcı politikadaki herhangi bir değişikliğe itiraz ederse, Kullanıcı bu Uygulamayı kullanmaya devam etmemelidir. Aksi belirtilmedikçe, o tarihte geçerli olan Gizlilik Politikası, topladığımız tüm Kişisel Veriler için geçerlidir.</p> <p><em>En son güncelleme: 17.12.2019</em></p>
+    infopage_title: Bilgi Sayfası
+    infopage_body: "<p>Bu <strong>tam kapsamlı katılım platformu</strong> belediyenizin veya kuruluşunuzun bir girişimidir ve fikir toplama, oylama, tartışma, anket, katılımcı bütçe oluşturma, çevrimiçi haritalama, senaryo planlama, danışma kurulları ve komiteler için destek vb. kamuya danışma süreçlerinde kullanılabilir.</p>\n<p>Ana sayfada, hangi <strong>süreçlerinin aktif olduğunu </strong>ve şu anda hangi <strong>aşamada </strong>olduklarını görebilirsiniz.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>Platformda nasıl oturum açarım?</h2>\n<p>Adınızı, soyadınızı ve e-posta adresinizi girerek kolayca oturum açabilirsiniz. Google veya Facebook hesabınızı da kullanabilirsiniz. Başkaları tarafından sadece adınız ve soyadınız görülebilecektir.</p>\n<h2>Platformu kendim kullanabilir miyim? Örneğin bir kamuoyu görüşü almak için?</h2>\n<p>Kesinlikle kullanabilirsiniz. Belediyenizdeki veya kuruluşunuzdaki sorumludan size proje moderatörü olmanız için gerekli izinleri vermesini isteyin. Bu izinler verildikten sonra, kendi projenizi ve zaman çizelgenizi oluşturabilir ve istediğiniz bilgileri (video, belge, resim vb.) paylaşabilirsiniz. Bu, başkalarını platforma davet etmenize, projenizde fikir yayınlamalarına, oy vermelerine veya yorum yapmalarına da olanak tanır.</p>\n<h2>Bir dernek/kuruluş/komite olarak katılabilir miyim? </h2>\n<p>Evet, bu mümkün. Platformda sadece adınız ve soyadınız başkaları tarafından görülebildiğinden, profilinizi oluştururken kuruluşunuzun adını kullanmanız yeterlidir.</p>\n<h2>Neden kendim bir web sitesi oluşturmak yerine bu platformu kullanayım?</h2>\n<p>Çevrimiçi katılım konusunda uzman ve kendini işine adamış geliştiricilerden oluşan bir ekip (<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a> belediyeniz veya kuruluşunuz tarafından görevlendirilmiştir) bu platformu günlük olarak geliştirmekte ve güncellemektedir. En küçük bir hata bile anında giderilir ve yaratıcı önerileriniz varsa platformda hangi özellikleri kullanabileceğinizi veya hangilerinin yakında kullanılabilir hale geleceğini göstererek size yardımcı olabilirler.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Daha fazla bilgiye mi ihtiyacınız var?</em></strong><em> Platformu kullanmak istiyor musunuz? Sorularınız veya geri bildiriminiz mi var? Belediyenizdeki veya kuruluşunuzdaki sorumlu kişilerle ya da support@citizenlab.co adresinden CitizenLab ile iletişime geçin.</em></p><strong>"
+    faq_title: SSS
+    faq_body: "<h2 class=\"ql-align-justify\">Bu platformun oluşturulma amacı nedir?</h2><p class=\"ql-align-justify\">Bu platform, bilgi paylaşmak, girdi ve geri bildirim almak için ortak bir merkez olarak tasarlanmıştır. Halihazırda aktif olan katılım projeleri ana sayfada gösterilir. Her katılım projesinin fikir eklemek, bir öneri hakkında yorum yapmak, projeleri oylamak ve önceliklendirmek veya bir ankete katılmak gibi farklı bir katılım şekli olabilir.</p><h2 class=\"ql-align-justify\">Nasıl katılabilirim?</h2><p class=\"ql-align-justify\">Herkese açık projelere her zaman göz atabilirsiniz ancak bir işlem yapmak için kaydolmanız gerekir. Bu, topluluk olma duygusunu korumaya ve girdilerin meşruiyetini sağlamaya yardımcı olur.</p><h2 class=\"ql-align-justify\">İnsanlar benimle ilgili hangi bilgileri görebilir?</h2><p class=\"ql-align-justify\">Adınız, fotoğrafınız ve eğer eklediyseniz biyografiniz görülür. Bu bilgileri Ayarlarınızdan değiştirebilirsiniz.</p><h2 class=\"ql-align-justify\">Neden girdimi yayınlayamıyorum veya yorum yapamıyorum?</h2><p class=\"ql-align-justify\">Yayınlama, yorum ve oylama, bir projenin yalnızca belirli zamanlarında veya aşamalarında etkinleştirilebilir. Bazı durumlarda, bir proje yalnızca belirli bir paydaş grubunun katkılarına açık olabilir.</p><p class=\"ql-align-justify\">Bir proje için yayınlama o anda etkinse, yayın göndermenizi isteyen bir düğme görürsünüz. Alternatif olarak, diğer katılım fırsatları için diğer aktif projelere göz atabilirsiniz.</p><h2 class=\"ql-align-justify\">Girdimi nasıl düzenleyebilirim veya silebilirim?</h2><p class=\"ql-align-justify\">Girdinizi yayınladıysanız ancak düzenleme yapmak veya silmek istiyorsanız, yayının sağ üst köşesindeki üç küçük noktaya tıklayarak bu seçeneği bulabilirsiniz.</p><h2 class=\"ql-align-justify\">Topluluk kuralları ve moderasyon politikaları nelerdir?</h2><p class=\"ql-align-justify\">Topluluk kurallarımız, platformun herkesin katılabileceği güvenli bir alan olmasını sağlamayı amaçlar. Lütfen yayınlarınızda aşağıdakilerin bulunmadığından emin olun:</p><ul>\n  <li class=\"ql-align-justify\">Kişisel saldırılar, hakaretler, küfürlü veya ayrımcı yorumlar</li>\n  <li class=\"ql-align-justify\">Küfür dahil saldırgan dil</li>\n  <li class=\"ql-align-justify\">Pazarlama veya reklam materyalleri</li>\n  <li class=\"ql-align-justify\">Diğer bireyler hakkında kişisel bilgiler</li>\n  <li class=\"ql-align-justify\">Görseller gibi telifli materyaller</li>\n  </ul><p class=\"ql-align-justify\">Bu yönergelere uymayan tüm yayınlar veya yorumlar düzenlenebilir, silinebilir ya da çok ağır ihlallerde yayınlanması engellenebilir. Daha fazla bilgi için lütfen Hüküm ve Koşullarımızı inceleyin.</p><h2 class=\"ql-align-justify\">Saldırgan bir yayını nasıl şikayet edebilirim?</h2><p class=\"ql-align-justify\">Bir yayını şikayet etmek için yayının sağ üst köşesindeki üç küçük noktaya tıklayın. Lütfen içeriği şikayet etme nedeninizi belirtin. Bu işlem, yayının incelenmesi için bir bildirim gönderir.</p><h2 class=\"ql-align-justify\">Kaydolurken veya oturum açarken neden zorluk yaşıyorum?</h2><p class=\"ql-align-justify\">Kaydolamıyorsanız, bunun nedeni aynı e-posta adresiyle zaten kaydolmuş olmanız veya daha önce platforma katılmak için bir davet almış olmanız olabilir. E-posta adresinizin bekleyen bir davet tarafından alındığını belirten bir mesaj görürseniz lütfen e-postanızı kontrol edin ve hesabınızı kaydetmek için davetiyedeki bağlantıya tıklayın. Daveti bulamazsanız, spam kutunuza bakmayı deneyin veya yeni bir davetiye isteyin.</p><h2 class=\"ql-align-justify\">Parolamı nasıl sıfırlarım?</h2><p class=\"ql-align-justify\">Oturum açma sayfasında her zaman parolanızı sıfırlama talebinde bulunabilirsiniz. Parolanızı sıfırlarsanız e-posta adresinize bir bağlantı gönderilir. Parolanızı değiştirmek için talimatları uygulayın. Güvenlik nedeniyle, bu bağlantı bir saat süreyle geçerli olur. Bağlantının süresi dolduysa yeni bir sıfırlama bağlantısı oluşturmak için oturum açma sayfasındaki \"Parolanızı mı unuttunuz?\" seçeneğine tekrar tıklayabilirsiniz.</p><p class=\"ql-align-justify\">E-postayı almadıysanız, spam kutunuzda olmadığından ve bağlantıyı kaydolduğunuz e-posta adresine gönderdiğinizden emin olun.</p><h2 class=\"ql-align-justify\">Verilerimle ne yapacaksınız?</h2><p class=\"ql-align-justify\">Veri toplama ve kullanımı hakkında daha fazla bilgi için gizlilik politikamızı inceleyin. Kısacası, verilerinizi asla reklam, pazarlama veya diğer spam türleri için kullanmayız.</p><h2 class=\"ql-align-justify\">Hangi e-postaları alacağım?</h2><p class=\"ql-align-justify\">Yayınlarınızdan birine yanıt verilmesi gibi, hesabınızla ve platformdaki etkinliğinizle ilgili e-postalar alabilirsiniz. Hangi e-postaları alacağınızı Ayarlar bölümünden kontrol edebilirsiniz. E-posta bildirimlerini açıp kapatabileceğiniz \"Bildirimler\" adlı bir bölüm bulunmaktadır.</p><h2 class=\"ql-align-justify\">Hesabımı nasıl silebilirim?</h2><p class=\"ql-align-justify\">Ayarlarınızda hesabınızı silme seçeneği bulunmaktadır. Gönderdiğiniz girdiler yayınlanmaya devam eder ancak adınız yayından kaldırılır ve 'bilinmeyen yazar' ifadesi ile değiştirilir. Tüm girdilerinizi silmek istiyorsanız lütfen hesabınızı silmeden önce yapın.</p>"
+    initiatives_title: Öneriler
+    initiatives_body: >
+      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Vatandaş önerisi nedir?</h2> <p>Bir $|orgName| sakini olarak bu platform aracılığıyla önerinizi gündeme getirebilirsiniz. Bu öneriler tercihen yerel yönetim bölgesi ile bağlantılı ve bir ihtiyaç, istek veya hayalden kaynaklanan somut fikirlerdir. Bu sizin kendi öneriniz olabileceği gibi ortak bir öneri de olabilir. Mevcut bir durumu değiştirmek, iyileştirmek ya da yeni bir proje başlatmak isteyebilirsiniz.</p> <p>Önerinizin hayata geçirilmesinde, $|orgName| tarafından katılım hem gerekli hem de mümkün olmalıdır. Önerinizle ilgili fikir geliştirme veya iş birliği için katılımınız tercih edilir ancak bu bir zorunluluk değildir. Bu nedenle "Otoyoldaki hız sınırını 80 km/saate düşürmek" güçlü bir öneri değilken "Ana caddeyi yaya bölgesine dönüştürmek" güçlü bir öneridir. Önerilerinizi getirin! Daha fazla bilgiye ihtiyaç duyulursa sizinle iletişime geçilecektir.</p><h2>Neden bu platforma bir öneri göndermelisiniz?</h2> <p>Bu, $|orgName| için resmi katılım platformudur ve aşağıdaki avantajları sunar:</p> <ul> <li>$|orgName| bu platformun resmi sahibi rolündedir ve platformdaki öneri ve görüşleri sürekli olarak takip eder. Bir öneri yayınladığınızda, sorumlu kişi otomatik olarak bir mesaj alır. Önerinizin dikkate alındığından emin olmak için onlarla iletişime geçmeniz gerekmez.</li> <li>Bu platform, vatandaşların önerileri gibi resmi katılımcı eylemler için özel olarak geliştirilmiştir. Kullanıcı deneyiminden adım adım yaklaşıma kadar her unsur, vatandaş katılımını kolaylaştırmak için oluşturulmuştur. Geleneksel sosyal medyayı kullanırken, öneriniz çok sayıda uyaran arasında kaybolabilir ve sıradan bir e-posta, dolu bir gelen kutusu içinde hemen kaybolur.</li> <li>Aynı bölgede yaşadığınız kişiler de bu platformda yer almaktadır. Önerinizi destekleyebilir ve geliştirebilirler. Öneriniz ne kadar yaratıcı olursa ve ne kadar çok destek toplamayı başarırsa hayata geçirilme şansı o kadar artar.</li> </ul> <h2>Nereden başlamanız gerekir?</h2> <p>Öncelikle, önerinizin aşağıdaki kriterleri karşılayıp karşılamadığını kontrol edin:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Öneriniz $|initiativesDaysLimit| gün içinde $|initiativesVotingThreshold| oy sayısına ulaştığında ne bekleyebilirsiniz?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Zamanında $|initiativesVotingThreshold| oy alamayan önerilere ne olur? </h2> <p>Böyle şeyler olur ama endişelenmeyin. Öneriniz platformda kalmaya devam edecektir. Önerinizin durumu otomatik olarak 'Süresi dolan' olarak değişecektir. Sonuç olarak, oylama artık mümkün olmayacaktır. Dilerseniz, kendi önerinizi istediğiniz zaman silebilirsiniz.</p>
+  nav_bar_items:
+    home:
+      title: Ana Sayfa
+    projects:
+      title: Tüm projeler
+    all_input:
+      title: Tüm girdiler
+    proposals:
+      title: Öneriler
+    events:
+      title: Etkinlikler
+    about:
+      title: Hakkında
+    faq:
+      title: SSS
+  projects:
+    open_idea_project_title: Bir fikriniz mi var? Gündeme taşıyın!
+    open_idea_project_description_preview: Mevcut projelerde göremediğiniz bir fikriniz mi var? Burada yayınlayın, destek toplayın ve gündemde yer almasını sağlayın!
+    open_idea_project_description: >
+      <p>Mevcut projelerde göremediğiniz bir fikriniz varsa burada yayınlayabilirsiniz.</p><p><strong>Amaç nedir?</strong> Fikrinizi gündeme taşımak.</p><p><strong>Nasıl mı?</strong> Destek toplayarak, yani 3 ay içinde en az 100 oy alarak. Bunu, öncelikle fikrinizi 'çekici' hale getirerek yapabilirsiniz. Açık ve ilgi çekici bir şekilde yazmak, resimler eklemek, gerçeklere dayalı güçlü argümanlar üretmek ve daha fazla ayrıntı veya arka plan bilgisi içeren eklerle geliştirmek gibi uygulamalar önerilir. Bunu yaptıktan sonra, fikrinizi sosyal medyada veya e-posta yoluyla paylaşmaya başlayın. İnsanları fikrinizle ilgili tartışmaya katılmaya davet edin veya lehte oy vererek fikrinizi desteklemeye ikna edin.</p><p><strong>Ne hakkında?</strong> Fikriniz, kentiniz ve politikasıyla ilgili olduğu sürece pek çok şey hakkında olabilir. Yaşadığınız bir sorun, öngördüğünüz bir çözüm veya bunların birleşimi olabilir. Bu fikir, çılgınca ve uzun vadeli olabileceği gibi çok somut ve hızla gerçekleştirilecek bir fikir de olabilir.</p><p><strong>Peki ya sonra? </strong>3 ay içinde 100 oya ulaştınız mı? Tebrikler! Kent yönetimi artık fikrinizi değerlendirmeye alacaktır. Fikrinizin uygulanabilir olduğu ve belirli gruplara veya bireylere zarar vermediği düşünülürse, kurul toplantısı sırasında önerinizi sunma şansına sahip olursunuz. Aynı toplantı sırasında, kurul üyeleri fikrinizle ilgili ne yapıp yapmayacakları ve neden yapmayacakları konusunda size doğrudan geri bildirimde bulunacaklardır. Eğer 3 ay içinde 100 oy toplayamazsanız öneriniz değerlendirmeye alınmaz.</p><p>Fikirlerinizi öğrenmek için sabırsızlanıyoruz!</p>
+  events:
+    council_meeting_title: Kurul Toplantısı
+    council_meeting_description: >
+      <p>Bu kurul toplantısında, 3 aydan kısa bir süre içinde 100 oy alan vatandaş girişimleri sunulacaktır.</p><p>Kurul daha sonra her bir fikir hakkındaki görüşlerini paylaşacaktır.</p>
+  custom_fields:
+    users:
+      gender:
+        title: Cinsiyet
+      birthyear:
+        title: Doğum yılı
+      domicile:
+        title: İkamet yeri
+      education:
+        title: Eğitim
+    ideas:
+      title:
+        title: Başlık
+        description:
+      body:
+        title: Açıklama
+        description:
+      author_id:
+        title: Yazan
+        description:
+      topic_ids:
+        title: Etiketler
+        description:
+      location:
+        title: Konum
+        description:
+      proposed_budget:
+        title: Öngörülen Bütçe
+        description:
+      budget:
+        title: Bütçe
+        description:
+      images:
+        title: Görseller
+        description:
+      attachments:
+        title: Ekler
+        description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: Fikriniz nedir ?
+        question:
+          title: Sorunuz nedir ?
+        contribution:
+          title: Katkınız nedir ?
+        project:
+          title: Projeniz nedir ?
+        issue:
+          title: Sorununuz nedir?
+        option:
+          title: Seçeneğiniz nedir ?
+      details:
+        title: Ayrıntılar
+      attachements:
+        title: Görseller ve Ekler
+      extra:
+        title: Diğer bilgiler
+  custom_field_options:
+    gender:
+      male: Erkek
+      female: Kadın
+      unspecified: Diğer
+    domicile:
+      outside: Başka bir yer
+    education:
+      ISCED2: Ortaokul
+      ISCED3: Lise
+      ISCED4: Orta öğretim sonrası yüksek öğretim dışı eğitim
+      ISCED5: Ön lisans
+      ISCED6: Lisans veya eşdeğeri
+      ISCED7: Yüksek lisans veya eşdeğeri
+      ISCED8: Doktora veya eşdeğeri
+  initiatives:
+    default_threshold_reached_message: >
+      <p>Öneri sahipleri, önerilerini sunmak için kurul toplantısına davet edilebilir. Bu süreçle ilgili bilgilendirme sağlanır.</p>
+    default_eligibility_criteria: >
+      <ul> <li>Yerel yönetimin etki alanı ve yetkileri dahilinde olmalıdır</li> <li>Bireysel çıkarlardan ziyade kamu yararına hizmet etmelidir</li> <li>Her tür ayrımcılıktan uzak olmalıdır</li> <li>Başkalarına zarar vermemelidir</li> </ul>
+  reset_password_mailer:
+    send_reset_password:
+      cta_reset_password: 'Parolanızı sıfırlayın'
+      message_you_reset_your_password: '%{organizationName} katılım platformu için parola sıfırlama talebinde bulundunuz. Yeni ve güvenli bir parola seçmek için aşağıdaki düğmeye tıklayın. Bu bağlantı 1 saat için geçerlidir.'
+      subject: '%{organizationName}: Parolanızı sıfırlayın'
+      title_reset_your_password: 'Yeni bir parola seçin'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Latitude'
+      longitude: 'Longitude'
+      author_fullname: 'Author name'
+      author_email: 'Author email'
+      author_id: 'Author ID'
+      created_at: 'Submitted at'
+      published_at: 'Published at'
+      comments_count: 'Yorumlar'
+      upvotes_count: 'Olumlu oylar'
+      downvotes_count: 'Olumsuz oylar'
+      baskets_count: 'Baskets'
+      input_url: 'URL'
+      project: 'Proje'
+      status: 'Durum'
+      assignee_fullname: 'Atanan'
+      assignee_email: 'Assignee email'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'

@@ -14,7 +14,7 @@ import { UploadFile } from 'typings';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;
@@ -25,14 +25,12 @@ const Container = styled.div<{ error: boolean }>`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid
     ${({ error }) =>
-      error ? lighten(0.4, colors.clRed) : lighten(0.4, colors.label)};
+      error ? lighten(0.4, colors.error) : lighten(0.4, colors.textSecondary)};
 `;
 
 const Paperclip = styled(Icon)`
-  flex: 0 0 10px;
-  width: 10px;
-  height: 20px;
-  fill: ${colors.label};
+  flex: 0 0 24px;
+  fill: ${colors.textSecondary};
   margin-right: 15px;
 `;
 
@@ -43,7 +41,7 @@ const FileInfo = styled.div`
 `;
 
 const FileDownloadLink = styled.a<{ error: boolean }>`
-  color: ${({ error }) => (error ? colors.clRed : colors.label)};
+  color: ${({ error }) => (error ? colors.error : colors.textSecondary)};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -60,14 +58,14 @@ const FileDownloadLink = styled.a<{ error: boolean }>`
 `;
 
 const FileSize = styled.span<{ error: boolean }>`
-  color: ${({ error }) => (error ? colors.clRed : colors.label)};
+  color: ${({ error }) => (error ? colors.error : colors.textSecondary)};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
   white-space: nowrap;
   margin-left: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -83,7 +81,7 @@ const FileDisplay = ({
   file,
   intl: { formatMessage },
   onDeleteClick,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const { error, url, filename, size } = file;
   return (
     <Container error={!!file.error}>
@@ -113,13 +111,12 @@ const FileDisplay = ({
         {size && <FileSize error={!!error}>({returnFileSize(size)})</FileSize>}
       </FileInfo>
       <DeleteIconButton
+        buttonType="button"
         iconName="delete"
         a11y_buttonActionMessage={formatMessage(messages.a11y_removeFile)}
         onClick={onDeleteClick}
-        iconWidth={'12px'}
-        iconHeight={'14px'}
-        iconColor={colors.label}
-        iconColorOnHover={colors.clRed}
+        iconColor={colors.textSecondary}
+        iconColorOnHover={colors.error}
       />
     </Container>
   );

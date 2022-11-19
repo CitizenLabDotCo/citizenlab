@@ -40,7 +40,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   width: calc(100% - 50px);
   margin: 0;
   padding: 0;
@@ -48,13 +48,13 @@ const Title = styled.h3`
   font-weight: 500;
   line-height: normal;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.xl}px;
   `}
 `;
 
 const Address = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -62,17 +62,15 @@ const Address = styled.div`
   align-items: center;
   margin-top: 20px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.s}px;
     margin-top: 18px;
   `}
 `;
 
 const MapMarkerIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-  fill: ${colors.label};
+  flex: 0 0 24px;
+  fill: ${colors.textSecondary};
   margin-right: 5px;
   margin-top: -2px;
 `;
@@ -95,7 +93,7 @@ const Description = styled.div`
     position: absolute;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-top: 18px;
   `}
 `;
@@ -114,22 +112,20 @@ const ViewInitiativeButton = styled(Button)`
 `;
 
 const CommentsCount = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   display: flex;
   flex-direction: row;
   align-items: center;
   display: none;
 
-  ${media.biggerThanLargePhone`
+  ${media.tablet`
     display: block;
   `}
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 25px;
-  height: 25px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 2px;
 `;
@@ -184,7 +180,7 @@ class InitiativePreview extends PureComponent<
 
           {initiativeAddress && (
             <Address>
-              <MapMarkerIcon name="mapmarker" />
+              <MapMarkerIcon name="position" />
               {initiativeAddress}
             </Address>
           )}

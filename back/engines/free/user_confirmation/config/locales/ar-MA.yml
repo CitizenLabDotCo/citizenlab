@@ -1,0 +1,13 @@
+ar-MA:
+  user_confirmation:
+    confirmations_mailer:
+      send_confirmation_code:
+        subject: "قم بتأكيد عنوان البريد الإلكتروني لمنصة المشاركة الخاصة بمؤسسة %{organizationName}"
+        header: "رمز التأكيد الخاص بك"
+        header_message: "مرحبًا %{firstName}!"
+        thanks_for_signing_up: "نشكرك على تسجيل الاشتراك في منصة المشاركة الخاصة بمؤسسة %{organizationName}."
+        please_confirm_your_email_address: "لإتمام عملية التسجيل، يرجى إثبات ملكيتك لعنوان بريدك الإلكتروني."
+        copy_paste_the_link_below: "انسخ الرمز أدناه والصقه في نموذج التسجيل في المنصة."
+        the_link_is_valid_for: "تستمر صلاحية هذا الرابط لمدة 24 ساعة. إذا انتهت صلاحية الرابط، فبإمكانك <a href=\"%{link}\">طلب رمز جديد</a>."
+        did_you_receive_this_email_in_error: "هل تلقيت هذه الرسالة الإلكترونية عن طريق الخطأ؟ <a href=\"%{link}\">أخبرنا</a>."
+

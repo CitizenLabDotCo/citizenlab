@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddParticipationContextToPhases < ActiveRecord::Migration[5.1]
   def change
     add_column :phases, :participation_method, :string, default: 'ideation', null: false

@@ -22,10 +22,7 @@ jest.mock('./consent', () => ({
 import * as consent from './consent';
 
 import { makeUser } from 'services/__mocks__/users';
-import {
-  __setMockAppConfiguration,
-  getAppConfigurationData,
-} from 'services/__mocks__/appConfiguration';
+import { getAppConfigurationData } from 'services/__mocks__/appConfiguration';
 import { getDestinationConfigs, registerDestination } from './destinations';
 
 registerDestination({
@@ -118,7 +115,6 @@ describe('<ConsentManager />', () => {
         expect(categorizedDestinations).toMatchSnapshot();
       });
       it('acts properly when all disabled', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllDisabled} />
         );
@@ -131,7 +127,6 @@ describe('<ConsentManager />', () => {
 
     describe('admin user', () => {
       it('acts properly when all enabled', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
         const wrapper = shallow(
           <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
@@ -154,7 +149,7 @@ describe('<ConsentManager />', () => {
           allowed: false,
           enabled: false,
         };
-        __setMockAppConfiguration(tenantDataAllEnabled);
+
         const wrapper = shallow(
           <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
@@ -170,7 +165,6 @@ describe('<ConsentManager />', () => {
         highest_role: 'super_admin',
       }).data;
       it('acts properly when all enabled', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
         const wrapper = shallow(
           <ConsentManager authUser={superAdmin} tenant={tenantDataAllEnabled} />
         );
@@ -180,7 +174,6 @@ describe('<ConsentManager />', () => {
         expect(categorizedDestinations).toMatchSnapshot();
       });
       it('acts properly when all disabled', () => {
-        __setMockAppConfiguration(tenantDataAllDisabled);
         const wrapper = shallow(
           <ConsentManager
             authUser={superAdmin}
@@ -199,7 +192,6 @@ describe('<ConsentManager />', () => {
     describe('no cookie previously', () => {
       describe('all destinations', () => {
         it('initializes preferences object correctly', () => {
-          __setMockAppConfiguration(tenantDataAllEnabled);
           const wrapper = shallow(
             <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
           );
@@ -211,7 +203,6 @@ describe('<ConsentManager />', () => {
           });
         });
         it('changes it as required', () => {
-          __setMockAppConfiguration(tenantDataAllEnabled);
           const wrapper = shallow(
             <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
           );
@@ -230,7 +221,6 @@ describe('<ConsentManager />', () => {
           });
         });
         it('consent is required', () => {
-          __setMockAppConfiguration(tenantDataAllEnabled);
           const wrapper = shallow(
             <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
           );
@@ -244,7 +234,6 @@ describe('<ConsentManager />', () => {
       });
       describe('no destinations', () => {
         it('initializes preferences object correctly', () => {
-          __setMockAppConfiguration(tenantDataAllDisabled);
           const wrapper = shallow(
             <ConsentManager authUser={null} tenant={tenantDataAllDisabled} />
           );
@@ -269,7 +258,7 @@ describe('<ConsentManager />', () => {
             functional: true,
             savedChoices: savedChoicesAllEnabled,
           }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
+
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
@@ -293,7 +282,7 @@ describe('<ConsentManager />', () => {
             functional: true,
             savedChoices: savedChoicesAllEnabled,
           }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
+
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
@@ -318,7 +307,6 @@ describe('<ConsentManager />', () => {
             functional: true,
             savedChoices: { ...savedChoicesAllEnabled, intercom: true },
           }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
 
         const wrapper = shallow(
           <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
@@ -341,7 +329,7 @@ describe('<ConsentManager />', () => {
             functional: true,
             savedChoices: { google_analytics: true },
           }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
+
         const wrapper = shallow(
           <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
@@ -366,7 +354,7 @@ describe('<ConsentManager />', () => {
             functional: false,
             savedChoices: mock_savedChoices,
           }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
+
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
@@ -381,7 +369,6 @@ describe('<ConsentManager />', () => {
     });
     describe('preference reset', () => {
       it('resets preferences when no previous cookie was set', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
@@ -406,7 +393,7 @@ describe('<ConsentManager />', () => {
             functional: true,
             savedChoices: savedChoicesAllDisabled,
           }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
+
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
@@ -437,7 +424,7 @@ describe('<ConsentManager />', () => {
         });
 
         const setConsentSpy = jest.spyOn(consent, 'setConsent');
-        __setMockAppConfiguration(tenantDataAllEnabled);
+
         const wrapper = shallow(
           <ConsentManager
             authUser={null}
@@ -460,7 +447,7 @@ describe('<ConsentManager />', () => {
             functional: true,
             savedChoices: savedChoicesAllEnabled,
           }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
+
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );

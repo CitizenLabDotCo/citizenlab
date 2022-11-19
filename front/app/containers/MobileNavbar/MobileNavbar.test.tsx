@@ -6,6 +6,8 @@ jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 jest.mock('hooks/useNavbarItems');
 jest.mock('utils/analytics');
+jest.mock('utils/cl-router/withRouter');
+jest.mock('utils/cl-router/Link');
 
 describe('<MobileNavbar />', () => {
   it('renders', () => {

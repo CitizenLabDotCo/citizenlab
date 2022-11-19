@@ -1,43 +1,40 @@
 import * as React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import { Multiloc } from 'typings';
 import styled from 'styled-components';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // utils
-import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
-import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
-import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
-import FormikInput from 'components/UI/FormikInput';
-import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
+import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-import {
-  Form,
-  Field,
-  FastField,
-  InjectedFormikProps,
-  FormikErrors,
-} from 'formik';
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
-import FormikSelect from 'components/UI/FormikSelect';
-import Error from 'components/UI/Error';
+
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object, array } from 'yup';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Input from 'components/HookForm/Input';
+import Feedback from 'components/HookForm/Feedback';
+import Select from 'components/HookForm/Select';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
 
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -67,59 +64,76 @@ export interface FormValues {
   group_ids?: string[];
 }
 
-interface InputProps {
-  mode: 'new' | 'edit';
-}
+type CampaignFormProps = {
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: Partial<FormValues>;
+} & WrappedComponentProps;
 
-interface DataProps {
-  user: GetAuthUserChildProps;
-  tenant: GetAppConfigurationChildProps;
-}
+const CampaignForm = ({
+  onSubmit,
+  defaultValues,
+  intl: { formatMessage },
+}: CampaignFormProps) => {
+  const user = useAuthUser();
+  const appConfig = useAppConfiguration();
+  const localize = useLocalize();
 
-interface Props
-  extends InputProps,
-    DataProps,
-    InjectedLocalized,
-    InjectedIntlProps {}
+  const schema = object({
+    sender: string()
+      .oneOf(['author', 'organization'])
+      .required(formatMessage(messages.fieldSenderError)),
+    reply_to: string()
+      .email(formatMessage(messages.fieldReplyToEmailError))
+      .required(formatMessage(messages.fieldReplyToError)),
+    subject_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldSubjectError)
+    ),
+    body_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldBodyError)
+    ),
+    group_ids: array(),
+  });
 
-export const validateCampaignForm = (
-  values: FormValues
-): FormikErrors<FormValues> => {
-  const errors: FormikErrors<FormValues> = {};
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
 
-  if (every(getValues(values.subject_multiloc), isEmpty)) {
-    errors.subject_multiloc = [{ error: 'blank' }] as any;
+  if (isNilOrError(user) || isNilOrError(appConfig)) {
+    return null;
   }
 
-  return errors;
-};
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
 
-class CampaignForm extends React.Component<
-  InjectedFormikProps<Props, FormValues>
-> {
-  senderOptions = () => {
-    const { user, tenant, localize } = this.props;
+  const senderOptions = () => {
     return [
       {
         value: 'author',
-        label:
-          !isNilOrError(user) &&
-          `${user.attributes.first_name} ${user.attributes.last_name}`,
+        label: !isNilOrError(user)
+          ? `${user.attributes.first_name} ${user.attributes.last_name}`
+          : '',
       },
       {
         value: 'organization',
-        label:
-          !isNilOrError(tenant) &&
-          localize(tenant.attributes.settings.core.organization_name),
+        label: !isNilOrError(appConfig)
+          ? localize(appConfig.attributes.settings.core.organization_name)
+          : '',
       },
     ];
   };
 
-  groupsOptions = (groups: GetGroupsChildProps) => {
+  const groupsOptions = (groups: GetGroupsChildProps) => {
     const groupList =
       !isNilOrError(groups) && !isNilOrError(groups.groupsList)
         ? groups.groupsList.map((group) => ({
-            label: this.props.localize(group.attributes.title_multiloc),
+            label: localize(group.attributes.title_multiloc),
             value: group.id,
           }))
         : [];
@@ -127,84 +141,64 @@ class CampaignForm extends React.Component<
     return groupList;
   };
 
-  renderFormikQuillMultiloc = (props) => {
-    return (
-      <FormikQuillMultiloc
-        label={this.props.intl.formatMessage(messages.fieldBody)}
-        labelTooltipText={this.props.intl.formatMessage(
-          messages.nameVariablesInfo
-        )}
-        noVideos
-        noAlign
-        {...props}
-      />
-    );
-  };
-
-  render() {
-    const { isSubmitting, errors, touched, status } = this.props;
-    return (
-      <Form>
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <StyledSection>
+          <StyledSectionField>
+            <Feedback />
+          </StyledSectionField>
           <StyledSectionTitle>
             <FormattedMessage {...messages.senderRecipients} />
           </StyledSectionTitle>
           <StyledSectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldSender} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.fieldSenderTooltip} />}
-              />
-            </Label>
-            <FastField
+            <Select
               name="sender"
-              component={FormikSelect}
-              options={this.senderOptions()}
-              clearable={false}
+              options={senderOptions()}
+              label={
+                <>
+                  <FormattedMessage {...messages.fieldSender} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.fieldSenderTooltip} />
+                    }
+                  />
+                </>
+              }
             />
-            {touched.sender && (
-              <Error fieldName="sender" apiErrors={errors.sender as any} />
-            )}
           </StyledSectionField>
 
           <StyledSectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldTo} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.fieldToTooltip} />}
-              />
-            </Label>
             <GetGroups>
               {(groups) =>
                 isNilOrError(groups) ? null : (
-                  <Field
+                  <MultipleSelect
                     name="group_ids"
-                    component={FormikMultipleSelect}
-                    options={this.groupsOptions(groups)}
                     placeholder={<FormattedMessage {...messages.allUsers} />}
+                    options={groupsOptions(groups)}
+                    label={
+                      <>
+                        <FormattedMessage {...messages.fieldTo} />
+                        <IconTooltip
+                          content={
+                            <FormattedMessage {...messages.fieldToTooltip} />
+                          }
+                        />
+                      </>
+                    }
                   />
                 )
               }
             </GetGroups>
-            {touched.group_ids && (
-              <Error
-                fieldName="group_ids"
-                apiErrors={errors.group_ids as any}
-              />
-            )}
           </StyledSectionField>
 
           <StyledSectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldReplyTo} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.fieldReplyToTooltip} />}
-              />
-            </Label>
-            <FastField name="reply_to" component={FormikInput} type="email" />
-            {touched.reply_to && (
-              <Error fieldName="reply_to" apiErrors={errors.reply_to as any} />
-            )}
+            <Input
+              name="reply_to"
+              type="email"
+              label={formatMessage(messages.fieldReplyTo)}
+              labelTooltipText={formatMessage(messages.fieldReplyToTooltip)}
+            />
           </StyledSectionField>
         </StyledSection>
         <StyledSection>
@@ -212,68 +206,37 @@ class CampaignForm extends React.Component<
             <FormattedMessage {...messages.fieldSubject} />
           </StyledSectionTitle>
           <SectionField className="e2e-campaign_subject_multiloc">
-            <FastField
+            <InputMultilocWithLocaleSwitcher
+              type="text"
               name="subject_multiloc"
-              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.fieldSubject} />}
               labelTooltipText={
                 <FormattedMessage {...messages.fieldSubjectTooltip} />
               }
               maxCharCount={80}
             />
-            {touched.subject_multiloc && (
-              <Error
-                fieldName="subject_multiloc"
-                apiErrors={errors.subject_multiloc as any}
-              />
-            )}
           </SectionField>
-
           <StyledSectionTitle>
             <FormattedMessage {...messages.fieldBody} />
           </StyledSectionTitle>
           <SectionField className="e2e-campaign_body_multiloc">
-            <FastField
+            <QuillMultilocWithLocaleSwitcher
               name="body_multiloc"
-              render={this.renderFormikQuillMultiloc}
+              label={formatMessage(messages.fieldBody)}
+              labelTooltipText={formatMessage(messages.nameVariablesInfo)}
+              noVideos
+              noAlign
             />
-            {touched.body_multiloc && (
-              <Error
-                fieldName="body_multiloc"
-                apiErrors={errors.body_multiloc as any}
-              />
-            )}
           </SectionField>
         </StyledSection>
-        <FormikSubmitWrapper
-          isSubmitting={isSubmitting}
-          status={status}
-          touched={touched}
-          messages={{
-            buttonSave: messages.formSaveButton,
-            buttonError: messages.formErrorButton,
-            buttonSuccess: messages.formSuccessButton,
-            messageSuccess: messages.formSuccessMessage,
-            messageError:
-              Object.keys(errors).length > 0
-                ? messages.formErrorMessage
-                : messages.formUnexpectedErrorMessage,
-          }}
-        />
-      </Form>
-    );
-  }
-}
+        <Box display="flex">
+          <Button type="submit" processing={methods.formState.isSubmitting}>
+            {formatMessage(messages.formSave)}
+          </Button>
+        </Box>
+      </form>
+    </FormProvider>
+  );
+};
 
-const Data = adopt<DataProps, InputProps>({
-  user: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-  tenant: ({ render }) => <GetAppConfiguration>{render}</GetAppConfiguration>,
-});
-
-const CampaignFormWithHOCs = injectIntl(localize<InputProps>(CampaignForm));
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <CampaignFormWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(CampaignForm);

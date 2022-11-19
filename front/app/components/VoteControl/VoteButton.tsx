@@ -53,7 +53,8 @@ const VoteIconContainer = styled.div<{
     return (
       styleType === 'border' &&
       `
-      border: solid 1px ${lighten(0.2, colors.label)};
+      padding: 8px;
+      border: solid 1px ${lighten(0.2, colors.textSecondary)};
       `
     );
   }}
@@ -104,10 +105,10 @@ const VoteIconContainer = styled.div<{
       ) {
         return `
             border-color: ${
-              { up: colors.clGreen, down: colors.clRed }[buttonVoteMode]
+              { up: colors.success, down: colors.error }[buttonVoteMode]
             };
             background: ${
-              { up: colors.clGreen, down: colors.clRed }[buttonVoteMode]
+              { up: colors.success, down: colors.error }[buttonVoteMode]
             };`;
       }
     }
@@ -180,7 +181,7 @@ const VoteCount = styled.div<{
   buttonVoteMode: TVoteMode;
   buttonVoteModeIsActive: boolean;
 }>`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
@@ -201,21 +202,20 @@ const VoteCount = styled.div<{
 
   ${({ buttonVoteModeIsActive, buttonVoteMode }) =>
     buttonVoteModeIsActive &&
-    `color: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};`}
+    `color: ${{ up: colors.success, down: colors.error }[buttonVoteMode]};`}
     }
 `;
 
 const VoteIcon = styled(Icon)<{
-  size: TSize;
   votingEnabled: boolean | null;
   buttonVoteModeIsActive: boolean;
   buttonVoteMode: TVoteMode;
   disabledReason: IdeaVotingDisabledReason | null;
 }>`
-  width: 19px;
-  height: 19px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   transition: all 100ms ease-out;
+  width: 16px;
+  height: 16px;
 
   ${({ votingEnabled, buttonVoteModeIsActive }) =>
     !votingEnabled &&
@@ -223,34 +223,6 @@ const VoteIcon = styled(Icon)<{
     `
      margin-right: 4px;
   `}
-
-  ${({ size }) => {
-    return {
-      1: `
-        width: 17px;
-        height: 17px;
-      `,
-      2: `
-        width: 18px;
-        height: 18px;
-      `,
-      3: `
-        width: 20px;
-        height: 20px;
-      `,
-      4: `
-        width: 21px;
-        height: 21px;
-      `,
-    }[size];
-  }}
-
-  ${({ buttonVoteMode }) => {
-    return {
-      up: 'margin-bottom: 4px;',
-      down: 'margin-top: 3px;',
-    }[buttonVoteMode];
-  }}
 
   ${({
     buttonVoteModeIsActive,
@@ -272,7 +244,7 @@ const VoteIcon = styled(Icon)<{
 
       if (!votingEnabled) {
         return `
-          fill: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};
+          fill: ${{ up: colors.success, down: colors.error }[buttonVoteMode]};
         `;
       }
     }
@@ -308,21 +280,21 @@ const Button = styled.button<{
       ${({ buttonVoteModeIsActive, buttonVoteMode: voteMode }) =>
         !buttonVoteModeIsActive &&
         `border: 1px solid ${
-          { up: colors.clGreen, down: colors.clRed }[voteMode]
+          { up: colors.success, down: colors.error }[voteMode]
         };`}
     }
 
     ${VoteIcon} {
       ${({ buttonVoteModeIsActive, buttonVoteMode: voteMode }) =>
         !buttonVoteModeIsActive &&
-        `fill: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
+        `fill: ${{ up: colors.success, down: colors.error }[voteMode]};`}
     }
 
     ${VoteCount} {
       ${({ buttonVoteModeIsActive, buttonVoteMode: voteMode }) => {
         return (
           !buttonVoteModeIsActive &&
-          `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`
+          `color: ${{ up: colors.success, down: colors.error }[voteMode]};`
         );
       }}
   }
@@ -472,7 +444,6 @@ const VoteButton = ({
           >
             <VoteIcon
               name={iconName}
-              size={size}
               votingEnabled={buttonEnabled}
               buttonVoteModeIsActive={buttonVoteModeIsActive}
               buttonVoteMode={buttonVoteMode}

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Insights::ViewPolicy, type: :policy do
+RSpec.describe Insights::ViewPolicy do
   subject { described_class.new(user, view) }
 
   let_it_be(:all_views) { create_list(:view, 2, nb_data_sources: 2) }

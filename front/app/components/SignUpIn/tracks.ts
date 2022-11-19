@@ -1,6 +1,10 @@
 export default {
+  // sign up
   signUpFlowEntered: 'Sign up flow entered',
   signUpFlowExited: 'Sign up flow exited',
+  signUpFlowExitedAtEmailVerificationStep:
+    'Sign up flow exited at email verification step (closed the modal)',
+
   signUpFlowCompleted: 'Sign up flow completed',
 
   signUpEmailPasswordStepEntered:
@@ -12,6 +16,7 @@ export default {
   signUpEmailPasswordStepFailed:
     'Sign up - email & password sign-up step failed',
 
+  // sign in
   signInFlowEntered: 'Sign in flow entered',
   signInFlowExited: 'Sign in flow exited',
   signInFlowCompleted: 'Sign in flow completed',

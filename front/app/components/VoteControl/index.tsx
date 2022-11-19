@@ -9,7 +9,7 @@ import {
 } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import ScreenReaderContent from './ScreenReaderContent';
@@ -543,7 +543,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
               ariaHidden={ariaHidden}
               styleType={styleType}
               size={size}
-              iconName="upvote"
+              iconName="vote-up"
               votesCount={upvotesCount}
               ideaId={idea.data.id}
             />
@@ -558,7 +558,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
                 ariaHidden={ariaHidden}
                 styleType={styleType}
                 size={size}
-                iconName="downvote"
+                iconName="vote-down"
                 votesCount={downvotesCount}
                 ideaId={idea.data.id}
               />
@@ -572,4 +572,4 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-export default withRouter<Props>(VoteControl);
+export default withRouter(VoteControl);

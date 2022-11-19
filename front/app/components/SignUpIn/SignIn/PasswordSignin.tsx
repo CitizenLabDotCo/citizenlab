@@ -26,7 +26,7 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 import { signIn } from 'services/auth';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -98,7 +98,10 @@ type State = {
   hasEmptyPasswordError: boolean;
 };
 
-class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
+class PasswordSignin extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
@@ -268,9 +271,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
       azureAdLoginEnabled,
       franceconnectLoginEnabled,
     ].filter((provider) => provider === true);
-    const isDesktop = windowSize
-      ? windowSize > viewportWidths.largeTablet
-      : true;
+    const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
 
     return (
       <Container

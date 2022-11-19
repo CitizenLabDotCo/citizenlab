@@ -11,10 +11,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.titleMessaging',
     defaultMessage: 'Messaging',
   },
-  subtitleEmails: {
-    id: 'app.containers.Admin.emails.subtitleEmails',
+  subtitleMessaging: {
+    id: 'app.containers.Admin.emails.subtitleMessaging',
     defaultMessage:
-      'Compose your own emails to be sent out to all users or to particular groups. And control what automated emails your users receive.',
+      'Send out your own messages and control what automated messages your users receive.',
   },
   helmetTitle: {
     id: 'app.containers.Admin.messaging.helmetTitle',
@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.fieldSenderTooltip',
     defaultMessage: 'Choose whom users will see as the sender of the email.',
   },
+  fieldSenderError: {
+    id: 'app.containers.Admin.emails.fieldSenderError',
+    defaultMessage: 'Provide a sender of the email',
+  },
   fieldReplyTo: {
     id: 'app.containers.Admin.emails.fieldReplyTo',
     defaultMessage: 'Replies should go to',
@@ -69,6 +73,15 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.fieldReplyToTooltip',
     defaultMessage:
       'Choose what email address should receive direct replies from users on your email.',
+  },
+  fieldReplyToEmailError: {
+    id: 'app.containers.Admin.emails.fieldReplyToEmailError',
+    defaultMessage:
+      'Provide an email address in the correct format, for example name@provider.com',
+  },
+  fieldReplyToError: {
+    id: 'app.containers.Admin.emails.fieldReplyToError',
+    defaultMessage: 'Provide an email address',
   },
   fieldTo: {
     id: 'app.containers.Admin.emails.fieldTo',
@@ -87,9 +100,17 @@ export default defineMessages({
     defaultMessage:
       'This will be shown in the subject line of the email and in the user’s inbox overview. Make it clear and engaging.',
   },
+  fieldSubjectError: {
+    id: 'app.containers.Admin.emails.fieldSubjectError',
+    defaultMessage: 'Provide an email subject for all languages',
+  },
   fieldBody: {
     id: 'app.containers.Admin.emails.fieldBody',
     defaultMessage: 'Email Message',
+  },
+  fieldBodyError: {
+    id: 'app.containers.Admin.emails.fieldBodyError',
+    defaultMessage: 'Provide an email message for all languages',
   },
   addCampaignTitle: {
     id: 'app.containers.Admin.emails.addCampaignTitle',
@@ -132,29 +153,9 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.previewSentConfirmation',
     defaultMessage: 'A preview email has been sent to your email address',
   },
-  formSaveButton: {
-    id: 'app.containers.Admin.emails.formSaveButton',
-    defaultMessage: 'Continue',
-  },
-  formErrorButton: {
-    id: 'app.containers.Admin.emails.formErrorButton',
-    defaultMessage: 'Continue',
-  },
-  formSuccessButton: {
-    id: 'app.containers.Admin.emails.formSuccessButton',
-    defaultMessage: 'Continue',
-  },
-  formSuccessMessage: {
-    id: 'app.containers.Admin.emails.formSuccessMessage',
-    defaultMessage: 'formSuccessMessage',
-  },
-  formErrorMessage: {
-    id: 'app.containers.Admin.emails.formErrorMessage',
-    defaultMessage: 'Please correct the errors above to continue',
-  },
-  formUnexpectedErrorMessage: {
-    id: 'app.containers.Admin.emails.formUnexpectedErrorMessage',
-    defaultMessage: 'Something went wrong, please try again later',
+  formSave: {
+    id: 'app.containers.Admin.emails.formSave',
+    defaultMessage: 'Save as draft',
   },
   previewTitle: {
     id: 'app.containers.Admin.emails.previewTitle',

@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
+import ReactResizeDetector from 'react-resize-detector';
 import Button from 'components/UI/Button';
 
 // services
@@ -14,7 +14,7 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 // i18n
 import T from 'components/T';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // style
@@ -35,7 +35,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxxl}px;
   line-height: normal;
   font-weight: 600;
@@ -51,7 +51,7 @@ const Title = styled.h1`
     text-align: right;
   `}
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     margin-bottom: 20px;
   `}
 `;
@@ -107,7 +107,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
+const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
   ({ projectFolder, className, intl: { formatMessage } }) => {
     const projectFolderFiles = useProjectFolderFiles(projectFolder.id);
     const { windowWidth } = useWindowSize();
@@ -158,20 +158,16 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
             <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
               <div>
                 <QuillEditedContent
-                  textColor={theme.colorText}
+                  textColor={theme.colors.tenantText}
                   fontSize="m"
                   className="e2e-folder-description"
+                  disableTabbing={!expanded}
                 >
                   <T
                     value={projectFolder.attributes.description_multiloc}
                     supportHtml={true}
                   />
                 </QuillEditedContent>
-                {!isNilOrError(projectFolderFiles) &&
-                  projectFolderFiles &&
-                  projectFolderFiles.data.length > 0 && (
-                    <FileAttachments files={projectFolderFiles.data} />
-                  )}
               </div>
             </ReactResizeDetector>
             {descriptionHeight &&
@@ -185,8 +181,8 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                       onClick={toggleExpandCollapse}
                       textDecoration="underline"
                       textDecorationHover="underline"
-                      textColor={colors.label}
-                      textHoverColor={theme.colorText}
+                      textColor={colors.textSecondary}
+                      textHoverColor={theme.colors.tenantText}
                       fontWeight="500"
                       fontSize={`${fontSizes.m}px`}
                       padding="0"
@@ -196,6 +192,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                   </ReadMoreInnerWrapper>
                 </ReadMoreOuterWrapper>
               )}
+
             {descriptionHeight &&
               descriptionHeight > collapsedDescriptionMaxHeight &&
               expanded && (
@@ -206,8 +203,8 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                     onClick={toggleExpandCollapse}
                     textDecoration="underline"
                     textDecorationHover="underline"
-                    textColor={colors.label}
-                    textHoverColor={theme.colorText}
+                    textColor={colors.textSecondary}
+                    textHoverColor={theme.colors.tenantText}
                     fontWeight="500"
                     fontSize={`${fontSizes.m}px`}
                     padding="0"
@@ -217,6 +214,11 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                 </CollapseButtonWrapper>
               )}
           </Description>
+          {!isNilOrError(projectFolderFiles) &&
+            projectFolderFiles &&
+            projectFolderFiles.data.length > 0 && (
+              <FileAttachments files={projectFolderFiles.data} />
+            )}
         </Container>
       );
     }

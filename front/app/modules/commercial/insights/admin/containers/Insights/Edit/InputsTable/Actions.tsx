@@ -49,7 +49,7 @@ const ActionButtonWrapper = styled.div`
 const DropdownListItemText = styled.div`
   width: 80%;
   flex: 1 1 auto;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -83,7 +83,7 @@ const DropdownListItem = styled.label`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
 
     ${DropdownListItemText} {
       color: #000;
@@ -99,8 +99,8 @@ const DropdownFooterButton = styled(Button)`
 `;
 
 // Typings
-import { InjectedIntlProps } from 'react-intl';
-import { withRouter, WithRouterProps } from 'react-router';
+import { WrappedComponentProps } from 'react-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 interface Props {
   className?: string;
@@ -113,7 +113,7 @@ const Actions = ({
   params: { viewId },
   location: { query },
   intl: { formatMessage },
-}: Props & InjectedIntlProps & WithRouterProps) => {
+}: Props & WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const categories = useInsightsCategories(viewId);
   const selectedInputsIds = selectedInputs.map((input) => input.id);
@@ -218,8 +218,12 @@ const Actions = ({
         <>
           {otherCategories.length > 0 && (
             <ActionButtonWrapper data-testid="insightsTableActionsBulkAssign">
-              <Button onClick={toggleDropdown} buttonStyle="admin-dark-text">
-                <StyledIcon name="moveFolder" />
+              <Button
+                className="intercom-insights-edit-bulk-assign-button"
+                onClick={toggleDropdown}
+                buttonStyle="admin-dark-text"
+              >
+                <StyledIcon name="folder-move" />
                 <FormattedMessage {...messages.bulkAssignCategory} />
               </Button>
 
@@ -269,7 +273,7 @@ const Actions = ({
               buttonStyle="admin-dark-text"
               processing={processingBulkApprove}
             >
-              <StyledIcon name="checkmark-full" />
+              <StyledIcon name="check-circle" />
               <FormattedMessage {...messages.bulkApprove} />
             </Button>
           )}
@@ -280,7 +284,7 @@ const Actions = ({
               buttonStyle="admin-dark-text"
               processing={processing}
             >
-              <StyledIcon name="trash" />
+              <StyledIcon name="delete" />
               <FormattedMessage {...messages.bulkUnassign} />
             </Button>
           )}
@@ -290,4 +294,4 @@ const Actions = ({
   );
 };
 
-export default withRouter<Props>(injectIntl<Props & WithRouterProps>(Actions));
+export default injectIntl(withRouter(Actions));

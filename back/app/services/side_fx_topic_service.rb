@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SideFxTopicService
   include SideFxHelper
 
@@ -18,7 +20,7 @@ class SideFxTopicService
   def after_destroy(frozen_topic, user)
     serialized_topic = clean_time_attributes(frozen_topic.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_topic), 'deleted', user, Time.now.to_i,
-                                 payload: { topic: serialized_topic })
+      payload: { topic: serialized_topic })
   end
 end
 

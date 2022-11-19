@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RecreateVersionsJob < ApplicationJob
   queue_as :default
   perform_retries false # to prevent extensive AWS lambda usage https://www.notion.so/citizenlab/Images-and-uploads-235125ffc7824a2493b7fd7d42b3b926

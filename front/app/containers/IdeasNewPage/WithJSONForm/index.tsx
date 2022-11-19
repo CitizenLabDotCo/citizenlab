@@ -1,19 +1,20 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
+import { useSearchParams } from 'react-router-dom';
 
-import { WithRouterProps } from 'react-router';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
-import { getInputTerm } from 'services/participationContexts';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import IdeasNewMeta from '../IdeasNewMeta';
@@ -21,20 +22,31 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import GoBackButton from 'containers/IdeasShow/GoBackButton';
+import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+import { FormattedMessage } from 'utils/cl-intl';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { getCurrentPhase } from 'services/phases';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
+  const [searchParams] = useSearchParams();
+  const phaseId = searchParams.get('phase_id');
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema(project?.id);
+  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+    projectId: project?.id,
+    phaseId,
+  });
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -45,9 +57,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
     if (
       !isPrivilegedUser &&
-      (authUser === null ||
-        (!isNilOrError(project) &&
-          !project.attributes.action_descriptor.posting_idea.enabled))
+      !isNilOrError(project) &&
+      !project.attributes.action_descriptor.posting_idea.enabled
     ) {
       clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
@@ -57,7 +68,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   // Click on map flow :
   // clicked location is passed in url params
   // reverse goecode them and use them as initial data
-  const [processingLocation, setProcessingLocation] = useState(Boolean(search));
+  const [processingLocation, setProcessingLocation] = useState(false);
   const [initialFormData, setInitialFormData] = useState({});
 
   useEffect(() => {
@@ -79,6 +90,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     }
 
     if (typeof lat === 'number' && typeof lng === 'number') {
+      setProcessingLocation(true);
       reverseGeocode(lat, lng).then((address) => {
         setInitialFormData((initialFormData) => ({
           ...initialFormData,
@@ -91,23 +103,39 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   const onSubmit = async (data) => {
     let location_point_geojson;
-
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
     }
-
     const idea = await addIdea({
       ...data,
       location_point_geojson,
       project_id: project?.id,
       publication_status: 'published',
+      phase_ids: phaseId ? [phaseId] : null,
     });
     const ideaId = idea.data.id;
 
-    clHistory.push({
-      pathname: `/ideas/${idea.data.attributes.slug}`,
-      search: `?new_idea_id=${ideaId}`,
-    });
+    // Check ParticipationMethodConfig for form submission action
+    if (
+      project?.attributes.process_type === 'timeline' &&
+      !isNilOrError(phases)
+    ) {
+      // Check if URL contains specific phase_id
+      const queryParams = new URLSearchParams(window.location.search);
+      const phaseIdFromUrl = queryParams.get('phase_id');
+      const phaseUsed =
+        phases.find((phase) => phase.id === phaseIdFromUrl) ||
+        getCurrentPhase(phases);
+      if (!isNilOrError(phaseUsed)) {
+        getMethodConfig(
+          phaseUsed?.attributes?.participation_method
+        ).onFormSubmission({ project, ideaId, idea, phaseId: phaseUsed.id });
+      }
+    } else if (!isNilOrError(project)) {
+      getMethodConfig(
+        project?.attributes.participation_method
+      ).onFormSubmission({ project, ideaId, idea });
+    }
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
@@ -142,9 +170,85 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     [uiSchema]
   );
 
+  // get participation method config
+  const phaseFromUrl = usePhase(phaseId);
+  // TODO: Improve typings and remove any
+  let config;
+
+  if (!isNilOrError(phaseFromUrl)) {
+    config = getMethodConfig(phaseFromUrl.attributes.participation_method);
+  } else {
+    if (phases && project?.attributes.process_type === 'timeline') {
+      const participationMethod =
+        getCurrentPhase(phases)?.attributes.participation_method;
+      if (!isNilOrError(participationMethod)) {
+        config = getMethodConfig(participationMethod);
+      }
+    } else if (!isNilOrError(project)) {
+      config = getMethodConfig(project.attributes.participation_method);
+    }
+  }
+
+  if (isNilOrError(project) || isNilOrError(config)) {
+    return null;
+  }
+
+  const userCanEditProject =
+    !isNilOrError(authUser) &&
+    canModerateProject(project.id, { data: authUser });
+  const showEditSurveyButton =
+    userCanEditProject && config.postType === 'nativeSurvey';
+
+  const linkToSurveyBuilder = phaseId
+    ? `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`
+    : `/admin/projects/${project.id}/native-survey/edit`;
+
+  const TitleComponent = (
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Box
+        display="flex"
+        width="100%"
+        flexDirection="row"
+        justifyContent="space-between"
+        mb="14px"
+        alignItems="center"
+        maxWidth="700px"
+        px="20px"
+      >
+        <GoBackButton insideModal={false} projectId={project.id} />
+        <Box data-cy="e2e-edit-survey-link">
+          {showEditSurveyButton && (
+            <Button
+              icon="edit"
+              linkTo={linkToSurveyBuilder}
+              buttonStyle="text"
+              textDecorationHover="underline"
+              hidden={!userCanEditProject}
+              padding="0"
+            >
+              <FormattedMessage {...messages.editSurvey} />
+            </Button>
+          )}
+        </Box>
+      </Box>
+
+      <Box>{config.getFormTitle({ project, phases, phaseFromUrl })}</Box>
+    </Box>
+  );
+
   return (
-    <PageContainer id="e2e-idea-new-page">
-      {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
+    <PageContainer id="e2e-idea-new-page" overflow="hidden">
+      {!isNilOrError(project) &&
+      !processingLocation &&
+      schema &&
+      uiSchema &&
+      config ? (
         <>
           <IdeasNewMeta />
           <Form
@@ -155,24 +259,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
-            title={
-              <FormattedMessage
-                {...{
-                  idea: messages.ideaFormTitle,
-                  option: messages.optionFormTitle,
-                  project: messages.projectFormTitle,
-                  question: messages.questionFormTitle,
-                  issue: messages.issueFormTitle,
-                  contribution: messages.contributionFormTitle,
-                }[
-                  getInputTerm(
-                    project?.attributes.process_type,
-                    project,
-                    phases
-                  )
-                ]}
-              />
-            }
+            title={TitleComponent}
+            config={'input'}
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (

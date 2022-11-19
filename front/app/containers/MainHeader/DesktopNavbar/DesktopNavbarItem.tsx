@@ -24,7 +24,7 @@ const NavigationItemBorder = styled.div`
 const NavigationItem = styled.li``;
 
 const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 500;
@@ -37,13 +37,13 @@ const StyledLink = styled(Link)`
   position: relative;
   white-space: nowrap;
   &:hover {
-    color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+    color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
     text-decoration: underline;
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
         theme.navbarActiveItemBorderColor
           ? rgba(theme.navbarActiveItemBorderColor, 0.3)
-          : rgba(theme.colorMain, 0.3)};
+          : rgba(theme.colors.tenantPrimary, 0.3)};
     }
   }
   &.active {
@@ -57,12 +57,13 @@ const StyledLink = styled(Link)`
       width: 100%;
       z-index: -1;
       background-color: ${({ theme }) =>
-        theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
+        theme.navbarActiveItemBackgroundColor ||
+        rgba(theme.colors.tenantPrimary, 0.05)};
       pointer-events: none;
     }
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
-        theme.navbarActiveItemBorderColor || theme.colorMain};
+        theme.navbarActiveItemBorderColor || theme.colors.tenantPrimary};
     }
   }
 `;
@@ -75,18 +76,12 @@ interface Props {
 }
 
 const DesktopNavbarItem = ({
-  className,
   linkTo,
   navigationItemTitle,
   onlyActiveOnIndex,
 }: Props) => (
   <NavigationItem data-testid="desktop-navbar-item">
-    <StyledLink
-      className={className}
-      to={linkTo}
-      activeClassName="active"
-      onlyActiveOnIndex={onlyActiveOnIndex}
-    >
+    <StyledLink to={linkTo} onlyActiveOnIndex={onlyActiveOnIndex}>
       <NavigationItemBorder />
       <T value={navigationItemTitle} />
     </StyledLink>

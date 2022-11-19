@@ -3,6 +3,7 @@
 module EmailCampaigns
   class ThresholdReachedForAdminMailer < ApplicationMailer
     private
+
     def subject
       format_message('subject')
     end

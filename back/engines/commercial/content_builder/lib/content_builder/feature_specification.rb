@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ContentBuilder
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification

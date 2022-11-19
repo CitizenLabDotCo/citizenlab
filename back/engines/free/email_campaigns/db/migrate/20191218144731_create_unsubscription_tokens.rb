@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUnsubscriptionTokens < ActiveRecord::Migration[5.2]
   def change
     create_table :email_campaigns_unsubscription_tokens, id: :uuid do |t|

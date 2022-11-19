@@ -6,7 +6,7 @@ import { adopt } from 'react-adopt';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -40,7 +40,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
+const UsersShowPageMeta: React.SFC<Props & WrappedComponentProps> = ({
   intl,
   authUser,
   tenantLocales,
@@ -96,6 +96,7 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
         <meta property="og:title" content={usersShowPageIndexTitle} />
         <meta property="og:description" content={usersShowPageDescription} />
         <meta property="og:url" content={location.href} />
+        <meta name="robots" content="noindex" />
       </Helmet>
     );
   }
@@ -103,7 +104,7 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
   return null;
 };
 
-const UsersShowPageMetaWithHoc = injectIntl<Props>(UsersShowPageMeta);
+const UsersShowPageMetaWithHoc = injectIntl(UsersShowPageMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

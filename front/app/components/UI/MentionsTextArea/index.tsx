@@ -25,7 +25,7 @@ const Container = styled.div`
   background: #fff;
 
   & .hasBorder textarea:focus {
-    border-color: ${colors.focussedBorder} !important;
+    border-color: ${colors.black} !important;
     box-shadow: ${defaultStyles.boxShadowFocused} !important;
   }
 
@@ -92,12 +92,12 @@ class MentionsTextArea extends PureComponent<Props, State> {
   textareaElement = React.createRef();
 
   static defaultProps = {
-    color: colors.text,
+    color: colors.textPrimary,
     fontSize: `${fontSizes.base}px`,
     fontWeight: '400',
     lineHeight: '24px',
     padding: '24px',
-    border: `solid 1px ${colors.border}`,
+    border: `solid 1px ${colors.borderDark}`,
     borderRadius: '3px',
     boxShadow: 'none',
     background: '#fff',
@@ -119,7 +119,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
       paddingLeft: '0px',
       paddingRight: '1px',
       borderRadius: '3px',
-      backgroundColor: transparentize(0.85, this.props.theme.colorText),
+      backgroundColor: transparentize(0.85, this.props.theme.colors.tenantText),
     };
     this.setState({ style, mentionStyle });
   }

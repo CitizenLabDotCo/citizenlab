@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class AssureCampaignsService
-
     def assure_campaigns
       instantiatable_campaign_types = (EmailCampaigns::DeliveryService.new.campaign_types - [EmailCampaigns::Campaigns::Manual.name])
 

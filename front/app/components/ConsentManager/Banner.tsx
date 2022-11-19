@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
@@ -13,7 +13,7 @@ const Container = styled.div`
   position: fixed;
   bottom: 0;
   color: white;
-  background: ${colors.adminTextColor};
+  background: ${colors.primary};
   font-size: ${fontSizes.base};
   z-index: 1001;
   width: 100%;
@@ -23,7 +23,7 @@ const Container = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     bottom: ${(props) => props.theme.mobileMenuHeight}px;
   `}
 `;
@@ -36,7 +36,7 @@ const ContentContainerInner = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     max-width: auto;
     flex-direction: column;
     align-items: stretch;
@@ -50,7 +50,7 @@ const Left = styled.div`
   flex-direction: column;
   margin-right: 40px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 0px;
     margin-bottom: 20px;
   `}
@@ -59,7 +59,7 @@ const Left = styled.div`
     margin-right: 0;
     margin-left: 40px;
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         margin-left: 0px;
     `}
   `}
@@ -103,26 +103,26 @@ const ButtonContainer = styled.div`
   `}
 `;
 
-const PreferencesButton = styled(Button)`
+const AcceptButton = styled(Button)`
   margin-right: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 0px;
     order: 2;
   `}
 
   ${isRtl`
-    margin-right: 0;
+    margin-right: 0px;
     margin-left: 10px;
 
-    ${media.smallerThanMinTablet`
-        margin-left: 0px;
+    ${media.phone`
+      margin-left: 0px;
     `}
   `}
 `;
 
-const AcceptButton = styled(Button)`
-  ${media.smallerThanMinTablet`
+const PreferencesButton = styled(Button)`
+  ${media.phone`
     margin-right: 10px;
     order: 1;
   `}
@@ -136,7 +136,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   border: none;
   background: none;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -146,63 +146,58 @@ interface Props {
   onChangePreferences: () => void;
 }
 
-class Banner extends PureComponent<Props> {
-  render() {
-    const { onAccept, onChangePreferences } = this.props;
-
-    const policyLink = (
-      <StyledLink to="/pages/cookie-policy">
-        <FormattedMessage {...messages.policyLink} />
-      </StyledLink>
-    );
-
-    return (
-      <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
-        <ContentContainer mode="page">
-          <ContentContainerInner>
-            <Left>
-              <Line className="first">
-                <FormattedMessage
-                  {...messages.mainText}
-                  values={{ policyLink }}
-                />
-              </Line>
-              <Line className="second">
-                <FormattedMessage {...messages.subText} />
-              </Line>
-            </Left>
-            <ButtonContainer>
-              <PreferencesButton
-                borderColor="transparent"
-                textColor="#fff"
-                bgColor={colors.adminTextColor}
-                bgHoverColor={rgba(255, 255, 255, 0.15)}
-                onClick={onChangePreferences}
-                className="integration-open-modal"
-              >
-                <FormattedMessage {...messages.manage} />
-              </PreferencesButton>
-              <AcceptButton
-                className="e2e-accept-cookies-btn"
-                buttonStyle="primary-inverse"
-                textColor={colors.adminTextColor}
-                textHoverColor={colors.adminTextColor}
-                onClick={onAccept}
-              >
-                <FormattedMessage {...messages.accept} />
-              </AcceptButton>
-            </ButtonContainer>
-          </ContentContainerInner>
-        </ContentContainer>
-        <StyledCloseIconButton
-          a11y_buttonActionMessage={messages.ariaButtonClose}
-          onClick={onAccept}
-          iconColor={rgba(255, 255, 255, 0.7)}
-          iconColorOnHover={'#fff'}
-        />
-      </Container>
-    );
-  }
-}
+const Banner = ({ onAccept, onChangePreferences }: Props) => {
+  return (
+    <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
+      <ContentContainer mode="page">
+        <ContentContainerInner>
+          <Left>
+            <Line className="first">
+              <FormattedMessage
+                {...messages.mainText}
+                values={{
+                  policyLink: (
+                    <StyledLink to="/pages/cookie-policy">
+                      <FormattedMessage {...messages.policyLink} />
+                    </StyledLink>
+                  ),
+                }}
+              />
+            </Line>
+            <Line className="second">
+              <FormattedMessage {...messages.subText} />
+            </Line>
+          </Left>
+          <ButtonContainer>
+            <AcceptButton
+              className="e2e-accept-cookies-btn"
+              buttonStyle="primary-inverse"
+              textColor={colors.primary}
+              textHoverColor={colors.primary}
+              onClick={onAccept}
+            >
+              <FormattedMessage {...messages.accept} />
+            </AcceptButton>
+            <PreferencesButton
+              className="integration-open-modal"
+              buttonStyle="primary-inverse"
+              textColor={colors.primary}
+              textHoverColor={colors.primary}
+              onClick={onChangePreferences}
+            >
+              <FormattedMessage {...messages.manage} />
+            </PreferencesButton>
+          </ButtonContainer>
+        </ContentContainerInner>
+      </ContentContainer>
+      <StyledCloseIconButton
+        a11y_buttonActionMessage={messages.ariaButtonClose}
+        onClick={onAccept}
+        iconColor={rgba(255, 255, 255, 0.7)}
+        iconColorOnHover={'#fff'}
+      />
+    </Container>
+  );
+};
 
 export default Banner;

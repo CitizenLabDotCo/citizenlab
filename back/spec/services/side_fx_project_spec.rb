@@ -1,18 +1,20 @@
-require "rails_helper"
+# frozen_string_literal: true
+
+require 'rails_helper'
 
 describe SideFxProjectService do
   let(:sfx_pc) { instance_double(SideFxParticipationContextService) }
-  let(:service) { SideFxProjectService.new(sfx_pc) }
+  let(:service) { described_class.new(sfx_pc) }
   let(:user) { create(:user) }
   let(:project) { create(:project) }
 
-  describe "after_create" do
+  describe 'after_create' do
     it "logs a 'created' action when a project is created" do
-      expect {service.after_create(project, user)}.
-        to have_enqueued_job(LogActivityJob).with(project, 'created', user, project.created_at.to_i)
+      expect { service.after_create(project, user) }
+        .to have_enqueued_job(LogActivityJob).with(project, 'created', user, project.created_at.to_i)
     end
 
-    it "calls after_create on SideFxParticipationContextService for a continuous project" do
+    it 'calls after_create on SideFxParticipationContextService for a continuous project' do
       continuous_project = create(:continuous_project)
       expect(sfx_pc).to receive(:after_create).with(continuous_project, user)
       service.after_create(continuous_project, user)
@@ -22,27 +24,27 @@ describe SideFxProjectService do
       service.after_create(project, user)
     end
 
-    it "runs the description through the text image service" do
+    it 'runs the description through the text image service' do
       expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
       service.after_create(project, user)
     end
   end
 
-  describe "before_update" do
-    it "runs the description through the text image service" do
+  describe 'before_update' do
+    it 'runs the description through the text image service' do
       expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
       service.before_update(project, user)
     end
   end
 
-  describe "after_update" do
+  describe 'after_update' do
     it "logs a 'changed' action job when the project has changed" do
-      project.update(title_multiloc: {'en': 'changed'})
-      expect {service.after_update(project, user)}.
-        to have_enqueued_job(LogActivityJob).with(project, 'changed', user, project.updated_at.to_i)
+      project.update(title_multiloc: { en: 'changed' })
+      expect { service.after_update(project, user) }
+        .to have_enqueued_job(LogActivityJob).with(project, 'changed', user, project.updated_at.to_i)
     end
 
-    it "calls before_update on SideFxParticipationContextService for a continuous project" do
+    it 'calls before_update on SideFxParticipationContextService for a continuous project' do
       continuous_project = build(:continuous_project)
       expect(sfx_pc).to receive(:before_update).with(continuous_project, user)
       service.before_update(continuous_project, user)
@@ -53,8 +55,8 @@ describe SideFxProjectService do
     end
   end
 
-  describe "before_destroy" do
-    it "calls before_destroy on SideFxParticipationContextService for a continuous project" do
+  describe 'before_destroy' do
+    it 'calls before_destroy on SideFxParticipationContextService for a continuous project' do
       continuous_project = build(:continuous_project)
       expect(sfx_pc).to receive(:before_destroy).with(continuous_project, user)
       service.before_destroy(continuous_project, user)
@@ -65,14 +67,25 @@ describe SideFxProjectService do
     end
   end
 
-  describe "after_destroy" do
+  describe 'after_destroy' do
     it "logs a 'deleted' action job when the project is destroyed" do
       travel_to Time.now do
         frozen_project = project.destroy
-        expect {service.after_destroy(frozen_project, user)}.
-          to have_enqueued_job(LogActivityJob)
+        expect { service.after_destroy(frozen_project, user) }
+          .to have_enqueued_job(LogActivityJob)
       end
     end
   end
 
+  describe 'after_delete_inputs' do
+    it 'logs "inputs_deleted" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        project,
+        'inputs_deleted',
+        user,
+        anything
+      )
+      service.after_delete_inputs project, user
+    end
+  end
 end

@@ -1,5 +1,6 @@
-class IdeaImageUploader < BaseImageUploader
+# frozen_string_literal: true
 
+class IdeaImageUploader < BaseImageUploader
   version :small do
     process resize_to_fill: [96, 96]
   end
@@ -17,7 +18,6 @@ class IdeaImageUploader < BaseImageUploader
   end
 
   def extension_allowlist
-    %w(jpg jpeg gif png bmp)
+    %w[jpg jpeg gif png bmp]
   end
-
 end

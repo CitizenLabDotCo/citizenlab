@@ -14,7 +14,7 @@ resource 'Tenants', admin_api: true do
 
   get 'admin_api/tenants' do
     example_request 'List all tenants' do
-      expect(status).to eq 200
+      assert_status 200
       expect(json_response_body.size).to eq(2)
     end
 
@@ -23,14 +23,14 @@ resource 'Tenants', admin_api: true do
 
       do_request
 
-      expect(status).to eq 200
+      assert_status 200
       expect(json_response_body.size).to eq(1)
     end
   end
 
   get 'admin_api/tenants/:tenant_id' do
     example_request 'Get a tenant by ID' do
-      expect(status).to eq 200
+      assert_status 200
       expect(json_response_body[:host]).to eq(tenant.host)
     end
   end
@@ -40,7 +40,6 @@ resource 'Tenants', admin_api: true do
       parameter :name, 'The name of the tenant'
       parameter :host, 'The host URL of the tenant'
       parameter :logo, 'The logo image of the tenant'
-      parameter :header_bg, 'The header background image of the tenant'
       parameter :settings, 'The tenant settings'
       parameter :style, 'The tenant style definitions'
     end
@@ -59,7 +58,7 @@ resource 'Tenants', admin_api: true do
 
       do_request tenant: { settings: settings }
 
-      expect(status).to eq 422
+      assert_status 422
     end
   end
 
@@ -81,7 +80,7 @@ resource 'Tenants', admin_api: true do
     let(:replacing_locale) { 'es-ES' }
 
     example_request 'Updating a tenant to remove locales used by some users' do
-      expect(status).to eq 200
+      assert_status 200
       expect(tenant.reload.settings.dig('core', 'locales')).to match_array %w[es-ES]
     end
   end
@@ -99,8 +98,9 @@ resource 'Tenants', admin_api: true do
       new_tenant.host = tenant.host
 
       do_request tenant: new_tenant.attributes
-      expect(response_status).to eq 422
-      expect(json_response_body[:errors][:host][0][:error]).to eq('taken')
+      assert_status 422
+      json_response = json_parse response_body
+      expect(json_response).to include_response_error(:host, 'taken')
     end
 
     example '[error] Cannot create tenant with invalid setting' do
@@ -109,7 +109,7 @@ resource 'Tenants', admin_api: true do
       new_tenant.settings = settings
 
       do_request tenant: new_tenant.attributes
-      expect(response_status).to eq 422
+      assert_status 422
       expect(json_response_body[:errors][:settings][0][:error][:human_message])
         .to include("The property '#/core/locales/0' value \"not-a-valid-locale\" did not match")
     end
@@ -117,23 +117,20 @@ resource 'Tenants', admin_api: true do
 
   delete 'admin_api/tenants/:tenant_id' do
     example_request 'Deleting a tenant', document: false do
-      original_host = tenant.host
-
-      expect(status).to eq 200
+      assert_status 200
       expect(tenant.reload.deleted_at).not_to be_nil
-      expect(tenant.reload.host).not_to eq(original_host)
     end
   end
 
   get 'admin_api/tenants/settings_schema' do
     example_request 'Get the json schema for settings' do
-      expect(status).to eq 200
+      assert_status 200
     end
   end
 
   get 'admin_api/tenants/style_schema' do
     example_request 'Get the json schema for style' do
-      expect(status).to eq 200
+      assert_status 200
     end
   end
 end

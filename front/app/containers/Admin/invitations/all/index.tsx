@@ -1,16 +1,11 @@
-// libraries
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-import { saveAs } from 'file-saver';
+import React, { useState } from 'react';
 
 // components
-import { Table, Popup } from 'semantic-ui-react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
-import Row from './Row';
+import TableHeader from './TableHeader';
+import TableRow from './TableRow';
 import SearchInput from 'components/UI/SearchInput';
 
 // resources
@@ -19,16 +14,20 @@ import GetInvites, {
   SortAttribute,
 } from 'resources/GetInvites';
 
-// utils
-import { API_PATH } from 'containers/App/constants';
-import { requestBlob } from 'utils/request';
-
 // i18n
 import messages from '../messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
+
+// utils
+import { API_PATH } from 'containers/App/constants';
+import { requestBlob } from 'utils/request';
+import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
+import { saveAs } from 'file-saver';
 
 const Container = styled.div`
   th::after {
@@ -55,182 +54,110 @@ const EmptyStateContainer = styled.div`
   justify-content: center;
 `;
 
-const InfoIcon = styled(Icon)`
-  fill: ${colors.clBlueDarker};
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
+const InvitesTable = ({
+  invitesList,
+  sortAttribute,
+  sortDirection,
+  currentPage,
+  lastPage,
+  onChangeSorting,
+  onChangePage,
+  onChangeSearchTerm,
+}: GetInvitesChildProps) => {
+  const [searchValue, setSearchValue] = useState('');
+  const [exporting, setExporting] = useState(false);
 
-  &:hover {
-    fill: #000;
-  }
-`;
+  if (isNilOrError(invitesList)) return null;
 
-export interface InputProps {}
-
-interface Props extends InputProps, GetInvitesChildProps {}
-
-interface State {
-  searchValue: string;
-  exporting: boolean;
-}
-
-class InvitesTable extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      searchValue: '',
-      exporting: false,
-    };
-  }
-
-  handleInvitesExport = async () => {
+  const handleInvitesExport = async () => {
     try {
-      this.setState({ exporting: true });
+      setExporting(true);
+
       const blob = await requestBlob(
         `${API_PATH}/invites/as_xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       );
+
       saveAs(blob, 'invites-export.xlsx');
-      this.setState({ exporting: false });
+
+      setExporting(false);
     } catch (error) {
-      this.setState({ exporting: false });
+      setExporting(false);
     }
   };
 
-  handleSortHeaderClick = (sortAttribute: SortAttribute) => () => {
-    this.props.onChangeSorting(sortAttribute);
+  const handleSortHeaderClick = (sortAttribute: SortAttribute) => () => {
+    onChangeSorting(sortAttribute);
   };
 
-  handleChangeSearchTerm = (searchValue: string) => {
-    this.setState({ searchValue });
-    this.props.onChangeSearchTerm(searchValue);
+  const handleChangeSearchTerm = (searchValue: string) => {
+    setSearchValue(searchValue);
+    onChangeSearchTerm(searchValue);
   };
 
-  render() {
-    const { searchValue, exporting } = this.state;
-    const {
-      invitesList,
-      sortAttribute,
-      sortDirection,
-      currentPage,
-      lastPage,
-      onChangePage,
-    } = this.props;
+  return (
+    <Container>
+      <HeaderContainer>
+        <SearchInput
+          onChange={handleChangeSearchTerm}
+          a11y_numberOfSearchResults={invitesList.length}
+        />
+        <Button
+          buttonStyle="cl-blue"
+          icon="download"
+          onClick={handleInvitesExport}
+          processing={exporting}
+        >
+          <FormattedMessage {...messages.exportInvites} />
+        </Button>
+      </HeaderContainer>
 
-    if (!isNilOrError(invitesList)) {
-      return (
-        <Container className={this.props['className']}>
-          <HeaderContainer>
-            <SearchInput onChange={this.handleChangeSearchTerm} />
-            <Button
-              buttonStyle="cl-blue"
-              icon="download"
-              onClick={this.handleInvitesExport}
-              processing={exporting}
-            >
-              <FormattedMessage {...messages.exportInvites} />
-            </Button>
-          </HeaderContainer>
+      {invitesList.length > 0 && (
+        <Table
+          border={`1px solid ${colors.grey300}`}
+          borderRadius={stylingConsts.borderRadius}
+          innerBorders={{
+            headerCells: true,
+            bodyRows: true,
+          }}
+        >
+          <TableHeader
+            sortAttribute={sortAttribute}
+            sortDirection={sortDirection}
+            onSortHeaderClick={handleSortHeaderClick}
+          />
 
-          {invitesList.length > 0 && (
-            <Table sortable>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell
-                    sorted={
-                      sortAttribute === 'email' ? sortDirection : undefined
-                    }
-                    onClick={this.handleSortHeaderClick('email')}
-                    width={3}
-                  >
-                    <FormattedMessage {...messages.email} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell
-                    sorted={
-                      sortAttribute === 'last_name' ? sortDirection : undefined
-                    }
-                    onClick={this.handleSortHeaderClick('last_name')}
-                    width={2}
-                  >
-                    <FormattedMessage {...messages.name} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell
-                    sorted={
-                      sortAttribute === 'created_at' ? sortDirection : undefined
-                    }
-                    onClick={this.handleSortHeaderClick('created_at')}
-                    width={1}
-                  >
-                    <FormattedMessage {...messages.invitedSince} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell
-                    sorted={
-                      sortAttribute === 'invite_status'
-                        ? sortDirection
-                        : undefined
-                    }
-                    onClick={this.handleSortHeaderClick('invite_status')}
-                    width={1}
-                    textAlign="center"
-                  >
-                    <FormattedMessage {...messages.inviteStatus} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell width={1} textAlign="center">
-                    <FormattedMessage {...messages.deleteInvite} />
-                    <Popup
-                      content={
-                        <FormattedMessage {...messages.deleteInviteTooltip} />
-                      }
-                      trigger={
-                        <button>
-                          <InfoIcon name="info3" />
-                        </button>
-                      }
-                    />
-                  </Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
+          <Tbody>
+            {invitesList.map((invite) => (
+              <TableRow key={invite.id} invite={invite} />
+            ))}
+          </Tbody>
 
-              <Table.Body>
-                {invitesList.map((invite) => (
-                  <Row key={invite.id} invite={invite} />
-                ))}
-              </Table.Body>
-
-              {currentPage && lastPage && lastPage > 1 && (
-                <Table.Footer fullWidth={true}>
-                  <Table.Row>
-                    <Table.HeaderCell colSpan="6">
-                      <Pagination
-                        currentPage={currentPage}
-                        totalPages={lastPage}
-                        loadPage={onChangePage}
-                      />
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Footer>
-              )}
-            </Table>
+          {currentPage && lastPage && lastPage > 1 && (
+            <Tfoot>
+              <Tr background={colors.grey50}>
+                <Td colSpan={5}>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={lastPage}
+                    loadPage={onChangePage}
+                  />
+                </Td>
+              </Tr>
+            </Tfoot>
           )}
+        </Table>
+      )}
 
-          {isEmpty(invitesList) && !isEmpty(searchValue) && (
-            <EmptyStateContainer>
-              <FormattedMessage
-                {...messages.currentlyNoInvitesThatMatchSearch}
-              />
-            </EmptyStateContainer>
-          )}
-        </Container>
-      );
-    }
+      {isEmpty(invitesList) && !isEmpty(searchValue) && (
+        <EmptyStateContainer>
+          <FormattedMessage {...messages.currentlyNoInvitesThatMatchSearch} />
+        </EmptyStateContainer>
+      )}
+    </Container>
+  );
+};
 
-    return null;
-  }
-}
-
-export default (inputProps: InputProps) => (
-  <GetInvites>
-    {(invites) => <InvitesTable {...inputProps} {...invites} />}
-  </GetInvites>
+export default () => (
+  <GetInvites>{(invites) => <InvitesTable {...invites} />}</GetInvites>
 );

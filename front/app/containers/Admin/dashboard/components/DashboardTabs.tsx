@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import Link from 'utils/cl-router/Link';
 
 // typings
@@ -17,6 +17,7 @@ import NavigationTabs, {
 import { matchPathToUrl } from 'utils/helperUtils';
 
 interface Props {
+  children?: React.ReactNode;
   resource: {
     title: string;
     subtitle?: string;
@@ -45,14 +46,22 @@ const DashboardTabs = memo<Props & WithRouterProps>(
                   if (tab.feature) {
                     return (
                       <FeatureFlag key={tab.url} name={tab.feature}>
-                        <Tab key={tab.url} active={active} className={classes}>
+                        <Tab
+                          key={tab.url}
+                          active={active}
+                          className={`${classes} intercom-admin-dashboard-tab-${tab.name}`}
+                        >
                           <Link to={tab.url}>{tab.label}</Link>
                         </Tab>
                       </FeatureFlag>
                     );
                   } else {
                     return (
-                      <Tab key={tab.url} active={active} className={classes}>
+                      <Tab
+                        key={tab.url}
+                        active={active}
+                        className={`${classes} intercom-admin-dashboard-tab-${tab.name}`}
+                      >
                         <Link to={tab.url}>{tab.label}</Link>
                       </Tab>
                     );

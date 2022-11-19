@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::CommentsController < ApplicationController
   include BlockingProfanity
 
@@ -17,31 +19,31 @@ class WebApi::V1::CommentsController < ApplicationController
       .includes(*include_attrs)
 
     root_comments = case params[:sort]
-      when "new"
-        root_comments.order(created_at: :desc)
-      when "-new"
-        root_comments.order(created_at: :asc)
-      when "upvotes_count"
-        root_comments.order(upvotes_count: :asc, lft: :asc)
-      when "-upvotes_count"
-        root_comments.order(upvotes_count: :desc, lft: :asc)
-      when nil
-        root_comments.order(lft: :asc)
-      else
-        raise "Unsupported sort method"
-      end
+    when 'new'
+      root_comments.order(created_at: :desc)
+    when '-new'
+      root_comments.order(created_at: :asc)
+    when 'upvotes_count'
+      root_comments.order(upvotes_count: :asc, lft: :asc)
+    when '-upvotes_count'
+      root_comments.order(upvotes_count: :desc, lft: :asc)
+    when nil
+      root_comments.order(lft: :asc)
+    else
+      raise 'Unsupported sort method'
+    end
     root_comments = paginate root_comments
 
     fully_expanded_root_comments = Comment.where(id: root_comments)
-      .where("children_count <= ?", FULLY_EXPAND_THRESHOLD)
+      .where('children_count <= ?', FULLY_EXPAND_THRESHOLD)
 
     partially_expanded_root_comments = Comment.where(id: root_comments)
-      .where("children_count > ?", FULLY_EXPAND_THRESHOLD)
+      .where('children_count > ?', FULLY_EXPAND_THRESHOLD)
 
     partially_expanded_child_comments = Comment
       .where(parent_id: partially_expanded_root_comments)
       .joins(:parent)
-      .where("comments.lft >= parents_comments.rgt - ?", MINIMAL_SUBCOMMENTS * 2)
+      .where('comments.lft >= parents_comments.rgt - ?', MINIMAL_SUBCOMMENTS * 2)
 
     child_comments = Comment
       .where(parent: fully_expanded_root_comments)
@@ -56,24 +58,24 @@ class WebApi::V1::CommentsController < ApplicationController
 
     serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments)
-      votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
+      votes_by_comment_id = votes.index_by(&:votable_id)
       {
-        params: fastjson_params(vbci: votes_by_comment_id), 
-        include: [:author, :user_vote]
+        params: fastjson_params(vbci: votes_by_comment_id),
+        include: %i[author user_vote]
       }
     else
       { params: fastjson_params, include: [:author] }
     end
-    
-    render json: { 
-      **WebApi::V1::CommentSerializer.new(@comments, serialization_options).serializable_hash, 
+
+    render json: {
+      **WebApi::V1::CommentSerializer.new(@comments, serialization_options).serializable_hash,
       links: page_links(root_comments)
     }
   end
 
   def index_xlsx
     if (@post_type == 'Idea') && params[:project].present?
-      authorize Project.find_by!(id: params[:project]), :index_xlsx?
+      authorize Project.find(params[:project]), :index_xlsx?
     elsif @post_type == 'Idea'
       authorize :idea_comment, :index_xlsx?
     elsif @post_type == 'Initiative'
@@ -88,18 +90,19 @@ class WebApi::V1::CommentsController < ApplicationController
       .includes(:author, :"#{@post_type.underscore}")
       .order(:lft)
     if (@post_type == 'Idea') && params[:project].present?
-      @comments = @comments.where(ideas: {project_id: params[:project]}) 
+      @comments = @comments.where(ideas: { project_id: params[:project] })
     end
     @comments = @comments.where(post_id: post_ids) if post_ids.present?
 
     I18n.with_locale(current_user&.locale) do
       service = XlsxService.new
       xlsx = case @post_type
-        when 'Idea' 
-          service.generate_idea_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
-        when 'Initiative' 
-          service.generate_initiative_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
-        else raise "#{@post_type} has no functionality for exporting comments"
+      when 'Idea'
+        service.generate_idea_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+      when 'Initiative'
+        service.generate_initiative_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+      else
+        raise "#{@post_type} has no functionality for exporting comments"
       end
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
@@ -113,10 +116,10 @@ class WebApi::V1::CommentsController < ApplicationController
 
     serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments.all)
-      votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
+      votes_by_comment_id = votes.index_by(&:votable_id)
       {
-        params: fastjson_params(vbci: votes_by_comment_id), 
-        include: [:author, :user_vote] 
+        params: fastjson_params(vbci: votes_by_comment_id),
+        include: %i[author user_vote]
       }
     else
       { params: fastjson_params, include: [:author] }
@@ -175,9 +178,9 @@ class WebApi::V1::CommentsController < ApplicationController
   def mark_as_deleted
     reason_code = params.dig(:comment, :reason_code)
     other_reason = params.dig(:comment, :other_reason)
-    if (@comment.author_id == current_user&.id) || 
-      ((Notifications::CommentDeletedByAdmin::REASON_CODES.include? reason_code) &&
-       (reason_code != 'other' || other_reason.present?))
+    if (@comment.author_id == current_user&.id) ||
+       ((Notifications::CommentDeletedByAdmin::REASON_CODES.include? reason_code) &&
+        (reason_code != 'other' || other_reason.present?))
       @comment.publication_status = 'deleted'
       if @comment.save
         SideFxCommentService.new.after_mark_as_deleted(@comment, current_user, reason_code, other_reason)
@@ -197,7 +200,7 @@ class WebApi::V1::CommentsController < ApplicationController
       SideFxCommentService.new.after_destroy(comment, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -218,11 +221,11 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def set_policy_class
     @policy_class = case @post_type
-      when 'Idea' then IdeaCommentPolicy
-      when 'Initiative' then InitiativeCommentPolicy
-      else raise "#{@post_type} has no comment policy defined"
+    when 'Idea' then IdeaCommentPolicy
+    when 'Initiative' then InitiativeCommentPolicy
+    else raise "#{@post_type} has no comment policy defined"
     end
-    raise RuntimeError, "must not be blank" if @post_type.blank?
+    raise 'must not be blank' if @post_type.blank?
   end
 
   def comment_create_params
@@ -245,7 +248,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
   # Merge both arrays in such a way that the order of both is preserved, but
   # the children are directly following their parent
-  def merge_comments root_comments, child_comments
+  def merge_comments(root_comments, child_comments)
     children_by_parent = child_comments.group_by(&:parent_id)
     root_comments.flat_map do |root_comment|
       [root_comment, *children_by_parent[root_comment.id]]

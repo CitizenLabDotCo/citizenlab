@@ -1,10 +1,9 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { isCLErrorJSON } from 'utils/errorUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -19,40 +18,21 @@ import { updateTopic, ITopicUpdate } from '../../../../services/topics';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
-import { Formik } from 'formik';
 import TopicForm from '../TopicForm';
 
 // typings
-import { CLErrorsJSON } from 'typings';
 
-const Edit = ({ params: { topicId } }: WithRouterProps) => {
+const Edit = () => {
+  const { topicId } = useParams() as { topicId: string };
   const topic = useTopic(topicId);
 
-  const handleSubmit = async (
-    values: ITopicUpdate,
-    { setErrors, setSubmitting, setStatus }
-  ) => {
+  const handleSubmit = async (values: ITopicUpdate) => {
     if (isNilOrError(topic)) return;
 
-    try {
-      await updateTopic(topic.id, {
-        ...values,
-      });
-      clHistory.push('/admin/settings/topics');
-    } catch (errorResponse) {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-
-      setSubmitting(false);
-    }
-  };
-
-  const renderFn = (props) => {
-    return <TopicForm {...props} />;
+    await updateTopic(topic.id, {
+      ...values,
+    });
+    clHistory.push('/admin/settings/topics');
   };
 
   const goBack = () => {
@@ -66,12 +46,10 @@ const Edit = ({ params: { topicId } }: WithRouterProps) => {
         <FormattedMessage {...messages.editTopicFormTitle} />
       </SectionTitle>
       {!isNilOrError(topic) && (
-        <Formik
-          initialValues={{
+        <TopicForm
+          defaultValues={{
             title_multiloc: topic.attributes.title_multiloc,
-            description_multiloc: topic.attributes.description_multiloc,
           }}
-          render={renderFn}
           onSubmit={handleSubmit}
         />
       )}
@@ -79,4 +57,4 @@ const Edit = ({ params: { topicId } }: WithRouterProps) => {
   );
 };
 
-export default withRouter(Edit);
+export default Edit;

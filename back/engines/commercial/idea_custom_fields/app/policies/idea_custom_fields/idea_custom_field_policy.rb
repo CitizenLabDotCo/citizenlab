@@ -1,57 +1,61 @@
+# frozen_string_literal: true
+
 module IdeaCustomFields
   class IdeaCustomFieldPolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
-      def resolve
-        if user&.admin?
-          scope.all
-        elsif user&.project_moderator?
-          scope
-            .joins("LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id")
-            .joins("LEFT JOIN projects ON projects.custom_form_id = custom_forms.id")
-            .where("projects.id" => ::UserRoleService.new.moderatable_projects(user))
-        else
-          scope.none
-        end
-      end
+    def index?
+      can_configure_custom_fields? record
     end
 
     def show?
-      can_view_custom_fields_for_project? record&.resource&.project
+      can_configure_custom_fields? record
     end
 
     def upsert_by_code?
-      show?
+      can_configure_custom_fields? record
     end
 
-    def destroy?
-      show?
+    def update?
+      can_configure_custom_fields? record
     end
 
-    def can_view_custom_fields_for_project? project
-      user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
+    def update_all?
+      can_configure_custom_fields? record
     end
 
+    # TODO: (native surveys) permitted attributes are dependent on the code and input type,
+    # so probably this has to move to a Visitor rather than adding more conditionals here.
     def permitted_attributes
-      if %w(title body).include? record.code
+      if %w[title_multiloc body_multiloc].include? record.code
         [
           description_multiloc: CL2_SUPPORTED_LOCALES
+        ]
+      elsif record.input_type == 'linear_scale'
+        [
+          :required,
+          :enabled,
+          :maximum,
+          {
+            title_multiloc: CL2_SUPPORTED_LOCALES,
+            description_multiloc: CL2_SUPPORTED_LOCALES,
+            minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
+            maximum_label_multiloc: CL2_SUPPORTED_LOCALES
+          }
         ]
       else
         [
           :required,
           :enabled,
-          title_multiloc: CL2_SUPPORTED_LOCALES,
-          description_multiloc: CL2_SUPPORTED_LOCALES
+          { title_multiloc: CL2_SUPPORTED_LOCALES,
+            description_multiloc: CL2_SUPPORTED_LOCALES }
         ]
       end
     end
 
+    private
+
+    def can_configure_custom_fields?(custom_field)
+      project = custom_field&.resource&.participation_context&.project
+      project && user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
+    end
   end
 end

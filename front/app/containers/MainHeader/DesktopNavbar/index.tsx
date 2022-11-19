@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 
 // components
 import DesktopNavbarItem from './DesktopNavbarItem';
@@ -16,11 +16,16 @@ import { media, isRtl } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
+import { WrappedComponentProps } from 'react-intl';
+
 const Container = styled.nav`
   height: 100%;
   margin-left: 35px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
   ${isRtl`
@@ -40,9 +45,9 @@ const NavbarItems = styled.ul`
   `};
 `;
 
-const DesktopNavbar = () => {
+const DesktopNavbar = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
-  const pageSlugById = usePageSlugById();
+  const pageSlugById = useCustomPageSlugById();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
@@ -52,7 +57,7 @@ const DesktopNavbar = () => {
   );
 
   return (
-    <Container>
+    <Container aria-label={formatMessage(messages.ariaLabel)}>
       <NavbarItems>
         {navbarItemPropsArray.map((navbarItemProps, i) => {
           const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
@@ -82,4 +87,4 @@ const DesktopNavbar = () => {
   );
 };
 
-export default DesktopNavbar;
+export default injectIntl(DesktopNavbar);

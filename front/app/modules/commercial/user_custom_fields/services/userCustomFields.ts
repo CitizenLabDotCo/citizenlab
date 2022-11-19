@@ -15,6 +15,19 @@ export type IUserCustomFieldInputType =
   | 'checkbox'
   | 'date';
 
+export type TCustomFieldCode =
+  | 'gender'
+  | 'birthyear'
+  | 'domicile'
+  | 'education'
+  | 'title'
+  | 'body'
+  | 'topic_ids'
+  | 'location'
+  | 'proposed_budget'
+  | 'images'
+  | 'attachments';
+
 export interface IUserCustomFieldData {
   id: string;
   type: string;
@@ -24,7 +37,7 @@ export interface IUserCustomFieldData {
     description_multiloc: Multiloc;
     input_type: IUserCustomFieldInputType;
     required: boolean;
-    code: string | null;
+    code: TCustomFieldCode | null;
     enabled: boolean;
     ordering: number;
     hidden: boolean;
@@ -33,6 +46,9 @@ export interface IUserCustomFieldData {
   };
   relationships?: {
     custom_field_options: {
+      data: IRelationship;
+    };
+    current_ref_distribution: {
       data: IRelationship;
     };
   };

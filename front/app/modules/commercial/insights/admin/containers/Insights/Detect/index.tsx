@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
@@ -18,7 +18,7 @@ import clHistory from 'utils/cl-router/history';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styles
@@ -41,7 +41,7 @@ const ButtonsContainer = styled(Box)`
 const Detect = ({
   params: { viewId },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const [processing, setProcessing] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const detectedCategories = useDetectedCategories(viewId);
@@ -86,7 +86,7 @@ const Detect = ({
         <Box display="flex" mb="32px">
           <Button
             buttonStyle="text"
-            icon="arrow-back"
+            icon="arrow-left"
             padding="0px"
             linkTo={backRoute}
           >

@@ -29,7 +29,9 @@ module.exports = {
     '!**/vendor/**',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
-  transformIgnorePatterns: ['<rootDir>/node_modules/(?!lodash-es).+\\.js$'],
+  transformIgnorePatterns: [
+    '<rootDir>/node_modules/(?!(lodash-es|d3-format|@hookform/resolvers)).+\\.js$',
+  ],
   snapshotSerializers: ['enzyme-to-json/serializer'],
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
@@ -38,8 +40,11 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/app/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
   },
-  testURL: 'https://demo.stg.citizenlab.co/en/',
+  testEnvironmentOptions: {
+    url: 'https://demo.stg.citizenlab.co/en/',
+  },
   globals: {
     CL_CONFIG: clConfig,
   },
+  resolver: `${__dirname}/internals/jest/resolver.js`,
 };

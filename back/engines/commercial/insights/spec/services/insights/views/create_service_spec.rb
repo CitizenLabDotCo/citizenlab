@@ -15,7 +15,7 @@ RSpec.describe Insights::Views::CreateService do
   describe '#execute' do
     it 'creates a new view' do
       view = nil
-      expect { view = service.execute }.to change { Insights::View.count }.by(1)
+      expect { view = service.execute }.to change(Insights::View, :count).by(1)
       expect(view.name).to eq(view_name)
       expect(view.data_sources.includes(:origin).map(&:origin)).to match_array(origins)
     end
@@ -33,7 +33,7 @@ RSpec.describe Insights::Views::CreateService do
 
     it 'authorizes the current user' do
       service.execute
-      expect(service.send(:pundit_policy_authorized?)).to eq(true)
+      expect(service.send(:pundit_policy_authorized?)).to be(true)
     end
 
     context 'when the view is not valid' do

@@ -7,9 +7,9 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // Index
-  tabSummary: {
-    id: 'app.containers.AdminPage.DashboardPage.tabSummary',
-    defaultMessage: 'Summary',
+  tabOverview: {
+    id: 'app.containers.AdminPage.DashboardPage.tabOverview',
+    defaultMessage: 'Overview',
   },
   tabUsers: {
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
@@ -26,6 +26,10 @@ export default defineMessages({
   helmetDescription: {
     id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
     defaultMessage: 'Dashboard for activities on the platform',
+  },
+  selectProject: {
+    id: 'app.containers.AdminPage.DashboardPage.selectProject',
+    defaultMessage: 'Select project',
   },
   // All tabs
   day: {
@@ -63,31 +67,6 @@ export default defineMessages({
   noData: {
     id: 'app.containers.AdminPage.DashboardPage.noData',
     defaultMessage: 'No data available with the current filters.',
-  },
-  // Filter Controls
-  allGroups: {
-    id: 'app.containers.AdminPage.DashboardPage.allGroups',
-    defaultMessage: 'All Groups',
-  },
-  hiddenLabelGroupFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelGroupFilter',
-    defaultMessage: 'Pick group filter',
-  },
-  allProjects: {
-    id: 'app.containers.AdminPage.DashboardPage.allProjects',
-    defaultMessage: 'All Projects',
-  },
-  hiddenLabelProjectFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelProjectFilter',
-    defaultMessage: 'Pick project filter',
-  },
-  allTopics: {
-    id: 'app.containers.AdminPage.DashboardPage.allTopics',
-    defaultMessage: 'All Topics',
-  },
-  hiddenLabelTopicFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelTopicFilter',
-    defaultMessage: 'Pick topic filter',
   },
   // Time and Resolution Controls
   customDateRange: {
@@ -191,15 +170,6 @@ export default defineMessages({
   selectedTopic: {
     id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
     defaultMessage: 'current topic filter',
-  },
-  totalCount: {
-    id: 'app.containers.AdminPage.DashboardPage.totalCount',
-    defaultMessage:
-      '{selectedResourceName} total in {selectedName} : {selectedCount}',
-  },
-  resourceByDifference: {
-    id: 'app.containers.AdminPage.DashboardPage.resourceByDifference',
-    defaultMessage: '{selectedResourceName} difference with {selectedName}',
   },
   // Users Charts
   usersByAgeTitle: {

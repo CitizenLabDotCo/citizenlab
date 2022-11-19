@@ -2,12 +2,12 @@
 import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // resources
 import GetAppConfigurationLocales, {
@@ -32,7 +32,7 @@ interface DataProps {
 
 interface Props extends DataProps {}
 
-const SignUpInPageMeta = memo<Props & InjectedIntlProps & WithRouterProps>(
+const SignUpInPageMeta = memo<Props & WrappedComponentProps & WithRouterProps>(
   ({ intl, location: { pathname }, tenantLocales, tenant, locale }) => {
     if (
       !isNilOrError(tenantLocales) &&

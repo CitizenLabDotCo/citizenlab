@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isEqual } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 
@@ -34,7 +34,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -86,7 +86,7 @@ interface Props {
 }
 
 const ProjectCustomMapConfigPage = memo<
-  Props & WithRouterProps & InjectedIntlProps
+  Props & WithRouterProps & WrappedComponentProps
 >(({ params: { projectId }, className, intl: { formatMessage } }) => {
   const appConfig = useAppConfiguration();
   const mapConfig = useMapConfig({ projectId });
@@ -174,7 +174,7 @@ const ProjectCustomMapConfigPage = memo<
             >
               <div>
                 <Button
-                  icon="mapCenter"
+                  icon="gps"
                   buttonStyle="white"
                   padding="7px"
                   boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"

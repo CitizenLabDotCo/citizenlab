@@ -26,8 +26,10 @@ import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
+import impactTrackingConfiguration from './commercial/impact_tracking';
 
 import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -36,17 +38,20 @@ import idBogusConfiguration from './commercial/id_bogus';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
+import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
-import customizableNavbarConfiguration from './commercial/customizable_navbar';
+import analyticsConfiguration from './commercial/analytics';
 
+import customizableNavbarConfiguration from './free/customizable_navbar';
 import userConfirmationConfiguration from './free/user_confirmation';
 
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
+import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
 declare var CL_CONFIG: any;
@@ -125,6 +130,10 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/custom_idea_statuses'],
   },
   {
+    configuration: bulkIdeaImportConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/bulk_import_ideas'],
+  },
+  {
     configuration: customTopicsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
   },
@@ -177,6 +186,10 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/id_gent_rrn'],
   },
   {
+    configuration: IdOostendeRrnConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_oostende_rrn'],
+  },
+  {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
   },
@@ -201,8 +214,12 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/insights'],
   },
   {
+    configuration: analyticsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/analytics'],
+  },
+  {
     configuration: customizableNavbarConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/customizable_navbar'],
+    isEnabled: CL_CONFIG['modules']['free/customizable_navbar'],
   },
   {
     configuration: userConfirmationConfiguration,
@@ -211,5 +228,13 @@ export default loadModules([
   {
     configuration: idViennaSamlConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_vienna_saml'],
+  },
+  {
+    configuration: representativenessConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/representativeness'],
+  },
+  {
+    configuration: impactTrackingConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/impact_tracking'],
   },
 ]);

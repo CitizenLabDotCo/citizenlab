@@ -46,15 +46,11 @@ const Left = styled.ul`
   margin: 0;
   padding: 0;
 
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
   & li {
     margin-right: 12px;
 
     &:after {
-      color: ${colors.label};
+      color: ${colors.textSecondary};
       font-size: ${fontSizes.s}px;
       font-weight: 400;
       content: '•';
@@ -62,20 +58,13 @@ const Left = styled.ul`
     }
 
     ${isRtl`
-        margin-left: 0;
-        margin-right: 12px;
+        margin-left: 12px;
+        margin-right: auto;
 
         &:after {
-          content: '';
-        }
-
-        &:before {
-          color: ${colors.label};
-          font-size: ${fontSizes.s}px;
-          font-weight: 400;
-          content: '•';
           margin-right: 12px;
         }
+
     `}
 
     &:last-child {

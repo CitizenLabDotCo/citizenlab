@@ -1,8 +1,712 @@
 # Changelog
 
-## Next release
+## Unreleased
 
-/
+## 2022-11-18
+
+### Fixed
+
+- [CL-2052] Fix Sentry error related to failed authentication
+- [CL-2030] Vienna SSO UI & UX changes
+- [CL-2053] Minor color fixes
+
+## 2022-11-16
+
+### Fixed
+
+- [CL-1763] Norwegian translations of navbar & default pages now applied
+- [CL-2036] Fixed new vs returning visitors Matomo import
+
+## 2022-11-14
+
+### Fixed
+
+- [CL-1811] Correct copy for Oostende verification tooltip
+
+## 2022-11-11
+
+### Changed
+
+- [CL-1839] Merge FranceConnect account based on names
+
+## 2022-11-10
+
+### Changed
+
+- [CL-1101] Make the login and signup flows fullscreen for platforms with FranceConnect login enabled
+
+## 2022-11-08
+
+### Changed
+
+- [CL-1776] Remove feedback icon in Bottom Right
+
+### Added
+
+- Added support for Balancing Act embed in content builder
+
+### Fixed
+
+- [CL-1923] Disabled switching from existing participation method to in-platform survey. Warning message added for additional clarity.
+
+## 2022-11-04
+
+### Fixed
+
+- [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
+
+## 2022-11-03
+
+### Fixed
+
+- [CL-1841] Show project attachments in content builder project description
+
+### Fixed
+
+- [CL-1929] Fix gender pie chart and update user pie charts style
+
+### Added
+
+- [CL-1955] Fixed bug where admins were not able to add ideas via the map in non-active ideation phases
+- [CL-1790] Add back to idea link on the idea edit page
+- [CL-1721] It is now possible to create a project from a template inside a folder (by anyone).
+
+## 2022-11-01
+
+### Fixed
+
+- [CL-1765] Resize new icons used in 3 email campaigns
+- [CL-1765] Replace missing icon and resize new icons used in 3 email campaigns
+
+### Changed
+
+- [CL-1700] Native surveys: create a default form when creating new native survey projects or phases
+
+## 2022-10-28
+
+### Added
+
+- [CL-1800] It is now possible to disable email + password registration while logins are still allowed for existing users.
+
+## 2022-10-27
+
+### Added
+
+- [CL-1786] Latvian language capabilities
+- [CL-1786] Catalan language capabilities
+- [CL-1786] Greek language capabilities
+
+### Changed
+
+- [CL-1611] Improved layout & content of Project Phase Started & Project Phase Upcoming emails.
+- [CL-1744] Visitors dashboard: add referrers table to traffic sources card
+
+## 2022-10-25
+
+### Added
+
+- [CL-1811] New Oostende verification method
+- [CL-1558] Native surveys
+
+## 2022-10-20
+
+### Fixed
+
+- [CL-1814] Fixed bug when opening the verification model after having a verification error
+
+## 2022-10-18
+
+### Fixed
+
+- [CL-1825] Made tables more visually consistent.
+
+## 2022-10-14
+
+### Fixed
+
+- Fixed bug where subtitle in some admin pages would appear above the main header.
+
+## 2022-10-13
+
+### Fixed
+
+- [CL-1835] Fixed missing verification button icon, which caused the verification modal to not open.
+
+## 2022-10-11
+
+### Fixed
+
+- [CL-1544] Fixed banner images and attachments being deleted in the back-office when a form is submitted via keyboard Enter press
+
+## 2022-10-06
+
+### Added
+
+- [CL-1328] New visitors dashboard released behind feature flag
+
+### Fixed
+
+- Some colors used in the charts were replaced wrongly during the design system refactor. Now they're correct again.
+
+## 2022-10-03
+
+### Fixed
+
+- [CL-1762] Default pages titles and content, and default navbar items, now display in Swedish for newly created platforms with the Swedish locale.
+
+## 2022-09-30
+
+### Added
+
+- [CL-1553] Basic privacy-friendly session counting for all visitors and users, for now not exposed in the product
+
+## 2022-09-29
+
+- [CL-1757] Don't show proposals in site map when proposals feature is disabled.
+
+## 2022-09-23
+
+### Fixed
+
+- [DISP-185] Fix 'Age group' copy not being translated
+
+## 2022-09-20
+
+## Added
+
+- Vienna citizen Single sign-on (StandardPortal)
+
+### Fixed
+
+- [CL-1586] Fix deleting folder and cause images
+
+## 2022-09-08
+
+### Fixed
+
+- Save button text in representation data input interface is now translated.
+
+## 2022-09-07_2
+
+### Changed
+
+- Custom forms can be associated with projects and phases.
+- Survey form builder improvements.
+
+### 2022-09-07
+
+### Fixed
+
+- Input status dashboard card now updates immediately (not just after refresh) when changing idea status in input manager
+
+## 2022-09-06
+
+### Added
+
+- [CL-423] Added input feedback dashboard card with new analytics endpoint
+
+## 2022-09-05
+
+### Added
+
+- [CL-1157] Added domicile fields to representation dashboard
+
+## 2022-09-02
+
+### Fixed
+
+- [CL-1580] Do not show full admin panel to moderators
+
+## 2022-08-30
+
+### Fixed
+
+- [CL-1308] Do not allow editing page slug when custom navbar is disabled
+
+## 2022-08-29
+
+### Fixed
+
+- [SLS-65] Fixed issue in citizenlab-ee to allow bulk import of custom field options
+
+## 2022-08-24
+
+### Fixed
+
+- [CL-1505] Posting ideas when there is no current phase
+- [CL-1509] Bulk idea import works for special date cells
+
+## 2022-08-23
+
+### Added
+
+- The public API now supports phases, as well as additional project properties
+- The project search now also searches through content builder content
+
+## 2022-08-18
+
+### Fixed
+
+- [CL-1407] Quickfix for critical bug that made the 'Submit your idea' button disappear for projects with a timeline
+
+### Added
+
+- [CL-1097] Added the ability for users to search for projects and folders by keyword on the main projects index page
+
+### Changed
+
+- Improve error handling and user feedback in the forms for creating pages and custom navigation items
+- [CL-854] Added tooltip to admin budget field in idea form for clarity
+
+## 2022-08-11
+
+### Fixed
+
+- [CL-1302] Added topics column to bulk idea import example sheet
+
+## 2022-08-09
+
+### Fixed
+
+- [CL-1289] Fix 'Submit base data' button width (representation dashboard)
+
+### Added
+
+- [CL-1273] Enable age graphs in representation dashboard
+
+## 2022-08-04
+
+### Added
+
+-[CL-5] Customizable Pages iteration 1
+
+## 2022-08-03
+
+### Added
+
+- [CL-1189] Added Turkish locale to platform
+
+## 2022-07-28_2
+
+### Fixed
+
+- [CL-1256] Fix verification using Belgian eID or Itsme application
+
+## 2022-07-28
+
+### Added
+
+- [CL-1118] Native survey feature
+- [CL-1128] Feature to bulk import ideas from an XLSX sheet
+
+## 2022-07-22
+
+### Fixed
+
+- [CL-1216] Fix slow insights export
+
+### Changed
+
+- [CL-1205] Change see less copy to read less in read more on project info and phase description
+- [CL-1140] Show sign up modal when a logged user clicks the take survey button
+
+## 2022-07-19
+
+### Fixed
+
+- [CL-1160] Fix blank insights tag detail view
+
+## 2022-07-14 (2)
+
+### Added
+
+- [CL-1077] Add PNG export to graph export dropdown
+
+## 2022-07-14
+
+### Fixed
+
+- [CL-1113] Fixed sharing button styling when copy link text is long
+
+### Changed
+
+- [CL-474] Update existing accessibility statement, following re-certification
+
+### Added
+
+- [CL-1088] Add link to academy. Update link to guides
+- [CL-972] Add a 'read more' expand/collapse feature to timeline phases
+
+## 2022-07-11
+
+### Fixed
+
+- Project publication status now defaults to draft on creation but remains published if it was already published
+
+### Added
+
+- [CL-1058] - Add desktop preview in content builder
+- [CL-1096] Add representativeness score to header of representativeness chart card
+
+## 2022-07-07
+
+### Fixed
+
+- [TEC-198] Various permission issues
+  - Route access for project folder moderators now works correctly
+  - Project folder moderators can now create a project and select the appropriate folder for it
+  - Route access for admins is now checked correctly
+  - Project/folder moderators now see the dashboard data correctly
+
+## 2022-07-06
+
+### Added
+
+- [CL-1085] Add link to support article when there are errors during embed in the content builder
+
+### Changed
+
+- [CL-875] "en" locale is shown as "en-US" in admin HQ
+
+## 2022-07-05
+
+### Added
+
+- [CL-1058] Add desktop preview in content builder
+- [CL-1001] Added noindex meta tag to user profile pages to reduce the SEO effectiveness of external spam links
+
+### Fixed
+
+- [CL-1083] XLSX export issues with custom fields
+
+## 2022-07-04
+
+### Added
+
+- [CL-504] Dynamic idea form has limited support for extra fields
+- [CL-1034] Add support for more URLs in the embed component whitelist
+- [CL-851] Create interface to add representativeness reference data (feature flagged for now).
+
+### Fixed
+
+- [CL-1074] Fix missing options check in user graph
+- [CL-1076] Fix failed request check on bar chart
+
+## 2022-06-30
+
+### Fixed
+
+- [CL-1051] When a new project is published, its default publication status is now draft
+- [CL-993] Fixed bug on idea form where fields were reset to empty state after changing description
+
+## 2022-06-29_2
+
+### Added
+
+- [CL-949] Adds explanation of the implications for project filtering when selecting all areas / no areas / a selection of areas in the Admin project creation / editing form.
+
+## 2022-06-29
+
+### Added
+
+- [CL-1028] Add Swedish locale
+
+### Changed
+
+- [CL-1024] Shows respective CTA buttons in the About component of the content builder
+
+## 2022-06-22
+
+### Fixed
+
+- [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
+
+### Changed
+
+- [CL-975] Social sharing options are now consistent across the platform, and a general "Copy link" option has been added.
+
+## 2022-06-21
+
+### Fixed
+
+- [CL-1026] Fix moderator access to conent builder
+
+## 2022-06-20
+
+### Fixed
+
+- [CL-903] Fix admin input manager crash on Safari
+
+## 2022-06-16
+
+### Added
+
+- [CL-979] Add description to embed component in content builder and restricts height to only take in numbers
+- [CL-951] The search field used in several places now notifies screen readers when new search results have loaded.
+
+### Fixed
+
+- [CL-966] Fixed issue with tabs stretching off the screen
+- [CL-908] Fix sheet names in excel exports.
+
+## 2022-06-15
+
+### Fixed
+
+- [CL-967] Fixed issue with map displaying off screen on Android
+- [CL-667] Next batch of RuboCop fixes
+
+## 2022-06-14
+
+### Added
+
+- [CL-767] Add data from backend to representative dashboard
+
+### Fixed
+
+- [CL-915] Show "Messaging" menu item only if any of 3 messaging features enabled
+- [CL-940] Graph excel export was not always giving the same numbers as the graph itself if a time period was selected. This is fixed now.
+- [CL-888] Fixed issue with folders page layout. Project cards are now displayed in two columns (instead of one) on large screens.
+- [CL-953] Fixed issue with expanding and collapsing custom idea fields after initial save.
+- Fixed issue where users were unable to moderate projects and project folders correctly
+
+## 2022-06-13
+
+### Changed
+
+- [TEC-11] Upgraded react-router frontend dependency
+
+## 2022-06-08_2
+
+### Fixed
+
+- [CL-717] Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
+
+## 2022-06-08
+
+### Changed
+
+- [CL-667] Fixed several RuboCop offences
+
+### Added
+
+- [CL-774] Add new option when adding areas to a project: "No areas"
+- [CL-906] Added support for Snap Survey
+
+## 2022-05-31
+
+### Changed
+
+- [CL-667] Fixed many RuboCop offences
+
+### Fixed
+
+- [CL-845] Fixed an issue with the Sign Up modal where it was impossible to scroll down on smaller screens, which made registration on certain Android devices impossible
+
+## 2022-05-30
+
+### Changed
+
+- [CL-830] 'Accept' button now before 'Manage' button on cookie banner, and both buttons now the same style.
+
+### Fixed
+
+- [CL-835] Roll back CL-99 ("Add slight blur to logged-in header image")
+- [CL-790] Events date picker now has the correct date format for US-based tenants
+- [CL-832] Remove enable/disable toggle from title and description fields in the idea form
+- [CL-833] Fix creating a new registration field in FR and AR-MA
+
+### Added
+
+- [CL-729] Do not show proposals navbar item if corresponding feature is disabled
+
+## 2022-05-26_2
+
+### Fixed
+
+- [CL-758] Fix custom field option ordering for dashboard charts
+
+## 2022-05-26
+
+### Fixed
+
+- [CL-788] Fixed issue with different URL when sharing idea from map vs list view
+
+## 2022-05-20
+
+### Fixed
+
+- [CL-836] Repaired the /invite URL, which should now open a signup modal with a spot for the user to enter the invite code they received via email
+
+## 2022-05-17
+
+### Added
+
+- [CL-292] Log an activity when an insights category is created, updated or deleted
+
+## 17-05-22
+
+### Fixed
+
+- [CL-776] Button in weekly moderator digest email now links to correct page
+
+## 2022-05-16_2
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
+### Fixed
+
+- [CL-775] Use correct link to conditions page
+- [CL-776] Button in weekly moderator digest email now links to correct page
+- [CL-814] Faster user XLSX export.
+
+## 2022-05-16
+
+### Fixed
+
+- Using the rich text editor in a right-to-left language no longer mislaligns puctuation
+- Fixed right-to-left alignment and margin issues for avatars, checkboxes, event, page headers, project card and form labels
+
+## 2022-05-13
+
+### Added
+
+- [CL-750] Add feature to remove CL branding
+
+## 2022-05-11
+
+### Fixed
+
+- [CL-711] Title text looking weird on insights start page
+
+## 2022-05-10_3
+
+### Fixed
+
+- [CL-764] Empty navbar item titles in backoffice.
+
+## 2022-05-10_2
+
+### Changed
+
+- Added RuboCop on CI and corrected many offences
+
+## 2022-05-10
+
+### Changed
+
+- [CL-716] The new phase started emails/notifications are also sent out for information phases or when it's possible to take a poll.
+
+### Fixed
+
+- [CL-387] The folder show page is better readable on narrow screens now
+
+## 2022-05-06_3
+
+### Changed
+
+- When a navbar item's title is customized for one locale, the other locales remain up to date with the latest translations.
+
+### Fixed
+
+- Titles of navbar items of demo platforms created with external templates, remain up to date with the latest translations.
+- [CL-730] Changed confirmation email DOM to make lives of spam bots a bit harder
+
+### Fixed
+
+- [CL-181] Prevent forms from trying to save on clicking label
+- The "send" button on the email campaign send page is now disabled after a single click, to prevent users from clicking it multiple times and potentially sending a campaign more than once
+
+## 2022-05-06
+
+### Added
+
+- Pages can now be translated 'live' via Weglot
+- It's now possible to escape the sign-up flow at any point. If a user account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), the user will be signed out and can continue on signing in.
+
+## 2022-05-05
+
+### Fixed
+
+- Fix timeline for Arabic languages ('right-to-left')
+- Fix language selector cropping for Arabic languages ('right-to-left')
+
+## 2022-05-04_3
+
+### Changed
+
+- Changed language-picker label text for Moroccan Arabic
+
+## 2022-05-04_2
+
+### Changed
+
+- Security update: Rails 6.1.5.1
+
+## 2022-05-04
+
+### Changed
+
+- City logo now in higher resolution.
+
+### Fixed
+
+- Fixed issue with budget field not showing in input form
+
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
+
+## 2022-05-02
+
+### Added
+
+- Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
+- Validation of content builder layouts: whitelist of URLs for video iframes.
+- Sanitization of content builder layouts: HTML of text elements.
+
+### Fixed
+
+- Updated registration custom field copies to the latest values from Crowdin for all the tenants and templates.
+
+## 2022-04-28
+
+### Added
+
+- Added support for the Moroccan Arabic language to the platform
+
+### Fixed
+
+- Start and end times for project phases now account for the user's local timezone, making sure users can still access and engage with projects when the start/end dates are valid for them locally. The default used UTC, so it was not a big issue in Europe (where we're mostly very close to UTC time), but could be a bigger issue in e.g. North and South America, where UTC offset could be 4 or 5 hours and this could cause projects to display as ended even if they should have been valid on the user's current local date.
+- Fixed breakpoint issues in `admin/insights` and `admin/users`, where content would disappear under the sidebar for certain screen sizes.
+- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them to screen readers and other accessability tools
+
+## 2022-04-25
+
+### Changed
+
+- 'Summary' dashboard: the 'Participation per project' and 'Participation per tag' work a little bit different. Now, if a project filter is active, the former will stay the same but highlight the selected project instead of showing the differences with other projects which were hard to interpret (analogous for 'Participation per tag').
+
+## 2022-04-20
+
+### Changed
+
+- Changed titles on the admin messaging page to accomodate both SMS and email campaigns
+
+### Fixed
+
+- Added dynamic functionality to prevent a user from using the tab key to select images/videos/buttons that are currently hidden behind "show more" buttons. Those elements can now be tabbed to only when the text is expanded and they are visible visually
+- Fixed accessibility issue regarding element order for screen readers in volunteer card
+- Removed unnecessary additional alt text describing city logos in header, navbar, and delete account modal. The remaining alt tags are now more concise for users who use screen readers
+- Properly disable SMS create/edit button if the message is empty
+- In the verification step of the sign-up flow, the form inputs are now connected to the correct labels, which makes it easier to select the input fields (also possible by clicking the input labels now)
+- Fixed a bug in the password signup flow where a user could skip accepting terms and conditions and privacy policy
 
 ## 2022-04-11
 
@@ -32,6 +736,12 @@
 ### Fixed
 
 - Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
+
+## 2022-04-04
+
+### Fixed
+
+- Fixed SurveyMonkey container height so survey questions are visible
 
 ## 2022-03-29
 

@@ -29,18 +29,17 @@
 #  comments_count               :integer          default(0), not null
 #  default_assignee_id          :uuid
 #  poll_anonymous               :boolean          default(FALSE), not null
-#  custom_form_id               :uuid
 #  downvoting_enabled           :boolean          default(TRUE), not null
 #  ideas_order                  :string
 #  input_term                   :string           default("idea")
 #  min_budget                   :integer          default(0)
 #  downvoting_method            :string           default("unlimited"), not null
 #  downvoting_limited_max       :integer          default(10)
+#  include_all_areas            :boolean          default(FALSE), not null
 #
 # Indexes
 #
-#  index_projects_on_custom_form_id  (custom_form_id)
-#  index_projects_on_slug            (slug) UNIQUE
+#  index_projects_on_slug  (slug) UNIQUE
 #
 # Foreign Keys
 #
@@ -71,10 +70,13 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
 
+  before_validation :set_process_type, on: :create
+  before_validation :generate_slug, on: :create
+  before_validation :sanitize_description_multiloc, if: :description_multiloc
+  before_validation :strip_title
+  before_validation :set_admin_publication
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
-
-  belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
@@ -90,26 +92,11 @@ class Project < ApplicationRecord
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist
 
-  before_validation :set_process_type, on: :create
-  before_validation :generate_slug, on: :create
-  before_validation :sanitize_description_multiloc, if: :description_multiloc
-  before_validation :strip_title
-  before_validation :set_admin_publication
-
   pg_search_scope :search_by_all,
-                  against: %i[title_multiloc description_multiloc description_preview_multiloc],
-                  using: { tsearch: { prefix: true } }
+    against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+    using: { tsearch: { prefix: true } }
 
-  scope :with_all_areas, (proc do |area_ids|
-    uniq_area_ids = area_ids.uniq
-    subquery = Project.unscoped.all
-      .joins(:areas)
-      .where(areas: { id: uniq_area_ids })
-      .group(:id)
-      .having('COUNT(*) = ?', uniq_area_ids.size)
-
-    where(id: subquery)
-  end)
+  scope :with_all_areas, -> { where(include_all_areas: true) }
 
   scope :with_some_areas, (proc do |area_ids|
     with_dups = joins(:areas_projects).where(areas_projects: { area_id: area_ids })
@@ -117,7 +104,7 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_topics, (proc do |topic_ids|
-    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids }).distinct
+    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids })
   end)
 
   scope :is_participation_context, lambda {
@@ -142,12 +129,23 @@ class Project < ApplicationRecord
     where(id: project_ids)
   }
 
+  class << self
+    def search_ids_by_all_including_patches(term)
+      result = defined?(super) ? super : []
+      result + search_by_all(term).pluck(:id)
+    end
+  end
+
   def continuous?
     process_type == 'continuous'
   end
 
   def timeline?
     process_type == 'timeline'
+  end
+
+  def native_survey?
+    participation_method == 'native_survey'
   end
 
   def project
@@ -175,9 +173,9 @@ class Project < ApplicationRecord
     # Built-in presence validation does not work.
     # Admin publication must always be present
     # once the project was created.
-    if id.present? && admin_publication&.id.blank?
-      errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
-    end
+    return unless id.present? && admin_publication&.id.blank?
+
+    errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
   end
 
   def generate_slug
@@ -222,4 +220,5 @@ Project.include_if_ee('IdeaAssignment::Extensions::Project')
 Project.include_if_ee('Insights::Patches::Project')
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
 Project.include_if_ee('ProjectManagement::Patches::Project')
+Project.include_if_ee('SmartGroups::Patches::Project')
 Project.include_if_ee('ContentBuilder::Patches::Project')

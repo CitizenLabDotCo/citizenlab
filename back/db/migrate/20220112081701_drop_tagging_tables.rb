@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DropTaggingTables < ActiveRecord::Migration[6.1]
   def change
     remove_foreign_key 'tagging_pending_tasks_ideas', 'ideas'

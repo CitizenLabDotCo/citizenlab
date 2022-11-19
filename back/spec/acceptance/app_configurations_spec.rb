@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'AppConfigurations' do
-
   explanation 'AppConfigurations store the global settings of the application.'
 
   before do
@@ -13,7 +14,6 @@ resource 'AppConfigurations' do
   end
 
   get 'web_api/v1/app_configuration' do
-
     AppConfiguration::Settings.json_schema['properties'].each do |feature, feature_descriptor|
       parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:app_configuration, :settings, feature]
       parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]
@@ -33,7 +33,7 @@ resource 'AppConfigurations' do
     end
 
     example_request 'Get the current configuration' do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example.org'
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :style)).to eq({}) if CitizenLab.ee?
@@ -43,9 +43,7 @@ resource 'AppConfigurations' do
   patch 'web_api/v1/app_configuration' do
     with_options scope: :app_configuration do
       parameter :logo, 'Base64 encoded logo'
-      parameter :header_bg, 'Base64 encoded header'
       parameter :favicon, 'Base64 encoded favicon'
-      parameter :homepage_info_multiloc, 'HTML multiloc for the homepage info section at the bottom'
 
       # Settings parameters
       parameter :settings, <<~DESC, extra: ''
@@ -72,21 +70,15 @@ resource 'AppConfigurations' do
 
         AppConfiguration.style_json_schema['properties'].each do |style, style_descriptor|
           parameter_description = "#{style_descriptor['description']}. Type: #{style_descriptor['type']}"
-          parameter style, parameter_description, scope: [:app_configuration, :style]
+          parameter style, parameter_description, scope: %i[app_configuration style]
         end
       end
     end
 
     ValidationErrorHelper.new.error_fields(self, AppConfiguration)
 
-    let(:logo) { base64_encoded_image('logo.png', 'image/png') }
-    let(:header_bg) { base64_encoded_image('header.jpg', 'image/jpeg') }
-    let(:favicon) { base64_encoded_image('favicon.png', 'image/png') }
-    let(:homepage_info_multiloc) do
-      {
-        'en' => 'Awesome homepage info'
-      }
-    end
+    let(:logo) { png_image_as_base64 'logo.png' }
+    let(:favicon) { png_image_as_base64 'favicon.png' }
     let(:organization_name) do
       {
         'en' => 'TestTown',
@@ -96,23 +88,16 @@ resource 'AppConfigurations' do
     end
 
     if CitizenLab.ee?
-      let(:style) do
-        {
-          'signedOutHeaderOverlayColor' => '#3467eb',
-          'signedInHeaderOverlayColor' => '#db2577',
-        }
-      end
+      let(:style) { { signedInHeaderOverlayColor: '#db2577' } }
     end
 
     example_request 'Update the app configuration' do
-      expect(response_status).to eq 200
+      assert_status 200
 
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
       expect(json_response.dig(:data, :attributes, :favicon)).to be_present
-      expect(json_response.dig(:data, :attributes, :homepage_info_multiloc).stringify_keys).to match homepage_info_multiloc
       if CitizenLab.ee?
-        expect(json_response.dig(:data, :attributes, :style, :signedOutHeaderOverlayColor)).to eq '#3467eb'
         expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'
       end
     end
@@ -124,32 +109,22 @@ resource 'AppConfigurations' do
 
       example '[error] Updating the configuration with unsupported features fails', document: false do
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :settings)).to be_present
       end
     end
 
     describe do
-      let(:settings) {
+      let(:settings) do
         { core: { fake_setting: 'should_fail' } }.deep_stringify_keys!
-      }
+      end
 
       example '[error] Updating the configuration with unsupported settings fails', document: false do
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :settings)).to be_present
-      end
-    end
-
-    describe do
-      example 'The header image can be removed' do
-        configuration = AppConfiguration.instance
-        configuration.update(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
-        expect(configuration.reload.header_bg_url).to be_present
-        do_request app_configuration: { header_bg: nil }
-        expect(configuration.reload.header_bg_url).to be nil
       end
     end
 
@@ -159,7 +134,7 @@ resource 'AppConfigurations' do
         configuration.update(logo: Rails.root.join('spec/fixtures/logo.png').open)
         expect(configuration.reload.logo_url).to be_present
         do_request app_configuration: { logo: nil }
-        expect(configuration.reload.logo_url).to be nil
+        expect(configuration.reload.logo_url).to be_nil
       end
     end
 
@@ -169,18 +144,8 @@ resource 'AppConfigurations' do
         configuration.update(favicon: Rails.root.join('spec/fixtures/favicon.png').open)
         expect(configuration.reload.favicon_url).to be_present
         do_request app_configuration: { favicon: nil }
-        expect(configuration.reload.favicon_url).to be nil
+        expect(configuration.reload.favicon_url).to be_nil
       end
     end
-  end
-
-  private
-
-  def base64_encoded_image(filename, mime)
-    "data:#{mime};base64,#{encode_image_as_base64(filename)}"
-  end
-
-  def encode_image_as_base64(filename)
-    Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))
   end
 end

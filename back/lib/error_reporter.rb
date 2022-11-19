@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Simplified (not compatible) version of Rails ErrorReporter
 # https://github.com/rails/rails/pull/43625/files
 class ErrorReporter

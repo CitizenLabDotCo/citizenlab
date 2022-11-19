@@ -1,6 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
-import { TPageSlugById } from 'hooks/usePageSlugById';
+import { TPageSlugById } from 'hooks/useCustomPageSlugById';
 import streams from 'utils/streams';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
@@ -41,38 +41,11 @@ export interface INavbarItem {
   };
 }
 
-export function navbarItemsStream() {
+export function navbarItemsStream({ onlyDefault } = { onlyDefault: false }) {
   return streams.get<{ data: INavbarItem[] }>({
     apiEndpoint,
+    queryParameters: { only_default: onlyDefault },
   });
-}
-
-// These services are used for the toggles in admin/settings/customize and
-// admin/initiatives. These toggles are only visible if the navbar module
-// is disabled, so that even open source users have some minimal control
-// over the navbar.
-export async function toggleAllInput({ enabled }: { enabled: boolean }) {
-  const response = await streams.add(`${apiEndpoint}/toggle_all_input`, {
-    enabled,
-  });
-  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-  return response;
-}
-
-export async function toggleProposals({ enabled }: { enabled: boolean }) {
-  const response = await streams.add(`${apiEndpoint}/toggle_proposals`, {
-    enabled,
-  });
-  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-  return response;
-}
-
-export async function toggleEvents({ enabled }: { enabled: boolean }) {
-  const response = await streams.add(`${apiEndpoint}/toggle_events`, {
-    enabled,
-  });
-  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-  return response;
 }
 
 // utility function to get slug associated with navbar item

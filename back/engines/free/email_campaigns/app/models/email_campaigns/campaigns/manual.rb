@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -32,7 +34,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages except: ['trial','churned']
+    allow_lifecycle_stages except: %w[trial churned]
 
     recipient_filter :user_filter_no_invitees
 
@@ -48,7 +50,7 @@ module EmailCampaigns
       'official'
     end
 
-    def generate_commands recipient:, time: nil, activity: nil
+    def generate_commands(recipient:, time: nil, activity: nil)
       [{
         author: author,
         event_payload: {},
@@ -61,11 +63,11 @@ module EmailCampaigns
 
     private
 
-    def user_filter_no_invitees users_scope, options={}
+    def user_filter_no_invitees(users_scope, _options = {})
       users_scope.active
     end
 
-    def only_manual_send activity: nil, time: nil
+    def only_manual_send(activity: nil, time: nil)
       !activity && !time
     end
   end

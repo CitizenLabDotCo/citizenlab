@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Moderation
   class WebApi::V1::ModerationsController < ApplicationController
-    after_action :verify_authorized, except: [:index, :moderations_count]
-    after_action :verify_policy_scoped, only: [:index, :moderations_count]
+    after_action :verify_authorized, except: %i[index moderations_count]
+    after_action :verify_policy_scoped, only: %i[index moderations_count]
 
     def index
       @moderations = policy_scope(published_moderations)
@@ -25,22 +27,22 @@ module Moderation
 
       if moderation_params[:moderation_status]
         @moderation_status = @moderation.moderation_status
-        if !@moderation_status
+        if @moderation_status
+          @moderation_status.update!(status: moderation_params[:moderation_status])
+          SideFxModerationStatusService.new.after_update(@moderation_status, current_user)
+        else
           @moderation_status = ModerationStatus.create!(
             moderatable: @moderation.source_record,
             status: moderation_params[:moderation_status]
           )
           SideFxModerationStatusService.new.after_create(@moderation_status, current_user)
-        else
-          @moderation_status.update!(status: moderation_params[:moderation_status])
-          SideFxModerationStatusService.new.after_update(@moderation_status, current_user)
         end
       end
 
       render json: WebApi::V1::ModerationSerializer.new(
         @moderation.reload,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     end
 
     def moderations_count
@@ -48,7 +50,7 @@ module Moderation
 
       index_filter
 
-      render json: {count: @moderations.count}, status: :ok
+      render json: { count: @moderations.count }, status: :ok
     end
 
     def moderation_params
@@ -68,7 +70,8 @@ module Moderation
     end
 
     def published_moderations
-      Moderation.where(id: Idea.published)
+      ideas = IdeasFinder.new({}, scope: Idea.published, current_user: current_user).find_records
+      Moderation.where(id: ideas)
         .or(Moderation.where(id: Initiative.published))
         .or(Moderation.where(id: Comment.published))
     end

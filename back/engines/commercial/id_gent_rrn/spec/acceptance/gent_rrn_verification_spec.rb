@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require 'savon/mock/spec_helper'
@@ -48,14 +50,14 @@ resource 'Verifications' do
                                                                       'wijkNr' => '5' } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
         do_request
-        expect(status).to eq(201)
+        assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.verifications.first).to have_attributes({
-                                                               method_name: 'gent_rrn',
-                                                               user_id: @user.id,
-                                                               active: true,
-                                                               hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
-                                                             })
+          method_name: 'gent_rrn',
+          user_id: @user.id,
+          active: true,
+          hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
+        })
         expect(@user.custom_field_values[@custom_field.key]).to eq @cfo5.key
       end
     end
@@ -69,14 +71,14 @@ resource 'Verifications' do
                                                                       'wijkNr' => '15' } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
         do_request
-        expect(status).to eq(201)
+        assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.verifications.first).to have_attributes({
-                                                               method_name: 'gent_rrn',
-                                                               user_id: @user.id,
-                                                               active: true,
-                                                               hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
-                                                             })
+          method_name: 'gent_rrn',
+          user_id: @user.id,
+          active: true,
+          hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
+        })
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
       end
     end
@@ -89,11 +91,11 @@ resource 'Verifications' do
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
                                                                       'redenNietGeldig' => ['ERR11'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
-        expect(status).to eq(422)
+        assert_status 422
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
-        json_response = json_parse(response_body)
-        expect(json_response).to eq({ errors: { base: [{ error: 'not_entitled', why: 'lives_outside' }] } })
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'not_entitled', why: 'lives_outside')
       end
     end
 
@@ -105,11 +107,11 @@ resource 'Verifications' do
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
                                                                       'redenNietGeldig' => ['ERR12'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
-        expect(status).to eq(422)
+        assert_status 422
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
-        json_response = json_parse(response_body)
-        expect(json_response).to eq({ errors: { base: [{ error: 'not_entitled', why: 'too_young' }] } })
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'not_entitled', why: 'too_young')
       end
     end
 
@@ -118,11 +120,11 @@ resource 'Verifications' do
 
       example '[error] Verify with an invalid rrn' do
         do_request
-        expect(status).to eq(422)
+        assert_status 422
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
-        json_response = json_parse(response_body)
-        expect(json_response).to eq({ errors: { rrn: [{ error: 'invalid' }] } })
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:rrn, 'invalid')
       end
     end
 
@@ -134,11 +136,11 @@ resource 'Verifications' do
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
                                                                       'redenNietGeldig' => ['ERR10'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
-        expect(status).to eq(422)
+        assert_status 422
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
-        json_response = json_parse(response_body)
-        expect(json_response).to eq({ errors: { base: [{ error: 'no_match' }] } })
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'no_match')
       end
     end
 
@@ -160,10 +162,10 @@ resource 'Verifications' do
 
       example '[error] Verify with an rrn that has already been taken' do
         do_request
-        expect(status).to eq(422)
+        assert_status 422
         expect(@user.reload.verified).to be false
-        json_response = json_parse(response_body)
-        expect(json_response).to eq({ errors: { base: [{ error: 'taken' }] } })
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'taken')
       end
     end
   end

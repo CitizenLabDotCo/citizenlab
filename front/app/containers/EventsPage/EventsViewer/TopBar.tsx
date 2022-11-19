@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // components
@@ -11,7 +11,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled, { useTheme } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -19,10 +19,13 @@ const Container = styled.div`
   padding-bottom: 14px;
   border-bottom: solid 1px #ccc;
   margin-bottom: 29px;
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Title = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: normal;
   font-weight: 600;
@@ -39,9 +42,7 @@ const ProjectFilterDropdownPositioner = styled.div`
 `;
 
 const FilterIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
-  fill: ${({ theme }) => theme.colorText};
+  fill: ${({ theme }) => theme.colors.tenantText};
   margin-right: 3px;
 `;
 
@@ -50,7 +51,7 @@ interface Props {
   setProjectIds: (projectIds: string[]) => void;
 }
 
-const TopBar = memo<Props & InjectedIntlProps>(
+const TopBar = memo<Props & WrappedComponentProps>(
   ({ title, setProjectIds, intl }) => {
     const theme: any = useTheme();
 
@@ -59,11 +60,11 @@ const TopBar = memo<Props & InjectedIntlProps>(
         <Title>{title}</Title>
 
         <ProjectFilterDropdownPositioner>
-          <FilterIcon name="filter-funnel" />
+          <FilterIcon name="filter-2" />
           <ProjectFilterDropdown
             title={intl.formatMessage(messages.filterDropdownTitle)}
             onChange={setProjectIds}
-            textColor={theme.colorText}
+            textColor={theme.colors.tenantText}
           />
         </ProjectFilterDropdownPositioner>
       </Container>

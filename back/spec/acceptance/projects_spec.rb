@@ -10,6 +10,7 @@ resource 'Projects' do
 
   before do
     header 'Content-Type', 'application/json'
+    create(:idea_status_proposed)
   end
 
   context 'when admin' do
@@ -19,7 +20,7 @@ resource 'Projects' do
       header 'Authorization', "Bearer #{token}"
 
       @projects = %w[published published draft published archived archived published]
-                  .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
+        .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
     end
 
     get 'web_api/v1/projects' do
@@ -29,17 +30,16 @@ resource 'Projects' do
       end
 
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default", required: false
-      parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
-      parameter :filter_ids, "Filter out only projects with the given list of IDs", required: false
-      parameter :search, 'Filter by searching in title_multiloc, description_multiloc and description_preview_multiloc', required: false
+      parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
 
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
 
       example_request 'List all projects (default behaviour)' do
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map { |d| json_response[:included].select{|x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id)}.first.dig(:attributes, :publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
+        expect(json_response[:data].map { |d| json_response[:included].find { |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.dig(:attributes, :publication_status) }.uniq).to match_array %w[published archived draft]
       end
 
       example 'List only projects with specified IDs' do
@@ -52,7 +52,7 @@ resource 'Projects' do
       example 'List all draft or archived projects', document: false do
         do_request(publication_statuses: %w[draft archived])
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| json_response[:included].select{|x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id)}.first.dig(:attributes, :publication_status) }).not_to include('published')
+        expect(json_response[:data].map { |d| json_response[:included].find { |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.dig(:attributes, :publication_status) }).not_to include('published')
       end
 
       example 'Get all projects on the second page with fixed page size' do
@@ -119,21 +119,8 @@ resource 'Projects' do
 
       example 'Admins can moderate all projects', document: false do
         do_request filter_can_moderate: true, publication_statuses: ['published']
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 4
-      end
-
-      example "Search for projects" do
-        p1 = create(:project, title_multiloc: {
-                "en": "super-specific-title-string",
-                "fr-BE": "a title",
-                "nl-BE": "a title"
-              })
-
-        do_request search: "super-specific-title-string"
-        json_response = json_parse(response_body)
-        expect(response_data.size).to eq 1
-        expect(response_ids).to eq [p1.id]
       end
     end
 
@@ -193,7 +180,6 @@ resource 'Projects' do
 
       example 'Get a project includes the participants_count and avatars_count', document: false do
         idea = create(:idea)
-        author = idea.author
         project = idea.project
         do_request id: project.id
         expect(status).to eq 200
@@ -222,39 +208,39 @@ resource 'Projects' do
 
     post 'web_api/v1/projects' do
       with_options scope: :project do
-        parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(",")}. Defaults to timeline"
-        parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
-        parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
-        parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
-        parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
-        parameter :header_bg, "Base64 encoded header image"
-        parameter :area_ids, "Array of ids of the associated areas"
-        parameter :topic_ids, "Array of ids of the associated topics"
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
-        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
-        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
-        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project? Defaults to true", required: false
-        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project? Defaults to true", required: false
-        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :upvoting_limited_max, "Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10", required: false
-        parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project? Defaults to true", required: false
-        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :downvoting_limited_max, "Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10", required: false
-        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
-        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
-        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false if CitizenLab.ee?
+        parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(',')}. Defaults to timeline"
+        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+        parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
+        parameter :header_bg, 'Base64 encoded header image'
+        parameter :area_ids, 'Array of ids of the associated areas'
+        parameter :topic_ids, 'Array of ids of the associated topics'
+        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
+        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
+        parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project? Defaults to true', required: false
+        parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
+        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :upvoting_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
+        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
+        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false if CitizenLab.ee?
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for posts.'
 
-        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false if CitizenLab.ee?
+        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false if CitizenLab.ee?
       end
 
-      with_options scope: [:project, :admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+      with_options scope: %i[project admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Project)
@@ -270,7 +256,7 @@ resource 'Projects' do
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
-        let(:header_bg) { encode_image_as_base64('header.jpg') }
+        let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:topic_ids) { create_list(:topic, 2).map(&:id) }
         let(:visible_to) { 'admins' }
@@ -279,27 +265,47 @@ resource 'Projects' do
         let(:default_assignee_id) { create(:admin).id } if CitizenLab.ee?
 
         example_request 'Create a timeline project' do
-          expect(response_status).to eq 201
-          expect(json_response.dig(:data,:attributes,:process_type)).to eq 'timeline'
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-          expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-          expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
-          expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'draft'
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :process_type)).to eq 'timeline'
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'admins'
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
           if CitizenLab.ee?
             expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
           end
-          expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
+          expect(json_response.dig(:data, :attributes, :header_bg)).to be_present
           # New projects are added to the top
-          expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        end
+
+        example 'Log activities', document: false do
+          # It's easier to use a null object instead of a more restrictive spy here
+          # because some of the expected jobs are configured before being queued:
+          #   LogActivityJob.set(...).perform_later(...)
+          stub_const('LogActivityJob', double.as_null_object)
+
+          do_request
+          project = Project.find(response_data[:id])
+
+          expect(LogActivityJob).to have_received('perform_later').exactly(2).times
+
+          expect(LogActivityJob)
+            .to have_received('perform_later')
+            .with(project, 'created', @user, be_a(Numeric))
+
+          expect(LogActivityJob)
+            .to have_received('perform_later')
+            .with(project, 'draft', @user, be_a(Numeric), payload: [nil, 'draft'])
         end
 
         example 'Create a project in a folder', skip: !CitizenLab.ee? do
           folder = create(:project_folder)
           do_request folder_id: folder.id
-          expect(response_status).to eq 201
+          assert_status 201
           # New folder projects are added to the top
           expect(json_response[:included].find do |inc|
                    inc[:type] == 'admin_publication'
@@ -312,7 +318,7 @@ resource 'Projects' do
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
-        let(:header_bg) { encode_image_as_base64('header.jpg') }
+        let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:process_type) { project.process_type }
@@ -326,25 +332,31 @@ resource 'Projects' do
         let(:ideas_order) { 'new' }
 
         example_request 'Create a continuous project' do
-          expect(response_status).to eq 201
-          expect(json_response.dig(:data,:attributes,:process_type)).to eq process_type
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-          expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
-          expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
-          expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
-          expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled
-          expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
-          expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
-          expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq true
-          expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq upvoting_method
-          expect(json_response.dig(:data,:attributes,:upvoting_limited_max)).to eq upvoting_limited_max
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
-          expect(json_response.dig(:data,:attributes,:input_term)).to be_present
-          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
+          assert_status 201
+          project_id = json_response.dig(:data, :id)
+          project_in_db = Project.find(project_id)
+
+          # A new ideation project does not have a default form.
+          expect(project_in_db.custom_form).to be_nil
+
+          expect(json_response.dig(:data, :attributes, :process_type)).to eq process_type
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+          expect(json_response.dig(:data, :attributes, :visible_to)).to eq visible_to
+          expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
+          expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
+          expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
+          expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
+          expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq voting_enabled
+          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
+          expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq upvoting_limited_max
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+          expect(json_response.dig(:data, :attributes, :input_term)).to be_present
+          expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
         end
 
         context 'when not admin' do
@@ -354,7 +366,8 @@ resource 'Projects' do
 
           let(:presentation_mode) { 'map' }
 
-          example_request '[error] Create a project', document: false do
+          example '[error] Create a project', document: false do
+            do_request
             expect(response_status).to eq 401
           end
         end
@@ -365,20 +378,22 @@ resource 'Projects' do
           example '[error] Create an invalid project', document: false do
             create(:project, slug: 'this-is-taken')
             do_request
-            expect(response_status).to eq 422
-            expect(json_response.dig(:errors, :slug)).to eq [{ error: 'taken', value: 'this-is-taken' }]
+            assert_status 422
+            expect(json_response).to include_response_error(:slug, 'taken', value: 'this-is-taken')
           end
         end
 
         describe do
-          let(:description_multiloc) {{
-            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
-          }}
+          let(:description_multiloc) do
+            {
+              'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+            }
+          end
 
           example 'Create a project with text image', document: false do
             ti_count = TextImage.count
             do_request
-            expect(response_status).to eq 201
+            assert_status 201
             expect(TextImage.count).to eq(ti_count + 1)
           end
 
@@ -386,10 +401,67 @@ resource 'Projects' do
             ti_count = TextImage.count
             do_request project: { title_multiloc: nil }
 
-            expect(response_status).to eq 422
+            assert_status 422
             expect(json_response[:errors][:title_multiloc]).to be_present
             expect(TextImage.count).to eq ti_count
           end
+        end
+      end
+
+      context 'native survey' do
+        let(:project) { build(:continuous_native_survey_project) }
+        let(:title_multiloc) { project.title_multiloc }
+        let(:description_multiloc) { project.description_multiloc }
+        let(:description_preview_multiloc) { project.description_preview_multiloc }
+        let(:visible_to) { 'admins' }
+        let(:process_type) { project.process_type }
+        let(:participation_method) { project.participation_method }
+
+        example 'Create a continuous project', document: false do
+          do_request
+          assert_status 201
+          project_id = json_response.dig(:data, :id)
+          project_in_db = Project.find(project_id)
+
+          # A new native survey project has a default form.
+          expect(project_in_db.custom_form.custom_fields.size).to eq 1
+          field = project_in_db.custom_form.custom_fields.first
+          expect(field.title_multiloc).to match({
+            'en' => an_instance_of(String),
+            'fr-FR' => an_instance_of(String),
+            'nl-NL' => an_instance_of(String)
+          })
+          options = field.options
+          expect(options.size).to eq 2
+          expect(options[0].key).to eq 'option1'
+          expect(options[1].key).to eq 'option2'
+          expect(options[0].title_multiloc).to match({
+            'en' => an_instance_of(String),
+            'fr-FR' => an_instance_of(String),
+            'nl-NL' => an_instance_of(String)
+          })
+          expect(options[1].title_multiloc).to match({
+            'en' => an_instance_of(String),
+            'fr-FR' => an_instance_of(String),
+            'nl-NL' => an_instance_of(String)
+          })
+
+          expect(project_in_db.process_type).to eq 'continuous'
+          expect(project_in_db.participation_method).to eq 'native_survey'
+          expect(project_in_db.title_multiloc).to match title_multiloc
+          expect(project_in_db.description_multiloc).to match description_multiloc
+          expect(project_in_db.visible_to).to eq visible_to
+          expect(project_in_db.ideas_order).to be_nil
+
+          # A native survey project still has some ideation-related state, all column defaults.
+          expect(project_in_db.input_term).to eq 'idea'
+          expect(project_in_db.presentation_mode).to eq 'card'
+          expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :voting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq 'unlimited'
+          expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq 10
         end
       end
     end
@@ -400,37 +472,37 @@ resource 'Projects' do
       end
 
       with_options scope: :project do
-        parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
-        parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
-        parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
-        parameter :slug, "The unique slug of the project"
-        parameter :header_bg, "Base64 encoded header image"
-        parameter :area_ids, "Array of ids of the associated areas"
-        parameter :topic_ids, "Array of ids of the associated topics"
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}.", required: false
-        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
-        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project?", required: false
-        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project?", required: false
-        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project?", required: false
-        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
-        parameter :upvoting_limited_max, "Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.", required: false
-        parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project?", required: false
-        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
-        parameter :downvoting_limited_max, "Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.", required: false
-        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
-        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
-        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false if CitizenLab.ee?
+        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+        parameter :slug, 'The unique slug of the project'
+        parameter :header_bg, 'Base64 encoded header image'
+        parameter :area_ids, 'Array of ids of the associated areas'
+        parameter :topic_ids, 'Array of ids of the associated topics'
+        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
+        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}.", required: false
+        parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project?', required: false
+        parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project?', required: false
+        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project?', required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
+        parameter :upvoting_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.', required: false
+        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project?', required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
+        parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.', required: false
+        parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
+        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(',')}.", required: false
+        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false if CitizenLab.ee?
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
 
-        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)" if CitizenLab.ee?
+        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)' if CitizenLab.ee?
       end
 
-      with_options scope: [:project, :admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
+      with_options scope: %i[project admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Project)
@@ -440,7 +512,7 @@ resource 'Projects' do
       let(:description_multiloc) { { 'en' => 'Changed body' } }
       let(:description_preview_multiloc) { @project.description_preview_multiloc }
       let(:slug) { 'changed-title' }
-      let(:header_bg) { encode_image_as_base64('header.jpg') }
+      let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
       let(:area_ids) { create_list(:area, 2).map(&:id) }
       let(:topic_ids) { create_list(:topic, 2).map(&:id) }
       let(:visible_to) { 'groups' }
@@ -459,24 +531,44 @@ resource 'Projects' do
         expect(response_status).to eq 200
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
-        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
-        expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
-        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
-        expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
-        expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
-        expect(json_response.dig(:data,:attributes,:input_term)).to be_present
-        expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
-        expect(json_response.dig(:data,:attributes,:min_budget)).to eq 100
-        expect(json_response.dig(:data,:attributes,:max_budget)).to eq 1000
-        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
-        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
+        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+        expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
+        expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
+        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
+        expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
+        expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+        expect(json_response.dig(:data, :attributes, :input_term)).to be_present
+        expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
+        expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
+        expect(json_response.dig(:data, :attributes, :max_budget)).to eq 1000
+        expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq 'card'
+        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
         if CitizenLab.ee?
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
         end
+      end
+
+      example 'Log activities', document: false do
+        # It's easier to use a null object instead of a more restrictive spy here
+        # because some of the expected jobs are configured before being queued:
+        #   LogActivityJob.set(...).perform_later(...)
+        stub_const('LogActivityJob', double.as_null_object)
+
+        do_request
+        project = Project.find(response_data[:id])
+
+        expect(LogActivityJob).to have_received('perform_later').exactly(2).times
+
+        expect(LogActivityJob)
+          .to have_received('perform_later')
+          .with(project, 'changed', @user, be_a(Numeric))
+
+        expect(LogActivityJob)
+          .to have_received('perform_later')
+          .with(project, 'archived', @user, be_a(Numeric), payload: %w[published archived])
       end
 
       example 'Add a project to a folder', skip: !CitizenLab.ee? do
@@ -485,15 +577,15 @@ resource 'Projects' do
         # expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
         expect(Project.find(json_response.dig(:data, :id)).folder.id).to eq folder.id
         # Projects moved into folders are added to the top
-        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
       end
 
       example 'Remove a project from a folder', skip: !CitizenLab.ee? do
-        folder = create(:project_folder, projects: [@project])
+        create(:project_folder, projects: [@project])
         do_request(project: { folder_id: nil })
-        expect(json_response.dig(:data, :relationships, :folder, :data, :id)).to eq nil
+        expect(json_response.dig(:data, :relationships, :folder, :data, :id)).to be_nil
         # Projects moved out of folders are added to the top
-        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
       end
 
       example '[error] Put a project in a non-existing folder', skip: !CitizenLab.ee? do
@@ -526,21 +618,21 @@ resource 'Projects' do
       example 'Disable downvoting', document: false do
         SettingsService.new.activate_feature! 'disable_downvoting'
         do_request(project: { downvoting_enabled: false })
-        expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to eq false
+        expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be false
       end
 
       example 'Disable downvoting when feature is not enabled', document: false do
         SettingsService.new.deactivate_feature! 'disable_downvoting'
         do_request(project: { downvoting_enabled: false })
-        expect(@project.reload.downvoting_enabled).to eq true
+        expect(@project.reload.downvoting_enabled).to be true
       end
 
       describe do
         example 'The header image can be removed' do
-          @project.update(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
+          @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
           expect(@project.reload.header_bg_url).to be_present
           do_request project: { header_bg: nil }
-          expect(@project.reload.header_bg_url).to be nil
+          expect(@project.reload.header_bg_url).to be_nil
         end
       end
     end
@@ -561,6 +653,412 @@ resource 'Projects' do
         expect(moderator.reload.project_moderator?(id)).to be false
       end
     end
+
+    get 'web_api/v1/projects/:id/survey_results' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create(:custom_form, participation_context: project) }
+      let(:id) { project.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {},
+          required: true
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+
+      before do
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat dog] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat] })
+      end
+
+      example 'Get survey results', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 200
+
+        expect(json_response).to eq(
+          {
+            data: {
+              results: [
+                {
+                  inputType: 'multiselect',
+                  question: { en: 'What are your favourite pets?' },
+                  required: true,
+                  totalResponses: 3,
+                  answers: [
+                    { answer: { en: 'Cat' }, responses: 2 },
+                    { answer: { en: 'Dog' }, responses: 1 }
+                  ]
+                }
+              ],
+              totalSubmissions: 2
+            }
+          }
+        )
+      end
+    end
+
+    get 'web_api/v1/projects/:id/submission_count' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create(:custom_form, participation_context: project) }
+      let(:id) { project.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+
+      before do
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat dog] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat] })
+        create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[dog] })
+      end
+
+      example 'Get submission count', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 200
+
+        expect(json_response).to eq({ data: { totalSubmissions: 3 } })
+      end
+    end
+
+    get 'web_api/v1/projects/:id/as_xlsx' do
+      context 'for a continuous native survey project' do
+        let(:project) { create(:continuous_native_survey_project) }
+        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:id) { project.id }
+        let(:multiselect_field) do
+          create(
+            :custom_field_multiselect,
+            resource: project_form,
+            title_multiloc: { 'en' => 'What are your favourite pets?' },
+            description_multiloc: {}
+          )
+        end
+        let!(:cat_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+        end
+        let!(:dog_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+        end
+
+        context 'when there are no inputs in the project' do
+          example 'Download native survey phase inputs in one sheet', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: project.title_multiloc['en'],
+                column_headers: [
+                  'ID',
+                  'What are your favourite pets?',
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: []
+              }
+            ])
+          end
+        end
+
+        context 'when there are inputs in the project' do
+          let!(:survey_response1) do
+            create(
+              :idea,
+              project: project,
+              custom_field_values: { multiselect_field.key => %w[cat dog] }
+            )
+          end
+          let!(:survey_response2) do
+            create(
+              :idea,
+              project: project,
+              custom_field_values: { multiselect_field.key => %w[cat] }
+            )
+          end
+
+          example 'Download native survey phase inputs in one sheet', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: project.title_multiloc['en'],
+                column_headers: [
+                  'ID',
+                  multiselect_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: [
+                  [
+                    survey_response1.id,
+                    'Cat, Dog',
+                    survey_response1.author_name,
+                    survey_response1.author.email,
+                    survey_response1.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ],
+                  [
+                    survey_response2.id,
+                    'Cat',
+                    survey_response2.author_name,
+                    survey_response2.author.email,
+                    survey_response2.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ]
+                ]
+              }
+            ])
+          end
+        end
+      end
+
+      context 'for a timeline project' do
+        let(:project) { create(:project, process_type: 'timeline') }
+        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:active_phase) do
+          create(
+            :active_phase,
+            project: project,
+            participation_method: 'native_survey',
+            title_multiloc: {
+              'en' => 'Phase 2: survey',
+              'nl-BE' => 'Fase 2: survey'
+            }
+          )
+        end
+        let(:future_phase) do
+          create(
+            :phase,
+            project: project,
+            participation_method: 'native_survey',
+            start_at: active_phase.end_at + 30.days,
+            end_at: active_phase.end_at + 60.days,
+            title_multiloc: {
+              'en' => 'Phase 3: survey',
+              'nl-BE' => 'Fase 3: survey'
+            }
+          )
+        end
+        let(:ideation_phase) do
+          create(
+            :phase,
+            project: project,
+            participation_method: 'ideation',
+            start_at: active_phase.start_at - 60.days,
+            end_at: active_phase.start_at - 30.days,
+            title_multiloc: {
+              'en' => 'Phase 1: ideation',
+              'nl-BE' => 'Fase 1: ideeën'
+            }
+          )
+        end
+        let(:active_phase_form) { create(:custom_form, participation_context: active_phase) }
+        let(:future_phase_form) { create(:custom_form, participation_context: future_phase) }
+        let(:id) { project.id }
+        let(:multiselect_field) do
+          create(
+            :custom_field_multiselect,
+            resource: active_phase_form,
+            title_multiloc: { 'en' => 'What are your favourite pets?' },
+            description_multiloc: {}
+          )
+        end
+        let!(:cat_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+        end
+        let!(:dog_option) do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+        end
+        let!(:linear_scale_field) do
+          create(
+            :custom_field_linear_scale,
+            resource: future_phase_form
+          )
+        end
+        let!(:extra_idea_field) do
+          create(
+            :custom_field_extra_custom_form,
+            resource: project_form
+          )
+        end
+
+        context 'when there are no inputs in the phases' do
+          example 'Download native survey phase inputs in separate sheets', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: 'Phase 2 survey', # The colon is removed from phase title "Phase 2: survey"
+                column_headers: [
+                  'ID',
+                  'What are your favourite pets?',
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: []
+              },
+              {
+                sheet_name: 'Phase 3 survey', # The colon is removed from phase title "Phase 3: survey"
+                column_headers: [
+                  'ID',
+                  'We need a swimming pool.',
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: []
+              }
+            ])
+          end
+        end
+
+        context 'when there are inputs in the phases' do
+          let!(:ideation_response1) do
+            create(
+              :idea,
+              project: project,
+              custom_field_values: { extra_idea_field.key => 'Answer' }
+            )
+          end
+          let!(:active_survey_response1) do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              custom_field_values: { multiselect_field.key => %w[cat dog] }
+            )
+          end
+          let!(:active_survey_response2) do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              custom_field_values: { multiselect_field.key => %w[cat] }
+            )
+          end
+          let!(:future_survey_response1) do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [future_phase],
+              custom_field_values: { linear_scale_field.key => 4 }
+            )
+          end
+
+          example 'Download native survey phase inputs in separate sheets', skip: !CitizenLab.ee? do
+            do_request
+            expect(status).to eq 200
+            expect(xlsx_contents(response_body)).to match_array([
+              {
+                sheet_name: 'Phase 2 survey', # The colon is removed from phase title "Phase 2: survey"
+                column_headers: [
+                  'ID',
+                  multiselect_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: [
+                  [
+                    active_survey_response1.id,
+                    'Cat, Dog',
+                    active_survey_response1.author_name,
+                    active_survey_response1.author.email,
+                    active_survey_response1.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ],
+                  [
+                    active_survey_response2.id,
+                    'Cat',
+                    active_survey_response2.author_name,
+                    active_survey_response2.author.email,
+                    active_survey_response2.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ]
+                ]
+              },
+              {
+                sheet_name: 'Phase 3 survey', # The colon is removed from phase title "Phase 3: survey"
+                column_headers: [
+                  'ID',
+                  linear_scale_field.title_multiloc['en'],
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: [
+                  [
+                    future_survey_response1.id,
+                    4,
+                    future_survey_response1.author_name,
+                    future_survey_response1.author.email,
+                    future_survey_response1.author_id,
+                    an_instance_of(DateTime), # created_at
+                    project.title_multiloc['en']
+                  ]
+                ]
+              }
+            ])
+          end
+        end
+      end
+    end
+
+    delete 'web_api/v1/projects/:id/inputs' do
+      let(:project) { create :continuous_project }
+      let(:id) { project.id }
+
+      example 'Delete all inputs of a project' do
+        create_list :idea, 2, project: project
+        create :idea
+        expect_any_instance_of(SideFxProjectService).to receive(:after_delete_inputs)
+
+        do_request
+        assert_status 200
+        expect(Project.find(id)).to eq project
+        expect(project.reload.ideas_count).to eq 0
+        expect(Idea.count).to eq 1
+      end
+    end
   end
 
   get 'web_api/v1/projects' do
@@ -575,14 +1073,13 @@ resource 'Projects' do
 
       example 'List all projects the current user can moderate' do
         n_moderating_projects = 3
-        pj1, pj2 = @projects.shuffle.take 2
         @projects.shuffle.take(n_moderating_projects).each do |pj|
           @moderator.add_role 'project_moderator', project_id: pj.id
         end
         @moderator.save!
 
         do_request filter_can_moderate: true
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq n_moderating_projects + 1
       end
     end
@@ -594,12 +1091,12 @@ resource 'Projects' do
         header 'Authorization', "Bearer #{token}"
 
         @projects = %w[published published draft published archived published archived]
-                    .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
+          .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
       end
 
       example 'Admins moderate all projects', document: false do
         do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq @projects.size
       end
     end
@@ -612,41 +1109,40 @@ resource 'Projects' do
       end
 
       example 'Get projects with access rights' do
-        project = create(:project)
+        create(:project)
         do_request
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 1
       end
 
-      example "Search for projects does not return projects with draft status" do
-        p1 = create(:project,
-              admin_publication_attributes: { publication_status: "published" },
-              title_multiloc: {
-                "en": "super-specific-title-string-1",
-                "fr-BE": "a title",
-                "nl-BE": "a title"
-              })
-
-        create(:project,
-          admin_publication_attributes: { publication_status: "draft" },
-          title_multiloc: {
-            "en": "super-specific-title-string-2",
-            "fr-BE": "a title",
-            "nl-BE": "a title"
-          })
-
-        do_request search: "super-specific-title-string"
-        json_response = json_parse(response_body)
-        expect(response_data.size).to eq 1
-        expect(response_ids).to eq [p1.id]
-      end
-
-      example 'Normal users cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
+      example 'Residents cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
         %w[published published draft published archived published archived]
           .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
         do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 0
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/:id/as_xlsx' do
+    context 'for a continuous project' do
+      let(:project) { create(:continuous_project) }
+      let(:id) { project.id }
+
+      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+
+    context 'for a timeline project' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:id) { project.id }
+
+      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+        do_request
+        expect(status).to eq 401
       end
     end
   end
@@ -663,13 +1159,21 @@ resource 'Projects' do
 
       example 'List all projects the current user can moderate', document: false, skip: !CitizenLab.ee? do
         do_request
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 0
       end
     end
-  end
-end
 
-def encode_image_as_base64(filename)
-  "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
+    delete 'web_api/v1/projects/:id/inputs' do
+      let(:project) { create :continuous_project }
+      let(:id) { project.id }
+
+      example '[error] Delete all inputs of a project' do
+        create :idea, project: project
+
+        do_request
+        assert_status 401
+      end
+    end
+  end
 end

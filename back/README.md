@@ -1,10 +1,10 @@
-# cl2_back
- 
-# Getting started
+# cl2-back
 
-First you have the latest docker and docker-compose installed.
+## Getting started
 
-Build the docker compose images
+First, you need the latest docker and docker-compose installed.
+
+Build the docker compose images:
 ```
 docker-compose up --build -d
 ```
@@ -245,13 +245,13 @@ In this section, we explain what you need to do (and what you shouldn't forget) 
 
 1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
 
-2. Remove files/folders you don’t need. Change the current files to correspond with the other engines. 
+2. Remove files/folders you don’t need. Change the current files to correspond with the other engines.
 
-3. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license. 
+3. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license.
 
 4. For feature engines (represented by an app configuration setting that can be enabled and disabled), copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
 
-5. Add the new engine to `citizenlab.config.json` and 
+5. Add the new engine to `citizenlab.config.json` and
 
 6. Update the licenses by executing `license_finder approvals add blorgh`.
 
@@ -332,11 +332,11 @@ Add it to the `Bullet.stacktrace_excludes = []` blacklist in `config/application
 
 We use [license_finder](https://github.com/pivotal/LicenseFinder) to check whether the licenses of our gems are compatible with our own. CI runs it for you.
 
-When you add a gem, you don't have to do anything if it comes with a license we previously approved. If it's a new license, you can use the license_finder CLI to approve the license, also for future dependencies.
+When you add a gem, you don't have to do anything if it comes with a license we previously approved. If it is a new license, you can use the license_finder CLI to approve the license, also for future dependencies.
 ```bash
 docker-compose run web license_finder permitted_licenses add "the license name"
 ```
-If the license is unkown to rubygems, you can directly approve a gem.
+If the license is unknown to rubygems, you can directly approve a gem.
 ```bash
 docker-compose run web license_finder approvals add some_awesome_new_gem
 ```

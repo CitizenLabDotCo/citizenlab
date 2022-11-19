@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: maps_layers
@@ -26,7 +28,7 @@ module CustomMaps
 
     attribute :geojson_file
 
-    GEOJSON_SCHEMA = CustomMaps::Engine.root.join('config','schemas','geojson.json_schema').to_s
+    GEOJSON_SCHEMA = CustomMaps::Engine.root.join('config', 'schemas', 'geojson.json_schema').to_s
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:map_config_id]
 
@@ -36,8 +38,8 @@ module CustomMaps
     validates :default_enabled, inclusion: { in: [true, false] }
     validates :geojson, presence: true, json: { schema: GEOJSON_SCHEMA, message: ->(errors) { errors } }
     validates :marker_svg_url,
-              format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
-              allow_nil: true
+      format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
+      allow_nil: true
 
     before_validation :set_default_enabled, :decode_geojson_file
 

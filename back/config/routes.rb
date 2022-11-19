@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  mount UserConfirmation::Engine => "", as: 'user_confirmation'
-  mount EmailCampaigns::Engine => "", as: 'email_campaigns'
-  mount Frontend::Engine => "", as: 'frontend'
-  mount Onboarding::Engine => "", as: 'onboarding'
-  mount Polls::Engine => "", as: 'polls'
+  mount UserConfirmation::Engine => '', as: 'user_confirmation'
+  mount EmailCampaigns::Engine => '', as: 'email_campaigns'
+  mount Frontend::Engine => '', as: 'frontend'
+  mount Onboarding::Engine => '', as: 'onboarding'
+  mount Polls::Engine => '', as: 'polls'
   mount Seo::Engine => '', as: 'seo'
-  mount Surveys::Engine => "", as: 'surveys'
-  mount Volunteering::Engine => "", as: 'volunteering'
+  mount Surveys::Engine => '', as: 'surveys'
+  mount Volunteering::Engine => '', as: 'volunteering'
 
   # It must come before +resource :ideas+, otherwise /web_api/v1/ideas/geotagged
   # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
@@ -14,9 +16,8 @@ Rails.application.routes.draw do
   # https://github.com/rails/rails/issues/11663
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
 
-  namespace :web_api, :defaults => {:format => :json} do
+  namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
-
       concern :votable do
         resources :votes, except: [:update], shallow: true do
           post :up, on: :collection
@@ -26,9 +27,8 @@ Rails.application.routes.draw do
       concern :post do
         resources :activities, only: [:index]
         resources :comments, shallow: true,
-          concerns: [:votable, :spam_reportable],
+          concerns: %i[votable spam_reportable],
           defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
-
           get :children, on: :member
           post :mark_as_deleted, on: :member
         end
@@ -40,27 +40,27 @@ Rails.application.routes.draw do
       end
 
       resources :ideas,
-        concerns: [:votable, :spam_reportable, :post],
+        concerns: %i[votable spam_reportable post],
         defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
-
-        resources :images, defaults: {container_type: 'Idea'}
-        resources :files, defaults: {container_type: 'Idea'}
+        resources :images, defaults: { container_type: 'Idea' }
+        resources :files, defaults: { container_type: 'Idea' }
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get :mini, on: :collection, action: 'index_mini'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
+        get :schema, on: :member
+        get :json_forms_schema, on: :member
       end
 
       resources :initiatives,
-        concerns: [:votable, :spam_reportable, :post],
+        concerns: %i[votable spam_reportable post],
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
+        resources :images, defaults: { container_type: 'Initiative' }
+        resources :files, defaults: { container_type: 'Initiative' }
 
-        resources :images, defaults: {container_type: 'Initiative'}
-        resources :files, defaults: {container_type: 'Initiative'}
-
-        resources :initiative_status_changes, shallow: true, except: [:update, :destroy]
+        resources :initiative_status_changes, shallow: true, except: %i[update destroy]
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
@@ -79,8 +79,8 @@ Rails.application.routes.draw do
         get :me, on: :collection
         post :complete_registration, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
-        post "reset_password_email" => "reset_password#reset_password_email", on: :collection
-        post "reset_password" => "reset_password#reset_password", on: :collection
+        post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
+        post 'reset_password' => 'reset_password#reset_password', on: :collection
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
@@ -91,13 +91,13 @@ Rails.application.routes.draw do
       end
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
-      resources :topics, only: [:index, :show]
+      resources :topics, only: %i[index show]
 
       resources :areas do
         patch 'reorder', on: :member
       end
 
-      resource :app_configuration, only: [:show, :update]
+      resource :app_configuration, only: %i[show update]
 
       resources :static_pages do
         resources :files, defaults: { container_type: 'StaticPage' }, shallow: false
@@ -106,9 +106,6 @@ Rails.application.routes.draw do
 
       resources :nav_bar_items, only: :index do
         get 'removed_default_items', on: :collection
-        %w[proposals events all_input].each do |code|
-          post "toggle_#{code}", on: :collection, to: 'nav_bar_items#toggle_item', defaults: { code: code }
-        end
       end
 
       # Events and phases are split in two because we cannot have a non-shallow
@@ -122,6 +119,14 @@ Rails.application.routes.draw do
 
       resources :phases, only: %i[show edit update destroy] do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
+        get 'survey_results', on: :member
+        get :as_xlsx, on: :member, action: 'index_xlsx'
+        get 'submission_count', on: :member
+        delete 'inputs', on: :member, action: 'delete_inputs'
+        resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
+          get 'schema', on: :collection
+          get 'json_forms_schema', on: :collection
+        end
       end
 
       resources :projects do
@@ -132,15 +137,19 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
 
-        resources :custom_fields, controller: 'idea_custom_fields', only: %i[] do
+        resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
           get 'schema', on: :collection
           get 'json_forms_schema', on: :collection
         end
 
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
+        get 'survey_results', on: :member
+        get 'submission_count', on: :member
+        get :as_xlsx, on: :member, action: 'index_xlsx'
+        delete 'inputs', on: :member, action: 'delete_inputs'
       end
 
-      resources :projects_allowed_input_topics, only: [:show, :create, :destroy] do
+      resources :projects_allowed_input_topics, only: %i[show create destroy] do
         patch 'reorder', on: :member
       end
 
@@ -171,8 +180,10 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
+      resource :home_page, only: %i[show update]
+
       scope 'stats' do
-        route_params = {controller: 'stats_users'}
+        route_params = { controller: 'stats_users' }
         get 'users_count', **route_params
 
         get 'users_by_time', **route_params
@@ -185,14 +196,13 @@ Rails.application.routes.draw do
         get 'users_by_time_cumulative_as_xlsx', **route_params
         get 'active_users_by_time_as_xlsx', **route_params
 
-        route_params = {controller: 'stats_ideas'}
+        route_params = { controller: 'stats_ideas' }
         get 'ideas_count', **route_params
 
         get 'ideas_by_time', **route_params
         get 'ideas_by_time_cumulative', **route_params
         get 'ideas_by_topic', **route_params
         get 'ideas_by_project', **route_params
-        get 'ideas_by_area', **route_params
         get 'ideas_by_status', **route_params
         get 'ideas_by_status_as_xlsx', **route_params
 
@@ -200,7 +210,6 @@ Rails.application.routes.draw do
         get 'ideas_by_time_cumulative_as_xlsx', **route_params
         get 'ideas_by_topic_as_xlsx', **route_params
         get 'ideas_by_project_as_xlsx', **route_params
-        get 'ideas_by_area_as_xlsx', **route_params
 
         route_params = { controller: 'stats_initiatives' }
         get 'initiatives_count', **route_params
@@ -253,7 +262,7 @@ Rails.application.routes.draw do
 
       resources :baskets, except: [:index]
 
-      resources :avatars, only: [:index, :show]
+      resources :avatars, only: %i[index show]
     end
   end
 

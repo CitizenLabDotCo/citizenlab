@@ -1,4 +1,4 @@
-FROM ruby:2.7.5-slim
+FROM ruby:2.7.6-slim
 
 RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       build-essential libpq-dev file imagemagick curl git optipng jpegoptim pngquant libgeos-dev libgmp3-dev netcat shared-mime-info \
@@ -20,11 +20,11 @@ COPY back/Gemfile back/Gemfile.* ./
 COPY back/engines ./engines
 COPY back/lib/citizen_lab.rb ./lib/
 
-RUN gem install bundler:2.3.8
+RUN gem install bundler:2.3.20
 RUN bundle install
 
 COPY back/. .
 
 EXPOSE 4000
 
-CMD puma -C config/puma.rb
+CMD bundle exec puma -C config/puma.rb

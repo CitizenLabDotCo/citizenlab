@@ -17,13 +17,12 @@ import { IPhaseData, getCurrentPhase } from 'services/phases';
 import { selectedPhase$, selectPhase } from './events';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -51,8 +50,6 @@ const PreviousPhaseButton = styled(Button)`
   `}
 `;
 
-const CurrentPhaseButton = styled(Button)``;
-
 const NextPhaseButton = styled(Button)`
   margin-left: 5px;
 
@@ -69,9 +66,8 @@ interface Props {
   className?: string;
 }
 
-const PhaseNavigation = memo<Props & InjectedIntlProps>(
+const PhaseNavigation = memo<Props & WrappedComponentProps>(
   ({ projectId, buttonStyle, className, intl: { formatMessage } }) => {
-    const locale = useLocale();
     const phases = usePhases(projectId);
 
     const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
@@ -124,7 +120,7 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
       }
     }, [phases]);
 
-    if (!isNilOrError(locale) && !isNilOrError(phases) && phases.length > 1) {
+    if (!isNilOrError(phases) && phases.length > 1) {
       const navButtonSize = '34px';
       const navButtonStyle = buttonStyle || 'secondary';
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
@@ -146,11 +142,9 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
           >
             <div>
               <PreviousPhaseButton
-                locale={locale}
                 onClick={goToPreviousPhase}
                 icon="chevron-left"
-                iconSize="12px"
-                iconColor={colors.label}
+                iconColor={colors.textSecondary}
                 buttonStyle={navButtonStyle}
                 width={navButtonSize}
                 height={navButtonSize}
@@ -172,12 +166,11 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
               hideOnClick={true}
             >
               <div>
-                <CurrentPhaseButton
-                  locale={locale}
+                <Button
                   onClick={goToCurrentPhase}
                   icon="dot"
-                  iconSize="8px"
-                  iconColor={colors.clGreen}
+                  iconSize="16px"
+                  iconColor={colors.success}
                   buttonStyle={navButtonStyle}
                   width={navButtonSize}
                   height={navButtonSize}
@@ -200,11 +193,9 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
           >
             <div>
               <NextPhaseButton
-                locale={locale}
                 onClick={goToNextPhase}
                 icon="chevron-right"
-                iconSize="12px"
-                iconColor={colors.label}
+                iconColor={colors.textSecondary}
                 buttonStyle={navButtonStyle}
                 width={navButtonSize}
                 height={navButtonSize}

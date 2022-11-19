@@ -203,10 +203,6 @@ textarea {
 ::-webkit-search-decoration {
   -webkit-appearance: none;
 }
-::-webkit-input-placeholder {
-  color: inherit;
-  opacity: 0.54;
-}
 ::-webkit-file-upload-button {
   -webkit-appearance: button;
   font: inherit;

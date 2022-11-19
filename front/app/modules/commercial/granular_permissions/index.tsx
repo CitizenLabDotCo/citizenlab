@@ -1,10 +1,18 @@
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import InitiativeSettingsTab from './admin/components/InitiativeSettingsTab';
-import ProjectSettingsTab from './admin/components/ProjectSettingsTab';
-import Granular from './admin/containers/Granular';
-import FeatureFlag from 'components/FeatureFlag';
+const InitiativeSettingsTab = React.lazy(
+  () => import('./admin/components/InitiativeSettingsTab')
+);
+const ProjectSettingsTab = React.lazy(
+  () => import('./admin/components/ProjectSettingsTab')
+);
+const Granular = React.lazy(() => import('./admin/containers/Granular'));
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
+
+const AdminGranularPermissionsComponent = React.lazy(
+  () => import('./admin/containers/permissions')
+);
 
 type RenderOnTabHideConditionProps = {
   children: ReactNode;
@@ -29,7 +37,7 @@ const configuration: ModuleConfiguration = {
     'admin.initiatives': [
       {
         path: 'permissions',
-        container: () => import('./admin/containers/permissions'),
+        element: <AdminGranularPermissionsComponent />,
       },
     ],
   },

@@ -1,6 +1,6 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isEmpty } from 'lodash-es';
 
 // module specific
@@ -8,6 +8,7 @@ import useIdeaCustomFields from 'modules/commercial/idea_custom_fields/hooks/use
 import {
   updateIdeaCustomField,
   IUpdatedIdeaCustomFieldProperties,
+  refetchCustomFields,
 } from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
 
 import IdeaCustomField from '../../../../../admin/containers/projects/edit/ideaform/IdeaCustomField';
@@ -27,13 +28,15 @@ import {
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
 
 // typings
 import { Multiloc } from 'typings';
+
+import { IIdeaCustomFieldData } from '../../../../../services/ideaCustomFields';
 
 const Container = styled.div``;
 
@@ -89,7 +92,7 @@ interface IChanges {
   };
 }
 
-const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
+const IdeaForm = memo<Props & WithRouterProps & WrappedComponentProps>(
   ({ params, className, intl: { formatMessage } }) => {
     const projectId = params.projectId;
 
@@ -105,11 +108,15 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
       (key) => collapsed[key] === false
     );
 
+    // We are using a custom created id because the ids on the backend change on initial update
+    const getCustomFieldId = (ideaCustomField: IIdeaCustomFieldData) =>
+      `${ideaCustomField.type}_${ideaCustomField.attributes.key}`;
+
     useEffect(() => {
       if (!isNilOrError(ideaCustomFields) && isEmpty(collapsed)) {
         const newCollapsed = {};
         ideaCustomFields.data.forEach((ideaCustomField) => {
-          newCollapsed[ideaCustomField.id] = true;
+          newCollapsed[getCustomFieldId(ideaCustomField)] = true;
         });
         setCollapsed(newCollapsed);
       }
@@ -177,18 +184,17 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
               const ideaCustomFieldCode = ideaCustomFields.data.find(
                 (item) => item.id === ideaCustomFieldId
               )?.attributes?.code;
-              return ideaCustomFieldCode
-                ? updateIdeaCustomField(
-                    projectId,
-                    ideaCustomFieldId,
-                    ideaCustomFieldCode,
-                    changes[ideaCustomFieldId]
-                  )
-                : Promise.resolve();
+              return updateIdeaCustomField(
+                projectId,
+                ideaCustomFieldId,
+                ideaCustomFieldCode,
+                changes[ideaCustomFieldId]
+              );
             }
           );
 
           await Promise.all(promises);
+          refetchCustomFields(projectId);
           setChanges({});
           setProcessing(false);
           setSuccess(true);
@@ -231,14 +237,16 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
                 />
               </StyledSubSectionTitle>
               {ideaCustomFields.data.map((ideaCustomField, index) => {
+                const id = getCustomFieldId(ideaCustomField);
                 return (
                   <IdeaCustomField
-                    key={ideaCustomField.id}
-                    collapsed={collapsed[ideaCustomField.id]}
+                    key={id}
+                    collapsed={collapsed[id]}
                     first={index === 0}
                     ideaCustomField={ideaCustomField}
                     onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
                     onChange={handleIdeaCustomFieldOnChange}
+                    id={id}
                   />
                 );
               })}

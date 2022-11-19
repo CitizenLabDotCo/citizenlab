@@ -25,7 +25,7 @@ const TitleWrapper = styled.div`
     margin: 10px;
     margin-top: 20px;
     margin-bottom: 30px;
-    color: ${colors.adminSecondaryTextColor};
+    color: ${colors.textSecondary};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
   }
@@ -117,7 +117,16 @@ const UsersHeader = memo(
             </Buttons>
           </TextAndButtons>
           <Spacer />
-          <StyledSearchInput onChange={handleSearchChange} />
+          <StyledSearchInput
+            onChange={handleSearchChange}
+            // Not important here. Requires quite some refactoring
+            // to get users here in a nice and consistent manner.
+            // This a11y_... prop needs to be a required one
+            // so we always have it on the citizen side.
+            // Whenever this components is touched,
+            // you can give it the right value (number of users resulting from the search) here.
+            a11y_numberOfSearchResults={0}
+          />
         </OnlyRow>
       );
     }
@@ -129,7 +138,15 @@ const UsersHeader = memo(
             <FormattedMessage tagName="h1" {...messages.allUsers} />
           </TextAndButtons>
           <Spacer />
-          <StyledSearchInput onChange={handleSearchChange} />
+          <StyledSearchInput
+            onChange={handleSearchChange}
+            // Not important here. Requires quite some refactoring
+            // to get users here in a nice and consistent manner.
+            // This a11y_... prop needs to be required so we always have it
+            // on the citizen side. Whenever this components is touched,
+            // you can give it the right value (number of users resulting from the search) here.
+            a11y_numberOfSearchResults={0}
+          />
         </FirstRow>
         <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
       </TitleWrapper>

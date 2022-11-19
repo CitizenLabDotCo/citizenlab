@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AvatarsController < ApplicationController
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped
@@ -27,7 +29,7 @@ class WebApi::V1::AvatarsController < ApplicationController
       authorize initiative, :show?
       avatars_service.avatars_for_initiative(initiative, users: users, limit: limit)
     when nil
-      users = User.none unless AppConfiguration.instance.settings.dig('core', 'display_header_avatars')
+      users = User.none unless HomePage.first.banner_avatars_enabled
       avatars_service.some_avatars(users: users, limit: limit)
     end
 

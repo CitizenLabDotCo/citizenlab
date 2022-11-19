@@ -20,7 +20,7 @@ const StyledList = styled.div`
 
 const timeout = 200;
 
-const Container = styled.div`
+export const Container = styled.div`
   font-size: ${fontSizes.s}px;
   font-weight: 300;
   justify-content: space-between !important;
@@ -29,10 +29,10 @@ const Container = styled.div`
   align-items: center !important;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-top: 1px solid ${colors.separation};
+  border-top: 1px solid ${colors.divider};
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
   &.last-item {
-    border-bottom: 1px solid ${colors.separation};
+    border-bottom: 1px solid ${colors.divider};
   }
   h1,
   h2,
@@ -49,7 +49,7 @@ const Container = styled.div`
     font-size: ${fontSizes.base}px;
   }
   p {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 20px;
@@ -91,7 +91,7 @@ const Container = styled.div`
   }
   &.e2e-admin-list-head-row {
     border-top: 0;
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     font-size: ${fontSizes.s}px;
     font-weight: 500;
   }

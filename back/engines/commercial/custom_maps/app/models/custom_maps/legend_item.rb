@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: maps_legend_items
@@ -26,7 +28,7 @@ module CustomMaps
 
     belongs_to :map_config, class_name: 'CustomMaps::MapConfig'
 
-    validates :title_multiloc, presence: true, multiloc: {presence: true}
-    validates :color, format: {with: /\A#[0-9a-f]{3}([0-9a-f]{3})?\z/}
+    validates :title_multiloc, presence: true, multiloc: { presence: true }
+    validates :color, format: { with: /\A#[0-9a-f]{3}([0-9a-f]{3})?\z/ }
   end
 end

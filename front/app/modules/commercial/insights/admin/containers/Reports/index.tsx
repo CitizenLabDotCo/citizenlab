@@ -1,9 +1,7 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import GetProjects, {
-  PublicationStatus,
-  GetProjectsChildProps,
-} from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -54,7 +52,7 @@ const ReportTab = memo(({ projects }: DataProps) => {
                   <RowTitle value={project.attributes.title_multiloc} />
                   <RowButton
                     className={`
-                        e2e-admin-edit-publication
+                        e2e-admin-edit-publication intercom-admin-project-edit-button
                       `}
                     linkTo={`/admin/insights/reports/${project.id}`}
                     buttonStyle="secondary"

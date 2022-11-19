@@ -1,7 +1,7 @@
 import React, { memo, FormEvent } from 'react';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -22,7 +22,7 @@ interface Props extends ButtonContainerProps {
   setDeletionError: (error: string) => void;
 }
 
-const DeleteProjectButton = memo<Props & InjectedIntlProps>(
+const DeleteProjectButton = memo<Props & WrappedComponentProps>(
   ({
     publication,
     setDeleteIsProcessing,
@@ -60,8 +60,8 @@ const DeleteProjectButton = memo<Props & InjectedIntlProps>(
         icon="delete"
         buttonStyle="text"
         className={`e2e-admin-delete-publication`}
-        iconHoverColor={colors.clRedError}
-        textHoverColor={colors.clRedError}
+        iconHoverColor={colors.red600}
+        textHoverColor={colors.red600}
         {...rest}
       >
         {deletionProps.copy}

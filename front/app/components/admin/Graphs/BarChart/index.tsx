@@ -1,165 +1,41 @@
-import React, { RefObject } from 'react';
-import { isEmpty } from 'lodash-es';
+import React from 'react';
 
 // components
-import {
-  ResponsiveContainer,
-  BarChart as RechartsBarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Cell,
-} from 'recharts';
-import { NoDataContainer } from 'components/admin/GraphWrappers';
-
-// hooks
-import { useTheme } from 'styled-components';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 
 // utils
-import {
-  Data,
-  Mapping,
-  Layout,
-  Margin,
-  BarProps,
-  AxisProps,
-  parseMapping,
-  getRechartsLayout,
-  parseBarProps,
-} from './utils';
-import { isNilOrError } from 'utils/helperUtils';
+import { convertMapping, convertBars } from './utils';
 
-interface RenderLabelsProps {
-  fill: string;
-  fontSize: number;
-}
+// typings
+import { Props } from './typings';
 
-interface RenderTooltipProps {
-  isAnimationActive: false;
-  cursor: { fill: string };
-}
-
-interface Props {
-  width?: string | number;
-  height?: string | number;
-  data?: Data | null | Error;
-  mapping?: Mapping;
-  layout?: Layout;
-  margin?: Margin;
-  bars?: BarProps;
-  xaxis?: AxisProps;
-  yaxis?: AxisProps;
-  renderLabels?: (props: RenderLabelsProps) => React.ReactNode;
-  renderTooltip?: (props: RenderTooltipProps) => React.ReactNode;
-  emptyContainerContent?: React.ReactNode;
-  className?: string;
-  innerRef?: RefObject<any>;
-}
-
-const BarChart = ({
-  width,
-  height,
-  data,
+const BarChart = <Row,>({
   mapping,
-  layout = 'vertical',
-  margin,
   bars,
-  xaxis,
-  yaxis,
-  renderLabels,
-  renderTooltip,
-  emptyContainerContent,
-  className,
-  innerRef,
-}: Props) => {
-  const {
-    chartLabelSize,
-    chartLabelColor,
-    animationBegin,
-    animationDuration,
-    newBarFill,
-    barHoverColor,
-  }: any = useTheme();
+  onMouseOver,
+  onMouseOut,
+  ...otherProps
+}: Props<Row>) => {
+  const convertedMapping = convertMapping(mapping);
+  const convertedBars = convertBars(bars);
 
-  const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
+  const handleMouseOver = ({ row, rowIndex }, event: React.MouseEvent) => {
+    onMouseOver && onMouseOver({ row, rowIndex }, event);
+  };
 
-  if (noData) {
-    return (
-      <NoDataContainer>
-        {emptyContainerContent ? (
-          <>{emptyContainerContent}</>
-        ) : (
-          <FormattedMessage {...messages.noData} />
-        )}
-      </NoDataContainer>
-    );
-  }
-
-  const { length, fill } = parseMapping(mapping);
-  const rechartsLayout = getRechartsLayout(layout);
-  const parsedBarProps = parseBarProps(newBarFill, bars);
+  const handleMouseOut = ({ row, rowIndex }, event: React.MouseEvent) => {
+    onMouseOut && onMouseOut({ row, rowIndex }, event);
+  };
 
   return (
-    <ResponsiveContainer className={className} width={width} height={height}>
-      <RechartsBarChart
-        data={data}
-        layout={rechartsLayout}
-        margin={margin}
-        ref={innerRef}
-      >
-        {renderTooltip &&
-          renderTooltip({
-            isAnimationActive: false,
-            cursor: { fill: barHoverColor },
-          })}
-
-        <Bar
-          dataKey={length}
-          animationDuration={animationDuration}
-          animationBegin={animationBegin}
-          {...parsedBarProps}
-        >
-          {renderLabels &&
-            renderLabels({ fill: chartLabelColor, fontSize: chartLabelSize })}
-
-          {fill &&
-            data.map((row, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={row[fill] || parsedBarProps.fill}
-              />
-            ))}
-        </Bar>
-
-        <XAxis
-          dataKey={layout === 'vertical' ? 'name' : length}
-          type={layout === 'vertical' ? 'category' : 'number'}
-          stroke={chartLabelColor}
-          fontSize={chartLabelSize}
-          tick={{ transform: 'translate(0, 7)' }}
-          {...xaxis}
-        />
-        <YAxis
-          dataKey={layout === 'horizontal' ? 'name' : length}
-          type={layout === 'horizontal' ? 'category' : 'number'}
-          stroke={chartLabelColor}
-          fontSize={chartLabelSize}
-          {...yaxis}
-        />
-      </RechartsBarChart>
-    </ResponsiveContainer>
+    <MultiBarChart
+      mapping={convertedMapping}
+      bars={convertedBars}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
+      {...otherProps}
+    />
   );
 };
 
 export default BarChart;
-
-export const DEFAULT_MARGIN: Margin = {
-  top: 20,
-  right: 30,
-  left: 10,
-  bottom: 5,
-};

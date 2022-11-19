@@ -1,29 +1,31 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Vote, type: :model do
-  context "associations" do
-    it { should belong_to(:user).optional }
-    it { should belong_to(:votable) }
+  context 'associations' do
+    it { is_expected.to belong_to(:user).optional }
+    it { is_expected.to belong_to(:votable) }
   end
 
-  context "Default factory" do
-    it "is valid" do
+  context 'Default factory' do
+    it 'is valid' do
       expect(build(:vote)).to be_valid
     end
   end
 
-  context "uniquness" do
+  context 'uniquness' do
     it "can't create 2 votes for the same votable and user" do
       idea = create(:idea)
       user = create(:user)
-      vote = create(:vote, votable: idea, user: user)
+      create(:vote, votable: idea, user: user)
       expect(build(:vote, mode: 'up', votable: idea, user: user)).not_to be_valid
       # Must be valid to be able to turn upvote into downvote in transaction
       expect(build(:vote, mode: 'down', votable: idea, user: user)).to be_valid
-      expect{ create(:vote, mode: 'down', votable: idea, user: user) }.to raise_error(ActiveRecord::RecordNotUnique)
+      expect { create(:vote, mode: 'down', votable: idea, user: user) }.to raise_error(ActiveRecord::RecordNotUnique)
     end
 
-    it "two votes of deleted users are allowed" do
+    it 'two votes of deleted users are allowed' do
       idea = create(:idea)
       u1 = create(:user)
       v1 = create(:vote, votable: idea, user: u1)

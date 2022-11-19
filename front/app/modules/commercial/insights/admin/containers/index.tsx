@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Link from 'utils/cl-router/Link';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -15,16 +16,15 @@ import { matchPathToUrl } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
+const Insights: React.FC<WrappedComponentProps & WithRouterProps> = ({
   location: { pathname },
   intl: { formatMessage },
-  children,
 }) => {
   const projectReportsFeatureFlag = useFeatureFlag({ name: 'project_reports' });
   const manualInsightsFeatureFlag = useFeatureFlag({
@@ -39,7 +39,7 @@ const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
       : []),
   ];
   return (
-    <div>
+    <div id="e2e-insights-container">
       <HelmetIntl
         title={messages.helmetTitle}
         description={messages.helmetDescription}
@@ -60,10 +60,12 @@ const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
               </Tab>
             ))}
           </NavigationTabs>
-          <TabsPageLayout>{children}</TabsPageLayout>
+          <TabsPageLayout>
+            <RouterOutlet />
+          </TabsPageLayout>
         </>
       ) : (
-        children
+        <RouterOutlet />
       )}
     </div>
   );

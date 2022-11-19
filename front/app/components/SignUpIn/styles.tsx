@@ -13,20 +13,20 @@ export const Options = styled.div`
   align-items: stretch;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 20px;
   `}
 `;
 
 export const Option = styled.div`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
   margin-top: 20px;
 
   & .link {
-    color: ${(props: any) => props.theme.colorText};
+    color: ${(props: any) => props.theme.colors.tenantText};
     font-weight: 400;
     line-height: normal;
     text-decoration: underline;
@@ -41,7 +41,7 @@ export const Option = styled.div`
   & .button {
     display: flex;
     align-items: center;
-    color: ${(props: any) => props.theme.colorText};
+    color: ${(props: any) => props.theme.colors.tenantText};
     font-size: ${fontSizes.base}px;
     font-weight: 300;
     line-height: normal;
@@ -77,7 +77,7 @@ export const StyledHeaderContainer = styled((props) => (
       background: transparent;
       border: none;
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         padding-top: 0px;
         padding-left: 2px;
         padding-right: 2px;
@@ -97,8 +97,8 @@ export const StyledHeaderTitle = styled((props) => <HeaderTitle {...props} />)<{
 
 export const StyledModalContentContainer = styled(ModalContentContainer)<{
   inModal: boolean;
-  windowHeight: string;
   headerHeight: string;
+  fullScreen?: boolean;
 }>`
   ${(props) =>
     props.inModal &&
@@ -107,9 +107,8 @@ export const StyledModalContentContainer = styled(ModalContentContainer)<{
       padding-bottom: 0px;
       max-height: calc(85vh - ${props.headerHeight});
 
-      ${media.smallerThanMinTablet`
-        max-height: ${(props) =>
-          `calc(${props.windowHeight} - 30px - ${props.headerHeight})`};
+      ${media.phone`
+        max-height: ${(props) => `calc(85vh - 30px - ${props.headerHeight})`};
       `}
     `}
 
@@ -119,10 +118,20 @@ export const StyledModalContentContainer = styled(ModalContentContainer)<{
       padding-top: 10px;
       padding-bottom: 0px;
 
-      ${media.smallerThanMinTablet`
+      ${media.phone`
         padding-top: 10px;
         padding-left: 2px;
         padding-right: 2px;
       `}
+    `}
+
+    ${(props) =>
+    props.fullScreen &&
+    css`
+      max-height: 100%;
+
+      ${media.phone`
+          max-height: 100%;
+        `}
     `}
 `;

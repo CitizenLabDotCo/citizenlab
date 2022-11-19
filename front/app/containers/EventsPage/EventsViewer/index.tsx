@@ -9,7 +9,7 @@ import Pagination from 'components/Pagination';
 
 // i18n
 import messages from '../messages';
-import { MessageDescriptor } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 
 // hooks
 import useEvents from 'hooks/useEvents';
@@ -36,7 +36,7 @@ const StyledPagination = styled(Pagination)`
 interface Props {
   title: string;
   fallbackMessage: MessageDescriptor;
-  eventsTime: 'past' | 'future';
+  eventsTime: 'past' | 'currentAndFuture';
   className?: string;
 }
 
@@ -50,7 +50,7 @@ const EventsViewer = memo<Props>(
       onCurrentPageChange,
     } = useEvents({
       projectPublicationStatuses: ['published'],
-      futureOnly: eventsTime === 'future',
+      currentAndFutureOnly: eventsTime === 'currentAndFuture',
       pastOnly: eventsTime === 'past',
       sort: eventsTime === 'past' ? 'newest' : 'oldest',
     });

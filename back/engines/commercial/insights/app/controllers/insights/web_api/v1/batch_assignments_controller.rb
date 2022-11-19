@@ -3,7 +3,6 @@
 module Insights
   module WebApi::V1
     class BatchAssignmentsController < ::ApplicationController
-
       def assign_categories
         assignment_service.add_assignments_batch(inputs, categories)
         render status: :no_content

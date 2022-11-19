@@ -3,9 +3,10 @@ import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
 import { InputTerm } from 'services/participationContexts';
+import { MessageDescriptor } from 'react-intl';
 
 type IInputTermMessages = {
-  [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in InputTerm]: MessageDescriptor;
 };
 
 export const getInputTermMessage = (

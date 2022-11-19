@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePeriodicActivitiesJob < ApplicationJob
   queue_as :default
 

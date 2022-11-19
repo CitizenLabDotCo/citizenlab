@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -36,13 +38,14 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :depth, 'Filter by depth (AND)', required: false
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
+      parameter :depth, 'Filter by depth', required: false
+      parameter :search, 'Search text of title, description, preview, and slug', required: false
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
       if CitizenLab.ee?
         parameter :folder, 'Filter by folder (project folder id)', required: false
-        parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
+        parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       end
 
       example_request 'List all admin publications' do
@@ -87,7 +90,7 @@ resource 'AdminPublication' do
         if CitizenLab.ee?
           expect(json_response[:data].size).to eq 5
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [empty_draft_folder.id, projects[2].id, projects[3].id, projects[5].id, projects[6].id]
-          expect(json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.first.dig(:attributes, :visible_children_count)).to eq 0
+          expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 0
         else
           expect(json_response[:data].size).to eq 4
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 4
@@ -253,7 +256,7 @@ resource 'AdminPublication' do
       parameter :filter_empty_folders, 'Filter out folders with no visible children for the current user', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
 
-      if !CitizenLab.ee?
+      unless CitizenLab.ee?
         example 'Listed admin publications have correct visible children count', document: false do
           do_request
           expect(status).to eq(200)
@@ -271,7 +274,7 @@ resource 'AdminPublication' do
           expect(json_response[:data].size).to eq 3
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
-          expect(json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.first.dig(:attributes, :visible_children_count)).to eq 2
+          expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
         end
 
         example 'Visible children count should take account with applied filters', document: false do
@@ -282,7 +285,156 @@ resource 'AdminPublication' do
           expect(json_response[:data].size).to eq 2
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
-          expect(json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.first.dig(:attributes, :visible_children_count)).to eq 1
+          expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
+        end
+
+        context 'search param' do
+          example_request 'Search param should return the proper projects and folders' do
+            p1 = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'super specific string 1'
+              }
+            )
+
+            p2 = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'another-string'
+              },
+              description_multiloc: {
+                en: 'super specific string 2'
+              }
+            )
+
+            p3 = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'archived' },
+              title_multiloc: {
+                en: 'other-string'
+              }
+            )
+
+            f1 = create(
+              :project_folder,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'super specific string 3'
+              }
+            )
+
+            f2 = create(
+              :project_folder,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'a different string 3'
+              },
+              description_multiloc: {
+                en: 'super specific string description'
+              }
+            )
+
+            f3 = create(
+              :project_folder,
+              admin_publication_attributes: { publication_status: 'archived' },
+              title_multiloc: {
+                en: 'other-string'
+              }
+            )
+
+            do_request search: 'super specific string'
+            expect(response_data.size).to eq 4
+            expect(response_ids).to contain_exactly(
+              p1.admin_publication.id,
+              p2.admin_publication.id,
+              f1.admin_publication.id,
+              f2.admin_publication.id
+            )
+            expect(response_ids).not_to include p3.admin_publication.id
+            expect(response_ids).not_to include f3.admin_publication.id
+          end
+
+          example_request 'searching with query and filtering by topic', document: false do
+            topic = create(:topic)
+            project_with_topic = create(:project, topics: [topic],
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'fancy title'
+              })
+            do_request search: 'fancy title', topics: [topic.id]
+            expect(response_data.size).to eq 1
+            expect(response_ids).to contain_exactly(project_with_topic.admin_publication.id)
+          end
+
+          example_request 'Search param should return a project within a folder' do
+            project_in_folder = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'title'
+              },
+              description_multiloc: {
+                en: 'super specific string'
+              }
+            )
+
+            folder = create(
+              :project_folder,
+              projects: [project_in_folder]
+            )
+
+            do_request search: 'super specific string'
+            expect(response_data.size).to eq 1
+            expect(response_ids).to contain_exactly(
+              project_in_folder.admin_publication.id
+            )
+            expect(response_ids).not_to include folder.admin_publication.id
+          end
+
+          example_request 'Search param should return a project within a folder and folder' do
+            project_in_folder = create(
+              :project,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: {
+                en: 'title'
+              },
+              description_multiloc: {
+                en: 'folder and project string'
+              }
+            )
+
+            folder = create(
+              :project_folder,
+              projects: [project_in_folder],
+              title_multiloc: {
+                en: 'folder and project string'
+              }
+            )
+
+            do_request search: 'folder and project string'
+            expect(response_data.size).to eq 2
+            expect(response_ids).to contain_exactly(
+              project_in_folder.admin_publication.id,
+              folder.admin_publication.id
+            )
+          end
+
+          if CitizenLab.ee?
+            example_request 'Search project by content from content builder' do
+              project = create(:project, content_builder_layouts: [
+                build(:layout, craftjs_jsonmultiloc: { en: { someid: { props: { text: 'sometext' } } } })
+              ])
+              create(:project, content_builder_layouts: [
+                build(:layout, craftjs_jsonmultiloc: { en: { sometext: { props: { text: 'othertext' } } } })
+              ])
+              do_request search: 'sometext'
+
+              expect(response_data.size).to eq 1
+              expect(response_ids).to contain_exactly(project.admin_publication.id)
+            end
+          end
         end
       end
 
@@ -309,7 +461,7 @@ resource 'AdminPublication' do
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
-        expect(json_response[:status_counts][:draft]).to eq nil
+        expect(json_response[:status_counts][:draft]).to be_nil
         expect(json_response[:status_counts][:published]).to eq 2
 
         if CitizenLab.ee?

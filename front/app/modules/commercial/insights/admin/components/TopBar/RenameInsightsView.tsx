@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -15,9 +15,6 @@ import Error from 'components/UI/Error';
 
 // services
 import { updateInsightsView } from 'modules/commercial/insights/services/insightsViews';
-
-// hooks
-import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -29,7 +26,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 350px;
   margin: 40px auto;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
 `;
 
 const Title = styled.h1`
@@ -62,8 +59,7 @@ const RenameInsightsView = ({
   insightsViewId,
   originalViewName,
   intl: { formatMessage },
-}: RenameInsightsViewProps & InjectedIntlProps) => {
-  const locale = useLocale();
+}: RenameInsightsViewProps & WrappedComponentProps) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
@@ -88,8 +84,6 @@ const RenameInsightsView = ({
     }
   };
 
-  if (isNilOrError(locale)) return null;
-
   return (
     <Container data-testid="insights">
       <Title>{formatMessage(messages.renameModalTitle)}</Title>
@@ -106,17 +100,12 @@ const RenameInsightsView = ({
           <Button
             processing={loading}
             disabled={!name}
-            locale={locale}
             onClick={handleSubmit}
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
           >
             {formatMessage(messages.renameModalSaveView)}
           </Button>
-          <Button
-            locale={locale}
-            onClick={closeRenameModal}
-            buttonStyle="secondary"
-          >
+          <Button onClick={closeRenameModal} buttonStyle="secondary">
             {formatMessage(messages.renameModalCancel)}
           </Button>
         </ButtonContainer>
@@ -125,4 +114,4 @@ const RenameInsightsView = ({
   );
 };
 
-export default injectIntl<RenameInsightsViewProps>(RenameInsightsView);
+export default injectIntl(RenameInsightsView);

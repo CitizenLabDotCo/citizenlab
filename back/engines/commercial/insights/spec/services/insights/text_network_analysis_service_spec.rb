@@ -11,7 +11,7 @@ describe Insights::TextNetworkAnalysisService do
     let(:tna_result) { build(:tna_result, tenant_id: Tenant.current.id, task_id: tna_task.task_id) }
 
     it 'stores the text network' do
-      expect { service.handle(tna_task, tna_result) }.to change { Insights::TextNetwork.count }.by(1)
+      expect { service.handle(tna_task, tna_result) }.to change(Insights::TextNetwork, :count).by(1)
 
       text_network = Insights::TextNetwork.find_by(view: task_view.view, language: tna_result.locale)
       expect(text_network.network).to eq(tna_result.network)
@@ -33,7 +33,7 @@ describe Insights::TextNetworkAnalysisService do
       before { tna_result.instance_variable_set(:@is_success, false) }
 
       it 'does nothing' do
-        expect { service.handle(tna_task, tna_result) }.not_to(change { Insights::TextNetwork.count })
+        expect { service.handle(tna_task, tna_result) }.not_to(change(Insights::TextNetwork, :count))
       end
     end
   end
@@ -63,10 +63,10 @@ describe Insights::TextNetworkAnalysisService do
       tasks = create_list(:tna_task, 2, handler_class: described_class)
       languages = %w[en nl-BE]
 
-      allow(nlp_tna_service).to receive(:analyse).and_return(Hash[languages.zip(tasks)])
+      allow(nlp_tna_service).to receive(:analyse).and_return(languages.zip(tasks).to_h)
 
       task_views = nil
-      expect { task_views = service.analyse(view) }.to change { Insights::TextNetworkAnalysisTaskView.count }.by(2)
+      expect { task_views = service.analyse(view) }.to change(Insights::TextNetworkAnalysisTaskView, :count).by(2)
 
       expect(task_views.map(&:view).uniq).to eq([view])
       expect(task_views.map(&:task)).to eq(tasks)
@@ -75,7 +75,7 @@ describe Insights::TextNetworkAnalysisService do
 
     it 'deletes existing networks for languages that are no longer in use' do
       text_network = create(:insights_text_network, language: 'nl-BE', view: view)
-      allow(nlp_tna_service).to receive(:analyse).and_return({ 'en': create(:tna_task) })
+      allow(nlp_tna_service).to receive(:analyse).and_return({ en: create(:tna_task) })
 
       service.analyse(view)
 

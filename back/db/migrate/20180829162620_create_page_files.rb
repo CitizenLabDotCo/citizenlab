@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePageFiles < ActiveRecord::Migration[5.1]
   def change
     create_table :page_files, id: :uuid do |t|

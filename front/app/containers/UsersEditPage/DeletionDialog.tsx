@@ -1,15 +1,26 @@
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import styled from 'styled-components';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
+
+// styles
+import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+
+// components
 import Button from 'components/UI/Button';
 import FormattedAnchor from 'components/FormattedAnchor';
 import Link from 'utils/cl-router/Link';
-import { signOutAndDeleteAccountPart1 } from 'services/auth';
+
+// hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import eventEmitter from 'utils/eventEmitter';
+import useLocalize from 'hooks/useLocalize';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div`
   padding: 0px 10px;
@@ -52,19 +63,24 @@ interface Props {
 const DeletionDialog = ({
   closeDialog,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
 
   const deleteProfile = () => {
-    signOutAndDeleteAccountPart1();
+    eventEmitter.emit('deleteProfileAndShowSuccessModal');
     closeDialog();
   };
 
   if (!isNilOrError(appConfiguration)) {
-    const logo = appConfiguration.data.attributes.logo?.medium;
+    const logo = appConfiguration.attributes.logo?.medium;
+    // just the org's name works fine as alt text for a11y purposes
+    const localizedOrgName = localize(
+      appConfiguration.attributes.settings.core.organization_name
+    );
     return (
       <Container>
-        {logo && <Logo src={logo} alt={formatMessage(messages.logoAltText)} />}
+        {logo && <Logo src={logo} alt={localizedOrgName} />}
         <Styledh1>
           <FormattedMessage {...messages.deleteYourAccount} />
         </Styledh1>
@@ -83,7 +99,7 @@ const DeletionDialog = ({
               {...messages.privacyReasons}
               values={{
                 conditionsLink: (
-                  <Link to="/pages/cookie-policy" target="_blank">
+                  <Link to="/pages/terms-and-conditions" target="_blank">
                     <FormattedMessage {...messages.conditionsLinkText} />
                   </Link>
                 ),
@@ -94,10 +110,10 @@ const DeletionDialog = ({
             <FormattedAnchor
               mainMessage={messages.contactUs}
               mainMessageLinkKey="feedbackLink"
-              urlMessage={messages.feedbackLinkUrl}
-              urlMessageValues={{ url: location.href }}
+              href={formatMessage(messages.feedbackLinkUrl, {
+                url: location.href,
+              })}
               linkTextMessage={messages.feedbackLinkText}
-              target="_blank"
             />
           </li>
           <li>

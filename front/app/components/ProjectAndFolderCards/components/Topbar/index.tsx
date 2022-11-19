@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // services
@@ -15,6 +15,7 @@ import Tabs from './Tabs';
 import { ScreenReaderOnly } from 'utils/a11y';
 import SelectTopics from './SelectTopics';
 import SelectAreas from './SelectAreas';
+import SearchInput from 'components/UI/SearchInput';
 
 // styling
 import styled from 'styled-components';
@@ -22,19 +23,21 @@ import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getShowFilters, getShowFiltersLabel } from './show';
+import { useSearchParams } from 'react-router-dom';
+import clHistory from 'utils/cl-router/history';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
@@ -43,26 +46,30 @@ const Title = styled.h2<{ hasPublications: boolean }>`
   text-align: center;
   margin-bottom: 28px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     text-align: left;
     margin-bottom: ${({ hasPublications }) =>
       hasPublications ? '36' : '20'}px;
     margin-left: 4px;
   `}
+  ${isRtl`
+    direction: rtl;
+  `}
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ showFilters: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: row-reverse;
-  justify-content: space-between;
+  justify-content: ${({ showFilters }) =>
+    showFilters ? 'space-between' : 'start'};
   border-bottom: 1px solid #d1d1d1;
 
   ${isRtl`
     flex-direction: row-reverse;
   `}
 
-  ${media.xlPhone`
+  ${media.phone`
     flex-direction: row;
   `}
 `;
@@ -80,7 +87,7 @@ const DesktopFilters = styled.div`
 
   height: 68px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 52px;
   `}
 
@@ -93,13 +100,17 @@ const StyledSelectTopics = styled(SelectTopics)`
   margin-right: 13px !important;
 `;
 
+const StyledSearchInput = styled(SearchInput)`
+  margin-bottom: 20px;
+`;
+
 const FiltersLabel = styled.div`
   margin-right: 16px;
   height: 100%;
   display: flex;
   align-items: center;
   font-size: ${fontSizes.base}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   transform: translateY(-1px);
 `;
 
@@ -115,10 +126,12 @@ interface Props {
   noAdminPublicationsAtAll: boolean;
   availableTabs: PublicationTab[];
   showTitle: boolean;
+  showSearch?: boolean;
   hasPublications: boolean;
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
+  onChangeSearch: (search: string | null) => void;
 }
 
 const Header = ({
@@ -128,20 +141,42 @@ const Header = ({
   noAdminPublicationsAtAll,
   availableTabs,
   showTitle,
+  showSearch,
   hasPublications,
   onChangeTopics,
   onChangeAreas,
   onChangeTab,
+  onChangeSearch,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
-  const smallerThanXlPhone = useBreakpoint('xlPhone');
-  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  const smallerThanXlPhone = useBreakpoint('phone');
+  const smallerThanMinTablet = useBreakpoint('tablet');
   const topics = useTopics({ forHomepageFilter: true });
   const areas = useAreas({ forHomepageFilter: true });
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
+  const [searchParams] = useSearchParams();
+  const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
+    null
+  );
+
+  useEffect(() => {
+    const focusSearch = searchParams.get('focusSearch');
+    // the value from the query param is a string, not a boolean
+    if (focusSearch === 'true' && searchInputRef) {
+      searchInputRef.focus();
+      clHistory.replace('/projects');
+    }
+  }, [searchParams, searchInputRef]);
+
+  const handleOnSearchChange = React.useCallback(
+    (search: string | null) => {
+      onChangeSearch(search);
+    },
+    [onChangeSearch]
+  );
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -176,6 +211,12 @@ const Header = ({
     onChangeAreas(selectedAreas);
   };
 
+  const handleSetSearchInputRef = (ref: HTMLInputElement | null) => {
+    setSearchInputRef(ref);
+  };
+
+  const shouldShowAreaAndTagFilters = !smallerThanXlPhone && showFilters;
+
   return (
     <div className={className}>
       {showTitle ? (
@@ -189,8 +230,16 @@ const Header = ({
         <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
       )}
 
-      <Container>
-        {!smallerThanXlPhone && showFilters && (
+      {showSearch && (
+        <StyledSearchInput
+          onChange={handleOnSearchChange}
+          a11y_numberOfSearchResults={statusCounts.all}
+          setInputRef={handleSetSearchInputRef}
+        />
+      )}
+
+      <Container showFilters={shouldShowAreaAndTagFilters}>
+        {shouldShowAreaAndTagFilters && (
           <DesktopFilters>
             {showFiltersLabel && (
               <FiltersLabel>{formatMessage(messages.filterBy)}</FiltersLabel>

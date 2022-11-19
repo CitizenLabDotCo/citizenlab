@@ -20,10 +20,10 @@ const CreateProjectFromTemplate = memo(
     const tenant = useAppConfiguration();
 
     const locales = !isNilOrError(tenant)
-      ? tenant.data.attributes.settings.core.locales
+      ? tenant.attributes.settings.core.locales
       : null;
     const organizationTypes = !isNilOrError(tenant)
-      ? tenant.data.attributes.settings.core.organization_type
+      ? tenant.attributes.settings.core.organization_type
       : null;
 
     const [departments, setDepartments] = useState<string[] | null>(null);

@@ -1,32 +1,16 @@
 // libraries
 import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
-import { adopt } from 'react-adopt';
-import localize, { InjectedLocalized } from 'utils/localize';
-
-// resources
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // components
-import ChartFilters from '../components/ChartFilters';
+import ChartFilters from './ChartFilters';
 import { GraphsContainer, ControlBar } from 'components/admin/GraphWrappers';
 import TimeControl from '../components/TimeControl';
 import Outlet from 'components/Outlet';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
-
 // tracking
 import { injectTracks } from 'utils/analytics';
 import tracks from '../tracks';
-
-// typings
-import { IOption } from 'typings';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 interface State {
   startAtMoment?: Moment | null;
@@ -35,21 +19,14 @@ interface State {
   currentGroupFilterLabel: string | undefined;
 }
 
-interface DataProps {
-  groups: GetGroupsChildProps;
-}
-
-interface Props extends DataProps {}
+interface Props {}
 
 interface Tracks {
   trackFilterOnGroup: (args: { extra: Record<string, string> }) => void;
 }
 
-export class UsersDashboard extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & Tracks,
-  State
-> {
-  constructor(props: Props & InjectedIntlProps & InjectedLocalized & Tracks) {
+export class UsersDashboard extends PureComponent<Props & Tracks, State> {
+  constructor(props: Props & Tracks) {
     super(props as any);
     this.state = {
       startAtMoment: undefined,
@@ -74,28 +51,6 @@ export class UsersDashboard extends PureComponent<
     });
   };
 
-  generateGroupFilterOptions = () => {
-    const {
-      groups,
-      groups: { groupsList },
-      localize,
-      intl: { formatMessage },
-    } = this.props;
-    let filterOptions: IOption[] = [];
-
-    if (!isNilOrError(groups) && !isNilOrError(groupsList)) {
-      filterOptions = groupsList.map((group) => ({
-        value: group.id,
-        label: localize(group.attributes.title_multiloc),
-      }));
-    }
-
-    return [
-      { value: '', label: formatMessage(messages.allGroups) },
-      ...filterOptions,
-    ];
-  };
-
   render() {
     const {
       currentGroupFilter,
@@ -117,15 +72,8 @@ export class UsersDashboard extends PureComponent<
         </ControlBar>
 
         <ChartFilters
-          currentProjectFilter={undefined}
           currentGroupFilter={currentGroupFilter}
-          currentTopicFilter={undefined}
-          projectFilterOptions={null}
-          groupFilterOptions={this.generateGroupFilterOptions()}
-          topicFilterOptions={null}
-          onProjectFilter={null}
           onGroupFilter={this.handleOnGroupFilter}
-          onTopicFilter={null}
         />
 
         <GraphsContainer>
@@ -142,16 +90,8 @@ export class UsersDashboard extends PureComponent<
   }
 }
 
-const Data = adopt<DataProps>({
-  groups: <GetGroups />,
-});
+const UsersDashBoardWithHOCs = injectTracks<Props>({
+  trackFilterOnGroup: tracks.filteredOnGroup,
+})(UsersDashboard);
 
-const UsersDashBoardWithHOCs = injectIntl(
-  injectTracks<Props>({
-    trackFilterOnGroup: tracks.filteredOnGroup,
-  })(localize<Props & Tracks>(UsersDashboard))
-);
-
-export default () => (
-  <Data>{(dataProps) => <UsersDashBoardWithHOCs {...dataProps} />}</Data>
-);
+export default UsersDashBoardWithHOCs;

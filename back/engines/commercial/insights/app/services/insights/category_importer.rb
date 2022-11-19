@@ -2,7 +2,6 @@
 
 module Insights
   class CategoryImporter
-
     # @param view [Insights::View]
     # @param locale [String, NilClass]
     def import(view, locale = nil)
@@ -19,8 +18,8 @@ module Insights
       project_ids = view.data_sources.where(origin_type: 'Project').pluck(:origin_id)
 
       topics = Topic.joins(:projects_allowed_input_topics)
-                    .where(projects_allowed_input_topics: { project_id: project_ids })
-                    .distinct
+        .where(projects_allowed_input_topics: { project_id: project_ids })
+        .distinct
 
       Category.transaction do
         topics.index_with do |topic|
@@ -38,11 +37,11 @@ module Insights
     def import_category_assignments(view)
       project_ids = view.data_sources.where(origin_type: 'Project').select(:origin_id)
       topic_category_mapping = view.categories.where(source_type: 'Topic')
-                                   .index_by(&:source_id)
+        .index_by(&:source_id)
 
       ideas_topics = IdeasTopic.joins(:idea, :topic)
-                               .where(ideas: { project_id: project_ids })
-                               .where(topics: topic_category_mapping.keys)
+        .where(ideas: { project_id: project_ids })
+        .where(topics: topic_category_mapping.keys)
 
       now = Time.zone.now
       assignment_attrs = ideas_topics.map do |idea_topic|

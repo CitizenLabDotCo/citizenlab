@@ -1,42 +1,37 @@
 import React, { memo, useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
 import { insertConfiguration } from 'utils/moduleUtils';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import DashboardTabs from './components/DashboardTabs';
 import Outlet from 'components/Outlet';
 
-// resource
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
 
-interface Props {
-  authUser: GetAuthUserChildProps;
-  children: JSX.Element;
-}
-
 export const DashboardsPage = memo(
-  ({
-    authUser,
-    children,
-    intl: { formatMessage },
-  }: Props & InjectedIntlProps) => {
+  ({ intl: { formatMessage } }: WrappedComponentProps) => {
+    const authUser = useAuthUser();
     const [tabs, setTabs] = useState<ITab[]>([
       {
-        label: formatMessage(messages.tabSummary),
+        label: formatMessage(messages.tabOverview),
         url: '/admin/dashboard',
-        name: 'dashboard',
+        name: 'overview',
       },
       {
         label: formatMessage(messages.tabUsers),
@@ -47,35 +42,34 @@ export const DashboardsPage = memo(
 
     const moderatorTabs: ITab[] = [
       {
-        label: formatMessage(messages.tabSummary),
+        label: formatMessage(messages.tabOverview),
         url: '/admin/dashboard',
-        name: 'dashboard',
+        name: 'overview',
       },
     ];
 
     useEffect(() => {
       if (
-        authUser &&
+        !isNilOrError(authUser) &&
         !isAdmin({ data: authUser }) &&
         isProjectModerator({ data: authUser })
       ) {
         setTabs(moderatorTabs);
       }
-
-      return () => setTabs([]);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isProjectModerator, authUser]);
+    }, [authUser]);
 
     const resource = {
       title: formatMessage(messages.titleDashboard),
       subtitle: formatMessage(messages.subtitleDashboard),
     };
 
-    const handleData = (data: InsertConfigurationOptions<ITab>) =>
+    const handleData = (data: InsertConfigurationOptions<ITab>) => {
       setTabs((tabs) => insertConfiguration(data)(tabs));
+    };
 
     if (
-      !authUser ||
+      isNilOrError(authUser) ||
       (authUser &&
         !isAdmin({ data: authUser }) &&
         !isProjectModerator({ data: authUser }))
@@ -96,21 +90,13 @@ export const DashboardsPage = memo(
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          {children}
+          <div id="e2e-dashboard-container">
+            <RouterOutlet />
+          </div>
         </DashboardTabs>
       </>
     );
   }
 );
 
-const DashboardsPageWithHoC = injectIntl(DashboardsPage);
-
-const Data = adopt({
-  authUser: <GetAuthUser />,
-});
-
-export default (props) => (
-  <Data {...props}>
-    {(dataProps) => <DashboardsPageWithHoC {...dataProps} {...props} />}
-  </Data>
-);
+export default injectIntl(DashboardsPage);

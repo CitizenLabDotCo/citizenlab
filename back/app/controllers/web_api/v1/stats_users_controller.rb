@@ -1,20 +1,19 @@
-class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
+# frozen_string_literal: true
 
+class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
-
-  before_action :render_no_data, only: [
-    :users_by_time,
-    :users_by_time_cumulative,
-    :active_users_by_time,
-    :active_users_by_time_cumulative,
+  before_action :render_no_data, only: %i[
+    users_by_time
+    users_by_time_cumulative
+    active_users_by_time
+    active_users_by_time_cumulative
   ]
-  before_action :render_no_data_as_xlsx, only: [
-    :users_by_time_as_xlsx,
-    :users_by_time_cumulative_as_xlsx,
-    :active_users_by_time_as_xlsx
+  before_action :render_no_data_as_xlsx, only: %i[
+    users_by_time_as_xlsx
+    users_by_time_cumulative_as_xlsx
+    active_users_by_time_as_xlsx
   ]
-
 
   def users_count
     count = User.active
@@ -51,7 +50,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_time
-    render json: {series: {users: users_by_time_serie}}
+    render json: { series: { users: users_by_time_serie } }
   end
 
   def users_by_time_as_xlsx
@@ -86,16 +85,18 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_time_cumulative
-    render json: {series: {users: users_by_time_cumulative_serie}}
+    render json: { series: { users: users_by_time_cumulative_serie } }
   end
 
   def users_by_time_cumulative_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_cumulative_serie, 'users_by_time_cumulative'
 
-    send_data xlsx,
-     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-     filename: 'users_by_time_cumulative.xlsx'
- end
+    send_data(
+      xlsx,
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      filename: 'users_by_time_cumulative.xlsx'
+    )
+  end
 
   def active_users_by_time_cumulative_serie
     activities_scope = Activity
@@ -131,7 +132,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def active_users_by_time_cumulative
-    render json: {series: {users: active_users_by_time_cumulative_serie}}
+    render json: { series: { users: active_users_by_time_cumulative_serie } }
   end
 
   def active_users_by_time_serie
@@ -168,14 +169,16 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def active_users_by_time
-    render json: {series: {users: active_users_by_time_serie}}
+    render json: { series: { users: active_users_by_time_serie } }
   end
 
   def active_users_by_time_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx active_users_by_time_serie, 'active_users_by_time'
-    send_data xlsx,
-     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-     filename: 'active_users_by_time.xlsx'
+    send_data(
+      xlsx,
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      filename: 'active_users_by_time.xlsx'
+    )
   end
 
   def users_engagement_scores
@@ -195,33 +198,32 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .from(scored_activities.select(:user_id).where(acted_at: @start_at..@end_at))
       .group(:user_id)
       .includes(:user)
-      .select("user_id, SUM(score) as sum_score")
-      .order("sum_score DESC")
+      .select('user_id, SUM(score) as sum_score')
+      .order('sum_score DESC')
       .limit(10)
 
     render json: WebApi::V1::EngagementScoreSerializer.new(
       serie,
       params: fastjson_params,
       include: [:user]
-      ).serialized_json
+    ).serialized_json
   end
 
   private
 
   def render_no_data
-    if @no_data
-      render json: {series: {users: {}}}
-    end
+    return unless @no_data
+
+    render json: { series: { users: {} } }
   end
 
   def render_no_data_as_xlsx
-    if @no_data
-      render json: {errors: "no data for this period"}, status: :unprocessable_entity
-    end
+    return unless @no_data
+
+    render json: { errors: 'no data for this period' }, status: :unprocessable_entity
   end
 
   def do_authorize
     authorize :stat_user
   end
-
 end

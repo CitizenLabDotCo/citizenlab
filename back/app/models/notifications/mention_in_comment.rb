@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: notifications
@@ -53,15 +55,12 @@
 #
 module Notifications
   class MentionInComment < Notification
-
     validates :initiating_user, :comment, :post, presence: true
 
-
-    ACTIVITY_TRIGGERS = {'Comment' => {'mentioned' => true}}
+    ACTIVITY_TRIGGERS = { 'Comment' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in a comment'
-    
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       comment = activity.item
       recipient_id = activity.payload['mentioned_user']
       initiator_id = comment&.author_id
@@ -76,13 +75,11 @@ module Notifications
         }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = comment.post.project_id
-        end 
-        [self.new(attributes)]
+        end
+        [new(attributes)]
       else
         []
       end
     end
-
   end
 end
-

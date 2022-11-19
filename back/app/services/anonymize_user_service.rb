@@ -1,11 +1,12 @@
-class AnonymizeUserService
+# frozen_string_literal: true
 
+class AnonymizeUserService
   # Commented out so we can restore later. Feel free to delete if
   # this is still here after May 2022.
 
   # MALE_AVATAR_URLS = [
-  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg',
-  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515574041/man-838636_960_720_f3i6ki.jpg',
+  #   'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/avatar01_male.jpeg',
+  #   'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/avatar26_male.jpeg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/7ca644b8-4ebf-4e74-a266-c8f9f945fc28/profile-1474295964-7c5694e2fc409f9ba430e094fee7f906.jpg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/7937ab55-2985-4d6e-a4ab-db25d605ef72/66c297f1dcd085d2304f63c5ed612c0a--beauty-portrait-male-portraits.jpg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/84184598-6aac-408a-a49b-26ec0176a94b/49cd4c44d562e92d90a3a4c81ced02dc.jpg',
@@ -27,8 +28,8 @@ class AnonymizeUserService
   # ]
 
   # FEMALE_AVATAR_URLS = [
-  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515573998/smiling-woman_kdsaal.jpg',
-  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515574018/tiamorrison-profile-photo-2-copy_pcnsxm.png',
+  #   'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/avatar18_female.jpeg',
+  #   'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/avatar27_female.jpeg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/1ded0d3c-a50f-4b68-b7ff-f1ca23dc185a/Portrait-8.jpg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/c6896f8d-2128-403a-82f0-fa04647173c6/popin_2016.jpg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/ffdc4756-2a6e-4f3d-b147-b259ea519e4c/89c81ca5da657d45d323eff5b8ad7c69.jpg',
@@ -81,16 +82,16 @@ class AnonymizeUserService
     end
 
     {
-      'first_name'                => first_name,
-      'last_name'                 => last_name,
-      'email'                     => email,
-      'password'                  => SecureRandom.urlsafe_base64(32),
-      'locale'                    => locale,
-      'custom_field_values'       => custom_field_values.to_json,
-      'bio_multiloc'              => bio,
+      'first_name' => first_name,
+      'last_name' => last_name,
+      'email' => email,
+      'password' => SecureRandom.urlsafe_base64(32),
+      'locale' => locale,
+      'custom_field_values' => custom_field_values.to_json,
+      'bio_multiloc' => bio,
       'registration_completed_at' => registration,
-      'created_at'                => registration,
-      'verified'                  => random_verified,
+      'created_at' => registration,
+      'verified' => random_verified,
       **avatar
     }
   end
@@ -100,15 +101,16 @@ class AnonymizeUserService
   def random_custom_field_values(user: nil)
     custom_field_values = {}
     if user
+      properties = %w[gender education birthyear]
       user[:custom_field_values].each do |property, value|
-        if %w[gender education birthyear].include? property
+        if properties.include? property
           custom_field_values[property] = value
         end
       end
     end
     custom_field_values['gender'] ||= User::GENDERS.sample
     custom_field_values['birthyear'] ||= random_birthyear
-    custom_field_values['education'] ||= (rand(7)+2).to_s
+    custom_field_values['education'] ||= rand(2..8).to_s
     custom_field_values
   end
 
@@ -118,14 +120,14 @@ class AnonymizeUserService
 
   def random_birthyear
     min_age, max_age = weighted_choice({
-      [14, 20]  => 7,
-      [20, 30]  => 22,
-      [30, 40]  => 32,
-      [40, 50]  => 25,
-      [50, 60]  => 15,
-      [60, 70]  => 10,
-      [70, 80]  => 5,
-      [80, 90]  => 3,
+      [14, 20] => 7,
+      [20, 30] => 22,
+      [30, 40] => 32,
+      [40, 50] => 25,
+      [50, 60] => 15,
+      [60, 70] => 10,
+      [70, 80] => 5,
+      [80, 90] => 3,
       [90, 100] => 1
     })
     age = rand(max_age - min_age) + min_age
@@ -134,7 +136,7 @@ class AnonymizeUserService
 
   # Weighted random sampling [Efraimidis, Spirakis - 2006]
   def weighted_choice(weighted)
-    weighted.max_by { |_, weight| rand ** (1.0 / weight) }.first
+    weighted.max_by { |_, weight| rand**(1.0 / weight) }.first
   end
 
   def random_first_name(gender)
@@ -149,7 +151,7 @@ class AnonymizeUserService
     end['first_name']
   end
 
-  def random_last_name(locale)
+  def random_last_name(_locale)
     @last_names.sample['last_name']
   end
 
@@ -165,7 +167,7 @@ class AnonymizeUserService
     else
       { 'avatar' => random_initials_avatar_base64(first_name, last_name) }
     end
-  rescue Exception => e
+  rescue StandardError => e
     ErrorReporter.report e
     {}
   end
@@ -174,9 +176,10 @@ class AnonymizeUserService
     name_param = I18n.transliterate "#{first_name}+#{last_name}" # Convert to all ASCII chars
     uri = URI "https://eu.ui-avatars.com/api/?name=#{name_param}"
     res = Net::HTTP.get_response uri
-    if !res.is_a?(Net::HTTPSuccess)
+    unless res.is_a?(Net::HTTPSuccess)
       raise "API request to eu.ui-avatars.com failed. Code: #{res.code}. Body: #{res.body}."
     end
+
     "data:image/png;base64,#{Base64.encode64 res.body}"
   end
 
@@ -192,26 +195,27 @@ class AnonymizeUserService
   end
 
   def random_bio(locales)
-    locales.map do |locale|
-      bio = case %w[greek hipster movie rick_and_morty game_of_thrones nil].sample
-            when 'greek'
-              Faker::GreekPhilosophers.quote
-            when 'hipster'
-              Faker::Hipster.paragraph
-            when 'movie'
-              Faker::Movie.quote
-            when 'rick_and_morty'
-              Faker::TvShows::RickAndMorty.quote
-            when 'game_of_thrones'
-              Faker::TvShows::GameOfThrones.quote
-            when 'nil'
-              ''
-            end
+    bios = %w[greek hipster movie rick_and_morty game_of_thrones nil]
+    locales.to_h do |locale|
+      bio = case bios.sample
+      when 'greek'
+        Faker::GreekPhilosophers.quote
+      when 'hipster'
+        Faker::Hipster.paragraph
+      when 'movie'
+        Faker::Movie.quote
+      when 'rick_and_morty'
+        Faker::TvShows::RickAndMorty.quote
+      when 'game_of_thrones'
+        Faker::TvShows::GameOfThrones.quote
+      when 'nil'
+        ''
+      end
       [locale, bio]
-    end.to_h
+    end
   end
 
-  def random_registration user: nil, start_at: (Time.now - 1.month)
+  def random_registration(user: nil, start_at: (Time.now - 1.month))
     if user
       user[:registration_completed_at]
     else

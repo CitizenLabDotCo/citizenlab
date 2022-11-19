@@ -231,4 +231,116 @@ export default defineMessages({
     id: 'app.errors.category_name_taken',
     defaultMessage: 'A category with this name already exists',
   },
+  bulk_import_ideas_maximum_ideas_exceeded: {
+    id: 'app.errors.bulk_import_ideas_maximum_ideas_exceeded',
+    defaultMessage: 'The maximum of {value} ideas has been exceeded.',
+  },
+  bulk_import_ideas_idea_not_valid: {
+    id: 'app.errors.bulk_import_ideas_idea_not_valid',
+    defaultMessage: 'The resulting idea is not valid: {value}.',
+  },
+  bulk_import_ideas_blank_title: {
+    id: 'app.errors.bulk_import_ideas_blank_title',
+    defaultMessage:
+      'Idea with empty title. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_blank_body: {
+    id: 'app.errors.bulk_import_ideas_blank_body',
+    defaultMessage:
+      'Idea with empty body. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_blank_project: {
+    id: 'app.errors.bulk_import_ideas_blank_project',
+    defaultMessage:
+      'Idea without project. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_project_not_found: {
+    id: 'app.errors.bulk_import_ideas_project_not_found',
+    defaultMessage:
+      'No project with title "{value}" exists. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_blank_email: {
+    id: 'app.errors.bulk_import_ideas_blank_email',
+    defaultMessage:
+      'Idea without user email. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_email_not_found: {
+    id: 'app.errors.bulk_import_ideas_email_not_found',
+    defaultMessage:
+      'No user exists with email "{value}". This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_publication_date_invalid_format: {
+    id: 'app.errors.bulk_import_ideas_publication_date_invalid_format',
+    defaultMessage:
+      'Idea with invalid publication date format "{value}". This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_location_point_blank_coordinate: {
+    id: 'app.errors.bulk_import_ideas_location_point_blank_coordinate',
+    defaultMessage:
+      'Idea location with a missing coordinate in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_location_point_non_numeric_coordinate: {
+    id: 'app.errors.bulk_import_ideas_location_point_non_numeric_coordinate',
+    defaultMessage:
+      'Idea location with a non-numeric coordinate in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_non_numeric_phase_rank: {
+    id: 'app.errors.bulk_import_ideas_non_numeric_phase_rank',
+    defaultMessage:
+      'Non-numeric phase rank in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_maximum_phase_rank_exceeded: {
+    id: 'app.errors.bulk_import_ideas_maximum_phase_rank_exceeded',
+    defaultMessage:
+      'Idea project has less phases than the requested phase {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_project_phase_not_found: {
+    id: 'app.errors.bulk_import_ideas_project_phase_not_found',
+    defaultMessage:
+      'No phase {value} found in project. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_ideas_image_url_not_valid: {
+    id: 'app.errors.bulk_import_ideas_image_url_not_valid',
+    defaultMessage:
+      'No image could be downloaded from {value}. Make sure the URL is valid and ends with a file extension such as .png or .jpg. This issue occurs in the row with ID {row}.',
+  },
+  banner_cta_signed_in_text_multiloc_blank: {
+    id: 'app.errors.banner_cta_signed_in_text_multiloc_blank',
+    defaultMessage: 'Enter a button text.',
+  },
+  banner_cta_signed_in_url_blank: {
+    id: 'app.errors.banner_cta_signed_in_url_blank',
+    defaultMessage: 'Enter a link.',
+  },
+  banner_cta_signed_in_url_url: {
+    id: 'app.errors.banner_cta_signed_in_url_url',
+    defaultMessage:
+      "Enter a valid link. Make sure the link starts with 'https://'.",
+  },
+  banner_cta_signed_out_text_multiloc_blank: {
+    id: 'app.errors.banner_cta_signed_out_text_multiloc_blank',
+    defaultMessage: 'Enter a button text.',
+  },
+  banner_cta_signed_out_url_blank: {
+    id: 'app.errors.banner_cta_signed_out_url_blank',
+    defaultMessage: 'Enter a link.',
+  },
+  banner_cta_signed_out_url_url: {
+    id: 'app.errors.banner_cta_signed_out_url_url',
+    defaultMessage:
+      "Enter a valid link. Make sure the link starts with 'https://'.",
+  },
+  banner_cta_button_multiloc_blank: {
+    id: 'app.errors.banner_cta_button_multiloc_blank',
+    defaultMessage: 'Enter a button text.',
+  },
+  banner_cta_button_url_blank: {
+    id: 'app.errors.banner_cta_button_url_blank',
+    defaultMessage: 'Enter a link.',
+  },
+  banner_cta_button_url_url: {
+    id: 'app.errors.banner_cta_button_url_url',
+    defaultMessage:
+      "Enter a valid link. Make sure the link starts with 'https://'.",
+  },
 });

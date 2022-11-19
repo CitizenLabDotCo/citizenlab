@@ -1,11 +1,10 @@
 import React from 'react';
-import SharingDropdownButton from 'components/Sharing/SharingDropdownButton';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -15,6 +14,7 @@ import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import SharingButtons from 'components/Sharing/SharingButtons';
 
 interface Props {
   className?: string;
@@ -23,11 +23,9 @@ interface Props {
 }
 
 const Component = ({
-  className,
   ideaId,
-  buttonComponent,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const idea = useIdea({ ideaId });
   const projectId = !isNilOrError(idea)
     ? idea.relationships.project.data.id
@@ -38,7 +36,7 @@ const Component = ({
   const localize = useLocalize();
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
-    const postUrl = location.href;
+    const postUrl = `${location.origin}/ideas/${idea.attributes.slug}`;
     const titleMultiloc = idea.attributes.title_multiloc;
     const postTitle = localize(titleMultiloc);
     const inputTerm = getInputTerm(
@@ -59,9 +57,21 @@ const Component = ({
         };
 
     return (
-      <SharingDropdownButton
-        className={className}
+      <SharingButtons
         url={postUrl}
+        facebookMessage={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaFacebookMessage,
+            option: messages.optionFacebookMessage,
+            project: messages.projectFacebookMessage,
+            question: messages.questionFacebookMessage,
+            issue: messages.issueFacebookMessage,
+            contribution: messages.contributionFacebookMessage,
+          }),
+          {
+            postTitle,
+          }
+        )}
         whatsAppMessage={formatMessage(
           getInputTermMessage(inputTerm, {
             idea: messages.ideaWhatsAppMessage,
@@ -116,7 +126,7 @@ const Component = ({
           }
         )}
         utmParams={utmParams}
-        buttonComponent={buttonComponent}
+        context={'idea'}
       />
     );
   }

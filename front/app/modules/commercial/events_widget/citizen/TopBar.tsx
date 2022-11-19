@@ -4,13 +4,13 @@ import React from 'react';
 import Link from 'utils/cl-router/Link';
 
 // i18n
-import messages from 'containers/LandingPage/messages';
+import messages from 'containers/HomePage/messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, isRtl, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const Header = styled.div`
   width: 100%;
@@ -21,7 +21,7 @@ const Header = styled.div`
   border-bottom: 1px solid #d1d1d1;
   margin-bottom: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 21px;
   `}
 
@@ -31,27 +31,27 @@ const Header = styled.div`
 `;
 
 const Title = styled.h2`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
   padding: 0;
   margin: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     text-align: center;
     margin: 0;
   `};
 `;
 
 const EventPageLink = styled(Link)`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   margin-top: auto;
 `;
 
-export default injectIntl<InjectedIntlProps>(({ intl }) => (
+export default injectIntl<WrappedComponentProps>(({ intl }) => (
   <Header>
-    <Title>{intl.formatMessage(messages.eventsWidgetTitle)}</Title>
+    <Title>{intl.formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
     <EventPageLink to="/events">
       {intl.formatMessage(messages.viewAllEventsText)}
     </EventPageLink>

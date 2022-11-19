@@ -1,30 +1,37 @@
 import React from 'react';
-import { clickSocialSharingLink } from '../utils';
+import { clickSocialSharingLink, Medium } from '../utils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
+import { Button } from '@citizenlab/cl2-component-library';
+
+// style
+import { colors } from 'utils/styleUtils';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
 
 interface Props {
-  className?: string;
-  onClick: () => void;
-  children: JSX.Element | JSX.Element[];
   whatsAppMessage: string;
   url: string;
 }
 
 const WhatsApp = ({
-  children,
-  onClick,
-  className,
   whatsAppMessage,
   url,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);
-    onClick();
+    trackClick('whatsapp');
+  };
+
+  const trackClick = (medium: Medium) => () => {
+    const properties = { network: medium };
+    trackEventByName(tracks.shareButtonClicked.name, properties);
   };
 
   const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
@@ -34,13 +41,16 @@ const WhatsApp = ({
   const whatsAppHref = `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`;
 
   return (
-    <button
-      className={className}
+    <Button
       onClick={handleClick(whatsAppHref)}
       aria-label={formatMessage(messages.shareViaWhatsApp)}
-    >
-      {children}
-    </button>
+      bgColor={colors.success}
+      width="40px"
+      height="40px"
+      icon="whatsapp"
+      iconSize="20px"
+      justify="center"
+    />
   );
 };
 

@@ -1,20 +1,22 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from 'utils/testUtils/rtl';
 import SlugInput, { Props } from '.';
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useAppConfiguration', () => () => ({
-  data: { attributes: { name: 'orgName', host: 'localhost' } },
+  attributes: { name: 'orgName', host: 'localhost' },
 }));
 jest.mock('hooks/useLocale');
 jest.mock('services/locale');
 
+const slug = 'my-folder';
+
 const defaultProps: Props = {
   apiErrors: {},
-  handleSlugOnChange: jest.mock,
-  resource: 'folder',
+  onSlugChange: jest.mock,
+  pathnameWithoutSlug: 'folders',
   showSlugErrorMessage: true,
-  slug: 'my-folder',
+  slug,
 };
 
 describe('SlugInput', () => {

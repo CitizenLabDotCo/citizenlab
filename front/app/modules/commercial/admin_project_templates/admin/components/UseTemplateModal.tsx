@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { get, isEmpty, transform } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
@@ -17,9 +17,13 @@ import { client } from '../../utils/apolloUtils';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useAuthUser from 'hooks/useAuthUser';
+import { useProjectFolders } from 'modules/commercial/project_folders/hooks';
+import { userModeratesFolder } from 'modules/commercial/project_folders/permissions/roles';
+import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Input, Icon } from '@citizenlab/cl2-component-library';
+import { Input, Icon, Select, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
@@ -29,7 +33,7 @@ import T from 'components/T';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // analytics
@@ -42,19 +46,13 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // typings
-import { Locale, Multiloc } from 'typings';
+import { Locale, Multiloc, IOption } from 'typings';
 
 const Content = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 35px;
   padding-bottom: 50px;
-`;
-
-const StyledInputMultilocWithLocaleSwitcher = styled(
-  InputMultilocWithLocaleSwitcher
-)`
-  margin-bottom: 35px;
 `;
 
 const Success = styled.div`
@@ -67,12 +65,12 @@ const Success = styled.div`
 
 const SuccessIcon = styled(Icon)`
   height: 40px;
-  fill: ${colors.clGreenSuccess};
+  fill: ${colors.success};
   margin-bottom: 20px;
 `;
 
 const SuccessText = styled.div`
-  color: ${colors.clGreenSuccess};
+  color: ${colors.success};
   font-size: ${fontSizes.m}px;
   font-weight: 400;
   text-align: center;
@@ -85,11 +83,11 @@ const SuccessText = styled.div`
   }
 
   a {
-    color: ${colors.clGreenSuccess};
+    color: ${colors.success};
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, colors.clGreenSuccess)};
+      color: ${darken(0.15, colors.success)};
       text-decoration: underline;
     }
   }
@@ -119,9 +117,10 @@ interface IVariables {
   projectTemplateId: string | undefined;
   titleMultiloc: Multiloc;
   timelineStartAt: string;
+  folderId: string | null;
 }
 
-const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
+const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
   ({
     params,
     intl,
@@ -136,9 +135,13 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
 
     const tenantLocales = useAppConfigurationLocales();
     const graphqlTenantLocales = useGraphqlTenantLocales();
+    const { projectFolders } = useProjectFolders({});
+    const authUser = useAuthUser();
+    const localize = useLocalize();
 
     const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
     const [startDate, setStartDate] = useState<string | null>(null);
+    const [folderId, setFolderId] = useState<string | null>(null);
     const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
     const [titleError, setTitleError] = useState<string | null>(null);
     const [startDateError, setStartDateError] = useState<string | null>(null);
@@ -161,11 +164,13 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
         $projectTemplateId: ID!
         $titleMultiloc: MultilocAttributes!
         $timelineStartAt: String
+        $folderId: String
       ) {
         applyProjectTemplate(
           projectTemplateId: $projectTemplateId
           titleMultiloc: $titleMultiloc
           timelineStartAt: $timelineStartAt
+          folderId: $folderId
         ) {
           errors
         }
@@ -230,6 +235,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
               ),
               projectTemplateId: templateId,
               timelineStartAt: startDate,
+              folderId,
             },
           });
           await streams.fetchAllWith({
@@ -248,7 +254,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
         }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tenantLocales, titleMultiloc, startDate, selectedLocale]);
+    }, [tenantLocales, titleMultiloc, startDate, selectedLocale, folderId]);
 
     const onClose = useCallback(() => {
       close();
@@ -271,6 +277,10 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
       setStartDate(startDate);
     }, []);
 
+    const handleSelectFolderChange = ({ value: folderId }) => {
+      setFolderId(folderId);
+    };
+
     useEffect(() => {
       setTitleMultiloc(null);
       setStartDate(null);
@@ -282,9 +292,30 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
       setResponseError(null);
     }, [opened]);
 
+    if (isNilOrError(authUser)) {
+      return null;
+    }
+
     const templateTitle = (
       <T value={get(data, 'projectTemplate.titleMultiloc')} />
     );
+
+    const folderOptions: IOption[] = !isNilOrError(projectFolders)
+      ? [
+          {
+            value: '',
+            label: '',
+          },
+          ...projectFolders
+            .filter((folder) => userModeratesFolder(authUser, folder.id))
+            .map((folder) => {
+              return {
+                value: folder.id,
+                label: localize(folder.attributes.title_multiloc),
+              };
+            }),
+        ]
+      : [];
 
     return (
       <Modal
@@ -329,7 +360,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
         <Content>
           {!success ? (
             <>
-              <StyledInputMultilocWithLocaleSwitcher
+              <InputMultilocWithLocaleSwitcher
                 id="project-title"
                 label={intl.formatMessage(messages.projectTitle)}
                 placeholder={intl.formatMessage(messages.typeProjectName)}
@@ -340,20 +371,27 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
                 error={titleError}
                 autoFocus={true}
               />
-
-              <Input
-                id="project-start-date"
-                label={intl.formatMessage(messages.projectStartDate)}
-                type="date"
-                onChange={onStartDateChange}
-                value={startDate}
-                error={startDateError}
-                placeholder={bowser.msie ? 'YYYY-MM-DD' : undefined}
+              <Box my="36px">
+                <Input
+                  id="project-start-date"
+                  label={intl.formatMessage(messages.projectStartDate)}
+                  type="date"
+                  onChange={onStartDateChange}
+                  value={startDate}
+                  error={startDateError}
+                  placeholder={bowser.msie ? 'YYYY-MM-DD' : undefined}
+                />
+              </Box>
+              <Select
+                value={folderId}
+                label={intl.formatMessage(messages.projectFolder)}
+                options={folderOptions}
+                onChange={handleSelectFolderChange}
               />
             </>
           ) : (
             <Success>
-              <SuccessIcon name="round-checkmark" />
+              <SuccessIcon name="check-circle" />
               <SuccessText>
                 <FormattedMessage {...messages.successMessage} />
                 {showGoBackLink && (
@@ -379,4 +417,4 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
   }
 );
 
-export default withRouter<Props>(injectIntl(UseTemplateModal));
+export default injectIntl(withRouter(UseTemplateModal));

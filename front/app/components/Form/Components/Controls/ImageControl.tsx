@@ -11,8 +11,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { deleteIdeaImage } from 'services/ideaImages';
-import useIdeaImages from 'hooks/useIdeaImages';
 import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { FormContext } from '../../contexts';
@@ -21,6 +19,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 const ImageControl = ({
   uischema,
   path,
+  data,
   handleChange,
   errors,
   schema,
@@ -32,17 +31,13 @@ const ImageControl = ({
     setImageFiles(imageFiles);
     setDidBlur(true);
   };
-  const handleUploadOnRemove = (file) => {
-    if (inputId && file.remote) {
-      deleteIdeaImage(inputId, file.id);
-    }
+  const handleUploadOnRemove = (_file) => {
     handleChange(path, undefined);
     setImageFiles([]);
     setDidBlur(true);
   };
 
   const { inputId } = useContext(FormContext);
-  const remoteImages = useIdeaImages(inputId);
 
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
   const [didBlur, setDidBlur] = useState(false);
@@ -50,19 +45,19 @@ const ImageControl = ({
   useEffect(() => {
     if (
       inputId &&
-      !isNilOrError(remoteImages) &&
-      remoteImages.length > 0 &&
-      remoteImages[0].attributes.versions.medium
+      !isNilOrError(data) &&
+      data.length > 0 &&
+      data[0].attributes?.versions.medium
     ) {
       (async () => {
         const newRemoteFile = await convertUrlToUploadFile(
-          remoteImages[0].attributes.versions.medium as string,
-          remoteImages[0].id
+          data[0].attributes.versions.medium as string,
+          data[0].id
         );
         newRemoteFile && setImageFiles([newRemoteFile]);
       })();
     }
-  }, [remoteImages, inputId]);
+  }, [data, inputId]);
 
   return (
     <Box id="e2e-idea-image-upload">
@@ -77,7 +72,9 @@ const ImageControl = ({
         id={sanitizeForClassname(id)}
         images={imageFiles}
         imagePreviewRatio={135 / 298}
-        acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+        acceptedFileTypes={{
+          'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+        }}
         onAdd={handleUploadOnAdd}
         onRemove={handleUploadOnRemove}
       />

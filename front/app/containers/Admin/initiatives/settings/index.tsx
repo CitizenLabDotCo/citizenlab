@@ -4,12 +4,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import usePage from 'hooks/usePage';
+import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
+import useCustomPage from 'hooks/useCustomPage';
 
 // services
 import { updateAppConfiguration } from 'services/appConfiguration';
-import { toggleProposals } from 'services/navbar';
-import { updatePage } from 'services/pages';
+import { updateCustomPage } from 'services/customPages';
 
 // components
 import {
@@ -57,17 +57,18 @@ type ProposalsSettingName = keyof ProposalsSettings;
 
 const InitiativesSettingsPage = () => {
   const appConfiguration = useAppConfiguration();
-  const proposalsPage = usePage({ pageSlug: 'initiatives' });
+  const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
+  const proposalsPage = useCustomPage({ customPageSlug: 'initiatives' });
 
   const remoteProposalsSettings = useMemo(() => {
     if (
       isNilOrError(appConfiguration) ||
-      !appConfiguration.data.attributes.settings.initiatives
+      !appConfiguration.attributes.settings.initiatives
     ) {
       return null;
     }
 
-    return omit(appConfiguration.data.attributes.settings.initiatives, [
+    return omit(appConfiguration.attributes.settings.initiatives, [
       'allowed',
       'enabled',
     ]);
@@ -80,21 +81,14 @@ const InitiativesSettingsPage = () => {
     setLocalProposalsSettings(remoteProposalsSettings);
   }, [remoteProposalsSettings]);
 
-  const [newProposalsNavbarItemEnabled, setNewProposalsNavbarItemEnabled] =
-    useState<boolean | null>(null);
-
-  useEffect(() => {
-    if (!isNilOrError(proposalsNavbarItemEnabled)) {
-      setNewProposalsNavbarItemEnabled(proposalsNavbarItemEnabled);
-    }
-  }, [proposalsNavbarItemEnabled]);
-
   const [newProposalsPageBody, setNewProposalsPageBody] =
     useState<Multiloc | null>(null);
 
   useEffect(() => {
     if (!isNilOrError(proposalsPage)) {
-      setNewProposalsPageBody(proposalsPage.attributes.body_multiloc);
+      setNewProposalsPageBody(
+        proposalsPage.attributes.top_info_section_multiloc
+      );
     }
   }, [proposalsPage]);
 
@@ -108,15 +102,13 @@ const InitiativesSettingsPage = () => {
     isNilOrError(proposalsPage) ||
     !remoteProposalsSettings ||
     !localProposalsSettings ||
-    newProposalsNavbarItemEnabled === null ||
     newProposalsPageBody === null
   ) {
     return null;
   }
 
   const validate = () => {
-    const tenantLocales =
-      appConfiguration.data.attributes.settings.core.locales;
+    const tenantLocales = appConfiguration.attributes.settings.core.locales;
     let validated = false;
 
     const proposalsSettingsChanged = !isEqual(
@@ -124,16 +116,11 @@ const InitiativesSettingsPage = () => {
       localProposalsSettings
     );
 
-    const proposalsNavbarItemChanged =
-      proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
-
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.body_multiloc !== newProposalsPageBody;
+      proposalsPage.attributes.top_info_section_multiloc !==
+      newProposalsPageBody;
 
-    const formChanged =
-      proposalsSettingsChanged ||
-      proposalsNavbarItemChanged ||
-      proposalsPageBodyChanged;
+    const formChanged = proposalsSettingsChanged || proposalsPageBodyChanged;
 
     if (!processing && formChanged) {
       validated = true;
@@ -166,11 +153,9 @@ const InitiativesSettingsPage = () => {
       localProposalsSettings
     );
 
-    const proposalsNavbarItemChanged =
-      proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
-
     const proposalsPageBodyChanged =
-      proposalsPage.attributes.body_multiloc !== newProposalsPageBody;
+      proposalsPage.attributes.top_info_section_multiloc !==
+      newProposalsPageBody;
 
     setProcessing(true);
 
@@ -187,16 +172,9 @@ const InitiativesSettingsPage = () => {
         promises.push(promise);
       }
 
-      if (proposalsNavbarItemChanged) {
-        const promise = toggleProposals({
-          enabled: newProposalsNavbarItemEnabled,
-        });
-        promises.push(promise);
-      }
-
       if (proposalsPageBodyChanged) {
-        const promise = updatePage(proposalsPage.id, {
-          body_multiloc: newProposalsPageBody,
+        const promise = updateCustomPage(proposalsPage.id, {
+          top_info_section_multiloc: newProposalsPageBody,
         });
 
         promises.push(promise);

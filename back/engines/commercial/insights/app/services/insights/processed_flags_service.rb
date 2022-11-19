@@ -5,15 +5,15 @@ module Insights
     # Sets a processed_flag for all the inputs in the views
     def set_processed(inputs, view_ids)
       processed_flag_attributes = inputs.to_a.product(view_ids) # yields all pairs of input x category
-                                  .map { |input, view_id|
-                                    {
-                                      view_id: view_id,
-                                      input_id: input.id,
-                                      input_type: input.class.name,
-                                      created_at: Time.zone.now,
-                                      updated_at: Time.zone.now
-                                    }
-                                  }
+        .map do |input, view_id|
+        {
+          view_id: view_id,
+          input_id: input.id,
+          input_type: input.class.name,
+          created_at: Time.zone.now,
+          updated_at: Time.zone.now
+        }
+      end
 
       return [] if processed_flag_attributes.blank?
 

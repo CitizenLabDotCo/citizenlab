@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -8,7 +9,7 @@ import Button from 'components/UI/Button';
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // tracks
@@ -38,13 +39,13 @@ const ActionsContainer = styled.div`
     margin-right: 15px;
   }
 `;
-const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
-  ({ children, intl: { formatMessage }, location }) => {
+const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
+  ({ intl: { formatMessage }, location }) => {
     const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.settingsTab),
-        name: 'initiatives',
-        url: '/admin/initiatives',
+        name: 'settings',
+        url: '/admin/initiatives/settings',
       },
       {
         label: formatMessage(messages.manageTab),
@@ -79,7 +80,7 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
             <Button
               id="e2e-new-proposal"
               buttonStyle="cl-blue"
-              icon="initiativesAdminMenuIcon"
+              icon="initiatives"
               linkTo={`/initiatives/new`}
               text={formatMessage(messages.addNewProposal)}
               onClick={onNewProposal(pathname)}
@@ -91,7 +92,10 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
             title={messages.metaTitle}
             description={messages.metaDescription}
           />
-          {children}
+          <div id="e2e-initiatives-admin-container">
+            {' '}
+            <RouterOutlet />
+          </div>
         </TabbedResource>
       </>
     );

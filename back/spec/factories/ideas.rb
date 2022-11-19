@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :idea do
     title_multiloc do
@@ -19,7 +21,7 @@ FactoryBot.define do
     association :project, factory: :continuous_project
     author
     idea_status
-    location_point_geojson { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
+    location_point_geojson { { 'type' => 'Point', 'coordinates' => [51.11520776293035, 3.921154106874878] } }
     location_description { 'Some road' }
     factory :idea_with_topics do
       transient do
@@ -30,17 +32,6 @@ FactoryBot.define do
           topic = create(:topic)
           idea.project.allowed_input_topics << topic
           idea.topics << topic
-        end
-      end
-    end
-
-    factory :idea_with_areas do
-      transient do
-        areas_count { 2 }
-      end
-      after(:create) do |idea, evaluator|
-        evaluator.areas_count.times do |_i|
-          idea.areas << create(:area)
         end
       end
     end

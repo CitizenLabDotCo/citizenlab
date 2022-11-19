@@ -14,7 +14,7 @@ import ParticipationLevelFilter from './ParticipationLevelFilter';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -85,7 +85,7 @@ const LoadMoreButton = styled(Button)``;
 const NoTemplates = styled.div`
   width: 100%;
   height: 260px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
@@ -109,10 +109,10 @@ interface Props {
     pageInfo: {
       hasNextPage: boolean;
     };
-  };
+  } | null;
 }
 
-const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
+const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
   ({
     intl,
     className,
@@ -147,6 +147,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
               onChange={onSearchChange}
+              a11y_numberOfSearchResults={templates?.edges.length || 0}
             />
           </Right>
         </Filters>

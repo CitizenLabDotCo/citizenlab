@@ -26,7 +26,7 @@ export default defineMessages({
   fileUploadLabelTooltip: {
     id: 'app.components.PagesForm.fileUploadLabelTooltip',
     defaultMessage:
-      'Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.',
+      'Files should not be larger than 50Mb. Added files will be shown on the bottom of this page',
   },
   slugLabelTooltip: {
     id: 'app.components.PagesForm.slugLabelTooltip',
@@ -40,30 +40,35 @@ export default defineMessages({
   brokenURLWarning: {
     id: 'app.components.PagesForm.brokenURLWarning',
     defaultMessage:
-      'If you change the URL, links to this page using the old URL will no longer work.',
+      'If you change the URL, links to this page using the old URL will no longer work',
   },
   slugRegexError: {
     id: 'app.components.PagesForm.slugRegexError',
     defaultMessage:
       'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
   },
-  emptySlugError: {
-    id: 'app.components.PagesForm.emptySlugError',
-    defaultMessage: "The slug can't be empty.",
+  blankSlugError: {
+    id: 'app.components.PagesForm.blankSlugError',
+    defaultMessage: 'Provide a slug',
   },
   takenSlugError: {
     id: 'app.components.pageForm.takenSlugError',
-    defaultMessage:
-      'This slug is already taken. Please choose a different one.',
+    defaultMessage: 'This slug is already taken. Choose a different one.',
   },
-  emptyTitleError: {
-    id: 'app.components.PagesForm.emptyTitleError',
-    defaultMessage:
-      'The title field is required. If your platform has multiple languages, check that all languages are filled in.',
+  titleMissingOneLanguageError: {
+    id: 'app.components.PagesForm.titleMissingOneLanguageError',
+    defaultMessage: 'Provide title for at least one language',
   },
-  emptyDescriptionError: {
-    id: 'app.components.PagesForm.emptyDescriptionError',
-    defaultMessage:
-      'The description field is required. If your platform has multiple languages, check that all languages are filled in.',
+  descriptionMissingOneLanguageError: {
+    id: 'app.components.PagesForm.descriptionMissingOneLanguageError',
+    defaultMessage: 'Provide content for at least one language',
+  },
+  savePage: {
+    id: 'app.components.PagesForm.savePage',
+    defaultMessage: 'Save page',
+  },
+  savePageSuccessMessage: {
+    id: 'app.components.PagesForm.saveSuccess',
+    defaultMessage: 'Page successfully saved',
   },
 });

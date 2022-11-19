@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddIdeasOrderToPhasesAndProjects < ActiveRecord::Migration[6.0]
   def change
     add_column :projects, :ideas_order, :string, default: nil

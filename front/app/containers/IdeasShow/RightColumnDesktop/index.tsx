@@ -10,6 +10,9 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import styled from 'styled-components';
 import { rightColumnWidthDesktop } from '../styleConstants';
 import { colors } from 'utils/styleUtils';
+import IdeaSharingButton from '../Buttons/IdeaSharingButton';
+import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div<{ insideModal: boolean }>`
   flex: 0 0 ${rightColumnWidthDesktop}px;
@@ -22,13 +25,6 @@ const Container = styled.div<{ insideModal: boolean }>`
 const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Box = styled.div`
-  padding: 20px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.backgroundLightGrey};
-  margin-bottom: 30px;
 `;
 
 const StyledVoteControl = styled(VoteControl)`
@@ -66,7 +62,12 @@ const RightColumnDesktop = ({
   return (
     <Container insideModal={insideModal} className={className || ''}>
       <InnerContainer>
-        <Box>
+        <Box
+          padding="20px"
+          borderRadius="3px"
+          background={colors.background}
+          mb="12px"
+        >
           <StyledVoteControl styleType="shadow" ideaId={ideaId} size="4" />
           <StyledAssignBudgetControl
             view="ideaPage"
@@ -74,6 +75,12 @@ const RightColumnDesktop = ({
             projectId={projectId}
           />
           <Buttons ideaId={ideaId} />
+        </Box>
+        <Box mb="16px">
+          <IdeaSharingButton
+            ideaId={ideaId}
+            buttonComponent={<SharingButtonComponent />}
+          />
         </Box>
         <StyledMetaInformation
           ideaId={ideaId}

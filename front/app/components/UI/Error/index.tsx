@@ -1,31 +1,31 @@
-import React, { useRef, useEffect } from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
-import CSSTransition from 'react-transition-group/CSSTransition';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
-import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
-import { CLError, Message } from 'typings';
+import React, { useEffect, useRef } from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
 import { IInviteError } from 'services/invites';
-import messages from './messages';
+import styled from 'styled-components';
+import { CLError, Message } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import messages from './messages';
 
 const timeout = 350;
 
 const ErrorMessageText = styled.div`
   flex: 1 1 100%;
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
 
   a {
-    color: ${colors.clRedError};
+    color: ${colors.red600};
     font-weight: 500;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.2, colors.clRedError)};
+      color: ${darken(0.2, colors.red600)};
       text-decoration: underline;
     }
   }
@@ -36,10 +36,8 @@ const ErrorMessageText = styled.div`
 `;
 
 const ErrorIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-  fill: ${colors.clRedError};
+  flex: 0 0 24px;
+  fill: ${colors.red600};
   padding: 0px;
   margin: 0px;
   margin-right: 10px;
@@ -54,11 +52,11 @@ const ContainerInner = styled.div<{ showBackground: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 13px;
+  padding: 0px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.clRedErrorBackground};
+  background: ${colors.errorLight};
   background: ${(props) =>
-    props.showBackground ? colors.clRedErrorBackground : 'transparent'};
+    props.showBackground ? colors.errorLight : 'transparent'};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -108,8 +106,6 @@ const ErrorList = styled.ul`
 const ErrorListItem = styled.li`
   display: flex;
   align-items: flex-start;
-  margin-top: 8px;
-  margin-bottom: 8px;
 `;
 
 const Bullet = styled.span`
@@ -130,47 +126,65 @@ interface Props {
   fieldName?: TFieldName | undefined;
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
+  scrollIntoView?: boolean;
 }
 
-export type TFieldName =
-  | 'base'
-  | 'title_multiloc'
-  | 'sender'
-  | 'group_ids'
-  | 'reply_to'
-  | 'subject_multiloc'
-  | 'body_multiloc'
-  | 'description_multiloc'
-  | 'description_preview_multiloc'
-  | 'required'
-  | 'input_type'
-  | 'slug'
-  | 'file'
-  | 'token'
-  | 'password'
-  | 'buttonText'
-  | 'showFooter'
-  | 'showLogo'
-  | 'showHeader'
-  | 'relativeLink'
-  | 'font'
-  | 'accentColor'
-  | 'textColor'
-  | 'siteBgColor'
-  | 'bgColor'
-  | 'fontSize'
-  | 'headerText'
-  | 'headerSubText'
-  | 'limit'
-  | 'width'
-  | 'height'
-  | 'first_name'
-  | 'last_name'
-  | 'confirmation_code'
-  | 'email'
-  | 'view_name'
-  | 'category_name'
-  | 'nav_bar_item_title_multiloc';
+export interface TFieldNameMap {
+  base: 'base';
+  title_multiloc: 'title_multiloc';
+  sender: 'sender';
+  group_ids: 'group_ids';
+  reply_to: 'reply_to';
+  subject_multiloc: 'subject_multiloc';
+  body_multiloc: 'body_multiloc';
+  description_multiloc: 'description_multiloc';
+  description_preview_multiloc: 'description_preview_multiloc';
+  required: 'required';
+  input_type: 'input_type';
+  slug: 'slug';
+  file: 'file';
+  token: 'token';
+  password: 'password';
+  buttonText: 'buttonText';
+  showFooter: 'showFooter';
+  showLogo: 'showLogo';
+  relativeLink: 'relativeLink';
+  font: 'font';
+  accentColor: 'accentColor';
+  textColor: 'textColor';
+  siteBgColor: 'siteBgColor';
+  bgColor: 'bgColor';
+  fontSize: 'fontSize';
+  headerText: 'headerText';
+  headerSubText: 'headerSubText';
+  limit: 'limit';
+  width: 'width';
+  height: 'height';
+  first_name: 'first_name';
+  last_name: 'last_name';
+  confirmation_code: 'confirmation_code';
+  email: 'email';
+  nav_bar_item_title_multiloc: 'nav_bar_item_title_multiloc';
+  banner_cta_button_multiloc: 'banner_cta_button_multiloc';
+  banner_cta_button_url: 'banner_cta_button_url';
+}
+
+export type TFieldName = TFieldNameMap[keyof TFieldNameMap];
+
+export const findErrorMessage = (
+  fieldName: TFieldName | undefined,
+  error: string
+) => {
+  if (fieldName && messages[`${fieldName}_${error}`]) {
+    return messages[`${fieldName}_${error}`] as Message;
+  }
+
+  if (messages[error]) {
+    return messages[error] as Message;
+  }
+  // Return a empty error message
+  return '';
+};
 
 const Error = (props: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -186,29 +200,18 @@ const Error = (props: Props) => {
     className = '',
     animate = true,
     id,
+    scrollIntoView = true,
   } = props;
 
   useEffect(() => {
-    if (text || apiErrors) {
+    if (scrollIntoView) {
       containerRef.current?.scrollIntoView &&
         containerRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
         });
     }
-  }, [text, apiErrors]);
-
-  const findMessage = (fieldName: TFieldName | undefined, error: string) => {
-    if (fieldName && messages[`${fieldName}_${error}`]) {
-      return messages[`${fieldName}_${error}`] as Message;
-    }
-
-    if (messages[error]) {
-      return messages[error] as Message;
-    }
-
-    return null;
-  };
+  }, [scrollIntoView]);
 
   const dedupApiErrors =
     apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
@@ -238,70 +241,83 @@ const Error = (props: Props) => {
           showBackground={showBackground}
           className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
         >
-          {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
+          {showIcon && (
+            <ErrorIcon
+              name="alert-circle"
+              fill={colors.error}
+              data-testid="error-icon"
+            />
+          )}
 
           <ErrorMessageText data-testid="error-message-text">
-            {text && <p>{text}</p>}
-            {dedupApiErrors &&
-              isArray(dedupApiErrors) &&
-              !isEmpty(dedupApiErrors) && (
-                <ErrorList>
-                  {dedupApiErrors.map((error, index) => {
-                    // If we have multiple possible errors for a certain input field,
-                    // we can 'group' them in the messages.js file using the fieldName as a prefix
-                    // Check the implementation of findMessage for details
-                    const errorMessage = findMessage(fieldName, error.error);
+            <Box py="16px">
+              {text}
+              {dedupApiErrors &&
+                isArray(dedupApiErrors) &&
+                !isEmpty(dedupApiErrors) && (
+                  <ErrorList>
+                    {dedupApiErrors.map((error, index) => {
+                      // If we have multiple possible errors for a certain input field,
+                      // we can 'group' them in the messages.js file using the fieldName as a prefix
+                      // Check the implementation of findErrorMessage for details
+                      const errorMessage = findErrorMessage(
+                        fieldName,
+                        error.error
+                      );
 
-                    if (errorMessage) {
-                      // Variables for inside messages.js
-                      const payload = error?.payload ?? null;
-                      const value = error?.value ?? null;
-                      const row = error?.row ?? null;
-                      const rows = error?.rows ?? null;
+                      if (errorMessage) {
+                        // Variables for inside messages.js
+                        const payload = error?.payload ?? null;
+                        const value = error?.value ?? null;
+                        const row = error?.row ?? null;
+                        const rows = error?.rows ?? null;
 
-                      let values = {
-                        row: <strong>{row}</strong>,
-                        rows: rows ? <strong>{rows.join(', ')}</strong> : null,
-                        // eslint-disable-next-line react/no-unescaped-entities
-                        value: <strong>'{value}'</strong>,
-                      };
+                        let values = {
+                          row: <strong>{row}</strong>,
+                          rows: rows ? (
+                            <strong>{rows.join(', ')}</strong>
+                          ) : null,
+                          // eslint-disable-next-line react/no-unescaped-entities
+                          value: <strong>'{value}'</strong>,
+                        };
 
-                      values = payload ? { ...payload, ...values } : values;
+                        values = payload ? { ...payload, ...values } : values;
 
-                      if (value || row || rows) {
+                        if (value || row || rows) {
+                          return (
+                            <ErrorListItem key={index}>
+                              {dedupApiErrors.length > 1 && (
+                                <Bullet aria-hidden>•</Bullet>
+                              )}
+
+                              <FormattedMessage
+                                {...errorMessage}
+                                values={values}
+                              />
+                            </ErrorListItem>
+                          );
+                        }
+
                         return (
                           <ErrorListItem key={index}>
                             {dedupApiErrors.length > 1 && (
                               <Bullet aria-hidden>•</Bullet>
                             )}
-
                             <FormattedMessage
                               {...errorMessage}
-                              values={values}
+                              values={{
+                                ideasCount: (error as CLError).ideas_count,
+                              }}
                             />
                           </ErrorListItem>
                         );
                       }
 
-                      return (
-                        <ErrorListItem key={index}>
-                          {dedupApiErrors.length > 1 && (
-                            <Bullet aria-hidden>•</Bullet>
-                          )}
-                          <FormattedMessage
-                            {...errorMessage}
-                            values={{
-                              ideasCount: (error as CLError).ideas_count,
-                            }}
-                          />
-                        </ErrorListItem>
-                      );
-                    }
-
-                    return null;
-                  })}
-                </ErrorList>
-              )}
+                      return null;
+                    })}
+                  </ErrorList>
+                )}
+            </Box>
           </ErrorMessageText>
         </ContainerInner>
       </Container>

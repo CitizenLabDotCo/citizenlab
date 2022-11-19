@@ -1,21 +1,69 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import CustomFieldGraphs from './admin/components/CustomFieldGraphs';
-import RegistrationFieldsToGraphs from './admin/components/RegistrationFieldsToGraphs';
-import AllCustomFields from './admin/components/CustomFields/All';
 
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
-import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
+
+const UserCustomFieldsForm = React.lazy(
+  () => import('./citizen/components/UserCustomFieldsForm')
+);
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
-import RegistrationQuestions from './admin/components/RegistrationQuestions';
+const RegistrationQuestions = React.lazy(
+  () => import('./admin/components/RegistrationQuestions')
+);
 import {
   IUsersByBirthyear,
   IUsersByDomicile,
   IUsersByRegistrationField,
 } from './services/stats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import UserCustomFieldsFormMigrated from './citizen/components/UserCustomFieldsFormMigrated';
+const UserCustomFieldsFormMigrated = React.lazy(
+  () => import('./citizen/components/UserCustomFieldsFormMigrated')
+);
+
+const CustomFieldGraphs = React.lazy(
+  () => import('./admin/components/CustomFieldGraphs')
+);
+const RegistrationFieldsToGraphs = React.lazy(
+  () => import('./admin/components/RegistrationFieldsToGraphs')
+);
+const AllCustomFields = React.lazy(
+  () => import('./admin/components/CustomFields/All')
+);
+
+const AdminCustomFieldsContainer = React.lazy(
+  () => import('./admin/containers/CustomFields/')
+);
+const AdminNewCustomFieldComponent = React.lazy(
+  () => import('./admin/containers/CustomFields/RegistrationCustomFieldNew')
+);
+const AdminCustomFieldEditComponent = React.lazy(
+  () => import('./admin/containers/CustomFields/RegistrationCustomFieldEdit')
+);
+const AdminCustomFieldRegistrationSettingsComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
+    )
+);
+const AdminCustomFieldRegistrationOptionsComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
+    )
+);
+const AdminCustomFieldRegistrationOptionsNewComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
+    )
+);
+const AdminCustomFieldRegistrationOptionsEditComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
+    )
+);
 
 declare module 'resources/GetSerieFromStream' {
   export interface ISupportedDataTypeMap {
@@ -63,49 +111,31 @@ const configuration: ModuleConfiguration = {
     admin: [
       {
         path: 'settings/registration/custom-fields',
-        container: () => import('./admin/containers/CustomFields/'),
-        childRoutes: [
+        element: <AdminCustomFieldsContainer />,
+        children: [
           {
             path: 'new',
-            container: () =>
-              import(
-                './admin/containers/CustomFields/RegistrationCustomFieldNew'
-              ),
+            element: <AdminNewCustomFieldComponent />,
           },
           {
             path: ':userCustomFieldId',
-            container: () =>
-              import(
-                './admin/containers/CustomFields/RegistrationCustomFieldEdit'
-              ),
-            childRoutes: [
+            element: <AdminCustomFieldEditComponent />,
+            children: [
               {
                 path: 'field-settings',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
-                  ),
+                element: <AdminCustomFieldRegistrationSettingsComponent />,
               },
               {
                 path: 'options',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
-                  ),
+                element: <AdminCustomFieldRegistrationOptionsComponent />,
               },
               {
                 path: 'options/new',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
-                  ),
+                element: <AdminCustomFieldRegistrationOptionsNewComponent />,
               },
               {
                 path: 'options/:userCustomFieldOptionId',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
-                  ),
+                element: <AdminCustomFieldRegistrationOptionsEditComponent />,
               },
             ],
           },

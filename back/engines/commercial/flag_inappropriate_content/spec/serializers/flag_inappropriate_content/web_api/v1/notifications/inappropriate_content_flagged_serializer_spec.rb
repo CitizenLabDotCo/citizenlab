@@ -10,6 +10,6 @@ describe FlagInappropriateContent::WebApi::V1::Notifications::InappropriateConte
     flagged = create(:inappropriate_content_flagged, inappropriate_content_flag: flag)
     hash = described_class.new(flagged).serializable_hash
 
-    expect(hash[:data][:attributes][:flaggable_path]).to eq("/ideas/my-idea")
+    expect(hash[:data][:attributes][:flaggable_path]).to eq('/ideas/my-idea')
   end
 end

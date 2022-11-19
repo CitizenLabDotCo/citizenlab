@@ -1,12 +1,18 @@
+# frozen_string_literal: true
+
 module IdViennaSaml
   class Engine < ::Rails::Engine
     isolate_namespace IdViennaSaml
 
     config.to_prepare do
-      AppConfiguration::Settings.add_feature(IdViennaSaml::FeatureSpecification)
+      AppConfiguration::Settings.add_feature(IdViennaSaml::EmployeeFeatureSpecification)
+      AppConfiguration::Settings.add_feature(IdViennaSaml::CitizenFeatureSpecification)
 
-      vienna_saml = IdViennaSaml::IdViennaSamlOmniauth.new
-      AuthenticationService.add_method('saml', vienna_saml)
+      vienna_employee_saml = IdViennaSaml::EmployeeSamlOmniauth.new
+      vienna_citizen_saml = IdViennaSaml::CitizenSamlOmniauth.new
+
+      AuthenticationService.add_method('vienna_employee', vienna_employee_saml)
+      AuthenticationService.add_method('vienna_citizen', vienna_citizen_saml)
     end
   end
 end

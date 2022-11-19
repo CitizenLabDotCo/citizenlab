@@ -40,7 +40,7 @@ const StyledLocaleSwitcher = styled(LocaleSwitcher)`
 `;
 
 const ReadMoreButton = styled.button`
-  color: ${colors.clIconAccent};
+  color: ${colors.teal400};
   font-weight: 500;
   margin: 0;
   margin-top: 12px;
@@ -48,7 +48,7 @@ const ReadMoreButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    color: ${darken(0.2, colors.clIconAccent)};
+    color: ${darken(0.2, colors.teal400)};
   }
 `;
 

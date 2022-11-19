@@ -15,7 +15,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -71,16 +71,16 @@ const Anchor = styled.div`
 
 const Form = styled.form`
   flex: 1;
-  border: 1px solid ${colors.border};
+  border: 1px solid ${colors.borderDark};
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;
 
   &:not(.focused):hover {
-    border-color: ${colors.hoveredBorder};
+    border-color: ${colors.black};
   }
 
   &.focused {
-    border-color: ${colors.focussedBorder};
+    border-color: ${colors.black};
     box-shadow: ${defaultStyles.boxShadowFocused};
   }
 `;
@@ -133,7 +133,7 @@ interface State {
 }
 
 class ParentCommentForm extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   textareaElement: HTMLTextAreaElement | null = null;
@@ -356,7 +356,7 @@ class ParentCommentForm extends PureComponent<
       messages[`${postType}CommentBodyPlaceholder`]
     );
     const smallerThanSmallTablet =
-      !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
+      !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
 
     if (!isNilOrError(authUser) && canComment) {
       return (
@@ -443,7 +443,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const ParentCommentFormWithHoCs = injectIntl<Props>(ParentCommentForm);
+const ParentCommentFormWithHoCs = injectIntl(ParentCommentForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

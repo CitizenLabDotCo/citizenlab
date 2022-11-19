@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateJoinTableInitiativesTopics < ActiveRecord::Migration[5.2]
   def change
     create_table :initiatives_topics, id: :uuid do |t|
@@ -5,6 +7,6 @@ class CreateJoinTableInitiativesTopics < ActiveRecord::Migration[5.2]
       t.references :topic, foreign_key: true, type: :uuid, index: true
     end
 
-    add_index :initiatives_topics, [:initiative_id, :topic_id], unique: true
+    add_index :initiatives_topics, %i[initiative_id topic_id], unique: true
   end
 end

@@ -1,13 +1,17 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import Tab from './admin/components/Tab';
+const Tab = React.lazy(() => import('./admin/components/Tab'));
+
+const AdminDashboardMapComponent = React.lazy(
+  () => import('./admin/containers/dashboard')
+);
 
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.dashboards': [
       {
         path: 'map',
-        container: () => import('./admin/containers/dashboard'),
+        element: <AdminDashboardMapComponent />,
       },
     ],
   },

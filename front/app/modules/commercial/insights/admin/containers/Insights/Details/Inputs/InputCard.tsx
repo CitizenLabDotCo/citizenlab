@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
 import styled from 'styled-components';
@@ -19,7 +19,7 @@ import useIdea from 'hooks/useIdea';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 const InputTitle = styled.h2`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: bold;
   margin-top: 16px;
@@ -27,7 +27,7 @@ const InputTitle = styled.h2`
 `;
 
 const InputBody = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   h1,
   h2,
   h3,

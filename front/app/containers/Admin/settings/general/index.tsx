@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { CLError, Multiloc, IOption } from 'typings';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { appLocalePairs } from 'containers/App/constants';
 import messages from '../messages';
@@ -40,7 +40,7 @@ import {
   updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
   IAppConfigurationData,
-  TAppConfigurationSetting,
+  TAppConfigurationSettingWithEnabled,
 } from 'services/appConfiguration';
 
 // Utils
@@ -89,7 +89,7 @@ interface State {
 }
 
 class SettingsGeneralTab extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscriptions: Subscription[];
@@ -191,7 +191,7 @@ class SettingsGeneralTab extends PureComponent<
             const errors = e.json.errors;
             this.setState({ errors, loading: false });
             // This error check uses an undocumented API from the backend.
-            // Needs to be reimplemented to use frontend validation when converted to a Formik form.
+            // Needs to be reimplemented to use frontend validation when converted to a React Hook Form.
             if (errors.settings && errors.settings.length > 0) {
               const foundUrlError = !!errors.settings.find(
                 (error) => error.error.fragment === '#/core/organization_site'
@@ -261,7 +261,7 @@ class SettingsGeneralTab extends PureComponent<
     }
   };
 
-  handleSettingChange = (settingName: TAppConfigurationSetting) => {
+  handleSettingChange = (settingName: TAppConfigurationSettingWithEnabled) => {
     const { appConfiguration } = this.state;
 
     if (!isNilOrError(appConfiguration)) {
@@ -467,4 +467,4 @@ class SettingsGeneralTab extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(SettingsGeneralTab);
+export default injectIntl(SettingsGeneralTab);

@@ -8,8 +8,8 @@ describe ProjectPolicy do
   let(:scope) { ProjectPolicy::Scope.new(user, Project) }
   let(:inverse_scope) { ProjectPolicy::InverseScope.new(project, User) }
 
-  context 'on a public project' do
-    let!(:project) { create(:project) }
+  context 'on a public continuous project' do
+    let!(:project) { create :continuous_project }
 
     context 'for a moderator of another project' do
       let(:user) { create(:project_moderator, projects: [create(:project)]) }
@@ -19,6 +19,7 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 2
@@ -30,8 +31,8 @@ describe ProjectPolicy do
     end
   end
 
-  context 'on a private admins project' do
-    let!(:project) { create(:private_admins_project) }
+  context 'on a continuous private admins project' do
+    let!(:project) { create :continuous_project, visible_to: 'admins' }
 
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
@@ -41,6 +42,7 @@ describe ProjectPolicy do
       it { is_expected.to permit(:update) }
       it { is_expected.to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:delete_inputs) }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1

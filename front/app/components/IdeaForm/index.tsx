@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import shallowCompare from 'utils/shallowCompare';
 import { adopt } from 'react-adopt';
 
@@ -10,7 +10,12 @@ import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
-import { Input, LocationInput } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Input,
+  LocationInput,
+} from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import UserSelect from 'components/UI/UserSelect';
@@ -37,6 +42,10 @@ import {
   IIdeaFormSchemas,
   CustomFieldCodes,
 } from 'services/ideaCustomFieldsSchemas';
+import {
+  ideaJsonFormsSchemaStream,
+  IIdeaJsonFormSchemas,
+} from 'services/ideaJsonFormsSchema';
 import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
@@ -52,9 +61,10 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import eventEmitter from 'utils/eventEmitter';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
@@ -81,12 +91,12 @@ const Form = styled.form`
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 25px;
     padding-right: 25px;
   `}
 
-  ${media.largePhone`
+  ${media.phone`
     padding-left: 18px;
     padding-right: 18px;
   `}
@@ -119,18 +129,28 @@ interface InputProps {
   proposedBudget: number | null;
   address: string;
   imageFile: UploadFile[];
+  ideaFiles: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
   hasTitleProfanityError: boolean;
   hasDescriptionProfanityError: boolean;
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
+  onImageFileAdd: (imageFile: UploadFile[]) => void;
+  onImageFileRemove: () => void;
+  onTagsChange: (selectedTopics: string[]) => void;
+  onAddressChange: (address: string) => void;
+  onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
   authorId: string | null;
+  ideaId?: string;
+  phaseId?: string;
 }
 
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   ideaAuthorChangeEnabled: GetFeatureFlagChildProps;
+  isIdeaCustomFieldsEnabled: GetFeatureFlagChildProps;
+  isDynamicIdeaFormEnabled: GetFeatureFlagChildProps;
   allowedTopics: GetTopicsChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
@@ -161,12 +181,13 @@ interface State {
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
-  ideaCustomFieldsSchemas: IIdeaFormSchemas | null;
+  ideaFilesChanged: boolean;
+  ideaCustomFieldsSchemas: IIdeaFormSchemas | IIdeaJsonFormSchemas | null;
   authorId: string | null;
 }
 
 class IdeaForm extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & WrappedComponentProps & WithRouterProps,
   State
 > {
   subscriptions: Subscription[];
@@ -194,6 +215,7 @@ class IdeaForm extends PureComponent<
       proposedBudgetError: null,
       ideaFiles: [],
       ideaFilesToRemove: [],
+      ideaFilesChanged: false,
       ideaCustomFieldsSchemas: null,
       locationError: null,
       imageError: null,
@@ -206,14 +228,36 @@ class IdeaForm extends PureComponent<
   }
 
   componentDidMount() {
-    const { projectId } = this.props;
+    const {
+      projectId,
+      ideaId,
+      phaseId,
+      isIdeaCustomFieldsEnabled,
+      isDynamicIdeaFormEnabled,
+    } = this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
     const project$: Observable<IProject | null> =
       projectByIdStream(projectId).observable;
-    const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
-      projectId as string
-    ).observable;
+
+    let ideaCustomFieldsSchemas$: Observable<
+      IIdeaFormSchemas | IIdeaJsonFormSchemas | Error | null
+    > = of(null);
+
+    if (isIdeaCustomFieldsEnabled && isDynamicIdeaFormEnabled) {
+      ideaCustomFieldsSchemas$ = ideaJsonFormsSchemaStream(
+        projectId as string,
+        phaseId,
+        ideaId
+      ).observable;
+    } else {
+      ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
+        projectId,
+        phaseId,
+        ideaId
+      ).observable;
+    }
+
     const pbContext$: Observable<IProjectData | IPhaseData | null> =
       project$.pipe(
         switchMap((project) => {
@@ -251,9 +295,11 @@ class IdeaForm extends PureComponent<
 
       pbContext$.subscribe((pbContext) => this.setState({ pbContext })),
 
-      ideaCustomFieldsSchemas$.subscribe((ideaCustomFieldsSchemas) =>
-        this.setState({ ideaCustomFieldsSchemas })
-      ),
+      ideaCustomFieldsSchemas$.subscribe((ideaCustomFieldsSchemas) => {
+        if (!isNilOrError(ideaCustomFieldsSchemas)) {
+          this.setState({ ideaCustomFieldsSchemas });
+        }
+      }),
 
       eventEmitter
         .observeEvent('IdeaFormSubmitEvent')
@@ -283,8 +329,14 @@ class IdeaForm extends PureComponent<
       remoteIdeaFiles,
       authUser,
       authorId,
+      ideaFiles: newIdeaFiles,
     } = this.props;
-    const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
+
+    const ideaFiles = this.state.ideaFilesChanged
+      ? newIdeaFiles
+      : Array.isArray(remoteIdeaFiles)
+      ? remoteIdeaFiles
+      : [];
 
     this.setState({
       selectedTopics,
@@ -321,22 +373,26 @@ class IdeaForm extends PureComponent<
 
   handleTopicsOnChange = (selectedTopics: string[]) => {
     this.setState({ selectedTopics });
+    this.props.onTagsChange(selectedTopics);
   };
 
   handleLocationOnChange = (address: string) => {
     this.setState({ address });
+    this.props.onAddressChange(address);
   };
 
   handleUploadOnAdd = (imageFile: UploadFile[]) => {
     this.setState({
       imageFile: [imageFile[0]],
     });
+    this.props.onImageFileAdd(imageFile);
   };
 
   handleUploadOnRemove = () => {
     this.setState({
       imageFile: [],
     });
+    this.props.onImageFileRemove();
   };
 
   handleBudgetOnChange = (budget: string) => {
@@ -561,18 +617,25 @@ class IdeaForm extends PureComponent<
   };
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
-    this.setState(({ ideaFiles }) => ({
-      ideaFiles: [...ideaFiles, ideaFileToAdd],
-    }));
+    const ideaFiles = [...this.state.ideaFiles, ideaFileToAdd];
+    this.setState({ ideaFiles, ideaFilesChanged: true });
+    this.props.onIdeaFilesChange(ideaFiles);
   };
 
   handleIdeaFileOnRemove = (ideaFileToRemove: UploadFile) => {
-    this.setState(({ ideaFiles, ideaFilesToRemove }) => ({
-      ideaFiles: ideaFiles.filter(
-        (ideaFile) => ideaFile.base64 !== ideaFileToRemove.base64
-      ),
-      ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove],
-    }));
+    const ideaFiles = this.state.ideaFiles.filter(
+      (ideaFile) => ideaFile.base64 !== ideaFileToRemove.base64
+    );
+
+    this.setState(({ ideaFilesToRemove }) => {
+      return {
+        ideaFiles,
+        ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove],
+        ideaFilesChanged: true,
+      };
+    });
+
+    this.props.onIdeaFilesChange(ideaFiles);
   };
 
   handleOnSubmit = () => {
@@ -598,7 +661,6 @@ class IdeaForm extends PureComponent<
       imageFile,
       ideaFiles
     );
-
     if (formClientSideIsValid) {
       const output: IIdeaFormOutput = {
         title,
@@ -618,26 +680,13 @@ class IdeaForm extends PureComponent<
 
   isFieldRequired = (
     fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaFormSchemas,
-    locale: Locale
-  ) => {
-    return ideaCustomFieldsSchemas.json_schema_multiloc[
-      locale
-    ].required.includes(fieldCode);
-  };
-
-  isFieldEnabled = (
-    fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaFormSchemas,
+    ideaCustomFieldsSchemas: IIdeaFormSchemas | IIdeaJsonFormSchemas,
     locale: Locale
   ) => {
     return (
-      ideaCustomFieldsSchemas.json_schema_multiloc?.[locale]?.properties?.[
+      ideaCustomFieldsSchemas.json_schema_multiloc[locale]?.required?.includes(
         fieldCode
-      ] &&
-      ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-        'ui:widget'
-      ] !== 'hidden'
+      ) || false
     );
   };
 
@@ -694,22 +743,22 @@ class IdeaForm extends PureComponent<
       !isNilOrError(allowedTopics) &&
       !isNilOrError(project)
     ) {
-      const topicsEnabled = this.isFieldEnabled(
+      const topicsEnabled = isFieldEnabled(
         'topic_ids',
         ideaCustomFieldsSchemas,
         locale
       );
-      const locationEnabled = this.isFieldEnabled(
+      const locationEnabled = isFieldEnabled(
         'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
-      const attachmentsEnabled = this.isFieldEnabled(
+      const attachmentsEnabled = isFieldEnabled(
         'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
-      const proposedBudgetEnabled = this.isFieldEnabled(
+      const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,
         locale
@@ -724,6 +773,26 @@ class IdeaForm extends PureComponent<
         project,
         phases
       );
+
+      const AdminBudgetFieldLabel = () => {
+        return (
+          <Box display="flex">
+            <FormattedMessage
+              {...messages.budgetLabel}
+              values={{
+                currency: tenantCurrency,
+                maxBudget: pbContext?.attributes.max_budget,
+              }}
+            />
+            <IconTooltip
+              iconColor="black"
+              marginLeft="4px"
+              icon="shield-checkered"
+              content={<FormattedMessage {...messages.adminFieldTooltip} />}
+            />
+          </Box>
+        );
+      };
 
       return (
         <Form id="idea-form" className={className}>
@@ -859,15 +928,13 @@ class IdeaForm extends PureComponent<
                   context={{ projectId }}
                 >
                   <FormElement>
-                    <FormLabel
-                      labelMessage={messages.budgetLabel}
-                      labelMessageValues={{
-                        currency: tenantCurrency,
-                        maxBudget: pbContext?.attributes.max_budget,
-                      }}
-                      htmlFor="budget"
-                      iconName="admin"
-                    />
+                    <Box display="flex">
+                      <FormLabel
+                        width="auto"
+                        labelValue={<AdminBudgetFieldLabel />}
+                        htmlFor="budget"
+                      />
+                    </Box>
                     <Input
                       id="budget"
                       error={budgetError}
@@ -1000,7 +1067,9 @@ class IdeaForm extends PureComponent<
                 id="idea-image-dropzone"
                 images={imageFile}
                 imagePreviewRatio={135 / 298}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
                 onAdd={this.handleUploadOnAdd}
                 onRemove={this.handleUploadOnRemove}
               />
@@ -1048,6 +1117,8 @@ class IdeaForm extends PureComponent<
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
   ideaAuthorChangeEnabled: <GetFeatureFlag name="idea_author_change" />,
+  isIdeaCustomFieldsEnabled: <GetFeatureFlag name="idea_custom_fields" />,
+  isDynamicIdeaFormEnabled: <GetFeatureFlag name="dynamic_idea_form" />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
@@ -1070,7 +1141,7 @@ const Data = adopt<DataProps, InputProps>({
   },
 });
 
-const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));
+const IdeaFormWitHOCs = injectIntl(withRouter(IdeaForm));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

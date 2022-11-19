@@ -1,13 +1,5 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-  lazy,
-  Suspense,
-} from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import CSSTransition from 'react-transition-group/CSSTransition';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
@@ -17,14 +9,14 @@ import {
 
 // components
 import {
-  Icon,
   IconTooltip,
-  Spinner,
   Toggle,
+  Accordion,
+  Box,
+  Title,
 } from '@citizenlab/cl2-component-library';
-const QuillMutilocWithLocaleSwitcher = lazy(
-  () => import('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher')
-);
+
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // i18n
 import T from 'components/T';
@@ -38,113 +30,13 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // typings
 import { Multiloc } from 'typings';
 
-const timeout = 250;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  border-bottom: solid 1px ${colors.separation};
-
-  &.first {
-    border-top: solid 1px ${colors.separation};
-  }
-`;
-
-const CustomFieldTitle = styled.div`
-  flex: 1;
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.l}px;
-  line-height: normal;
-  font-weight: 500;
-`;
-
-const ChevronIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
-  fill: ${colors.label};
-  margin-left: 20px;
-  transition: fill 80ms ease-out, transform 200ms ease-out;
-`;
-
-const CollapsedContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  cursor: pointer;
-
-  &.expanded {
-    ${ChevronIcon} {
-      transform: rotate(90deg);
-    }
-  }
-
-  &:hover {
-    ${ChevronIcon} {
-      fill: #000;
-    }
-  }
-`;
-
-const CollapseContainer = styled.div`
-  opacity: 0;
-  display: none;
-  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  will-change: opacity, height;
-
-  &.collapse-enter {
-    opacity: 0;
-    max-height: 0px;
-    overflow: hidden;
-    display: block;
-
-    &.collapse-enter-active {
-      opacity: 1;
-      max-height: 600px;
-      overflow: hidden;
-      display: block;
-    }
-  }
-
-  &.collapse-enter-done {
-    opacity: 1;
-    overflow: visible;
-    display: block;
-  }
-
-  &.collapse-exit {
-    opacity: 1;
-    max-height: 600px;
-    overflow: hidden;
-    display: block;
-
-    &.collapse-exit-active {
-      opacity: 0;
-      max-height: 0px;
-      overflow: hidden;
-      display: block;
-    }
-  }
-
-  &.collapse-exit-done {
-    display: none;
-  }
-`;
-
-const CollapseContainerInner = styled.div`
-  padding-top: 10px;
-  margin-bottom: 25px;
-`;
-
 const Toggles = styled.div`
   margin-bottom: 30px;
 `;
 
 const LocaleSwitcherLabelText = styled.span`
   font-weight: 500;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.m}px;
 `;
 
@@ -168,6 +60,7 @@ interface Props {
     updatedProperties: IUpdatedIdeaCustomFieldProperties
   ) => void;
   className?: string;
+  id: string;
 }
 
 const disablableFields = [
@@ -176,16 +69,16 @@ const disablableFields = [
   'idea_files_attributes',
   'proposed_budget',
 ];
-const alwaysRequiredFields = ['title', 'body'];
+const alwaysRequiredFields = ['title_multiloc', 'body_multiloc'];
 
 export default memo<Props>(
   ({
     ideaCustomField,
     collapsed,
-    first,
     onChange,
     onCollapseExpand,
     className,
+    id,
   }) => {
     const canSetEnabled = disablableFields.find(
       (field) => field === ideaCustomField.attributes.key
@@ -233,103 +126,87 @@ export default memo<Props>(
       onChange(ideaCustomField.id, { required: fieldRequired });
     }, [fieldRequired, ideaCustomField, onChange]);
 
-    const handleCollapseExpand = useCallback(() => {
-      onCollapseExpand(ideaCustomField.id);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ideaCustomField]);
+    const handleCollapseExpand = () => {
+      onCollapseExpand(id);
+    };
 
     if (!isNilOrError(ideaCustomField)) {
+      const { code, key, title_multiloc } = ideaCustomField.attributes;
+      const e2eId = code || key;
       return (
-        <Container className={`${className || ''} ${first ? 'first' : ''}`}>
-          <CollapsedContent
-            onMouseDown={removeFocusAfterMouseClick}
-            onClick={handleCollapseExpand}
-            className={`
-            ${collapsed ? 'collapsed' : 'expanded'}
-            e2e-${ideaCustomField.attributes.code}-setting-collapsed
-          `}
-          >
-            <CustomFieldTitle>
-              <T value={ideaCustomField.attributes.title_multiloc} />
-            </CustomFieldTitle>
-            <ChevronIcon name="chevron-right" />
-          </CollapsedContent>
+        <Accordion
+          title={
+            <Box
+              className={`
+              e2e-${e2eId}-setting-collapsed
+            `}
+            >
+              <Title variant="h3">
+                <T value={title_multiloc} />
+              </Title>
+            </Box>
+          }
+          isOpenByDefault={!collapsed}
+          onChange={handleCollapseExpand}
+          className={`${className || ''}`}
+        >
+          <Box pt="10px" mb="25px" w="100%">
+            <Toggles>
+              {canSetEnabled && (
+                <ToggleContainer>
+                  <StyledToggle
+                    checked={fieldEnabled}
+                    onChange={handleEnabledOnChange}
+                    label={<FormattedMessage {...messages.enabled} />}
+                    labelTextColor={colors.primary}
+                    className={`
+                      e2e-${e2eId}-enabled-toggle-label
+                    `}
+                  />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.enabledTooltipContent} />
+                    }
+                  />
+                </ToggleContainer>
+              )}
+              {fieldEnabled && canSetRequired && (
+                <ToggleContainer>
+                  <StyledToggle
+                    checked={fieldRequired}
+                    onChange={handleRequiredOnChange}
+                    label={<FormattedMessage {...messages.required} />}
+                    labelTextColor={colors.primary}
+                    className={`
+                        e2e-${e2eId}-required-toggle-label
+                    `}
+                  />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.requiredTooltipContent} />
+                    }
+                  />
+                </ToggleContainer>
+              )}
+            </Toggles>
 
-          <CSSTransition
-            classNames="collapse"
-            in={collapsed === false}
-            timeout={timeout}
-            mounOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-          >
-            <CollapseContainer>
-              <CollapseContainerInner>
-                <Toggles>
-                  {canSetEnabled && (
-                    <ToggleContainer>
-                      <StyledToggle
-                        checked={fieldEnabled}
-                        onChange={handleEnabledOnChange}
-                        label={<FormattedMessage {...messages.enabled} />}
-                        labelTextColor={colors.adminTextColor}
-                        className={`
-                        e2e-${ideaCustomField.attributes.code}-enabled-toggle-label
-                      `}
-                      />
-                      <IconTooltip
-                        content={
-                          <FormattedMessage
-                            {...messages.enabledTooltipContent}
-                          />
-                        }
-                      />
-                    </ToggleContainer>
-                  )}
-                  {fieldEnabled && canSetRequired && (
-                    <ToggleContainer>
-                      <StyledToggle
-                        checked={fieldRequired}
-                        onChange={handleRequiredOnChange}
-                        label={<FormattedMessage {...messages.required} />}
-                        labelTextColor={colors.adminTextColor}
-                        className={`
-                          e2e-${ideaCustomField.attributes.code}-required-toggle-label
-                      `}
-                      />
-                      <IconTooltip
-                        content={
-                          <FormattedMessage
-                            {...messages.requiredTooltipContent}
-                          />
-                        }
-                      />
-                    </ToggleContainer>
-                  )}
-                </Toggles>
-
-                {fieldEnabled && (
-                  <Suspense fallback={<Spinner />}>
-                    <QuillMutilocWithLocaleSwitcher
-                      id={`${ideaCustomField.id}-description`}
-                      noImages={true}
-                      noVideos={true}
-                      noAlign={true}
-                      valueMultiloc={descriptionMultiloc}
-                      onChange={handleDescriptionOnChange}
-                      label={
-                        <LocaleSwitcherLabelText>
-                          <FormattedMessage {...messages.descriptionLabel} />
-                        </LocaleSwitcherLabelText>
-                      }
-                    />
-                  </Suspense>
-                )}
-              </CollapseContainerInner>
-            </CollapseContainer>
-          </CSSTransition>
-        </Container>
+            {fieldEnabled && (
+              <QuillMutilocWithLocaleSwitcher
+                id={`${ideaCustomField.id}-description`}
+                noImages={true}
+                noVideos={true}
+                noAlign={true}
+                valueMultiloc={descriptionMultiloc}
+                onChange={handleDescriptionOnChange}
+                label={
+                  <LocaleSwitcherLabelText>
+                    <FormattedMessage {...messages.descriptionLabel} />
+                  </LocaleSwitcherLabelText>
+                }
+              />
+            )}
+          </Box>
+        </Accordion>
       );
     }
 

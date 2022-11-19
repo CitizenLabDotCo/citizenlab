@@ -1,14 +1,15 @@
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import React from 'react';
-import NavItem from './admin/components/NavItem';
+const NavItem = React.lazy(() => import('./admin/components/NavItem'));
+
+const AdminModerationComponent = React.lazy(() => import('./admin/containers'));
 
 const configuration: ModuleConfiguration = {
   routes: {
     admin: [
       {
         path: 'moderation',
-        name: 'moderation',
-        container: () => import('./admin/containers'),
+        element: <AdminModerationComponent />,
       },
     ],
   },

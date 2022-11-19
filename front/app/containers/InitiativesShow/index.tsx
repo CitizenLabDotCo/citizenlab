@@ -8,7 +8,7 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -59,9 +59,10 @@ import GetAppConfiguration, {
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
+import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -106,7 +107,7 @@ const Container = styled.main`
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -141,11 +142,11 @@ const InitiativeContainer = styled.div`
   padding-right: 60px;
   position: relative;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: 35px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -156,7 +157,7 @@ const Content = styled.div`
   width: 100%;
   display: flex;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: block;
   `}
 `;
@@ -171,7 +172,7 @@ const LeftColumn = styled.div`
     padding-right: ${columnsGapTablet}px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 0;
   `}
 `;
@@ -179,7 +180,7 @@ const LeftColumn = styled.div`
 const StyledTopics = styled(Topics)`
   margin-bottom: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-bottom: 5px;
   `}
 `;
@@ -188,7 +189,7 @@ const InitiativeHeader = styled.div`
   margin-top: -5px;
   margin-bottom: 28px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 0px;
     margin-bottom: 45px;
   `}
@@ -200,9 +201,9 @@ const InitiativeBannerContainer = styled.div`
   display: flex;
   align-items: stretch;
   position: relative;
-  background: ${({ theme }) => theme.colorMain};
+  background: ${({ theme }) => theme.colors.tenantPrimary};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: 200px;
   `}
 `;
@@ -253,7 +254,7 @@ const MobileMoreActionContainer = styled.div`
 const StyledDropdownMap = styled(DropdownMap)`
   margin-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-bottom: 20px;
   `}
 `;
@@ -273,7 +274,7 @@ const RightColumnDesktop = styled(RightColumn)`
     width: ${rightColumnWidthTablet}px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -294,7 +295,7 @@ const SharingButtonsMobile = styled(SharingButtons)`
   margin: 0;
   margin-top: 40px;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;
@@ -337,7 +338,7 @@ interface State {
 }
 
 export class InitiativesShow extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
+  Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
   officialFeedbackElement = createRef<HTMLDivElement>();
@@ -355,16 +356,16 @@ export class InitiativesShow extends PureComponent<
   }
 
   componentDidMount() {
-    const newInitiativeId = this.props.location.query?.['new_initiative_id'];
+    const queryParams = new URLSearchParams(window.location.search);
+    const newInitiativeId = queryParams.get('new_initiative_id');
 
     this.setLoaded();
-
     if (isString(newInitiativeId)) {
       setTimeout(() => {
         this.setState({ initiativeIdForSocialSharing: newInitiativeId });
       }, 1500);
 
-      window.history.replaceState(null, '', window.location.pathname);
+      clHistory.replace(window.location.pathname);
     }
   }
 
@@ -477,11 +478,9 @@ export class InitiativesShow extends PureComponent<
       const initiativeUrl = location.href;
       const initiativeId = initiative?.id;
       const initiativeBody = localize(initiative?.attributes?.body_multiloc);
-      const isDesktop = windowSize
-        ? windowSize > viewportWidths.largeTablet
-        : true;
+      const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
       const isNotDesktop = windowSize
-        ? windowSize <= viewportWidths.largeTablet
+        ? windowSize <= viewportWidths.tablet
         : false;
       const utmParams = !isNilOrError(authUser)
         ? {
@@ -634,6 +633,9 @@ export class InitiativesShow extends PureComponent<
                     twitterMessage={formatMessage(messages.twitterMessage, {
                       initiativeTitle,
                     })}
+                    facebookMessage={formatMessage(messages.facebookMessage, {
+                      initiativeTitle,
+                    })}
                     whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                       initiativeTitle,
                     })}
@@ -670,6 +672,12 @@ export class InitiativesShow extends PureComponent<
                         id="e2e-initiative-sharing-component"
                         context="initiative"
                         url={initiativeUrl}
+                        facebookMessage={formatMessage(
+                          messages.facebookMessage,
+                          {
+                            initiativeTitle,
+                          }
+                        )}
                         twitterMessage={formatMessage(messages.twitterMessage, {
                           initiativeTitle,
                         })}
@@ -700,7 +708,6 @@ export class InitiativesShow extends PureComponent<
         </>
       );
     }
-
     return (
       <>
         {!loaded && (
@@ -750,7 +757,7 @@ export class InitiativesShow extends PureComponent<
 }
 
 const InitiativesShowWithHOCs = injectLocalize<Props>(
-  injectIntl(withRouter(InitiativesShow))
+  withRouter(injectIntl(InitiativesShow))
 );
 
 const Data = adopt<DataProps, InputProps>({

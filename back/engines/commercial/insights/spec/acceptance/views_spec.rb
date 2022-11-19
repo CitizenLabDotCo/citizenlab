@@ -40,7 +40,7 @@ resource 'Views' do
       let(:name) { '' }
 
       example_request 'returns unprocessable-entity error', document: false do
-        expect(status).to eq(422)
+        assert_status 422
       end
     end
   end
@@ -50,7 +50,7 @@ resource 'Views' do
       before { admin_header_token }
 
       example_request 'lists all views' do
-        expect(status).to eq(200)
+        assert_status 200
         expect(response_data.pluck(:id)).to match_array(views.pluck(:id))
 
         data_source_ids = views.flat_map { |v| v.data_sources.pluck(:origin_id) }
@@ -71,7 +71,7 @@ resource 'Views' do
       before { header_token_for(moderator) }
 
       example_request 'lists views of moderated projects' do
-        expect(status).to eq(200)
+        assert_status 200
         expect(response_data.pluck(:id)).to eq [moderated_view.id]
       end
     end
@@ -108,7 +108,7 @@ resource 'Views' do
       end
 
       example_request 'gets one view by id' do
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response_body).to match(expected_response)
       end
     end
@@ -120,7 +120,7 @@ resource 'Views' do
 
       example 'is authorized', document: false do
         do_request
-        expect(status).to eq(200)
+        assert_status 200
       end
     end
 
@@ -202,7 +202,7 @@ resource 'Views' do
 
           ideas.each do |idea|
             topic_ids = assignments.select { |a| a.input_id == idea.id }
-                                   .map { |a| a.category.source_id }
+              .map { |a| a.category.source_id }
             expect(topic_ids).to match_array(topics.pluck(:id))
           end
         end
@@ -270,7 +270,7 @@ resource 'Views' do
 
       example_request 'updates a view' do
         expect(name).not_to eq(previous_name) # making sure we didn't reuse the same name by mistake
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response_body).to match(expected_response)
       end
 
@@ -284,7 +284,7 @@ resource 'Views' do
 
       example 'is authorized', document: false do
         do_request
-        expect(status).to eq(200)
+        assert_status 200
       end
     end
 
@@ -299,7 +299,7 @@ resource 'Views' do
       before { admin_header_token }
 
       example_request 'deletes a view' do
-        expect(status).to eq(200)
+        assert_status 200
         expect { view.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -311,7 +311,7 @@ resource 'Views' do
 
       example 'is authorized', document: false do
         do_request
-        expect(status).to eq(200)
+        assert_status 200
       end
     end
 

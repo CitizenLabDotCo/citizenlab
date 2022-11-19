@@ -70,13 +70,13 @@ export interface InputProps {
   sort?: Sort;
   search?: string;
   topics?: string[];
-  areas?: string[];
   ideaStatusId?: string;
   publicationStatus?: PublicationStatus;
   projectPublicationStatus?: ProjectPublicationStatus;
   boundingBox?: number[];
   assignee?: string;
   feedbackNeeded?: boolean;
+  filterCanModerate?: boolean;
   // prop mini Gets stripped down ideas containing only title, should never be cached,
   // and is not tested in all scenarios, but improves performance drastically.
   mini?: boolean;
@@ -85,19 +85,19 @@ export interface InputProps {
 export interface IQueryParameters {
   'page[number]': number;
   'page[size]': number;
-  projects: string[] | undefined | null;
-  phase: string | undefined | null;
-  author: string | undefined | null;
+  projects?: string[] | null;
+  phase?: string | null;
+  author?: string | null;
   sort: Sort;
-  search: string | undefined | null;
-  topics: string[] | undefined | null;
-  areas: string[] | undefined | null;
-  idea_status: string | undefined | null;
-  publication_status: PublicationStatus | undefined | null;
-  project_publication_status: ProjectPublicationStatus | undefined | null;
-  bounding_box: number[] | undefined | null;
-  assignee: string | undefined | null;
-  feedback_needed: boolean | undefined | null;
+  search?: string | null;
+  topics?: string[] | null;
+  idea_status?: string | null;
+  publication_status?: PublicationStatus | null;
+  project_publication_status?: ProjectPublicationStatus | null;
+  bounding_box?: number[] | null;
+  assignee?: string | null;
+  feedback_needed?: boolean | null;
+  filter_can_moderate?: boolean | null;
 }
 
 interface IAccumulator {
@@ -120,7 +120,6 @@ export type GetIdeasChildProps = State & {
   onChangeSearchTerm: (search: string) => void;
   onChangeSorting: (sort: Sort) => void;
   onChangeTopics: (topics: string[]) => void;
-  onChangeAreas: (areas: string[]) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
   onChangeProjectPublicationStatus: (
@@ -167,13 +166,13 @@ export default class GetIdeas extends React.Component<Props, State> {
       author: undefined,
       search: undefined,
       topics: undefined,
-      areas: undefined,
       idea_status: undefined,
       publication_status: undefined,
       project_publication_status: undefined,
       bounding_box: undefined,
       assignee: undefined,
       feedback_needed: undefined,
+      filter_can_moderate: undefined,
     };
     const queryParameters = this.getQueryParameters(
       this.defaultQueryParameters,
@@ -337,13 +336,13 @@ export default class GetIdeas extends React.Component<Props, State> {
     author: this.props.authorId,
     sort: this.props.sort as Sort,
     topics: this.props.topics,
-    areas: this.props.areas,
     idea_status: this.props.ideaStatusId,
     publication_status: this.props.publicationStatus,
     project_publication_status: this.props.projectPublicationStatus,
     bounding_box: this.props.boundingBox,
     assignee: this.props.assignee,
     feedback_needed: this.props.feedbackNeeded,
+    filter_can_moderate: this.props.filterCanModerate,
     search: undefined,
   });
 
@@ -373,13 +372,13 @@ export default class GetIdeas extends React.Component<Props, State> {
       sort: props.sort as Sort,
       search: props.search,
       topics: props.topics,
-      areas: props.areas,
       idea_status: props.ideaStatusId,
       publication_status: props.publicationStatus,
       project_publication_status: props.projectPublicationStatus,
       bounding_box: props.boundingBox,
       assignee: props.assignee,
       feedback_needed: props.feedbackNeeded,
+      filter_can_moderate: props.filterCanModerate,
     };
 
     // Omit all queryParameters that are nil.
@@ -446,14 +445,6 @@ export default class GetIdeas extends React.Component<Props, State> {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       topics,
-      'page[number]': 1,
-    });
-  };
-
-  handleAreasOnchange = (areas: string[]) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      areas,
       'page[number]': 1,
     });
   };
@@ -532,7 +523,6 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeSearchTerm: this.handleSearchOnChange,
       onChangeSorting: this.handleSortOnChange,
       onChangeTopics: this.handleTopicsOnChange,
-      onChangeAreas: this.handleAreasOnchange,
       onChangeStatus: this.handleStatusOnChange,
       onChangePublicationStatus: this.handlePublicationStatusOnChange,
       onChangeProjectPublicationStatus:

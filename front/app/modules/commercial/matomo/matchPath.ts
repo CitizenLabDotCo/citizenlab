@@ -78,16 +78,17 @@ export function getAllPathsFromRoutes(route) {
       return `${head}/${path || ''}`;
     }
   }
+
   function paths(route: RouteConfiguration, head: string) {
-    if (route.childRoutes) {
-      if (route.indexRoute) {
-        res.push(makeRoute(head, route.path));
-      }
-      route.childRoutes.forEach((r) => paths(r, makeRoute(head, route.path)));
+    // to do: check into this vs. master
+    if (route.children) {
+      res.push(makeRoute(head, route.path));
+      route.children.forEach((r) => paths(r, makeRoute(head, route.path)));
     } else {
       res.push(makeRoute(head, route.path));
     }
   }
+
   paths(route, '');
   return res.map((path) => path.replaceAll('/*', ''));
 }

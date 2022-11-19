@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::Notifications::IdeaMarkedAsSpamSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :initiating_user_first_name do |object|
     object.initiating_user&.first_name

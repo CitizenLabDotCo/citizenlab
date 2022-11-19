@@ -28,7 +28,7 @@ const FormattedStatusLabel = (
       return (
         <StatusLabel
           width={props.width}
-          backgroundColor={colors.adminOrangeIcons}
+          backgroundColor={colors.orange}
           text={<FormattedMessage {...messages.draft} />}
         />
       );
@@ -36,7 +36,7 @@ const FormattedStatusLabel = (
       return (
         <StatusLabel
           width={props.width}
-          backgroundColor={colors.adminMenuBackground}
+          backgroundColor={colors.background}
           text={<FormattedMessage {...messages.sending} />}
         />
       );
@@ -44,7 +44,7 @@ const FormattedStatusLabel = (
       return (
         <StatusLabel
           width={props.width}
-          backgroundColor={colors.clGreenSuccess}
+          backgroundColor={colors.success}
           text={<FormattedMessage {...messages.sent} />}
         />
       );
@@ -52,7 +52,7 @@ const FormattedStatusLabel = (
       return (
         <StatusLabel
           width={props.width}
-          backgroundColor={colors.clRedError}
+          backgroundColor={colors.red600}
           text={<FormattedMessage {...messages.failed} />}
         />
       );

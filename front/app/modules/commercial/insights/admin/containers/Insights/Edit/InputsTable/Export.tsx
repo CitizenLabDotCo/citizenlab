@@ -1,6 +1,7 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
 
 // components
 import Button from 'components/UI/Button';
@@ -8,7 +9,7 @@ import Button from 'components/UI/Button';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { colors } from 'utils/styleUtils';
@@ -21,7 +22,7 @@ import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 // services
 import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';
 
-type ExportProps = WithRouterProps & InjectedIntlProps;
+type ExportProps = WithRouterProps & WrappedComponentProps;
 
 const Export = ({
   params: { viewId },
@@ -40,7 +41,8 @@ const Export = ({
         `${API_PATH}/${getInsightsInputsEndpoint(viewId)}/as_xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         {
-          category: query.category,
+          categories:
+            typeof query.category === 'string' ? [query.category] : undefined,
           processed:
             query.processed === 'true'
               ? true
@@ -64,7 +66,7 @@ const Export = ({
     <div data-testid="insightsExport">
       <Button
         buttonStyle="secondary"
-        textColor={colors.adminTextColor}
+        textColor={colors.primary}
         onClick={handleExportClick}
       >
         {formatMessage(messages.inputsTableExport)}

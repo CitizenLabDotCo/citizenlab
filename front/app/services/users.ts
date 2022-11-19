@@ -2,22 +2,9 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authApiEndpoint } from './auth';
+import { TRole } from 'services/permissions/roles';
 
 const apiEndpoint = `${API_PATH}/users`;
-
-export type IProjectModeratorRole = {
-  type: 'project_moderator';
-  project_id: string;
-};
-
-type IAdminRole = {
-  type: 'admin';
-};
-
-export type IRole =
-  | IAdminRole
-  | IProjectModeratorRole
-  | IProjectFolderModeratorRole;
 
 export interface IUserAttributes {
   first_name: string;
@@ -27,7 +14,7 @@ export interface IUserAttributes {
   slug: string;
   locale: Locale;
   avatar?: ImageSizes;
-  roles?: IRole[];
+  roles?: TRole[];
   highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
   bio_multiloc: Multiloc;
   registration_completed_at: string | null;
@@ -73,8 +60,8 @@ export interface IUserUpdate {
   email?: string;
   password?: string;
   locale?: string;
-  avatar?: string;
-  roles?: IRole[];
+  avatar?: string | null;
+  roles?: TRole[];
   birthyear?: number;
   gender?: string;
   domicile?: string;

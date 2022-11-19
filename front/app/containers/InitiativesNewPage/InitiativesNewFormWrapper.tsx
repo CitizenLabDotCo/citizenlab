@@ -53,7 +53,7 @@ const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
   min-width: 530px;
   height: 900px;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-width: 230px;
   `}
 `;

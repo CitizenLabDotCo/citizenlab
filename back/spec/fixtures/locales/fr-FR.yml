@@ -1,3 +1,11 @@
 fr:
   symbols:
     outside: quelque part d'autre
+  nav_bar_items:
+    home:
+      title: Accueil
+  form_builder:
+    default_select_field:
+      title: Question par défaut
+      option1: Première option
+      option2: Deuxième option

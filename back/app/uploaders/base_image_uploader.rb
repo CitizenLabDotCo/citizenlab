@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
   # We're not caching, since the external image optimization process will
   # quickly generate a new version that should replace this one asap
   def fog_attributes
-    {'Cache-Control' => 'no-cache'}
+    { 'Cache-Control' => 'no-cache' }
   end
 
   # from https://github.com/carrierwaveuploader/carrierwave/wiki/how-to:-create-random-and-unique-filenames-for-all-versioned-files#unique-filenames
@@ -13,7 +15,7 @@ class BaseImageUploader < BaseUploader
   end
 
   def extension_allowlist
-    %w(jpg jpeg gif png)
+    %w[jpg jpeg gif png]
   end
 
   protected
@@ -25,7 +27,7 @@ class BaseImageUploader < BaseUploader
 
   # Modified from https://vivianbrown.net/blog/cropping-gifs.html
   def safe_resize_to_fill_for_gif(width, height)
-    if @file.content_type == "image/gif"
+    if @file.content_type == 'image/gif'
       gif_safe_transform! do |img|
         resize_to_fill_using_convert(img, width, height)
       end
@@ -47,14 +49,15 @@ class BaseImageUploader < BaseUploader
 
   def resize_to_fill_using_convert(img, target_width, target_height, gravity = 'Center')
     current_image = MiniMagick::Image.open(@file.path)
-    current_width, current_height = current_image.width, current_image.height
+    current_width = current_image.width
+    current_height = current_image.height
     if target_width != current_width || target_height != current_height
-      scale_x = target_width/current_width.to_f
-      scale_y = target_height/current_height.to_f
+      scale_x = target_width / current_width.to_f
+      scale_y = target_height / current_height.to_f
       if scale_x >= scale_y
         current_width = (scale_x * (current_width + 0.5)).round
         current_height = (scale_x * (current_height + 0.5)).round
-        img.resize "#{current_width}"
+        img.resize current_width
       else
         current_width = (scale_y * (current_width + 0.5)).round
         current_height = (scale_y * (current_height + 0.5)).round
@@ -62,8 +65,7 @@ class BaseImageUploader < BaseUploader
       end
     end
     img.gravity gravity
-    img.background "rgba(255,255,255,0.0)"
+    img.background 'rgba(255,255,255,0.0)'
     img.extent "#{target_width}x#{target_height}" if current_width != target_width || current_height != target_height
   end
-
 end

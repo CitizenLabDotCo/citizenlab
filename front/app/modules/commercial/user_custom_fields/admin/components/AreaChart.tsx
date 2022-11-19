@@ -1,10 +1,10 @@
 // Libraries
 import React from 'react';
-import { map, orderBy } from 'lodash-es';
+import { orderBy } from 'lodash-es';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -20,6 +20,7 @@ import HorizontalBarChart from 'containers/Admin/dashboard/users/charts/Horizont
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { convertDomicileData } from '../../utils/data';
 
 interface Props {
   startAt: string | null | undefined;
@@ -29,41 +30,32 @@ interface Props {
   className?: string;
 }
 
-const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
+export const fallbackMessages = {
+  _blank: messages._blank,
+  outside: messages.otherArea,
+};
+
+const AreaChart = (
+  props: Props & WrappedComponentProps & InjectedLocalized
+) => {
   const {
     intl: { formatMessage },
     localize,
   } = props;
 
   const convertToGraphFormat = (data: IUsersByDomicile) => {
-    if (!isNilOrError(data)) {
-      const { series, areas } = data;
+    if (isNilOrError(data)) return null;
 
-      const res = map(areas, (value, key) => ({
-        value: series.users[key] || 0,
-        name: localize(value.title_multiloc),
-        code: key,
-      }));
+    const { series, areas } = data;
 
-      if (series.users['_blank']) {
-        res.push({
-          value: series.users['_blank'],
-          name: formatMessage(messages._blank),
-          code: '_blank',
-        });
-      }
-      if (series.users['outside']) {
-        res.push({
-          value: series.users['outside'],
-          name: formatMessage(messages.otherArea),
-          code: 'outside',
-        });
-      }
-      const sortedByValue = orderBy(res, 'value', 'desc');
-      return sortedByValue.length > 0 ? sortedByValue : null;
-    }
+    const parseName = (key, value) =>
+      key in fallbackMessages
+        ? formatMessage(fallbackMessages[key])
+        : localize(value.title_multiloc);
 
-    return null;
+    const res = convertDomicileData(areas, series.users, parseName);
+    const sortedByValue = orderBy(res, 'value', 'desc');
+    return sortedByValue.length > 0 ? sortedByValue : null;
   };
 
   return (
@@ -79,8 +71,8 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   );
 };
 
-const WrappedAreaChart = injectIntl<Props>(
-  localize<Props & InjectedIntlProps>(AreaChart)
+const WrappedAreaChart = injectIntl(
+  localize<Props & WrappedComponentProps>(AreaChart)
 );
 
 export default WrappedAreaChart;

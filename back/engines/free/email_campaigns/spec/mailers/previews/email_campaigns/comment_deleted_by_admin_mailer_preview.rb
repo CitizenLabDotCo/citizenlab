@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class CommentDeletedByAdminMailerPreview < ActionMailer::Preview
     def campaign_mail
       comment = Comment.first
       recipient = User.first
-      initiating_user = User.last
       command = {
         recipient: recipient,
         event_payload: {

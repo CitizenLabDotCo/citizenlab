@@ -1,6 +1,6 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -14,8 +14,9 @@ import ContinuousSurvey from './continuous/Survey';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Title, Image } from '@citizenlab/cl2-component-library';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
+import Modal from 'components/UI/Modal';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -28,6 +29,7 @@ import useAuthUser from 'hooks/useAuthUser';
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
+import rocket from 'assets/img/rocket.png';
 
 // typings
 import { IProjectData } from 'services/projects';
@@ -35,7 +37,8 @@ import { IProjectData } from 'services/projects';
 // other
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
-import getScrollToEventId from './getScrollToEventId';
+import { getCurrentPhase } from 'services/phases';
+import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -48,13 +51,13 @@ const Container = styled.main<{ background: string }>`
   align-items: center;
   background: ${(props) => props.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
       mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
     mobileTopBarHeight}px);
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
       mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
     mobileTopBarHeight}px);
@@ -84,9 +87,39 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ? project.attributes.process_type
     : undefined;
 
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
   const locale = useLocale();
   const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
+
+  // UseEffect to handle modal state and phase parameters
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const showModalParam = queryParams.get('show_modal');
+    const phaseIdParam = queryParams.get('phase_id');
+    // Set phase id
+    if (!isNilOrError(phaseIdParam) && phaseIdUrl === null) {
+      setPhaseIdUrl(phaseIdParam);
+    }
+    // Set modal state
+    if (!isNilOrError(showModalParam)) {
+      setTimeout(() => {
+        if (!showModal) {
+          setShowModal(JSON.parse(showModalParam));
+        }
+      }, 1500);
+    }
+    // Clear URL parameters for continuous projects
+    // (handled elsewhere for timeline projects)
+    if (
+      !isNilOrError(project) &&
+      project.attributes.process_type === 'continuous'
+    ) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, [project, showModal, phaseIdUrl]);
+
   const { events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
     sort: 'newest',
@@ -100,7 +133,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const isUnauthorized = useMemo(() => {
     if (!isApiError(project)) return false;
 
-    return project.json.errors.base[0].error === 'Unauthorized!';
+    return project.json.errors?.base[0].error === 'Unauthorized!';
   }, [project]);
 
   const userSignedInButUnauthorized = !isNilOrError(user) && isUnauthorized;
@@ -121,6 +154,24 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   } else if (projectNotFound) {
     content = <ProjectNotFound />;
   } else if (projectId && processType) {
+    let phaseParticipationMethod;
+
+    if (!isNilOrError(phases)) {
+      const phase = phaseIdUrl ? getPhase(phaseIdUrl, phases) : null;
+      if (!isNilOrError(phase)) {
+        phaseParticipationMethod = phase.attributes.participation_method;
+      } else {
+        phaseParticipationMethod =
+          getCurrentPhase(phases)?.attributes.participation_method;
+      }
+    }
+
+    const config = getMethodConfig(
+      phaseParticipationMethod
+        ? phaseParticipationMethod
+        : project?.attributes.participation_method
+    );
+
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
@@ -138,6 +189,26 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           projectId={projectId}
           scrollToEventId={scrollToEventId}
         />
+        <Modal
+          opened={showModal}
+          close={() => {
+            setShowModal(false);
+          }}
+          hasSkipButton={false}
+        >
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Image width="80px" height="80px" src={rocket} alt="" />
+            <Title variant="h2" textAlign="center">
+              {config && config.getModalContent({})}
+            </Title>
+          </Box>
+        </Modal>
       </ContentWrapper>
     );
   }
@@ -157,17 +228,13 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
   ({ location: { pathname, query }, params: { slug, phaseNumber } }) => {
     const project = useProject({ projectSlug: slug });
     const phases = usePhases(project?.id);
+    const { scrollToEventId } = query;
+    const processType = project?.attributes?.process_type;
 
     const urlSegments = pathname
       .replace(/^\/|\/$/g, '')
       .split('/')
       .filter((segment) => segment !== '');
-
-    const scrollToEventId = getScrollToEventId(query, urlSegments);
-    const processType = project?.attributes.process_type;
-
-    // If processType is not available yet: don't render yet
-    if (!processType) return null;
 
     // If processType is 'timeline' but the phases aren't loaded yet: don't render yet
     if (processType === 'timeline' && isNilOrError(phases)) return null;

@@ -11,7 +11,7 @@ import useInappropriateContentFlag from '../../hooks/useInappropriateContentFlag
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`
@@ -20,7 +20,7 @@ const Container = styled.div`
 `;
 
 const WarningContent = styled.div`
-  color: ${colors.clRedError};
+  color: ${colors.red600};
   font-weight: bold;
   margin-right: 5px;
 `;
@@ -34,7 +34,7 @@ interface Props {
 const InappropriateContentWarning = ({
   inappropriateContentFlagId,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const inappropriateContentFlag = useInappropriateContentFlag(
     inappropriateContentFlagId
   );
@@ -57,7 +57,7 @@ const InappropriateContentWarning = ({
             }
           </WarningContent>
           <StyledIconTooltip
-            iconColor={colors.clRedError}
+            iconColor={colors.red600}
             content={formatMessage(messages.flagTooltip)}
           />
         </Container>

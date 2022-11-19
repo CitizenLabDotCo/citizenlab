@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SideFxGroupService
   include SideFxHelper
 
@@ -20,6 +22,6 @@ class SideFxGroupService
   def after_destroy(frozen_group, user)
     serialized_group = clean_time_attributes(frozen_group.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_group), 'deleted', user, Time.now.to_i,
-                                 payload: { group: serialized_group })
+      payload: { group: serialized_group })
   end
 end

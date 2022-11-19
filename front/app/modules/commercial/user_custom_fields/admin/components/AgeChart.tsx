@@ -1,11 +1,9 @@
 // Libraries
 import React from 'react';
-import { range, forOwn, get } from 'lodash-es';
-import moment from 'moment';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 
 // services
@@ -20,6 +18,7 @@ import BarChartByCategory from 'containers/Admin/dashboard/users/charts/BarChart
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { binBirthyear } from '../../utils/data';
 
 interface Props {
   startAt: string | null | undefined;
@@ -29,39 +28,13 @@ interface Props {
   className?: string;
 }
 
-const AgeChart = (props: Props & InjectedIntlProps) => {
+const AgeChart = (props: Props & WrappedComponentProps) => {
   const convertToGraphFormat = (data: IUsersByBirthyear) => {
-    const currentYear = moment().year();
+    if (isNilOrError(data)) return null;
 
-    if (!isNilOrError(data)) {
-      return [
-        ...range(0, 100, 10).map((minAge) => {
-          let numberOfUsers = 0;
-          const maxAge = minAge + 9;
-
-          forOwn(data.series.users, (userCount, birthYear) => {
-            const age = currentYear - parseInt(birthYear, 10);
-
-            if (age >= minAge && age <= maxAge) {
-              numberOfUsers += userCount;
-            }
-          });
-
-          return {
-            name: `${minAge} - ${maxAge}`,
-            value: numberOfUsers,
-            code: `${minAge}`,
-          };
-        }),
-        {
-          name: props.intl.formatMessage(messages._blank),
-          value: get(data.series.users, '_blank', 0),
-          code: '',
-        },
-      ];
-    }
-
-    return null;
+    return binBirthyear(data.series.users, {
+      missingBin: props.intl.formatMessage(messages._blank),
+    });
   };
 
   return (
@@ -76,4 +49,4 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
   );
 };
 
-export default injectIntl<Props>(AgeChart);
+export default injectIntl(AgeChart);

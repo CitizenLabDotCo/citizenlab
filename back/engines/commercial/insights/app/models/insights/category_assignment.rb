@@ -41,8 +41,6 @@ module Insights
     validates :input, presence: true
     validates :input_id, uniqueness: { scope: %i[input_type category], message: 'Assignment already exists' }
 
-
-
     def touch_view
       category.view.touch if previous_changes.present?
     end

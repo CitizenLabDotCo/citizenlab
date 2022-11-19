@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from surveys (originally 20190124093845)
 class CreateResponses < ActiveRecord::Migration[5.2]
   def change
@@ -13,8 +15,7 @@ class CreateResponses < ActiveRecord::Migration[5.2]
       t.jsonb :answers, default: {}
 
       t.timestamps
-      t.index ["participation_context_type", "participation_context_id"], name: "index_surveys_responses_on_participation_context"
-      
+      t.index %w[participation_context_type participation_context_id], name: 'index_surveys_responses_on_participation_context'
     end
   end
 end

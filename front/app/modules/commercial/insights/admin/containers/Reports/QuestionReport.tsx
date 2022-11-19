@@ -3,7 +3,7 @@ import useLocalize from 'hooks/useLocalize';
 import usePollOptions from 'hooks/usePollOptions';
 import usePollResponses from 'hooks/usePollResponses';
 import React, { memo } from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { IPollQuestion } from 'services/pollQuestions';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -20,7 +20,7 @@ const QuestionReport = memo(
     question,
     participationContextId,
     participationContextType,
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
 
     const pollOptions = usePollOptions(question.id);

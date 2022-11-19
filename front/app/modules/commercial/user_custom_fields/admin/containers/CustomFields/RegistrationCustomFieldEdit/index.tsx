@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // services
 import {
@@ -17,7 +18,7 @@ import {
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
@@ -30,15 +31,14 @@ const StyledGoBackButton = styled(GoBackButton)`
 `;
 
 export interface Props {
-  children: JSX.Element | null;
+  children?: React.ReactNode;
 }
 
 const RegistrationCustomFieldEdit = memo(
   ({
     intl: { formatMessage },
     params: { userCustomFieldId },
-    children,
-  }: Props & WithRouterProps & InjectedIntlProps) => {
+  }: Props & WithRouterProps & WrappedComponentProps) => {
     const localize = useLocalize();
     const userCustomField = useUserCustomField(userCustomFieldId);
     const hasOptions = (inputType: IUserCustomFieldInputType) => {
@@ -76,11 +76,6 @@ const RegistrationCustomFieldEdit = memo(
       return tabs;
     };
 
-    const childrenWithExtraProps = React.cloneElement(
-      children as React.ReactElement<any>,
-      { customField: userCustomField }
-    );
-
     if (!isNilOrError(userCustomField)) {
       return (
         <>
@@ -91,7 +86,7 @@ const RegistrationCustomFieldEdit = memo(
               title: localize(userCustomField.attributes.title_multiloc),
             }}
           >
-            {childrenWithExtraProps}
+            <RouterOutlet />
           </TabbedResource>
         </>
       );

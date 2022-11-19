@@ -16,7 +16,7 @@ import useUser from 'hooks/useUser';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styles
 import styled from 'styled-components';
@@ -133,7 +133,7 @@ const Avatar = memo(
     userId,
     hideIfNoAvatar,
     ...props
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const user = useUser({ userId });
 
     if (!isNilOrError(user)) {
@@ -150,9 +150,9 @@ const Avatar = memo(
       const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
       const containerSize = avatarSize + paddingValue * 2 + borderThickness * 2;
       const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
-      const fillColor = props.fillColor || lighten(0.2, colors.label);
-      const fillHoverColor = colors.label;
-      const borderHoverColor = colors.label;
+      const fillColor = props.fillColor || lighten(0.2, colors.textSecondary);
+      const fillHoverColor = colors.textSecondary;
+      const borderHoverColor = colors.textSecondary;
       const borderColor = props.borderColor || 'transparent';
       const bgColor = props.bgColor || 'transparent';
 
@@ -172,9 +172,7 @@ const Avatar = memo(
               size={containerSize}
               borderThickness={borderThickness}
               borderColor={borderColor}
-              borderHoverColor={
-                moderator ? colors.clRedError : borderHoverColor
-              }
+              borderHoverColor={moderator ? colors.red600 : borderHoverColor}
               bgColor={bgColor}
               padding={paddingValue}
             />
@@ -183,15 +181,13 @@ const Avatar = memo(
           {!avatarSrc && !hideIfNoAvatar && (
             <AvatarIcon
               className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
-              name="user"
+              name="user-circle"
               size={containerSize}
               fillColor={fillColor}
               fillHoverColor={fillHoverColor}
               borderThickness={borderThickness}
               borderColor={borderColor}
-              borderHoverColor={
-                moderator ? colors.clRedError : borderHoverColor
-              }
+              borderHoverColor={moderator ? colors.red600 : borderHoverColor}
               bgColor={bgColor}
               paddingValue={paddingValue}
             />
@@ -199,18 +195,18 @@ const Avatar = memo(
 
           {moderator && (
             <BadgeIcon
-              name="clShield"
+              name="cl-favicon"
               size={badgeSize}
-              fill={colors.clRedError}
+              fill={colors.red600}
             />
           )}
 
           {verified && addVerificationBadge && (
             <FeatureFlag name="verification">
               <BadgeIcon
-                name="checkmark-full"
+                name="check-circle"
                 size={badgeSize}
-                fill={colors.clGreen}
+                fill={colors.success}
               />
             </FeatureFlag>
           )}

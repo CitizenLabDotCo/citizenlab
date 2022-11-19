@@ -62,13 +62,25 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def survey_results?
+    active_moderator?
+  end
+
+  def submission_count?
+    survey_results?
+  end
+
+  def delete_inputs?
+    record.continuous? && active_moderator?
+  end
+
   def create?
     active? && admin?
   end
 
   def show?
     active_moderator? || (
-      %w(published archived).include?(record.admin_publication.publication_status) && (
+      %w[published archived].include?(record.admin_publication.publication_status) && (
         record.visible_to == 'public' || (
           user &&
           record.visible_to == 'groups' &&
@@ -113,6 +125,7 @@ class ProjectPolicy < ApplicationPolicy
       :poll_anonymous,
       :ideas_order,
       :input_term,
+      :include_all_areas,
       {
         admin_publication_attributes: [:publication_status],
         title_multiloc: CL2_SUPPORTED_LOCALES,
@@ -124,7 +137,7 @@ class ProjectPolicy < ApplicationPolicy
     ]
 
     if AppConfiguration.instance.feature_activated? 'disable_downvoting'
-      shared += %i(downvoting_enabled downvoting_method downvoting_limited_max)
+      shared += %i[downvoting_enabled downvoting_method downvoting_limited_max]
     end
     shared
   end
@@ -143,7 +156,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def active_moderator?
-    return if !active?
+    return unless active?
 
     UserRoleService.new.can_moderate_project? record, user
   end

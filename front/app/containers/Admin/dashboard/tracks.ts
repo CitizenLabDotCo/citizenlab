@@ -1,7 +1,7 @@
 export default {
   // Dashboard events
-  clickedSummaryTab: {
-    name: 'Clicked Summary Tab',
+  clickedOverviewTab: {
+    name: 'Clicked Overview Tab',
   },
   clickedUsersTab: {
     name: 'Clicked Users Tab',
@@ -14,9 +14,6 @@ export default {
   },
   filteredOnProject: {
     name: 'Filtered on Project',
-  },
-  filteredOnTopic: {
-    name: 'Filtered on Topic',
   },
   choseResource: {
     name: 'Changed resource type in select graph',

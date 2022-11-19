@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class WebApi::V1::FoldersController < ::ApplicationController
     before_action :set_project_folder, only: %i[show update destroy]
@@ -12,7 +14,7 @@ module ProjectFolders
       # Array of publication IDs for folders that
       # still have visible children left.
       parent_ids_for_visible_children = Pundit.policy_scope(current_user, Project)
-                                              .includes(:admin_publication).pluck('admin_publications.parent_id').compact
+        .includes(:admin_publication).pluck('admin_publications.parent_id').compact
       # Caches the counts of visible children for
       # the current user.
       visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
@@ -60,6 +62,8 @@ module ProjectFolders
     def update
       @project_folder.assign_attributes project_folder_params
       authorize @project_folder
+      remove_image_if_requested!(@project_folder, project_folder_params, :header_bg)
+
       SideFxService.new.before_update(@project_folder, current_user)
       if @project_folder.save
         SideFxService.new.after_update(@project_folder, current_user)
@@ -75,15 +79,22 @@ module ProjectFolders
 
     def destroy
       frozen_folder = nil
+      frozen_projects = nil
+      @project_folder.projects.each do |project|
+        SideFxProjectService.new.before_destroy(project, current_user)
+      end
       ActiveRecord::Base.transaction do
-        @project_folder.projects.each(&:destroy!)
+        frozen_projects = @project_folder.projects.each(&:destroy!)
         frozen_folder = @project_folder.destroy
       end
       if frozen_folder.destroyed?
         SideFxService.new.after_destroy(frozen_folder, current_user)
+        frozen_projects.each do |project|
+          SideFxProjectService.new.after_destroy(project, current_user)
+        end
         head :ok
       else
-        head 500
+        head :internal_server_error
       end
     end
 
