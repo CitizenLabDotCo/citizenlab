@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { isEmpty, isNaN, omit, isEqual } from 'lodash-es';
+import { isEmpty, isNaN, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -8,7 +8,10 @@ import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 import useCustomPage from 'hooks/useCustomPage';
 
 // services
-import { updateAppConfiguration } from 'services/appConfiguration';
+import {
+  updateAppConfiguration,
+  ProposalsSettings,
+} from 'services/appConfiguration';
 import { updateCustomPage } from 'services/customPages';
 
 // components
@@ -43,15 +46,9 @@ export const StyledWarning = styled(Warning)`
 `;
 
 export const StyledSectionDescription = styled(SectionDescription)`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 0;
 `;
-
-interface ProposalsSettings {
-  days_limit: number;
-  eligibility_criteria: Multiloc;
-  threshold_reached_message: Multiloc;
-  voting_threshold: number;
-}
 
 type ProposalsSettingName = keyof ProposalsSettings;
 
@@ -68,10 +65,7 @@ const InitiativesSettingsPage = () => {
       return null;
     }
 
-    return omit(appConfiguration.attributes.settings.initiatives, [
-      'allowed',
-      'enabled',
-    ]);
+    return appConfiguration.attributes.settings.initiatives;
   }, [appConfiguration]);
 
   const [localProposalsSettings, setLocalProposalsSettings] =
@@ -206,12 +200,17 @@ const InitiativesSettingsPage = () => {
     setSuccess(false);
   };
 
+  const onToggle = () => {
+    if (appConfiguration.attributes.settings.initiatives) {
+      setLocalProposalsSettings({
+        ...localProposalsSettings,
+        enabled: !appConfiguration.attributes.settings.initiatives.enabled,
+      });
+    }
+  };
+
   return (
     <Container>
-      <ProposalsFeatureToggle
-        enabled={localProposalsFeatureEnabled}
-        onToggle={onToggle}
-      />
       <SectionTitle>
         <FormattedMessage {...messages.settingsTabTitle} />
       </SectionTitle>
@@ -220,6 +219,10 @@ const InitiativesSettingsPage = () => {
       </SectionDescription>
 
       <Section>
+        <ProposalsFeatureToggle
+          enabled={localProposalsSettings.enabled}
+          onToggle={onToggle}
+        />
         <VotingThreshold
           value={localProposalsSettings.voting_threshold}
           onChange={updateProposalsSetting('voting_threshold')}

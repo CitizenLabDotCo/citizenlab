@@ -7,7 +7,7 @@ import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
-import { Toggle } from '@citizenlab/cl2-component-library';
+import { Toggle, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,7 +26,7 @@ const ProposalsFeatureToggle = ({ enabled, onToggle }: Props) => {
   return (
     <SectionField>
       <SubSectionTitleWithDescription>
-        <FormattedMessage {...messages.showProposalEnabled} />
+        <FormattedMessage {...messages.feature} />
       </SubSectionTitleWithDescription>
       <StyledSectionDescription>
         <FormattedMessage {...messages.showProposalEnabledInfo} />
@@ -34,7 +34,13 @@ const ProposalsFeatureToggle = ({ enabled, onToggle }: Props) => {
       <StyledToggle
         checked={enabled}
         onChange={onToggle}
-        label={<FormattedMessage {...messages.enabledToggle} />}
+        label={
+          <Text fontSize="s" color="blue400">
+            <FormattedMessage
+              {...(enabled ? messages.enabledToggle : messages.disabledToggle)}
+            />
+          </Text>
+        }
       />
     </SectionField>
   );

@@ -101,6 +101,14 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.enabledToggle',
     defaultMessage: 'Enabled',
   },
+  disabledToggle: {
+    id: 'app.containers.Admin.initiatives.disabledToggle',
+    defaultMessage: 'Disabled',
+  },
+  feature: {
+    id: 'app.containers.Admin.initiatives.feature',
+    defaultMessage: 'Feature',
+  },
   proposalSuccessMessage: {
     id: 'app.containers.Admin.initiatives.proposalSuccessMessage',
     defaultMessage: 'Success message',
