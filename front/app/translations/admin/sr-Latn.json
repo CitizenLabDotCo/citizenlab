@@ -610,7 +610,6 @@
   "app.containers.Admin.initiatives.settingsTabSubtitle": "Upravljajte podešavanjima predloga, uključite ih, podesite neophodan broj glasova, kao i sve relevantne informacije o procesu i kriterijumima predlaganja.",
   "app.containers.Admin.initiatives.settingsTabTitle": "Upravljajte predlozima",
   "app.containers.Admin.initiatives.showProposalEnabled": "Predlozi",
-  "app.containers.Admin.initiatives.showProposalEnabledInfo": "Uključite ili isključite mogućnost predlaganja na vašoj platformi.",
   "app.containers.Admin.initiatives.showProposalPostingEnabledInfo": "Uključite ili isključite mogućnost postavljanja novih predloga na vašu platformu. Postojeći predlozi će ostati vidljivi.",
   "app.containers.Admin.initiatives.subtitleManageTab": "Pregledajte podnete predloge, promenite njihov status i dodelite teme radi lakšeg filtriranja i kategorizacije.",
   "app.containers.Admin.initiatives.titleInitiatives": "Predlozi",

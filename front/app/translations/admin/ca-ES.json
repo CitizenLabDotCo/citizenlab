@@ -610,7 +610,6 @@
   "app.containers.Admin.initiatives.settingsTabSubtitle": "Configureu la configuració de les propostes, inclosa l'activació de la funció, l'establiment de llindars de votació i la informació rellevant i els criteris de proposta.",
   "app.containers.Admin.initiatives.settingsTabTitle": "Configureu les vostres propostes",
   "app.containers.Admin.initiatives.showProposalEnabled": "Propostes",
-  "app.containers.Admin.initiatives.showProposalEnabledInfo": "Activeu o desactiveu la funció de propostes a la vostra plataforma.",
   "app.containers.Admin.initiatives.showProposalPostingEnabledInfo": "Activeu o desactiveu les propostes noves perquè es publiquin a la vostra plataforma. Les propostes existents romandran visibles.",
   "app.containers.Admin.initiatives.subtitleManageTab": "Consulteu les propostes enviades, canvieu-ne l'estat i afegiu etiquetes per facilitar el filtratge i la categorització.",
   "app.containers.Admin.initiatives.titleInitiatives": "Propostes",

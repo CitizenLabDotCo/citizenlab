@@ -610,7 +610,6 @@
   "app.containers.Admin.initiatives.settingsTabSubtitle": "Konfigurer indstillingerne for borgerforslag, herunder aktivering af funktionen, indstilling af værdier og relevante oplysninger om kriterier for at opnå støtte til et borgerforslag.",
   "app.containers.Admin.initiatives.settingsTabTitle": "Konfigurer dine forslag",
   "app.containers.Admin.initiatives.showProposalEnabled": "Forslag",
-  "app.containers.Admin.initiatives.showProposalEnabledInfo": "Aktivér eller deaktivér borgerforslag på din platform.",
   "app.containers.Admin.initiatives.showProposalPostingEnabledInfo": "Aktivér eller deaktivér nye forslag fra at blive offentliggjort på din platform. Eksisterende forslag vil forblive synlige.",
   "app.containers.Admin.initiatives.subtitleManageTab": "Du kan se de indsendte forslag, ændre deres status og tilføje mærker for at gøre det lettere at filtrere og kategorisere dem.",
   "app.containers.Admin.initiatives.titleInitiatives": "Borgerforslag",

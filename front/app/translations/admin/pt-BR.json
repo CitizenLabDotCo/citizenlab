@@ -610,7 +610,6 @@
   "app.containers.Admin.initiatives.settingsTabSubtitle": "Defina as configurações para propostas, incluindo ativação das funções, definição de limites de votação e incluir informações relevantes e critérios da proposta",
   "app.containers.Admin.initiatives.settingsTabTitle": "Configure suas propostas",
   "app.containers.Admin.initiatives.showProposalEnabled": "Propostas",
-  "app.containers.Admin.initiatives.showProposalEnabledInfo": "Habilite ou desabilite o recurso de propostas em sua plataforma.",
   "app.containers.Admin.initiatives.showProposalPostingEnabledInfo": "Habilite ou desabilite a publicação de novas propostas em sua plataforma. As propostas existentes permanecerão visíveis.",
   "app.containers.Admin.initiatives.subtitleManageTab": "Adicionar tópicos a propostas, consultar ou alterar seus status, atualizar oficialmente os cidadãos. Contate-nos se quiser usar tópicos ou status personalizados.",
   "app.containers.Admin.initiatives.titleInitiatives": "Propostas",

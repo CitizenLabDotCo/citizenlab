@@ -610,7 +610,6 @@
   "app.containers.Admin.initiatives.settingsTabSubtitle": "Configurez la soumission de propositions, notamment l'activation de la fonctionnalité, les seuils de vote, les informations pertinentes et les critères d'éligibilité des propositions.",
   "app.containers.Admin.initiatives.settingsTabTitle": "Configurez vos propositions",
   "app.containers.Admin.initiatives.showProposalEnabled": "Propositions",
-  "app.containers.Admin.initiatives.showProposalEnabledInfo": "Activez ou désactivez la fonctionnalité \"Propositions\" sur votre plateforme.",
   "app.containers.Admin.initiatives.showProposalPostingEnabledInfo": "Activez ou désactivez la soumission de nouvelles propositions sur votre plateforme. Les propositions existantes resteront visibles.",
   "app.containers.Admin.initiatives.subtitleManageTab": "Ajouter des étiquettes aux propositions, consultez et changez leurs status, ou postez une mise à jour officielle aux participants. Contactez nous si vous souhaitez utiliser des étiquettes ou status personnalisés.",
   "app.containers.Admin.initiatives.titleInitiatives": "Propositions",
