@@ -5,6 +5,7 @@ import {
   isUndefinedOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // components
 import Button from 'components/UI/Button';
@@ -158,9 +159,13 @@ const AssignBudgetControl = memo(
 
         if (
           isNilOrError(authUser) ||
-          budgetingDisabledReason === 'not_verified'
+          budgetingDisabledReason === 'not_signed_in'
         ) {
           openSignUpInModal({
+            // This never works because 'not_signed_in' gets precedence in the BE
+            // as a disabled_reason.
+            // Even when set to true,
+            // it doesn't work.
             verification: budgetingDisabledReason === 'not_verified',
             verificationContext:
               budgetingDisabledReason === 'not_verified'
@@ -170,6 +175,17 @@ const AssignBudgetControl = memo(
                     type: participationContextType,
                   }
                 : undefined,
+          });
+        } else if (
+          !isNilOrError(authUser) &&
+          budgetingDisabledReason === 'not_verified'
+        ) {
+          openVerificationModal({
+            context: {
+              action: 'budgeting',
+              id: participationContextId,
+              type: participationContextType,
+            },
           });
         } else if (!isNilOrError(authUser) && isBudgetingEnabled) {
           setProcessing(true);
