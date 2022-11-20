@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { isEmpty, isNaN, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import { API_PATH } from 'containers/App/constants';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -13,6 +14,7 @@ import {
   ProposalsSettings,
 } from 'services/appConfiguration';
 import { updateCustomPage } from 'services/customPages';
+import streams, { IStreamParams } from 'utils/streams';
 
 // components
 import {
@@ -175,6 +177,9 @@ const InitiativesSettingsPage = () => {
       }
 
       await Promise.all(promises);
+      await streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/nav_bar_items`],
+      });
 
       setProcessing(false);
       setSuccess(true);
