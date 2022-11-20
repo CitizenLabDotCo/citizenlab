@@ -32,7 +32,7 @@ module MachineTranslations
             begin
               @translation = MachineTranslationService.new.build_translation_for @translation_attributes
               authorize @translation
-            
+
             # Occasional SQL-injection attacks have been attempted via values for attribute_name,
             # in which case we ensure @translation == nil, and rescue the resulting Pundit error.
             rescue Pundit::NotDefinedError

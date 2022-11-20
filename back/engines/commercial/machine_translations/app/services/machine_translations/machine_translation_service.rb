@@ -4,7 +4,7 @@ module MachineTranslations
   class MachineTranslationService
     def build_translation_for(translatable:, attribute_name:, locale_to:)
       multiloc = translatable[attribute_name]
-      
+
       # Occasional SQL-injection attacks have been attempted via values for attribute_name,
       # so we return nil here. This also means we can avoid associated Sentry errors.
       return nil if multiloc.nil?
