@@ -610,7 +610,6 @@
   "app.containers.Admin.initiatives.settingsTabSubtitle": "Özelliği etkinleştirme, oylama eşikleri belirleme ve ilgili bilgiler veya öneri kriterleri ekleme de dahil olmak üzere öneri ayarlarını yapılandırın.",
   "app.containers.Admin.initiatives.settingsTabTitle": "Önerilerinizi yapılandırın",
   "app.containers.Admin.initiatives.showProposalEnabled": "Öneriler",
-  "app.containers.Admin.initiatives.showProposalEnabledInfo": "Platformunuzda öneriler özelliğini etkinleştirin veya devre dışı bırakın.",
   "app.containers.Admin.initiatives.showProposalPostingEnabledInfo": "Platformunuzda yeni öneri yayınlanmasını etkinleştirin veya devre dışı bırakın. Mevcut öneriler görünür halde kalacaktır.",
   "app.containers.Admin.initiatives.subtitleManageTab": "Sunulan önerileri görüntüleyin, durumlarını değiştirin, daha kolay filtrelenmeleri ve sınıflandırılmaları için önerilere etiketler ekleyin.",
   "app.containers.Admin.initiatives.titleInitiatives": "Öneriler",

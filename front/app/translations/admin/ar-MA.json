@@ -514,7 +514,6 @@
   "app.containers.Admin.initiatives.settingsTabSubtitle": "قم بتهيئة إعدادات المُقترحات، بما في ذلك تنشيط الميزات، وتعيين حدود التصويت، وشمول المعلومات ذات الصلة، وتحديد معايير المُقترحات.",
   "app.containers.Admin.initiatives.settingsTabTitle": "قم بتهيئة مُقترحاتك",
   "app.containers.Admin.initiatives.showProposalEnabled": "المُقترحات",
-  "app.containers.Admin.initiatives.showProposalEnabledInfo": "قم بتمكين أو تعطيل ميزة المُقترحات على منصتك.",
   "app.containers.Admin.initiatives.showProposalPostingEnabledInfo": "قم بتمكين أو تعطيل ميزة نشر المُقترحات الجديدة على منصتك. ستبقى المُقترحات الحالية مرئية.",
   "app.containers.Admin.initiatives.subtitleManageTab": "أضِف موضوعات إلى المُقترحات، أو غيّر حالاتها، أو احصل على المشورة، وقدّم تحديثات رسمية للمواطنين.\nتواصل معنا في حال رغبت في استخدام الموضوعات أو الحالات المخصصة.",
   "app.containers.Admin.initiatives.titleInitiatives": "المُقترحات",

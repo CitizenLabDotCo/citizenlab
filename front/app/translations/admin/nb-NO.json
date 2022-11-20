@@ -610,7 +610,6 @@
   "app.containers.Admin.initiatives.settingsTabSubtitle": "Konfigurer innstillinger for forslag, inkludert aktivering av funksjonen, angivelse av stemmeterskler og inkludering av relevant informasjon og forslagskriterier.",
   "app.containers.Admin.initiatives.settingsTabTitle": "Konfigurer forslagene",
   "app.containers.Admin.initiatives.showProposalEnabled": "Forslag",
-  "app.containers.Admin.initiatives.showProposalEnabledInfo": "Aktiver eller deaktiver forslagsfunksjonen på plattformen.",
   "app.containers.Admin.initiatives.showProposalPostingEnabledInfo": "Aktiver eller deaktiver nye forslag fra å bli publisert på plattformen. Eksisterende forslag forblir synlige.",
   "app.containers.Admin.initiatives.subtitleManageTab": "Vis innsendte forslag, endre status og legg til tagger for enklere filtrering og kategorisering.",
   "app.containers.Admin.initiatives.titleInitiatives": "Forslag",
