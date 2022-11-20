@@ -4,6 +4,8 @@ module MachineTranslations
   class MachineTranslationService
     def build_translation_for(translatable:, attribute_name:, locale_to:)
       multiloc = translatable[attribute_name]
+      return nil if multiloc.nil?
+      
       locale_from = multiloc_to_locale_from multiloc
       text_or_html = multiloc[locale_from]
       MachineTranslation.new(

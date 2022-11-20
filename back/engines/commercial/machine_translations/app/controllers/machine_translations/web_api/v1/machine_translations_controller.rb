@@ -32,6 +32,9 @@ module MachineTranslations
             begin
               @translation = MachineTranslationService.new.build_translation_for @translation_attributes
               authorize @translation
+            rescue Pundit::NotDefinedError
+              render json: { errors: { base: [{ error: 'unable_to_translate' }] } }, status: :unprocessable_entity
+              return
             rescue ClErrors::TransactionError => e
               raise e unless e.error_key == :translatable_blank
 
