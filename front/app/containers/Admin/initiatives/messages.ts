@@ -88,10 +88,6 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.showProposalEnabled',
     defaultMessage: 'Proposals',
   },
-  showProposalEnabledInfo: {
-    id: 'app.containers.Admin.initiatives.showProposalEnabledInfo',
-    defaultMessage: 'Enable or disable the proposals feature on your platform.',
-  },
   showProposalPostingEnabledInfo: {
     id: 'app.containers.Admin.initiatives.showProposalPostingEnabledInfo',
     defaultMessage:

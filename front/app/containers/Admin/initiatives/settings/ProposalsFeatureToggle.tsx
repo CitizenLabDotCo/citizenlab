@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { StyledSectionDescription } from '.';
 
 // components
 import {
@@ -28,9 +27,6 @@ const ProposalsFeatureToggle = ({ enabled, onToggle }: Props) => {
       <SubSectionTitleWithDescription>
         <FormattedMessage {...messages.feature} />
       </SubSectionTitleWithDescription>
-      <StyledSectionDescription>
-        <FormattedMessage {...messages.showProposalEnabledInfo} />
-      </StyledSectionDescription>
       <StyledToggle
         checked={enabled}
         onChange={onToggle}
