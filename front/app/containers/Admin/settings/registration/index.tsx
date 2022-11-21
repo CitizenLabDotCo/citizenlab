@@ -119,6 +119,9 @@ const SettingsRegistrationTab = () => {
     }
   };
 
+  const userConfirmationToggleIsEnabled =
+    !!latestAppConfigSettings?.user_confirmation?.enabled;
+
   const handleUserConfirmationToggleChange = (value: boolean) => {
     const newAttributesDiff = {
       ...attributesDiff,
@@ -162,13 +165,12 @@ const SettingsRegistrationTab = () => {
                 }
               />
             </SectionField>
-            {userConfirmationIsAllowed &&
-              latestAppConfigSettings?.user_confirmation !== undefined && (
-                <ToggleUserConfirmation
-                  onChange={handleUserConfirmationToggleChange}
-                  isEnabled={latestAppConfigSettings.user_confirmation.enabled}
-                />
-              )}
+            {userConfirmationIsAllowed && (
+              <ToggleUserConfirmation
+                onChange={handleUserConfirmationToggleChange}
+                isEnabled={userConfirmationToggleIsEnabled}
+              />
+            )}
             <Outlet
               id="app.containers.Admin.settings.registrationSectionEnd"
               onCoreSettingWithMultilocChange={

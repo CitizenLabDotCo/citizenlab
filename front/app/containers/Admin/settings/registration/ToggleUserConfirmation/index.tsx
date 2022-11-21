@@ -35,9 +35,9 @@ type Props = {
 };
 
 const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
-  function handleChange() {
+  const handleChange = () => {
     onChange(!isEnabled);
-  }
+  };
 
   return (
     <Box mb="35px">
