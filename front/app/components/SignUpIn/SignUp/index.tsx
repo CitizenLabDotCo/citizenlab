@@ -8,6 +8,7 @@ import { completeRegistration } from 'services/users';
 import Header from './Header';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
+import CustomFieldsStep from 'containers/UserCustomFields/citizen/components/CustomFieldsStep';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -68,6 +69,7 @@ export interface TSignUpStepsMap {
   'auth-providers': 'auth-providers';
   'password-signup': 'password-signup';
   'account-created': 'account-created';
+  'custom-fields': 'custom-fields';
   success: 'success';
 }
 
@@ -374,6 +376,10 @@ const SignUp = ({
             />
 
             <Mounter onMount={confirmOutletsRendered} />
+
+            {activeStep === 'custom-fields' && (
+              <CustomFieldsStep onCompleted={onCompleteActiveStep} />
+            )}
 
             {activeStep === 'success' && (
               <Success onClose={handleFlowCompleted} />

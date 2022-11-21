@@ -10,7 +10,7 @@ import UserCustomFieldsForm from 'containers/UserCustomFields/citizen/components
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
+import useUserCustomFieldsSchema from '../../../hooks/useUserCustomFieldsSchema';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -26,9 +26,6 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-
-// typings
-import { TSignUpStep } from 'components/SignUpIn/SignUp';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -66,13 +63,12 @@ const SkipButton = styled(Button)`
 
 type InputProps = {
   onCompleted: (registrationData?: Record<string, any>) => void;
-  step: TSignUpStep | null;
 };
 
 interface Props extends InputProps, WrappedComponentProps {}
 
 const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
-  ({ intl: { formatMessage }, onCompleted, step }) => {
+  ({ intl: { formatMessage }, onCompleted }) => {
     const [processingSubmit, setProcessingSubmit] = useState(false);
     const [processingSkip, setProcessingSkip] = useState(false);
     const [unknownError, setUnknownError] = useState<string | null>();
@@ -115,10 +111,6 @@ const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
       setProcessingSkip(true);
       onCompleted();
     };
-
-    if (step !== 'custom-fields') {
-      return null;
-    }
 
     if (isNilOrError(authUser) || isNilOrError(userCustomFieldsSchema)) {
       return (

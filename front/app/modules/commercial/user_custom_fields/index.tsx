@@ -6,9 +6,6 @@ import {
   IUsersByRegistrationField,
 } from './services/stats';
 
-// citizen
-import CustomFieldsStep from './citizen/components/CustomFieldsStep';
-
 // admin
 const CustomFieldGraphs = React.lazy(
   () => import('./admin/components/CustomFieldGraphs')
@@ -126,10 +123,6 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
-    'app.components.SignUpIn.SignUp.step': ({
-      metaData: _metaData,
-      ...props
-    }) => <CustomFieldsStep {...props} />,
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
       CustomFieldGraphs,
     'app.containers.Admin.settings.registrationTabEnd': AllCustomFields,
