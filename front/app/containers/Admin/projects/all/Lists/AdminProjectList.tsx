@@ -58,10 +58,11 @@ const AdminProjectList = memo<Props>((_props) => {
       <>
         <StyledListHeader>
           <HeaderTitle>
-            {!isProjectFoldersEnabled && (
-              <FormattedMessage {...messages.existingProjects} />
-            )}
-            <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.title" />
+            <FormattedMessage
+              {...(isProjectFoldersEnabled
+                ? messages.projectsAndFolders
+                : messages.existingProjects)}
+            />
           </HeaderTitle>
           <Spacer />
           <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />

@@ -7,9 +7,6 @@ const NewProjectFolderButton = React.lazy(
 const ProjectFolderRow = React.lazy(
   () => import('./admin/components/ProjectFolderRow')
 );
-const ProjectFolderTitle = React.lazy(
-  () => import('./admin/components/ProjectFolderTitle')
-);
 const ProjectFolderSelect = React.lazy(
   () => import('./admin/components/ProjectFolderSelect')
 );
@@ -115,11 +112,6 @@ const configuration: ModuleConfiguration = {
         </RenderOnPublicationType>
       );
     },
-    'app.containers.AdminPage.projects.all.projectsAndFolders.title': () => (
-      <FeatureFlag name="project_folders">
-        <ProjectFolderTitle />
-      </FeatureFlag>
-    ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.actions': () => (
       <FeatureFlag name="project_folders">
         <NewProjectFolderButton />

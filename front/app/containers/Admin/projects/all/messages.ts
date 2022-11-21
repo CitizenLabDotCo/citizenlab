@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.existingProjects',
     defaultMessage: 'Existing projects',
   },
+  projectsAndFolders: {
+    id: 'app.containers.AdminPage.projects.all.projectsAndFolders',
+    defaultMessage: 'Projects and folders',
+  },
   fromScratch: {
     id: 'app.containers.AdminPage.ProjectEdit.fromScratch',
     defaultMessage: 'From scratch',

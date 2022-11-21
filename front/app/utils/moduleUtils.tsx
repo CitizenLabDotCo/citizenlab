@@ -101,10 +101,6 @@ export interface OutletsPropertyMap {
   'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
     publication: IAdminPublicationContent;
   };
-  'app.containers.AdminPage.projects.all.projectsAndFolders.title': Record<
-    string,
-    any
-  >;
   'app.components.AdminPage.projects.form.additionalInputs.inputs': {
     projectAttrs: IUpdatedProjectProperties;
     onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
