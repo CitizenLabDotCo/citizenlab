@@ -68,7 +68,7 @@ class User < ApplicationRecord
     end
 
     def enabled_roles
-      ['admin']
+      %w[admin project_moderator]
     end
 
     # Returns the user record from the database which matches the specified
@@ -200,6 +200,14 @@ class User < ApplicationRecord
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
   scope :normal_user, -> { where("roles = '[]'::jsonb") }
   scope :not_normal_user, -> { where.not("roles = '[]'::jsonb") }
+  scope :project_moderator, lambda { |project_id = nil|
+    if project_id
+      where('roles @> ?', JSON.generate([{ type: 'project_moderator', project_id: project_id }]))
+    else
+      where("roles @> '[{\"type\":\"project_moderator\"}]'")
+    end
+  }
+  scope :not_project_moderator, -> { where.not(id: project_moderator) }
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
@@ -294,17 +302,17 @@ class User < ApplicationRecord
     false
   end
 
-  def project_moderator?(_project_id = nil)
-    false
+  def project_moderator?(project_id = nil)
+    project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
   end
 
   def normal_user?
-    !admin?
+    !admin? && moderatable_project_ids.blank?
   end
 
-  # TODO: include folders?
   def moderatable_project_ids
-    []
+    # Does not include folders
+    roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
   end
 
   def add_role(type, options = {})
@@ -429,5 +437,4 @@ User.include(UserConfirmation::Extensions::User)
 User.prepend_if_ee('MultiTenancy::Patches::User')
 User.prepend_if_ee('MultiTenancy::Patches::UserConfirmation::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
-User.prepend_if_ee('ProjectManagement::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')
