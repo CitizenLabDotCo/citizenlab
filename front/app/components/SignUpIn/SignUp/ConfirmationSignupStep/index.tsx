@@ -98,9 +98,9 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
   margin-right: 4px;
 `;
 
-type Props = Pick<SignUpStepOutletProps, 'onCompleted' | 'step'>;
+type Props = Pick<SignUpStepOutletProps, 'onCompleted'>;
 
-const ConfirmationSignupStep = ({ onCompleted, step }: Props) => {
+const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   const user = useAuthUser();
   const [confirmation, setConfirmation] = useState<IConfirmation>({
     code: null,

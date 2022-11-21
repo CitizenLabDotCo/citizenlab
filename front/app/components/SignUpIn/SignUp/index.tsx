@@ -137,7 +137,6 @@ const SignUp = ({
   const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
     getDefaultSteps()
   );
-  console.log(configuration);
   const [outletsRendered, setOutletsRendered] = useState(false);
   const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
     useState<TDataLoadedPerOutlet>({});
