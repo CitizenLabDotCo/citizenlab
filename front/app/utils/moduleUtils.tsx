@@ -109,10 +109,6 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
-  'app.containers.AdminPage.projects.all.projectsAndFolders.actions': Record<
-    string,
-    any
-  >;
   'app.containers.Admin.projects.all.createProject': {
     selectedTabValue: TTabName;
   };

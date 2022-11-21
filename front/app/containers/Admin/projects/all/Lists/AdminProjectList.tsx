@@ -11,6 +11,7 @@ import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
 import Outlet from 'components/Outlet';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
+import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -65,7 +66,14 @@ const AdminProjectList = memo<Props>((_props) => {
             />
           </HeaderTitle>
           <Spacer />
-          <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />
+          {isProjectFoldersEnabled && (
+            <Button
+              linkTo={'/admin/projects/folders/new'}
+              buttonStyle="admin-dark"
+            >
+              <FormattedMessage {...messages.newProjectFolder} />
+            </Button>
+          )}
         </StyledListHeader>
         <SortableList
           items={rootLevelAdminPublications}

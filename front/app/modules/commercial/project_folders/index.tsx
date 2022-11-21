@@ -1,9 +1,7 @@
 import React, { ReactNode, lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isNilOrError } from 'utils/helperUtils';
-const NewProjectFolderButton = React.lazy(
-  () => import('./admin/components/NewProjectFolderButton')
-);
+
 const ProjectFolderRow = React.lazy(
   () => import('./admin/components/ProjectFolderRow')
 );
@@ -112,11 +110,6 @@ const configuration: ModuleConfiguration = {
         </RenderOnPublicationType>
       );
     },
-    'app.containers.AdminPage.projects.all.projectsAndFolders.actions': () => (
-      <FeatureFlag name="project_folders">
-        <NewProjectFolderButton />
-      </FeatureFlag>
-    ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
       <RenderOnPublicationType
         publication={props.publication}
