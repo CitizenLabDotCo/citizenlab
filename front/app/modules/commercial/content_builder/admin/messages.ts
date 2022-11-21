@@ -297,4 +297,12 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.trafficSources',
     defaultMessage: 'Traffic sources',
   },
+  usersByGender: {
+    id: 'app.containers.admin.ContentBuilder.trafficSources',
+    defaultMessage: 'Users by gender',
+  },
+  usersByAge: {
+    id: 'app.containers.admin.ContentBuilder.trafficSources',
+    defaultMessage: 'Users by age',
+  },
 });

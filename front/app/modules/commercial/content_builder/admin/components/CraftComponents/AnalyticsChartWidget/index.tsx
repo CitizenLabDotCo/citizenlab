@@ -11,6 +11,8 @@ import VisitorsCard from '../../../../../analytics/admin/components/VisitorsCard
 import VisitorsTrafficSourcesCard from '../../../../../analytics/admin/components/VisitorsTrafficSourcesCard';
 import { injectIntl } from '../../../../../../../utils/cl-intl';
 import messages from '../../../messages';
+import GenderChart from '../../../../../user_custom_fields/admin/components/GenderChart';
+import AgeChart from '../../../../../user_custom_fields/admin/components/AgeChart';
 
 interface Props {
   title: string;
@@ -47,6 +49,27 @@ const AnalyticsChartWidget = ({
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
           reportConfig={{ title }}
+        />
+      );
+      break;
+    case 'GenderChart':
+      // TODO: Plugin start & end dates
+      chart = (
+        <GenderChart
+          startAt={null}
+          endAt={null}
+          currentGroupFilter={undefined}
+          currentGroupFilterLabel={undefined}
+        />
+      );
+      break;
+    case 'AgeChart':
+      chart = (
+        <AgeChart
+          startAt={null}
+          endAt={null}
+          currentGroupFilter={undefined}
+          currentGroupFilterLabel={undefined}
         />
       );
       break;

@@ -368,6 +368,58 @@ const ContentBuilderToolbox = ({
             label={formatMessage(messages.trafficSources)}
           />
         </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-users-by-gender-widget"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <AnalyticsChartWidget
+                chartType="GenderChart"
+                title={formatMessage(messages.usersByGender)}
+                projectId={undefined}
+                startAtMoment={undefined}
+                endAtMoment={null}
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem
+            icon="chart-bar"
+            label={formatMessage(messages.usersByGender)}
+          />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-users-by-gender-widget"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <AnalyticsChartWidget
+                chartType="AgeChart"
+                title={formatMessage(messages.usersByAge)}
+                projectId={undefined}
+                startAtMoment={undefined}
+                endAtMoment={null}
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem
+            icon="chart-bar"
+            label={formatMessage(messages.usersByAge)}
+          />
+        </DraggableElement>
       </Box>
     </Box>
   );
