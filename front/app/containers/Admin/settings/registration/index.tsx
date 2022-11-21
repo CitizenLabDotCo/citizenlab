@@ -8,17 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
-import {
-  IAppConfigurationSettings,
-  IUpdatedAppConfigurationProperties,
-  updateAppConfiguration,
-  TAppConfigurationSettingCore,
-  TAppConfigurationSetting,
-} from 'services/appConfiguration';
-
 // components
-import messages from 'containers/Admin/settings/messages';
-
 import {
   SectionTitle,
   SubSectionTitle,
@@ -28,10 +18,21 @@ import {
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import CustomFieldSettings from './CustomFieldSettings';
 
 // i18n
+import messages from 'containers/Admin/settings/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
+
+// typings
+import {
+  IAppConfigurationSettings,
+  IUpdatedAppConfigurationProperties,
+  updateAppConfiguration,
+  TAppConfigurationSettingCore,
+  TAppConfigurationSetting,
+} from 'services/appConfiguration';
 
 export const LabelTooltip = styled.div`
   display: flex;
@@ -189,7 +190,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             />
           </form>
         </SignUpFieldsSection>
-        <Outlet id="app.containers.Admin.settings.registrationTabEnd" />
+        <CustomFieldSettings />
       </>
     );
   }

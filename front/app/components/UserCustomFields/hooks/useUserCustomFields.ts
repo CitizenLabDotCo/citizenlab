@@ -9,7 +9,9 @@ interface Props {
   inputTypes?: IUserCustomFieldInputType[];
 }
 
-export default function useUserCustomFields({ inputTypes }: Props) {
+export default function useUserCustomFields({
+  inputTypes,
+}: Props | undefined = {}) {
   const [userCustomFields, setUserCustomFields] = useState<
     IUserCustomFieldData[] | undefined | null | Error
   >(undefined);

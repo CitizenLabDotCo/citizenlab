@@ -13,9 +13,6 @@ const CustomFieldGraphs = React.lazy(
 const RegistrationFieldsToGraphs = React.lazy(
   () => import('./admin/components/RegistrationFieldsToGraphs')
 );
-const AllCustomFields = React.lazy(
-  () => import('./admin/components/CustomFields/All')
-);
 
 const RegistrationQuestions = React.lazy(
   () => import('./admin/components/RegistrationQuestions')
@@ -55,7 +52,6 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
       CustomFieldGraphs,
-    'app.containers.Admin.settings.registrationTabEnd': AllCustomFields,
     'app.containers.Admin.settings.registrationSectionEnd':
       RegistrationQuestions,
   },

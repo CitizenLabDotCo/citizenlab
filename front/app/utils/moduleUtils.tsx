@@ -259,7 +259,6 @@ export interface OutletsPropertyMap {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
   'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
   'app.components.VerificationModal.buttons': {
     onClick: (method: TVerificationMethod) => void;

@@ -10,7 +10,7 @@ import { isEqual, clone } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import customfieldMessages from '../../../../admin/containers/CustomFields/messages';
+import customfieldMessages from 'containers/Admin/settings/registration/CustomFields/messages';
 import T from 'components/T';
 
 // components
@@ -39,15 +39,11 @@ import {
   reorderCustomFieldForUsers,
   isBuiltInField,
   isHiddenField,
-} from '../../../../services/userCustomFields';
-
-// resources
-import GetUserCustomFields, {
-  GetUserCustomFieldsChildProps,
-} from '../../../../resources/GetUserCustomFields';
+} from 'components/UserCustomFields/services/userCustomFields';
 
 // styling
 import { colors } from 'utils/styleUtils';
+import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
 
 const Buttons = styled.div`
   display: flex;
@@ -83,7 +79,7 @@ interface State {
 export interface InputProps {}
 
 interface DataProps {
-  userCustomFields: GetUserCustomFieldsChildProps;
+  userCustomFields: IUserCustomFieldData[] | null | undefined;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -319,15 +315,15 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
 
 const CustomFieldsListWithHoCs = injectIntl(CustomFields);
 
-export default (inputProps: InputProps) => (
-  <GetUserCustomFields>
-    {(customFields) => (
-      <DndProvider backend={HTML5Backend}>
-        <CustomFieldsListWithHoCs
-          {...inputProps}
-          userCustomFields={customFields}
-        />
-      </DndProvider>
-    )}
-  </GetUserCustomFields>
-);
+export default (inputProps: InputProps) => {
+  const userCustomFields = useUserCustomFields();
+
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <CustomFieldsListWithHoCs
+        {...inputProps}
+        userCustomFields={userCustomFields}
+      />
+    </DndProvider>
+  );
+};
