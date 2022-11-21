@@ -8,7 +8,7 @@ import { IUserData } from 'services/users';
 // utils
 import Form from 'components/Form';
 import { forOwn } from 'lodash-es';
-import useUserJsonFormsSchemas from '../../../hooks/useUserJsonFormSchemas';
+import useUserJsonFormsSchemas from '../../../../hooks/useUserJsonFormSchemas';
 import { ErrorObject } from 'ajv';
 import messages from './messages';
 

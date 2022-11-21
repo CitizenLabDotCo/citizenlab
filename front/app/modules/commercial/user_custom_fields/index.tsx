@@ -1,26 +1,20 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-
-import CustomFieldsStep from './citizen/components/CustomFieldsStep';
-
-const UserCustomFieldsForm = React.lazy(
-  () => import('./citizen/components/UserCustomFieldsForm')
-);
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
-const RegistrationQuestions = React.lazy(
-  () => import('./admin/components/RegistrationQuestions')
-);
 import {
   IUsersByBirthyear,
   IUsersByDomicile,
   IUsersByRegistrationField,
 } from './services/stats';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-const UserCustomFieldsFormMigrated = React.lazy(
-  () => import('./citizen/components/UserCustomFieldsFormMigrated')
+
+// citizen
+import CustomFieldsStep from './citizen/components/CustomFieldsStep';
+const UserCustomFieldsForm = React.lazy(
+  () => import('./citizen/components/UserCustomFieldsForm')
 );
 
+// admin
 const CustomFieldGraphs = React.lazy(
   () => import('./admin/components/CustomFieldGraphs')
 );
@@ -63,6 +57,10 @@ const AdminCustomFieldRegistrationOptionsEditComponent = React.lazy(
     import(
       './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
     )
+);
+
+const RegistrationQuestions = React.lazy(
+  () => import('./admin/components/RegistrationQuestions')
 );
 
 declare module 'resources/GetSerieFromStream' {
@@ -151,21 +149,11 @@ const configuration: ModuleConfiguration = {
     }) => <CustomFieldsStep {...props} />,
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
       CustomFieldGraphs,
-    'app.containers.UserEditPage.ProfileForm.forms': (props) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const useJSONForm = useFeatureFlag({
-        name: 'jsonforms_custom_fields',
-      });
-      return useJSONForm ? (
-        <RenderOnCustomFields>
-          <UserCustomFieldsFormMigrated {...props} />
-        </RenderOnCustomFields>
-      ) : (
-        <RenderOnCustomFields>
-          <UserCustomFieldsForm {...props} />
-        </RenderOnCustomFields>
-      );
-    },
+    'app.containers.UserEditPage.ProfileForm.forms': (props) => (
+      <RenderOnCustomFields>
+        <UserCustomFieldsForm {...props} />
+      </RenderOnCustomFields>
+    ),
     'app.containers.Admin.settings.registrationTabEnd': AllCustomFields,
     'app.containers.Admin.settings.registrationSectionEnd':
       RegistrationQuestions,
