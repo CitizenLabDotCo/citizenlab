@@ -220,7 +220,6 @@ const ManageBudgetButton = styled(Button)``;
 
 const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)`
   min-width: 200px;
-  z-index: 900;
 `;
 
 const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
