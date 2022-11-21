@@ -14,11 +14,11 @@ class AdminApi::BulkDeleteUsersJob < ApplicationJob
       end
     end
 
-    if emails_of_not_found_users.count.positive?
-      ErrorReporter.report_msg(
-        'One or more users not found with given email(s). See extra for email(s).',
-        extra: { 'emails_of_not_found_users': emails_of_not_found_users.to_s }
-      )
-    end
+    return unless emails_of_not_found_users.count.positive?
+
+    ErrorReporter.report_msg(
+      'One or more users not found with given email(s). See additional data for email(s).',
+      extra: { emails_of_not_found_users: emails_of_not_found_users.to_s }
+    )
   end
 end
