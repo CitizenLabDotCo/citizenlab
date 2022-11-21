@@ -27,7 +27,7 @@ import useAdminPublications, {
 
 // services
 import { isAdmin } from 'services/permissions/roles';
-import { userModeratesFolder } from '../../../permissions/roles';
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // typings
 import { PublicationStatus } from 'services/projects';

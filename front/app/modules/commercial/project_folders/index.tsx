@@ -2,12 +2,6 @@ import React, { ReactNode, lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-const ProjectFolderSelect = React.lazy(
-  () => import('./admin/components/ProjectFolderSelect')
-);
-const ProjectFolderSiteMap = React.lazy(
-  () => import('containers/SiteMap/ProjectFolderSiteMapItem')
-);
 const ProjectFolderModerationRightsReceivedNotification = React.lazy(
   () =>
     import(
@@ -22,9 +16,7 @@ const ProjectFolderGoBackButton = React.lazy(
 );
 import { isProjectFolderModerator } from 'services/permissions/rules/projectFolderPermissions';
 import useAuthUser from 'hooks/useAuthUser';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
-import { AdminPublicationType } from 'services/adminPublications';
 import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 import { Navigate } from 'react-router-dom';
@@ -36,23 +28,8 @@ const FolderContainer = lazy(() => import('./admin/containers'));
 const FolderProjects = lazy(() => import('./admin/containers/projects'));
 const FolderPermissions = lazy(() => import('./admin/containers/permissions'));
 
-type RenderOnPublicationTypeProps = {
-  publication: IAdminPublicationContent;
-  publicationType: AdminPublicationType;
-  children: ReactNode;
-};
-
 type RenderOnProjectFolderModeratorProps = {
   children: ReactNode;
-};
-
-const RenderOnPublicationType = ({
-  publication,
-  publicationType,
-  children,
-}: RenderOnPublicationTypeProps) => {
-  if (publication.publicationType !== publicationType) return null;
-  return <>{children}</>;
 };
 
 const RenderOnProjectFolderModerator = ({
@@ -81,17 +58,6 @@ const RenderOnNotificationType = ({
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
-      onProjectAttributesDiffChange,
-      projectAttrs,
-    }) => (
-      <FeatureFlag name="project_folders">
-        <ProjectFolderSelect
-          projectAttrs={projectAttrs}
-          onProjectAttributesDiffChange={onProjectAttributesDiffChange}
-        />
-      </FeatureFlag>
-    ),
     'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (
       <FeatureFlag name="project_folders">
         <RenderOnProjectFolderModerator>

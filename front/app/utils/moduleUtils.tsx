@@ -13,14 +13,12 @@ import React, {
 
 import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 import PageLoading from 'components/UI/PageLoading';
-
 import { OutletRenderProps } from 'components/Outlet';
 import { ITabItem } from 'components/UI/Tabs';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
-import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
+import { IProjectData } from 'services/projects';
 
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
@@ -30,7 +28,6 @@ import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'components/Verification/verificationModalEvents';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
 import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
 import { LatLngTuple } from 'leaflet';
@@ -92,10 +89,6 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
 };
 
 export interface OutletsPropertyMap {
-  'app.components.AdminPage.projects.form.additionalInputs.inputs': {
-    projectAttrs: IUpdatedProjectProperties;
-    onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
-  };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': Record<
     string,
     any

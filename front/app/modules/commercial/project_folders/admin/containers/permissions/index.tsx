@@ -12,7 +12,7 @@ import {
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // services
-import { useProjectFolderModerators } from '../../../hooks';
+import useProjectFolderModerators from '../../../hooks/useProjectFolderModerators';
 import { IUsers, IUserData, usersStream } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
 import {

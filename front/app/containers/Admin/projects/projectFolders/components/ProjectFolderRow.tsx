@@ -40,7 +40,7 @@ const FolderIcon = styled(Icon)`
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
-import DeleteProjectFolderButton from '../../../../../modules/commercial/project_folders/admin/components/DeleteProjectFolderButton';
+import DeleteProjectFolderButton from './DeleteProjectFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 24px;

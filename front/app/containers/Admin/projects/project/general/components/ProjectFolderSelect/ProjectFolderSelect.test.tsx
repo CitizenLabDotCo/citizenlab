@@ -12,18 +12,15 @@ jest.mock('services/permissions', () => {
   return { usePermission: () => mockPermission };
 });
 
-jest.mock('modules/commercial/project_folders/hooks', () => {
-  return {
-    useProjectFolders: () => {
-      return {
-        projectFolders: [
-          { id: 'folder1', attributes: { title_multiloc: { en: 'Folder 1' } } },
-          { id: 'folder2', attributes: { title_multiloc: { en: 'Folder 2' } } },
-        ],
-      };
-    },
-  };
-});
+const projectFolders = {
+  projectFolders: [
+    { id: 'folder1', attributes: { title_multiloc: { en: 'Folder 1' } } },
+    { id: 'folder2', attributes: { title_multiloc: { en: 'Folder 2' } } },
+  ],
+};
+
+jest.mock('hooks/useProjectFolders', () => jest.fn(() => projectFolders));
+
 const mockUser = {
   data: {
     id: 'userId',

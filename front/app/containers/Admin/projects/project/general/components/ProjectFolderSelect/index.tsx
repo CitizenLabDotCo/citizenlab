@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
 // hooks
-import { useProjectFolders } from '../../../hooks';
+import useProjectFolders from 'hooks/useProjectFolders';
 import useLocalize from 'hooks/useLocalize';
 import { usePermission } from 'services/permissions';
 
@@ -54,7 +54,6 @@ const ProjectFolderSelect = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { projectFolders } = useProjectFolders({});
-
   const authUser = useAuthUser();
 
   const userCanCreateProjectInFolderOnly = usePermission({
