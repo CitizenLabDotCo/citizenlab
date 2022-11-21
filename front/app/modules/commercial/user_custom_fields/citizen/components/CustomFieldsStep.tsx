@@ -28,11 +28,7 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // typings
-import {
-  TSignUpStep,
-  TSignUpStepConfigurationObject,
-} from 'components/SignUpIn/SignUp';
-import { UserCustomFieldsInfos } from '../../services/userCustomFields';
+import { TSignUpStep } from 'components/SignUpIn/SignUp';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -70,19 +66,13 @@ const SkipButton = styled(Button)`
 
 type InputProps = {
   onCompleted: (registrationData?: Record<string, any>) => void;
-  onData: (data: TSignUpStepConfigurationObject) => void;
-  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
   step: TSignUpStep | null;
 };
 
 interface Props extends InputProps, WrappedComponentProps {}
 
-const isEnabled = (userCustomFieldsSchema: UserCustomFieldsInfos) =>
-  userCustomFieldsSchema.hasRequiredFields ||
-  userCustomFieldsSchema.hasCustomFields;
-
 const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
-  ({ onData, onDataLoaded, intl: { formatMessage }, onCompleted, step }) => {
+  ({ intl: { formatMessage }, onCompleted, step }) => {
     const [processingSubmit, setProcessingSubmit] = useState(false);
     const [processingSkip, setProcessingSkip] = useState(false);
     const [unknownError, setUnknownError] = useState<string | null>();
@@ -91,35 +81,12 @@ const CustomFieldsStep: FC<Props & WrappedComponentProps> = memo(
     const userCustomFieldsSchema = useUserCustomFieldsSchema();
 
     useEffect(() => {
-      onDataLoaded('custom-fields', false);
       trackEventByName(tracks.signUpCustomFieldsStepEntered);
       return () => {
         trackEventByName(tracks.signUpCustomFieldsStepExited);
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useEffect(() => {
-      if (!isNilOrError(userCustomFieldsSchema)) {
-        onData({
-          key: 'custom-fields',
-          position: 6,
-          stepDescriptionMessage: messages.completeYourProfile,
-          helperText: (tenant) =>
-            tenant?.attributes.settings.core.custom_fields_signup_helper_text,
-          isEnabled: () => isEnabled(userCustomFieldsSchema),
-          isActive: (authUser) => {
-            if (isNilOrError(authUser)) return false;
-            if (authUser.attributes.registration_completed_at) return false;
-
-            return isEnabled(userCustomFieldsSchema);
-          },
-          canTriggerRegistration: true,
-        });
-        onDataLoaded('custom-fields', true);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userCustomFieldsSchema]);
 
     const handleOnSubmitButtonClick = (event: FormEvent) => {
       event.preventDefault();

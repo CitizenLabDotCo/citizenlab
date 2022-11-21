@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { TSignUpConfiguration, TSignUpStepConfigurationObject } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
 
-const baseConfiguration = getDefaultSteps();
+const baseConfiguration = getDefaultSteps({} as any);
 
 const isActive = (authUser: TAuthUser) => {
   return !isNilOrError(authUser) && authUser.attributes.confirmation_required;

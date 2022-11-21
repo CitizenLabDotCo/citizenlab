@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 // services
 import { handleOnSSOClick } from 'services/singleSignOn';
 import { completeRegistration } from 'services/users';
@@ -17,6 +18,7 @@ import Mounter from 'components/Mounter';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import useUserCustomFieldsSchema from 'containers/UserCustomFields/hooks/useUserCustomFieldsSchema';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -34,8 +36,8 @@ import {
 import { signUpActiveStepChange } from 'components/SignUpIn/events';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
 
@@ -50,6 +52,7 @@ import styled, { useTheme } from 'styled-components';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
+import { UserCustomFieldsInfos } from 'containers/UserCustomFields/services/userCustomFields';
 
 const Container = styled.div`
   width: 100%;
@@ -112,14 +115,19 @@ export interface Props {
   fullScreen?: boolean;
 }
 
+interface InnerProps extends Props {
+  userCustomFieldsSchema: UserCustomFieldsInfos;
+}
+
 const SignUp = ({
-  intl: { formatMessage },
   metaData,
   onSignUpCompleted,
   onGoToSignIn,
   className,
   fullScreen,
-}: Props & WrappedComponentProps) => {
+  userCustomFieldsSchema,
+}: InnerProps) => {
+  const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
   const theme: any = useTheme();
@@ -128,7 +136,7 @@ const SignUp = ({
 
   // state
   const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
-    getDefaultSteps()
+    getDefaultSteps(userCustomFieldsSchema)
   );
   const [outletsRendered, setOutletsRendered] = useState(false);
   const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
@@ -376,4 +384,12 @@ const SignUp = ({
     </Container>
   );
 };
-export default injectIntl(SignUp);
+
+const Wrapper = (props: Props) => {
+  const userCustomFieldsSchema = useUserCustomFieldsSchema();
+  if (isNilOrError(userCustomFieldsSchema)) return null;
+
+  return <SignUp {...props} userCustomFieldsSchema={userCustomFieldsSchema} />;
+};
+
+export default Wrapper;

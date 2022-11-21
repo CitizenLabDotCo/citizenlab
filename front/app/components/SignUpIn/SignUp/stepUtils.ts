@@ -14,8 +14,11 @@ import {
 } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { ISignUpInMetaData } from 'components/SignUpIn';
+import { UserCustomFieldsInfos } from 'containers/UserCustomFields/services/userCustomFields';
 
-export function getDefaultSteps(): TSignUpConfiguration {
+export function getDefaultSteps(
+  userCustomFieldsSchema: UserCustomFieldsInfos
+): TSignUpConfiguration {
   return {
     'auth-providers': {
       key: 'auth-providers',
@@ -74,6 +77,21 @@ export function getDefaultSteps(): TSignUpConfiguration {
       },
       canTriggerRegistration: true,
     },
+    'custom-fields': {
+      key: 'custom-fields',
+      position: 6,
+      stepDescriptionMessage: messages.completeYourProfile,
+      helperText: (tenant) =>
+        tenant?.attributes.settings.core.custom_fields_signup_helper_text,
+      isEnabled: () => customFieldsEnabled(userCustomFieldsSchema),
+      isActive: (authUser) => {
+        if (isNilOrError(authUser)) return false;
+        if (authUser.attributes.registration_completed_at) return false;
+
+        return customFieldsEnabled(userCustomFieldsSchema);
+      },
+      canTriggerRegistration: true,
+    },
     success: {
       key: 'success',
       position: 7,
@@ -94,6 +112,10 @@ const byPosition = (
   a: TSignUpStepConfigurationObject,
   b: TSignUpStepConfigurationObject
 ) => a.position - b.position;
+
+const customFieldsEnabled = (userCustomFieldsSchema: UserCustomFieldsInfos) =>
+  userCustomFieldsSchema.hasRequiredFields ||
+  userCustomFieldsSchema.hasCustomFields;
 
 export function getActiveStep(
   configuration: TSignUpConfiguration,
