@@ -255,13 +255,11 @@ const AssignBudgetControl = memo(
       const isBudgetingEnabled =
         idea.attributes.action_descriptor.budgeting?.enabled;
       const isSignedIn = !isNilOrError(authUser);
-      const budgetingDisabledReason =
-        idea.attributes.action_descriptor.budgeting?.disabled_reason;
-      const isPermitted = budgetingDisabledReason !== 'not_permitted';
+      const isPermitted =
+        idea.attributes.action_descriptor.budgeting?.disabled_reason !==
+        'not_permitted';
       const hasBudgetingDisabledReason =
         !!idea.attributes.action_descriptor.budgeting?.disabled_reason;
-      const isPBContext =
-        participationContext?.attributes?.participation_method === 'budgeting';
       const isCurrentPhase =
         getCurrentPhase(phases)?.id === participationContext?.id;
       const isCurrent =
@@ -271,7 +269,9 @@ const AssignBudgetControl = memo(
         isCurrentPhase;
       const buttonMessage = getAddRemoveButtonMessage(view, isInBasket);
 
-      if (isPBContext) {
+      if (
+        participationContext?.attributes?.participation_method === 'budgeting'
+      ) {
         const addRemoveButton =
           isCurrent && isPermitted ? (
             <Button
