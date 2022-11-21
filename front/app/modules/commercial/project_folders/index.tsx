@@ -26,9 +26,6 @@ const CreateProject = React.lazy(
 const ProjectFolderGoBackButton = React.lazy(
   () => import('./citizen/components/ProjectFolderGoBackButton')
 );
-const ProjectsListItem = React.lazy(
-  () => import('containers/MainHeader/ProjectsListItem')
-);
 import { isProjectFolderModerator } from './permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -94,22 +91,6 @@ const configuration: ModuleConfiguration = {
     import('./permissions/rules');
   },
   outlets: {
-    'app.containers.Navbar.projectlist.item': (props) => {
-      const { localize, publication } = props;
-      return (
-        <RenderOnPublicationType
-          publication={publication}
-          publicationType={publicationType}
-        >
-          <ProjectsListItem
-            to={`/folders/${publication.attributes.publication_slug}`}
-            {...props}
-          >
-            {localize(publication.attributes.publication_title_multiloc)}
-          </ProjectsListItem>
-        </RenderOnPublicationType>
-      );
-    },
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
       <RenderOnPublicationType
         publication={props.publication}

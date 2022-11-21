@@ -33,7 +33,6 @@ import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
 import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
-import { Localize } from 'hooks/useLocalize';
 import { LatLngTuple } from 'leaflet';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetIdeaChildProps } from 'resources/GetIdea';
@@ -93,10 +92,6 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
 };
 
 export interface OutletsPropertyMap {
-  'app.containers.Navbar.projectlist.item': {
-    publication: IAdminPublicationContent;
-    localize: Localize;
-  };
   'app.containers.Navbar.projectsAndFolders.title': Record<string, any>;
   'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
     publication: IAdminPublicationContent;
