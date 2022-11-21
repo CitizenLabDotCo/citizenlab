@@ -137,6 +137,7 @@ const SignUp = ({
   const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
     getDefaultSteps()
   );
+  console.log(configuration);
   const [outletsRendered, setOutletsRendered] = useState(false);
   const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
     useState<TDataLoadedPerOutlet>({});
@@ -362,11 +363,7 @@ const SignUp = ({
             )}
 
             {activeStep === 'confirmation' && userConfirmation && (
-              <ConfirmationSignupStep
-                step={activeStep}
-                onData={handleOnOutletData}
-                onCompleted={onCompleteActiveStep}
-              />
+              <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
             )}
 
             <Outlet
