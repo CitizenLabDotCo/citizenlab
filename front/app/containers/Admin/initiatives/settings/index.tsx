@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { isEmpty, isNaN, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
@@ -50,6 +49,10 @@ export const StyledWarning = styled(Warning)`
 export const StyledSectionDescription = styled(SectionDescription)`
   margin-bottom: 10px;
   margin-top: 0;
+`;
+
+const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 10px;
 `;
 
 type ProposalsSettingName = keyof ProposalsSettings;
@@ -216,13 +219,9 @@ const InitiativesSettingsPage = () => {
 
   return (
     <Container>
-      <SectionTitle>
+      <StyledSectionTitle>
         <FormattedMessage {...messages.settingsTabTitle} />
-      </SectionTitle>
-      <SectionDescription>
-        <FormattedMessage {...messages.settingsTabSubtitle} />
-      </SectionDescription>
-
+      </StyledSectionTitle>
       <Section>
         <ProposalsFeatureToggle
           enabled={localProposalsSettings.enabled}

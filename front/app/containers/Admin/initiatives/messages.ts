@@ -25,11 +25,6 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.settingsTabTitle',
     defaultMessage: 'Configure your proposals',
   },
-  settingsTabSubtitle: {
-    id: 'app.containers.Admin.initiatives.settingsTabSubtitle',
-    defaultMessage:
-      'Configure the settings for proposals, including activating the feature, setting voting thresholds and including relevant information and proposal criteria.',
-  },
   titleManageTab: {
     id: 'app.containers.Admin.initiatives.titleManageTab',
     defaultMessage: 'Manage the initiatives on the platform.',
@@ -93,14 +88,6 @@ export default defineMessages({
     defaultMessage:
       'Enable or disable new proposals from being posted on your platform. Existing proposals will remain visible.',
   },
-  enabledToggle: {
-    id: 'app.containers.Admin.initiatives.enabledToggle',
-    defaultMessage: 'Enabled',
-  },
-  disabledToggle: {
-    id: 'app.containers.Admin.initiatives.disabledToggle',
-    defaultMessage: 'Disabled',
-  },
   feature: {
     id: 'app.containers.Admin.initiatives.feature',
     defaultMessage: 'Feature',
@@ -129,5 +116,9 @@ export default defineMessages({
   proposalsPageLinkText: {
     id: 'app.containers.Admin.initiatives.proposalsPageLinkText',
     defaultMessage: 'proposals information page',
+  },
+  enableProposals: {
+    id: 'app.containers.Admin.initiatives.enableProposals',
+    defaultMessage: 'Enable proposals',
   },
 });
