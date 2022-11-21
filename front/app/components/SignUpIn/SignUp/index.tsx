@@ -65,6 +65,7 @@ export interface TSignUpStepsMap {
   'auth-providers': 'auth-providers';
   'password-signup': 'password-signup';
   'account-created': 'account-created';
+  confirmation: 'confirmation';
   success: 'success';
 }
 

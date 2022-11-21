@@ -1,5 +1,5 @@
 import React, { useEffect, useState, FormEvent } from 'react';
-import { CONFIRMATION_STEP_NAME } from '../../index';
+import { CONFIRMATION_STEP_NAME } from '../../../index';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { trackEventByName } from 'utils/analytics';
@@ -10,7 +10,7 @@ import {
   confirm,
   resendCode,
   IConfirmation,
-} from '../../services/confirmation';
+} from '../../../services/confirmation';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors, CLError } from 'typings';

@@ -29,6 +29,7 @@ export interface IUserAttributes {
   custom_field_values?: Record<string, any>;
   invite_status: 'pending' | 'accepted' | null;
   verified?: boolean;
+  confirmation_required: boolean;
 }
 
 export interface IUserData {
