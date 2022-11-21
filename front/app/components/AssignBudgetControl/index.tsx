@@ -268,23 +268,7 @@ const AssignBudgetControl = memo(
           (participationContext as IProjectData).attributes
             .publication_status !== 'archived') ||
         isCurrentPhase;
-
-      const getAddRemoveButtonMessage = (view: TView) => {
-        switch (view) {
-          case 'ideaCard':
-            if (isInBasket) {
-              return messages.remove;
-            } else {
-              return messages.add;
-            }
-          case 'ideaPage':
-            if (isInBasket) {
-              return messages.removeFromMyBasket;
-            } else {
-              return messages.addToMyBasket;
-            }
-        }
-      };
+      const buttonMessage = getAddRemoveButtonMessage(view, isInBasket);
 
       if (isPBContext) {
         const addRemoveButton =
@@ -301,7 +285,7 @@ const AssignBudgetControl = memo(
                 isInBasket ? 'in-basket' : 'not-in-basket'
               }`}
             >
-              <FormattedMessage {...getAddRemoveButtonMessage(view)} />
+              <FormattedMessage {...buttonMessage} />
             </Button>
           ) : null;
 
@@ -349,3 +333,20 @@ const AssignBudgetControl = memo(
 );
 
 export default AssignBudgetControl;
+
+function getAddRemoveButtonMessage(view: TView, isInBasket: boolean) {
+  switch (view) {
+    case 'ideaCard':
+      if (isInBasket) {
+        return messages.remove;
+      } else {
+        return messages.add;
+      }
+    case 'ideaPage':
+      if (isInBasket) {
+        return messages.removeFromMyBasket;
+      } else {
+        return messages.addToMyBasket;
+      }
+  }
+}
