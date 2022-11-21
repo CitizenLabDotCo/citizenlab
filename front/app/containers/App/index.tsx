@@ -138,7 +138,6 @@ interface State {
   modalId: string | null;
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
-  visible: boolean;
   userDeletedSuccessfullyModalOpened: boolean;
   userSuccessfullyDeleted: boolean;
   signUpInModalMounted: boolean;
@@ -163,7 +162,6 @@ class App extends PureComponent<Props, State> {
       modalId: null,
       modalSlug: null,
       modalType: null,
-      visible: true,
       userDeletedSuccessfullyModalOpened: false,
       userSuccessfullyDeleted: false,
       signUpInModalMounted: false,
@@ -486,7 +484,6 @@ class App extends PureComponent<Props, State> {
       modalId,
       modalSlug,
       modalType,
-      visible,
       userDeletedSuccessfullyModalOpened,
       userSuccessfullyDeleted,
       navbarRef,
@@ -521,7 +518,7 @@ class App extends PureComponent<Props, State> {
 
     return (
       <>
-        {tenant && visible && (
+        {tenant && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider
               theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
