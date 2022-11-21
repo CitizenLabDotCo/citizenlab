@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   projectFolderImagesStream,
   IProjectFolderImages,
-} from '../services/projectFolderImages';
+} from 'services/projectFolderImages';
 
 export default function useProjectFolderImages(
   projectFolderId: string | undefined

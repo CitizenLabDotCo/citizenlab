@@ -119,11 +119,6 @@ export interface OutletsPropertyMap {
   'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': {
     onMount: () => void;
   };
-  'app.components.ProjectAndFolderCards.card': {
-    publication: IAdminPublicationContent;
-    size: 'small' | 'medium' | 'large';
-    layout: 'dynamic' | 'threecolumns' | 'twocolumns';
-  };
   'app.containers.SiteMap.ProjectsSection.listitem': {
     adminPublication: IAdminPublicationContent;
     hightestTitle: 'h3' | 'h4';

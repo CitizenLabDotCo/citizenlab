@@ -5,9 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 const ProjectFolderSelect = React.lazy(
   () => import('./admin/components/ProjectFolderSelect')
 );
-const ProjectFolderCard = React.lazy(
-  () => import('./citizen/components/ProjectFolderCard')
-);
 const ProjectFolderSiteMap = React.lazy(
   () => import('./citizen/components/ProjectFolderSiteMap')
 );
@@ -85,14 +82,6 @@ const RenderOnNotificationType = ({
 const publicationType: AdminPublicationType = 'folder';
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.ProjectAndFolderCards.card': (props) => (
-      <RenderOnPublicationType
-        publication={props.publication}
-        publicationType={publicationType}
-      >
-        <ProjectFolderCard {...props} />
-      </RenderOnPublicationType>
-    ),
     'app.containers.SiteMap.ProjectsSection.listitem': ({
       adminPublication,
       ...props

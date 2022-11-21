@@ -10,9 +10,9 @@ import {
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
-} from '../../../services/projectFolderImages';
+} from '../../../../../../services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
+import useProjectFolderImages from '../../../../../../hooks/useProjectFolderImages';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
