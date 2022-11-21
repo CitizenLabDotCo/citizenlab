@@ -1664,7 +1664,7 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Beteiligungsquote",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Prozentualer Anteil aller Teilnehmenden im Vergleich zu allen Besucher:innen",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalActiveUsers": "Aktivste BenutzerInnen insgesamt",
-  "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automated campaigns",
+  "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automatisierte E-Mails",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automatisierte E-Mails",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.bottomStatLabel": "From {quantity} campaigns",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.campaigns": "Kampagnen",
