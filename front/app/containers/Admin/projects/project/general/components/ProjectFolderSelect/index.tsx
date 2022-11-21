@@ -36,13 +36,6 @@ const StyledSectionField = styled(SectionField)`
   max-width: 100%;
   margin-bottom: 40px;
 `;
-
-declare module 'services/projects' {
-  export interface IProjectFormState {
-    folder_id?: string;
-  }
-}
-
 interface Props {
   projectAttrs: IUpdatedProjectProperties;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;

@@ -252,6 +252,7 @@ export interface IProjectFormState {
   submitState: ISubmitState;
   slug: string | null;
   showSlugErrorMessage: boolean;
+  folder_id?: string;
 }
 
 export interface IProject {
