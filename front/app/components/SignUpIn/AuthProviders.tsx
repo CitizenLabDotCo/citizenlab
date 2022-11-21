@@ -174,6 +174,12 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
           franceconnectLoginEnabled &&
           !metaData.error && <Or />}
 
+        <Outlet
+          id="app.components.SignUpIn.AuthProviders.ContainerStart"
+          flow={flow}
+          onContinue={onAuthProviderSelected}
+        />
+
         {isPasswordSigninOrSignupAllowed && (
           <StyledAuthProviderButton
             flow={flow}
@@ -233,11 +239,6 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
             />
           </StyledAuthProviderButton>
         )}
-        <Outlet
-          id="app.components.SignUpIn.AuthProviders.ContainerEnd"
-          flow={flow}
-          onContinue={onAuthProviderSelected}
-        />
 
         <Options>
           <Option>

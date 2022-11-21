@@ -1488,7 +1488,6 @@
   "app.errors.unparseable_excel": "Wybrany plik Excela nie mógł zostać przetworzony.",
   "app.errors.view_name_taken": "Widok o tej nazwie już istnieje",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Nieodpowiednie treści zostały automatycznie wykryte w poście lub komentarzu",
-  "app.modules.commercial.id_vienna_saml.components.continueWithStandardPortal": "Kontynuuj pracę z programem StandardPortal",
   "app.modules.id_cow.cancel": "Anuluj",
   "app.modules.id_cow.emptyFieldError": "To pole nie może być puste.",
   "app.modules.id_cow.helpAltText": "Pokazuje, gdzie znaleźć numer seryjny ID na dowodzie osobistym",

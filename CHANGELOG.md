@@ -1,8 +1,14 @@
 # Changelog
 
+## Unreleased
+
+## 2022-11-18
+
 ### Fixed
 
 - [CL-2052] Fix Sentry error related to failed authentication
+- [CL-2030] Vienna SSO UI & UX changes
+- [CL-2053] Minor color fixes
 
 ## 2022-11-16
 
