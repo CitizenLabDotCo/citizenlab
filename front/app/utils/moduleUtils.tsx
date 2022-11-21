@@ -205,10 +205,6 @@ export interface OutletsPropertyMap {
     ideaId: string;
     compact?: boolean;
   };
-  'app.containers.UserEditPage.ProfileForm.forms': {
-    authUser: IUserData;
-    onChange: (data: { key: string; formData: Record<string, any> }) => void;
-  };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
     projectId: string;

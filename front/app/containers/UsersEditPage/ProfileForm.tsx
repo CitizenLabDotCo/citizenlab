@@ -24,6 +24,7 @@ import {
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
+import UserCustomFieldsForm from 'containers/UserCustomFields/citizen/components/UserCustomFieldsForm';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -50,7 +51,6 @@ import styled from 'styled-components';
 // typings
 import { IOption, UploadFile, Multiloc } from 'typings';
 
-import Outlet from 'components/Outlet';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -330,10 +330,9 @@ const ProfileForm = ({
             />
           </SectionField>
         </form>
-        <Outlet
-          id="app.containers.UserEditPage.ProfileForm.forms"
-          onChange={handleCustomFieldsChange}
+        <UserCustomFieldsForm
           authUser={authUser}
+          onChange={handleCustomFieldsChange}
         />
         <Box display="flex">
           <Button

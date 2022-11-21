@@ -2,10 +2,14 @@ import React from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUserCustomFieldsSchema from 'containers/UserCustomFields/hooks/useUserCustomFieldsSchema';
 
 // components
 import UserCustomFieldsFormOld from './UserCustomFieldsFormOld';
 import UserCustomFieldsFormMigrated from './UserCustomFieldsFormMigrated';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IUserData } from 'services/users';
@@ -19,9 +23,16 @@ interface Props {
 }
 
 const UserCustomFieldsForm = (props: Props) => {
+  const userCustomFieldsSchema = useUserCustomFieldsSchema();
   const useJSONForm = useFeatureFlag({
     name: 'jsonforms_custom_fields',
   });
+
+  const hasCustomFields =
+    !isNilOrError(userCustomFieldsSchema) &&
+    userCustomFieldsSchema.hasCustomFields;
+
+  if (!hasCustomFields) return null;
 
   if (useJSONForm) {
     return <UserCustomFieldsFormMigrated {...props} />;

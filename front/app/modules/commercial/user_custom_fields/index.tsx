@@ -1,7 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
 import {
   IUsersByBirthyear,
   IUsersByDomicile,
@@ -10,9 +8,6 @@ import {
 
 // citizen
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
-const UserCustomFieldsForm = React.lazy(
-  () => import('./citizen/components/UserCustomFieldsForm')
-);
 
 // admin
 const CustomFieldGraphs = React.lazy(
@@ -92,18 +87,6 @@ declare module 'containers/Admin/dashboard/users/charts/PieChartByCategory' {
   }
 }
 
-const RenderOnCustomFields = ({ children }) => {
-  const userCustomFieldsSchema = useUserCustomFieldsSchema();
-
-  const hasCustomFields =
-    !isNilOrError(userCustomFieldsSchema) &&
-    userCustomFieldsSchema.hasCustomFields;
-
-  if (!hasCustomFields) return null;
-
-  return <>{children}</>;
-};
-
 const configuration: ModuleConfiguration = {
   routes: {
     admin: [
@@ -149,11 +132,6 @@ const configuration: ModuleConfiguration = {
     }) => <CustomFieldsStep {...props} />,
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
       CustomFieldGraphs,
-    'app.containers.UserEditPage.ProfileForm.forms': (props) => (
-      <RenderOnCustomFields>
-        <UserCustomFieldsForm {...props} />
-      </RenderOnCustomFields>
-    ),
     'app.containers.Admin.settings.registrationTabEnd': AllCustomFields,
     'app.containers.Admin.settings.registrationSectionEnd':
       RegistrationQuestions,

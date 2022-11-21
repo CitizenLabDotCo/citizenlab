@@ -6,7 +6,7 @@ import { isObject } from 'lodash-es';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import UserCustomFieldsForm from '../../citizen/components/UserCustomFieldsForm';
+import UserCustomFieldsForm from 'containers/UserCustomFields/citizen/components/UserCustomFieldsForm';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
