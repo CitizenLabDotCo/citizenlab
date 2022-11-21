@@ -119,10 +119,6 @@ export interface OutletsPropertyMap {
   'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': {
     onMount: () => void;
   };
-  'app.containers.SiteMap.ProjectsSection.listitem': {
-    adminPublication: IAdminPublicationContent;
-    hightestTitle: 'h3' | 'h4';
-  };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;
   };

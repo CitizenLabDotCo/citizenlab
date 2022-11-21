@@ -13,7 +13,7 @@ import messages from 'containers/SiteMap/messages';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
-import useProjectFolder from '../../../hooks/useProjectFolder';
+import useProjectFolder from 'hooks/useProjectFolder';
 
 // typings
 import { PublicationStatus } from 'services/projects';

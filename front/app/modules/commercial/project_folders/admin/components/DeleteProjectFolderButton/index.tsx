@@ -7,7 +7,7 @@ import messages from './messages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
-import { deleteProjectFolder } from '../../../services/projectFolders';
+import { deleteProjectFolder } from 'services/projectFolders';
 
 // components
 import { RowButton } from './StyledComponents';

@@ -3,17 +3,14 @@ import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  addProjectFolder,
-  updateProjectFolder,
-} from '../../../services/projectFolders';
+import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
-} from '../../../../../../services/projectFolderImages';
+} from 'services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import useProjectFolderImages from '../../../../../../hooks/useProjectFolderImages';
-import useProjectFolder from '../../../hooks/useProjectFolder';
+import useProjectFolderImages from 'hooks/useProjectFolderImages';
+import useProjectFolder from 'hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';

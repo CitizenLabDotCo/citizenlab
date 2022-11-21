@@ -7,7 +7,7 @@ import SharingButtons from 'components/Sharing/SharingButtons';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectFolder from '../../../hooks/useProjectFolder';
+import useProjectFolder from 'hooks/useProjectFolder';
 
 // i18n
 import T from 'components/T';

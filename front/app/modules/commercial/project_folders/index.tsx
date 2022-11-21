@@ -6,7 +6,7 @@ const ProjectFolderSelect = React.lazy(
   () => import('./admin/components/ProjectFolderSelect')
 );
 const ProjectFolderSiteMap = React.lazy(
-  () => import('./citizen/components/ProjectFolderSiteMap')
+  () => import('containers/SiteMap/ProjectFolderSiteMapItem')
 );
 const ProjectFolderModerationRightsReceivedNotification = React.lazy(
   () =>
@@ -79,23 +79,8 @@ const RenderOnNotificationType = ({
   return null;
 };
 
-const publicationType: AdminPublicationType = 'folder';
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.SiteMap.ProjectsSection.listitem': ({
-      adminPublication,
-      ...props
-    }) => (
-      <RenderOnPublicationType
-        publication={adminPublication}
-        publicationType={publicationType}
-      >
-        <ProjectFolderSiteMap
-          projectFolderId={adminPublication.relationships.publication.data.id}
-          {...props}
-        />
-      </RenderOnPublicationType>
-    ),
     'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
       onProjectAttributesDiffChange,
       projectAttrs,

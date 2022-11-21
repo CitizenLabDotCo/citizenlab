@@ -22,7 +22,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // typings
-import { IProjectFolderData } from '../../../services/projectFolders';
+import { IProjectFolderData } from 'services/projectFolders';
 
 interface Props {
   projectFolder: IProjectFolderData;

@@ -13,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 
 // typings
-import { IProjectFolderData } from '../../../services/projectFolders';
+import { IProjectFolderData } from 'services/projectFolders';
 
 const Container = styled.div``;
 

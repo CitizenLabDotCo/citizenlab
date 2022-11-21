@@ -17,7 +17,7 @@ import ContentContainer from 'components/ContentContainer';
 import useAuthUser from 'hooks/useAuthUser';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useProjectFolder from '../../../hooks/useProjectFolder';
+import useProjectFolder from 'hooks/useProjectFolder';
 import useAdminPublications from 'hooks/useAdminPublications';
 
 // i18n
@@ -30,7 +30,7 @@ import { maxPageWidth } from './styles';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { IProjectFolderData } from '../../../services/projectFolders';
+import { IProjectFolderData } from 'services/projectFolders';
 import { PublicationStatus } from 'services/projects';
 
 const Container = styled.main`

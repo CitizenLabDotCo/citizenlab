@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { IProjectFolderData } from '../../../services/projectFolders';
+import { IProjectFolderData } from 'services/projectFolders';
 
 const Container = styled.div`
   width: 100%;

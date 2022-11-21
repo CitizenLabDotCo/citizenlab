@@ -1,6 +1,6 @@
-import { IUserData } from 'services/users';
+import { IUserData, IUser } from 'services/users';
 import { isAdmin, TRole } from 'services/permissions/roles';
-import { IProjectFolderData } from '../../../modules/commercial/project_folders/services/projectFolders';
+import { IProjectFolderData } from '../../projectFolders';
 import {
   definePermissionRule,
   IRouteItem,
@@ -9,7 +9,6 @@ import {
   canAccessRoute,
   isModeratorRoute,
 } from 'services/permissions/rules/routePermissions';
-import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
