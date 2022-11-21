@@ -14,7 +14,6 @@ import {
   IUpdatedAppConfigurationProperties,
   updateAppConfiguration,
   TAppConfigurationSettingCore,
-  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 
 // components
@@ -43,9 +42,7 @@ const SignUpFieldsSection = styled.div`
   margin-bottom: 60px;
 `;
 
-interface Props {}
-
-const SettingsRegistrationTab = (_props: Props) => {
+const SettingsRegistrationTab = () => {
   const appConfig = useAppConfiguration();
   const userConfirmationIsAllowed = useFeatureFlag({
     name: 'user_confirmation',
@@ -100,19 +97,6 @@ const SettingsRegistrationTab = (_props: Props) => {
       setAttributesDiff(newAttributesDiff);
     };
 
-  const handleSettingOnChange =
-    (setting: TAppConfigurationSetting) => (value: any) => {
-      const newAttributesDiff = {
-        ...attributesDiff,
-        settings: {
-          ...(attributesDiff.settings || {}),
-          [setting]: value,
-        },
-      };
-
-      setAttributesDiff(newAttributesDiff);
-    };
-
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) {
       event.preventDefault();
@@ -133,6 +117,18 @@ const SettingsRegistrationTab = (_props: Props) => {
       setIsFormSubmitting(false);
       setErrors(isCLErrorJSON(error) ? error.json.errors : error);
     }
+  };
+
+  const handleUserConfirmationToggleChange = (value: boolean) => {
+    const newAttributesDiff = {
+      ...attributesDiff,
+      settings: {
+        ...(attributesDiff.settings || {}),
+        user_confirmation: { enabled: value },
+      },
+    };
+
+    setAttributesDiff(newAttributesDiff);
   };
 
   if (!isNilOrError(latestAppConfigSettings)) {
@@ -169,23 +165,17 @@ const SettingsRegistrationTab = (_props: Props) => {
             {userConfirmationIsAllowed &&
               latestAppConfigSettings?.user_confirmation !== undefined && (
                 <ToggleUserConfirmation
-                  onSettingChange={handleSettingOnChange}
-                  userConfirmationSetting={
-                    latestAppConfigSettings.user_confirmation
-                  }
+                  onChange={handleUserConfirmationToggleChange}
+                  isEnabled={latestAppConfigSettings.user_confirmation.enabled}
                 />
               )}
             <Outlet
               id="app.containers.Admin.settings.registrationSectionEnd"
-              onSettingChange={handleSettingOnChange}
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
               }
               customFieldsSignupHelperTextMultiloc={
                 latestAppConfigSettings.core.custom_fields_signup_helper_text
-              }
-              userConfirmationSetting={
-                latestAppConfigSettings.user_confirmation
               }
             />
             <SubmitWrapper
