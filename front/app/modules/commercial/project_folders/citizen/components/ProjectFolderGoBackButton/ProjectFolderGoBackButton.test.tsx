@@ -18,9 +18,7 @@ const projectFolderData = {
 };
 
 jest.mock('utils/cl-router/history');
-jest.mock('../../../hooks/useProjectFolder', () =>
-  jest.fn(() => projectFolderData)
-);
+jest.mock('hooks/useProjectFolder', () => jest.fn(() => projectFolderData));
 jest.mock('hooks/useLocale');
 jest.mock('hooks/useLocalize');
 
