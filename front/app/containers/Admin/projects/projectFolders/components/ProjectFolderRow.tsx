@@ -17,7 +17,7 @@ import styled from 'styled-components';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -27,7 +27,7 @@ import useAdminPublications, {
 
 // services
 import { isAdmin } from 'services/permissions/roles';
-import { userModeratesFolder } from '../../../permissions/roles';
+import { userModeratesFolder } from '../../../../../services/permissions/rules/projectFolderPermissions';
 
 // typings
 import { PublicationStatus } from 'services/projects';
@@ -40,7 +40,7 @@ const FolderIcon = styled(Icon)`
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
-import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
+import DeleteProjectFolderButton from '../../../../../modules/commercial/project_folders/admin/components/DeleteProjectFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 24px;

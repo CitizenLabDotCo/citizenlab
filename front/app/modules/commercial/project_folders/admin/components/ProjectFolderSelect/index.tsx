@@ -9,7 +9,7 @@ import { usePermission } from 'services/permissions';
 
 // services
 import { IUpdatedProjectProperties } from 'services/projects';
-import { userModeratesFolder } from 'modules/commercial/project_folders/permissions/roles';
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // components
 import {

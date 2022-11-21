@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-import { userModeratesFolder } from '../../../permissions/roles';
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';

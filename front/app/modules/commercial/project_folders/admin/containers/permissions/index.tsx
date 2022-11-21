@@ -6,7 +6,7 @@ import { IOption } from 'typings';
 import {
   isProjectFolderModerator,
   userModeratesFolder,
-} from '../../../permissions/roles';
+} from 'services/permissions/rules/projectFolderPermissions';
 
 // utils
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';

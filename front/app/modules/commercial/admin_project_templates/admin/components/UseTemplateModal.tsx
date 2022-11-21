@@ -19,7 +19,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useAuthUser from 'hooks/useAuthUser';
 import { useProjectFolders } from 'modules/commercial/project_folders/hooks';
-import { userModeratesFolder } from 'modules/commercial/project_folders/permissions/roles';
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 import useLocalize from 'hooks/useLocalize';
 
 // components

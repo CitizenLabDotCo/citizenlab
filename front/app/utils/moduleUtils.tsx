@@ -92,10 +92,6 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
 };
 
 export interface OutletsPropertyMap {
-  'app.containers.Navbar.projectsAndFolders.title': Record<string, any>;
-  'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
-    publication: IAdminPublicationContent;
-  };
   'app.components.AdminPage.projects.form.additionalInputs.inputs': {
     projectAttrs: IUpdatedProjectProperties;
     onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;

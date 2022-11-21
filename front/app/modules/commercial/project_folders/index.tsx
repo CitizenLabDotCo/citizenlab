@@ -2,9 +2,6 @@ import React, { ReactNode, lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-const ProjectFolderRow = React.lazy(
-  () => import('./admin/components/ProjectFolderRow')
-);
 const ProjectFolderSelect = React.lazy(
   () => import('./admin/components/ProjectFolderSelect')
 );
@@ -26,7 +23,7 @@ const CreateProject = React.lazy(
 const ProjectFolderGoBackButton = React.lazy(
   () => import('./citizen/components/ProjectFolderGoBackButton')
 );
-import { isProjectFolderModerator } from './permissions/roles';
+import { isProjectFolderModerator } from 'services/permissions/rules/projectFolderPermissions';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
@@ -87,18 +84,7 @@ const RenderOnNotificationType = ({
 
 const publicationType: AdminPublicationType = 'folder';
 const configuration: ModuleConfiguration = {
-  afterMountApplication: () => {
-    import('./permissions/rules');
-  },
   outlets: {
-    'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
-      <RenderOnPublicationType
-        publication={props.publication}
-        publicationType={publicationType}
-      >
-        <ProjectFolderRow {...props} />
-      </RenderOnPublicationType>
-    ),
     'app.components.ProjectAndFolderCards.card': (props) => (
       <RenderOnPublicationType
         publication={props.publication}

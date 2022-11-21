@@ -1,10 +1,10 @@
-import { IProjectFolderData } from './../services/projectFolders';
+import { IUserData } from 'services/users';
+import { isAdmin, TRole } from 'services/permissions/roles';
+import { IProjectFolderData } from '../../../modules/commercial/project_folders/services/projectFolders';
 import {
   definePermissionRule,
   IRouteItem,
 } from 'services/permissions/permissions';
-import { isProjectFolderModerator, userModeratesFolder } from './roles';
-import { isAdmin } from 'services/permissions/roles';
 import {
   canAccessRoute,
   isModeratorRoute,
@@ -12,6 +12,33 @@ import {
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
+
+export function userModeratesFolder(
+  user: IUserData | null,
+  projectFolderId: string
+) {
+  if (isNilOrError(user)) {
+    return false;
+  }
+
+  return (
+    isAdmin({ data: user }) ||
+    !!user.attributes?.roles?.find((role: TRole) => {
+      return (
+        role.type === 'project_folder_moderator' &&
+        role.project_folder_id === projectFolderId
+      );
+    })
+  );
+}
+
+export function isProjectFolderModerator(user: IUserData) {
+  return !!user.attributes?.roles?.find((role: TRole) => {
+    return role.type === 'project_folder_moderator';
+  });
+}
+
+// rules
 
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
