@@ -139,6 +139,7 @@ const AssignBudgetControl = memo(
         idea.attributes.action_descriptor.budgeting?.disabled_reason;
 
       if (
+        // not signed up/in
         isNilOrError(authUser) ||
         budgetingDisabledReason === 'not_signed_in'
       ) {
@@ -157,19 +158,19 @@ const AssignBudgetControl = memo(
                 }
               : undefined,
         });
-      } else if (
-        !isNilOrError(authUser) &&
-        budgetingDisabledReason === 'not_verified'
-      ) {
-        openVerificationModal({
-          context: {
-            action: 'budgeting',
-            id: participationContextId,
-            type: participationContextType,
-          },
-        });
-      } else if (isBudgetingEnabled) {
-        actuallyAssignBudget(idea, participationContextId, authUser);
+        // if signed up & in
+      } else if (!isNilOrError(authUser)) {
+        if (budgetingDisabledReason === 'not_verified') {
+          openVerificationModal({
+            context: {
+              action: 'budgeting',
+              id: participationContextId,
+              type: participationContextType,
+            },
+          });
+        } else if (isBudgetingEnabled) {
+          actuallyAssignBudget(idea, participationContextId, authUser);
+        }
       }
     };
 
