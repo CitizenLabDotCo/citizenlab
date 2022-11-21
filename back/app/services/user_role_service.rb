@@ -24,8 +24,8 @@ class UserRoleService
     user.admin?
   end
 
-  def can_moderate_project?(_project, user)
-    user.admin?
+  def can_moderate_project?(project, user)
+    user.admin? || (project.persisted? && user.project_moderator?(project.id))
   end
 
   def moderators_for(object, scope = User)
@@ -38,25 +38,32 @@ class UserRoleService
       moderators_for object.post, scope
     when 'Project'
       moderators_for_project object, scope
+    when 'Phase'
+      moderators_for_project object.project, scope
     end
   end
 
-  def moderators_for_project(_project, scope = User)
-    scope.admin
+  def moderators_for_project(project, scope = User)
+    if project.id
+      scope.admin.or scope.project_moderator(project.id)
+    else
+      scope.admin
+    end
   end
 
   def moderatable_projects(user, scope = Project)
     if user.admin?
       scope.all
+    elsif user.project_moderator?
+      scope.where(id: user.moderatable_project_ids)
     else
       scope.none
     end
   end
 
   def moderates_something?(user)
-    user.admin?
+    user.admin? || user.project_moderator?
   end
 end
 
-UserRoleService.prepend_if_ee 'ProjectManagement::Patches::UserRoleService'
 UserRoleService.prepend_if_ee 'ProjectFolders::Patches::UserRoleService'
