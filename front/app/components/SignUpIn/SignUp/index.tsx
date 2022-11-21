@@ -17,6 +17,7 @@ import Mounter from 'components/Mounter';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -50,6 +51,7 @@ import styled, { useTheme } from 'styled-components';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
+import ConfirmationSignupStep from './ConfirmationSignupStep';
 
 const Container = styled.div`
   width: 100%;
@@ -126,6 +128,10 @@ const SignUp = ({
   const theme: any = useTheme();
 
   const modalContentRef = useRef<HTMLDivElement>(null);
+
+  const userConfirmation = useFeatureFlag({
+    name: 'user_confirmation',
+  });
 
   // state
   const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
@@ -351,6 +357,14 @@ const SignUp = ({
                 onGoToSignIn={onGoToSignIn}
                 onGoBack={handleGoBack}
                 onError={handleStepError}
+                onCompleted={onCompleteActiveStep}
+              />
+            )}
+
+            {activeStep === 'confirmation' && userConfirmation && (
+              <ConfirmationSignupStep
+                step={activeStep}
+                onData={handleOnOutletData}
                 onCompleted={onCompleteActiveStep}
               />
             )}

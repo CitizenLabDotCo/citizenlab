@@ -1,8 +1,5 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const ConfirmationSignupStep = React.lazy(
-  () => import('./citizen/components/ConfirmationSignupStep')
-);
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -19,11 +16,7 @@ const RenderOnFeatureFlag = ({ children }) => {
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.SignUpIn.SignUp.step': (props) => {
-      return (
-        <RenderOnFeatureFlag>
-          <ConfirmationSignupStep {...props} />
-        </RenderOnFeatureFlag>
-      );
+      return <RenderOnFeatureFlag />;
     },
   },
 };

@@ -1,16 +1,11 @@
 import React, { useEffect, useState, FormEvent } from 'react';
-import { CONFIRMATION_STEP_NAME } from '../../../index';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import messages from './messages';
 import Error from 'components/UI/Error';
-import {
-  confirm,
-  resendCode,
-  IConfirmation,
-} from '../../../services/confirmation';
+import { confirm, resendCode, IConfirmation } from 'services/confirmation';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors, CLError } from 'typings';
@@ -28,6 +23,8 @@ import {
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import { FormLabel } from 'components/UI/FormComponents';
+
+const CONFIRMATION_STEP_NAME = 'confirmation';
 
 const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
