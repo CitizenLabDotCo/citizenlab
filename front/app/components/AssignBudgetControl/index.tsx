@@ -126,47 +126,41 @@ const AssignBudgetControl = memo(
       (idea: IIdeaData, participationContextId: string) =>
       (event?: FormEvent) => {
         event?.preventDefault();
-        assignBudget(idea, participationContextId);
-      };
 
-    const assignBudget = async (
-      idea: IIdeaData,
-      participationContextId: string
-    ) => {
-      const isBudgetingEnabled =
-        idea.attributes.action_descriptor.budgeting?.enabled;
-      const budgetingDisabledReason =
-        idea.attributes.action_descriptor.budgeting?.disabled_reason;
+        const isBudgetingEnabled =
+          idea.attributes.action_descriptor.budgeting?.enabled;
+        const budgetingDisabledReason =
+          idea.attributes.action_descriptor.budgeting?.disabled_reason;
 
-      if (
-        // not signed up/in
-        isNilOrError(authUser) ||
-        budgetingDisabledReason === 'not_signed_in'
-      ) {
-        openSignUpInModal({
-          verificationContext: {
-            action: 'budgeting',
-            id: participationContextId,
-            type: participationContextType,
-          },
-        });
-        // if signed up & in
-      } else if (!isNilOrError(authUser)) {
-        if (budgetingDisabledReason === 'not_verified') {
-          openVerificationModal({
-            context: {
+        if (
+          // not signed up/in
+          isNilOrError(authUser) ||
+          budgetingDisabledReason === 'not_signed_in'
+        ) {
+          openSignUpInModal({
+            verificationContext: {
               action: 'budgeting',
               id: participationContextId,
               type: participationContextType,
             },
           });
-        } else if (isBudgetingEnabled) {
-          actuallyAssignBudget(idea, participationContextId, authUser);
+          // if signed up & in
+        } else if (!isNilOrError(authUser)) {
+          if (budgetingDisabledReason === 'not_verified') {
+            openVerificationModal({
+              context: {
+                action: 'budgeting',
+                id: participationContextId,
+                type: participationContextType,
+              },
+            });
+          } else if (isBudgetingEnabled) {
+            assignBudget(idea, participationContextId, authUser);
+          }
         }
-      }
-    };
+      };
 
-    const actuallyAssignBudget = async (
+    const assignBudget = async (
       idea: IIdeaData,
       participationContextId: string,
       authUser: IUserData
