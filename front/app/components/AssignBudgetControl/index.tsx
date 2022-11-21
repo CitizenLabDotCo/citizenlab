@@ -2,7 +2,6 @@ import React, { memo, FormEvent, useState } from 'react';
 import { includes, isUndefined } from 'lodash-es';
 import {
   isNilOrError,
-  isUndefinedOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
@@ -12,18 +11,8 @@ import Button from 'components/UI/Button';
 
 // services
 import { IProjectData } from 'services/projects';
-import {
-  getCurrentPhase,
-  getLatestRelevantPhase,
-  IPhaseData,
-} from 'services/phases';
+import { getCurrentPhase, getLatestRelevantPhase } from 'services/phases';
 import { addBasket, updateBasket } from 'services/baskets';
-
-// resources
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { GetIdeaChildProps } from 'resources/GetIdea';
-import { GetProjectChildProps } from 'resources/GetProject';
-import { GetPhasesChildProps } from 'resources/GetPhases';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -50,9 +39,6 @@ import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
-
-// typings
-import { IParticipationContextType } from 'typings';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -99,35 +85,35 @@ const StyledPBExpenses = styled(PBExpenses)`
 
 type TView = 'ideaCard' | 'ideaPage';
 
-interface OuterProps {
+interface Props {
   view: TView;
   projectId: string;
   ideaId: string;
   className?: string;
 }
 
-interface InnerProps extends OuterProps {
-  authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
-  participationContext: IProjectData | IPhaseData;
-  participationContextId: string;
-  participationContextType: IParticipationContextType;
-}
-
 const AssignBudgetControl = memo(
-  ({
-    view,
-    ideaId,
-    authUser,
-    idea,
-    phases,
-    participationContext,
-    participationContextId,
-    participationContextType,
-    className,
-  }: InnerProps) => {
+  ({ view, ideaId, className, projectId }: Props) => {
+    const authUser = useAuthUser();
+    const idea = useIdea({ ideaId });
+    const project = useProject({ projectId });
+    const phases = usePhases(projectId);
+    const isContinuousProject =
+      project?.attributes.process_type === 'continuous';
+    const ideaPhaseIds = !isNilOrError(idea)
+      ? idea?.relationships?.phases?.data?.map((item) => item.id)
+      : null;
+    const ideaPhases = !isNilOrError(phases)
+      ? phases?.filter((phase) => includes(ideaPhaseIds, phase.id))
+      : null;
+    const latestRelevantIdeaPhase = ideaPhases
+      ? getLatestRelevantPhase(ideaPhases)
+      : null;
+    const participationContext = isContinuousProject
+      ? project
+      : latestRelevantIdeaPhase;
+    const participationContextType = isContinuousProject ? 'project' : 'phase';
+    const participationContextId = participationContext?.id || null;
     const basket = useBasket(
       participationContext?.relationships?.user_basket?.data?.id
     );
@@ -147,7 +133,7 @@ const AssignBudgetControl = memo(
         setProcessing(false);
       };
 
-      if (!isNilOrError(idea)) {
+      if (!isNilOrError(idea) && participationContextId) {
         const isBudgetingEnabled =
           idea.attributes.action_descriptor.budgeting?.enabled;
         const basketIdeaIds = !isNilOrError(basket)
@@ -242,19 +228,14 @@ const AssignBudgetControl = memo(
       }
     };
 
-    if (
-      !isUndefined(authUser) &&
-      !isNilOrError(idea) &&
-      !isUndefined(basket) &&
-      idea.attributes.budget
-    ) {
+    if (!isNilOrError(idea) && !isUndefined(basket) && idea.attributes.budget) {
       const basketIdeaIds = !isNilOrError(basket)
         ? basket.relationships.ideas.data.map((idea) => idea.id)
         : [];
       const isInBasket = includes(basketIdeaIds, ideaId);
       const isBudgetingEnabled =
         idea.attributes.action_descriptor.budgeting?.enabled;
-      const isSignedIn = !!authUser;
+      const isSignedIn = !isNilOrError(authUser);
       const budgetingDisabledReason =
         idea.attributes.action_descriptor.budgeting?.disabled_reason;
       const isPermitted = budgetingDisabledReason !== 'not_permitted';
@@ -349,63 +330,4 @@ const AssignBudgetControl = memo(
   }
 );
 
-// Contains the logic to determine the participationContext (= the project or most relevant phase the idea belongs to at the moment it's being loaded)
-// It's important to get the proper participationContext both here and in VoteControl to be able to determine which control (if any) should be shown, as
-// the same idea can be present in multiple phases (e.g. a voting and a PB phase) and can therefore have a different control based on the participationContext that's been determined.
-// Similar logic can be found in the VoteControl component. The important thing here is to figure out if the idea belongs to multiple phases, and if that's the case determine
-// the most relevant current phase via the 'getLatestRelevantPhase()' function.
-// This logic used to be all over the place, but now it should be present only in this component and VoteControl. Try to keep it that way :).
-const AssignBudgetControlWrapper = memo(
-  ({ view, projectId, ideaId, className }: OuterProps) => {
-    const authUser = useAuthUser();
-    const idea = useIdea({ ideaId });
-    const project = useProject({ projectId });
-    const phases = usePhases(projectId);
-
-    const isContinuousProject =
-      project?.attributes.process_type === 'continuous';
-    const ideaPhaseIds = !isNilOrError(idea)
-      ? idea?.relationships?.phases?.data?.map((item) => item.id)
-      : null;
-    const ideaPhases = !isNilOrError(phases)
-      ? phases?.filter((phase) => includes(ideaPhaseIds, phase.id))
-      : null;
-    const latestRelevantIdeaPhase = ideaPhases
-      ? getLatestRelevantPhase(ideaPhases)
-      : null;
-    const participationContext = isContinuousProject
-      ? project
-      : latestRelevantIdeaPhase;
-    const participationContextType = isContinuousProject ? 'project' : 'phase';
-    const participationContextId = participationContext?.id || null;
-
-    if (
-      !isUndefinedOrError(authUser) &&
-      !isNilOrError(idea) &&
-      !isNilOrError(project) &&
-      !isUndefinedOrError(phases) &&
-      participationContext &&
-      participationContextId
-    ) {
-      return (
-        <AssignBudgetControl
-          view={view}
-          projectId={projectId}
-          ideaId={ideaId}
-          authUser={authUser}
-          idea={idea}
-          project={project}
-          phases={phases}
-          participationContext={participationContext}
-          participationContextType={participationContextType}
-          participationContextId={participationContextId}
-          className={className}
-        />
-      );
-    }
-
-    return null;
-  }
-);
-
-export default AssignBudgetControlWrapper;
+export default AssignBudgetControl;
