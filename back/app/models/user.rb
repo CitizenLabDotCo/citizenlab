@@ -226,10 +226,6 @@ class User < ApplicationRecord
     where(id: user_ids)
   }
 
-  # Dummy scopes to be overridden
-  scope :project_moderator, ->(_project_id = nil) { User.none }
-  scope :not_project_moderator, -> { User.all }
-
   def self.oldest_admin
     active.admin.order(:created_at).reject(&:super_admin?).first
   end
