@@ -227,6 +227,23 @@ describe('getActiveStep', () => {
     ).toBe('verification');
   });
 
+  it("returns 'custom-fields' if account created and active", () => {
+    const configuration = getDefaultSteps({
+      hasRequiredFields: false,
+      hasCustomFields: true,
+    } as any);
+
+    const authUser = getAuthUser({});
+    const metaData = getMetaData({});
+
+    expect(
+      getActiveStep(configuration, authUser, metaData, {
+        emailSignUpSelected: true,
+        accountCreated: true,
+      })
+    ).toBe('custom-fields');
+  });
+
   it("returns 'success' if verified, registration completed and metaData.verification", () => {
     const configuration = {
       ...baseConfiguration,
@@ -309,5 +326,40 @@ describe('getEnabledSteps', () => {
         accountCreated: false,
       })
     ).toEqual(['auth-providers', 'account-created']);
+  });
+
+  it('returns correct steps for configuration if in modal and custom fields enabled', () => {
+    const configuration = getDefaultSteps({
+      hasRequiredFields: false,
+      hasCustomFields: true,
+    } as any);
+
+    const authUser = getAuthUser({});
+    const metaData = getMetaData({ inModal: true });
+
+    expect(
+      getEnabledSteps(configuration, authUser, metaData, {
+        emailSignUpSelected: true,
+        accountCreated: false,
+      })
+    ).toEqual([
+      'auth-providers',
+      'password-signup',
+      'account-created',
+      'custom-fields',
+      'success',
+    ]);
+
+    expect(
+      getEnabledSteps(configuration, authUser, metaData, {
+        emailSignUpSelected: false,
+        accountCreated: false,
+      })
+    ).toEqual([
+      'auth-providers',
+      'account-created',
+      'custom-fields',
+      'success',
+    ]);
   });
 });
