@@ -14,7 +14,7 @@ import {
   ProposalsSettings,
 } from 'services/appConfiguration';
 import { updateCustomPage } from 'services/customPages';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 
 // components
 import {
