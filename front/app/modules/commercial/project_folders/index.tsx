@@ -1,6 +1,5 @@
-import React, { ReactNode, lazy } from 'react';
+import React, { lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 const ProjectFolderModerationRightsReceivedNotification = React.lazy(
   () =>
@@ -8,14 +7,9 @@ const ProjectFolderModerationRightsReceivedNotification = React.lazy(
       './citizen/components/ProjectFolderModerationRightsReceivedNotification'
     )
 );
-const CreateProject = React.lazy(
-  () => import('containers/Admin/projects/all/CreateProject')
-);
 const ProjectFolderGoBackButton = React.lazy(
   () => import('./citizen/components/ProjectFolderGoBackButton')
 );
-import { isProjectFolderModerator } from 'services/permissions/rules/projectFolderPermissions';
-import useAuthUser from 'hooks/useAuthUser';
 import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
 import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
@@ -27,22 +21,6 @@ const FolderSettings = lazy(() => import('./admin/containers/settings'));
 const FolderContainer = lazy(() => import('./admin/containers'));
 const FolderProjects = lazy(() => import('./admin/containers/projects'));
 const FolderPermissions = lazy(() => import('./admin/containers/permissions'));
-
-type RenderOnProjectFolderModeratorProps = {
-  children: ReactNode;
-};
-
-const RenderOnProjectFolderModerator = ({
-  children,
-}: RenderOnProjectFolderModeratorProps) => {
-  const authUser = useAuthUser();
-
-  if (!isNilOrError(authUser) && isProjectFolderModerator(authUser)) {
-    return <>{children}</>;
-  }
-
-  return null;
-};
 
 const RenderOnNotificationType = ({
   children,
@@ -58,13 +36,6 @@ const RenderOnNotificationType = ({
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (
-      <FeatureFlag name="project_folders">
-        <RenderOnProjectFolderModerator>
-          <CreateProject />
-        </RenderOnProjectFolderModerator>
-      </FeatureFlag>
-    ),
     'app.components.NotificationMenu.Notification': ({ notification }) => (
       <FeatureFlag name="project_folders">
         <RenderOnNotificationType

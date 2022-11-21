@@ -89,10 +89,6 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
 };
 
 export interface OutletsPropertyMap {
-  'app.containers.AdminPage.projects.all.createProjectNotAdmin': Record<
-    string,
-    any
-  >;
   'app.containers.Admin.projects.all.createProject': {
     selectedTabValue: TTabName;
   };
