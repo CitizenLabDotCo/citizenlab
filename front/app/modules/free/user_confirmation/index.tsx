@@ -3,9 +3,7 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 const ConfirmationSignupStep = React.lazy(
   () => import('./citizen/components/ConfirmationSignupStep')
 );
-const ToggleUserConfirmation = React.lazy(
-  () => import('./admin/components/ToggleUserConfirmation')
-);
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export const CONFIRMATION_STEP_NAME = 'confirmation';
@@ -18,15 +16,6 @@ const RenderOnFeatureFlag = ({ children }) => {
   return featureFlag ? <>{children}</> : null;
 };
 
-const RenderOnAllowed = ({ children }) => {
-  const allowed = useFeatureFlag({
-    name: 'user_confirmation',
-    onlyCheckAllowed: true,
-  });
-
-  return allowed ? <>{children}</> : null;
-};
-
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.SignUpIn.SignUp.step': (props) => {
@@ -35,20 +24,6 @@ const configuration: ModuleConfiguration = {
           <ConfirmationSignupStep {...props} />
         </RenderOnFeatureFlag>
       );
-    },
-
-    'app.containers.Admin.settings.registrationSectionEnd': ({
-      userConfirmationSetting,
-      onSettingChange,
-    }) => {
-      return userConfirmationSetting ? (
-        <RenderOnAllowed>
-          <ToggleUserConfirmation
-            userConfirmationSetting={userConfirmationSetting}
-            onSettingChange={onSettingChange}
-          />
-        </RenderOnAllowed>
-      ) : null;
     },
   },
 };

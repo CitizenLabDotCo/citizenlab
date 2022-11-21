@@ -7,6 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   IAppConfigurationSettings,
@@ -17,8 +18,9 @@ import {
 } from 'services/appConfiguration';
 
 // components
-import messages from 'containers/Admin/settings/messages';
 
+import ToggleUserConfirmation from './ToggleUserConfirmation';
+import Outlet from 'components/Outlet';
 import {
   SectionTitle,
   SubSectionTitle,
@@ -31,7 +33,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import Outlet from 'components/Outlet';
+import messages from 'containers/Admin/settings/messages';
 
 export const LabelTooltip = styled.div`
   display: flex;
@@ -45,6 +47,10 @@ interface Props {}
 
 const SettingsRegistrationTab = (_props: Props) => {
   const appConfig = useAppConfiguration();
+  const userConfirmationIsAllowed = useFeatureFlag({
+    name: 'user_confirmation',
+    onlyCheckAllowed: true,
+  });
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSaved, setIsFormSaved] = useState(false);
   const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
@@ -160,6 +166,15 @@ const SettingsRegistrationTab = (_props: Props) => {
                 }
               />
             </SectionField>
+            {userConfirmationIsAllowed &&
+              latestAppConfigSettings?.user_confirmation !== undefined && (
+                <ToggleUserConfirmation
+                  onSettingChange={handleSettingOnChange}
+                  userConfirmationSetting={
+                    latestAppConfigSettings.user_confirmation
+                  }
+                />
+              )}
             <Outlet
               id="app.containers.Admin.settings.registrationSectionEnd"
               onSettingChange={handleSettingOnChange}
