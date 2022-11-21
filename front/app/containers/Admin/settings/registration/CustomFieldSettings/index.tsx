@@ -10,7 +10,7 @@ import { isEqual, clone } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import customfieldMessages from 'containers/Admin/settings/registration/CustomFields/messages';
+import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
 import T from 'components/T';
 
 // components
