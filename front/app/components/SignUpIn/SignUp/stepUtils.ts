@@ -14,7 +14,7 @@ import {
 } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { UserCustomFieldsInfos } from 'containers/UserCustomFields/services/userCustomFields';
+import { UserCustomFieldsInfos } from 'components/UserCustomFields/services/userCustomFields';
 
 export function getDefaultSteps(
   userCustomFieldsSchema: UserCustomFieldsInfos

@@ -8,7 +8,7 @@ import { completeRegistration } from 'services/users';
 import Header from './Header';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
-import CustomFieldsStep from 'containers/UserCustomFields/citizen/components/CustomFieldsStep';
+import CustomFieldsStep from 'components/UserCustomFields/citizen/CustomFieldsStep';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -19,7 +19,7 @@ import Mounter from 'components/Mounter';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
-import useUserCustomFieldsSchema from 'containers/UserCustomFields/hooks/useUserCustomFieldsSchema';
+import useUserCustomFieldsSchema from 'components/UserCustomFields/hooks/useUserCustomFieldsSchema';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -53,7 +53,7 @@ import styled, { useTheme } from 'styled-components';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
-import { UserCustomFieldsInfos } from 'containers/UserCustomFields/services/userCustomFields';
+import { UserCustomFieldsInfos } from 'components/UserCustomFields/services/userCustomFields';
 
 const Container = styled.div`
   width: 100%;

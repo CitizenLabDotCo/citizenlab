@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
-import { addUserCustomFieldOption } from '../../../../services/userCustomFieldOptions';
+import { addUserCustomFieldOption } from 'components/UserCustomFields/services/userCustomFieldOptions';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';

@@ -8,10 +8,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomFieldOption from '../../../../hooks/useUserCustomFieldOption';
+import useUserCustomFieldOption from 'components/UserCustomFields/hooks/useUserCustomFieldOption';
 
 // services
-import { updateUserCustomFieldOption } from '../../../../services/userCustomFieldOptions';
+import { updateUserCustomFieldOption } from 'components/UserCustomFields/services/userCustomFieldOptions';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';

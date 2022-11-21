@@ -6,11 +6,11 @@ import { isObject } from 'lodash-es';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import UserCustomFieldsForm from 'containers/UserCustomFields/citizen/components/UserCustomFieldsForm';
+import UserCustomFieldsForm from '../UserCustomFieldsForm';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useUserCustomFieldsSchema from '../../../hooks/useUserCustomFieldsSchema';
+import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';

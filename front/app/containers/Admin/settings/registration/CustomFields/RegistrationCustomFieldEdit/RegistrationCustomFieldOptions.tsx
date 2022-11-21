@@ -9,10 +9,10 @@ import {
   IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
   deleteUserCustomFieldOption,
-} from '../../../../services/userCustomFieldOptions';
+} from 'components/UserCustomFields/services/userCustomFieldOptions';
 
 // hooks
-import useUserCustomFieldOptions from '../../../../hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'components/UserCustomFields/hooks/useUserCustomFieldOptions';
 import useLocalize from 'hooks/useLocalize';
 
 // components

@@ -24,7 +24,7 @@ import {
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
-import UserCustomFieldsForm from 'containers/UserCustomFields/citizen/components/UserCustomFieldsForm';
+import UserCustomFieldsForm from 'components/UserCustomFields/citizen/UserCustomFieldsForm';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
