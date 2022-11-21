@@ -17,40 +17,6 @@ const AllCustomFields = React.lazy(
   () => import('./admin/components/CustomFields/All')
 );
 
-const AdminCustomFieldsContainer = React.lazy(
-  () => import('./admin/containers/CustomFields/')
-);
-const AdminNewCustomFieldComponent = React.lazy(
-  () => import('./admin/containers/CustomFields/RegistrationCustomFieldNew')
-);
-const AdminCustomFieldEditComponent = React.lazy(
-  () => import('./admin/containers/CustomFields/RegistrationCustomFieldEdit')
-);
-const AdminCustomFieldRegistrationSettingsComponent = React.lazy(
-  () =>
-    import(
-      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
-    )
-);
-const AdminCustomFieldRegistrationOptionsComponent = React.lazy(
-  () =>
-    import(
-      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
-    )
-);
-const AdminCustomFieldRegistrationOptionsNewComponent = React.lazy(
-  () =>
-    import(
-      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
-    )
-);
-const AdminCustomFieldRegistrationOptionsEditComponent = React.lazy(
-  () =>
-    import(
-      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
-    )
-);
-
 const RegistrationQuestions = React.lazy(
   () => import('./admin/components/RegistrationQuestions')
 );
@@ -85,42 +51,6 @@ declare module 'containers/Admin/dashboard/users/charts/PieChartByCategory' {
 }
 
 const configuration: ModuleConfiguration = {
-  routes: {
-    admin: [
-      {
-        path: 'settings/registration/custom-fields',
-        element: <AdminCustomFieldsContainer />,
-        children: [
-          {
-            path: 'new',
-            element: <AdminNewCustomFieldComponent />,
-          },
-          {
-            path: ':userCustomFieldId',
-            element: <AdminCustomFieldEditComponent />,
-            children: [
-              {
-                path: 'field-settings',
-                element: <AdminCustomFieldRegistrationSettingsComponent />,
-              },
-              {
-                path: 'options',
-                element: <AdminCustomFieldRegistrationOptionsComponent />,
-              },
-              {
-                path: 'options/new',
-                element: <AdminCustomFieldRegistrationOptionsNewComponent />,
-              },
-              {
-                path: 'options/:userCustomFieldOptionId',
-                element: <AdminCustomFieldRegistrationOptionsEditComponent />,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
   outlets: {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
