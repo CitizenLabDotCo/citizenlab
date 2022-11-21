@@ -96,15 +96,6 @@ class Permission < ApplicationRecord
   def set_permitted_by
     self.permitted_by ||= 'users'
   end
-
-  # @param [User] user
-  # @return [Boolean]
-  def moderator?(user)
-    return if user.nil?
-    return unless permission_scope.respond_to?(:moderators)
-
-    permission_scope.moderators.include?(user)
-  end
 end
 
 Permission.prepend_if_ee('SmartGroups::Patches::Permission')

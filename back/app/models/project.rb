@@ -81,6 +81,8 @@ class Project < ApplicationRecord
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
 
+  after_destroy :remove_moderators
+
   PROCESS_TYPES = %w[timeline continuous].freeze
   INTERNAL_ROLES = %w[open_idea_box].freeze
 
@@ -209,6 +211,13 @@ class Project < ApplicationRecord
   def remove_notifications
     notifications.each do |notification|
       notification.destroy! unless notification.update(project: nil)
+    end
+  end
+
+  def remove_moderators
+    UserRoleService.new.moderators_for_project(self).each do |moderator|
+      moderator.delete_role 'project_moderator', project_id: id
+      moderator.save!
     end
   end
 end
