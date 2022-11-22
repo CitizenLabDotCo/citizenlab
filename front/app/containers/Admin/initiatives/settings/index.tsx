@@ -46,13 +46,13 @@ export const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
 `;
 
-export const StyledSectionDescription = styled(SectionDescription)`
-  margin-bottom: 10px;
-  margin-top: 0;
-`;
-
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 10px;
+`;
+
+export const StyledSectionDescription = styled(SectionDescription)`
+  margin-top: 0;
+  margin-bottom: 20px;
 `;
 
 type ProposalsSettingName = keyof ProposalsSettings;
