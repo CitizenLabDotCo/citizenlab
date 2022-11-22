@@ -1022,24 +1022,6 @@
       "properties": {
         <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
       }
-    },
-    "customized_button": {
-      "type": "object",
-      "title": "Customized button",
-      "description": "Configure the customized button.",
-      "additionalProperties": false,
-      "properties": {
-        "text": {
-          "title": "Button text",
-          "description": "The text of the button.",
-          "allOf": [{"$ref": "#/definitions/multiloc_string"}]
-        },
-        "url": {
-          "type": "string",
-          "title": "Button URL",
-          "description": "The URL of the button."
-        }
-      }
     }
   }
 }
