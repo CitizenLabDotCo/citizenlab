@@ -33,13 +33,6 @@ export const Title = styled.h1`
   `}
 `;
 
-export const Subtitle = styled.h2`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.l}px;
-  font-weight: 600;
-  line-height: normal;
-`;
-
 export const Form = styled.form<{ inModal: boolean }>`
   width: 100%;
   max-width: ${(props) => (props.inModal ? '380px' : 'unset')};
