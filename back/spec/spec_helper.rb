@@ -155,11 +155,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
     Rack::Attack.enabled = false
-  end
-
-  config.around(:all) do |examples|
-    initial_sentry_dsn = ENV['SENTRY_DSN']
-    ENV['SENTRY_DSN'] = nil # to not send errors in test env, but do send in development (if set)
+    ENV['SENTRY_DSN'] = nil # to not send errors in test env.
     #
     # We need it for the tests where Sentry is not invoked explicitly. E.g. for ApplicationJob tests.
     # Reasons to initialize Sentry:
@@ -169,8 +165,6 @@ RSpec.configure do |config|
     # Why not to use this code in those tests that need it?
     # => Because `Sentry.init` affects all tests, not only the current one.
     Sentry.init
-    examples.run
-    ENV['SENTRY_DSN'] = initial_sentry_dsn
   end
 
   # rubocop:disable RSpec/BeforeAfterAll
