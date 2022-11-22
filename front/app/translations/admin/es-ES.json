@@ -586,7 +586,6 @@
   "app.containers.Admin.ideas.tabStatuses": "Estatus",
   "app.containers.Admin.initiatives.addNewProposal": "Añadir una propuesta",
   "app.containers.Admin.initiatives.enableProposals": "Habilitar propuestas",
-  "app.containers.Admin.initiatives.feature": "Característica",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Presentación de propuestas",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Días para alcanzar el umbral de votación",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Meta de votación",
