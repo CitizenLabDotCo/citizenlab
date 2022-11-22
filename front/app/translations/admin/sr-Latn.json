@@ -586,7 +586,6 @@
   "app.containers.Admin.ideas.tabStatuses": "Statusi",
   "app.containers.Admin.initiatives.addNewProposal": "Dodajte predlog",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
-  "app.containers.Admin.initiatives.feature": "Funkcija",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Postavljanje predloga",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Vreme (dani) za prikupljanje neophodnog broja glasova",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Neophodan broj glasova",
