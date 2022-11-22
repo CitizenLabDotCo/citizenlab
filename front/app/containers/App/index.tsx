@@ -30,7 +30,7 @@ const ConsentManager = lazy(() => import('components/ConsentManager'));
 import ErrorBoundary from 'components/ErrorBoundary';
 import Outlet from 'components/Outlet';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import SignUpIn from 'containers/SignUpIn';
+import SignUpIn from 'containers/SignUpInContainer';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 import Meta from './Meta';
@@ -131,7 +131,7 @@ export type TAuthUser = IUser | null | undefined;
 
 interface State {
   previousPathname: string | null;
-  tenant: IAppConfiguration | null;
+  appConfiguration: IAppConfiguration | null;
   authUser: TAuthUser;
   modalId: string | null;
   modalSlug: string | null;
@@ -153,7 +153,7 @@ class App extends PureComponent<Props, State> {
     super(props);
     this.state = {
       previousPathname: null,
-      tenant: null,
+      appConfiguration: null,
       authUser: undefined,
       modalId: null,
       modalSlug: null,
@@ -229,7 +229,7 @@ class App extends PureComponent<Props, State> {
       ]).subscribe(([authUser, locale, tenant]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
-        this.setState({ tenant, authUser, locale });
+        this.setState({ appConfiguration: tenant, authUser, locale });
       }),
 
       tenant$.pipe(first()).subscribe((tenant) => {
@@ -314,7 +314,7 @@ class App extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { authUser, tenant, verificationModalMounted } = this.state;
+    const { authUser, appConfiguration, verificationModalMounted } = this.state;
     const {
       redirectsEnabled,
       location: { pathname, search },
@@ -322,7 +322,8 @@ class App extends PureComponent<Props, State> {
 
     if (
       redirectsEnabled &&
-      (prevState.tenant !== tenant || prevProps.location.pathname !== pathname)
+      (prevState.appConfiguration !== appConfiguration ||
+        prevProps.location.pathname !== pathname)
     ) {
       this.handleCustomRedirect();
     }
@@ -370,11 +371,14 @@ class App extends PureComponent<Props, State> {
     const {
       location: { pathname },
     } = this.props;
-    const { tenant } = this.state;
+    const { appConfiguration } = this.state;
     const urlSegments = pathname.replace(/^\/+/g, '').split('/');
 
-    if (!isNilOrError(tenant) && tenant.data.attributes.settings.redirects) {
-      const { rules } = tenant.data.attributes.settings.redirects;
+    if (
+      !isNilOrError(appConfiguration) &&
+      appConfiguration.data.attributes.settings.redirects
+    ) {
+      const { rules } = appConfiguration.data.attributes.settings.redirects;
 
       rules.forEach((rule) => {
         if (
@@ -435,7 +439,7 @@ class App extends PureComponent<Props, State> {
       this.props;
     const {
       previousPathname,
-      tenant,
+      appConfiguration,
       modalId,
       modalSlug,
       modalType,
@@ -455,7 +459,7 @@ class App extends PureComponent<Props, State> {
     const fullScreenModalEnabledAndOpen =
       fullscreenModalEnabled && signUpInModalOpened;
 
-    const theme = getTheme(tenant);
+    const theme = getTheme(appConfiguration);
     const showFooter =
       !isAdminPage &&
       !isIdeaFormPage &&
@@ -473,7 +477,7 @@ class App extends PureComponent<Props, State> {
 
     return (
       <>
-        {tenant && (
+        {appConfiguration && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider
               theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
