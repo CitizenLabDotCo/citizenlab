@@ -13,6 +13,8 @@ class UserRoleService
       can_moderate? object.post, user
     when 'Vote'
       can_moderate? object.votable, user
+    when 'ProjectFolders::Folder'
+      user.admin? || (object.id && user.project_folder_moderator?(object.id))
     when 'Project'
       can_moderate_project? object, user
     when 'Phase'
@@ -25,7 +27,9 @@ class UserRoleService
   end
 
   def can_moderate_project?(project, user)
-    user.admin? || (project.persisted? && user.project_moderator?(project.id))
+    user.admin? ||
+      (project.persisted? && user.project_moderator?(project.id)) ||
+      (project.folder? && user.project_folder_moderator?(project.folder_id))
   end
 
   def moderators_for(object, scope = User)
@@ -36,6 +40,8 @@ class UserRoleService
       scope.admin
     when 'Comment'
       moderators_for object.post, scope
+    when 'ProjectFolders::Folder'
+      scope.admin.or(scope.project_folder_moderator(object.id))
     when 'Project'
       moderators_for_project object, scope
     when 'Phase'
@@ -44,26 +50,32 @@ class UserRoleService
   end
 
   def moderators_for_project(project, scope = User)
-    if project.id
-      scope.admin.or scope.project_moderator(project.id)
-    else
-      scope.admin
-    end
+    moderators_scope = scope.admin
+    moderators_scope = moderators_scope.or scope.project_moderator(project.id) if project.id
+    moderators_scope = moderators_scope.or scope.project_folder_moderator(project.folder_id) if project.folder_id
+    moderators_scope
   end
 
   def moderatable_projects(user, scope = Project)
-    if user.admin?
-      scope.all
-    elsif user.project_moderator?
-      scope.where(id: user.moderatable_project_ids)
-    else
-      scope.none
+    return scope.all if user.admin?
+
+    moderatable_projects = scope.none
+    if user.project_moderator?
+      moderatable_projects = moderatable_projects.or(scope.where(id: user.moderatable_project_ids))
     end
+    if user.project_folder_moderator?
+      admin_publications = AdminPublication
+        .joins(:parent)
+        .where(parents_admin_publications: {
+          publication_type: 'ProjectFolders::Folder',
+          publication_id: user.moderated_project_folder_ids
+        })
+      moderatable_projects = moderatable_projects.or(scope.where(admin_publication: admin_publications))
+    end
+    moderatable_projects
   end
 
   def moderates_something?(user)
-    user.admin? || user.project_moderator?
+    user.admin? || user.project_moderator? || user.project_folder_moderator?
   end
 end
-
-UserRoleService.prepend_if_ee 'ProjectFolders::Patches::UserRoleService'
