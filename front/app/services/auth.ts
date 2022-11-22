@@ -38,7 +38,7 @@ export async function signIn(
   rememberMe: boolean
 ) {
   try {
-    const bodyData = { auth: { email, password, rememberMe } };
+    const bodyData = { auth: { email, password } };
     const httpMethod: IHttpMethod = { method: 'POST' };
     const { jwt } = await request<IUserToken>(
       `${API_PATH}/user_token`,
@@ -46,7 +46,7 @@ export async function signIn(
       httpMethod,
       null
     );
-    setJwt(jwt);
+    setJwt(jwt, rememberMe);
     const authUser = await getAuthUserAsync();
     await streams.reset();
     return authUser;
