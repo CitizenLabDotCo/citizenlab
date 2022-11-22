@@ -3,7 +3,7 @@ import { parse } from 'qs';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import { SSOParams } from 'services/singleSignOn';
 import clHistory from 'utils/cl-router/history';
-import { TAuthUser } from 'containers/App';
+import { TAuthUser } from 'hooks/useAuthUser';
 
 export default function openSignUpInModalIfNecessary(
   authUser: TAuthUser,
@@ -36,7 +36,7 @@ export default function openSignUpInModalIfNecessary(
       // At that point authUser will exist.
       // When we just do !authUser?.data?.attributes?.verified,
       // we will also return true here when authUser is null or undefined.
-      authUser && !authUser?.data.attributes.registration_completed_at;
+      !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
     // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
     const {
       sso_response,
@@ -72,7 +72,9 @@ export default function openSignUpInModalIfNecessary(
         // At that point authUser will exist.
         // When we just do !authUser?.data?.attributes?.verified,
         // we will also return true here when authUser is null or undefined.
-        authUser && !authUser?.data?.attributes?.verified && sso_verification;
+        !isNilOrError(authUser) &&
+        !authUser.attributes.verified &&
+        sso_verification;
 
       // we do not open the modal when the user gets sent to the '/sign-up' or '/sign-in' urls because
       // on those pages we show the sign-up-in flow directly on the page and not as a modal.

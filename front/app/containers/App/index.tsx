@@ -14,7 +14,13 @@ import { first, tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { endsWith, isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
+import {
+  endsWith,
+  isDesktop,
+  isNilOrError,
+  isNil,
+  isPage,
+} from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -52,7 +58,7 @@ import {
   signOutAndDeleteAccount,
 } from 'services/auth';
 import { localeStream } from 'services/locale';
-import { IUser } from 'services/users';
+import { TAuthUser } from 'hooks/useAuthUser';
 
 // resources
 import GetFeatureFlag, {
@@ -128,8 +134,6 @@ interface DataProps {
 }
 
 interface Props extends WithRouterProps, InputProps, DataProps {}
-
-export type TAuthUser = IUser | null | undefined;
 
 interface State {
   previousPathname: string | null;
@@ -237,7 +241,11 @@ class App extends PureComponent<Props, State> {
       ]).subscribe(([authUser, locale, tenant]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
-        this.setState({ tenant, authUser, locale });
+        this.setState({
+          tenant,
+          authUser: !isNil(authUser) ? authUser.data : null,
+          locale,
+        });
       }),
 
       tenant$.pipe(first()).subscribe((tenant) => {
