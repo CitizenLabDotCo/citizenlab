@@ -10,7 +10,7 @@ import VoteControl from 'components/VoteControl';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
 
 // utils
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 
 // styling
 import styled from 'styled-components';

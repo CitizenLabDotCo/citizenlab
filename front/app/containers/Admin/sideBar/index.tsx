@@ -195,6 +195,7 @@ class Sidebar extends PureComponent<
           iconName: 'sidebar-proposals',
           message: 'initiatives',
           featureNames: ['initiatives'],
+          onlyCheckAllowed: true,
         },
         {
           name: 'userinserts',

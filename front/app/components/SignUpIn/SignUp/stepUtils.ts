@@ -88,6 +88,18 @@ export function getDefaultSteps(): TSignUpConfiguration {
       isActive: userEmailToBeConfirmed,
       canTriggerRegistration: true,
     },
+    verification: {
+      key: 'verification',
+      position: 5,
+      stepDescriptionMessage: messages.verifyYourIdentity,
+      isEnabled: (_, metaData) => !!metaData.verification,
+      isActive: (authUser, metaData) => {
+        if (isNilOrError(authUser)) return false;
+        const flowHasVerificationStep = !!metaData.verification;
+        return flowHasVerificationStep && !authUser.attributes.verified;
+      },
+      canTriggerRegistration: true,
+    },
     success: {
       key: 'success',
       position: 7,

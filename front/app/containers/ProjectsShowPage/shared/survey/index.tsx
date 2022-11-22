@@ -36,7 +36,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 // styling
 import styled from 'styled-components';
 import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 import SurveyXact from './SurveyXact';
 
 const Container = styled.div`
