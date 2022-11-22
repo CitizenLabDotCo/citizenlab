@@ -1,7 +1,7 @@
 ca:
   email_campaigns:
     campaign_type_description:
-      "manual": Official messages
+      "manual": Missatges oficials
       "admin_rights_received": Admin rights received
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
@@ -30,7 +30,7 @@ ca:
       "official_feedback_on_voted_initiative": Update on a proposal I voted on
       "official_feedback_on_your_idea": Update on my idea
       "official_feedback_on_your_initiative": Update on my proposal
-      "password_reset": Password reset
+      "password_reset": Restabliu la contrasenya
       "project_moderation_rights_received": Project moderation rights received
       "project_folder_moderation_rights_received": Folder manager rights received
       "project_phase_started": New project phase
@@ -101,7 +101,7 @@ ca:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
-      "powered_by": "Powered by"
+      "powered_by": "Impulsat per"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
     comment_deleted_by_admin:
@@ -176,8 +176,8 @@ ca:
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
-      idea_section: Ideas
-      initiative_section: Proposals
+      idea_section: Idees
+      initiative_section: Propostes
       title_initiatives_past_week: 'New proposals assigned to you'
       title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
@@ -419,6 +419,7 @@ ca:
       cta_view_phase: 'Discover this new phase'
       event_description: 'This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!'
       main_header: 'A new phase started for project ''%{projectName}'''
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'This project entered the phase ''%{phaseTitle}'''
       subject: '%{projectName} entered a new phase'
       preheader: 'A new phase has been started for %{projectName}'
@@ -426,6 +427,7 @@ ca:
       cta_view_phase: 'Set this new phase up'
       event_description: 'The project ''%{projectName}'' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected ideas transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?'
       main_header: '%{firstName}, a project will enter a new phase soon'
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'The project will enter the phase ''%{phaseTitle}'''
       subject: 'Get everything set up for the new phase of %{projectName}'
       preheader: 'A new phase will start soon for %{projectName}'

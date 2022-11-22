@@ -68,11 +68,9 @@ resource 'Analytics - Visits model' do
         query: {
           fact: 'visit',
           filters: {
-            dimension_date_last_action: {
-              date: {
-                from: '2022-09-01',
-                to: '2022-09-30'
-              }
+            'dimension_date_last_action.date': {
+              from: '2022-09-01',
+              to: '2022-09-30'
             }
           },
           aggregations: {
@@ -123,9 +121,7 @@ resource 'Analytics - Visits model' do
         query: {
           fact: 'visit',
           filters: {
-            dimension_projects: {
-              id: project_id
-            }
+            'dimension_projects.id': project_id
           },
           aggregations: {
             all: 'count',
@@ -174,9 +170,7 @@ resource 'Analytics - Visits model' do
         query: {
           fact: 'visit',
           filters: {
-            dimension_user: {
-              role: ['citizen', nil]
-            }
+            'dimension_user.role': ['citizen', nil]
           },
           aggregations: {
             all: 'count',

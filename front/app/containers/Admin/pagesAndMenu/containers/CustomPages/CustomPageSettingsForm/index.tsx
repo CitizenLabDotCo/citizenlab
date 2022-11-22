@@ -30,18 +30,21 @@ import { Multiloc } from 'typings';
 
 export interface FormValues {
   title_multiloc: Multiloc;
+  nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
 }
 
 type TMode = 'new' | 'edit';
 interface Props {
   defaultValues?: FormValues;
+  showNavBarItemTitle?: boolean;
   mode: TMode;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
 const CustomPageSettingsForm = ({
   defaultValues,
+  showNavBarItemTitle,
   intl: { formatMessage },
   mode,
   onSubmit,
@@ -51,6 +54,11 @@ const CustomPageSettingsForm = ({
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.titleMultilocError)
     ),
+    ...(showNavBarItemTitle && {
+      nav_bar_item_title_multiloc: validateMultilocForEveryLocale(
+        formatMessage(messages.titleMultilocError)
+      ),
+    }),
     ...(mode === 'edit' && {
       slug: string()
         .matches(slugRegEx, formatMessage(messages.slugRegexError))
@@ -79,7 +87,7 @@ const CustomPageSettingsForm = ({
         onSubmit={methods.handleSubmit(onFormSubmit)}
         data-testid="customPageSettingsForm"
       >
-        <SectionFormWrapper>
+        <SectionFormWrapper flatTopBorder>
           <SectionField>
             <Feedback
               successMessage={
@@ -95,11 +103,24 @@ const CustomPageSettingsForm = ({
                 type="text"
               />
             </Box>
+            {showNavBarItemTitle && (
+              <Box mb="20px">
+                <InputMultilocWithLocaleSwitcher
+                  label={formatMessage(messages.navbarItemTitle)}
+                  type="text"
+                  name="nav_bar_item_title_multiloc"
+                />
+              </Box>
+            )}
             {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
             <Box display="flex">
-              <Button type="submit" processing={methods.formState.isSubmitting}>
+              <Button
+                data-cy="e2e-submit-custom-page"
+                type="submit"
+                processing={methods.formState.isSubmitting}
+              >
                 {formatMessage(messages.saveButton)}
               </Button>
             </Box>

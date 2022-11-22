@@ -172,7 +172,7 @@ const SelectableResourceChart = ({
             <ReportExportMenu
               svgNode={currentChart}
               name={formatMessage(REPORT_EXPORT_MENU_NAME_MESSAGES[byWhat])}
-              xlsxEndpoint={xlsxEndpoint}
+              xlsx={{ endpoint: xlsxEndpoint }}
               {...reportExportMenuProps}
             />
           )}

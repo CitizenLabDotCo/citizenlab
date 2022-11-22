@@ -96,7 +96,7 @@ export class BarChartByCategory extends React.PureComponent<
               <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
+                xlsx={{ endpoint: xlsxEndpoint }}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
                 startAt={startAt}

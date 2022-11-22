@@ -20,6 +20,9 @@ import { reportError } from 'utils/loggingUtils';
 import { requestBlob } from 'utils/request';
 import messages from './messages';
 
+// typings
+import { OneOf } from 'typings';
+
 const DropdownButton = styled(Button)``;
 
 const Container = styled.div`
@@ -36,13 +39,10 @@ const StyledButton = styled(Button)`
   }
 `;
 
-export type XlsxData = Record<string, Record<string, any>[]>;
-
 export interface ReportExportMenuProps {
   className?: string;
   name: string;
   svgNode?: React.RefObject<any> | React.RefObject<any>[];
-  xlsxEndpoint?: string;
   startAt?: string | null | undefined;
   endAt?: string | null;
   resolution?: IResolution;
@@ -52,13 +52,41 @@ export interface ReportExportMenuProps {
   currentProjectFilterLabel?: string | undefined;
   currentGroupFilterLabel?: string | undefined;
   currentTopicFilterLabel?: string | undefined;
-  xlsxData?: XlsxData;
+  xlsx?: XlsxConfig;
 }
+
+type XlsxConfig = OneOf<
+  [XlsxConfigEndpoint, XlsxConfigData, XlsxConfigOnDownload]
+>;
+
+interface XlsxConfigEndpoint {
+  endpoint: string;
+}
+
+interface XlsxConfigData {
+  data: XlsxData;
+}
+
+interface XlsxConfigOnDownload {
+  onDownload: () => Promise<XlsxData>;
+}
+
+export type XlsxData = Record<string, Record<string, any>[]>;
+
+const downloadXlsxData = (data: XlsxData, fileName: string) => {
+  const workbook = XLSX.utils.book_new();
+
+  Object.entries(data).forEach(([sheet_name, sheet_data]) => {
+    const worksheet = XLSX.utils.json_to_sheet(sheet_data);
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheet_name);
+  });
+
+  XLSX.writeFile(workbook, `${fileName}.xlsx`);
+};
 
 const ReportExportMenu = ({
   svgNode,
   className,
-  xlsxEndpoint,
   name,
   startAt,
   endAt,
@@ -69,8 +97,8 @@ const ReportExportMenu = ({
   currentGroupFilterLabel,
   currentTopicFilterLabel,
   currentProjectFilterLabel,
+  xlsx,
   intl: { formatMessage, formatDate },
-  xlsxData,
 }: ReportExportMenuProps & WrappedComponentProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
@@ -190,11 +218,14 @@ const ReportExportMenu = ({
   };
 
   const downloadXlsx = async () => {
-    if (xlsxEndpoint) {
+    setExportingXls(true);
+
+    if (xlsx?.endpoint) {
+      const { endpoint } = xlsx;
+
       try {
-        setExportingXls(true);
         const blob = await requestBlob(
-          xlsxEndpoint,
+          endpoint,
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           {
             start_at: startAt,
@@ -205,31 +236,33 @@ const ReportExportMenu = ({
             topic: currentTopicFilter,
           }
         );
+
         if (blob.size <= 2467) {
-          throw new Error(`Empty xlsx : ${xlsxEndpoint}`);
+          throw new Error(`Empty xlsx : ${endpoint}`);
         }
         saveAs(blob, `${fileName}.xlsx`);
-        setExportingXls(false);
         setDropdownOpened(false);
       } catch (error) {
         reportError(error);
-        setExportingXls(false);
       }
-    } else if (xlsxData) {
-      const workbook = XLSX.utils.book_new();
-      Object.entries(xlsxData).forEach(([sheet_name, sheet_data]) => {
-        const worksheet = XLSX.utils.json_to_sheet(sheet_data);
-        XLSX.utils.book_append_sheet(workbook, worksheet, sheet_name);
-      });
-      XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    } else if (xlsx?.data) {
+      const { data } = xlsx;
+
+      downloadXlsxData(data, fileName);
+    } else if (xlsx?.onDownload) {
+      const xlsxData = await xlsx.onDownload();
+
+      downloadXlsxData(xlsxData, fileName);
     }
+
+    setExportingXls(false);
 
     // track this click for user analytics
     trackEventByName('Clicked export xlsx', { extra: { graph: name } });
   };
 
   return (
-    <Container className={className}>
+    <Container className={`${className} intercom-admin-export-button`}>
       <DropdownButton
         buttonStyle="admin-dark-text"
         onClick={toggleDropdown()}
@@ -266,7 +299,7 @@ const ReportExportMenu = ({
                 <FormattedMessage {...messages.downloadPng} />
               </StyledButton>
             )}
-            {(xlsxData || xlsxEndpoint) && (
+            {xlsx && (
               <StyledButton
                 onClick={downloadXlsx}
                 buttonStyle="text"

@@ -9,16 +9,47 @@ import { Navigate } from 'react-router-dom';
 import { AdminPublicationType } from 'services/adminPublications';
 import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
 import { isNilOrError } from 'utils/helperUtils';
-import { ModuleConfiguration } from 'utils/moduleUtils';
-import NewProjectFolderButton from './admin/components/NewProjectFolderButton';
-import ProjectFolderRow from './admin/components/ProjectFolderRow';
-import ProjectFolderSelect from './admin/components/ProjectFolderSelect';
-import ProjectFolderTitle from './admin/components/ProjectFolderTitle';
-import ProjectFolderCard from './citizen/components/ProjectFolderCard';
-import ProjectFolderGoBackButton from './citizen/components/ProjectFolderGoBackButton';
-import ProjectFolderModerationRightsReceivedNotification from './citizen/components/ProjectFolderModerationRightsReceivedNotification';
-import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
+const NewProjectFolderButton = React.lazy(
+  () => import('./admin/components/NewProjectFolderButton')
+);
+const ProjectFolderRow = React.lazy(
+  () => import('./admin/components/ProjectFolderRow')
+);
+const ProjectFolderTitle = React.lazy(
+  () => import('./admin/components/ProjectFolderTitle')
+);
+const ProjectFolderSelect = React.lazy(
+  () => import('./admin/components/ProjectFolderSelect')
+);
+const ProjectFolderCard = React.lazy(
+  () => import('./citizen/components/ProjectFolderCard')
+);
+const ProjectFolderSiteMap = React.lazy(
+  () => import('./citizen/components/ProjectFolderSiteMap')
+);
+const ProjectFolderModerationRightsReceivedNotification = React.lazy(
+  () =>
+    import(
+      './citizen/components/ProjectFolderModerationRightsReceivedNotification'
+    )
+);
+const CreateProject = React.lazy(
+  () => import('containers/Admin/projects/all/CreateProject')
+);
+const ProjectFolderGoBackButton = React.lazy(
+  () => import('./citizen/components/ProjectFolderGoBackButton')
+);
+const ProjectsListItem = React.lazy(
+  () => import('containers/MainHeader/ProjectsListItem')
+);
 import { isProjectFolderModerator } from './permissions/roles';
+import useAuthUser from 'hooks/useAuthUser';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
+import { AdminPublicationType } from 'services/adminPublications';
+import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
+import { Navigate } from 'react-router-dom';
 const FolderShowPage = lazy(
   () => import('./citizen/containers/ProjectFolderShowPage')
 );

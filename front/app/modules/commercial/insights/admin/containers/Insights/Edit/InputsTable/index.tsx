@@ -388,6 +388,7 @@ const InputsTable = ({
           {inputs.length > 0 && nlpFeatureFlag && status === 'isIdle' && (
             <Box alignItems="center" mr="16px">
               <Button
+                className="intercom-insights-edit-scan-button"
                 buttonStyle="secondary"
                 textColor={colors.primary}
                 onClick={triggerScan}
@@ -398,6 +399,7 @@ const InputsTable = ({
             </Box>
           )}
           <Button
+            className="intercom-insights-edit-done-button"
             buttonStyle="admin-dark"
             bgColor={colors.teal}
             linkTo={`/admin/insights/${viewId}`}

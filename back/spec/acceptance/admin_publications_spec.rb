@@ -45,7 +45,7 @@ resource 'AdminPublication' do
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
       if CitizenLab.ee?
         parameter :folder, 'Filter by folder (project folder id)', required: false
-        parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
+        parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       end
 
       example_request 'List all admin publications' do

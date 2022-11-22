@@ -215,7 +215,7 @@ const CustomFieldsGraph = ({
                 fieldName: localize(customField.attributes.title_multiloc),
               })}
               svgNode={currentChartRef}
-              xlsxEndpoint={xlsxEndpoint}
+              xlsx={{ endpoint: xlsxEndpoint }}
               currentProjectFilter={currentProject}
               startAt={startAt}
               endAt={endAt}

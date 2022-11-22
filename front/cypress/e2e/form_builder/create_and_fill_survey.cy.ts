@@ -1,5 +1,6 @@
 import { snakeCase } from 'lodash-es';
 import { randomString } from '../../support/commands';
+import moment = require('moment');
 
 describe('Survey builder', () => {
   const projectTitle = randomString();
@@ -286,5 +287,116 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
 
     cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
+  });
+
+  it('allows deleting survey results when user clicks the delete button', () => {
+    const fieldIdentifier = snakeCase(questionTitle);
+    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+
+    // Save the survey
+    cy.get('form').submit();
+    // Should show success message on saving
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Check that edit button is not disabled
+    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
+      'not.have.attr',
+      'disabled'
+    );
+
+    // Navigate to the survey page
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
+    cy.contains(questionTitle).should('exist');
+
+    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+
+    // Save survey response
+    cy.get('.e2e-submit-idea-form').click();
+
+    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+
+    // Check that field exists
+    cy.get(`[data-cy="${`e2e-field-${fieldIdentifier}`}"]`).should('exist');
+
+    // Check that the edit button is disabled
+    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
+      'have.attr',
+      'disabled'
+    );
+
+    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
+    cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
+
+    // Click the delete button
+    cy.get('[data-cy="e2e-delete-survey-results"]').click();
+
+    // Confirm deleting the results
+    cy.get('[data-cy="e2e-confirm-delete-survey-results"]').click();
+
+    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('not.exist');
+  });
+
+  it('allows export of survey results', () => {
+    const fieldIdentifier = snakeCase(questionTitle);
+    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+
+    // Save the survey
+    cy.get('form').submit();
+    // Should show success message on saving
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Check that edit button is not disabled
+    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
+      'not.have.attr',
+      'disabled'
+    );
+
+    // Navigate to the survey page
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
+    cy.contains(questionTitle).should('exist');
+
+    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+
+    // Save survey response
+    cy.get('.e2e-submit-idea-form').click();
+
+    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+
+    // Check that field exists
+    cy.get(`[data-cy="${`e2e-field-${fieldIdentifier}`}"]`).should('exist');
+
+    // Check that the edit button is disabled
+    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
+      'have.attr',
+      'disabled'
+    );
+
+    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
+    cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
+
+    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
+
+    // Click the view survey results button
+    cy.get('[data-cy="e2e-form-view-results"]').click();
+
+    // Click button to export survey results
+    cy.get('[data-cy="e2e-download-survey-results"]').click();
+
+    const fileName = `${snakeCase(projectTitle)}_${moment().format(
+      'YYYY-MM-DD'
+    )}.xlsx`;
+
+    // Check that file is downloaded
+    const downloadsFolder = Cypress.config('downloadsFolder');
+    cy.readFile(`${downloadsFolder}/${fileName}`).should('exist');
+
+    // Delete the downloads folder and its contents
+    cy.task('deleteFolder', downloadsFolder);
   });
 });

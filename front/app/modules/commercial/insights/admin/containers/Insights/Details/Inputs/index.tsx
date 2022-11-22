@@ -219,6 +219,7 @@ const Inputs = ({
       ) : (
         <>
           <Button
+            className="intercom-insights-network-save-as-tag-button"
             buttonStyle="white"
             mb="12px"
             textColor={colors.textSecondary}

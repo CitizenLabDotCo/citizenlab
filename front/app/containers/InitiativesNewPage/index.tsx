@@ -14,12 +14,19 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // utils
 import { isAdmin } from 'services/permissions/roles';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import PageNotFound from 'components/PageNotFound';
+import InitiativesNewMeta from './InitiativesNewMeta';
+import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
+import { ILocationInfo } from 'typings';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
@@ -125,9 +132,7 @@ export class InitiativesNewPage extends React.PureComponent<
     ) {
       return null;
     }
-    const initiativeTopics = topics.filter(
-      (topic) => !isNilOrError(topic)
-    ) as ITopicData[];
+    const initiativeTopics = topics.filter((topic) => !isNilOrError(topic));
 
     return (
       <>
@@ -156,8 +161,18 @@ const Data = adopt<DataProps>({
   postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 
-export default withRouter((inputProps: WithRouterProps) => (
-  <Data>
-    {(dataProps) => <InitiativesNewPage {...dataProps} {...inputProps} />}
-  </Data>
-));
+export default withRouter((inputProps: WithRouterProps) => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
+
+  return (
+    <Data>
+      {(dataProps: DataProps) => (
+        <InitiativesNewPage {...dataProps} {...inputProps} />
+      )}
+    </Data>
+  );
+});

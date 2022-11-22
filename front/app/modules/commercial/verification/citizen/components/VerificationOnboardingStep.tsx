@@ -4,7 +4,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-import messages from 'containers/LandingPage/messages';
+import messages from 'containers/HomePage/messages';
 import {
   AcceptButton,
   AvatarAndShield,
@@ -15,7 +15,7 @@ import {
   SkipButton,
   StyledAvatar,
   Text,
-} from 'containers/LandingPage/SignedInHeader';
+} from 'containers/HomePage/SignedInHeader';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

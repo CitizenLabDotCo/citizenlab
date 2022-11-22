@@ -14,7 +14,8 @@ module EmailCampaigns
           phase_end_at: Time.zone.today.next_month.iso8601,
           phase_url: 'demo.stg.citizenlab.co',
           project_title_multiloc: { 'en' => 'Renovations' },
-          project_description_multiloc: { 'en' => 'Renovating the entire city' }
+          project_description_multiloc: { 'en' => 'Renovating the entire city' },
+          project_description_preview_multiloc: { 'en' => 'Project description preview text (a.k.a Homepage description)' }
         }
       }
 

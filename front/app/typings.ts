@@ -11,6 +11,7 @@ import {
 } from 'services/appConfiguration';
 import { IIdeaAction } from 'services/ideas';
 import { IProjectAction } from 'services/projects';
+import { WrappedComponentProps } from 'react-intl';
 
 declare global {
   interface Function {
@@ -193,3 +194,20 @@ export type IGraphFormat = IGraphPoint[];
 export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
 export type Percentage = `${number}%`;
+
+/* eslint-disable */
+type Values<T extends {}> = T[keyof T];
+type Tuplize<T extends {}[]> = Pick<
+  T,
+  Exclude<keyof T, Extract<keyof {}[], string> | number>
+>;
+type _OneOf<T extends {}> = Values<{
+  [K in keyof T]: T[K] & {
+    [M in Values<{ [L in keyof Omit<T, K>]: keyof T[L] }>]?: undefined;
+  };
+}>;
+
+export type OneOf<T extends {}[]> = _OneOf<Tuplize<T>>;
+/* eslint-enable */
+
+export type FormatMessage = WrappedComponentProps['intl']['formatMessage'];

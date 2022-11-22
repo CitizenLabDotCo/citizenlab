@@ -1,5 +1,13 @@
 import { isLastVerificationMethod } from 'modules/commercial/verification';
 import React from 'react';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import './services/verificationMethods';
+const IdCardLookupButton = React.lazy(
+  () => import('./components/IdCardLookupButton')
+);
+const IdCardLookupForm = React.lazy(
+  () => import('./components/IdCardLookupForm')
+);
 import {
   IDLookupMethod,
   TVerificationMethodName,

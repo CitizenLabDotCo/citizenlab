@@ -6,6 +6,10 @@ const validPlatformLinks = [
     urls: ['https://citizenlabco.typeform.com/to/I3AaTInh'],
   },
   {
+    platform: 'BalancingAct',
+    urls: ['https://dummy.abalancingact.com/dummy'],
+  },
+  {
     platform: 'Enalyzer',
     urls: ['https://surveys.enalyzer.com/?pid=cefb4s4s'],
   },
@@ -48,10 +52,6 @@ const validPlatformLinks = [
   {
     platform: 'Dailymotion',
     urls: ['https://www.dailymotion.com/embed/video/x855y3y?'],
-  },
-  {
-    platform: 'Vimeo',
-    urls: ['https://player.vimeo.com/video/719182720?h=ef103ac0a7'],
   },
   {
     platform: 'Dreambroker',

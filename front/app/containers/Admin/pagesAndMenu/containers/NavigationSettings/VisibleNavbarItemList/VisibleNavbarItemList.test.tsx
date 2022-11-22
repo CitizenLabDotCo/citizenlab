@@ -7,7 +7,7 @@ import VisibleNavbarItemList from '.';
 const mockNavbarItems = allNavbarItems;
 
 jest.mock('services/locale');
-jest.mock('hooks/usePageSlugById', () => jest.fn(() => 'slug'));
+jest.mock('hooks/useCustomPageSlugById', () => jest.fn(() => 'slug'));
 jest.mock('hooks/useNavbarItems', () => jest.fn(() => mockNavbarItems));
 jest.mock('utils/cl-router/Link');
 jest.mock('utils/cl-router/history');
@@ -38,7 +38,7 @@ describe('<VisibleNavbarItemList />', () => {
       )
     );
     expect(clHistory.push).toHaveBeenCalledWith(
-      `/admin/pages-menu/pages/edit/${itemWithPage.relationships.static_page.data?.id}`
+      `/admin/pages-menu/pages/${itemWithPage.relationships.static_page.data?.id}/settings`
     );
   });
 

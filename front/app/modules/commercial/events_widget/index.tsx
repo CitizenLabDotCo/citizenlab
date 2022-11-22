@@ -2,6 +2,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
+const EventsWidget = React.lazy(() => import('./citizen'));
 import SectionToggle, {
   Props as SectionToggleProps,
 } from './admin/SectionToggle';
@@ -39,7 +41,7 @@ const configuration: ModuleConfiguration = {
         </RenderOnFeatureAllowed>
       );
     },
-    'app.containers.LandingPage.EventsWidget': () => {
+    'app.containers.HomePage.EventsWidget': () => {
       return (
         <RenderOnAllowedAndEnabled>
           <EventsWidget />

@@ -16,9 +16,8 @@ import messages from '../messages';
 import { toFullMonth } from 'utils/dateUtils';
 
 // typings
+import { TimeSeriesRow } from '../../../hooks/useVisitors/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-import {} from 'typings';
-import { TimeSeriesRow } from '../../../hooks/useVisitorsData/typings';
 
 type DataKey = 'visitors' | 'visits';
 

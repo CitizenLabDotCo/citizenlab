@@ -1,5 +1,6 @@
-import { Box } from '@citizenlab/cl2-component-library';
-import PageTitle from 'components/admin/PageTitle';
+import React from 'react';
+import messages from './messages';
+import Outlet from 'components/Outlet';
 import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -10,50 +11,15 @@ import styled from 'styled-components';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border-radius: 3px;
-  border: 1px solid #e0e0e0;
-  box-sizing: border-box;
-  padding: 3.5rem 4rem;
-  margin-bottom: 60px;
-`;
-
-const PagesAndMenuIndex = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
-  // It's better to avoid using this feature flag in the core
-  // https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916522447
-  const customizableNavbarEnabled = useFeatureFlag({
-    name: 'customizable_navbar',
-  });
-
+const PagesAndMenuIndex = () => {
   return (
     <>
-      <HelmetIntl
-        title={
-          customizableNavbarEnabled
-            ? messages.pagesMenuMetaTitle
-            : messages.pagesMetaTitle
-        }
-      />
+      <HelmetIntl title={messages.pagesMenuMetaTitle} />
       <div id="e2e-pages-menu-container">
         <Outlet id="app.containers.Admin.pages-menu.index" />
-        {!customizableNavbarEnabled && (
-          <>
-            <Box mb="20px">
-              <PageTitle>{formatMessage(messages.pageHeader)}</PageTitle>
-            </Box>
-            <Container>
-              <RouterOutlet />
-            </Container>
-          </>
-        )}
       </div>
     </>
   );
 };
 
-export default injectIntl(PagesAndMenuIndex);
+export default PagesAndMenuIndex;

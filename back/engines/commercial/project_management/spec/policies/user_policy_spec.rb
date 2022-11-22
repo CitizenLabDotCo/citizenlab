@@ -16,7 +16,6 @@ describe UserPolicy do
       let(:subject_user) { current_user }
 
       it { is_expected.to     permit(:show)    }
-      it { is_expected.to     permit(:create)  }
       it { is_expected.to     permit(:update)  }
       it { is_expected.to     permit(:destroy) }
       it { is_expected.to     permit(:index) }
@@ -32,7 +31,6 @@ describe UserPolicy do
       let(:subject_user) { create :user }
 
       it { is_expected.to     permit(:show)    }
-      it { is_expected.to     permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.to     permit(:index) }

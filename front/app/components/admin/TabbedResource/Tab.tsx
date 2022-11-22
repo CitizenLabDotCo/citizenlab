@@ -33,13 +33,13 @@ const Container = styled.div`
   }
 
   &:not(.active):hover a {
-    color: ${colors.textPrimary};
+    color: ${colors.primary};
     border-color: #ddd;
   }
 
   &.active a {
-    color: ${colors.textPrimary};
-    border-color: ${colors.textPrimary};
+    color: ${colors.primary};
+    border-color: ${colors.primary};
   }
 `;
 
@@ -49,9 +49,13 @@ const StatusLabelWithMargin = styled(StatusLabel)`
 
 interface Props {
   tab: ITab;
+  className?: string;
 }
 
-const Tab = ({ tab: { url, label, statusLabel, active } }: Props) => {
+const Tab = ({
+  tab: { url, label, statusLabel, active },
+  className,
+}: Props) => {
   const { pathname } = useLocation();
 
   const activeClassForTab = () => {
@@ -68,7 +72,7 @@ const Tab = ({ tab: { url, label, statusLabel, active } }: Props) => {
   return (
     <Container
       key={url}
-      className={`${name} ${activeClassForTab()}`}
+      className={`${name} ${activeClassForTab()} ${className}`}
       data-testid="resource-single-tab"
     >
       <Link to={url}>

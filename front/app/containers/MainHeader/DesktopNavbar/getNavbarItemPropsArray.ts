@@ -1,5 +1,5 @@
-import { TPageSlugById } from 'hooks/usePageSlugById';
-import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
+import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
+import { TPageSlugById } from 'hooks/useCustomPageSlugById';
 
 export default function getNavbarItemPropsArray(
   navbarItems: INavbarItem[],

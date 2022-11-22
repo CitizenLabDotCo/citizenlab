@@ -8,9 +8,10 @@ import {
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { FormLabel } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import React, { useContext, useEffect, useState } from 'react';
-import { deleteIdeaImage } from 'services/ideaImages';
 import { UploadFile } from 'typings';
+import ErrorDisplay from '../ErrorDisplay';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
@@ -32,10 +33,7 @@ const ImageControl = ({
     setImageFiles(imageFiles);
     setDidBlur(true);
   };
-  const handleUploadOnRemove = (file) => {
-    if (inputId && file.remote) {
-      deleteIdeaImage(inputId, file.id);
-    }
+  const handleUploadOnRemove = (_file) => {
     handleChange(path, undefined);
     setImageFiles([]);
     setDidBlur(true);

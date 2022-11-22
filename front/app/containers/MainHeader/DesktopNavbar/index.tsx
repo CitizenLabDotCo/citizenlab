@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 
 // components
 import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
@@ -47,7 +47,7 @@ const NavbarItems = styled.ul`
 
 const DesktopNavbar = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
-  const pageSlugById = usePageSlugById();
+  const pageSlugById = useCustomPageSlugById();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 

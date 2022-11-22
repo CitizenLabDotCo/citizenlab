@@ -12,14 +12,8 @@ import eventEmitter from 'utils/eventEmitter';
 // components
 import Fragment from 'components/Fragment';
 
-import {
-  Container,
-  PageContent,
-  PageDescription,
-  PageTitle,
-  StyledContentContainer,
-} from 'containers/PagesShowPage';
-
+import { Container, PageContent, PageTitle } from 'containers/PagesShowPage';
+import { Box } from '@citizenlab/cl2-component-library';
 // styles
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { darken } from 'polished';
@@ -60,24 +54,25 @@ const CookiePolicy = () => {
         <StyledContentContainer>
           <Fragment name="pages/cookie-policy/content">
             <PageTitle>{formatMessage(messages.cookiePolicyTitle)}</PageTitle>
-            <PageDescription>
+            <Box>
               <QuillEditedContent>
                 <p>{formatMessage(messages.intro)}</p>
                 <h2>{formatMessage(messages.whatDoWeUseCookiesFor)}</h2>
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.viewPreferencesText}
-                  values={{
-                    viewPreferencesButton: (
-                      <StyledButton
-                        data-testid="viewPreferencesButton"
-                        onClick={openConsentManager}
-                      >
-                        {formatMessage(messages.viewPreferencesButtonText)}
-                      </StyledButton>
-                    ),
-                  }}
-                />
+                <p>
+                  <FormattedMessage
+                    {...messages.viewPreferencesText}
+                    values={{
+                      viewPreferencesButton: (
+                        <StyledButton
+                          data-testid="viewPreferencesButton"
+                          onClick={openConsentManager}
+                        >
+                          {formatMessage(messages.viewPreferencesButtonText)}
+                        </StyledButton>
+                      ),
+                    }}
+                  />
+                </p>
 
                 <h3>{formatMessage(messages.analyticsTitle)}</h3>
                 <p>{formatMessage(messages.analyticsContent)}</p>
@@ -113,7 +108,7 @@ const CookiePolicy = () => {
                   }}
                 />
               </QuillEditedContent>
-            </PageDescription>
+            </Box>
           </Fragment>
         </StyledContentContainer>
       </PageContent>

@@ -17,7 +17,6 @@ export interface Props {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   checked: boolean;
-  disabled: boolean;
   editLinkPath?: string;
   isLastItem: boolean;
   hideToggle?: boolean;
@@ -31,7 +30,6 @@ const SectionToggle = ({
   tooltipMessageDescriptor,
   editLinkPath,
   checked,
-  disabled,
   isLastItem,
   hideToggle = false,
   name,
@@ -51,11 +49,7 @@ const SectionToggle = ({
           mt="7px"
           data-cy={`e2e-admin-section-toggle-${name}`}
         >
-          <Toggle
-            checked={checked}
-            onChange={onChangeSectionToggle}
-            disabled={disabled}
-          />
+          <Toggle checked={checked} onChange={onChangeSectionToggle} />
         </Box>
         <Box>
           <Title mr="10px">
@@ -69,7 +63,10 @@ const SectionToggle = ({
         </Box>
       </Box>
       {editLinkPath && onClickEditButton && (
-        <AdminEditButton onClick={() => onClickEditButton(editLinkPath)} />
+        <AdminEditButton
+          onClick={() => onClickEditButton(editLinkPath)}
+          testId={name}
+        />
       )}
     </Row>
   );

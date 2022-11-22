@@ -3,9 +3,12 @@ import { colors } from 'components/admin/Graphs/styling';
 
 // utils
 import { capitalize } from 'lodash-es';
-import { roundPercentage, roundPercentages, sum } from 'utils/math';
+import { get } from 'utils/helperUtils';
 
 // typings
+import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';
+import { Translations } from './translations';
+import { Localize } from 'hooks/useLocalize';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { Localize } from 'hooks/useLocalize';
 import { FeedbackRow, StackedBarsRow, StatusRow } from './typings';
@@ -87,7 +90,7 @@ export const parseStackedBarsData = (
     statusRows.reduce(
       (acc, row) => ({
         ...acc,
-        [row['status.id']]: row.count,
+        [get(row, 'dimension_status.id')]: row.count,
       }),
       {}
     ),
@@ -103,7 +106,7 @@ export const getStatusColorById = (statusRows: StatusRow[]) => {
   return statusRows.reduce(
     (acc, row) => ({
       ...acc,
-      [row['status.id']]: row.first_status_color,
+      [get(row, 'dimension_status.id')]: row.first_dimension_status_color,
     }),
     {}
   );
@@ -115,8 +118,10 @@ export const parseStackedBarsLegendItems = (
 ): LegendItem[] => {
   return statusRows.map((statusRow) => ({
     icon: 'circle',
-    color: statusRow.first_status_color,
-    label: capitalize(localize(statusRow.first_status_title_multiloc)),
+    color: statusRow.first_dimension_status_color,
+    label: capitalize(
+      localize(statusRow.first_dimension_status_title_multiloc)
+    ),
   }));
 };
 
@@ -189,7 +194,7 @@ export const parseExcelData = (
   };
 
   const xlsxDataSheet3 = statusRows.map((statusRow, i) => ({
-    [status]: localize(statusRow.first_status_title_multiloc),
+    [status]: localize(statusRow.first_dimension_status_title_multiloc),
     [numberOfInputs]: statusRow.count,
     [percentageOfInputs]: percentages[i],
   }));

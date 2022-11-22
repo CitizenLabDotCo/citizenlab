@@ -1,5 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -16,10 +17,9 @@ import messages from 'containers/UsersEditPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
-import { darken } from 'polished';
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const Container = styled(FormSection)`
   display: flex;
@@ -46,7 +46,7 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 const ShieldIcon = styled(Icon)`
-  fill: ${colors.white};
+  fill: ${colors.textSecondary};
   opacity: 0.5;
   width: 48px;
   height: 48px;

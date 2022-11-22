@@ -1,3 +1,9 @@
+import React from 'react';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import './services/verificationMethods';
+const ClaveUnicaButton = React.lazy(
+  () => import('./components/ClaveUnicaButton')
+);
 import { isLastVerificationMethod } from 'modules/commercial/verification';
 import React from 'react';
 import { TVerificationMethodName } from 'services/verificationMethods';

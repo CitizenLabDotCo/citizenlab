@@ -1,5 +1,4 @@
-import { get, snakeCase } from 'lodash-es';
-import React from 'react';
+import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { injectIntl } from 'utils/cl-intl';
@@ -27,29 +26,48 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useFormResults from 'hooks/useFormResults';
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
+
+// Services
+import { downloadSurveyResults } from 'services/formCustomFields';
 
 const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const [isDownloading, setIsDownloading] = useState(false);
   const locale = useLocale();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  let phaseId = urlParams.get('phase_id');
-  if (phaseId === null) {
-    phaseId = '';
-  }
-
+  const phaseId = urlParams.get('phase_id');
+  const project = useProject({ projectId });
+  const phase = usePhase(phaseId);
   const formResults = useFormResults({
     projectId,
     phaseId,
   });
 
-  if (isNilOrError(formResults) || isNilOrError(locale)) {
+  if (
+    isNilOrError(formResults) ||
+    isNilOrError(locale) ||
+    isNilOrError(project)
+  ) {
     return null;
   }
 
   const { totalSubmissions, results } = formResults;
+
+  const handleDownloadResults = async () => {
+    try {
+      setIsDownloading(true);
+      await downloadSurveyResults(project, locale, phase);
+    } catch (error) {
+      // Not handling errors for now
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const surveyResponseMessage =
     totalSubmissions > 0
@@ -70,9 +88,12 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         <Box>
           <Button
             icon="download"
+            data-cy="e2e-download-survey-results"
             buttonStyle="secondary"
             width="auto"
             minWidth="312px"
+            onClick={handleDownloadResults}
+            processing={isDownloading}
           >
             {formatMessage(messages.downloadResults)}
           </Button>
@@ -141,7 +162,10 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                       bgColor={colors.primary}
                       completed={percentage}
                       leftLabel={answer}
-                      rightLabel={`${percentage}% (${responses} choices)`}
+                      rightLabel={formatMessage(messages.choiceCount, {
+                        choiceCount: responses,
+                        percentage,
+                      })}
                     />
                   );
                 })}

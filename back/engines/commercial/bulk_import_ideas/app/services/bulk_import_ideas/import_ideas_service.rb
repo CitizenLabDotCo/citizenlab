@@ -44,7 +44,7 @@ module BulkImportIdeas
           'Email' => 'moderator@citizenlab.co',
           'Project' => 'Project 1',
           'Phase' => 1,
-          'Image URL' => 'https://res.cloudinary.com/citizenlabco/image/upload/v1548847594/image_v8imrf.png',
+          'Image URL' => 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
           'Date (dd-mm-yyyy)' => '18-07-2022',
           'Topics' => 'Mobility; Health and welfare',
           'Latitude' => 50.5035,

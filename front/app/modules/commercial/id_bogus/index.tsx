@@ -1,9 +1,12 @@
 import { isLastVerificationMethod } from 'modules/commercial/verification';
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import BogusButton from './components/BogusButton';
-import VerificationFormBogus from './components/VerificationFormBogus';
 import './services/verificationMethods';
+const BogusButton = React.lazy(() => import('./components/BogusButton'));
+const VerificationFormBogus = React.lazy(
+  () => import('./components/VerificationFormBogus')
+);
+import { isLastVerificationMethod } from 'modules/commercial/verification';
 
 const verificationMethodName = 'bogus';
 const configuration: ModuleConfiguration = {

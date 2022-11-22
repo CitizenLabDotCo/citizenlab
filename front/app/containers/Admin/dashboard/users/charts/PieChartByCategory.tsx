@@ -6,9 +6,13 @@ import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
+// utils
+import renderTooltip from './renderPieChartByCategoryTooltip';
+import { roundPercentages } from 'utils/math';
+
 // styling
-import { legacyColors } from 'components/admin/Graphs/styling';
 import { withTheme } from 'styled-components';
+import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
 // components
 import PieChart from 'components/admin/Graphs/PieChart';
@@ -27,12 +31,16 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // typings
-import { IStream, IStreamParams } from 'utils/streams';
-
+import { IStreamParams, IStream } from 'utils/streams';
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { IGraphFormat } from 'typings';
 
 interface DataProps {
   serie: IGraphFormat;
+}
+
+interface Serie extends IGraphFormat {
+  percentage: number;
 }
 
 export interface ISupportedDataTypeMap {}
@@ -59,13 +67,6 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-export const piechartColors = [
-  legacyColors.pinkRed,
-  legacyColors.lightBlue,
-  legacyColors.lightGreen,
-  legacyColors.grey,
-];
-
 class PieChartByCategory extends React.PureComponent<
   Props & WrappedComponentProps
 > {
@@ -76,8 +77,22 @@ class PieChartByCategory extends React.PureComponent<
     this.currentChart = React.createRef();
   }
 
+  makeLegends = (row, i): LegendItem => ({
+    icon: 'circle',
+    color: categoricalColorScheme({ rowIndex: i }),
+    label: `${row.name} (${row.percentage}%)`,
+  });
+
+  addPercentages = (serie): Serie | undefined => {
+    if (!serie) return;
+    const percentages = roundPercentages(serie.map((row) => row.value));
+    return serie.map((row, i) => ({
+      ...row,
+      percentage: percentages[i],
+    }));
+  };
+
   render() {
-    const { colorMain } = this.props['theme'];
     const {
       startAt,
       endAt,
@@ -89,6 +104,8 @@ class PieChartByCategory extends React.PureComponent<
       currentGroupFilterLabel,
     } = this.props;
 
+    const percentagesSerie = this.addPercentages(serie);
+
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -98,7 +115,7 @@ class PieChartByCategory extends React.PureComponent<
               <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
+                xlsx={{ endpoint: xlsxEndpoint }}
                 currentGroupFilter={currentGroupFilter}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 startAt={startAt}
@@ -106,26 +123,31 @@ class PieChartByCategory extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          {!serie ? (
+          {!percentagesSerie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
             <PieChartStyleFixesDiv>
               <PieChart
-                data={serie}
+                data={percentagesSerie}
+                width={164}
                 mapping={{
                   angle: 'value',
                   name: 'name',
-                  fill: ({ rowIndex }) => piechartColors[rowIndex] ?? colorMain,
                 }}
                 pie={{
                   startAngle: 0,
                   endAngle: 360,
-                  innerRadius: 60,
+                  outerRadius: 60,
                 }}
-                annotations
-                tooltip
+                tooltip={renderTooltip()}
+                legend={{
+                  items: percentagesSerie.map(this.makeLegends),
+                  maintainGraphSize: true,
+                  marginLeft: 50,
+                  position: 'right-center',
+                }}
                 innerRef={this.currentChart}
               />
             </PieChartStyleFixesDiv>

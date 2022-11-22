@@ -284,7 +284,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
             {serie && (
               <ReportExportMenu
                 svgNode={this.currentChart}
-                xlsxEndpoint={votesByTimeXlsxEndpoint}
+                xlsx={{ endpoint: votesByTimeXlsxEndpoint }}
                 name={formatMessage(messages.votes)}
                 {...this.props}
               />

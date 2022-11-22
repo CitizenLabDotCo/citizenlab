@@ -17,10 +17,13 @@ import { client } from '../../utils/apolloUtils';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useAuthUser from 'hooks/useAuthUser';
+import { useProjectFolders } from 'modules/commercial/project_folders/hooks';
+import { userModeratesFolder } from 'modules/commercial/project_folders/permissions/roles';
+import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Icon, Input } from '@citizenlab/cl2-component-library';
-import T from 'components/T';
+import { Input, Icon, Select, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -42,19 +45,13 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { Locale, Multiloc } from 'typings';
+import { Locale, Multiloc, IOption } from 'typings';
 
 const Content = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 35px;
   padding-bottom: 50px;
-`;
-
-const StyledInputMultilocWithLocaleSwitcher = styled(
-  InputMultilocWithLocaleSwitcher
-)`
-  margin-bottom: 35px;
 `;
 
 const Success = styled.div`
@@ -119,6 +116,7 @@ interface IVariables {
   projectTemplateId: string | undefined;
   titleMultiloc: Multiloc;
   timelineStartAt: string;
+  folderId: string | null;
 }
 
 const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
@@ -136,9 +134,13 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
 
     const tenantLocales = useAppConfigurationLocales();
     const graphqlTenantLocales = useGraphqlTenantLocales();
+    const { projectFolders } = useProjectFolders({});
+    const authUser = useAuthUser();
+    const localize = useLocalize();
 
     const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
     const [startDate, setStartDate] = useState<string | null>(null);
+    const [folderId, setFolderId] = useState<string | null>(null);
     const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
     const [titleError, setTitleError] = useState<string | null>(null);
     const [startDateError, setStartDateError] = useState<string | null>(null);
@@ -161,11 +163,13 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
         $projectTemplateId: ID!
         $titleMultiloc: MultilocAttributes!
         $timelineStartAt: String
+        $folderId: String
       ) {
         applyProjectTemplate(
           projectTemplateId: $projectTemplateId
           titleMultiloc: $titleMultiloc
           timelineStartAt: $timelineStartAt
+          folderId: $folderId
         ) {
           errors
         }
@@ -230,6 +234,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
               ),
               projectTemplateId: templateId,
               timelineStartAt: startDate,
+              folderId,
             },
           });
           await streams.fetchAllWith({
@@ -248,7 +253,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
         }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tenantLocales, titleMultiloc, startDate, selectedLocale]);
+    }, [tenantLocales, titleMultiloc, startDate, selectedLocale, folderId]);
 
     const onClose = useCallback(() => {
       close();
@@ -271,6 +276,10 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       setStartDate(startDate);
     }, []);
 
+    const handleSelectFolderChange = ({ value: folderId }) => {
+      setFolderId(folderId);
+    };
+
     useEffect(() => {
       setTitleMultiloc(null);
       setStartDate(null);
@@ -282,9 +291,30 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       setResponseError(null);
     }, [opened]);
 
+    if (isNilOrError(authUser)) {
+      return null;
+    }
+
     const templateTitle = (
       <T value={get(data, 'projectTemplate.titleMultiloc')} />
     );
+
+    const folderOptions: IOption[] = !isNilOrError(projectFolders)
+      ? [
+          {
+            value: '',
+            label: '',
+          },
+          ...projectFolders
+            .filter((folder) => userModeratesFolder(authUser, folder.id))
+            .map((folder) => {
+              return {
+                value: folder.id,
+                label: localize(folder.attributes.title_multiloc),
+              };
+            }),
+        ]
+      : [];
 
     return (
       <Modal
@@ -329,7 +359,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
         <Content>
           {!success ? (
             <>
-              <StyledInputMultilocWithLocaleSwitcher
+              <InputMultilocWithLocaleSwitcher
                 id="project-title"
                 label={intl.formatMessage(messages.projectTitle)}
                 placeholder={intl.formatMessage(messages.typeProjectName)}
@@ -340,15 +370,22 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                 error={titleError}
                 autoFocus={true}
               />
-
-              <Input
-                id="project-start-date"
-                label={intl.formatMessage(messages.projectStartDate)}
-                type="date"
-                onChange={onStartDateChange}
-                value={startDate}
-                error={startDateError}
-                placeholder={bowser.msie ? 'YYYY-MM-DD' : undefined}
+              <Box my="36px">
+                <Input
+                  id="project-start-date"
+                  label={intl.formatMessage(messages.projectStartDate)}
+                  type="date"
+                  onChange={onStartDateChange}
+                  value={startDate}
+                  error={startDateError}
+                  placeholder={bowser.msie ? 'YYYY-MM-DD' : undefined}
+                />
+              </Box>
+              <Select
+                value={folderId}
+                label={intl.formatMessage(messages.projectFolder)}
+                options={folderOptions}
+                onChange={handleSelectFolderChange}
               />
             </>
           ) : (

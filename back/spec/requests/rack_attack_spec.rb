@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'Rack::Attack', type: :request, slow_test: true do
+describe 'Rack::Attack', type: :request do
   include ActiveSupport::Testing::TimeHelpers
 
   before do
@@ -79,6 +79,17 @@ describe 'Rack::Attack', type: :request, slow_test: true do
   end
 
   it 'limits account creation requests from same IP to 10 in 20 seconds' do
+    # enable user signup via password first
+    settings = AppConfiguration.instance.settings
+    settings['password_login'] = {
+      'enabled' => true,
+      'allowed' => true,
+      'enable_signup' => true,
+      'minimum_length' => 5,
+      'phone' => false
+    }
+    AppConfiguration.instance.update! settings: settings
+
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     # Use a different email for each request, to emulate multiple account creation attempts

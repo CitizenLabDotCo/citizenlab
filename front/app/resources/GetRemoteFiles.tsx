@@ -7,7 +7,11 @@ import {
   of,
   Subscription,
 } from 'rxjs';
-import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
+import shallowCompare from 'utils/shallowCompare';
+import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
+import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
+import { pageFilesStream, ICustomPageFiles } from 'services/pageFiles';
 import { eventFilesStream, IEventFiles } from 'services/eventFiles';
 import { ideaFilesStream, IIdeaFiles } from 'services/ideaFiles';
 import {
@@ -110,7 +114,7 @@ export default class GetRemoteFiles extends React.Component<Props, State> {
                 | IProjectFiles
                 | IPhaseFiles
                 | IEventFiles
-                | IPageFiles
+                | ICustomPageFiles
                 | IIdeaFiles
                 | IInitiativeFiles
                 | null

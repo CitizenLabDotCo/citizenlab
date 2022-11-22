@@ -5,16 +5,24 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import RegistrationQuestions from './admin/components/RegistrationQuestions';
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
-import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
-import UserCustomFieldsFormMigrated from './citizen/components/UserCustomFieldsFormMigrated';
+
+const UserCustomFieldsForm = React.lazy(
+  () => import('./citizen/components/UserCustomFieldsForm')
+);
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
+const RegistrationQuestions = React.lazy(
+  () => import('./admin/components/RegistrationQuestions')
+);
 import {
   IUsersByBirthyear,
   IUsersByDomicile,
   IUsersByRegistrationField,
 } from './services/stats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+const UserCustomFieldsFormMigrated = React.lazy(
+  () => import('./citizen/components/UserCustomFieldsFormMigrated')
+);
 
-// lazy components for outlets
 const CustomFieldGraphs = React.lazy(
   () => import('./admin/components/CustomFieldGraphs')
 );
@@ -24,7 +32,7 @@ const RegistrationFieldsToGraphs = React.lazy(
 const AllCustomFields = React.lazy(
   () => import('./admin/components/CustomFields/All')
 );
-// lazy components for routes
+
 const AdminCustomFieldsContainer = React.lazy(
   () => import('./admin/containers/CustomFields/')
 );

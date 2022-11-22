@@ -1,7 +1,8 @@
 import FeatureFlag from 'components/FeatureFlag';
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import Tab from './admin/components/Tab';
+const Tab = React.lazy(() => import('./admin/components/Tab'));
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const StatusesComponent = React.lazy(() => import('./admin/containers/'));
 const NewStatusComponent = React.lazy(() => import('./admin/containers/new'));

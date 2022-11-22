@@ -3,7 +3,8 @@ import React, { memo } from 'react';
 // components
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
-import Link from 'utils/cl-router/Link';
+import { AuthProvider } from '../AuthProviders';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -16,19 +17,16 @@ import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
+  gap: 15px;
   flex-direction: column;
   align-items: stretch;
-`;
-
-const CheckboxWrapper = styled.div`
-  margin-bottom: 15px;
 `;
 
 const ConsentText = styled.div`
   color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
-  font-weight: 300;
+  font-weight: ${(props: any) => props.fontWeight};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -48,6 +46,10 @@ const ConsentText = styled.div`
   }
 `;
 
+const BoldConsentText = styled(ConsentText)`
+  font-weight: bold;
+`;
+
 interface Props {
   termsAndConditionsAccepted: boolean;
   privacyPolicyAccepted: boolean;
@@ -55,6 +57,7 @@ interface Props {
   privacyPolicyError: boolean;
   onTacAcceptedChange: (tacAccepted: boolean) => void;
   onPrivacyAcceptedChange: (privacyAccepted: boolean) => void;
+  authProvider: AuthProvider;
   className?: string;
 }
 
@@ -68,6 +71,7 @@ const Consent = memo(
     privacyPolicyAccepted,
     onTacAcceptedChange,
     onPrivacyAcceptedChange,
+    authProvider,
   }: Props & WrappedComponentProps) => {
     const handleTermsAndConditionsOnChange = () => {
       onTacAcceptedChange(!termsAndConditionsAccepted);
@@ -77,71 +81,108 @@ const Consent = memo(
       onPrivacyAcceptedChange(!privacyPolicyAccepted);
     };
 
-    return (
-      <Container className={className}>
-        <CheckboxWrapper id="e2e-terms-and-conditions-container">
-          <Checkbox
-            className="e2e-terms-and-conditions"
-            size="20px"
-            checked={termsAndConditionsAccepted}
-            onChange={handleTermsAndConditionsOnChange}
-            label={
-              <ConsentText>
-                <FormattedMessage
-                  {...messages.iHaveReadAndAgreeTo}
-                  values={{
-                    link: (
-                      <Link target="_blank" to="/pages/terms-and-conditions">
-                        <FormattedMessage {...messages.theTermsAndConditions} />
-                      </Link>
-                    ),
-                  }}
-                />
-              </ConsentText>
-            }
-          />
-          <Error
-            text={
-              termsAndConditionsError ? formatMessage(messages.tacError) : null
-            }
-          />
-        </CheckboxWrapper>
+    if (authProvider === 'id_vienna_saml') {
+      return (
+        <Container className={className}>
+          <ConsentText>
+            <FormattedMessage
+              {...messages.viennaConsentHeader}
+              values={{ br: <br /> }}
+            />
+            <ul>
+              <li>{formatMessage(messages.viennaConsentEmail)}</li>
+              <li>{formatMessage(messages.viennaConsentFirstName)}</li>
+              <li>{formatMessage(messages.viennaConsentLastName)}</li>
+              <li>{formatMessage(messages.viennaConsentUserName)}</li>
+            </ul>
+            <FormattedMessage {...messages.viennaConsentFooter} />
+          </ConsentText>
 
-        <CheckboxWrapper id="e2e-privacy-container">
-          <Checkbox
-            className="e2e-privacy-checkbox"
-            size="20px"
-            checked={privacyPolicyAccepted}
-            onChange={handlePrivacyPolicyOnChange}
-            label={
-              <ConsentText>
-                <FormattedMessage
-                  {...messages.iHaveReadAndAgreeTo}
-                  values={{
-                    link: (
-                      <Link target="_blank" to="/pages/privacy-policy">
-                        <FormattedMessage {...messages.thePrivacyPolicy} />
-                      </Link>
-                    ),
-                  }}
-                />
-              </ConsentText>
-            }
-          />
-          <Error
-            text={
-              privacyPolicyError
-                ? formatMessage(messages.privacyPolicyNotAcceptedError)
-                : null
-            }
-          />
-        </CheckboxWrapper>
+          <BoldConsentText>
+            <FormattedMessage
+              {...messages.iHaveReadAndAgreeToVienna}
+              values={{
+                link: (
+                  <Link target="_blank" to="/pages/terms-and-conditions">
+                    <FormattedMessage {...messages.theTermsAndConditions} />
+                  </Link>
+                ),
+              }}
+            />
+          </BoldConsentText>
+        </Container>
+      );
+    } else {
+      return (
+        <Container className={className}>
+          <Box id="e2e-terms-and-conditions-container">
+            <Checkbox
+              className="e2e-terms-and-conditions"
+              size="20px"
+              checked={termsAndConditionsAccepted}
+              onChange={handleTermsAndConditionsOnChange}
+              label={
+                <ConsentText>
+                  <FormattedMessage
+                    {...messages.iHaveReadAndAgreeTo}
+                    values={{
+                      link: (
+                        <Link target="_blank" to="/pages/terms-and-conditions">
+                          <FormattedMessage
+                            {...messages.theTermsAndConditions}
+                          />
+                        </Link>
+                      ),
+                    }}
+                  />
+                </ConsentText>
+              }
+            />
+            <Error
+              text={
+                termsAndConditionsError
+                  ? formatMessage(messages.tacError)
+                  : null
+              }
+            />
+          </Box>
 
-        <ConsentText>
-          <FormattedMessage {...messages.emailConsent} />
-        </ConsentText>
-      </Container>
-    );
+          <Box id="e2e-privacy-container">
+            <Checkbox
+              className="e2e-privacy-checkbox"
+              size="20px"
+              checked={privacyPolicyAccepted}
+              onChange={handlePrivacyPolicyOnChange}
+              label={
+                <ConsentText>
+                  <FormattedMessage
+                    {...messages.iHaveReadAndAgreeTo}
+                    values={{
+                      link: (
+                        <Link target="_blank" to="/pages/privacy-policy">
+                          <FormattedMessage {...messages.thePrivacyPolicy} />
+                        </Link>
+                      ),
+                    }}
+                  />
+                </ConsentText>
+              }
+            />
+            <Error
+              text={
+                privacyPolicyError
+                  ? formatMessage(messages.privacyPolicyNotAcceptedError)
+                  : null
+              }
+            />
+          </Box>
+
+          <ConsentText>
+            <FormattedMessage {...messages.emailConsent} />
+          </ConsentText>
+        </Container>
+      );
+    }
   }
 );
 

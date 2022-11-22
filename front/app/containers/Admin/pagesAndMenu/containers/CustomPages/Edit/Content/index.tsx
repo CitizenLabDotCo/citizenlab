@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -37,10 +37,8 @@ export type TCustomPageSectionToggleData = {
 
 // types
 const CustomPagesEditContent = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  // to be typed
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage(customPageId);
+  const customPage = useCustomPage({ customPageId });
 
   if (isNilOrError(customPage)) {
     return null;
@@ -92,28 +90,23 @@ const CustomPagesEditContent = () => {
       if (isNilOrError(customPage)) {
         return;
       }
-      setIsLoading(true);
       try {
         await updateCustomPage(customPageId, {
           [sectionName]: !customPage.attributes[sectionName],
         });
       } catch (error) {
         console.error(error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
   const handleOnClick = (sectionPath: string) => {
     if (sectionPath) {
-      clHistory.push(
-        `/admin/pages-menu/custom/${customPageId}/${sectionPath}/`
-      );
+      clHistory.push(`/admin/pages-menu/pages/${customPageId}/${sectionPath}/`);
     }
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper flatTopBorder>
       <Box display="flex" flexDirection="column">
         <Box mb="28px">
           <Warning>
@@ -141,7 +134,6 @@ const CustomPagesEditContent = () => {
                 editLinkPath={linkToPath}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
-                disabled={isLoading}
                 isLastItem={index === sectionTogglesData.length - 1}
                 hideToggle={hideToggle}
               />

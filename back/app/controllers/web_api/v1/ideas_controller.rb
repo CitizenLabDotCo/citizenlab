@@ -121,7 +121,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def create
     project = Project.find(params.dig(:idea, :project_id))
     phase_ids = params.dig(:idea, :phase_ids) || []
-    is_moderator = UserRoleService.new.can_moderate_project?(project, current_user)
+    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
 
     if phase_ids.any?
       send_error and return unless is_moderator
@@ -140,8 +140,7 @@ class WebApi::V1::IdeasController < ApplicationController
     custom_form = participation_context_for_form.custom_form || CustomForm.new(participation_context: participation_context_for_form)
 
     extract_custom_field_values_from_params! custom_form
-    user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
-    input = Idea.new idea_params(custom_form, user_can_moderate_project)
+    input = Idea.new idea_params(custom_form, is_moderator)
     if project.timeline?
       input.creation_phase = (participation_context if participation_method.form_in_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
@@ -172,6 +171,11 @@ class WebApi::V1::IdeasController < ApplicationController
     input = Idea.find params[:id]
     project = input.project
     authorize input
+
+    if invalid_blank_author_for_update? input, params
+      render json: { errors: { author: [{ error: :blank }] } }, status: :unprocessable_entity
+      return
+    end
 
     extract_custom_field_values_from_params! input.custom_form
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
@@ -334,6 +338,15 @@ class WebApi::V1::IdeasController < ApplicationController
     (input.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
       params[:idea][:custom_field_values][clear_key] = nil
     end
+  end
+
+  def invalid_blank_author_for_update?(input, params)
+    author_removal = params[:idea].key?(:author_id) && params[:idea][:author_id].nil?
+    publishing = params[:idea][:publication_status] == 'published'
+
+    return false unless author_removal || (publishing && !input.author_id)
+
+    input.participation_method_on_creation.sign_in_required_for_posting?
   end
 end
 

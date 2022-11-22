@@ -38,17 +38,18 @@ import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import idCowConfiguration from './commercial/id_cow';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
-import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
+import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
+import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import eventsWidgetConfiguration from './commercial/events_widget';
 import widgetsConfiguration from './commercial/widgets';
 
 import analyticsConfiguration from './commercial/analytics';
-import customizableNavbarConfiguration from './commercial/customizable_navbar';
-import insightsConfiguration from './commercial/insights';
 
+import customizableNavbarConfiguration from './free/customizable_navbar';
 import userConfirmationConfiguration from './free/user_confirmation';
 
+import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
@@ -184,6 +185,10 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/id_gent_rrn'],
   },
   {
+    configuration: IdOostendeRrnConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_oostende_rrn'],
+  },
+  {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
   },
@@ -213,11 +218,15 @@ export default loadModules([
   },
   {
     configuration: customizableNavbarConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/customizable_navbar'],
+    isEnabled: CL_CONFIG['modules']['free/customizable_navbar'],
   },
   {
     configuration: userConfirmationConfiguration,
     isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
+  },
+  {
+    configuration: idViennaSamlConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_vienna_saml'],
   },
   {
     configuration: representativenessConfiguration,

@@ -2,7 +2,7 @@
 
 # CitizenLab
 
-![CitizenLab](https://res.cloudinary.com/citizenlabco/image/upload/c_scale,w_170/v1604331338/CitizenLab_logo.png)
+![CitizenLab](https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/citizenlab_logo_small.png)
 
 CitizenLab is a **digital democracy platform** that facilitates community participation and co-creation. Participants can post ideas, contribute to discussion, or choose to vote and prioritize community projects. Whether it’s through a poll, a participatory budget, or idea collection, the CitizenLab platform offers multiple ways to make your community participate, and manage their inputs effectively.
 
@@ -10,7 +10,7 @@ CitizenLab is a **digital democracy platform** that facilitates community partic
 
 If you'd like to test out the functionalities before setting up your own instance, feel free to take a look at our **[demo video](https://www.loom.com/share/f1a80ddad6244222a9e976488f8ab19c)** or explore the **[demo platform](https://opensource.demo.citizenlab.co/)**, with all open-source functionalities enabled. Admin credentials are shown in the sign-up flow, if you'd like to get access to the back-office.
 
-![GIF of the CitizenLab platform](https://res.cloudinary.com/citizenlabco/image/upload/c_scale,w_739/v1617377717/gif-citizenlab-participation-platform_yqpk66.gif)
+![GIF of the CitizenLab platform](https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/example_platform_small.gif)
 
 ## Open-source model
 

@@ -98,6 +98,7 @@ export const StyledHeaderTitle = styled((props) => <HeaderTitle {...props} />)<{
 export const StyledModalContentContainer = styled(ModalContentContainer)<{
   inModal: boolean;
   headerHeight: string;
+  fullScreen?: boolean;
 }>`
   ${(props) =>
     props.inModal &&
@@ -122,5 +123,15 @@ export const StyledModalContentContainer = styled(ModalContentContainer)<{
         padding-left: 2px;
         padding-right: 2px;
       `}
+    `}
+
+    ${(props) =>
+    props.fullScreen &&
+    css`
+      max-height: 100%;
+
+      ${media.phone`
+          max-height: 100%;
+        `}
     `}
 `;

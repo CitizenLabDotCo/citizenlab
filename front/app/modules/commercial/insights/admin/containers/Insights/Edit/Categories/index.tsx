@@ -279,6 +279,7 @@ const Categories = ({
     >
       <Box my="20px">
         <CategoryButton
+          className="intercom-insights-edit-all-tags"
           bgColor={
             inputsCategoryFilter === 'allInput'
               ? darken(0.05, colors.grey200)
@@ -297,6 +298,7 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
+          className="intercom-insights-edit-recently-posted-tags"
           bgColor={
             inputsCategoryFilter === 'recentlyPosted'
               ? darken(0.05, colors.grey200)
@@ -315,6 +317,7 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
+          className="intercom-insights-edit-not-categorized"
           bgColor={
             inputsCategoryFilter === 'notCategorized'
               ? darken(0.05, colors.grey200)
@@ -376,7 +379,13 @@ const Categories = ({
           }
         />
       </Box>
-      <Box display="flex" alignItems="center" mb="28px" as="form">
+      <Box
+        display="flex"
+        alignItems="center"
+        mb="28px"
+        as="form"
+        className="intercom-insights-edit-add-tag-form"
+      >
         <Input
           type="text"
           value={name}

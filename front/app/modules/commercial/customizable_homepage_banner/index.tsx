@@ -1,15 +1,20 @@
-import FeatureFlag from 'components/FeatureFlag';
-import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
+const LayoutSettingField = React.lazy(
+  () =>
+    import(
+      'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField'
+    )
+);
 import React from 'react';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import CTASettings from './admin/CTASettings';
-import CTA from './citizen/CTA';
-import TwoColumnLayout from './citizen/TwoColumnLayout';
-import TwoRowLayout from './citizen/TwoRowLayout';
+const CTASettings = React.lazy(() => import('./admin/CTASettings'));
+const CTA = React.lazy(() => import('./citizen/CTA'));
+const TwoColumnLayout = React.lazy(() => import('./citizen/TwoColumnLayout'));
+const TwoRowLayout = React.lazy(() => import('./citizen/TwoRowLayout'));
 
 declare module 'utils/moduleUtils' {
   export interface OutletsPropertyMap {
@@ -37,21 +42,21 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.settings.customize.headerSectionEnd': (props) => {
       return <CTASettings {...props} />;
     },
-    'app.containers.LandingPage.SignedOutHeader.CTA': (props) => {
+    'app.containers.HomePage.SignedOutHeader.CTA': (props) => {
       return (
         <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn={false} {...props} />
         </FeatureFlag>
       );
     },
-    'app.containers.LandingPage.SignedInHeader.CTA': (props) => {
+    'app.containers.HomePage.SignedInHeader.CTA': (props) => {
       return (
         <FeatureFlag name="customizable_homepage_banner">
           <CTA signedIn {...props} />
         </FeatureFlag>
       );
     },
-    'app.containers.LandingPage.SignedOutHeader.index': ({
+    'app.containers.HomePage.SignedOutHeader.index': ({
       homepageBannerLayout,
     }) => {
       if (homepageBannerLayout === 'two_column_layout') {

@@ -1,7 +1,7 @@
 import BannerButton, {
   BannerButtonStyle,
-} from 'containers/LandingPage/BannerButton';
-import SignUpButton from 'containers/LandingPage/SignUpButton';
+} from 'components/LandingPages/citizen/BannerButton';
+import SignUpButton from 'containers/HomePage/SignUpButton';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React, { KeyboardEvent, MouseEvent } from 'react';

@@ -1,73 +1,57 @@
 import React, { useRef, useState } from 'react';
 
 // hooks
-import useVisitorsTrafficSourcesData from '../../hooks/useVisitorsTrafficSourcesData';
+import useVisitorReferrerTypes from '../../hooks/useVisitorReferrerTypes';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import GraphCard from 'components/admin/GraphCard';
-import PieChart from 'components/admin/Graphs/PieChart';
 import EmptyPieChart from '../EmptyPieChart';
-import renderTooltip from './renderTooltip';
+import Chart from './Chart';
+import Table from './Table';
+import TableModal from './TableModal';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { useIntl } from 'utils/cl-intl';
 
-// typings
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Moment } from 'moment';
+// utils
+import getXlsxData from './getXlsxData';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  projectFilter: string | undefined;
-  resolution: IResolution;
-}
+// typings
+import { ProjectId, Dates } from '../../typings';
+import { View } from 'components/admin/GraphCard/ViewToggle';
 
-const VisitorsCard = ({
+type Props = ProjectId & Dates;
+
+const VisitorsTrafficSourcesCard = ({
+  projectId,
   startAtMoment,
   endAtMoment,
-  projectFilter,
-  resolution,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const { pieData, xlsxData } = useVisitorsTrafficSourcesData(formatMessage, {
+  const { pieData, xlsxData } = useVisitorReferrerTypes({
+    projectId,
     startAtMoment,
     endAtMoment,
-    projectId: projectFilter,
   });
-  const [hoverIndex, setHoverIndex] = useState<number | undefined>();
+  const [currentView, setCurrentView] = useState<View>('chart');
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const onMouseOver = ({ rowIndex }) => {
-    setHoverIndex(rowIndex);
-  };
-
-  const onMouseOut = () => {
-    setHoverIndex(undefined);
-  };
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   const cardTitle = formatMessage(messages.visitorsTrafficSources);
 
-  if (isNilOrError(pieData)) {
+  if (isNilOrError(pieData) || isNilOrError(xlsxData)) {
     return (
       <GraphCard title={cardTitle}>
         <EmptyPieChart />
       </GraphCard>
     );
   }
-
-  const legend = pieData.map(
-    (row): LegendItem => ({
-      icon: 'circle',
-      color: row.color,
-      label: `${row.name} (${row.percentage}%)`,
-    })
-  );
 
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
@@ -77,41 +61,50 @@ const VisitorsCard = ({
       title={cardTitle}
       exportMenu={{
         name: cardTitle,
-        svgNode: graphRef,
-        xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
+        svgNode: currentView === 'chart' ? graphRef : undefined,
+        xlsx: {
+          onDownload: () =>
+            getXlsxData(
+              {
+                projectId,
+                startAtMoment,
+                endAtMoment,
+              },
+              xlsxData,
+              formatMessage
+            ),
+        },
         startAt,
         endAt,
-        currentProjectFilter: projectFilter,
-        resolution,
+        currentProjectFilter: projectId,
+      }}
+      viewToggle={{
+        view: currentView,
+        onChangeView: setCurrentView,
       }}
     >
-      <Box width="100%" height="initial" display="flex" alignItems="center">
-        <PieChart
-          width={164}
-          height={164}
-          data={pieData}
-          mapping={{
-            angle: 'value',
-            name: 'name',
-            opacity: ({ rowIndex }) => {
-              if (hoverIndex === undefined) return 1;
-              return hoverIndex === rowIndex ? 1 : 0.3;
-            },
-          }}
-          tooltip={renderTooltip()}
-          legend={{
-            items: legend,
-            marginLeft: 50,
-            maintainGraphSize: true,
-            position: 'right-center',
-          }}
-          innerRef={graphRef}
-          onMouseOver={onMouseOver}
-          onMouseOut={onMouseOut}
+      {currentView === 'chart' && (
+        <Chart pieData={pieData} innerRef={graphRef} onOpenModal={openModal} />
+      )}
+
+      {currentView === 'table' && (
+        <Table
+          projectId={projectId}
+          startAtMoment={startAtMoment}
+          endAtMoment={endAtMoment}
+          onOpenModal={openModal}
         />
-      </Box>
+      )}
+
+      <TableModal
+        projectId={projectId}
+        startAtMoment={startAtMoment}
+        endAtMoment={endAtMoment}
+        open={modalOpen}
+        onClose={closeModal}
+      />
     </GraphCard>
   );
 };
 
-export default injectIntl(VisitorsCard);
+export default VisitorsTrafficSourcesCard;

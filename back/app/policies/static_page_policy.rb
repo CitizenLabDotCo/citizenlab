@@ -61,4 +61,4 @@ class StaticPagePolicy < ApplicationPolicy
   end
 end
 
-StaticPagePolicy.prepend_if_ee 'CustomizableNavbar::Patches::StaticPagePolicy'
+StaticPagePolicy.prepend CustomizableNavbar::Patches::StaticPagePolicy

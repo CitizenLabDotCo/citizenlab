@@ -22,7 +22,6 @@ import {
 } from 'services/homepageSettings';
 
 // utils
-import { forOwn, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -36,7 +35,7 @@ const EditHomepageHeroBannerForm = ({
 }: WrappedComponentProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
-  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
+  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
   const [localSettings, setLocalSettings] =
     useState<IHomepageSettingsAttributes | null>(null);
 
@@ -50,31 +49,37 @@ const EditHomepageHeroBannerForm = ({
     }
   }, [homepageSettings]);
 
-  // disable form if there's no header image when local settings change
-  useEffect(() => {
-    if (!localSettings?.header_bg) {
-      setFormStatus('disabled');
-    }
-  }, [localSettings]);
-
   if (isNilOrError(homepageSettings)) {
     return null;
   }
 
   const handleSave = async () => {
-    // only update the page settings if they have changed
-    const diffedValues = {};
-    forOwn(localSettings, (value, key) => {
-      if (!isEqual(value, homepageSettings.attributes[key])) {
-        diffedValues[key] = value;
-      }
-    });
+    if (localSettings?.header_bg == null) {
+      setFormStatus('error');
+      return;
+    }
+
+    // this is a hack. If both objects have a "large" key under header_bg with a null value,
+    // it means the image was initialized (with the large: null value) on the server
+    // and hasn't been updated by the user locally. we set the whole value to null
+    // to trigger the FE error message. the  triple equals is on purpose, we want to
+    // only trigger this when the value is explicitly null and not undefined
+    if (
+      localSettings.header_bg?.large === null &&
+      homepageSettings.attributes.header_bg?.large === null
+    ) {
+      setLocalSettings({
+        ...localSettings,
+        header_bg: null,
+      });
+      setFormStatus('error');
+      return;
+    }
 
     setIsLoading(true);
-    setFormStatus('disabled');
     setApiErrors(null);
     try {
-      await updateHomepageSettings(diffedValues);
+      await updateHomepageSettings(localSettings);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {

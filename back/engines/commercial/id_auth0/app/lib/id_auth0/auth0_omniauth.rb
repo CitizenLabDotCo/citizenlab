@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
 module IdAuth0
-  class Auth0Omniauth
+  class Auth0Omniauth < OmniauthMethods::Base
     include Auth0Verification
-
-    def profile_to_user_attrs(_auth)
-      {}
-    end
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
@@ -19,10 +15,6 @@ module IdAuth0
       options[:authorize_params] = {
         scope: 'openid'
       }
-    end
-
-    def updateable_user_attrs
-      []
     end
   end
 end

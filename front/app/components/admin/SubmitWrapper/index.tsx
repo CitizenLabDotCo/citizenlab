@@ -7,6 +7,7 @@ import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
@@ -84,37 +85,52 @@ interface Props
   loading: boolean;
   customError?: string | null;
   messages: {
-    buttonSave: any;
-    buttonSuccess: any;
-    messageSuccess: any;
-    messageError: any;
+    buttonSave: MessageDescriptor;
+    buttonSuccess: MessageDescriptor;
+    messageSuccess: MessageDescriptor;
+    messageError: MessageDescriptor;
   };
   onClick?: (event: FormEvent<any>) => void;
   buttonStyle?: ButtonStyles;
+  secondaryButtonOnClick?: (event: FormEvent<any>) => void;
+  secondaryButtonStyle?: ButtonStyles;
+  secondaryButtonSaveMessage?: MessageDescriptor;
   animate?: boolean;
+  enableFormOnSuccess?: boolean;
 }
 
 export default class SubmitWrapper extends PureComponent<Props> {
-  submitButton: HTMLInputElement | null;
+  submitButton: HTMLButtonElement | null;
+  secondaryButton: HTMLButtonElement | null;
 
   constructor(props: Props) {
     super(props as any);
     this.submitButton = null;
+    this.secondaryButton = null;
   }
 
-  removeFocus = (el) => {
+  removeFocus = (el: HTMLButtonElement | null) => {
     el && el.blur();
   };
 
-  setSubmitButtonRef = (el) => {
+  setSubmitButtonRef = (el: HTMLButtonElement | null) => {
     this.submitButton = el;
+  };
+
+  setSecondaryButtonRef = (el: HTMLButtonElement | null) => {
+    this.secondaryButton = el;
   };
 
   render() {
     const style = this.props.buttonStyle || 'cl-blue';
+    const secondaryButtonStyle =
+      this.props.secondaryButtonStyle || 'primary-outlined';
 
     if (this.props.status === 'success' || this.props.status === 'error') {
       this.removeFocus(this.submitButton);
+      if (this.secondaryButton) {
+        this.removeFocus(this.secondaryButton);
+      }
     }
 
     const buttonProps = omit(this.props, [
@@ -131,13 +147,18 @@ export default class SubmitWrapper extends PureComponent<Props> {
     const { loading, status, onClick, messages, animate, customError } =
       this.props;
 
+    // give the option to leave the form enabled even in success state
+    const isSubmitButtonDisabled =
+      status === 'disabled' ||
+      (!this.props.enableFormOnSuccess && status === 'success');
+
     return (
       <Wrapper aria-live="polite" fullWidth={!!buttonProps.fullWidth}>
         <Button
           className="e2e-submit-wrapper-button"
           buttonStyle={style}
           processing={loading}
-          disabled={status === 'disabled' || status === 'success'}
+          disabled={isSubmitButtonDisabled}
           onClick={onClick}
           setSubmitButtonRef={this.setSubmitButtonRef}
           {...buttonProps}
@@ -151,6 +172,25 @@ export default class SubmitWrapper extends PureComponent<Props> {
             <FormattedMessage {...messages.buttonSuccess} />
           )}
         </Button>
+
+        {/* show a secondary button if an onClick handler is provided for it */}
+        {this.props.secondaryButtonOnClick && (
+          <Button
+            data-cy="e2e-submit-wrapper-secondary-submit-button"
+            buttonStyle={secondaryButtonStyle}
+            processing={loading}
+            disabled={isSubmitButtonDisabled}
+            onClick={this.props.secondaryButtonOnClick}
+            setSubmitButtonRef={this.setSecondaryButtonRef}
+            ml="25px"
+          >
+            {this.props.secondaryButtonSaveMessage ? (
+              <FormattedMessage {...this.props.secondaryButtonSaveMessage} />
+            ) : (
+              <FormattedMessage {...messages.buttonSave} />
+            )}
+          </Button>
+        )}
 
         {status === 'error' && (
           <Message className="error">

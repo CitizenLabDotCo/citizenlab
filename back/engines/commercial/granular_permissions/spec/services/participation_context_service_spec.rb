@@ -31,6 +31,11 @@ describe ParticipationContextService do
       permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
     end
+
+    it 'returns nil when everyone can post and the user is not signed in' do
+      permission.update! permitted_by: 'everyone'
+      expect(service.posting_idea_disabled_reason_for_project(project, nil)).to be_nil
+    end
   end
 
   describe 'commenting_idea_disabled_reason_for_project' do

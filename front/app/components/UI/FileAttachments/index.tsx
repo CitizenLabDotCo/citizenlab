@@ -1,5 +1,6 @@
 import React from 'react';
 import { IEventFileData } from 'services/eventFiles';
+import { ICustomPageFileData } from 'services/pageFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
 import { IInitiativeFileData } from 'services/initiativeFiles';
 import { IPageFileData } from 'services/pageFiles';
@@ -17,7 +18,7 @@ interface Props {
     | IProjectFileData[]
     | IPhaseFileData[]
     | IEventFileData[]
-    | IPageFileData[]
+    | ICustomPageFileData[]
     | IIdeaFileData[]
     | IInitiativeFileData[];
   className?: string;

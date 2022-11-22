@@ -138,23 +138,23 @@
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Hva er ideen din?
         question:
-          title: What is your question ?
+          title: Hva er spørsmålet ditt?
         contribution:
-          title: What is your contribution ?
+          title: Hva er bidraget ditt?
         project:
-          title: What is your project ?
+          title: Hva er prosjektet ditt?
         issue:
-          title: What is your issue ?
+          title: Hva er problemet ditt?
         option:
-          title: What is your option ?
+          title: Hva er alternativet ditt?
       details:
         title: Detaljer
       attachements:
-        title: Images and Attachements
+        title: Bilder og vedlagte filer
       extra:
-        title: Additional information
+        title: Tilleggsinformasjon
   custom_field_options:
     gender:
       male: Mann
@@ -181,3 +181,27 @@
       message_you_reset_your_password: 'Du ba om å tilbakestille passord for plattformen til%{organizationName}. Klikk på knappen nedenfor for å velge et nytt, sikkert passord. Koblingen utløper om en time.'
       subject: '%{organizationName}: tilbakestill passordet ditt'
       title_reset_your_password: 'Velg et nytt passord'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Breddegrad'
+      longitude: 'Lengdegrad'
+      author_fullname: 'Forfatterens navn'
+      author_email: 'Forfatterens e-postadresse'
+      author_id: 'Forfatterens ID'
+      created_at: 'Innsendt'
+      published_at: 'Publisert'
+      comments_count: 'Kommentarer'
+      upvotes_count: 'Positive stemmer'
+      downvotes_count: 'Negative stemmer'
+      baskets_count: 'Kurver'
+      input_url: 'URL-adresse'
+      project: 'Prosjekt'
+      status: 'Status'
+      assignee_fullname: 'Anvist til'
+      assignee_email: 'Oppdragstakerens e-postadresse'
+  form_builder:
+    default_select_field:
+      title: 'Ditt spørsmål'
+      option1: 'Alternativ 1'
+      option2: 'Alternativ 2'

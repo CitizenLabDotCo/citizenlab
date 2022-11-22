@@ -181,3 +181,27 @@ da:
       message_you_reset_your_password: 'Du anmodede om en nulstilling af din adgangskode på %{organizationName}''s borgerinddragelsesplatform. Klik på nedenstående knap, for at vælge en ny og sikker adgangskode. Linket udløber om 1 time.'
       subject: '%{organizationName}: Nulstil din adgangskode'
       title_reset_your_password: 'Vælg en ny adgangskode'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Breddegrad'
+      longitude: 'Længdegrad'
+      author_fullname: 'Forfatterens navn'
+      author_email: 'Forfatter e-mail'
+      author_id: 'Forfatter ID'
+      created_at: 'Indsendt på'
+      published_at: 'Udgivet på'
+      comments_count: 'Kommentarer'
+      upvotes_count: 'Stem op'
+      downvotes_count: 'Stem ned'
+      baskets_count: 'Kurve'
+      input_url: 'URL'
+      project: '{tenantName, select, DeloitteDK {Verdensmål} other {Projekt}}'
+      status: 'Status'
+      assignee_fullname: 'Modtager'
+      assignee_email: 'E-mail til modtageren'
+  form_builder:
+    default_select_field:
+      title: 'Dit spørgsmål'
+      option1: 'Mulighed 1'
+      option2: 'Mulighed 2'

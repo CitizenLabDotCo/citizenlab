@@ -3,13 +3,17 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-import AssigneeFilter from './admin/components/AssigneeFilter';
-import IdeaHeaderCell from './admin/components/IdeaHeaderCell';
-import IdeaRowCell from './admin/components/IdeaRowCell';
-import Tab from './admin/components/Tab';
-import InputAssignment from './admin/containers/';
+const AssigneeFilter = React.lazy(
+  () => import('./admin/components/AssigneeFilter')
+);
+const IdeaHeaderCell = React.lazy(
+  () => import('./admin/components/IdeaHeaderCell')
+);
+const IdeaRowCell = React.lazy(() => import('./admin/components/IdeaRowCell'));
+const Tab = React.lazy(() => import('./admin/components/Tab'));
+const InputAssignment = React.lazy(() => import('./admin/containers/'));
 
-import FeatureFlag from 'components/FeatureFlag';
+const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const StyledAssigneeFilter = styled(AssigneeFilter)`
   margin-right: 20px;

@@ -26,7 +26,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { CLError, Locale, Multiloc } from 'typings';
+import { Locale, CLError } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -109,6 +109,9 @@ const ConfigMultiselectWithLocaleSwitcher = ({
           render={({ field: { ref: _ref, value: choices, onBlur } }) => {
             const canDeleteLastOption =
               allowDeletingAllOptions || choices.length > 1;
+            const validatedValues = choices.map((choice) => ({
+              title_multiloc: choice.title_multiloc,
+            }));
 
             return (
               <Box
@@ -136,9 +139,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                         onSelectedLocaleChange={handleOnSelectedLocaleChange}
                         locales={!isNilOrError(locales) ? locales : []}
                         selectedLocale={selectedLocale}
-                        values={{
-                          input_field: choices as Multiloc,
-                        }}
+                        values={validatedValues}
                       />
                     </Box>
                   </Box>

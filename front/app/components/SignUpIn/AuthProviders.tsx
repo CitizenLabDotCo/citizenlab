@@ -6,9 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Outlet from 'components/Outlet';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
-import Or from 'components/UI/Or';
-import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
+import Error from 'components/UI/Error';
 
 // resources
 import GetAppConfiguration, {
@@ -137,23 +135,49 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
 
+    const isPasswordSigninOrSignupAllowed =
+      passwordLoginEnabled &&
+      (flow === 'signin' ||
+        (flow === 'signup' &&
+          !isNilOrError(tenant) &&
+          tenant.attributes.settings.password_login?.enable_signup));
+
     return (
       <Container className={className}>
-        {franceconnectLoginEnabled && (
-          <FranceConnectButton
-            onClick={handleOnFranceConnectSelected}
-            logoAlt={formatMessage(messages.signUpButtonAltText, {
-              loginMechanismName: 'FranceConnect',
-            })}
-          />
-        )}
+        {franceconnectLoginEnabled &&
+          (metaData.error?.code === 'franceconnect_merging_failed' ? (
+            <Error
+              text={
+                <FormattedMessage
+                  {...messages.franceConnectMergingFailed}
+                  values={{ br: <br /> }}
+                />
+              }
+              animate={false}
+              marginBottom="30px"
+            />
+          ) : (
+            <FranceConnectButton
+              onClick={handleOnFranceConnectSelected}
+              logoAlt={formatMessage(messages.signUpButtonAltText, {
+                loginMechanismName: 'FranceConnect',
+              })}
+            />
+          ))}
 
-        {(passwordLoginEnabled ||
+        {(isPasswordSigninOrSignupAllowed ||
           facebookLoginEnabled ||
           azureAdLoginEnabled) &&
-          franceconnectLoginEnabled && <Or />}
+          franceconnectLoginEnabled &&
+          !metaData.error && <Or />}
 
-        {passwordLoginEnabled && (
+        <Outlet
+          id="app.components.SignUpIn.AuthProviders.ContainerStart"
+          flow={flow}
+          onContinue={onAuthProviderSelected}
+        />
+
+        {isPasswordSigninOrSignupAllowed && (
           <StyledAuthProviderButton
             flow={flow}
             icon="email"
@@ -212,11 +236,6 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
             />
           </StyledAuthProviderButton>
         )}
-        <Outlet
-          id="app.components.SignUpIn.AuthProviders.ContainerEnd"
-          flow={flow}
-          onContinue={onAuthProviderSelected}
-        />
 
         <Options>
           <Option>

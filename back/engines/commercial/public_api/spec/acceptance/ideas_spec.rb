@@ -20,15 +20,26 @@ resource 'Ideas' do
 
       example_request 'Get the first page of trending ideas' do
         explanation 'Endpoint to retrieve citizen ideas. The most trending ideas are returned first. The endpoint supports pagination.'
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:ideas].size).to eq Idea.count
+        expect(json_response[:ideas].size).to eq 5
         expect(json_response[:meta]).to eq({ total_pages: 1, current_page: 1 })
+      end
+
+      example 'Native survey responses are not included' do
+        IdeaStatus.create_defaults
+        create :idea, project: create(:continuous_native_survey_project)
+
+        do_request
+
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:ideas].size).to eq 5
       end
 
       example 'Get the second page of trending ideas' do
         do_request('page_number' => 2, 'page_size' => 3)
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:ideas].size).to eq 2
         expect(json_response[:meta]).to eq({ total_pages: 2, current_page: 2 })
@@ -43,7 +54,7 @@ resource 'Ideas' do
       let(:idea_id) { @ideas.first.id }
 
       example_request 'Get one idea by id' do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:idea][:id]).to eq idea_id
       end

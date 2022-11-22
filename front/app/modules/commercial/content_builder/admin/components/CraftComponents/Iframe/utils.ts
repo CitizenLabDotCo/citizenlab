@@ -16,7 +16,7 @@ const urlWhiteList = [
   /^(https?):\/\/.+\.konveio\.com\//,
   /^(https?):\/\/(www\.)?facebook\.com\//,
   /^(https?):\/\/(?:www\.)?youtu(?:be\.com\/(?:watch\?v=|embed\/)|\.be\/)([\w\-_]*)/,
-  /^(https?):\/\/(?:www\.)?(?:player\.vimeo\.com\/video|vimeo\.com)\/(\d+)(?:|\/\?)/,
+  /^(https?):\/\/(?:www\.)?player\.vimeo\.(com\/video|vimeo\.com)\/(\d+)(?:|\/\?)/,
   /^(https?):\/\/(?:www\.)?dailymotion\.com\/embed\/video\/?(.+)/,
   /^(https?):\/\/?media\.videotool\.dk\/?\?vn=[\w-]+/,
   /^(https?):\/\/(?:www\.)?dreambroker\.com\/channel\/([\w-]+)\/iframe\//,
@@ -27,6 +27,7 @@ const urlWhiteList = [
   /^(https?):\/\/(www\.)?google\.com\/maps(\/[a-z])?\/embed\?([^&]*)=([-A-Z0-9+&@#/%=~_|!:,.;]+)/i,
   /^(https?):\/\/([-A-Z0-9.]+)\.slideshare(\.(net|com))\/slideshow\/embed_code\/key\/([-A-Z0-9+&@#/%=~_|!:,.;]+)/i,
   /^(https?):\/\/(www\.)?onedrive\.live\.([-A-Z0-9+&@#/%=~_|!:,.;?]+)/i,
+  /^(https?):\/\/(.+\.)abalancingact\.com/i,
   /^(https?):\/\/.*pdf$/,
 ];
 

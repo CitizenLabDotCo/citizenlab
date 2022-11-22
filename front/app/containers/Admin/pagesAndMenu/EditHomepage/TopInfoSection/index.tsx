@@ -2,7 +2,10 @@ import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/Gene
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { updateHomepageSettings } from 'services/homepageSettings';
+import {
+  IHomepageSettingsAttributes,
+  updateHomepageSettings,
+} from 'services/homepageSettings';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { homeBreadcrumb } from '../../breadcrumbs';
@@ -13,10 +16,22 @@ const TopInfoSection = ({ intl: { formatMessage } }: WrappedComponentProps) => {
     return null;
   }
 
+  const updateHomepageAndEnableSection = (
+    data: Partial<IHomepageSettingsAttributes>
+  ) => {
+    return updateHomepageSettings({
+      ...data,
+      top_info_section_enabled: true,
+    });
+  };
+
   return (
     <GenericTopInfoSection
       pageData={homepageSettings}
       updatePage={(data) => updateHomepageSettings(data)}
+      updatePageAndEnableSection={(data) =>
+        updateHomepageAndEnableSection(data)
+      }
       breadcrumbs={[
         {
           label: formatMessage(homeBreadcrumb.label),

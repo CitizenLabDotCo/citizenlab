@@ -21,9 +21,7 @@ describe('HeaderImageDropzone', () => {
         headerError={null}
       />
     );
-    const dropZone = component.container.querySelector(
-      '#landingpage-header-dropzone'
-    );
+    const dropZone = component.container.querySelector('#header-dropzone');
     expect(dropZone).toBeInTheDocument();
   });
 
@@ -43,9 +41,7 @@ describe('HeaderImageDropzone', () => {
       />
     );
 
-    const dropZone = component.container.querySelector(
-      '#landingpage-header-dropzone'
-    );
+    const dropZone = component.container.querySelector('#header-dropzone');
 
     await waitFor(() => {
       fireEvent.change(dropZone, {

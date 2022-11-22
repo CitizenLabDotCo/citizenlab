@@ -5,14 +5,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesEdition.policiesTitle',
     defaultMessage: 'Platform policies',
   },
-  policiesSubtitleFree: {
-    id: 'app.containers.AdminPage.PagesEdition.policiesSubtitleFree',
+  policiesSubtitle: {
+    id: 'app.containers.AdminPage.PagesEdition.policiesSubtitle',
     defaultMessage:
-      "Edit your platform's terms and conditions and privacy policy. The About and FAQ pages can be edited in the {pagesLink} tab.",
-  },
-  linkToPages: {
-    id: 'app.containers.AdminPage.PagesEdition.linkToPages',
-    defaultMessage: 'Pages',
+      "Edit your platform's terms and conditions and privacy policy. Other pages, including the About and FAQ pages, can be edited in the {navigationLink} tab.",
   },
   titleLabel: {
     id: 'app.containers.AdminPage.PagesEdition.titleLabel',

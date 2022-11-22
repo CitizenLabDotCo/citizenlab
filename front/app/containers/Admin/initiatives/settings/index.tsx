@@ -1,16 +1,19 @@
-import { isEmpty, isEqual, isNaN, omit } from 'lodash-es';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { isEmpty, isNaN, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-
+import { API_PATH } from 'containers/App/constants';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
-import usePage from 'hooks/usePage';
+import useCustomPage from 'hooks/useCustomPage';
 
 // services
-import { updateAppConfiguration } from 'services/appConfiguration';
-import { toggleProposals } from 'services/navbar';
-import { updatePage } from 'services/pages';
+import {
+  updateAppConfiguration,
+  ProposalsSettings,
+} from 'services/appConfiguration';
+import { updateCustomPage } from 'services/customPages';
+import streams from 'utils/streams';
 
 // components
 import {
@@ -19,6 +22,10 @@ import {
   SectionTitle,
 } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
+import ProposalsFeatureToggle from './ProposalsFeatureToggle';
+import VotingThreshold from './VotingThreshold';
+import VotingLimit from './VotingLimit';
+import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
 import EnableSwitch from './EnableSwitch';
 import PageBody from './PageBody';
@@ -43,23 +50,21 @@ export const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
 `;
 
-export const StyledSectionDescription = styled(SectionDescription)`
-  margin-bottom: 20px;
+const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 10px;
 `;
 
-interface ProposalsSettings {
-  days_limit: number;
-  eligibility_criteria: Multiloc;
-  threshold_reached_message: Multiloc;
-  voting_threshold: number;
-}
+export const StyledSectionDescription = styled(SectionDescription)`
+  margin-top: 0;
+  margin-bottom: 20px;
+`;
 
 type ProposalsSettingName = keyof ProposalsSettings;
 
 const InitiativesSettingsPage = () => {
   const appConfiguration = useAppConfiguration();
   const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
-  const proposalsPage = usePage({ pageSlug: 'initiatives' });
+  const proposalsPage = useCustomPage({ customPageSlug: 'initiatives' });
 
   const remoteProposalsSettings = useMemo(() => {
     if (
@@ -69,10 +74,7 @@ const InitiativesSettingsPage = () => {
       return null;
     }
 
-    return omit(appConfiguration.attributes.settings.initiatives, [
-      'allowed',
-      'enabled',
-    ]);
+    return appConfiguration.attributes.settings.initiatives;
   }, [appConfiguration]);
 
   const [localProposalsSettings, setLocalProposalsSettings] =
@@ -81,15 +83,6 @@ const InitiativesSettingsPage = () => {
   useEffect(() => {
     setLocalProposalsSettings(remoteProposalsSettings);
   }, [remoteProposalsSettings]);
-
-  const [newProposalsNavbarItemEnabled, setNewProposalsNavbarItemEnabled] =
-    useState<boolean | null>(null);
-
-  useEffect(() => {
-    if (!isNilOrError(proposalsNavbarItemEnabled)) {
-      setNewProposalsNavbarItemEnabled(proposalsNavbarItemEnabled);
-    }
-  }, [proposalsNavbarItemEnabled]);
 
   const [newProposalsPageBody, setNewProposalsPageBody] =
     useState<Multiloc | null>(null);
@@ -112,7 +105,6 @@ const InitiativesSettingsPage = () => {
     isNilOrError(proposalsPage) ||
     !remoteProposalsSettings ||
     !localProposalsSettings ||
-    newProposalsNavbarItemEnabled === null ||
     newProposalsPageBody === null
   ) {
     return null;
@@ -127,17 +119,11 @@ const InitiativesSettingsPage = () => {
       localProposalsSettings
     );
 
-    const proposalsNavbarItemChanged =
-      proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
-
     const proposalsPageBodyChanged =
       proposalsPage.attributes.top_info_section_multiloc !==
       newProposalsPageBody;
 
-    const formChanged =
-      proposalsSettingsChanged ||
-      proposalsNavbarItemChanged ||
-      proposalsPageBodyChanged;
+    const formChanged = proposalsSettingsChanged || proposalsPageBodyChanged;
 
     if (!processing && formChanged) {
       validated = true;
@@ -170,9 +156,6 @@ const InitiativesSettingsPage = () => {
       localProposalsSettings
     );
 
-    const proposalsNavbarItemChanged =
-      proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
-
     const proposalsPageBodyChanged =
       proposalsPage.attributes.top_info_section_multiloc !==
       newProposalsPageBody;
@@ -192,15 +175,8 @@ const InitiativesSettingsPage = () => {
         promises.push(promise);
       }
 
-      if (proposalsNavbarItemChanged) {
-        const promise = toggleProposals({
-          enabled: newProposalsNavbarItemEnabled,
-        });
-        promises.push(promise);
-      }
-
       if (proposalsPageBodyChanged) {
-        const promise = updatePage(proposalsPage.id, {
+        const promise = updateCustomPage(proposalsPage.id, {
           top_info_section_multiloc: newProposalsPageBody,
         });
 
@@ -208,6 +184,9 @@ const InitiativesSettingsPage = () => {
       }
 
       await Promise.all(promises);
+      await streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/nav_bar_items`],
+      });
 
       setProcessing(false);
       setSuccess(true);
@@ -216,11 +195,6 @@ const InitiativesSettingsPage = () => {
       setProcessing(false);
       setError(true);
     }
-  };
-
-  const toggleEnableSwitch = () => {
-    setNewProposalsNavbarItemEnabled(!newProposalsNavbarItemEnabled);
-    setSuccess(false);
   };
 
   const updateProposalsSetting = (settingName: ProposalsSettingName) => {
@@ -238,21 +212,25 @@ const InitiativesSettingsPage = () => {
     setSuccess(false);
   };
 
+  const onToggle = () => {
+    if (appConfiguration.attributes.settings.initiatives) {
+      setLocalProposalsSettings({
+        ...localProposalsSettings,
+        enabled: !localProposalsSettings.enabled,
+      });
+    }
+  };
+
   return (
     <Container>
-      <SectionTitle>
+      <StyledSectionTitle>
         <FormattedMessage {...messages.settingsTabTitle} />
-      </SectionTitle>
-      <SectionDescription>
-        <FormattedMessage {...messages.settingsTabSubtitle} />
-      </SectionDescription>
-
+      </StyledSectionTitle>
       <Section>
-        <EnableSwitch
-          enabled={newProposalsNavbarItemEnabled}
-          onToggle={toggleEnableSwitch}
+        <ProposalsFeatureToggle
+          enabled={localProposalsSettings.enabled}
+          onToggle={onToggle}
         />
-
         <VotingThreshold
           value={localProposalsSettings.voting_threshold}
           onChange={updateProposalsSetting('voting_threshold')}

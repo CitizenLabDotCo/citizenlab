@@ -22,31 +22,19 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 
-import { Point } from 'components/UI/LeafletMap/typings';
-import { LatLngTuple } from 'leaflet';
-import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { ParticipationMethod } from 'services/participationContexts';
-import { IUserData } from 'services/users';
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  ITab,
-  Locale,
-  Multiloc,
-} from 'typings';
-
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'components/Verification/verificationModalEvents';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
-import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
+import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
 import { Localize } from 'hooks/useLocalize';
-import { IntlFormatters } from 'react-intl';
+import { LatLngTuple } from 'leaflet';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
@@ -59,14 +47,26 @@ import {
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
 import { ICommentData } from 'services/comments';
+import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
 import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
+import { ParticipationMethod } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
+import { IUserData } from 'services/users';
 import { TVerificationMethod } from 'services/verificationMethods';
+import {
+  CellConfiguration,
+  InsertConfigurationOptions,
+  ITab,
+  Locale,
+  Multiloc,
+} from 'typings';
+import { IntlFormatters } from 'react-intl';
+import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -178,13 +178,22 @@ export interface OutletsPropertyMap {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
-  'app.containers.Admin.dashboard.summary.postStatus': {
+  'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
     resolution: IResolution;
-    onMount: () => void;
   };
+  'app.containers.Admin.dashboard.summary.emailDeliveries': {
+    projectId: string | undefined;
+    startAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
+    resolution: IResolution;
+  };
+  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
+  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
+  'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
+  'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;
@@ -319,7 +328,7 @@ export interface OutletsPropertyMap {
     isVerified: boolean;
   };
   'app.containers.App.modals': { onMounted: (id: string) => void };
-  'app.containers.LandingPage.onboardingCampaigns': {
+  'app.containers.HomePage.onboardingCampaigns': {
     onboardingCampaigns: IOnboardingCampaigns;
     contentTimeout: number;
     contentDelay: number;
@@ -354,34 +363,21 @@ export interface OutletsPropertyMap {
     projectFolderId: string;
     className?: string;
   };
-  'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.Events': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.settings.customize.AllInput': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.initiatives.settings.EnableSwitch': {
-    onMount: () => void;
-  };
-  'app.containers.LandingPage.SignedOutHeader.index': {
+  'app.containers.HomePage.EventsWidget': Record<string, any>;
+  'app.containers.HomePage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
   };
-  'app.containers.Admin.settings.policies.start': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
   'app.containers.Admin.pages-menu.index': Record<string, any>;
   'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
-  'app.containers.LandingPage.SignedOutHeader.CTA': {
+  'app.containers.HomePage.SignedOutHeader.CTA': {
     buttonStyle: BannerButtonStyle;
     signUpIn: (event: MouseEvent | KeyboardEvent) => void;
   };
-  'app.containers.LandingPage.SignedInHeader.CTA': {
+  'app.containers.HomePage.SignedInHeader.CTA': {
     customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
   };
-  'app.components.SignUpIn.AuthProviders.ContainerEnd': {
+  'app.components.SignUpIn.AuthProviders.ContainerStart': {
     flow: TSignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
@@ -392,9 +388,6 @@ export interface OutletsPropertyMap {
   'app.components.PageForm.index.top': {
     pageId: string | null;
     navbarItemId: string | null;
-  };
-  'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': {
-    onMount: () => void;
   };
 }
 

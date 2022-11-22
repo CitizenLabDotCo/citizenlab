@@ -17,9 +17,7 @@ import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import messages from '../../messages';
-import ErrorDisplay from '../ErrorDisplay';
-import controlMessages from './messages';
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
 const UserPickerControl = ({
   data,
@@ -35,7 +33,7 @@ const UserPickerControl = ({
   const FieldLabel = () => {
     return (
       <Box display="flex">
-        <Text>{getLabel(uischema, schema, path)}</Text>
+        {getLabel(uischema, schema, path)}
         {uischema?.options?.isAdminField && (
           <IconTooltip
             iconColor={colors.grey800}

@@ -55,7 +55,7 @@ const TableModal = ({
           <ReportExportMenu
             name={title}
             currentProjectFilter={projectFilter}
-            xlsxEndpoint={xlsxEndpoint}
+            xlsx={{ endpoint: xlsxEndpoint }}
           />
         </Box>
       </Box>

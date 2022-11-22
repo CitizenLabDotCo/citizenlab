@@ -103,6 +103,7 @@ RSpec.describe User, type: :model do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
+        'enable_signup' => true,
         'minimum_length' => 5,
         'phone' => false
       }
@@ -117,6 +118,7 @@ RSpec.describe User, type: :model do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
+        'enable_signup' => true,
         'minimum_length' => 5,
         'phone' => false
       }

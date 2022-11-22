@@ -1,26 +1,35 @@
+import React, { useEffect, useState } from 'react';
+
+// types
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import { CLErrors, Multiloc } from 'typings';
+
+// components
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
-import { PAGES_MENU_CUSTOM_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import useCustomPage from 'hooks/useCustomPage';
-import { forOwn, isEqual } from 'lodash-es';
-import React, { useEffect, useState } from 'react';
+import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
+import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
+
+// utils
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import { isNilOrError, isNil } from 'utils/helperUtils';
+
+// resources
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import useCustomPage from 'hooks/useCustomPage';
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
   TCustomPageCTAType,
   updateCustomPage,
 } from 'services/customPages';
-import { CLErrors, Multiloc } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
-import messages from '../../../GenericHeroBannerForm/messages';
 
+// i18n
+import messages from '../../../GenericHeroBannerForm/messages';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
 import { injectIntl } from 'utils/cl-intl';
@@ -39,12 +48,12 @@ const EditCustomPageHeroBannerForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
 
-  const [formStatus, setFormStatus] = useState<ISubmitState>('disabled');
+  const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
   const [localSettings, setLocalSettings] =
     useState<ICustomPageAttributes | null>(null);
 
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage(customPageId);
+  const customPage = useCustomPage({ customPageId });
 
   useEffect(() => {
     if (!isNilOrError(customPage)) {
@@ -54,31 +63,51 @@ const EditCustomPageHeroBannerForm = ({
     }
   }, [customPage]);
 
-  // disable form if there's no header image when local settings change
-  useEffect(() => {
-    if (!localSettings?.header_bg) {
-      setFormStatus('disabled');
-    }
-  }, [localSettings]);
-
   if (isNilOrError(customPage)) {
     return null;
   }
 
-  const handleSave = async () => {
-    // only update the page settings if they have changed
-    const diffedValues = {};
-    forOwn(localSettings, (value, key) => {
-      if (!isEqual(value, customPage.attributes[key])) {
-        diffedValues[key] = value;
-      }
-    });
+  const saveCustomPage = async (enableHeroBanner = false) => {
+    if (isNil(localSettings)) {
+      return;
+    }
+
+    // if the header_bg is null, the user has removed it, and
+    // the form cannot be saved
+    if (localSettings.header_bg == null) {
+      setFormStatus('error');
+      return;
+    }
+
+    // this is a hack. If both objects have a "large" key under header_bg with a null value,
+    // it means the image was initialized (with the large: null value) on the server
+    // and hasn't been updated by the user locally. we set the whole value to null
+    // to trigger the FE error message. the triple equals is on purpose, we want to
+    // only trigger this when the value is explicitly null and not undefined
+    if (
+      localSettings.header_bg?.large === null &&
+      customPage.attributes.header_bg?.large === null
+    ) {
+      setLocalSettings({
+        ...localSettings,
+        header_bg: null,
+      });
+      setFormStatus('error');
+      return;
+    }
+
+    const settingsToUpdate = {
+      ...localSettings,
+    };
+
+    if (enableHeroBanner) {
+      settingsToUpdate.banner_enabled = true;
+    }
 
     setIsLoading(true);
-    setFormStatus('disabled');
     setApiErrors(null);
     try {
-      await updateCustomPage(customPageId, diffedValues);
+      await updateCustomPage(customPageId, settingsToUpdate);
       setIsLoading(false);
       setFormStatus('success');
     } catch (error) {
@@ -89,6 +118,14 @@ const EditCustomPageHeroBannerForm = ({
       setIsLoading(false);
       setFormStatus('error');
     }
+  };
+
+  const handleSave = () => {
+    saveCustomPage(false);
+  };
+
+  const handleSaveAndEnable = () => {
+    saveCustomPage(true);
   };
 
   const handleSignedOutMultilocHeaderOnChange = (
@@ -152,8 +189,17 @@ const EditCustomPageHeroBannerForm = ({
         <HelmetIntl title={messages.customPageMetaTitle} />
         <GenericHeroBannerForm
           onSave={handleSave}
+          onSaveAndEnable={
+            // undefined to match type for optional prop.
+            // only show secondary button if banner is not enabled
+            localSettings.banner_enabled ? undefined : handleSaveAndEnable
+          }
+          badge={
+            <ShownOnPageBadge shownOnPage={localSettings.banner_enabled} />
+          }
           formStatus={formStatus}
           isLoading={isLoading}
+          linkToViewPage={`/pages/${customPage.attributes.slug}`}
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
@@ -161,7 +207,7 @@ const EditCustomPageHeroBannerForm = ({
             },
             {
               label: localize(customPage.attributes.title_multiloc),
-              linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
+              linkTo: adminCustomPageContentPath(customPageId),
             },
             { label: formatMessage(messages.heroBannerTitle) },
           ]}

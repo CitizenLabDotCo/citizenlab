@@ -4,3 +4,8 @@ nl:
   nav_bar_items:
     home:
       title: Home
+  form_builder:
+    default_select_field:
+      title: Standaardvraag
+      option1: Eerste optie
+      option2: Tweede optie

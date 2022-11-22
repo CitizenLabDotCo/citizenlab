@@ -125,7 +125,11 @@ const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
             </InsightsContainerTitle>
             <p>{formatMessage(messages.listDescription)}</p>
           </div>
-          <Button bgColor={colors.primary} onClick={openCreateModal}>
+          <Button
+            className="intercom-admin-create-insights-button"
+            bgColor={colors.primary}
+            onClick={openCreateModal}
+          >
             {formatMessage(messages.listCreate)}
           </Button>
         </InsightsContainerHeader>
@@ -148,7 +152,7 @@ const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
                 <Button
                   buttonStyle="white"
                   icon="delete"
-                  textColor={colors.primary}
+                  textColor={colors.textSecondary}
                   boxShadow="none"
                   onClick={handleDeleteClick(view.id)}
                 >

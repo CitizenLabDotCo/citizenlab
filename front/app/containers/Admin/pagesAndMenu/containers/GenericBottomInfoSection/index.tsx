@@ -5,7 +5,9 @@ import { useTheme } from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Button from 'components/UI/Button';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -38,7 +40,11 @@ interface Props {
   updatePage: (data: {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
+  updatePageAndEnableSection: (data: {
+    bottom_info_section_multiloc: Multiloc;
+  }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
+  linkToViewPage?: string;
 }
 
 interface FormValues {
@@ -48,14 +54,26 @@ interface FormValues {
 const GenericBottomInfoSection = ({
   pageData,
   updatePage,
+  updatePageAndEnableSection,
   breadcrumbs,
   intl: { formatMessage },
+  linkToViewPage,
 }: WrappedComponentProps & Props) => {
   const theme: any = useTheme();
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       await updatePage(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
+  const onFormSubmitAndEnable = async (formValues: FormValues) => {
+    if (!updatePageAndEnableSection) return;
+
+    try {
+      await updatePageAndEnableSection(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -89,6 +107,16 @@ const GenericBottomInfoSection = ({
             { label: formatMessage(messages.pageTitle) },
           ]}
           title={formatMessage(messages.pageTitle)}
+          badge={
+            <ShownOnPageBadge
+              shownOnPage={pageData.attributes.bottom_info_section_enabled}
+            />
+          }
+          rightSideCTA={
+            linkToViewPage ? (
+              <ViewCustomPageButton linkTo={linkToViewPage} />
+            ) : null
+          }
         >
           <Feedback successMessage={formatMessage(messages.messageSuccess)} />
           <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
@@ -106,6 +134,18 @@ const GenericBottomInfoSection = ({
             >
               {formatMessage(messages.saveButton)}
             </Button>
+            {!pageData.attributes.bottom_info_section_enabled && (
+              <Button
+                ml="30px"
+                type="button"
+                buttonStyle="primary-outlined"
+                onClick={methods.handleSubmit(onFormSubmitAndEnable)}
+                processing={methods.formState.isSubmitting}
+                data-cy={`e2e-bottom-info-section-secondary-submit`}
+              >
+                {formatMessage(messages.saveAndEnableButton)}
+              </Button>
+            )}
           </Box>
         </SectionFormWrapper>
       </form>

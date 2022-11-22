@@ -5,7 +5,8 @@ import tracks from './tracks';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useLocalize from 'hooks/useLocalize';
 
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
@@ -128,7 +129,7 @@ const FullMobileNavMenu = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
-  const pageSlugById = usePageSlugById();
+  const pageSlugById = useCustomPageSlugById();
   const localize = useLocalize();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;

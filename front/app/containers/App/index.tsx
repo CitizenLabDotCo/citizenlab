@@ -78,12 +78,23 @@ import { Locale } from 'typings';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 
-const Container = styled.div`
+const Container = styled.div<{
+  disableScroll?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   align-items: stretch;
   position: relative;
   background: #fff;
+
+  // for instances with e.g. a fullscreen modal, we want to
+  // be able to disable scrolling on the page behind the modal
+  ${(props: any) =>
+    props.disableScroll &&
+    `
+      height: 100%;
+      overflow: hidden;
+    `};
 `;
 
 const InnerContainer = styled.div`
@@ -112,6 +123,7 @@ interface InputProps {}
 
 interface DataProps {
   redirectsEnabled: GetFeatureFlagChildProps;
+  fullscreenModalEnabled: GetFeatureFlagChildProps;
   windowSize: GetWindowSizeChildProps;
 }
 
@@ -130,11 +142,12 @@ interface State {
   userDeletedSuccessfullyModalOpened: boolean;
   userSuccessfullyDeleted: boolean;
   signUpInModalMounted: boolean;
+  signUpInModalOpened: boolean;
   verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
   locale: Locale | null;
-  invitationDeclined: boolean;
+  signUpInModalClosed: boolean;
 }
 
 class App extends PureComponent<Props, State> {
@@ -154,11 +167,12 @@ class App extends PureComponent<Props, State> {
       userDeletedSuccessfullyModalOpened: false,
       userSuccessfullyDeleted: false,
       signUpInModalMounted: false,
+      signUpInModalOpened: false, // we need to apply CSS when modal is opened
       verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
       locale: null,
-      invitationDeclined: false,
+      signUpInModalClosed: false, // we need to know if modal was closed not to reopen it again. See ccd951c4ee
     };
     this.subscriptions = [];
   }
@@ -342,12 +356,12 @@ class App extends PureComponent<Props, State> {
 
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
-    const { invitationDeclined } = this.state;
+    const { signUpInModalClosed } = this.state;
 
     openSignUpInModalIfNecessary(
       authUser,
-      isAuthError,
-      isInvitation && !invitationDeclined,
+      isAuthError && !signUpInModalClosed,
+      isInvitation && !signUpInModalClosed,
       signUpInModalMounted,
       search
     );
@@ -437,6 +451,10 @@ class App extends PureComponent<Props, State> {
     this.setState({ userDeletedSuccessfullyModalOpened: false });
   };
 
+  updateModalOpened = (opened: boolean) => {
+    this.setState({ signUpInModalOpened: opened });
+  };
+
   setNavbarRef = (navbarRef: HTMLElement) => {
     this.setState({ navbarRef });
   };
@@ -455,12 +473,13 @@ class App extends PureComponent<Props, State> {
     this.setState({ signUpInModalMounted: true });
   };
 
-  handleDeclineInvitation = () => {
-    this.setState({ invitationDeclined: true });
+  handleSignUpInModalClosed = () => {
+    this.setState({ signUpInModalClosed: true });
   };
 
   render() {
-    const { location, children, windowSize } = this.props;
+    const { location, children, windowSize, fullscreenModalEnabled } =
+      this.props;
     const {
       previousPathname,
       tenant,
@@ -472,6 +491,7 @@ class App extends PureComponent<Props, State> {
       userSuccessfullyDeleted,
       navbarRef,
       mobileNavbarRef,
+      signUpInModalOpened,
     } = this.state;
 
     const isAdminPage = isPage('admin', location.pathname);
@@ -480,6 +500,9 @@ class App extends PureComponent<Props, State> {
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isDesktopUser = windowSize && isDesktop(windowSize);
+    const fullScreenModalEnabledAndOpen =
+      fullscreenModalEnabled && signUpInModalOpened;
+
     const theme = getTheme(tenant);
     const showFooter =
       !isAdminPage &&
@@ -495,6 +518,7 @@ class App extends PureComponent<Props, State> {
       !isIdeaEditPage &&
       !isInitiativeEditPage;
     const { pathname } = removeLocale(location.pathname);
+
     return (
       <>
         {tenant && visible && (
@@ -503,8 +527,12 @@ class App extends PureComponent<Props, State> {
               theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
             >
               <GlobalStyle />
-
-              <Container>
+              <Container
+                // when the fullscreen modal is enabled on a platform and
+                // is currently open, we want to disable scrolling on the
+                // app sitting below it (CL-1101)
+                disableScroll={fullscreenModalEnabled && signUpInModalOpened}
+              >
                 <Meta />
                 <ErrorBoundary>
                   <Suspense fallback={null}>
@@ -530,7 +558,9 @@ class App extends PureComponent<Props, State> {
                 <ErrorBoundary>
                   <SignUpInModal
                     onMounted={this.handleSignUpInModalMounted}
-                    onDeclineInvitation={this.handleDeclineInvitation}
+                    onOpened={this.updateModalOpened}
+                    onClosed={this.handleSignUpInModalClosed}
+                    fullScreenModal={fullscreenModalEnabled}
                   />
                 </ErrorBoundary>
                 <Outlet
@@ -570,7 +600,7 @@ class App extends PureComponent<Props, State> {
                     <PlatformFooter />
                   </Suspense>
                 )}
-                {showMobileNav && (
+                {showMobileNav && !fullScreenModalEnabledAndOpen && (
                   <MobileNavbar setRef={this.setMobileNavigationRef} />
                 )}
                 <ErrorBoundary>
@@ -588,6 +618,8 @@ class App extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
+  // CL-1101, FranceConnect platforms have full screen login experience
+  fullscreenModalEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 const AppWithHoC = withRouter(App);

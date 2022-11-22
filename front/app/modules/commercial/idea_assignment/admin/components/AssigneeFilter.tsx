@@ -101,7 +101,7 @@ export class AssigneeFilter extends PureComponent<
 
     return (
       <Dropdown
-        className={className}
+        className={`${className} intercom-admin-asignee-filter`}
         id="e2e-select-assignee-filter"
         options={this.getAssigneeOptions(prospectAssignees, authUser)}
         onChange={this.onAssigneeChange}

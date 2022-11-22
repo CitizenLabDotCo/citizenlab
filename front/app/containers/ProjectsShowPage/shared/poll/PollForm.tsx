@@ -162,7 +162,7 @@ export class PollForm extends PureComponent<Props, State> {
           </PollContainer>
           <Button
             onClick={this.sendAnswer}
-            size="2"
+            size="m"
             fullWidth={true}
             disabled={!isValid}
             className="e2e-send-poll"

@@ -181,3 +181,27 @@ ar-MA:
       message_you_reset_your_password: 'لقد طلبت إعادة تعيين كلمة المرور لمنصة مشاركة %{organizationName}. انقر فوق الزر أدناه لاختيار كلمة مرور جديدة وآمنة. تنتهي صلاحية الرابط خلال ساعة واحدة.'
       subject: '%{organizationName}: إعادة تعيين كلمة المرور'
       title_reset_your_password: 'اختر كلمة مرور جديدة'
+  xlsx_export:
+    column_headers:
+      input_id: 'المعرِّف'
+      latitude: 'دائرة العرض'
+      longitude: 'خط الطول'
+      author_fullname: 'اسم المؤلف'
+      author_email: 'البريد الإلكتروني للمؤلف'
+      author_id: 'معرِّف المؤلف'
+      created_at: 'تم التقديم في'
+      published_at: 'تم النشر في'
+      comments_count: 'التعليقات ممكنة'
+      upvotes_count: 'أصوات إيجابية'
+      downvotes_count: 'أصوات سلبية'
+      baskets_count: 'سلال'
+      input_url: 'URL'
+      project: 'المشروع'
+      status: 'الحالة'
+      assignee_fullname: 'المعيّن إليه'
+      assignee_email: 'البريد الإلكتروني للمعيَّن إليه'
+  form_builder:
+    default_select_field:
+      title: 'سؤالك'
+      option1: 'الخيار 1'
+      option2: 'الخيار 2'

@@ -107,6 +107,7 @@ const NavbarItemRow = ({
             ml="10px"
             data-testid="edit-button"
             data-cy="e2e-navbar-item-edit-button"
+            className="intercom-admin-pages-menu-edit-button"
           >
             <FormattedMessage {...messages.editButton} />
           </Button>
@@ -114,7 +115,12 @@ const NavbarItemRow = ({
 
         {viewButtonLink && (
           <Link to={viewButtonLink} target="_blank">
-            <Button buttonStyle="secondary" icon="search" ml="10px">
+            <Button
+              buttonStyle="secondary"
+              icon="search"
+              ml="10px"
+              className="intercom-admin-pages-menu-view-button"
+            >
               <FormattedMessage {...messages.viewButton} />
             </Button>
           </Link>
@@ -126,6 +132,7 @@ const NavbarItemRow = ({
             icon="delete"
             onClick={handleOnClickDeleteButton}
             ml="10px"
+            className="intercom-admin-pages-menu-delete-button"
           >
             <FormattedMessage {...messages.deleteButton} />
           </Button>
@@ -133,10 +140,13 @@ const NavbarItemRow = ({
 
         {showAddButton && (
           <Button
+            // no icon on add and remove buttons, so specify height to match the others
+            height="44px"
             buttonStyle="secondary"
             onClick={handleOnClickAddButton}
             disabled={addButtonDisabled}
             ml="10px"
+            className="intercom-admin-pages-menu-add-to-navbar-button"
           >
             <FormattedMessage {...messages.addButton} />
           </Button>
@@ -144,9 +154,11 @@ const NavbarItemRow = ({
 
         {showRemoveButton && (
           <Button
+            height="44px"
             buttonStyle="secondary"
             onClick={handleOnClickRemoveButton}
             ml="10px"
+            className="intercom-admin-pages-menu-remove-from-navbar-button"
           >
             <FormattedMessage {...messages.removeButton} />
           </Button>

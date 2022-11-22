@@ -25,10 +25,16 @@ import GetRemoteFiles, {
 } from 'resources/GetRemoteFiles';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // utils
 import { isError, isNilOrError } from 'utils/helperUtils';
 
 // components
+import PageNotFound from 'components/PageNotFound';
+import InitiativesEditMeta from './InitiativesEditMeta';
+import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
 import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import InitiativesEditMeta from './InitiativesEditMeta';
@@ -162,8 +168,16 @@ const Data = adopt<DataProps, WithRouterProps>({
   ),
 });
 
-export default withRouter((withRouterProps: WithRouterProps) => (
-  <Data {...withRouterProps}>
-    {(dataProps) => <InitiativesEditPage {...dataProps} />}
-  </Data>
-));
+export default withRouter((withRouterProps: WithRouterProps) => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
+
+  return (
+    <Data {...withRouterProps}>
+      {(dataProps) => <InitiativesEditPage {...dataProps} />}
+    </Data>
+  );
+});

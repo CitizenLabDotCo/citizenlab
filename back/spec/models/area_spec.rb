@@ -84,4 +84,58 @@ RSpec.describe Area, type: :model do
       end
     end
   end
+
+  describe '#recreate_custom_field_options!' do
+    let!(:domicile) { create(:custom_field_domicile) }
+
+    before do
+      create_list(:area, 2)
+    end
+
+    it 'restores missing options' do
+      area = described_class.first
+      area.custom_field_option.destroy
+
+      expect { described_class.recreate_custom_field_options }
+        .to change(domicile.options, :count).by(1)
+
+      expect(area.reload.custom_field_option.attributes.symbolize_keys)
+        .to include(area.send(:option_attributes))
+    end
+
+    it 'fixes inconsistent options' do
+      area = described_class.first
+      option = area.custom_field_option
+
+      original_ordering = option.ordering
+      new_ordering = domicile.options.count + 1
+
+      original_title = option.title_multiloc
+      new_title = { 'en' => 'wrong-value' }
+      expect(original_title).not_to eq(new_title) # sanity check
+
+      # Using +update_columns+ to skip the callbacks to propagate the changes
+      # to the associated area.
+      option.update_columns(title_multiloc: new_title, ordering: new_ordering)
+      described_class.recreate_custom_field_options
+
+      area.reload
+      expect(area.title_multiloc).to eq(original_title)
+      expect(area.ordering).to eq(original_ordering)
+    end
+
+    # Does not include details for the somewhere-else option.
+    def option_details
+      domicile = CustomField.find_by(key: 'domicile')
+      domicile.options.left_joins(:area).pluck('areas.id', 'ordering', 'title_multiloc')
+    end
+
+    it 'is idempotent' do
+      option_details_before = option_details
+      described_class.recreate_custom_field_options
+      option_details_after = option_details
+
+      expect(option_details_before).to match_array(option_details_after)
+    end
+  end
 end

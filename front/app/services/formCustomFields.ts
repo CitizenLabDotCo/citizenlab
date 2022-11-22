@@ -1,6 +1,12 @@
 import { API_PATH } from 'containers/App/constants';
 import { IRelationship, Multiloc } from 'typings';
-import streams, { IStreamParams } from 'utils/streams';
+import { saveAs } from 'file-saver';
+import moment from 'moment';
+import { requestBlob } from 'utils/request';
+import { IProjectData } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
+import { TPhase } from 'hooks/usePhase';
+import { snakeCase } from 'lodash-es';
 
 // We can add more input types here when we support them
 export type ICustomFieldInputType =
@@ -53,6 +59,38 @@ export type IFlatCustomField = Omit<
 export type IFlatCustomFieldWithIndex = IFlatCustomField & {
   index: number;
 };
+
+const properties = [
+  'id',
+  'input_type',
+  'description_multiloc',
+  'required',
+  'title_multiloc',
+  'maximum_label_multiloc',
+  'minimum_label_multiloc',
+  'maximum',
+  'options',
+  'enabled',
+  'index',
+];
+
+const doesOjectHaveProperties = (
+  element: unknown,
+  propertyNames: string[]
+): boolean => {
+  let hasProperties = true;
+  propertyNames.forEach((propertyName) => {
+    if (!Object.prototype.hasOwnProperty.call(element, propertyName)) {
+      hasProperties = false;
+    }
+  });
+  return hasProperties;
+};
+
+export const isNewCustomFieldObject = (
+  element: unknown
+): element is IFlatCustomFieldWithIndex =>
+  doesOjectHaveProperties(element, properties);
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
@@ -161,7 +199,7 @@ export interface SurveyResultsType {
 export function formCustomFieldsResultsStream(
   projectId: string,
   streamParams: IStreamParams | null = null,
-  phaseId?: string
+  phaseId?: string | null
 ) {
   const apiEndpoint = phaseId
     ? `${API_PATH}/phases/${phaseId}/survey_results`
@@ -172,6 +210,28 @@ export function formCustomFieldsResultsStream(
     ...streamParams,
   });
 }
+
+export const downloadSurveyResults = async (
+  project: IProjectData,
+  locale: string,
+  phase?: TPhase
+) => {
+  const apiEndpoint = !isNilOrError(phase)
+    ? `${API_PATH}/phases/${phase.id}/as_xlsx`
+    : `${API_PATH}/projects/${project.id}/as_xlsx`;
+  const fileNameTitle = !isNilOrError(phase)
+    ? phase.attributes.title_multiloc
+    : project.attributes.title_multiloc;
+  const fileName = `${snakeCase(fileNameTitle[locale])}_${moment().format(
+    'YYYY-MM-DD'
+  )}.xlsx`;
+
+  const blob = await requestBlob(
+    apiEndpoint,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  );
+  saveAs(blob, fileName);
+};
 
 export interface IFormSubmissionCountData {
   totalSubmissions: number;

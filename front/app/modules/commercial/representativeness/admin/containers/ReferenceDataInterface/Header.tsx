@@ -10,7 +10,7 @@ import messages from './messages';
 
 const Header = () => (
   <>
-    <Title variant="h2">
+    <Title color="primary" variant="h2">
       <FormattedMessage {...messages.pageTitle} />
     </Title>
     <Text color="textSecondary">

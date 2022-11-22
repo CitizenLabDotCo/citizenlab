@@ -1,3 +1,25 @@
+import React, { ReactNode } from 'react';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+const RenderOnNotificationType = React.lazy(
+  () => import('modules/utilComponents/RenderOnNotificationType')
+);
+const Setting = React.lazy(() => import('./admin/containers/Setting'));
+const RemoveFlagButton = React.lazy(
+  () => import('./admin/components/RemoveFlagButton')
+);
+const ActivityWarningsTab = React.lazy(
+  () => import('./admin/components/ActivityWarningsTab')
+);
+const InappropriateContentWarning = React.lazy(
+  () => import('./admin/components/InappropriateContentWarning')
+);
+const EmptyMessageModerationsWithFlag = React.lazy(
+  () => import('./admin/components/EmptyMessageModerationsWithFlag')
+);
+const NLPFlagNotification = React.lazy(
+  () => import('./citizen/components/NLPFlagNotification')
+);
+import { INLPFlagNotificationData } from 'services/notifications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import RenderOnNotificationType from 'modules/utilComponents/RenderOnNotificationType';
 import React, { ReactNode } from 'react';

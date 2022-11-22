@@ -3,7 +3,7 @@ import createAdminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
 
-const LandingPage = lazy(() => import('containers/LandingPage'));
+const HomePage = lazy(() => import('containers/HomePage'));
 const SignUpInPage = lazy(() => import('containers/SignUpInPage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
@@ -29,7 +29,8 @@ const CookiePolicy = lazy(() => import('containers/CookiePolicy'));
 const AccessibilityStatement = lazy(
   () => import('containers/AccessibilityStatement')
 );
-const PagesShowPage = lazy(() => import('containers/PagesShowPage'));
+const CustomPageShow = lazy(() => import('containers/CustomPageShow'));
+
 const PasswordRecovery = lazy(() => import('containers/PasswordRecovery'));
 const PasswordReset = lazy(() => import('containers/PasswordReset'));
 const SubscriptionEndedPage = lazy(
@@ -46,7 +47,7 @@ export default function createRoutes() {
           index: true,
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -70,7 +71,7 @@ export default function createRoutes() {
           path: 'invite',
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -78,7 +79,7 @@ export default function createRoutes() {
           path: 'complete-signup',
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -86,7 +87,7 @@ export default function createRoutes() {
           path: 'authentication-error',
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -250,7 +251,7 @@ export default function createRoutes() {
           path: 'pages/:slug',
           element: (
             <PageLoading>
-              <PagesShowPage />
+              <CustomPageShow />
             </PageLoading>
           ),
         },
@@ -288,14 +289,6 @@ export default function createRoutes() {
           ),
         },
         ...moduleConfiguration.routes.citizen,
-        {
-          path: '*',
-          element: (
-            <PageLoading>
-              <PagesShowPage />
-            </PageLoading>
-          ),
-        },
       ],
     },
   ];

@@ -1,7 +1,7 @@
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import CTARadioButtons, {
   Props as CTARadioButtonProps,
-} from 'components/LandingPageComponents/admin/CTARadioButtons';
+} from 'components/LandingPages/admin/CTARadioButtons';
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { TCustomPageCTAType } from 'services/customPages';

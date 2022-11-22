@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { List, Row } from 'components/admin/ResourceList';
-import { PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,10 +11,7 @@ import NavbarItemRow from '../NavbarItemRow';
 
 export default function VisibleNavbarItemList() {
   const navbarItems = useNavbarItems({ onlyDefault: true });
-  const pageSlugById = usePageSlugById();
-  const previewNewCustomPages = useFeatureFlag({
-    name: 'preview_new_custom_pages',
-  });
+  const pageSlugById = useCustomPageSlugById();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;
@@ -24,17 +20,16 @@ export default function VisibleNavbarItemList() {
   const handleClickEdit = (navbarItem: INavbarItem) => () => {
     // redirect to homepage toggle page
     if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
-      clHistory.push(`${PAGES_MENU_PATH}/homepage/`);
+      clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage/`);
       return;
     }
 
     const pageData = navbarItem.relationships.static_page.data;
-
     pageData
-      ? previewNewCustomPages
-        ? clHistory.push(`${PAGES_MENU_PATH}/custom/${pageData.id}`)
-        : clHistory.push(`${PAGES_MENU_PATH}/pages/edit/${pageData.id}`)
-      : clHistory.push(`${PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`);
+      ? clHistory.push(`${ADMIN_PAGES_MENU_PATH}/pages/${pageData.id}/settings`)
+      : clHistory.push(
+          `${ADMIN_PAGES_MENU_PATH}/navbar-items/edit/${navbarItem.id}`
+        );
   };
 
   const getViewButtonLink = (navbarItem: INavbarItem) => {

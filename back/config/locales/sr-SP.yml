@@ -181,3 +181,27 @@ sr-SP:
       message_you_reset_your_password: 'Затражили сте ресетовање лозинке за %{organizationName} партиципативну платформу. Кликните на дугме у наставку да бисте изабрали нову, сигурну лозинку. Линк истиче за 1 сат.'
       subject: '%{organizationName}: ресетујте своју лозинку'
       title_reset_your_password: 'Изаберите нову лозинку'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Географска ширина'
+      longitude: 'Географска дужина'
+      author_fullname: 'Име аутора'
+      author_email: 'Е-пошта аутора'
+      author_id: 'ID аутора'
+      created_at: 'Предато у'
+      published_at: 'Објављено у'
+      comments_count: 'Коментари'
+      upvotes_count: 'Upvotes'
+      downvotes_count: 'Downvotes'
+      baskets_count: 'Корпе'
+      input_url: 'URL'
+      project: 'Пројекат'
+      status: 'Статус'
+      assignee_fullname: 'Assignee'
+      assignee_email: 'Е-пошта додељеног корисника'
+  form_builder:
+    default_select_field:
+      title: 'Ваше питање'
+      option1: 'Опција 1'
+      option2: 'Опција 2'

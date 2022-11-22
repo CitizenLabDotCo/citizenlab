@@ -48,6 +48,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { LatLng } from 'leaflet';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 const Container = styled.div``;
 
@@ -73,7 +74,6 @@ const TooltipContentText = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-
   a,
   button {
     color: ${colors.teal};
@@ -93,7 +93,6 @@ const TooltipContentText = styled.div`
     margin: 0px;
     cursor: pointer;
     transition: all 100ms ease-out;
-
     &:hover {
       color: ${darken(0.15, colors.teal)};
       text-decoration: underline;
@@ -177,13 +176,20 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       if (!isNilOrError(project)) {
         trackEventByName(tracks.redirectedToIdeaFrom);
 
+        const isUserModerator =
+          !isNilOrError(authUser) &&
+          canModerateProject(projectId, { data: authUser });
+
+        const parameters =
+          phaseId && isUserModerator ? `&phase_id=${phaseId}` : '';
+
         clHistory.push({
           pathname: `/projects/${project.attributes.slug}/ideas/new`,
           search: latLng
             ? stringify(
                 { lat: latLng.lat, lng: latLng.lng },
                 { addQueryPrefix: true }
-              )
+              ).concat(parameters)
             : undefined,
         });
       }

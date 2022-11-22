@@ -1,3 +1,5 @@
+import React, { memo, useContext, Suspense } from 'react';
+import { OutletsPropertyMap, OutletId } from 'utils/moduleUtils';
 import { OutletsContext } from 'containers/OutletsProvider';
 import React, { memo, useContext } from 'react';
 import { OutletId, OutletsPropertyMap } from 'utils/moduleUtils';
@@ -34,10 +36,10 @@ const Outlet = memo(({ children, id, ...props }: Props) => {
   ));
 
   if (children) {
-    return children(componentsToRender);
+    return <Suspense fallback={null}>{children(componentsToRender)}</Suspense>;
   }
 
-  return <>{componentsToRender}</>;
+  return <Suspense fallback={null}>{componentsToRender}</Suspense>;
 });
 
 export default Outlet;

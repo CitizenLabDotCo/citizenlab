@@ -1,6 +1,7 @@
 import { some } from 'lodash-es';
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+const Tab = React.lazy(() => import('./admin/components/Tab'));
 import {
   getAllParticipationMethods,
   getMethodConfig,

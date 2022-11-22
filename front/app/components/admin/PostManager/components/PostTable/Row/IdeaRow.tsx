@@ -114,7 +114,10 @@ const IdeaRow = ({
       onClick: onClickTitle,
       Component: ({ idea, onClick }) => {
         return (
-          <TitleLink className="e2e-idea-manager-idea-title" onClick={onClick}>
+          <TitleLink
+            className="e2e-idea-manager-idea-title intercom-admin-input-manager-title"
+            onClick={onClick}
+          >
             <T value={idea.attributes.title_multiloc} />
           </TitleLink>
         );

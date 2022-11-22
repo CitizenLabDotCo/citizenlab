@@ -169,13 +169,13 @@
 
       "dynamic_idea_form": {
         "type": "object",
-        "title": "Dynamic idea form (experimental)",
-        "description":  "Changes the idea form from the hard-coded version, to the experimental generated version. Don't turn this on unless you know what you're doing.",
+        "title": "Dynamic idea form",
+        "description": "Changes the idea form from the hard-coded version to the generated version.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       },
       "jsonforms_custom_fields": {
@@ -208,10 +208,16 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "phone"],
+        "required-settings": ["minimum_length", "phone", "enable_signup"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "enable_signup": {
+            "type": "boolean",
+            "title": "Enable sign-up",
+            "description": "If unchecked, only login via password is allowed for existing users; sign-up via password is disabled for new users.",
+            "default": true
+          },
           "minimum_length": {
             "type": "number",
             "title": "Minimum password length",
@@ -476,7 +482,7 @@
       "initiatives": {
         "type": "object",
         "title": "Proposals",
-        "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
+        "description":  "Allow proposals. Disabling this feature removes the corresponding item from the navbar",
         "additionalProperties": false,
         "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
         "required": ["allowed", "enabled"],
@@ -832,18 +838,6 @@
         }
       },
 
-      "preview_new_custom_pages": {
-        "type": "object",
-        "title": "Preview New Custom Pages",
-        "description":	"Allow new custom pages to be created. Don't enable if you're not sure what is it.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
       "events_widget": {
         "type": "object",
         "title": "Events Landing Page Widget",
@@ -979,12 +973,12 @@
       "native_surveys": {
         "type": "object",
         "title": "Allow in-platform surveys",
-        "description":  "DO NOT ENABLE THIS FEATURE BECAUSE IT IS STILL UNDER DEVELOPMENT !!!",
+        "description":  "",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1018,6 +1012,7 @@
     "id_cow": ["verification"],
     "id_franceconnect": ["verification"],
     "id_gent_rrn": ["verification"],
+    "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"]
   },
   "definitions": {

@@ -245,6 +245,10 @@ class ImagesDropzone extends PureComponent<
   componentDidMount() {
     this.setUrlObjects();
     this.removeExcessImages();
+
+    if (this.props.errorMessage) {
+      this.setState({ errorMessage: this.props.errorMessage });
+    }
   }
 
   componentDidUpdate(prevProps: Props) {

@@ -3,12 +3,20 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import PageNotFound from 'components/PageNotFound';
+import InitiativesIndexMeta from './InitiativesIndexMeta';
+import InitiativesHeader from './InitiativesHeader';
+import InitiativeCards from 'components/InitiativeCards';
+import ContentContainer from 'components/ContentContainer';
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
 import InitiativeButton from 'components/InitiativeButton';
 import InitiativeCards from 'components/InitiativeCards';
 import InitiativesHeader from './InitiativesHeader';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -66,11 +74,16 @@ const Padding = styled.div`
   height: 100px;
   ${media.phone`
     height: 40px;
-  `}
+    `}
 `;
 
 const InitiativeIndexPage = () => {
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
 
   if (!isNilOrError(initiativePermissions)) {
     const { enabled } = initiativePermissions;

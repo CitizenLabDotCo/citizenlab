@@ -9,12 +9,13 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import PageForm, { FormValues } from 'components/PageForm';
 
 // services
+import { updateCustomPage } from 'services/customPages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import { updatePage } from 'services/pages';
 
 // hooks
-import usePage from 'hooks/usePage';
 import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
+import useCustomPage from 'hooks/useCustomPage';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -97,7 +98,7 @@ interface Props {
 }
 
 const PageEditor = ({ className, pageSlug }: Props) => {
-  const page = usePage({ pageSlug });
+  const page = useCustomPage({ customPageSlug: pageSlug });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
@@ -117,7 +118,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       local_page_files,
     }: FormValues) => {
       const fieldValues = { slug, title_multiloc, top_info_section_multiloc };
-      await updatePage(pageId, fieldValues);
+      await updateCustomPage(pageId, fieldValues);
 
       if (!isNilOrError(local_page_files)) {
         handleAddPageFiles(pageId, local_page_files, remotePageFiles);

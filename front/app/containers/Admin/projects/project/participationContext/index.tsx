@@ -4,13 +4,15 @@ import { Observable, of, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 // components
-import ParticipationMethodPicker from './components/ParticipationMethodPicker';
+import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
 import PollInputs from './components/PollInputs';
 import { Container, StyledSection } from './components/styling';
 import SurveyInputs from './components/SurveyInputs';
 
 // services
+import { projectByIdStream, IProject, IProjectData } from 'services/projects';
+import { phaseStream, IPhase } from 'services/phases';
 import {
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
@@ -85,6 +87,8 @@ interface InputProps {
   onSubmit: (arg: IParticipationContextConfig) => void;
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
+  phase?: IPhase | undefined | null;
+  project?: IProjectData | undefined | null;
   apiErrors: ApiErrors;
 }
 
@@ -432,6 +436,8 @@ class ParticipationContext extends PureComponent<
         <Container className={className}>
           <StyledSection>
             <ParticipationMethodPicker
+              phase={this.props.phase}
+              project={this.props.project}
               participation_method={participation_method}
               showSurveys={showSurveys}
               apiErrors={apiErrors}

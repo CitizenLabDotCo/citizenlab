@@ -74,7 +74,7 @@ export default ({
   const ManageButton = (
     <RowButton
       className={`
-        e2e-admin-edit-publication
+        e2e-admin-edit-publication intercom-admin-project-edit-button
       `}
       linkTo={adminProjectsProjectPath(publication.publicationId)}
       buttonStyle="secondary"

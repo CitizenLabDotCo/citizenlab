@@ -61,6 +61,14 @@ export type IAppConfigurationSettingsCore = {
   topic_term?: Multiloc;
 };
 
+export type ProposalsSettings = {
+  allowed: boolean;
+  enabled: boolean;
+  days_limit: number;
+  eligibility_criteria: Multiloc;
+  threshold_reached_message: Multiloc;
+  voting_threshold: number;
+};
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   customizable_homepage_banner: {
@@ -78,6 +86,7 @@ export interface IAppConfigurationSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
+    enable_signup: boolean;
     phone?: boolean;
     minimum_length?: number;
     phone_email_pattern?: string;
@@ -116,19 +125,11 @@ export interface IAppConfigurationSettings {
   manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;
   pages?: AppConfigurationFeature;
-  preview_new_custom_pages?: AppConfigurationFeature;
   project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   participatory_budgeting?: AppConfigurationFeature;
-  initiatives?: {
-    allowed: boolean;
-    enabled: boolean;
-    days_limit: number;
-    eligibility_criteria: Multiloc;
-    threshold_reached_message: Multiloc;
-    voting_threshold: number;
-  };
+  initiatives?: ProposalsSettings;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
@@ -212,7 +213,6 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
   representativeness?: AppConfigurationFeature;

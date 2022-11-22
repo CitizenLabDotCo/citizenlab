@@ -3,13 +3,13 @@ import { Observable, of } from 'rxjs';
 import { IPhase, IPhaseData, phaseStream } from 'services/phases';
 import { isNilOrError } from 'utils/helperUtils';
 
-export type TPhase = IPhaseData | undefined | null | Error;
+export type TPhase = IPhaseData | null | Error;
 
 export default function usePhase(phaseId: string | null) {
-  const [phase, setPhase] = useState<TPhase>(undefined);
+  const [phase, setPhase] = useState<TPhase>(null);
 
   useEffect(() => {
-    setPhase(undefined);
+    setPhase(null);
 
     let observable: Observable<IPhase | null> = of(null);
 

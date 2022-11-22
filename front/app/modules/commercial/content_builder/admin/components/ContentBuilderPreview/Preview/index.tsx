@@ -17,6 +17,8 @@ import { PROJECT_DESCRIPTION_CODE } from '../../../../services/contentBuilder';
 
 // types
 import { Multiloc } from 'typings';
+import useProjectFiles from 'hooks/useProjectFiles';
+import FileAttachments from 'components/UI/FileAttachments';
 
 type PreviewProps = {
   projectId: string;
@@ -26,6 +28,7 @@ type PreviewProps = {
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   const locale = useLocale();
   const localize = useLocalize();
+  const projectFiles = useProjectFiles(projectId);
 
   const contentBuilderLayout = useContentBuilderLayout({
     projectId,
@@ -56,6 +59,11 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
           <Editor isPreview={true}>
             <ContentBuilderFrame editorData={editorData} />
           </Editor>
+          {!isNilOrError(projectFiles) && (
+            <Box maxWidth="750px">
+              <FileAttachments files={projectFiles.data} />
+            </Box>
+          )}
         </Box>
       )}
       {!isLoadingContentBuilderLayout && !contentBuilderContent && (

@@ -1,3 +1,4 @@
+import React from 'react';
 import { isError } from 'lodash-es';
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
@@ -5,6 +6,8 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import PageNotFound from 'components/PageNotFound';
+import InitiativesShow from 'containers/InitiativesShow';
 import Button from 'components/UI/Button';
 import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
@@ -13,6 +16,9 @@ import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -58,7 +64,9 @@ interface Props extends InputProps, DataProps {}
 
 const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
 
-const InitiativesShowPage = memo<Props>(({ initiative }) => {
+const InitiativesShowPage = ({ initiative }: Props) => {
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
   if (isError(initiative)) {
     return (
       <InitiativeNotFoundWrapper>
@@ -74,6 +82,10 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
     );
   }
 
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
+
   if (!isNilOrError(initiative)) {
     return (
       <Container>
@@ -84,7 +96,7 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
   }
 
   return null;
-});
+};
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   initiative: ({ params, render }) => (
@@ -92,8 +104,10 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativesShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter((inputProps: InputProps & WithRouterProps) => {
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => <InitiativesShowPage {...inputProps} {...dataProps} />}
+    </Data>
+  );
+});

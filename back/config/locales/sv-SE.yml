@@ -181,3 +181,27 @@ sv:
       message_you_reset_your_password: 'Du begärde en lösenordsåterställning för plattformen för deltagande för %{organizationName}. Klicka på knappen nedan för att välja ett nytt, säkert lösenord. Länken upphör att gälla om 1 timme.'
       subject: '%{organizationName}: Återställ ditt lösenord'
       title_reset_your_password: 'Välj ett nytt lösenord'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Latitud'
+      longitude: 'Longitud'
+      author_fullname: 'Författarens namn'
+      author_email: 'Författarens e-postadress'
+      author_id: 'Författar-ID'
+      created_at: 'Skickades in'
+      published_at: 'Publicerades'
+      comments_count: 'Kommentarer'
+      upvotes_count: 'Uppröster'
+      downvotes_count: 'Nerröster'
+      baskets_count: 'Korgar'
+      input_url: 'Webbadress'
+      project: 'Projekt'
+      status: 'Status'
+      assignee_fullname: 'Tilldelad person'
+      assignee_email: 'Mottagarens e-postadress'
+  form_builder:
+    default_select_field:
+      title: 'Din fråga'
+      option1: 'Alternativ 1'
+      option2: 'Alternativ 2'
