@@ -136,7 +136,7 @@ jobs:
       - run: |
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/free/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
-          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
+          bundle exec COVERAGE=ON rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
       - store_test_results:
           path: spec/reports
 
