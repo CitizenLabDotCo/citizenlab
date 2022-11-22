@@ -16,24 +16,16 @@ export const Container = styled.div`
 export const Header = styled.div`
   width: 100%;
   max-width: 1150px;
-  min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
+  min-height: 275px;
   margin: 0 auto;
   padding: 0;
   position: relative;
+  aspect-ratio: 3 / 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  filter: blur(0);
   border-radius: ${(props: any) => props.theme.borderRadius};
-
-  ${media.tablet`
-    min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
-  `}
-
-  ${media.phone`
-    min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.phone}px;
-  `}
 `;
 
 export const HeaderImage = styled.div`

@@ -59,9 +59,7 @@ const EditButton = styled(Button)`
 
 const HeaderImageContainer = styled.div`
   width: 100%;
-  height: 0;
-  box-sizing: content-box;
-  padding-bottom: 18%;
+  aspect-ratio: 5 / 1;
   margin-bottom: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;

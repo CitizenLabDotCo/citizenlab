@@ -16,10 +16,11 @@ export const Container = styled.div`
 
 export const HeaderImage = styled(Image)`
   width: 100%;
-  height: ${homepageBannerLayoutHeights['two_row_layout'].desktop}px;
+  aspect-ratio: 6 / 1;
+  // height: ${homepageBannerLayoutHeights['two_row_layout'].desktop}px;
   overflow: hidden;
 
-  ${media.tablet`
-    height: ${homepageBannerLayoutHeights['two_row_layout'].tablet}px;
-  `}
+  // ${media.tablet`
+  //   height: ${homepageBannerLayoutHeights['two_row_layout'].tablet}px;
+  // `}
 `;

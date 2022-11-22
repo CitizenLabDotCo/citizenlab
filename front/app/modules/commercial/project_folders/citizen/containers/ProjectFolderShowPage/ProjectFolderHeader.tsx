@@ -16,9 +16,8 @@ import { IProjectFolderData } from '../../../services/projectFolders';
 
 const FolderImageContainer = styled.div`
   width: 100%;
-  height: 0 !important;
-  box-sizing: content-box;
-  padding-bottom: 18%;
+  height: auto !important;
+  aspect-ratio: 5 / 1;
   margin-bottom: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   position: relative;
