@@ -72,10 +72,10 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 const ShieldIcon = styled(Icon)`
+  opacity: 0.5;
   fill: ${colors.textSecondary};
   width: 48px;
   height: 48px;
-  margin-left: -5px;
 `;
 
 const Content = styled.div`
