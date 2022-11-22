@@ -57,15 +57,15 @@ export default defineMessages({
   //   id: 'app.components.VerificationModal.back',
   //   defaultMessage: 'Back',
   // },
-  // userVerifiedTitle: {
-  //   id: 'app.components.VerificationModal.userVerifiedTitle',
-  //   defaultMessage: 'You’re now verified !',
-  // },
-  // userVerifiedSubtitle: {
-  //   id: 'app.components.VerificationModal.userVerifiedSubtitle',
-  //   defaultMessage:
-  //     'Your identity has been verified. You’re now a full member of the community on this platform.',
-  // },
+  userVerifiedTitle: {
+    id: 'app.components.VerificationModal.userVerifiedTitle',
+    defaultMessage: 'You’re now verified !',
+  },
+  userVerifiedSubtitle: {
+    id: 'app.components.VerificationModal.userVerifiedSubtitle',
+    defaultMessage:
+      'Your identity has been verified. You’re now a full member of the community on this platform.',
+  },
   errorTitle: {
     id: 'app.components.VerificationModal.errorTitle',
     defaultMessage: 'There was an issue with the verification of your account',
@@ -101,8 +101,8 @@ export default defineMessages({
   //   id: 'app.components.VerificationModal.skipThisStep',
   //   defaultMessage: 'Skip this step',
   // },
-  // close: {
-  //   id: 'app.components.VerificationModal.close',
-  //   defaultMessage: 'Close',
-  // },
+  close: {
+    id: 'app.components.VerificationModal.close',
+    defaultMessage: 'Close',
+  },
 });
