@@ -13,9 +13,6 @@ const VerificationModal = React.lazy(
 const VerificationOnboardingStep = React.lazy(
   () => import('./citizen/components/VerificationOnboardingStep')
 );
-const VerificationSignUpStep = React.lazy(
-  () => import('./citizen/components/VerificationSignUpStep')
-);
 const VerificationStatus = React.lazy(
   () => import('./citizen/components/VerificationStatus')
 );
@@ -34,9 +31,6 @@ export function isLastVerificationMethod(
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.SignUpIn.SignUp.step': (props) => (
-      <VerificationSignUpStep {...props} />
-    ),
     'app.containers.UserEditPage.content': () => <VerificationStatus />,
     'app.containers.Navbar.UserMenu.UserNameContainer': (props) => (
       <VerificationBadge {...props} />
