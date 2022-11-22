@@ -15,8 +15,8 @@ da:
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
   initiative_statuses:
-    proposed: aktive
-    proposed_description: aktive
+    proposed: foreslået
+    proposed_description: foreslået
     expired: udløbet
     expired_description: udløbet
     threshold_reached: fået nok stemmer
