@@ -83,6 +83,11 @@ class Project < ApplicationRecord
 
   after_destroy :remove_moderators
 
+  attr_accessor :folder_changed, :folder_was
+
+  after_save :reassign_moderators, if: :folder_changed?
+  after_commit :clear_folder_changes, if: :folder_changed?
+
   PROCESS_TYPES = %w[timeline continuous].freeze
   INTERNAL_ROLES = %w[open_idea_box].freeze
 
@@ -169,6 +174,49 @@ class Project < ApplicationRecord
     save!
   end
 
+  def folder
+    admin_publication&.parent&.publication
+  end
+
+  def folder_id
+    admin_publication&.parent&.publication_id
+  end
+
+  def folder?
+    !!folder_id
+  end
+
+  def saved_change_to_folder?
+    admin_publication.saved_change_to_parent_id?
+  end
+
+  def folder_id=(id)
+    parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)&.id
+    raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
+    return unless folder&.admin_publication&.id != parent_id
+
+    build_admin_publication unless admin_publication
+    folder_will_change!
+    admin_publication.assign_attributes(parent_id: parent_id)
+  end
+
+  def folder_changed?
+    folder_changed
+  end
+
+  def folder=(folder)
+    self.folder_id = folder.id
+  end
+
+  def folder_will_change!
+    self.folder_was = folder
+    self.folder_changed = true
+  end
+
+  def clear_folder_changes
+    self.folder_changed = false
+  end
+
   private
 
   def admin_publication_must_exist
@@ -220,6 +268,41 @@ class Project < ApplicationRecord
       moderator.save!
     end
   end
+
+  def reassign_moderators
+    add_new_folder_moderators
+    remove_old_folder_moderators
+  end
+
+  def add_new_folder_moderators
+    new_folder_moderators.each do |moderator|
+      next if moderator.moderatable_project_ids.include?(id)
+
+      moderator.add_role('project_moderator', project_id: id)
+      moderator.save
+    end
+  end
+
+  def remove_old_folder_moderators
+    old_folder_moderators.each do |moderator|
+      next unless moderator.moderatable_project_ids.include?(id)
+
+      moderator.delete_role('project_moderator', project_id: id)
+      moderator.save
+    end
+  end
+
+  def new_folder_moderators
+    return ::User.none unless folder&.id
+
+    ::User.project_folder_moderator(folder&.id)
+  end
+
+  def old_folder_moderators
+    return ::User.none unless folder_was.is_a?(ProjectFolders::Folder)
+
+    ::User.project_folder_moderator(folder_was.id)
+  end
 end
 
 Project.include(ProjectPermissions::Patches::Project)
@@ -227,6 +310,5 @@ Project.include(ProjectPermissions::Patches::Project)
 Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.include_if_ee('IdeaAssignment::Extensions::Project')
 Project.include_if_ee('Insights::Patches::Project')
-Project.prepend_if_ee('ProjectFolders::Patches::Project')
 Project.include_if_ee('SmartGroups::Patches::Project')
 Project.include_if_ee('ContentBuilder::Patches::Project')
