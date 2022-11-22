@@ -20,7 +20,7 @@ import Mounter from 'components/Mounter';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
-import useUserCustomFieldsSchema from 'components/UserCustomFields/hooks/useUserCustomFieldsSchema';
+import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils

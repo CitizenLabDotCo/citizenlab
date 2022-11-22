@@ -23,7 +23,7 @@ import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
+import useUserCustomFields from 'hooks/useUserCustomFields';
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];

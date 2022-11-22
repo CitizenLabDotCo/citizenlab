@@ -9,7 +9,7 @@ import CustomFieldGraph from './CustomFieldGraph';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
+import useUserCustomFields from 'hooks/useUserCustomFields';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';

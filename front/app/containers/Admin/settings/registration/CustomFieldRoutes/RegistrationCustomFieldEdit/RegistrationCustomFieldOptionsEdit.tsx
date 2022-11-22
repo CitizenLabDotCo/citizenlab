@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomFieldOption from 'components/UserCustomFields/hooks/useUserCustomFieldOption';
+import useUserCustomFieldOption from 'hooks/useUserCustomFieldOption';
 
 // services
 import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';

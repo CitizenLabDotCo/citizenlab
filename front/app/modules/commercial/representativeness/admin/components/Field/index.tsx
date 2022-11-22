@@ -11,11 +11,11 @@ import {
 } from '../../services/referenceDistribution';
 
 // hooks
-import useUserCustomFieldOptions from 'components/UserCustomFields/hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
 import useReferenceDistribution, {
   RemoteFormValues,
 } from '../../hooks/useReferenceDistribution';
-import useUserCustomField from 'components/UserCustomFields/hooks/useUserCustomField';
+import useUserCustomField from 'hooks/useUserCustomField';
 
 // components
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';

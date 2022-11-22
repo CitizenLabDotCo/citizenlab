@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useUserCustomFieldOptions from 'components/UserCustomFields/hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
 
 // components
 import { Select } from '@citizenlab/cl2-component-library';

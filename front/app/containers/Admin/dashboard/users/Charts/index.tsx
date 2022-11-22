@@ -8,7 +8,7 @@ import {
 } from 'services/userCustomFieldStats';
 
 // hooks
-import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
+import useUserCustomFields from 'hooks/useUserCustomFields';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';

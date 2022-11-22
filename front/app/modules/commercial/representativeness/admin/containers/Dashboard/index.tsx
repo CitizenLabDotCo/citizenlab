@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
+import useUserCustomFields from 'hooks/useUserCustomFields';
 
 // typings
 import { IUserCustomFieldData } from 'services/userCustomFields';

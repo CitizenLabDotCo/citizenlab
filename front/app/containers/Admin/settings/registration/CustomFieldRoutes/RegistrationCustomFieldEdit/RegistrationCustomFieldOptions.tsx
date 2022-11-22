@@ -12,7 +12,7 @@ import {
 } from 'services/userCustomFieldOptions';
 
 // hooks
-import useUserCustomFieldOptions from 'components/UserCustomFields/hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
 import useLocalize from 'hooks/useLocalize';
 
 // components

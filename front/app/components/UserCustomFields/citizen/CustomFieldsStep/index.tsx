@@ -10,7 +10,7 @@ import UserCustomFieldsForm from '../UserCustomFieldsForm';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
+import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';

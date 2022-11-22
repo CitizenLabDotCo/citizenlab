@@ -22,7 +22,7 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomField from 'components/UserCustomFields/hooks/useUserCustomField';
+import useUserCustomField from 'hooks/useUserCustomField';
 import useLocalize from 'hooks/useLocalize';
 
 const StyledGoBackButton = styled(GoBackButton)`

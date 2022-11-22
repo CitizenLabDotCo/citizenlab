@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { userJsonFormSchemasStream } from '../../../services/userCustomFields';
+import { userJsonFormSchemasStream } from 'services/userCustomFields';
 import { isEmpty, get } from 'lodash-es';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';

@@ -18,7 +18,7 @@ import Form, { FieldProps } from 'react-jsonschema-form';
 // hooks
 import useUserCustomFieldsSchema, {
   UserCustomFieldsSchema,
-} from '../../../hooks/useUserCustomFieldsSchema';
+} from 'hooks/useUserCustomFieldsSchema';
 
 // For DateInput to work
 import 'react-dates/initialize';

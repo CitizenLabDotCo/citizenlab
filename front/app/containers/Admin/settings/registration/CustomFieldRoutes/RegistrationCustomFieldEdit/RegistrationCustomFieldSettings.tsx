@@ -6,7 +6,7 @@ import {
   updateCustomFieldForUsers,
   isBuiltInField,
 } from 'services/userCustomFields';
-import useUserCustomField from 'components/UserCustomFields/hooks/useUserCustomField';
+import useUserCustomField from 'hooks/useUserCustomField';
 
 import RegistrationCustomFieldForm, {
   FormValues,

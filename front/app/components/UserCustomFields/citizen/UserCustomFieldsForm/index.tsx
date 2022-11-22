@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
+import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 
 // components
 import UserCustomFieldsFormOld from './UserCustomFieldsFormOld';

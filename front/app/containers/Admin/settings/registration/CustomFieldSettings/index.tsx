@@ -43,7 +43,7 @@ import {
 
 // styling
 import { colors } from 'utils/styleUtils';
-import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
+import useUserCustomFields from 'hooks/useUserCustomFields';
 
 const Buttons = styled.div`
   display: flex;
