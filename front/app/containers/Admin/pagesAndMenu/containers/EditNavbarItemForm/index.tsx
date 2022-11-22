@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import NavbarItemForm, { FormValues } from '../../../components/NavbarItemForm';
+import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 

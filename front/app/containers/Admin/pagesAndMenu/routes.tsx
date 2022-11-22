@@ -8,7 +8,7 @@ const NavigationSettings = lazy(
   () => import('./containers/PagesMenu/NavigationSettings')
 );
 const EditNavbarItemForm = lazy(
-  () => import('./containers/PagesMenu/EditNavbarItemForm')
+  () => import('./containers/EditNavbarItemForm')
 );
 
 // homepage
