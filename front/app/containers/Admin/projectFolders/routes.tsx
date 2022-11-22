@@ -1,7 +1,6 @@
 import React, { lazy } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet as RouterOutlet } from 'react-router-dom';
 import PageLoading from 'components/UI/PageLoading';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 
 const FolderSettings = lazy(() => import('./containers/settings'));
 const FolderContainer = lazy(() => import('./containers'));
