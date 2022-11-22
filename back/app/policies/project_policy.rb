@@ -14,7 +14,7 @@ class ProjectPolicy < ApplicationPolicy
       # It entails that scopes does not have to be redundant. In other words, each sub-scope (clause) should aim to
       # include only the projects to which this role gives access (without repeating projects to which lesser roles
       # of the user gives access).
-      moderator_scope = if user.active?
+      moderator_scope = if user&.active?
         UserRoleService.new.moderatable_projects(user, scope)
       else
         scope.none
