@@ -15,6 +15,10 @@ import {
 import { TAuthUser } from 'hooks/useAuthUser';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 
+const userEmailToBeConfirmed = (authUser: TAuthUser) => {
+  return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
+};
+
 export function getDefaultSteps(): TSignUpConfiguration {
   return {
     'auth-providers': {
@@ -72,6 +76,16 @@ export function getDefaultSteps(): TSignUpConfiguration {
         // execute prematurely
         return !isNilOrError(authUser) && !accountCreated;
       },
+      canTriggerRegistration: true,
+    },
+    confirmation: {
+      key: 'confirmation',
+      position: 4,
+      stepDescriptionMessage: messages.confirmYourAccount,
+      isEnabled: (authUser) => {
+        return userEmailToBeConfirmed(authUser);
+      },
+      isActive: userEmailToBeConfirmed,
       canTriggerRegistration: true,
     },
     verification: {

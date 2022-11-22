@@ -1,17 +1,12 @@
-import React, { useEffect, useState, FormEvent } from 'react';
-import { CONFIRMATION_STEP_NAME } from '../../index';
+import React, { useState, FormEvent } from 'react';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import messages from './messages';
 import Error from 'components/UI/Error';
-import {
-  confirm,
-  resendCode,
-  IConfirmation,
-} from '../../services/confirmation';
-import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import { confirm, resendCode, IConfirmation } from 'services/confirmation';
+import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors, CLError } from 'typings';
 import styled from 'styled-components';
@@ -103,13 +98,9 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
   margin-right: 4px;
 `;
 
-type Props = Pick<SignUpStepOutletProps, 'onCompleted' | 'onData' | 'step'>;
+type Props = Pick<SignUpStepOutletProps, 'onCompleted'>;
 
-const userEmailToBeConfirmed = (authUser: TAuthUser) => {
-  return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
-};
-
-const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
+const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   const user = useAuthUser();
   const [confirmation, setConfirmation] = useState<IConfirmation>({
     code: null,
@@ -120,21 +111,7 @@ const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
   const [changingEmail, setChangingEmail] = useState(false);
   const [codeResent, setCodeResent] = useState(false);
 
-  useEffect(() => {
-    onData({
-      key: CONFIRMATION_STEP_NAME,
-      position: 4,
-      stepDescriptionMessage: messages.confirmYourAccount,
-      isEnabled: (authUser) => {
-        return userEmailToBeConfirmed(authUser);
-      },
-      isActive: userEmailToBeConfirmed,
-      canTriggerRegistration: true,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (step !== CONFIRMATION_STEP_NAME || isNilOrError(user)) {
+  if (isNilOrError(user)) {
     return null;
   }
 

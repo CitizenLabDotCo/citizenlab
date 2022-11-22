@@ -1,3 +1,5 @@
+// TODO - move to Auth container when we create it
+
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 

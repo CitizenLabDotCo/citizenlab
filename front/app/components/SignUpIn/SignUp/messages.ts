@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  confirmYourAccount: {
+    id: 'app.components.ConfirmationModal.confirmYourAccount',
+    defaultMessage: 'Confirm your Email Address',
+  },
   tokenLabel: {
     id: 'app.containers.SignUp.tokenLabel',
     defaultMessage: 'Invitation code',
