@@ -49,7 +49,6 @@ import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
-import { ParticipationMethod } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
 import { IUserData } from 'services/users';
 import { TVerificationMethod } from 'services/verificationMethods';
@@ -175,12 +174,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
   'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
-  'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
-    startAt: string;
-    endAt: string;
-    participationMethods: ParticipationMethod[];
-    project: IProjectData;
-  };
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
     compact?: boolean;

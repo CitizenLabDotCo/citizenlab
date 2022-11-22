@@ -18,7 +18,7 @@ import BarChartByCategory from './BarChartByCategory';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { binBirthyear } from './dataUtils';
+import { binBirthyear } from 'utils/dataUtils';
 
 interface Props {
   startAt: string | null | undefined;

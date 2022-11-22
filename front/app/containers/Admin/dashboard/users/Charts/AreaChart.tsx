@@ -20,7 +20,7 @@ import HorizontalBarChart from './HorizontalBarChart';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { convertDomicileData } from './dataUtils';
+import { convertDomicileData } from 'utils/dataUtils';
 
 interface Props {
   startAt: string | null | undefined;

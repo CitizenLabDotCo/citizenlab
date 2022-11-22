@@ -6,11 +6,11 @@ import {
   join,
   convertDomicileData,
   Series,
-} from '../../../utils/data';
+} from 'utils/dataUtils';
 import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
 
 // typings
-import { TCustomFieldCode } from '../../../services/userCustomFields';
+import { TCustomFieldCode } from 'components/UserCustomFields/services/userCustomFields';
 import {
   IUsersByRegistrationField,
   IUsersByDomicile,

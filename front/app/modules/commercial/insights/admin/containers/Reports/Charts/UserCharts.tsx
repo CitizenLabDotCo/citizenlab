@@ -9,7 +9,7 @@ import CustomFieldGraph from './CustomFieldGraph';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useUserCustomFields from '../../../hooks/useUserCustomFields';
+import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
@@ -17,7 +17,7 @@ import { IProjectData } from 'services/projects';
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
-} from '../../../services/userCustomFields';
+} from 'components/UserCustomFields/services/userCustomFields';
 
 interface Props {
   startAt: string;
@@ -33,7 +33,7 @@ const INPUT_TYPES: IUserCustomFieldInputType[] = [
   'number',
 ];
 
-const CustomFieldGraphs = ({
+const UserCharts = ({
   participationMethods,
   startAt,
   endAt,
@@ -78,4 +78,4 @@ const allowedField = ({
   return true;
 };
 
-export default CustomFieldGraphs;
+export default UserCharts;
