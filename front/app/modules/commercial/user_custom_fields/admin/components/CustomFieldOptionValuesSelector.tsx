@@ -1,18 +1,27 @@
 import React from 'react';
-import GetUserCustomFieldOptions, {
-  GetUserCustomFieldOptionsChildProps,
-} from '../../resources/GetUserCustomFieldOptions';
+
+// hooks
+import useUserCustomFieldOptions from 'components/UserCustomFields/hooks/useUserCustomFieldOptions';
+
+// components
+import MultipleSelect from 'components/UI/MultipleSelect';
+
+// i18n
+import localize, { InjectedLocalized } from 'utils/localize';
+
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+
+// typings
 import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { IOption } from 'typings';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import localize, { InjectedLocalized } from 'utils/localize';
-import { isNilOrError } from 'utils/helperUtils';
+import { IUserCustomFieldOptionData } from 'components/UserCustomFields/services/userCustomFieldOptions';
 
 type Props = {
   rule: TRule;
   value: string[];
   onChange: (values: string[]) => void;
-  options: GetUserCustomFieldOptionsChildProps;
+  options: IUserCustomFieldOptionData[] | NilOrError;
 };
 
 interface State {}
@@ -55,13 +64,14 @@ const CustomFieldOptionValuesSelectorWithHOC = localize(
   CustomFieldOptionValuesSelector
 );
 
-export default (inputProps: Props) => (
-  <GetUserCustomFieldOptions customFieldId={inputProps.rule?.['customFieldId']}>
-    {(options) => (
-      <CustomFieldOptionValuesSelectorWithHOC
-        {...inputProps}
-        options={options}
-      />
-    )}
-  </GetUserCustomFieldOptions>
-);
+export default (inputProps: Props) => {
+  const customFieldId = inputProps.rule?.['customFieldId'];
+  const customFieldOptions = useUserCustomFieldOptions(customFieldId);
+
+  return (
+    <CustomFieldOptionValuesSelectorWithHOC
+      {...inputProps}
+      options={customFieldOptions}
+    />
+  );
+};
