@@ -586,7 +586,7 @@
   "app.containers.Admin.ideas.tabStatuses": "Statusar",
   "app.containers.Admin.initiatives.addNewProposal": "Lägg till ett förslag",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
-  "app.containers.Admin.initiatives.feature": "Feature",
+  "app.containers.Admin.initiatives.feature": "Funktion",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Inlämning av förslag",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Dagar för att nå rösttröskeln",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Rösttröskel",
