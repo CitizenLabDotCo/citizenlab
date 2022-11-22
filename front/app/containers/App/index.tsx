@@ -69,7 +69,6 @@ import GetWindowSize, {
 } from 'resources/GetWindowSize';
 
 // events
-import { openSignUpInModal$ } from 'components/SignUpIn/events';
 import eventEmitter from 'utils/eventEmitter';
 
 // style
@@ -326,24 +325,6 @@ class App extends PureComponent<Props, State> {
             }
           });
         }),
-
-      openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
-        // Sometimes we need to still open the sign up/in modal
-        // after login is completed, if registration is not complete.
-        // But in that case, componentDidUpdate is somehow called before
-        // the modal is closed which overwrites the metaData.
-        // This slightly dirty hack covers that case.
-        if (metaData) {
-          return;
-        } else {
-          // if metaData is undefined, it means we're closing
-          // the sign up/in modal.
-          this.setState({ signUpInModalMounted: false });
-          setTimeout(() => {
-            this.forceUpdate();
-          }, 1);
-        }
-      }),
     ];
   }
 
