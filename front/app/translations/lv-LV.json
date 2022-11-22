@@ -1170,8 +1170,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Taking this survey requires verification of your identity. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "The survey is no longer available, since this project is no longer active.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verify your identity now.",
-  "app.containers.ProjectsShowPage.process.survey.logInToTakeTheSurvey": "Pierakstīties, lai piedalītos pētījumā",
-  "app.containers.ProjectsShowPage.process.survey.signUpToTakeTheSurvey": "Reģistrēties, lai piedalītos pētījumā",
   "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.",
   "app.containers.SearchInput.removeSearchTerm": "Noņemt meklēšanas terminu",
   "app.containers.SearchInput.searchAriaLabel": "Meklēt",
