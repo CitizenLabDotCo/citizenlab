@@ -1,5 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -19,7 +20,6 @@ import messages from 'containers/UsersEditPage/messages';
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 const Container = styled(FormSection)`
   display: flex;
@@ -46,7 +46,7 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 const ShieldIcon = styled(Icon)`
-  fill: ${colors.white};
+  fill: ${colors.textSecondary};
   opacity: 0.5;
   width: 48px;
   height: 48px;
