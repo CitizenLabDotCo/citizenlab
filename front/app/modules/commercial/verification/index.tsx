@@ -4,9 +4,6 @@ import {
   TVerificationMethodName,
 } from 'services/verificationMethods';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const VerificationBadge = React.lazy(
-  () => import('./citizen/components/VerificationBadge')
-);
 const VerificationModal = React.lazy(
   () => import('./citizen/components/VerificationModal')
 );
@@ -28,9 +25,6 @@ export function isLastVerificationMethod(
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Navbar.UserMenu.UserNameContainer': (props) => (
-      <VerificationBadge {...props} />
-    ),
     'app.containers.App.modals': ({ onMounted }) => {
       return <VerificationModal onMounted={onMounted} />;
     },

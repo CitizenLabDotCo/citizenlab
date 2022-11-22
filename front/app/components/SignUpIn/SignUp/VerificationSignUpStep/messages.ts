@@ -13,14 +13,6 @@ export default defineMessages({
     id: 'app.components.VerificationModal.toParticipateInThisProject',
     defaultMessage: 'to participate in this project',
   },
-  // verified: {
-  //   id: 'app.containers.Navbar.verified',
-  //   defaultMessage: 'Verified',
-  // },
-  // unverified: {
-  //   id: 'app.containers.Navbar.unverified',
-  //   defaultMessage: 'Unverified',
-  // },
   // showHelp: {
   //   id: 'app.components.VerificationModal.showHelp',
   //   defaultMessage: 'Where can I find my ID Serial Number?',

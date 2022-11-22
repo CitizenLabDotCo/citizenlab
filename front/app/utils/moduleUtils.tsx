@@ -323,9 +323,6 @@ export interface OutletsPropertyMap {
     color?: string;
     align: 'left' | 'center';
   };
-  'app.containers.Navbar.UserMenu.UserNameContainer': {
-    isVerified: boolean;
-  };
   'app.containers.App.modals': { onMounted: (id: string) => void };
   'app.containers.HomePage.onboardingCampaigns': {
     onboardingCampaigns: IOnboardingCampaigns;
