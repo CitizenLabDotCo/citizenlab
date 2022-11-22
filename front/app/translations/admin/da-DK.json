@@ -585,7 +585,7 @@
   "app.containers.Admin.ideas.import": "Import",
   "app.containers.Admin.ideas.tabStatuses": "Statusser",
   "app.containers.Admin.initiatives.addNewProposal": "Tilføj et forslag",
-  "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
+  "app.containers.Admin.initiatives.enableProposals": "Aktiver borgerforslag",
   "app.containers.Admin.initiatives.feature": "Funktion",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Afsendelse af forslag",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Antal dage til at nå antallet af stemmer",
