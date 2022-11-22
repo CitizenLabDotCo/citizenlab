@@ -586,7 +586,6 @@
   "app.containers.Admin.ideas.tabStatuses": "Statuser",
   "app.containers.Admin.initiatives.addNewProposal": "Legg til et forslag",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
-  "app.containers.Admin.initiatives.feature": "Funksjon",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Forslagsinnsending",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Dager før stemmeterskelen er nådd",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Stemmeterskel",
