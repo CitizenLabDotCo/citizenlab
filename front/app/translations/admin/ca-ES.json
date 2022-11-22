@@ -586,7 +586,7 @@
   "app.containers.Admin.ideas.tabStatuses": "Estats",
   "app.containers.Admin.initiatives.addNewProposal": "Afegir una proposta",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
-  "app.containers.Admin.initiatives.feature": "Feature",
+  "app.containers.Admin.initiatives.feature": "Característica",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Presentació de la proposta",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Dies per assolir el llindar de votació",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Llindar de votació",
