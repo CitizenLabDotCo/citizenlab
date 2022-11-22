@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import SignUpInModal from 'components/SignUpIn/SignUpInModal';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { endsWith } from 'lodash-es';
-import openSignUpInModalIfNecessary from 'containers/App/openSignUpInModalIfNecessary';
+import openSignUpInModalIfNecessary from './utils/openSignUpInModalIfNecessary';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { openSignUpInModal$ } from 'components/SignUpIn/events';
 
