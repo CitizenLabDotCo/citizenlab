@@ -163,6 +163,14 @@
             "type": "string",
             "format": "email",
             "default": "support@citizenlab.co"
+          },
+          "authentication_token_lifetime_in_days": {
+            "title": "Authentication token lifetime in days",
+            "description": "How many days before an authentication token (a user session) is expired.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "default": 30
           }
         }
       },

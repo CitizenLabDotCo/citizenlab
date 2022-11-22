@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- [CL-1483] Let tenants configure their Authentication token lifetime
+
 ## 2022-11-18
 
 ### Fixed
