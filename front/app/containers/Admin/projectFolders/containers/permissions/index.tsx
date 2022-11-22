@@ -12,7 +12,7 @@ import {
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // services
-import useProjectFolderModerators from '../../../../../modules/commercial/project_folders/hooks/useProjectFolderModerators';
+import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
 import { IUsers, IUserData, usersStream } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
 import {
