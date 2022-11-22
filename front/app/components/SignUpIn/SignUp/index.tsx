@@ -9,7 +9,7 @@ import Header from './Header';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
 import ConfirmationSignupStep from './ConfirmationSignupStep';
-import CustomFieldsStep from 'components/UserCustomFields/citizen/CustomFieldsStep';
+import CustomFieldsSignupStep from 'components/SignUpIn/SignUp/CustomFieldsSignupStep';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -389,7 +389,7 @@ const SignUp = ({
             <Mounter onMount={confirmOutletsRendered} />
 
             {activeStep === 'custom-fields' && (
-              <CustomFieldsStep onCompleted={onCompleteActiveStep} />
+              <CustomFieldsSignupStep onCompleted={onCompleteActiveStep} />
             )}
 
             {activeStep === 'success' && (
