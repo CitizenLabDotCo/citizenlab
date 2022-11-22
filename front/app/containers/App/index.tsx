@@ -1,5 +1,5 @@
 import { configureScope } from '@sentry/react';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 import 'focus-visible';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
@@ -28,7 +28,6 @@ const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 // components
 import ErrorBoundary from 'components/ErrorBoundary';
-import Outlet from 'components/Outlet';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import SignUpInModal from 'components/SignUpIn/SignUpInModal';
 import MainHeader from 'containers/MainHeader';
@@ -77,6 +76,7 @@ import { Locale } from 'typings';
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
+import VerificationModal from './VerificationModal';
 
 const Container = styled.div<{
   disableScroll?: boolean;
@@ -563,10 +563,7 @@ class App extends PureComponent<Props, State> {
                     fullScreenModal={fullscreenModalEnabled}
                   />
                 </ErrorBoundary>
-                <Outlet
-                  id="app.containers.App.modals"
-                  onMounted={this.handleModalMounted}
-                />
+                <VerificationModal onMounted={this.handleModalMounted} />
                 <ErrorBoundary>
                   <div id="modal-portal" />
                 </ErrorBoundary>

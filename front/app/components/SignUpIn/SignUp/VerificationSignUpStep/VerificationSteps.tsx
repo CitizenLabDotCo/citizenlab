@@ -20,7 +20,7 @@ import {
   ContextShape,
   IVerificationError,
   TVerificationStep,
-} from 'components/Verification/verificationModalEvents';
+} from 'containers/App/VerificationModal/verificationModalEvents';
 
 const Container = styled.div`
   display: flex;

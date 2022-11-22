@@ -28,7 +28,7 @@ import { IdeaCellComponentProps } from 'components/admin/PostManager/components/
 import { IResolution } from 'components/admin/ResolutionControl';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
-import { TVerificationStep } from 'components/Verification/verificationModalEvents';
+import { TVerificationStep } from 'containers/App/VerificationModal/verificationModalEvents';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
@@ -323,7 +323,6 @@ export interface OutletsPropertyMap {
     color?: string;
     align: 'left' | 'center';
   };
-  'app.containers.App.modals': { onMounted: (id: string) => void };
   'app.containers.HomePage.onboardingCampaigns': {
     onboardingCampaigns: IOnboardingCampaigns;
     contentTimeout: number;

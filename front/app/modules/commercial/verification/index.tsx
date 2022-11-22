@@ -4,9 +4,6 @@ import {
   TVerificationMethodName,
 } from 'services/verificationMethods';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const VerificationModal = React.lazy(
-  () => import('./citizen/components/VerificationModal')
-);
 const VerificationOnboardingStep = React.lazy(
   () => import('./citizen/components/VerificationOnboardingStep')
 );
@@ -25,9 +22,6 @@ export function isLastVerificationMethod(
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.App.modals': ({ onMounted }) => {
-      return <VerificationModal onMounted={onMounted} />;
-    },
     'app.containers.HomePage.onboardingCampaigns': VerificationOnboardingStep,
   },
 };

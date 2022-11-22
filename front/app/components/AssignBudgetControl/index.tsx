@@ -3,7 +3,7 @@ import {
   isNilOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 
 // components
 import Button from 'components/UI/Button';
