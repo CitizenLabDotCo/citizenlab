@@ -68,6 +68,7 @@ const AdminProjectList = memo<Props>((_props) => {
           <Spacer />
           {isProjectFoldersEnabled && (
             <Button
+              data-cy="e2e-new-project-folder-button"
               linkTo={'/admin/projects/folders/new'}
               buttonStyle="admin-dark"
             >

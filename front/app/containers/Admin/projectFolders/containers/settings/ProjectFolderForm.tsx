@@ -448,8 +448,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.archivedStatus} />}
           />
         </SectionField>
-        <SectionField>
+        <SectionField data-cy="e2e-project-folder-title">
           <InputMultilocWithLocaleSwitcher
+            id="project-folder-title"
             valueMultiloc={titleMultiloc}
             type="text"
             onChange={getHandler(setTitleMultiloc)}
@@ -466,7 +467,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             onSlugChange={handleSlugOnChange}
           />
         </SectionField>
-        <SectionField>
+        <SectionField data-cy="e2e-project-folder-short-description">
           <TextAreaMultilocWithLocaleSwitcher
             valueMultiloc={shortDescriptionMultiloc}
             name="textAreaMultiloc"
@@ -481,7 +482,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             }
           />
         </SectionField>
-        <SectionField>
+        <SectionField data-cy="e2e-project-folder-description">
           <QuillMutilocWithLocaleSwitcher
             id="description"
             valueMultiloc={descriptionMultiloc}
