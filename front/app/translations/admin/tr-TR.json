@@ -586,7 +586,6 @@
   "app.containers.Admin.ideas.tabStatuses": "Durumlar",
   "app.containers.Admin.initiatives.addNewProposal": "Bir öneri ekleyin",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
-  "app.containers.Admin.initiatives.feature": "Feature",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Öneri gönderme",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Oylama eşiğine ulaşmak için kalan gün sayısı",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Oylama eşiği",
