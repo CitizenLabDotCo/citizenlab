@@ -322,10 +322,6 @@ export interface OutletsPropertyMap {
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
   };
-  'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': {
-    projectFolderId: string;
-    className?: string;
-  };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
   'app.containers.HomePage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
