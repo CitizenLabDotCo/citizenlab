@@ -31,13 +31,14 @@ module MachineTranslations
           else
             begin
               @translation = MachineTranslationService.new.build_translation_for @translation_attributes
-              authorize @translation
 
-            # Occasional SQL-injection attacks have been attempted via values for attribute_name,
-            # in which case we ensure @translation == nil, and rescue the resulting Pundit error.
-            rescue Pundit::NotDefinedError
-              render json: { errors: { base: [{ error: 'unable_to_translate' }] } }, status: :unprocessable_entity
-              return
+              if @translation.nil?
+                render json: { errors: { base: [{ error: 'unable_to_translate' }] } }, status: :unprocessable_entity
+                skip_authorization
+                return
+              end
+
+              authorize @translation
             rescue ClErrors::TransactionError => e
               raise e unless e.error_key == :translatable_blank
 
