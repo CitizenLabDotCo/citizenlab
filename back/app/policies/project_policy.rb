@@ -172,7 +172,4 @@ class ProjectPolicy < ApplicationPolicy
 end
 
 ProjectPolicy.prepend(Polls::Patches::ProjectPolicy)
-
-ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
 ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')
-ProjectPolicy.prepend_if_ee('ProjectManagement::Patches::ProjectPolicy')
