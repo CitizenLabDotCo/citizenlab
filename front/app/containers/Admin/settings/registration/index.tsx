@@ -21,7 +21,7 @@ import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import CustomFieldSettings from './CustomFieldSettings';
 import ToggleUserConfirmation from './ToggleUserConfirmation';
-import Outlet from 'components/Outlet';
+import CustomFieldsSignupText from './CustomFieldsSignupText';
 
 // i18n
 import messages from 'containers/Admin/settings/messages';
@@ -172,8 +172,7 @@ const SettingsRegistrationTab = () => {
                 isEnabled={userConfirmationToggleIsEnabled}
               />
             )}
-            <Outlet
-              id="app.containers.Admin.settings.registrationSectionEnd"
+            <CustomFieldsSignupText
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
               }

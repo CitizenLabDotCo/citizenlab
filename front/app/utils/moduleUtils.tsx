@@ -40,10 +40,7 @@ import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import {
-  CustomizedButtonConfig,
-  TAppConfigurationSettingCore,
-} from 'services/appConfiguration';
+import { CustomizedButtonConfig } from 'services/appConfiguration';
 import { ICommentData } from 'services/comments';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { THomepageBannerLayout } from 'services/homepageSettings';
@@ -79,13 +76,6 @@ export type SignUpStepOutletProps = {
   onCompleted: () => void;
   onSkipped: () => void;
   onError: () => void;
-};
-
-export type IAdminSettingsRegistrationSectionEndOutletProps = {
-  onCoreSettingWithMultilocChange: (
-    coreSetting: TAppConfigurationSettingCore
-  ) => (multiloc: Multiloc) => void;
-  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
 };
 
 export interface OutletsPropertyMap {
@@ -255,7 +245,6 @@ export interface OutletsPropertyMap {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
   'app.components.VerificationModal.buttons': {
     onClick: (method: TVerificationMethod) => void;
     verificationMethods: TVerificationMethod[];

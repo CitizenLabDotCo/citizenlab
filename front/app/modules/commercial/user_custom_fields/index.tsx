@@ -14,10 +14,6 @@ const RegistrationFieldsToGraphs = React.lazy(
   () => import('./admin/components/RegistrationFieldsToGraphs')
 );
 
-const RegistrationQuestions = React.lazy(
-  () => import('./admin/components/RegistrationQuestions')
-);
-
 declare module 'resources/GetSerieFromStream' {
   export interface ISupportedDataTypeMap {
     usersByBirthyear: IUsersByBirthyear;
@@ -52,8 +48,6 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
       CustomFieldGraphs,
-    'app.containers.Admin.settings.registrationSectionEnd':
-      RegistrationQuestions,
   },
 };
 
