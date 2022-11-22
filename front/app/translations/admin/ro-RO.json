@@ -585,7 +585,7 @@
   "app.containers.Admin.ideas.import": "Import",
   "app.containers.Admin.ideas.tabStatuses": "Statuses",
   "app.containers.Admin.initiatives.addNewProposal": "Add a proposal",
-  "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
+  "app.containers.Admin.initiatives.enableProposals": "Activați propunerile",
   "app.containers.Admin.initiatives.feature": "Caracteristică",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Proposal submission",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Days to reach voting threshold",
