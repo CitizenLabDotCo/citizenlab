@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import React from 'react';
+import { isError, isNilOrError } from 'utils/helperUtils';
 
 // components
 import TypeformSurvey from './TypeformSurvey';
@@ -12,7 +11,6 @@ import SmartSurvey from './SmartSurvey';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import SnapSurvey from './SnapSurvey';
 import Warning from 'components/UI/Warning';
-import SignUpIn from 'components/SignUpIn';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
@@ -21,23 +19,22 @@ import {
   ISurveyTakingDisabledReason,
 } from 'services/actionTakingRules';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-
 // i18n
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
-import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 import SurveyXact from './SurveyXact';
+
+// hooks
+import usePhase from 'hooks/usePhase';
+import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
 
 const Container = styled.div`
   position: relative;
@@ -47,50 +44,7 @@ const Container = styled.div`
   }
 `;
 
-const SignUpInWrapper = styled.div`
-  width: 100%;
-  padding: 20px;
-  padding-top: 45px;
-  ${defaultCardStyle};
-
-  ${media.phone`
-    padding-top: 30px;
-  `}
-`;
-
-const StyledSignUpIn = styled(SignUpIn)`
-  width: 100%;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-
-  & .signuphelpertext {
-    display: none !important;
-  }
-
-  & .signupinheadercontainer {
-    border-bottom: none !important;
-  }
-
-  & .signupincontentcontainer {
-    max-height: unset !important;
-  }
-`;
-
-const SignUpInHeader = styled.h2`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.xxl}px;
-  line-height: normal;
-  font-weight: 500;
-  margin: 0;
-  padding: 0;
-
-  ${media.phone`
-    font-size: ${fontSizes.xl}px;
-  `}
-`;
-
-interface InputProps {
+interface Props {
   projectId: string | null;
   phaseId?: string | null;
   surveyEmbedUrl: string;
@@ -98,19 +52,29 @@ interface InputProps {
   className?: string;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
-}
+const disabledMessage: {
+  [key in ISurveyTakingDisabledReason]: MessageDescriptor;
+} = {
+  projectInactive: messages.surveyDisabledProjectInactive,
+  maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,
+  maybeNotVerified: messages.surveyDisabledMaybeNotVerified,
+  notPermitted: messages.surveyDisabledNotPermitted,
+  notActivePhase: messages.surveyDisabledNotActivePhase,
+  notVerified: messages.surveyDisabledNotVerified,
+};
 
-interface Props extends InputProps, DataProps {}
+const Survey = ({
+  projectId,
+  phaseId,
+  surveyEmbedUrl,
+  surveyService,
+  className,
+}: Props) => {
+  const project = useProject({ projectId });
+  const phase = usePhase(phaseId || null);
+  const authUser = useAuthUser();
 
-interface State {}
-
-class Survey extends PureComponent<Props, State> {
-  onVerify = () => {
-    const { projectId, phaseId } = this.props;
+  const onVerify = () => {
     const pcId = phaseId || projectId;
     const pcType = phaseId ? 'phase' : 'project';
 
@@ -125,9 +89,7 @@ class Survey extends PureComponent<Props, State> {
     }
   };
 
-  signUpIn = (flow: 'signin' | 'signup') => {
-    const { phaseId, project, projectId } = this.props;
-
+  const signUpIn = (flow: 'signin' | 'signup') => {
     if (!isNilOrError(project)) {
       const pcId = phaseId || projectId;
       const pcType = phaseId ? 'phase' : 'project';
@@ -149,191 +111,116 @@ class Survey extends PureComponent<Props, State> {
     }
   };
 
-  signIn = () => {
-    this.signUpIn('signin');
+  const signIn = () => {
+    signUpIn('signin');
   };
 
-  signUp = () => {
-    this.signUpIn('signup');
+  const signUp = () => {
+    signUpIn('signup');
   };
 
-  noOp = () => {};
-
-  disabledMessage: {
-    [key in ISurveyTakingDisabledReason]: MessageDescriptor;
-  } = {
-    projectInactive: messages.surveyDisabledProjectInactive,
-    maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,
-    maybeNotVerified: messages.surveyDisabledMaybeNotVerified,
-    notPermitted: messages.surveyDisabledNotPermitted,
-    notActivePhase: messages.surveyDisabledNotActivePhase,
-    notVerified: messages.surveyDisabledNotVerified,
-  };
-
-  render() {
-    const {
-      surveyEmbedUrl,
-      surveyService,
-      authUser,
+  if (!isNilOrError(project)) {
+    const { enabled, disabledReason } = getSurveyTakingRules({
       project,
-      phase,
-      className,
-    } = this.props;
+      phaseContext: !isError(phase) ? phase : null,
+      signedIn: !isNilOrError(authUser),
+    });
 
-    if (!isNilOrError(project)) {
-      const { enabled, disabledReason } = getSurveyTakingRules({
-        project,
-        phaseContext: phase,
-        signedIn: !isNilOrError(authUser),
-      });
-      const registrationNotCompleted =
-        !isNilOrError(authUser) &&
-        !authUser.attributes.registration_completed_at;
-      const shouldVerify = !!(
-        disabledReason === 'maybeNotVerified' ||
-        disabledReason === 'notVerified'
-      );
-
-      if (
-        disabledReason === 'maybeNotPermitted' ||
-        disabledReason === 'maybeNotVerified' ||
-        disabledReason === 'notVerified' ||
-        registrationNotCompleted
-      ) {
-        return (
-          <Container className={className || ''}>
-            <SignUpInWrapper>
-              <StyledSignUpIn
-                metaData={{
-                  flow: 'signup',
-                  pathname: window.location.pathname,
-                  inModal: true,
-                  verification: shouldVerify,
-                  noPushLinks: true,
-                  noAutofocus: true,
-                }}
-                customSignInHeader={
-                  <SignUpInHeader>
-                    <FormattedMessage {...messages.logInToTakeTheSurvey} />
-                  </SignUpInHeader>
-                }
-                customSignUpHeader={
-                  <SignUpInHeader>
-                    <FormattedMessage {...messages.signUpToTakeTheSurvey} />
-                  </SignUpInHeader>
-                }
-                onSignUpInCompleted={this.noOp}
-              />
-            </SignUpInWrapper>
-          </Container>
-        );
-      }
-
-      if (enabled) {
-        const email = authUser ? authUser.attributes.email : null;
-        const user_id = authUser ? authUser.id : null;
-        const language = authUser ? authUser.attributes.locale : undefined;
-        return (
-          <Container
-            id="project-survey"
-            className={`${className} e2e-${surveyService}-survey enabled`}
-          >
-            <ProjectPageSectionTitle>
-              <FormattedMessage {...messages.survey} />
-            </ProjectPageSectionTitle>
-
-            {surveyService === 'typeform' && (
-              <TypeformSurvey
-                typeformUrl={surveyEmbedUrl}
-                email={email || null}
-                user_id={user_id}
-                language={language || undefined}
-              />
-            )}
-
-            {surveyService === 'survey_monkey' && (
-              <SurveymonkeySurvey surveymonkeyUrl={surveyEmbedUrl} />
-            )}
-
-            {surveyService === 'google_forms' && (
-              <GoogleFormsSurvey googleFormsUrl={surveyEmbedUrl} />
-            )}
-
-            {surveyService === 'enalyzer' && (
-              <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
-            )}
-
-            {surveyService === 'qualtrics' && (
-              <QualtricsSurvey qualtricsUrl={surveyEmbedUrl} />
-            )}
-
-            {surveyService === 'smart_survey' && (
-              <SmartSurvey
-                smartSurveyUrl={surveyEmbedUrl}
-                email={email || null}
-                user_id={user_id}
-              />
-            )}
-
-            {surveyService === 'microsoft_forms' && (
-              <MicrosoftFormsSurvey microsoftFormsUrl={surveyEmbedUrl} />
-            )}
-
-            {surveyService === 'survey_xact' && (
-              <SurveyXact surveyXactUrl={surveyEmbedUrl} />
-            )}
-
-            {surveyService === 'snap_survey' && (
-              <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
-            )}
-          </Container>
-        );
-      }
+    if (enabled) {
+      const email = !isNilOrError(authUser) ? authUser.attributes.email : null;
+      const user_id = !isNilOrError(authUser) ? authUser.id : null;
+      const language = !isNilOrError(authUser)
+        ? authUser.attributes.locale
+        : undefined;
 
       return (
-        <Container className={`warning ${className || ''}`}>
-          <Warning icon="lock">
-            <FormattedMessage
-              {...(disabledReason
-                ? this.disabledMessage[disabledReason]
-                : messages.surveyDisabledNotPossible)}
-              values={{
-                verificationLink: (
-                  <button onClick={this.onVerify}>
-                    <FormattedMessage {...messages.verificationLinkText} />
-                  </button>
-                ),
-                signUpLink: (
-                  <button onClick={this.signUp}>
-                    <FormattedMessage {...messages.signUpLinkText} />
-                  </button>
-                ),
-                logInLink: (
-                  <button onClick={this.signIn}>
-                    <FormattedMessage {...messages.logInLinkText} />
-                  </button>
-                ),
-              }}
+        <Container
+          id="project-survey"
+          className={`${className} e2e-${surveyService}-survey enabled`}
+        >
+          <ProjectPageSectionTitle>
+            <FormattedMessage {...messages.survey} />
+          </ProjectPageSectionTitle>
+
+          {surveyService === 'typeform' && (
+            <TypeformSurvey
+              typeformUrl={surveyEmbedUrl}
+              email={email || null}
+              user_id={user_id}
+              language={language || undefined}
             />
-          </Warning>
+          )}
+
+          {surveyService === 'survey_monkey' && (
+            <SurveymonkeySurvey surveymonkeyUrl={surveyEmbedUrl} />
+          )}
+
+          {surveyService === 'google_forms' && (
+            <GoogleFormsSurvey googleFormsUrl={surveyEmbedUrl} />
+          )}
+
+          {surveyService === 'enalyzer' && (
+            <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
+          )}
+
+          {surveyService === 'qualtrics' && (
+            <QualtricsSurvey qualtricsUrl={surveyEmbedUrl} />
+          )}
+
+          {surveyService === 'smart_survey' && (
+            <SmartSurvey
+              smartSurveyUrl={surveyEmbedUrl}
+              email={email || null}
+              user_id={user_id}
+            />
+          )}
+
+          {surveyService === 'microsoft_forms' && (
+            <MicrosoftFormsSurvey microsoftFormsUrl={surveyEmbedUrl} />
+          )}
+
+          {surveyService === 'survey_xact' && (
+            <SurveyXact surveyXactUrl={surveyEmbedUrl} />
+          )}
+
+          {surveyService === 'snap_survey' && (
+            <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
+          )}
         </Container>
       );
     }
 
-    return null;
+    return (
+      <Container className={`warning ${className || ''}`}>
+        <Warning icon="lock">
+          <FormattedMessage
+            {...(disabledReason
+              ? disabledMessage[disabledReason]
+              : messages.surveyDisabledNotPossible)}
+            values={{
+              verificationLink: (
+                <button onClick={onVerify}>
+                  <FormattedMessage {...messages.verificationLinkText} />
+                </button>
+              ),
+              signUpLink: (
+                <button onClick={signUp}>
+                  <FormattedMessage {...messages.signUpLinkText} />
+                </button>
+              ),
+              logInLink: (
+                <button onClick={signIn}>
+                  <FormattedMessage {...messages.logInLinkText} />
+                </button>
+              ),
+            }}
+          />
+        </Warning>
+      </Container>
+    );
   }
-}
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
-});
+  return null;
+};
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Survey {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Survey;
