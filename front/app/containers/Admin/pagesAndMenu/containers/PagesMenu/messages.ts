@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  hiddenFromNavigation: {
-    id: 'app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation',
-    defaultMessage: 'Other available pages',
-  },
   pageHeader: {
     id: 'app.modules.navbar.admin.containers.pageHeader',
     defaultMessage: 'Pages & menu',
