@@ -7,7 +7,7 @@ import {
 } from 'services/verificationMethods';
 
 // components
-import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
+import VerificationMethodButton from 'containers/App/VerificationModal/VerificationMethodButton';
 
 // i18n
 import T from 'components/T';
