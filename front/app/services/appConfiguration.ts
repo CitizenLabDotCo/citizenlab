@@ -61,6 +61,14 @@ export type IAppConfigurationSettingsCore = {
   topic_term?: Multiloc;
 };
 
+export type ProposalsSettings = {
+  allowed: boolean;
+  enabled: boolean;
+  days_limit: number;
+  eligibility_criteria: Multiloc;
+  threshold_reached_message: Multiloc;
+  voting_threshold: number;
+};
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   customizable_homepage_banner: {
@@ -121,14 +129,7 @@ export interface IAppConfigurationSettings {
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   participatory_budgeting?: AppConfigurationFeature;
-  initiatives?: {
-    allowed: boolean;
-    enabled: boolean;
-    days_limit: number;
-    eligibility_criteria: Multiloc;
-    threshold_reached_message: Multiloc;
-    voting_threshold: number;
-  };
+  initiatives?: ProposalsSettings;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
