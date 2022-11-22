@@ -585,6 +585,7 @@
   "app.containers.Admin.ideas.import": "Importēt",
   "app.containers.Admin.ideas.tabStatuses": "Statusi",
   "app.containers.Admin.initiatives.addNewProposal": "Pievienot priekšlikumu",
+  "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Priekšlikuma iesniegšana",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Dienas līdz balsošanas sliekšņa sasniegšanai",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Balsošanas slieksnis",

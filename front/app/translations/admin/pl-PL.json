@@ -585,6 +585,7 @@
   "app.containers.Admin.ideas.import": "Import",
   "app.containers.Admin.ideas.tabStatuses": "Statusy",
   "app.containers.Admin.initiatives.addNewProposal": "Dodaj propozycję",
+  "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Składanie wniosków",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Dni do osiągnięcia progu popracia",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Próg poparcia",

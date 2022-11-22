@@ -585,6 +585,7 @@
   "app.containers.Admin.ideas.import": "Importeren",
   "app.containers.Admin.ideas.tabStatuses": "Statussen",
   "app.containers.Admin.initiatives.addNewProposal": "Een initiatief toevoegen",
+  "app.containers.Admin.initiatives.enableProposals": "Voorstellen inschakelen",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Indienen van een initiatief",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Aantal dagen om stemmen te halen",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Benodigd aantal stemmen",

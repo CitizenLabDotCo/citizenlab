@@ -585,6 +585,7 @@
   "app.containers.Admin.ideas.import": "Import",
   "app.containers.Admin.ideas.tabStatuses": "Statusit",
   "app.containers.Admin.initiatives.addNewProposal": "Siunnersuummik ilanngussigit",
+  "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Proposal submission",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Days to reach voting threshold",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Taasisinnaanermut killigititaq",
