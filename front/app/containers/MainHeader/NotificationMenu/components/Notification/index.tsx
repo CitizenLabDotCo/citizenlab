@@ -1,5 +1,6 @@
 import React from 'react';
-import Outlet from 'components/Outlet';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
@@ -30,6 +31,7 @@ import StatusChangeOnCommentedInitiativeNotification from '../StatusChangeOnComm
 import StatusChangeOnVotedIdeaNotification from '../StatusChangeOnVotedIdeaNotification';
 import StatusChangeOnVotedInitiativeNotification from '../StatusChangeOnVotedInitiativeNotification';
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
+import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
 
 import {
   TNotificationData,
@@ -62,6 +64,7 @@ import {
   IStatusChangeOnVotedIdeaNotificationData,
   IStatusChangeOnVotedInitiativeNotificationData,
   IThresholdReachedForAdminNotificationData,
+  IProjectFolderModerationRightsReceivedNotificationData,
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -74,6 +77,8 @@ type Props = {
 };
 
 const Notification = ({ notification }: Props) => {
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+
   switch (notification.attributes.type) {
     case 'admin_rights_received':
       return (
@@ -281,13 +286,20 @@ const Notification = ({ notification }: Props) => {
           }
         />
       );
+    case 'project_folder_moderation_rights_received':
+      if (isProjectFoldersEnabled) {
+        return (
+          <ProjectFolderModerationRightsReceivedNotification
+            notification={
+              notification as IProjectFolderModerationRightsReceivedNotificationData
+            }
+          />
+        );
+      } else {
+        return null;
+      }
     default:
-      return (
-        <Outlet
-          id="app.components.NotificationMenu.Notification"
-          notification={notification as TNotificationData}
-        />
-      );
+      return null;
   }
 };
 
