@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from '../../../resources/GetProjectFolder';
+} from '../../../../../resources/GetProjectFolder';
 import { adopt } from 'react-adopt';
 import GoBackButton from 'components/UI/GoBackButton';
 import ProjectFolderForm from './ProjectFolderForm';

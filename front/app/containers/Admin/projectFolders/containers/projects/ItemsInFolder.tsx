@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { PublicationStatus } from 'services/projects';
-import { updateProjectFolderMembership } from '../../../services/projects';
+import { updateProjectFolderMembership } from '../../../../../modules/commercial/project_folders/services/projects';
 import { isAdmin } from 'services/permissions/roles';
 
 // hooks

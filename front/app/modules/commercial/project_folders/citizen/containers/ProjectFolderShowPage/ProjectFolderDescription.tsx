@@ -8,7 +8,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import Button from 'components/UI/Button';
 
 // services
-import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
+import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n

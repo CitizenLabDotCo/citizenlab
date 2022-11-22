@@ -5,10 +5,19 @@ import { Navigate } from 'react-router-dom';
 const FolderShowPage = lazy(
   () => import('./citizen/containers/ProjectFolderShowPage')
 );
-const FolderSettings = lazy(() => import('./admin/containers/settings'));
-const FolderContainer = lazy(() => import('./admin/containers'));
-const FolderProjects = lazy(() => import('./admin/containers/projects'));
-const FolderPermissions = lazy(() => import('./admin/containers/permissions'));
+const FolderSettings = lazy(
+  () => import('../../../containers/Admin/projectFolders/containers/settings')
+);
+const FolderContainer = lazy(
+  () => import('../../../containers/Admin/projectFolders/containers')
+);
+const FolderProjects = lazy(
+  () => import('../../../containers/Admin/projectFolders/containers/projects')
+);
+const FolderPermissions = lazy(
+  () =>
+    import('../../../containers/Admin/projectFolders/containers/permissions')
+);
 
 const configuration: ModuleConfiguration = {
   routes: {

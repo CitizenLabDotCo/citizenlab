@@ -12,13 +12,13 @@ import {
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // services
-import useProjectFolderModerators from '../../../hooks/useProjectFolderModerators';
+import useProjectFolderModerators from '../../../../../modules/commercial/project_folders/hooks/useProjectFolderModerators';
 import { IUsers, IUserData, usersStream } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
 import {
   addFolderModerator,
   deleteFolderModerator,
-} from '../../../services/projectFolderModerators';
+} from '../../../../../services/projectFolderModerators';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';

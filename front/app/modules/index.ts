@@ -55,7 +55,7 @@ import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
 declare var CL_CONFIG: any;
-
+console.log('Config: ', CL_CONFIG);
 export default loadModules([
   {
     configuration: projectFoldersConfiguration,
