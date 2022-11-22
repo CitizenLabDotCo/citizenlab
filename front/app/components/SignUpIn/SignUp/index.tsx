@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 // services
 import { handleOnSSOClick } from 'services/singleSignOn';
 import { completeRegistration } from 'services/users';
@@ -7,16 +8,20 @@ import { completeRegistration } from 'services/users';
 import Header from './Header';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
+import ConfirmationSignupStep from './ConfirmationSignupStep';
+import CustomFieldsSignupStep from 'components/SignUpIn/SignUp/CustomFieldsSignupStep';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { StyledModalContentContainer } from 'components/SignUpIn/styles';
 import Outlet from 'components/Outlet';
 import Mounter from 'components/Mounter';
+import VerificationSignUpStep from './VerificationSignUpStep';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
@@ -35,8 +40,8 @@ import {
 import { signUpActiveStepChange } from 'components/SignUpIn/events';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
 
@@ -51,7 +56,7 @@ import styled, { useTheme } from 'styled-components';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
-import ConfirmationSignupStep from './ConfirmationSignupStep';
+import { UserCustomFieldsInfos } from 'services/userCustomFields';
 
 const Container = styled.div`
   width: 100%;
@@ -67,8 +72,10 @@ export interface TSignUpStepsMap {
   'auth-providers': 'auth-providers';
   'password-signup': 'password-signup';
   'account-created': 'account-created';
+  'custom-fields': 'custom-fields';
   confirmation: 'confirmation';
   success: 'success';
+  verification: 'verification';
 }
 
 export type TSignUpStep = TSignUpStepsMap[keyof TSignUpStepsMap];
@@ -115,14 +122,19 @@ export interface Props {
   fullScreen?: boolean;
 }
 
+interface InnerProps extends Props {
+  userCustomFieldsSchema: UserCustomFieldsInfos;
+}
+
 const SignUp = ({
-  intl: { formatMessage },
   metaData,
   onSignUpCompleted,
   onGoToSignIn,
   className,
   fullScreen,
-}: Props & WrappedComponentProps) => {
+  userCustomFieldsSchema,
+}: InnerProps) => {
+  const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
   const theme: any = useTheme();
@@ -135,7 +147,7 @@ const SignUp = ({
 
   // state
   const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
-    getDefaultSteps()
+    getDefaultSteps(userCustomFieldsSchema)
   );
   const [outletsRendered, setOutletsRendered] = useState(false);
   const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
@@ -361,6 +373,15 @@ const SignUp = ({
               />
             )}
 
+            {activeStep === 'verification' && (
+              <VerificationSignUpStep
+                metaData={metaData}
+                onError={handleStepError}
+                onSkipped={onCompleteActiveStep}
+                onCompleted={onCompleteActiveStep}
+              />
+            )}
+
             {activeStep === 'confirmation' && userConfirmation && (
               <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
             )}
@@ -378,6 +399,10 @@ const SignUp = ({
 
             <Mounter onMount={confirmOutletsRendered} />
 
+            {activeStep === 'custom-fields' && (
+              <CustomFieldsSignupStep onCompleted={onCompleteActiveStep} />
+            )}
+
             {activeStep === 'success' && (
               <Success onClose={handleFlowCompleted} />
             )}
@@ -387,4 +412,12 @@ const SignUp = ({
     </Container>
   );
 };
-export default injectIntl(SignUp);
+
+const Wrapper = (props: Props) => {
+  const userCustomFieldsSchema = useUserCustomFieldsSchema();
+  if (isNilOrError(userCustomFieldsSchema)) return null;
+
+  return <SignUp {...props} userCustomFieldsSchema={userCustomFieldsSchema} />;
+};
+
+export default Wrapper;

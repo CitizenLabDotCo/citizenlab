@@ -25,10 +25,10 @@ import messages from './messages';
 
 // events
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 
 // styling
 import styled from 'styled-components';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 import SurveyXact from './SurveyXact';
 
 // hooks
