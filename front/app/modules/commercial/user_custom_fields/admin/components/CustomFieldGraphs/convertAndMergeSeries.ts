@@ -7,7 +7,7 @@ import {
   convertDomicileData,
   Series,
 } from '../../../utils/data';
-import { fallbackMessages } from '../AreaChart';
+import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
 
 // typings
 import { TCustomFieldCode } from '../../../services/userCustomFields';

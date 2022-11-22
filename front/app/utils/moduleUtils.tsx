@@ -158,12 +158,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.users.graphs': {
-    startAt?: string | null;
-    endAt: string | null;
-    currentGroupFilter?: string;
-    currentGroupFilterLabel?: string;
-  };
   'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;

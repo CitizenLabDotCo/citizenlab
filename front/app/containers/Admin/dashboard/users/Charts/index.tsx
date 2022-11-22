@@ -1,15 +1,14 @@
-// libraries
 import React, { PureComponent } from 'react';
-
-// resources
-import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import {
   usersByRegFieldStream,
   IUsersByRegistrationField,
   usersByRegFieldXlsxEndpoint,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'components/UserCustomFields/services/stats';
+
+// hooks
+import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -18,16 +17,20 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/Admin/dashboard/messages';
 
 // components
-import BarChartByCategory from 'containers/Admin/dashboard/users/charts/BarChartByCategory';
-import PieChartByCategory from 'containers/Admin/dashboard/users/charts/PieChartByCategory';
+import BarChartByCategory from './BarChartByCategory';
+import PieChartByCategory from './PieChartByCategory';
+import AreaChart from './AreaChart';
+import GenderChart from './GenderChart';
+import AgeChart from './AgeChart';
 
-import AreaChart from 'modules/commercial/user_custom_fields/admin/components/AreaChart';
-import GenderChart from 'modules/commercial/user_custom_fields/admin/components/GenderChart';
-import AgeChart from 'modules/commercial/user_custom_fields/admin/components/AgeChart';
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-import GetUserCustomFields, {
-  GetUserCustomFieldsChildProps,
-} from '../../resources/GetUserCustomFields';
+// typings
+import {
+  IUserCustomFieldInputType,
+  IUserCustomFieldData,
+} from 'components/UserCustomFields/services/userCustomFields';
 
 interface InputProps {
   currentGroupFilter: string | undefined;
@@ -37,7 +40,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  customFields: GetUserCustomFieldsChildProps;
+  customFields: IUserCustomFieldData[] | NilOrError;
 }
 
 type GraphOption = {
@@ -188,15 +191,22 @@ const RegistrationFieldsToGraphsWithHoCs = localize<Props>(
   injectIntl(RegistrationFieldsToGraphs as any)
 ) as any;
 
-export default (inputProps: InputProps) => (
-  <GetUserCustomFields
-    inputTypes={['select', 'multiselect', 'checkbox', 'number']}
-  >
-    {(customFields) => (
-      <RegistrationFieldsToGraphsWithHoCs
-        {...inputProps}
-        customFields={customFields}
-      />
-    )}
-  </GetUserCustomFields>
-);
+const INPUT_TYPES: IUserCustomFieldInputType[] = [
+  'select',
+  'multiselect',
+  'checkbox',
+  'number',
+];
+
+export default (inputProps: InputProps) => {
+  const userCustomFields = useUserCustomFields({
+    inputTypes: INPUT_TYPES,
+  });
+
+  return (
+    <RegistrationFieldsToGraphsWithHoCs
+      {...inputProps}
+      customFields={userCustomFields}
+    />
+  );
+};

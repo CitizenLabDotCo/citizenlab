@@ -7,8 +7,13 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
+// styling
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
+
 // components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
   GraphCardHeader,
@@ -17,7 +22,7 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -27,17 +32,21 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { IStreamParams, IStream } from 'utils/streams';
-
 import { IGraphFormat } from 'typings';
+import {
+  IUsersByBirthyear,
+  IUsersByDomicile,
+  IUsersByRegistrationField,
+} from 'components/UserCustomFields/services/stats';
 
 interface DataProps {
-  serie: IGraphFormat;
+  serie?: IGraphFormat | null | Error;
 }
 
-export interface ISupportedDataTypeMap {}
-
-export type ISupportedDataType =
-  ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
+type ISupportedDataType =
+  | IUsersByBirthyear
+  | IUsersByDomicile
+  | IUsersByRegistrationField;
 
 interface InputProps {
   stream: (
@@ -47,18 +56,18 @@ interface InputProps {
   convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
   startAt: string | null | undefined;
   endAt: string | null;
-  currentGroupFilter: string | undefined;
-  currentGroupFilterLabel: string | undefined;
+  currentGroupFilter?: string | undefined;
+  currentGroupFilterLabel?: string | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
   customId?: string;
-  xlsxEndpoint: string;
+  xlsxEndpoint?: string;
 }
 
 interface Props extends InputProps, DataProps {}
 
-export class BarChartByCategory extends React.PureComponent<
+export class HorizontalBarChart extends React.PureComponent<
   Props & WrappedComponentProps
 > {
   currentChart: React.RefObject<any>;
@@ -70,14 +79,12 @@ export class BarChartByCategory extends React.PureComponent<
     const {
       startAt,
       endAt,
-      currentGroupFilterLabel,
-      currentGroupFilter,
-      xlsxEndpoint,
       className,
       graphTitleString,
       serie,
       intl: { formatMessage },
       graphUnit,
+      xlsxEndpoint,
     } = this.props;
 
     const noData =
@@ -94,27 +101,30 @@ export class BarChartByCategory extends React.PureComponent<
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
             {!noData && (
               <ReportExportMenu
-                name={graphTitleString}
                 svgNode={this.currentChart}
-                xlsx={{ endpoint: xlsxEndpoint }}
-                currentGroupFilterLabel={currentGroupFilterLabel}
-                currentGroupFilter={currentGroupFilter}
+                xlsx={xlsxEndpoint ? { endpoint: xlsxEndpoint } : undefined}
+                name={graphTitleString}
                 startAt={startAt}
                 endAt={endAt}
               />
             )}
           </GraphCardHeader>
           <BarChart
-            data={serie}
             innerRef={this.currentChart}
-            margin={DEFAULT_BAR_CHART_MARGIN}
+            height={!noData && serie.length > 1 ? serie.length * 50 : 100}
+            data={serie}
             mapping={{
               category: 'name',
               length: 'value',
             }}
-            bars={{ name: unitName }}
+            bars={{
+              name: unitName,
+              size: graphUnit === 'ideas' ? 5 : sizes.bar,
+            }}
+            layout="horizontal"
+            margin={DEFAULT_BAR_CHART_MARGIN}
+            yaxis={{ width: 150, tickLine: false }}
             labels
-            tooltip
           />
         </GraphCardInner>
       </GraphCard>
@@ -122,12 +132,12 @@ export class BarChartByCategory extends React.PureComponent<
   }
 }
 
-const BarChartByCategoryWithHoCs = injectIntl(BarChartByCategory);
+const HorizontalBarChartWithHoCs = injectIntl(HorizontalBarChart);
 
-const WrappedBarChartByCategory = (inputProps: InputProps) => (
+const WrappedHorizontalBarChart = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
-    {(serie) => <BarChartByCategoryWithHoCs {...serie} {...inputProps} />}
+    {(serie) => <HorizontalBarChartWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
 
-export default WrappedBarChartByCategory;
+export default WrappedHorizontalBarChart;

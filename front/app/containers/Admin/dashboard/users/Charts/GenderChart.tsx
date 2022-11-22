@@ -1,11 +1,9 @@
-// libraries
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
-import renderTooltip from './renderGenderTooltip';
 import { roundPercentages } from 'utils/math';
 
 // intl
@@ -28,13 +26,14 @@ import {
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
 import PieChart from 'components/admin/Graphs/PieChart';
+import renderTooltip from './renderGenderTooltip';
 
 // services
 import {
   usersByGenderStream,
   IUsersByRegistrationField,
   usersByGenderXlsxEndpoint,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'components/UserCustomFields/services/stats';
 
 // typings
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';

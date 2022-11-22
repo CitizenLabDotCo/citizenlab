@@ -11,14 +11,14 @@ import {
   IUsersByBirthyear,
   usersByBirthyearStream,
   usersByBirthyearXlsxEndpoint,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'components/UserCustomFields/services/stats';
 
 // components
-import BarChartByCategory from 'containers/Admin/dashboard/users/charts/BarChartByCategory';
+import BarChartByCategory from './BarChartByCategory';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { binBirthyear } from '../../utils/data';
+import { binBirthyear } from './dataUtils';
 
 interface Props {
   startAt: string | null | undefined;

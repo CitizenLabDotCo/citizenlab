@@ -13,14 +13,14 @@ import {
   IUsersByDomicile,
   usersByDomicileStream,
   usersByDomicileXlsxEndpoint,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'components/UserCustomFields/services/stats';
 
 // components
-import HorizontalBarChart from 'containers/Admin/dashboard/users/charts/HorizontalBarChart';
+import HorizontalBarChart from './HorizontalBarChart';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { convertDomicileData } from '../../utils/data';
+import { convertDomicileData } from './dataUtils';
 
 interface Props {
   startAt: string | null | undefined;
