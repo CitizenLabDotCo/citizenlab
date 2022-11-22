@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :project_folder, class: ProjectFolders::Folder do
+  factory :project_folder, class: 'ProjectFolders::Folder' do
     title_multiloc do
       {
         'en' => 'All things swimming pools',
