@@ -50,5 +50,12 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
 
       expect(campaign.apply_recipient_filters).to match([admin])
     end
+
+    it 'filters out moderators' do
+      admin = create(:admin)
+      _moderator = create(:project_moderator)
+
+      expect(campaign.apply_recipient_filters).to match([admin])
+    end
   end
 end

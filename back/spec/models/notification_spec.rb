@@ -86,29 +86,70 @@ RSpec.describe Notification, type: :model do
       expect(notifications).to be_present
     end
 
-    it 'makes project_phase_started notifications for members of the project group' do
-      phase = create(:active_phase)
-      project = phase.project
-      project.visible_to = 'groups'
-      project.groups << create(:group)
+    describe 'project_phase_started' do
+      it 'makes project_phase_started notifications on phase started' do
+        phase = create(:active_phase)
+        project = phase.project
+        project.visible_to = 'groups'
+        project.groups << create(:group)
+
+        # members
+        user = create(:user, email: 'user1@example.com', manual_groups: [project.groups.first])
+        _admin = create(:admin, email: 'admin@example.com', manual_groups: [project.groups.first])
+        # non-members
+        _other_user = create(:admin)
+        _other_admin = create(:user, email: 'user2@example.com')
+
+        activity = create(:activity, item: phase, action: 'started')
+
+        notifications = Notifications::ProjectPhaseStarted.make_notifications_on(activity)
+        expect(notifications.map(&:recipient_id)).to match_array [user.id]
+      end
+
+      context 'when the project is visible only to some groups' do
+        let(:phase) { create(:active_phase) }
+        let!(:project) do
+          phase.project.tap do |project|
+            project.visible_to = 'groups'
+            project.groups << create(:group)
+          end
+        end
+        let(:notifications) do
+          activity = create(:activity, item: phase, action: 'started')
+          Notifications::ProjectPhaseStarted.make_notifications_on(activity)
+        end
+
+        context 'and the user moderates the project' do
+          before { create(:project_moderator, projects: [project], manual_groups: [project.groups.first]) }
+
+          it { expect(notifications.map(&:recipient_id)).to eq [] }
+        end
+
+        context 'and the user moderates another project' do
+          let!(:user) { create(:project_moderator, manual_groups: [project.groups.first]) }
+
+          it { expect(notifications.map(&:recipient_id)).to eq [user.id] }
+        end
+      end
     end
 
-    it 'makes project_phase_started notifications on phase started' do
-      phase = create(:active_phase)
-      project = phase.project
-      project.visible_to = 'groups'
-      project.groups << create(:group)
+    it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_given' do
+      project = create(:project)
+      moderator = create(:project_moderator, projects: [project])
+      activity = create(:activity, item: moderator, action: 'project_moderation_rights_given',
+        payload: { project_id: project.id })
 
-      # members
-      user = create(:user, email: 'user1@example.com', manual_groups: [project.groups.first])
-      _admin = create(:admin, email: 'admin@example.com', manual_groups: [project.groups.first])
-      # non-members
-      _other_user = create(:admin)
-      _other_admin = create(:user, email: 'user2@example.com')
+      notifications = Notifications::ProjectModerationRightsReceived.make_notifications_on activity
+      expect(notifications).to be_present
+    end
 
-      activity = create(:activity, item: phase, action: 'started')
+    it 'makes project_folder_moderation_rights_received notifications on user project_folder_moderation_rights_received' do
+      folder = create(:project_folder)
+      create(:admin)
+      user = create(:user)
+      activity = create(:activity, item: user, action: 'project_folder_moderation_rights_received', payload: { project_folder_id: folder.id })
 
-      notifications = Notifications::ProjectPhaseStarted.make_notifications_on(activity)
+      notifications = ProjectFolders::Notifications::ProjectFolderModerationRightsReceived.make_notifications_on activity
       expect(notifications.map(&:recipient_id)).to match_array [user.id]
     end
   end
@@ -201,5 +242,14 @@ RSpec.describe Notification, type: :model do
 
     expect { described_class.find(n1.id) }.to raise_error(ActiveRecord::RecordNotFound)
     expect(described_class.find(n2.id)).to be_present
+  end
+
+  it 'deleting a folder also deletes notifications referencing to it' do
+    folder = create(:project_folder)
+    create(:project_folder_moderation_rights_received, project_folder: folder)
+    count = described_class.count
+    folder.destroy!
+
+    expect(described_class.count).to eq(count - 1)
   end
 end
