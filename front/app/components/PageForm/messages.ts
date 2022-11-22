@@ -72,7 +72,7 @@ export default defineMessages({
     defaultMessage: 'Page successfully saved',
   },
   navbarItemTitle: {
-    id: 'app.components.PagesForm..navbarItemTitle',
+    id: 'app.components.PagesForm.navbarItemTitle',
     defaultMessage: 'Name in navbar',
   },
 });
