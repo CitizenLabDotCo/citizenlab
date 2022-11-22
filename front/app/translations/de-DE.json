@@ -1215,7 +1215,7 @@
   "app.containers.SignUp.continueWithAzure": "Weiter mit {azureProviderName}",
   "app.containers.SignUp.continueWithFacebook": "Weiter mit Facebook",
   "app.containers.SignUp.continueWithGoogle": "Weiter mit Google",
-  "app.containers.SignUp.createYourAccount": "Registrieren",
+  "app.containers.SignUp.createYourAccount": "Erstellen Sie ein Konto",
   "app.containers.SignUp.emailConsent": "{tenantName, select, wien {-} other {Mit Ihrer Registrierung erklären Sie sich einverstanden, E-Mails von dieser Plattform zu erhalten. In Ihren Einstellungen können Sie auswählen, welche E-Mails Sie erhalten möchten.}}",
   "app.containers.SignUp.emailError": "Geben Sie eine E-Mail-Adresse im richtigen Format ein, z. B. name@beispiel.com",
   "app.containers.SignUp.emailLabel": "E-Mail",
