@@ -6,7 +6,7 @@ module ProjectFolders
       def can_moderate?(object, user)
         case object.class.name
         when 'ProjectFolders::Folder'
-          user.admin_or_folder_moderator? object.id
+          user.admin? || (object.id && user.project_folder_moderator?(object.id))
         else
           super
         end

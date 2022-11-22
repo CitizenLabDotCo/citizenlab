@@ -26,7 +26,7 @@ module ProjectFolders
       end
 
       def create?
-        super || user&.moderates_parent_folder?(record)
+        super || (record.folder && UserRoleService.new.can_moderate?(record.folder, user))
       end
     end
   end

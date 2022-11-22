@@ -45,6 +45,7 @@ class User < ApplicationRecord
 
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
+  ROLES = %w[admin project_moderator project_folder_moderator].freeze
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -57,7 +58,7 @@ class User < ApplicationRecord
         # Remove the schemas for roles that are not enabled.
         schema['items']['oneOf'] = schema.dig('items', 'oneOf').select do |role_schema|
           role_name = role_schema.dig('properties', 'type', 'enum', 0)
-          enabled_roles.include?(role_name)
+          ROLES.include?(role_name)
         end
       end
     end
@@ -65,10 +66,6 @@ class User < ApplicationRecord
     # Returns (and memoize) the schema of all declared roles without restrictions.
     def _roles_json_schema
       @_roles_json_schema ||= JSON.parse(File.read(Rails.root.join('config/schemas/user_roles.json_schema')))
-    end
-
-    def enabled_roles
-      %w[admin project_moderator]
     end
 
     # Returns the user record from the database which matches the specified
@@ -208,6 +205,19 @@ class User < ApplicationRecord
     end
   }
   scope :not_project_moderator, -> { where.not(id: project_moderator) }
+  scope :project_folder_moderator, lambda { |*project_folder_ids|
+    return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
+
+    query = project_folder_ids.map do |id|
+      { type: 'project_folder_moderator', project_folder_id: id }
+    end
+
+    where('roles @> ?', JSON.generate(query))
+  }
+
+  scope :not_project_folder_moderator, lambda { |*project_folder_ids|
+    where.not(id: project_folder_moderator(*project_folder_ids))
+  }
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
@@ -294,8 +304,8 @@ class User < ApplicationRecord
     roles.any? { |r| r['type'] == 'admin' }
   end
 
-  def project_folder_moderator?(_project_folder_id = nil)
-    false
+  def project_folder_moderator?(project_folder_id = nil)
+    project_folder_id ? moderated_project_folder_ids.include?(project_folder_id) : moderated_project_folder_ids.present?
   end
 
   def project_moderator?(project_id = nil)
@@ -303,12 +313,16 @@ class User < ApplicationRecord
   end
 
   def normal_user?
-    !admin? && moderatable_project_ids.blank?
+    !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
   end
 
   def moderatable_project_ids
     # Does not include folders
     roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
+  end
+
+  def moderated_project_folder_ids
+    roles.select { |role| role['type'] == 'project_folder_moderator' }.pluck('project_folder_id').compact
   end
 
   def add_role(type, options = {})

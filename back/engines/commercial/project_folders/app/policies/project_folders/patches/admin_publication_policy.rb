@@ -4,7 +4,7 @@ module ProjectFolders
   module Patches
     module AdminPublicationPolicy
       def reorder?
-        super || (record.publication_type == 'Project' && user&.moderates_parent_folder?(record.publication))
+        UserRoleService.new.can_moderate? record.publication, user
       end
     end
   end
