@@ -67,6 +67,7 @@ export interface TSignUpStepsMap {
   'password-signup': 'password-signup';
   'account-created': 'account-created';
   success: 'success';
+  verification: 'verification';
 }
 
 export type TSignUpStep = TSignUpStepsMap[keyof TSignUpStepsMap];
