@@ -88,10 +88,6 @@ export default defineMessages({
     defaultMessage:
       'Enable or disable new proposals from being posted on your platform. Existing proposals will remain visible.',
   },
-  feature: {
-    id: 'app.containers.Admin.initiatives.feature',
-    defaultMessage: 'Feature',
-  },
   proposalSuccessMessage: {
     id: 'app.containers.Admin.initiatives.proposalSuccessMessage',
     defaultMessage: 'Success message',
