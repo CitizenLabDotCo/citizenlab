@@ -77,6 +77,16 @@ export function getDefaultSteps(
       },
       canTriggerRegistration: true,
     },
+    confirmation: {
+      key: 'confirmation',
+      position: 4,
+      stepDescriptionMessage: messages.confirmYourAccount,
+      isEnabled: (authUser) => {
+        return userEmailToBeConfirmed(authUser);
+      },
+      isActive: userEmailToBeConfirmed,
+      canTriggerRegistration: true,
+    },
     'custom-fields': {
       key: 'custom-fields',
       position: 6,
@@ -112,6 +122,10 @@ const byPosition = (
   a: TSignUpStepConfigurationObject,
   b: TSignUpStepConfigurationObject
 ) => a.position - b.position;
+
+const userEmailToBeConfirmed = (authUser: TAuthUser) => {
+  return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
+};
 
 const customFieldsEnabled = (userCustomFieldsSchema: UserCustomFieldsInfos) =>
   userCustomFieldsSchema.hasRequiredFields ||

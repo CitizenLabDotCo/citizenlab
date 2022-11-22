@@ -41,9 +41,7 @@ import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import {
-  AppConfigurationFeature,
   CustomizedButtonConfig,
-  TAppConfigurationSetting,
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
 import { ICommentData } from 'services/comments';
@@ -84,12 +82,10 @@ export type SignUpStepOutletProps = {
 };
 
 export type IAdminSettingsRegistrationSectionEndOutletProps = {
-  onSettingChange: (setting: TAppConfigurationSetting) => (value: any) => void;
   onCoreSettingWithMultilocChange: (
     coreSetting: TAppConfigurationSettingCore
   ) => (multiloc: Multiloc) => void;
   customFieldsSignupHelperTextMultiloc?: Multiloc | null;
-  userConfirmationSetting?: AppConfigurationFeature;
 };
 
 export interface OutletsPropertyMap {

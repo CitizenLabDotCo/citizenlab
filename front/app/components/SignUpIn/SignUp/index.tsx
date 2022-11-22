@@ -8,6 +8,7 @@ import { completeRegistration } from 'services/users';
 import Header from './Header';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
+import ConfirmationSignupStep from './ConfirmationSignupStep';
 import CustomFieldsStep from 'containers/UserCustomFields/citizen/components/CustomFieldsStep';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
@@ -20,6 +21,7 @@ import Mounter from 'components/Mounter';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import useUserCustomFieldsSchema from 'containers/UserCustomFields/hooks/useUserCustomFieldsSchema';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -70,6 +72,7 @@ export interface TSignUpStepsMap {
   'password-signup': 'password-signup';
   'account-created': 'account-created';
   'custom-fields': 'custom-fields';
+  confirmation: 'confirmation';
   success: 'success';
 }
 
@@ -135,6 +138,10 @@ const SignUp = ({
   const theme: any = useTheme();
 
   const modalContentRef = useRef<HTMLDivElement>(null);
+
+  const userConfirmation = useFeatureFlag({
+    name: 'user_confirmation',
+  });
 
   // state
   const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
@@ -362,6 +369,10 @@ const SignUp = ({
                 onError={handleStepError}
                 onCompleted={onCompleteActiveStep}
               />
+            )}
+
+            {activeStep === 'confirmation' && userConfirmation && (
+              <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
             )}
 
             <Outlet
