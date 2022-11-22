@@ -323,7 +323,6 @@ export interface OutletsPropertyMap {
     color?: string;
     align: 'left' | 'center';
   };
-  'app.containers.UserEditPage.content': Record<string, any>;
   'app.containers.Navbar.UserMenu.UserNameContainer': {
     isVerified: boolean;
   };
