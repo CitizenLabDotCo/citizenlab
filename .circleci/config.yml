@@ -711,7 +711,7 @@ workflows:
   nightly-e2e-tests:
     triggers:
       - schedule:
-          cron: "0 1 * * 1-5" # https://crontab.guru/
+          cron: "0 2,14 * * 1-5" # https://crontab.guru/
           filters:
             branches:
               only:
