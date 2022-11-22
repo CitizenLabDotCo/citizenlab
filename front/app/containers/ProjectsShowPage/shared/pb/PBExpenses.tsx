@@ -259,7 +259,7 @@ const TooltipContentText = styled.div`
 `;
 
 interface Props {
-  participationContextId: string | null;
+  participationContextId: string;
   participationContextType: IParticipationContextType;
   viewMode: 'row' | 'column';
   className?: string;
