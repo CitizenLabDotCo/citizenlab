@@ -57,16 +57,28 @@ const EditButton = styled(Button)`
   `}
 `;
 
-const HeaderImage = styled(Image)`
+const HeaderImageContainer = styled.div`
   width: 100%;
-  height: 240px;
+  height: 0;
+  box-sizing: content-box;
+  padding-bottom: 18%;
   margin-bottom: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   overflow: hidden;
 
   ${media.phone`
-    height: 160px;
     margin-bottom: 20px;
+  `}
+`;
+
+const HeaderImage = styled(Image)`
+  width: 100%;
+
+  ${media.phone`
   `}
 `;
 
@@ -131,15 +143,17 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
               </TopBar>
             )}
             {projectHeaderImageLargeUrl && (
-              <HeaderImage
-                id="e2e-project-header-image"
-                src={projectHeaderImageLargeUrl}
-                cover={true}
-                fadeIn={false}
-                isLazy={false}
-                placeholderBg="transparent"
-                alt=""
-              />
+              <HeaderImageContainer>
+                <HeaderImage
+                  id="e2e-project-header-image"
+                  src={projectHeaderImageLargeUrl}
+                  cover={true}
+                  fadeIn={false}
+                  isLazy={false}
+                  placeholderBg="transparent"
+                  alt=""
+                />
+              </HeaderImageContainer>
             )}
             <StyledProjectArchivedIndicator
               projectId={projectId}

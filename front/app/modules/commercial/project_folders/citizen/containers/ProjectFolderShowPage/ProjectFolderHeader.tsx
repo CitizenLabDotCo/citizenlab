@@ -14,17 +14,18 @@ import { media } from 'utils/styleUtils';
 // typings
 import { IProjectFolderData } from '../../../services/projectFolders';
 
-const Container = styled.div`
+const FolderImageContainer = styled.div`
   width: 100%;
+  height: 0 !important;
+  box-sizing: content-box;
+  padding-bottom: 18%;
+  margin-bottom: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  overflow: hidden;
-  display: flex;
-  align-items: stretch;
   position: relative;
+  overflow: hidden;
 `;
 
 const HeaderImage = styled(Image)`
-  flex: 1;
   width: 100%;
 `;
 
@@ -51,7 +52,7 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
 
   if (projectFolder.attributes?.header_bg?.large) {
     return (
-      <Container className={`${className || ''} e2e-header-folder`}>
+      <FolderImageContainer className={`${className || ''} e2e-header-folder`}>
         <HeaderImage
           src={projectFolder.attributes?.header_bg.large}
           cover={true}
@@ -65,7 +66,7 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
           buttonStyle="white"
           padding={smallerThan1100px ? '4px 10px' : '6px 13px'}
         />
-      </Container>
+      </FolderImageContainer>
     );
   }
 

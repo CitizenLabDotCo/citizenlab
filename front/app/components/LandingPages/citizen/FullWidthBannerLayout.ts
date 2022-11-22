@@ -1,23 +1,31 @@
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 export const Container = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  background: ${colors.background};
+  padding-top: 24px;
+
+  ${media.tablet`
+  padding-top: 0;
+  `}
 `;
 
 export const Header = styled.div`
   width: 100%;
+  max-width: 1150px;
   min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  filter: blur(0);
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   ${media.tablet`
     min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
