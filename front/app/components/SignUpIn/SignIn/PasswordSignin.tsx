@@ -6,11 +6,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import {
-  Input,
-  Checkbox,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { Input, Checkbox } from '@citizenlab/cl2-component-library';
 import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -335,8 +331,8 @@ class PasswordSignin extends PureComponent<
 
           <FormElement>
             <Checkbox
-              label="Remember me"
-              labelTooltipText="Do not select if using a public computer"
+              label={formatMessage(messages.rememberMeLabel)}
+              labelTooltipText={formatMessage(messages.rememberMeTooltip)}
               checked={rememberMe}
               onChange={this.handleRememberMeOnChange}
             />

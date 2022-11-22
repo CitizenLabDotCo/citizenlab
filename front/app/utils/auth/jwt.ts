@@ -1,4 +1,4 @@
-import { get, set, remove } from 'js-cookie';
+import { get, set, remove, CookieAttributes } from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import { SECURE_COOKIE } from '../cookie';
 
@@ -18,12 +18,16 @@ export function getJwt() {
   }
 }
 
-export function setJwt(jwt: string) {
-  set(COOKIE_NAME, jwt, { expires: 60, secure: SECURE_COOKIE });
+export function setJwt(jwt: string, rememberMe: boolean) {
+  const attrs = { secure: SECURE_COOKIE } as CookieAttributes;
+  if (rememberMe) {
+    attrs.expires = 30; // If omitted, the cookie becomes a session cookie
+  }
+  set(COOKIE_NAME, jwt, attrs);
 }
 
 export function removeJwt() {
-  remove(COOKIE_NAME, { expires: 60 });
+  remove(COOKIE_NAME);
 }
 
 export function decode(jwt) {
