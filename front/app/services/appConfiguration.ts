@@ -219,6 +219,7 @@ export interface IAppConfigurationSettings {
   native_surveys?: AppConfigurationFeature;
   analytics?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
+  user_confirmation?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

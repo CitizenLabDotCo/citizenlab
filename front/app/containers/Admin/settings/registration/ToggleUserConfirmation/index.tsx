@@ -10,10 +10,6 @@ import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import styled from 'styled-components';
 import { SubSectionTitle } from 'components/admin/Section';
-import {
-  TAppConfigurationSetting,
-  AppConfigurationFeature,
-} from 'services/appConfiguration';
 
 const StyledToggle = styled(Toggle)`
   flex-direction: row-reverse;
@@ -34,23 +30,14 @@ const ToggleLabel = styled.label`
 `;
 
 type Props = {
-  onSettingChange: (
-    setting: TAppConfigurationSetting
-  ) => (value: AppConfigurationFeature) => void;
-  userConfirmationSetting: AppConfigurationFeature;
+  isEnabled: boolean;
+  onChange: (value: boolean) => void;
 };
 
-const ToggleUserConfirmation = ({
-  onSettingChange,
-  userConfirmationSetting,
-}: Props) => {
-  function handleToggleOnChange() {
-    const newUserConfirmationSetting = {
-      ...userConfirmationSetting,
-      enabled: !userConfirmationSetting.enabled,
-    };
-    onSettingChange('user_confirmation')(newUserConfirmationSetting);
-  }
+const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
+  const handleChange = () => {
+    onChange(!isEnabled);
+  };
 
   return (
     <Box mb="35px">
@@ -66,11 +53,11 @@ const ToggleUserConfirmation = ({
       </SubSectionTitle>
       <ToggleLabel>
         <StyledToggle
-          checked={userConfirmationSetting.enabled}
-          onChange={handleToggleOnChange}
+          checked={isEnabled}
+          onChange={handleChange}
           labelTextColor={colors.primary}
         />
-        {userConfirmationSetting.enabled ? (
+        {isEnabled ? (
           <FormattedMessage {...messages.enabled} />
         ) : (
           <FormattedMessage {...messages.disabled} />
