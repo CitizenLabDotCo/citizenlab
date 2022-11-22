@@ -14,8 +14,6 @@ import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 import history from 'utils/browserHistory';
 
-console.log({ modules });
-
 import {
   createRoutesFromChildren,
   matchRoutes,

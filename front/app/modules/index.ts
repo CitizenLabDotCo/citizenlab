@@ -1,6 +1,5 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import projectFoldersConfiguration from './commercial/project_folders';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
@@ -55,12 +54,8 @@ import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
 declare var CL_CONFIG: any;
-console.log('Config: ', CL_CONFIG);
+
 export default loadModules([
-  {
-    configuration: projectFoldersConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/project_folders'],
-  },
   {
     configuration: smartGroupsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/smart_groups'],
