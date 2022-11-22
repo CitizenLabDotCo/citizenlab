@@ -16,6 +16,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { StyledModalContentContainer } from 'components/SignUpIn/styles';
 import Outlet from 'components/Outlet';
 import Mounter from 'components/Mounter';
+import VerificationSignUpStep from './VerificationSignUpStep';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -74,6 +75,7 @@ export interface TSignUpStepsMap {
   'custom-fields': 'custom-fields';
   confirmation: 'confirmation';
   success: 'success';
+  verification: 'verification';
 }
 
 export type TSignUpStep = TSignUpStepsMap[keyof TSignUpStepsMap];
@@ -367,6 +369,15 @@ const SignUp = ({
                 onGoToSignIn={onGoToSignIn}
                 onGoBack={handleGoBack}
                 onError={handleStepError}
+                onCompleted={onCompleteActiveStep}
+              />
+            )}
+
+            {activeStep === 'verification' && (
+              <VerificationSignUpStep
+                metaData={metaData}
+                onError={handleStepError}
+                onSkipped={onCompleteActiveStep}
                 onCompleted={onCompleteActiveStep}
               />
             )}

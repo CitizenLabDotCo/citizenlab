@@ -26,7 +26,6 @@ import matomoConfiguration from './commercial/matomo';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
-import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 
@@ -190,10 +189,6 @@ export default loadModules([
   {
     configuration: machineTranslationsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
-  },
-  {
-    configuration: verificationConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/verification'],
   },
   {
     configuration: widgetsConfiguration,

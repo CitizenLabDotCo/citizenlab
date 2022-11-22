@@ -2,9 +2,9 @@ import React, { useCallback, useState, useEffect } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
-import VerificationSuccess from './VerificationSuccess';
+import VerificationSteps from 'components/SignUpIn/SignUp/VerificationSignUpStep/VerificationSteps';
 import VerificationError from './VerificationError';
-import VerificationSteps from './VerificationSteps';
+import VerificationSuccess from './VerificationSuccess';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
@@ -15,9 +15,6 @@ import {
   ContextShape,
   IVerificationError,
   TVerificationStep,
-} from 'components/Verification/verificationModalEvents';
-
-import {
   openVerificationModal$,
   closeVerificationModal$,
   closeVerificationModal,

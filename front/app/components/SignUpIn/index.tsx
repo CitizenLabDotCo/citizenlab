@@ -9,7 +9,7 @@ import SignUp from './SignUp';
 import SignIn from './SignIn';
 
 // styling
-import { ContextShape } from 'components/Verification/verificationModalEvents';
+import { ContextShape } from 'containers/App/VerificationModal/verificationModalEvents';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

@@ -28,7 +28,7 @@ import { IdeaCellComponentProps } from 'components/admin/PostManager/components/
 import { IResolution } from 'components/admin/ResolutionControl';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
-import { TVerificationStep } from 'components/Verification/verificationModalEvents';
+import { TVerificationStep } from 'containers/App/VerificationModal/verificationModalEvents';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
@@ -45,12 +45,7 @@ import { ICommentData } from 'services/comments';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
-import {
-  IOnboardingCampaignNames,
-  IOnboardingCampaigns,
-} from 'services/onboardingCampaigns';
 import { IPhaseData } from 'services/phases';
-import { IUserData } from 'services/users';
 import { TVerificationMethod } from 'services/verificationMethods';
 import {
   CellConfiguration,
@@ -289,20 +284,6 @@ export interface OutletsPropertyMap {
     translateButtonClicked?: boolean;
     color?: string;
     align: 'left' | 'center';
-  };
-  'app.containers.UserEditPage.content': Record<string, any>;
-  'app.containers.Navbar.UserMenu.UserNameContainer': {
-    isVerified: boolean;
-  };
-  'app.containers.App.modals': { onMounted: (id: string) => void };
-  'app.containers.HomePage.onboardingCampaigns': {
-    onboardingCampaigns: IOnboardingCampaigns;
-    contentTimeout: number;
-    contentDelay: number;
-    authUser: IUserData;
-    theme: unknown;
-    onSkip: (name: IOnboardingCampaignNames) => void;
-    onAccept: (name: IOnboardingCampaignNames) => void;
   };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;

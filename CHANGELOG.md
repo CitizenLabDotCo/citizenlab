@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased
+## 2022-11-22
+
+### Added
+
+- [CL-573] The proposals feature toggle in the admin settings.
+
+### Fixed
+
+- [CL-2076] When a user needs to verify before assigning an idea to their participatory budget basket, they now see the right verification modal, not the sign up modal.
 
 ## 2022-11-18
 

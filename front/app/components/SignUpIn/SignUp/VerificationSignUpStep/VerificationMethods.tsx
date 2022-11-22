@@ -25,7 +25,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
 import Outlet from 'components/Outlet';
-import { ContextShape } from 'components/Verification/verificationModalEvents';
+import { ContextShape } from 'containers/App/VerificationModal/verificationModalEvents';
 
 const Container = styled.div`
   display: flex;
@@ -72,10 +72,10 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 const ShieldIcon = styled(Icon)`
+  opacity: 0.5;
   fill: ${colors.textSecondary};
   width: 48px;
   height: 48px;
-  margin-left: -5px;
 `;
 
 const Content = styled.div`

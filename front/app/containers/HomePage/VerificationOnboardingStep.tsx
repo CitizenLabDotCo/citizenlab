@@ -1,10 +1,14 @@
 import { Icon } from '@citizenlab/cl2-component-library';
 import React from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { colors } from 'utils/styleUtils';
-
-import messages from 'containers/HomePage/messages';
+import {
+  IOnboardingCampaignNames,
+  IOnboardingCampaigns,
+} from 'services/onboardingCampaigns';
+import { IUserData } from 'services/users';
+import messages from './messages';
 import {
   AcceptButton,
   AvatarAndShield,
@@ -15,7 +19,7 @@ import {
   SkipButton,
   StyledAvatar,
   Text,
-} from 'containers/HomePage/SignedInHeader';
+} from './SignedInHeader';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -27,6 +31,15 @@ const ShieldIcon = styled(Icon)`
   margin-left: -3px;
 `;
 
+interface Props {
+  onboardingCampaigns: IOnboardingCampaigns;
+  contentTimeout: number;
+  contentDelay: number;
+  authUser: IUserData;
+  onSkip: (name: IOnboardingCampaignNames) => void;
+  onAccept: (name: IOnboardingCampaignNames) => void;
+}
+
 const VerificationOnboardingStep = ({
   onSkip,
   onAccept,
@@ -34,9 +47,9 @@ const VerificationOnboardingStep = ({
   authUser,
   contentTimeout,
   contentDelay,
-  theme,
-}) => {
-  const handleSkip = () => onSkip(onboardingCampaigns.name)();
+}: Props) => {
+  const theme: any = useTheme();
+  const handleSkip = () => onSkip(onboardingCampaigns.name);
   const handleAccept = () => onAccept(onboardingCampaigns.name);
 
   return (
