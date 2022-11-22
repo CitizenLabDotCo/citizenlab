@@ -6,7 +6,11 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Input } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  Checkbox,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -92,6 +96,7 @@ interface Props extends InputProps, DataProps {}
 type State = {
   email: string | null;
   password: string | null;
+  rememberMe: boolean;
   processing: boolean;
   emailOrPhoneNumberError: string | null;
   signInError: string | null;
@@ -110,6 +115,7 @@ class PasswordSignin extends PureComponent<
     this.state = {
       email: null,
       password: null,
+      rememberMe: false,
       processing: false,
       emailOrPhoneNumberError: null,
       signInError: null,
@@ -140,6 +146,12 @@ class PasswordSignin extends PureComponent<
       password,
       hasEmptyPasswordError: false,
       signInError: null,
+    });
+  };
+
+  handleRememberMeOnChange = () => {
+    this.setState({
+      rememberMe: !this.state.rememberMe,
     });
   };
 
@@ -210,7 +222,7 @@ class PasswordSignin extends PureComponent<
 
       const { onSignInCompleted } = this.props;
       const { formatMessage } = this.props.intl;
-      const { email, password } = this.state;
+      const { email, password, rememberMe } = this.state;
 
       if (
         this.validate(phoneLoginEnabled, email, password) &&
@@ -219,7 +231,7 @@ class PasswordSignin extends PureComponent<
       ) {
         try {
           this.setState({ processing: true });
-          const user = await signIn(email, password);
+          const user = await signIn(email, password, rememberMe);
           trackEventByName(tracks.signInEmailPasswordCompleted);
           onSignInCompleted(user.data.id);
         } catch (error) {
@@ -244,6 +256,7 @@ class PasswordSignin extends PureComponent<
     const {
       email,
       password,
+      rememberMe,
       processing,
       emailOrPhoneNumberError,
       signInError,
@@ -317,6 +330,15 @@ class PasswordSignin extends PureComponent<
               autocomplete="current-password"
               isLoginPasswordInput
               errors={{ emptyError: hasEmptyPasswordError }}
+            />
+          </FormElement>
+
+          <FormElement>
+            <Checkbox
+              label="Remember me"
+              labelTooltipText="Do not select if using a public computer"
+              checked={rememberMe}
+              onChange={this.handleRememberMeOnChange}
             />
           </FormElement>
 
