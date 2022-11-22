@@ -1,5 +1,4 @@
 import React, { memo, FormEvent, useState } from 'react';
-import { includes, isUndefined } from 'lodash-es';
 import {
   isNilOrError,
   capitalizeParticipationContextType,
@@ -106,7 +105,10 @@ const AssignBudgetControl = memo(
       ? idea?.relationships?.phases?.data?.map((item) => item.id)
       : null;
     const ideaPhases = !isNilOrError(phases)
-      ? phases?.filter((phase) => includes(ideaPhaseIds, phase.id))
+      ? phases?.filter(
+          (phase) =>
+            Array.isArray(ideaPhaseIds) && ideaPhaseIds.includes(phase.id)
+        )
       : null;
     const latestRelevantIdeaPhase = ideaPhases
       ? getLatestRelevantPhase(ideaPhases)
@@ -178,7 +180,8 @@ const AssignBudgetControl = memo(
         const basketIdeaIds = basket.relationships.ideas.data.map(
           (idea) => idea.id
         );
-        const isInBasket = includes(basketIdeaIds, ideaId);
+        const isInBasket = basketIdeaIds.includes(ideaId);
+
         let newIdeas: string[] = [];
 
         if (isInBasket) {
@@ -230,14 +233,14 @@ const AssignBudgetControl = memo(
 
     if (
       !isNilOrError(idea) &&
-      !isUndefined(basket) &&
       idea.attributes.budget &&
       participationContextId
     ) {
       const basketIdeaIds = !isNilOrError(basket)
         ? basket.relationships.ideas.data.map((idea) => idea.id)
         : [];
-      const isInBasket = includes(basketIdeaIds, ideaId);
+      const isInBasket =
+        Array.isArray(basketIdeaIds) && basketIdeaIds.includes(ideaId);
       const isBudgetingEnabled =
         idea.attributes.action_descriptor.budgeting?.enabled;
       const isSignedIn = !isNilOrError(authUser);
