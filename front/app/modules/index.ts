@@ -2,7 +2,6 @@ import { loadModules } from 'utils/moduleUtils';
 
 import projectFoldersConfiguration from './commercial/project_folders';
 import smartGroupsConfiguration from './commercial/smart_groups';
-import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
 import projectManagementConfiguration from './commercial/project_management';
@@ -62,10 +61,6 @@ export default loadModules([
   {
     configuration: smartGroupsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/smart_groups'],
-  },
-  {
-    configuration: userCustomFieldsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/user_custom_fields'],
   },
   {
     configuration: ideaCustomFieldsConfiguration,

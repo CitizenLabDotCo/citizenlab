@@ -9,17 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import {
-  IAppConfigurationSettings,
-  IUpdatedAppConfigurationProperties,
-  updateAppConfiguration,
-  TAppConfigurationSettingCore,
-} from 'services/appConfiguration';
-
 // components
-
-import ToggleUserConfirmation from './ToggleUserConfirmation';
-import Outlet from 'components/Outlet';
 import {
   SectionTitle,
   SubSectionTitle,
@@ -29,10 +19,21 @@ import {
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import CustomFieldSettings from './CustomFieldSettings';
+import ToggleUserConfirmation from './ToggleUserConfirmation';
+import CustomFieldsSignupText from './CustomFieldsSignupText';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/Admin/settings/messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
+// typings
+import {
+  IAppConfigurationSettings,
+  IUpdatedAppConfigurationProperties,
+  updateAppConfiguration,
+  TAppConfigurationSettingCore,
+} from 'services/appConfiguration';
 
 export const LabelTooltip = styled.div`
   display: flex;
@@ -171,8 +172,7 @@ const SettingsRegistrationTab = () => {
                 isEnabled={userConfirmationToggleIsEnabled}
               />
             )}
-            <Outlet
-              id="app.containers.Admin.settings.registrationSectionEnd"
+            <CustomFieldsSignupText
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
               }
@@ -196,7 +196,7 @@ const SettingsRegistrationTab = () => {
             />
           </form>
         </SignUpFieldsSection>
-        <Outlet id="app.containers.Admin.settings.registrationTabEnd" />
+        <CustomFieldSettings />
       </>
     );
   }

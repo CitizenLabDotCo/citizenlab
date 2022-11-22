@@ -40,18 +40,12 @@ import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import {
-  CustomizedButtonConfig,
-  TAppConfigurationSettingCore,
-} from 'services/appConfiguration';
+import { CustomizedButtonConfig } from 'services/appConfiguration';
 import { ICommentData } from 'services/comments';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
-
-import { ParticipationMethod } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
-import { IUserData } from 'services/users';
 import { TVerificationMethod } from 'services/verificationMethods';
 import {
   CellConfiguration,
@@ -76,13 +70,6 @@ export type SignUpStepOutletProps = {
   onCompleted: () => void;
   onSkipped: () => void;
   onError: () => void;
-};
-
-export type IAdminSettingsRegistrationSectionEndOutletProps = {
-  onCoreSettingWithMultilocChange: (
-    coreSetting: TAppConfigurationSettingCore
-  ) => (multiloc: Multiloc) => void;
-  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
 };
 
 export interface OutletsPropertyMap {
@@ -165,12 +152,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.users.graphs': {
-    startAt?: string | null;
-    endAt: string | null;
-    currentGroupFilter?: string;
-    currentGroupFilterLabel?: string;
-  };
   'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
@@ -188,19 +169,9 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
   'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
-  'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
-    startAt: string;
-    endAt: string;
-    participationMethods: ParticipationMethod[];
-    project: IProjectData;
-  };
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
     compact?: boolean;
-  };
-  'app.containers.UserEditPage.ProfileForm.forms': {
-    authUser: IUserData;
-    onChange: (data: { key: string; formData: Record<string, any> }) => void;
   };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
@@ -256,8 +227,6 @@ export interface OutletsPropertyMap {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
-  'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
   'app.components.VerificationModal.buttons': {
     onClick: (method: TVerificationMethod) => void;
     verificationMethods: TVerificationMethod[];
