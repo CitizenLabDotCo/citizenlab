@@ -3,6 +3,12 @@ import Button from 'components/UI/Button';
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 
+export const FormContainer = styled.div<{ inModal: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: ${(props) => (props.inModal ? 'center' : 'stretch')};
+`;
+
 export const Title = styled.h1`
   width: 100%;
   color: ${({ theme }) => theme.colors.tenantText};
@@ -32,12 +38,6 @@ export const Subtitle = styled.h2`
   font-size: ${fontSizes.l}px;
   font-weight: 600;
   line-height: normal;
-`;
-
-export const FormContainer = styled.div<{ inModal: boolean }>`
-  display: flex;
-  flex-direction: column;
-  align-items: ${(props) => (props.inModal ? 'center' : 'stretch')};
 `;
 
 export const Form = styled.form<{ inModal: boolean }>`
