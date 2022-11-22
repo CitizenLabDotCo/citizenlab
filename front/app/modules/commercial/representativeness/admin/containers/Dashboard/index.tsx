@@ -69,12 +69,11 @@ const RepresentativenessDashboard = () => {
 };
 
 const RepresentativenessDashboardFeatureFlagWrapper = () => {
-  const userCustomFieldsActive = useFeatureFlag({ name: 'user_custom_fields' });
   const representativenessActive = useFeatureFlag({
     name: 'representativeness',
   });
 
-  if (!userCustomFieldsActive || !representativenessActive) {
+  if (!representativenessActive) {
     return null;
   }
 
