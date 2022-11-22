@@ -1,8 +1,12 @@
 import React from 'react';
 
 // services
-import { getNavbarItemSlug, INavbarItem } from 'services/navbar';
-import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
+import {
+  getNavbarItemSlug,
+  INavbarItem,
+  removeNavbarItem,
+  reorderNavbarItem,
+} from 'services/navbar';
 import { deleteCustomPage } from 'services/customPages';
 
 // components

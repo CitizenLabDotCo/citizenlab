@@ -1,14 +1,13 @@
 import React, { useMemo } from 'react';
 
 // services
-import { getNavbarItemSlug } from 'services/navbar';
+import { getNavbarItemSlug, addNavbarItem } from 'services/navbar';
 import {
   deleteCustomPage,
   FIXED_PAGES,
   ICustomPageData,
   TPageCode,
 } from 'services/customPages';
-import { addNavbarItem } from 'services/navbar';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
