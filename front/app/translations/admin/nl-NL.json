@@ -586,7 +586,7 @@
   "app.containers.Admin.ideas.tabStatuses": "Statussen",
   "app.containers.Admin.initiatives.addNewProposal": "Een initiatief toevoegen",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
-  "app.containers.Admin.initiatives.feature": "Feature",
+  "app.containers.Admin.initiatives.feature": "Functie",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Indienen van een initiatief",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Aantal dagen om stemmen te halen",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Benodigd aantal stemmen",
