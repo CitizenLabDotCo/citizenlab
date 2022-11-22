@@ -54,3 +54,16 @@ export function openVerificationModal(params?: IOpenVerificationModalParams) {
     context: params?.context || null,
   });
 }
+
+export function closeVerificationModal() {
+  eventEmitter.emit(VerificationModalEvents.close);
+}
+
+export const openVerificationModal$ =
+  eventEmitter.observeEvent<OpenVerificationModalData>(
+    VerificationModalEvents.open
+  );
+
+export const closeVerificationModal$ = eventEmitter.observeEvent(
+  VerificationModalEvents.close
+);

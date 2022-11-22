@@ -5,7 +5,7 @@ const GentRrnButton = React.lazy(() => import('./components/GentRrnButton'));
 const VerificationFormGentRrn = React.lazy(
   () => import('./components/VerificationFormGentRrn')
 );
-import { isLastVerificationMethod } from 'modules/commercial/verification';
+import isLastVerificationMethod from 'containers/App/VerificationModal/isLastVerificationMethod';
 import { TVerificationMethodName } from 'services/verificationMethods';
 
 const verificationMethodName: TVerificationMethodName = 'gent_rrn';

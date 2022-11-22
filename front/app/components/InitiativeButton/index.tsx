@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import messages from './messages';
