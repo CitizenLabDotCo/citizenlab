@@ -586,7 +586,7 @@
   "app.containers.Admin.ideas.tabStatuses": "Καταστάσεις",
   "app.containers.Admin.initiatives.addNewProposal": "Προσθήκη πρότασης",
   "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
-  "app.containers.Admin.initiatives.feature": "Feature",
+  "app.containers.Admin.initiatives.feature": "Δυνατότητα",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Υποβολή πρότασης",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Ημέρες για την επίτευξη του ορίου ψηφοφορίας",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Κατώτατο όριο ψηφοφορίας",
