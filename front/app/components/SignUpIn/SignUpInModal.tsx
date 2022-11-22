@@ -23,8 +23,6 @@ import {
   signUpActiveStepChange$,
 } from 'components/SignUpIn/events';
 
-// style
-import { Box } from '@citizenlab/cl2-component-library';
 interface Props {
   className?: string;
   onMounted?: () => void;
@@ -134,7 +132,7 @@ const SignUpInModal = memo<Props>(
         close={onClose}
         closeOnClickOutside={false}
       >
-        <Box id="e2e-sign-up-in-modal" className={className} zIndex="1000">
+        <div id="e2e-sign-up-in-modal" className={className}>
           {opened && metaData && (
             <SignUpIn
               metaData={metaData}
@@ -142,7 +140,7 @@ const SignUpInModal = memo<Props>(
               fullScreen={fullScreenModal}
             />
           )}
-        </Box>
+        </div>
       </Modal>
     );
   }
