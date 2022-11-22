@@ -212,7 +212,7 @@ const InitiativesSettingsPage = () => {
     if (appConfiguration.attributes.settings.initiatives) {
       setLocalProposalsSettings({
         ...localProposalsSettings,
-        enabled: !appConfiguration.attributes.settings.initiatives.enabled,
+        enabled: !localProposalsSettings.enabled,
       });
     }
   };
