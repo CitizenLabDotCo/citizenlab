@@ -24,6 +24,7 @@ jest.mock('hooks/useLocale');
 
 jest.mock('services/navbar', () => ({
   addNavbarItem: jest.fn(),
+  getNavbarItemSlug: jest.fn(),
 }));
 
 jest.mock('services/customPages', () => {
