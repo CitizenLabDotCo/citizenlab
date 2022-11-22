@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 // hooks
-import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
-import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
+import useUserCustomField from 'components/UserCustomFields/hooks/useUserCustomField';
+import useUserCustomFieldOptions from 'components/UserCustomFields/hooks/useUserCustomFieldOptions';
 import useLocalize from 'hooks/useLocalize';
 
 // components

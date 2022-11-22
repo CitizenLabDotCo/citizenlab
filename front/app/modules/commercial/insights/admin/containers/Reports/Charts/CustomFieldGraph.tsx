@@ -42,7 +42,7 @@ import {
   usersByBirthyearXlsxEndpoint,
   usersByDomicileStream,
   usersByDomicileXlsxEndpoint,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'components/UserCustomFields/services/stats';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

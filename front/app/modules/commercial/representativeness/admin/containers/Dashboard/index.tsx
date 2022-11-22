@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUserCustomFields from 'modules/commercial/user_custom_fields/hooks/useUserCustomFields';
+import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
 
 // typings
-import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import { IUserCustomFieldData } from 'components/UserCustomFields/services/userCustomFields';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';

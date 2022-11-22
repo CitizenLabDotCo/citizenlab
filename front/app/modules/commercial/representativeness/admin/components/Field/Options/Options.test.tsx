@@ -16,7 +16,7 @@ const generateOptions = (n: number) =>
 let mockOptions;
 
 jest.mock(
-  'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions',
+  'components/UserCustomFields/hooks/useUserCustomFieldOptions',
   () => () => mockOptions
 );
 
@@ -25,7 +25,7 @@ let mockField;
 const selectField = { attributes: { key: null } };
 
 jest.mock(
-  'modules/commercial/user_custom_fields/hooks/useUserCustomField',
+  'components/UserCustomFields/hooks/useUserCustomField',
   () => () => mockField
 );
 

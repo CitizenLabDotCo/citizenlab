@@ -15,7 +15,7 @@ import {
   IUsersByRegistrationField,
   IUsersByDomicile,
   IUsersByBirthyear,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'components/UserCustomFields/services/stats';
 
 // i18n
 import messages from 'containers/Admin/dashboard/messages';

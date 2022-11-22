@@ -5,7 +5,7 @@ import {
   usersByRegFieldStream,
   IUsersByAge,
   IUsersByRegistrationField,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'components/UserCustomFields/services/stats';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';

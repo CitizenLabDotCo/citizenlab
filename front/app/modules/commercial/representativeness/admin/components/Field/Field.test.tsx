@@ -28,7 +28,7 @@ const selectUserCustomFieldOptions = [
 const birthyearUserCustomFieldOptions = [];
 
 jest.mock(
-  'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions',
+  'components/UserCustomFields/hooks/useUserCustomFieldOptions',
   () => () => mockUserCustomFieldOptions
 );
 
@@ -63,7 +63,7 @@ const birthyearField = {
 };
 
 jest.mock(
-  'modules/commercial/user_custom_fields/hooks/useUserCustomField',
+  'components/UserCustomFields/hooks/useUserCustomField',
   () => () => mockUserCustomField
 );
 
