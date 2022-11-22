@@ -30,7 +30,6 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 // typings
 import { IUserCustomFieldData } from 'services/userCustomFields';
 import { IStream } from 'utils/streams';
-import { ICustomFieldParams } from 'services/userCustomFieldStats';
 
 // services
 import {
@@ -42,6 +41,7 @@ import {
   usersByBirthyearXlsxEndpoint,
   usersByDomicileStream,
   usersByDomicileXlsxEndpoint,
+  ICustomFieldParams,
 } from 'services/userCustomFieldStats';
 
 // utils
