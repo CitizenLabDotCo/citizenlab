@@ -2,9 +2,7 @@ import React, { lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import { Navigate } from 'react-router-dom';
-const FolderShowPage = lazy(
-  () => import('./citizen/containers/ProjectFolderShowPage')
-);
+const FolderShowPage = lazy(() => import('containers/ProjectFolderShowPage'));
 const FolderSettings = lazy(
   () => import('../../../containers/Admin/projectFolders/containers/settings')
 );

@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
-import ProjectFolderSharingModal from '../../../citizen/components/ProjectFolderSharingModal';
+import ProjectFolderSharingModal from 'components/ProjectFolders/ProjectFolderSharingModal';
 
 // i18n
 import messages from './messages';
