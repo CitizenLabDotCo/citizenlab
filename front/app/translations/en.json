@@ -257,6 +257,7 @@
   "app.components.PageNotFound.goBackToHomePage": "Back to the homepage",
   "app.components.PageNotFound.notFoundTitle": "Page not found",
   "app.components.PageNotFound.pageNotFoundDescription": "The requested page could not be found.",
+  "app.components.PagesForm..navbarItemTitle": "Name in navbar",
   "app.components.PagesForm.blankSlugError": "Provide a slug",
   "app.components.PagesForm.brokenURLWarning": "If you change the URL, links to this page using the old URL will no longer work.",
   "app.components.PagesForm.descriptionMissingOneLanguageError": "Provide content for at least one language",
