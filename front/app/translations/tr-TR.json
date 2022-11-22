@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "İçerik",
   "app.components.PagesForm.fileUploadLabel": "Ekler (en fazla 50 MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Dosyalar 50 MB'tan büyük olamaz. Eklenen dosyalar bu sayfanın altında gösterilir.",
+  "app.components.PagesForm.navbarItemTitle": "Gezinme çubuğundaki ad",
   "app.components.PagesForm.pageTitle": "Başlık",
   "app.components.PagesForm.pageUrl": "Sayfa URL'si",
   "app.components.PagesForm.resultingPageURL": "Sonuç URL",
