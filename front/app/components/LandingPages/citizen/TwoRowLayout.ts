@@ -17,7 +17,7 @@ export const Container = styled.div`
 export const HeaderImage = styled(Image)`
   width: 100%;
   aspect-ratio: 6 / 1;
-  // height: ${homepageBannerLayoutHeights['two_row_layout'].desktop}px;
+  min-height: 100px;
   overflow: hidden;
 
   // ${media.tablet`
