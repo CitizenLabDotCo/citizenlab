@@ -3,7 +3,7 @@ import {
   userCustomFieldsStream,
   IUserCustomFieldData,
   IUserCustomFieldInputType,
-} from '../services/userCustomFields';
+} from '../../../services/userCustomFields';
 
 interface Props {
   inputTypes?: IUserCustomFieldInputType[];

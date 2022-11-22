@@ -15,7 +15,7 @@ import {
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
-} from 'components/UserCustomFields/services/userCustomFields';
+} from 'services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';

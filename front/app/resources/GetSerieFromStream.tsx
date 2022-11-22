@@ -18,7 +18,7 @@ import {
   ICommentsByProject,
   IVotesByProject,
 } from 'services/stats';
-import { IUsersByBirthyear } from 'components/UserCustomFields/services/stats';
+import { IUsersByBirthyear } from 'services/userCustomFieldStats';
 import { IGraphFormat, IParticipationByTopic } from 'typings';
 
 interface State {

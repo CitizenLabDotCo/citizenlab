@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { addCustomFieldForUsers } from 'components/UserCustomFields/services/userCustomFields';
+import { addCustomFieldForUsers } from 'services/userCustomFields';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';

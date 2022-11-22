@@ -11,7 +11,7 @@ import {
   usersByGenderXlsxEndpoint,
   usersByDomicileXlsxEndpoint,
   usersByAgeXlsxEndpoint,
-} from 'components/UserCustomFields/services/stats';
+} from 'services/userCustomFieldStats';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -35,7 +35,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
-} from 'components/UserCustomFields/services/userCustomFields';
+} from 'services/userCustomFields';
 import {
   RepresentativenessRow,
   RepresentativenessRowMultiloc,

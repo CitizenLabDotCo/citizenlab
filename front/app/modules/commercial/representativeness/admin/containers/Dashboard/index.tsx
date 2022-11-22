@@ -5,7 +5,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
 
 // typings
-import { IUserCustomFieldData } from 'components/UserCustomFields/services/userCustomFields';
+import { IUserCustomFieldData } from 'services/userCustomFields';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';

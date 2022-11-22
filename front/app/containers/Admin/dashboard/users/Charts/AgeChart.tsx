@@ -11,7 +11,7 @@ import {
   IUsersByBirthyear,
   usersByBirthyearStream,
   usersByBirthyearXlsxEndpoint,
-} from 'components/UserCustomFields/services/stats';
+} from 'services/userCustomFieldStats';
 
 // components
 import BarChartByCategory from './BarChartByCategory';

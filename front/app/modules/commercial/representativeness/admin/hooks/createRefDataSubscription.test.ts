@@ -8,7 +8,7 @@ import {
 import {
   IUsersByRegistrationField,
   IUsersByAge,
-} from 'components/UserCustomFields/services/stats';
+} from 'services/userCustomFieldStats';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');

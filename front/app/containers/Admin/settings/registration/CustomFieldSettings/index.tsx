@@ -39,7 +39,7 @@ import {
   reorderCustomFieldForUsers,
   isBuiltInField,
   isHiddenField,
-} from 'components/UserCustomFields/services/userCustomFields';
+} from 'services/userCustomFields';
 
 // styling
 import { colors } from 'utils/styleUtils';

@@ -5,7 +5,7 @@ import {
   usersByRegFieldStream,
   IUsersByRegistrationField,
   usersByRegFieldXlsxEndpoint,
-} from 'components/UserCustomFields/services/stats';
+} from 'services/userCustomFieldStats';
 
 // hooks
 import useUserCustomFields from 'components/UserCustomFields/hooks/useUserCustomFields';
@@ -30,7 +30,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
   IUserCustomFieldInputType,
   IUserCustomFieldData,
-} from 'components/UserCustomFields/services/userCustomFields';
+} from 'services/userCustomFields';
 
 interface InputProps {
   currentGroupFilter: string | undefined;

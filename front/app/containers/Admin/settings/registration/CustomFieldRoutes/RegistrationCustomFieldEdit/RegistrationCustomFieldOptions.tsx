@@ -9,7 +9,7 @@ import {
   IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
   deleteUserCustomFieldOption,
-} from 'components/UserCustomFields/services/userCustomFieldOptions';
+} from 'services/userCustomFieldOptions';
 
 // hooks
 import useUserCustomFieldOptions from 'components/UserCustomFields/hooks/useUserCustomFieldOptions';

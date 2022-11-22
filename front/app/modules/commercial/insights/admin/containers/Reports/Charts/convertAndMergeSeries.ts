@@ -10,12 +10,12 @@ import {
 import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
 
 // typings
-import { TCustomFieldCode } from 'components/UserCustomFields/services/userCustomFields';
+import { TCustomFieldCode } from 'services/userCustomFields';
 import {
   IUsersByRegistrationField,
   IUsersByDomicile,
   IUsersByBirthyear,
-} from 'components/UserCustomFields/services/stats';
+} from 'services/userCustomFieldStats';
 
 // i18n
 import messages from 'containers/Admin/dashboard/messages';

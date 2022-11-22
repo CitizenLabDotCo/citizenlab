@@ -14,7 +14,7 @@ import {
   IUserCustomFieldData,
   isBuiltInField,
   IUserCustomFieldInputType,
-} from 'components/UserCustomFields/services/userCustomFields';
+} from 'services/userCustomFields';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';

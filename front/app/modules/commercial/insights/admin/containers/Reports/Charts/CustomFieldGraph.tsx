@@ -28,9 +28,9 @@ import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
-import { IUserCustomFieldData } from 'components/UserCustomFields/services/userCustomFields';
+import { IUserCustomFieldData } from 'services/userCustomFields';
 import { IStream } from 'utils/streams';
-import { ICustomFieldParams } from 'components/UserCustomFields/services/stats';
+import { ICustomFieldParams } from 'services/userCustomFieldStats';
 
 // services
 import {
@@ -42,7 +42,7 @@ import {
   usersByBirthyearXlsxEndpoint,
   usersByDomicileStream,
   usersByDomicileXlsxEndpoint,
-} from 'components/UserCustomFields/services/stats';
+} from 'services/userCustomFieldStats';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

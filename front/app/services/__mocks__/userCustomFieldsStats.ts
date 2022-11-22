@@ -1,4 +1,4 @@
-import { IUsersByRegistrationField } from '../stats';
+import { IUsersByRegistrationField } from 'services/userCustomFieldStats';
 
 export const mockUsersByRegFields = {
   series: {

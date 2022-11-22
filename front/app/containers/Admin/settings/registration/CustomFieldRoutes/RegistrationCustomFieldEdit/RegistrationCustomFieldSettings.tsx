@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import {
   updateCustomFieldForUsers,
   isBuiltInField,
-} from 'components/UserCustomFields/services/userCustomFields';
+} from 'services/userCustomFields';
 import useUserCustomField from 'components/UserCustomFields/hooks/useUserCustomField';
 
 import RegistrationCustomFieldForm, {

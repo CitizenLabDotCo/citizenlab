@@ -34,7 +34,7 @@ import {
 import { isSupported } from '../../containers/Dashboard/utils';
 
 // typings
-import { IUserCustomFieldOptionData } from 'components/UserCustomFields/services/userCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
 interface Props {
   userCustomFieldId: string;
 }

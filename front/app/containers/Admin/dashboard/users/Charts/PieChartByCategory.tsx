@@ -37,7 +37,7 @@ import { IGraphFormat } from 'typings';
 import {
   IUsersByBirthyear,
   IUsersByRegistrationField,
-} from 'components/UserCustomFields/services/stats';
+} from 'services/userCustomFieldStats';
 
 interface DataProps {
   serie: IGraphFormat;

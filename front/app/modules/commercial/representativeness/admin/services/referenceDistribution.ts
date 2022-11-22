@@ -4,7 +4,7 @@ import { apiEndpoint as statsEndpoint } from 'services/stats';
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
-} from 'components/UserCustomFields/services/userCustomFields';
+} from 'services/userCustomFields';
 import { getEndpoint as getRScoreEndpoint } from './rScore';
 
 const ENDPOINT_BY_CODE = {

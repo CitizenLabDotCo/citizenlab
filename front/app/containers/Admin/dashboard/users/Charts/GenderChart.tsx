@@ -33,7 +33,7 @@ import {
   usersByGenderStream,
   IUsersByRegistrationField,
   usersByGenderXlsxEndpoint,
-} from 'components/UserCustomFields/services/stats';
+} from 'services/userCustomFieldStats';
 
 // typings
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';

@@ -11,7 +11,7 @@ import messages from '../messages';
 import useUserCustomFieldOption from 'components/UserCustomFields/hooks/useUserCustomFieldOption';
 
 // services
-import { updateUserCustomFieldOption } from 'components/UserCustomFields/services/userCustomFieldOptions';
+import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';

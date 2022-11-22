@@ -15,7 +15,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 // typings
 import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { IOption } from 'typings';
-import { IUserCustomFieldOptionData } from 'components/UserCustomFields/services/userCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
 
 type Props = {
   rule: TRule;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   customFieldsSchemaForUsersStream,
   UserCustomFieldsInfos,
-} from '../services/userCustomFields';
+} from '../../../services/userCustomFields';
 import { localeStream } from 'services/locale';
 import { combineLatest } from 'rxjs';
 import { isEmpty, get } from 'lodash-es';

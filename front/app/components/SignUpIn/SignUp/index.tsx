@@ -55,7 +55,7 @@ import styled, { useTheme } from 'styled-components';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
-import { UserCustomFieldsInfos } from 'components/UserCustomFields/services/userCustomFields';
+import { UserCustomFieldsInfos } from 'services/userCustomFields';
 
 const Container = styled.div`
   width: 100%;

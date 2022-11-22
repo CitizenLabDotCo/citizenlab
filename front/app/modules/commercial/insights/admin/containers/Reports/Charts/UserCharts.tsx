@@ -17,7 +17,7 @@ import { IProjectData } from 'services/projects';
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
-} from 'components/UserCustomFields/services/userCustomFields';
+} from 'services/userCustomFields';
 
 interface Props {
   startAt: string;

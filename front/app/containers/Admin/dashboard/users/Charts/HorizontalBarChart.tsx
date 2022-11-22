@@ -37,7 +37,7 @@ import {
   IUsersByBirthyear,
   IUsersByDomicile,
   IUsersByRegistrationField,
-} from 'components/UserCustomFields/services/stats';
+} from 'services/userCustomFieldStats';
 
 interface DataProps {
   serie?: IGraphFormat | null | Error;
