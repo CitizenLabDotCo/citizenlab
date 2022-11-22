@@ -43,6 +43,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 import { IHomepageSettingsData } from 'services/homepageSettings';
+import VerificationOnboardingStep from './VerificationOnboardingStep';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -436,13 +437,11 @@ class SignedInHeader extends PureComponent<Props, State> {
             </HeaderContentCompleteProfile>
           </CSSTransition>
 
-          <Outlet
-            id="app.containers.HomePage.onboardingCampaigns"
+          <VerificationOnboardingStep
             onboardingCampaigns={onboardingCampaigns}
             contentTimeout={contentTimeout}
             contentDelay={contentDelay}
             authUser={authUser}
-            theme={theme}
             onSkip={this.handleSkip}
             onAccept={this.handleAccept}
           />

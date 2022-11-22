@@ -50,10 +50,7 @@ import { ICommentData } from 'services/comments';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
-import {
-  IOnboardingCampaignNames,
-  IOnboardingCampaigns,
-} from 'services/onboardingCampaigns';
+
 import { ParticipationMethod } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
 import { IUserData } from 'services/users';
@@ -322,15 +319,6 @@ export interface OutletsPropertyMap {
     translateButtonClicked?: boolean;
     color?: string;
     align: 'left' | 'center';
-  };
-  'app.containers.HomePage.onboardingCampaigns': {
-    onboardingCampaigns: IOnboardingCampaigns;
-    contentTimeout: number;
-    contentDelay: number;
-    authUser: IUserData;
-    theme: unknown;
-    onSkip: (name: IOnboardingCampaignNames) => void;
-    onAccept: (name: IOnboardingCampaignNames) => void;
   };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
