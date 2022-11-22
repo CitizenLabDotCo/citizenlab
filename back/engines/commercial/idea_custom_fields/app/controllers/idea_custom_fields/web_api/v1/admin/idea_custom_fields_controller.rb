@@ -209,6 +209,10 @@ module IdeaCustomFields
 
       custom_fields_params
         .map do |field|
+          if field.is_a?(ActiveSupport::HashWithIndifferentAccess)
+            raise "WRONG #{params.inspect}"
+          end
+
           field.permit(
             :id,
             :input_type,
