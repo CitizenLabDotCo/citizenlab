@@ -32,9 +32,13 @@ export function lockedFieldsStream() {
   });
 }
 
-export async function signIn(email: string, password: string) {
+export async function signIn(
+  email: string,
+  password: string,
+  rememberMe: boolean
+) {
   try {
-    const bodyData = { auth: { email, password } };
+    const bodyData = { auth: { email, password, rememberMe } };
     const httpMethod: IHttpMethod = { method: 'POST' };
     const { jwt } = await request<IUserToken>(
       `${API_PATH}/user_token`,
@@ -81,7 +85,7 @@ export async function signUp(
         : `${API_PATH}/users`;
     const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
     await request(signUpEndpoint, bodyData, httpMethod, null);
-    const authenticatedUser = await signIn(email, password);
+    const authenticatedUser = await signIn(email, password, false);
     return authenticatedUser;
   } catch (error) {
     throw error;
