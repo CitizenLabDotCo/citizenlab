@@ -8,13 +8,13 @@ import {
   ICustomPageData,
   TPageCode,
 } from 'services/customPages';
-import { addNavbarItem } from '../../../../services/navbar';
+import { addNavbarItem } from 'services/navbar';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
 import useCustomPages from 'hooks/useCustomPages';
 import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
-import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
+import useRemovedDefaultNavbarItems from 'hooks/useRemovedDefaultNavbarItems';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
@@ -30,7 +30,7 @@ import messages from './messages';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
+import getItemsNotInNavbar, { IItemNotInNavbar } from 'utils/navbar';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 const isNotFixedPage = (page: ICustomPageData) =>

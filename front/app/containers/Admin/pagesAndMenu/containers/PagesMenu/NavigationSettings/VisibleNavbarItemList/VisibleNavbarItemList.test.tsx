@@ -4,10 +4,7 @@ import React from 'react';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
-import {
-  removeNavbarItem,
-  reorderNavbarItem,
-} from '../../../../services/navbar';
+import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
 import { deleteCustomPage } from 'services/customPages';
 
 jest.mock('services/locale');

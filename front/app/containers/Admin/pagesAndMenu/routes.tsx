@@ -1,11 +1,15 @@
 import PageLoading from 'components/UI/PageLoading';
-import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import Outlet from 'components/Outlet';
 
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
 const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
+const NavigationSettings = lazy(
+  () => import('./containers/PagesMenu/NavigationSettings')
+);
+const EditNavbarItemForm = lazy(
+  () => import('./containers/PagesMenu/EditNavbarItemForm')
+);
 
 // homepage
 const EditHomepage = lazy(() => import('./containers/EditHomepage'));
@@ -62,7 +66,7 @@ export default () => ({
           index: true,
           element: (
             <PageLoading>
-              <Outlet id="app.containers.Admin.pages-menu.NavigationSettings" />
+              <NavigationSettings />
             </PageLoading>
           ),
         },
@@ -147,10 +151,6 @@ export default () => ({
             </PageLoading>
           ),
         },
-        // {
-        //   path: ':customPageId/projects',
-        //   element: <></>,
-        // },
         {
           path: ':customPageId/bottom-info-section',
           element: (
@@ -169,6 +169,9 @@ export default () => ({
         },
       ],
     },
-    ...moduleConfiguration.routes['admin.pages-menu'],
+    {
+      path: 'navbar-items/edit/:navbarItemId',
+      element: <EditNavbarItemForm />,
+    },
   ],
 });
