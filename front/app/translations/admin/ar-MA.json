@@ -1325,11 +1325,8 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Content Warnings",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "حقوق الوصول",
   "app.modules.idea_assignment.admin.components.permissionsTab": "حقوق الوصول",
-  "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Other available pages",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pages shown on your navigation bar",
-  "app.modules.navbar.admin.components.tabNavigation": "Navigation",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Are you sure you want to delete this page? This cannot be undone. You can also remove the page from the navigation bar if you aren’t ready to delete it yet.",
-  "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Are you sure you want to delete this page? This cannot be undone.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
   "app.modules.project_management.admin.components.permissionsTab": "حقوق الوصول",
   "components.admin.ServerError.genericServerError": "حدثت مشكلة أثناء تحميل هذا المحتوى، يُرجى المحاولة مجددًا في وقت لاحق."

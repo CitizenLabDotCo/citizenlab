@@ -1268,11 +1268,8 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Avvertenze sul contenuto",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Access rights",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
-  "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Altre pagine disponibili",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pagine mostrate sulla tua barra di navigazione",
-  "app.modules.navbar.admin.components.tabNavigation": "Navigazione",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sei sicuro di voler cancellare questa pagina? Questo non può essere annullato. Puoi anche rimuovere la pagina dalla barra di navigazione se non sei ancora pronto a cancellarla.",
-  "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Sei sicuro di volerlo cancellare? Questa azione non può essere annullata.",
   "app.modules.navbar.admin.containers.pageSubtitle": "La tua barra di navigazione può visualizzare fino a quattro pagine oltre alle pagine Home e progetti. Puoi rinominare le voci di menu, riordinare e aggiungere nuove pagine con i tuoi contenuti.",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
   "components.admin.ServerError.genericServerError": "There was an issue loading this content, please try again later."
