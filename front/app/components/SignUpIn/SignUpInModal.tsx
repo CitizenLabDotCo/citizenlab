@@ -24,10 +24,7 @@ import {
 } from 'components/SignUpIn/events';
 
 // style
-import styled from 'styled-components';
-
-const Container = styled.div``;
-
+import { Box } from '@citizenlab/cl2-component-library';
 interface Props {
   className?: string;
   onMounted?: () => void;
@@ -137,7 +134,7 @@ const SignUpInModal = memo<Props>(
         close={onClose}
         closeOnClickOutside={false}
       >
-        <Container id="e2e-sign-up-in-modal" className={className}>
+        <Box id="e2e-sign-up-in-modal" className={className} zIndex="1000">
           {opened && metaData && (
             <SignUpIn
               metaData={metaData}
@@ -145,7 +142,7 @@ const SignUpInModal = memo<Props>(
               fullScreen={fullScreenModal}
             />
           )}
-        </Container>
+        </Box>
       </Modal>
     );
   }
