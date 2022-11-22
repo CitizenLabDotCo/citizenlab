@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :project_moderator, class: User, parent: :user do
+  factory :project_moderator, class: 'User', parent: :user do
     transient do
       projects { [create(:project)] }
       project_ids { nil }
