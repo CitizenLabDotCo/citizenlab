@@ -35,6 +35,7 @@ module EmailCampaigns
       Campaigns::OfficialFeedbackOnVotedInitiative,
       Campaigns::OfficialFeedbackOnYourIdea,
       Campaigns::OfficialFeedbackOnYourInitiative,
+      Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
@@ -47,8 +48,7 @@ module EmailCampaigns
       Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
       Campaigns::Welcome,
-      Campaigns::YourProposedInitiativesDigest,
-      ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
+      Campaigns::YourProposedInitiativesDigest
     ].freeze
 
     def campaign_types
