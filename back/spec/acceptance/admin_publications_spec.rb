@@ -214,7 +214,7 @@ resource 'AdminPublication' do
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
       parameter :filter_empty_folders, 'Filter out folders with no visible children for the current user', required: false
-      parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
+      parameter :folder, 'Filter by folder (project folder id)', required: false
 
       example 'Listed admin publications have correct visible children count', document: false do
         do_request(folder: nil)
