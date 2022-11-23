@@ -51,12 +51,12 @@ class TrackSegmentService
 
   # @param [Symbol] role
   def intercom_integration_enabled?(role)
-    role == :admin || role == :project_moderator
+    %i[admin project_moderator].include?(role)
   end
 
   # @param [Symbol] role
   def satismeter_integration_enabled?(role)
-    role == :admin || role == :project_moderator
+    %i[admin project_moderator].include?(role)
   end
 
   # @param [User] user
