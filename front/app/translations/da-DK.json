@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Del via Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Del med WhatsApp",
   "app.components.SideModal.closeButtonAria": "Luk",
-  "app.components.SignUpIn.continue": "Fortsæt",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valgt {numberOfSelectedTopics, plural, =0 {zero topics} et {zero topics} andet {# topics}}.{selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Oversæt",
