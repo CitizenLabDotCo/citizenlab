@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isVerificationError } from 'containers/Authentication/VerificationModal/verificationModalEvents';
 // components
@@ -53,46 +53,7 @@ const VerificationModal = () => {
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
-  useEffect(() => {
-    const subscriptions = [
-      openVerificationModal$.subscribe(
-        ({ eventValue: { step, context, error } }) => {
-          setActiveStep(step);
-          setContext(context);
-          error && setError(error);
-        }
-      ),
-      closeVerificationModal$.subscribe(() => {
-        setActiveStep(null);
-        setContext(null);
-      }),
-    ];
-
-    return () =>
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }, []);
-
-  const onClose = () => {
-    closeVerificationModal();
-  };
-
-  const onCompleted = () => {
-    setActiveStep('success');
-    setContext(null);
-  };
-
-  const onError = () => {
-    setActiveStep('error');
-    setContext(null);
-  };
-
-  useEffect(() => {
-    if (!isNilOrError(authUser) && mounted) {
-      openVerificationModalIfSuccessOrError();
-    }
-  }, [authUser, mounted]);
-
-  const openVerificationModalIfSuccessOrError = () => {
+  const openVerificationModalIfSuccessOrError = useCallback(() => {
     // query.get returns the value, which is a string 'true'
     // for this param (search for it in the backend)
     if (query.get('verification_success') === 'true') {
@@ -112,6 +73,45 @@ const VerificationModal = () => {
       }
       setContext(null);
     }
+  }, [query]);
+
+  useEffect(() => {
+    const subscriptions = [
+      openVerificationModal$.subscribe(
+        ({ eventValue: { step, context, error } }) => {
+          setActiveStep(step);
+          setContext(context);
+          error && setError(error);
+        }
+      ),
+      closeVerificationModal$.subscribe(() => {
+        setActiveStep(null);
+        setContext(null);
+      }),
+    ];
+
+    return () =>
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }, []);
+
+  useEffect(() => {
+    if (!isNilOrError(authUser) && mounted) {
+      openVerificationModalIfSuccessOrError();
+    }
+  }, [authUser, mounted, openVerificationModalIfSuccessOrError]);
+
+  const onClose = () => {
+    closeVerificationModal();
+  };
+
+  const onCompleted = () => {
+    setActiveStep('success');
+    setContext(null);
+  };
+
+  const onError = () => {
+    setActiveStep('error');
+    setContext(null);
   };
 
   return (
