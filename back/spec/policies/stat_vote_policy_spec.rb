@@ -5,9 +5,10 @@ require 'rails_helper'
 RSpec.describe StatVotePolicy do
   let(:scope) { described_class::Scope.new(user, Vote) }
 
+  let_it_be(:upvoted_idea) { create(:idea) }
   let_it_be(:votes) do
     [
-      create_list(:vote, 2),
+      create_list(:vote, 2, votable: upvoted_idea),
       create(:downvote),
       create(:comment_vote)
     ].flatten
