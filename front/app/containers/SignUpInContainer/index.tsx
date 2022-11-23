@@ -7,11 +7,12 @@ import openSignUpInModalIfNecessary from './utils/openSignUpInModalIfNecessary';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { openSignUpInModal$ } from 'components/SignUpIn/events';
 
-type SignUpInContainer = {
+interface Props {
   authUser: TAuthUser;
   onModalOpenedStateChange: (isOpened: boolean) => void;
-};
-const SignUpInContainer = ({ authUser, onModalOpenedStateChange }) => {
+}
+
+const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const [signUpInModalClosed, setSignUpInModalClosed] = useState(false);
   const [signUpInModalMounted, setSignUpInModalMounted] = useState(false);
 
