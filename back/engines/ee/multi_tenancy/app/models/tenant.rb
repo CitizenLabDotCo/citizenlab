@@ -38,7 +38,6 @@ class Tenant < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
   before_validation :ensure_style
   after_create :create_apartment_tenant
-  after_create :create_app_configuration, if: :auto_config
 
   after_update :update_tenant_schema, if: :saved_change_to_host?
   after_update :update_app_configuration, if: :config_sync_enabled
@@ -190,21 +189,6 @@ class Tenant < ApplicationRecord
   end
 
   private
-
-  def create_app_configuration
-    switch do
-      AppConfiguration.create!(
-        id: id,
-        name: name,
-        host: host,
-        logo: logo,
-        favicon: favicon,
-        settings: settings,
-        style: style,
-        created_at: created_at
-      )
-    end
-  end
 
   def update_app_configuration
     switch do

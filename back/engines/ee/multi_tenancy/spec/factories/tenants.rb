@@ -12,6 +12,21 @@ FactoryBot.define do
     name { Faker::Address.city }
     sequence(:host) { |n| "tenant-#{n}.citizenlab.co" }
     settings { SettingsService.new.minimal_required_settings(locales: locales, lifecycle_stage: lifecycle) }
+
+    after(:create) do |tenant, evaluator|
+      tenant.switch do
+        create(:app_configuration,
+          id: tenant.id,
+          name: tenant.name,
+          host: tenant.host,
+          settings: tenant.settings,
+          style: tenant.style,
+          updated_at: tenant.updated_at,
+          created_at: tenant.created_at,
+          lifecycle: evaluator.lifecycle,
+          locales: evaluator.locales)
+      end
+    end
   end
 
   factory :test_tenant, class: 'Tenant' do
@@ -39,6 +54,19 @@ FactoryBot.define do
           eligibility_criteria: { 'en' => 'Eligibility criteria' }
         }
       })
+    end
+
+    after(:create) do |tenant|
+      tenant.switch do
+        create(:test_app_configuration,
+          id: tenant.id,
+          name: tenant.name,
+          host: tenant.host,
+          settings: tenant.settings,
+          style: tenant.style,
+          updated_at: tenant.updated_at,
+          created_at: tenant.created_at)
+      end
     end
   end
 end
