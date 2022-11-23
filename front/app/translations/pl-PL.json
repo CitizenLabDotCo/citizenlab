@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Udostępnij za pomocą Messengera",
   "app.components.Sharing.shareViaWhatsApp": "Udostępniaj przez WhatsApp",
   "app.components.SideModal.closeButtonAria": "Zamknij",
-  "app.components.SignUpIn.continue": "Kontynuuj",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Zaznaczono {numberOfSelectedTopics, plural, =0 {zero tematów} one {jeden temat} few {# tematy} many {# tematów} other {# tematy}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Oryginał",
   "app.components.UI.TranslateButton.translate": "Przetłumacz",

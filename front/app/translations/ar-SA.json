@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "شارك عبر الماسنجر",
   "app.components.Sharing.shareViaWhatsApp": "شارك عبر الواتس أب",
   "app.components.SideModal.closeButtonAria": "إغلاق",
-  "app.components.SignUpIn.continue": "متابعة",
   "app.components.TopicsPicker.numberOfSelectedTopics": "تم تحديد {numberOfSelectedTopics, plural, =0 {لا يوجد موضوعات} one {موضوع واحد} other {# موضوعات}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "الأصلي",
   "app.components.UI.TranslateButton.translate": "ترجمة",

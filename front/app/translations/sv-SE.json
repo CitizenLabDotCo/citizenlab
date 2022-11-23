@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Dela via Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Dela via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Stäng",
-  "app.components.SignUpIn.continue": "Fortsätt",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valde {numberOfSelectedTopics, plural, =0 {noll ämnen} one {ett ämne} other {# ämnen}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Översätt",

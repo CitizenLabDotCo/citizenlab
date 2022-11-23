@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Koplietot, izmantojot Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Koplietot, izmantojot WhatsApp",
   "app.components.SideModal.closeButtonAria": "Aizvērt",
-  "app.components.SignUpIn.continue": "Turpināt",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Izvēlēts {numberOfSelectedTopics, plural, =0 {zero tags} one {one tag} other {# tags}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Oriģināls",
   "app.components.UI.TranslateButton.translate": "Tulkot",
