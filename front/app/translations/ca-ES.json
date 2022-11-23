@@ -1554,7 +1554,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Feu un exercici d'assignació pressupostària",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Creeu una enquesta a la plataforma",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Creeu una enquesta",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Inserir una enquesta externa",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Creeu una enquesta externa",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Cerqueu voluntaris",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Recolliu aportacions i comentaris",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Compartir informació",
