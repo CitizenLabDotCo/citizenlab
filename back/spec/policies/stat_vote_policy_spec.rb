@@ -19,7 +19,7 @@ RSpec.describe StatVotePolicy do
     it { expect(scope.resolve.count).to eq(votes.count) }
   end
 
-  context 'for a normal user' do
+  context 'for a resident' do
     let(:user) { create(:user) }
 
     it { expect(scope.resolve).to be_empty }
@@ -29,5 +29,22 @@ RSpec.describe StatVotePolicy do
     let(:user) { nil }
 
     it { expect(scope.resolve).to be_empty }
+  end
+
+  context 'for an admin who is also project moderator' do
+    let(:user) do
+      create(:project_moderator).tap do |user|
+        user.roles << { type: 'admin' }
+        user.save!
+      end
+    end
+
+    it { expect(scope.resolve.count).to eq(votes.count) }
+  end
+
+  context 'for a project moderator' do
+    let(:user) { create(:project_moderator, project_ids: [upvoted_idea.project_id]) }
+
+    it { expect(scope.resolve.count).to eq(2) }
   end
 end
