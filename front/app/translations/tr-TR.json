@@ -1554,7 +1554,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Bir bütçe tahsis denemesi yapın",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Platform içi bir anket oluşturun",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Bir oylama oluşturun",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Embed an external survey",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Create an external survey",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Gönüllüler bulun",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Girdi ve geri bildirim toplayın",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Bilgi paylaşın",
