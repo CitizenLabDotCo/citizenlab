@@ -6,8 +6,6 @@ class WebApi::V1::ProjectsController < ApplicationController
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
-  define_callbacks :save_project
-
   def index
     params['moderator'] = current_user if params[:filter_can_moderate]
 
@@ -146,13 +144,16 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def save_project
     ActiveRecord::Base.transaction do
-      run_callbacks(:save_project) do
-        # authorize is placed within the block so we can prepare
-        # the @project to be authorized from a callback.
-        authorize @project
-        @project.save
-      end
+      authorize @project
+      set_folder
+      @project.save
     end
+  end
+
+  def set_folder
+    return unless params.require(:project).key?(:folder_id)
+
+    @project.folder_id = params.dig(:project, :folder_id)
   end
 
   def set_project
@@ -160,5 +161,3 @@ class WebApi::V1::ProjectsController < ApplicationController
     authorize @project
   end
 end
-
-WebApi::V1::ProjectsController.include_if_ee('ProjectFolders::WebApi::V1::Patches::ProjectsController')
