@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { parse } from 'qs';
 import { isNilOrError } from 'utils/helperUtils';
 import { isVerificationError } from 'containers/Authentication/VerificationModal/verificationModalEvents';
 // components
@@ -11,7 +10,6 @@ import VerificationSuccess from './VerificationSuccess';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
-import { useLocation } from 'react-router-dom';
 import useAuthUser from 'hooks/useAuthUser';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
@@ -45,7 +43,6 @@ const Container = styled.div`
 const VerificationModal = () => {
   const { windowWidth } = useWindowSize();
   const authUser = useAuthUser();
-  const { search } = useLocation();
   const query = useQuery();
   const isMounted = useIsMounted();
   const mounted = isMounted();
@@ -91,23 +88,23 @@ const VerificationModal = () => {
 
   useEffect(() => {
     if (!isNilOrError(authUser) && mounted) {
-      openVerificationModalIfSuccessOrError(search);
+      openVerificationModalIfSuccessOrError();
     }
   }, [authUser, mounted]);
 
-  const openVerificationModalIfSuccessOrError = (search: string) => {
-    const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
-
-    if (Object.hasOwn(urlSearchParams, 'verification_success')) {
+  const openVerificationModalIfSuccessOrError = () => {
+    // query.get returns the value, which is a string 'true'
+    // for this param (search for it in the backend)
+    if (query.get('verification_success') === 'true') {
       window.history.replaceState(null, '', window.location.pathname);
       setActiveStep('success');
     }
 
-    if (
-      Object.hasOwn(urlSearchParams, 'verification_error') &&
-      urlSearchParams.verification_error === 'true'
-    ) {
+    // query.get returns the value, which is a string 'true'
+    // for this param (search for it in the backend)
+    if (query.get('verification_error') === 'true') {
       const error = query.get('error');
+
       window.history.replaceState(null, '', window.location.pathname);
       setActiveStep('error');
       if (
