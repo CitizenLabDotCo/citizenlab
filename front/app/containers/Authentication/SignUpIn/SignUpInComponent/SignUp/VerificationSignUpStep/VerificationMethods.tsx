@@ -6,7 +6,7 @@ import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Title, Subtitle } from './styles';
+import { Title, Subtitle } from 'components/AuthProviders/styles';
 import Or from 'components/UI/Or';
 
 // hooks

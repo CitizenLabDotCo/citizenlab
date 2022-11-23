@@ -4,7 +4,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // components
 import { IconNames } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import Consent from 'components/SignUpIn/SignUp/Consent';
+import Consent from './Consent';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -12,7 +12,6 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/SignUpIn/tracks';
 
 // styling
 import styled from 'styled-components';
@@ -21,7 +20,12 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { TSignUpInFlow } from 'events/openSignUpInModal';
-import { AuthProvider } from './AuthProviders';
+import { AuthProvider } from './';
+
+const tracks = {
+  signInWithSSOClicked: 'Sign in with SSO button clicked',
+  signUpWithSSOClicked: 'Sign up with SSO button clicked',
+};
 
 const timeout = 300;
 
