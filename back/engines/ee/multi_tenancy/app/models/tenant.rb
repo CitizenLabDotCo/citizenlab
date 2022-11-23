@@ -112,11 +112,6 @@ class Tenant < ApplicationRecord
     AppConfiguration.style_json_schema
   end
 
-  def self.available_style_attributes
-    ActiveSupport::Deprecation.warn('Tenant::available_style_attributes is deprecated. Use AppConfiguration::available_style_attributes instead.')
-    AppConfiguration.available_style_attributes
-  end
-
   def custom_initialization
     @config_sync_enabled = true
     @auto_config = true
