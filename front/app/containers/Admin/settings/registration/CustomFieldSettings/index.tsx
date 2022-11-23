@@ -14,7 +14,6 @@ import customfieldMessages from 'containers/Admin/settings/registration/CustomFi
 import T from 'components/T';
 
 // components
-import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import {
@@ -299,15 +298,13 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
             );
           })}
         </CustomFieldsList>
-        <FeatureFlag name="user_custom_fields">
-          <Button
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            linkTo="/admin/settings/registration/custom-fields/new"
-          >
-            <FormattedMessage {...messages.addAFieldButton} />
-          </Button>
-        </FeatureFlag>
+        <Button
+          buttonStyle="cl-blue"
+          icon="plus-circle"
+          linkTo="/admin/settings/registration/custom-fields/new"
+        >
+          <FormattedMessage {...messages.addAFieldButton} />
+        </Button>
       </Section>
     );
   }

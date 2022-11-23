@@ -143,7 +143,6 @@ export interface IAppConfigurationSettings {
   dynamic_idea_form?: AppConfigurationFeature;
   jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
-  user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
