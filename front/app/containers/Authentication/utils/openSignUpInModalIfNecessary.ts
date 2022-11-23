@@ -86,7 +86,6 @@ export default function openSignUpInModalIfNecessary(
           shouldVerify ||
           isInvitation)
       ) {
-        console.log('calling openSignUpInModal from ____IfNecessary');
         openSignUpInModal({
           isInvitation,
           token,

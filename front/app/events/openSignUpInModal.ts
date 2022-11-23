@@ -46,8 +46,6 @@ function emitOpenSignUpInModal(metaData: ISignUpInMetaData | undefined) {
 }
 
 export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
-  console.log('calling openSignUpInModal');
-
   const emittedMetaData: ISignUpInMetaData = {
     flow: metaData?.flow || 'signup',
     pathname: metaData?.pathname || window.location.pathname,
