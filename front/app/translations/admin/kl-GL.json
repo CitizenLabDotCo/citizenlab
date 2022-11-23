@@ -987,7 +987,7 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Piffissaligaanngilaq",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Suliniummik pilersitsigit",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Suliniummik skabelonimeersumik pilersitsigit",
-  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Create an external survey",
+  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Embed an external survey",
   "app.containers.AdminPage.ProjectEdit.createNativeSurvey": "Create an in-platform survey",
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Set up a survey without leaving our platform.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Isumasiuinermik pilersitsigit",
