@@ -48,6 +48,7 @@ const VerificationModal = () => {
   const { search } = useLocation();
   const query = useQuery();
   const isMounted = useIsMounted();
+  const mounted = isMounted();
   const [activeStep, setActiveStep] = useState<TVerificationStep>(null);
   const [context, setContext] = useState<ContextShape>(null);
   const [error, setError] = useState<IVerificationError | null>(null);
@@ -89,10 +90,10 @@ const VerificationModal = () => {
   };
 
   useEffect(() => {
-    if (!isNilOrError(authUser) && isMounted()) {
+    if (!isNilOrError(authUser) && mounted) {
       openVerificationModalIfSuccessOrError(search);
     }
-  }, []);
+  }, [authUser, mounted]);
 
   const openVerificationModalIfSuccessOrError = (search: string) => {
     const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
