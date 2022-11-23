@@ -98,6 +98,14 @@ RSpec.describe AppConfiguration, type: :model do
     end
   end
 
+  describe 'style' do
+    it 'can never be nil' do
+      app_config = described_class.instance
+      app_config.update(style: nil)
+      expect(app_config.style).to eq({})
+    end
+  end
+
   context 'when updated' do
     it 'persists & synchronizes only the dirty attributes' do
       app_config = described_class.instance

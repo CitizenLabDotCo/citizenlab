@@ -35,7 +35,6 @@ class Tenant < ApplicationRecord
   validate :valid_host_format
 
   after_initialize :custom_initialization
-  before_validation :ensure_style
   after_create :create_apartment_tenant
 
   after_update :update_tenant_schema, if: :saved_change_to_host?
@@ -237,9 +236,5 @@ class Tenant < ApplicationRecord
       :invalid_format,
       message: 'The chosen host does not have a valid format'
     )
-  end
-
-  def ensure_style
-    self.style ||= {}
   end
 end
