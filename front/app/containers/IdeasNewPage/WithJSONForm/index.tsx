@@ -14,7 +14,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
-import useQuery from 'utils/cl-router/useQuery';
+
 import messages from '../messages';
 
 import IdeasNewMeta from '../IdeasNewMeta';
@@ -120,8 +120,9 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       project?.attributes.process_type === 'timeline' &&
       !isNilOrError(phases)
     ) {
-      const query = useQuery();
-      const phaseIdFromUrl = query.get('phase_id');
+      // Check if URL contains specific phase_id
+      const queryParams = new URLSearchParams(window.location.search);
+      const phaseIdFromUrl = queryParams.get('phase_id');
       const phaseUsed =
         phases.find((phase) => phase.id === phaseIdFromUrl) ||
         getCurrentPhase(phases);

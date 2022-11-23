@@ -63,7 +63,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import useQuery from 'utils/cl-router/useQuery';
 
 // style
 import styled from 'styled-components';
@@ -196,10 +195,10 @@ export const IdeasShow = ({
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
-  const query = useQuery();
 
   useEffect(() => {
-    const newIdeaId = query.get('new_idea_id');
+    const queryParams = new URLSearchParams(window.location.search);
+    const newIdeaId = queryParams.get('new_idea_id');
     let timeout: NodeJS.Timeout;
     if (isString(newIdeaId)) {
       timeout = setTimeout(() => {
