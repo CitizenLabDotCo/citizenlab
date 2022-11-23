@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isVerificationError } from 'events/verificationModal';
 // components
 import Modal from 'components/UI/Modal';
 // TODO: Change when we move to container
@@ -21,6 +20,7 @@ import {
   openVerificationModal$,
   closeVerificationModal$,
   closeVerificationModal,
+  isVerificationError,
 } from 'events/verificationModal';
 
 // style
