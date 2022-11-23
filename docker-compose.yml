@@ -28,6 +28,8 @@ services:
       - bundle_path:/bundle
     env_file:
       - ".env-back"
+    environment:
+      BUNDLE_PATH: /bundle
     tty: true
     stdin_open: true
 
@@ -47,6 +49,8 @@ services:
       - bundle_path:/bundle
     env_file:
       - ".env-back"
+    environment:
+      BUNDLE_PATH: /bundle
     tty: true
     stdin_open: true
 
