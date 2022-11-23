@@ -144,8 +144,8 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def save_project
     ActiveRecord::Base.transaction do
-      authorize @project
       set_folder
+      authorize @project
       @project.save
     end
   end
