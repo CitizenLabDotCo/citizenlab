@@ -32,7 +32,7 @@ import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
 // utils
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // events
 import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';

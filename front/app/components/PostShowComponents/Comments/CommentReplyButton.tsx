@@ -8,7 +8,7 @@ import messages from './messages';
 
 // events
 import { commentReplyButtonClicked } from './events';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 
 // analytics

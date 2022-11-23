@@ -17,7 +17,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'components/SignUpIn/SignUp/VerificationSignUpStep/styles';
+} from 'components/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';

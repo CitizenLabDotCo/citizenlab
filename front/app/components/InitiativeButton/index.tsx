@@ -6,7 +6,7 @@ import { openVerificationModal } from 'containers/App/VerificationModal/verifica
 import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import messages from './messages';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 
