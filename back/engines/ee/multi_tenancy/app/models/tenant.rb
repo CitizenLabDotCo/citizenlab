@@ -34,15 +34,6 @@ class Tenant < ApplicationRecord
   validates :host, uniqueness: true, exclusion: { in: %w[schema-migrations public] }
   validate :valid_host_format
 
-  validate(on: :update) do |record|
-    missing_locales = switch do
-      User.where.not(locale: settings.dig('core', 'locales')).pluck(:locale)
-    end
-    if missing_locales.present?
-      record.errors.add(:settings, "is missing locales that are still in use by some users: #{missing_locales.uniq}")
-    end
-  end
-
   after_initialize :custom_initialization
   before_validation :validate_missing_feature_dependencies
   before_validation :ensure_style

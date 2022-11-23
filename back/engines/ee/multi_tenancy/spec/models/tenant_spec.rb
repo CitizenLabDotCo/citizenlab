@@ -110,19 +110,6 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
-  describe 'Removing a locale from the tenant settings' do
-    it 'fails when there are users with the removed locale' do
-      tenant = create(:tenant)
-      Apartment::Tenant.switch(tenant.schema_name) do
-        tenant.settings['core']['locales'] = %w[en nl-BE]
-        tenant.save!
-        create(:user, locale: 'en')
-        tenant.settings['core']['locales'] = ['nl-BE']
-        expect(tenant).to be_invalid
-      end
-    end
-  end
-
   describe 'Style' do
     it 'can never be nil' do
       tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
