@@ -25,9 +25,6 @@
 class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
 
-  mount_base64_uploader :logo, TenantLogoUploader
-  mount_base64_uploader :favicon, TenantFaviconUploader
-
   attr_accessor :config_sync_enabled
 
   validates :name, :host, presence: true
@@ -98,19 +95,6 @@ class Tenant < ApplicationRecord
     # correspond to the value as it currently is in the
     # database.
     Tenant.host_to_schema_name(host_was)
-  end
-
-
-  # TODO_MT Duplicate code with AppConfiguration
-  # (Needed by tenant uploaders to compute +asset_host+ when creating a new tenant with uploads, bc app config does not
-  # exist yet).
-  def base_backend_uri
-    if Rails.env.development?
-      'http://localhost:4000'
-    else
-      transport = Rails.env.test? ? 'http' : 'https'
-      "#{transport}://#{host}"
-    end
   end
 
   # Returns the app configuration of the tenant.
