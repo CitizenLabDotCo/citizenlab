@@ -164,6 +164,8 @@ const SignUp = ({
 
     setActiveStep(nextActiveStep);
 
+    console.log(metaData);
+
     setEnabledSteps(
       getEnabledSteps(configuration, authUser, metaData, {
         emailSignUpSelected,
@@ -178,6 +180,8 @@ const SignUp = ({
     accountCreated,
     activeStep,
   ]);
+
+  console.log(enabledSteps);
 
   // called when a step is completed
   const onCompleteActiveStep = useCallback(

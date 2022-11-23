@@ -12,6 +12,7 @@ interface Props {
 }
 
 const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
+  const [hasCheckedSignUp, setHasCheckedSignUp] = useState(false);
   const [signUpInModalClosed, setSignUpInModalClosed] = useState(false);
   const [signUpInModalMounted, setSignUpInModalMounted] = useState(false);
 
@@ -22,6 +23,9 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const { pathname, search } = useLocation();
 
   useEffect(() => {
+    if (authUser === undefined) return;
+    if (hasCheckedSignUp) return;
+
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
 
@@ -32,6 +36,8 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
       signUpInModalMounted,
       search
     );
+
+    setHasCheckedSignUp(true);
   }, [pathname, search, authUser, signUpInModalClosed, signUpInModalMounted]);
 
   const handleSignUpInModalMounted = () => {
