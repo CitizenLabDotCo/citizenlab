@@ -1552,7 +1552,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Allouer un budget",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Créez une enquête sur la plateforme",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Créer un sondage",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Intégrer une enquête externe",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Créer une enquête externe",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Trouver des bénévoles",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Recueillir des contributions et des commentaires",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Partager l'information",
