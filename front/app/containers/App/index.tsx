@@ -1,5 +1,5 @@
 import { configureScope } from '@sentry/react';
-import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'containers/Authentication/VerificationModal/verificationModalEvents';
 import 'focus-visible';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
@@ -80,7 +80,6 @@ import { Locale } from 'typings';
 
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import VerificationModal from './VerificationModal';
 
 const Container = styled.div<{
   disableScroll?: boolean;
@@ -523,9 +522,9 @@ class App extends PureComponent<Props, State> {
                   <Authentication
                     authUser={this.state.authUser}
                     onModalOpenedStateChange={this.handleSignUpInModalOpened}
+                    onMounted={this.handleModalMounted}
                   />
                 </ErrorBoundary>
-                <VerificationModal onMounted={this.handleModalMounted} />
                 <ErrorBoundary>
                   <div id="modal-portal" />
                 </ErrorBoundary>
