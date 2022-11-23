@@ -3,8 +3,8 @@
 class WebApi::V1::NavBarItemsController < ApplicationController
   include AddRemoveNavBarItems
 
-  skip_before_action :authenticate_user, only: :index
   before_action :set_item, except: %i[create index removed_default_items]
+  skip_before_action :authenticate_user, only: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
