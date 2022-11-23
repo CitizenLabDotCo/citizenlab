@@ -87,11 +87,6 @@ class Tenant < ApplicationRecord
     AppConfiguration.instance.settings(*path)
   end
 
-  def self.settings_json_schema_str
-    ActiveSupport::Deprecation.warn('Tenant::settings_json_schema_str is deprecated. Use AppConfiguration::Settings.json_schema_str_str instead.')
-    AppConfiguration::Settings.json_schema_str
-  end
-
   def self.settings_json_schema
     ActiveSupport::Deprecation.warn('Tenant::settings_json_schema is deprecated. Use AppConfiguration::Settings.json_schema_schema instead.')
     AppConfiguration::Settings.json_schema
