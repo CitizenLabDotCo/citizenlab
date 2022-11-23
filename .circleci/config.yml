@@ -94,7 +94,7 @@ jobs:
           docker push citizenlabdotco/back-essential:$CIRCLE_SHA1
 
   back-lint:
-    resource_class: small
+    resource_class: medium
     executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
