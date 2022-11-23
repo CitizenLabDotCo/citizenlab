@@ -36,6 +36,7 @@ describe TrackIntercomService do
         custom_attributes: hash_including(
           isAdmin: true,
           isSuperAdmin: false,
+          isProjectModerator: false,
           highestRole: 'admin',
           firstName: user.first_name,
           lastName: user.last_name,
@@ -65,6 +66,7 @@ describe TrackIntercomService do
         hash_including(
           isAdmin: true,
           isSuperAdmin: false,
+          isProjectModerator: false,
           highestRole: 'admin',
           firstName: user.first_name,
           lastName: user.last_name,
@@ -76,43 +78,6 @@ describe TrackIntercomService do
 
       service.identify_user(user)
     end
-
-    # TODO: Merge these tests into the others
-    context 'when it creates a new contact' do
-      let(:user) { create(:admin) }
-
-      it "includes 'isProjectModerator' custom attribute" do
-        contacts_api = double('contacts_api').as_null_object
-        expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
-
-        zero_contacts = OpenStruct.new(count: 0)
-        expect(contacts_api).to receive(:search).and_return(zero_contacts)
-
-        expect(contacts_api).to receive(:create) do |attributes|
-          expect(attributes.dig(:custom_attributes, :isProjectModerator)).to be(false)
-        end.and_return(double('contact').as_null_object)
-
-        service.identify_user(user)
-      end
-    end
-
-    context 'when it updates an existing contact' do
-      let(:user) { create(:admin) }
-
-      it "includes 'isProjectModerator' custom attribute" do
-        contacts_api = double('contacts_api').as_null_object
-        expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
-
-        contact = double('contact').as_null_object
-        expect(contacts_api).to receive(:search).and_return(double({ count: 1, :[] => contact }))
-
-        # The main assertion:
-        expect(contact).to receive(:custom_attributes=).with(hash_including(isProjectModerator: false))
-
-        service.identify_user(user)
-      end
-    end
-
   end
 
   describe 'track_activity' do
