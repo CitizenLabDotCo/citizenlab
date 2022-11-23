@@ -8,8 +8,7 @@ import messages from './messages';
 // components
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
-// TODO: Restructure
-import { Title } from 'containers/Authentication/SignUpIn/SignUpInComponent/SignUp/VerificationSignUpStep/styles';
+import { Title } from 'components/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
