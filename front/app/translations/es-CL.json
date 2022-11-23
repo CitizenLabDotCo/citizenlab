@@ -1556,7 +1556,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Realizar un ejercicio de asignación presupuestaria",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Crear una encuesta en la plataforma",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Crear una encuesta",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Crear una encuesta con un servicio externo",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Crea una encuesta externa",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Encuentra voluntarios",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Recopilar aportes y retroalimentación",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Comparte información",
