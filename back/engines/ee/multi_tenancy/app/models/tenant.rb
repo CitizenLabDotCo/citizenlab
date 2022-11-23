@@ -160,11 +160,6 @@ class Tenant < ApplicationRecord
     end
   end
 
-  def location
-    ActiveSupport::Deprecation.warn('Tenant#location is deprecated. Use AppConfiguration#location instead.')
-    configuration.location
-  end
-
   # Returns the app configuration of the tenant.
   #   config = tenant.configuration
   # If the optional code block is specified, it will be run in the context of

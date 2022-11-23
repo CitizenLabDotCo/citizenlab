@@ -153,7 +153,7 @@ end
 
 def locales_map_for_tenant(generic_mapping, tenant)
   generic_mapping.keys.index_with do |old_locale|
-    old_to_new_locale(generic_mapping, old_locale, tenant.location)
+    old_to_new_locale(generic_mapping, old_locale, tenant.configuration.location)
   end
 end
 
