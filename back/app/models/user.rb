@@ -242,7 +242,7 @@ class User < ApplicationRecord
   end
 
   def to_token_payload
-    token_lifetime = AppConfiguration.instance.settings.dig('core', 'authentication_token_lifetime_in_days')&.days || 30.days
+    token_lifetime = AppConfiguration.instance.settings('core', 'authentication_token_lifetime_in_days').days
     {
       sub: id,
       roles: roles,

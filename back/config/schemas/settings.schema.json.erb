@@ -10,7 +10,17 @@
         "type": "object",
         "title": "Core system",
         "description": "The container for general settings. The core system should always be enabled.",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
+        "required-settings": [
+          "organization_type",
+          "timezone",
+          "currency",
+          "locales",
+          "color_main",
+          "color_secondary",
+          "color_text",
+          "lifecycle_stage",
+          "authentication_token_lifetime_in_days"
+        ],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
