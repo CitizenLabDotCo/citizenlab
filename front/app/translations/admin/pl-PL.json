@@ -987,7 +987,7 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Bez linii czasu",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Utwórz projekt",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Utwórz projekt na podstawie szablonu",
-  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Create an external survey",
+  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Embed an external survey",
   "app.containers.AdminPage.ProjectEdit.createNativeSurvey": "Tworzenie ankiety CitizenLab",
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Skonfiguruj ankietę bez opuszczania naszej platformy.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Stwórz badanie",
