@@ -14,8 +14,8 @@ import PasswordInput, {
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
-import Consent from 'components/SignUpIn/SignUp/Consent';
-import { Options, Option } from 'components/SignUpIn/styles';
+import Consent from '../SignUp/Consent';
+import { Options, Option } from '../styles';
 
 // utils
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
@@ -42,7 +42,7 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/SignUpIn/tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';

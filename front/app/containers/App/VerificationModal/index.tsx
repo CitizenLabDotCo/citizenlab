@@ -2,7 +2,8 @@ import React, { useCallback, useState, useEffect } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
-import VerificationSteps from 'components/SignUpIn/SignUp/VerificationSignUpStep/VerificationSteps';
+// TODO: Change when we move to container
+import VerificationSteps from 'containers/Authentication/SignUpIn/SignUpInComponent/SignUp/VerificationSignUpStep/VerificationSteps';
 import VerificationError from './VerificationError';
 import VerificationSuccess from './VerificationSuccess';
 

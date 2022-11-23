@@ -5,7 +5,10 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import SignUpInPageMeta from './SignUpInPageMeta';
-import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
+// TODO: Remove
+import SignUpIn, {
+  ISignUpInMetaData,
+} from 'containers/Authentication/SignUpIn/SignUpInComponent';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -15,10 +18,11 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError, endsWith } from 'utils/helperUtils';
 
 // events
+// TODO: Remove
 import {
   signUpActiveStepChange$,
   openSignUpInModal$,
-} from 'components/SignUpIn/events';
+} from 'containers/Authentication/SignUpIn/SignUpInComponent/events';
 
 // context
 import { PreviousPathnameContext } from 'context';

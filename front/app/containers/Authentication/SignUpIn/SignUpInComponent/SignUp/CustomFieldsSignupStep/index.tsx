@@ -15,7 +15,7 @@ import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from 'components/SignUpIn/SignUp/messages';
+import messages from '../messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';

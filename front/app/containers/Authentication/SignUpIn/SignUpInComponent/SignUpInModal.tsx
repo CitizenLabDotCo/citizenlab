@@ -4,8 +4,8 @@ import tracks from './tracks';
 
 // components
 import Modal from 'components/UI/Modal';
-import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
-import { TSignUpStep } from 'components/SignUpIn/SignUp';
+import SignUpIn from '.';
+import { TSignUpStep } from './SignUp';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
@@ -21,7 +21,8 @@ import {
   closeSignUpInModal,
   openSignUpInModal$,
   signUpActiveStepChange$,
-} from 'components/SignUpIn/events';
+} from './events';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 
 interface Props {
   className?: string;
