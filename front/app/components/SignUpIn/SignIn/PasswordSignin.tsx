@@ -215,10 +215,16 @@ class PasswordSignin extends PureComponent<
   handleOnSubmit =
     (phoneLoginEnabled: boolean) => async (event: React.FormEvent) => {
       event.preventDefault();
+      if (isNilOrError(this.props.tenant)) {
+        return;
+      }
 
       const { onSignInCompleted } = this.props;
       const { formatMessage } = this.props.intl;
       const { email, password, rememberMe } = this.state;
+      const expires =
+        this.props.tenant.attributes.settings.core
+          .authentication_token_lifetime_in_days;
 
       if (
         this.validate(phoneLoginEnabled, email, password) &&
@@ -227,7 +233,7 @@ class PasswordSignin extends PureComponent<
       ) {
         try {
           this.setState({ processing: true });
-          const user = await signIn(email, password, rememberMe);
+          const user = await signIn(email, password, rememberMe, expires);
           trackEventByName(tracks.signInEmailPasswordCompleted);
           onSignInCompleted(user.data.id);
         } catch (error) {

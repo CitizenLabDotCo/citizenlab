@@ -35,7 +35,8 @@ export function lockedFieldsStream() {
 export async function signIn(
   email: string,
   password: string,
-  rememberMe: boolean
+  rememberMe: boolean,
+  expires?: number
 ) {
   try {
     const bodyData = { auth: { email, password } };
@@ -46,7 +47,7 @@ export async function signIn(
       httpMethod,
       null
     );
-    setJwt(jwt, rememberMe);
+    setJwt(jwt, rememberMe, expires);
     const authUser = await getAuthUserAsync();
     await streams.reset();
     return authUser;

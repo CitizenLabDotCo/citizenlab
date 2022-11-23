@@ -18,10 +18,10 @@ export function getJwt() {
   }
 }
 
-export function setJwt(jwt: string, rememberMe: boolean) {
+export function setJwt(jwt: string, rememberMe: boolean, expires?: number) {
   const attrs = { secure: SECURE_COOKIE } as CookieAttributes;
   if (rememberMe) {
-    attrs.expires = 30; // If omitted, the cookie becomes a session cookie
+    attrs.expires = expires; // If omitted, the cookie becomes a session cookie
   }
   set(COOKIE_NAME, jwt, attrs);
 }
