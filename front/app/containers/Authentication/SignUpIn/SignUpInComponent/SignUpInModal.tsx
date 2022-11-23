@@ -25,13 +25,12 @@ import { ISignUpInMetaData } from 'events/openSignUpInModal';
 
 interface Props {
   className?: string;
-  onClosed: () => void;
   onOpened?: (opened: boolean) => void;
   fullScreenModal?: boolean;
 }
 
 const SignUpInModal = memo<Props>(
-  ({ className, onClosed, onOpened, fullScreenModal }) => {
+  ({ className, onOpened, fullScreenModal }) => {
     const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
       undefined
     );
@@ -90,14 +89,11 @@ const SignUpInModal = memo<Props>(
         trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
       }
 
-      onClosed();
-
       closeSignUpInModal();
     };
 
     const onSignUpInCompleted = () => {
       closeSignUpInModal();
-      onClosed();
 
       const requiresVerification = !!metaData?.verification;
 
