@@ -111,6 +111,4 @@ describe TrackIntercomService do
       service.track_activity(activity)
     end
   end
-
 end
-
