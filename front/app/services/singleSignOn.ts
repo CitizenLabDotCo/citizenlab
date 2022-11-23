@@ -1,5 +1,5 @@
 import { AUTH_PATH } from 'containers/App/constants';
-import { ISignUpInMetaData, TSignUpInError } from 'components/SignUpIn';
+import { ISignUpInMetaData, TSignUpInError } from 'events/openSignUpInModal';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 import { isProjectContext } from 'containers/App/VerificationModal/verificationModalEvents';

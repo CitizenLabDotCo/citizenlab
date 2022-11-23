@@ -20,7 +20,7 @@ import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { TSignUpInFlow } from 'components/SignUpIn';
+import { TSignUpInFlow } from 'events/openSignUpInModal';
 import { AuthProvider } from './AuthProviders';
 
 const timeout = 300;

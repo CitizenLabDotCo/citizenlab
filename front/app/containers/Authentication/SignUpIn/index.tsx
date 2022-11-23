@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+import SignUpInModal from './SignUpInComponent/SignUpInModal';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { endsWith } from 'lodash-es';
-import openSignUpInModalIfNecessary from './utils/openSignUpInModalIfNecessary';
+import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
 import { TAuthUser } from 'hooks/useAuthUser';
-import { openSignUpInModal$ } from 'components/SignUpIn/events';
+import { openSignUpInModal$ } from './SignUpInComponent/events';
 
 type SignUpInContainer = {
   authUser: TAuthUser;

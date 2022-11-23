@@ -35,7 +35,7 @@ const ConsentManager = lazy(() => import('components/ConsentManager'));
 // components
 import ErrorBoundary from 'components/ErrorBoundary';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import SignUpIn from 'containers/SignUpInContainer';
+import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 import Meta from './Meta';
@@ -520,7 +520,7 @@ class App extends PureComponent<Props, State> {
                   </Suspense>
                 </ErrorBoundary>
                 <ErrorBoundary>
-                  <SignUpIn
+                  <Authentication
                     authUser={this.state.authUser}
                     onModalOpenedStateChange={this.handleSignUpInModalOpened}
                   />

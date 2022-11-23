@@ -1,5 +1,4 @@
 import React, { useState, FormEvent } from 'react';
-import { SignUpStepOutletProps } from 'utils/moduleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
@@ -98,7 +97,7 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
   margin-right: 4px;
 `;
 
-type Props = Pick<SignUpStepOutletProps, 'onCompleted'>;
+type Props = { onCompleted: () => void };
 
 const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   const user = useAuthUser();

@@ -1,14 +1,14 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
 // components
-import PasswordSignin from 'components/SignUpIn/SignIn/PasswordSignin';
-import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import PasswordSignin from './PasswordSignin';
+import AuthProviders, { AuthProvider } from '../AuthProviders';
 import Error from 'components/UI/Error';
 import {
   StyledHeaderContainer,
   StyledHeaderTitle,
   StyledModalContentContainer,
-} from 'components/SignUpIn/styles';
+} from '../styles';
 
 // utils
 import { handleOnSSOClick } from 'services/singleSignOn';
@@ -19,13 +19,13 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/SignUpIn/tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
 
 // typings
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 
 const Container = styled.div``;
 

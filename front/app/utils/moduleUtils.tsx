@@ -1,7 +1,3 @@
-import {
-  TSignUpStep,
-  TSignUpStepConfigurationObject,
-} from 'components/SignUpIn/SignUp';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
 import React, {
@@ -11,7 +7,6 @@ import React, {
   ReactElement,
 } from 'react';
 
-import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 import PageLoading from 'components/UI/PageLoading';
 
 import { OutletRenderProps } from 'components/Outlet';
@@ -47,6 +42,7 @@ import { THomepageBannerLayout } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
+import { TSignUpInFlow } from 'events/openSignUpInModal';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
@@ -60,16 +56,6 @@ import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useSt
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
   onData: (data: InsertConfigurationOptions<ITab>) => void;
-};
-
-export type SignUpStepOutletProps = {
-  onData: (data: TSignUpStepConfigurationObject) => void;
-  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
-  step: TSignUpStep | null;
-  metaData: ISignUpInMetaData;
-  onCompleted: () => void;
-  onSkipped: () => void;
-  onError: () => void;
 };
 
 export interface OutletsPropertyMap {
@@ -168,7 +154,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
   'app.containers.Admin.dashboard.summary.events': StatCardProps;
-  'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
     compact?: boolean;

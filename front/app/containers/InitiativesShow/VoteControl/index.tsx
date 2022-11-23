@@ -31,7 +31,7 @@ import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';

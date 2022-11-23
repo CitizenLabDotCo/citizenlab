@@ -11,7 +11,7 @@ import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
-import { Options, Option } from 'components/SignUpIn/styles';
+import { Options, Option } from '../styles';
 
 // resources
 import GetAppConfiguration, {
@@ -36,14 +36,14 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/SignUpIn/tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 
 // typings
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from '../';
 
 const Container = styled.div`
   flex: 1 1 auto;

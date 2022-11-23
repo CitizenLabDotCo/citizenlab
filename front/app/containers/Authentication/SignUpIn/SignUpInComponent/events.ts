@@ -1,6 +1,6 @@
 import eventEmitter from 'utils/eventEmitter';
-import { ISignUpInMetaData } from 'components/SignUpIn';
-import { TSignUpStep } from 'components/SignUpIn/SignUp';
+import { ISignUpInMetaData } from './';
+import { TSignUpStep } from './SignUp';
 
 enum events {
   openSignUpInModal = 'openSignUpInModal',
@@ -8,7 +8,6 @@ enum events {
 }
 
 // ---------
-
 function emitOpenSignUpInModal(metaData: ISignUpInMetaData | undefined) {
   eventEmitter.emit(events.openSignUpInModal, metaData);
 }
@@ -16,22 +15,6 @@ function emitOpenSignUpInModal(metaData: ISignUpInMetaData | undefined) {
 export const openSignUpInModal$ = eventEmitter.observeEvent<
   ISignUpInMetaData | undefined
 >(events.openSignUpInModal);
-
-export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
-  const emittedMetaData: ISignUpInMetaData = {
-    flow: metaData?.flow || 'signup',
-    pathname: metaData?.pathname || window.location.pathname,
-    verification: metaData?.verification,
-    verificationContext: metaData?.verificationContext,
-    error: metaData?.error,
-    isInvitation: !!metaData?.isInvitation,
-    token: metaData?.token,
-    inModal: true,
-    action: metaData?.action || undefined,
-  };
-
-  emitOpenSignUpInModal(emittedMetaData);
-}
 
 export function closeSignUpInModal() {
   emitOpenSignUpInModal(undefined);

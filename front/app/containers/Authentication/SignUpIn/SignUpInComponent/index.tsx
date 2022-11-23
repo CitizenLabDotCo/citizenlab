@@ -13,7 +13,7 @@ import { ContextShape } from 'containers/App/VerificationModal/verificationModal
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from './events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 export type TSignUpInFlow = 'signup' | 'signin';
 

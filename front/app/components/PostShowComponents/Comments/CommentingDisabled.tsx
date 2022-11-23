@@ -19,7 +19,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // events
 import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // styling
 import styled from 'styled-components';
