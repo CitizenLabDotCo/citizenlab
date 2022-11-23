@@ -5,14 +5,11 @@ import { first } from 'rxjs/operators';
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // Services
-import {
-  findMembership,
-  addMembership,
-} from 'modules/commercial/project_management/services/projectModerators';
+import { findMembership, addMembership } from 'services/projectModerators';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
 // hooks
-import useProjectModerators from 'modules/commercial/project_management/hooks/useProjectModerators';
+import useProjectModerators from 'hooks/useProjectModerators';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';

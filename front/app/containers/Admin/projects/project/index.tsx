@@ -14,6 +14,10 @@ import Outlet from 'components/Outlet';
 import { Box } from '@citizenlab/cl2-component-library';
 import NewIdeaButton from './ideas/NewIdeaButton';
 import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
+import FeatureFlag from 'components/FeatureFlag';
+import Tab from './permissions/components/Tab';
+// const Tab = React.lazy(() => import('./admin/components/Tab'));
+// const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 // resources
 import GetFeatureFlag, {
@@ -372,6 +376,9 @@ export class AdminProjectsProjectIndex extends PureComponent<
             project={project}
             phases={phases}
           />
+          <FeatureFlag name="project_management">
+            <Tab onData={this.handleData} />
+          </FeatureFlag>
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>
