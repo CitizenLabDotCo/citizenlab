@@ -72,11 +72,6 @@ class Tenant < ApplicationRecord
     AppConfiguration.instance.settings(*path)
   end
 
-  def self.style(*path)
-    ActiveSupport::Deprecation.warn('Tenant::style is deprecated. Use AppConfiguration::style instead.')
-    AppConfiguration.instance.style(*path)
-  end
-
   def custom_initialization
     @config_sync_enabled = true
   end
