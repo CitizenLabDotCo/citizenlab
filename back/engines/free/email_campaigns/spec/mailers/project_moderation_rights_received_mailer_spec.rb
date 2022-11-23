@@ -2,9 +2,7 @@
 
 require 'rails_helper'
 
-skip_reason = defined?(EmailCampaigns::Engine) ? nil : 'email_campaigns engine is not installed'
-
-RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer, type: :mailer, skip: skip_reason do
+RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer, type: :mailer do
   describe 'campaign_mail' do
     let_it_be(:project) { create(:project) }
     let_it_be(:recipient) { create(:project_moderator, locale: 'en', projects: [project]) }
