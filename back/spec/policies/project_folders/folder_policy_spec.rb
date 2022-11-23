@@ -40,7 +40,7 @@ describe ProjectFolders::FolderPolicy do
       end
     end
 
-    context 'when user' do
+    context 'when resident' do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
