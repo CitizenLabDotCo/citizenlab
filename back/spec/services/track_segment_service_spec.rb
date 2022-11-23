@@ -136,4 +136,3 @@ describe TrackSegmentService do
     end
   end
 end
-
