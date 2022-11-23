@@ -34,3 +34,4 @@ cypress/screenshots/
 
 #Local VsCode config
 .vscode/launch.json
+.vscode/*
