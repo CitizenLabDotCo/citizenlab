@@ -1556,7 +1556,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Realizar um exercício de alocação de orçamento",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Criar uma enquete na plataforma",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Criar uma pesquisa",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Incorporar uma pesquisa externa",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Criar uma pesquisa externa",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Encontrar voluntários",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Colete comentários e feedback",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Compartilhar informação",
