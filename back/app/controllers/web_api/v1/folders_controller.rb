@@ -5,7 +5,7 @@ class WebApi::V1::FoldersController < ::ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    @project_folders = policy_scope(Folder).includes(:images, admin_publication: [:children])
+    @project_folders = policy_scope(ProjectFolders::Folder).includes(:images, admin_publication: [:children])
     @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
 
     @project_folders = paginate @project_folders
@@ -35,18 +35,18 @@ class WebApi::V1::FoldersController < ::ApplicationController
   end
 
   def by_slug
-    @project_folder = Folder.find_by!(slug: params[:slug])
+    @project_folder = ProjectFolders::Folder.find_by!(slug: params[:slug])
     authorize @project_folder
     show
   end
 
   def create
-    @project_folder = Folder.new(project_folder_params)
+    @project_folder = ProjectFolders::Folder.new(project_folder_params)
 
     authorize @project_folder
 
     if @project_folder.save
-      SideFxService.new.after_create(@project_folder, current_user)
+      ProjectFolders::SideFxService.new.after_create(@project_folder, current_user)
 
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
@@ -63,9 +63,9 @@ class WebApi::V1::FoldersController < ::ApplicationController
     authorize @project_folder
     remove_image_if_requested!(@project_folder, project_folder_params, :header_bg)
 
-    SideFxService.new.before_update(@project_folder, current_user)
+    ProjectFolders::SideFxService.new.before_update(@project_folder, current_user)
     if @project_folder.save
-      SideFxService.new.after_update(@project_folder, current_user)
+      ProjectFolders::SideFxService.new.after_update(@project_folder, current_user)
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
         params: fastjson_params,
@@ -87,7 +87,7 @@ class WebApi::V1::FoldersController < ::ApplicationController
       frozen_folder = @project_folder.destroy
     end
     if frozen_folder.destroyed?
-      SideFxService.new.after_destroy(frozen_folder, current_user)
+      ProjectFolders::SideFxService.new.after_destroy(frozen_folder, current_user)
       frozen_projects.each do |project|
         SideFxProjectService.new.after_destroy(project, current_user)
       end
@@ -100,7 +100,7 @@ class WebApi::V1::FoldersController < ::ApplicationController
   private
 
   def set_project_folder
-    @project_folder = Folder.find(params[:id])
+    @project_folder = ProjectFolders::Folder.find(params[:id])
     authorize @project_folder
   end
 
