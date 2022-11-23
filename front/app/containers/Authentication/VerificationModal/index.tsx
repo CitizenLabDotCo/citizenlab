@@ -107,10 +107,7 @@ const VerificationModal = () => {
 
       window.history.replaceState(null, '', window.location.pathname);
       setActiveStep('error');
-      if (
-        (typeof error === 'string' && isVerificationError(error)) ||
-        error === null
-      ) {
+      if (typeof error === 'string' && isVerificationError(error)) {
         setError(error);
       }
       setContext(null);
