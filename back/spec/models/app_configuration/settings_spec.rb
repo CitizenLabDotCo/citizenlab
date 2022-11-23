@@ -15,15 +15,26 @@ RSpec.describe AppConfiguration::Settings do
     described_class.instance_variable_set(:@extension_features_hash, @initial_features_hash)
   end
 
+  shared_examples 'produces_valid_json_schema' do
+    it 'produces a valid json schema' do
+      metaschema = JSON::Validator.validator_for_name('draft4').metaschema
+      expect(JSON::Validator.validate!(metaschema, json_schema)).to be true
+    end
+  end
+
   context 'without extension features' do
     describe '.json_schema' do
+      subject(:json_schema) { described_class.json_schema }
+
       it 'uses only the core json schema settings' do
-        expect(described_class.json_schema).to match(described_class.core_settings_json_schema)
+        expect(json_schema).to match(described_class.core_settings_json_schema)
       end
 
       it 'uses no extension features' do
         expect(described_class.extension_features_specs).to be_empty
       end
+
+      include_examples 'produces_valid_json_schema'
     end
   end
 
@@ -54,6 +65,8 @@ RSpec.describe AppConfiguration::Settings do
       it 'includes feature json schema in properties' do
         expect(json_schema.dig('properties', feature_spec.feature_name)).to eq(feature_spec.json_schema)
       end
+
+      include_examples 'produces_valid_json_schema'
     end
 
     describe '.extension_features_specs' do
