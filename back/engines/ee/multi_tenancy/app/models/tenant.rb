@@ -138,10 +138,6 @@ class Tenant < ApplicationRecord
     Tenant.host_to_schema_name(host_was)
   end
 
-  def base_frontend_uri
-    ActiveSupport::Deprecation.warn('Tenant#base_frontend_uri is deprecated. Use AppConfiguration#base_frontend_uri instead.')
-    configuration.base_frontend_uri
-  end
 
   # TODO_MT Duplicate code with AppConfiguration
   # (Needed by tenant uploaders to compute +asset_host+ when creating a new tenant with uploads, bc app config does not
