@@ -87,14 +87,6 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
-  describe 'The settings JSON schema' do
-    it 'is a valid JSON schema' do
-      metaschema = JSON::Validator.validator_for_name('draft4').metaschema
-      schema = described_class.settings_json_schema
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-    end
-  end
-
   describe 'Getting the current tenant' do
     it 'succeeds with the correct tenant' do
       tenant = described_class.find_by(host: 'example.org')
