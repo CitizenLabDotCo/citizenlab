@@ -1,6 +1,7 @@
 import { randomString } from '../../../support/commands';
 
 describe('Admin: add projects to folder', () => {
+  let folderId: string;
   let projectId1: string;
   let projectId2: string;
   let projectTitle1 = randomString();
@@ -36,10 +37,11 @@ describe('Admin: add projects to folder', () => {
   });
 
   it('creates a new folder', () => {
+    cy.intercept('GET', '**/project_folders/**').as('getFolder');
+
     cy.get('[data-cy="e2e-new-project-folder-button"]').click();
     const folderTitle = randomString();
     const folderShortDescription = randomString();
-    const folderDescription = randomString();
 
     // Add folder title
     cy.get('[data-cy="e2e-project-folder-title"]')
@@ -98,6 +100,11 @@ describe('Admin: add projects to folder', () => {
     // Navigate to the folder page
     cy.get('#to-projectFolder').click();
 
+    // wait for the folder request and get the ID from it
+    cy.wait('@getFolder').then((interception) => {
+      folderId = interception.response?.body.data.id;
+    });
+
     // Check for correct content on folder page
     cy.get('#e2e-folder-page').contains(folderTitle).should('exist');
     cy.get('#e2e-folder-page').contains(projectTitle1).should('exist');
@@ -107,5 +114,6 @@ describe('Admin: add projects to folder', () => {
   afterEach(() => {
     cy.apiRemoveProject(projectId1);
     cy.apiRemoveProject(projectId2);
+    cy.apiRemoveFolder(folderId);
   });
 });
