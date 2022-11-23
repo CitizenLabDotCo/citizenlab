@@ -28,7 +28,7 @@ class Tenant < ApplicationRecord
   mount_base64_uploader :logo, TenantLogoUploader
   mount_base64_uploader :favicon, TenantFaviconUploader
 
-  attr_accessor :config_sync_enabled, :auto_config
+  attr_accessor :config_sync_enabled
 
   validates :name, :host, presence: true
   validates :host, uniqueness: true, exclusion: { in: %w[schema-migrations public] }
@@ -83,12 +83,6 @@ class Tenant < ApplicationRecord
 
   def custom_initialization
     @config_sync_enabled = true
-    @auto_config = true
-  end
-
-  def disable_auto_config
-    self.auto_config = false
-    self
   end
 
   def disable_config_sync
