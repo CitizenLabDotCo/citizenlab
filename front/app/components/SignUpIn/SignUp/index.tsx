@@ -122,7 +122,7 @@ const SignUp = ({
 }: Props & WrappedComponentProps) => {
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const modalContentRef = useRef<HTMLDivElement>(null);
 

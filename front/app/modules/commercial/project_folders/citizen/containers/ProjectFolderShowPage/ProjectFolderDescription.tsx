@@ -111,7 +111,7 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
   ({ projectFolder, className, intl: { formatMessage } }) => {
     const projectFolderFiles = useProjectFolderFiles(projectFolder.id);
     const { windowWidth } = useWindowSize();
-    const theme: any = useTheme();
+    const theme = useTheme();
 
     const [expanded, setExpanded] = useState(false);
     const [descriptionHeight, setDescriptionHeight] = useState<number | null>(
