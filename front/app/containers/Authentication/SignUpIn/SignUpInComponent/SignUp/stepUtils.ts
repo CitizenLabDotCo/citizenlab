@@ -10,7 +10,6 @@ import {
   TSignUpConfiguration,
   TSignUpStepConfigurationObject,
   ILocalState,
-  TDataLoadedPerOutlet,
 } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { ISignUpInMetaData } from 'events/openSignUpInModal';

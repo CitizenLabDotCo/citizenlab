@@ -106,10 +106,6 @@ export type TSignUpConfiguration = {
   [key in TSignUpStep]?: TSignUpStepConfigurationObject;
 };
 
-export type TDataLoadedPerOutlet = {
-  [key in TSignUpStep]?: boolean;
-};
-
 export interface Props {
   metaData: ISignUpInMetaData;
   customHeader?: JSX.Element;
