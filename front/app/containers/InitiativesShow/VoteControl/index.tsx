@@ -37,7 +37,7 @@ import GetInitiativesPermissions, {
 } from 'resources/GetInitiativesPermissions';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { trackEventByName } from 'utils/analytics';
-import { openVerificationModal } from 'containers/Authentication/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 
 const Container = styled.div`
   ${media.desktop`

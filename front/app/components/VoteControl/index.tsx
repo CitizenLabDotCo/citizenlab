@@ -34,7 +34,7 @@ import {
 
 // utils
 import { openSignUpInModal } from 'events/openSignUpInModal';
-import { openVerificationModal } from 'containers/Authentication/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 
 // style
 import styled from 'styled-components';

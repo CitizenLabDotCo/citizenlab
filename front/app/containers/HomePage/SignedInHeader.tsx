@@ -26,7 +26,7 @@ import GetOnboardingCampaigns, {
 
 // utils
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { openVerificationModal } from 'containers/Authentication/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';

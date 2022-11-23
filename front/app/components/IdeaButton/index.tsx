@@ -35,7 +35,7 @@ import { getInputTermMessage } from 'utils/i18n';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // events
-import { openVerificationModal } from 'containers/Authentication/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
