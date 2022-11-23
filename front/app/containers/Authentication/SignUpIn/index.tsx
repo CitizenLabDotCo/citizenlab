@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+
+// components
 import SignUpInModal from './SignUpInComponent/SignUpInModal';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// hooks
+import { useLocation } from 'react-router-dom';
 import { endsWith } from 'lodash-es';
+
+// utils
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
-import { TAuthUser } from 'hooks/useAuthUser';
+
+// typings
+import { IUserData } from 'services/users';
 
 interface Props {
-  authUser: TAuthUser;
+  authUser: IUserData | null | undefined;
   onModalOpenedStateChange: (isOpened: boolean) => void;
 }
 

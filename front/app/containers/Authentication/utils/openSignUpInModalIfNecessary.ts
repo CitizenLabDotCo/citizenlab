@@ -5,14 +5,14 @@ import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError, endsWith } from 'utils/helperUtils';
+import { endsWith } from 'utils/helperUtils';
 
 // typings
 import { SSOParams } from 'services/singleSignOn';
-import { TAuthUser } from 'hooks/useAuthUser';
+import { IUserData } from 'services/users';
 
 export default function openSignUpInModalIfNecessary(
-  authUser: TAuthUser,
+  authUser: IUserData | null,
   isAuthError: boolean,
   isInvitation: boolean,
   search: string
@@ -24,7 +24,7 @@ export default function openSignUpInModalIfNecessary(
     // when the user is sent to the '/invite' url (e.g. when the user clicks on an invitation link)
     isInvitation ||
     // when the user exists and is logged in
-    !isNilOrError(authUser)
+    authUser !== null
   ) {
     const urlSearchParams = parse(search, {
       ignoreQueryPrefix: true,
@@ -41,7 +41,7 @@ export default function openSignUpInModalIfNecessary(
       // At that point authUser will exist.
       // When we just do !authUser?.data?.attributes?.verified,
       // we will also return true here when authUser is null or undefined.
-      !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
+      authUser !== null && !authUser.attributes.registration_completed_at;
     // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
     const {
       sso_response,
@@ -77,9 +77,7 @@ export default function openSignUpInModalIfNecessary(
         // At that point authUser will exist.
         // When we just do !authUser?.data?.attributes?.verified,
         // we will also return true here when authUser is null or undefined.
-        !isNilOrError(authUser) &&
-        !authUser.attributes.verified &&
-        sso_verification;
+        authUser !== null && !authUser.attributes.verified && sso_verification;
 
       // we do not open the modal when the user gets sent to the '/sign-up' or '/sign-in' urls because
       // on those pages we show the sign-up-in flow directly on the page and not as a modal.
