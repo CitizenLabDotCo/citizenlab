@@ -1552,7 +1552,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Gjennomfør en budsjettfordelingsøvelse",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Opprett en spørreundersøkelse på plattformen",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Opprett en meningsmåling",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Integrer en ekstern spørreundersøkelse",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Opprett en ekstern spørreundersøkelse",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Finn frivillige",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Innhent innspill og tilbakemeldinger",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Del informasjon",
