@@ -1,13 +1,13 @@
 import { randomString } from '../../../support/commands';
 
 describe('Admin: add projects to folder', () => {
+  let projectId1: string;
+  let projectId2: string;
   let projectTitle1 = randomString();
   let projectDescription = randomString();
   let projectTitle2 = randomString();
-  let projectId1: string;
-  let projectId2: string;
 
-  before(() => {
+  beforeEach(() => {
     cy.apiCreateProject({
       type: 'continuous',
       title: projectTitle1,
@@ -29,9 +29,7 @@ describe('Admin: add projects to folder', () => {
     }).then((project) => {
       projectId2 = project.body.data.id;
     });
-  });
 
-  beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/');
     cy.acceptCookies();
@@ -79,10 +77,12 @@ describe('Admin: add projects to folder', () => {
     // Wait for folder page to load
     cy.get('.e2e-resource-header').contains(folderTitle);
 
-    // Add two projects to the folder
+    // Check that our projects are in the list and add them to the folder
+    cy.get(`[data-cy="e2e-manage-button-${projectId1}"]`).should('exist');
     cy.get(`[data-cy="e2e-manage-button-${projectId1}"]`)
       .find('button')
       .click();
+    cy.get(`[data-cy="e2e-manage-button-${projectId2}"]`).should('exist');
     cy.get(`[data-cy="e2e-manage-button-${projectId2}"]`)
       .find('button')
       .click();
@@ -104,7 +104,7 @@ describe('Admin: add projects to folder', () => {
     cy.get('#e2e-folder-page').contains(projectTitle2).should('exist');
   });
 
-  after(() => {
+  afterEach(() => {
     cy.apiRemoveProject(projectId1);
     cy.apiRemoveProject(projectId2);
   });
