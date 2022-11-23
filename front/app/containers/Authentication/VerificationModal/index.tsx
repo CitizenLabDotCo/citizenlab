@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { parse } from 'qs';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -74,19 +74,19 @@ const VerificationModal = () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
   }, []);
 
-  const onClose = useCallback(() => {
+  const onClose = () => {
     closeVerificationModal();
-  }, []);
+  };
 
-  const onCompleted = useCallback(() => {
+  const onCompleted = () => {
     setActiveStep('success');
     setContext(null);
-  }, []);
+  };
 
-  const onError = useCallback(() => {
+  const onError = () => {
     setActiveStep('error');
     setContext(null);
-  }, []);
+  };
 
   useEffect(() => {
     if (!isNilOrError(authUser) && isMounted()) {
