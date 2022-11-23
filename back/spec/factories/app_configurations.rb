@@ -4,6 +4,11 @@ require 'faker'
 
 FactoryBot.define do
   factory :app_configuration do
+    transient do
+      lifecycle { 'active' }
+      locales { %w[en nl-BE fr-FR] }
+    end
+
     host { 'localhost' }
     settings do
       {
@@ -16,9 +21,10 @@ FactoryBot.define do
             'nl-BE' => Faker::Address.city,
             'fr-FR' => Faker::Address.city
           },
+          'lifecycle_stage' => lifecycle,
           'timezone' => 'Brussels',
           'currency' => 'EUR',
-          'locales' => %w[en nl-BE fr-FR],
+          'locales' => locales,
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color
@@ -38,7 +44,6 @@ FactoryBot.define do
           'eligibility_criteria' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
               locales: %i[en nl-BE fr-FR])
-
         }
       }
     end
@@ -59,7 +64,7 @@ FactoryBot.define do
             'nl-NL' => 'Luik',
             'fr-FR' => 'Liege'
           },
-          lifecycle_stage: 'active',
+          'lifecycle_stage' => 'active',
           'locales' => %w[en fr-FR nl-NL],
           'timezone' => 'Brussels',
           'currency' => 'EUR',
