@@ -26,4 +26,4 @@ COPY back/. .
 
 EXPOSE 4000
 
-CMD bundle install; bundle exec puma -C config/puma.rb
+CMD bundle install && bundle exec puma -C config/puma.rb
