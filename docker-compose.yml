@@ -20,7 +20,7 @@ services:
       # - 'memcached'
     build:
       context: .
-      dockerfile: back/Dockerfile
+      dockerfile: back/Dockerfile.development
     ports:
       - "4000:4000"
     volumes:
@@ -40,7 +40,7 @@ services:
       - "web"
     build:
       context: .
-      dockerfile: back/Dockerfile
+      dockerfile: back/Dockerfile.development
     command: bundle exec que
     volumes:
       - "./back:/cl2_back"
