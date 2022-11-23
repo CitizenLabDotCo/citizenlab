@@ -38,8 +38,6 @@ module MultiTenancy
         return if attrs_delta.blank?
 
         tenant.attributes = attrs_delta
-        tenant.remove_logo! if logo_previously_changed? && logo.blank?
-        tenant.remove_favicon! if favicon_previously_changed? && favicon.blank?
         tenant.disable_config_sync.save
       end
 

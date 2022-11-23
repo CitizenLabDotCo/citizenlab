@@ -175,8 +175,6 @@ class Tenant < ApplicationRecord
       return if attrs_delta.blank?
 
       config.attributes = attrs_delta
-      config.remove_logo! if logo_previously_changed? && logo.blank?
-      config.remove_favicon! if favicon_previously_changed? && favicon.blank?
       config.disable_tenant_sync.save
     end
   end
@@ -184,15 +182,11 @@ class Tenant < ApplicationRecord
   def attributes_delta(new_obj, old_obj)
     new_attributes = new_obj.attributes
     old_attributes = old_obj.attributes
-    carrierwave_attrs = %w[logo favicon]
-    common_attrs = (old_attributes.keys & new_attributes.keys) - carrierwave_attrs
+    common_attrs = (old_attributes.keys & new_attributes.keys)
+
     new_attributes
       .slice(*common_attrs)
       .reject { |k, v| v == old_attributes[k] }
-      .tap do |attrs|
-      attrs[:logo] = new_obj.logo if new_obj.logo_previously_changed?
-      attrs[:favicon] = new_obj.favicon if new_obj.favicon_previously_changed?
-    end
   end
 
   def create_apartment_tenant
