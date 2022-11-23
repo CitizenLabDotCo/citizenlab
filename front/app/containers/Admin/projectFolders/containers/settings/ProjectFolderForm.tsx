@@ -30,8 +30,8 @@ import FileUploader from 'components/UI/FileUploader';
 import {
   addProjectFolderFile,
   deleteProjectFolderFile,
-} from '../../../../../services/projectFolderFiles';
-import useProjectFolderFiles from '../../../../../hooks/useProjectFolderFiles';
+} from 'services/projectFolderFiles';
+import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';

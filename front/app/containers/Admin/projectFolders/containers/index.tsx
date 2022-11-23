@@ -24,7 +24,7 @@ import messages from './messages';
 // Resources
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from '../../../../resources/GetProjectFolder';
+} from 'resources/GetProjectFolder';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
