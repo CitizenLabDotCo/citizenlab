@@ -32,6 +32,7 @@ import usePhase from 'hooks/usePhase';
 
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
+import useQuery from 'utils/cl-router/useQuery';
 
 const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {
@@ -39,9 +40,8 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   };
   const [isDownloading, setIsDownloading] = useState(false);
   const locale = useLocale();
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const phaseId = urlParams.get('phase_id');
+  const query = useQuery();
+  const phaseId = query.get('phase_id');
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);
   const formResults = useFormResults({

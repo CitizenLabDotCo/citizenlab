@@ -2,6 +2,7 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 import { isError } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
+import useQuery from 'utils/cl-router/useQuery';
 
 // components
 import ProjectHelmet from './shared/header/ProjectHelmet';
@@ -92,12 +93,12 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const locale = useLocale();
   const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
+  const query = useQuery();
 
   // UseEffect to handle modal state and phase parameters
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const showModalParam = queryParams.get('show_modal');
-    const phaseIdParam = queryParams.get('phase_id');
+    const showModalParam = query.get('show_modal');
+    const phaseIdParam = query.get('phase_id');
     // Set phase id
     if (!isNilOrError(phaseIdParam) && phaseIdUrl === null) {
       setPhaseIdUrl(phaseIdParam);
