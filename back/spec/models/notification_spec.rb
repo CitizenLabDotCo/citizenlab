@@ -149,7 +149,7 @@ RSpec.describe Notification, type: :model do
       user = create(:user)
       activity = create(:activity, item: user, action: 'project_folder_moderation_rights_received', payload: { project_folder_id: folder.id })
 
-      notifications = ProjectFolders::Notifications::ProjectFolderModerationRightsReceived.make_notifications_on activity
+      notifications = Notifications::ProjectFolderModerationRightsReceived.make_notifications_on activity
       expect(notifications.map(&:recipient_id)).to match_array [user.id]
     end
   end

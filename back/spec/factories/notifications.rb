@@ -118,7 +118,7 @@ FactoryBot.define do
     association :post, factory: :initiative
   end
 
-  factory :project_folder_moderation_rights_received, parent: :notification, class: 'ProjectFolders::Notifications::ProjectFolderModerationRightsReceived' do
+  factory :project_folder_moderation_rights_received, parent: :notification, class: 'Notifications::ProjectFolderModerationRightsReceived' do
     initiating_user
     project_folder
   end
