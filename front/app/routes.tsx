@@ -4,7 +4,6 @@ import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
 
 const HomePage = lazy(() => import('containers/HomePage'));
-const SignUpInPage = lazy(() => import('containers/SignUpInPage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const UsersShowPage = lazy(() => import('containers/UsersShowPage'));
@@ -48,22 +47,6 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <HomePage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: 'sign-in',
-          element: (
-            <PageLoading>
-              <SignUpInPage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: 'sign-up',
-          element: (
-            <PageLoading>
-              <SignUpInPage />
             </PageLoading>
           ),
         },

@@ -4,7 +4,10 @@ import SignUpInModal from './SignUpInComponent/SignUpInModal';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { endsWith } from 'lodash-es';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import { TAuthUser } from 'hooks/useAuthUser';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   authUser: TAuthUser;
@@ -21,10 +24,10 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
 
   const { pathname, search } = useLocation();
 
-  useEffect(() => {
-    const isAuthError = endsWith(pathname, 'authentication-error');
-    const isInvitation = endsWith(pathname, '/invite');
+  const isAuthError = endsWith(pathname, 'authentication-error');
+  const isInvitation = endsWith(pathname, '/invite');
 
+  useEffect(() => {
     openSignUpInModalIfNecessary(
       authUser,
       isAuthError && !signUpInModalClosed,
@@ -32,7 +35,33 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
       signUpInModalMounted,
       search
     );
-  }, [pathname, search, authUser, signUpInModalClosed, signUpInModalMounted]);
+  }, [
+    isInvitation,
+    isAuthError,
+    search,
+    authUser,
+    signUpInModalClosed,
+    signUpInModalMounted,
+  ]);
+
+  // In case of a sign up / in route, open modal and redirect to homepage
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    const isSignInRoute = endsWith(pathname, 'sign-in');
+    const isSignUpRoute = endsWith(pathname, 'sign-up');
+    const isAuthRoute = isSignInRoute || isSignUpRoute;
+    if (isAuthRoute && isNilOrError(authUser)) {
+      timeout = setTimeout(() => {
+        openSignUpInModal({
+          flow: isSignInRoute ? 'signin' : 'signup',
+        });
+      }, 0);
+    }
+    clHistory.replace('/');
+    () => {
+      clearTimeout(timeout);
+    };
+  }, [pathname, authUser]);
 
   const handleSignUpInModalMounted = () => {
     setSignUpInModalMounted(true);
