@@ -6,16 +6,14 @@ import { completeRegistration } from 'services/users';
 
 // components
 import Header from './Header';
-import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
-import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
+import AuthProviders, { AuthProvider } from '../AuthProviders';
+import PasswordSignup from '../SignUp/PasswordSignup';
 import ConfirmationSignupStep from './ConfirmationSignupStep';
-import CustomFieldsSignupStep from 'components/SignUpIn/SignUp/CustomFieldsSignupStep';
-import Success from 'components/SignUpIn/SignUp/Success';
+import CustomFieldsSignupStep from '../SignUp/CustomFieldsSignupStep';
+import Success from '../SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { StyledModalContentContainer } from 'components/SignUpIn/styles';
-import Outlet from 'components/Outlet';
-import Mounter from 'components/Mounter';
+import { StyledModalContentContainer } from '../styles';
 import VerificationSignUpStep from './VerificationSignUpStep';
 
 // hooks
@@ -33,11 +31,10 @@ import {
   registrationCanBeCompleted,
   getNumberOfSteps,
   getActiveStepNumber,
-  allDataLoaded,
 } from './stepUtils';
 
 // events
-import { signUpActiveStepChange } from 'components/SignUpIn/events';
+import { signUpActiveStepChange } from '../events';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -47,13 +44,13 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/SignUpIn/tracks';
+import tracks from '../tracks';
 
 // style
 import styled, { useTheme } from 'styled-components';
 
 // typings
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
 import { UserCustomFieldsInfos } from 'services/userCustomFields';
@@ -145,16 +142,9 @@ const SignUp = ({
     name: 'user_confirmation',
   });
 
-  // state
-  const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
-    getDefaultSteps(userCustomFieldsSchema)
-  );
-  const [outletsRendered, setOutletsRendered] = useState(false);
-  const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
-    useState<TDataLoadedPerOutlet>({});
+  const configuration = getDefaultSteps(userCustomFieldsSchema);
   const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
   const [accountCreated, setAccountCreated] = useState(false);
-  const confirmOutletsRendered = () => setOutletsRendered(true);
   const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
     metaData.isInvitation ? 'password-signup' : 'auth-providers'
   );
@@ -169,9 +159,6 @@ const SignUp = ({
 
   // this transitions the current step to the next step
   useEffect(() => {
-    if (!outletsRendered) return;
-    if (!allDataLoaded(dataLoadedPerOutlet)) return;
-
     const nextActiveStep = getActiveStep(configuration, authUser, metaData, {
       emailSignUpSelected,
       accountCreated,
@@ -193,8 +180,6 @@ const SignUp = ({
     metaData,
     emailSignUpSelected,
     accountCreated,
-    outletsRendered,
-    dataLoadedPerOutlet,
     activeStep,
   ]);
 
@@ -284,22 +269,6 @@ const SignUp = ({
       : setError(formatMessage(messages.somethingWentWrongText));
   };
 
-  const handleOnOutletData = (
-    configuration: TSignUpStepConfigurationObject
-  ) => {
-    setConfiguration((oldConfiguration) => ({
-      ...oldConfiguration,
-      [configuration.key]: configuration,
-    }));
-  };
-
-  const handleOnOutletDataLoaded = (step: TSignUpStep, loaded: boolean) => {
-    setDataLoadedPerOutlet((oldDataLoadedPerOutlet) => ({
-      ...oldDataLoadedPerOutlet,
-      [step]: loaded,
-    }));
-  };
-
   const handleGoBack = () => {
     setEmailSignUpSelected(false);
   };
@@ -385,19 +354,6 @@ const SignUp = ({
             {activeStep === 'confirmation' && userConfirmation && (
               <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
             )}
-
-            <Outlet
-              id="app.components.SignUpIn.SignUp.step"
-              step={activeStep}
-              metaData={metaData}
-              onData={handleOnOutletData}
-              onDataLoaded={handleOnOutletDataLoaded}
-              onError={handleStepError}
-              onSkipped={onCompleteActiveStep}
-              onCompleted={onCompleteActiveStep}
-            />
-
-            <Mounter onMount={confirmOutletsRendered} />
 
             {activeStep === 'custom-fields' && (
               <CustomFieldsSignupStep onCompleted={onCompleteActiveStep} />

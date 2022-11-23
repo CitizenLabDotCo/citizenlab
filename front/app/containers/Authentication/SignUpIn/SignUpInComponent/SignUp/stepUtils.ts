@@ -13,7 +13,7 @@ import {
   TDataLoadedPerOutlet,
 } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 import { UserCustomFieldsInfos } from 'services/userCustomFields';
 
 export function getDefaultSteps(

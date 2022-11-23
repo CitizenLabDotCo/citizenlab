@@ -1,6 +1,6 @@
 import { getDefaultSteps, getActiveStep, getEnabledSteps } from './stepUtils';
 import { IUserData } from 'services/users';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 import { isNilOrError } from 'utils/helperUtils';
 import { TSignUpConfiguration, TSignUpStepConfigurationObject } from './';
 import { TAuthUser } from 'hooks/useAuthUser';

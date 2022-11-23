@@ -28,7 +28,7 @@ import { Options, Option } from 'components/SignUpIn/styles';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 
 const Container = styled.div`
   display: flex;

@@ -2,7 +2,7 @@ import React from 'react';
 import VerificationSteps from './VerificationSteps';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 
 interface Props {
   metaData: ISignUpInMetaData;

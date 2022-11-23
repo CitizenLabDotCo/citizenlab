@@ -50,7 +50,7 @@ import { viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON } from 'typings';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 import { IUser } from 'services/users';
 
 const Container = styled.div``;
