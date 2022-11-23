@@ -24,10 +24,10 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
 
   const { pathname, search } = useLocation();
 
-  const isAuthError = endsWith(pathname, 'authentication-error');
-  const isInvitation = endsWith(pathname, '/invite');
-
   useEffect(() => {
+    const isAuthError = endsWith(pathname, 'authentication-error');
+    const isInvitation = endsWith(pathname, '/invite');
+
     openSignUpInModalIfNecessary(
       authUser,
       isAuthError && !signUpInModalClosed,
@@ -35,14 +35,7 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
       signUpInModalMounted,
       search
     );
-  }, [
-    isInvitation,
-    isAuthError,
-    search,
-    authUser,
-    signUpInModalClosed,
-    signUpInModalMounted,
-  ]);
+  }, [pathname, search, authUser, signUpInModalClosed, signUpInModalMounted]);
 
   // In case of a sign up / in route, open modal and redirect to homepage
   useEffect(() => {
