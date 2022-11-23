@@ -15,7 +15,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const [hasCheckedIfModalShouldBeOpened, setHasCheckedIfModalShouldBeOpened] =
     useState(false);
   const [signUpInModalClosed, setSignUpInModalClosed] = useState(false);
-  const [signUpInModalMounted, setSignUpInModalMounted] = useState(false);
 
   const fullscreenModalEnabled = useFeatureFlag({
     name: 'franceconnect_login',
@@ -35,7 +34,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
       authUser,
       isAuthError && !signUpInModalClosed,
       isInvitation && !signUpInModalClosed,
-      signUpInModalMounted,
       search
     );
 
@@ -45,13 +43,8 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
     search,
     authUser,
     signUpInModalClosed,
-    signUpInModalMounted,
     hasCheckedIfModalShouldBeOpened,
   ]);
-
-  const handleSignUpInModalMounted = () => {
-    setSignUpInModalMounted(true);
-  };
 
   const handleUpdateModalOpened = (opened: boolean) => {
     onModalOpenedStateChange(opened);
@@ -63,7 +56,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
 
   return (
     <SignUpInModal
-      onMounted={handleSignUpInModalMounted}
       onOpened={handleUpdateModalOpened}
       onClosed={handleCloseSignUpInModal}
       fullScreenModal={fullscreenModalEnabled}

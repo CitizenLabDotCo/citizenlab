@@ -9,7 +9,6 @@ export default function openSignUpInModalIfNecessary(
   authUser: TAuthUser,
   isAuthError: boolean,
   isInvitation: boolean,
-  signUpInModalMounted: boolean,
   search: string
 ) {
   // here we check all the possible conditions that could potentially trigger the sign-up and/or verification flow to appear
@@ -18,8 +17,8 @@ export default function openSignUpInModalIfNecessary(
     isAuthError ||
     // when the user is sent to the '/invite' url (e.g. when the user clicks on an invitation link)
     isInvitation ||
-    // when -both- the signup modal component has mounted and the authUser stream has initiated
-    (signUpInModalMounted && !isNilOrError(authUser))
+    // when the user exists and is logged in
+    !isNilOrError(authUser)
   ) {
     const urlSearchParams = parse(search, {
       ignoreQueryPrefix: true,
