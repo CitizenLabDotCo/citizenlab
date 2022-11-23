@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { parse } from 'qs';
 import { isNilOrError } from 'utils/helperUtils';
-
+import { isVerificationError } from 'containers/Authentication/VerificationModal/verificationModalEvents';
 // components
 import Modal from 'components/UI/Modal';
 // TODO: Change when we move to container
@@ -11,7 +11,7 @@ import VerificationSuccess from './VerificationSuccess';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import useAuthUser from 'hooks/useAuthUser';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
@@ -29,6 +29,7 @@ import {
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 import ErrorBoundary from 'components/ErrorBoundary';
+import useQuery from 'utils/cl-router/useQuery';
 
 // typings
 const Container = styled.div`
@@ -45,12 +46,11 @@ const VerificationModal = () => {
   const { windowWidth } = useWindowSize();
   const authUser = useAuthUser();
   const { search } = useLocation();
-  const { query } = useParams();
-
+  const query = useQuery();
   const isMounted = useIsMounted();
   const [activeStep, setActiveStep] = useState<TVerificationStep>(null);
   const [context, setContext] = useState<ContextShape>(null);
-  const [error, setError] = useState<IVerificationError>(null);
+  const [error, setError] = useState<IVerificationError | null>(null);
   const opened = !!activeStep;
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
@@ -106,9 +106,15 @@ const VerificationModal = () => {
       Object.hasOwn(urlSearchParams, 'verification_error') &&
       urlSearchParams.verification_error === 'true'
     ) {
+      const error = query.get('error');
       window.history.replaceState(null, '', window.location.pathname);
       setActiveStep('error');
-      // setError(query?.error || null);
+      if (
+        (typeof error === 'string' && isVerificationError(error)) ||
+        error === null
+      ) {
+        setError(error);
+      }
       setContext(null);
     }
   };
@@ -140,7 +146,9 @@ const VerificationModal = () => {
             <VerificationSuccess onClose={onClose} />
           )}
 
-          {activeStep === 'error' && <VerificationError error={error} />}
+          {activeStep === 'error' && error && (
+            <VerificationError error={error} />
+          )}
         </Container>
       </Modal>
     </ErrorBoundary>
