@@ -32,7 +32,7 @@ class TrackIntercomService
   def track_user?(user)
     return false if user.super_admin?
 
-    user.admin?
+    user.admin? || user.project_moderator?
   end
 
   def identify_tenant(tenant)
@@ -79,6 +79,7 @@ class TrackIntercomService
       locale: user.locale,
       isAdmin: user.admin?,
       isSuperAdmin: user.super_admin?,
+      isProjectModerator: user.project_moderator?,
       highestRole: user.highest_role.to_s
     }
   end
@@ -142,5 +143,3 @@ class TrackIntercomService
     @intercom.companies.save(company)
   end
 end
-
-TrackIntercomService.prepend_if_ee('ProjectManagement::Patches::TrackIntercomService')
