@@ -153,11 +153,6 @@ class Tenant < ApplicationRecord
     configuration.feature_activated?(feature)
   end
 
-  def public_settings
-    ActiveSupport::Deprecation.warn('Tenant#public_settings is deprecated. Use AppConfiguration#public_settings instead.')
-    configuration.public_settings
-  end
-
   def base_frontend_uri
     ActiveSupport::Deprecation.warn('Tenant#base_frontend_uri is deprecated. Use AppConfiguration#base_frontend_uri instead.')
     configuration.base_frontend_uri
