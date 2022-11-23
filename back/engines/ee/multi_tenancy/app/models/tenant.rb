@@ -35,7 +35,6 @@ class Tenant < ApplicationRecord
   validate :valid_host_format
 
   after_initialize :custom_initialization
-  before_validation :validate_missing_feature_dependencies
   before_validation :ensure_style
   after_create :create_apartment_tenant
 
@@ -233,14 +232,6 @@ class Tenant < ApplicationRecord
     ActiveRecord::Base.connection.execute("ALTER SCHEMA \"#{old_schema}\" RENAME TO \"#{new_schema}\"")
     # If we were in the apartment of the altered tenant, we switch to the new schema.
     Apartment::Tenant.switch!(new_schema) if old_schema == Apartment::Tenant.current
-  end
-
-  def validate_missing_feature_dependencies
-    ss = SettingsService.new
-    missing_dependencies = ss.missing_dependencies(settings, AppConfiguration::Settings.json_schema)
-    return if missing_dependencies.empty?
-
-    errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
   end
 
   def valid_host_format
