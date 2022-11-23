@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Trimite prin Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Distribuiți prin WhatsApp",
   "app.components.SideModal.closeButtonAria": "Închide",
-  "app.components.SignUpIn.continue": "Continuă",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selectate {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Traduceți",

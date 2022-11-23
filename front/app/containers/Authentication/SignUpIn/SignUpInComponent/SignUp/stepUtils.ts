@@ -10,7 +10,6 @@ import {
   TSignUpConfiguration,
   TSignUpStepConfigurationObject,
   ILocalState,
-  TDataLoadedPerOutlet,
 } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { ISignUpInMetaData } from 'events/openSignUpInModal';
@@ -213,12 +212,4 @@ export function getActiveStepNumber(
     notSuccessOrAccountCreated
   );
   return enabledStepsWithoutSuccess.indexOf(activeStep) + 1;
-}
-
-export function allDataLoaded(dataLoadedPerOutlet: TDataLoadedPerOutlet) {
-  if (Object.keys(dataLoadedPerOutlet).length === 0) {
-    return true;
-  }
-
-  return Object.values(dataLoadedPerOutlet).every((loaded) => loaded === true);
 }

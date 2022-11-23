@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Per Meddenger deelen",
   "app.components.Sharing.shareViaWhatsApp": "Per WhatsApp deelen",
   "app.components.SideModal.closeButtonAria": "Zoumaachen",
-  "app.components.SignUpIn.continue": "Weiderfueren",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewielt {numberOfSelectedTopics, plural, =0 {null Sujeten} one {ee Sujet} other {# Sujet'en}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Iwwersetzen",

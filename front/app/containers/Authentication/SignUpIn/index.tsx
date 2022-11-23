@@ -5,7 +5,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { endsWith } from 'lodash-es';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
 import { TAuthUser } from 'hooks/useAuthUser';
-import { openSignUpInModal$ } from './SignUpInComponent/events';
 
 interface Props {
   authUser: TAuthUser;
@@ -21,28 +20,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   });
 
   const { pathname, search } = useLocation();
-
-  useEffect(() => {
-    const subscription = openSignUpInModal$.subscribe(
-      ({ eventValue: metaData }) => {
-        // Sometimes we need to still open the sign up/in modal
-        // after login is completed, if registration is not complete.
-        // But in that case, componentDidUpdate is somehow called before
-        // the modal is closed which overwrites the metaData.
-        // This slightly dirty hack covers that case.
-        if (metaData) {
-          return;
-        } else {
-          // if metaData is undefined, it means we're closing
-          // the sign up/in modal.
-          setSignUpInModalMounted(false);
-        }
-      }
-    );
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   useEffect(() => {
     const isAuthError = endsWith(pathname, 'authentication-error');

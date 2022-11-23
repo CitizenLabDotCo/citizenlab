@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Podijelite putem Messengera",
   "app.components.Sharing.shareViaWhatsApp": "Podijelite putem WhatsAppa",
   "app.components.SideModal.closeButtonAria": "Zatvori",
-  "app.components.SignUpIn.continue": "Nastavi",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Odabrani {numberOfSelectedTopics, plural, =0 {nula oznaka} one {jedna oznaka} other {# oznaka}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Prevedi",

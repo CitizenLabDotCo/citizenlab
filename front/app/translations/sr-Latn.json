@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Delite kroz Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Delite kroz WhatsApp",
   "app.components.SideModal.closeButtonAria": "Zatvori",
-  "app.components.SignUpIn.continue": "Nastavite",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selected {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Prevedi",

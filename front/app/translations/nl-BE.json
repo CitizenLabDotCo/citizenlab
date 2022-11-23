@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Deel via Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Deel via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Sluiten",
-  "app.components.SignUpIn.continue": "Ga verder",
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural,=0 {Geen tags} one {Eén tag} other {# tags}} geselecteerd. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Origineel",
   "app.components.UI.TranslateButton.translate": "Vertaal",

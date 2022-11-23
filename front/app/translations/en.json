@@ -440,7 +440,6 @@
   "app.components.Sharing.shareViaMessenger": "Share via Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Share via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Close",
-  "app.components.SignUpIn.continue": "Continue",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selected {numberOfSelectedTopics, plural, =0 {zero tags} one {one tag} other {# tags}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Translate",

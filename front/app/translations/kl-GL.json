@@ -426,7 +426,6 @@
   "app.components.Sharing.shareViaMessenger": "Messengerikkut siammarteruk",
   "app.components.Sharing.shareViaWhatsApp": "Share via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Matujuk",
-  "app.components.SignUpIn.continue": "Nangigit",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selected {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Allagaq peqqaartoq",
   "app.components.UI.TranslateButton.translate": "Nutseruk",
