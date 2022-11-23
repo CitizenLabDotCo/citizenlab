@@ -1,14 +1,18 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import { parse } from 'qs';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Modal from 'components/UI/Modal';
 // TODO: Change when we move to container
-import VerificationSteps from 'containers/Authentication/SignUpIn/SignUpInComponent/SignUp/VerificationSignUpStep/VerificationSteps';
+import VerificationSteps from '../SignUpIn/SignUpInComponent/SignUp/VerificationSignUpStep/VerificationSteps';
 import VerificationError from './VerificationError';
 import VerificationSuccess from './VerificationSuccess';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
+import { useLocation, useParams } from 'react-router-dom';
+import useAuthUser from 'hooks/useAuthUser';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
@@ -37,13 +41,11 @@ const Container = styled.div`
   padding-right: 20px;
 `;
 
-export interface Props {
-  className?: string;
-  onMounted: (id: string) => void;
-}
-
-const VerificationModal = ({ className, onMounted }: Props) => {
+const VerificationModal = () => {
   const { windowWidth } = useWindowSize();
+  const authUser = useAuthUser();
+  const { search } = useLocation();
+  const { query } = useParams();
 
   const isMounted = useIsMounted();
   const [activeStep, setActiveStep] = useState<TVerificationStep>(null);
@@ -52,13 +54,6 @@ const VerificationModal = ({ className, onMounted }: Props) => {
   const opened = !!activeStep;
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
-
-  useEffect(() => {
-    if (isMounted() && onMounted) {
-      onMounted('verification');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onMounted]);
 
   useEffect(() => {
     const subscriptions = [
@@ -93,6 +88,31 @@ const VerificationModal = ({ className, onMounted }: Props) => {
     setContext(null);
   }, []);
 
+  useEffect(() => {
+    if (!isNilOrError(authUser) && isMounted()) {
+      openVerificationModalIfSuccessOrError(search);
+    }
+  }, []);
+
+  const openVerificationModalIfSuccessOrError = (search: string) => {
+    const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
+
+    if (Object.hasOwn(urlSearchParams, 'verification_success')) {
+      window.history.replaceState(null, '', window.location.pathname);
+      setActiveStep('success');
+    }
+
+    if (
+      Object.hasOwn(urlSearchParams, 'verification_error') &&
+      urlSearchParams.verification_error === 'true'
+    ) {
+      window.history.replaceState(null, '', window.location.pathname);
+      setActiveStep('error');
+      // setError(query?.error || null);
+      setContext(null);
+    }
+  };
+
   return (
     <ErrorBoundary>
       <Modal
@@ -104,7 +124,7 @@ const VerificationModal = ({ className, onMounted }: Props) => {
         close={onClose}
         closeOnClickOutside={false}
       >
-        <Container id="e2e-verification-modal" className={className || ''}>
+        <Container id="e2e-verification-modal">
           {activeStep && activeStep !== 'success' && activeStep !== 'error' && (
             <VerificationSteps
               context={context}
