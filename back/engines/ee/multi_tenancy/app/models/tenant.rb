@@ -92,16 +92,6 @@ class Tenant < ApplicationRecord
     AppConfiguration.instance.style(*path)
   end
 
-  def self.style_json_schema_str
-    ActiveSupport::Deprecation.warn('Tenant::style_json_schema_str is deprecated. Use AppConfiguration::style_json_schema_str instead.')
-    AppConfiguration.style_json_schema_str
-  end
-
-  def self.style_json_schema
-    ActiveSupport::Deprecation.warn('Tenant::style_json_schema is deprecated. Use AppConfiguration::style_json_schema instead.')
-    AppConfiguration.style_json_schema
-  end
-
   def custom_initialization
     @config_sync_enabled = true
     @auto_config = true
