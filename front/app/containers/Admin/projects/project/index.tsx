@@ -16,8 +16,6 @@ import NewIdeaButton from './ideas/NewIdeaButton';
 import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
 import FeatureFlag from 'components/FeatureFlag';
 import Tab from './permissions/components/Tab';
-// const Tab = React.lazy(() => import('./admin/components/Tab'));
-// const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 // resources
 import GetFeatureFlag, {
