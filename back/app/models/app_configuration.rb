@@ -39,6 +39,7 @@ class AppConfiguration < ApplicationRecord
   validate :validate_singleton, on: :create
 
   before_validation :validate_missing_feature_dependencies
+  before_validation :add_missing_features_and_settings, on: :create
 
   after_update do
     AppConfiguration.instance.reload
@@ -116,6 +117,13 @@ class AppConfiguration < ApplicationRecord
     self.settings = ss.add_missing_features(settings, schema)
     self.settings = ss.add_missing_settings(settings, schema)
     self
+  end
+
+  def add_missing_features_and_settings
+    ss = SettingsService.new
+    schema = Settings.json_schema
+    self.settings = ss.add_missing_features(settings, schema)
+    self.settings = ss.add_missing_settings(settings, schema)
   end
 
   def feature_activated?(setting_name)
