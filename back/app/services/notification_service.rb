@@ -20,7 +20,6 @@ class NotificationService
     Notifications::OfficialFeedbackOnVotedInitiative,
     Notifications::OfficialFeedbackOnYourIdea,
     Notifications::OfficialFeedbackOnYourInitiative,
-    ProjectFolders::Notifications::ProjectFolderModerationRightsReceived,
     Notifications::ProjectModerationRightsReceived,
     Notifications::ProjectPhaseStarted,
     Notifications::ProjectPhaseUpcoming,
@@ -30,7 +29,8 @@ class NotificationService
     Notifications::StatusChangeOnCommentedInitiative,
     Notifications::StatusChangeOnVotedIdea,
     Notifications::StatusChangeOnVotedInitiative,
-    Notifications::ThresholdReachedForAdmin
+    Notifications::ThresholdReachedForAdmin,
+    ProjectFolders::Notifications::ProjectFolderModerationRightsReceived
   ].freeze
 
   def notification_classes
