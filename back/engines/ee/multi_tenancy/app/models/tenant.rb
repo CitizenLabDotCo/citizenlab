@@ -138,11 +138,6 @@ class Tenant < ApplicationRecord
     Tenant.host_to_schema_name(host_was)
   end
 
-  def cleanup_settings
-    ActiveSupport::Deprecation.warn('Tenant#cleanup_settings is deprecated. Use AppConfiguration#cleanup_settings instead.')
-    configuration.cleanup_settings
-  end
-
   def base_frontend_uri
     ActiveSupport::Deprecation.warn('Tenant#base_frontend_uri is deprecated. Use AppConfiguration#base_frontend_uri instead.')
     configuration.base_frontend_uri
