@@ -24,7 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // Hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
-import VerificationStatus from 'components/SignUpIn/SignUp/VerificationSignUpStep/VerificationStatus';
+import VerificationStatus from './VerificationStatus';
 
 const Container = styled.main`
   width: 100%;
