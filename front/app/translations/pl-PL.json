@@ -1555,7 +1555,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Przydzielanie środków",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Tworzenie ankiety CitizenLab",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Stwórz badanie",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Osadź ankietę z innych źródeł",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Embed an external survey",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Znajdź wolontariuszy",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Zbieranie inicjatyw i informacji zwrotnych",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Podziel się informacjami",
