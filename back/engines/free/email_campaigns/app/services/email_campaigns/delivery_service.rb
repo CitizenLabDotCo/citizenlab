@@ -47,7 +47,8 @@ module EmailCampaigns
       Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
       Campaigns::Welcome,
-      Campaigns::YourProposedInitiativesDigest
+      Campaigns::YourProposedInitiativesDigest,
+      ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
     ].freeze
 
     def campaign_types
@@ -166,4 +167,3 @@ end
 
 EmailCampaigns::DeliveryService.prepend_if_ee('FlagInappropriateContent::Patches::EmailCampaigns::DeliveryService')
 EmailCampaigns::DeliveryService.prepend_if_ee('IdeaAssignment::Patches::EmailCampaigns::DeliveryService')
-EmailCampaigns::DeliveryService.prepend_if_ee('ProjectFolders::Patches::EmailCampaigns::DeliveryService')
