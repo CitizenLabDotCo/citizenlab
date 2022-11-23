@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'containers/Authentication/VerificationModal/verificationModalEvents';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';

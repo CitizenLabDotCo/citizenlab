@@ -7,7 +7,7 @@ import VerificationModal from './VerificationModal';
 type Authentication = {
   authUser: TAuthUser;
   onModalOpenedStateChange: (isOpened: boolean) => void;
-  onMounted: (id?: string) => void;
+  onMounted: (id: string) => void;
 };
 
 const Authentication = ({ authUser, onModalOpenedStateChange, onMounted }) => {

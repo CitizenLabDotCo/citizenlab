@@ -9,7 +9,7 @@ import messages from './messages';
 // events
 import { commentReplyButtonClicked } from './events';
 import { openSignUpInModal } from 'events/openSignUpInModal';
-import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'containers/Authentication/VerificationModal/verificationModalEvents';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';

@@ -26,7 +26,7 @@ import tracks from './tracks';
 
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
-import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'containers/Authentication/VerificationModal/verificationModalEvents';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';

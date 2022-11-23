@@ -39,7 +39,7 @@ const Container = styled.div`
 
 export interface Props {
   className?: string;
-  onMounted: (id?: string) => void;
+  onMounted: (id: string) => void;
 }
 
 const VerificationModal = ({ className, onMounted }: Props) => {

@@ -6,7 +6,7 @@ import {
   getPCParticipationConditions,
 } from 'services/participationConditions';
 
-import { ContextShape } from 'containers/App/VerificationModal/verificationModalEvents';
+import { ContextShape } from 'containers/Authentication/VerificationModal/verificationModalEvents';
 
 // doesn't react to prop changes, which is ok here because components are unmounted btwn uses
 

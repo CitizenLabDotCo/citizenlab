@@ -29,7 +29,7 @@ import { MessageDescriptor } from 'react-intl';
 
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
-import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'containers/Authentication/VerificationModal/verificationModalEvents';
 
 import styled from 'styled-components';
 
