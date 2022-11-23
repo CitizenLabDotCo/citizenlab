@@ -21,7 +21,7 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import { AuthProvider } from 'components/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'containers/App/VerificationModal/verificationModalEvents';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';

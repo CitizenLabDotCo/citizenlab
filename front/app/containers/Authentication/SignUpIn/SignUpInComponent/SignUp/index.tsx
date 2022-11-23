@@ -6,7 +6,7 @@ import { completeRegistration } from 'services/users';
 
 // components
 import Header from './Header';
-import AuthProviders, { AuthProvider } from '../AuthProviders';
+import AuthProviders, { AuthProvider } from 'components/AuthProviders';
 import PasswordSignup from '../SignUp/PasswordSignup';
 import ConfirmationSignupStep from './ConfirmationSignupStep';
 import CustomFieldsSignupStep from '../SignUp/CustomFieldsSignupStep';

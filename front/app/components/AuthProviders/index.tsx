@@ -20,11 +20,11 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './SignUp/messages';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { Options, Option } from 'components/SignUpIn/styles';
+import { Options, Option } from './styles';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
