@@ -1553,7 +1553,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Genomför en övning för budgettilldelning",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Skapa en undersökning på plattformen",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Skapa en omröstning",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Bädda in en extern undersökning",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Creați un sondaj extern",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Hitta personer som anmäler sig frivilligt",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Samla in indata och återkoppling",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Dela information",
