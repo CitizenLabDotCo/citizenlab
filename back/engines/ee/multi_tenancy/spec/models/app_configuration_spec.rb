@@ -75,6 +75,29 @@ RSpec.describe AppConfiguration, type: :model do
     end
   end
 
+  describe '#closest_locale_to' do
+    let(:app_config) do
+      create(:tenant, host: 'something.else-than-the-default-test-tenant').configuration
+    end
+
+    it 'returns the locale itself if it is present' do
+      app_config.settings['core']['locales'] = %w[en nl-BE]
+      expect(app_config.closest_locale_to('nl-BE')).to eq 'nl-BE'
+    end
+
+    it 'returns the first locale when the requested locale is not present' do
+      app_config.settings['core']['locales'] = %w[en nl-BE]
+      expect(app_config.closest_locale_to('de-DE')).to eq 'en'
+    end
+
+    # An OmniAuth response (following SSO with, for example, Google) often includes a
+    # 2 character locale code, which we try to match against our longer codes.
+    it 'returns the first locale containing a matching 2 character substring' do
+      app_config.settings['core']['locales'] = %w[en nl-BE]
+      expect(app_config.closest_locale_to('nl')).to eq 'nl-BE'
+    end
+  end
+
   context 'when updated' do
     it 'persists & synchronizes only the dirty attributes' do
       app_config = described_class.instance

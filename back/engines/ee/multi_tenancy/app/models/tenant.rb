@@ -153,11 +153,6 @@ class Tenant < ApplicationRecord
     configuration.feature_activated?(feature)
   end
 
-  def closest_locale_to(locale)
-    ActiveSupport::Deprecation.warn('Tenant#closest_locale_to is deprecated. Use AppConfiguration#closest_locale_to instead.')
-    configuration.closest_locale_to(locale)
-  end
-
   def public_settings
     ActiveSupport::Deprecation.warn('Tenant#public_settings is deprecated. Use AppConfiguration#public_settings instead.')
     configuration.public_settings
