@@ -67,15 +67,17 @@ export const ModalContentContainer = styled.div<{
   ${({ fullScreen }) =>
     fullScreen &&
     `
-      max-width: 580px;;
+      display: flex;
+      justify-content: center;
       padding-bottom: 40px !important;
   `}
 `;
 
-const StyledCloseIconButton = styled(CloseIconButton)`
+const StyledCloseIconButton = styled(CloseIconButton)<{
+  fullScreen?: boolean;
+}>`
   position: absolute;
   top: 19px;
-  right: 25px;
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -95,20 +97,20 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     left: 25px;
   `}
 
+  ${({ fullScreen }) => (fullScreen ? 'left: 25px;' : 'right: 25px;')};
+
   ${media.phone`
     top: 13px;
+    ${({ fullScreen }) => (fullScreen ? 'left: auto;' : '')};
     right: 15px;
   `}
 `;
 
 // copy of the styled FocusOn container below
 const StyledNonFocusableContainer = styled.div<{
-  width: number | string;
   fullScreen?: boolean;
 }>`
   width: 100%;
-  max-width: ${({ width }) =>
-    width.constructor === String ? width : `${width}px`};
   display: flex;
   justify-content: center;
 
@@ -166,7 +168,6 @@ const ModalContainer = styled(clickOutside)<{
       align-items: center;
       max-height: 100%;
       border-radius: 0;
-      border-top: 2px solid ${colors.borderLight};
   `}
 
   /* tall desktops screens */
@@ -393,7 +394,7 @@ const ModalContentContainerSwitch = ({
 }) => {
   if (fullScreen) {
     return (
-      <StyledNonFocusableContainer width={width} fullScreen={fullScreen}>
+      <StyledNonFocusableContainer fullScreen={fullScreen}>
         {children}
       </StyledNonFocusableContainer>
     );
@@ -577,12 +578,12 @@ class Modal extends PureComponent<Props, State> {
                 role="dialog"
               >
                 <StyledCloseIconButton
+                  fullScreen={fullScreen}
                   className="e2e-modal-close-button"
                   onClick={this.clickCloseButton}
                   iconColor={colors.textSecondary}
                   iconColorOnHover={'#000'}
                   a11y_buttonActionMessage={messages.closeModal}
-                  fullScreen={fullScreen}
                 />
 
                 {header && (
