@@ -58,7 +58,14 @@ class Tenant < ApplicationRecord
   scope :creation_finalized, -> { not_deleted.where.not(creation_finalized_at: nil) }
   scope :churned, -> { with_lifecycle('churned') }
   scope :with_lifecycle, lambda { |lifecycle|
-    where(%(settings @> '{"core": {"lifecycle_stage": "#{lifecycle}"} }'))
+    ids = AppConfiguration
+      .from_tenants(self)
+      .select { |config| config.settings('core', 'lifecycle_stage') == lifecycle }
+      .pluck(:id)
+
+    # We can use app configuration ids to query tenants because tenants and
+    # app configurations share the same ids.
+    where(id: ids)
   }
 
   class << self
