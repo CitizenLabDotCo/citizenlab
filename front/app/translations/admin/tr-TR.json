@@ -987,7 +987,7 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Zaman çizelgesi olmadan",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Bir proje oluşturun",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Şablon kullanarak bir proje oluşturun",
-  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Embed an external survey",
+  "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Create an external survey",
   "app.containers.AdminPage.ProjectEdit.createNativeSurvey": "Platform içi bir anket oluşturun",
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Platformumuzdan ayrılmadan bir anket oluşturun.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Bir oylama oluşturun",
