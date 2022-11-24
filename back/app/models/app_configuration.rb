@@ -162,6 +162,18 @@ class AppConfiguration < ApplicationRecord
     "#{transport}://#{host}"
   end
 
+  def lifecycle_stage
+    settings.dig('core','lifecycle_stage')
+  end
+
+  def active?
+    lifecycle_stage == 'active'
+  end
+
+  def churned?
+    lifecycle_stage == 'churned'
+  end
+
   private
 
   def validate_missing_feature_dependencies
