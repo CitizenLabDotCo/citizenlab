@@ -7,7 +7,7 @@ import {
 } from 'services/verificationMethods';
 
 // components
-import VerificationMethodButton from 'containers/App/VerificationModal/VerificationMethodButton';
+import VerificationMethodButton from 'containers/Authentication/VerificationModal/VerificationMethodButton';
 
 // i18n
 import T from 'components/T';

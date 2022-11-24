@@ -18,7 +18,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // styling

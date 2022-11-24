@@ -25,7 +25,7 @@ import messages from './messages';
 
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
-import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 
 // styling
 import styled from 'styled-components';
