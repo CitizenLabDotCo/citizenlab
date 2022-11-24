@@ -1202,6 +1202,8 @@
   "app.containers.SignIn.logIn": "Logg inn",
   "app.containers.SignIn.or": "Eller",
   "app.containers.SignIn.passwordLabel": "Passord",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Informasjonen du har oppgitt er ikke korrekt. Klikk «glemt passord» for å nullstille passordet.",
   "app.containers.SignIn.signUp": "Registrer deg",
   "app.containers.SignIn.somethingWentWrong": "Noe gikk galt og du får dessverre ikke logget inn. Prøv igjen senere.",
