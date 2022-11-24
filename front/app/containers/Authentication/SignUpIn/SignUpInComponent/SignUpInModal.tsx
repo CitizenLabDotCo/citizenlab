@@ -3,6 +3,7 @@ import { signOut } from 'services/auth';
 import tracks from './tracks';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import SignUpIn from '.';
 import { TSignUpStep } from './SignUp';
@@ -133,7 +134,11 @@ const SignUpInModal = memo<Props>(
         close={onClose}
         closeOnClickOutside={false}
       >
-        <div id="e2e-sign-up-in-modal" className={className}>
+        <Box
+          id="e2e-sign-up-in-modal"
+          className={className}
+          width={`${modalWidth}px`}
+        >
           {opened && metaData && (
             <SignUpIn
               metaData={metaData}
@@ -141,7 +146,7 @@ const SignUpInModal = memo<Props>(
               fullScreen={fullScreenModal}
             />
           )}
-        </div>
+        </Box>
       </Modal>
     );
   }
