@@ -618,7 +618,7 @@ GEM
       qonfig (~> 0.24)
     css_parser (1.11.0)
       addressable
-    dalli (2.7.11)
+    dalli (3.2.3)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.1)
@@ -1201,7 +1201,7 @@ DEPENDENCIES
   custom_maps!
   custom_topics!
   customizable_navbar!
-  dalli (~> 2.7)
+  dalli (~> 3.2.3)
   database_cleaner (~> 2.0.1)
   email_campaigns!
   factory_bot_rails
