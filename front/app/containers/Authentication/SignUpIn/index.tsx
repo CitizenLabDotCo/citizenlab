@@ -1,13 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
-import SignUpInModal from './SignUpInComponent/SignUpInModal';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { endsWith } from 'lodash-es';
+
+// events
+import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
+import { openSignUpInModal$ } from './SignUpInComponent/events';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
-import { openSignUpInModal } from 'events/openSignUpInModal';
-import { TAuthUser } from 'hooks/useAuthUser';
+
+// hooks
+import { useLocation } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// components
+import SignUpInModal from './SignUpInComponent/SignUpInModal';
+
+// history
 import clHistory from 'utils/cl-router/history';
+
+// utils
+import { endsWith } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { TAuthUser } from 'hooks/useAuthUser';
 
 interface Props {
   authUser: TAuthUser;
@@ -15,9 +28,9 @@ interface Props {
 }
 
 const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
+  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>();
   const [initiated, setInitiated] = useState(false);
   const [signUpInModalClosed, setSignUpInModalClosed] = useState(false);
-  const [signUpInModalMounted, setSignUpInModalMounted] = useState(false);
 
   const fullscreenModalEnabled = useFeatureFlag({
     name: 'franceconnect_login',
@@ -26,26 +39,44 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const { pathname, search } = useLocation();
 
   useEffect(() => {
+    const subscription = openSignUpInModal$.subscribe(
+      ({ eventValue: newMetaData }) => {
+        setMetaData(newMetaData);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // In case of a SSO response or invite
+  useEffect(() => {
+    const authUserIsPending = authUser === undefined;
+    if (authUserIsPending) return;
+
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
+
     if (!initiated) {
       openSignUpInModalIfNecessary(
         authUser,
         isAuthError && !signUpInModalClosed,
         isInvitation && !signUpInModalClosed,
-        signUpInModalMounted,
         search
       );
     }
+
     setInitiated(true);
-  }, [
-    pathname,
-    search,
-    authUser,
-    signUpInModalClosed,
-    signUpInModalMounted,
-    initiated,
-  ]);
+  }, [pathname, search, authUser, signUpInModalClosed, initiated]);
+
+  // In case the user signs in
+  useEffect(() => {
+    if (isNilOrError(authUser)) return;
+    if (metaData) return;
+
+    if (!authUser.attributes.registration_completed_at) {
+      openSignUpInModal({ flow: 'signup' });
+    }
+  }, [authUser, metaData]);
 
   // In case of a sign up / in route, open modal and redirect to homepage
   useEffect(() => {
@@ -67,10 +98,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
     };
   }, [pathname, authUser]);
 
-  const handleSignUpInModalMounted = useCallback(() => {
-    setSignUpInModalMounted(true);
-  }, []);
-
   const handleUpdateModalOpened = useCallback(
     (opened: boolean) => {
       onModalOpenedStateChange(opened);
@@ -84,7 +111,7 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
 
   return (
     <SignUpInModal
-      onMounted={handleSignUpInModalMounted}
+      metaData={metaData}
       onOpened={handleUpdateModalOpened}
       onClosed={handleCloseSignUpInModal}
       fullScreenModal={fullscreenModalEnabled}
