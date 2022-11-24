@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Inhalt",
   "app.components.PagesForm.fileUploadLabel": "Anhänge (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Hinzugefügte Dateien werden am unteren Rand dieser Seite angezeigt.",
+  "app.components.PagesForm.navbarItemTitle": "Name in der Navigationsleiste",
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesForm.pageUrl": "URL der Seite",
   "app.components.PagesForm.resultingPageURL": "Resultierende URL",
