@@ -1202,6 +1202,8 @@
   "app.containers.SignIn.logIn": "Zaloguj się",
   "app.containers.SignIn.or": "Albo",
   "app.containers.SignIn.passwordLabel": "Hasło",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Podane informacje nie są prawidłowe. Kliknij \"Zapomniałem hasła\", aby zmienić swoje hasło.",
   "app.containers.SignIn.signUp": "Zarejestruj się",
   "app.containers.SignIn.somethingWentWrong": "Coś poszło nie tak i nie możemy Cię zarejestrować. Proszę spróbuj później.",
