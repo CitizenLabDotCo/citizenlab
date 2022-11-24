@@ -12,27 +12,29 @@ namespace :fix_existing_tenants do
         dry_run = !!args[:dry_run]
 
         tenant = Tenant.current
+        app_config = AppConfiguration.instance
+        settings = app_config.settings
+
         loc_map = locales_map_for_tenant(generic_locale_mapping, tenant)
         puts "#{tenant.name} --- locale mapping #{loc_map}"
 
         # *** Update the locales in the tenant settings
-        tenant.settings['core']['locales'] = tenant.settings['core']['locales'].map do |old_locale|
-          loc_map[old_locale]
-        end
-        if tenant.settings['core']['organization_name']
-          tenant.settings['core']['organization_name'] =
-            multiloc_transform(tenant.settings['core']['organization_name'], loc_map)
-        end
-        if tenant.settings['core']['meta_title']
-          tenant.settings['core']['meta_title'] = multiloc_transform(tenant.settings['core']['meta_title'], loc_map)
-        end
-        if tenant.settings['core']['meta_description']
-          tenant.settings['core']['meta_description'] =
-            multiloc_transform(tenant.settings['core']['meta_description'], loc_map)
+        settings['core']['locales'] = settings['core']['locales'].map(&loc_map)
+
+        if settings['core']['organization_name']
+          settings['core']['organization_name'] = multiloc_transform(settings['core']['organization_name'], loc_map)
         end
 
-        tenant.save unless dry_run
-        puts "#{tenant.name} --- tenant locales changed to #{tenant.settings['core']['locales']}"
+        if settings['core']['meta_title']
+          settings['core']['meta_title'] = multiloc_transform(settings['core']['meta_title'], loc_map)
+        end
+
+        if settings['core']['meta_description']
+          settings['core']['meta_description'] = multiloc_transform(settings['core']['meta_description'], loc_map)
+        end
+
+        app_config.update(settings: settings) unless dry_run
+        puts "#{tenant.name} --- tenant locales changed to #{settings['core']['locales']}"
 
         # *** Update all multiloc fields
         classes = ['PgSearch::Document', 'Apartment::Adapters::AbstractAdapter::SeparateDbConnectionHandler']
@@ -65,7 +67,7 @@ namespace :fix_existing_tenants do
   desc "Show which tenants don't have a custom location"
   task detect_locationless_tenants: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
-      if tenant.settings.dig('maps', 'map_center', 'lat') == '50.8503'
+      if tenant.configuration.settings.dig('maps', 'map_center', 'lat') == '50.8503'
         puts "*** Needs custom map center:  #{tenant.name}"
       else
         puts "--- Has custom map center: #{tenant.name}"

@@ -42,7 +42,7 @@ namespace :fix_existing_tenants do
   desc 'Migrate initiatives posting_enabled before removal'
   task migrate_initiatives_posting_enabled: [:environment] do |_t, _args|
     tenants = Tenant.all.select do |tenant|
-      tenant.settings.dig('initiatives', 'posting_enabled') == false
+      !tenant.configuration.settings.dig('initiatives', 'posting_enabled')
     end
     tenants.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do

@@ -37,19 +37,20 @@ namespace :fix_existing_tenants do
   task fix_timezones: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
       puts "Processing tenant #{tenant.host}..."
-      tz = tenant.settings.dig('core', 'timezone')
-      next if ActiveSupport::TimeZone.all.map(&:name).include?(tz)
+      app_config = AppConfiguration.instance
+      timezone = app_config.settings('core', 'timezone')
+      next if ActiveSupport::TimeZone.all.map(&:name).include?(timezone)
 
-      new_tz = timezone_mapping[tz]
+      new_tz = timezone_mapping[timezone]
       unless new_tz
-        puts "No timezone mapping found for #{tz}!"
+        puts "No timezone mapping found for #{timezone}!"
         new_tz = 'Brussels'
       end
+
       puts "Mapping to #{new_tz}"
-      tenant.settings['core']['timezone'] = new_tz
-      unless tenant.save
-        puts "Failed for #{tenant.host}!"
-      end
+      settings = app_config.settings
+      settings['core']['timezone'] = new_tz
+      puts "Failed for #{tenant.host}!" unless app_config.update(settings: settings)
     end
   end
 end

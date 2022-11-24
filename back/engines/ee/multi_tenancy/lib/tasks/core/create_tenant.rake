@@ -340,7 +340,7 @@ namespace :cl2_back do
         last_name: 'Lab',
         email: 'hello@citizenlab.co',
         password: 'democrazy',
-        locale: tenant.settings.dig('core', 'locales')&.first || 'en',
+        locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
       )
     end

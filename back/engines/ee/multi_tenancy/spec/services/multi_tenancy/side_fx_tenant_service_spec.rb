@@ -33,10 +33,7 @@ describe MultiTenancy::SideFxTenantService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the tenant has changed" do
-      # MT_TODO to refactor
-      settings = tenant.settings
-      settings['core']['organization_name'] = { 'en' => 'New name' }
-      tenant.update!(settings: settings)
+      tenant.update!(name: "new-#{tenant.name}")
       expect { service.after_update(tenant, current_user) }
         .to have_enqueued_job(LogActivityJob).with(tenant, 'changed', current_user, tenant.updated_at.to_i)
     end
