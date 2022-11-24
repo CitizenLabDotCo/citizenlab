@@ -139,7 +139,6 @@ const SignUpInModal = memo<Props>(
           id="e2e-sign-up-in-modal"
           className={className}
           width={`${modalWidth}px`}
-          height="1000px"
           background="white"
         >
           {opened && metaData && (

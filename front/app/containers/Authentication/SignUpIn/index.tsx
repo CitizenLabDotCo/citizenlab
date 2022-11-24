@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import SignUpInModal from './SignUpInComponent/SignUpInModal';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -67,17 +67,20 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
     };
   }, [pathname, authUser]);
 
-  const handleSignUpInModalMounted = () => {
+  const handleSignUpInModalMounted = useCallback(() => {
     setSignUpInModalMounted(true);
-  };
+  }, []);
 
-  const handleUpdateModalOpened = (opened: boolean) => {
-    onModalOpenedStateChange(opened);
-  };
+  const handleUpdateModalOpened = useCallback(
+    (opened: boolean) => {
+      onModalOpenedStateChange(opened);
+    },
+    [onModalOpenedStateChange]
+  );
 
-  const handleCloseSignUpInModal = () => {
+  const handleCloseSignUpInModal = useCallback(() => {
     setSignUpInModalClosed(true);
-  };
+  }, []);
 
   return (
     <SignUpInModal
