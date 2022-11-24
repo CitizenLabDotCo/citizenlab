@@ -2,12 +2,12 @@ import React from 'react';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import useCustomPage from 'hooks/useCustomPage';
 import { isNilOrError } from 'utils/helperUtils';
 import { isPolicyPageSlug } from 'services/customPages';
 import { SectionField } from 'components/admin/Section';
-import useNavbarItem from '../../hooks/useNavbarItem';
+import useNavbarItem from 'hooks/useNavbarItem';
 
 type Props = {
   pageId: string | null;

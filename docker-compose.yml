@@ -39,7 +39,6 @@ services:
       - "postgres"
       - "mailcatcher"
       - "rabbitmq"
-      - "web"
     build:
       context: .
       dockerfile: back/Dockerfile.development

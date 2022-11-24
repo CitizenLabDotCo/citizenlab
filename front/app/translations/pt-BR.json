@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Conteúdo",
   "app.components.PagesForm.fileUploadLabel": "Anexos (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Os arquivos adicionados serão mostrados na parte inferior desta página",
+  "app.components.PagesForm.navbarItemTitle": "Nome na barra de navegação",
   "app.components.PagesForm.pageTitle": "Assunto",
   "app.components.PagesForm.pageUrl": "URL da página",
   "app.components.PagesForm.resultingPageURL": "URL resultante",

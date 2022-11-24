@@ -45,8 +45,6 @@ import eventsWidgetConfiguration from './commercial/events_widget';
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
 
-import customizableNavbarConfiguration from './free/customizable_navbar';
-
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import representativenessConfiguration from './commercial/representativeness';
 
@@ -205,10 +203,6 @@ export default loadModules([
   {
     configuration: analyticsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/analytics'],
-  },
-  {
-    configuration: customizableNavbarConfiguration,
-    isEnabled: CL_CONFIG['modules']['free/customizable_navbar'],
   },
   {
     configuration: idViennaSamlConfiguration,

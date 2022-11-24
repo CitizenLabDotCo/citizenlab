@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Innehåll",
   "app.components.PagesForm.fileUploadLabel": "Bilagor (max. 50 MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Filer bör inte vara större än 50 MB. Tillagda filer kommer att visas längst ner på den här sidan.",
+  "app.components.PagesForm.navbarItemTitle": "Namn i navigeringsfältet",
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesForm.pageUrl": "Sidans webbadress",
   "app.components.PagesForm.resultingPageURL": "Resulterande webbadress",
