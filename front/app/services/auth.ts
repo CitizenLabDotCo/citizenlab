@@ -39,7 +39,7 @@ export async function signIn(
   tokenLifetime?: number
 ) {
   try {
-    const bodyData = { auth: { email, password } };
+    const bodyData = { auth: { email, password, remember_me: rememberMe } };
     const httpMethod: IHttpMethod = { method: 'POST' };
     const { jwt } = await request<IUserToken>(
       `${API_PATH}/user_token`,
