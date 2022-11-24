@@ -277,6 +277,7 @@
   "app.components.PagesForm.editContent": "Saturs",
   "app.components.PagesForm.fileUploadLabel": "Pielikumi (ne vairāk kā 50 MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Faili nedrīkst būt lielāki par 50 Mb. Pievienotie faili tiks parādīti šīs lapas apakšā.",
+  "app.components.PagesForm.navbarItemTitle": "Nosaukums navigācijas joslā",
   "app.components.PagesForm.pageTitle": "Nosaukums",
   "app.components.PagesForm.pageUrl": "Lapas URL",
   "app.components.PagesForm.resultingPageURL": "Rezultāta URL",
