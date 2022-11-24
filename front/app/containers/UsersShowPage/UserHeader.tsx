@@ -27,8 +27,6 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
-// import clHistory from 'utils/cl-router/history';
-
 const Bio = styled.div`
   line-height: 1.25;
   max-width: 600px;
@@ -99,7 +97,6 @@ const UserHeader = ({ userSlug }: Props) => {
         )}
         {!isNilOrError(authUser) && authUser.id === user.id && (
           <Button
-            // onClick={() => clHistory.push('/profile/edit')}
             linkTo="/profile/edit"
             buttonStyle="text"
             icon="edit"
