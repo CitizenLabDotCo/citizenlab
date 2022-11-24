@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Inhalt",
   "app.components.PagesForm.fileUploadLabel": "Annexen (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Dateie sollten net méi grouss sinn wéi 50MB. Bäigefüügten Dateie ginn um Enn vun dëser Säit gewisen.",
+  "app.components.PagesForm.navbarItemTitle": "Numm an Navigatiounsleescht",
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesForm.pageUrl": "URL-Säit",
   "app.components.PagesForm.resultingPageURL": "Resultéierend URL",
