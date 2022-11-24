@@ -7,7 +7,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   skip_after_action :verify_authorized, only: :users_search
   skip_after_action :verify_policy_scoped, only: :index
 
-  class Moderator < OpenStruct
+  class Moderator < Struct
     def self.policy_class
       ProjectModeratorPolicy
     end
