@@ -8,7 +8,6 @@ module MultiTenancy
 
     def after_create(tenant, current_user = nil)
       LogActivityJob.perform_later(tenant, 'created', current_user, tenant.created_at.to_i)
-      update_google_host(tenant)
     end
 
     def before_apply_template(tenant, _template, current_user = nil)
@@ -55,7 +54,6 @@ module MultiTenancy
       LogActivityJob.perform_later(tenant, 'changed', current_user, tenant.updated_at.to_i)
 
       trigger_host_changed_effects(tenant, current_user) if tenant.host_previously_changed?
-      update_google_host(tenant) if (tenant.active? && tenant.host_previously_changed?) || tenant.changed_lifecycle_stage?
       tenant.switch { TrackTenantJob.perform_later tenant }
     end
 
@@ -74,10 +72,6 @@ module MultiTenancy
     def trigger_host_changed_effects(tenant, user)
       LogActivityJob.perform_later(tenant, 'changed_host', user, tenant.updated_at.to_i,
         payload: { changes: tenant.host_previous_change })
-    end
-
-    def update_google_host(tenant)
-      tenant.switch { Seo::UpdateGoogleHostJob.perform_later }
     end
   end
 end

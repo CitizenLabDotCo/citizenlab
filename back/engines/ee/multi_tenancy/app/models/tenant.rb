@@ -53,6 +53,8 @@ class Tenant < ApplicationRecord
     where(id: ids)
   }
 
+  delegate :active?, :churned?, to: :configuration
+
   class << self
     def schema_name_to_host(schema_name)
       schema_name&.tr('_', '.')
@@ -141,14 +143,6 @@ class Tenant < ApplicationRecord
 
   def lifecycle_change_diff
     settings_previous_change.map { |s| s&.dig('core', 'lifecycle_stage') }
-  end
-
-  def active?
-    configuration.settings('core', 'lifecycle_stage') == 'active'
-  end
-
-  def churned?
-    configuration.settings('core', 'lifecycle_stage') == 'churned'
   end
 
   def deleted?
