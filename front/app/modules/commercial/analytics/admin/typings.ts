@@ -62,4 +62,3 @@ export interface Stat {
 
 // Component layouts
 export type Layout = 'wide' | 'narrow';
-export type BoxLayout = Record<Layout, BoxProps>;
