@@ -151,10 +151,6 @@ class Tenant < ApplicationRecord
     configuration.settings('core', 'lifecycle_stage') == 'churned'
   end
 
-  def just_churned?
-    active? && changed_lifecycle_stage
-  end
-
   def deleted?
     !!deleted_at
   end
