@@ -20,6 +20,8 @@ jest.mock('components/admin/Section', () => ({
 jest.mock('components/FeatureFlag', () => 'FeatureFlag');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
+const localize = (multiloc) => multiloc.en;
+
 describe('<AdminProjectPoll/>', () => {
   describe('boundaries', () => {
     it('is feature flagged under the name poll from the root', () => {
