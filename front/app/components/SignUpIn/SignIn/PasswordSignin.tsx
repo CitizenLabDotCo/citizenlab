@@ -222,7 +222,7 @@ class PasswordSignin extends PureComponent<
       const { onSignInCompleted } = this.props;
       const { formatMessage } = this.props.intl;
       const { email, password, rememberMe } = this.state;
-      const expires =
+      const tokenLifetime =
         this.props.tenant.attributes.settings.core
           .authentication_token_lifetime_in_days;
 
@@ -233,7 +233,7 @@ class PasswordSignin extends PureComponent<
       ) {
         try {
           this.setState({ processing: true });
-          const user = await signIn(email, password, rememberMe, expires);
+          const user = await signIn(email, password, rememberMe, tokenLifetime);
           trackEventByName(tracks.signInEmailPasswordCompleted);
           onSignInCompleted(user.data.id);
         } catch (error) {
