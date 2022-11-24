@@ -150,12 +150,9 @@ resource 'ProjectFolder' do
       let!(:id) { project_folder.id }
       let(:project_with_moderator) { project_folder.projects.first }
 
-      before do
-        create_list(:project_folder_moderator, 3, project_folders: [project_folder])
-        create(:project_moderator, projects: [project_with_moderator])
-      end
-
       example 'Delete a folder' do
+        create_list :project_folder_moderator, 3, project_folders: [project_folder]
+        create :project_moderator, projects: [project_with_moderator]
         old_count = ProjectFolders::Folder.count
         old_publications_count = AdminPublication.count
         old_project_count = Project.count

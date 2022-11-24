@@ -143,18 +143,13 @@ resource 'Moderators' do
       let(:project_folder_id) { project_folder.id }
       let(:user) { create(:user) }
       let(:user_id) { user.id }
-      let!(:child_projects) { create_list(:project, 3) }
+      let!(:child_projects) { create_list(:project, 3, folder: project_folder) }
 
-      before do
-        child_projects.each do |project|
-          project.folder = project_folder
-          project.save!
-        end
-
+      example 'Add a moderator role' do
         expect(user.reload.moderatable_project_ids).to be_empty
-      end
 
-      example_request 'Add a moderator role' do
+        do_request
+
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq user_id

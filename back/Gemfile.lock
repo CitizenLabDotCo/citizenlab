@@ -310,18 +310,6 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: engines/commercial/project_folders
-  specs:
-    project_folders (0.1.0)
-      rails (~> 6.1)
-
-PATH
-  remote: engines/commercial/project_management
-  specs:
-    project_management (0.1.0)
-      rails (~> 6.1)
-
-PATH
   remote: engines/commercial/public_api
   specs:
     public_api (0.1.0)
@@ -1261,8 +1249,6 @@ DEPENDENCIES
   pg_search (~> 2.3.5)
   polls!
   premailer-rails (~> 1.10.3)
-  project_folders!
-  project_management!
   project_permissions!
   pry
   pry-byebug

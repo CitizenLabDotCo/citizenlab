@@ -378,6 +378,7 @@ Rails/UniqueValidationWithoutIndex:
     - 'app/models/initiative_status_change.rb'
     - 'app/models/invite.rb'
     - 'app/models/permission.rb'
+    - 'app/models/project_folders/folder.rb'
     - 'app/models/vote.rb'
 
 # Offense count: 1
