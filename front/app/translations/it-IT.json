@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Contenuto",
   "app.components.PagesForm.fileUploadLabel": "Allegati (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "I file non dovrebbero essere più grandi di 50Mb. I file aggiunti saranno mostrati in fondo a questa pagina.",
+  "app.components.PagesForm.navbarItemTitle": "Nome nella barra di navigazione",
   "app.components.PagesForm.pageTitle": "Titolo",
   "app.components.PagesForm.pageUrl": "URL della pagina",
   "app.components.PagesForm.resultingPageURL": "URL risultante",
