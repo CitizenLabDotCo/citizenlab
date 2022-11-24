@@ -1202,6 +1202,8 @@
   "app.containers.SignIn.logIn": "Iserit",
   "app.containers.SignIn.or": "Imaluunniit",
   "app.containers.SignIn.passwordLabel": "Kode isissutissaq",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Paasissutissat allanneqartut eqqortuunngillat. Qulaani \"password\" puigorpara tooruk nutaamik taarserniarukku.",
   "app.containers.SignIn.signUp": "Nalunaarsorit",
   "app.containers.SignIn.somethingWentWrong": "Something went wrong and we can't sign you in right now. Please try again later.",
