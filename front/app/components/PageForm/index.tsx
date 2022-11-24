@@ -30,7 +30,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import Button from 'components/UI/Button';
-import Outlet from 'components/Outlet';
+import NavbarTitleField from './NavbarTitleField';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -113,8 +113,7 @@ const PageForm = ({
             successMessage={formatMessage(messages.savePageSuccessMessage)}
           />
         </SectionField>
-        <Outlet
-          id="app.components.PageForm.index.top"
+        <NavbarTitleField
           pageId={pageId}
           navbarItemId={
             !isNilOrError(page) && page.relationships.nav_bar_item.data
