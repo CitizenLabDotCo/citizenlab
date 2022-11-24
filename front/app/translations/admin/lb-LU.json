@@ -1265,11 +1265,8 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Content Warnings",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Access rights",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
-  "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Weider disponibel Säiten",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Säiten, déi op Ärer Navigatiounsleescht ugewise ginn",
-  "app.modules.navbar.admin.components.tabNavigation": "Navigatioun",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sidd Dir sécher, datt Dir dës Säit läsche wëllt? Dëst kann net réckgängeg gemaach ginn. Dir kënnt d’Säit och vun der Navigatiounsleescht ewechhuelen, wann Dir net prett sidd, se ze läschen.",
-  "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Sidd Dir sécher, datt Dir dës Säit läsche wëllt? Dëst kann net réckgängeg gemaach ginn.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Är Navigatiounsleescht kann zousätzlech zu den Homepagen a Projetssäiten bis zu fënnef Säiten uweisen. Dir kënnt Menüpunkten ëmbenennen, nei uerdnen an nei Säite mat Ärem eegenen Inhalt dobäifügen.",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
   "components.admin.ServerError.genericServerError": "There was an issue loading this content, please try again later."
