@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Contenu",
   "app.components.PagesForm.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Les pièces jointes seront visibles en bas de cette page.",
+  "app.components.PagesForm.navbarItemTitle": "Nom dans la barre de navigation",
   "app.components.PagesForm.pageTitle": "Titre",
   "app.components.PagesForm.pageUrl": "URL de la page",
   "app.components.PagesForm.resultingPageURL": "URL résultant",
