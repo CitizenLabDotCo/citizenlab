@@ -12,29 +12,50 @@ resource 'User Token' do
     with_options scope: :auth do
       parameter :email, required: true
       parameter :password, required: true
+      parameter :remember_me, required: false
     end
 
-    context 'when authentication_token_lifetime_in_days is configured' do
-      before do
-        config = AppConfiguration.instance
-        config.settings['core']['authentication_token_lifetime_in_days'] = authentication_token_lifetime_in_days
-        config.save!
+    let(:email) { 'test@email.com' }
+    let(:password) { '12345678' }
+    let(:remember_me) { false }
 
-        create(:user, email: email, password: password)
+    before do
+      create(:user, email: email, password: password)
+      allow(Time).to receive(:now).and_return(Time.now)
+    end
 
-        allow(Time).to receive(:now).and_return(Time.now)
-      end
+    example_request 'Create JWT token with 1 day expiration' do
+      expect(status).to eq(201)
 
-      let(:email) { 'test@email.com' }
-      let(:password) { '12345678' }
+      jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+      expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
+    end
 
-      let(:authentication_token_lifetime_in_days) { 8 }
+    context 'when remember_me is sent' do
+      let(:remember_me) { true }
 
-      example_request 'Create JWT token with expiration from settings' do
+      example_request 'Create JWT token with default expiration' do
         expect(status).to eq(201)
 
         jwt = JWT.decode(json_response_body[:jwt], nil, false).first
-        expect(jwt['exp']).to eq((Time.now + authentication_token_lifetime_in_days.days).to_i)
+        expect(jwt['exp']).to eq((Time.now + 30.days).to_i)
+      end
+
+      context 'when authentication_token_lifetime_in_days is configured' do
+        before do
+          config = AppConfiguration.instance
+          config.settings['core']['authentication_token_lifetime_in_days'] = token_lifetime
+          config.save!
+        end
+
+        let(:token_lifetime) { 8 }
+
+        example_request 'Create JWT token with expiration from settings' do
+          expect(status).to eq(201)
+
+          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+          expect(jwt['exp']).to eq((Time.now + token_lifetime.days).to_i)
+        end
       end
     end
   end
