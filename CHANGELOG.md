@@ -10,6 +10,10 @@
 
 - [CL-2076] When a user needs to verify before assigning an idea to their participatory budget basket, they now see the right verification modal, not the sign up modal.
 
+### Added
+
+- [CL-1483] Let tenants configure their Authentication token lifetime
+
 ## 2022-11-18
 
 ### Fixed
