@@ -46,8 +46,6 @@ module MachineTranslations
         translation = EasyTranslate.translate text_or_html, from: from, to: to
         break
       rescue EasyTranslate::EasyTranslateException => e
-        raise e if e.message.include?('Bad language pair')
-
         exception = e
         sleep rand(max_sleep + 1) if i < retries
       end
