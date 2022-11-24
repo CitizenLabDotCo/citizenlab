@@ -1201,6 +1201,8 @@
   "app.containers.SignIn.logIn": "Oturum açın",
   "app.containers.SignIn.or": "Ya da",
   "app.containers.SignIn.passwordLabel": "Parola",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Girilen bilgiler doğru değil. Parolanızı sıfırlamak için \"Parolanızı mı unuttunuz?\" seçeneğine tıklayın.",
   "app.containers.SignIn.signUp": "Kaydolun",
   "app.containers.SignIn.somethingWentWrong": "Bir sorun oluştu ve şu anda oturumunuzu açamıyoruz. Lütfen daha sonra tekrar deneyin.",
