@@ -1,6 +1,5 @@
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { BoxProps } from '@citizenlab/cl2-component-library';
 
 // Parameters
 export interface ProjectId {
