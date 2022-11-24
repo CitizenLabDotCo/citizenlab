@@ -99,6 +99,7 @@ const SignUpInModal = memo<Props>(
       if (metaData?.pathname.includes('projects/')) {
         location.reload();
       }
+      355;
       // Temporary fix end
 
       if (!requiresVerification || authUserIsVerified) {
