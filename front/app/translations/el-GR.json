@@ -277,6 +277,7 @@
   "app.components.PagesForm.editContent": "Περιεχόμενο",
   "app.components.PagesForm.fileUploadLabel": "Συνημμένα αρχεία (μέγιστο 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Τα αρχεία δεν πρέπει να είναι μεγαλύτερα από 50Mb. Τα προστιθέμενα αρχεία θα εμφανίζονται στο κάτω μέρος αυτής της σελίδας.",
+  "app.components.PagesForm.navbarItemTitle": "Όνομα στη γραμμή πλοήγησης",
   "app.components.PagesForm.pageTitle": "Τίτλος",
   "app.components.PagesForm.pageUrl": "URL της σελίδας",
   "app.components.PagesForm.resultingPageURL": "Προκύπτουσα διεύθυνση URL",
