@@ -380,15 +380,6 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
-  remote: engines/free/customizable_navbar
-  specs:
-    customizable_navbar (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
-      rails (~> 6.1)
-      ros-apartment (>= 2.9.0)
-
-PATH
   remote: engines/free/email_campaigns
   specs:
     email_campaigns (0.1.0)
@@ -1200,7 +1191,6 @@ DEPENDENCIES
   custom_idea_statuses!
   custom_maps!
   custom_topics!
-  customizable_navbar!
   dalli (~> 3.2.3)
   database_cleaner (~> 2.0.1)
   email_campaigns!
