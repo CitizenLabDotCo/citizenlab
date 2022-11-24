@@ -35,7 +35,7 @@ export function lockedFieldsStream() {
 export async function signIn(
   email: string,
   password: string,
-  rememberMe: boolean = false,
+  rememberMe = false,
   tokenLifetime?: number
 ) {
   try {
