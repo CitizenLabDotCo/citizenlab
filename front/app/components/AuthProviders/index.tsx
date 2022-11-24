@@ -2,7 +2,6 @@ import React, { memo, useCallback, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isBoolean } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
@@ -76,7 +75,7 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
     tenant,
     viennaCitizenLoginEnabled,
   }) => {
-    const { flow, inModal, noPushLinks } = metaData;
+    const { flow } = metaData;
     const azureProviderName = !isNilOrError(tenant)
       ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name
       : null;
@@ -124,12 +123,7 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
     const handleGoToOtherFlow = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
-
-        if (inModal || noPushLinks) {
-          goToOtherFlow();
-        } else {
-          clHistory.push(flow === 'signin' ? '/sign-up' : '/sign-in');
-        }
+        goToOtherFlow();
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [goToOtherFlow]

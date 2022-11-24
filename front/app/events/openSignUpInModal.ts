@@ -35,8 +35,6 @@ export interface ISignUpInMetaData {
   error?: ISignUpInError;
   isInvitation?: boolean;
   token?: string;
-  inModal?: boolean;
-  noPushLinks?: boolean;
   noAutofocus?: boolean;
   action?: () => void;
 }
@@ -54,9 +52,10 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     error: metaData?.error,
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,
-    inModal: true,
     action: metaData?.action || undefined,
   };
 
-  emitOpenSignUpInModal(emittedMetaData);
+  setTimeout(() => {
+    emitOpenSignUpInModal(emittedMetaData);
+  }, 1);
 }

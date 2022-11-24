@@ -116,13 +116,11 @@ export function getDefaultSteps(
     success: {
       key: 'success',
       position: 7,
-      isEnabled: (_, metaData) => !!metaData.inModal,
-      isActive: (authUser, metaData) => {
+      isEnabled: () => true,
+      isActive: (authUser) => {
         if (isNilOrError(authUser)) return false;
 
-        return (
-          !!authUser.attributes.registration_completed_at && !!metaData.inModal
-        );
+        return !!authUser.attributes.registration_completed_at;
       },
       canTriggerRegistration: false,
     },
