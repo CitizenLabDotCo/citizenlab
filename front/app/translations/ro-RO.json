@@ -1202,6 +1202,8 @@
   "app.containers.SignIn.logIn": "Autentificare",
   "app.containers.SignIn.or": "Sau",
   "app.containers.SignIn.passwordLabel": "Parola",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Informațiile furnizate nu sunt corecte. Faceți clic pe „Parolă uitată“ pentru a vă reseta parola.",
   "app.containers.SignIn.signUp": "Înscrie-te",
   "app.containers.SignIn.somethingWentWrong": "A apărut o eroare. Vă rugăm să încercați din nou mai târziu.",
