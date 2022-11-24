@@ -26,7 +26,10 @@ import {
 // style
 import styled from 'styled-components';
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+  max-width: 580px;
+`;
 
 interface Props {
   className?: string;
