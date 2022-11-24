@@ -7,7 +7,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   skip_after_action :verify_authorized, only: :users_search
   skip_after_action :verify_policy_scoped, only: :index
 
-  class Moderator < Struct
+  Moderator = Struct.new(:user_id, :project_id) do
     def self.policy_class
       ProjectModeratorPolicy
     end
@@ -15,7 +15,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
 
   def index
     # TODO: something about authorize index (e.g. user_id nastiness)
-    authorize Moderator.new({ user_id: nil, project_id: params[:project_id] })
+    authorize Moderator.new(nil, params[:project_id])
     @moderators = User.project_moderator(params[:project_id])
     @moderators = paginate @moderators
 
@@ -53,7 +53,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   end
 
   def users_search
-    authorize Moderator.new({ user_id: nil, project_id: params[:project_id] })
+    authorize Moderator.new(nil, params[:project_id])
     @users = ::User.search_by_all(params[:search])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
@@ -74,6 +74,6 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   end
 
   def do_authorize
-    authorize Moderator.new({ user_id: params[:id], project_id: params[:project_id] })
+    authorize Moderator.new(params[:id], params[:project_id])
   end
 end

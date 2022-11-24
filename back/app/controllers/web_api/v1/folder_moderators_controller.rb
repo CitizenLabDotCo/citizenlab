@@ -6,7 +6,7 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
 
   skip_after_action :verify_policy_scoped, only: [:index]
 
-  class Moderator < Struct
+  Moderator = Struct.new(:project_folder_id) do
     def self.policy_class
       FolderModeratorPolicy
     end
@@ -65,6 +65,6 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   end
 
   def do_authorize
-    authorize Moderator.new(project_folder_id: params[:project_folder_id])
+    authorize Moderator.new(params[:project_folder_id])
   end
 end
