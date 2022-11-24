@@ -335,7 +335,7 @@ class PasswordSignin extends PureComponent<
             />
           </FormElement>
 
-          <FormElement>
+          <FormElement style={{ paddingTop: '8px' }}>
             <Checkbox
               label={formatMessage(messages.rememberMeLabel)}
               labelTooltipText={formatMessage(messages.rememberMeTooltip)}
