@@ -47,4 +47,3 @@ class ProjectsFilteringService
     end
   end
 end
-
