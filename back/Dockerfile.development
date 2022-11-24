@@ -26,4 +26,5 @@ COPY back/. .
 
 EXPOSE 4000
 
-CMD bundle install && bundle exec puma -C config/puma.rb
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
