@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Conţinut",
   "app.components.PagesForm.fileUploadLabel": "Atașamente (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Fișierele adăugate vor fi afișate în partea de jos a acestei pagini.",
+  "app.components.PagesForm.navbarItemTitle": "Nume în bara de navigare",
   "app.components.PagesForm.pageTitle": "Titlu",
   "app.components.PagesForm.pageUrl": "URL-ul paginii",
   "app.components.PagesForm.resultingPageURL": "URL-ul rezultat",
