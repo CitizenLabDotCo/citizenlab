@@ -1,5 +1,5 @@
 import eventEmitter from 'utils/eventEmitter';
-import { ISignUpInMetaData } from './';
+import { ISignUpInMetaData } from './SignUpIn';
 import { TSignUpStep } from './SignUp';
 
 enum events {

@@ -5,7 +5,7 @@ import tracks from './tracks';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import SignUpIn from '.';
+import SignUpIn from './SignUpIn';
 import { TSignUpStep } from './SignUp';
 
 // hooks
@@ -99,7 +99,6 @@ const SignUpInModal = memo<Props>(
       if (metaData?.pathname.includes('projects/')) {
         location.reload();
       }
-      355;
       // Temporary fix end
 
       if (!requiresVerification || authUserIsVerified) {
