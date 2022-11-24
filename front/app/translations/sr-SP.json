@@ -1201,6 +1201,8 @@
   "app.containers.SignIn.logIn": "Пријави се",
   "app.containers.SignIn.or": "Или",
   "app.containers.SignIn.passwordLabel": "Лозинка",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Унесене информације нису тачне. Кликните на линк за заборављену лозинку како бисте је ресетовали.",
   "app.containers.SignIn.signUp": "Региструјте се",
   "app.containers.SignIn.somethingWentWrong": "Дошло је до грешке и нисте успели да се пријавите. Молимо вас покушајте касније.",
