@@ -1202,6 +1202,8 @@
   "app.containers.SignIn.logIn": "Se connecter",
   "app.containers.SignIn.or": "Ou",
   "app.containers.SignIn.passwordLabel": "Mot de passe",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Les informations fournies ne sont pas correctes. Cliquez sur « Mot de passe oublié » ci-dessous pour réinitialiser votre mot de passe.",
   "app.containers.SignIn.signUp": "S'inscrire",
   "app.containers.SignIn.somethingWentWrong": "Une erreur est survenue : il n'est pas possible de vous connecter actuellement. Veuillez réessayer.",
