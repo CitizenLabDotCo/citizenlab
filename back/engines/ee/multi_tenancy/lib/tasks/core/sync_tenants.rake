@@ -156,7 +156,7 @@ def value_changed(value1, value2, field_name)
   when /_multiloc$/
     value1 = value1.stringify_keys
     value2 = value2.stringify_keys
-    (value1.keys & value2.keys & Tenant.current.settings.dig('core', 'locales')).any? do |key|
+    (value1.keys & value2.keys & AppConfiguration.instance.settings('core', 'locales')).any? do |key|
       value1[key] != value2[key]
     end
   when 'ordering'

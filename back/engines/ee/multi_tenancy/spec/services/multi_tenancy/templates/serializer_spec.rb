@@ -77,7 +77,7 @@ describe MultiTenancy::Templates::Serializer do
 
       serializer = described_class.new Tenant.current
       template = serializer.run
-      tenant = create :tenant, locales: Tenant.current.settings.dig('core', 'locales')
+      tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
       Apartment::Tenant.switch(tenant.schema_name) do
         MultiTenancy::TenantTemplateService.new.apply_template template
         expect(Comment.count).to eq 1
