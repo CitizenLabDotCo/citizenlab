@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 // events
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
+import { openSignUpInModal$ } from './SignUpInComponent/events';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
 
 // hooks
@@ -27,6 +28,7 @@ interface Props {
 }
 
 const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
+  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>();
   const [initiated, setInitiated] = useState(false);
   const [signUpInModalClosed, setSignUpInModalClosed] = useState(false);
 
@@ -35,6 +37,16 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   });
 
   const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    const subscription = openSignUpInModal$.subscribe(
+      ({ eventValue: newMetaData }) => {
+        setMetaData(newMetaData);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // In case of a SSO response or invite
   useEffect(() => {
@@ -59,11 +71,12 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   // In case the user signs in
   useEffect(() => {
     if (isNilOrError(authUser)) return;
+    if (metaData) return;
 
     if (!authUser.attributes.registration_completed_at) {
       openSignUpInModal({ flow: 'signup' });
     }
-  }, [authUser]);
+  }, [authUser, metaData]);
 
   // In case of a sign up / in route, open modal and redirect to homepage
   useEffect(() => {
@@ -98,6 +111,7 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
 
   return (
     <SignUpInModal
+      metaData={metaData}
       onOpened={handleUpdateModalOpened}
       onClosed={handleCloseSignUpInModal}
       fullScreenModal={fullscreenModalEnabled}

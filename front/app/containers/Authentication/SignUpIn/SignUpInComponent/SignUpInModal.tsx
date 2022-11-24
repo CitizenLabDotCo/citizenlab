@@ -17,14 +17,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 
 // events
-import {
-  closeSignUpInModal,
-  openSignUpInModal$,
-  signUpActiveStepChange$,
-} from './events';
+import { closeSignUpInModal, signUpActiveStepChange$ } from './events';
 import { ISignUpInMetaData } from 'events/openSignUpInModal';
 
 interface Props {
+  metaData?: ISignUpInMetaData;
   className?: string;
   onClosed: () => void;
   onOpened?: (opened: boolean) => void;
@@ -32,10 +29,7 @@ interface Props {
 }
 
 const SignUpInModal = memo<Props>(
-  ({ className, onClosed, onOpened, fullScreenModal }) => {
-    const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
-      undefined
-    );
+  ({ metaData, className, onClosed, onOpened, fullScreenModal }) => {
     const [signUpActiveStep, setSignUpActiveStep] = useState<
       TSignUpStep | null | undefined
     >(undefined);
@@ -63,17 +57,13 @@ const SignUpInModal = memo<Props>(
     }, [opened, onOpened]);
 
     useEffect(() => {
-      const subscriptions = [
-        openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
-          setMetaData(newMetaData);
-        }),
-        signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
+      const subscription = signUpActiveStepChange$.subscribe(
+        ({ eventValue: activeStep }) => {
           setSignUpActiveStep(activeStep);
-        }),
-      ];
+        }
+      );
 
-      return () =>
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      return () => subscription.unsubscribe();
     }, [authUser]);
 
     const onClose = async () => {
@@ -109,6 +99,7 @@ const SignUpInModal = memo<Props>(
       if (metaData?.pathname.includes('projects/')) {
         location.reload();
       }
+      355;
       // Temporary fix end
 
       if (!requiresVerification || authUserIsVerified) {
