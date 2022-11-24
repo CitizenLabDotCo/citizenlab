@@ -277,6 +277,7 @@
   "app.components.PagesForm.editContent": "Contenido",
   "app.components.PagesForm.fileUploadLabel": "Archivos adjuntos (máximo 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Los archivos adjuntos aparecerán al fondo de esta página.",
+  "app.components.PagesForm.navbarItemTitle": "Nombre en la barra de navegación",
   "app.components.PagesForm.pageTitle": "Título",
   "app.components.PagesForm.pageUrl": "URL de la página",
   "app.components.PagesForm.resultingPageURL": "URL resultante",
