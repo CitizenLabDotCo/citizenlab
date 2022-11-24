@@ -23,7 +23,7 @@ import { IdeaCellComponentProps } from 'components/admin/PostManager/components/
 import { IResolution } from 'components/admin/ResolutionControl';
 import { AuthProvider } from 'components/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
-import { TVerificationStep } from 'containers/App/VerificationModal/verificationModalEvents';
+import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
