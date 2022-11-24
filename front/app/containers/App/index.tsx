@@ -1,12 +1,10 @@
 import { configureScope } from '@sentry/react';
-import { openVerificationModal } from 'containers/App/VerificationModal/verificationModalEvents';
 import 'focus-visible';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-import { has, includes, uniq } from 'lodash-es';
+import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
-import { parse } from 'qs';
 import React, { lazy, PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
 import { combineLatest, Subscription } from 'rxjs';
@@ -80,7 +78,6 @@ import { Locale } from 'typings';
 
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import VerificationModal from './VerificationModal';
 
 const Container = styled.div<{
   disableScroll?: boolean;
@@ -142,7 +139,6 @@ interface State {
   modalType: 'idea' | 'initiative' | null;
   userDeletedSuccessfullyModalOpened: boolean;
   userSuccessfullyDeleted: boolean;
-  verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
   locale: Locale | null;
@@ -164,7 +160,6 @@ class App extends PureComponent<Props, State> {
       modalType: null,
       userDeletedSuccessfullyModalOpened: false,
       userSuccessfullyDeleted: false,
-      verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
       locale: null,
@@ -322,10 +317,10 @@ class App extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { authUser, appConfiguration, verificationModalMounted } = this.state;
+    const { appConfiguration } = this.state;
     const {
       redirectsEnabled,
-      location: { pathname, search },
+      location: { pathname },
     } = this.props;
 
     if (
@@ -334,39 +329,6 @@ class App extends PureComponent<Props, State> {
         prevProps.location.pathname !== pathname)
     ) {
       this.handleCustomRedirect();
-    }
-
-    // when -both- the authUser is initiated and the verification modal component mounted
-    // we check if a 'verification_success' or 'verification_error' url param is present.
-    // if so, we open the verication modal with the appropriate step
-    if (
-      !isNilOrError(authUser) &&
-      verificationModalMounted &&
-      (prevState.authUser === undefined || !prevState.verificationModalMounted)
-    ) {
-      this.openVerificationModalIfSuccessOrError(search);
-    }
-  }
-
-  openVerificationModalIfSuccessOrError(search: string) {
-    const { location } = this.props;
-    const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
-
-    if (has(urlSearchParams, 'verification_success')) {
-      window.history.replaceState(null, '', window.location.pathname);
-      openVerificationModal({ step: 'success' });
-    }
-
-    if (
-      has(urlSearchParams, 'verification_error') &&
-      urlSearchParams.verification_error === 'true'
-    ) {
-      window.history.replaceState(null, '', window.location.pathname);
-      openVerificationModal({
-        step: 'error',
-        error: location.query?.error || null,
-        context: null,
-      });
     }
   }
 
@@ -430,12 +392,6 @@ class App extends PureComponent<Props, State> {
 
   setMobileNavigationRef = (mobileNavbarRef: HTMLElement) => {
     this.setState({ mobileNavbarRef });
-  };
-
-  handleModalMounted = (id: string) => {
-    if (id === 'verification') {
-      this.setState({ verificationModalMounted: true });
-    }
   };
 
   handleSignUpInModalOpened = (isOpened: boolean) => {
@@ -525,7 +481,6 @@ class App extends PureComponent<Props, State> {
                     onModalOpenedStateChange={this.handleSignUpInModalOpened}
                   />
                 </ErrorBoundary>
-                <VerificationModal onMounted={this.handleModalMounted} />
                 <ErrorBoundary>
                   <div id="modal-portal" />
                 </ErrorBoundary>

@@ -10,7 +10,7 @@ import { Icon, Title } from '@citizenlab/cl2-component-library';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { IVerificationError } from './verificationModalEvents';
+import { IVerificationError } from 'events/verificationModal';
 
 // Types
 const Container = styled.div`

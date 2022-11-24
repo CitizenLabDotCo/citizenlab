@@ -1,14 +1,15 @@
-import React, { useCallback, useState, useEffect } from 'react';
-
+import React, { useState, useEffect, useCallback } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import Modal from 'components/UI/Modal';
 // TODO: Change when we move to container
-import VerificationSteps from 'containers/Authentication/SignUpIn/SignUpInComponent/SignUp/VerificationSignUpStep/VerificationSteps';
+import VerificationSteps from '../SignUpIn/SignUpInComponent/SignUp/VerificationSignUpStep/VerificationSteps';
 import VerificationError from './VerificationError';
 import VerificationSuccess from './VerificationSuccess';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
+import useAuthUser from 'hooks/useAuthUser';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
@@ -19,12 +20,14 @@ import {
   openVerificationModal$,
   closeVerificationModal$,
   closeVerificationModal,
-} from './verificationModalEvents';
+  isVerificationError,
+} from 'events/verificationModal';
 
 // style
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 import ErrorBoundary from 'components/ErrorBoundary';
+import useQuery from 'utils/cl-router/useQuery';
 
 // typings
 const Container = styled.div`
@@ -37,28 +40,40 @@ const Container = styled.div`
   padding-right: 20px;
 `;
 
-export interface Props {
-  className?: string;
-  onMounted: (id?: string) => void;
-}
-
-const VerificationModal = ({ className, onMounted }: Props) => {
+const VerificationModal = () => {
   const { windowWidth } = useWindowSize();
-
+  const authUser = useAuthUser();
+  const query = useQuery();
   const isMounted = useIsMounted();
+  const mounted = isMounted();
   const [activeStep, setActiveStep] = useState<TVerificationStep>(null);
   const [context, setContext] = useState<ContextShape>(null);
-  const [error, setError] = useState<IVerificationError>(null);
+  const [error, setError] = useState<IVerificationError | null>(null);
   const opened = !!activeStep;
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
-  useEffect(() => {
-    if (isMounted() && onMounted) {
-      onMounted('verification');
+  const openVerificationModalIfSuccessOrError = useCallback(() => {
+    // query.get returns the value, which is a string 'true'
+    // for this param (search for it in the backend)
+    if (query.get('verification_success') === 'true') {
+      window.history.replaceState(null, '', window.location.pathname);
+      setActiveStep('success');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onMounted]);
+
+    // query.get returns the value, which is a string 'true'
+    // for this param (search for it in the backend)
+    if (query.get('verification_error') === 'true') {
+      const error = query.get('error');
+
+      window.history.replaceState(null, '', window.location.pathname);
+      setActiveStep('error');
+      if (typeof error === 'string' && isVerificationError(error)) {
+        setError(error);
+      }
+      setContext(null);
+    }
+  }, [query]);
 
   useEffect(() => {
     const subscriptions = [
@@ -79,19 +94,25 @@ const VerificationModal = ({ className, onMounted }: Props) => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
   }, []);
 
-  const onClose = useCallback(() => {
-    closeVerificationModal();
-  }, []);
+  useEffect(() => {
+    if (!isNilOrError(authUser) && mounted) {
+      openVerificationModalIfSuccessOrError();
+    }
+  }, [authUser, mounted, openVerificationModalIfSuccessOrError]);
 
-  const onCompleted = useCallback(() => {
+  const onClose = () => {
+    closeVerificationModal();
+  };
+
+  const onCompleted = () => {
     setActiveStep('success');
     setContext(null);
-  }, []);
+  };
 
-  const onError = useCallback(() => {
+  const onError = () => {
     setActiveStep('error');
     setContext(null);
-  }, []);
+  };
 
   return (
     <ErrorBoundary>
@@ -104,7 +125,7 @@ const VerificationModal = ({ className, onMounted }: Props) => {
         close={onClose}
         closeOnClickOutside={false}
       >
-        <Container id="e2e-verification-modal" className={className || ''}>
+        <Container id="e2e-verification-modal">
           {activeStep && activeStep !== 'success' && activeStep !== 'error' && (
             <VerificationSteps
               context={context}
@@ -120,7 +141,9 @@ const VerificationModal = ({ className, onMounted }: Props) => {
             <VerificationSuccess onClose={onClose} />
           )}
 
-          {activeStep === 'error' && <VerificationError error={error} />}
+          {activeStep === 'error' && error && (
+            <VerificationError error={error} />
+          )}
         </Container>
       </Modal>
     </ErrorBoundary>
