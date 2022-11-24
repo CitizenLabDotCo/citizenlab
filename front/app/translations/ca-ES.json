@@ -277,6 +277,7 @@
   "app.components.PagesForm.editContent": "Contingut",
   "app.components.PagesForm.fileUploadLabel": "Fitxers adjunts (màx. 50 MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Els fitxers no han de ser més grans de 50 Mb. Els fitxers afegits es mostraran a la part inferior d'aquesta pàgina.",
+  "app.components.PagesForm.navbarItemTitle": "Nom a la barra de navegació",
   "app.components.PagesForm.pageTitle": "Títol",
   "app.components.PagesForm.pageUrl": "URL de la pàgina",
   "app.components.PagesForm.resultingPageURL": "URL resultant",
