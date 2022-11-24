@@ -1202,6 +1202,8 @@
   "app.containers.SignIn.logIn": "Accedi",
   "app.containers.SignIn.or": "Oppure",
   "app.containers.SignIn.passwordLabel": "Password",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Le informazioni fornite non sono corrette. Clicca su \"Hai dimenticato la password?\" per reimpostare la tua password.",
   "app.containers.SignIn.signUp": "Iscriviti",
   "app.containers.SignIn.somethingWentWrong": "Qualcosa è andato storto e non possiamo registrarti in questo momento. Si prega di riprovare più tardi.",
