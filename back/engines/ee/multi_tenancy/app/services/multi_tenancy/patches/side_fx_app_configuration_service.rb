@@ -8,7 +8,6 @@ module MultiTenancy
         MultiTenancy::TrackTenantJob.perform_later(Tenant.current)
       end
 
-      # MT_TODO To be removed once event subscribers have benn adapted.
       def log_activity(app_config, action, user, payload = nil)
         super
 

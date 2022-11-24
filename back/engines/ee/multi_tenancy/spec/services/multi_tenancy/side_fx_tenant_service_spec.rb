@@ -57,31 +57,6 @@ describe MultiTenancy::SideFxTenantService do
           payload: { changes: [old_host, 'some-domain.net'] })
         .and have_enqueued_job(Seo::UpdateGoogleHostJob)
     end
-
-    it "logs a 'changed_lifecycle_stage' action job when the tenant has changed" do
-      tenant = Tenant.current
-      settings = tenant.settings
-      old_lifecycle_stage = settings['core']['lifecycle_stage']
-      settings['core']['lifecycle_stage'] = 'churned'
-      tenant.update!(settings: settings)
-      expect { service.after_update(tenant, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user,
-          tenant.updated_at.to_i, payload: { changes: [old_lifecycle_stage, 'churned'] })
-    end
-
-    it "logs a 'changed_lifecycle_stage' action job when an active tenant has changed" do
-      tenant = Tenant.current
-      settings = tenant.settings
-      settings['core']['lifecycle_stage'] = 'churned'
-      tenant.update!(settings: settings)
-      old_lifecycle_stage = settings['core']['lifecycle_stage']
-      settings['core']['lifecycle_stage'] = 'active'
-      tenant.update!(settings: settings)
-      expect { service.after_update(tenant, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user,
-          tenant.updated_at.to_i, payload: { changes: [old_lifecycle_stage, 'active'] })
-        .and have_enqueued_job(Seo::UpdateGoogleHostJob)
-    end
   end
 
   describe 'before_destroy' do
