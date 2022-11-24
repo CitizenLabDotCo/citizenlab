@@ -1,13 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
-import SignUpInModal from './SignUpInComponent/SignUpInModal';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { endsWith } from 'lodash-es';
-import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
+
+// events
 import { openSignUpInModal } from 'events/openSignUpInModal';
-import { TAuthUser } from 'hooks/useAuthUser';
+import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
+
+// hooks
+import { useLocation } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// components
+import SignUpInModal from './SignUpInComponent/SignUpInModal';
+
+// history
 import clHistory from 'utils/cl-router/history';
+
+// utils
+import { endsWith } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { TAuthUser } from 'hooks/useAuthUser';
 
 interface Props {
   authUser: TAuthUser;
@@ -24,6 +36,7 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
 
   const { pathname, search } = useLocation();
 
+  // In case of a SSO response or invite
   useEffect(() => {
     const authUserIsPending = authUser === undefined;
     if (authUserIsPending) return;
@@ -42,6 +55,15 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
 
     setInitiated(true);
   }, [pathname, search, authUser, signUpInModalClosed, initiated]);
+
+  // In case the user signs in
+  useEffect(() => {
+    if (isNilOrError(authUser)) return;
+
+    if (!authUser.attributes.registration_completed_at) {
+      openSignUpInModal({ flow: 'signup' });
+    }
+  }, [authUser]);
 
   // In case of a sign up / in route, open modal and redirect to homepage
   useEffect(() => {
