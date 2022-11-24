@@ -44,6 +44,12 @@ module MachineTranslations
 
               render json: { errors: { base: [{ error: 'translatable_blank' }] } }, status: :unprocessable_entity
               return
+            rescue EasyTranslate::EasyTranslateException => e
+              raise e unless e.message.include?('Bad language pair')
+
+              render json: { errors: { base: [{ error: 'bad_language_pair' }] } }, status: :unprocessable_entity
+              skip_authorization
+              return
             end
             unless @translation.save
               render json: { errors: @translation.errors.details }, status: :unprocessable_entity
