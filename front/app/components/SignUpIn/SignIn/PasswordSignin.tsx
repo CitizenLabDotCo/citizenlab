@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Input, Checkbox } from '@citizenlab/cl2-component-library';
+import { Input, Checkbox, Box } from '@citizenlab/cl2-component-library';
 import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -55,7 +55,7 @@ const Form = styled.form`
   width: 100%;
 `;
 
-const FormElement = styled.div`
+const FormElement = styled(Box)`
   width: 100%;
   margin-bottom: 16px;
   position: relative;
@@ -335,7 +335,7 @@ class PasswordSignin extends PureComponent<
             />
           </FormElement>
 
-          <FormElement style={{ paddingTop: '8px' }}>
+          <FormElement paddingTop="8px">
             <Checkbox
               label={formatMessage(messages.rememberMeLabel)}
               labelTooltipText={formatMessage(messages.rememberMeTooltip)}
