@@ -367,8 +367,6 @@ export interface OutletsPropertyMap {
   'app.containers.HomePage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
   };
-  'app.containers.Admin.pages-menu.index': Record<string, any>;
-  'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.HomePage.SignedOutHeader.CTA': {
     buttonStyle: BannerButtonStyle;
     signUpIn: (event: MouseEvent | KeyboardEvent) => void;
@@ -385,10 +383,6 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
-  'app.components.PageForm.index.top': {
-    pageId: string | null;
-    navbarItemId: string | null;
-  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

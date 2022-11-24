@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { removedDefaultNavbarItems } from '../services/navbar';
+import { removedDefaultNavbarItems } from 'services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
 import { TNavbarItemsState } from 'hooks/useNavbarItems';
 
