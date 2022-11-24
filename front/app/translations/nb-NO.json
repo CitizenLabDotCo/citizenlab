@@ -277,6 +277,7 @@
   "app.components.PagesForm.editContent": "Innhold",
   "app.components.PagesForm.fileUploadLabel": "Vedlegg (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Filer kan ikke være større enn 50Mb. Vedlagte filer vil vises nederst på denne siden.",
+  "app.components.PagesForm.navbarItemTitle": "Navn i navigasjonslinjen",
   "app.components.PagesForm.pageTitle": "Tittel",
   "app.components.PagesForm.pageUrl": "Side URL",
   "app.components.PagesForm.resultingPageURL": "Resultater URL",
