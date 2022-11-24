@@ -55,7 +55,5 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     action: metaData?.action || undefined,
   };
 
-  setTimeout(() => {
-    emitOpenSignUpInModal(emittedMetaData);
-  }, 1);
+  emitOpenSignUpInModal(emittedMetaData);
 }
