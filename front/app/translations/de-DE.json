@@ -1202,6 +1202,8 @@
   "app.containers.SignIn.logIn": "Anmelden",
   "app.containers.SignIn.or": "Oder",
   "app.containers.SignIn.passwordLabel": "Passwort",
+  "app.containers.SignIn.rememberMeLabel": "Daten speichern für das nächste Mal",
+  "app.containers.SignIn.rememberMeTooltip": "Nicht auswählen, wenn Sie einen öffentlichen Computer benutzen",
   "app.containers.SignIn.signInError": "Die angegebenen Informationen sind nicht korrekt. Klicke bitte auf 'Passwort vergessen', um das Passwort zurückzusetzen.",
   "app.containers.SignIn.signUp": "Registrieren",
   "app.containers.SignIn.somethingWentWrong": "Etwas ist schiefgelaufen und wir können Sie Im Moment nicht anmelden. Bitte versuchen Sie es später erneut.",
