@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Imarisai",
   "app.components.PagesForm.fileUploadLabel": "Kakkiussinerit (annerpaamik 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Fil-it 50 Mb-imit annertunerussanngillat. Fil-it ilanngunneqartut quppernermi matumani allermi nuisinneqassapput.",
+  "app.components.PagesForm.navbarItemTitle": "Navigationslinjemi taaguutaa allaguk",
   "app.components.PagesForm.pageTitle": "Taaguut",
   "app.components.PagesForm.pageUrl": "Quppernermi URL",
   "app.components.PagesForm.resultingPageURL": "URL-ip inerneri",
