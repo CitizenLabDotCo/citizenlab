@@ -49,8 +49,9 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
           flow: isSignInRoute ? 'signin' : 'signup',
         });
       }, 0);
+      clHistory.replace('/');
     }
-    clHistory.replace('/');
+
     () => {
       clearTimeout(timeout);
     };
