@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Садржај",
   "app.components.PagesForm.fileUploadLabel": "Прилози (маx. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Фајлови не би требало да буду већи од 50Мб. Додати фајлови ће се приказивати на дну ове странице.",
+  "app.components.PagesForm.navbarItemTitle": "Назив у нав. траци",
   "app.components.PagesForm.pageTitle": "Назив",
   "app.components.PagesForm.pageUrl": "URL странице",
   "app.components.PagesForm.resultingPageURL": "Добијени URL",
