@@ -34,7 +34,7 @@ resource 'Projects' do
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
 
-      parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
+      parameter :folder, 'Filter by folder (project folder id)', required: false
 
       example_request 'List all projects (default behaviour)' do
         assert_status 200
@@ -61,7 +61,7 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 2
       end
 
-      example 'List all projects from a folder', skip: !CitizenLab.ee? do
+      example 'List all projects from a folder' do
         folder = create(:project_folder, projects: @projects.take(2))
 
         do_request folder: folder.id
@@ -69,7 +69,7 @@ resource 'Projects' do
         expect(json_response[:data].pluck(:id)).to match_array @projects.take(2).map(&:id)
       end
 
-      example 'List all top-level projects', skip: !CitizenLab.ee? do
+      example 'List all top-level projects' do
         create(:project_folder, projects: @projects.take(2))
 
         do_request folder: nil, publication_statuses: AdminPublication::PUBLICATION_STATUSES
@@ -235,8 +235,7 @@ resource 'Projects' do
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for posts.'
-
-        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false if CitizenLab.ee?
+        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
       end
 
       with_options scope: %i[project admin_publication_attributes] do
@@ -302,7 +301,7 @@ resource 'Projects' do
             .with(project, 'draft', @user, be_a(Numeric), payload: [nil, 'draft'])
         end
 
-        example 'Create a project in a folder', skip: !CitizenLab.ee? do
+        example 'Create a project in a folder' do
           folder = create(:project_folder)
           do_request folder_id: folder.id
           assert_status 201
@@ -497,8 +496,7 @@ resource 'Projects' do
         parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false if CitizenLab.ee?
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
-
-        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)' if CitizenLab.ee?
+        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
       end
 
       with_options scope: %i[project admin_publication_attributes] do
@@ -1085,7 +1083,7 @@ resource 'Projects' do
   end
 
   get 'web_api/v1/projects' do
-    context 'when moderator', skip: !CitizenLab.ee? do
+    context 'when moderator' do
       before do
         @project = create(:project)
         @moderator = create(:project_moderator, projects: [@project])
@@ -1180,7 +1178,7 @@ resource 'Projects' do
 
       let(:filter_can_moderate) { true }
 
-      example 'List all projects the current user can moderate', document: false, skip: !CitizenLab.ee? do
+      example 'List all projects the current user can moderate', document: false do
         do_request
         assert_status 200
         expect(json_response[:data].size).to eq 0

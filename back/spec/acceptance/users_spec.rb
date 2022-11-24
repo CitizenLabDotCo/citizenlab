@@ -374,7 +374,7 @@ resource 'Users' do
           expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
         end
 
-        example 'List all users in group, ordered by role', skip: !CitizenLab.ee? do
+        example 'List all users in group, ordered by role' do
           group = create(:group)
 
           admin = create(:admin, manual_groups: [group])
@@ -415,7 +415,7 @@ resource 'Users' do
           end
         end
 
-        example 'List all users who can moderate a project', skip: !CitizenLab.ee? do
+        example 'List all users who can moderate a project' do
           p = create(:project)
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
@@ -429,7 +429,7 @@ resource 'Users' do
           expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, @user.id]
         end
 
-        example 'List all users who can moderate', skip: !CitizenLab.ee? do
+        example 'List all users who can moderate' do
           p = create(:project)
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
@@ -445,11 +445,8 @@ resource 'Users' do
           p = create(:project)
           a = create(:admin)
           create(:user)
-
-          if CitizenLab.ee?
-            create(:project_moderator, projects: [p])
-            create(:project_moderator)
-          end
+          create(:project_moderator, projects: [p])
+          create(:project_moderator)
 
           do_request(can_admin: true)
           json_response = json_parse(response_body)
