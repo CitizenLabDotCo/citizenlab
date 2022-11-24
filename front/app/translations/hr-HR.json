@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Sadržaj",
   "app.components.PagesForm.fileUploadLabel": "Privici (maks. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Datoteke ne smiju biti veće od 50 MB. Dodane datoteke će se prikazivati na dnu stranice.",
+  "app.components.PagesForm.navbarItemTitle": "Naziv u navigacijskoj traci",
   "app.components.PagesForm.pageTitle": "Naslov",
   "app.components.PagesForm.pageUrl": "URL stranice",
   "app.components.PagesForm.resultingPageURL": "Rezultirajući URL",
