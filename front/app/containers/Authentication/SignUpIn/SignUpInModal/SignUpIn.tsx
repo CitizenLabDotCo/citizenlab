@@ -36,8 +36,6 @@ export interface ISignUpInMetaData {
 
 interface Props {
   metaData: ISignUpInMetaData;
-  customSignInHeader?: JSX.Element;
-  customSignUpHeader?: JSX.Element;
   onSignUpInCompleted: () => void;
   className?: string;
   fullScreen?: boolean;
@@ -54,8 +52,6 @@ function getNewFlow(flow: TSignUpInFlow) {
 
 const SignUpIn = ({
   metaData,
-  customSignInHeader,
-  customSignUpHeader,
   onSignUpInCompleted,
   className,
   fullScreen,
@@ -76,7 +72,6 @@ const SignUpIn = ({
         {metaData.flow === 'signup' ? (
           <SignUp
             metaData={metaData}
-            customHeader={customSignUpHeader}
             onSignUpCompleted={onSignUpInCompleted}
             onGoToSignIn={onToggleSelectedMethod}
             fullScreen={fullScreen}
@@ -84,7 +79,6 @@ const SignUpIn = ({
         ) : (
           <SignIn
             metaData={metaData}
-            customHeader={customSignInHeader}
             onSignInCompleted={onSignUpInCompleted}
             onGoToSignUp={onToggleSelectedMethod}
             fullScreen={fullScreen}

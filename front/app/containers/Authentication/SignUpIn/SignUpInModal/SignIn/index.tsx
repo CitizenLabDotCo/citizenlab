@@ -33,7 +33,6 @@ export type TSignInSteps = 'auth-providers' | 'password-signin';
 
 export interface Props {
   metaData: ISignUpInMetaData;
-  customHeader?: JSX.Element;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   className?: string;
@@ -41,14 +40,7 @@ export interface Props {
 }
 
 const SignIn = memo<Props>(
-  ({
-    metaData,
-    customHeader,
-    onSignInCompleted,
-    onGoToSignUp,
-    className,
-    fullScreen,
-  }) => {
+  ({ metaData, onSignInCompleted, onGoToSignUp, className, fullScreen }) => {
     const [activeStep, setActiveStep] =
       useState<TSignInSteps>('auth-providers');
 
@@ -93,13 +85,9 @@ const SignIn = memo<Props>(
           className="signupinheadercontainer"
           inModal={true}
         >
-          {!customHeader ? (
-            <StyledHeaderTitle inModal={true}>
-              <FormattedMessage {...messages.logIn} />
-            </StyledHeaderTitle>
-          ) : (
-            customHeader
-          )}
+          <StyledHeaderTitle inModal={true}>
+            <FormattedMessage {...messages.logIn} />
+          </StyledHeaderTitle>
         </StyledHeaderContainer>
 
         <StyledModalContentContainer

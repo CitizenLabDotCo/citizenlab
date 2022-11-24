@@ -108,7 +108,6 @@ export type TSignUpConfiguration = {
 
 export interface Props {
   metaData: ISignUpInMetaData;
-  customHeader?: JSX.Element;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
