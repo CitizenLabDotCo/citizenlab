@@ -35,7 +35,7 @@ export function lockedFieldsStream() {
 export async function signIn(
   email: string,
   password: string,
-  rememberMe: boolean,
+  rememberMe: boolean = false,
   tokenLifetime?: number
 ) {
   try {
@@ -86,7 +86,7 @@ export async function signUp(
         : `${API_PATH}/users`;
     const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
     await request(signUpEndpoint, bodyData, httpMethod, null);
-    const authenticatedUser = await signIn(email, password, false);
+    const authenticatedUser = await signIn(email, password);
     return authenticatedUser;
   } catch (error) {
     throw error;
