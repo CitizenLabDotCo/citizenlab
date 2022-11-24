@@ -1201,6 +1201,8 @@
   "app.containers.SignIn.logIn": "Prijava",
   "app.containers.SignIn.or": "Ili",
   "app.containers.SignIn.passwordLabel": "Lozinka",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Unesene informacije nisu točne. Kliknite „Zaboravi lozinku“ kako biste je ponovno postavili.",
   "app.containers.SignIn.signUp": "Registracija",
   "app.containers.SignIn.somethingWentWrong": "Došlo je do pogreške i niste se uspjeli prijaviti. Pokušajte kasnije.",
