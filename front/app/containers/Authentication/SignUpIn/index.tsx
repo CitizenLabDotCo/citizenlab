@@ -1,9 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import SignUpInModal from './SignUpInComponent/SignUpInModal';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { endsWith } from 'lodash-es';
+import React, { useState, useEffect, useCallback } from 'react';
+
+// events
+import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
+import { openSignUpInModal$ } from './SignUpInComponent/events';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
+
+// hooks
+import { useLocation } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// components
+import SignUpInModal from './SignUpInComponent/SignUpInModal';
+
+// history
+import clHistory from 'utils/cl-router/history';
+
+// utils
+import { endsWith } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
 import { TAuthUser } from 'hooks/useAuthUser';
 
 interface Props {
@@ -12,8 +28,9 @@ interface Props {
 }
 
 const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
+  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>();
+  const [initiated, setInitiated] = useState(false);
   const [signUpInModalClosed, setSignUpInModalClosed] = useState(false);
-  const [signUpInModalMounted, setSignUpInModalMounted] = useState(false);
 
   const fullscreenModalEnabled = useFeatureFlag({
     name: 'franceconnect_login',
@@ -22,33 +39,79 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const { pathname, search } = useLocation();
 
   useEffect(() => {
+    const subscription = openSignUpInModal$.subscribe(
+      ({ eventValue: newMetaData }) => {
+        setMetaData(newMetaData);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // In case of a SSO response or invite
+  useEffect(() => {
+    const authUserIsPending = authUser === undefined;
+    if (authUserIsPending) return;
+
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
 
-    openSignUpInModalIfNecessary(
-      authUser,
-      isAuthError && !signUpInModalClosed,
-      isInvitation && !signUpInModalClosed,
-      signUpInModalMounted,
-      search
-    );
-  }, [pathname, search, authUser, signUpInModalClosed, signUpInModalMounted]);
+    if (!initiated) {
+      openSignUpInModalIfNecessary(
+        authUser,
+        isAuthError && !signUpInModalClosed,
+        isInvitation && !signUpInModalClosed,
+        search
+      );
+    }
 
-  const handleSignUpInModalMounted = () => {
-    setSignUpInModalMounted(true);
-  };
+    setInitiated(true);
+  }, [pathname, search, authUser, signUpInModalClosed, initiated]);
 
-  const handleUpdateModalOpened = (opened: boolean) => {
-    onModalOpenedStateChange(opened);
-  };
+  // In case the user signs in
+  useEffect(() => {
+    if (isNilOrError(authUser)) return;
+    if (metaData) return;
 
-  const handleCloseSignUpInModal = () => {
+    if (!authUser.attributes.registration_completed_at) {
+      openSignUpInModal({ flow: 'signup' });
+    }
+  }, [authUser, metaData]);
+
+  // In case of a sign up / in route, open modal and redirect to homepage
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    const isSignInRoute = endsWith(pathname, 'sign-in');
+    const isSignUpRoute = endsWith(pathname, 'sign-up');
+    const isAuthRoute = isSignInRoute || isSignUpRoute;
+    if (isAuthRoute && isNilOrError(authUser)) {
+      timeout = setTimeout(() => {
+        openSignUpInModal({
+          flow: isSignInRoute ? 'signin' : 'signup',
+        });
+      }, 0);
+      clHistory.replace('/');
+    }
+
+    () => {
+      clearTimeout(timeout);
+    };
+  }, [pathname, authUser]);
+
+  const handleUpdateModalOpened = useCallback(
+    (opened: boolean) => {
+      onModalOpenedStateChange(opened);
+    },
+    [onModalOpenedStateChange]
+  );
+
+  const handleCloseSignUpInModal = useCallback(() => {
     setSignUpInModalClosed(true);
-  };
+  }, []);
 
   return (
     <SignUpInModal
-      onMounted={handleSignUpInModalMounted}
+      metaData={metaData}
       onOpened={handleUpdateModalOpened}
       onClosed={handleCloseSignUpInModal}
       fullScreenModal={fullscreenModalEnabled}

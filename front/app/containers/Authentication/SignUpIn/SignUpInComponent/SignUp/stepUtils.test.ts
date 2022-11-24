@@ -285,9 +285,9 @@ describe('getActiveStep', () => {
 });
 
 describe('getEnabledSteps', () => {
-  it('returns correct steps for base configuration if in modal', () => {
+  it('returns correct steps for base configuration', () => {
     const authUser = getAuthUser({});
-    const metaData = getMetaData({ inModal: true });
+    const metaData = getMetaData({});
 
     expect(
       getEnabledSteps(baseConfiguration, authUser, metaData, {
@@ -309,26 +309,7 @@ describe('getEnabledSteps', () => {
     ).toEqual(['auth-providers', 'account-created', 'success']);
   });
 
-  it('returns correct steps for base configuration if not in modal', () => {
-    const authUser = getAuthUser({});
-    const metaData = getMetaData({ inModal: false });
-
-    expect(
-      getEnabledSteps(baseConfiguration, authUser, metaData, {
-        emailSignUpSelected: true,
-        accountCreated: false,
-      })
-    ).toEqual(['auth-providers', 'password-signup', 'account-created']);
-
-    expect(
-      getEnabledSteps(baseConfiguration, authUser, metaData, {
-        emailSignUpSelected: false,
-        accountCreated: false,
-      })
-    ).toEqual(['auth-providers', 'account-created']);
-  });
-
-  it('returns correct steps for configuration if in modal and custom fields enabled', () => {
+  it('returns correct steps for configuration if custom fields enabled', () => {
     const configuration = getDefaultSteps({
       hasRequiredFields: false,
       hasCustomFields: true,

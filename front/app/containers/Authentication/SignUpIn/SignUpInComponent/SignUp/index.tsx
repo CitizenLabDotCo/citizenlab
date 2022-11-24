@@ -222,19 +222,6 @@ const SignUp = ({
     onSignUpCompleted();
   }, [onSignUpCompleted]);
 
-  // this makes sure that if registration is completed,
-  // but we're not in a modal, handleFlowCompleted is
-  // still called even without closing the Success window
-  useEffect(() => {
-    if (
-      !isNilOrError(authUser) &&
-      !!authUser.attributes.registration_completed_at &&
-      !metaData.inModal
-    ) {
-      handleFlowCompleted();
-    }
-  }, [authUser, metaData, handleFlowCompleted]);
-
   // emit event whenever activeStep changes
   useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
 
@@ -286,7 +273,7 @@ const SignUp = ({
     <Container id="e2e-sign-up-container" className={className ?? ''}>
       {activeStep !== 'success' && (
         <Header
-          inModal={metaData.inModal}
+          inModal={true}
           onResize={onResize}
           activeStepNumber={activeStepNumber}
           totalStepsCount={totalStepsCount}
@@ -296,7 +283,7 @@ const SignUp = ({
       )}
 
       <StyledModalContentContainer
-        inModal={!!metaData.inModal}
+        inModal={true}
         headerHeight={headerHeight}
         ref={modalContentRef}
         fullScreen={fullScreen}

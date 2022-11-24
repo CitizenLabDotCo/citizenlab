@@ -3,12 +3,12 @@ import { signOut } from 'services/auth';
 import tracks from './tracks';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import SignUpIn from '.';
 import { TSignUpStep } from './SignUp';
 
 // hooks
-import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
 
@@ -17,27 +17,19 @@ import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 
 // events
-import {
-  closeSignUpInModal,
-  openSignUpInModal$,
-  signUpActiveStepChange$,
-} from './events';
+import { closeSignUpInModal, signUpActiveStepChange$ } from './events';
 import { ISignUpInMetaData } from 'events/openSignUpInModal';
 
 interface Props {
+  metaData?: ISignUpInMetaData;
   className?: string;
-  onMounted?: () => void;
   onClosed: () => void;
   onOpened?: (opened: boolean) => void;
   fullScreenModal?: boolean;
 }
 
 const SignUpInModal = memo<Props>(
-  ({ className, onMounted, onClosed, onOpened, fullScreenModal }) => {
-    const isMounted = useIsMounted();
-    const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
-      undefined
-    );
+  ({ metaData, className, onClosed, onOpened, fullScreenModal }) => {
     const [signUpActiveStep, setSignUpActiveStep] = useState<
       TSignUpStep | null | undefined
     >(undefined);
@@ -47,7 +39,7 @@ const SignUpInModal = memo<Props>(
       metaData?.verificationContext
     );
 
-    const opened = !!metaData?.inModal;
+    const opened = !!metaData;
 
     const hasParticipationConditions =
       !isNilOrError(participationConditions) &&
@@ -59,29 +51,19 @@ const SignUpInModal = memo<Props>(
         : 580;
 
     useEffect(() => {
-      if (isMounted()) {
-        onMounted?.();
-      }
-    }, [onMounted, isMounted]);
-
-    useEffect(() => {
       if (onOpened) {
         onOpened(opened);
       }
     }, [opened, onOpened]);
 
     useEffect(() => {
-      const subscriptions = [
-        openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
-          setMetaData(newMetaData);
-        }),
-        signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
+      const subscription = signUpActiveStepChange$.subscribe(
+        ({ eventValue: activeStep }) => {
           setSignUpActiveStep(activeStep);
-        }),
-      ];
+        }
+      );
 
-      return () =>
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      return () => subscription.unsubscribe();
     }, [authUser]);
 
     const onClose = async () => {
@@ -117,6 +99,7 @@ const SignUpInModal = memo<Props>(
       if (metaData?.pathname.includes('projects/')) {
         location.reload();
       }
+      355;
       // Temporary fix end
 
       if (!requiresVerification || authUserIsVerified) {
@@ -127,13 +110,19 @@ const SignUpInModal = memo<Props>(
     return (
       <Modal
         fullScreen={fullScreenModal}
+        zIndex={1004}
         width={modalWidth}
         padding="0px"
         opened={opened}
         close={onClose}
         closeOnClickOutside={false}
       >
-        <div id="e2e-sign-up-in-modal" className={className}>
+        <Box
+          id="e2e-sign-up-in-modal"
+          className={className}
+          width={`${modalWidth}px`}
+          background="white"
+        >
           {opened && metaData && (
             <SignUpIn
               metaData={metaData}
@@ -141,7 +130,7 @@ const SignUpInModal = memo<Props>(
               fullScreen={fullScreenModal}
             />
           )}
-        </div>
+        </Box>
       </Modal>
     );
   }

@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { set, keys, difference, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
@@ -255,12 +254,7 @@ class PasswordSignup extends PureComponent<
 
   handleOnGoToSignIn = (event: React.FormEvent) => {
     event.preventDefault();
-
-    if (this.props.metaData?.inModal || this.props.metaData?.noPushLinks) {
-      this.props.onGoToSignIn();
-    } else {
-      clHistory.push('/sign-in');
-    }
+    this.props.onGoToSignIn();
   };
 
   handleTacAcceptedChange = (tacAccepted: boolean) => {
@@ -474,12 +468,7 @@ class PasswordSignup extends PureComponent<
 
   goBackToSignUpOptions = (event: React.MouseEvent) => {
     event.preventDefault();
-
-    if (this.props.metaData?.inModal || this.props.metaData?.noPushLinks) {
-      this.props.onGoBack?.();
-    } else {
-      clHistory.push('/sign-up');
-    }
+    this.props.onGoBack?.();
   };
 
   get emailErrors() {

@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
 
 // libraries
 import Link from 'utils/cl-router/Link';
@@ -150,12 +149,7 @@ class PasswordSignin extends PureComponent<
 
   handleGoToSignUp = (event: React.FormEvent) => {
     event.preventDefault();
-
-    if (this.props.metaData?.inModal || this.props.metaData?.noPushLinks) {
-      this.props.onGoToSignUp();
-    } else {
-      clHistory.push('/sign-up');
-    }
+    this.props.onGoToSignUp();
   };
 
   validate(

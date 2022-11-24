@@ -91,10 +91,10 @@ const SignIn = memo<Props>(
       <Container id="e2e-sign-in-container" className={className}>
         <StyledHeaderContainer
           className="signupinheadercontainer"
-          inModal={!!metaData.inModal}
+          inModal={true}
         >
           {!customHeader ? (
-            <StyledHeaderTitle inModal={!!metaData.inModal}>
+            <StyledHeaderTitle inModal={true}>
               <FormattedMessage {...messages.logIn} />
             </StyledHeaderTitle>
           ) : (
@@ -103,7 +103,7 @@ const SignIn = memo<Props>(
         </StyledHeaderContainer>
 
         <StyledModalContentContainer
-          inModal={!!metaData.inModal}
+          inModal={true}
           fullScreen={fullScreen}
           headerHeight="68px"
           className="signupincontentcontainer"

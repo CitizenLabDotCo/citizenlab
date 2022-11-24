@@ -39,7 +39,7 @@ const VerificationSignUpStep = ({
       onError={handleOnError}
       context={metaData?.verificationContext || null}
       initialActiveStep="method-selection"
-      inModal={!!metaData.inModal}
+      inModal={true}
       showHeader={false}
       skippable={true}
     />
