@@ -1202,6 +1202,8 @@
   "app.containers.SignIn.logIn": "Iniciar Sessió",
   "app.containers.SignIn.or": "O",
   "app.containers.SignIn.passwordLabel": "Contrasenya",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "La informació proporcionada no és correcta. Feu clic a \"Heu oblidat la contrasenya?\" per restablir la contrasenya.",
   "app.containers.SignIn.signUp": "Registreu-vos",
   "app.containers.SignIn.somethingWentWrong": "S'ha produït un error i no podem iniciar la sessió ara mateix. Si us plau, intenteu-ho més tard.",
