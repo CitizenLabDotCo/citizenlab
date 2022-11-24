@@ -26,5 +26,5 @@ COPY back/. .
 
 EXPOSE 4000
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["sh", "entrypoint.sh"]
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
