@@ -47,73 +47,68 @@ const UserHeader = ({ userSlug }: Props) => {
   const isTablet = useBreakpoint('tablet');
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
 
-  if (!isNilOrError(user)) {
-    const memberSinceMoment = moment(user.attributes.created_at).format('LL');
-    let hasDescription = false;
-
-    forOwn(user.attributes.bio_multiloc, (value, _key) => {
-      if (!isEmpty(value) && value !== '<p></p>' && value !== '<p><br></p>') {
-        hasDescription = true;
-      }
-    });
-
-    return (
-      <Box
-        bgColor="white"
-        width="100%"
-        p={isTablet ? '20px 20px 35px' : '30px 0px 70px'}
-      >
-        <Box w="100%" display="flex" justifyContent="center" mb="40px">
-          <Avatar userId={user.id} size={isTablet ? 120 : 150} />
-        </Box>
-
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          w="100%"
-          mt="0px"
-        >
-          <Title id="e2e-usersshowpage-fullname" color="tenantText">
-            {user.attributes.first_name} {user.attributes.last_name}
-          </Title>
-          <Text color="tenantText">
-            <FormattedMessage
-              {...messages.memberSince}
-              values={{ date: memberSinceMoment }}
-            />
-          </Text>
-          {!hideBio &&
-            !isEmpty(user.attributes.bio_multiloc) &&
-            hasDescription && (
-              <Bio>
-                <QuillEditedContent>
-                  {user.attributes.bio_multiloc && (
-                    <T
-                      value={user.attributes.bio_multiloc}
-                      supportHtml={true}
-                    />
-                  )}
-                </QuillEditedContent>
-              </Bio>
-            )}
-          {!isNilOrError(authUser) && authUser.id === user.id && (
-            <Button
-              linkTo="/profile/edit"
-              buttonStyle="text"
-              icon="edit"
-              className="e2e-edit-profile"
-              bgHoverColor={colors.background}
-            >
-              <FormattedMessage {...messages.editProfile} />
-            </Button>
-          )}
-        </Box>
-      </Box>
-    );
+  if (isNilOrError(user)) {
+    return null;
   }
+  const memberSinceMoment = moment(user.attributes.created_at).format('LL');
+  let hasDescription = false;
 
-  return null;
+  forOwn(user.attributes.bio_multiloc, (value, _key) => {
+    if (!isEmpty(value) && value !== '<p></p>' && value !== '<p><br></p>') {
+      hasDescription = true;
+    }
+  });
+
+  return (
+    <Box
+      bgColor="white"
+      width="100%"
+      p={isTablet ? '20px 20px 35px' : '30px 0px 70px'}
+      data-testid="userHeader"
+    >
+      <Box w="100%" display="flex" justifyContent="center" mb="40px">
+        <Avatar userId={user.id} size={isTablet ? 120 : 150} />
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        w="100%"
+        mt="0px"
+      >
+        <Title id="e2e-usersshowpage-fullname" color="tenantText">
+          {user.attributes.first_name} {user.attributes.last_name}
+        </Title>
+        <Text color="tenantText">
+          <FormattedMessage
+            {...messages.memberSince}
+            values={{ date: memberSinceMoment }}
+          />
+        </Text>
+        {!hideBio && !isEmpty(user.attributes.bio_multiloc) && hasDescription && (
+          <Bio data-testid="userHeaderBio">
+            <QuillEditedContent>
+              {user.attributes.bio_multiloc && (
+                <T value={user.attributes.bio_multiloc} supportHtml={true} />
+              )}
+            </QuillEditedContent>
+          </Bio>
+        )}
+        {!isNilOrError(authUser) && authUser.id === user.id && (
+          <Button
+            linkTo="/profile/edit"
+            buttonStyle="text"
+            icon="edit"
+            className="e2e-edit-profile"
+            bgHoverColor={colors.background}
+          >
+            <FormattedMessage {...messages.editProfile} />
+          </Button>
+        )}
+      </Box>
+    </Box>
+  );
 };
 
 export default UserHeader;
