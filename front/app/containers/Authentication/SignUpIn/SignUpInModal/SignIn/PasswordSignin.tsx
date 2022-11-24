@@ -42,7 +42,7 @@ import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 
 // typings
-import { ISignUpInMetaData } from '../SignUpIn';
+import { ISignUpInMetaData } from '../typings';
 
 const Container = styled.div`
   flex: 1 1 auto;
