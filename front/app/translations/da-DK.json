@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "Indhold",
   "app.components.PagesForm.fileUploadLabel": "Vedhæftninger (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Filerne bør ikke være større end 50 Mb. Tilføjede filer vil blive vist nederst på denne side.",
+  "app.components.PagesForm.navbarItemTitle": "Navn i navbar",
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesForm.pageUrl": "Side-URL",
   "app.components.PagesForm.resultingPageURL": "Resulterende URL",
