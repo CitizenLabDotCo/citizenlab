@@ -17,7 +17,6 @@ interface Props {
 const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const [initiated, setInitiated] = useState(false);
   const [signUpInModalClosed, setSignUpInModalClosed] = useState(false);
-  const [signUpInModalMounted, setSignUpInModalMounted] = useState(false);
 
   const fullscreenModalEnabled = useFeatureFlag({
     name: 'franceconnect_login',
@@ -26,26 +25,23 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const { pathname, search } = useLocation();
 
   useEffect(() => {
+    const authUserIsPending = authUser === undefined;
+    if (authUserIsPending) return;
+
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
+
     if (!initiated) {
       openSignUpInModalIfNecessary(
         authUser,
         isAuthError && !signUpInModalClosed,
         isInvitation && !signUpInModalClosed,
-        signUpInModalMounted,
         search
       );
     }
+
     setInitiated(true);
-  }, [
-    pathname,
-    search,
-    authUser,
-    signUpInModalClosed,
-    signUpInModalMounted,
-    initiated,
-  ]);
+  }, [pathname, search, authUser, signUpInModalClosed, initiated]);
 
   // In case of a sign up / in route, open modal and redirect to homepage
   useEffect(() => {
@@ -67,10 +63,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
     };
   }, [pathname, authUser]);
 
-  const handleSignUpInModalMounted = useCallback(() => {
-    setSignUpInModalMounted(true);
-  }, []);
-
   const handleUpdateModalOpened = useCallback(
     (opened: boolean) => {
       onModalOpenedStateChange(opened);
@@ -84,7 +76,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
 
   return (
     <SignUpInModal
-      onMounted={handleSignUpInModalMounted}
       onOpened={handleUpdateModalOpened}
       onClosed={handleCloseSignUpInModal}
       fullScreenModal={fullscreenModalEnabled}

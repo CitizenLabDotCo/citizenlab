@@ -9,7 +9,6 @@ import SignUpIn from '.';
 import { TSignUpStep } from './SignUp';
 
 // hooks
-import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
 
@@ -27,15 +26,13 @@ import { ISignUpInMetaData } from 'events/openSignUpInModal';
 
 interface Props {
   className?: string;
-  onMounted?: () => void;
   onClosed: () => void;
   onOpened?: (opened: boolean) => void;
   fullScreenModal?: boolean;
 }
 
 const SignUpInModal = memo<Props>(
-  ({ className, onMounted, onClosed, onOpened, fullScreenModal }) => {
-    const isMounted = useIsMounted();
+  ({ className, onClosed, onOpened, fullScreenModal }) => {
     const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
       undefined
     );
@@ -58,12 +55,6 @@ const SignUpInModal = memo<Props>(
       signUpActiveStep === 'verification' && hasParticipationConditions
         ? 820
         : 580;
-
-    useEffect(() => {
-      if (isMounted()) {
-        onMounted?.();
-      }
-    }, [onMounted, isMounted]);
 
     useEffect(() => {
       if (onOpened) {
