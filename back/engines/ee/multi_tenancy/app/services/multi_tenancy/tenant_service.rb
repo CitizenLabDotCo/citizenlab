@@ -17,7 +17,7 @@ module MultiTenancy
       tenant_side_fx.before_create(tenant)
 
       config = ActiveRecord::Base.transaction do
-        tenant.disable_auto_config.save!
+        tenant.save!
         # The tenant must be saved before proceeding with the AppConfiguration because:
         # - the app configuration creation and its side effects must run within the tenant context,
         # - we want to reuse the same id for app configuration.
