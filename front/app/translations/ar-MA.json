@@ -263,6 +263,7 @@
   "app.components.PagesForm.editContent": "المحتوى",
   "app.components.PagesForm.fileUploadLabel": "المُرفقات (في حدود 50 ميغابايت)",
   "app.components.PagesForm.fileUploadLabelTooltip": "ستظهر الملفات المُرفقة أسفل هذه الصفحة.",
+  "app.components.PagesForm.navbarItemTitle": "الاسم في شريط التنقل",
   "app.components.PagesForm.pageTitle": "العنوان",
   "app.components.PagesForm.pageUrl": "عنوان URL للصفحة",
   "app.components.PagesForm.resultingPageURL": "عنوان URL الناتج",
