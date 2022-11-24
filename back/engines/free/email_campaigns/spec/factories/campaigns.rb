@@ -130,7 +130,7 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :project_folder_moderation_rights_received_campaign, class: ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived do
+  factory :project_folder_moderation_rights_received_campaign, class: EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived do
     enabled { true }
   end
 

@@ -14,7 +14,7 @@ module EmailCampaigns
           project_folder_url: Frontend::UrlService.new.model_to_url(project_folder, locale: recipient.locale)
         }
       }
-      campaign = ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.first_or_create!
+      campaign = EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.first_or_create!
 
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end

@@ -19,6 +19,7 @@
 #
 module ProjectFolders
   class Folder < ::ApplicationRecord
+    self.table_name = 'project_folders_folders'
     include PgSearch::Model
 
     has_one :admin_publication, as: :publication, dependent: :destroy
@@ -27,9 +28,6 @@ module ProjectFolders
     has_many :files, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'  # TODO: remove after renaming project_folder association in File model
     has_many :text_images, as: :imageable, dependent: :destroy
     accepts_nested_attributes_for :text_images
-
-    before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
-    has_many :notifications, foreign_key: :project_folder_id, dependent: :nullify
 
     mount_base64_uploader :header_bg, HeaderBgUploader
 
@@ -44,6 +42,9 @@ module ProjectFolders
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
     before_validation :strip_title
     before_validation :set_admin_publication
+
+    before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
+    has_many :notifications, foreign_key: :project_folder_id, inverse_of: :project_folder, dependent: :nullify
 
     after_destroy :remove_moderators
 

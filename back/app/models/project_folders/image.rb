@@ -21,6 +21,7 @@
 #
 module ProjectFolders
   class Image < ::ApplicationRecord
+    self.table_name = 'project_folders_images'
     mount_base64_uploader :image, ImageUploader
     belongs_to :project_folder, class_name: 'Folder' # TODO: rename to :folder
 

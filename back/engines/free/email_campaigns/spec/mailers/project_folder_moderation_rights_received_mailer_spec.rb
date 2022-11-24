@@ -6,7 +6,7 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
   describe 'campaign_mail' do
     let(:project_folder) { create(:project_folder) }
     let!(:recipient) { create(:project_folder_moderator, locale: 'en', project_folders: [project_folder]) }
-    let!(:campaign) { ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
+    let!(:campaign) { EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     let(:command) do
