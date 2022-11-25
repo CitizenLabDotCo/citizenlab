@@ -430,7 +430,16 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-test:
+      - back-test-os:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - back-test-ee:
           context: docker-hub-access
           requires:
             - back-build-essential-docker-image
