@@ -7,7 +7,7 @@ import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary'
 
 // hooks
 import { useLocation } from 'react-router-dom';
-// import useFeatureFlag from 'hooks/useFeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import SignUpInModal from './SignUpInModal';
@@ -32,10 +32,9 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const [initiated, setInitiated] = useState(false);
   const [signUpInModalClosed, setSignUpInModalClosed] = useState(false);
 
-  // const fullscreenModalEnabled = useFeatureFlag({
-  //   name: 'franceconnect_login',
-  // });
-  const fullscreenModalEnabled = false;
+  const fullscreenModalEnabled = useFeatureFlag({
+    name: 'franceconnect_login',
+  });
 
   const { pathname, search } = useLocation();
 
