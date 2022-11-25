@@ -3,11 +3,11 @@ import { randomString } from '../../support/commands';
 describe('Content builder navigation', () => {
   let projectId = '';
   let projectSlug = '';
+  const projectTitle = randomString();
 
   before(() => {
     cy.setAdminLoginCookie();
     cy.getAuthUser().then((user) => {
-      const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
       const projectDescription = 'Original project description.';
       const userId = user.body.data.id;
@@ -56,7 +56,7 @@ describe('Content builder navigation', () => {
 
   it('navigates to project settings when content builder goBack clicked', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.wait(4000);
+    cy.contains(projectTitle).should('exist');
     cy.get('#e2e-go-back-button').click();
     cy.url().should(
       'eq',
