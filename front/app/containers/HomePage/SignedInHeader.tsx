@@ -202,6 +202,8 @@ export const Left = styled.div`
 
   ${media.tablet`
     margin-right: 0;
+    flex-direction: column;
+    align-items: flex-start;
   `}
 `;
 
@@ -212,10 +214,6 @@ export const Icons = styled.div`
   ${isRtl`
     margin-right: 0px;
     margin-left: 30px;
-  `}
-
-  ${media.tablet`
-    display: none;
   `}
 `;
 
@@ -233,22 +231,10 @@ export const Text = styled.div`
 `;
 
 export const Right = styled.div`
-  flex-shrink: 0;
   display: flex;
-
-  ${media.tablet`
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-top: 30px;
-  `}
 
   ${isRtl`
     flex-direction: row-reverse;
-
-    ${media.tablet`
-        align-items: flex-end;
-    `}
   `}
 `;
 
@@ -269,7 +255,7 @@ export const SkipButton = styled(Button)`
 export const AcceptButton = styled(Button)`
   ${media.tablet`
     order: 1;
-    margin-bottom: 10px;
+    margin-right: 10px;
   `}
 `;
 
