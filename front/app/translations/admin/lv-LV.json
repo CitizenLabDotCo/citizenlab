@@ -1104,7 +1104,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Pievienot atbildi",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Pievienot apsekojuma saturu",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Atcelt",
-  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
+  "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# izvēles} one {# izvēle} other {# izvēles}})",
   "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Izvēlieties vairāk par vienu",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Aizvērt",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Slēgts",
