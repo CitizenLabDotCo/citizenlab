@@ -58,6 +58,10 @@ const Header = styled.div`
   ${media.tablet`
     height: 320px;
   `}
+
+  ${media.phone`
+    height: 400px;
+  `}
 `;
 
 const HeaderImageContainer = styled.div`
@@ -207,6 +211,7 @@ export const Left = styled.div`
 
   ${media.phone`
     align-items: center;
+    margin-bottom: 30px;
   `}
 `;
 
