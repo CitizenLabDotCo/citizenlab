@@ -50,7 +50,7 @@ import tracks from '../tracks';
 import styled, { useTheme } from 'styled-components';
 
 // typings
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
+import { ISignUpInMetaData, openSignUpInModal } from 'events/openSignUpInModal';
 import { Multiloc } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
 import { UserCustomFieldsInfos } from 'services/userCustomFields';
@@ -268,6 +268,15 @@ const SignUp = ({
     ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
     : '';
 
+  const handleSkipVerification = () => {
+    openSignUpInModal({
+      ...metaData,
+      verification: false,
+      verificationContext: undefined,
+    });
+    onCompleteActiveStep();
+  };
+
   return (
     <Container id="e2e-sign-up-container" className={className ?? ''}>
       {activeStep !== 'success' && (
@@ -324,17 +333,17 @@ const SignUp = ({
               />
             )}
 
+            {activeStep === 'confirmation' && userConfirmation && (
+              <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
+            )}
+
             {activeStep === 'verification' && (
               <VerificationSignUpStep
                 metaData={metaData}
                 onError={handleStepError}
-                onSkipped={onCompleteActiveStep}
+                onSkipped={handleSkipVerification}
                 onCompleted={onCompleteActiveStep}
               />
-            )}
-
-            {activeStep === 'confirmation' && userConfirmation && (
-              <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
             )}
 
             {activeStep === 'custom-fields' && (
