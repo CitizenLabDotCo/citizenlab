@@ -48,7 +48,7 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   # title. That way, the frontend can know what the title
   # will be when the page would be added to the navbar (and
   # show this in the list of items to add).
-  # See also back/engines/free/customizable_navbar/app/controllers/customizable_navbar/web_api/v1/patches/static_pages_controller.rb
+  # See also back/app/controllers/web_api/v1/static_pages_controller.rb
   # #assign_attributes
   attribute :nav_bar_item_title_multiloc do |object|
     current_navbaritem_title = object.nav_bar_item&.title_multiloc_with_fallback

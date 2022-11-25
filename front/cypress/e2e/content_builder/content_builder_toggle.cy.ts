@@ -48,6 +48,7 @@ describe('Content builder toggle', () => {
       'cypress/fixtures/example.pdf'
     );
     cy.wait(4000);
+
     // Submit project
     cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@saveProject');
@@ -85,8 +86,9 @@ describe('Content builder toggle', () => {
     cy.get('#e2e-project-file-uploader').selectFile(
       'cypress/fixtures/example.pdf'
     );
+    cy.wait(4000);
 
-    // Save project after adding attachment
+    // Submit project
     cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@saveProject');
     cy.wait('@saveProjectFiles');

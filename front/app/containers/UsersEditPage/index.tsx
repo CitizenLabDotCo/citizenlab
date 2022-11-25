@@ -43,15 +43,15 @@ const Container = styled.main`
 const Wrapper = styled.div``;
 
 export default () => {
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const authUser = useAuthUser();
-  const loaded = tenant !== undefined && authUser !== undefined;
+  const loaded = appConfig !== undefined && authUser !== undefined;
 
   if (loaded && !authUser) {
     clHistory.push('/sign-in');
   }
 
-  if (loaded && !isNilOrError(tenant) && !isNilOrError(authUser)) {
+  if (loaded && !isNilOrError(appConfig) && !isNilOrError(authUser)) {
     return (
       <Container id="e2e-user-edit-profile-page">
         <UsersEditPageMeta user={authUser} />

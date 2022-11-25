@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Input } from '@citizenlab/cl2-component-library';
+import { Input, Checkbox, Box } from '@citizenlab/cl2-component-library';
 import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -55,7 +55,7 @@ const Form = styled.form`
   width: 100%;
 `;
 
-const FormElement = styled.div`
+const FormElement = styled(Box)`
   width: 100%;
   margin-bottom: 16px;
   position: relative;
@@ -92,6 +92,7 @@ interface Props extends InputProps, DataProps {}
 type State = {
   email: string | null;
   password: string | null;
+  rememberMe: boolean;
   processing: boolean;
   emailOrPhoneNumberError: string | null;
   signInError: string | null;
@@ -110,6 +111,7 @@ class PasswordSignin extends PureComponent<
     this.state = {
       email: null,
       password: null,
+      rememberMe: false,
       processing: false,
       emailOrPhoneNumberError: null,
       signInError: null,
@@ -140,6 +142,12 @@ class PasswordSignin extends PureComponent<
       password,
       hasEmptyPasswordError: false,
       signInError: null,
+    });
+  };
+
+  handleRememberMeOnChange = () => {
+    this.setState({
+      rememberMe: !this.state.rememberMe,
     });
   };
 
@@ -207,10 +215,16 @@ class PasswordSignin extends PureComponent<
   handleOnSubmit =
     (phoneLoginEnabled: boolean) => async (event: React.FormEvent) => {
       event.preventDefault();
+      if (isNilOrError(this.props.tenant)) {
+        return;
+      }
 
       const { onSignInCompleted } = this.props;
       const { formatMessage } = this.props.intl;
-      const { email, password } = this.state;
+      const { email, password, rememberMe } = this.state;
+      const tokenLifetime =
+        this.props.tenant.attributes.settings.core
+          .authentication_token_lifetime_in_days;
 
       if (
         this.validate(phoneLoginEnabled, email, password) &&
@@ -219,7 +233,7 @@ class PasswordSignin extends PureComponent<
       ) {
         try {
           this.setState({ processing: true });
-          const user = await signIn(email, password);
+          const user = await signIn(email, password, rememberMe, tokenLifetime);
           trackEventByName(tracks.signInEmailPasswordCompleted);
           onSignInCompleted(user.data.id);
         } catch (error) {
@@ -244,6 +258,7 @@ class PasswordSignin extends PureComponent<
     const {
       email,
       password,
+      rememberMe,
       processing,
       emailOrPhoneNumberError,
       signInError,
@@ -317,6 +332,15 @@ class PasswordSignin extends PureComponent<
               autocomplete="current-password"
               isLoginPasswordInput
               errors={{ emptyError: hasEmptyPasswordError }}
+            />
+          </FormElement>
+
+          <FormElement paddingTop="8px">
+            <Checkbox
+              label={formatMessage(messages.rememberMeLabel)}
+              labelTooltipText={formatMessage(messages.rememberMeTooltip)}
+              checked={rememberMe}
+              onChange={this.handleRememberMeOnChange}
             />
           </FormElement>
 
