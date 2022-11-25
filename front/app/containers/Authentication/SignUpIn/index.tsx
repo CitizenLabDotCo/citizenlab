@@ -35,6 +35,7 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   // const fullscreenModalEnabled = useFeatureFlag({
   //   name: 'franceconnect_login',
   // });
+
   const fullscreenModalEnabled = true;
 
   const { pathname, search } = useLocation();
