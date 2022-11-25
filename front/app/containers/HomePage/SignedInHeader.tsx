@@ -218,10 +218,11 @@ export const Icons = styled.div`
 `;
 
 const CompleteProfileIcon = styled(Icon)`
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   margin-left: -3px;
-  opacity: 0.5;
+  margin-top: 3px;
+  opacity: 0.7;
 `;
 
 export const Text = styled.div`
