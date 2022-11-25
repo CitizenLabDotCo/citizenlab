@@ -54,7 +54,6 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:, **_unused_options)
-      # notification = activity.item
       folder = ProjectFolders::Folder.find(activity.payload['project_folder_id'])
       [{
         event_payload: {

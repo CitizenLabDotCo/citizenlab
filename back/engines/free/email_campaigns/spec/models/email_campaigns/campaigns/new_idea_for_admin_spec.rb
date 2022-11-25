@@ -12,27 +12,27 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin, type: :model do
   describe 'apply_recipient_filters' do
     it 'filters out normal users' do
       idea = create(:idea)
-      _user = create(:user)
+      create(:user)
       admin = create(:admin)
 
       idea_published = create(:activity, item: idea, action: 'published')
-      expect(campaign.apply_recipient_filters(activity: idea_published)).to match [admin]
+      expect(campaign.apply_recipient_filters(activity: idea_published)).to eq [admin]
     end
 
     it 'keeps moderators' do
       idea = create(:idea)
       moderator = create(:project_moderator, projects: [idea.project])
-      _other_moderator = create(:project_moderator)
+      create(:project_moderator)
 
       idea_published = create(:activity, item: idea, action: 'published')
-      expect(campaign.apply_recipient_filters(activity: idea_published)).to match([moderator])
+      expect(campaign.apply_recipient_filters(activity: idea_published)).to eq([moderator])
     end
 
     it 'filters out everyone if the author is an admin' do
       project = create(:project)
       admin = create(:admin)
       idea = create(:idea, project: project, author: admin)
-      _another_admin = create(:admin)
+      create(:admin)
 
       idea_published = create(:activity, item: idea, action: 'published')
       expect(campaign.apply_recipient_filters(activity: idea_published).count).to eq 0
@@ -42,7 +42,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin, type: :model do
       project = create(:project)
       moderator = create(:project_moderator, projects: [project])
       idea = create(:idea, project: project, author: moderator)
-      _admin = create(:admin)
+      create(:admin)
 
       idea_published = create(:activity, item: idea, action: 'published')
       expect(campaign.apply_recipient_filters(activity: idea_published).count).to eq 0
