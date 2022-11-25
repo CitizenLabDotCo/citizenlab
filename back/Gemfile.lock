@@ -302,6 +302,15 @@ PATH
       rails (~> 6.1)
 
 PATH
+  remote: engines/commercial/multi_tenancy
+  specs:
+    multi_tenancy (0.1.0)
+      actionpack-cloudfront (~> 1.2.0)
+      nlp
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
+
+PATH
   remote: engines/commercial/nlp
   specs:
     nlp (0.1.0)
@@ -369,15 +378,6 @@ PATH
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
       savon (~> 2.12.0)
-
-PATH
-  remote: engines/ee/multi_tenancy
-  specs:
-    multi_tenancy (0.1.0)
-      actionpack-cloudfront (~> 1.2.0)
-      nlp
-      rails (~> 6.1)
-      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/free/email_campaigns
