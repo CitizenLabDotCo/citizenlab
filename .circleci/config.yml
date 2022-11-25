@@ -31,6 +31,14 @@ parameters:
     type: boolean
     default: false
 
+  e2e:
+    type: boolean
+    default: false
+
+  templates:
+    type: boolean
+    default: false
+
 executors:
   back-essential:
     parameters:
