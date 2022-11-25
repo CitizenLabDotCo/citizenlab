@@ -128,8 +128,8 @@ const SignUp = ({
 }: InnerProps) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
-  const tenant = useAppConfiguration();
-  const theme: any = useTheme();
+  const theme = useTheme();
+  const appConfig = useAppConfiguration();
 
   const modalContentRef = useRef<HTMLDivElement>(null);
 
@@ -262,7 +262,7 @@ const SignUp = ({
     : null;
   const activeStepConfiguration = activeStep ? configuration[activeStep] : null;
   const helpText = activeStepConfiguration?.helperText?.(
-    !isNilOrError(tenant) ? tenant : undefined
+    !isNilOrError(appConfig) ? appConfig : undefined
   );
   const stepDescription = activeStepConfiguration?.stepDescriptionMessage
     ? formatMessage(activeStepConfiguration.stepDescriptionMessage)

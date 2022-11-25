@@ -1187,6 +1187,8 @@
   "app.containers.SignIn.logIn": "Logga in",
   "app.containers.SignIn.or": "Eller",
   "app.containers.SignIn.passwordLabel": "Lösenord",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Den angivna informationen är inte korrekt. Klicka på Har du glömt ditt lösenord? för att återställa ditt lösenord.",
   "app.containers.SignIn.signUp": "Registrera dig",
   "app.containers.SignIn.somethingWentWrong": "Något gick fel och vi kan inte logga in dig just nu. Försök igen senare.",

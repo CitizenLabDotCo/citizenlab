@@ -34,7 +34,7 @@ interface Props {
 }
 
 const User = ({ userId }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const authUser = useAuthUser();
 
   if (isNilOrError(authUser)) {

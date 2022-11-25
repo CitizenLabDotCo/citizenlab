@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- [CL-1483] Add “Remember me” checkbox to login form to not persist cookies
+
 ## 2022-11-22
 
 ### Added

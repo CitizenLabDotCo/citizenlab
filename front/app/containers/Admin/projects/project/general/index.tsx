@@ -24,13 +24,13 @@ import {
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import Outlet from 'components/Outlet';
 import {
   StyledForm,
   ProjectType,
   StyledSectionField,
   ParticipationContextWrapper,
 } from './components/styling';
+import ProjectFolderSelect from './components/ProjectFolderSelect';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -38,6 +38,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
 import { useParams } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import {
@@ -74,6 +75,7 @@ const AdminProjectsProjectGeneral = ({
 }: WrappedComponentProps) => {
   const { projectId } = useParams();
   const project = useProject({ projectId });
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(projectId);
   const remoteProjectImages = useProjectImages({
@@ -572,11 +574,12 @@ const AdminProjectsProjectGeneral = ({
           onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
         />
 
-        <Outlet
-          id="app.components.AdminPage.projects.form.additionalInputs.inputs"
-          projectAttrs={projectAttrs}
-          onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-        />
+        {isProjectFoldersEnabled && (
+          <ProjectFolderSelect
+            projectAttrs={projectAttrs}
+            onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+          />
+        )}
 
         <HeaderImageDropzone
           projectHeaderImage={projectHeaderImage}

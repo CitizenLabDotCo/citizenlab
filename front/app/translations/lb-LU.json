@@ -1187,6 +1187,8 @@
   "app.containers.SignIn.logIn": "Umellen",
   "app.containers.SignIn.or": "Oder",
   "app.containers.SignIn.passwordLabel": "Passwuert",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Déi zur Verfügung gestallten Informatioun ass net korrekt. Klickt op \"Passwuert vergiess\" fir Äert Passwuert zeréckzesetzen.",
   "app.containers.SignIn.signUp": "Aschreiwen",
   "app.containers.SignIn.somethingWentWrong": "E Feeler ass opgetrueden: Dir kennt Iech am Abléck net umellen. Versicht et spéider nach eng Kéier. ",

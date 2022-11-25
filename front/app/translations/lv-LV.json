@@ -1187,6 +1187,8 @@
   "app.containers.SignIn.logIn": "Pierakstīties",
   "app.containers.SignIn.or": "Vai",
   "app.containers.SignIn.passwordLabel": "Parole",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "Sniegtā informācija nav pareiza. Lai atiestatītu paroli, nospiediet uz “Aizmirsāt paroli?”.",
   "app.containers.SignIn.signUp": "Reģistrēties",
   "app.containers.SignIn.somethingWentWrong": "Radās kļūda, un mēs šobrīd nevaram jūs reģistrēt. Lūdzu, mēģiniet vēlāk.",

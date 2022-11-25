@@ -8,7 +8,6 @@ import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
 import Chart from './Chart';
-import { STATS_CONTAINER_LAYOUT } from '../RegistrationsCard/layouts';
 
 // i18n
 import messages from './messages';
@@ -83,7 +82,11 @@ const ActiveUsersCard = ({
               bottomLabelValue={stats.activeUsers.lastPeriod}
             />
           </Box>
-          <Box {...STATS_CONTAINER_LAYOUT[layout]}>
+          <Box
+            mt={layout === 'wide' ? '32px' : 'auto'}
+            ml={layout === 'narrow' ? '32px' : 'auto'}
+            width={layout === 'narrow' ? '50%' : 'auto'}
+          >
             <Statistic
               name={formatMessage(messages.participationRate)}
               tooltipContent={formatMessage(messages.participationRateTooltip)}

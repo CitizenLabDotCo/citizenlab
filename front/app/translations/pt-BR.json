@@ -1187,6 +1187,8 @@
   "app.containers.SignIn.logIn": "Iniciar Sessão",
   "app.containers.SignIn.or": "Ou",
   "app.containers.SignIn.passwordLabel": "Senha",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "A informação fornecida não está correcta. Clique em 'Senha esquecida' para redefinir sua senha.",
   "app.containers.SignIn.signUp": "Crie seu login",
   "app.containers.SignIn.somethingWentWrong": "Alguma coisa deu errado e não te podemos cadastrar agora mesmo. Por favor, tente novamente mais tarde.",
