@@ -341,3 +341,5 @@ If the license is unknown to rubygems, you can directly approve a gem.
 docker-compose run web license_finder approvals add some_awesome_new_gem
 ```
 Only approve a license or gem if you're sure there are no compatibility issues. License_finder stores its information in `doc/dependency_decisions.yml`
+
+Trigger CI

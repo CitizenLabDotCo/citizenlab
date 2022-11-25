@@ -6,3 +6,5 @@ More specifically, this currently contains:
 * The code that generates the json manifest
 * A service that maps domain objects to cl2-front urls
 * Endpoint to log user feedback about the front-end
+
+Trigger CI
