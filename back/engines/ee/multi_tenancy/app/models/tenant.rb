@@ -172,13 +172,13 @@ class Tenant < ApplicationRecord
   end
 
   def attributes_delta(new_obj, old_obj)
+    common_attrs = %w[id host name created_at updated_at]
     new_attributes = new_obj.attributes
     old_attributes = old_obj.attributes
-    common_attrs = (old_attributes.keys & new_attributes.keys)
 
     new_attributes
       .slice(*common_attrs)
-      .reject { |k, v| v == old_attributes[k] }
+      .reject { |key, new_value| new_value == old_attributes[key] }
   end
 
   def create_apartment_tenant

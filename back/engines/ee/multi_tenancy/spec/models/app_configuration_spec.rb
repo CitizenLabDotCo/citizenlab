@@ -3,41 +3,42 @@
 require 'rails_helper'
 
 RSpec.describe AppConfiguration, type: :model do
-  it 'name is synced with tenant' do
-    Tenant.current.update(name: 'Karhide')
-    expect(described_class.instance.name).to eq('Karhide')
+  context 'when updated' do
+    it 'name is synced with tenant' do
+      Tenant.current.update(name: 'Karhide')
+      expect(described_class.instance.name).to eq('Karhide')
 
-    described_class.instance.update(name: 'Orgoreyn')
-    expect(Tenant.current.name).to eq('Orgoreyn')
-  end
+      described_class.instance.update(name: 'Orgoreyn')
+      expect(Tenant.current.name).to eq('Orgoreyn')
+    end
 
-  it 'host is synced with tenant' do
-    Tenant.current.update(host: 'karhide.org')
-    Apartment::Tenant.switch!('karhide_org')
-    expect(described_class.instance.host).to eq('karhide.org')
+    it 'host is synced with tenant' do
+      Tenant.current.update(host: 'karhide.org')
+      Apartment::Tenant.switch!('karhide_org')
+      expect(described_class.instance.host).to eq('karhide.org')
 
-    described_class.instance.update(host: 'orgoreyn.org')
-    expect { Apartment::Tenant.switch!('karhide_org') }.to raise_error(Apartment::TenantNotFound)
-    Apartment::Tenant.switch!('orgoreyn_org')
-    expect(described_class.instance.host).to eq('orgoreyn.org')
-  end
+      described_class.instance.update(host: 'orgoreyn.org')
+      expect { Apartment::Tenant.switch!('karhide_org') }.to raise_error(Apartment::TenantNotFound)
+      Apartment::Tenant.switch!('orgoreyn_org')
+      expect(described_class.instance.host).to eq('orgoreyn.org')
+    end
 
-  it 'settings are synced with tenant' do
-    core_settings_update = {
-      organization_type: 'large_city',
-      lifecycle_stage: 'trial',
-      currency: 'USD',
-      color_main: '#FFFFFF'
-    }.stringify_keys!
+    it 'persists & synchronizes only the dirty attributes' do
+      app_config = described_class.instance
+      another_config_ref = described_class.find(app_config.id)
 
-    config = described_class.instance
-    settings = config.settings
-    settings['core'].merge!(core_settings_update)
-    config.settings = settings
-    config.save!
+      # The +created_at+ attribute is modified through the other reference.
+      new_created_at = another_config_ref.created_at + 1
+      another_config_ref.update!(created_at: new_created_at)
 
-    tenant_core_settings = Tenant.current.settings['core']
-    expect(tenant_core_settings).to include(core_settings_update)
+      # The value of the +created_at+ attribute of +app_config+ is now stale, but it's
+      # not dirty and as such the update should not persist it.
+      app_config.update!(updated_at: Time.zone.now)
+      app_config.reload
+
+      expect(app_config.created_at).to eq(new_created_at)
+      expect(Tenant.current.created_at).to eq(new_created_at)
+    end
   end
 
   describe 'Lifecycle stage' do
@@ -103,27 +104,6 @@ RSpec.describe AppConfiguration, type: :model do
       app_config = described_class.instance
       app_config.update(style: nil)
       expect(app_config.style).to eq({})
-    end
-  end
-
-  context 'when updated' do
-    it 'persists & synchronizes only the dirty attributes' do
-      app_config = described_class.instance
-      another_config_ref = described_class.find(app_config.id)
-
-      # The main color is modified through the other reference.
-      new_color = '#000000'
-      expect(app_config.settings.dig('core', 'color_main')).not_to eq(new_color) # sanity check
-      another_config_ref.settings['core']['color_main'] = new_color
-      another_config_ref.save!
-
-      # The value of the +settings+ attribute of +app_config+ is now stale, but it's not
-      # dirty and as such the update should not persist it.
-      app_config.update!(updated_at: Time.zone.now)
-      app_config.reload
-
-      expect(app_config.settings.dig('core', 'color_main')).to eq(new_color)
-      expect(Tenant.current.settings.dig('core', 'color_main')).to eq(new_color)
     end
   end
 end

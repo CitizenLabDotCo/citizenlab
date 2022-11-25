@@ -65,11 +65,8 @@ module MultiTenancy
 
       tenant.switch do
         config_side_fx.before_update(config)
-
-        ActiveRecord::Base.transaction do
-          config.save!
-          tenant.reload # after sync
-        end
+        config.save!
+        tenant.reload # after sync
 
         config_side_fx.after_update(config)
         tenant_side_fx.after_update(tenant)

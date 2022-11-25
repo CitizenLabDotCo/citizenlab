@@ -115,19 +115,17 @@ RSpec.describe Tenant, type: :model do
       tenant = described_class.current
       another_tenant_ref = described_class.find(tenant.id)
 
-      # The main color is modified through the other reference.
-      new_color = '#000000'
-      expect(tenant.settings.dig('core', 'color_main')).not_to eq(new_color) # sanity check
-      another_tenant_ref.settings['core']['color_main'] = new_color
-      another_tenant_ref.save!
+      # The +created_at+ attribute is modified through the other reference.
+      new_created_at = another_tenant_ref.created_at + 1
+      another_tenant_ref.update!(created_at: new_created_at)
 
-      # The value of the +settings+ attribute of +tenant+ is now stale, but it's not
-      # dirty and as such the update should not persist it.
+      # The value of the +created_at+ attribute of +app_config+ is now stale, but it's
+      # not dirty and as such the update should not persist it.
       tenant.update!(updated_at: Time.zone.now)
       tenant.reload
 
-      expect(tenant.settings.dig('core', 'color_main')).to eq(new_color)
-      expect(AppConfiguration.instance.reload.settings.dig('core', 'color_main')).to eq(new_color)
+      expect(tenant.created_at).to eq(new_created_at)
+      expect(AppConfiguration.instance.reload.created_at).to eq(new_created_at)
     end
   end
 end
