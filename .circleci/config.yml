@@ -460,7 +460,8 @@ workflows:
       - back-web-api-docs:
           context: docker-hub-access
           requires:
-            - back-test
+            - back-test-os
+            - back-test-ee
           filters:
             branches:
               ignore:
@@ -566,7 +567,15 @@ workflows:
             branches:
               only:
                 - production
-      - back-test:
+      - back-test-os:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
+      - back-test-ee:
           context: docker-hub-access
           requires:
             - back-build-essential-docker-image
@@ -591,7 +600,8 @@ workflows:
             - front-detect-deadcode
             - front-lint
             - back-lint
-            - back-test
+            - back-test-os
+            - back-test-ee
             - back-bundle-audit
             - back-license-check
           filters:
@@ -607,7 +617,8 @@ workflows:
             - front-detect-deadcode
             - front-lint
             - back-lint
-            - back-test
+            - back-test-os
+            - back-test-ee
             - back-bundle-audit
             - back-license-check
           filters:
