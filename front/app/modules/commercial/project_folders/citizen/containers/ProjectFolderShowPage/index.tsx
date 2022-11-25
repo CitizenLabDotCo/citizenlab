@@ -160,7 +160,7 @@ const ProjectFolderShowPage = memo<{
 }>(({ projectFolder }) => {
   const authUser = useAuthUser();
   const locale = useLocale();
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
   const { list: adminPublicationsList } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
@@ -171,7 +171,7 @@ const ProjectFolderShowPage = memo<{
 
   const loading =
     isUndefined(locale) ||
-    isUndefined(tenant) ||
+    isUndefined(appConfig) ||
     isUndefined(projectFolder) ||
     isUndefined(adminPublicationsList);
 
