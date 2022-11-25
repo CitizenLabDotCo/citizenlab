@@ -27,6 +27,14 @@ export default defineMessages({
     id: 'app.containers.SignIn.passwordLabel',
     defaultMessage: 'Password',
   },
+  rememberMeLabel: {
+    id: 'app.containers.SignIn.rememberMeLabel',
+    defaultMessage: 'Remember me',
+  },
+  rememberMeTooltip: {
+    id: 'app.containers.SignIn.rememberMeTooltip',
+    defaultMessage: 'Do not select if using a public computer',
+  },
   signInError: {
     id: 'app.containers.SignIn.signInError',
     defaultMessage: 'No account was found for the provided credentials',
