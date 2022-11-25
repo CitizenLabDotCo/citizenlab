@@ -259,6 +259,10 @@ namespace :cl2_back do
             }
           ]
         },
+        project_folders: {
+          enabled: true,
+          allowed: true
+        },
         volunteering: {
           enabled: true,
           allowed: true
@@ -272,6 +276,10 @@ namespace :cl2_back do
           allowed: true
         },
         smart_groups: {
+          enabled: true,
+          allowed: true
+        },
+        project_management: {
           enabled: true,
           allowed: true
         },
