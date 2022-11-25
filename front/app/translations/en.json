@@ -1203,7 +1203,7 @@
   "app.containers.SignIn.or": "Or",
   "app.containers.SignIn.passwordLabel": "Password",
   "app.containers.SignIn.rememberMeLabel": "Remember me",
-  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer.",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "The provided information is not correct. Click 'Forgot Password?' to reset your password.",
   "app.containers.SignIn.signUp": "Sign up",
   "app.containers.SignIn.somethingWentWrong": "Something went wrong and we can't sign you in right now. Please try again later.",
