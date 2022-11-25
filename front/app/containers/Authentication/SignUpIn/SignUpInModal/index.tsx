@@ -131,7 +131,7 @@ const SignUpInModal = memo<Props>(
     return (
       <Modal
         fullScreen={fullScreenModal}
-        zIndex={1000001}
+        zIndex={fullScreenModal ? 400 : 10000001}
         width={modalWidth}
         padding="0px"
         opened={opened}
