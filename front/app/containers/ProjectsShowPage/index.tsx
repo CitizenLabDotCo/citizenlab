@@ -90,7 +90,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
   const locale = useLocale();
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
 
   // UseEffect to handle modal state and phase parameters
@@ -127,8 +127,8 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const user = useAuthUser();
 
   const loading = useMemo(() => {
-    return anyIsUndefined(locale, tenant, project, phases, events);
-  }, [locale, tenant, project, phases, events]);
+    return anyIsUndefined(locale, appConfig, project, phases, events);
+  }, [locale, appConfig, project, phases, events]);
 
   const isUnauthorized = useMemo(() => {
     if (!isApiError(project)) return false;
