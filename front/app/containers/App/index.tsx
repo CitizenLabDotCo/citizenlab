@@ -457,6 +457,7 @@ class App extends PureComponent<Props, State> {
                 <ErrorBoundary>
                   <Suspense fallback={null}>
                     <PostPageFullscreenModal
+                      signUpInModalOpened={signUpInModalOpened}
                       type={modalType}
                       postId={modalId}
                       slug={modalSlug}

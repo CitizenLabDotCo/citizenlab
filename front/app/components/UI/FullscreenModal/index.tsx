@@ -20,6 +20,7 @@ import { trackPage } from 'utils/analytics';
 // styling
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -95,6 +96,7 @@ interface InputProps {
   mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
   modalPortalElement?: HTMLElement;
+  disableFocusOn?: boolean;
 }
 
 interface DataProps {
@@ -211,6 +213,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       navbarRef,
       mobileNavbarRef,
       className,
+      disableFocusOn,
     } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement =
@@ -224,13 +227,28 @@ class FullscreenModal extends PureComponent<Props, State> {
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
           windowHeight={windowHeight}
         >
-          <StyledFocusOn autoFocus={false} shards={shards}>
-            {topBar}
-            <Content className="fullscreenmodal-scrollcontainer">
-              {children}
-            </Content>
-            {bottomBar}
-          </StyledFocusOn>
+          {disableFocusOn ? (
+            <Box
+              flex="1"
+              display="flex"
+              flexDirection="column"
+              alignItems="stretch"
+            >
+              {topBar}
+              <Content className="fullscreenmodal-scrollcontainer">
+                {children}
+              </Content>
+              {bottomBar}
+            </Box>
+          ) : (
+            <StyledFocusOn autoFocus={false} shards={shards}>
+              {topBar}
+              <Content className="fullscreenmodal-scrollcontainer">
+                {children}
+              </Content>
+              {bottomBar}
+            </StyledFocusOn>
+          )}
         </Container>
       );
     }
