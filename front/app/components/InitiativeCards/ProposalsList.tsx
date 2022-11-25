@@ -143,7 +143,6 @@ const ProposalsList = ({
           )}
         </>
       )}
-      ;
     </div>
   );
 };

@@ -21,7 +21,8 @@ FactoryBot.define do
           'locales' => %w[en nl-BE fr-FR],
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
-          'color_text' => Faker::Color.hex_color
+          'color_text' => Faker::Color.hex_color,
+          'authentication_token_lifetime_in_days' => 30
         },
         'customizable_homepage_banner' => {
           'allowed' => true,
@@ -65,7 +66,8 @@ FactoryBot.define do
           'currency' => 'EUR',
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
-          'color_text' => Faker::Color.hex_color
+          'color_text' => Faker::Color.hex_color,
+          'authentication_token_lifetime_in_days' => 30
         },
         'customizable_homepage_banner' => {
           'allowed' => true,
