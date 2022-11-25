@@ -1,9 +1,9 @@
 #!/bin/bash
 
-rm ../citizenlab/.env-back
-cp ../citizenlab/.env-back.example ../citizenlab/.env-back
+rm .env-back
+cp .env-back.example .env-back
 echo "Restored example .env-back"
 
-rm ../citizenlab/.env-front
-cp ../citizenlab/.env-front.example ../citizenlab/.env-front
+rm .env-front
+cp .env-front.example .env-front
 echo "Restored example .env-front"
