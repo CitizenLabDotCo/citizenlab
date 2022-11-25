@@ -196,7 +196,10 @@ const ModalContainer = styled(clickOutside)<{
     `}
 `;
 
-const Overlay = styled.div<{ fullScreen?: boolean; zIndex?: number }>`
+const Overlay = styled.div<{
+  fullScreen?: boolean;
+  zIndex?: number;
+}>`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -212,6 +215,7 @@ const Overlay = styled.div<{ fullScreen?: boolean; zIndex?: number }>`
   padding-right: 30px;
   overflow: hidden;
   will-change: opacity, transform;
+
   z-index: ${({ fullScreen, zIndex }) => {
     if (zIndex !== undefined) {
       return zIndex.toString();

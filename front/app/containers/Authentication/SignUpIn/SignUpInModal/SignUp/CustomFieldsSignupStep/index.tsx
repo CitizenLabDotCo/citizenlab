@@ -33,6 +33,7 @@ const Loading = styled.div`
 
 const Container = styled.div`
   padding-bottom: 30px;
+  width: 100%;
 
   ${media.phone`
     padding-bottom: 15px;
