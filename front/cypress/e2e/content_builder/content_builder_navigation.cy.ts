@@ -23,9 +23,7 @@ describe('Content builder navigation', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiEnableContentBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-        });
+        cy.apiEnableContentBuilder({ projectId });
       });
     });
   });
@@ -58,6 +56,7 @@ describe('Content builder navigation', () => {
 
   it('navigates to project settings when content builder goBack clicked', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.wait(4000);
     cy.get('#e2e-go-back-button').click();
     cy.url().should(
       'eq',
@@ -67,6 +66,7 @@ describe('Content builder navigation', () => {
 
   it('navigates to live project when view project button clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
+    cy.get('#to-project').should('exist');
     cy.get('#to-project').click();
     cy.url().should(
       'eq',
