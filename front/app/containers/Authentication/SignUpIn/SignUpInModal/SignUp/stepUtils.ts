@@ -93,6 +93,7 @@ export function getDefaultSteps(
       isEnabled: (_, metaData) => !!metaData.verification,
       isActive: (authUser, metaData) => {
         if (isNilOrError(authUser)) return false;
+        console.log(!!metaData.verification);
         const flowHasVerificationStep = !!metaData.verification;
         return flowHasVerificationStep && !authUser.attributes.verified;
       },

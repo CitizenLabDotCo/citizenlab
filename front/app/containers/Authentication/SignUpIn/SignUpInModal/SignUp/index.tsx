@@ -324,6 +324,10 @@ const SignUp = ({
               />
             )}
 
+            {activeStep === 'confirmation' && userConfirmation && (
+              <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
+            )}
+
             {activeStep === 'verification' && (
               <VerificationSignUpStep
                 metaData={metaData}
@@ -331,10 +335,6 @@ const SignUp = ({
                 onSkipped={onCompleteActiveStep}
                 onCompleted={onCompleteActiveStep}
               />
-            )}
-
-            {activeStep === 'confirmation' && userConfirmation && (
-              <ConfirmationSignupStep onCompleted={onCompleteActiveStep} />
             )}
 
             {activeStep === 'custom-fields' && (
