@@ -27,6 +27,7 @@ import {
 } from 'lodash-es';
 import request from 'utils/request';
 import { reportError } from 'utils/loggingUtils';
+import { RequestError } from 'utils/requestError';
 import {
   deepFreeze,
   sanitizeQueryParameters,
@@ -62,6 +63,7 @@ export interface IStreamParams {
 
 export interface IInputStreamParams extends Omit<IStreamParams, 'bodyData'> {
   apiEndpoint: string;
+  handleErrorLogging?(error: RequestError): void;
 }
 
 interface IExtendedStreamParams {
@@ -351,6 +353,7 @@ class Streams {
       ...inputParams,
     };
     const apiEndpoint = removeTrailingSlash(params.apiEndpoint);
+    const logError = inputParams.handleErrorLogging ?? reportError;
 
     const queryParameters = sanitizeQueryParameters(
       params.queryParameters,
@@ -432,7 +435,7 @@ class Streams {
             this.streams[streamId].observer.next(error);
             // destroy the stream
             this.deleteStream(streamId, apiEndpoint);
-            reportError(error);
+            logError(error);
           } else if (streamId === authApiEndpoint) {
             this.streams[streamId].observer.next(null);
           }
