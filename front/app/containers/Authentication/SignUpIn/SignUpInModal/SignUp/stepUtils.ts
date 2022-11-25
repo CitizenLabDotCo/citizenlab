@@ -10,7 +10,7 @@ import {
   TSignUpConfiguration,
   TSignUpStepConfigurationObject,
   ILocalState,
-} from './';
+} from '.';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { ISignUpInMetaData } from 'events/openSignUpInModal';
 import { UserCustomFieldsInfos } from 'services/userCustomFields';

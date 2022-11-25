@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Modal from 'components/UI/Modal';
 // TODO: Change when we move to container
-import VerificationSteps from '../SignUpIn/SignUpInComponent/SignUp/VerificationSignUpStep/VerificationSteps';
+import VerificationSteps from '../SignUpIn/SignUpInModal/SignUp/VerificationSignUpStep/VerificationSteps';
 import VerificationError from './VerificationError';
 import VerificationSuccess from './VerificationSuccess';
 

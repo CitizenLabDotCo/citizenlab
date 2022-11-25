@@ -1,12 +1,12 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 import { signOut } from 'services/auth';
 import tracks from './tracks';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import SignUpIn from '.';
-import { TSignUpStep } from './SignUp';
+import SignIn from './SignIn';
+import SignUp, { TSignUpStep } from './SignUp';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -18,7 +18,10 @@ import { trackEventByName } from 'utils/analytics';
 
 // events
 import { closeSignUpInModal, signUpActiveStepChange$ } from './events';
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
+import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
+
+// typings
+import { TSignUpInFlow } from './typings';
 
 interface Props {
   metaData?: ISignUpInMetaData;
@@ -26,6 +29,15 @@ interface Props {
   onClosed: () => void;
   onOpened?: (opened: boolean) => void;
   fullScreenModal?: boolean;
+}
+
+function getNewFlow(flow: TSignUpInFlow) {
+  switch (flow) {
+    case 'signup':
+      return 'signin';
+    case 'signin':
+      return 'signup';
+  }
 }
 
 const SignUpInModal = memo<Props>(
@@ -99,13 +111,22 @@ const SignUpInModal = memo<Props>(
       if (metaData?.pathname.includes('projects/')) {
         location.reload();
       }
-      355;
       // Temporary fix end
 
       if (!requiresVerification || authUserIsVerified) {
         metaData?.action?.();
       }
     };
+
+    const onToggleSelectedMethod = useCallback(() => {
+      if (!metaData) return;
+
+      const flow = getNewFlow(metaData.flow);
+      openSignUpInModal({
+        ...metaData,
+        flow,
+      });
+    }, [metaData]);
 
     return (
       <Modal
@@ -124,11 +145,23 @@ const SignUpInModal = memo<Props>(
           background="white"
         >
           {opened && metaData && (
-            <SignUpIn
-              metaData={metaData}
-              onSignUpInCompleted={onSignUpInCompleted}
-              fullScreen={fullScreenModal}
-            />
+            <Box>
+              {metaData.flow === 'signup' ? (
+                <SignUp
+                  metaData={metaData}
+                  onSignUpCompleted={onSignUpInCompleted}
+                  onGoToSignIn={onToggleSelectedMethod}
+                  fullScreen={fullScreenModal}
+                />
+              ) : (
+                <SignIn
+                  metaData={metaData}
+                  onSignInCompleted={onSignUpInCompleted}
+                  onGoToSignUp={onToggleSelectedMethod}
+                  fullScreen={fullScreenModal}
+                />
+              )}
+            </Box>
           )}
         </Box>
       </Modal>

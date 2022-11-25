@@ -7,10 +7,10 @@ import { completeRegistration } from 'services/users';
 // components
 import Header from './Header';
 import AuthProviders, { AuthProvider } from 'components/AuthProviders';
-import PasswordSignup from '../SignUp/PasswordSignup';
+import PasswordSignup from './PasswordSignup';
 import ConfirmationSignupStep from './ConfirmationSignupStep';
-import CustomFieldsSignupStep from '../SignUp/CustomFieldsSignupStep';
-import Success from '../SignUp/Success';
+import CustomFieldsSignupStep from './CustomFieldsSignupStep';
+import Success from './Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { StyledModalContentContainer } from '../styles';
@@ -108,7 +108,6 @@ export type TSignUpConfiguration = {
 
 export interface Props {
   metaData: ISignUpInMetaData;
-  customHeader?: JSX.Element;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;

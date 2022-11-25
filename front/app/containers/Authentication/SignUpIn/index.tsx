@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 // events
 import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
-import { openSignUpInModal$ } from './SignUpInComponent/events';
+import { openSignUpInModal$ } from './SignUpInModal/events';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
 
 // hooks
@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import SignUpInModal from './SignUpInComponent/SignUpInModal';
+import SignUpInModal from './SignUpInModal';
 
 // history
 import clHistory from 'utils/cl-router/history';
