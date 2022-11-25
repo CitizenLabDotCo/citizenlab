@@ -9,8 +9,15 @@ class SideFxVoteService
     if vote.votable_type == 'Initiative'
       AutomatedTransitionJob.perform_now
     end
+    serialized_vote = clean_time_attributes(vote.attributes)
     type = votable_type(vote)
-    LogActivityJob.perform_later(vote, "#{type}_#{vote.mode}voted", current_user, vote.created_at.to_i)
+    LogActivityJob.perform_later(
+      encode_frozen_resource(vote),
+      "#{type}_#{vote.mode}voted",
+      current_user,
+      Time.now.to_i,
+      payload: { vote: serialized_vote }
+    )
   end
 
   def before_destroy(vote, current_user); end
