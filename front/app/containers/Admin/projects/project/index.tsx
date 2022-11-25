@@ -374,7 +374,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
           />
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
-            <ActionsContainer>
+            <ActionsContainer data-cy="e2e-actions-container">
               {tabbedProps.tabs.some((tab) => tab.name === 'ideas') && (
                 <>
                   <Box

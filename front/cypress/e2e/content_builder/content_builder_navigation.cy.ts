@@ -58,6 +58,7 @@ describe('Content builder navigation', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.contains(projectTitle).should('exist');
     cy.get('#e2e-go-back-button').click();
+    cy.get('[data-cy="e2e-actions-container"]').should('be.visible');
     cy.url().should(
       'eq',
       `${Cypress.config().baseUrl}/en/admin/projects/${projectId}/description`
@@ -66,6 +67,7 @@ describe('Content builder navigation', () => {
 
   it('navigates to live project when view project button clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
+    cy.get('[data-cy="e2e-actions-container"]').should('be.visible');
     cy.get('#to-project').should('exist');
     cy.get('#to-project').click();
     cy.url().should(
