@@ -59,11 +59,6 @@ executors:
           POSTGRES_PASSWORD: postgres
 
 commands:
-  enable_ee:
-    steps:
-      # TODO: Does this even do anything in terms of setting env vars? I think the .env-back file is only picked up via docker-compose file
-      - run: "sh scripts/enable_ee.sh"
-      - run: "bundle install"
   wait-for-postgres:
     steps:
       - run:
@@ -175,7 +170,8 @@ jobs:
       CITIZENLAB_EE: true
     steps:
       - wait-for-postgres
-      - enable_ee
+      - run: |
+          bundle install
       - run: |
           rake db:create
           rake db:schema:load
