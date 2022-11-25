@@ -175,6 +175,7 @@ jobs:
       CITIZENLAB_EE: true
     steps:
       - wait-for-postgres
+      - enable_ee
       - run: |
           rake db:create
           rake db:schema:load
