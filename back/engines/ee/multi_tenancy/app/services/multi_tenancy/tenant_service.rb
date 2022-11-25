@@ -16,7 +16,7 @@ module MultiTenancy
       tenant = Tenant.new(tenant_attrs)
       tenant_side_fx.before_create(tenant)
 
-      config = ActiveRecord::Base.transaction do
+      ActiveRecord::Base.transaction do
         tenant.save!
         # The tenant must be saved before proceeding with the AppConfiguration because:
         # - the app configuration creation and its side effects must run within the tenant context,
@@ -24,15 +24,15 @@ module MultiTenancy
         tenant.switch do
           config = AppConfiguration.send(:new, config_attrs.merge(id: tenant.id, created_at: tenant.created_at))
           config_side_fx.before_create(config)
+
           config.save! # The config-tenant sync implicitly initializes (shared) tenant attributes.
-          config
+          tenant.reload
+
+          tenant_side_fx.after_create(tenant)
+          config_side_fx.after_create(config)
+          [true, tenant, config]
         end
       end
-
-      tenant.reload
-      tenant_side_fx.after_create(tenant)
-      tenant.switch { config_side_fx.after_create(config) }
-      [true, tenant, config]
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       [false, tenant, config]
     end
