@@ -343,19 +343,11 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            project_folders: {
-              enabled: true,
-              allowed: true
-            },
             moderation: {
               enabled: true,
               allowed: true
             },
             flag_inappropriate_content: {
-              enabled: true,
-              allowed: true
-            },
-            project_management: {
               enabled: true,
               allowed: true
             },
