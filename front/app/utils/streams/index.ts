@@ -874,7 +874,10 @@ class Streams {
     }
 
     uniq(mergedStreamIds).forEach((streamId) => {
-      if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {
+      if (
+        (!onlyFetchActiveStreams || this.isActiveStream(streamId)) &&
+        this.streams[streamId]
+      ) {
         promises.push(this.streams[streamId].fetch());
       }
     });
