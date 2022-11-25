@@ -1,9 +1,6 @@
 .env-back
 .env-front
 
-back/engines/ee
 node_modules
-
-citizenlab.config.ee.json
 
 *.DS_Store

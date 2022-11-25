@@ -1,0 +1,117 @@
+inherit_from:
+  - .rubocop_todo.yml
+
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+  - 'db/schema.rb'
+  - 'bin/**/*'
+
+Layout/HashAlignment:
+  EnforcedColonStyle: [key, table]
+  EnforcedHashRocketStyle: [key, table]
+
+Style/Documentation:
+  # Most classes are not documented, so turn off this Cop.
+  Enabled: false
+
+Style/SymbolProc:
+  Enabled: true
+  IgnoredMethods:
+    - attribute
+    - throttle
+  Exclude:
+    - 'db/migrate/**/*'
+
+Style/NumericPredicate:
+  # Turned off because `something == 0` and `something.zero?`
+  # are not the same if `something` is not a number.
+  Enabled: false
+
+Layout/FirstArgumentIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstParameterIndentation:
+  EnforcedStyle: consistent
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/ArrayAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: start_of_line
+
+Layout/TrailingWhitespace:
+  AllowInHeredoc: true
+
+Metrics/ClassLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
+
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
+
+RSpec/MultipleExpectations:
+  # It makes little sense to disallow multiple expectations in one example,
+  # so turn off this Cop.
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Metrics/MethodLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
+  AllowedMethods: ['included', 'prepended', 'extended']
+  Exclude:
+  - '**/db/migrate/**/*'
+
+Lint/Void:
+  Exclude:
+    - 'config/initializers/sentry.rb'
+
+Naming/FileName:
+  Exclude:
+    - 'db/seeds/citizenlab-ee.rb'
+
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/db/seedfile_spec.rb'
+    - 'spec/tasks/email_campaigns_task_spec.rb'
+
+RSpec/BeforeAfterAll:
+  Exclude:
+    - 'spec/tasks/email_campaigns_task_spec.rb'
+
+Rails/UnknownEnv:
+  # config/initializers/apartment.rb refers to staging, which is not part of the default settings.
+  Environments: [development, test, production, staging]
+
+Rails/UniqueValidationWithoutIndex:
+  # This Cop does not fail when running in citizenlab-ee/engines/ee/multi_tenancy locally,
+  # because db/schema.rb does not exist, but it fails on CI.
+  Exclude:
+    - 'app/models/tenant.rb'
