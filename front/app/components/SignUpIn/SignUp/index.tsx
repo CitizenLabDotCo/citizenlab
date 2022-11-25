@@ -121,8 +121,8 @@ const SignUp = ({
   fullScreen,
 }: Props & WrappedComponentProps) => {
   const authUser = useAuthUser();
+  const theme = useTheme();
   const appConfig = useAppConfiguration();
-  const theme: any = useTheme();
 
   const modalContentRef = useRef<HTMLDivElement>(null);
 
