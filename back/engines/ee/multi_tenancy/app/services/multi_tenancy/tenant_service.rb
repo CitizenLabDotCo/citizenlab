@@ -69,9 +69,6 @@ module MultiTenancy
         ActiveRecord::Base.transaction do
           config.save!
           tenant.reload # after sync
-          tenant.attributes = attrs.slice(:host, :name)
-          tenant_side_fx.before_update(tenant)
-          tenant.without_config_sync(&:save!)
         end
 
         config_side_fx.after_update(config)
