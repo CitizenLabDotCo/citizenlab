@@ -122,23 +122,12 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-essential:$CIRCLE_SHA1
 
-  back-lint-os:
+  back-lint:
     resource_class: medium
     executor:
       name: back-essential
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
-    environment:
-      RAILS_ENV: development
-    steps:
-      - run: bundle exec rubocop -P --format simple
-
-  back-lint-ee:
-    resource_class: medium
-    executor:
-      name: back-essential
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back/engines/commercial/multi_tenancy
     environment:
       RAILS_ENV: development
     steps:
@@ -422,16 +411,7 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-lint-os:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-      - back-lint-ee:
+      - back-lint:
           context: docker-hub-access
           requires:
             - back-build-essential-docker-image
@@ -560,15 +540,7 @@ workflows:
             branches:
               only:
                 - production
-      - back-lint-os:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              only:
-                - production
-      - back-lint-ee:
+      - back-lint:
           context: docker-hub-access
           requires:
             - back-build-essential-docker-image
@@ -608,8 +580,7 @@ workflows:
             - front-build
             - front-detect-deadcode
             - front-lint
-            - back-lint-os
-            - back-lint-ee
+            - back-lint
             - back-test
             - back-bundle-audit
             - back-license-check
@@ -625,8 +596,7 @@ workflows:
             - front-build
             - front-detect-deadcode
             - front-lint
-            - back-lint-os
-            - back-lint-ee
+            - back-lint
             - back-test
             - back-bundle-audit
             - back-license-check
