@@ -96,7 +96,7 @@ const ProposalsList = ({
   onLoadMore,
   querying,
 }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const loadMore = () => {
     trackEventByName(tracks.loadMoreProposals);
     onLoadMore();
@@ -143,7 +143,6 @@ const ProposalsList = ({
           )}
         </>
       )}
-      ;
     </div>
   );
 };

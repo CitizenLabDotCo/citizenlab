@@ -31,12 +31,12 @@ const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
     const locale = useLocale();
     const tenantLocales = useAppConfigurationLocales();
     const authUser = useAuthUser();
-    const tenant = useAppConfiguration();
+    const appConfig = useAppConfiguration();
 
     if (
       !isNilOrError(tenantLocales) &&
       !isNilOrError(locale) &&
-      !isNilOrError(tenant) &&
+      !isNilOrError(appConfig) &&
       !isNilOrError(authUser)
     ) {
       const { formatMessage } = intl;
@@ -44,7 +44,7 @@ const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
       const firstName = user.attributes.first_name;
       const lastName = user.attributes.last_name;
       const organizationNameMultiLoc =
-        tenant.attributes.settings.core.organization_name;
+        appConfig.attributes.settings.core.organization_name;
       const tenantName = getLocalized(
         organizationNameMultiLoc,
         locale,

@@ -13,14 +13,12 @@ import React, {
 
 import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 import PageLoading from 'components/UI/PageLoading';
-
 import { OutletRenderProps } from 'components/Outlet';
 import { ITabItem } from 'components/UI/Tabs';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
-import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
+import { IProjectData } from 'services/projects';
 
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
@@ -30,10 +28,8 @@ import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'components/Verification/verificationModalEvents';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { NavItem } from 'containers/Admin/sideBar';
 import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
-import { Localize } from 'hooks/useLocalize';
 import { LatLngTuple } from 'leaflet';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetIdeaChildProps } from 'resources/GetIdea';
@@ -93,30 +89,6 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
 };
 
 export interface OutletsPropertyMap {
-  'app.containers.Navbar.projectlist.item': {
-    publication: IAdminPublicationContent;
-    localize: Localize;
-  };
-  'app.containers.Navbar.projectsAndFolders.title': Record<string, any>;
-  'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
-    publication: IAdminPublicationContent;
-  };
-  'app.containers.AdminPage.projects.all.projectsAndFolders.title': Record<
-    string,
-    any
-  >;
-  'app.components.AdminPage.projects.form.additionalInputs.inputs': {
-    projectAttrs: IUpdatedProjectProperties;
-    onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
-  };
-  'app.containers.AdminPage.projects.all.createProjectNotAdmin': Record<
-    string,
-    any
-  >;
-  'app.containers.AdminPage.projects.all.projectsAndFolders.actions': Record<
-    string,
-    any
-  >;
   'app.containers.Admin.projects.all.createProject': {
     selectedTabValue: TTabName;
   };
@@ -135,15 +107,6 @@ export interface OutletsPropertyMap {
   };
   'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': {
     onMount: () => void;
-  };
-  'app.components.ProjectAndFolderCards.card': {
-    publication: IAdminPublicationContent;
-    size: 'small' | 'medium' | 'large';
-    layout: 'dynamic' | 'threecolumns' | 'twocolumns';
-  };
-  'app.containers.SiteMap.ProjectsSection.listitem': {
-    adminPublication: IAdminPublicationContent;
-    hightestTitle: 'h3' | 'h4';
   };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;
@@ -359,16 +322,10 @@ export interface OutletsPropertyMap {
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
   };
-  'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': {
-    projectFolderId: string;
-    className?: string;
-  };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
   'app.containers.HomePage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
   };
-  'app.containers.Admin.pages-menu.index': Record<string, any>;
-  'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.HomePage.SignedOutHeader.CTA': {
     buttonStyle: BannerButtonStyle;
     signUpIn: (event: MouseEvent | KeyboardEvent) => void;
@@ -385,10 +342,6 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
-  'app.components.PageForm.index.top': {
-    pageId: string | null;
-    navbarItemId: string | null;
-  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
