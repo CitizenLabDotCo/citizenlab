@@ -9,7 +9,7 @@ resource 'Tenants', admin_api: true do
   header 'Content-Type', 'application/json'
   header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
 
-  let_it_be(:tenant) { create(:tenant) }
+  let_it_be(:tenant, reload: true) { create(:tenant) }
   let_it_be(:tenant_id) { tenant.id }
 
   get 'admin_api/tenants' do
@@ -52,6 +52,35 @@ resource 'Tenants', admin_api: true do
       tenant.switch { create(:user, locale: 'en') }
     end
 
+    example 'Change host' do
+      new_host = "new-#{tenant.host}"
+      do_request(tenant: { host: new_host })
+
+      assert_status 200
+      expect(tenant.reload.host).to eq(new_host)
+      tenant.switch { expect(tenant.configuration.host).to eq(new_host) }
+    end
+
+    example 'Rename tenant' do
+      new_name = "new-#{tenant.name}"
+      do_request(tenant: { name: new_name})
+
+      assert_status 200
+      expect(tenant.reload.name).to eq(new_name)
+      tenant.switch { expect(tenant.configuration.name).to eq(new_name) }
+    end
+
+    example 'Remove logo' do
+      tenant.switch do
+        AppConfiguration.instance.update!(logo: Rails.root.join('spec/fixtures/logo.png').open)
+      end
+
+      do_request(tenant: { logo: nil })
+
+      assert_status 200
+      tenant.switch { expect(tenant.configuration.logo).to be_blank }
+    end
+
     example '[error] Updating a tenant to remove locales used by some users', document: false do
       settings = tenant.settings
       settings['core']['locales'] = ['en-GB']
@@ -81,7 +110,7 @@ resource 'Tenants', admin_api: true do
 
     example_request 'Updating a tenant to remove locales used by some users' do
       assert_status 200
-      expect(tenant.reload.settings.dig('core', 'locales')).to match_array %w[es-ES]
+      expect(tenant.configuration.settings('core', 'locales')).to match_array %w[es-ES]
     end
   end
 
