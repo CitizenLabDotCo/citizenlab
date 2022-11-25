@@ -229,7 +229,7 @@ const CompleteProfileIcon = styled(Icon)`
   height: 48px;
   margin-left: -3px;
   margin-top: 3px;
-  opacity: 0.7;
+  opacity: 0.5;
 `;
 
 export const Text = styled.div`
