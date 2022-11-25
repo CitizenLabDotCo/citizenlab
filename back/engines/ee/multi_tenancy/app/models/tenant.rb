@@ -83,6 +83,13 @@ class Tenant < ApplicationRecord
     self
   end
 
+  def without_config_sync
+    self.config_sync_enabled = false
+    yield self
+  ensure
+    self.config_sync_enabled = true
+  end
+
   # @return [String, nil] +nil+ if the tenant has not been persisted yet.
   #   Otherwise, the name of the corresponding PG schema.
   def schema_name
@@ -160,7 +167,7 @@ class Tenant < ApplicationRecord
       return if attrs_delta.blank?
 
       config.attributes = attrs_delta
-      config.disable_tenant_sync.save
+      config.without_tenant_sync(&:save)
     end
   end
 

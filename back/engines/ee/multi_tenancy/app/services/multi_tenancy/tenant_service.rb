@@ -71,7 +71,7 @@ module MultiTenancy
           tenant.reload # after sync
           tenant.attributes = attrs.slice(:host, :name)
           tenant_side_fx.before_update(tenant)
-          tenant.disable_config_sync.save!
+          tenant.without_config_sync(&:save!)
         end
 
         config_side_fx.after_update(config)
