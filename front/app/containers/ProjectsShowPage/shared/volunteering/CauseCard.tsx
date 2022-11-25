@@ -171,7 +171,7 @@ interface Props {
 }
 
 const CauseCard = memo<Props>(({ cause, className }) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 

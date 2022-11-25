@@ -55,7 +55,7 @@ const NotificationCount = ({
   onToggleDropdown,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   return (
     <Container>

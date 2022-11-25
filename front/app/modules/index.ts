@@ -1,11 +1,9 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import projectFoldersConfiguration from './commercial/project_folders';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
-import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
@@ -47,7 +45,6 @@ import eventsWidgetConfiguration from './commercial/events_widget';
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
 
-import customizableNavbarConfiguration from './free/customizable_navbar';
 import userConfirmationConfiguration from './free/user_confirmation';
 
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
@@ -57,10 +54,6 @@ import representativenessConfiguration from './commercial/representativeness';
 declare var CL_CONFIG: any;
 
 export default loadModules([
-  {
-    configuration: projectFoldersConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/project_folders'],
-  },
   {
     configuration: smartGroupsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/smart_groups'],
@@ -104,10 +97,6 @@ export default loadModules([
   {
     configuration: projectVisibilityConfiguration,
     isEnabled: CL_CONFIG['modules']['free/project_visibility'],
-  },
-  {
-    configuration: projectManagementConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/project_management'],
   },
   {
     configuration: moderationConfiguration,
@@ -216,10 +205,6 @@ export default loadModules([
   {
     configuration: analyticsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/analytics'],
-  },
-  {
-    configuration: customizableNavbarConfiguration,
-    isEnabled: CL_CONFIG['modules']['free/customizable_navbar'],
   },
   {
     configuration: userConfirmationConfiguration,

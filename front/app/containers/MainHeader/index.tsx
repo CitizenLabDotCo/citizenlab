@@ -224,14 +224,14 @@ const SignUpMenuItem = styled.button`
   border: none;
   border-radius: 0px;
   background-color: ${({ theme }) =>
-    theme.tenantPrimary || theme.colors.tenantSecondary};
+    theme.colors.tenantPrimary || theme.colors.tenantSecondary};
   transition: all 100ms ease-out;
 
   &:hover {
     color: #fff;
     text-decoration: underline;
     background-color: ${({ theme }) =>
-      darken(0.12, theme.tenantPrimary || theme.colors.tenantSecondary)};
+      darken(0.12, theme.colors.tenantPrimary || theme.colors.tenantSecondary)};
   }
 
   ${media.phone`
@@ -255,7 +255,7 @@ const MainHeader = ({
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
   const locale = useLocale();
-  const theme: any = useTheme();
+  const theme = useTheme();
   const windowSize = useWindowSize();
   const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
 

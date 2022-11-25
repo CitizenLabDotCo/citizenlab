@@ -14,6 +14,7 @@ ENV INSTALL_PATH /cl2_back
 RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
+ENV PATH="$PATH:/cl2_back/bin"
 
 COPY citizenlab.config.json citizenlab.config.*.json /
 COPY back/Gemfile back/Gemfile.* ./
@@ -26,4 +27,5 @@ COPY back/. .
 
 EXPOSE 4000
 
-CMD bundle install && bundle exec puma -C config/puma.rb
+ENTRYPOINT ["sh", "entrypoint.sh"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
