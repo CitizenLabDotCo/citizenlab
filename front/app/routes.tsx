@@ -24,6 +24,9 @@ const InitiativesShowPage = lazy(
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
 const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
+const ProjectFolderShowPage = lazy(
+  () => import('containers/ProjectFolderShowPage')
+);
 const EventsPage = lazy(() => import('containers/EventsPage'));
 const CookiePolicy = lazy(() => import('containers/CookiePolicy'));
 const AccessibilityStatement = lazy(
@@ -222,6 +225,14 @@ export default function createRoutes() {
               ),
             },
           ],
+        },
+        {
+          path: 'folders/:slug',
+          element: (
+            <PageLoading>
+              <ProjectFolderShowPage />,
+            </PageLoading>
+          ),
         },
         {
           path: 'events',
