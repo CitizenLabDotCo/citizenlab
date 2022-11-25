@@ -16,7 +16,7 @@ module MultiTenancy
       tenant = Tenant.new(tenant_attrs)
       tenant_side_fx.before_create(tenant)
 
-      ActiveRecord::Base.transaction do
+      config = ActiveRecord::Base.transaction do
         tenant.save!
         # The tenant must be saved before proceeding with the AppConfiguration because:
         # - the app configuration creation and its side effects must run within the tenant context,
@@ -30,9 +30,11 @@ module MultiTenancy
 
           tenant_side_fx.after_create(tenant)
           config_side_fx.after_create(config)
-          [true, tenant, config]
+          config
         end
       end
+
+      [true, tenant, config]
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       [false, tenant, config]
     end

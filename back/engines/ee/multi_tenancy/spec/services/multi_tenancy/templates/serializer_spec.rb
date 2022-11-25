@@ -7,17 +7,15 @@ describe MultiTenancy::Templates::Serializer do
     it 'successfully generates a tenant template from a given tenant' do
       load Rails.root.join('db/seeds.rb')
       localhost = Tenant.find_by(host: 'localhost')
-      settings = localhost.settings
-      settings['core']['locales'] = AppConfiguration.instance.settings('core', 'locales')
-      localhost.update!(settings: settings) # TODO: OS how will tenant templates work?
-      Apartment::Tenant.switch('localhost') do
-        load Rails.root.join('db/seeds.rb')
-      end
-      serializer = described_class.new(Tenant.find_by(host: 'localhost'))
-      template = serializer.run
-      tenant = create :tenant, locales: localhost.settings.dig('core', 'locales')
-      Apartment::Tenant.switch(tenant.schema_name) do
-        MultiTenancy::TenantTemplateService.new.apply_template template
+      localhost.switch { MultiTenancy::Seeds::Runner.new.execute }
+      template = described_class.new(localhost).run
+
+      locales = localhost.configuration.settings('core', 'locales')
+      tenant = create(:tenant, locales: locales)
+
+      tenant.switch do
+        MultiTenancy::TenantTemplateService.new.apply_template(template)
+
         expect(HomePage.count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0

@@ -11,6 +11,7 @@ FactoryBot.define do
 
     name { Faker::Address.city }
     sequence(:host) { |n| "tenant-#{n}.citizenlab.co" }
+    style { {} }
     settings { SettingsService.new.minimal_required_settings(locales: locales, lifecycle_stage: lifecycle) }
 
     after(:create) do |tenant, evaluator|
@@ -19,8 +20,8 @@ FactoryBot.define do
           id: tenant.id,
           name: tenant.name,
           host: tenant.host,
-          settings: tenant.settings,
-          style: tenant.style,
+          settings: evaluator.settings,
+          style: evaluator.style,
           updated_at: tenant.updated_at,
           created_at: tenant.created_at,
           lifecycle: evaluator.lifecycle,
@@ -32,6 +33,7 @@ FactoryBot.define do
   factory :test_tenant, class: 'Tenant' do
     name { 'test-tenant' }
     host { 'example.org' }
+    style { {} }
     settings do
       SettingsService.new.minimal_required_settings(
         locales: %w[en fr-FR nl-NL],
@@ -56,14 +58,14 @@ FactoryBot.define do
       })
     end
 
-    after(:create) do |tenant|
+    after(:create) do |tenant, evaluator|
       tenant.switch do
         create(:test_app_configuration,
           id: tenant.id,
           name: tenant.name,
           host: tenant.host,
-          settings: tenant.settings,
-          style: tenant.style,
+          settings: evaluator.settings,
+          style: evaluator.style,
           updated_at: tenant.updated_at,
           created_at: tenant.created_at)
       end
