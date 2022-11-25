@@ -61,6 +61,7 @@ executors:
 commands:
   enable_ee:
     steps:
+      # TODO: Does this even do anything in terms of setting env vars? I think the .env-back file is only picked up via docker-compose file
       - run: "sh scripts/enable_ee.sh"
       - run: "bundle install"
   wait-for-postgres:
@@ -85,15 +86,6 @@ jobs:
       - run:
           name: Trigger workflows
           command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
-
-  trigger-private-workflows:
-    resource_class: small
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run: |
-          chmod +x .circleci/private-trigger.sh && .circleci/private-trigger.sh << pipeline.parameters.back >> << pipeline.parameters.front >>
 
   danger-check:
     resource_class: small
@@ -148,7 +140,7 @@ jobs:
       # See https://github.com/rubysec/bundler-audit
       - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
 
-  back-test:
+  back-test-os:
     resource_class: small
     executor:
       name: back-essential
@@ -165,6 +157,29 @@ jobs:
           rake db:schema:load
       - run: |
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/free/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
+          echo $TESTFILES
+          bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
+      - store_test_results:
+          path: spec/reports
+
+  back-test-ee:
+    resource_class: small
+    executor:
+      name: back-essential
+      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
+    working_directory: /cl2_back
+    parallelism: 4
+    environment:
+      RAILS_ENV: test
+      COVERAGE: ON
+      CITIZENLAB_EE: true
+    steps:
+      - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: |
+          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
           bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
       - store_test_results:
@@ -368,20 +383,6 @@ workflows:
     when: << pipeline.parameters.trigger >>
     jobs:
       - trigger-workflows:
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-
-  private-ci:
-    when:
-      and:
-        - not: << pipeline.parameters.trigger >>
-        - or: [<< pipeline.parameters.back >>, << pipeline.parameters.front >>]
-    jobs:
-      - trigger-private-workflows:
-          context: circleci-api-token
           filters:
             branches:
               ignore:
