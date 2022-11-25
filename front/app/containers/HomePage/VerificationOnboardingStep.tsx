@@ -3,10 +3,7 @@ import React from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { useTheme } from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import {
-  IOnboardingCampaignNames,
-  IOnboardingCampaigns,
-} from 'services/onboardingCampaigns';
+import { IOnboardingCampaigns } from 'services/onboardingCampaigns';
 import { IUserData } from 'services/users';
 import messages from './messages';
 import {
@@ -36,8 +33,8 @@ interface Props {
   contentTimeout: number;
   contentDelay: number;
   authUser: IUserData;
-  onSkip: (name: IOnboardingCampaignNames) => void;
-  onAccept: (name: IOnboardingCampaignNames) => void;
+  onSkip: () => void;
+  onAccept: () => void;
 }
 
 const VerificationOnboardingStep = ({
@@ -48,9 +45,7 @@ const VerificationOnboardingStep = ({
   contentTimeout,
   contentDelay,
 }: Props) => {
-  const theme: any = useTheme();
-  const handleSkip = () => onSkip(onboardingCampaigns.name);
-  const handleAccept = () => onAccept(onboardingCampaigns.name);
+  const theme = useTheme();
 
   return (
     <CSSTransition
@@ -89,7 +84,7 @@ const VerificationOnboardingStep = ({
           <SkipButton
             buttonStyle="primary-outlined"
             text={<FormattedMessage {...messages.doItLater} />}
-            onClick={handleSkip}
+            onClick={onSkip}
             borderColor="#fff"
             textColor="#fff"
             fontWeight="500"
@@ -98,7 +93,7 @@ const VerificationOnboardingStep = ({
           <AcceptButton
             text={<FormattedMessage {...messages.verifyNow} />}
             buttonStyle="primary-inverse"
-            onClick={handleAccept}
+            onClick={onAccept}
             textColor={theme.colors.tenantPrimary}
             textHoverColor={theme.colors.tenantPrimary}
             fontWeight="500"
