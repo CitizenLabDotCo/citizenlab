@@ -13,8 +13,6 @@ describe SideFxVoteService do
         expect { service.after_create(vote, user) }
           .to have_enqueued_job(LogActivityJob)
       end
-      # expect { service.after_create(vote, user) }
-      #   .to have_enqueued_job(LogActivityJob).with(vote, 'idea_upvoted', user, vote.updated_at.to_i)
     end
 
     it "logs a 'upvoted' action when a upvote on an initiative is created" do
@@ -23,8 +21,6 @@ describe SideFxVoteService do
         expect { service.after_create(vote, user) }
           .to have_enqueued_job(LogActivityJob)
       end
-      # expect { service.after_create(vote, user) }
-      #   .to have_enqueued_job(LogActivityJob).with(vote, 'initiative_upvoted', user, vote.updated_at.to_i)
     end
 
     it "logs a 'downvoted' action when a downvote is created" do
@@ -33,8 +29,6 @@ describe SideFxVoteService do
         expect { service.after_create(vote, user) }
           .to have_enqueued_job(LogActivityJob)
       end
-      # expect { service.after_create(vote, user) }
-      #   .to have_enqueued_job(LogActivityJob).with(vote, 'idea_downvoted', user, vote.updated_at.to_i)
     end
   end
 
