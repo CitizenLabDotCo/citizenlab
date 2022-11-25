@@ -173,7 +173,6 @@ const HeaderContent = styled.div`
     align-items: stretch;
     justify-content: center;
     padding-left: 15px;
-    padding-right: 15px;
   `}
 `;
 
@@ -205,6 +204,10 @@ export const Left = styled.div`
     flex-direction: column;
     align-items: flex-start;
   `}
+
+  ${media.phone`
+    align-items: center;
+  `}
 `;
 
 export const Icons = styled.div`
@@ -214,6 +217,10 @@ export const Icons = styled.div`
   ${isRtl`
     margin-right: 0px;
     margin-left: 30px;
+  `}
+
+  ${media.phone`
+    margin-right: 0;
   `}
 `;
 
@@ -229,6 +236,10 @@ export const Text = styled.div`
   ${isRtl`
     direction: rtl;
   `}
+
+  ${media.phone`
+    text-align: center;
+  `}
 `;
 
 export const Right = styled.div`
@@ -236,6 +247,10 @@ export const Right = styled.div`
 
   ${isRtl`
     flex-direction: row-reverse;
+  `}
+
+  ${media.phone`
+    flex-direction: column;
   `}
 `;
 
@@ -257,6 +272,11 @@ export const AcceptButton = styled(Button)`
   ${media.tablet`
     order: 1;
     margin-right: 10px;
+  `}
+
+  ${media.phone`
+    margin-bottom: 10px;
+    margin-right: 0px;
   `}
 `;
 
