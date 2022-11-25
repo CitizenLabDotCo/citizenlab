@@ -22,7 +22,7 @@ module MultiTenancy
         # - the app configuration creation and its side effects must run within the tenant context,
         # - we want to reuse the same id for app configuration.
         tenant.switch do
-          config = AppConfiguration.send(:new, config_attrs.merge(id: tenant.id))
+          config = AppConfiguration.send(:new, config_attrs.merge(id: tenant.id, created_at: tenant.created_at))
           config_side_fx.before_create(config)
           config.save! # The config-tenant sync implicitly initializes (shared) tenant attributes.
           config
@@ -37,16 +37,6 @@ module MultiTenancy
       [false, tenant, config]
     end
 
-    def finalize_creation(tenant)
-      tenant.switch do
-        EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
-        PermissionsService.new.update_all_permissions # fix permissions
-        TrackTenantJob.perform_later tenant
-      end
-
-      tenant.update! creation_finalized_at: Time.zone.now
-    end
-
     # @return [Array(Boolean, Tenant, AppConfiguration)]
     def initialize_with_template(tenant_attrs, config_attrs, template_name)
       locales = config_attrs.dig('settings', 'core', 'locales')
@@ -55,6 +45,16 @@ module MultiTenancy
       success, tenant, _config = result = initialize_tenant(tenant_attrs, config_attrs)
       ApplyTenantTemplateJob.perform_later(template_name, tenant) if success
       result
+    end
+
+    def finalize_creation(tenant)
+      tenant.switch do
+        EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
+        PermissionsService.new.update_all_permissions # fix permissions
+        TrackTenantJob.perform_later tenant
+      end
+
+      tenant.update! creation_finalized_at: Time.zone.now
     end
 
     # @param [Tenant] tenant
@@ -83,7 +83,7 @@ module MultiTenancy
     # @param [ActiveSupport::Duration,nil] retry_interval
     def delete(tenant, retry_interval: nil)
       tenant_side_fx.before_destroy(tenant)
-      tenant.update!(deleted_at: Time.zone.now) # Mark the tenant as deleted.
+      tenant.update!(deleted_at: Time.zone.now)
 
       # Users must be removed before the tenant to ensure PII is removed from
       # third-party services.
