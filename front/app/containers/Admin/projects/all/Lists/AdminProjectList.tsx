@@ -9,8 +9,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
-import Outlet from 'components/Outlet';
+import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
+import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -58,13 +59,22 @@ const AdminProjectList = memo<Props>((_props) => {
       <>
         <StyledListHeader>
           <HeaderTitle>
-            {!isProjectFoldersEnabled && (
-              <FormattedMessage {...messages.existingProjects} />
-            )}
-            <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.title" />
+            <FormattedMessage
+              {...(isProjectFoldersEnabled
+                ? messages.projectsAndFolders
+                : messages.existingProjects)}
+            />
           </HeaderTitle>
           <Spacer />
-          <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />
+          {isProjectFoldersEnabled && (
+            <Button
+              data-cy="e2e-new-project-folder-button"
+              linkTo={'/admin/projects/folders/new'}
+              buttonStyle="admin-dark"
+            >
+              <FormattedMessage {...messages.newProjectFolder} />
+            </Button>
+          )}
         </StyledListHeader>
         <SortableList
           items={rootLevelAdminPublications}
@@ -95,10 +105,9 @@ const AdminProjectList = memo<Props>((_props) => {
                             publication={item}
                           />
                         )}
-                        <Outlet
-                          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
-                          publication={item}
-                        />
+                        {item.publicationType === 'folder' && (
+                          <ProjectFolderRow publication={item} />
+                        )}
                       </StyledSortableRow>
                     );
                   }

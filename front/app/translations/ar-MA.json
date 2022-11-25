@@ -1202,6 +1202,8 @@
   "app.containers.SignIn.logIn": "تسجيل الدخول",
   "app.containers.SignIn.or": "أو",
   "app.containers.SignIn.passwordLabel": "كلمة المرور",
+  "app.containers.SignIn.rememberMeLabel": "Remember me",
+  "app.containers.SignIn.rememberMeTooltip": "Do not select if using a public computer",
   "app.containers.SignIn.signInError": "المعلومات المقدمة غير صحيحة. انقر على \"هل نسيت كلمة المرور؟\" لإعادة تعيين كلمة المرور الخاصة بك.",
   "app.containers.SignIn.signUp": "التسجيل",
   "app.containers.SignIn.somethingWentWrong": "حدث خطأ ما ولا يمكننا إتمام عملية تسجيل دخولك الآن. يُرجى المحاولة مجددًا في وقت لاحق.",
