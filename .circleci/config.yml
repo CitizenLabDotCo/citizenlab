@@ -166,7 +166,7 @@ jobs:
     resource_class: small
     executor:
       name: back-essential
-      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
+      image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     parallelism: 4
     environment:
