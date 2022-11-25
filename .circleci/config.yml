@@ -1,5 +1,22 @@
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.3.3
+
+slack-fail-post-step-templates: &slack-fail-post-step-templates
+  post-steps:
+    - slack/notify:
+        event: fail
+        mentions: ':boom: FAILURE: Tenant templates workflow failed to release new template versions.'
+        template: basic_fail_1
+
+slack-fail-post-step-inconsistent-data: &slack-fail-post-step-inconsistent-data
+  post-steps:
+    - slack/notify:
+        event: fail
+        mentions: ':boom: FAILURE: Some data is likely invalid.'
+        template: basic_fail_1
+
 parameters:
   # This parameter is used to trigger the main workflow
   trigger:
