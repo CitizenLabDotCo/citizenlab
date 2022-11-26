@@ -5,7 +5,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import { Icon, Image } from '@citizenlab/cl2-component-library';
+import { Image } from '@citizenlab/cl2-component-library';
+import CompleteProfileStep from './CompleteProfileStep';
 
 // services
 import {
@@ -19,11 +20,11 @@ import { openVerificationModal } from 'events/verificationModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import T from 'components/T';
 
 // style
@@ -31,7 +32,7 @@ import styled, { useTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
-import VerificationOnboardingStep from './VerificationOnboardingStep';
+import VerificationOnboardingStep from '../VerificationOnboardingStep';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -224,14 +225,6 @@ export const Icons = styled.div`
   `}
 `;
 
-const CompleteProfileIcon = styled(Icon)`
-  width: 48px;
-  height: 48px;
-  margin-left: -3px;
-  margin-top: 3px;
-  opacity: 0.5;
-`;
-
 export const Text = styled.div`
   ${isRtl`
     direction: rtl;
@@ -363,63 +356,10 @@ const SignedInHeader = ({ className }: Props) => {
           </HeaderImageContainerInner>
         </HeaderImageContainer>
 
-        {/* First header state - complete profile */}
-        <CSSTransition
-          classNames="content"
-          in={onboardingCampaignName === 'complete_profile'}
-          timeout={
-            onboardingCampaignName === 'complete_profile'
-              ? contentTimeout + contentDelay
-              : contentTimeout
-          }
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-        >
-          <HeaderContentCompleteProfile id="e2e-signed-in-header-complete-profile">
-            <Left>
-              <Icons>
-                <StyledAvatar
-                  userId={authUser?.id}
-                  size={50}
-                  fillColor="#fff"
-                  padding={0}
-                  borderThickness={0}
-                />
-                <CompleteProfileIcon name="edit" fill="#fff" ariaHidden />
-              </Icons>
-              <Text>
-                <FormattedMessage
-                  {...messages.completeYourProfile}
-                  tagName="h2"
-                  values={{ firstName: authUser.attributes.first_name }}
-                />
-              </Text>
-            </Left>
-
-            <Right>
-              <SkipButton
-                buttonStyle="primary-outlined"
-                text={<FormattedMessage {...messages.doItLater} />}
-                onClick={handleSkip(onboardingCampaignName)}
-                borderColor="#fff"
-                textColor="#fff"
-                fontWeight="500"
-                className="e2e-signed-in-header-complete-skip-btn"
-              />
-              <AcceptButton
-                text={<FormattedMessage {...messages.completeProfile} />}
-                buttonStyle="primary-inverse"
-                linkTo="/profile/edit"
-                textColor={theme.colors.tenantPrimary}
-                textHoverColor={theme.colors.tenantPrimary}
-                fontWeight="500"
-                className="e2e-signed-in-header-accept-btn"
-              />
-            </Right>
-          </HeaderContentCompleteProfile>
-        </CSSTransition>
+        <CompleteProfileStep
+          activeOnboardingCampaignName={onboardingCampaignName}
+          onSkip={handleSkip}
+        />
 
         <VerificationOnboardingStep
           verificationCampaignIsActive={
