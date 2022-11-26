@@ -1,5 +1,4 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -11,17 +10,8 @@ import { Icon, Image } from '@citizenlab/cl2-component-library';
 // services
 import {
   dismissOnboardingCampaign,
-  IOnboardingCampaignNames,
+  OnboardingCampaignName,
 } from 'services/onboardingCampaigns';
-
-// resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetOnboardingCampaigns, {
-  GetOnboardingCampaignsChildProps,
-} from 'resources/GetOnboardingCampaigns';
 
 // utils
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -41,8 +31,13 @@ import styled, { useTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
-import { IHomepageSettingsData } from 'services/homepageSettings';
 import VerificationOnboardingStep from './VerificationOnboardingStep';
+
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAuthUser from 'hooks/useAuthUser';
+import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -296,44 +291,34 @@ export const StyledAvatar = styled(Avatar)`
   z-index: 2;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
-  homepageSettings: Error | IHomepageSettingsData | null;
 }
 
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  authUser: GetAuthUserChildProps;
-  onboardingCampaigns: GetOnboardingCampaignsChildProps;
-}
+const SignedInHeader = ({ className }: Props) => {
+  const homepageSettings = useHomepageSettings();
+  const appConfiguration = useAppConfiguration();
+  const authUser = useAuthUser();
+  const onboardingCampaign = useOnboardingCampaign();
 
-interface Props extends InputProps, DataProps {}
-
-const SignedInHeader = ({
-  tenant,
-  authUser,
-  className,
-  onboardingCampaigns,
-  homepageSettings,
-}: Props) => {
   const theme = useTheme();
-  const handleSkip = (name: IOnboardingCampaignNames) => () => {
+  const handleSkip = (name: OnboardingCampaignName) => () => {
     trackEventByName(tracks.clickSkipButton, {
       extra: { location: 'signed-in header', context: name },
     });
     dismissOnboardingCampaign(name);
   };
 
-  const handleAccept = (name: IOnboardingCampaignNames) => () => {
+  const handleAccept = (name: OnboardingCampaignName) => () => {
     if (name === 'verification') {
       openVerificationModal();
     }
   };
 
   if (
-    !isNilOrError(tenant) &&
+    !isNilOrError(appConfiguration) &&
     !isNilOrError(authUser) &&
-    !isNilOrError(onboardingCampaigns) &&
+    !isNilOrError(onboardingCampaign) &&
     !isNilOrError(homepageSettings)
   ) {
     const tenantHeaderImage = homepageSettings.attributes.header_bg
@@ -348,6 +333,7 @@ const SignedInHeader = ({
     const genericTitle = (
       <FormattedMessage tagName="h1" {...messages.titleCity} />
     );
+    const onboardingCampaignName = onboardingCampaign.data.attributes.name;
 
     return (
       <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
@@ -380,9 +366,9 @@ const SignedInHeader = ({
         {/* First header state - complete profile */}
         <CSSTransition
           classNames="content"
-          in={onboardingCampaigns.name === 'complete_profile'}
+          in={onboardingCampaignName === 'complete_profile'}
           timeout={
-            onboardingCampaigns.name === 'complete_profile'
+            onboardingCampaignName === 'complete_profile'
               ? contentTimeout + contentDelay
               : contentTimeout
           }
@@ -416,7 +402,7 @@ const SignedInHeader = ({
               <SkipButton
                 buttonStyle="primary-outlined"
                 text={<FormattedMessage {...messages.doItLater} />}
-                onClick={handleSkip(onboardingCampaigns.name)}
+                onClick={handleSkip(onboardingCampaignName)}
                 borderColor="#fff"
                 textColor="#fff"
                 fontWeight="500"
@@ -436,20 +422,22 @@ const SignedInHeader = ({
         </CSSTransition>
 
         <VerificationOnboardingStep
-          onboardingCampaigns={onboardingCampaigns}
+          verificationCampaignIsActive={
+            onboardingCampaignName === 'verification'
+          }
           contentTimeout={contentTimeout}
           contentDelay={contentDelay}
           authUser={authUser}
-          onSkip={handleSkip(onboardingCampaigns.name)}
-          onAccept={handleAccept(onboardingCampaigns.name)}
+          onSkip={handleSkip(onboardingCampaignName)}
+          onAccept={handleAccept(onboardingCampaignName)}
         />
 
         {/* Second header state - custom CTA */}
         <CSSTransition
           classNames="content"
-          in={onboardingCampaigns.name === 'custom_cta'}
+          in={onboardingCampaignName === 'custom_cta'}
           timeout={
-            onboardingCampaigns.name === 'custom_cta'
+            onboardingCampaignName === 'custom_cta'
               ? contentTimeout + contentDelay
               : contentTimeout
           }
@@ -463,7 +451,9 @@ const SignedInHeader = ({
               <Text>
                 <T
                   as="h2"
-                  value={onboardingCampaigns.cta_message_multiloc}
+                  value={
+                    onboardingCampaign.data.attributes.cta_message_multiloc
+                  }
                   supportHtml
                 />
               </Text>
@@ -473,14 +463,20 @@ const SignedInHeader = ({
               <SkipButton
                 buttonStyle="primary-outlined"
                 text={<FormattedMessage {...messages.doItLater} />}
-                onClick={handleSkip(onboardingCampaigns.name)}
+                onClick={handleSkip(onboardingCampaignName)}
                 borderColor="#fff"
                 textColor="#fff"
                 fontWeight="500"
               />
               <AcceptButton
-                text={<T value={onboardingCampaigns.cta_button_multiloc} />}
-                linkTo={onboardingCampaigns.cta_button_link}
+                text={
+                  <T
+                    value={
+                      onboardingCampaign.data.attributes.cta_button_multiloc
+                    }
+                  />
+                }
+                linkTo={onboardingCampaign.data.attributes.cta_button_link}
                 buttonStyle="primary-inverse"
                 textColor={theme.colors.tenantPrimary}
                 textHoverColor={theme.colors.tenantPrimary}
@@ -493,9 +489,9 @@ const SignedInHeader = ({
         {/* Third header state - default customizable message */}
         <CSSTransition
           classNames="content"
-          in={onboardingCampaigns.name === 'default'}
+          in={onboardingCampaignName === 'default'}
           timeout={
-            onboardingCampaigns.name === 'default'
+            onboardingCampaignName === 'default'
               ? contentTimeout + contentDelay
               : contentTimeout
           }
@@ -531,14 +527,4 @@ const SignedInHeader = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-  onboardingCampaigns: <GetOnboardingCampaigns />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <SignedInHeader {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default SignedInHeader;

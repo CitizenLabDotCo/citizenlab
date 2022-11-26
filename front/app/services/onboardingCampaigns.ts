@@ -2,40 +2,38 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
-export type IOnboardingCampaignNames =
+export type OnboardingCampaignName =
   | 'complete_profile'
   | 'custom_cta'
   | 'default'
   | 'verification';
 export const currentOnboardingCampaignsApiEndpoint = `${API_PATH}/onboarding_campaigns/current`;
 
-export type IOnboardingCampaigns = {
-  name: IOnboardingCampaignNames;
+export interface OnboardingCampaignAttributes {
+  name: OnboardingCampaignName;
   cta_message_multiloc: Multiloc;
   cta_button_multiloc: Multiloc;
   cta_button_link: string;
-};
+}
 
-export interface IOnboardingCampaignsData {
+export interface OnboardingCampaignData {
   data: {
     type: 'onboarding_status';
-    attributes: IOnboardingCampaigns;
+    attributes: OnboardingCampaignAttributes;
   };
 }
 
 export function currentOnboardingCampaignsStream(
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<IOnboardingCampaignsData>({
+  return streams.get<OnboardingCampaignData>({
     apiEndpoint: currentOnboardingCampaignsApiEndpoint,
     ...streamParams,
   });
 }
 
-export async function dismissOnboardingCampaign(
-  name: IOnboardingCampaignNames
-) {
-  const response = await streams.add<IOnboardingCampaignsData>(
+export async function dismissOnboardingCampaign(name: OnboardingCampaignName) {
+  const response = await streams.add<OnboardingCampaignData>(
     `${API_PATH}/onboarding_campaigns/${name}/dismissal`,
     {}
   );

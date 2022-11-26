@@ -3,7 +3,6 @@ import React from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { useTheme } from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { IOnboardingCampaigns } from 'services/onboardingCampaigns';
 import { IUserData } from 'services/users';
 import messages from './messages';
 import {
@@ -29,7 +28,7 @@ const ShieldIcon = styled(Icon)`
 `;
 
 interface Props {
-  onboardingCampaigns: IOnboardingCampaigns;
+  verificationCampaignIsActive: boolean;
   contentTimeout: number;
   contentDelay: number;
   authUser: IUserData;
@@ -40,7 +39,7 @@ interface Props {
 const VerificationOnboardingStep = ({
   onSkip,
   onAccept,
-  onboardingCampaigns,
+  verificationCampaignIsActive,
   authUser,
   contentTimeout,
   contentDelay,
@@ -50,9 +49,9 @@ const VerificationOnboardingStep = ({
   return (
     <CSSTransition
       classNames="content"
-      in={onboardingCampaigns.name === 'verification'}
+      in={verificationCampaignIsActive}
       timeout={
-        onboardingCampaigns.name === 'verification'
+        verificationCampaignIsActive
           ? contentTimeout + contentDelay
           : contentTimeout
       }
