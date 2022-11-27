@@ -9,6 +9,7 @@ const VerificationOnboardingStep = lazy(
 const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
 const FallbackStep = lazy(() => import('./FallbackStep'));
 import HeaderImage from './HeaderImage';
+import Avatar from 'components/Avatar';
 
 // services
 import {
@@ -152,6 +153,25 @@ export const Right = styled.div`
 
   ${media.phone`
     flex-direction: column;
+  `}
+`;
+
+export const StyledAvatar = styled(Avatar)`
+  margin-right: -3px;
+  z-index: 2;
+`;
+
+export const Icons = styled.div`
+  display: flex;
+  margin-right: 30px;
+
+  ${isRtl`
+    margin-right: 0px;
+    margin-left: 30px;
+  `}
+
+  ${media.phone`
+    margin-right: 0;
   `}
 `;
 

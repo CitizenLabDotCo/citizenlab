@@ -1,15 +1,14 @@
 import React from 'react';
-import Avatar from 'components/Avatar';
 import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import messages from '../messages';
-import { HeaderContent, Left, Right, Text } from '.';
+import { HeaderContent, Left, Right, Text, Icons, StyledAvatar } from '.';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { FormattedMessage } from 'utils/cl-intl';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { openVerificationModal } from 'events/verificationModal';
-import { colors, media, isRtl } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
 import AcceptButton from './AcceptButton';
@@ -27,25 +26,6 @@ const AvatarAndShield = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const StyledAvatar = styled(Avatar)`
-  margin-right: -3px;
-  z-index: 2;
-`;
-
-const Icons = styled.div`
-  display: flex;
-  margin-right: 30px;
-
-  ${isRtl`
-    margin-right: 0px;
-    margin-left: 30px;
-  `}
-
-  ${media.phone`
-    margin-right: 0;
-  `}
 `;
 
 interface Props {
