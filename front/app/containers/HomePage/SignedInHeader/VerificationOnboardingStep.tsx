@@ -1,18 +1,15 @@
-import { Icon } from '@citizenlab/cl2-component-library';
 import React from 'react';
+import Avatar from 'components/Avatar';
+import { Icon } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { useTheme } from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import messages from '../messages';
 import {
   AcceptButton,
-  AvatarAndShield,
   HeaderContentCompleteProfile,
-  Icons,
   Left,
   Right,
   SkipButton,
-  StyledAvatar,
   Text,
   contentDelay,
   contentTimeout,
@@ -22,6 +19,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { openVerificationModal } from 'events/verificationModal';
+import { colors, media, isRtl } from 'utils/styleUtils';
 
 const ShieldIcon = styled(Icon)`
   fill: ${colors.white};
@@ -29,6 +27,31 @@ const ShieldIcon = styled(Icon)`
   width: 50px;
   height: 50px;
   margin-left: -3px;
+`;
+
+const AvatarAndShield = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledAvatar = styled(Avatar)`
+  margin-right: -3px;
+  z-index: 2;
+`;
+
+const Icons = styled.div`
+  display: flex;
+  margin-right: 30px;
+
+  ${isRtl`
+    margin-right: 0px;
+    margin-left: 30px;
+  `}
+
+  ${media.phone`
+    margin-right: 0;
+  `}
 `;
 
 interface Props {

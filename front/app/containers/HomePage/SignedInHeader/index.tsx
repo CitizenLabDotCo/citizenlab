@@ -3,7 +3,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import Avatar from 'components/Avatar';
 import CompleteProfileStep from './CompleteProfileStep';
 import VerificationOnboardingStep from './VerificationOnboardingStep';
 import CustomCTAStep from './CustomCTAStep';
@@ -25,7 +24,6 @@ import styled from 'styled-components';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
 
 export const contentTimeout = 350;
@@ -136,20 +134,6 @@ export const Left = styled.div`
   `}
 `;
 
-export const Icons = styled.div`
-  display: flex;
-  margin-right: 30px;
-
-  ${isRtl`
-    margin-right: 0px;
-    margin-left: 30px;
-  `}
-
-  ${media.phone`
-    margin-right: 0;
-  `}
-`;
-
 export const Text = styled.div`
   ${isRtl`
     direction: rtl;
@@ -198,23 +182,11 @@ export const AcceptButton = styled(Button)`
   `}
 `;
 
-export const AvatarAndShield = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const StyledAvatar = styled(Avatar)`
-  margin-right: -3px;
-  z-index: 2;
-`;
-
 interface Props {
   className?: string;
 }
 
 const SignedInHeader = ({ className }: Props) => {
-  const authUser = useAuthUser();
   const onboardingCampaign = useOnboardingCampaign();
 
   const handleSkip = (name: OnboardingCampaignName) => () => {
@@ -224,7 +196,7 @@ const SignedInHeader = ({ className }: Props) => {
     dismissOnboardingCampaign(name);
   };
 
-  if (!isNilOrError(authUser) && !isNilOrError(onboardingCampaign)) {
+  if (!isNilOrError(onboardingCampaign)) {
     const onboardingCampaignName = onboardingCampaign.data.attributes.name;
 
     return (
