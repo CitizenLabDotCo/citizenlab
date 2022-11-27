@@ -358,7 +358,7 @@ const SignedInHeader = ({ className }: Props) => {
 
         <CompleteProfileStep
           activeOnboardingCampaignName={onboardingCampaignName}
-          onSkip={handleSkip}
+          onSkip={handleSkip('complete_profile')}
         />
 
         <VerificationOnboardingStep

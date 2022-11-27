@@ -198,7 +198,7 @@ export const StyledAvatar = styled(Avatar)`
 
 interface Props {
   activeOnboardingCampaignName: OnboardingCampaignName;
-  onSkip: (onboardingCampaignName: OnboardingCampaignName) => void;
+  onSkip: () => void;
 }
 
 const ONBOARDING_CAMPAIGN_NAME = 'complete_profile';
@@ -209,9 +209,6 @@ const CompleteProfileStep = ({
 }: Props) => {
   const authUser = useAuthUser();
   const theme = useTheme();
-  const handleSkip = () => {
-    onSkip(ONBOARDING_CAMPAIGN_NAME);
-  };
 
   if (!isNilOrError(authUser)) {
     return (
@@ -253,7 +250,7 @@ const CompleteProfileStep = ({
             <SkipButton
               buttonStyle="primary-outlined"
               text={<FormattedMessage {...messages.doItLater} />}
-              onClick={handleSkip}
+              onClick={onSkip}
               borderColor="#fff"
               textColor="#fff"
               fontWeight="500"
