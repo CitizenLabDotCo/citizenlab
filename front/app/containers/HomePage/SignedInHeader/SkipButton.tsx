@@ -20,17 +20,17 @@ const StyledButton = styled(Button)`
 `;
 
 interface Props {
-  onSkip: () => void;
+  onClick: () => void;
   className?: string;
 }
 
-const SkipButton = ({ onSkip, className }: Props) => {
+const SkipButton = ({ onClick, className }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <StyledButton
       buttonStyle="primary-outlined"
       text={formatMessage(messages.doItLater)}
-      onClick={onSkip}
+      onClick={onClick}
       borderColor="#fff"
       textColor="#fff"
       fontWeight="500"
