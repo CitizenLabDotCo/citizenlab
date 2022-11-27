@@ -56,9 +56,7 @@ const HeaderImageOverlay = styled.div`
   right: 0;
 `;
 
-interface Props {}
-
-const HeaderImage = ({}: Props) => {
+const HeaderImage = () => {
   const homepageSettings = useHomepageSettings();
   const objectFitCoverSupported =
     window['CSS'] && CSS.supports('object-fit: cover');
@@ -67,6 +65,7 @@ const HeaderImage = ({}: Props) => {
     const tenantHeaderImage = homepageSettings.attributes.header_bg
       ? homepageSettings.attributes.header_bg.large
       : null;
+
     return (
       <HeaderImageContainer>
         <HeaderImageContainerInner>

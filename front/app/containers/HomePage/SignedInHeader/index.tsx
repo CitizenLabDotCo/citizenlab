@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import CompleteProfileStep from './CompleteProfileStep';
-import VerificationOnboardingStep from '../VerificationOnboardingStep';
+import VerificationOnboardingStep from './VerificationOnboardingStep';
 import CustomCTAStep from './CustomCTAStep';
 import FallbackStep from './FallbackStep';
 import HeaderImage from './HeaderImage';
@@ -15,9 +15,6 @@ import {
   dismissOnboardingCampaign,
   OnboardingCampaignName,
 } from 'services/onboardingCampaigns';
-
-// utils
-import { openVerificationModal } from 'events/verificationModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -31,9 +28,9 @@ import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
 
-const contentTimeout = 350;
+export const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
-const contentDelay = 550;
+export const contentDelay = 550;
 
 const Header = styled.div`
   width: 100%;
@@ -227,12 +224,6 @@ const SignedInHeader = ({ className }: Props) => {
     dismissOnboardingCampaign(name);
   };
 
-  const handleAccept = (name: OnboardingCampaignName) => () => {
-    if (name === 'verification') {
-      openVerificationModal();
-    }
-  };
-
   if (!isNilOrError(authUser) && !isNilOrError(onboardingCampaign)) {
     const onboardingCampaignName = onboardingCampaign.data.attributes.name;
 
@@ -241,14 +232,8 @@ const SignedInHeader = ({ className }: Props) => {
         <HeaderImage />
 
         <VerificationOnboardingStep
-          verificationCampaignIsActive={
-            onboardingCampaignName === 'verification'
-          }
-          contentTimeout={contentTimeout}
-          contentDelay={contentDelay}
-          authUser={authUser}
-          onSkip={handleSkip(onboardingCampaignName)}
-          onAccept={handleAccept(onboardingCampaignName)}
+          activeOnboardingCampaignName={onboardingCampaignName}
+          onSkip={handleSkip('verification')}
         />
         <CompleteProfileStep
           activeOnboardingCampaignName={onboardingCampaignName}
