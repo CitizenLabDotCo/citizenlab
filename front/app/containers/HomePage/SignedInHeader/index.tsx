@@ -4,8 +4,11 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import { Image } from '@citizenlab/cl2-component-library';
 import CompleteProfileStep from './CompleteProfileStep';
+import VerificationOnboardingStep from '../VerificationOnboardingStep';
+import CustomCTAStep from './CustomCTAStep';
+import FallbackStep from './FallbackStep';
+import HeaderImage from './HeaderImage';
 
 // services
 import {
@@ -23,14 +26,10 @@ import tracks from '../tracks';
 // style
 import styled from 'styled-components';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
-import VerificationOnboardingStep from '../VerificationOnboardingStep';
-import CustomCTAStep from './CustomCTAStep';
-import FallbackStep from './FallbackStep';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
-import useHomepageSettings from 'hooks/useHomepageSettings';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -50,57 +49,6 @@ const Header = styled.div`
   ${media.phone`
     height: 400px;
   `}
-`;
-
-const HeaderImageContainer = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const HeaderImageContainerInner = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
-const HeaderImage = styled(Image)`
-  width: 100%;
-  height: auto;
-
-  ${media.tablet`
-    &.objectFitCoverSupported {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    &:not(.objectFitCoverSupported) {
-      width: auto;
-      height: 100%;
-    }
-  `}
-`;
-
-const HeaderImageOverlay = styled.div`
-  background: ${({ theme }) =>
-    theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary};
-  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity / 100};
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
 `;
 
 export const HeaderContent = styled.div`
@@ -269,7 +217,6 @@ interface Props {
 }
 
 const SignedInHeader = ({ className }: Props) => {
-  const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
   const onboardingCampaign = useOnboardingCampaign();
 
@@ -286,36 +233,13 @@ const SignedInHeader = ({ className }: Props) => {
     }
   };
 
-  if (
-    !isNilOrError(authUser) &&
-    !isNilOrError(onboardingCampaign) &&
-    !isNilOrError(homepageSettings)
-  ) {
-    const tenantHeaderImage = homepageSettings.attributes.header_bg
-      ? homepageSettings.attributes.header_bg.large
-      : null;
-
-    const objectFitCoverSupported =
-      window['CSS'] && CSS.supports('object-fit: cover');
-
+  if (!isNilOrError(authUser) && !isNilOrError(onboardingCampaign)) {
     const onboardingCampaignName = onboardingCampaign.data.attributes.name;
 
     return (
       <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
-        <HeaderImageContainer>
-          <HeaderImageContainerInner>
-            {tenantHeaderImage && (
-              <HeaderImage
-                alt="" // Image is decorative, so alt tag is empty
-                src={tenantHeaderImage}
-                className={
-                  objectFitCoverSupported ? 'objectFitCoverSupported' : ''
-                }
-              />
-            )}
-            <HeaderImageOverlay />
-          </HeaderImageContainerInner>
-        </HeaderImageContainer>
+        <HeaderImage />
+
         <VerificationOnboardingStep
           verificationCampaignIsActive={
             onboardingCampaignName === 'verification'
