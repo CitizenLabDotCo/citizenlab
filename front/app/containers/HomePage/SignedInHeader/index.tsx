@@ -20,14 +20,8 @@ import { openVerificationModal } from 'events/verificationModal';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import T from 'components/T';
-
 // style
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import VerificationOnboardingStep from '../VerificationOnboardingStep';
 import CustomCTAStep from './CustomCTAStep';
@@ -303,30 +297,14 @@ const SignedInHeader = ({ className }: Props) => {
     const tenantHeaderImage = homepageSettings.attributes.header_bg
       ? homepageSettings.attributes.header_bg.large
       : null;
-    const defaultMessage =
-      homepageSettings.attributes.banner_signed_in_header_multiloc;
 
     const objectFitCoverSupported =
       window['CSS'] && CSS.supports('object-fit: cover');
 
-    const genericTitle = (
-      <FormattedMessage tagName="h1" {...messages.titleCity} />
-    );
     const onboardingCampaignName = onboardingCampaign.data.attributes.name;
 
     return (
       <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
-        <ScreenReaderOnly>
-          {defaultMessage ? (
-            <T as="h1" value={defaultMessage}>
-              {(translatedTitle) =>
-                translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
-              }
-            </T>
-          ) : (
-            genericTitle
-          )}
-        </ScreenReaderOnly>
         <HeaderImageContainer>
           <HeaderImageContainerInner>
             {tenantHeaderImage && (
