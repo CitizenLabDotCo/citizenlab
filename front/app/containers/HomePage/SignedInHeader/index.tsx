@@ -28,7 +28,7 @@ import messages from '../messages';
 import T from 'components/T';
 
 // style
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
@@ -39,6 +39,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
 import useHomepageSettings from 'hooks/useHomepageSettings';
+import CustomCTAStep from './CustomCTAStep';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -111,7 +112,7 @@ const HeaderImageOverlay = styled.div`
   right: 0;
 `;
 
-const HeaderContent = styled.div`
+export const HeaderContent = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
@@ -177,7 +178,6 @@ const HeaderContent = styled.div`
 `;
 
 export const HeaderContentCompleteProfile = styled(HeaderContent)``;
-const HeaderContentCustomCta = styled(HeaderContent)``;
 const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
 
@@ -294,7 +294,6 @@ const SignedInHeader = ({ className }: Props) => {
   const authUser = useAuthUser();
   const onboardingCampaign = useOnboardingCampaign();
 
-  const theme = useTheme();
   const handleSkip = (name: OnboardingCampaignName) => () => {
     trackEventByName(tracks.clickSkipButton, {
       extra: { location: 'signed-in header', context: name },
@@ -356,11 +355,6 @@ const SignedInHeader = ({ className }: Props) => {
           </HeaderImageContainerInner>
         </HeaderImageContainer>
 
-        <CompleteProfileStep
-          activeOnboardingCampaignName={onboardingCampaignName}
-          onSkip={handleSkip('complete_profile')}
-        />
-
         <VerificationOnboardingStep
           verificationCampaignIsActive={
             onboardingCampaignName === 'verification'
@@ -372,59 +366,15 @@ const SignedInHeader = ({ className }: Props) => {
           onAccept={handleAccept(onboardingCampaignName)}
         />
 
-        {/* Second header state - custom CTA */}
-        <CSSTransition
-          classNames="content"
-          in={onboardingCampaignName === 'custom_cta'}
-          timeout={
-            onboardingCampaignName === 'custom_cta'
-              ? contentTimeout + contentDelay
-              : contentTimeout
-          }
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-        >
-          <HeaderContentCustomCta id="e2e-signed-in-header-custom-cta">
-            <Left>
-              <Text>
-                <T
-                  as="h2"
-                  value={
-                    onboardingCampaign.data.attributes.cta_message_multiloc
-                  }
-                  supportHtml
-                />
-              </Text>
-            </Left>
+        <CompleteProfileStep
+          activeOnboardingCampaignName={onboardingCampaignName}
+          onSkip={handleSkip('complete_profile')}
+        />
 
-            <Right>
-              <SkipButton
-                buttonStyle="primary-outlined"
-                text={<FormattedMessage {...messages.doItLater} />}
-                onClick={handleSkip(onboardingCampaignName)}
-                borderColor="#fff"
-                textColor="#fff"
-                fontWeight="500"
-              />
-              <AcceptButton
-                text={
-                  <T
-                    value={
-                      onboardingCampaign.data.attributes.cta_button_multiloc
-                    }
-                  />
-                }
-                linkTo={onboardingCampaign.data.attributes.cta_button_link}
-                buttonStyle="primary-inverse"
-                textColor={theme.colors.tenantPrimary}
-                textHoverColor={theme.colors.tenantPrimary}
-                fontWeight="500"
-              />
-            </Right>
-          </HeaderContentCustomCta>
-        </CSSTransition>
+        <CustomCTAStep
+          activeOnboardingCampaignName={onboardingCampaignName}
+          onSkip={handleSkip('custom_cta')}
+        />
 
         {/* Third header state - default customizable message */}
         <CSSTransition

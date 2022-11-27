@@ -7,6 +7,7 @@ export type OnboardingCampaignName =
   | 'custom_cta'
   | 'default'
   | 'verification';
+
 export const currentOnboardingCampaignsApiEndpoint = `${API_PATH}/onboarding_campaigns/current`;
 
 export interface OnboardingCampaignAttributes {
