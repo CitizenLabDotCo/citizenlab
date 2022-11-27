@@ -9,9 +9,6 @@ import { Icon } from '@citizenlab/cl2-component-library';
 // services
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 
-// utils
-import CSSTransition from 'react-transition-group/CSSTransition';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -22,6 +19,7 @@ import { media, fontSizes, isRtl } from 'utils/styleUtils';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import OnboardingStep from './OnboardingStep';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -195,33 +193,21 @@ export const StyledAvatar = styled(Avatar)`
 `;
 
 interface Props {
-  activeOnboardingCampaignName: OnboardingCampaignName;
   onSkip: () => void;
+  activeOnboardingCampaignName: OnboardingCampaignName;
 }
 
-const ONBOARDING_CAMPAIGN_NAME = 'complete_profile';
-
 const CompleteProfileStep = ({
-  activeOnboardingCampaignName,
   onSkip,
+  activeOnboardingCampaignName,
 }: Props) => {
   const authUser = useAuthUser();
   const theme = useTheme();
 
   if (!isNilOrError(authUser)) {
     return (
-      <CSSTransition
-        classNames="content"
-        in={activeOnboardingCampaignName === ONBOARDING_CAMPAIGN_NAME}
-        timeout={
-          activeOnboardingCampaignName === ONBOARDING_CAMPAIGN_NAME
-            ? contentTimeout + contentDelay
-            : contentTimeout
-        }
-        mountOnEnter={true}
-        unmountOnExit={true}
-        enter={true}
-        exit={true}
+      <OnboardingStep
+        isIncomingStep={activeOnboardingCampaignName === 'complete_profile'}
       >
         <HeaderContent id="e2e-signed-in-header-complete-profile">
           <Left>
@@ -265,7 +251,7 @@ const CompleteProfileStep = ({
             />
           </Right>
         </HeaderContent>
-      </CSSTransition>
+      </OnboardingStep>
     );
   }
 

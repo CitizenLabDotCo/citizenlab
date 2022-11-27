@@ -8,9 +8,6 @@ import T from 'components/T';
 // services
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 
-// utils
-import CSSTransition from 'react-transition-group/CSSTransition';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -20,33 +17,21 @@ import { useTheme } from 'styled-components';
 
 // hooks
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
-
-const contentTimeout = 350;
-const contentDelay = 550;
+import OnboardingStep from './OnboardingStep';
 
 interface Props {
   activeOnboardingCampaignName: OnboardingCampaignName;
   onSkip: () => void;
 }
 
-const CustomCTAStep = ({ activeOnboardingCampaignName, onSkip }: Props) => {
+const CustomCTAStep = ({ onSkip, activeOnboardingCampaignName }: Props) => {
   const theme = useTheme();
   const onboardingCampaign = useOnboardingCampaign();
 
   if (!isNilOrError(onboardingCampaign)) {
     return (
-      <CSSTransition
-        classNames="content"
-        in={activeOnboardingCampaignName === 'custom_cta'}
-        timeout={
-          activeOnboardingCampaignName === 'custom_cta'
-            ? contentTimeout + contentDelay
-            : contentTimeout
-        }
-        mountOnEnter={true}
-        unmountOnExit={true}
-        enter={true}
-        exit={true}
+      <OnboardingStep
+        isIncomingStep={activeOnboardingCampaignName === 'custom_cta'}
       >
         <HeaderContent id="e2e-signed-in-header-custom-cta">
           <Left>
@@ -82,7 +67,7 @@ const CustomCTAStep = ({ activeOnboardingCampaignName, onSkip }: Props) => {
             />
           </Right>
         </HeaderContent>
-      </CSSTransition>
+      </OnboardingStep>
     );
   }
 

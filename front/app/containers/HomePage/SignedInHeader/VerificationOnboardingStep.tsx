@@ -1,25 +1,16 @@
 import React from 'react';
 import Avatar from 'components/Avatar';
 import { Icon } from '@citizenlab/cl2-component-library';
-import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { useTheme } from 'styled-components';
 import messages from '../messages';
-import {
-  AcceptButton,
-  HeaderContent,
-  Left,
-  Right,
-  SkipButton,
-  Text,
-  contentDelay,
-  contentTimeout,
-} from '.';
+import { AcceptButton, HeaderContent, Left, Right, SkipButton, Text } from '.';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { FormattedMessage } from 'utils/cl-intl';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { openVerificationModal } from 'events/verificationModal';
 import { colors, media, isRtl } from 'utils/styleUtils';
+import OnboardingStep from './OnboardingStep';
 
 const ShieldIcon = styled(Icon)`
   fill: ${colors.white};
@@ -72,18 +63,8 @@ const VerificationOnboardingStep = ({
 
   if (!isNilOrError(authUser)) {
     return (
-      <CSSTransition
-        classNames="content"
-        in={activeOnboardingCampaignName === 'verification'}
-        timeout={
-          activeOnboardingCampaignName === 'verification'
-            ? contentTimeout + contentDelay
-            : contentTimeout
-        }
-        mountOnEnter={true}
-        unmountOnExit={true}
-        enter={true}
-        exit={true}
+      <OnboardingStep
+        isIncomingStep={activeOnboardingCampaignName === 'verification'}
       >
         <HeaderContent id="e2e-signed-in-header-verification">
           <Left>
@@ -125,7 +106,7 @@ const VerificationOnboardingStep = ({
             />
           </Right>
         </HeaderContent>
-      </CSSTransition>
+      </OnboardingStep>
     );
   }
 

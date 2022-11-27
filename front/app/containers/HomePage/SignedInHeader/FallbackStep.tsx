@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import { Left, Right, contentTimeout, contentDelay, HeaderContent } from './';
+import { Left, Right, HeaderContent } from './';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,6 +11,7 @@ import T from 'components/T';
 import useAuthUser from 'hooks/useAuthUser';
 import Outlet from 'components/Outlet';
 import { media } from 'utils/styleUtils';
+import OnboardingStep from './OnboardingStep';
 
 const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
@@ -37,18 +37,8 @@ const FallbackStep = ({ activeOnboardingCampaignName }: Props) => {
       homepageSettings.attributes.banner_signed_in_header_multiloc;
 
     return (
-      <CSSTransition
-        classNames="content"
-        in={activeOnboardingCampaignName === 'default'}
-        timeout={
-          activeOnboardingCampaignName === 'default'
-            ? contentTimeout + contentDelay
-            : contentTimeout
-        }
-        mountOnEnter={true}
-        unmountOnExit={true}
-        enter={true}
-        exit={true}
+      <OnboardingStep
+        isIncomingStep={activeOnboardingCampaignName === 'default'}
       >
         <HeaderContentDefault id="e2e-signed-in-header-default-cta">
           <Left>
@@ -69,7 +59,7 @@ const FallbackStep = ({ activeOnboardingCampaignName }: Props) => {
             />
           </Right>
         </HeaderContentDefault>
-      </CSSTransition>
+      </OnboardingStep>
     );
   }
 
