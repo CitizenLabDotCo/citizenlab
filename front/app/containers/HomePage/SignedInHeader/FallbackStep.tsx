@@ -16,14 +16,11 @@ import OnboardingStep from './OnboardingStep';
 const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
 
-  h2 {
-    text-align: center;
-  }
-
   ${media.tablet`
     align-items: center;
   `}
 `;
+
 interface Props {
   currentOnboardingCampaignName: OnboardingCampaignName;
 }
