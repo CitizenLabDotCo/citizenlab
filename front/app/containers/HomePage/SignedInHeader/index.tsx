@@ -205,6 +205,7 @@ const SignedInHeader = ({ className }: Props) => {
             currentOnboardingCampaignName={onboardingCampaignName}
             onSkip={handleSkip('complete_profile')}
           />
+          {/* Do we even use this step? */}
           <CustomCTAStep
             currentOnboardingCampaignName={onboardingCampaignName}
             onSkip={handleSkip('custom_cta')}
