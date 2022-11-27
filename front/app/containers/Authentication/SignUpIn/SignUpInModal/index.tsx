@@ -3,7 +3,7 @@ import { signOut } from 'services/auth';
 import tracks from './tracks';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import SignIn from './SignIn';
 import SignUp, { TSignUpStep } from './SignUp';
@@ -50,6 +50,8 @@ const SignUpInModal = memo<Props>(
     const participationConditions = useParticipationConditions(
       metaData?.verificationContext
     );
+
+    const smallerThanPhone = useBreakpoint('phone');
 
     const opened = !!metaData;
 
@@ -131,7 +133,7 @@ const SignUpInModal = memo<Props>(
     return (
       <Modal
         fullScreen={fullScreenModal}
-        zIndex={1000001}
+        zIndex={fullScreenModal ? 400 : 10000001}
         width={modalWidth}
         padding="0px"
         opened={opened}
@@ -141,7 +143,7 @@ const SignUpInModal = memo<Props>(
         <Box
           id="e2e-sign-up-in-modal"
           className={className}
-          width={`${modalWidth}px`}
+          width={smallerThanPhone ? undefined : `${modalWidth}px`}
           background="white"
         >
           {opened && metaData && (
