@@ -170,12 +170,12 @@ export const StyledAvatar = styled(Avatar)`
 
 interface Props {
   onSkip: () => void;
-  activeOnboardingCampaignName: OnboardingCampaignName;
+  currentOnboardingCampaignName: OnboardingCampaignName;
 }
 
 const CompleteProfileStep = ({
   onSkip,
-  activeOnboardingCampaignName,
+  currentOnboardingCampaignName,
 }: Props) => {
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
@@ -183,7 +183,7 @@ const CompleteProfileStep = ({
   if (!isNilOrError(authUser)) {
     return (
       <OnboardingStep
-        isIncomingStep={activeOnboardingCampaignName === 'complete_profile'}
+        isIncomingStep={currentOnboardingCampaignName === 'complete_profile'}
       >
         <HeaderContent id="e2e-signed-in-header-complete-profile">
           <Left>

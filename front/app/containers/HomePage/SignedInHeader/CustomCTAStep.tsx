@@ -9,25 +9,25 @@ import T from 'components/T';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 
 // hooks
-import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
+import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
 import AcceptButton from './AcceptButton';
 import useLocalize from 'hooks/useLocalize';
 
 interface Props {
-  activeOnboardingCampaignName: OnboardingCampaignName;
+  currentOnboardingCampaignName: OnboardingCampaignName;
   onSkip: () => void;
 }
 
-const CustomCTAStep = ({ onSkip, activeOnboardingCampaignName }: Props) => {
-  const onboardingCampaign = useOnboardingCampaign();
+const CustomCTAStep = ({ onSkip, currentOnboardingCampaignName }: Props) => {
+  const onboardingCampaign = useCurrentOnboardingCampaign();
   const localize = useLocalize();
 
   if (!isNilOrError(onboardingCampaign)) {
     return (
       <OnboardingStep
-        isIncomingStep={activeOnboardingCampaignName === 'custom_cta'}
+        isIncomingStep={currentOnboardingCampaignName === 'custom_cta'}
       >
         <HeaderContent id="e2e-signed-in-header-custom-cta">
           <Left>

@@ -25,10 +25,10 @@ const HeaderContentDefault = styled(HeaderContent)`
   `}
 `;
 interface Props {
-  activeOnboardingCampaignName: OnboardingCampaignName;
+  currentOnboardingCampaignName: OnboardingCampaignName;
 }
 
-const FallbackStep = ({ activeOnboardingCampaignName }: Props) => {
+const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
   const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
 
@@ -38,7 +38,7 @@ const FallbackStep = ({ activeOnboardingCampaignName }: Props) => {
 
     return (
       <OnboardingStep
-        isIncomingStep={activeOnboardingCampaignName === 'default'}
+        isIncomingStep={currentOnboardingCampaignName === 'default'}
       >
         <HeaderContentDefault id="e2e-signed-in-header-default-cta">
           <Left>

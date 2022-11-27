@@ -25,7 +25,7 @@ import styled from 'styled-components';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 
 // hooks
-import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
+import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
 
 export const contentTimeout = 350;
 export const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -160,7 +160,7 @@ interface Props {
 }
 
 const SignedInHeader = ({ className }: Props) => {
-  const onboardingCampaign = useOnboardingCampaign();
+  const currentOnboardingCampaign = useCurrentOnboardingCampaign();
 
   const handleSkip = (name: OnboardingCampaignName) => () => {
     trackEventByName(tracks.clickSkipButton, {
@@ -169,26 +169,29 @@ const SignedInHeader = ({ className }: Props) => {
     dismissOnboardingCampaign(name);
   };
 
-  if (!isNilOrError(onboardingCampaign)) {
-    const onboardingCampaignName = onboardingCampaign.data.attributes.name;
+  if (!isNilOrError(currentOnboardingCampaign)) {
+    const onboardingCampaignName =
+      currentOnboardingCampaign.data.attributes.name;
 
     return (
       <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
         <HeaderImage />
         <Suspense fallback={null}>
           <VerificationOnboardingStep
-            activeOnboardingCampaignName={onboardingCampaignName}
+            currentOnboardingCampaignName={onboardingCampaignName}
             onSkip={handleSkip('verification')}
           />
           <CompleteProfileStep
-            activeOnboardingCampaignName={onboardingCampaignName}
+            currentOnboardingCampaignName={onboardingCampaignName}
             onSkip={handleSkip('complete_profile')}
           />
           <CustomCTAStep
-            activeOnboardingCampaignName={onboardingCampaignName}
+            currentOnboardingCampaignName={onboardingCampaignName}
             onSkip={handleSkip('custom_cta')}
           />
-          <FallbackStep activeOnboardingCampaignName={onboardingCampaignName} />
+          <FallbackStep
+            currentOnboardingCampaignName={onboardingCampaignName}
+          />
         </Suspense>
       </Header>
     );

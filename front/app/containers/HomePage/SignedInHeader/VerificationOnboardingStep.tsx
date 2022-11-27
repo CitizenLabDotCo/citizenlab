@@ -49,13 +49,13 @@ const Icons = styled.div`
 `;
 
 interface Props {
-  activeOnboardingCampaignName: OnboardingCampaignName;
+  currentOnboardingCampaignName: OnboardingCampaignName;
   onSkip: () => void;
 }
 
 const VerificationOnboardingStep = ({
   onSkip,
-  activeOnboardingCampaignName,
+  currentOnboardingCampaignName,
 }: Props) => {
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
@@ -67,7 +67,7 @@ const VerificationOnboardingStep = ({
   if (!isNilOrError(authUser)) {
     return (
       <OnboardingStep
-        isIncomingStep={activeOnboardingCampaignName === 'verification'}
+        isIncomingStep={currentOnboardingCampaignName === 'verification'}
       >
         <HeaderContent id="e2e-signed-in-header-verification">
           <Left>

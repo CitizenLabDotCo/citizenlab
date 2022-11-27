@@ -4,7 +4,7 @@ import {
   OnboardingCampaignData,
 } from 'services/onboardingCampaigns';
 
-export default function useOnboardingCampaign() {
+export default function useCurrentOnboardingCampaign() {
   const [onboardingCampaign, setOnboardingCampaign] =
     useState<OnboardingCampaignData | null>(null);
 
