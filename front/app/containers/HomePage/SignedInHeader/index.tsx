@@ -1,5 +1,4 @@
 import React from 'react';
-import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -15,7 +14,6 @@ import {
 } from 'services/onboardingCampaigns';
 
 // utils
-import CSSTransition from 'react-transition-group/CSSTransition';
 import { openVerificationModal } from 'events/verificationModal';
 
 // tracking
@@ -31,15 +29,15 @@ import T from 'components/T';
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 import VerificationOnboardingStep from '../VerificationOnboardingStep';
+import CustomCTAStep from './CustomCTAStep';
+import FallbackStep from './FallbackStep';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
 import useHomepageSettings from 'hooks/useHomepageSettings';
-import CustomCTAStep from './CustomCTAStep';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -178,17 +176,6 @@ export const HeaderContent = styled.div`
 `;
 
 export const HeaderContentCompleteProfile = styled(HeaderContent)``;
-const HeaderContentDefault = styled(HeaderContent)`
-  justify-content: center;
-
-  h2 {
-    text-align: center;
-  }
-
-  ${media.tablet`
-    align-items: center;
-  `}
-`;
 
 export const Left = styled.div`
   display: flex;
@@ -354,7 +341,6 @@ const SignedInHeader = ({ className }: Props) => {
             <HeaderImageOverlay />
           </HeaderImageContainerInner>
         </HeaderImageContainer>
-
         <VerificationOnboardingStep
           verificationCampaignIsActive={
             onboardingCampaignName === 'verification'
@@ -365,51 +351,15 @@ const SignedInHeader = ({ className }: Props) => {
           onSkip={handleSkip(onboardingCampaignName)}
           onAccept={handleAccept(onboardingCampaignName)}
         />
-
         <CompleteProfileStep
           activeOnboardingCampaignName={onboardingCampaignName}
           onSkip={handleSkip('complete_profile')}
         />
-
         <CustomCTAStep
           activeOnboardingCampaignName={onboardingCampaignName}
           onSkip={handleSkip('custom_cta')}
         />
-
-        {/* Third header state - default customizable message */}
-        <CSSTransition
-          classNames="content"
-          in={onboardingCampaignName === 'default'}
-          timeout={
-            onboardingCampaignName === 'default'
-              ? contentTimeout + contentDelay
-              : contentTimeout
-          }
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-        >
-          <HeaderContentDefault id="e2e-signed-in-header-default-cta">
-            <Left>
-              {defaultMessage && !isEmpty(defaultMessage) ? (
-                <T as="h2" value={defaultMessage} supportHtml />
-              ) : (
-                <FormattedMessage
-                  {...messages.defaultSignedInMessage}
-                  tagName="h2"
-                  values={{ firstName: authUser.attributes.first_name }}
-                />
-              )}
-            </Left>
-            <Right>
-              <Outlet
-                id="app.containers.HomePage.SignedInHeader.CTA"
-                buttonStyle="primary-inverse"
-              />
-            </Right>
-          </HeaderContentDefault>
-        </CSSTransition>
+        <FallbackStep activeOnboardingCampaignName={onboardingCampaignName} />
       </Header>
     );
   }
