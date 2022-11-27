@@ -113,8 +113,6 @@ export const HeaderContent = styled.div`
   `}
 `;
 
-export const HeaderContentCompleteProfile = styled(HeaderContent)``;
-
 export const Left = styled.div`
   display: flex;
   align-items: center;

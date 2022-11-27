@@ -92,8 +92,6 @@ const HeaderContent = styled.div`
   `}
 `;
 
-export const HeaderContentCompleteProfile = styled(HeaderContent)``;
-
 export const Left = styled.div`
   display: flex;
   align-items: center;
@@ -225,7 +223,7 @@ const CompleteProfileStep = ({
         enter={true}
         exit={true}
       >
-        <HeaderContentCompleteProfile id="e2e-signed-in-header-complete-profile">
+        <HeaderContent id="e2e-signed-in-header-complete-profile">
           <Left>
             <Icons>
               <StyledAvatar
@@ -266,7 +264,7 @@ const CompleteProfileStep = ({
               className="e2e-signed-in-header-accept-btn"
             />
           </Right>
-        </HeaderContentCompleteProfile>
+        </HeaderContent>
       </CSSTransition>
     );
   }

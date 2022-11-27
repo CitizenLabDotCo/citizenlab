@@ -6,7 +6,7 @@ import styled, { useTheme } from 'styled-components';
 import messages from '../messages';
 import {
   AcceptButton,
-  HeaderContentCompleteProfile,
+  HeaderContent,
   Left,
   Right,
   SkipButton,
@@ -85,7 +85,7 @@ const VerificationOnboardingStep = ({
         enter={true}
         exit={true}
       >
-        <HeaderContentCompleteProfile id="e2e-signed-in-header-verification">
+        <HeaderContent id="e2e-signed-in-header-verification">
           <Left>
             <Icons>
               <AvatarAndShield aria-hidden>
@@ -124,7 +124,7 @@ const VerificationOnboardingStep = ({
               className="e2e-signed-in-header-accept-btn"
             />
           </Right>
-        </HeaderContentCompleteProfile>
+        </HeaderContent>
       </CSSTransition>
     );
   }
