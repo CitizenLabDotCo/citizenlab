@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
 const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
 const VerificationOnboardingStep = lazy(
   () => import('./VerificationOnboardingStep')
@@ -153,32 +152,6 @@ export const Right = styled.div`
 
   ${media.phone`
     flex-direction: column;
-  `}
-`;
-
-export const SkipButton = styled(Button)`
-  margin-right: 10px;
-
-  ${media.tablet`
-    order: 2;
-    margin-right: 0px;
-  `}
-
-  ${isRtl`
-    margin-right: 0px;
-    margin-left: 10px;
-  `}
-`;
-
-export const AcceptButton = styled(Button)`
-  ${media.tablet`
-    order: 1;
-    margin-right: 10px;
-  `}
-
-  ${media.phone`
-    margin-bottom: 10px;
-    margin-right: 0px;
   `}
 `;
 
