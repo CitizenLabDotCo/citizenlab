@@ -28,7 +28,6 @@ import CustomCTAStep from './CustomCTAStep';
 import FallbackStep from './FallbackStep';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
 import useHomepageSettings from 'hooks/useHomepageSettings';
@@ -271,7 +270,6 @@ interface Props {
 
 const SignedInHeader = ({ className }: Props) => {
   const homepageSettings = useHomepageSettings();
-  const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
   const onboardingCampaign = useOnboardingCampaign();
 
@@ -289,7 +287,6 @@ const SignedInHeader = ({ className }: Props) => {
   };
 
   if (
-    !isNilOrError(appConfiguration) &&
     !isNilOrError(authUser) &&
     !isNilOrError(onboardingCampaign) &&
     !isNilOrError(homepageSettings)
