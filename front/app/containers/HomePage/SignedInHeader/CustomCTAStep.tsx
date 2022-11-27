@@ -2,19 +2,18 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { HeaderContent, Left, Text, Right, AcceptButton } from './';
+import { HeaderContent, Left, Text, Right } from './';
 import T from 'components/T';
 
 // services
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 
-// style
-import { useTheme } from 'styled-components';
-
 // hooks
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
+import AcceptButton from './AcceptButton';
+import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   activeOnboardingCampaignName: OnboardingCampaignName;
@@ -22,8 +21,8 @@ interface Props {
 }
 
 const CustomCTAStep = ({ onSkip, activeOnboardingCampaignName }: Props) => {
-  const theme = useTheme();
   const onboardingCampaign = useOnboardingCampaign();
+  const localize = useLocalize();
 
   if (!isNilOrError(onboardingCampaign)) {
     return (
@@ -42,18 +41,12 @@ const CustomCTAStep = ({ onSkip, activeOnboardingCampaignName }: Props) => {
           </Left>
 
           <Right>
-            <SkipButton onSkip={onSkip} />
+            <SkipButton onClick={onSkip} />
             <AcceptButton
-              text={
-                <T
-                  value={onboardingCampaign.data.attributes.cta_button_multiloc}
-                />
-              }
+              text={localize(
+                onboardingCampaign.data.attributes.cta_button_multiloc
+              )}
               linkTo={onboardingCampaign.data.attributes.cta_button_link}
-              buttonStyle="primary-inverse"
-              textColor={theme.colors.tenantPrimary}
-              textHoverColor={theme.colors.tenantPrimary}
-              fontWeight="500"
             />
           </Right>
         </HeaderContent>

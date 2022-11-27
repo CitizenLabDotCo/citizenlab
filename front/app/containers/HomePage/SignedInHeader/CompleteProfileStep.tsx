@@ -2,7 +2,6 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import { Icon } from '@citizenlab/cl2-component-library';
 
@@ -12,15 +11,17 @@ import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 // style
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
+import AcceptButton from './AcceptButton';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -156,18 +157,6 @@ export const Right = styled.div`
   `}
 `;
 
-export const AcceptButton = styled(Button)`
-  ${media.tablet`
-    order: 1;
-    margin-right: 10px;
-  `}
-
-  ${media.phone`
-    margin-bottom: 10px;
-    margin-right: 0px;
-  `}
-`;
-
 export const AvatarAndShield = styled.div`
   display: flex;
   align-items: center;
@@ -189,7 +178,7 @@ const CompleteProfileStep = ({
   activeOnboardingCampaignName,
 }: Props) => {
   const authUser = useAuthUser();
-  const theme = useTheme();
+  const { formatMessage } = useIntl();
 
   if (!isNilOrError(authUser)) {
     return (
@@ -219,17 +208,13 @@ const CompleteProfileStep = ({
 
           <Right>
             <SkipButton
-              onSkip={onSkip}
+              onClick={onSkip}
               className="e2e-signed-in-header-complete-skip-btn"
             />
             <AcceptButton
-              text={<FormattedMessage {...messages.completeProfile} />}
-              buttonStyle="primary-inverse"
               linkTo="/profile/edit"
-              textColor={theme.colors.tenantPrimary}
-              textHoverColor={theme.colors.tenantPrimary}
-              fontWeight="500"
               className="e2e-signed-in-header-accept-btn"
+              text={formatMessage(messages.completeProfile)}
             />
           </Right>
         </HeaderContent>

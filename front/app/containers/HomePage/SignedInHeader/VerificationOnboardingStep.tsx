@@ -1,9 +1,9 @@
 import React from 'react';
 import Avatar from 'components/Avatar';
 import { Icon } from '@citizenlab/cl2-component-library';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import messages from '../messages';
-import { AcceptButton, HeaderContent, Left, Right, Text } from '.';
+import { HeaderContent, Left, Right, Text } from '.';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { FormattedMessage } from 'utils/cl-intl';
 import useAuthUser from 'hooks/useAuthUser';
@@ -12,6 +12,8 @@ import { openVerificationModal } from 'events/verificationModal';
 import { colors, media, isRtl } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
+import AcceptButton from './AcceptButton';
+import { useIntl } from 'utils/cl-intl';
 
 const ShieldIcon = styled(Icon)`
   fill: ${colors.white};
@@ -55,8 +57,8 @@ const VerificationOnboardingStep = ({
   onSkip,
   activeOnboardingCampaignName,
 }: Props) => {
-  const theme = useTheme();
   const authUser = useAuthUser();
+  const { formatMessage } = useIntl();
 
   const onAccept = () => {
     openVerificationModal();
@@ -88,16 +90,12 @@ const VerificationOnboardingStep = ({
 
           <Right>
             <SkipButton
-              onSkip={onSkip}
+              onClick={onSkip}
               className="e2e-signed-in-header-verification-skip-btn"
             />
             <AcceptButton
-              text={<FormattedMessage {...messages.verifyNow} />}
-              buttonStyle="primary-inverse"
+              text={formatMessage(messages.verifyNow)}
               onClick={onAccept}
-              textColor={theme.colors.tenantPrimary}
-              textHoverColor={theme.colors.tenantPrimary}
-              fontWeight="500"
               className="e2e-signed-in-header-accept-btn"
             />
           </Right>
