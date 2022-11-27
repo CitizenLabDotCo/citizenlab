@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import CompleteProfileStep from './CompleteProfileStep';
-import VerificationOnboardingStep from './VerificationOnboardingStep';
-import CustomCTAStep from './CustomCTAStep';
-import FallbackStep from './FallbackStep';
+const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
+const VerificationOnboardingStep = lazy(
+  () => import('./VerificationOnboardingStep')
+);
+const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
+const FallbackStep = lazy(() => import('./FallbackStep'));
 import HeaderImage from './HeaderImage';
 
 // services
@@ -27,7 +29,7 @@ import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
 
 export const contentTimeout = 350;
-const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+export const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 export const contentDelay = 550;
 
 const Header = styled.div`
@@ -202,20 +204,21 @@ const SignedInHeader = ({ className }: Props) => {
     return (
       <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
         <HeaderImage />
-
-        <VerificationOnboardingStep
-          activeOnboardingCampaignName={onboardingCampaignName}
-          onSkip={handleSkip('verification')}
-        />
-        <CompleteProfileStep
-          activeOnboardingCampaignName={onboardingCampaignName}
-          onSkip={handleSkip('complete_profile')}
-        />
-        <CustomCTAStep
-          activeOnboardingCampaignName={onboardingCampaignName}
-          onSkip={handleSkip('custom_cta')}
-        />
-        <FallbackStep activeOnboardingCampaignName={onboardingCampaignName} />
+        <Suspense fallback={null}>
+          <VerificationOnboardingStep
+            activeOnboardingCampaignName={onboardingCampaignName}
+            onSkip={handleSkip('verification')}
+          />
+          <CompleteProfileStep
+            activeOnboardingCampaignName={onboardingCampaignName}
+            onSkip={handleSkip('complete_profile')}
+          />
+          <CustomCTAStep
+            activeOnboardingCampaignName={onboardingCampaignName}
+            onSkip={handleSkip('custom_cta')}
+          />
+          <FallbackStep activeOnboardingCampaignName={onboardingCampaignName} />
+        </Suspense>
       </Header>
     );
   }

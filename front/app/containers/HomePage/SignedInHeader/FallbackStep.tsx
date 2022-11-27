@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { media } from 'utils/styleUtils';
-import { HeaderContent, Left, Right } from './';
+import { Left, Right, contentTimeout, contentDelay, HeaderContent } from './';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,6 +11,7 @@ import messages from '../messages';
 import T from 'components/T';
 import useAuthUser from 'hooks/useAuthUser';
 import Outlet from 'components/Outlet';
+import { media } from 'utils/styleUtils';
 
 const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
@@ -24,10 +24,6 @@ const HeaderContentDefault = styled(HeaderContent)`
     align-items: center;
   `}
 `;
-
-const contentTimeout = 350;
-const contentDelay = 550;
-
 interface Props {
   activeOnboardingCampaignName: OnboardingCampaignName;
 }
