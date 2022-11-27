@@ -3,7 +3,7 @@ import Avatar from 'components/Avatar';
 import { Icon } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 import messages from '../messages';
-import { AcceptButton, HeaderContent, Left, Right, SkipButton, Text } from '.';
+import { AcceptButton, HeaderContent, Left, Right, Text } from '.';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { FormattedMessage } from 'utils/cl-intl';
 import useAuthUser from 'hooks/useAuthUser';
@@ -11,6 +11,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { openVerificationModal } from 'events/verificationModal';
 import { colors, media, isRtl } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
+import SkipButton from './SkipButton';
 
 const ShieldIcon = styled(Icon)`
   fill: ${colors.white};
@@ -87,12 +88,7 @@ const VerificationOnboardingStep = ({
 
           <Right>
             <SkipButton
-              buttonStyle="primary-outlined"
-              text={<FormattedMessage {...messages.doItLater} />}
-              onClick={onSkip}
-              borderColor="#fff"
-              textColor="#fff"
-              fontWeight="500"
+              onSkip={onSkip}
               className="e2e-signed-in-header-verification-skip-btn"
             />
             <AcceptButton

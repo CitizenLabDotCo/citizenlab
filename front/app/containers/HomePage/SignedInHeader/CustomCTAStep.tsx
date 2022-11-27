@@ -2,15 +2,11 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { HeaderContent, Left, Text, Right, AcceptButton, SkipButton } from './';
+import { HeaderContent, Left, Text, Right, AcceptButton } from './';
 import T from 'components/T';
 
 // services
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 
 // style
 import { useTheme } from 'styled-components';
@@ -18,6 +14,7 @@ import { useTheme } from 'styled-components';
 // hooks
 import useOnboardingCampaign from 'hooks/useOnboardingCampaign';
 import OnboardingStep from './OnboardingStep';
+import SkipButton from './SkipButton';
 
 interface Props {
   activeOnboardingCampaignName: OnboardingCampaignName;
@@ -45,14 +42,7 @@ const CustomCTAStep = ({ onSkip, activeOnboardingCampaignName }: Props) => {
           </Left>
 
           <Right>
-            <SkipButton
-              buttonStyle="primary-outlined"
-              text={<FormattedMessage {...messages.doItLater} />}
-              onClick={onSkip}
-              borderColor="#fff"
-              textColor="#fff"
-              fontWeight="500"
-            />
+            <SkipButton onSkip={onSkip} />
             <AcceptButton
               text={
                 <T

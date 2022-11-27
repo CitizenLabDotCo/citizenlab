@@ -20,6 +20,7 @@ import { media, fontSizes, isRtl } from 'utils/styleUtils';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import OnboardingStep from './OnboardingStep';
+import SkipButton from './SkipButton';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -155,20 +156,6 @@ export const Right = styled.div`
   `}
 `;
 
-export const SkipButton = styled(Button)`
-  margin-right: 10px;
-
-  ${media.tablet`
-    order: 2;
-    margin-right: 0px;
-  `}
-
-  ${isRtl`
-    margin-right: 0px;
-    margin-left: 10px;
-  `}
-`;
-
 export const AcceptButton = styled(Button)`
   ${media.tablet`
     order: 1;
@@ -232,12 +219,7 @@ const CompleteProfileStep = ({
 
           <Right>
             <SkipButton
-              buttonStyle="primary-outlined"
-              text={<FormattedMessage {...messages.doItLater} />}
-              onClick={onSkip}
-              borderColor="#fff"
-              textColor="#fff"
-              fontWeight="500"
+              onSkip={onSkip}
               className="e2e-signed-in-header-complete-skip-btn"
             />
             <AcceptButton
