@@ -50,6 +50,15 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     end
   end
 
+  @folders.each do |folder|
+    multilingual_sitemap_entry(
+      xml,
+      front_end_url_for(folder),
+      folder.admin_publication.publication_status == 'published' ? 0.6 : 0.2,
+      folder.updated_at
+    )
+  end
+
   @ideas.each do |idea|
     multilingual_sitemap_entry(
       xml,

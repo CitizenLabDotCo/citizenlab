@@ -143,6 +143,10 @@ Rails.application.routes.draw do
           get 'json_forms_schema', on: :collection
         end
 
+        resources :moderators, controller: 'project_moderators', except: [:update] do
+          get :users_search, on: :collection
+        end
+
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get 'survey_results', on: :member
         get 'submission_count', on: :member
@@ -157,6 +161,14 @@ Rails.application.routes.draw do
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
         get 'status_counts', on: :collection
+      end
+
+      resources :project_folders, controller: 'folders' do
+        resources :moderators, controller: 'folder_moderators', except: %i[update]
+
+        resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
+        resources :files, controller: '/web_api/v1/files', defaults: { container_type: 'ProjectFolder' }
+        get 'by_slug/:slug', on: :collection, to: 'folders#by_slug'
       end
 
       resources :notifications, only: %i[index show] do
