@@ -1,24 +1,23 @@
 import React from 'react';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import { List, Row } from 'components/admin/ResourceList';
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-import { Box } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Warning from 'components/UI/Warning';
 
-import { adminCustomPageSettingsPath } from '../../routes';
-
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
-import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 
 // utils
-// import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 import { isNilOrError } from 'utils/helperUtils';
+import { adminCustomPageSettingsPath } from '../../routes';
+
 // i18n
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const ProjectsListContent = ({
   areaIds,
