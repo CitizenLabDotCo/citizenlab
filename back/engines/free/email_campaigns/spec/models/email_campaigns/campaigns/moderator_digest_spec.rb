@@ -60,6 +60,19 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
       commands = campaign.reload.generate_commands(recipient: moderator.reload).first
       expect(commands).to be_blank
     end
+
+    it 'does not include native survey responses' do
+      IdeaStatus.create_defaults
+      survey_project = create :continuous_native_survey_project
+      response = create :idea, project: survey_project
+      moderator.add_role 'project_moderator', project_id: survey_project.id
+      moderator.save!
+
+      commands = campaign.generate_commands(recipient: moderator)
+      expect(
+        commands.flat_map { |command| command.dig(:event_payload, :top_ideas).pluck(:id) }
+      ).not_to include response.id
+    end
   end
 
   describe 'apply_recipient_filters' do
