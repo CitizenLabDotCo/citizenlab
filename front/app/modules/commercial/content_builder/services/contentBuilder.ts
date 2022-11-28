@@ -2,6 +2,7 @@ import { SerializedNode } from '@craftjs/core';
 import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 import streams from 'utils/streams';
+import { reportError } from 'utils/loggingUtils';
 
 export const PROJECT_DESCRIPTION_CODE = 'project_description';
 
@@ -31,6 +32,12 @@ export interface IContentBuilderLayoutObject {
 export function contentBuilderLayoutStream({ projectId, code }) {
   return streams.get<IContentBuilderLayout>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}`,
+    handleErrorLogging: (error) => {
+      // A 404 error is expected when the content builder layout is not found so we don't want to log it
+      if (error.statusCode !== 404) {
+        reportError(error);
+      }
+    },
   });
 }
 

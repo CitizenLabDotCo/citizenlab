@@ -11,6 +11,8 @@ import settingsRoutes from './settings/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
 import pagesAndMenuRoutes from './pagesAndMenu/routes';
+import customFieldRoutes from './settings/registration/CustomFieldRoutes/routes';
+import projectFoldersRoutes from './projectFolders/routes';
 
 // components
 import PageLoading from 'components/UI/PageLoading';
@@ -120,6 +122,8 @@ const createAdminRoutes = () => {
       invitationsRoutes(),
       createAdminMessagingRoutes(),
       ideasRoutes(),
+      customFieldRoutes(),
+      projectFoldersRoutes(),
       {
         path: 'workshops',
         element: (
