@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
+import registrationRoutes from './registration/routes';
 
 const AdminSettingsIndex = lazy(() => import('containers/Admin/settings'));
 const AdminSettingsGeneral = lazy(
@@ -12,9 +13,6 @@ const AdminSettingsCustomize = lazy(
 );
 const AdminSettingsPolicies = lazy(
   () => import('containers/Admin/settings/policies')
-);
-const AdminSettingsRegistration = lazy(
-  () => import('containers/Admin/settings/registration')
 );
 // areas
 const AdminAreasAll = lazy(() => import('./areas/all'));
@@ -57,14 +55,7 @@ export default () => ({
         </PageLoading>
       ),
     },
-    {
-      path: 'registration',
-      element: (
-        <PageLoading>
-          <AdminSettingsRegistration />
-        </PageLoading>
-      ),
-    },
+    registrationRoutes(),
     {
       path: 'areas',
       children: [
