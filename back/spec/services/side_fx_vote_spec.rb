@@ -30,6 +30,7 @@ describe SideFxVoteService do
     it "logs a 'upvoted' action when a upvote on an initiative is created and then immediately removed", active_job_inline_adapter: true do
       vote = create(:vote, mode: 'up', votable: create(:initiative))
       vote.destroy!
+      allow(PublishActivityToRabbitJob).to receive(:perform_later)
       service.after_create(vote, user)
       expect(Activity.where(action: 'initiative_upvoted').first).to be_present
     end
