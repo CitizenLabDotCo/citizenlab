@@ -36,8 +36,6 @@
     "commercial/matomo": true,
     "commercial/moderation": true,
     "commercial/nlp": true,
-    "commercial/project_folders": true,
-    "commercial/project_management": true,
     "commercial/public_api": true,
     "commercial/remove_vendor_branding": true,
     "commercial/satismeter": true,
