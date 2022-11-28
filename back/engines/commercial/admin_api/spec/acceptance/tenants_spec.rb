@@ -46,10 +46,14 @@ resource 'Tenants', admin_api: true do
     ValidationErrorHelper.new.error_fields(self, Tenant)
 
     before do
-      settings = tenant.settings
-      settings['core']['locales'] = ['en']
-      tenant.update!(settings: settings)
-      tenant.switch { create(:user, locale: 'en') }
+      tenant.switch do
+        app_config = AppConfiguration.instance
+        settings = app_config.settings
+        settings['core']['locales'] = ['en']
+        app_config.update!(settings: settings)
+
+        tenant.switch { create(:user, locale: 'en') }
+      end
     end
 
     example 'Change host' do
@@ -82,7 +86,7 @@ resource 'Tenants', admin_api: true do
     end
 
     example '[error] Updating a tenant to remove locales used by some users', document: false do
-      settings = tenant.settings
+      settings = tenant.configuration.settings
       settings['core']['locales'] = ['en-GB']
 
       do_request tenant: { settings: settings }
@@ -99,10 +103,14 @@ resource 'Tenants', admin_api: true do
     ValidationErrorHelper.new.error_fields self, Tenant
 
     before do
-      settings = tenant.settings
-      settings['core']['locales'] = %w[en es-ES]
-      tenant.update! settings: settings
-      tenant.switch { create(:user, locale: 'en') }
+      tenant.switch do
+        app_config = AppConfiguration.instance
+        settings = app_config.settings
+        settings['core']['locales'] = %w[en es-ES]
+        app_config.update!(settings: settings)
+
+        tenant.switch { create(:user, locale: 'en') }
+      end
     end
 
     let(:remove_locale) { 'en' }
@@ -115,29 +123,28 @@ resource 'Tenants', admin_api: true do
   end
 
   post 'admin_api/tenants' do
-    let(:new_tenant) { build(:tenant) }
+    let(:new_tenant_attrs) { attributes_for(:app_configuration) }
 
     example 'Create a tenant' do
-      do_request tenant: new_tenant.attributes
+      do_request tenant: new_tenant_attrs
       expect(response_status).to eq 201
-      expect(json_response_body[:host]).to eq(new_tenant.host)
+      expect(json_response_body[:host]).to eq(new_tenant_attrs[:host])
     end
 
     example '[error] Cannot create tenant with host of other tenant' do
-      new_tenant.host = tenant.host
+      new_tenant_attrs[:host] = tenant.host
 
-      do_request tenant: new_tenant.attributes
+      do_request tenant: new_tenant_attrs
+
       assert_status 422
-      json_response = json_parse response_body
-      expect(json_response).to include_response_error(:host, 'taken')
+      expect(json_response_body).to include_response_error(:host, 'taken')
     end
 
     example '[error] Cannot create tenant with invalid setting' do
-      settings = tenant.settings
-      settings['core']['locales'] = ['not-a-valid-locale']
-      new_tenant.settings = settings
+      new_tenant_attrs[:settings]['core']['locales'] = ['not-a-valid-locale']
 
-      do_request tenant: new_tenant.attributes
+      do_request tenant: new_tenant_attrs
+
       assert_status 422
       expect(json_response_body[:errors][:settings][0][:error][:human_message])
         .to include("The property '#/core/locales/0' value \"not-a-valid-locale\" did not match")

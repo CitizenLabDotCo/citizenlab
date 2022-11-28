@@ -10,6 +10,8 @@ FactoryBot.define do
     end
 
     host { 'localhost' }
+    name { Faker::Address.city }
+
     settings do
       {
         'core' => {
