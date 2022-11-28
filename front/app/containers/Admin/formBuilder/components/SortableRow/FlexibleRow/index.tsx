@@ -80,7 +80,12 @@ export const FlexibleRow = ({
           isLastItem ? 'last-item' : ''
         }`}
       >
-        <Box display="flex" alignContent="center" height={rowHeight}>
+        <Box
+          display="flex"
+          alignContent="center"
+          py="8px"
+          minHeight={rowHeight}
+        >
           {children}
         </Box>
       </Container>

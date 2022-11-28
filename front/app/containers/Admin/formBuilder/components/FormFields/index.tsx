@@ -131,6 +131,7 @@ const FormFields = ({
                     justifyContent="space-between"
                     className="expand"
                     width="100%"
+                    ml={field.input_type === 'page' ? '8px' : '32px'}
                   >
                     <Box display="flex" alignItems="center">
                       <Icon
@@ -168,7 +169,7 @@ const FormFields = ({
                       </Text>
                     </Box>
                     <Box
-                      pr="24px"
+                      pr="32px"
                       display="flex"
                       height="100%"
                       alignContent="center"
