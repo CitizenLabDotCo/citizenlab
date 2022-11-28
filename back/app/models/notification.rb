@@ -64,6 +64,7 @@ class Notification < ApplicationRecord
   belongs_to :official_feedback, optional: true
   belongs_to :spam_report, optional: true
   belongs_to :invite, optional: true
+  belongs_to :project_folder, optional: true
 
   has_many :activities, as: :item
 

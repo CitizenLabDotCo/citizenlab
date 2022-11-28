@@ -1,8 +1,6 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import projectFoldersConfiguration from './commercial/project_folders';
 import smartGroupsConfiguration from './commercial/smart_groups';
-import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
@@ -26,7 +24,6 @@ import matomoConfiguration from './commercial/matomo';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
-import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 
@@ -46,8 +43,6 @@ import eventsWidgetConfiguration from './commercial/events_widget';
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
 
-import userConfirmationConfiguration from './free/user_confirmation';
-
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import representativenessConfiguration from './commercial/representativeness';
 
@@ -56,16 +51,8 @@ declare var CL_CONFIG: any;
 
 export default loadModules([
   {
-    configuration: projectFoldersConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/project_folders'],
-  },
-  {
     configuration: smartGroupsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/smart_groups'],
-  },
-  {
-    configuration: userCustomFieldsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/user_custom_fields'],
   },
   {
     configuration: ideaCustomFieldsConfiguration,
@@ -192,10 +179,6 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
   },
   {
-    configuration: verificationConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/verification'],
-  },
-  {
     configuration: widgetsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/widgets'],
   },
@@ -210,10 +193,6 @@ export default loadModules([
   {
     configuration: analyticsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/analytics'],
-  },
-  {
-    configuration: userConfirmationConfiguration,
-    isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
   },
   {
     configuration: idViennaSamlConfiguration,

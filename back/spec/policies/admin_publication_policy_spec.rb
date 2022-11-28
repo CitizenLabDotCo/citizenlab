@@ -20,7 +20,7 @@ describe AdminPublicationPolicy do
       end
     end
 
-    context 'for a user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:reorder) }
@@ -37,6 +37,16 @@ describe AdminPublicationPolicy do
 
       it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator of another project' do
+      let(:user) { create(:project_moderator, projects: [create(:project)]) }
+
+      it { is_expected.not_to permit(:reorder) }
+
+      it 'indexes the project holder' do
+        expect(scope.resolve.size).to eq 2
       end
     end
   end
@@ -55,7 +65,7 @@ describe AdminPublicationPolicy do
       end
     end
 
-    context 'for a user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:reorder) }
@@ -71,6 +81,16 @@ describe AdminPublicationPolicy do
       it { is_expected.to permit(:reorder) }
 
       it 'should index the project holder' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.not_to permit(:reorder) }
+
+      it 'indexes the project holder' do
         expect(scope.resolve.size).to eq 1
       end
     end
