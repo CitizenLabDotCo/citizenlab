@@ -3,7 +3,6 @@
 module MultiTenancy
   module Patches
     module SideFxAppConfigurationService
-
       def after_create(app_config, current_user = nil)
         super
         Seo::UpdateGoogleHostJob.perform_later

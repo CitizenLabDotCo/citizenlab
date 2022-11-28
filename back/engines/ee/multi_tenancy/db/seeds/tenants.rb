@@ -399,7 +399,7 @@ module MultiTenancy
           id: '07ff8088-cc78-4307-9a1c-ebb6fb836f96',
           name: 'empty',
           host: 'empty.localhost',
-          created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now),
+          created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now)
         }
 
         config_attrs = tenant_attrs.merge(
