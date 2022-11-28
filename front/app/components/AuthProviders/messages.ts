@@ -86,7 +86,7 @@ export default defineMessages({
   },
   viennaThePrivacyPolicy: {
     id: 'app.containers.SignUp.viennaThePrivacyPolicy',
-    defaultMessage: 'the privacy policy',
+    defaultMessage: 'the vienna privacy policy',
   },
   iHaveReadAndAgreeToVienna: {
     id: 'app.containers.SignUp.iHaveReadAndAgreeToVienna',
