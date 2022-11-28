@@ -48,8 +48,10 @@ const CustomTopicRow = memo((props: Props) => {
   const { isLastItem, topic, handleDeleteClick } = props;
   const localize = useLocalize();
 
-  const static_page_ids = topic.attributes.static_page_ids;
-  const staticPages = useCustomPages({ ids: static_page_ids });
+  const staticPageIds = topic.relationships.static_pages.data.map(
+    (page) => page.id
+  );
+  const staticPages = useCustomPages({ ids: staticPageIds });
 
   return (
     <Row
@@ -64,7 +66,7 @@ const CustomTopicRow = memo((props: Props) => {
         </RowContentInner>
       </RowContent>
       <Buttons>
-        {static_page_ids.length > 0 && !isNilOrError(staticPages) && (
+        {staticPageIds.length > 0 && !isNilOrError(staticPages) && (
           <IconTooltip
             mr="20px"
             iconColor={colors.error}
@@ -99,7 +101,7 @@ const CustomTopicRow = memo((props: Props) => {
           <FormattedMessage {...messages.editButtonLabel} />
         </Button>
         <Button
-          disabled={static_page_ids.length > 0}
+          disabled={staticPageIds.length > 0}
           onClick={handleDeleteClick(topic.id)}
           buttonStyle="text"
           icon="delete"

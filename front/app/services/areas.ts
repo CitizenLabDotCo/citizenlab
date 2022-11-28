@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc } from 'typings';
+import { Multiloc, IRelationship } from 'typings';
 
 const apiEndpoint = `${API_PATH}/areas`;
 
@@ -22,6 +22,11 @@ export interface IAreaData {
     description_multiloc: Multiloc;
     ordering: number;
     static_page_ids: string[];
+  };
+  relationships: {
+    static_pages: {
+      data: IRelationship[];
+    };
   };
 }
 

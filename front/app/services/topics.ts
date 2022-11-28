@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc } from 'typings';
+import { Multiloc, IRelationship } from 'typings';
 
 export const apiEndpoint = `${API_PATH}/topics`;
 
@@ -33,6 +33,11 @@ export interface ITopicData {
     ordering: number;
     code: Code;
     static_page_ids: string[];
+  };
+  relationships: {
+    static_pages: {
+      data: IRelationship[];
+    };
   };
 }
 

@@ -109,6 +109,15 @@ const AreaList = () => {
   );
 };
 
+interface AreaListRowProps {
+  item: IAreaData;
+  handleDragRow: (fromIndex: number, toIndex: number) => void;
+  handleDropRow: (itemId: string, toIndex: number) => void;
+  index: number;
+  isLastItem: boolean;
+  handleDeleteClick: (areaId: string) => (event: React.FormEvent<any>) => void;
+}
+
 const AreaListRow = ({
   item,
   handleDragRow,
@@ -116,10 +125,13 @@ const AreaListRow = ({
   index,
   isLastItem,
   handleDeleteClick,
-}) => {
+}: AreaListRowProps) => {
   const localize = useLocalize();
-  const { static_page_ids } = item.attributes;
-  const staticPages = useCustomPages({ ids: static_page_ids });
+
+  const staticPageIds = item.relationships.static_pages.data.map(
+    (page) => page.id
+  );
+  const staticPages = useCustomPages({ ids: staticPageIds });
 
   return (
     <SortableRow
@@ -132,7 +144,7 @@ const AreaListRow = ({
       <TextCell className="expand">
         <T value={item.attributes.title_multiloc} />
       </TextCell>
-      {static_page_ids.length > 0 && !isNilOrError(staticPages) && (
+      {staticPageIds.length > 0 && !isNilOrError(staticPages) && (
         <Box>
           <IconTooltip
             iconColor={colors.error}
@@ -162,7 +174,7 @@ const AreaListRow = ({
         onClick={handleDeleteClick(item.id)}
         buttonStyle="text"
         icon="delete"
-        disabled={static_page_ids.length > 0}
+        disabled={staticPageIds.length > 0}
       >
         <FormattedMessage {...messages.deleteButtonLabel} />
       </Button>
