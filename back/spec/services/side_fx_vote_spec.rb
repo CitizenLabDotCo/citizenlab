@@ -24,6 +24,15 @@ describe SideFxVoteService do
       expect { service.after_create(vote, user) }
         .to have_enqueued_job(LogActivityJob)
     end
+
+    # Test for regression of bugfix to prevent case where an exception occurs due to resource being
+    # deleted before the job to log an Activity recording its creation is run. See CL-1962.
+    it "logs a 'upvoted' action when a upvote on an initiative is created and then immediately removed", active_job_inline_adapter: true do
+      vote = create(:vote, mode: 'up', votable: create(:initiative))
+      vote.destroy!
+      service.after_create(vote, user)
+      expect(Activity.where(action: 'initiative_upvoted').first).to be_present
+    end
   end
 
   describe 'after_destroy' do
@@ -43,13 +52,6 @@ describe SideFxVoteService do
         expect { service.after_destroy(frozen_vote, user) }
           .to have_enqueued_job(LogActivityJob)
       end
-    end
-
-    it "logs a 'upvoted' action when a upvote on an initiative is created and then immediately removed", active_job_inline_adapter: true do
-      vote = create(:vote, mode: 'up', votable: create(:initiative))
-      vote.destroy!
-      service.after_create(vote, user)
-      expect(Activity.where(action: 'initiative_upvoted').first).to be_present
     end
   end
 end
