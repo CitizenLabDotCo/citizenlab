@@ -222,7 +222,7 @@ const CustomPageSettingsForm = ({
                     <Select
                       name="area_id"
                       options={mapFilterEntityToOptions(areas)}
-                      label={<>{formatMessage(messages.selectedAreasLabel)}</>}
+                      label={formatMessage(messages.selectedAreasLabel)}
                       labelTooltipText="choose an area"
                     />
                   </Box>
