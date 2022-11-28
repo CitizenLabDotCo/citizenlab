@@ -10,6 +10,7 @@ import messages from './messages';
 
 // utils
 import { isAdmin } from 'services/permissions/roles';
+import { isProjectFolderModerator } from 'services/permissions/rules/projectFolderPermissions';
 
 // components
 import CreateProject from './CreateProject';
@@ -26,6 +27,7 @@ const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
 
 // style
 import styled from 'styled-components';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div``;
 
@@ -63,6 +65,11 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const userIsAdmin = !isNilOrError(authUser)
     ? isAdmin({ data: authUser })
     : false;
+  const userIsFolderModerator = !isNilOrError(authUser)
+    ? isProjectFolderModerator(authUser)
+    : false;
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
@@ -90,10 +97,9 @@ const AdminProjectsList = memo(({ className }: Props) => {
         </SectionDescription>
 
         <CreateProjectWrapper>
-          {userIsAdmin ? (
+          {(userIsAdmin ||
+            (userIsFolderModerator && isProjectFoldersEnabled)) && (
             <CreateProject />
-          ) : (
-            <Outlet id="app.containers.AdminPage.projects.all.createProjectNotAdmin" />
           )}
         </CreateProjectWrapper>
 
