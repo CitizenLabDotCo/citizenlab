@@ -182,4 +182,9 @@ export default defineMessages({
     id: 'app.utils.AdminPage.ProjectEdit.shareInformation',
     defaultMessage: 'Share information',
   },
+  // Project page utils
+  noEventsPlaceholder: {
+    id: 'app.containers.Projects.noEventsPlaceholder',
+    defaultMessage: 'No Events',
+  },
 });

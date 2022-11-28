@@ -38,10 +38,11 @@ interface Props {
   fallbackMessage: MessageDescriptor;
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
+  projectIds?: string[];
 }
 
 const EventsViewer = memo<Props>(
-  ({ title, fallbackMessage, eventsTime, className }) => {
+  ({ title, fallbackMessage, eventsTime, className, projectIds }) => {
     const {
       events,
       currentPage,
@@ -49,6 +50,7 @@ const EventsViewer = memo<Props>(
       onProjectIdsChange,
       onCurrentPageChange,
     } = useEvents({
+      projectIds,
       projectPublicationStatuses: ['published'],
       currentAndFutureOnly: eventsTime === 'currentAndFuture',
       pastOnly: eventsTime === 'past',

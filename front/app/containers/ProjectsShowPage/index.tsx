@@ -39,6 +39,8 @@ import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
+import EventsViewer from 'containers/EventsPage/EventsViewer';
+import messages from 'utils/messages';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -185,10 +187,27 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
         ) : (
           <TimelineContainer projectId={projectId} />
         )}
-        <ProjectEvents
-          projectId={projectId}
-          scrollToEventId={scrollToEventId}
-        />
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="48px"
+          mx="auto"
+          my="48px"
+          maxWidth="1166px"
+        >
+          <EventsViewer
+            projectIds={[projectId]}
+            eventsTime="currentAndFuture"
+            title={'Current and Future'}
+            fallbackMessage={messages.noEventsPlaceholder}
+          />
+          <EventsViewer
+            projectIds={[projectId]}
+            eventsTime="past"
+            title={'Past'}
+            fallbackMessage={messages.noEventsPlaceholder}
+          />
+        </Box>
         <Modal
           opened={showModal}
           close={() => {
