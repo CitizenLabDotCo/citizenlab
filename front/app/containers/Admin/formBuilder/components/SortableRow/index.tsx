@@ -12,7 +12,6 @@ const style = {
 
 export interface SortableRowProps {
   id: any;
-  text: string;
   index: number;
   isLastItem?: boolean;
   rowHeight?: string;

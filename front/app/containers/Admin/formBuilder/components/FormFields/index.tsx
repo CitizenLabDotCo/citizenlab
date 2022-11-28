@@ -122,7 +122,6 @@ const FormFields = ({
                 <SortableRow
                   rowHeight={field.input_type === 'page' ? '50px' : '70px'}
                   id={field.id}
-                  text={''}
                   index={index}
                   moveRow={handleDragRow}
                 >
