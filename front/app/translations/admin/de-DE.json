@@ -1091,7 +1091,7 @@
   "app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip": "Wählen Sie aus, welche partizipativen Maßnahmen die Benutzerinnen in dieser Ideenfindungsphase ergreifen können.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Zeitstrahl",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Abstimmung",
-  "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Hat die meisten Stimmen erhalten",
+  "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Meist gewählt",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Projektbild",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "Dieses Bild wird auf der Homepage angezeigt. Die idealen Abmessungen sind eine Breite von 1440 Pixel und eine Höhe zwischen 1440 und 720 Pixel.",
   "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "Dies ist das Bild, das in der Ordnerkarte angezeigt wird. Die idealen Abmessungen für dieses Bild sind eine Breite von 1440 Pixel und eine Höhe zwischen 1440 und 720 Pixel.",
