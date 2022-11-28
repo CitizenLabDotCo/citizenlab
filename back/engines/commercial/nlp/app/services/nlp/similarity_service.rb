@@ -5,7 +5,7 @@ module NLP
     def similarity(tenant_id, idea, locale: nil, idea_ids: nil, min_score: nil, max_ideas: nil)
       unless locale
         locale = idea.title_multiloc.keys.first
-        tenant_locales = Tenant.find(tenant_id).settings.dig('core', 'locales')
+        tenant_locales = Tenant.find(tenant_id).configuration.settings('core', 'locales')
         unless tenant_locales.include? locale
           locale = tenant_locales.first
         end
