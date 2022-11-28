@@ -18,4 +18,12 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageSettingsLinkText',
     defaultMessage: 'page settings',
   },
+  editProject: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject',
+    defaultMessage: 'Edit',
+  },
+  noAvailableProjects: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects',
+    defaultMessage: 'No available projects based on your {pageSettingsLink}.',
+  },
 });

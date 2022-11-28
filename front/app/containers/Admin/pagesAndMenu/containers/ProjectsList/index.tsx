@@ -1,25 +1,20 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-import Warning from 'components/UI/Warning';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
+import ProjectsListContent from './ProjectsListContent';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 import useCustomPage from 'hooks/useCustomPage';
 
 // utils
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
-import {
-  adminCustomPageContentPath,
-  adminCustomPageSettingsPath,
-} from '../../routes';
+import { adminCustomPageContentPath } from '../../routes';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -35,6 +30,9 @@ const ProjectList = () => {
   if (isNilOrError(customPage)) {
     return null;
   }
+
+  const areaIds = customPage.relationships.areas.data.map((area) => area.id);
+  const topicIds = customPage.relationships.areas.data.map((area) => area.id);
 
   return (
     // add helmet intl
@@ -62,22 +60,7 @@ const ProjectList = () => {
         <ViewCustomPageButton linkTo={`/pages/${customPage.attributes.slug}`} />
       }
     >
-      <Box display="flex" flexDirection="column">
-        <Box mb="28px">
-          <Warning>
-            <FormattedMessage
-              {...messages.sectionDescription}
-              values={{
-                pageSettingsLink: (
-                  <Link to={`${adminCustomPageSettingsPath(customPageId)}`}>
-                    <FormattedMessage {...messages.pageSettingsLinkText} />
-                  </Link>
-                ),
-              }}
-            />
-          </Warning>
-        </Box>
-      </Box>
+      <ProjectsListContent areaIds={areaIds} topicIds={topicIds} />
     </SectionFormWrapper>
   );
 };

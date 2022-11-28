@@ -53,7 +53,7 @@ export const adminCustomPageContentPath = (pageId: string) => {
 };
 
 export const adminCustomPageSettingsPath = (pageId: string) => {
-  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/content`;
+  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/settings`;
 };
 
 export default () => ({
