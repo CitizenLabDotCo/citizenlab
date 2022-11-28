@@ -1438,6 +1438,7 @@ resource 'Idea Custom Fields' do
               }
             ]
           }
+
           do_request request
 
           assert_status 200
@@ -1948,6 +1949,16 @@ resource 'Idea Custom Fields' do
             type: 'custom_field',
             relationships: { options: { data: [] } }
           })
+        end
+
+        example 'Destroy all fields' do
+          create(:custom_field, resource: custom_form) # field to destroy
+          request = { custom_fields: [] }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 0
         end
 
         example 'Add a custom field with options and delete a field with options' do

@@ -71,7 +71,7 @@ const EventsContainer = memo<Props>(
     });
 
     const locale = useLocale();
-    const tenant = useAppConfiguration();
+    const appConfig = useAppConfiguration();
     const phases = usePhases(projectId);
     const [scrollToEventId, setScrollToEventId] = useState<null | string>(null);
 
@@ -91,7 +91,7 @@ const EventsContainer = memo<Props>(
       if (
         scrollToEventId === null ||
         !ideasLoaded ||
-        !allHaveLoaded(events, locale, tenant, phases)
+        !allHaveLoaded(events, locale, appConfig, phases)
       ) {
         return;
       }
@@ -102,7 +102,7 @@ const EventsContainer = memo<Props>(
 
       setScrollToEventId(null);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [events, locale, tenant, phases, ideasLoaded]);
+    }, [events, locale, appConfig, phases, ideasLoaded]);
 
     if (!isNilOrError(events) && events.length > 0) {
       return (

@@ -46,11 +46,11 @@ const PasswordInput = ({
   isLoginPasswordInput,
   errors,
 }: Props) => {
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
-  if (!isNilOrError(tenant)) {
+  if (!isNilOrError(appConfig)) {
     const minimumPasswordLength =
-      tenant.attributes.settings.password_login?.minimum_length ||
+      appConfig.attributes.settings.password_login?.minimum_length ||
       DEFAULT_MINIMUM_PASSWORD_LENGTH;
 
     return (
