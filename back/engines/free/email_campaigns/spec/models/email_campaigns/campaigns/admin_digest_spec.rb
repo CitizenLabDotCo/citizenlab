@@ -32,6 +32,16 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
       ).not_to include(draft.id)
       expect(command.dig(:tracked_content, :idea_ids)).to include(new_ideas.first.id)
     end
+
+    it 'does not include native survey responses' do
+      IdeaStatus.create_defaults
+      response = create :idea, project: create(:continuous_native_survey_project)
+
+      command = campaign.generate_commands(recipient: admin).first
+      expect(
+        command.dig(:event_payload, :top_project_ideas).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
+      ).not_to include response.id
+    end
   end
 
   describe 'apply_recipient_filters' do
