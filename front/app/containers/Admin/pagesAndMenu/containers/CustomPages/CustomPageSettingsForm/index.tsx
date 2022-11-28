@@ -24,6 +24,7 @@ import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
 import useTopics from 'hooks/useTopics';
 import useAreas from 'hooks/useAreas';
 import useLocalize from 'hooks/useLocalize';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -72,6 +73,9 @@ const CustomPageSettingsForm = ({
 }: Props & WrappedComponentProps) => {
   const localize = useLocalize();
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.titleMultilocError)
@@ -182,45 +186,49 @@ const CustomPageSettingsForm = ({
             {mode === 'edit' && (
               <SlugInput slug={slug} pathnameWithoutSlug="pages" />
             )}
-            {/* // should be behind a feature flag */}
-            <Box>
-              <Box display="flex" justifyContent="flex-start">
-                <Label>
-                  <span>{formatMessage(messages.linkedProjectsLabel)}</span>
-                  <IconTooltip
-                    ml="10px"
-                    content={formatMessage(messages.linkedProjectsTooltip)}
-                  />
-                </Label>
-              </Box>
-              <Box mb="30px">
-                <Tabs name="projects_filter_type" items={projectsFilterTabs} />
-              </Box>
-              {methods.watch('projects_filter_type') === 'topics' && (
+            {advancedCustomPagesEnabled && (
+              <Box>
+                <Box display="flex" justifyContent="flex-start">
+                  <Label>
+                    <span>{formatMessage(messages.linkedProjectsLabel)}</span>
+                    <IconTooltip
+                      ml="10px"
+                      content={formatMessage(messages.linkedProjectsTooltip)}
+                    />
+                  </Label>
+                </Box>
                 <Box mb="30px">
-                  <MultipleSelect
-                    name="topic_ids"
-                    options={mapFilterEntityToOptions(topics)}
-                    label={
-                      <>
-                        {formatMessage(messages.selectedTagsLabel)}
-                        <IconTooltip content={'add some tags'} />
-                      </>
-                    }
+                  <Tabs
+                    name="projects_filter_type"
+                    items={projectsFilterTabs}
                   />
                 </Box>
-              )}
-              {methods.watch('projects_filter_type') === 'areas' && (
-                <Box mb="20px">
-                  <Select
-                    name="area_id"
-                    options={mapFilterEntityToOptions(areas)}
-                    label={<>{formatMessage(messages.selectedAreasLabel)}</>}
-                    labelTooltipText="choose an area"
-                  />
-                </Box>
-              )}
-            </Box>
+                {methods.watch('projects_filter_type') === 'topics' && (
+                  <Box mb="30px">
+                    <MultipleSelect
+                      name="topic_ids"
+                      options={mapFilterEntityToOptions(topics)}
+                      label={
+                        <>
+                          {formatMessage(messages.selectedTagsLabel)}
+                          <IconTooltip content={'add some tags'} />
+                        </>
+                      }
+                    />
+                  </Box>
+                )}
+                {methods.watch('projects_filter_type') === 'areas' && (
+                  <Box mb="20px">
+                    <Select
+                      name="area_id"
+                      options={mapFilterEntityToOptions(areas)}
+                      label={formatMessage(messages.selectedAreasLabel)}
+                      labelTooltipText="choose an area"
+                    />
+                  </Box>
+                )}
+              </Box>
+            )}
             <Box display="flex">
               <Button
                 data-cy="e2e-submit-custom-page"
