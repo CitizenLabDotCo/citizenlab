@@ -51,12 +51,12 @@ class TrackSegmentService
 
   # @param [Symbol] role
   def intercom_integration_enabled?(role)
-    role == :admin
+    %i[admin project_moderator].include?(role)
   end
 
   # @param [Symbol] role
   def satismeter_integration_enabled?(role)
-    role == :admin
+    %i[admin project_moderator].include?(role)
   end
 
   # @param [User] user
@@ -73,6 +73,7 @@ class TrackSegmentService
       gender: user.gender,
       isSuperAdmin: user.super_admin?,
       isAdmin: user.admin?,
+      isProjectModerator: user.project_moderator?,
       highestRole: user.highest_role,
       timezone: AppConfiguration.instance.settings('core', 'timezone')
     }
@@ -121,5 +122,3 @@ class TrackSegmentService
     SecureRandom.base64
   end
 end
-
-TrackSegmentService.prepend_if_ee('ProjectManagement::Patches::TrackSegmentService')
