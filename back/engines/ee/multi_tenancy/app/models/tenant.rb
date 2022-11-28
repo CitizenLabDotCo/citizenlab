@@ -70,8 +70,13 @@ class Tenant < ApplicationRecord
   end
 
   def self.settings(*path)
-    ActiveSupport::Deprecation.warn('Tenant::settings is deprecated. Use AppConfiguration::settings instead.')
+    ErrorReporter.report_msg('Tenant::settings is deprecated. Use AppConfiguration#settings instead.')
     AppConfiguration.instance.settings(*path)
+  end
+
+  def settings
+    ErrorReporter.report_msg('Tenant#settings is deprecated. Use AppConfiguration#settings instead.')
+    AppConfiguration.instance.settings
   end
 
   def custom_initialization
