@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import messages from '../messages';
 import { HeaderContent, Left, Right, Text, Icons, StyledAvatar } from '.';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { openVerificationModal } from 'events/verificationModal';
@@ -12,7 +12,6 @@ import { colors } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
 import AcceptButton from './AcceptButton';
-import { useIntl } from 'utils/cl-intl';
 
 const ShieldIcon = styled(Icon)`
   fill: ${colors.white};

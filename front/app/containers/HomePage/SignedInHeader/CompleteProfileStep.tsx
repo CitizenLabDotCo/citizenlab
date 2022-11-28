@@ -11,9 +11,8 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
