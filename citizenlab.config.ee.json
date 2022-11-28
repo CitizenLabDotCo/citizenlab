@@ -44,6 +44,8 @@
     "commercial/segment": true,
     "commercial/smart_groups": true,
     "commercial/texting": true,
+    "commercial/user_custom_fields": true,
+    "commercial/verification": true,
     "commercial/widgets": true,
     "commercial/representativeness": true
   }
