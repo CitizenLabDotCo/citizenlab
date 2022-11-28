@@ -39,7 +39,7 @@
   "app.components.Comments.commentingInitiativeNotPermitted": "Du hast nicht das Recht zu kommentieren.",
   "app.components.Comments.commentingMaybeNotPermitted": "Bitte {signInLink}, um zu sehen, welche Aktionen Sie vornehmen können.",
   "app.components.Comments.invisibleTitleComments": "Kommentare",
-  "app.components.Comments.mostUpvoted": "Hat die meisten Stimmen erhalten",
+  "app.components.Comments.mostUpvoted": "Meist gewählt",
   "app.components.Comments.official": "Offiziell",
   "app.components.Comments.oldestToNewest": "Neueste",
   "app.components.Comments.replyToComment": "Auf Kommentar antworten",
