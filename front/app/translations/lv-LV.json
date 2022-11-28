@@ -612,7 +612,7 @@
   "app.containers.Comments.a11y_commentDeleted": "Komentārs dzēsts",
   "app.containers.Comments.a11y_commentPosted": "Komentārs publicēts",
   "app.containers.Comments.a11y_undoUpvote": "Atcelt augšupvērsto balsojumu",
-  "app.containers.Comments.a11y_upvoteCount": "{upvoteCount, plural, zero {}=0 {nav augšupvērsto balsojumu} one {1 augšā balsojums} other {# augšupejošās balsis}}",
+  "app.containers.Comments.a11y_upvoteCount": "{upvoteCount, plural, =0 {nav augšupvērsto balsojumu} one {1 augšā balsojums} other {# augšupejošās balsis}}",
   "app.containers.Comments.addCommentError": "Radās kļūda. Lūdzu, vēlāk mēģiniet vēlreiz.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Atcelt",
   "app.containers.Comments.adminCommentDeletionConfirmButton": "Dzēst šo komentāru",
