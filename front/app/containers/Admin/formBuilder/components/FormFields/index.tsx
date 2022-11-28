@@ -119,139 +119,62 @@ const FormFields = ({
                     : onEditField({ ...field, index });
                 }}
               >
-                {field.input_type === 'page' && (
-                  <SortableRow
-                    rowHeight={field.input_type === 'page' ? '50px' : '70px'}
-                    id={field.id}
-                    text={''}
-                    index={index}
-                    moveRow={handleDragRow}
+                <SortableRow
+                  rowHeight={field.input_type === 'page' ? '50px' : '70px'}
+                  id={field.id}
+                  text={''}
+                  index={index}
+                  moveRow={handleDragRow}
+                >
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    className="expand"
+                    width="100%"
                   >
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      className="expand"
-                      width="100%"
-                    >
-                      <Box display="flex" alignItems="center">
-                        <Icon
-                          ml="28px"
-                          width="12px"
-                          fill={getIndexTitleColor(selectedFieldId, field)}
-                          name="sort"
-                        />
-                        <Text
-                          as="span"
-                          color={getIndexTitleColor(selectedFieldId, field)}
-                          fontSize="base"
-                          mt="auto"
-                          mb="auto"
-                          fontWeight="bold"
-                          mx="12px"
-                        >
-                          <>
-                            <FormattedMessage
-                              {...(field.input_type === 'page'
-                                ? messages.page
-                                : messages.question)}
-                            />
-                            {getIndexForTitle(formCustomFields, field)}
-                          </>
-                        </Text>
-                        <Text
-                          as="span"
-                          fontSize="base"
-                          mt="auto"
-                          mb="auto"
-                          color={getTitleColor(selectedFieldId, field)}
-                        >
-                          <T value={field.title_multiloc} />
-                        </Text>
-                      </Box>
-                      <Box
-                        pr="24px"
-                        display="flex"
-                        height="100%"
-                        alignContent="center"
+                    <Box display="flex" alignItems="center">
+                      <Icon
+                        ml="28px"
+                        width="12px"
+                        fill={getIndexTitleColor(selectedFieldId, field)}
+                        name="sort"
+                      />
+                      <Text
+                        as="span"
+                        color={getIndexTitleColor(selectedFieldId, field)}
+                        fontSize="base"
+                        mt="auto"
+                        mb="auto"
+                        fontWeight="bold"
+                        mx="12px"
                       >
-                        {!isNilOrError(field.input_type) &&
-                          field.input_type !== 'page' && (
-                            <Box my="auto" ml="12px">
-                              {' '}
-                              <Badge
-                                className="inverse"
-                                color={colors.coolGrey600}
-                              >
-                                <FormattedMessage
-                                  {...getTranslatedFieldType(field.input_type)}
-                                />
-                              </Badge>
-                            </Box>
-                          )}
-                        {field.required && (
-                          <Box mt="auto" mb="auto" ml="12px">
-                            {' '}
-                            <Badge className="inverse" color={colors.error}>
-                              <FormattedMessage {...messages.required} />
-                            </Badge>
-                          </Box>
-                        )}
-                      </Box>
+                        <>
+                          <FormattedMessage
+                            {...(field.input_type === 'page'
+                              ? messages.page
+                              : messages.question)}
+                          />
+                          {getIndexForTitle(formCustomFields, field)}
+                        </>
+                      </Text>
+                      <Text
+                        as="span"
+                        fontSize="base"
+                        mt="auto"
+                        mb="auto"
+                        color={getTitleColor(selectedFieldId, field)}
+                      >
+                        <T value={field.title_multiloc} />
+                      </Text>
                     </Box>
-                  </SortableRow>
-                )}
-                {field.input_type !== 'page' && (
-                  <SortableRow
-                    rowHeight="70px"
-                    id={field.id}
-                    text={''}
-                    index={index}
-                    moveRow={handleDragRow}
-                  >
                     <Box
+                      pr="24px"
                       display="flex"
-                      justifyContent="space-between"
-                      className="expand"
-                      width="100%"
+                      height="100%"
+                      alignContent="center"
                     >
-                      <Box display="flex" alignItems="center">
-                        <Icon
-                          ml="28px"
-                          width="12px"
-                          fill={getIndexTitleColor(selectedFieldId, field)}
-                          name="sort"
-                        />
-                        <Text
-                          as="span"
-                          color={getIndexTitleColor(selectedFieldId, field)}
-                          fontSize="base"
-                          mt="auto"
-                          mb="auto"
-                          fontWeight="bold"
-                          mx="12px"
-                        >
-                          <>
-                            <FormattedMessage {...messages.question} />
-                            {/* {getIndexForTitle(formCustomFields, field)} */}
-                          </>
-                        </Text>
-                        <Text
-                          as="span"
-                          fontSize="base"
-                          mt="auto"
-                          mb="auto"
-                          color={getTitleColor(selectedFieldId, field)}
-                        >
-                          <T value={field.title_multiloc} />
-                        </Text>
-                      </Box>
-                      <Box
-                        pr="24px"
-                        display="flex"
-                        height="100%"
-                        alignContent="center"
-                      >
-                        {!isNilOrError(field.input_type) && (
+                      {!isNilOrError(field.input_type) &&
+                        field.input_type !== 'page' && (
                           <Box my="auto" ml="12px">
                             {' '}
                             <Badge
@@ -264,18 +187,17 @@ const FormFields = ({
                             </Badge>
                           </Box>
                         )}
-                        {field.required && (
-                          <Box mt="auto" mb="auto" ml="12px">
-                            {' '}
-                            <Badge className="inverse" color={colors.error}>
-                              <FormattedMessage {...messages.required} />
-                            </Badge>
-                          </Box>
-                        )}
-                      </Box>
+                      {field.required && (
+                        <Box mt="auto" mb="auto" ml="12px">
+                          {' '}
+                          <Badge className="inverse" color={colors.error}>
+                            <FormattedMessage {...messages.required} />
+                          </Badge>
+                        </Box>
+                      )}
                     </Box>
-                  </SortableRow>
-                )}
+                  </Box>
+                </SortableRow>
               </FormFieldsContainer>
             );
           })}
