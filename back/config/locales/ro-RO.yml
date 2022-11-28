@@ -152,14 +152,14 @@ ro:
       details:
         title: Detalii
       attachements:
-        title: Images and Attachements
+        title: Imagini și atașamente
       extra:
         title: Additional information
   custom_field_options:
     gender:
       male: Masculin
       female: Femeie
-      unspecified: Nespecificat
+      unspecified: Alte
     domicile:
       outside: Altundeva
     education:
