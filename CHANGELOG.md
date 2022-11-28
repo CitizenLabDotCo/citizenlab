@@ -1,5 +1,38 @@
 # Changelog
 
+### Added
+
+- [CL-1483] Add “Remember me” checkbox to login form to not persist cookies
+
+## 2022-11-22
+
+### Added
+
+- [CL-573] The proposals feature toggle in the admin settings.
+
+### Fixed
+
+- [CL-2076] When a user needs to verify before assigning an idea to their participatory budget basket, they now see the right verification modal, not the sign up modal.
+
+### Added
+
+- [CL-1483] Let tenants configure their Authentication token lifetime
+
+## 2022-11-18
+
+### Fixed
+
+- [CL-2052] Fix Sentry error related to failed authentication
+- [CL-2030] Vienna SSO UI & UX changes
+- [CL-2053] Minor color fixes
+
+## 2022-11-16
+
+### Fixed
+
+- [CL-1763] Norwegian translations of navbar & default pages now applied
+- [CL-2036] Fixed new vs returning visitors Matomo import
+
 ## 2022-11-14
 
 ### Fixed

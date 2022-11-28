@@ -28,7 +28,6 @@ import useLocalize from 'hooks/useLocalize';
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { omit } from 'lodash-es';
 
 // intl
 import messages from '../messages';
@@ -111,27 +110,8 @@ const CustomPageSettingsForm = ({
   const slug = methods.watch('slug');
 
   const onFormSubmit = async (formValues: FormValues) => {
-    let newFormValues = { ...formValues };
-
-    // remove values for filter selections other than the final one
-    // if by areas filter or by no filter, don't send topic_ids
-    if (
-      newFormValues.projects_filter_type === 'areas' ||
-      newFormValues.projects_filter_type === 'no_filter'
-    ) {
-      newFormValues = omit(newFormValues, 'topic_ids');
-    }
-
-    // if by topics or by no filter, don't send area_id
-    if (
-      newFormValues.projects_filter_type === 'topics' ||
-      newFormValues.projects_filter_type === 'no_filter'
-    ) {
-      newFormValues = omit(newFormValues, 'area_id');
-    }
-
     try {
-      await onSubmit(newFormValues);
+      await onSubmit(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }

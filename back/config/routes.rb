@@ -104,8 +104,9 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'static_pages#by_slug'
       end
 
-      resources :nav_bar_items, only: :index do
+      resources :nav_bar_items, only: %i[index create update destroy] do
         get 'removed_default_items', on: :collection
+        patch 'reorder', on: :member
       end
 
       # Events and phases are split in two because we cannot have a non-shallow

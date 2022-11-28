@@ -53,7 +53,7 @@ interface Props {
 
 const TopBar = memo<Props & WrappedComponentProps>(
   ({ title, setProjectIds, intl }) => {
-    const theme: any = useTheme();
+    const theme = useTheme();
 
     return (
       <Container>

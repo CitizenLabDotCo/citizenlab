@@ -157,8 +157,8 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
   end
 
   create_table "areas_static_pages", force: :cascade do |t|
-    t.uuid "area_id"
-    t.uuid "static_page_id"
+    t.uuid "area_id", null: false
+    t.uuid "static_page_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["area_id"], name: "index_areas_static_pages_on_area_id"
@@ -1170,8 +1170,8 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
   end
 
   create_table "static_pages_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "topic_id"
-    t.uuid "static_page_id"
+    t.uuid "topic_id", null: false
+    t.uuid "static_page_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["static_page_id"], name: "index_static_pages_topics_on_static_page_id"
@@ -1719,20 +1719,13 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
   SQL
-  create_view "analytics_fact_registrations", sql_definition: <<-SQL
-      SELECT u.id,
-      u.id AS dimension_user_id,
-      (u.registration_completed_at)::date AS dimension_date_registration_id,
-      (i.created_at)::date AS dimension_date_invited_id,
-      (i.accepted_at)::date AS dimension_date_accepted_id
-     FROM (users u
-       LEFT JOIN invites i ON ((i.invitee_id = u.id)));
-  SQL
-  create_view "analytics_dimension_users", sql_definition: <<-SQL
-      SELECT users.id,
-      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
-      users.invite_status
-     FROM users;
+  create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
+      SELECT ecd.id,
+      (ecd.sent_at)::date AS dimension_date_sent_id,
+      ecd.campaign_id,
+      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
+     FROM (email_campaigns_deliveries ecd
+       JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
   SQL
   create_view "analytics_dimension_statuses", sql_definition: <<-SQL
       SELECT idea_statuses.id,
@@ -1747,20 +1740,20 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
       initiative_statuses.color
      FROM initiative_statuses;
   SQL
-  create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
-      SELECT ecd.id,
-      (ecd.sent_at)::date AS dimension_date_sent_id,
-      ecd.campaign_id,
-      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
-     FROM (email_campaigns_deliveries ecd
-       JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
+  create_view "analytics_fact_registrations", sql_definition: <<-SQL
+      SELECT u.id,
+      u.id AS dimension_user_id,
+      (u.registration_completed_at)::date AS dimension_date_registration_id,
+      (i.created_at)::date AS dimension_date_invited_id,
+      (i.accepted_at)::date AS dimension_date_accepted_id
+     FROM (users u
+       LEFT JOIN invites i ON ((i.invitee_id = u.id)));
   SQL
-  create_view "analytics_fact_events", sql_definition: <<-SQL
-      SELECT events.id,
-      events.project_id AS dimension_project_id,
-      (events.start_at)::date AS dimension_date_start_id,
-      (events.end_at)::date AS dimension_date_end_id
-     FROM events;
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+      users.invite_status
+     FROM users;
   SQL
   create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
       WITH last_project_statuses AS (
@@ -1808,5 +1801,13 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
       (project_statuses."timestamp")::date AS dimension_date_id
      FROM project_statuses
     ORDER BY project_statuses."timestamp" DESC;
+  SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.created_at)::date AS dimension_date_created_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
   SQL
 end

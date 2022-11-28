@@ -44,8 +44,11 @@ class StaticPage < ApplicationRecord
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
 
-  has_and_belongs_to_many :topics
-  has_and_belongs_to_many :areas
+  has_many :static_pages_topics, dependent: :destroy
+  has_many :topics, through: :static_pages_topics
+
+  has_many :areas_static_pages, dependent: :destroy
+  has_many :areas, through: :areas_static_pages
 
   accepts_nested_attributes_for :nav_bar_item
   accepts_nested_attributes_for :text_images
@@ -95,6 +98,13 @@ class StaticPage < ApplicationRecord
   validates :topics, length: { minimum: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:topics) }
 
   mount_base64_uploader :header_bg, HeaderBgUploader
+
+  class << self
+    def associations_project_filter_types
+      no_filter = projects_filter_types.fetch(:no_filter)
+      projects_filter_types.except(no_filter)
+    end
+  end
 
   def custom?
     code == 'custom'
@@ -146,8 +156,8 @@ class StaticPage < ApplicationRecord
   end
 
   def destroy_obsolete_associations
-    return if projects_filter_type_was == self.class.projects_filter_types.fetch(:no_filter)
-
-    public_send(projects_filter_type_was).destroy_all if projects_filter_type_changed? && projects_filter_type_was.present?
+    (self.class.associations_project_filter_types.values - [projects_filter_type]).each do |association|
+      public_send(association).destroy_all
+    end
   end
 end

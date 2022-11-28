@@ -1,9 +1,22 @@
 import React from 'react';
 import injectIntl from './injectIntl';
 import { screen, render } from 'utils/testUtils/rtl';
-import regularMessages from 'components/Author/messages';
-import orgNameMessages from 'components/CityLogoSection/messages';
-import tenantNameMessages from 'containers/SignUpInPage/messages';
+import { defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  regular: {
+    id: 'regular',
+    defaultMessage: 'Message',
+  },
+  orgName: {
+    id: 'orgName',
+    defaultMessage: 'Message { orgName }',
+  },
+  tenantName: {
+    id: 'tenant',
+    defaultMessage: 'Message { tenantName }',
+  },
+});
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useLocale');
@@ -20,29 +33,23 @@ jest.mock('hooks/useAppConfiguration', () => () => ({
 describe('FormattedMessage', () => {
   it('renders', () => {
     const Component = injectIntl(({ intl: { formatMessage } }) => {
-      return <p>{formatMessage(regularMessages.a11y_postedBy)}</p>;
+      return <p>{formatMessage(messages.regular)}</p>;
     });
     render(<Component />);
-    expect(screen.getByText('Posted by:')).toBeInTheDocument();
+    expect(screen.getByText('Message')).toBeInTheDocument();
   });
   it('renders orgName', () => {
     const Component = injectIntl(({ intl: { formatMessage } }) => {
-      return <p>{formatMessage(orgNameMessages.iframeTitle)}</p>;
+      return <p>{formatMessage(messages.orgName)}</p>;
     });
     render(<Component />);
-    expect(
-      screen.getByText('More information about organization name')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Message organization name')).toBeInTheDocument();
   });
   it('renders tenantName', () => {
     const Component = injectIntl(({ intl: { formatMessage } }) => {
-      return <p>{formatMessage(tenantNameMessages.signUpMetaTitle)}</p>;
+      return <p>{formatMessage(messages.tenantName)}</p>;
     });
     render(<Component />);
-    expect(
-      screen.getByText(
-        'Sign up for the CitizenLab platform of tenant name | CitizenLab'
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText('Message tenant name')).toBeInTheDocument();
   });
 });
