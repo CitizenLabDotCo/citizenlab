@@ -94,22 +94,6 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
-  describe 'Getting the settings of the current tenant' do
-    it 'succeeds when the setting is available' do
-      expect(described_class.settings('core', 'timezone')).to eq('Brussels')
-    end
-
-    it 'raise an error when there is no current tenant' do
-      Apartment::Tenant.switch('public') do
-        expect { described_class.settings 'core', 'timezone' }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
-    it 'returns nil when the setting does not exist' do
-      expect(described_class.settings('core', 'gibberish')).to be_nil
-    end
-  end
-
   context 'when updated' do
     it 'persists & synchronizes only the dirty attributes' do
       tenant = described_class.current
