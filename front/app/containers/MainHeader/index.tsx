@@ -24,7 +24,7 @@ import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import eventEmitter from 'utils/eventEmitter';
 import clHistory from 'utils/cl-router/history';
 
