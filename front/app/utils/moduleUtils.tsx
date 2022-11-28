@@ -1,7 +1,3 @@
-import {
-  TSignUpStep,
-  TSignUpStepConfigurationObject,
-} from 'components/SignUpIn/SignUp';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
 import React, {
@@ -11,7 +7,6 @@ import React, {
   ReactElement,
 } from 'react';
 
-import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 import PageLoading from 'components/UI/PageLoading';
 import { OutletRenderProps } from 'components/Outlet';
 import { ITabItem } from 'components/UI/Tabs';
@@ -24,9 +19,9 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import { AuthProvider } from 'components/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
-import { TVerificationStep } from 'components/Verification/verificationModalEvents';
+import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
 import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
@@ -36,24 +31,14 @@ import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import {
-  AppConfigurationFeature,
-  CustomizedButtonConfig,
-  TAppConfigurationSetting,
-  TAppConfigurationSettingCore,
-} from 'services/appConfiguration';
+import { CustomizedButtonConfig } from 'services/appConfiguration';
 import { ICommentData } from 'services/comments';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
-import {
-  IOnboardingCampaignNames,
-  IOnboardingCampaigns,
-} from 'services/onboardingCampaigns';
-import { ParticipationMethod } from 'services/participationContexts';
 import { IPhaseData } from 'services/phases';
-import { IUserData } from 'services/users';
 import { TVerificationMethod } from 'services/verificationMethods';
+import { TSignUpInFlow } from 'events/openSignUpInModal';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
@@ -67,25 +52,6 @@ import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useSt
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
   onData: (data: InsertConfigurationOptions<ITab>) => void;
-};
-
-export type SignUpStepOutletProps = {
-  onData: (data: TSignUpStepConfigurationObject) => void;
-  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
-  step: TSignUpStep | null;
-  metaData: ISignUpInMetaData;
-  onCompleted: () => void;
-  onSkipped: () => void;
-  onError: () => void;
-};
-
-export type IAdminSettingsRegistrationSectionEndOutletProps = {
-  onSettingChange: (setting: TAppConfigurationSetting) => (value: any) => void;
-  onCoreSettingWithMultilocChange: (
-    coreSetting: TAppConfigurationSettingCore
-  ) => (multiloc: Multiloc) => void;
-  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
-  userConfirmationSetting?: AppConfigurationFeature;
 };
 
 export interface OutletsPropertyMap {
@@ -135,12 +101,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.users.graphs': {
-    startAt?: string | null;
-    endAt: string | null;
-    currentGroupFilter?: string;
-    currentGroupFilterLabel?: string;
-  };
   'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
@@ -157,20 +117,9 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
   'app.containers.Admin.dashboard.summary.events': StatCardProps;
-  'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
-  'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
-    startAt: string;
-    endAt: string;
-    participationMethods: ParticipationMethod[];
-    project: IProjectData;
-  };
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
     compact?: boolean;
-  };
-  'app.containers.UserEditPage.ProfileForm.forms': {
-    authUser: IUserData;
-    onChange: (data: { key: string; formData: Record<string, any> }) => void;
   };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
@@ -226,8 +175,6 @@ export interface OutletsPropertyMap {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
-  'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
   'app.components.VerificationModal.buttons': {
     onClick: (method: TVerificationMethod) => void;
     verificationMethods: TVerificationMethod[];
@@ -285,20 +232,6 @@ export interface OutletsPropertyMap {
     translateButtonClicked?: boolean;
     color?: string;
     align: 'left' | 'center';
-  };
-  'app.containers.UserEditPage.content': Record<string, any>;
-  'app.containers.Navbar.UserMenu.UserNameContainer': {
-    isVerified: boolean;
-  };
-  'app.containers.App.modals': { onMounted: (id: string) => void };
-  'app.containers.HomePage.onboardingCampaigns': {
-    onboardingCampaigns: IOnboardingCampaigns;
-    contentTimeout: number;
-    contentDelay: number;
-    authUser: IUserData;
-    theme: unknown;
-    onSkip: (name: IOnboardingCampaignNames) => void;
-    onAccept: (name: IOnboardingCampaignNames) => void;
   };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
