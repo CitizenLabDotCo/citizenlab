@@ -28,10 +28,6 @@ import { media, fontSizes, isRtl } from 'utils/styleUtils';
 // hooks
 import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
 
-export const contentTimeout = 350;
-export const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
-export const contentDelay = 550;
-
 const Header = styled.div`
   width: 100%;
   height: 190px;
@@ -66,32 +62,6 @@ export const HeaderContent = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
-  &.content-enter {
-    opacity: 0;
-
-    &.content-enter-active {
-      opacity: 1;
-      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
-    }
-  }
-
-  &.content-enter-done {
-    opacity: 1;
-  }
-
-  &.content-exit {
-    opacity: 1;
-    transition: all ${contentTimeout}ms ${contentEasing};
-
-    &.content-exit-active {
-      opacity: 0;
-    }
-  }
-
-  &.content-exit-done {
-    display: none;
-  }
 
   h2 {
     color: #fff;
