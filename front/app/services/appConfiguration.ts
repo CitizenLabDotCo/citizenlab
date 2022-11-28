@@ -59,11 +59,24 @@ export type IAppConfigurationSettingsCore = {
   area_term?: Multiloc;
   topics_term?: Multiloc;
   topic_term?: Multiloc;
+  authentication_token_lifetime_in_days: number;
 };
 
+export type ProposalsSettings = {
+  allowed: boolean;
+  enabled: boolean;
+  days_limit: number;
+  eligibility_criteria: Multiloc;
+  threshold_reached_message: Multiloc;
+  voting_threshold: number;
+};
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   customizable_homepage_banner: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  advanced_custom_pages: {
     allowed: boolean;
     enabled: boolean;
   };
@@ -121,14 +134,7 @@ export interface IAppConfigurationSettings {
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   participatory_budgeting?: AppConfigurationFeature;
-  initiatives?: {
-    allowed: boolean;
-    enabled: boolean;
-    days_limit: number;
-    eligibility_criteria: Multiloc;
-    threshold_reached_message: Multiloc;
-    voting_threshold: number;
-  };
+  initiatives?: ProposalsSettings;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
@@ -142,7 +148,6 @@ export interface IAppConfigurationSettings {
   dynamic_idea_form?: AppConfigurationFeature;
   jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
-  user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
@@ -219,6 +224,7 @@ export interface IAppConfigurationSettings {
   native_surveys?: AppConfigurationFeature;
   analytics?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
+  user_confirmation?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

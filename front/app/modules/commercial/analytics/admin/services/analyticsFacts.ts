@@ -16,7 +16,8 @@ export interface QuerySchema {
     | 'visit'
     | 'registration'
     | 'event'
-    | 'project_status';
+    | 'project_status'
+    | 'email_delivery';
   filters?: {
     [k: string]:
       | string

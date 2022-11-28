@@ -6,8 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import { colors, media, fontSizes } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 import useAuthUser from 'hooks/useAuthUser';
+import VerificationBadge from './VerificationBadge';
 
 const UserNameContainer = styled.div`
   display: flex;
@@ -34,7 +34,7 @@ interface Props {
 }
 
 const User = ({ userId }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const authUser = useAuthUser();
 
   if (isNilOrError(authUser)) {
@@ -54,10 +54,7 @@ const User = ({ userId }: Props) => {
           userId={userId}
           hideLastName
         />
-        <Outlet
-          id="app.containers.Navbar.UserMenu.UserNameContainer"
-          isVerified={isVerified}
-        />
+        <VerificationBadge isVerified={isVerified} />
       </UserNameContainer>
 
       <Avatar

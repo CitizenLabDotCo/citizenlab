@@ -44,8 +44,11 @@ class StaticPage < ApplicationRecord
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
 
-  has_and_belongs_to_many :topics
-  has_and_belongs_to_many :areas
+  has_many :static_pages_topics, dependent: :destroy
+  has_many :topics, through: :static_pages_topics
+
+  has_many :areas_static_pages, dependent: :destroy
+  has_many :areas, through: :areas_static_pages
 
   accepts_nested_attributes_for :nav_bar_item
   accepts_nested_attributes_for :text_images
