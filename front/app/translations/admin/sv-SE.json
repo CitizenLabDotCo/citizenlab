@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Nytt projekt",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "De nyaste",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Inte ett giltigt belopp",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Inga mallar hittades",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Ange en projekttitel",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Inte ett giltigt nummer",
