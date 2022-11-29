@@ -20,7 +20,7 @@ describe Polls::ResponsePolicy do
     end
   end
 
-  context 'for a mortal user on response of another user' do
+  context 'for a resident on response of another user' do
     let(:user) { create(:user) }
 
     it { is_expected.not_to permit(:create) }
@@ -31,7 +31,7 @@ describe Polls::ResponsePolicy do
     end
   end
 
-  context 'for a mortal user who owns the response' do
+  context 'for a resident who owns the response' do
     let(:user) { response.user }
 
     it { is_expected.to permit(:create) }
@@ -53,12 +53,35 @@ describe Polls::ResponsePolicy do
     end
   end
 
-  context "for a mortal user who owns the response in a private groups project where she's not member of a manual group with access" do
+  context "for a resident who owns the response in a private groups project where she's not member of a manual group with access" do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project, participation_method: 'poll') }
     let!(:response) { create(:poll_response, participation_context: project, user: user) }
 
     it { is_expected.not_to permit(:create) }
+
+    it 'does not index the response' do
+      response.save!
+      expect(scope.resolve.size).to eq 0
+    end
+  end
+
+  context "for a moderator of the response's project that doesn't own the response" do
+    let(:user) { create(:project_moderator, projects: [pc]) }
+
+    it { is_expected.not_to permit(:create) }
+
+    it 'indexes the response' do
+      response.save!
+      expect(scope.resolve.size).to eq 1
+    end
+  end
+
+  context 'for a moderator of another project that owns the response' do
+    let(:user) { create(:project_moderator) }
+    let!(:response) { build(:poll_response, user: user, participation_context: pc) }
+
+    it { is_expected.to permit(:create) }
 
     it 'does not index the response' do
       response.save!
