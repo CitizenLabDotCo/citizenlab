@@ -36,12 +36,10 @@ export default function useAdminPublicationsStatusCounts({
     PublicationStatus[]
   >(publicationStatusFilter);
 
-  // topicFilter and areaFilter are usually based off other
+  // topicFilter and areaFilter are usually based of other
   // requests, and will initially be null/undefined.
-  // Without the useEffect, they don't get updated.
-  // In fact, we should have a useEffect for each
-  // parameter, but others are hard-coded (not waiting for requests),
-  // which is why they're not problematic.
+  // Without the useEffect, they don't get updated
+  // (or useDeepCompareEffect because we are comparing arrays here).
   useDeepCompareEffect(() => {
     if (topicFilter !== undefined) {
       setTopics(topicFilter);

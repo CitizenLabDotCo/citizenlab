@@ -35,6 +35,10 @@ export default function useEvents(parameters: InputParameters) {
   const [lastPage, setLastPage] = useState(1);
   const [pageSize] = useState(parameters.pageSize ?? DEFAULT_PAGE_SIZE);
 
+  // projectIds can be based of other
+  // requests, and initially be null/undefined.
+  // Without the useEffect, it doesn't get updated
+  // (or useDeepCompareEffect because we are comparing arrays here).
   useDeepCompareEffect(() => {
     if (parameters.projectIds) {
       setProjectIds(parameters.projectIds);
