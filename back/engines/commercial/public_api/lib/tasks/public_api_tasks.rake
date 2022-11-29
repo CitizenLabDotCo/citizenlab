@@ -2,6 +2,7 @@
 
 desc 'Public API'
 namespace :public_api do
+  # https://www.notion.so/citizenlab/Receive-public-API-credentials-72b6a21ca8e6445f856f26a18757d1c8
   task :create_client, [:tenant_host] => :environment do |_t, args|
     tenant = Tenant.find_by(host: args[:tenant_host])
 
