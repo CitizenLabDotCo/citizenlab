@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Yeni Proje",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "En yeni",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Geçerli bir tutar değil",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Şablon bulunamadı",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Lütfen bir proje başlığı girin",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Geçerli bir sayı değil",
