@@ -56,7 +56,7 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('exist');
 
     // Try saving without entering data for required field
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
     cy.location('pathname').should(
@@ -67,7 +67,7 @@ describe('Survey builder', () => {
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
     // Save survey response
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Check that we show a success message
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
@@ -107,7 +107,6 @@ describe('Survey builder', () => {
   });
 
   it('deletes a field when the delete button is clicked', () => {
-    const fieldIdentifier = snakeCase(questionTitle);
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
@@ -124,11 +123,7 @@ describe('Survey builder', () => {
 
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
 
-    // Check that field exists
-    cy.get(`[data-cy="${`e2e-field-${fieldIdentifier}`}"]`).should('exist');
-
-    // Click the edit button
-    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).click();
+    cy.contains(questionTitle).should('exist').click();
 
     // Click to delete the field
     cy.get(`[data-cy="e2e-delete-field"]`).click();
@@ -195,7 +190,7 @@ describe('Survey builder', () => {
       force: true,
     });
     cy.get(`#${linearScaleTitle}-radio-1`).click({ force: true });
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
     cy.visit(`/projects/${projectSlug}/ideas/new`);
@@ -204,7 +199,7 @@ describe('Survey builder', () => {
       force: true,
     });
     cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
     cy.visit(`/projects/${projectSlug}/ideas/new`);
@@ -213,7 +208,7 @@ describe('Survey builder', () => {
       force: true,
     });
     cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
     cy.visit(`admin/projects/${projectId}/native-survey/results`);
@@ -246,7 +241,6 @@ describe('Survey builder', () => {
   });
 
   it('does not allow editing survey fields in builder when responses have started coming in', () => {
-    const fieldIdentifier = snakeCase(questionTitle);
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
@@ -256,11 +250,9 @@ describe('Survey builder', () => {
     // Should show success message on saving
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
-    // Check that edit button is not disabled
-    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
-      'not.have.attr',
-      'disabled'
-    );
+    // Check that the user can access the settings to edit
+    cy.contains(questionTitle).should('exist').click();
+    cy.get('#e2e-title-multiloc').should('exist');
 
     // Navigate to the survey page
     cy.visit(`/projects/${projectSlug}/ideas/new`);
@@ -270,18 +262,13 @@ describe('Survey builder', () => {
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
     // Save survey response
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
 
-    // Check that field exists
-    cy.get(`[data-cy="${`e2e-field-${fieldIdentifier}`}"]`).should('exist');
-
-    // Check that the edit button is disabled
-    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
-      'have.attr',
-      'disabled'
-    );
+    // Check that the user cannot access the settings to edit
+    cy.contains(questionTitle).should('exist').click();
+    cy.get('#e2e-title-multiloc').should('not.exist');
 
     cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
     cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
@@ -290,7 +277,6 @@ describe('Survey builder', () => {
   });
 
   it('allows deleting survey results when user clicks the delete button', () => {
-    const fieldIdentifier = snakeCase(questionTitle);
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
@@ -300,11 +286,9 @@ describe('Survey builder', () => {
     // Should show success message on saving
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
-    // Check that edit button is not disabled
-    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
-      'not.have.attr',
-      'disabled'
-    );
+    // Check that the user can access the settings to edit
+    cy.contains(questionTitle).should('exist').click();
+    cy.get('#e2e-title-multiloc').should('exist');
 
     // Navigate to the survey page
     cy.visit(`/projects/${projectSlug}/ideas/new`);
@@ -314,18 +298,13 @@ describe('Survey builder', () => {
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
     // Save survey response
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
 
-    // Check that field exists
-    cy.get(`[data-cy="${`e2e-field-${fieldIdentifier}`}"]`).should('exist');
-
-    // Check that the edit button is disabled
-    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
-      'have.attr',
-      'disabled'
-    );
+    // Check that the user cannot access the settings to edit
+    cy.contains(questionTitle).should('exist').click();
+    cy.get('#e2e-title-multiloc').should('not.exist');
 
     cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
     cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
@@ -340,7 +319,6 @@ describe('Survey builder', () => {
   });
 
   it('allows export of survey results', () => {
-    const fieldIdentifier = snakeCase(questionTitle);
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
@@ -350,11 +328,9 @@ describe('Survey builder', () => {
     // Should show success message on saving
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
-    // Check that edit button is not disabled
-    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
-      'not.have.attr',
-      'disabled'
-    );
+    // Check that the user can access the settings to edit
+    cy.contains(questionTitle).should('exist').click();
+    cy.get('#e2e-title-multiloc').should('exist');
 
     // Navigate to the survey page
     cy.visit(`/projects/${projectSlug}/ideas/new`);
@@ -364,18 +340,13 @@ describe('Survey builder', () => {
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
     // Save survey response
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
 
-    // Check that field exists
-    cy.get(`[data-cy="${`e2e-field-${fieldIdentifier}`}"]`).should('exist');
-
-    // Check that the edit button is disabled
-    cy.get(`[data-cy="${`e2e-edit-${fieldIdentifier}`}"]`).should(
-      'have.attr',
-      'disabled'
-    );
+    // Check that the user cannot access the settings to edit
+    cy.contains(questionTitle).should('exist').click();
+    cy.get('#e2e-title-multiloc').should('not.exist');
 
     cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
     cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();

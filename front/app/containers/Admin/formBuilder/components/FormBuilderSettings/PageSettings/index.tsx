@@ -27,7 +27,7 @@ const PageSettings = ({ field }: Props) => {
           type="text"
         />
       </SectionField>
-      <SectionField>
+      <SectionField data-cy="e2e-page-description-multiloc">
         <QuillMultilocWithLocaleSwitcher
           name={`customFields.${field.index}.description_multiloc`}
           label={<FormattedMessage {...messages.descriptionLabel} />}
