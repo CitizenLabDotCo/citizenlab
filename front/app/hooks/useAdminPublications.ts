@@ -129,8 +129,6 @@ export default function useAdminPublications({
       folder: childrenOfId,
     };
 
-    console.log({ queryParameters });
-
     const subscription = listAdminPublications({
       queryParameters,
     })

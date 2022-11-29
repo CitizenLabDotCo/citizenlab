@@ -147,8 +147,9 @@ export default ({
   };
 
   const AdminTag = () => {
-    if (publication.attributes?.publication_visible_to !== 'admins')
+    if (publication.attributes?.publication_visible_to !== 'admins') {
       return null;
+    }
 
     const AdminStatusLabel = () => {
       return (
