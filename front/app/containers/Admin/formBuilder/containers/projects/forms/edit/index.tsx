@@ -112,7 +112,7 @@ export const FormEdit = ({
     formState: { isSubmitting, errors },
   } = methods;
 
-  const { fields, append, remove, move } = useFieldArray({
+  const { fields, append, remove, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -122,7 +122,19 @@ export const FormEdit = ({
   };
 
   const handleDelete = (fieldIndex: number) => {
-    remove(fieldIndex);
+    const field = fields[fieldIndex];
+
+    // When the first page is deleted, it's questions go to the next page
+    if (fieldIndex === 0 && field.input_type === 'page') {
+      const nextPageIndex = fields.findIndex(
+        (feild, fieldIndex) => feild.input_type === 'page' && fieldIndex !== 0
+      );
+      move(nextPageIndex, 0);
+      remove(1);
+    } else {
+      remove(fieldIndex);
+    }
+
     closeSettings();
   };
 
@@ -181,6 +193,13 @@ export const FormEdit = ({
       handleHookFormSubmissionError(error, setError, 'customFields');
     }
   };
+
+  // Page is only deletable when we have more than one page
+  const isPageDeletable =
+    fields.filter((field) => field.input_type === 'page').length > 1;
+  const isDeleteDisabled = !(
+    selectedField?.input_type !== 'page' || isPageDeletable
+  );
 
   return (
     <Box
@@ -246,6 +265,7 @@ export const FormEdit = ({
                   field={selectedField}
                   onDelete={handleDelete}
                   onClose={closeSettings}
+                  isDeleteDisabled={isDeleteDisabled}
                 />
               )}
             </Box>
