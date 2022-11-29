@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- [CL-2109] Events display on Project page now matches the Events page. I.e. Events on Project page now displayed under "Current" and "Past" headers, and nearest event is displayed at the top of the list.
+
 ### Added
 
 - [CL-1483] Add “Remember me” checkbox to login form to not persist cookies
