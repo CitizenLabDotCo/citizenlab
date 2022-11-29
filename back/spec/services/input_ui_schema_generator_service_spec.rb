@@ -475,16 +475,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             rules: [
               {
                 if: 1,
-                then: [
-                  {
-                    effect: 'hide',
-                    target_id: page2.id
-                  },
-                  {
-                    effect: 'hide',
-                    target_id: page3.id
-                  }
-                ]
+                goto_page_id: page3.id
               }
             ]
           }
@@ -511,12 +502,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             rules: [
               {
                 if: 'never',
-                then: [
-                  {
-                    effect: 'hide',
-                    target_id: page3.id
-                  }
-                ]
+                goto_page_id: page4.id
               }
             ]
           }
@@ -533,6 +519,15 @@ RSpec.describe InputUiSchemaGeneratorService do
           :custom_field_page,
           resource: form,
           key: 'page3',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:page4) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page4',
           title_multiloc: { 'en' => '' },
           description_multiloc: { 'en' => '' }
         )
@@ -603,15 +598,6 @@ RSpec.describe InputUiSchemaGeneratorService do
               },
               elements: [],
               ruleArray: [
-                {
-                  effect: 'HIDE',
-                  condition: {
-                    scope: "#/properties/#{field_in_page1.key}",
-                    schema: {
-                      enum: [1]
-                    }
-                  }
-                },
                 {
                   effect: 'HIDE',
                   condition: {

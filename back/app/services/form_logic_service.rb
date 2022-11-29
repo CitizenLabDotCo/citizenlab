@@ -6,8 +6,8 @@ class FormLogicService
     @field_index = fields.index_by(&:id)
   end
 
-  def ui_schema_rules_for(field)
-    target_field_rules[field.id]
+  def ui_schema_rules_for(target_field)
+    target_field_rules[target_field.id]
   end
 
   def replace_temp_ids!(temp_ids_to_ids_mapping)
@@ -17,11 +17,9 @@ class FormLogicService
       logic = field.logic
       rules = logic.fetch('rules', [])
       rules.each do |rule|
-        rule['then'].each do |action|
-          target_id = action['target_id']
-          if temp_ids_to_ids_mapping.include?(target_id)
-            action['target_id'] = temp_ids_to_ids_mapping[target_id]
-          end
+        target_id = rule['goto_page_id']
+        if temp_ids_to_ids_mapping.include?(target_id)
+          rule['goto_page_id'] = temp_ids_to_ids_mapping[target_id]
         end
       end
       field.update! logic: logic
@@ -46,48 +44,46 @@ class FormLogicService
       end
 
       field.logic['rules'].all? do |rule|
-        rule['then'].all? do |action|
-          next true unless action['target_id']
+        next true if rule.key? 'goto' # Value for `goto` has already been checked in `valid_structure?`
 
-          # Order is important here, because `target_after_source?` and `target_is_page?`
-          # rely on `valid_target_ids?` to return true. In those methods,
-          # `field_index[action['target_id']]` will always return a field.
-          unless valid_target_id?(action)
-            field.errors.add(
-              :logic,
-              :invalid_target_id,
-              message: 'has invalid target_id',
-              value: action['target_id']
-            )
-            next false
-          end
-          unless target_after_source?(action, field)
-            field.errors.add(
-              :logic,
-              :target_before_source_not_allowed,
-              message: 'has target before source',
-              value: action['target_id']
-            )
-            next false
-          end
+        target_id = rule['goto_page_id'] # Present because we passed the `valid_structure?` check.
 
-          next true if target_is_page?(action)
-
+        # Order is important here, because `target_after_source?` and `target_is_page?`
+        # rely on `valid_target_id?` to return true. In those methods,
+        # `field_index[target_id]` will always return a field.
+        unless valid_target_id?(target_id)
           field.errors.add(
             :logic,
-            :only_page_allowed_as_target,
-            message: 'has target that is not a page',
-            value: action['target_id']
+            :invalid_goto_page_id,
+            message: 'has invalid goto_page_id',
+            value: target_id
           )
-          false
+          next false
         end
+        unless target_after_source?(target_id, field)
+          field.errors.add(
+            :logic,
+            :target_before_source_not_allowed,
+            message: 'has target before source',
+            value: target_id
+          )
+          next false
+        end
+
+        next true if target_is_page?(target_id)
+
+        field.errors.add(
+          :logic,
+          :only_page_allowed_as_target,
+          message: 'has target that is not a page',
+          value: target_id
+        )
+        false
       end
     end
   end
 
   private
-
-  EFFECTS = %w[show hide submit_survey]
 
   attr_reader :fields, :field_index
 
@@ -96,31 +92,27 @@ class FormLogicService
     return false unless logic.keys == ['rules']
 
     logic['rules'].all? do |rule|
-      rule.keys == %w[if then] && rule['then'].all? do |action|
-        allowed_then_keys = %w[effect]
-        allowed_then_keys << 'target_id' if action['effect'] != 'submit_survey'
-        action.keys == allowed_then_keys && EFFECTS.include?(action['effect'])
-      end
+      rule.keys == %w[if goto_page_id] || (rule.keys == %w[if goto] && rule['goto'] == 'end_page')
     end
   end
 
-  def valid_target_id?(action)
-    field_index.key? action['target_id']
+  def valid_target_id?(target_id)
+    field_index.key? target_id
   end
 
-  def target_after_source?(action, source_field)
-    target_field = field_index[action['target_id']]
+  def target_after_source?(target_id, source_field)
+    target_field = field_index[target_id]
     target_field.ordering > source_field.ordering
   end
 
-  def target_is_page?(action)
-    target_field = field_index[action['target_id']]
+  def target_is_page?(target_id)
+    target_field = field_index[target_id]
     target_field.page?
   end
 
-  def ui_schema_rule_for(effect, field, value)
+  def ui_schema_hide_rule_for(field, value)
     {
-      effect: effect.upcase,
+      effect: 'HIDE',
       condition: {
         scope: "#/properties/#{field.key}",
         schema: {
@@ -131,24 +123,32 @@ class FormLogicService
   end
 
   def target_field_rules
-    @target_field_rules ||= fields.each_with_object({}) do |field, accu|
-      rules = field.logic['rules']
-      next if rules.blank?
+    @target_field_rules ||= {}.tap do |accu|
+      fields.each_with_index do |field, index|
+        rules = field.logic['rules']
+        next if rules.blank?
 
-      rules.each do |rule|
-        rule['then'].each do |action|
-          effect = action['effect']
-          case effect
-          when 'hide', 'show'
-            value = rule['if']
-            target_id = action['target_id']
-            accu[target_id] ||= []
-            accu[target_id] << ui_schema_rule_for(effect, field, value)
-          when 'submit_survey'
-            # TODO
+        rules.each do |rule|
+          value = rule['if']
+          target_id = rule['goto_page_id']
+          pages_in_between(index, target_id).each do |page|
+            accu[page.id] ||= []
+            accu[page.id] << ui_schema_hide_rule_for(field, value)
           end
         end
       end
     end
+  end
+
+  def pages_in_between(index, page_id)
+    pages = []
+    index += 1
+    while index < fields.size
+      return pages if fields[index].id == page_id
+
+      pages << fields[index] if fields[index].page?
+      index += 1
+    end
+    pages
   end
 end

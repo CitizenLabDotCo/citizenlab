@@ -253,7 +253,7 @@ resource 'Idea Custom Fields' do
                       then: [
                         {
                           effect: 'show'
-                          # Missing target_id
+                          # Missing goto_page_id
                         }
                       ]
                     }
@@ -303,7 +303,7 @@ resource 'Idea Custom Fields' do
                       then: [
                         {
                           effect: 'show'
-                          # Missing target_id
+                          # Missing goto_page_id
                         }
                       ]
                     }
@@ -336,17 +336,7 @@ resource 'Idea Custom Fields' do
           page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
           field_to_update.update!(
             logic: {
-              rules: [
-                {
-                  if: 1,
-                  then: [
-                    {
-                      effect: 'hide',
-                      target_id: page2.id
-                    }
-                  ]
-                }
-              ]
+              rules: [{ if: 1, goto_page_id: page2.id }]
             }
           )
           request = {
@@ -369,17 +359,7 @@ resource 'Idea Custom Fields' do
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
                 maximum_label_multiloc: { 'en' => 'Strongly agree' },
                 logic: {
-                  rules: [
-                    {
-                      if: 2,
-                      then: [
-                        {
-                          effect: 'show',
-                          target_id: page3.id
-                        }
-                      ]
-                    }
-                  ]
+                  rules: [{ if: 2, goto_page_id: page3.id }]
                 }
               },
               {
@@ -438,17 +418,7 @@ resource 'Idea Custom Fields' do
               minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
               maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
               logic: {
-                rules: [
-                  {
-                    if: 2,
-                    then: [
-                      {
-                        effect: 'show',
-                        target_id: page3.id
-                      }
-                    ]
-                  }
-                ]
+                rules: [{ if: 2, goto_page_id: page3.id }]
               }
             },
             id: field_to_update.id,
@@ -501,17 +471,7 @@ resource 'Idea Custom Fields' do
           page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
           field_to_update.update!(
             logic: {
-              rules: [
-                {
-                  if: 1,
-                  then: [
-                    {
-                      effect: 'hide',
-                      target_id: page2.id
-                    }
-                  ]
-                }
-              ]
+              rules: [{ if: 1, goto_page_id: page2.id }]
             }
           )
           request = {
@@ -534,17 +494,7 @@ resource 'Idea Custom Fields' do
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
                 maximum_label_multiloc: { 'en' => 'Strongly agree' },
                 logic: {
-                  rules: [
-                    {
-                      if: 2,
-                      then: [
-                        {
-                          effect: 'show',
-                          target_id: 'temp_1'
-                        }
-                      ]
-                    }
-                  ]
+                  rules: [{ if: 2, goto_page_id: 'temp_1' }]
                 }
               },
               {
@@ -603,17 +553,7 @@ resource 'Idea Custom Fields' do
               minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
               maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
               logic: {
-                rules: [
-                  {
-                    if: 2,
-                    then: [
-                      {
-                        effect: 'show',
-                        target_id: json_response[:data][3][:id]
-                      }
-                    ]
-                  }
-                ]
+                rules: [{ if: 2, goto_page_id: json_response[:data][3][:id] }]
               }
             },
             id: field_to_update.id,
@@ -667,17 +607,7 @@ resource 'Idea Custom Fields' do
           page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
           field_to_update.update!(
             logic: {
-              rules: [
-                {
-                  if: 1,
-                  then: [
-                    {
-                      effect: 'hide',
-                      target_id: page2.id
-                    }
-                  ]
-                }
-              ]
+              rules: [{ if: 1, goto_page_id: page2.id }]
             }
           )
 
@@ -701,17 +631,7 @@ resource 'Idea Custom Fields' do
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
                 maximum_label_multiloc: { 'en' => 'Strongly agree' },
                 logic: {
-                  rules: [
-                    {
-                      if: 1,
-                      then: [
-                        {
-                          effect: 'hide',
-                          target_id: page2.id
-                        }
-                      ]
-                    }
-                  ]
+                  rules: [{ if: 1, goto_page_id: page2.id }]
                 }
               },
               {
@@ -769,17 +689,7 @@ resource 'Idea Custom Fields' do
               minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
               maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
               logic: {
-                rules: [
-                  {
-                    if: 1,
-                    then: [
-                      {
-                        effect: 'hide',
-                        target_id: page2.id
-                      }
-                    ]
-                  }
-                ]
+                rules: [{ if: 1, goto_page_id: page2.id }]
               }
             },
             id: field_to_update.id,
@@ -832,17 +742,7 @@ resource 'Idea Custom Fields' do
           page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
           field_to_update.update!(
             logic: {
-              rules: [
-                {
-                  if: 1,
-                  then: [
-                    {
-                      effect: 'hide',
-                      target_id: page2.id
-                    }
-                  ]
-                }
-              ]
+              rules: [{ if: 1, goto_page_id: page2.id }]
             }
           )
           request = {
@@ -948,17 +848,7 @@ resource 'Idea Custom Fields' do
           page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
           field_to_update.update!(
             logic: {
-              rules: [
-                {
-                  if: 1,
-                  then: [
-                    {
-                      effect: 'hide',
-                      target_id: page2.id
-                    }
-                  ]
-                }
-              ]
+              rules: [{ if: 1, goto_page_id: page2.id }]
             }
           )
 
@@ -1040,17 +930,7 @@ resource 'Idea Custom Fields' do
           page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
           field_to_delete.update!(
             logic: {
-              rules: [
-                {
-                  if: 1,
-                  then: [
-                    {
-                      effect: 'hide',
-                      target_id: page2.id
-                    }
-                  ]
-                }
-              ]
+              rules: [{ if: 1, goto_page_id: page2.id }]
             }
           )
 
@@ -1102,24 +982,8 @@ resource 'Idea Custom Fields' do
           field_to_update.update!(
             logic: {
               rules: [
-                {
-                  if: 1,
-                  then: [
-                    {
-                      effect: 'hide',
-                      target_id: page2.id
-                    }
-                  ]
-                },
-                {
-                  if: 2,
-                  then: [
-                    {
-                      effect: 'show',
-                      target_id: page3.id
-                    }
-                  ]
-                }
+                [{ if: 1, goto_page_id: page2.id }],
+                [{ if: 2, goto_page_id: page3.id }]
               ]
             }
           )
@@ -1144,17 +1008,7 @@ resource 'Idea Custom Fields' do
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
                 maximum_label_multiloc: { 'en' => 'Strongly agree' },
                 logic: {
-                  rules: [
-                    {
-                      if: 2,
-                      then: [
-                        {
-                          effect: 'show',
-                          target_id: page3.id
-                        }
-                      ]
-                    }
-                  ]
+                  rules: [{ if: 2, goto_page_id: page3.id }]
                 }
               },
               {
@@ -1213,17 +1067,7 @@ resource 'Idea Custom Fields' do
               minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
               maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
               logic: {
-                rules: [
-                  {
-                    if: 2,
-                    then: [
-                      {
-                        effect: 'show',
-                        target_id: page3.id
-                      }
-                    ]
-                  }
-                ]
+                rules: [{ if: 2, goto_page_id: page3.id }]
               }
             },
             id: field_to_update.id,
@@ -1295,17 +1139,7 @@ resource 'Idea Custom Fields' do
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
                 maximum_label_multiloc: { 'en' => 'Strongly agree' },
                 logic: {
-                  rules: [
-                    {
-                      if: 2,
-                      then: [
-                        {
-                          effect: 'show',
-                          target_id: 'temp_1'
-                        }
-                      ]
-                    }
-                  ]
+                  rules: [{ if: 2, goto_page_id: 'temp_1' }]
                 }
               },
               {
@@ -1356,17 +1190,7 @@ resource 'Idea Custom Fields' do
               minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
               maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
               logic: {
-                rules: [
-                  {
-                    if: 2,
-                    then: [
-                      {
-                        effect: 'show',
-                        target_id: json_response[:data][2][:id]
-                      }
-                    ]
-                  }
-                ]
+                rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
               }
             },
             id: field_to_update.id,
@@ -1415,17 +1239,7 @@ resource 'Idea Custom Fields' do
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
                 maximum_label_multiloc: { 'en' => 'Strongly agree' },
                 logic: {
-                  rules: [
-                    {
-                      if: 2,
-                      then: [
-                        {
-                          effect: 'show',
-                          target_id: 'temp_1'
-                        }
-                      ]
-                    }
-                  ]
+                  rules: [{ if: 2, goto_page_id: 'temp_1' }]
                 }
               },
               {
@@ -1477,17 +1291,7 @@ resource 'Idea Custom Fields' do
               minimum_label_multiloc: { en: 'Strongly disagree' },
               maximum_label_multiloc: { en: 'Strongly agree' },
               logic: {
-                rules: [
-                  {
-                    if: 2,
-                    then: [
-                      {
-                        effect: 'show',
-                        target_id: json_response[:data][2][:id]
-                      }
-                    ]
-                  }
-                ]
+                rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
               }
             },
             id: an_instance_of(String),
@@ -1524,17 +1328,7 @@ resource 'Idea Custom Fields' do
           page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
           field_to_update.update!(
             logic: {
-              rules: [
-                {
-                  if: 1,
-                  then: [
-                    {
-                      effect: 'hide',
-                      target_id: page2.id
-                    }
-                  ]
-                }
-              ]
+              rules: [{ if: 1, goto_page_id: page2.id }]
             }
           )
 
@@ -1559,24 +1353,8 @@ resource 'Idea Custom Fields' do
                 maximum_label_multiloc: { 'en' => 'Strongly agree' },
                 logic: {
                   rules: [
-                    {
-                      if: 1,
-                      then: [
-                        {
-                          effect: 'hide',
-                          target_id: page2.id
-                        }
-                      ]
-                    },
-                    {
-                      if: 2,
-                      then: [
-                        {
-                          effect: 'show',
-                          target_id: page3.id
-                        }
-                      ]
-                    }
+                    { if: 1, goto_page_id: page2.id },
+                    { if: 2, goto_page_id: page3.id }
                   ]
                 }
               },
@@ -1637,24 +1415,8 @@ resource 'Idea Custom Fields' do
               maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
               logic: {
                 rules: [
-                  {
-                    if: 1,
-                    then: [
-                      {
-                        effect: 'hide',
-                        target_id: page2.id
-                      }
-                    ]
-                  },
-                  {
-                    if: 2,
-                    then: [
-                      {
-                        effect: 'show',
-                        target_id: page3.id
-                      }
-                    ]
-                  }
+                  { if: 1, goto_page_id: page2.id },
+                  { if: 2, goto_page_id: page3.id }
                 ]
               }
             },
