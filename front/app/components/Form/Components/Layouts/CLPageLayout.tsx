@@ -61,6 +61,7 @@ const CLPageLayout = memo(
     const isSmallerThanXlPhone = useBreakpoint('phone');
     const submitText = formSubmitText || messages.submit;
     const showSubmit = currentStep === uiPages.length - 1;
+    const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
 
     useEffect(() => {
@@ -139,6 +140,7 @@ const CLPageLayout = memo(
         >
           <Button
             onClick={handleNextAndSubmit}
+            data-cy={dataCyValue}
             mb="20px"
             icon="chevron-right"
             iconPos="right"
