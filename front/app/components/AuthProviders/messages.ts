@@ -84,6 +84,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.viennaConsentUserName',
     defaultMessage: 'User name',
   },
+  viennaThePrivacyPolicy: {
+    id: 'app.containers.SignUp.viennaThePrivacyPolicy',
+    defaultMessage: 'the privacy policy',
+  },
   iHaveReadAndAgreeToVienna: {
     id: 'app.containers.SignUp.iHaveReadAndAgreeToVienna',
     defaultMessage:

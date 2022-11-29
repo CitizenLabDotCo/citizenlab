@@ -143,60 +143,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'roles' do
-    it 'is valid without roles' do
-      u = build(:user, roles: [])
-      expect(u).to be_valid
-    end
-
-    it 'is valid when the user is an admin' do
-      u = build(:user, roles: [{ type: 'admin' }])
-      expect(u).to be_valid
-    end
-
-    it 'is invalid when the user has an unknown role type' do
-      u = build(:user, roles: [{ type: 'stonecarver' }])
-      expect { u.valid? }.to(change { u.errors[:roles] })
-    end
-  end
-
-  describe 'admin?' do
-    it 'responds true when the user has the admin role' do
-      u = build(:user, roles: [{ type: 'admin' }])
-      expect(u.admin?).to be true
-    end
-
-    it 'responds false when the user does not have the admin role' do
-      u = build(:user, roles: [])
-      expect(u.admin?).to be false
-    end
-  end
-
-  describe 'project_moderator?' do
-    it 'responds false when the user does not have a project_moderator role' do
-      l = create(:project)
-      u = build(:user, roles: [])
-      expect(u.project_moderator?(l.id)).to be false
-    end
-
-    it 'responds false when the user is not a project_moderator and no project_id is passed' do
-      u = build(:admin)
-      expect(u.project_moderator?).to be false
-    end
-  end
-
-  describe 'delete_role' do
-    it 'denies a user from his admin rights' do
-      admin = create(:admin)
-      admin.delete_role('admin')
-
-      aggregate_failures 'testing admin' do
-        expect(admin).to be_valid
-        expect(admin).not_to be_admin
-      end
-    end
-  end
-
   describe 'locale' do
     before do
       settings = AppConfiguration.instance.settings
@@ -301,6 +247,153 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'roles' do
+    it 'is valid without roles' do
+      u = build(:user, roles: [])
+      expect(u).to be_valid
+    end
+
+    it 'is valid when the user is an admin' do
+      u = build(:user, roles: [{ type: 'admin' }])
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when the user has an unknown role type' do
+      u = build(:user, roles: [{ type: 'stonecarver' }])
+      expect { u.valid? }.to(change { u.errors[:roles] })
+    end
+
+    it 'is valid when the user is a project moderator' do
+      project = create(:project)
+      u = build(:user, roles: [{ type: 'project_moderator', project_id: project.id }])
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when a project_moderator is missing a project_id' do
+      u = build(:user, roles: [{ type: 'project_moderator' }])
+      expect { u.valid? }.to(change { u.errors[:roles] })
+    end
+
+    it 'is valid when the user is a project_folder moderator' do
+      project_folder = create(:project_folder)
+      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: project_folder.id }])
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when a project_folder_moderator is missing a project_folder_id' do
+      u = build(:user, roles: [{ type: 'project_folder_moderator' }])
+      expect { u.valid? }.to(change { u.errors[:roles] })
+    end
+  end
+
+  describe 'admin?' do
+    it 'responds true when the user has the admin role' do
+      u = build(:user, roles: [{ type: 'admin' }])
+      expect(u.admin?).to be true
+    end
+
+    it 'responds false when the user does not have the admin role' do
+      u = build(:user, roles: [])
+      expect(u.admin?).to be false
+    end
+  end
+
+  describe 'project_moderator?' do
+    it 'responds false when the user does not have a project_moderator role' do
+      l = create(:project)
+      u = build(:user, roles: [])
+      expect(u.project_moderator?(l.id)).to be false
+    end
+
+    it 'responds false when the user is not a project_moderator and no project_id is passed' do
+      u = build(:admin)
+      expect(u.project_moderator?).to be false
+    end
+
+    it 'responds true when the user has the project_moderator role' do
+      l = create(:project)
+      u = build(:user, roles: [{ type: 'project_moderator', project_id: l.id }])
+      expect(u.project_moderator?(l.id)).to be true
+    end
+
+    it 'responds false when the user does not have a project_moderator role for the given project' do
+      l1 = create(:project)
+      l2 = create(:project)
+      u = build(:user, roles: [{ type: 'project_moderator', project_id: l1.id }])
+      expect(u.project_moderator?(l2.id)).to be false
+    end
+
+    it 'responds true when the user is project_moderator and no project_id is passed' do
+      u = build(:user, roles: [{ type: 'project_moderator', project_id: 'project_id' }])
+      expect(u.project_moderator?).to be true
+    end
+  end
+
+  describe 'project_folder_moderator?' do
+    it 'responds true when the user has the project_folder_moderator role' do
+      l = create(:project_folder)
+      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: l.id }])
+      expect(u.project_folder_moderator?(l.id)).to be true
+    end
+
+    it 'responds false when the user does not have a project_folder_moderator role' do
+      l = create(:project_folder)
+      u = build(:user, roles: [])
+      expect(u.project_folder_moderator?(l.id)).to be false
+    end
+
+    it 'responds false when the user does not have a project_folder_moderator role for the given project_folder' do
+      l1 = create(:project_folder)
+      l2 = create(:project_folder)
+      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: l1.id }])
+      expect(u.project_folder_moderator?(l2.id)).to be false
+    end
+
+    it 'response true when the user is project_folder_moderator and no project_folder_id is passed' do
+      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: 'project_folder_id' }])
+      expect(u.project_folder_moderator?).to be true
+    end
+
+    it 'response false when the user is not a project_folder_moderator and no project_folder_id is passed' do
+      u = build(:admin)
+      expect(u.project_folder_moderator?).to be false
+    end
+  end
+
+  describe 'add_role' do
+    it 'gives a user moderator rights for a project' do
+      usr = create(:user, roles: [])
+      prj = create(:project)
+      expect(usr.project_moderator?(prj.id)).to be false
+
+      usr.add_role 'project_moderator', project_id: prj.id
+      expect(usr.save).to be true
+      expect(usr.project_moderator?(prj.id)).to be true
+      expect(usr.project_moderator?(create(:project).id)).to be false
+    end
+  end
+
+  describe 'delete_role' do
+    it 'denies a user from his admin rights' do
+      admin = create(:admin)
+      admin.delete_role('admin')
+
+      aggregate_failures 'testing admin' do
+        expect(admin).to be_valid
+        expect(admin).not_to be_admin
+      end
+    end
+
+    it 'denies a user from his moderator rights' do
+      project = create :project
+      moderator = create :project_moderator, projects: [project]
+
+      moderator.delete_role 'project_moderator', project_id: project.id
+      expect(moderator.save).to be true
+      expect(moderator.project_moderator?(project.id)).to be false
+    end
+  end
+
   describe 'order_role' do
     before do
       10.times do |_i|
@@ -316,6 +409,52 @@ RSpec.describe User, type: :model do
     it 'sorts from lower level roles to higher level roles with option asc' do
       serie = described_class.order_role(:desc).map { |u| u.roles.size }
       expect(serie).to eq serie.sort
+    end
+  end
+
+  describe 'super_admin?' do
+    it 'returns true for admins with various citizenlab email variations' do
+      users = [
+        build_stubbed(:admin, email: 'hello@citizenlab.co'),
+        build_stubbed(:admin, email: 'hello+admin@citizenLab.co'),
+        build_stubbed(:admin, email: 'hello@citizenlab.eu'),
+        build_stubbed(:admin, email: 'moderator+admin@citizenlab.be'),
+        build_stubbed(:admin, email: 'some.person@citizen-lab.fr'),
+        build_stubbed(:admin, email: 'cheese.lover@CitizenLab.ch'),
+        build_stubbed(:admin, email: 'Fritz+Wurst@Citizenlab.de'),
+        build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
+        build_stubbed(:admin, email: 'bigger@citizenlab.us'),
+        build_stubbed(:admin, email: 'magdalena@citizenlab.cl'),
+        build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK')
+      ]
+
+      expect(users).to all be_super_admin
+    end
+
+    it 'returns false for non-citizenlab emails' do
+      strangers = [
+        build_stubbed(:admin, email: 'hello@citizenlab.com'),
+        build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
+        build_stubbed(:admin)
+      ]
+      expect(strangers).not_to include(be_super_admin)
+    end
+
+    it 'returns false for non-admins' do
+      user = build_stubbed(:user, email: 'hello@citizenlab.co')
+      expect(user).not_to be_super_admin
+    end
+  end
+
+  describe 'highest_role' do
+    it 'correctly returns the highest role the user posesses' do
+      expect(build_stubbed(:admin, email: 'hello@citizenlab.co').highest_role).to eq :super_admin
+      expect(build_stubbed(:admin).highest_role).to eq :admin
+      expect(build_stubbed(:user).highest_role).to eq :user
+    end
+
+    it 'correctly returns the highest role a moderator posesses' do
+      expect(build_stubbed(:project_moderator).highest_role).to eq :project_moderator
     end
   end
 
@@ -420,48 +559,6 @@ RSpec.describe User, type: :model do
     it 'raises if no user record with that email was found' do
       expect { described_class.find_by_cimail!('doesnotexist@example.com') }
         .to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
-
-  describe 'super_admin?' do
-    it 'returns true for admins with various citizenlab email variations' do
-      users = [
-        build_stubbed(:admin, email: 'hello@citizenlab.co'),
-        build_stubbed(:admin, email: 'hello+admin@citizenLab.co'),
-        build_stubbed(:admin, email: 'hello@citizenlab.eu'),
-        build_stubbed(:admin, email: 'moderator+admin@citizenlab.be'),
-        build_stubbed(:admin, email: 'some.person@citizen-lab.fr'),
-        build_stubbed(:admin, email: 'cheese.lover@CitizenLab.ch'),
-        build_stubbed(:admin, email: 'Fritz+Wurst@Citizenlab.de'),
-        build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
-        build_stubbed(:admin, email: 'bigger@citizenlab.us'),
-        build_stubbed(:admin, email: 'magdalena@citizenlab.cl'),
-        build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK')
-      ]
-
-      expect(users).to all be_super_admin
-    end
-
-    it 'returns false for non-citizenlab emails' do
-      strangers = [
-        build_stubbed(:admin, email: 'hello@citizenlab.com'),
-        build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
-        build_stubbed(:admin)
-      ]
-      expect(strangers).not_to include(be_super_admin)
-    end
-
-    it 'returns false for non-admins' do
-      user = build_stubbed(:user, email: 'hello@citizenlab.co')
-      expect(user).not_to be_super_admin
-    end
-  end
-
-  describe 'highest_role' do
-    it 'correctly returns the highest role the user posesses' do
-      expect(build_stubbed(:admin, email: 'hello@citizenlab.co').highest_role).to eq :super_admin
-      expect(build_stubbed(:admin).highest_role).to eq :admin
-      expect(build_stubbed(:user).highest_role).to eq :user
     end
   end
 end
