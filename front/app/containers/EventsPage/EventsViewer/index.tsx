@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 
 // components
 import TopBar from './TopBar';
@@ -66,6 +66,12 @@ const EventsViewer = memo<Props>(
       pastOnly: eventsTime === 'past',
       sort: eventsTime === 'past' ? 'newest' : 'oldest',
     });
+
+    useEffect(() => {
+      if (!isNilOrError(projectIds)) {
+        onProjectIdsChange(projectIds);
+      }
+    }, [projectIds]);
 
     const eventsLoading = isNil(events);
     const eventsError = isError(events);
