@@ -42,15 +42,7 @@ module ParticipationMethod
       true
     end
 
-    def supports_toxicity_detection?
-      true
-    end
-
     def sign_in_required_for_posting?
-      true
-    end
-
-    def include_data_in_email?
       true
     end
   end

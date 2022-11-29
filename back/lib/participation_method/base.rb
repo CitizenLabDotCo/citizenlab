@@ -78,11 +78,11 @@ module ParticipationMethod
     end
 
     def supports_toxicity_detection?
-      false
+      true
     end
 
     def include_data_in_email?
-      false
+      true
     end
 
     private
