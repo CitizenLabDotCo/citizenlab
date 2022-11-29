@@ -24,6 +24,15 @@ describe('Admin project participation method settings', () => {
     cy.setAdminLoginCookie();
     cy.visit(`admin/projects/${projectIdContinuous}`);
 
+    // Check that participation method warning is present
+    cy.get('#e2e-participation-method-warning').should('exist');
+
+    // Check that native survey radio is disabled
+    cy.get('#participationmethod-native_survey')
+      .siblings()
+      .first()
+      .should('have.class', 'disabled');
+
     // Information
     cy.get('#participationmethod-information').click({ force: true });
     cy.get('.e2e-submit-wrapper-button').find('button').click();

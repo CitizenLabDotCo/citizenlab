@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_07_124858) do
+ActiveRecord::Schema.define(version: 2022_11_10_105544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1134,7 +1134,6 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
 
   create_table "static_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
-    t.jsonb "body_multiloc", default: {}
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1540,17 +1539,6 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
   SQL
-  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
-      SELECT idea_statuses.id,
-      idea_statuses.title_multiloc,
-      idea_statuses.color
-     FROM idea_statuses
-  UNION ALL
-   SELECT initiative_statuses.id,
-      initiative_statuses.title_multiloc,
-      initiative_statuses.color
-     FROM initiative_statuses;
-  SQL
   create_view "analytics_dimension_projects", sql_definition: <<-SQL
       SELECT projects.id,
       projects.title_multiloc
@@ -1576,18 +1564,6 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
              FROM official_feedbacks
             GROUP BY official_feedbacks.post_id) a
     GROUP BY a.post_id;
-  SQL
-  create_view "analytics_dimension_users", sql_definition: <<-SQL
-      SELECT users.id,
-      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role
-     FROM users;
-  SQL
-  create_view "analytics_fact_registrations", sql_definition: <<-SQL
-      SELECT users.id,
-      users.id AS dimension_user_id,
-      (users.registration_completed_at)::date AS dimension_date_registration_id
-     FROM users
-    WHERE (users.registration_completed_at IS NOT NULL);
   SQL
   create_view "analytics_fact_participations", sql_definition: <<-SQL
       SELECT i.id,
@@ -1728,5 +1704,88 @@ ActiveRecord::Schema.define(version: 2022_11_07_124858) do
       ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
      FROM (email_campaigns_deliveries ecd
        JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
+  SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc,
+      idea_statuses.code,
+      idea_statuses.color
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc,
+      initiative_statuses.code,
+      initiative_statuses.color
+     FROM initiative_statuses;
+  SQL
+  create_view "analytics_fact_registrations", sql_definition: <<-SQL
+      SELECT u.id,
+      u.id AS dimension_user_id,
+      (u.registration_completed_at)::date AS dimension_date_registration_id,
+      (i.created_at)::date AS dimension_date_invited_id,
+      (i.accepted_at)::date AS dimension_date_accepted_id
+     FROM (users u
+       LEFT JOIN invites i ON ((i.invitee_id = u.id)));
+  SQL
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+      users.invite_status
+     FROM users;
+  SQL
+  create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
+      WITH last_project_statuses AS (
+           SELECT DISTINCT ON (activities.item_id) activities.item_id AS project_id,
+              activities.action AS status,
+              activities.acted_at AS "timestamp"
+             FROM activities
+            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY ((ARRAY['draft'::character varying, 'published'::character varying, 'archived'::character varying, 'deleted'::character varying])::text[])))
+            ORDER BY activities.item_id, activities.acted_at DESC
+          ), finished_statuses_for_continuous_projects AS (
+           SELECT lps.project_id,
+              'finished'::text AS status,
+              lps."timestamp"
+             FROM (last_project_statuses lps
+               JOIN projects p ON ((lps.project_id = p.id)))
+            WHERE (((p.process_type)::text = 'continuous'::text) AND ((lps.status)::text = 'archived'::text))
+          ), finished_statuses_for_timeline_projects AS (
+           SELECT phases.project_id,
+              'finished'::text AS status,
+              ((max(phases.end_at) + 1))::timestamp without time zone AS "timestamp"
+             FROM (phases
+               JOIN projects ON ((phases.project_id = projects.id)))
+            WHERE ((projects.process_type)::text <> 'draft'::text)
+            GROUP BY phases.project_id
+           HAVING (max(phases.end_at) < now())
+          ), project_statuses AS (
+           SELECT last_project_statuses.project_id,
+              last_project_statuses.status,
+              last_project_statuses."timestamp"
+             FROM last_project_statuses
+          UNION
+           SELECT finished_statuses_for_timeline_projects.project_id,
+              finished_statuses_for_timeline_projects.status,
+              finished_statuses_for_timeline_projects."timestamp"
+             FROM finished_statuses_for_timeline_projects
+          UNION
+           SELECT finished_statuses_for_continuous_projects.project_id,
+              finished_statuses_for_continuous_projects.status,
+              finished_statuses_for_continuous_projects."timestamp"
+             FROM finished_statuses_for_continuous_projects
+          )
+   SELECT project_statuses.project_id AS dimension_project_id,
+      project_statuses.status,
+      project_statuses."timestamp",
+      (project_statuses."timestamp")::date AS dimension_date_id
+     FROM project_statuses
+    ORDER BY project_statuses."timestamp" DESC;
+  SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.created_at)::date AS dimension_date_created_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
   SQL
 end

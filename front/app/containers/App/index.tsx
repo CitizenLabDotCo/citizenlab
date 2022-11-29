@@ -1,12 +1,10 @@
 import { configureScope } from '@sentry/react';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 import 'focus-visible';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-import { has, includes, uniq } from 'lodash-es';
+import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
-import { parse } from 'qs';
 import React, { lazy, PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
 import { combineLatest, Subscription } from 'rxjs';
@@ -14,7 +12,13 @@ import { first, tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { endsWith, isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
+import {
+  endsWith,
+  isDesktop,
+  isNilOrError,
+  isNil,
+  isPage,
+} from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -28,9 +32,8 @@ const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 // components
 import ErrorBoundary from 'components/ErrorBoundary';
-import Outlet from 'components/Outlet';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 import Meta from './Meta';
@@ -53,7 +56,7 @@ import {
   signOutAndDeleteAccount,
 } from 'services/auth';
 import { localeStream } from 'services/locale';
-import { IUser } from 'services/users';
+import { TAuthUser } from 'hooks/useAuthUser';
 
 // resources
 import GetFeatureFlag, {
@@ -64,7 +67,6 @@ import GetWindowSize, {
 } from 'resources/GetWindowSize';
 
 // events
-import { openSignUpInModal$ } from 'components/SignUpIn/events';
 import eventEmitter from 'utils/eventEmitter';
 
 // style
@@ -76,14 +78,24 @@ import { Locale } from 'typings';
 
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 
-const Container = styled.div`
+const Container = styled.div<{
+  disableScroll?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   align-items: stretch;
   position: relative;
   background: #fff;
+
+  // for instances with e.g. a fullscreen modal, we want to
+  // be able to disable scrolling on the page behind the modal
+  ${(props: any) =>
+    props.disableScroll &&
+    `
+      height: 100%;
+      overflow: hidden;
+    `};
 `;
 
 const InnerContainer = styled.div`
@@ -95,10 +107,9 @@ const InnerContainer = styled.div`
   align-items: stretch;
 
   ${media.tablet`
-    padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
-    min-height: calc(100vh - ${(props) =>
-      props.theme.mobileTopBarHeight}px - ${(props) =>
-    props.theme.mobileMenuHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - ${(
+    props
+  ) => props.theme.mobileMenuHeight}px);
   `}
 `;
 
@@ -112,29 +123,25 @@ interface InputProps {}
 
 interface DataProps {
   redirectsEnabled: GetFeatureFlagChildProps;
+  fullscreenModalEnabled: GetFeatureFlagChildProps;
   windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends WithRouterProps, InputProps, DataProps {}
 
-export type TAuthUser = IUser | null | undefined;
-
 interface State {
   previousPathname: string | null;
-  tenant: IAppConfiguration | null;
+  appConfiguration: IAppConfiguration | null;
   authUser: TAuthUser;
   modalId: string | null;
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
-  visible: boolean;
   userDeletedSuccessfullyModalOpened: boolean;
   userSuccessfullyDeleted: boolean;
-  signUpInModalMounted: boolean;
-  verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
   locale: Locale | null;
-  invitationDeclined: boolean;
+  signUpInModalOpened: boolean;
 }
 
 class App extends PureComponent<Props, State> {
@@ -145,20 +152,17 @@ class App extends PureComponent<Props, State> {
     super(props);
     this.state = {
       previousPathname: null,
-      tenant: null,
+      appConfiguration: null,
       authUser: undefined,
       modalId: null,
       modalSlug: null,
       modalType: null,
-      visible: true,
       userDeletedSuccessfullyModalOpened: false,
       userSuccessfullyDeleted: false,
-      signUpInModalMounted: false,
-      verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
       locale: null,
-      invitationDeclined: false,
+      signUpInModalOpened: false,
     };
     this.subscriptions = [];
   }
@@ -223,7 +227,11 @@ class App extends PureComponent<Props, State> {
       ]).subscribe(([authUser, locale, tenant]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
-        this.setState({ tenant, authUser, locale });
+        this.setState({
+          appConfiguration: tenant,
+          authUser: !isNil(authUser) ? authUser.data : null,
+          locale,
+        });
       }),
 
       tenant$.pipe(first()).subscribe((tenant) => {
@@ -304,85 +312,22 @@ class App extends PureComponent<Props, State> {
             }
           });
         }),
-
-      openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
-        // Sometimes we need to still open the sign up/in modal
-        // after login is completed, if registration is not complete.
-        // But in that case, componentDidUpdate is somehow called before
-        // the modal is closed which overwrites the metaData.
-        // This slightly dirty hack covers that case.
-        if (metaData) {
-          return;
-        } else {
-          // if metaData is undefined, it means we're closing
-          // the sign up/in modal.
-          this.setState({ signUpInModalMounted: false });
-          setTimeout(() => {
-            this.forceUpdate();
-          }, 1);
-        }
-      }),
     ];
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { authUser, tenant, signUpInModalMounted, verificationModalMounted } =
-      this.state;
+    const { appConfiguration } = this.state;
     const {
       redirectsEnabled,
-      location: { pathname, search },
+      location: { pathname },
     } = this.props;
 
     if (
       redirectsEnabled &&
-      (prevState.tenant !== tenant || prevProps.location.pathname !== pathname)
+      (prevState.appConfiguration !== appConfiguration ||
+        prevProps.location.pathname !== pathname)
     ) {
       this.handleCustomRedirect();
-    }
-
-    const isAuthError = endsWith(pathname, 'authentication-error');
-    const isInvitation = endsWith(pathname, '/invite');
-    const { invitationDeclined } = this.state;
-
-    openSignUpInModalIfNecessary(
-      authUser,
-      isAuthError,
-      isInvitation && !invitationDeclined,
-      signUpInModalMounted,
-      search
-    );
-
-    // when -both- the authUser is initiated and the verification modal component mounted
-    // we check if a 'verification_success' or 'verification_error' url param is present.
-    // if so, we open the verication modal with the appropriate step
-    if (
-      !isNilOrError(authUser) &&
-      verificationModalMounted &&
-      (prevState.authUser === undefined || !prevState.verificationModalMounted)
-    ) {
-      this.openVerificationModalIfSuccessOrError(search);
-    }
-  }
-
-  openVerificationModalIfSuccessOrError(search: string) {
-    const { location } = this.props;
-    const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
-
-    if (has(urlSearchParams, 'verification_success')) {
-      window.history.replaceState(null, '', window.location.pathname);
-      openVerificationModal({ step: 'success' });
-    }
-
-    if (
-      has(urlSearchParams, 'verification_error') &&
-      urlSearchParams.verification_error === 'true'
-    ) {
-      window.history.replaceState(null, '', window.location.pathname);
-      openVerificationModal({
-        step: 'error',
-        error: location.query?.error || null,
-        context: null,
-      });
     }
   }
 
@@ -395,11 +340,14 @@ class App extends PureComponent<Props, State> {
     const {
       location: { pathname },
     } = this.props;
-    const { tenant } = this.state;
+    const { appConfiguration } = this.state;
     const urlSegments = pathname.replace(/^\/+/g, '').split('/');
 
-    if (!isNilOrError(tenant) && tenant.data.attributes.settings.redirects) {
-      const { rules } = tenant.data.attributes.settings.redirects;
+    if (
+      !isNilOrError(appConfiguration) &&
+      appConfiguration.data.attributes.settings.redirects
+    ) {
+      const { rules } = appConfiguration.data.attributes.settings.redirects;
 
       rules.forEach((rule) => {
         if (
@@ -445,33 +393,24 @@ class App extends PureComponent<Props, State> {
     this.setState({ mobileNavbarRef });
   };
 
-  handleModalMounted = (id: string) => {
-    if (id === 'verification') {
-      this.setState({ verificationModalMounted: true });
-    }
-  };
-
-  handleSignUpInModalMounted = () => {
-    this.setState({ signUpInModalMounted: true });
-  };
-
-  handleDeclineInvitation = () => {
-    this.setState({ invitationDeclined: true });
+  handleSignUpInModalOpened = (isOpened: boolean) => {
+    this.setState({ signUpInModalOpened: isOpened });
   };
 
   render() {
-    const { location, children, windowSize } = this.props;
+    const { location, children, windowSize, fullscreenModalEnabled } =
+      this.props;
     const {
       previousPathname,
-      tenant,
+      appConfiguration,
       modalId,
       modalSlug,
       modalType,
-      visible,
       userDeletedSuccessfullyModalOpened,
       userSuccessfullyDeleted,
       navbarRef,
       mobileNavbarRef,
+      signUpInModalOpened,
     } = this.state;
 
     const isAdminPage = isPage('admin', location.pathname);
@@ -480,7 +419,10 @@ class App extends PureComponent<Props, State> {
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isDesktopUser = windowSize && isDesktop(windowSize);
-    const theme = getTheme(tenant);
+    const fullScreenModalEnabledAndOpen =
+      fullscreenModalEnabled && signUpInModalOpened;
+
+    const theme = getTheme(appConfiguration);
     const showFooter =
       !isAdminPage &&
       !isIdeaFormPage &&
@@ -495,20 +437,26 @@ class App extends PureComponent<Props, State> {
       !isIdeaEditPage &&
       !isInitiativeEditPage;
     const { pathname } = removeLocale(location.pathname);
+
     return (
       <>
-        {tenant && visible && (
+        {appConfiguration && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider
               theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
             >
               <GlobalStyle />
-
-              <Container>
+              <Container
+                // when the fullscreen modal is enabled on a platform and
+                // is currently open, we want to disable scrolling on the
+                // app sitting below it (CL-1101)
+                disableScroll={fullscreenModalEnabled && signUpInModalOpened}
+              >
                 <Meta />
                 <ErrorBoundary>
                   <Suspense fallback={null}>
                     <PostPageFullscreenModal
+                      signUpInModalOpened={signUpInModalOpened}
                       type={modalType}
                       postId={modalId}
                       slug={modalSlug}
@@ -528,15 +476,11 @@ class App extends PureComponent<Props, State> {
                   </Suspense>
                 </ErrorBoundary>
                 <ErrorBoundary>
-                  <SignUpInModal
-                    onMounted={this.handleSignUpInModalMounted}
-                    onDeclineInvitation={this.handleDeclineInvitation}
+                  <Authentication
+                    authUser={this.state.authUser}
+                    onModalOpenedStateChange={this.handleSignUpInModalOpened}
                   />
                 </ErrorBoundary>
-                <Outlet
-                  id="app.containers.App.modals"
-                  onMounted={this.handleModalMounted}
-                />
                 <ErrorBoundary>
                   <div id="modal-portal" />
                 </ErrorBoundary>
@@ -570,7 +514,7 @@ class App extends PureComponent<Props, State> {
                     <PlatformFooter />
                   </Suspense>
                 )}
-                {showMobileNav && (
+                {showMobileNav && !fullScreenModalEnabledAndOpen && (
                   <MobileNavbar setRef={this.setMobileNavigationRef} />
                 )}
                 <ErrorBoundary>
@@ -588,6 +532,8 @@ class App extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
+  // CL-1101, FranceConnect platforms have full screen login experience
+  fullscreenModalEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 const AppWithHoC = withRouter(App);

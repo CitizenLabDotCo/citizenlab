@@ -10,7 +10,17 @@
         "type": "object",
         "title": "Core system",
         "description": "The container for general settings. The core system should always be enabled.",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
+        "required-settings": [
+          "organization_type",
+          "timezone",
+          "currency",
+          "locales",
+          "color_main",
+          "color_secondary",
+          "color_text",
+          "lifecycle_stage",
+          "authentication_token_lifetime_in_days"
+        ],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
@@ -163,6 +173,14 @@
             "type": "string",
             "format": "email",
             "default": "support@citizenlab.co"
+          },
+          "authentication_token_lifetime_in_days": {
+            "title": "Authentication token lifetime in days",
+            "description": "How many days before an authentication token (a user session) is expired.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "default": 30
           }
         }
       },
@@ -199,6 +217,29 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_management": {
+        "type": "object",
+        "title": "Project Managers",
+        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+      "project_folders": {
+        "type": "object",
+        "title": "Project Folders",
+        "description": "Allow project folders.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1021,24 +1062,6 @@
       "additionalProperties": false,
       "properties": {
         <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
-      }
-    },
-    "customized_button": {
-      "type": "object",
-      "title": "Customized button",
-      "description": "Configure the customized button.",
-      "additionalProperties": false,
-      "properties": {
-        "text": {
-          "title": "Button text",
-          "description": "The text of the button.",
-          "allOf": [{"$ref": "#/definitions/multiloc_string"}]
-        },
-        "url": {
-          "type": "string",
-          "title": "Button URL",
-          "description": "The URL of the button."
-        }
       }
     }
   }

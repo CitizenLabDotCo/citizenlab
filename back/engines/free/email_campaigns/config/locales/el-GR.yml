@@ -1,7 +1,7 @@
 el:
   email_campaigns:
     campaign_type_description:
-      "manual": Official messages
+      "manual": Επίσημα μηνύματα
       "admin_rights_received": Admin rights received
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
@@ -30,7 +30,7 @@ el:
       "official_feedback_on_voted_initiative": Update on a proposal I voted on
       "official_feedback_on_your_idea": Update on my idea
       "official_feedback_on_your_initiative": Update on my proposal
-      "password_reset": Password reset
+      "password_reset": Επαναφορά κωδικού πρόσβασης
       "project_moderation_rights_received": Project moderation rights received
       "project_folder_moderation_rights_received": Folder manager rights received
       "project_phase_started": New project phase
@@ -101,7 +101,7 @@ el:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
-      "powered_by": "Powered by"
+      "powered_by": "Υποστηρίζεται από"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
     comment_deleted_by_admin:
@@ -176,8 +176,8 @@ el:
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
-      idea_section: Ideas
-      initiative_section: Proposals
+      idea_section: Ιδέες
+      initiative_section: Προτάσεις
       title_initiatives_past_week: 'New proposals assigned to you'
       title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:

@@ -3,12 +3,18 @@
 module Analytics
   class Query
     MODELS = {
-      post: FactPost,
+      email_delivery: FactEmailDelivery,
+      event: FactEvent,
       participation: FactParticipation,
-      visit: FactVisit,
+      post: FactPost,
+      project_status: FactProjectStatus,
       registration: FactRegistration,
-      email_delivery: FactEmailDelivery
+      visit: FactVisit
     }.freeze
+
+    def self.fact_names
+      MODELS.keys.map(&:to_s)
+    end
 
     def initialize(query)
       @json_query = query
@@ -50,23 +56,7 @@ module Analytics
     end
 
     def fact_attributes
-      model_attributes = model
-        .columns_hash
-        .transform_values(&:type)
-
-      associations = model
-        .reflect_on_all_associations
-        .map do |assoc|
-          fields = assoc.options[:class_name].constantize.columns_hash.to_h do |k, v|
-            [
-              "#{assoc.name}.#{k}",
-              v.type
-            ]
-          end
-          fields
-        end.reduce({}, :merge)
-
-      @fact_attributes ||= associations.merge(model_attributes)
+      @fact_attributes ||= calculate_fact_attributes
     end
 
     def dimensions
@@ -153,6 +143,20 @@ module Analytics
       @aggregations_names ||= aggregations.map do |field, aggregation|
         aggregation_alias(field, aggregation)
       end
+    end
+
+    private
+
+    def calculate_fact_attributes
+      model_attributes = model.columns_hash.transform_values(&:type)
+
+      associations_attributes = model.reflect_on_all_associations.map do |assoc|
+        assoc.klass.columns_hash.to_h do |column_name, column|
+          ["#{assoc.name}.#{column_name}", column.type]
+        end
+      end.reduce(:merge)
+
+      associations_attributes.merge(model_attributes)
     end
   end
 end

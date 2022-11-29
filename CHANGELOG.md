@@ -1,8 +1,89 @@
 # Changelog
 
+## 2022-11-29
+
+### Fixed
+
+- [CL-1845] The responsiveness of the signed-in banner got fixed.
+
+## 2022-11-28
+
+### Fixed
+
+- Verification during sign up is fixed.
+
+## 2022-11-25
+
+### Added
+
+- [CL-1483] Add “Remember me” checkbox to login form to not persist cookies
+
+## 2022-11-24
+
+### Added
+
+- [CL-1483] Let tenants configure their Authentication token lifetime
+
+## 2022-11-22
+
+### Added
+
+- [CL-573] The proposals feature toggle in the admin settings.
+
+### Fixed
+
+- [CL-2076] When a user needs to verify before assigning an idea to their participatory budget basket, they now see the right verification modal, not the sign up modal.
+
+## 2022-11-18
+
+### Fixed
+
+- [CL-2052] Fix Sentry error related to failed authentication
+- [CL-2030] Vienna SSO UI & UX changes
+- [CL-2053] Minor color fixes
+
+## 2022-11-16
+
+### Fixed
+
+- [CL-1763] Norwegian translations of navbar & default pages now applied
+- [CL-2036] Fixed new vs returning visitors Matomo import
+
+## 2022-11-14
+
+### Fixed
+
+- [CL-1811] Correct copy for Oostende verification tooltip
+
+## 2022-11-11
+
+### Changed
+
+- [CL-1839] Merge FranceConnect account based on names
+
+## 2022-11-10
+
+### Changed
+
+- [CL-1101] Make the login and signup flows fullscreen for platforms with FranceConnect login enabled
+
+## 2022-11-08
+
+### Changed
+
+- [CL-1776] Remove feedback icon in Bottom Right
+
+### Added
+
+- Added support for Balancing Act embed in content builder
+
+### Fixed
+
+- [CL-1923] Disabled switching from existing participation method to in-platform survey. Warning message added for additional clarity.
+
 ## 2022-11-04
 
-#### Fixed
+### Fixed
 
 - [CL-1817] Show 'page not found' on initiatives routes if initiatives are disabled
 

@@ -154,9 +154,7 @@ describe('Admin: update Hero Banner content', () => {
 
     // check that the data we entered earlier is persisted in the form
     // layout chooser
-    cy.get('[data-cy="e2e-two-column-layout-option"]')
-      .find('label')
-      .should('have.class', 'enabled');
+    cy.get('#banner-two-column-layout').should('have.attr', 'checked');
 
     // signed-out header and subheader
     cy.get('[data-cy="e2e-signed-out-header-section"]')

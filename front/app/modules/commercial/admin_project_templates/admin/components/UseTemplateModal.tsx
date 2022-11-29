@@ -18,11 +18,11 @@ import { client } from '../../utils/apolloUtils';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useAuthUser from 'hooks/useAuthUser';
-import { useProjectFolders } from 'modules/commercial/project_folders/hooks';
+import useProjectFolders from 'hooks/useProjectFolders';
 import {
   userModeratesFolder,
   isProjectFolderModerator,
-} from 'modules/commercial/project_folders/permissions/roles';
+} from 'services/permissions/rules/projectFolderPermissions';
 import { isAdmin } from 'services/permissions/roles';
 import useLocalize from 'hooks/useLocalize';
 

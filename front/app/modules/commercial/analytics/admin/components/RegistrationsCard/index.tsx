@@ -12,28 +12,27 @@ import Chart from './Chart';
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
+import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { BOTTOM_LABEL_COPY } from '../VisitorsCard/VisitorStats';
 import { emptyStatsData } from './generateEmptyData';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { ProjectId, Dates, Resolution, Layout } from '../../typings';
 
-interface Props {
-  projectFilter?: string;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  resolution: IResolution;
-}
+type Props = ProjectId &
+  Dates &
+  Resolution & {
+    layout?: Layout;
+  };
 
 const RegistrationsCard = ({
-  projectFilter,
+  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
+  layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -50,9 +49,12 @@ const RegistrationsCard = ({
   const cardTitle = formatMessage(messages.registrations);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
-  const bottomLabel = formatMessage(BOTTOM_LABEL_COPY[resolution]);
+  const bottomLabel = getTimePeriodTranslationByResolution(
+    formatMessage,
+    resolution
+  );
 
-  const shownStatsData = projectFilter ? emptyStatsData : stats;
+  const shownStatsData = projectId ? emptyStatsData : stats;
 
   return (
     <GraphCard
@@ -66,33 +68,64 @@ const RegistrationsCard = ({
         resolution: deducedResolution,
       }}
     >
-      <Box px="20px" display="flex" flexDirection="row">
-        <Box width="initial">
-          <Statistic
-            name={formatMessage(messages.totalRegistrations)}
-            value={shownStatsData.registrations.value}
-            bottomLabel={bottomLabel}
-            bottomLabelValue={shownStatsData.registrations.lastPeriod}
-          />
-          <Box mt="32px">
+      <Box display="flex" flexDirection={layout === 'wide' ? 'row' : 'column'}>
+        <Box
+          width="initial"
+          display="flex"
+          pl="20px"
+          flexDirection={layout === 'narrow' ? 'row' : 'column'}
+        >
+          <Box width={layout === 'narrow' ? '50%' : undefined}>
             <Statistic
-              name={formatMessage(messages.conversionRate)}
-              value={shownStatsData.conversionRate.value}
+              name={formatMessage(messages.totalRegistrations)}
+              value={shownStatsData.registrations.value}
               bottomLabel={bottomLabel}
-              bottomLabelValue={shownStatsData.conversionRate.lastPeriod}
+              bottomLabelValue={shownStatsData.registrations.lastPeriod}
+            />
+          </Box>
+          <Box
+            mt={layout === 'wide' ? '32px' : 'auto'}
+            ml={layout === 'narrow' ? '32px' : 'auto'}
+            width={layout === 'narrow' ? '50%' : 'auto'}
+          >
+            <Statistic
+              name={formatMessage(messages.registrationRate)}
+              tooltipContent={formatMessage(messages.registrationRateTooltip)}
+              value={shownStatsData.registrationRate.value}
+              bottomLabel={bottomLabel}
+              bottomLabelValue={shownStatsData.registrationRate.lastPeriod}
             />
           </Box>
         </Box>
-        <Box flexGrow={1} display="flex" justifyContent="flex-end">
-          <Chart
-            timeSeries={timeSeries}
-            projectFilter={projectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={deducedResolution}
-            innerRef={graphRef}
-          />
-        </Box>
+        {layout === 'wide' && (
+          <Box flexGrow={1} display="flex" justifyContent="flex-end" pr="20px">
+            <Box pt="8px" height="250px" width="95%" maxWidth="800px" mt="-1px">
+              <Chart
+                timeSeries={timeSeries}
+                projectId={projectId}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={deducedResolution}
+                innerRef={graphRef}
+                layout={layout}
+              />
+            </Box>
+          </Box>
+        )}
+
+        {layout === 'narrow' && (
+          <Box width="100%" height="250px" mt="30px">
+            <Chart
+              timeSeries={timeSeries}
+              projectId={projectId}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={deducedResolution}
+              innerRef={graphRef}
+              layout={layout}
+            />
+          </Box>
+        )}
       </Box>
     </GraphCard>
   );

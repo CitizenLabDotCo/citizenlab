@@ -7,7 +7,7 @@ import useHomepageSettings from 'hooks/useHomepageSettings';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // style
 import styled from 'styled-components';

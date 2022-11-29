@@ -20,11 +20,12 @@ import { trackPage } from 'utils/analytics';
 // styling
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
-const Container = styled.div<{ windowHeight: string }>`
+const Container = styled.div<{ windowHeight: string; zIndex?: number }>`
   width: 100vw;
   height: ${(props) =>
     `calc(${props.windowHeight} - ${props.theme.menuHeight}px)`};
@@ -34,7 +35,7 @@ const Container = styled.div<{ windowHeight: string }>`
   display: flex;
   overflow: hidden;
   background: #fff;
-  z-index: 1003;
+  z-index: ${({ zIndex }) => (!zIndex ? '1003' : zIndex.toString())};
 
   &.modal-enter {
     transform: translateY(100vh);
@@ -95,6 +96,8 @@ interface InputProps {
   mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
   modalPortalElement?: HTMLElement;
+  disableFocusOn?: boolean;
+  zIndex?: number;
 }
 
 interface DataProps {
@@ -211,6 +214,8 @@ class FullscreenModal extends PureComponent<Props, State> {
       navbarRef,
       mobileNavbarRef,
       className,
+      disableFocusOn,
+      zIndex,
     } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement =
@@ -223,14 +228,30 @@ class FullscreenModal extends PureComponent<Props, State> {
           id="e2e-fullscreenmodal-content"
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
           windowHeight={windowHeight}
+          zIndex={zIndex}
         >
-          <StyledFocusOn autoFocus={false} shards={shards}>
-            {topBar}
-            <Content className="fullscreenmodal-scrollcontainer">
-              {children}
-            </Content>
-            {bottomBar}
-          </StyledFocusOn>
+          {disableFocusOn ? (
+            <Box
+              flex="1"
+              display="flex"
+              flexDirection="column"
+              alignItems="stretch"
+            >
+              {topBar}
+              <Content className="fullscreenmodal-scrollcontainer">
+                {children}
+              </Content>
+              {bottomBar}
+            </Box>
+          ) : (
+            <StyledFocusOn autoFocus={false} shards={shards}>
+              {topBar}
+              <Content className="fullscreenmodal-scrollcontainer">
+                {children}
+              </Content>
+              {bottomBar}
+            </StyledFocusOn>
+          )}
         </Container>
       );
     }
