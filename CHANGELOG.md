@@ -1,12 +1,33 @@
 # Changelog
 
+
 ### Changed
 
 - [CL-2109] Events display on Project page now matches the Events page. I.e. Events on Project page now displayed under "Current" and "Past" headers, and nearest event is displayed at the top of the list.
 
+## 2022-11-29
+
+### Fixed
+
+- [CL-1845] The responsiveness of the signed-in banner got fixed.
+
+## 2022-11-28
+
+### Fixed
+
+- Verification during sign up is fixed.
+
+## 2022-11-25
+
 ### Added
 
 - [CL-1483] Add “Remember me” checkbox to login form to not persist cookies
+
+## 2022-11-24
+
+### Added
+
+- [CL-1483] Let tenants configure their Authentication token lifetime
 
 ## 2022-11-22
 
@@ -17,10 +38,6 @@
 ### Fixed
 
 - [CL-2076] When a user needs to verify before assigning an idea to their participatory budget basket, they now see the right verification modal, not the sign up modal.
-
-### Added
-
-- [CL-1483] Let tenants configure their Authentication token lifetime
 
 ## 2022-11-18
 
