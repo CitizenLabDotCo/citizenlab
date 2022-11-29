@@ -51,7 +51,7 @@ export default function useAdminPublicationsStatusCounts({
     if (areaFilter !== undefined) {
       setAreas(areaFilter);
     }
-  }, [JSON.stringify(areaFilter)]);
+  }, [areaFilter]);
 
   const onChangeTopics = useCallback((topics: string[]) => {
     topics.length === 0 ? setTopics(null) : setTopics(topics);
