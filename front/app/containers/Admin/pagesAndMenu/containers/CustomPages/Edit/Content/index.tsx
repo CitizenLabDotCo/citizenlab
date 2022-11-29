@@ -48,6 +48,10 @@ const CustomPagesEditContent = () => {
     return null;
   }
 
+  const hideProjects =
+    !advancedCustomPagesEnabled ||
+    customPage.attributes.projects_filter_type === 'no_filter';
+
   const sectionTogglesData: TCustomPageSectionToggleData[] = [
     {
       name: 'banner_enabled',
@@ -71,13 +75,13 @@ const CustomPagesEditContent = () => {
       name: 'projects_enabled',
       titleMessageDescriptor: sectionToggleMessages.projectsList,
       tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
-      hideSection: !advancedCustomPagesEnabled,
+      hideSection: hideProjects,
     },
     {
       name: 'events_widget_enabled',
       titleMessageDescriptor: sectionToggleMessages.eventsList,
       tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
-      hideSection: !advancedCustomPagesEnabled,
+      hideSection: hideProjects,
     },
     {
       name: 'bottom_info_section_enabled',
