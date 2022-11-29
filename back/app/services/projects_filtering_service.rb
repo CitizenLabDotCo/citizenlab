@@ -35,6 +35,15 @@ class ProjectsFilteringService
     keep_ids = options[:filter_ids]
     keep_ids ? scope.where(id: keep_ids) : scope
   end
-end
 
-ProjectsFilteringService.include_if_ee('ProjectManagement::Patches::ProjectsFilteringService')
+  add_filter('by_moderator') do |scope, options|
+    next scope unless options.key? :moderator
+
+    moderator = options[:moderator] # nil means the user is not logged in
+    if moderator
+      ::UserRoleService.new.moderatable_projects moderator, scope
+    else
+      scope.none
+    end
+  end
+end

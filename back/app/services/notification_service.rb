@@ -20,6 +20,7 @@ class NotificationService
     Notifications::OfficialFeedbackOnVotedInitiative,
     Notifications::OfficialFeedbackOnYourIdea,
     Notifications::OfficialFeedbackOnYourInitiative,
+    Notifications::ProjectFolderModerationRightsReceived,
     Notifications::ProjectModerationRightsReceived,
     Notifications::ProjectPhaseStarted,
     Notifications::ProjectPhaseUpcoming,
@@ -52,4 +53,3 @@ end
 
 NotificationService.prepend_if_ee('FlagInappropriateContent::Patches::NotificationService')
 NotificationService.prepend_if_ee('IdeaAssignment::Patches::NotificationService')
-NotificationService.prepend_if_ee('ProjectFolders::Patches::NotificationService')
