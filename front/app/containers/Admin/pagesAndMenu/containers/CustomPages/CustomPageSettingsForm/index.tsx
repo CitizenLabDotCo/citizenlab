@@ -112,6 +112,7 @@ const CustomPageSettingsForm = ({
   });
 
   const slug = methods.watch('slug');
+  const slugHasChanged = slug !== defaultValues?.slug;
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -198,7 +199,11 @@ const CustomPageSettingsForm = ({
               </Box>
             )}
             {mode === 'edit' && (
-              <SlugInput slug={slug} pathnameWithoutSlug="pages" />
+              <SlugInput
+                slug={slug}
+                pathnameWithoutSlug="pages"
+                showWarningMessage={slugHasChanged}
+              />
             )}
             {advancedCustomPagesEnabled && (
               <Box>

@@ -11,9 +11,14 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 interface Props {
   slug?: string;
   pathnameWithoutSlug: string;
+  showWarningMessage?: boolean;
 }
 
-const SlugInput = ({ slug, pathnameWithoutSlug }: Props) => {
+const SlugInput = ({
+  slug,
+  pathnameWithoutSlug,
+  showWarningMessage,
+}: Props) => {
   const appConfig = useAppConfiguration();
   const locale = useLocale();
 
@@ -24,11 +29,13 @@ const SlugInput = ({ slug, pathnameWithoutSlug }: Props) => {
 
     return (
       <>
-        <Box mb="16px">
-          <Warning>
-            <FormattedMessage {...messages.brokenURLWarning} />
-          </Warning>
-        </Box>
+        {showWarningMessage && (
+          <Box mb="16px">
+            <Warning>
+              <FormattedMessage {...messages.brokenURLWarning} />
+            </Warning>
+          </Box>
+        )}
         <Input
           label={<FormattedMessage {...messages.pageUrl} />}
           labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
