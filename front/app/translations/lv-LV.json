@@ -1255,6 +1255,7 @@
   "app.containers.SignUp.viennaConsentHeader": "Tiks pārraidīti šādi dati:",
   "app.containers.SignUp.viennaConsentLastName": "Uzvārds",
   "app.containers.SignUp.viennaConsentUserName": "Lietotājvārds",
+  "app.containers.SignUp.viennaThePrivacyPolicy": "privātuma politika",
   "app.containers.SignUp.whatIsFranceConnect": "Kas ir FranceConnect?",
   "app.containers.SiteMap.contributions": "Ieguldījumi",
   "app.containers.SiteMap.issues": "Komentāri",

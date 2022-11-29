@@ -105,7 +105,7 @@ const Consent = memo(
               values={{
                 link: (
                   <Link target="_blank" to="/pages/privacy-policy">
-                    <FormattedMessage {...messages.viennaThePrivacyPolicy} />
+                    <FormattedMessage {...messages.viennaDataProtection} />
                   </Link>
                 ),
               }}
