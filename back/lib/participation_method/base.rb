@@ -77,6 +77,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_toxicity_detection?
+      false
+    end
+
     private
 
     attr_reader :participation_context
