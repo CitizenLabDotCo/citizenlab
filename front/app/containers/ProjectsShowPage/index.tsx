@@ -13,7 +13,13 @@ import ContinuousSurvey from './continuous/Survey';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
-import { Box, Spinner, Title, Image } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  Image,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import Modal from 'components/UI/Modal';
 
@@ -89,6 +95,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ? project.attributes.process_type
     : undefined;
 
+  const smallerThanMinTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
@@ -204,6 +211,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           mx="auto"
           my="48px"
           maxWidth="1166px"
+          padding={smallerThanMinTablet ? '20px' : '0px'}
         >
           <EventsViewer
             projectIds={[projectId]}
