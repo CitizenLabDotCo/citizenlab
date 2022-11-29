@@ -1262,6 +1262,7 @@
   "app.containers.SignUp.viennaConsentHeader": "سيتم إرسال البيانات التالية:",
   "app.containers.SignUp.viennaConsentLastName": "اسم العائلة",
   "app.containers.SignUp.viennaConsentUserName": "اسم المستخدم",
+  "app.containers.SignUp.viennaDataProtection": "the vienna privacy policy",
   "app.containers.SignUp.whatIsFranceConnect": "ما هي خدمة FranceConnect؟",
   "app.containers.SiteMap.contributions": "المُساهمات",
   "app.containers.SiteMap.issues": "التعليقات",
