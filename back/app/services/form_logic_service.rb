@@ -28,58 +28,7 @@ class FormLogicService
 
   def valid?
     fields.all? do |field|
-      unless valid_structure? field.logic
-        field.errors.add(:logic, :invalid_structure, message: 'has invalid structure')
-        next false
-      end
-      next true if field.logic.blank?
-
-      if field.page?
-        field.errors.add(
-          :logic,
-          :page_not_allowed_as_source,
-          message: 'is not allowed on pages'
-        )
-        next false
-      end
-
-      field.logic['rules'].all? do |rule|
-        next true if rule.key? 'goto' # Value for `goto` has already been checked in `valid_structure?`
-
-        target_id = rule['goto_page_id'] # Present because we passed the `valid_structure?` check.
-
-        # Order is important here, because `target_after_source?` and `target_is_page?`
-        # rely on `valid_target_id?` to return true. In those methods,
-        # `field_index[target_id]` will always return a field.
-        unless valid_target_id?(target_id)
-          field.errors.add(
-            :logic,
-            :invalid_goto_page_id,
-            message: 'has invalid goto_page_id',
-            value: target_id
-          )
-          next false
-        end
-        unless target_after_source?(target_id, field)
-          field.errors.add(
-            :logic,
-            :target_before_source_not_allowed,
-            message: 'has target before source',
-            value: target_id
-          )
-          next false
-        end
-
-        next true if target_is_page?(target_id)
-
-        field.errors.add(
-          :logic,
-          :only_page_allowed_as_target,
-          message: 'has target that is not a page',
-          value: target_id
-        )
-        false
-      end
+      no_logic?(field) || (valid_structure?(field) && valid_source?(field) && valid_rules?(field))
     end
   end
 
@@ -87,27 +36,102 @@ class FormLogicService
 
   attr_reader :fields, :field_index
 
-  def valid_structure?(logic)
-    return true if logic == {}
-    return false unless logic.keys == ['rules']
+  def no_logic?(field)
+    field.logic == {}
+  end
 
-    logic['rules'].all? do |rule|
-      rule.keys == %w[if goto_page_id] || (rule.keys == %w[if goto] && rule['goto'] == 'end_page')
+  def valid_structure?(field)
+    logic = field.logic
+    if logic.keys == ['rules']
+      all_rules_are_valid = logic['rules'].all? do |rule|
+        rule.keys == %w[if goto_page_id] || (rule.keys == %w[if goto] && rule['goto'] == 'end_page')
+      end
+      return true if all_rules_are_valid
+    end
+    add_invalid_structure_error(field)
+    false
+  end
+
+  def valid_source?(field)
+    return true unless field.page?
+
+    add_page_not_allowed_as_source_error(field)
+    false
+  end
+
+  def valid_rules?(field)
+    field.logic['rules'].all? do |rule|
+      next true if rule.key? 'goto' # Value for `goto` has already been checked in `valid_structure?`
+
+      target_id = rule['goto_page_id'] # Present because we passed the `valid_structure?` check.
+
+      # Order is important here, because `target_after_source?` and `target_is_page?`
+      # rely on `valid_target_id?` to return true. In those methods,
+      # `field_index[target_id]` will always return a field.
+      valid_target_id?(target_id, field) && target_after_source?(target_id, field) && target_is_page?(target_id, field)
     end
   end
 
-  def valid_target_id?(target_id)
-    field_index.key? target_id
+  def valid_target_id?(target_id, field)
+    return true if field_index.key? target_id
+
+    add_invalid_goto_page_id_error(field, target_id)
+    false
   end
 
   def target_after_source?(target_id, source_field)
     target_field = field_index[target_id]
-    target_field.ordering > source_field.ordering
+    return true if target_field.ordering > source_field.ordering
+
+    add_target_before_source_not_allowed_error(source_field, target_id)
+    false
   end
 
-  def target_is_page?(target_id)
+  def target_is_page?(target_id, field)
     target_field = field_index[target_id]
-    target_field.page?
+    return true if target_field.page?
+
+    add_only_page_allowed_as_target_error(field, target_id)
+    false
+  end
+
+  def add_invalid_structure_error(field)
+    field.errors.add(:logic, :invalid_structure, message: 'has invalid structure')
+  end
+
+  def add_page_not_allowed_as_source_error(field)
+    field.errors.add(
+      :logic,
+      :page_not_allowed_as_source,
+      message: 'is not allowed on pages'
+    )
+  end
+
+  def add_invalid_goto_page_id_error(field, target_id)
+    field.errors.add(
+      :logic,
+      :invalid_goto_page_id,
+      message: 'has invalid goto_page_id',
+      value: target_id
+    )
+  end
+
+  def add_target_before_source_not_allowed_error(field, target_id)
+    field.errors.add(
+      :logic,
+      :target_before_source_not_allowed,
+      message: 'has target before source',
+      value: target_id
+    )
+  end
+
+  def add_only_page_allowed_as_target_error(field, target_id)
+    field.errors.add(
+      :logic,
+      :only_page_allowed_as_target,
+      message: 'has target that is not a page',
+      value: target_id
+    )
   end
 
   def ui_schema_hide_rule_for(field, value)
