@@ -40,6 +40,7 @@ interface Props {
   className?: string;
   projectIds?: string[];
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
+  hideSectionIfNoEvents?: boolean;
 }
 
 const EventsViewer = memo<Props>(
@@ -50,6 +51,7 @@ const EventsViewer = memo<Props>(
     className,
     projectIds,
     onClickTitleGoToProjectAndScrollToEvent,
+    hideSectionIfNoEvents,
   }) => {
     const {
       events,
@@ -68,46 +70,58 @@ const EventsViewer = memo<Props>(
     const eventsLoading = isNil(events);
     const eventsError = isError(events);
 
-    return (
-      <div className={className}>
-        <TopBar title={title} setProjectIds={onProjectIdsChange} />
+    const shouldHideSection =
+      (!isNilOrError(events) && events.length === 0 && hideSectionIfNoEvents) ||
+      (eventsLoading && hideSectionIfNoEvents) ||
+      (isNilOrError(events) && hideSectionIfNoEvents);
 
-        {eventsError && (
-          <EventsMessage message={messages.errorWhenFetchingEvents} />
-        )}
-        {eventsLoading && <EventsSpinner />}
+    if (shouldHideSection) {
+      return null;
+    } else {
+      return (
+        <div className={className}>
+          <TopBar title={title} setProjectIds={onProjectIdsChange} />
 
-        {!isNilOrError(events) && (
-          <>
-            {events.length > 0 &&
-              events.map((event, i) => (
-                <StyledEventCard
-                  id={event.id}
-                  event={event}
-                  showProjectTitle
-                  onClickTitleGoToProjectAndScrollToEvent={
-                    onClickTitleGoToProjectAndScrollToEvent
-                  }
-                  showLocation
-                  showDescription
-                  showAttachments
-                  last={events.length - 1 === i}
-                  key={event.id}
-                />
-              ))}
+          {eventsError && (
+            <EventsMessage message={messages.errorWhenFetchingEvents} />
+          )}
 
-            {events.length === 0 && <EventsMessage message={fallbackMessage} />}
+          {eventsLoading && <EventsSpinner />}
 
-            <StyledPagination
-              currentPage={currentPage}
-              totalPages={lastPage}
-              loadPage={onCurrentPageChange}
-              useColorsTheme
-            />
-          </>
-        )}
-      </div>
-    );
+          {!isNilOrError(events) && (
+            <>
+              {events.length > 0 &&
+                events.map((event, i) => (
+                  <StyledEventCard
+                    id={event.id}
+                    event={event}
+                    showProjectTitle
+                    onClickTitleGoToProjectAndScrollToEvent={
+                      onClickTitleGoToProjectAndScrollToEvent
+                    }
+                    showLocation
+                    showDescription
+                    showAttachments
+                    last={events.length - 1 === i}
+                    key={event.id}
+                  />
+                ))}
+
+              {events.length === 0 && (
+                <EventsMessage message={fallbackMessage} />
+              )}
+
+              <StyledPagination
+                currentPage={currentPage}
+                totalPages={lastPage}
+                loadPage={onCurrentPageChange}
+                useColorsTheme
+              />
+            </>
+          )}
+        </div>
+      );
+    }
   }
 );
 

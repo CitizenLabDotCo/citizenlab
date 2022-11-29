@@ -220,6 +220,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
             title={formatMessage(messages.upcomingAndOngoingEvents)}
             fallbackMessage={messages.noUpcomingOrOngoingEvents}
             onClickTitleGoToProjectAndScrollToEvent={false}
+            hideSectionIfNoEvents={true}
           />
           <EventsViewer
             projectIds={[projectId]}
@@ -227,6 +228,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
             title={formatMessage(messages.pastEvents)}
             fallbackMessage={messages.noPastEvents}
             onClickTitleGoToProjectAndScrollToEvent={false}
+            hideSectionIfNoEvents={true}
           />
         </Box>
         <Modal
