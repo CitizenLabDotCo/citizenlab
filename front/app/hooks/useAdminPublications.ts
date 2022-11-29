@@ -9,6 +9,7 @@ import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
+import { useDeepCompareEffect } from 'react-use';
 
 export interface BaseProps {
   // to rename
@@ -91,13 +92,12 @@ export default function useAdminPublications({
   // In fact, we should have a useEffect for each
   // parameter, but others are hard-coded (not waiting for requests),
   // which is why they're not problematic.
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (topicFilter !== undefined) {
       setTopics(topicFilter);
     }
-  }, [JSON.stringify(topicFilter)]);
-
-  useEffect(() => {
+  }, [topicFilter]);
+  useDeepCompareEffect(() => {
     if (areaFilter !== undefined) {
       setAreas(areaFilter);
     }

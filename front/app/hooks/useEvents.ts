@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
 import { PublicationStatus } from 'services/projects';
-
+import { useDeepCompareEffect } from 'react-use';
 type sort = 'newest' | 'oldest';
 
 interface InputParameters {
@@ -35,11 +35,11 @@ export default function useEvents(parameters: InputParameters) {
   const [lastPage, setLastPage] = useState(1);
   const [pageSize] = useState(parameters.pageSize ?? DEFAULT_PAGE_SIZE);
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (parameters.projectIds) {
       setProjectIds(parameters.projectIds);
     }
-  }, [JSON.stringify(parameters.projectIds)]);
+  }, [parameters.projectIds]);
 
   const onProjectIdsChange = (projectIds: string[]) => {
     setProjectIds([...projectIds]);
