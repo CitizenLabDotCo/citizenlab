@@ -130,12 +130,15 @@ const FormFields = ({
                     ml={field.input_type === 'page' ? '8px' : '32px'}
                   >
                     <Box display="flex" alignItems="center">
-                      <Icon
-                        ml="28px"
-                        width="12px"
-                        fill={getIndexTitleColor(selectedFieldId, field)}
-                        name="sort"
-                      />
+                      <Box flexGrow={0} flexShrink={0}>
+                        <Icon
+                          ml="28px"
+                          width="12px"
+                          fill={getIndexTitleColor(selectedFieldId, field)}
+                          name="sort"
+                        />
+                      </Box>
+
                       <Text
                         as="span"
                         color={getIndexTitleColor(selectedFieldId, field)}
