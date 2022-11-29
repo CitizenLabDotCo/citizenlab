@@ -16,7 +16,7 @@ export const Container = styled.div`
 export const Header = styled.div`
   width: 100%;
   max-width: 1150px;
-  min-height: 275px;
+  min-height: 225px;
   margin: 0 auto;
   padding: 0;
   position: relative;
