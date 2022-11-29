@@ -19,6 +19,7 @@ import {
 
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -32,13 +33,17 @@ export type TCustomPageSectionToggleData = {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   linkToPath?: string;
-  hideToggle?: boolean;
+  hideSection?: boolean;
+  disabled?: boolean;
 };
 
 // types
 const CustomPagesEditContent = () => {
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage({ customPageId });
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
 
   if (isNilOrError(customPage)) {
     return null;
@@ -67,11 +72,15 @@ const CustomPagesEditContent = () => {
       name: 'projects_enabled',
       titleMessageDescriptor: sectionToggleMessages.projectsList,
       tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
+      hideSection: !advancedCustomPagesEnabled,
+      disabled: customPage.attributes.projects_filter_type === 'no_filter',
     },
     {
       name: 'events_widget_enabled',
       titleMessageDescriptor: sectionToggleMessages.eventsList,
       tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
+      hideSection: !advancedCustomPagesEnabled,
+      disabled: customPage.attributes.projects_filter_type === 'no_filter',
     },
     {
       name: 'bottom_info_section_enabled',
@@ -116,22 +125,26 @@ const CustomPagesEditContent = () => {
               titleMessageDescriptor,
               tooltipMessageDescriptor,
               linkToPath,
-              hideToggle,
+              hideSection,
+              disabled,
             },
             index
           ) => {
+            if (hideSection) {
+              return;
+            }
             return (
               <SectionToggle
                 key={name}
                 name={name}
-                checked={customPage.attributes[name]}
+                checked={!disabled && customPage.attributes[name]}
                 onChangeSectionToggle={handleOnChangeToggle(name)}
                 onClickEditButton={handleOnClick}
                 editLinkPath={linkToPath}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
                 isLastItem={index === sectionTogglesData.length - 1}
-                hideToggle={hideToggle}
+                disabled={disabled}
               />
             );
           }
