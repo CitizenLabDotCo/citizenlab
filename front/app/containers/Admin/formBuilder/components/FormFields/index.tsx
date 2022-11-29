@@ -2,7 +2,6 @@ import React from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { useFormContext } from 'react-hook-form';
-import { snakeCase } from 'lodash-es';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -97,14 +96,12 @@ const FormFields = ({
             ) {
               outlineStyle = `1px solid ${colors.teal300}`;
             }
-            const fieldIdentifier = snakeCase(field.title_multiloc[locale]);
 
             return (
               <FormFieldsContainer
                 role={'button'}
                 key={field.id}
                 style={{ outline: outlineStyle, outlineOffset: '-1px' }}
-                data-cy={`e2e-field-${fieldIdentifier}`}
                 background={getFieldBackgroundColor(selectedFieldId, field)}
                 onClick={() => {
                   isEditingDisabled
