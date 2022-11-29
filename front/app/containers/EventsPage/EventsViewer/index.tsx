@@ -71,6 +71,7 @@ const EventsViewer = memo<Props>(
       if (!isNilOrError(projectIds)) {
         onProjectIdsChange(projectIds);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [projectIds]);
 
     const eventsLoading = isNil(events);
