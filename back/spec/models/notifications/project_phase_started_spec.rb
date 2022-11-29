@@ -29,5 +29,19 @@ RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
       notifications = described_class.make_notifications_on activity
       expect(notifications.size).to eq 1
     end
+
+    it 'only creates a notification for users who have participated' do
+      project = create(:project_with_current_phase, slug: 'aaa')
+      activity = create :activity, item: project.phases[2], action: 'started'
+      participant = create(:user)
+      non_participant = create(:user)
+      idea = create(:idea, project_id: project.id, author_id: participant.id)
+      create :activity, item: idea, user_id: participant.id, action: 'published'
+      notifications = described_class.make_notifications_on activity
+      notification_ids = notifications.pluck(:recipient_id)
+
+      expect(notification_ids).to include participant.id
+      expect(notification_ids).not_to include non_participant.id
+    end
   end
 end
