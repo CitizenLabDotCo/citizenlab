@@ -16,6 +16,7 @@ export interface BaseProps {
   topicFilter?: string[] | null;
   areaFilter?: string[] | null;
   publicationStatusFilter: PublicationStatus[];
+  // to be clarified
   rootLevelOnly?: boolean;
   // to be clarified
   removeNotAllowedParents?: boolean;
@@ -101,7 +102,7 @@ export default function useAdminPublications({
     if (areaFilter !== undefined) {
       setAreas(areaFilter);
     }
-  }, [JSON.stringify(areaFilter)]);
+  }, [areaFilter]);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
