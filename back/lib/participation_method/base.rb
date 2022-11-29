@@ -81,6 +81,10 @@ module ParticipationMethod
       false
     end
 
+    def include_data_in_email?
+      false
+    end
+
     private
 
     attr_reader :participation_context
