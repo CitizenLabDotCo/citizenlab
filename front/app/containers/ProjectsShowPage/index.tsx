@@ -103,14 +103,23 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
 
+  const { events } = useEvents({
+    projectIds: projectId ? [projectId] : undefined,
+    sort: 'newest',
+  });
+
+  const loading = useMemo(() => {
+    return anyIsUndefined(locale, appConfig, project, phases, events);
+  }, [locale, appConfig, project, phases, events]);
+
   // UseEffect to scroll to event when provided
   useEffect(() => {
-    if (scrollToEventId) {
+    if (scrollToEventId && !loading) {
       setTimeout(() => {
         scrollToElement({ id: scrollToEventId });
       }, 1500);
     }
-  }, [scrollToEventId]);
+  }, [loading, scrollToEventId]);
 
   // UseEffect to handle modal state and phase parameters
   useEffect(() => {
@@ -139,15 +148,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     }
   }, [project, showModal, phaseIdUrl]);
 
-  const { events } = useEvents({
-    projectIds: projectId ? [projectId] : undefined,
-    sort: 'newest',
-  });
   const user = useAuthUser();
-
-  const loading = useMemo(() => {
-    return anyIsUndefined(locale, appConfig, project, phases, events);
-  }, [locale, appConfig, project, phases, events]);
 
   const isUnauthorized = useMemo(() => {
     if (!isApiError(project)) return false;
