@@ -158,7 +158,20 @@ const CustomPageSettingsForm = ({
         onSubmit={methods.handleSubmit(onFormSubmit)}
         data-testid="customPageSettingsForm"
       >
-        <SectionFormWrapper flatTopBorder>
+        <SectionFormWrapper
+          stickyMenuContents={
+            <Box display="flex">
+              <Button
+                data-cy="e2e-submit-custom-page"
+                type="submit"
+                processing={methods.formState.isSubmitting}
+              >
+                {formatMessage(messages.saveButton)}
+              </Button>
+            </Box>
+          }
+          flatTopBorder
+        >
           <SectionField>
             <Feedback
               successMessage={
@@ -229,15 +242,6 @@ const CustomPageSettingsForm = ({
                 )}
               </Box>
             )}
-            <Box display="flex">
-              <Button
-                data-cy="e2e-submit-custom-page"
-                type="submit"
-                processing={methods.formState.isSubmitting}
-              >
-                {formatMessage(messages.saveButton)}
-              </Button>
-            </Box>
           </SectionField>
         </SectionFormWrapper>
       </form>
