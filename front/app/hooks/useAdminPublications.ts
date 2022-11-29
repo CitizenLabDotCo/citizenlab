@@ -94,6 +94,7 @@ export default function useAdminPublications({
     if (topicFilter !== undefined) {
       setTopics(topicFilter);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stringifiedTopicFilter]);
 
   const stringifiedAreaFilter = JSON.stringify(areaFilter);
@@ -101,6 +102,7 @@ export default function useAdminPublications({
     if (areaFilter !== undefined) {
       setAreas(areaFilter);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stringifiedAreaFilter]);
 
   const onLoadMore = useCallback(() => {

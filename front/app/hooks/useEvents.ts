@@ -42,6 +42,7 @@ export default function useEvents(parameters: InputParameters) {
     if (parameters.projectIds) {
       setProjectIds(parameters.projectIds);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stringifiedProjectIds]);
 
   const onProjectIdsChange = (projectIds: string[]) => {

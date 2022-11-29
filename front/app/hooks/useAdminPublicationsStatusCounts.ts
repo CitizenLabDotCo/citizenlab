@@ -43,6 +43,7 @@ export default function useAdminPublicationsStatusCounts({
     if (topicFilter !== undefined) {
       setTopics(topicFilter);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stringifiedTopicFilter]);
 
   const stringifiedAreaFilter = JSON.stringify(areaFilter);
@@ -50,6 +51,7 @@ export default function useAdminPublicationsStatusCounts({
     if (areaFilter !== undefined) {
       setAreas(areaFilter);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stringifiedAreaFilter]);
 
   const onChangeTopics = useCallback((topics: string[]) => {
