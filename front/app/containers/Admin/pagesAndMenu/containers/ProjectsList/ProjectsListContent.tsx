@@ -51,33 +51,25 @@ const ProjectsListContent = ({
     );
   }
 
+  const warningMessage =
+    adminPublications.length > 0
+      ? messages.sectionDescription
+      : messages.noAvailableProjects;
+
   return (
     <Box display="flex" flexDirection="column">
       <Box mb="28px">
         <Warning>
-          {adminPublications.length > 0 ? (
-            <FormattedMessage
-              {...messages.sectionDescription}
-              values={{
-                pageSettingsLink: (
-                  <Link to={`${adminCustomPageSettingsPath(customPageId)}`}>
-                    <FormattedMessage {...messages.pageSettingsLinkText} />
-                  </Link>
-                ),
-              }}
-            />
-          ) : (
-            <FormattedMessage
-              {...messages.noAvailableProjects}
-              values={{
-                pageSettingsLink: (
-                  <Link to={`${adminCustomPageSettingsPath(customPageId)}`}>
-                    <FormattedMessage {...messages.pageSettingsLinkText} />
-                  </Link>
-                ),
-              }}
-            />
-          )}
+          <FormattedMessage
+            {...warningMessage}
+            values={{
+              pageSettingsLink: (
+                <Link to={`${adminCustomPageSettingsPath(customPageId)}`}>
+                  <FormattedMessage {...messages.pageSettingsLinkText} />
+                </Link>
+              ),
+            }}
+          />
         </Warning>
       </Box>
       <List>
