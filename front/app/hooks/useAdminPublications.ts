@@ -11,11 +11,12 @@ import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
 export interface BaseProps {
-  topicFilter?: string[] | null;
-  areaFilter?: string[] | null;
+  topicFilter?: string[];
+  areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
+  search?: string;
 }
 
 export interface InputProps extends BaseProps {
@@ -77,23 +78,11 @@ export default function useAdminPublications({
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [search, setSearch] = useState<string | null>(null);
-  const [topics, setTopics] = useState<string[] | null>(null);
-  const [areas, setAreas] = useState<string[] | null>(null);
+  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
+  const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
-
-  useEffect(() => {
-    if (topicFilter !== undefined) {
-      setTopics(topicFilter);
-    }
-  }, [JSON.stringify(topicFilter)]);
-
-  useEffect(() => {
-    if (areaFilter !== undefined) {
-      setAreas(areaFilter);
-    }
-  }, [JSON.stringify(areaFilter)]);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -133,14 +122,12 @@ export default function useAdminPublications({
       'page[size]': pageSize,
       search,
       depth: rootLevelOnly ? 0 : undefined,
-      ...(topics && { topics }),
-      ...(areas && { areas }),
+      topics,
+      areas,
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
       folder: childrenOfId,
     };
-
-    console.log({ queryParameters });
 
     const subscription = listAdminPublications({
       queryParameters,
