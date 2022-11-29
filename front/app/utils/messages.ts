@@ -183,8 +183,20 @@ export default defineMessages({
     defaultMessage: 'Share information',
   },
   // Project page utils
-  noEventsPlaceholder: {
-    id: 'app.containers.Projects.noEventsPlaceholder',
-    defaultMessage: 'No Events',
+  upcomingAndOngoingEvents: {
+    id: 'app.containers.Projects.upcomingAndOngoingEvents',
+    defaultMessage: 'Upcoming and ongoing events',
+  },
+  pastEvents: {
+    id: 'app.containers.Projects.pastEvents',
+    defaultMessage: 'Past events',
+  },
+  noUpcomingOrOngoingEvents: {
+    id: 'app.containers.Projects.noUpcomingOrOngoingEvents',
+    defaultMessage: 'No upcoming or ongoing events are currently scheduled.',
+  },
+  noPastEvents: {
+    id: 'app.containers.Projects.noPastEvents',
+    defaultMessage: 'No past events to display',
   },
 });

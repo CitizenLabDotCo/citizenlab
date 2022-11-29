@@ -24,6 +24,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
+import { useIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -88,6 +89,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ? project.attributes.process_type
     : undefined;
 
+  const { formatMessage } = useIntl();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
   const locale = useLocale();
@@ -206,15 +208,15 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           <EventsViewer
             projectIds={[projectId]}
             eventsTime="currentAndFuture"
-            title={'Current and Future'}
-            fallbackMessage={messages.noEventsPlaceholder}
+            title={formatMessage(messages.upcomingAndOngoingEvents)}
+            fallbackMessage={messages.noUpcomingOrOngoingEvents}
             onClickTitleGoToProjectAndScrollToEvent={false}
           />
           <EventsViewer
             projectIds={[projectId]}
             eventsTime="past"
-            title={'Past'}
-            fallbackMessage={messages.noEventsPlaceholder}
+            title={formatMessage(messages.pastEvents)}
+            fallbackMessage={messages.noPastEvents}
             onClickTitleGoToProjectAndScrollToEvent={false}
           />
         </Box>
