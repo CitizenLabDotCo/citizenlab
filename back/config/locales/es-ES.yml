@@ -152,7 +152,7 @@ es:
       details:
         title: Detalles
       attachements:
-        title: Imágenes y archivos adjuntos
+        title: Imágenes y adjuntos
       extra:
         title: Información adicional
   custom_field_options:
