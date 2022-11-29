@@ -96,14 +96,12 @@ const FormFields = ({
             ) {
               outlineStyle = `1px solid ${colors.teal300}`;
             }
-            const fieldIdentifier = field.title_multiloc[locale];
 
             return (
               <FormFieldsContainer
                 role={'button'}
                 key={field.id}
                 style={{ outline: outlineStyle, outlineOffset: '-1px' }}
-                data-cy={`e2e-field-${fieldIdentifier}`}
                 background={getFieldBackgroundColor(selectedFieldId, field)}
                 onClick={() => {
                   isEditingDisabled
