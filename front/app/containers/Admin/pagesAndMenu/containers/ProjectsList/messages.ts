@@ -26,4 +26,9 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects',
     defaultMessage: 'No available projects based on your {pageSettingsLink}.',
   },
+  noFilter: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects',
+    defaultMessage:
+      'This project has no tag or area filter, so no projects will be displayed.',
+  },
 });

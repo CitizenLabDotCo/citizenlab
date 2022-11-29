@@ -9,6 +9,7 @@ import Warning from 'components/UI/Warning';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
+import useCustomPage from 'hooks/useCustomPage';
 import { useParams } from 'react-router-dom';
 
 // utils
@@ -34,8 +35,21 @@ const ProjectsListContent = ({
   });
 
   const { customPageId } = useParams() as { customPageId: string };
+  const customPage = useCustomPage({ customPageId });
 
-  if (isNilOrError(adminPublications)) return null;
+  if (isNilOrError(adminPublications) || isNilOrError(customPage)) return null;
+
+  if (customPage.attributes.projects_filter_type === 'no_filter') {
+    return (
+      <Box display="flex" flexDirection="column">
+        <Box mb="28px">
+          <Warning>
+            <FormattedMessage {...messages.noFilter} />
+          </Warning>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box display="flex" flexDirection="column">
