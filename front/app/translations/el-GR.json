@@ -1255,7 +1255,7 @@
   "app.containers.SignUp.viennaConsentHeader": "Θα μεταδοθούν τα ακόλουθα δεδομένα:",
   "app.containers.SignUp.viennaConsentLastName": "Επώνυμο",
   "app.containers.SignUp.viennaConsentUserName": "Όνομα χρήστη",
-  "app.containers.SignUp.viennaThePrivacyPolicy": "την πολιτική απορρήτου",
+  "app.containers.SignUp.viennaDataProtection": "the vienna privacy policy",
   "app.containers.SignUp.whatIsFranceConnect": "Τι είναι το France Connect;",
   "app.containers.SiteMap.contributions": "Συνεισφορές",
   "app.containers.SiteMap.issues": "Σχόλια",
