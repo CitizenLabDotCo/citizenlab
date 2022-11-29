@@ -44,6 +44,9 @@ const CustomPagesEditContent = () => {
     return null;
   }
 
+  const projectFilterEnabled =
+    customPage.attributes.projects_filter_type !== 'no_filter';
+
   const sectionTogglesData: TCustomPageSectionToggleData[] = [
     {
       name: 'banner_enabled',
@@ -67,7 +70,8 @@ const CustomPagesEditContent = () => {
       name: 'projects_enabled',
       titleMessageDescriptor: sectionToggleMessages.projectsList,
       tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
-      linkToPath: 'projects',
+      // projects list can only be seen when a tag/filter has been selected
+      ...(projectFilterEnabled && { linkToPath: 'projects' }),
     },
     {
       name: 'events_widget_enabled',

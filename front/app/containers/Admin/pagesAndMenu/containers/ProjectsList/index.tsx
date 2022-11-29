@@ -32,7 +32,9 @@ const ProjectList = () => {
   }
 
   const areaIds = customPage.relationships.areas.data.map((area) => area.id);
-  const topicIds = customPage.relationships.areas.data.map((area) => area.id);
+  const topicIds = customPage.relationships.topics.data.map(
+    (topic) => topic.id
+  );
 
   return (
     // add helmet intl
