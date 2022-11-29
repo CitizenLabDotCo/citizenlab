@@ -8,7 +8,6 @@ import ProjectHelmet from './shared/header/ProjectHelmet';
 import ProjectNotFound from './shared/header/ProjectNotFound';
 import ProjectNotVisible from './shared/header/ProjectNotVisible';
 import ProjectHeader from './shared/header/ProjectHeader';
-import ProjectEvents from './shared/events';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousSurvey from './continuous/Survey';
 import ContinuousPoll from './continuous/Poll';
@@ -41,6 +40,7 @@ import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import messages from 'utils/messages';
+import { scrollToElement } from 'utils/scroll';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -76,7 +76,6 @@ const Loading = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
 `;
-
 interface Props {
   project: IProjectData | Error | null | undefined;
   scrollToEventId?: string;
@@ -94,6 +93,15 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const locale = useLocale();
   const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
+
+  // UseEffect to scroll to event when provided
+  useEffect(() => {
+    if (scrollToEventId) {
+      setTimeout(() => {
+        scrollToElement({ id: scrollToEventId });
+      }, 1500);
+    }
+  }, [scrollToEventId]);
 
   // UseEffect to handle modal state and phase parameters
   useEffect(() => {
@@ -200,12 +208,14 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
             eventsTime="currentAndFuture"
             title={'Current and Future'}
             fallbackMessage={messages.noEventsPlaceholder}
+            onClickTitleGoToProjectAndScrollToEvent={false}
           />
           <EventsViewer
             projectIds={[projectId]}
             eventsTime="past"
             title={'Past'}
             fallbackMessage={messages.noEventsPlaceholder}
+            onClickTitleGoToProjectAndScrollToEvent={false}
           />
         </Box>
         <Modal

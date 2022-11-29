@@ -39,10 +39,18 @@ interface Props {
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
   projectIds?: string[];
+  onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
 const EventsViewer = memo<Props>(
-  ({ title, fallbackMessage, eventsTime, className, projectIds }) => {
+  ({
+    title,
+    fallbackMessage,
+    eventsTime,
+    className,
+    projectIds,
+    onClickTitleGoToProjectAndScrollToEvent,
+  }) => {
     const {
       events,
       currentPage,
@@ -74,9 +82,12 @@ const EventsViewer = memo<Props>(
             {events.length > 0 &&
               events.map((event, i) => (
                 <StyledEventCard
+                  id={event.id}
                   event={event}
                   showProjectTitle
-                  onClickTitleGoToProjectAndScrollToEvent
+                  onClickTitleGoToProjectAndScrollToEvent={
+                    onClickTitleGoToProjectAndScrollToEvent
+                  }
                   showLocation
                   showDescription
                   showAttachments
