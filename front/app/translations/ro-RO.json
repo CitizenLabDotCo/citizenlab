@@ -1255,7 +1255,7 @@
   "app.containers.SignUp.viennaConsentHeader": "Vor fi transmise următoarele date:",
   "app.containers.SignUp.viennaConsentLastName": "Numele de familie",
   "app.containers.SignUp.viennaConsentUserName": "Numele de utilizator",
-  "app.containers.SignUp.viennaThePrivacyPolicy": "politica de confidențialitate",
+  "app.containers.SignUp.viennaDataProtection": "the vienna privacy policy",
   "app.containers.SignUp.whatIsFranceConnect": "Ce este FranceConnect?",
   "app.containers.SiteMap.contributions": "Contribuții",
   "app.containers.SiteMap.issues": "Comentarii",
