@@ -104,10 +104,6 @@ interface Props {
 }
 
 const EventsWidget = ({ id, projectIds }: Props) => {
-  // This avoids flashing of all events (if projectIds are undefined)
-  // as well as having to do projectIds checks before rendering this component.
-  // See CustomPageEvents.tsx for an example.
-
   const { formatMessage } = useIntl();
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
@@ -117,6 +113,9 @@ const EventsWidget = ({ id, projectIds }: Props) => {
     ...(projectIds && { projectIds }),
   });
 
+  // This avoids flashing of all events (if projectIds are undefined)
+  // as well as having to do projectIds checks before rendering this component.
+  // See CustomPageEvents.tsx for an example.
   if (projectIds === null) {
     return null;
   }
