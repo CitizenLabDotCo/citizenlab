@@ -9,7 +9,6 @@ import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
-import { useDeepCompareEffect } from 'react-use';
 
 export interface BaseProps {
   // to rename
@@ -90,17 +89,19 @@ export default function useAdminPublications({
   // topicFilter and areaFilter are usually based of other
   // requests, and will initially be null/undefined.
   // Without the useEffect, they don't get updated
-  // (or useDeepCompareEffect because we are comparing arrays here).
-  useDeepCompareEffect(() => {
+  const stringifiedTopicFilter = JSON.stringify(topicFilter);
+  useEffect(() => {
     if (topicFilter !== undefined) {
       setTopics(topicFilter);
     }
-  }, [topicFilter]);
-  useDeepCompareEffect(() => {
+  }, [stringifiedTopicFilter]);
+
+  const stringifiedAreaFilter = JSON.stringify(areaFilter);
+  useEffect(() => {
     if (areaFilter !== undefined) {
       setAreas(areaFilter);
     }
-  }, [areaFilter]);
+  }, [stringifiedAreaFilter]);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {

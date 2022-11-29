@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { useDeepCompareEffect } from 'react-use';
 
 // services
 import {
@@ -39,17 +38,19 @@ export default function useAdminPublicationsStatusCounts({
   // topicFilter and areaFilter are usually based of other
   // requests, and will initially be null/undefined.
   // Without the useEffect, they don't get updated
-  // (or useDeepCompareEffect because we are comparing arrays here).
-  useDeepCompareEffect(() => {
+  const stringifiedTopicFilter = JSON.stringify(topicFilter);
+  useEffect(() => {
     if (topicFilter !== undefined) {
       setTopics(topicFilter);
     }
-  }, [topicFilter]);
-  useDeepCompareEffect(() => {
+  }, [stringifiedTopicFilter]);
+
+  const stringifiedAreaFilter = JSON.stringify(areaFilter);
+  useEffect(() => {
     if (areaFilter !== undefined) {
       setAreas(areaFilter);
     }
-  }, [areaFilter]);
+  }, [stringifiedAreaFilter]);
 
   const onChangeTopics = useCallback((topics: string[]) => {
     topics.length === 0 ? setTopics(null) : setTopics(topics);
