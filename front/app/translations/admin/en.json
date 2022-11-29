@@ -513,6 +513,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Page content",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Edit",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "No available projects based on your {pageSettingsLink}.",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "This project has no tag or area filter, so no projects will be displayed.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Projects list | {orgName}",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageSettingsLinkText": "page settings",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageTitle": "Projects list",
