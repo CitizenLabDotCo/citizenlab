@@ -1104,6 +1104,7 @@
   "app.containers.Projects.navPoll": "Poll",
   "app.containers.Projects.navSurvey": "Survey",
   "app.containers.Projects.nextPhase": "Next phase",
+  "app.containers.Projects.noEventsPlaceholder": "No Events",
   "app.containers.Projects.noItems": "You haven't selected any items yet",
   "app.containers.Projects.noPhaseSelected": "No phase selected",
   "app.containers.Projects.noProjectFoundHere": "{tenantName, select, CQC {Log in to view this project.} other {There is no project here.}}",
