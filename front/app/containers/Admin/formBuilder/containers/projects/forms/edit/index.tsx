@@ -139,7 +139,15 @@ export const FormEdit = ({
   };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    move(fromIndex, toIndex);
+    const elementBeingDragged = fields[fromIndex];
+    // Only pages should be draggable to index 0
+    const shouldMove =
+      elementBeingDragged.input_type === 'page' || toIndex !== 0;
+
+    if (shouldMove) {
+      move(fromIndex, toIndex);
+    }
+
     if (!isNilOrError(selectedField)) {
       setSelectedField({ ...selectedField, index: toIndex });
     }
