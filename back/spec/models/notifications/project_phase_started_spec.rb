@@ -47,8 +47,8 @@ RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
 
   describe 'for admins and moderators' do
     it 'only creates a notification for admins and moderators who are not a phase moderator' do
-      project = create(:project_with_current_phase)
-      activity = create :activity, item: project.phases[2], action: 'started'
+      # project = create(:project_with_current_phase)
+      # activity = create :activity, item: project.phases[2], action: 'started'
 
       # Add more here, if we go down this route
     end
