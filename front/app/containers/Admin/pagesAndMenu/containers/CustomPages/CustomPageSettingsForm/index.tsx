@@ -17,7 +17,12 @@ import SlugInput from 'components/HookForm/SlugInput';
 import Tabs from 'components/HookForm/Tabs';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
-import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Label,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -28,7 +33,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { colors } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from '../messages';
