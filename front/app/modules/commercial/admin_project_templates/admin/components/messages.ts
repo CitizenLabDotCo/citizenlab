@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.fromATemplate',
     defaultMessage: 'From a template',
   },
+  noFolder: {
+    id: 'app.containers.AdminPage.ProjectEdit.noFolder',
+    defaultMessage: 'No folder',
+  },
   departments: {
     id: 'app.containers.AdminPage.ProjectEdit.departments',
     defaultMessage: 'Departments',
