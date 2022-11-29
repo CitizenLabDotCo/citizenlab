@@ -154,14 +154,23 @@ class FormLogicService
 
         rules.each do |rule|
           value = rule['if']
-          target_id = rule['goto_page_id']
-          pages_in_between(index, target_id).each do |page|
+          pages_to_hide = if rule['goto'] == 'end_page'
+            pages_after(index)
+          else
+            target_id = rule['goto_page_id']
+            pages_in_between(index, target_id)
+          end
+          pages_to_hide.each do |page|
             accu[page.id] ||= []
             accu[page.id] << ui_schema_hide_rule_for(field, value)
           end
         end
       end
     end
+  end
+
+  def pages_after(index)
+    fields.drop(index).select(&:page?)
   end
 
   def pages_in_between(index, page_id)

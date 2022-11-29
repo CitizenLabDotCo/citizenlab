@@ -104,7 +104,7 @@ describe FormLogicService do
         })
       end
 
-      it 'returns a UI schema rules with rules for the given page' do
+      it 'returns a UI schema with rules for the given page' do
         expect(form_logic.ui_schema_rules_for(page1)).to be_nil
         expect(form_logic.ui_schema_rules_for(question1)).to be_nil
         expect(form_logic.ui_schema_rules_for(page2)).to eq([{
@@ -136,6 +136,56 @@ describe FormLogicService do
           }
         }])
         expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
+
+    context 'when an answer triggers going to the survey end' do
+      before do
+        question1.update!(logic: {
+          'rules' => [{ 'if' => value, 'goto' => 'end_page' }]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question1.key}",
+            schema: {
+              enum: [value]
+            }
+          }
+        }])
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question1.key}",
+            schema: {
+              enum: [value]
+            }
+          }
+        }])
+        expect(form_logic.ui_schema_rules_for(page4)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question1.key}",
+            schema: {
+              enum: [value]
+            }
+          }
+        }])
+        expect(form_logic.ui_schema_rules_for(page5)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question1.key}",
+            schema: {
+              enum: [value]
+            }
+          }
+        }])
       end
     end
   end
