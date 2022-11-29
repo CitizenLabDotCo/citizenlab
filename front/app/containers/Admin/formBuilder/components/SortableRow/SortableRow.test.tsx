@@ -11,7 +11,7 @@ const items = [
 ];
 
 describe('<SortableRow />', () => {
-  it('drag and drops correctly', () => {
+  it('calls the moveRow on dragging', () => {
     const handleDragRow = jest.fn();
 
     render(

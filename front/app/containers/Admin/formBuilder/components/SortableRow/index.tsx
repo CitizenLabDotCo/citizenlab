@@ -2,16 +2,17 @@
 // https://react-dnd.github.io/react-dnd/examples/sortable/simple
 
 import React, { useRef, FC } from 'react';
-import { DragObjectWithType, useDrag, useDrop } from 'react-dnd-cjs';
+import {
+  DragObjectWithType,
+  DragSourceMonitor,
+  useDrag,
+  useDrop,
+} from 'react-dnd-cjs';
 import type { Identifier, XYCoord } from 'dnd-core';
 import { FlexibleRow } from './FlexibleRow';
 
-const style = {
-  cursor: 'move',
-};
-
 export interface SortableRowProps {
-  id: any;
+  id: string;
   index: number;
   isLastItem?: boolean;
   rowHeight?: string;
@@ -88,7 +89,7 @@ export const SortableRow: FC<SortableRowProps> = ({
 
   const [{ isDragging }, drag] = useDrag({
     item: { type: 'ROW', id, index } as DragObjectWithType,
-    collect: (monitor: any) => ({
+    collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
@@ -99,7 +100,11 @@ export const SortableRow: FC<SortableRowProps> = ({
 
   return (
     <>
-      <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>
+      <div
+        ref={ref}
+        style={{ cursor: 'move', opacity }}
+        data-handler-id={handlerId}
+      >
         <FlexibleRow rowHeight={rowHeight} isLastItem={isLastItem}>
           {children}
         </FlexibleRow>
