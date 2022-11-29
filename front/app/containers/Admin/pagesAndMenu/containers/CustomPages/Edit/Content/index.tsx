@@ -34,7 +34,6 @@ export type TCustomPageSectionToggleData = {
   tooltipMessageDescriptor: MessageDescriptor;
   linkToPath?: string;
   hideSection?: boolean;
-  disabled?: boolean;
 };
 
 // types
@@ -73,14 +72,12 @@ const CustomPagesEditContent = () => {
       titleMessageDescriptor: sectionToggleMessages.projectsList,
       tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
       hideSection: !advancedCustomPagesEnabled,
-      disabled: customPage.attributes.projects_filter_type === 'no_filter',
     },
     {
       name: 'events_widget_enabled',
       titleMessageDescriptor: sectionToggleMessages.eventsList,
       tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
       hideSection: !advancedCustomPagesEnabled,
-      disabled: customPage.attributes.projects_filter_type === 'no_filter',
     },
     {
       name: 'bottom_info_section_enabled',
@@ -126,7 +123,6 @@ const CustomPagesEditContent = () => {
               tooltipMessageDescriptor,
               linkToPath,
               hideSection,
-              disabled,
             },
             index
           ) => {
@@ -137,14 +133,13 @@ const CustomPagesEditContent = () => {
               <SectionToggle
                 key={name}
                 name={name}
-                checked={!disabled && customPage.attributes[name]}
+                checked={customPage.attributes[name]}
                 onChangeSectionToggle={handleOnChangeToggle(name)}
                 onClickEditButton={handleOnClick}
                 editLinkPath={linkToPath}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
                 isLastItem={index === sectionTogglesData.length - 1}
-                disabled={disabled}
               />
             );
           }
