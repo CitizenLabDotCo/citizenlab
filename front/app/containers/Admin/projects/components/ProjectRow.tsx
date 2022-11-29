@@ -20,6 +20,7 @@ import DeleteProjectButton from './DeleteProjectButton';
 import PublicationStatusLabel from './PublicationStatusLabel';
 import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
+import Link from 'utils/cl-router/Link';
 
 // resources
 import useProjectGroups from 'hooks/useProjectGroups';
@@ -71,6 +72,10 @@ export default ({
     projectId: publication.publicationId,
   });
 
+  const userCanModerateProject =
+    !isNilOrError(authUser) &&
+    canModerateProject(publication.publicationId, { data: authUser });
+
   const ManageButton = (
     <RowButton
       className={`
@@ -81,15 +86,12 @@ export default ({
       icon="edit"
       type="button"
       key="manage"
-      disabled={
-        isBeingDeleted ||
-        (!isNilOrError(authUser) &&
-          !canModerateProject(publication.publicationId, { data: authUser }))
-      }
+      disabled={isBeingDeleted || !userCanModerateProject}
     >
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>
   );
+
   const publicationStatus = publication.attributes.publication_status;
 
   const DeleteButton = (
@@ -101,6 +103,77 @@ export default ({
       key="delete"
     />
   );
+
+  const GroupsTag = () => {
+    if (
+      publication.attributes?.publication_visible_to !== 'groups' ||
+      isNilOrError(projectGroups)
+    ) {
+      return null;
+    }
+
+    const GroupStatusLabel = () => {
+      return (
+        <StyledStatusLabel
+          text={
+            projectGroups.length > 0 ? (
+              <FormattedMessage
+                {...messages.xGroupsHaveAccess}
+                values={{ groupCount: projectGroups.length }}
+              />
+            ) : (
+              <FormattedMessage {...messages.onlyAdminsCanView} />
+            )
+          }
+          backgroundColor={colors.teal}
+          icon="lock"
+        />
+      );
+    };
+
+    if (userCanModerateProject) {
+      return (
+        <Link
+          to={`${adminProjectsProjectPath(
+            publication.publicationId
+          )}/permissions`}
+        >
+          <GroupStatusLabel />
+        </Link>
+      );
+    }
+
+    return <GroupStatusLabel />;
+  };
+
+  const AdminTag = () => {
+    if (publication.attributes?.publication_visible_to !== 'admins')
+      return null;
+
+    const AdminStatusLabel = () => {
+      return (
+        <StyledStatusLabel
+          text={<FormattedMessage {...messages.onlyAdminsCanView} />}
+          backgroundColor={colors.teal}
+          icon="lock"
+        />
+      );
+    };
+
+    if (userCanModerateProject) {
+      return (
+        <Link
+          to={`${adminProjectsProjectPath(
+            publication.publicationId
+          )}/permissions`}
+        >
+          <AdminStatusLabel />
+        </Link>
+      );
+    }
+
+    return <AdminStatusLabel />;
+  };
 
   const renderRowButton = (action) => (
     <RowButton
@@ -128,31 +201,8 @@ export default ({
       <RowContent className="e2e-admin-projects-list-item">
         <RowContentInner className="expand primary">
           <RowTitle value={publication.attributes.publication_title_multiloc} />
-          {publication.attributes?.publication_visible_to === 'groups' &&
-            !isNilOrError(projectGroups) && (
-              <StyledStatusLabel
-                text={
-                  projectGroups.length > 0 ? (
-                    <FormattedMessage
-                      {...messages.xGroupsHaveAccess}
-                      values={{ groupCount: projectGroups.length }}
-                    />
-                  ) : (
-                    <FormattedMessage {...messages.onlyAdminsCanView} />
-                  )
-                }
-                backgroundColor={colors.teal}
-                icon="lock"
-              />
-            )}
-          {publication.attributes?.publication_visible_to === 'admins' && (
-            <StyledStatusLabel
-              text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-              backgroundColor={colors.teal}
-              icon="lock"
-            />
-          )}
-
+          <GroupsTag />
+          <AdminTag />
           {!hidePublicationStatusLabel && (
             <PublicationStatusLabel publicationStatus={publicationStatus} />
           )}
