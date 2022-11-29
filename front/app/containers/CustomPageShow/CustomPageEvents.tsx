@@ -25,6 +25,8 @@ const CustomPageEvents = ({ page }: Props) => {
       )
     : null;
 
+  // We need projectIds before rendering to ensure there's no flashing of all events
+  // Before we're done calculating projectIds above.
   if (projectIds) {
     return <EventsWidget projectIds={projectIds} />;
   }
