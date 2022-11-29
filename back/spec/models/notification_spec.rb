@@ -97,10 +97,14 @@ RSpec.describe Notification, type: :model do
         user = create(:user, email: 'user1@example.com', manual_groups: [project.groups.first])
         _admin = create(:admin, email: 'admin@example.com', manual_groups: [project.groups.first])
         # non-members
-        _other_user = create(:admin)
-        _other_admin = create(:user, email: 'user2@example.com')
+        _other_admin = create(:admin)
+        _other_user = create(:user, email: 'user2@example.com')
 
         activity = create(:activity, item: phase, action: 'started')
+
+        # User must have participated in the project
+        idea = create(:idea, project_id: project.id, author_id: user.id)
+        create :activity, item: idea, user_id: user.id, action: 'published'
 
         notifications = Notifications::ProjectPhaseStarted.make_notifications_on(activity)
         expect(notifications.map(&:recipient_id)).to match_array [user.id]
@@ -127,6 +131,10 @@ RSpec.describe Notification, type: :model do
 
         context 'and the user moderates another project' do
           let!(:user) { create(:project_moderator, manual_groups: [project.groups.first]) }
+
+          # let!(:idea) { create(:idea, project_id: project.id, author_id: user.id) }
+
+          # let!(:activity) { create :activity, item: idea, user_id: user.id, action: 'published' }
 
           it { expect(notifications.map(&:recipient_id)).to eq [user.id] }
         end

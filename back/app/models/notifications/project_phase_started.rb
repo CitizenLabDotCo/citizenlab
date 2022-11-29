@@ -66,7 +66,7 @@ module Notifications
 
       if phase.project
         user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
-          .where.not(id: UserRoleService.new.moderators_for(phase))
+          .or(User.not_normal_user.where.not(id: UserRoleService.new.moderators_for(phase)))
         ActiveRecord::Base.transaction do
           # We're using a transaction to garantee that
           # created notifications are rolled back when
