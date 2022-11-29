@@ -1262,6 +1262,7 @@
   "app.containers.SignUp.viennaConsentHeader": "Følgende data vil blive overført:",
   "app.containers.SignUp.viennaConsentLastName": "Efternavn",
   "app.containers.SignUp.viennaConsentUserName": "Brugernavn",
+  "app.containers.SignUp.viennaDataProtection": "the vienna privacy policy",
   "app.containers.SignUp.whatIsFranceConnect": "Hvad er FranceConnect?",
   "app.containers.SiteMap.contributions": "Bidrag",
   "app.containers.SiteMap.issues": "Kommentarer",
