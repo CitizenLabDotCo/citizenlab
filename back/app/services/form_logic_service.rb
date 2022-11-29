@@ -44,7 +44,7 @@ class FormLogicService
     logic = field.logic
     if logic.keys == ['rules']
       all_rules_are_valid = logic['rules'].all? do |rule|
-        rule.keys == %w[if goto_page_id] || (rule.keys == %w[if goto] && rule['goto'] == 'end_page')
+        rule.keys == %w[if goto_page_id] || (rule.keys == %w[if goto] && rule['goto'] == 'survey_end')
       end
       return true if all_rules_are_valid
     end
@@ -154,7 +154,7 @@ class FormLogicService
 
         rules.each do |rule|
           value = rule['if']
-          pages_to_hide = if rule['goto'] == 'end_page'
+          pages_to_hide = if rule['goto'] == 'survey_end'
             pages_after(index)
           else
             target_id = rule['goto_page_id']

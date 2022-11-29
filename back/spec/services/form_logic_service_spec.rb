@@ -142,7 +142,7 @@ describe FormLogicService do
     context 'when an answer triggers going to the survey end' do
       before do
         question1.update!(logic: {
-          'rules' => [{ 'if' => value, 'goto' => 'end_page' }]
+          'rules' => [{ 'if' => value, 'goto' => 'survey_end' }]
         })
       end
 
@@ -206,7 +206,7 @@ describe FormLogicService do
           { 'rules' => [] },
           { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] },
           { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] },
-          { 'rules' => [{ 'if' => 1, 'goto' => 'end_page' }] },
+          { 'rules' => [{ 'if' => 1, 'goto' => 'survey_end' }] },
           { 'rules' => [
             { 'if' => 1, 'goto_page_id' => page2.id },
             { 'if' => 2, 'goto_page_id' => page4.id }
@@ -227,7 +227,7 @@ describe FormLogicService do
       end
       let(:logic_for_question2) do
         { 'rules' => [
-          { 'if' => 1, 'goto' => 'end_page' },
+          { 'if' => 1, 'goto' => 'survey_end' },
           { 'if' => 2, 'goto_page_id' => page4.id }
         ] }
       end
@@ -270,7 +270,7 @@ describe FormLogicService do
       end
       let(:logic_for_question2) do
         { 'rules' => [
-          { 'if' => 1, 'goto' => 'end_page' },
+          { 'if' => 1, 'goto' => 'survey_end' },
           { 'if' => 2 }
         ] }
       end
