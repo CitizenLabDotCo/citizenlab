@@ -112,7 +112,7 @@ export const FormEdit = ({
     formState: { isSubmitting, errors },
   } = methods;
 
-  const { fields, append, remove, move, replace } = useFieldArray({
+  const { fields, append, remove, move } = useFieldArray({
     name: 'customFields',
     control,
   });
