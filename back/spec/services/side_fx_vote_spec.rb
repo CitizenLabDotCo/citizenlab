@@ -10,19 +10,29 @@ describe SideFxVoteService do
     it "logs a 'upvoted' action when a upvote on an idea is created" do
       vote = create(:vote, mode: 'up', votable: create(:idea))
       expect { service.after_create(vote, user) }
-        .to have_enqueued_job(LogActivityJob).with(vote, 'idea_upvoted', user, vote.updated_at.to_i)
+        .to have_enqueued_job(LogActivityJob)
     end
 
     it "logs a 'upvoted' action when a upvote on an initiative is created" do
       vote = create(:vote, mode: 'up', votable: create(:initiative))
       expect { service.after_create(vote, user) }
-        .to have_enqueued_job(LogActivityJob).with(vote, 'initiative_upvoted', user, vote.updated_at.to_i)
+        .to have_enqueued_job(LogActivityJob)
     end
 
     it "logs a 'downvoted' action when a downvote is created" do
       vote = create(:vote, mode: 'down', votable: create(:idea))
       expect { service.after_create(vote, user) }
-        .to have_enqueued_job(LogActivityJob).with(vote, 'idea_downvoted', user, vote.updated_at.to_i)
+        .to have_enqueued_job(LogActivityJob)
+    end
+
+    # Test for regression of bugfix to prevent case where an exception occurs due to resource being
+    # deleted before the job to log an Activity recording its creation is run. See CL-1962.
+    it "logs a 'upvoted' action when a upvote on an initiative is created and then immediately removed", active_job_inline_adapter: true do
+      vote = create(:vote, mode: 'up', votable: create(:initiative))
+      vote.destroy!
+      allow(PublishActivityToRabbitJob).to receive(:perform_later)
+      service.after_create(vote, user)
+      expect(Activity.where(action: 'initiative_upvoted').first).to be_present
     end
   end
 
