@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { array, object, string } from 'yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { slugRegEx } from 'utils/textUtils';
-// import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
@@ -29,6 +28,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from '../messages';
@@ -165,6 +165,7 @@ const CustomPageSettingsForm = ({
                 data-cy="e2e-submit-custom-page"
                 type="submit"
                 processing={methods.formState.isSubmitting}
+                bgColor={colors.blue500}
               >
                 {formatMessage(messages.saveButton)}
               </Button>

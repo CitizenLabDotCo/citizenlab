@@ -14,7 +14,7 @@ const ViewCustomPageButton = ({
 }: Props & WrappedComponentProps) => {
   return (
     <Button
-      buttonStyle="cl-blue"
+      buttonStyle="secondary-outlined"
       icon="eye"
       id="to-custom-page"
       openLinkInNewTab
