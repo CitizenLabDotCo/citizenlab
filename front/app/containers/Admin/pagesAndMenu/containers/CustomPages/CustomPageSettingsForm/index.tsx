@@ -220,6 +220,7 @@ const CustomPageSettingsForm = ({
                   <Tabs
                     name="projects_filter_type"
                     items={projectsFilterTabs}
+                    minTabWidth={120}
                   />
                 </Box>
                 {methods.watch('projects_filter_type') === 'topics' && (
