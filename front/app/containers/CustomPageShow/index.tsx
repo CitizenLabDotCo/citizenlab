@@ -7,7 +7,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
-import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
+import CustomPageEvents from './CustomPageEvents';
 import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from 'components/PageNotFound';
@@ -20,7 +20,6 @@ import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
-import useAdminPublications from 'hooks/useAdminPublications';
 
 // utils
 import { isError, isNil, isNilOrError } from 'utils/helperUtils';
@@ -64,22 +63,6 @@ const CustomPageShow = () => {
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
-  const topicIds = !isNilOrError(page)
-    ? page.relationships.topics?.data.map((topic) => topic.id)
-    : null;
-  const areaIds = !isNilOrError(page)
-    ? page.relationships.areas?.data.map((area) => area.id)
-    : null;
-  const adminPublications = useAdminPublications({
-    topicFilter: topicIds,
-    areaFilter: areaIds,
-    publicationStatusFilter: ['published', 'archived'],
-  });
-  const projectIds = !isNilOrError(adminPublications.list)
-    ? adminPublications.list.map(
-        (adminPublication) => adminPublication.relationships.publication.data.id
-      )
-    : null;
 
   // when neither have loaded
   if (isNil(page) || isNilOrError(appConfiguration)) {
@@ -139,13 +122,11 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-        {pageAttributes.events_widget_enabled &&
-          projectIds &&
-          projectIds.length > 0 && (
-            <ContentContainer>
-              <EventsWidget projectIds={projectIds} />
-            </ContentContainer>
-          )}
+        {pageAttributes.events_widget_enabled && (
+          <ContentContainer>
+            <CustomPageEvents page={page} />
+          </ContentContainer>
+        )}
         {pageAttributes.bottom_info_section_enabled && (
           <InfoSection
             multilocContent={pageAttributes.bottom_info_section_multiloc}
