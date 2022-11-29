@@ -131,26 +131,17 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 
 const ProjectImageContainer = styled.div`
   width: 100%;
-  height: 254px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 254px;
   display: flex;
+  aspect-ratio: 5 / 3;
+  min-height: 125px;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
 
   &.large {
     width: 50%;
-    height: 100%;
-    flex-basis: 50%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-  }
-
-  &.small {
-    height: 224px;
-    flex-basis: 224px;
   }
 `;
 
