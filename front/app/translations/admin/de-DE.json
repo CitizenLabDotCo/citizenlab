@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Neues Projekt",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Neueste",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Kein gültiger Betrag",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Keine Vorlagen gefunden",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Dies kann nicht leer sein",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "{orgName, select, München {Bitte geben Sie die max. Anzahl der zulässigen Bewertungen von Mängelmeldungen durch einen Benutzer an} other {Bitte geben Sie die max. Anzahl der zulässigen Stimmen pro Benutzer an}}",
