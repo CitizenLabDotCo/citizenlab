@@ -53,7 +53,7 @@ describe('Form builder number field', () => {
     cy.contains(questionTitle).should('exist');
 
     // Try saving without entering data for required field
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
     cy.location('pathname').should(
@@ -72,7 +72,7 @@ describe('Form builder number field', () => {
     cy.get('.e2e-error-message').should('have.length', 0);
 
     // Save survey response
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Check that we show a success message
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
