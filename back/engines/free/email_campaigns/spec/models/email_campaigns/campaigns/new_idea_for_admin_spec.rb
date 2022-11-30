@@ -48,4 +48,30 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin, type: :model do
       expect(campaign.apply_recipient_filters(activity: idea_published).count).to eq 0
     end
   end
+
+  describe '#generate_commands' do
+    let(:user) { create :user }
+    let(:title_multiloc) { { 'en' => 'My awesome idea' } }
+    let(:idea) { create :idea, author: user, title_multiloc: title_multiloc }
+    let(:activity) { create :activity, item: idea, action: 'published', user: user }
+    let(:reciptient) { create :admin }
+
+    it 'generates a command with the desired payload and tracked content' do
+      command = campaign.generate_commands(recipient: reciptient, activity: activity).first
+
+      expect(command.dig(:event_payload, :post_title_multiloc)).to eq title_multiloc
+    end
+
+    describe do
+      before { IdeaStatus.create_defaults }
+
+      let(:idea) { create :idea, author: user, project: create(:continuous_native_survey_project) }
+
+      it "doesn't get triggered for a native survey response" do
+        commands = campaign.generate_commands recipient: user, activity: activity
+
+        expect(commands).to be_empty
+      end
+    end
+  end
 end

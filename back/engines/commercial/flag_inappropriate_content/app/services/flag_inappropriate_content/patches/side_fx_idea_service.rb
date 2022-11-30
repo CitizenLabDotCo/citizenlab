@@ -7,10 +7,14 @@ module FlagInappropriateContent
 
       def after_create(idea, user)
         super
+        return unless idea.participation_method_on_creation.supports_toxicity_detection?
+
         ToxicityDetectionJob.perform_later idea, attributes: SUPPORTED_ATTRS
       end
 
       def after_update(idea, user)
+        return super unless idea.participation_method_on_creation.supports_toxicity_detection?
+
         # before super to reliably detect attribute changes
         atrs = updated_supported_attrs idea
         if atrs.present?

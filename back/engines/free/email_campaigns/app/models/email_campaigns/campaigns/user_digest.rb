@@ -67,7 +67,9 @@ module EmailCampaigns
       discover_projects = discover_projects @users_to_projects[recipient.id]
 
       @notifications_counts ||= notifications_counts
-      @top_ideas ||= top_ideas.all
+      @top_ideas ||= top_ideas.select do |idea|
+        idea.participation_method_on_creation.include_data_in_email?
+      end
       @new_initiatives ||= new_initiatives(name_service, time: time)
       @successful_initiatives ||= successful_initiatives(name_service, time: time)
       @initiative_ids ||= (@new_initiatives + @successful_initiatives).pluck(:id).compact

@@ -167,7 +167,9 @@ module EmailCampaigns
     end
 
     def top_ideas
-      @top_ideas ||= new_ideas.concat(active_ideas).uniq(&:id)
+      @top_ideas ||= new_ideas.concat(active_ideas).uniq(&:id).select do |idea|
+        idea.participation_method_on_creation.include_data_in_email?
+      end
     end
 
     def active_ideas
