@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
 import messages from './messages';
-import { ISectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
+import { IHomepageSectionToggleData } from 'containers/Admin/pagesAndMenu/containers/EditHomepage';
 
 export interface Props {
-  onData: (data: InsertConfigurationOptions<ISectionToggleData>) => void;
+  onData: (
+    data: InsertConfigurationOptions<IHomepageSectionToggleData>
+  ) => void;
 }
 
 const SectionToggle = ({ onData }: Props) => {
