@@ -205,3 +205,6 @@ lv:
       title: 'Jūsu jautājums'
       option1: '1. variants'
       option2: '2. variants'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
