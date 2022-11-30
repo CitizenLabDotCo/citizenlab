@@ -36,7 +36,7 @@ describe SmartGroups::Rules::Role do
       admins = create_list(:admin, 2)
       moderators = create_list(:project_moderator, 2)
       admin_and_moderator = create(:project_moderator)
-      admin_and_moderator.update(roles: admin_and_moderator.roles + [{ type: 'admin' }])
+      admin_and_moderator.update!(roles: admin_and_moderator.roles + [{ type: 'admin' }])
       mortals + admins + moderators + [admin_and_moderator]
     end
 

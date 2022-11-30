@@ -107,10 +107,9 @@ const InnerContainer = styled.div`
   align-items: stretch;
 
   ${media.tablet`
-    padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
-    min-height: calc(100vh - ${(props) =>
-      props.theme.mobileTopBarHeight}px - ${(props) =>
-    props.theme.mobileMenuHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - ${(
+    props
+  ) => props.theme.mobileMenuHeight}px);
   `}
 `;
 

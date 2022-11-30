@@ -7,7 +7,7 @@ describe IdeaPolicy do
 
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
 
-  context 'on idea in a public project' do
+  context 'on an idea in a public project' do
     let(:project) { create(:continuous_project) }
     let!(:idea) { create(:idea, project: project) }
 
@@ -25,7 +25,7 @@ describe IdeaPolicy do
       end
     end
 
-    context 'for a user who is not the idea author' do
+    context 'for a resident who is not the idea author' do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
@@ -39,7 +39,7 @@ describe IdeaPolicy do
       end
     end
 
-    context 'for a user who did not complete registration who is the idea author' do
+    context 'for a resident who did not complete registration who is the idea author' do
       let :user do
         idea.author.update(registration_completed_at: nil)
         idea.author
@@ -83,6 +83,19 @@ describe IdeaPolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:show)    }
+      it { is_expected.to permit(:create)  }
+      it { is_expected.to permit(:update)  }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the idea' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
   end
 
   context 'on idea in a private admins project' do
@@ -103,7 +116,7 @@ describe IdeaPolicy do
       end
     end
 
-    context 'for a user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show) }
@@ -122,6 +135,19 @@ describe IdeaPolicy do
 
       it { is_expected.to permit(:show)    }
       it { is_expected.to permit(:by_slug) }
+      it { is_expected.to permit(:create)  }
+      it { is_expected.to permit(:update)  }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the idea' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:show)    }
       it { is_expected.to permit(:create)  }
       it { is_expected.to permit(:update)  }
       it { is_expected.to permit(:destroy) }
@@ -215,7 +241,7 @@ describe IdeaPolicy do
       end
     end
 
-    context 'for a user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show) }

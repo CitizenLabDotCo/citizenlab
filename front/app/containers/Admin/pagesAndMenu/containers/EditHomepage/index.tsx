@@ -54,12 +54,6 @@ const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       tooltipMessageDescriptor: sectionToggleMessages.topInfoSectionTooltip,
       linkToPath: 'top-info-section',
     },
-    // Should be enabled and extended again in i2
-    // {
-    //   name: 'projects_enabled',
-    //   titleMessageDescriptor: sectionToggleMessages.projectsList,
-    //   tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
-    // },
     {
       name: 'bottom_info_section_enabled',
       titleMessageDescriptor: sectionToggleMessages.bottomInfoSection,
