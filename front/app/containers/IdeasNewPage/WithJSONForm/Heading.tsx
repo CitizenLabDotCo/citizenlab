@@ -102,9 +102,10 @@ export const Heading = ({
                     data-cy="e2e-edit-survey-link"
                     icon="edit"
                     linkTo={linkToSurveyBuilder}
-                    buttonStyle="text"
+                    buttonStyle="primary-inverse"
                     textDecorationHover="underline"
                     hidden={!canUserEditProject}
+                    mr="4px"
                   >
                     <FormattedMessage {...messages.editSurvey} />
                   </Button>

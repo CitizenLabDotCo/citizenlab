@@ -62,7 +62,8 @@ const FormSectionDescriptionStyled = styled.p`
 `;
 
 const StyledSpan = styled.span`
-  margin-right: 3px;
+  margin-right: 8px;
+  font-weight: bold;
 `;
 
 interface FormSectionTitleProps {
@@ -115,16 +116,22 @@ export const Spacer = styled.div`
   height: 8px;
 `;
 
-const OptionalText = styled.span`
-  color: ${({ theme }) => theme.colors.tenantText};
+const OptionalText = styled.div`
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-weight: 400;
 `;
 
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
   ${isRtl`
     flex-direction: row-reverse;
+  `}
+
+  ${media.phone`
+    flex-direction: column;
+    align-items: flex-start;
   `}
 `;
 
@@ -233,7 +240,7 @@ export const FormLabel = memo<
         </StyledSpan>
         {optional && (
           <OptionalText>
-            &nbsp;{'('}
+            {'('}
             <FormattedMessage {...messages.optional} />
             {')'}
           </OptionalText>
