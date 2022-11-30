@@ -1544,7 +1544,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Veikt budžeta sadali",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Izveidot platformā veiktu apsekojumu",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Izveidot aptauju",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Iegult ārējo pētījumu",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Izveidot ārēju apsekojumu",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Atrast brīvprātīgos",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Iegūtie dati un atsauksmes",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Kopīgot informāciju",
