@@ -32,7 +32,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     <>
       {page.attributes.projects_enabled && (
         <ContentContainer>
-          <ProjectsList publications={adminPublications.list} />
+          <ProjectsList adminPublications={adminPublications.list} />
         </ContentContainer>
       )}
       {page.attributes.events_widget_enabled && (

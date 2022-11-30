@@ -4,16 +4,16 @@ import ProjectCard from 'components/ProjectCard';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 export interface Props {
-  publications: IAdminPublicationContent[];
+  adminPublications: IAdminPublicationContent[];
 }
 
-const ProjectsList = ({ publications }: Props) => {
+const ProjectsList = ({ adminPublications }: Props) => {
   return (
     <>
-      {publications.map((publication) => {
+      {adminPublications.map((adminPublication) => {
         return (
           <ProjectCard
-            projectId={publication.id}
+            projectId={adminPublication.publicationId}
             size="small"
             layout="threecolumns"
           />
