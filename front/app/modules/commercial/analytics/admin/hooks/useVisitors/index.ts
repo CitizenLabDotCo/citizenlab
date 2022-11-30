@@ -81,6 +81,7 @@ const query = ({
     aggregations: {
       all: 'count',
       visitor_id: 'count',
+      'dimension_date_last_action.date': 'first',
     },
   };
 
