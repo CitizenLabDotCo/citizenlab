@@ -133,6 +133,34 @@ RSpec.describe Notification, type: :model do
       end
     end
 
+    describe 'project_phase_upcoming' do
+      let(:project) { create(:project_with_current_phase) }
+      let(:other_project) { create(:project_with_current_phase) }
+
+      let(:project_folder) { create(:project_folder, projects: [project]) }
+      let(:other_project_folder) { create(:project_folder, projects: [other_project]) }
+
+      let!(:regular_user) { create(:user) }
+      let!(:moderator_of_project) { create(:project_moderator, projects: [project]) }
+      let!(:moderator_of_other_project) { create(:project_moderator, projects: [other_project]) }
+      let!(:moderator_of_project_folder) { create(:project_folder_moderator, project_folders: [project_folder]) }
+      let!(:moderator_of_other_project_folder) { create(:project_folder_moderator, project_folders: [other_project_folder]) }
+      let!(:admin) { create(:admin) }
+
+      it 'notifies all admins and only relevant moderators' do
+        activity = create :activity, item: project.phases[2], action: 'upcoming'
+        notifications = Notifications::ProjectPhaseUpcoming.make_notifications_on activity
+        notification_ids = notifications.pluck(:recipient_id)
+
+        expect(notification_ids).to include moderator_of_project.id
+        expect(notification_ids).to include moderator_of_project_folder.id
+        expect(notification_ids).to include admin.id
+        expect(notification_ids).not_to include regular_user.id
+        expect(notification_ids).not_to include moderator_of_other_project.id
+        expect(notification_ids).not_to include moderator_of_other_project_folder.id
+      end
+    end
+
     it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_given' do
       project = create(:project)
       moderator = create(:project_moderator, projects: [project])
