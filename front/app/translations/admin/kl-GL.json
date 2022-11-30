@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Suliniut nutaaq",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Nutaajunerit",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Annertussuseq atorsinnaanngilaq",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Skabeloninik nassaartoqanngilaq",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Suliniutip taaguutissaanik allagit",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Kisitsit atorsinnaanngilaq",
