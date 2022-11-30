@@ -74,12 +74,19 @@ const CLPageLayout = memo(
       setShowSubmitButton(false);
     }, [setShowSubmitButton]);
 
+    const scrollToTop = () => {
+      if (useTopAnchor) {
+        topAnchorRef.current.scrollIntoView();
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+
     const handleNextAndSubmit = () => {
       if (showSubmit) {
         onSubmit();
         return;
       }
-
       const currentPageCategorization = uiPages[currentStep];
       if (
         customAjv.validate(
@@ -88,13 +95,7 @@ const CLPageLayout = memo(
         )
       ) {
         setShowAllErrors(false);
-
-        if (useTopAnchor) {
-          topAnchorRef.current.scrollIntoView();
-        } else {
-          window.scrollTo(0, 0);
-        }
-
+        scrollToTop();
         setCurrentStep(currentStep + 1);
       } else {
         setShowAllErrors(true);
@@ -181,11 +182,7 @@ const CLPageLayout = memo(
               <Button
                 onClick={() => {
                   setCurrentStep(currentStep - 1);
-                  if (useTopAnchor) {
-                    topAnchorRef.current.scrollIntoView();
-                  } else {
-                    window.scrollTo(0, 0);
-                  }
+                  scrollToTop();
                 }}
                 mb="20px"
                 icon="chevron-left"
