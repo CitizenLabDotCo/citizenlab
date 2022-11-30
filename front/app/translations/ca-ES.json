@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Hi ha hagut un problema per part nostra, ho sentim",
   "app.components.HookForm.Feedback.successMessage": "Formulari enviat correctament",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Si canvieu l'URL, els enllaços a aquesta pàgina amb l'URL antic deixaran de funcionar",
-  "app.components.HookForm.SlugInput.pageUrl": "URL de la pàgina",
   "app.components.HookForm.SlugInput.resultingPageURL": "URL resultant",
   "app.components.HookForm.SlugInput.slugTooltip": "L’identificador d’URL és el conjunt únic de paraules al final de l'adreça web o URL de la pàgina",
   "app.components.IdeaCards.showMore": "Mostrar més",

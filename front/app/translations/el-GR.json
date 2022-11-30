@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Υπήρξε ένα πρόβλημα από την πλευρά μας, συγγνώμη",
   "app.components.HookForm.Feedback.successMessage": "Η φόρμα υποβλήθηκε επιτυχώς",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Εάν αλλάξετε τη διεύθυνση URL, οι σύνδεσμοι προς αυτή τη σελίδα που χρησιμοποιούν την παλιά διεύθυνση URL δεν θα λειτουργούν πλέον",
-  "app.components.HookForm.SlugInput.pageUrl": "URL της σελίδας",
   "app.components.HookForm.SlugInput.resultingPageURL": "Προκύπτουσα διεύθυνση URL",
   "app.components.HookForm.SlugInput.slugTooltip": "Το slug είναι το μοναδικό σύνολο λέξεων στο τέλος της διαδικτυακής διεύθυνσης της σελίδας ή της διεύθυνσης URL",
   "app.components.IdeaCards.showMore": "Εμφάνιση περισσότερων",

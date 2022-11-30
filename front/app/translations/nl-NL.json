@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Er ging iets mis aan onze kant, excuses",
   "app.components.HookForm.Feedback.successMessage": "Formulier succesvol verstuurd",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Als je de URL wijzigt, werken links naar deze pagina met de oude URL niet meer",
-  "app.components.HookForm.SlugInput.pageUrl": "Pagina-URL",
   "app.components.HookForm.SlugInput.resultingPageURL": "Resulterende URL",
   "app.components.HookForm.SlugInput.slugTooltip": "De slug is de unieke reeks woorden aan het einde van het webadres van de pagina, of URL",
   "app.components.IdeaCards.showMore": "Toon meer",

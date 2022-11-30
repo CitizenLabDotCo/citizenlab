@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "C'è stato un problema da parte nostra, siamo spiacenti",
   "app.components.HookForm.Feedback.successMessage": "Modulo inviato correttamente",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Se modifichi l'URL, i collegamenti a questa pagina che utilizzano il vecchio URL non funzioneranno più",
-  "app.components.HookForm.SlugInput.pageUrl": "URL della pagina",
   "app.components.HookForm.SlugInput.resultingPageURL": "URL risultante",
   "app.components.HookForm.SlugInput.slugTooltip": "Lo slug è l'insieme univoco di parole alla fine dell'indirizzo Web o URL della pagina",
   "app.components.IdeaCards.showMore": "Mostra di più",

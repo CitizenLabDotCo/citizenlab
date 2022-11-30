@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Nowy projekt",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Najnowsze",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Nieodpowiednia kwota",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Nie znaleziono żadnych szablonów",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "To nie może być puste",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Proszę podać maksymalną liczbę głosów na użytkownika",

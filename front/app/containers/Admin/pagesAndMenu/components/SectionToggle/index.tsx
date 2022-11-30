@@ -20,7 +20,6 @@ export interface Props {
   editLinkPath?: string;
   isLastItem: boolean;
   hideToggle?: boolean;
-  disabled?: boolean;
   name?: string;
 }
 
@@ -33,7 +32,6 @@ const SectionToggle = ({
   checked,
   isLastItem,
   hideToggle = false,
-  disabled = false,
   name,
 }: Props) => {
   return (
@@ -51,11 +49,7 @@ const SectionToggle = ({
           mt="7px"
           data-cy={`e2e-admin-section-toggle-${name}`}
         >
-          <Toggle
-            checked={checked}
-            onChange={onChangeSectionToggle}
-            disabled={disabled}
-          />
+          <Toggle checked={checked} onChange={onChangeSectionToggle} />
         </Box>
         <Box>
           <Title mr="10px">

@@ -7,9 +7,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  pageUrl: {
-    id: 'app.components.HookForm.SlugInput.pageUrl',
-    defaultMessage: 'Page URL',
+  pageSlug: {
+    id: 'app.components.HookForm.SlugInput.pageSlug',
+    defaultMessage: 'Page slug',
   },
   resultingPageURL: {
     id: 'app.components.HookForm.SlugInput.resultingPageURL',
