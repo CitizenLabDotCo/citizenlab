@@ -25,7 +25,7 @@ const Messenger = ({
   url,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);
     trackClick('messenger');
@@ -35,8 +35,8 @@ const Messenger = ({
     const properties = { network: medium };
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
-  if (!isNilOrError(tenant)) {
-    const facebookAppId = tenant.attributes.settings.facebook_login?.app_id;
+  if (!isNilOrError(appConfig)) {
+    const facebookAppId = appConfig.attributes.settings.facebook_login?.app_id;
     const messengerHref = facebookAppId
       ? `fb-messenger://share/?link=${url}&app_id=${facebookAppId}`
       : null;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // components
 import ProjectCard from 'components/ProjectCard';
-import Outlet from 'components/Outlet';
+import ProjectFolderCard from './ProjectFolderCard';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -70,12 +70,13 @@ const ProjectsTabPanel = ({
                 layout={layout}
               />
             )}
-            <Outlet
-              id="app.components.ProjectAndFolderCards.card"
-              publication={item}
-              size={size}
-              layout={layout}
-            />
+            {projectOrFolderType === 'folder' && (
+              <ProjectFolderCard
+                publication={item}
+                size={size}
+                layout={layout}
+              />
+            )}
           </React.Fragment>
         );
       })}

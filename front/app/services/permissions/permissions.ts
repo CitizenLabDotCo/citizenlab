@@ -107,7 +107,7 @@ const usePermission = ({
   context?: any;
 }) => {
   const user = useAuthUser();
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
   if (!item) {
     return false;
@@ -119,8 +119,8 @@ const usePermission = ({
   if (rule) {
     return (
       !isNilOrError(user) &&
-      !isNilOrError(tenant) &&
-      rule(item, { data: user }, tenant, context)
+      !isNilOrError(appConfig) &&
+      rule(item, { data: user }, appConfig, context)
     );
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;

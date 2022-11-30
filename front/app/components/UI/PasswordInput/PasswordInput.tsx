@@ -57,7 +57,7 @@ const PasswordInputComponent = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
   const { minimumLengthError, emptyError } = errors;
@@ -94,7 +94,7 @@ const PasswordInputComponent = ({
     setPasswordScore(score);
   };
 
-  if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+  if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
     return (
       <>
         <Container>

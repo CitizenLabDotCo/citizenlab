@@ -112,7 +112,7 @@ const CategoryCard = ({
   handleChange,
   disableUncheck,
 }: Props) => {
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
   return (
     <Container className="e2e-category">
@@ -166,7 +166,7 @@ const CategoryCard = ({
                 {index !== 0 && <Separator>•</Separator>}
                 <SSpan>
                   <DestinationName
-                    tenant={!isNilOrError(tenant) ? tenant : null}
+                    tenant={!isNilOrError(appConfig) ? appConfig : null}
                     destination={d}
                   />
                 </SSpan>

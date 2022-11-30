@@ -11,8 +11,8 @@ import VisitorsCard from '../../../../../analytics/admin/components/VisitorsCard
 import VisitorsTrafficSourcesCard from '../../../../../analytics/admin/components/VisitorsTrafficSourcesCard';
 import { injectIntl } from '../../../../../../../utils/cl-intl';
 import messages from '../../../messages';
-import GenderChart from '../../../../../user_custom_fields/admin/components/GenderChart';
-import AgeChart from '../../../../../user_custom_fields/admin/components/AgeChart';
+import GenderChart from '../../../../../../../containers/Admin/dashboard/users/charts/GenderChart';
+import AgeChart from '../../../../../../../containers/Admin/dashboard/users/charts/AgeChart';
 
 interface Props {
   title: string;

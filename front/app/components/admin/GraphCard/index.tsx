@@ -59,7 +59,7 @@ const GraphCard = ({
           )}
         </Box>
         <Box display="flex" flexDirection="row">
-          {topRightStat && <Box theme="light">{topRightStat}</Box>}
+          {topRightStat && <Box>{topRightStat}</Box>}
           {exportMenu && <ReportExportMenu {...exportMenu} />}
           {viewToggle && (
             <Box ml="12px">

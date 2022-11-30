@@ -1,6 +1,5 @@
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { BoxProps } from '@citizenlab/cl2-component-library';
 
 // Parameters
 export interface ProjectId {
@@ -62,7 +61,6 @@ export interface Stat {
 
 // Component layouts
 export type Layout = 'wide' | 'narrow';
-export type BoxLayout = Record<Layout, BoxProps>;
 
 // Report specifics
 export interface ReportChartConfig {

@@ -162,6 +162,19 @@ describe('streams.get', () => {
       expect(request).toHaveBeenCalledTimes(2);
     });
   });
+
+  it('calls a custom log function when one is passed through', async () => {
+    const log = jest.fn();
+    request.mockRejectedValueOnce(new Error('Async error'));
+
+    streams.get({
+      apiEndpoint: '/web_api/v1/error',
+      handleErrorLogging: (error) => {
+        log(error);
+        expect(log).toHaveBeenCalledTimes(1);
+      },
+    });
+  });
 });
 
 describe('streams.reset', () => {

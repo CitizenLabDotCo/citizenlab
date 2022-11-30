@@ -104,6 +104,7 @@ export default ({
 
   const renderRowButton = (action) => (
     <RowButton
+      data-cy={`e2e-manage-button-${publication.publicationId}`}
       key={action.icon}
       type="button"
       className={[

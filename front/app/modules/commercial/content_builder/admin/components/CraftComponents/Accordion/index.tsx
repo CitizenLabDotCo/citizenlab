@@ -22,7 +22,7 @@ import messages from '../../../messages';
 import { injectIntl } from 'utils/cl-intl';
 
 const Accordion = ({ text, title, openByDefault }) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   return (
     <AccordionComponent
