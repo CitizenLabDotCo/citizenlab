@@ -75,8 +75,7 @@ const CustomPagesEditContent = () => {
       name: 'projects_enabled',
       titleMessageDescriptor: sectionToggleMessages.projectsList,
       tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
-      // projects list can only be seen when a tag/filter has been selected
-      ...(projectFilterEnabled && { linkToPath: 'projects' }),
+      linkToPath: 'projects',
       hideSection: !projectFilterEnabled,
     },
     {
