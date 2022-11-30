@@ -1,5 +1,9 @@
 # Changelog
 
+## Next release
+
+- [CL-2171] Fix excel export of visitor data for Dutch clients
+
 ## 2022-11-30
 
 ### Fixed
