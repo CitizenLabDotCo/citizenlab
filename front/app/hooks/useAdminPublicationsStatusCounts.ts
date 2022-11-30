@@ -35,7 +35,7 @@ export default function useAdminPublicationsStatusCounts({
     PublicationStatus[]
   >(publicationStatusFilter);
 
-  // topicIds and areaIds are usually based of other
+  // topicIds and areaIds are usually based off other
   // requests, and will initially be null/undefined.
   // Without the useEffect, they don't get updated
   const stringifiedTopicIds = JSON.stringify(topicIds);
