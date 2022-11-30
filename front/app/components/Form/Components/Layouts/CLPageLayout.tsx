@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useContext } from 'react';
+import React, { memo, useState, useEffect, useContext, useRef } from 'react';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
@@ -29,6 +29,7 @@ import {
   PageCategorization,
   isPageCategorization,
 } from 'components/Form/Components/Layouts/utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -55,6 +56,7 @@ const CLPageLayout = memo(
   }: LayoutProps) => {
     const { setShowSubmitButton, onSubmit, setShowAllErrors, formSubmitText } =
       useContext(FormContext);
+    const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const uiPages = (uischema as PageCategorization).elements;
     const theme: any = useTheme();
@@ -63,6 +65,10 @@ const CLPageLayout = memo(
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
+    const useTopAnchor =
+      isSmallerThanXlPhone &&
+      !isNilOrError(topAnchorRef) &&
+      topAnchorRef.current;
 
     useEffect(() => {
       setShowSubmitButton(false);
@@ -82,6 +88,13 @@ const CLPageLayout = memo(
         )
       ) {
         setShowAllErrors(false);
+
+        if (useTopAnchor) {
+          topAnchorRef.current.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
+        }
+
         setCurrentStep(currentStep + 1);
       } else {
         setShowAllErrors(true);
@@ -89,84 +102,105 @@ const CLPageLayout = memo(
     };
 
     return (
-      <Box
-        width="100%"
-        maxWidth="700px"
-        display="flex"
-        flexDirection="column"
-        padding="0 20px 30px 20px"
-        margin="auto"
-      >
-        {uiPages.map((page, index) => {
-          return (
-            currentStep === index && (
-              <StyledFormSection key={index}>
-                <Title variant="h2" mb="32px" color="tenantText">
-                  {page.options.title}
-                </Title>
-                <Box mb="16px">
-                  <QuillEditedContent
-                    fontWeight={400}
-                    textColor={theme.colors.tenantText}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: page.options.description,
-                      }}
-                    />
-                  </QuillEditedContent>
-                </Box>
-                {page.elements.map((elementUiSchema, index) => (
-                  <Box width="100%" mb="40px" key={index}>
-                    <JsonFormsDispatch
-                      renderers={renderers}
-                      cells={cells}
-                      uischema={elementUiSchema}
-                      schema={schema}
-                      path={path}
-                      enabled={enabled}
-                    />
-                  </Box>
-                ))}
-              </StyledFormSection>
-            )
-          );
-        })}
+      <>
         <Box
-          display="flex"
-          flexDirection={isSmallerThanXlPhone ? 'column' : 'row-reverse'}
-          justifyContent="space-between"
+          ref={topAnchorRef}
+          marginTop={'-92px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
+          marginBottom={'92px'}
+          id="top-anchor"
+        />
+
+        <Box
           width="100%"
+          maxWidth="700px"
+          display="flex"
+          flexDirection="column"
+          padding="0 20px 96px 20px"
+          margin="auto"
         >
-          <Button
-            onClick={handleNextAndSubmit}
-            data-cy={dataCyValue}
-            mb="20px"
-            icon="chevron-right"
-            iconPos="right"
-            key={currentStep.toString()}
-            bgColor={showSubmit ? theme.colors.green500 : theme.colors.primary}
+          <Box style={{ position: 'absolute', top: 0 }} />
+          {uiPages.map((page, index) => {
+            return (
+              currentStep === index && (
+                <StyledFormSection key={index}>
+                  <Box>
+                    <Title variant="h2" mb="32px" color="tenantText">
+                      {page.options.title}
+                    </Title>
+                  </Box>
+                  <Box mb="16px">
+                    <QuillEditedContent
+                      fontWeight={400}
+                      textColor={theme.colors.tenantText}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: page.options.description,
+                        }}
+                      />
+                    </QuillEditedContent>
+                  </Box>
+                  {page.elements.map((elementUiSchema, index) => (
+                    <Box width="100%" mb="40px" key={index}>
+                      <JsonFormsDispatch
+                        renderers={renderers}
+                        cells={cells}
+                        uischema={elementUiSchema}
+                        schema={schema}
+                        path={path}
+                        enabled={enabled}
+                      />
+                    </Box>
+                  ))}
+                </StyledFormSection>
+              )
+            );
+          })}
+          <Box
+            display="flex"
+            flexDirection={isSmallerThanXlPhone ? 'column' : 'row-reverse'}
+            justifyContent="space-between"
             width="100%"
           >
-            <FormattedMessage {...(showSubmit ? submitText : messages.next)} />
-          </Button>
-          {hasPreviousPage && (
             <Button
-              onClick={() => {
-                setCurrentStep(currentStep - 1);
-              }}
+              onClick={handleNextAndSubmit}
+              data-cy={dataCyValue}
               mb="20px"
-              icon="chevron-left"
-              bgColor="white"
-              buttonStyle="secondary-outlined"
+              icon="chevron-right"
+              iconPos="right"
+              key={currentStep.toString()}
+              bgColor={
+                showSubmit ? theme.colors.green500 : theme.colors.primary
+              }
               width="100%"
-              marginRight={isSmallerThanXlPhone ? '0px' : '16px'}
             >
-              <FormattedMessage {...messages.previous} />
+              <FormattedMessage
+                {...(showSubmit ? submitText : messages.next)}
+              />
             </Button>
-          )}
+            {hasPreviousPage && (
+              <Button
+                onClick={() => {
+                  setCurrentStep(currentStep - 1);
+                  if (useTopAnchor) {
+                    topAnchorRef.current.scrollIntoView();
+                  } else {
+                    window.scrollTo(0, 0);
+                  }
+                }}
+                mb="20px"
+                icon="chevron-left"
+                bgColor="white"
+                buttonStyle="secondary-outlined"
+                width="100%"
+                marginRight={isSmallerThanXlPhone ? '0px' : '16px'}
+              >
+                <FormattedMessage {...messages.previous} />
+              </Button>
+            )}
+          </Box>
         </Box>
-      </Box>
+      </>
     );
   }
 );
