@@ -118,7 +118,6 @@ const CLPageLayout = memo(
           padding="0 20px 96px 20px"
           margin="auto"
         >
-          <Box style={{ position: 'absolute', top: 0 }} />
           {uiPages.map((page, index) => {
             return (
               currentStep === index && (
