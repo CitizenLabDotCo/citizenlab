@@ -11,10 +11,10 @@ import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
-import { THomepageSectionToggleData } from '../../containers/EditHomepage';
-import { TCustomPageSectionToggleData } from '../../containers/CustomPages/Edit/Content';
+import { IHomepageSectionToggleData } from '../../containers/EditHomepage';
+import { ICustomPageSectionToggleData } from '../../containers/CustomPages/Edit/Content';
 
-export interface TSectionToggleData {
+export interface ISectionToggleData {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   linkToPath?: string;
@@ -22,7 +22,7 @@ export interface TSectionToggleData {
 }
 
 interface Props {
-  sectionToggleData: THomepageSectionToggleData | TCustomPageSectionToggleData;
+  sectionToggleData: IHomepageSectionToggleData | ICustomPageSectionToggleData;
   onChangeSectionToggle: () => void;
   onClickEditButton?: (editLinkPath: string) => void;
   checked: boolean;

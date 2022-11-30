@@ -27,16 +27,16 @@ import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
 import clHistory from 'utils/cl-router/history';
-import { TSectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
+import { ISectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 
-export interface THomepageSectionToggleData extends TSectionToggleData {
+export interface IHomepageSectionToggleData extends ISectionToggleData {
   name: THomepageEnabledSetting | 'homepage_banner';
 }
 
 const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const [sectionTogglesData, setSectionTogglesData] = useState<
-    THomepageSectionToggleData[]
+    IHomepageSectionToggleData[]
   >([
     {
       name: 'homepage_banner',
@@ -74,7 +74,7 @@ const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
     };
 
   const handleOnData = (
-    sectionToggleData: InsertConfigurationOptions<THomepageSectionToggleData>
+    sectionToggleData: InsertConfigurationOptions<IHomepageSectionToggleData>
   ) => {
     setSectionTogglesData((currentSectionTogglesData) => {
       return insertConfiguration(sectionToggleData)(currentSectionTogglesData);

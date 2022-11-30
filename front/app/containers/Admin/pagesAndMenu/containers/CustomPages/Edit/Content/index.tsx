@@ -1,5 +1,5 @@
 import React from 'react';
-import { TSectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
+import { ISectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
@@ -29,7 +29,7 @@ import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
-export interface TCustomPageSectionToggleData extends TSectionToggleData {
+export interface ICustomPageSectionToggleData extends ISectionToggleData {
   name: TCustomPageEnabledSetting;
   hideSection?: boolean;
 }
@@ -50,7 +50,7 @@ const CustomPagesEditContent = () => {
     !advancedCustomPagesEnabled ||
     customPage.attributes.projects_filter_type === 'no_filter';
 
-  const sectionTogglesData: TCustomPageSectionToggleData[] = [
+  const sectionTogglesData: ICustomPageSectionToggleData[] = [
     {
       name: 'banner_enabled',
       titleMessageDescriptor: sectionToggleMessages.heroBanner,
