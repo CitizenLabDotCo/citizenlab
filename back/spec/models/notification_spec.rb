@@ -148,7 +148,7 @@ RSpec.describe Notification, type: :model do
       let!(:admin) { create(:admin) }
 
       it 'notifies all admins and only relevant moderators' do
-        activity = create :activity, item: project.phases[2], action: 'upcoming'
+        activity = create(:activity, item: project.phases[2], action: 'upcoming')
         notifications = Notifications::ProjectPhaseUpcoming.make_notifications_on activity
         notification_ids = notifications.pluck(:recipient_id)
 
