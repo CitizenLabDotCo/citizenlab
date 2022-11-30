@@ -6,7 +6,7 @@ import moment, { Moment } from 'moment';
 import ChartFilters from './ChartFilters';
 import { GraphsContainer, ControlBar } from 'components/admin/GraphWrappers';
 import TimeControl from '../components/TimeControl';
-import Outlet from 'components/Outlet';
+import Charts from './Charts';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
@@ -77,8 +77,7 @@ export class UsersDashboard extends PureComponent<Props & Tracks, State> {
         />
 
         <GraphsContainer>
-          <Outlet
-            id="app.containers.Admin.dashboard.users.graphs"
+          <Charts
             startAt={startAt}
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}

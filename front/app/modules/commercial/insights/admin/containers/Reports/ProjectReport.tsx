@@ -36,15 +36,15 @@ import { ParticipationMethod } from 'services/participationContexts';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 import T from 'components/T';
 
-import HorizontalBarChartWithoutStream from './charts/HorizontalBarChartWithoutStream';
-import IdeasByStatusChart from './charts/IdeasByStatusChart';
-import ParticipationPerTopic from './charts/ParticipationPerTopic';
-import LineBarChart from './charts/LineBarChart';
-import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import HorizontalBarChartWithoutStream from './Charts/HorizontalBarChartWithoutStream';
+import IdeasByStatusChart from './Charts/IdeasByStatusChart';
+import ParticipationPerTopic from './Charts/ParticipationPerTopic';
+import LineBarChart from './Charts/LineBarChart';
+import LineBarChartVotesByTime from './Charts/LineBarChartVotesByTime';
+import BarChartActiveUsersByTime from './Charts/BarChartActiveUsersByTime';
 import PollReport from './PollReport';
+import UserCharts from './Charts/UserCharts';
 
-import Outlet from 'components/Outlet';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
@@ -249,8 +249,7 @@ const ProjectReport = memo(
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />
-              <Outlet
-                id="app.containers.Admin.dashboard.reports.ProjectReport.graphs"
+              <UserCharts
                 startAt={startAt}
                 endAt={endAt}
                 participationMethods={participationMethods}

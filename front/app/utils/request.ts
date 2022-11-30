@@ -4,6 +4,7 @@ import { getJwt } from 'utils/auth/jwt';
 import { isString } from 'lodash-es';
 import { IHttpMethod } from 'typings';
 import { IObject } from 'utils/streams';
+import { RequestError } from 'utils/requestError';
 
 export default function request<T>(
   url: string,
@@ -53,7 +54,10 @@ export default function request<T>(
       const errorMessage = isString(json?.error)
         ? json.error
         : response.statusText || 'unknown error';
-      const error = new Error(`error for ${urlWithParams}: ${errorMessage}`);
+      const error = new RequestError(
+        `error for ${urlWithParams}: ${errorMessage}`
+      );
+      error.statusCode = response.status;
       if (json) {
         // The error reasons may be encoded in the
         // json content (this happens e.g. for

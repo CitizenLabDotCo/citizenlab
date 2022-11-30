@@ -28,7 +28,9 @@ class Area < ApplicationRecord
   has_many :projects, through: :areas_projects
   has_many :areas_initiatives, dependent: :destroy
   has_many :initiatives, through: :areas_initiatives
-  has_and_belongs_to_many :static_pages
+
+  has_many :areas_static_pages, dependent: :restrict_with_error
+  has_many :static_pages, through: :areas_static_pages
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -43,7 +45,6 @@ class Area < ApplicationRecord
   after_create :recreate_custom_field_option
   after_update :update_custom_field_option
   before_destroy :destroy_custom_field_option
-  before_destroy :validate_empty_static_pages
 
   validates :ordering, numericality: {
     only_integer: true,
@@ -111,13 +112,6 @@ class Area < ApplicationRecord
     SideFxCustomFieldOptionService.new.before_destroy(custom_field_option, nil)
     custom_field_option.destroy
     SideFxCustomFieldOptionService.new.after_destroy(custom_field_option, nil)
-  end
-
-  def validate_empty_static_pages
-    return unless static_pages.exists?
-
-    errors.add(:static_pages, 'linked_static_pages_exist')
-    throw :abort
   end
 
   class << self

@@ -19,6 +19,7 @@ import {
 
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -32,17 +33,24 @@ export type TCustomPageSectionToggleData = {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   linkToPath?: string;
-  hideToggle?: boolean;
+  hideSection?: boolean;
 };
 
 // types
 const CustomPagesEditContent = () => {
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage({ customPageId });
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
 
   if (isNilOrError(customPage)) {
     return null;
   }
+
+  const hideProjects =
+    !advancedCustomPagesEnabled ||
+    customPage.attributes.projects_filter_type === 'no_filter';
 
   const sectionTogglesData: TCustomPageSectionToggleData[] = [
     {
@@ -67,11 +75,13 @@ const CustomPagesEditContent = () => {
       name: 'projects_enabled',
       titleMessageDescriptor: sectionToggleMessages.projectsList,
       tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
+      hideSection: hideProjects,
     },
     {
       name: 'events_widget_enabled',
       titleMessageDescriptor: sectionToggleMessages.eventsList,
       tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
+      hideSection: hideProjects,
     },
     {
       name: 'bottom_info_section_enabled',
@@ -116,10 +126,13 @@ const CustomPagesEditContent = () => {
               titleMessageDescriptor,
               tooltipMessageDescriptor,
               linkToPath,
-              hideToggle,
+              hideSection,
             },
             index
           ) => {
+            if (hideSection) {
+              return;
+            }
             return (
               <SectionToggle
                 key={name}
@@ -131,7 +144,6 @@ const CustomPagesEditContent = () => {
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
                 isLastItem={index === sectionTogglesData.length - 1}
-                hideToggle={hideToggle}
               />
             );
           }

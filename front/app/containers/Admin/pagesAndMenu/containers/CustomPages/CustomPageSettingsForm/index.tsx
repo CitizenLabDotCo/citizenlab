@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { array, object, string } from 'yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { slugRegEx } from 'utils/textUtils';
-// import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
@@ -18,12 +17,18 @@ import SlugInput from 'components/HookForm/SlugInput';
 import Tabs from 'components/HookForm/Tabs';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
-import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Label,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 // hooks
 import useTopics from 'hooks/useTopics';
 import useAreas from 'hooks/useAreas';
 import useLocalize from 'hooks/useLocalize';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -63,6 +68,8 @@ const projectsFilterTypesArray: ProjectsFilterTypes[] = [
   'areas',
 ];
 
+const fieldMarginBottom = '40px';
+
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   intl: { formatMessage },
@@ -72,6 +79,9 @@ const CustomPageSettingsForm = ({
 }: Props & WrappedComponentProps) => {
   const localize = useLocalize();
   const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.titleMultilocError)
@@ -108,6 +118,7 @@ const CustomPageSettingsForm = ({
   });
 
   const slug = methods.watch('slug');
+  const slugHasChanged = slug !== defaultValues?.slug;
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -154,7 +165,21 @@ const CustomPageSettingsForm = ({
         onSubmit={methods.handleSubmit(onFormSubmit)}
         data-testid="customPageSettingsForm"
       >
-        <SectionFormWrapper flatTopBorder>
+        <SectionFormWrapper
+          stickyMenuContents={
+            <Box display="flex">
+              <Button
+                data-cy="e2e-submit-custom-page"
+                type="submit"
+                processing={methods.formState.isSubmitting}
+                bgColor={colors.blue500}
+              >
+                {formatMessage(messages.saveButton)}
+              </Button>
+            </Box>
+          }
+          flatTopBorder
+        >
           <SectionField>
             <Feedback
               successMessage={
@@ -163,7 +188,7 @@ const CustomPageSettingsForm = ({
                   : formatMessage(messages.messageCreatedSuccess)
               }
             />
-            <Box mb="30px">
+            <Box mb={fieldMarginBottom}>
               <InputMultilocWithLocaleSwitcher
                 name="title_multiloc"
                 label={formatMessage(messages.titleLabel)}
@@ -171,7 +196,7 @@ const CustomPageSettingsForm = ({
               />
             </Box>
             {showNavBarItemTitle && (
-              <Box mb="30px">
+              <Box mb={fieldMarginBottom}>
                 <InputMultilocWithLocaleSwitcher
                   label={formatMessage(messages.navbarItemTitle)}
                   type="text"
@@ -180,56 +205,53 @@ const CustomPageSettingsForm = ({
               </Box>
             )}
             {mode === 'edit' && (
-              <SlugInput slug={slug} pathnameWithoutSlug="pages" />
+              <Box mb={fieldMarginBottom}>
+                <SlugInput
+                  slug={slug}
+                  pathnameWithoutSlug="pages"
+                  showWarningMessage={slugHasChanged}
+                />
+              </Box>
             )}
-            {/* // should be behind a feature flag */}
-            <Box>
-              <Box display="flex" justifyContent="flex-start">
-                <Label>
-                  <span>{formatMessage(messages.linkedProjectsLabel)}</span>
-                  <IconTooltip
-                    ml="10px"
-                    content={formatMessage(messages.linkedProjectsTooltip)}
-                  />
-                </Label>
-              </Box>
-              <Box mb="30px">
-                <Tabs name="projects_filter_type" items={projectsFilterTabs} />
-              </Box>
-              {methods.watch('projects_filter_type') === 'topics' && (
+
+            {advancedCustomPagesEnabled && (
+              <Box mb={fieldMarginBottom}>
+                <Box display="flex" justifyContent="flex-start">
+                  <Label>
+                    <span>{formatMessage(messages.linkedProjectsLabel)}</span>
+                    <IconTooltip
+                      ml="10px"
+                      content={formatMessage(messages.linkedProjectsTooltip)}
+                    />
+                  </Label>
+                </Box>
                 <Box mb="30px">
-                  <MultipleSelect
-                    name="topic_ids"
-                    options={mapFilterEntityToOptions(topics)}
-                    label={
-                      <>
-                        {formatMessage(messages.selectedTagsLabel)}
-                        <IconTooltip content={'add some tags'} />
-                      </>
-                    }
+                  <Tabs
+                    name="projects_filter_type"
+                    items={projectsFilterTabs}
+                    minTabWidth={120}
                   />
                 </Box>
-              )}
-              {methods.watch('projects_filter_type') === 'areas' && (
-                <Box mb="20px">
-                  <Select
-                    name="area_id"
-                    options={mapFilterEntityToOptions(areas)}
-                    label={<>{formatMessage(messages.selectedAreasLabel)}</>}
-                    labelTooltipText="choose an area"
-                  />
-                </Box>
-              )}
-            </Box>
-            <Box display="flex">
-              <Button
-                data-cy="e2e-submit-custom-page"
-                type="submit"
-                processing={methods.formState.isSubmitting}
-              >
-                {formatMessage(messages.saveButton)}
-              </Button>
-            </Box>
+                {methods.watch('projects_filter_type') === 'topics' && (
+                  <Box mb="30px">
+                    <MultipleSelect
+                      name="topic_ids"
+                      options={mapFilterEntityToOptions(topics)}
+                      label={formatMessage(messages.selectedTagsLabel)}
+                    />
+                  </Box>
+                )}
+                {methods.watch('projects_filter_type') === 'areas' && (
+                  <Box mb="20px">
+                    <Select
+                      name="area_id"
+                      options={mapFilterEntityToOptions(areas)}
+                      label={formatMessage(messages.selectedAreasLabel)}
+                    />
+                  </Box>
+                )}
+              </Box>
+            )}
           </SectionField>
         </SectionFormWrapper>
       </form>

@@ -157,8 +157,8 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
   end
 
   create_table "areas_static_pages", force: :cascade do |t|
-    t.uuid "area_id"
-    t.uuid "static_page_id"
+    t.uuid "area_id", null: false
+    t.uuid "static_page_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["area_id"], name: "index_areas_static_pages_on_area_id"
@@ -1170,8 +1170,8 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
   end
 
   create_table "static_pages_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "topic_id"
-    t.uuid "static_page_id"
+    t.uuid "topic_id", null: false
+    t.uuid "static_page_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["static_page_id"], name: "index_static_pages_topics_on_static_page_id"
@@ -1718,6 +1718,27 @@ ActiveRecord::Schema.define(version: 2022_11_14_094435) do
        LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
              FROM initiative_status_changes isc_
             WHERE (isc_.initiative_id = i.id))))));
+  SQL
+  create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
+      SELECT ecd.id,
+      (ecd.sent_at)::date AS dimension_date_sent_id,
+      ecd.campaign_id,
+      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
+     FROM (email_campaigns_deliveries ecd
+       JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
+  SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc,
+      idea_statuses.code,
+      idea_statuses.color
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc,
+      initiative_statuses.code,
+      initiative_statuses.color
+     FROM initiative_statuses;
   SQL
   create_view "analytics_fact_registrations", sql_definition: <<-SQL
       SELECT u.id,

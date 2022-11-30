@@ -53,6 +53,14 @@ RSpec.describe StaticPage, type: :model do
         expect(valid).to be(true)
       end
     end
+
+    describe '#projects_filter_type' do
+      it 'is not valid with a bad projects filter type' do
+        expect { build(:static_page, projects_filter_type: 'not_a_valid_enum_value') }
+          .to raise_error(ArgumentError)
+          .with_message(/is not a valid projects_filter_type/)
+      end
+    end
   end
 
   describe 'when create new static page with no value for slug' do

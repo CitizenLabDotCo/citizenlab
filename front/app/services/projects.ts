@@ -122,6 +122,7 @@ export interface IProjectAttributes {
   ideas_order?: IdeaDefaultSortMethod;
   input_term: InputTerm;
   include_all_areas: boolean;
+  folder_id?: string;
   action_descriptor: {
     posting_idea: {
       enabled: boolean;
@@ -229,6 +230,7 @@ export interface IUpdatedProjectProperties {
   slug?: string;
   topic_ids?: string[];
   include_all_areas?: boolean;
+  folder_id?: string;
 }
 
 export interface IProjectFormState {
@@ -252,6 +254,7 @@ export interface IProjectFormState {
   submitState: ISubmitState;
   slug: string | null;
   showSlugErrorMessage: boolean;
+  folder_id?: string;
 }
 
 export interface IProject {
@@ -360,4 +363,25 @@ export function getProjectUrl(project: IProjectData) {
 
 export function getProjectInputTerm(project: IProjectData) {
   return project.attributes.input_term;
+}
+
+export async function updateProjectFolderMembership(
+  projectId: string,
+  newProjectFolderId: string | null,
+  oldProjectFolderId?: string
+) {
+  const response = await streams.update<IProject>(
+    `${apiEndpoint}/${projectId}`,
+    projectId,
+    { project: { folder_id: newProjectFolderId } }
+  );
+
+  await streams.fetchAllWith({
+    dataId: [newProjectFolderId, oldProjectFolderId].filter(
+      (item) => item
+    ) as string[],
+    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/projects`],
+  });
+
+  return response;
 }

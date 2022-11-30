@@ -6,7 +6,6 @@
   ],
   "modules": {
     "free/email_campaigns": true,
-    "free/customizable_navbar": true,
     "free/frontend": true,
     "free/onboarding": true,
     "free/polls": true,

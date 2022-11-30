@@ -10,8 +10,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
+import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
-import Outlet from 'components/Outlet';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,14 +29,11 @@ const ModeratorProjectList = memo<Props>(() => {
   const adminPublicationRow = (adminPublication) => {
     if (adminPublication.publicationType === 'project') {
       return <ProjectRow publication={adminPublication} />;
-    } else {
-      return (
-        <Outlet
-          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
-          publication={adminPublication}
-        />
-      );
     }
+    if (adminPublication.publicationType === 'folder') {
+      return <ProjectFolderRow publication={adminPublication} />;
+    }
+    return null;
   };
 
   if (
