@@ -30,7 +30,7 @@ const SlugInput = ({ slug, pathnameWithoutSlug }: Props) => {
           </Warning>
         </Box>
         <Input
-          label={<FormattedMessage {...messages.pageUrl} />}
+          label={<FormattedMessage {...messages.pageSlug} />}
           labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
           id="slug"
           name="slug"
