@@ -1,4 +1,5 @@
 import React from 'react';
+import { TSectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
@@ -8,7 +9,7 @@ import Warning from 'components/UI/Warning';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
 
 // services
@@ -28,13 +29,10 @@ import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
-export type TCustomPageSectionToggleData = {
+export interface TCustomPageSectionToggleData extends TSectionToggleData {
   name: TCustomPageEnabledSetting;
-  titleMessageDescriptor: MessageDescriptor;
-  tooltipMessageDescriptor: MessageDescriptor;
-  linkToPath?: string;
   hideSection?: boolean;
-};
+}
 
 // types
 const CustomPagesEditContent = () => {
@@ -119,35 +117,23 @@ const CustomPagesEditContent = () => {
             <FormattedMessage {...messages.sectionDescription} />
           </Warning>
         </Box>
-        {sectionTogglesData.map(
-          (
-            {
-              name,
-              titleMessageDescriptor,
-              tooltipMessageDescriptor,
-              linkToPath,
-              hideSection,
-            },
-            index
-          ) => {
-            if (hideSection) {
-              return;
-            }
-            return (
-              <SectionToggle
-                key={name}
-                name={name}
-                checked={customPage.attributes[name]}
-                onChangeSectionToggle={handleOnChangeToggle(name)}
-                onClickEditButton={handleOnClick}
-                editLinkPath={linkToPath}
-                titleMessageDescriptor={titleMessageDescriptor}
-                tooltipMessageDescriptor={tooltipMessageDescriptor}
-                isLastItem={index === sectionTogglesData.length - 1}
-              />
-            );
+        {sectionTogglesData.map((sectionToggleData, index) => {
+          if (sectionToggleData.hideSection) {
+            return;
           }
-        )}
+          return (
+            <SectionToggle
+              key={sectionToggleData.name}
+              checked={customPage.attributes[sectionToggleData.name]}
+              onChangeSectionToggle={handleOnChangeToggle(
+                sectionToggleData.name
+              )}
+              onClickEditButton={handleOnClick}
+              isLastItem={index === sectionTogglesData.length - 1}
+              sectionToggleData={sectionToggleData}
+            />
+          );
+        })}
       </Box>
     </PageWrapper>
   );

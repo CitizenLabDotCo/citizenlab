@@ -11,28 +11,36 @@ import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
-export interface Props {
-  onChangeSectionToggle: () => void;
-  onClickEditButton?: (editLinkPath: string) => void;
+import { THomepageSectionToggleData } from '../../containers/EditHomepage';
+import { TCustomPageSectionToggleData } from '../../containers/CustomPages/Edit/Content';
+
+export interface TSectionToggleData {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
-  checked: boolean;
-  editLinkPath?: string;
-  isLastItem: boolean;
+  linkToPath?: string;
   hideToggle?: boolean;
-  name?: string;
+}
+
+interface Props {
+  sectionToggleData: THomepageSectionToggleData | TCustomPageSectionToggleData;
+  onChangeSectionToggle: () => void;
+  onClickEditButton?: (editLinkPath: string) => void;
+  checked: boolean;
+  isLastItem: boolean;
 }
 
 const SectionToggle = ({
   onChangeSectionToggle,
   onClickEditButton,
-  titleMessageDescriptor,
-  tooltipMessageDescriptor,
-  editLinkPath,
   checked,
   isLastItem,
-  hideToggle = false,
-  name,
+  sectionToggleData: {
+    titleMessageDescriptor,
+    tooltipMessageDescriptor,
+    name,
+    linkToPath,
+    hideToggle = false,
+  },
 }: Props) => {
   return (
     <Row isLastItem={isLastItem}>
@@ -62,9 +70,9 @@ const SectionToggle = ({
           />
         </Box>
       </Box>
-      {editLinkPath && onClickEditButton && (
+      {linkToPath && onClickEditButton && (
         <AdminEditButton
-          onClick={() => onClickEditButton(editLinkPath)}
+          onClick={() => onClickEditButton(linkToPath)}
           testId={name}
         />
       )}
