@@ -78,7 +78,9 @@ describe('Admin: update text content and sections', () => {
     cy.get('[data-testid="e2e-landing-page-bottom-info-section"]').should(
       'not.exist'
     );
-    cy.get('[data-testid="e2e-events-widget-container"]').should('not.exist');
+    cy.get('[data-testid="e2e-homepage-events-widget-container"]').should(
+      'not.exist'
+    );
 
     // go back to admin page
     cy.visit('/admin/pages-menu/');
@@ -129,6 +131,8 @@ describe('Admin: update text content and sections', () => {
     cy.visit('/');
     cy.contains(topInfoContent);
     cy.contains(bottomInfoContent);
-    cy.get('[data-testid="e2e-events-widget-container"]').should('exist');
+    cy.get('[data-testid="e2e-homepage-events-widget-container"]').should(
+      'exist'
+    );
   });
 });

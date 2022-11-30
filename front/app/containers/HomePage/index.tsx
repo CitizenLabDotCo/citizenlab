@@ -23,8 +23,8 @@ const HomePage = () => {
   const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
 
-  return (
-    <>
+  if (!isNilOrError(homepageSettings)) {
+    return (
       <Container id="e2e-landing-page">
         {!isNilOrError(authUser) ? (
           <SignedInHeader />
@@ -36,33 +36,33 @@ const HomePage = () => {
 
         <Content>
           <Suspense fallback={<LoadingBox />}>
-            {!isNilOrError(homepageSettings) &&
-              homepageSettings.attributes.top_info_section_enabled && (
-                // top info section
-                <InfoSection
-                  multilocContent={
-                    homepageSettings.attributes.top_info_section_multiloc
-                  }
-                  fragmentName="pages/homepage_info/top-content"
-                />
-              )}
+            {homepageSettings.attributes.top_info_section_enabled && (
+              // top info section
+              <InfoSection
+                multilocContent={
+                  homepageSettings.attributes.top_info_section_multiloc
+                }
+                fragmentName="pages/homepage_info/top-content"
+              />
+            )}
             <MainContent />
-            {!isNilOrError(homepageSettings) &&
-              homepageSettings.attributes.bottom_info_section_enabled && (
-                // bottom info section
-                <InfoSection
-                  multilocContent={
-                    homepageSettings.attributes.bottom_info_section_multiloc
-                  }
-                  fragmentName="pages/homepage_info/content"
-                />
-              )}
+            {homepageSettings.attributes.bottom_info_section_enabled && (
+              // bottom info section
+              <InfoSection
+                multilocContent={
+                  homepageSettings.attributes.bottom_info_section_multiloc
+                }
+                fragmentName="pages/homepage_info/content"
+              />
+            )}
             <Footer />
           </Suspense>
         </Content>
       </Container>
-    </>
-  );
+    );
+  }
+
+  return null;
 };
 
 export default HomePage;
