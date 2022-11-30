@@ -44,7 +44,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.HomePage.EventsWidget': () => {
       return (
         <RenderOnAllowedAndEnabled>
-          <EventsWidget id="e2e-homepage-events-widget-container" />
+          <EventsWidget data-testid="e2e-homepage-events-widget-container" />
         </RenderOnAllowedAndEnabled>
       );
     },
