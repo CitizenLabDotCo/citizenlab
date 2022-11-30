@@ -76,6 +76,18 @@ RSpec.describe ParticipationMethod::Poll do
     end
   end
 
+  describe '#supports_toxicity_detection?' do
+    it 'returns true' do
+      expect(participation_method.supports_toxicity_detection?).to be true
+    end
+  end
+
+  describe '#include_data_in_email?' do
+    it 'returns true' do
+      expect(participation_method.include_data_in_email?).to be true
+    end
+  end
+
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_voting?) { is_expected.to be false }

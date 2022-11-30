@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "New Project",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Most recent",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Not a valid amount",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "No templates found",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Please enter a project title",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Not a valid number",

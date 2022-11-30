@@ -1255,7 +1255,7 @@
   "app.containers.SignUp.viennaConsentHeader": "De volgende gegevens worden verzonden:",
   "app.containers.SignUp.viennaConsentLastName": "Achternaam",
   "app.containers.SignUp.viennaConsentUserName": "Gebruikersnaam",
-  "app.containers.SignUp.viennaThePrivacyPolicy": "het privacybeleid",
+  "app.containers.SignUp.viennaDataProtection": "the vienna privacy policy",
   "app.containers.SignUp.whatIsFranceConnect": "Wat is FranceConnect?",
   "app.containers.SiteMap.contributions": "Onderwerpen",
   "app.containers.SiteMap.issues": "{tenantName, select, gent {Verhalen} other {Reacties}}",

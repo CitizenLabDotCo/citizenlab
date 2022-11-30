@@ -77,6 +77,14 @@ module ParticipationMethod
       false
     end
 
+    def supports_toxicity_detection?
+      true
+    end
+
+    def include_data_in_email?
+      true
+    end
+
     private
 
     attr_reader :participation_context
