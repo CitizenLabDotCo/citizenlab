@@ -117,7 +117,7 @@ sv:
         title: Författare
         description:
       topic_ids:
-        title: Topics
+        title: Ämnen
         description:
       location:
         title: Plats
@@ -205,3 +205,6 @@ sv:
       title: 'Din fråga'
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
