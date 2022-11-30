@@ -30,7 +30,7 @@ export default function useRegistrations({
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
-  const [deducedResolution, setDeducedResolution] =
+  const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
 
   useEffect(() => {
@@ -53,13 +53,13 @@ export default function useRegistrations({
 
         const translations = getTranslations(formatMessage);
 
-        setDeducedResolution(resolution);
+        setCurrentResolution(resolution);
 
         const timeSeries = parseTimeSeries(
           response.data[0],
           startAtMoment,
           endAtMoment,
-          deducedResolution
+          currentResolution
         );
         setTimeSeries(timeSeries);
 
@@ -67,7 +67,7 @@ export default function useRegistrations({
         setStats(stats);
 
         setXlsxData(
-          parseExcelData(stats, timeSeries, deducedResolution, translations)
+          parseExcelData(stats, timeSeries, currentResolution, translations)
         );
       }
     );
@@ -75,5 +75,5 @@ export default function useRegistrations({
     return () => subscription.unsubscribe();
   }, [startAtMoment, endAtMoment, resolution, formatMessage]);
 
-  return { deducedResolution, timeSeries, stats, xlsxData };
+  return { currentResolution, timeSeries, stats, xlsxData };
 }

@@ -33,7 +33,7 @@ export default function useActiveUsers({
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
-  const [deducedResolution, setDeducedResolution] =
+  const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function useActiveUsers({
 
         const translations = getTranslations(formatMessage);
 
-        setDeducedResolution(resolution);
+        setCurrentResolution(resolution);
 
         const stats = parseStats(response.data);
         setStats(stats);
@@ -67,13 +67,13 @@ export default function useActiveUsers({
           response.data[0],
           startAtMoment,
           endAtMoment,
-          deducedResolution
+          currentResolution
         );
 
         setTimeSeries(timeSeries);
 
         setXlsxData(
-          parseExcelData(stats, timeSeries, deducedResolution, translations)
+          parseExcelData(stats, timeSeries, currentResolution, translations)
         );
       }
     );
@@ -81,5 +81,5 @@ export default function useActiveUsers({
     return () => subscription.unsubscribe();
   }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
 
-  return { timeSeries, stats, xlsxData, deducedResolution };
+  return { timeSeries, stats, xlsxData, currentResolution };
 }

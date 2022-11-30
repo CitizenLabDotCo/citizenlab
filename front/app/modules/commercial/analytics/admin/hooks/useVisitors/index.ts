@@ -97,7 +97,7 @@ export default function useVisitorsData({
 }: QueryParameters) {
   const { formatMessage } = useIntl();
 
-  const [deducedResolution, setDeducedResolution] =
+  const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
@@ -119,13 +119,13 @@ export default function useVisitorsData({
           setStats(response);
           setTimeSeries(response);
           setXlsxData(response);
-          setDeducedResolution(resolution);
+          setCurrentResolution(resolution);
           return;
         }
 
         const translations = getTranslations(formatMessage);
 
-        setDeducedResolution(resolution);
+        setCurrentResolution(resolution);
 
         const stats = parseStats(response.data);
         setStats(stats);
@@ -134,12 +134,12 @@ export default function useVisitorsData({
           response.data[2],
           startAtMoment,
           endAtMoment,
-          deducedResolution
+          currentResolution
         );
         setTimeSeries(timeSeries);
 
         setXlsxData(
-          parseExcelData(stats, timeSeries, translations, deducedResolution)
+          parseExcelData(stats, timeSeries, translations, currentResolution)
         );
       }
     );
@@ -147,5 +147,5 @@ export default function useVisitorsData({
     return () => subscription.unsubscribe();
   }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
 
-  return { deducedResolution, stats, timeSeries, xlsxData };
+  return { currentResolution, stats, timeSeries, xlsxData };
 }
