@@ -87,57 +87,18 @@ RSpec.describe Notification, type: :model do
     end
 
     describe 'project_phase_started' do
-      it 'makes project_phase_started notifications on phase started' do
-        phase = create(:active_phase)
-        project = phase.project
-        project.visible_to = 'groups'
-        project.groups << create(:group)
+      it 'only notifies users who participated in project' do
+        project = create(:project_with_current_phase)
+        activity = create :activity, item: project.phases[2], action: 'started'
+        participant = create(:user)
+        non_participant = create(:user)
+        idea = create(:idea, project_id: project.id, author_id: participant.id)
+        create :activity, item: idea, user_id: participant.id, action: 'published'
+        notifications = Notifications::ProjectPhaseStarted.make_notifications_on activity
+        notification_ids = notifications.pluck(:recipient_id)
 
-        # members
-        user = create(:user, email: 'user1@example.com', manual_groups: [project.groups.first])
-        _admin = create(:admin, email: 'admin@example.com', manual_groups: [project.groups.first])
-        # non-members
-        _other_admin = create(:admin)
-        _other_user = create(:user, email: 'user2@example.com')
-
-        activity = create(:activity, item: phase, action: 'started')
-
-        # User must have participated in the project
-        idea = create(:idea, project_id: project.id, author_id: user.id)
-        create :activity, item: idea, user_id: user.id, action: 'published'
-
-        notifications = Notifications::ProjectPhaseStarted.make_notifications_on(activity)
-        expect(notifications.map(&:recipient_id)).to match_array [user.id]
-      end
-
-      context 'when the project is visible only to some groups' do
-        let(:phase) { create(:active_phase) }
-        let!(:project) do
-          phase.project.tap do |project|
-            project.visible_to = 'groups'
-            project.groups << create(:group)
-          end
-        end
-        let(:notifications) do
-          activity = create(:activity, item: phase, action: 'started')
-          Notifications::ProjectPhaseStarted.make_notifications_on(activity)
-        end
-
-        context 'and the user moderates the project' do
-          before { create(:project_moderator, projects: [project], manual_groups: [project.groups.first]) }
-
-          it { expect(notifications.map(&:recipient_id)).to eq [] }
-        end
-
-        context 'and the user moderates another project' do
-          let!(:user) { create(:project_moderator, manual_groups: [project.groups.first]) }
-
-          # let!(:idea) { create(:idea, project_id: project.id, author_id: user.id) }
-
-          # let!(:activity) { create :activity, item: idea, user_id: user.id, action: 'published' }
-
-          it { expect(notifications.map(&:recipient_id)).to eq [user.id] }
-        end
+        expect(notification_ids).to include participant.id
+        expect(notification_ids).not_to include non_participant.id
       end
     end
 

@@ -30,7 +30,7 @@ RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
     #   expect(notifications.size).to eq 1
     # end
 
-    it 'only creates a notification for users who have participated' do
+    it 'only creates a notification for users who have participated in project with the phase' do
       project = create(:project_with_current_phase)
       activity = create :activity, item: project.phases[2], action: 'started'
       participant = create(:user)
