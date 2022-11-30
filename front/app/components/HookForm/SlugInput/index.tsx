@@ -29,13 +29,6 @@ const SlugInput = ({
 
     return (
       <>
-        {showWarningMessage && (
-          <Box mb="16px">
-            <Warning>
-              <FormattedMessage {...messages.brokenURLWarning} />
-            </Warning>
-          </Box>
-        )}
         <Input
           label={<FormattedMessage {...messages.pageUrl} />}
           labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
@@ -49,6 +42,13 @@ const SlugInput = ({
           </b>
           : {previewUrl}
         </Text>
+        {showWarningMessage && (
+          <Box mb="16px">
+            <Warning>
+              <FormattedMessage {...messages.brokenURLWarning} />
+            </Warning>
+          </Box>
+        )}
       </>
     );
   }
