@@ -11,6 +11,7 @@ import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from 'components/PageNotFound';
 import { Box } from '@citizenlab/cl2-component-library';
+import ProjectsList from './ProjectsList';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';

@@ -1,11 +1,21 @@
 import React from 'react';
 
 import ProjectCard from 'components/ProjectCard';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
-const ProjectsList = (projects) => {
-  return projects.map((project) => {
+export interface Props {
+  publications: IAdminPublicationContent[];
+  hasMore: boolean;
+}
+
+const ProjectsList = ({ publications, hasMore }: Props) => {
+  return publications.map((publication) => {
     return (
-      <ProjectCard projectId={projectOrFolderId} size={size} layout={layout} />
+      <ProjectCard
+        projectId={publication.id}
+        size="small"
+        layout="threecolumns"
+      />
     );
   });
 };
