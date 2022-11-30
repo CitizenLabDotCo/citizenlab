@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- [CL-2156] Notifications of Project Phase Started now sent only to Users who have participated in the relevant Project.
+
 ## 2022-11-29
 
 ### Fixed
