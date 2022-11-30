@@ -56,6 +56,14 @@ module ParticipationMethod
       true
     end
 
+    def supports_toxicity_detection?
+      false
+    end
+
+    def include_data_in_email?
+      false
+    end
+
     # The "Additional information" category in the UI should be suppressed.
     # As long as the form builder does not support sections/categories,
     # we can suppress the heading by returning nil.

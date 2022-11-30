@@ -1,5 +1,12 @@
 # Changelog
 
+## 2022-11-30
+
+### Fixed
+
+- [CL-2147] Do not trigger emails, notifications and toxicity detection when submitting survey responses.
+- [CL-2164] Phase upcoming notifications and emails were not arriving.
+
 ## 2022-11-29
 
 ### Fixed
