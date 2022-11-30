@@ -1,9 +1,9 @@
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 
 // utils
 import { round } from 'lodash-es';
-import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
-import { keys } from 'utils/helperUtils';
+import { timeSeriesParser } from '../../utils/timeSeries';
+import { keys, get } from 'utils/helperUtils';
 import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 
 // typings
@@ -33,7 +33,10 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   };
 };
 
-const getDate = dateGetter('dimension_date_last_action');
+const getDate = (row: TimeSeriesResponseRow) => {
+  return moment(get(row, 'first_dimension_date_last_action_date'));
+};
+
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (

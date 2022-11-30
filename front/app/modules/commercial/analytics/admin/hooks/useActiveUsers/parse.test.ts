@@ -6,15 +6,15 @@ describe('parseStats', () => {
     const responseData: Response['data'] = [
       [
         {
-          'dimension_date_created.month': '2022-09',
+          first_dimension_date_created_date: '2022-09-02',
           count_dimension_user_id: 1,
         },
         {
-          'dimension_date_created.month': '2022-10',
+          first_dimension_date_created_date: '2022-10-01',
           count_dimension_user_id: 4,
         },
         {
-          'dimension_date_created.month': '2022-11',
+          first_dimension_date_created_date: '2022-11-14',
           count_dimension_user_id: 3,
         },
       ],
@@ -42,7 +42,7 @@ describe('parseStats', () => {
     const responseData: Response['data'] = [
       [
         {
-          'dimension_date_created.month': '2022-11',
+          first_dimension_date_created_date: '2022-11-09',
           count_dimension_user_id: 3,
         },
       ],

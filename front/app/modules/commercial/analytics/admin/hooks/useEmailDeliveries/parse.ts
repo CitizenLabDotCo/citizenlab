@@ -1,9 +1,9 @@
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 
 // utils
 import { groupBy } from 'lodash-es';
-import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
-import { keys } from 'utils/helperUtils';
+import { timeSeriesParser } from '../../utils/timeSeries';
+import { keys, get } from 'utils/helperUtils';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -17,6 +17,21 @@ import {
   PreparedTimeSeriesResponseRow,
 } from './typings';
 import { Translations } from './translations';
+
+export const mergeTimeSeries = (timeSeriesQuery: TimeSeriesResponseRow[]) => {
+  const dateColumn = 'first_dimension_date_sent_date';
+  const groupedTimeSerie = groupBy(timeSeriesQuery, dateColumn);
+
+  return Object.values(groupedTimeSerie).map((values) => ({
+    [dateColumn]: values[0][dateColumn],
+    automated:
+      values.find((row: TimeSeriesResponseRow) => row.automated === true)
+        ?.count ?? 0,
+    custom:
+      values.find((row: TimeSeriesResponseRow) => row.automated === false)
+        ?.count ?? 0,
+  }));
+};
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
@@ -37,7 +52,10 @@ const parseRow = (
   };
 };
 
-const getDate = dateGetter('dimension_date_sent');
+const getDate = (row: PreparedTimeSeriesResponseRow) => {
+  return moment(get(row, 'first_dimension_date_sent_date'));
+};
+
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
@@ -52,19 +70,6 @@ export const parseTimeSeries = (
     endAtMoment,
     resolution
   );
-};
-
-export const mergeTimeSeries = (timeSeriesQuery, dateColumn: string) => {
-  const groupedTimeSerie = groupBy(timeSeriesQuery, dateColumn);
-  return Object.values(groupedTimeSerie).map((values) => ({
-    [dateColumn]: values[0][dateColumn],
-    automated:
-      values.find((row: TimeSeriesResponseRow) => row.automated === true)
-        ?.count ?? 0,
-    custom:
-      values.find((row: TimeSeriesResponseRow) => row.automated === false)
-        ?.count ?? 0,
-  }));
 };
 
 export const parseStats = ([

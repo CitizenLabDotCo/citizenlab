@@ -18,19 +18,10 @@ import {
   parseExcelData,
 } from './parse';
 
-// utils
-import { getInterval } from '../../utils/query';
-
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import {
-  QueryParameters,
-  Response,
-  Stats,
-  TimeSeries,
-  PreparedTimeSeriesResponse,
-} from './typings';
+import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export default function useVisitorsData({
@@ -64,10 +55,8 @@ export default function useVisitorsData({
           setCurrentResolution(resolution);
           return;
         }
-        const preparedTimeSeries = mergeTimeSeries(
-          response.data[3],
-          `dimension_date_sent.${getInterval(resolution)}`
-        );
+        const preparedTimeSeries = mergeTimeSeries(response.data[3]);
+
         const translations = getTranslations(formatMessage);
 
         setCurrentResolution(resolution);
@@ -76,7 +65,7 @@ export default function useVisitorsData({
         setStats(stats);
 
         const timeSeries = parseTimeSeries(
-          preparedTimeSeries as PreparedTimeSeriesResponse,
+          preparedTimeSeries,
           startAtMoment,
           endAtMoment,
           currentResolution
