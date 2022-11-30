@@ -48,9 +48,9 @@ const CustomPagesEditContent = () => {
     return null;
   }
 
-  const projectFilterEnabled =
-    advancedCustomPagesEnabled &&
-    customPage.attributes.projects_filter_type !== 'no_filter';
+  const hideProjects =
+    !advancedCustomPagesEnabled ||
+    customPage.attributes.projects_filter_type === 'no_filter';
 
   const sectionTogglesData: TCustomPageSectionToggleData[] = [
     {
@@ -75,14 +75,13 @@ const CustomPagesEditContent = () => {
       name: 'projects_enabled',
       titleMessageDescriptor: sectionToggleMessages.projectsList,
       tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
-      linkToPath: 'projects',
-      hideSection: !projectFilterEnabled,
+      hideSection: hideProjects,
     },
     {
       name: 'events_widget_enabled',
       titleMessageDescriptor: sectionToggleMessages.eventsList,
       tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
-      hideSection: !projectFilterEnabled,
+      hideSection: hideProjects,
     },
     {
       name: 'bottom_info_section_enabled',
