@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Νέο έργο",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Πιο πρόσφατα",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Μη έγκυρο ποσό",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Δεν βρέθηκαν πρότυπα",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Παρακαλούμε εισάγετε έναν τίτλο έργου",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Μη έγκυρος αριθμός",

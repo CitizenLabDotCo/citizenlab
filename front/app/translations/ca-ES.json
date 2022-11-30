@@ -1255,6 +1255,7 @@
   "app.containers.SignUp.viennaConsentHeader": "Es transmetran les dades següents:",
   "app.containers.SignUp.viennaConsentLastName": "Cognom",
   "app.containers.SignUp.viennaConsentUserName": "Nom d'usuari",
+  "app.containers.SignUp.viennaDataProtection": "the vienna privacy policy",
   "app.containers.SignUp.whatIsFranceConnect": "Què és France Connect?",
   "app.containers.SiteMap.contributions": "Aportacions",
   "app.containers.SiteMap.issues": "Comentaris",

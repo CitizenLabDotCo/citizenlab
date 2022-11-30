@@ -1255,6 +1255,7 @@
   "app.containers.SignUp.viennaConsentHeader": "Sie können diesen Service ab sofort auch mit Ihrem Stadt Wien Konto nutzen. Der Vorteil: nur ein Login für personalisierte digitale Services der Stadt.{br}{br}Folgende Daten werden einmalig übernommen:",
   "app.containers.SignUp.viennaConsentLastName": "Familienname",
   "app.containers.SignUp.viennaConsentUserName": "Benutzer*innenname",
+  "app.containers.SignUp.viennaDataProtection": "den Datenschutzbedingungen",
   "app.containers.SignUp.whatIsFranceConnect": "Was ist FranceConnect?",
   "app.containers.SiteMap.contributions": "Beiträge",
   "app.containers.SiteMap.issues": "Vorhaben",

@@ -1255,6 +1255,7 @@
   "app.containers.SignUp.viennaConsentHeader": "Prenijet će se sljedeći podaci:",
   "app.containers.SignUp.viennaConsentLastName": "Prezime",
   "app.containers.SignUp.viennaConsentUserName": "Korisničko ime",
+  "app.containers.SignUp.viennaDataProtection": "the vienna privacy policy",
   "app.containers.SignUp.whatIsFranceConnect": "Što je FranceConnect?",
   "app.containers.SiteMap.contributions": "Doprinosi",
   "app.containers.SiteMap.issues": "Komentari",

@@ -1255,6 +1255,7 @@
   "app.containers.SignUp.viennaConsentHeader": "The following data will be transmitted:",
   "app.containers.SignUp.viennaConsentLastName": "Soyadı",
   "app.containers.SignUp.viennaConsentUserName": "User name",
+  "app.containers.SignUp.viennaDataProtection": "the vienna privacy policy",
   "app.containers.SignUp.whatIsFranceConnect": "FranceConnect nedir?",
   "app.containers.SiteMap.contributions": "Katkılar",
   "app.containers.SiteMap.issues": "Yorumlar",
