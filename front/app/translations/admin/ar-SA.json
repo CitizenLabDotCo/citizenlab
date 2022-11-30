@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "مشروع جديد",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "الأحدث",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "ليست قيمة صالحة",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "لم يتم العثور على قوالب",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "لا يمكن أن يكون هذا فارغًا",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "يرجى تقديم الحد الأقصى لعدد الأصوات المسموح بها لكل مستخدم",

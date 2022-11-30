@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Nieuw project",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Meest recent",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Geen geldig bedrag",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "Geen map",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Geen sjablonen gevonden",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Dit mag niet leeg zijn",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Geef het max. aantal toegestane stemmen per gebruiker",
