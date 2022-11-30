@@ -8,8 +8,7 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { TLayout } from '..';
-import { PublicationTab } from '..';
+import { TLayout, PublicationTab } from '..';
 
 // utils
 import getCardSizes from './getCardSizes';
