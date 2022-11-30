@@ -85,7 +85,7 @@ const IdeasList = ({
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
 }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const loadMoreIdeas = () => {
     onLoadMore();

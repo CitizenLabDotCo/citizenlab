@@ -1,6 +1,45 @@
 # Changelog
 
-## Unreleased
+## 2022-11-30
+
+### Fixed
+
+- [CL-2147] Do not trigger emails, notifications and toxicity detection when submitting survey responses.
+- [CL-2164] Phase upcoming notifications and emails were not arriving.
+
+## 2022-11-29
+
+### Fixed
+
+- [CL-1845] The responsiveness of the signed-in banner got fixed.
+
+## 2022-11-28
+
+### Fixed
+
+- Verification during sign up is fixed.
+
+## 2022-11-25
+
+### Added
+
+- [CL-1483] Add “Remember me” checkbox to login form to not persist cookies
+
+## 2022-11-24
+
+### Added
+
+- [CL-1483] Let tenants configure their Authentication token lifetime
+
+## 2022-11-22
+
+### Added
+
+- [CL-573] The proposals feature toggle in the admin settings.
+
+### Fixed
+
+- [CL-2076] When a user needs to verify before assigning an idea to their participatory budget basket, they now see the right verification modal, not the sign up modal.
 
 ## 2022-11-18
 

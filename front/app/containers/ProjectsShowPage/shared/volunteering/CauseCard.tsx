@@ -16,7 +16,7 @@ import Warning from 'components/UI/Warning';
 
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
@@ -171,7 +171,7 @@ interface Props {
 }
 
 const CauseCard = memo<Props>(({ cause, className }) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 

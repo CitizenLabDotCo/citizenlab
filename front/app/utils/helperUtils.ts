@@ -38,10 +38,6 @@ export function isApiError(obj: any): obj is CLErrorsJSON {
   return (obj as CLErrorsJSON)?.json !== undefined;
 }
 
-export function isUndefinedOrError(obj: any): obj is undefined | Error {
-  return obj === undefined || obj instanceof Error;
-}
-
 export function isEmptyMultiloc(multiloc: Multiloc) {
   let validTranslation = false;
 

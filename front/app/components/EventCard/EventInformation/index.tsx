@@ -180,7 +180,7 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
     intl,
   } = props;
 
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const eventFiles = useResourceFiles({
     resourceType: 'event',

@@ -14,9 +14,14 @@ class ProjectPolicy < ApplicationPolicy
       # It entails that scopes does not have to be redundant. In other words, each sub-scope (clause) should aim to
       # include only the projects to which this role gives access (without repeating projects to which lesser roles
       # of the user gives access).
-      resolve_for_admin
-        .or resolve_for_visitor
-        .or resolve_for_normal_user
+      moderator_scope = if user&.active?
+        UserRoleService.new.moderatable_projects(user, scope)
+      else
+        scope.none
+      end
+      moderator_scope
+        .or(resolve_for_visitor)
+        .or(resolve_for_normal_user)
     end
 
     private
@@ -48,12 +53,13 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
-        scope.all
-      elsif record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
-        scope.in_any_group(record.groups).or(scope.admin)
+      return scope.all if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
+
+      moderator_scope = UserRoleService.new.moderators_for_project record, scope
+      if record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
+        scope.in_any_group(record.groups).or(moderator_scope)
       else
-        scope.admin
+        moderator_scope
       end
     end
   end
@@ -75,7 +81,10 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def create?
-    active? && admin?
+    return false unless active?
+    return true if admin?
+
+    record.folder && UserRoleService.new.can_moderate?(record.folder, user)
   end
 
   def show?
@@ -163,7 +172,4 @@ class ProjectPolicy < ApplicationPolicy
 end
 
 ProjectPolicy.prepend(Polls::Patches::ProjectPolicy)
-
-ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
 ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')
-ProjectPolicy.prepend_if_ee('ProjectManagement::Patches::ProjectPolicy')

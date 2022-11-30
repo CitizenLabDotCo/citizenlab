@@ -312,6 +312,16 @@ resource 'Idea Custom Fields' do
           })
         end
 
+        example 'Destroy all fields' do
+          create(:custom_field, resource: custom_form) # field to destroy
+          request = { custom_fields: [] }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 0
+        end
+
         example 'Add, edit, delete and reorder options of an existing custom field' do
           change_field = create :custom_field_select, :with_options, resource: custom_form
           change_option = change_field.options.first
@@ -535,6 +545,16 @@ resource 'Idea Custom Fields' do
             type: 'custom_field',
             relationships: { options: { data: [] } }
           })
+        end
+
+        example 'Destroy all fields' do
+          create(:custom_field, resource: custom_form) # field to destroy
+          request = { custom_fields: [] }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 0
         end
 
         example 'Add a custom field with options and delete a field with options' do

@@ -156,7 +156,7 @@ gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 # exception.
 gem 'aws-sdk-s3', '~> 1'
 gem 'bootsnap', '~> 1', require: false
-gem 'dalli', '~> 2.7'
+gem 'dalli', '~> 3.2.3'
 gem 'mailgun-ruby', '~>1.2.0'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'

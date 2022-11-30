@@ -84,7 +84,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
     alignment: node.data.props.alignment,
     id: node.id,
   }));
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   return (
     <Box background="#ffffff" marginBottom="20px">
