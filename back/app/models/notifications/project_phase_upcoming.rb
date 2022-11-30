@@ -64,7 +64,8 @@ module Notifications
       phase = activity.item
 
       if phase.project
-        recipients(phase).ids.map do |recipient_id|
+        recipients = UserRoleService.new.moderators_for phase
+        recipients.ids.map do |recipient_id|
           new(
             recipient_id: recipient_id,
             phase: phase,
@@ -75,10 +76,5 @@ module Notifications
         []
       end
     end
-
-    def self.recipients(phase)
-      UserRoleService.new.moderators_for(phase)
-    end
-    private_class_method :recipients
   end
 end
