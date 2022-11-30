@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "A fost o problemă la noi, ne pare rău.",
   "app.components.HookForm.Feedback.successMessage": "Formularul a fost trimis cu succes",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Dacă schimbați URL-ul, legăturile către această pagină folosind vechiul URL nu vor mai funcționa",
-  "app.components.HookForm.SlugInput.pageUrl": "URL-ul paginii",
   "app.components.HookForm.SlugInput.resultingPageURL": "URL-ul rezultat",
   "app.components.HookForm.SlugInput.slugTooltip": "Slug-ul este setul unic de cuvinte de la sfârșitul adresei web a paginii, sau URL",
   "app.components.IdeaCards.showMore": "Afișați mai multe",

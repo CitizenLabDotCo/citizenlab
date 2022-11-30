@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Beklager, et problem oppstod på vår side",
   "app.components.HookForm.Feedback.successMessage": "Suksess. Ditt skjema er sendt inn",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Om du endrer URL, vil gamle URL-linker til denne siden slutte å virke",
-  "app.components.HookForm.SlugInput.pageUrl": "Side URL",
   "app.components.HookForm.SlugInput.resultingPageURL": "Resultater URL",
   "app.components.HookForm.SlugInput.slugTooltip": "Slug er det unike settet med ord på slutten av sidens nettadresse, eller URL",
   "app.components.IdeaCards.showMore": "Vis mer",

@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Ursäkta, det var ett problem hos oss",
   "app.components.HookForm.Feedback.successMessage": "Formuläret har skickats in",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Om du ändrar webbadressen kommer länkar till den här sidan med den gamla webbadressen inte längre att fungera",
-  "app.components.HookForm.SlugInput.pageUrl": "Sidans webbadress",
   "app.components.HookForm.SlugInput.resultingPageURL": "Resulterande webbadress",
   "app.components.HookForm.SlugInput.slugTooltip": "En slug är den unika uppsättningen ord i slutet av sidans webbadress (URL).",
   "app.components.IdeaCards.showMore": "Visa mer",
