@@ -12,13 +12,16 @@ import { fontSizes } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
 import { Dropdown } from '@citizenlab/cl2-component-library';
-import { requestBlob } from 'utils/request';
-import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { IResolution } from 'components/admin/ResolutionControl';
+
+// utils
+import { requestBlob } from 'utils/request';
+import { reportError } from 'utils/loggingUtils';
+import { truncate } from 'utils/textUtils';
 
 // typings
 import { OneOf } from 'typings';
@@ -78,7 +81,7 @@ const downloadXlsxData = (data: XlsxData, fileName: string) => {
 
   Object.entries(data).forEach(([sheet_name, sheet_data]) => {
     const worksheet = XLSX.utils.json_to_sheet(sheet_data);
-    XLSX.utils.book_append_sheet(workbook, worksheet, sheet_name);
+    XLSX.utils.book_append_sheet(workbook, worksheet, truncate(sheet_name, 31));
   });
 
   XLSX.writeFile(workbook, `${fileName}.xlsx`);
