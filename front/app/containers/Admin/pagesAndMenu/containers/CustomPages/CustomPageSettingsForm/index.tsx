@@ -232,12 +232,7 @@ const CustomPageSettingsForm = ({
                     <MultipleSelect
                       name="topic_ids"
                       options={mapFilterEntityToOptions(topics)}
-                      label={
-                        <>
-                          {formatMessage(messages.selectedTagsLabel)}
-                          <IconTooltip content={'add some tags'} />
-                        </>
-                      }
+                      label={formatMessage(messages.selectedTagsLabel)}
                     />
                   </Box>
                 )}
@@ -247,7 +242,6 @@ const CustomPageSettingsForm = ({
                       name="area_id"
                       options={mapFilterEntityToOptions(areas)}
                       label={formatMessage(messages.selectedAreasLabel)}
-                      labelTooltipText="choose an area"
                     />
                   </Box>
                 )}
