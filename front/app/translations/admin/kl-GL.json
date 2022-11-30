@@ -1163,7 +1163,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.optional": "Nammineq aalajangiiffigisassaq",
   "app.containers.AdminPage.ProjectEdit.survey.page": "Page",
   "app.containers.AdminPage.ProjectEdit.survey.question": "Apeqqut",
-  "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Question description (optional)",
+  "app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional": "Apeqqummut nassuiaat (nammineq toqqarsinnaasaq)",
   "app.containers.AdminPage.ProjectEdit.survey.questionTitle": "Apeqqummut qulequtaq",
   "app.containers.AdminPage.ProjectEdit.survey.range": "Annertussuseq",
   "app.containers.AdminPage.ProjectEdit.survey.removeAnswer": "Remove answer",
