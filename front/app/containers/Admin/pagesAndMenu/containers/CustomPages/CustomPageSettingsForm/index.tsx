@@ -68,6 +68,8 @@ const projectsFilterTypesArray: ProjectsFilterTypes[] = [
   'areas',
 ];
 
+const fieldMarginBottom = '40px';
+
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   intl: { formatMessage },
@@ -186,7 +188,7 @@ const CustomPageSettingsForm = ({
                   : formatMessage(messages.messageCreatedSuccess)
               }
             />
-            <Box mb="30px">
+            <Box mb={fieldMarginBottom}>
               <InputMultilocWithLocaleSwitcher
                 name="title_multiloc"
                 label={formatMessage(messages.titleLabel)}
@@ -194,7 +196,7 @@ const CustomPageSettingsForm = ({
               />
             </Box>
             {showNavBarItemTitle && (
-              <Box mb="30px">
+              <Box mb={fieldMarginBottom}>
                 <InputMultilocWithLocaleSwitcher
                   label={formatMessage(messages.navbarItemTitle)}
                   type="text"
@@ -203,14 +205,17 @@ const CustomPageSettingsForm = ({
               </Box>
             )}
             {mode === 'edit' && (
-              <SlugInput
-                slug={slug}
-                pathnameWithoutSlug="pages"
-                showWarningMessage={slugHasChanged}
-              />
+              <Box mb={fieldMarginBottom}>
+                <SlugInput
+                  slug={slug}
+                  pathnameWithoutSlug="pages"
+                  showWarningMessage={slugHasChanged}
+                />
+              </Box>
             )}
+
             {advancedCustomPagesEnabled && (
-              <Box>
+              <Box mb={fieldMarginBottom}>
                 <Box display="flex" justifyContent="flex-start">
                   <Label>
                     <span>{formatMessage(messages.linkedProjectsLabel)}</span>
