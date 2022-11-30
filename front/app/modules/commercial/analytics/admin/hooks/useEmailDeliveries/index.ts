@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 
 // services
-import {
-  analyticsStream,
-  Query,
-  QuerySchema,
-} from '../../services/analyticsFacts';
+import { analyticsStream } from '../../services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
+
+// query
+import { query } from './query';
 
 // parse
 import {
@@ -20,7 +19,7 @@ import {
 } from './parse';
 
 // utils
-import { getDateFilter, getInterval } from '../../utils/query';
+import { getInterval } from '../../utils/query';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -33,69 +32,6 @@ import {
   PreparedTimeSeriesResponse,
 } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-
-const query = ({
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: QueryParameters): Query => {
-  const dateFilter = getDateFilter(
-    'dimension_date_sent',
-    startAtMoment,
-    endAtMoment
-  );
-
-  const totalEmailsDeliveriesQuery: QuerySchema = {
-    fact: 'email_delivery',
-    filters: dateFilter,
-    aggregations: {
-      all: 'count',
-    },
-  };
-
-  const customEmailsDeliveriesQuery: QuerySchema = {
-    fact: 'email_delivery',
-    filters: {
-      ...dateFilter,
-      automated: false,
-    },
-    aggregations: {
-      all: 'count',
-      campaign_id: 'count',
-    },
-  };
-
-  const automatedEmailsDeliveriesQuery: QuerySchema = {
-    fact: 'email_delivery',
-    filters: {
-      ...dateFilter,
-      automated: true,
-    },
-    aggregations: {
-      all: 'count',
-      campaign_id: 'count',
-    },
-  };
-
-  const timeSeriesQuery: QuerySchema = {
-    fact: 'email_delivery',
-    filters: { dateFilter },
-    groups: [`dimension_date_sent.${getInterval(resolution)}`, 'automated'],
-    aggregations: {
-      all: 'count',
-      'dimension_date_sent.date': 'first',
-    },
-  };
-
-  return {
-    query: [
-      totalEmailsDeliveriesQuery,
-      customEmailsDeliveriesQuery,
-      automatedEmailsDeliveriesQuery,
-      timeSeriesQuery,
-    ],
-  };
-};
 
 export default function useVisitorsData({
   startAtMoment,
