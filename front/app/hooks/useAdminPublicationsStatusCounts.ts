@@ -19,8 +19,8 @@ export interface IStatusCounts extends IStatusCountsBase {
 }
 
 export default function useAdminPublicationsStatusCounts({
-  topicFilter,
-  areaFilter,
+  topicIds,
+  areaIds,
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
@@ -35,24 +35,24 @@ export default function useAdminPublicationsStatusCounts({
     PublicationStatus[]
   >(publicationStatusFilter);
 
-  // topicFilter and areaFilter are usually based of other
+  // topicIds and areaIds are usually based of other
   // requests, and will initially be null/undefined.
   // Without the useEffect, they don't get updated
-  const stringifiedTopicFilter = JSON.stringify(topicFilter);
+  const stringifiedTopicIds = JSON.stringify(topicIds);
   useEffect(() => {
-    if (topicFilter !== undefined) {
-      setTopics(topicFilter);
+    if (topicIds !== undefined) {
+      setTopics(topicIds);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stringifiedTopicFilter]);
+  }, [stringifiedTopicIds]);
 
-  const stringifiedAreaFilter = JSON.stringify(areaFilter);
+  const stringifiedAreaIds = JSON.stringify(areaIds);
   useEffect(() => {
-    if (areaFilter !== undefined) {
-      setAreas(areaFilter);
+    if (areaIds !== undefined) {
+      setAreas(areaIds);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stringifiedAreaFilter]);
+  }, [stringifiedAreaIds]);
 
   const onChangeTopics = useCallback((topics: string[]) => {
     topics.length === 0 ? setTopics(null) : setTopics(topics);

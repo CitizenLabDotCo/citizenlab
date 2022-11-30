@@ -15,8 +15,8 @@ const CustomPageEvents = ({ page }: Props) => {
   const areaIds = page.relationships.areas.data.map((area) => area.id);
 
   const adminPublications = useAdminPublications({
-    topicFilter: topicIds,
-    areaFilter: areaIds,
+    topicIds,
+    areaIds,
     publicationStatusFilter: ['published', 'archived'],
   });
   const projectIds = !isNilOrError(adminPublications.list)

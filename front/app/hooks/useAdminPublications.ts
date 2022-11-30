@@ -12,8 +12,8 @@ import { IRelationship } from 'typings';
 
 export interface BaseProps {
   // to rename
-  topicFilter?: string[] | null;
-  areaFilter?: string[] | null;
+  topicIds?: string[] | null;
+  areaIds?: string[] | null;
   publicationStatusFilter: PublicationStatus[];
   // to be clarified
   rootLevelOnly?: boolean;
@@ -65,8 +65,8 @@ export interface IUseAdminPublicationsOutput {
 
 export default function useAdminPublications({
   pageSize = 1000,
-  topicFilter,
-  areaFilter,
+  topicIds,
+  areaIds,
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
@@ -86,24 +86,24 @@ export default function useAdminPublications({
     PublicationStatus[]
   >(publicationStatusFilter);
 
-  // topicFilter and areaFilter are usually based of other
+  // topicIds and areaIds are usually based of other
   // requests, and will initially be null/undefined.
   // Without the useEffect, they don't get updated
-  const stringifiedTopicFilter = JSON.stringify(topicFilter);
+  const stringifiedtopicIds = JSON.stringify(topicIds);
   useEffect(() => {
-    if (topicFilter !== undefined) {
-      setTopics(topicFilter);
+    if (topicIds !== undefined) {
+      setTopics(topicIds);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stringifiedTopicFilter]);
+  }, [stringifiedtopicIds]);
 
-  const stringifiedAreaFilter = JSON.stringify(areaFilter);
+  const stringifiedareaIds = JSON.stringify(areaIds);
   useEffect(() => {
-    if (areaFilter !== undefined) {
-      setAreas(areaFilter);
+    if (areaIds !== undefined) {
+      setAreas(areaIds);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stringifiedAreaFilter]);
+  }, [stringifiedareaIds]);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
