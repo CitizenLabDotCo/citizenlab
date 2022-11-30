@@ -115,6 +115,7 @@ const FormFields = ({
                     ? undefined
                     : onEditField({ ...field, index });
                 }}
+                data-cy="e2e-field-row"
               >
                 <SortableRow
                   rowHeight={field.input_type === 'page' ? '50px' : '70px'}
