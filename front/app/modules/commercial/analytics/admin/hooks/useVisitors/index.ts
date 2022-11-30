@@ -1,94 +1,23 @@
 import { useState, useEffect } from 'react';
 
 // services
-import {
-  analyticsStream,
-  Query,
-  QuerySchema,
-  AggregationsConfig,
-} from '../../services/analyticsFacts';
+import { analyticsStream } from '../../services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
+// query
+import { query } from './query';
+
 // parse
 import { parseStats, parseTimeSeries, parseExcelData } from './parse';
-
-// utils
-import {
-  getProjectFilter,
-  getDateFilter,
-  getDateFilterLastPeriod,
-  getInterval,
-} from '../../utils/query';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-
-const getAggregations = (): AggregationsConfig => ({
-  all: 'count',
-  visitor_id: 'count',
-  duration: 'avg',
-  pages_visited: 'avg',
-});
-
-const query = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: QueryParameters): Query => {
-  const totalsWholePeriodQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter(
-        'dimension_date_last_action',
-        startAtMoment,
-        endAtMoment
-      ),
-    },
-    aggregations: getAggregations(),
-  };
-
-  const totalsLastPeriodQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilterLastPeriod('dimension_date_last_action', resolution),
-    },
-    aggregations: getAggregations(),
-  };
-
-  const timeSeriesQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter(
-        'dimension_date_last_action',
-        startAtMoment,
-        endAtMoment
-      ),
-    },
-    groups: `dimension_date_last_action.${getInterval(resolution)}`,
-    aggregations: {
-      all: 'count',
-      visitor_id: 'count',
-      'dimension_date_last_action.date': 'first',
-    },
-  };
-
-  return {
-    query: [totalsWholePeriodQuery, totalsLastPeriodQuery, timeSeriesQuery],
-  };
-};
 
 export default function useVisitorsData({
   projectId,
