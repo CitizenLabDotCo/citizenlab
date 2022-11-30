@@ -56,8 +56,8 @@ const AnalyticsChartWidget = ({
       // TODO: Plugin start & end dates
       chart = (
         <GenderChart
-          startAt={null}
-          endAt={null}
+          startAt={startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss')}
+          endAt={startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss')}
           currentGroupFilter={undefined}
           currentGroupFilterLabel={undefined}
         />
@@ -90,11 +90,13 @@ const AnalyticsChartWidgetSettings = injectIntl(
       projectId,
       startAtMoment,
       endAtMoment,
+      chartType,
     } = useNode((node) => ({
       title: node.data.props.title,
       projectId: node.data.props.projectId,
       startAtMoment: node.data.props.startAtMoment,
       endAtMoment: node.data.props.endAtMoment,
+      chartType: node.data.props.chartType,
     }));
 
     const setTitle = (value: string) => {
@@ -125,7 +127,7 @@ const AnalyticsChartWidgetSettings = injectIntl(
           <Input
             id="e2e-analytics-chart-widget-title"
             label={
-              <Title variant="h3" color="tenantText" mb={'0'}>
+              <Title variant="h4" color="tenantText" mb={'0'}>
                 {formatMessage(messages.analyticsChartTitle)}
               </Title>
             }
@@ -135,20 +137,26 @@ const AnalyticsChartWidgetSettings = injectIntl(
           />
         </Box>
         <Box mb="20px">
+          <Title variant="h4" color="tenantText" mb={'0'}>
+            {formatMessage(messages.analyticsChartDateRange)}
+          </Title>
           <TimeControl
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             onChange={handleChangeTimeRange}
+            hidePresets={true}
           />
         </Box>
-        <Box mb="20px">
-          <ProjectFilter
-            currentProjectFilter={projectId}
-            width="100%"
-            padding="11px"
-            onProjectFilter={handleProjectFilter}
-          />
-        </Box>
+        {chartType !== 'AgeChart' && chartType !== 'GenderChart' && (
+          <Box mb="20px">
+            <ProjectFilter
+              currentProjectFilter={projectId}
+              width="100%"
+              padding="11px"
+              onProjectFilter={handleProjectFilter}
+            />
+          </Box>
+        )}
       </Box>
     );
   }

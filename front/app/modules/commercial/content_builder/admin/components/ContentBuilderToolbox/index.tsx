@@ -395,7 +395,7 @@ const ContentBuilderToolbox = ({
           />
         </DraggableElement>
         <DraggableElement
-          id="e2e-draggable-users-by-gender-widget"
+          id="e2e-draggable-users-by-age-widget"
           ref={(ref) =>
             ref &&
             connectors.create(
