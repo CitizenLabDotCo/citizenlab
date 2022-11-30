@@ -82,11 +82,11 @@ export default defineMessages({
   },
   byAreaFilter: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter',
-    defaultMessage: 'By Area',
+    defaultMessage: 'By area',
   },
   byTagsFilter: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter',
-    defaultMessage: 'By Tag(s)',
+    defaultMessage: 'By tag(s)',
   },
   selectedTagsLabel: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedTagsLabel',

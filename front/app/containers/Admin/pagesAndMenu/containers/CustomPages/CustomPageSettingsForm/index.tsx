@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { array, object, string } from 'yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { slugRegEx } from 'utils/textUtils';
-// import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
@@ -18,7 +17,12 @@ import SlugInput from 'components/HookForm/SlugInput';
 import Tabs from 'components/HookForm/Tabs';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
-import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Label,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -63,6 +67,8 @@ const projectsFilterTypesArray: ProjectsFilterTypes[] = [
   'topics',
   'areas',
 ];
+
+const fieldMarginBottom = '40px';
 
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
@@ -112,6 +118,7 @@ const CustomPageSettingsForm = ({
   });
 
   const slug = methods.watch('slug');
+  const slugHasChanged = slug !== defaultValues?.slug;
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -158,7 +165,21 @@ const CustomPageSettingsForm = ({
         onSubmit={methods.handleSubmit(onFormSubmit)}
         data-testid="customPageSettingsForm"
       >
-        <SectionFormWrapper flatTopBorder>
+        <SectionFormWrapper
+          stickyMenuContents={
+            <Box display="flex">
+              <Button
+                data-cy="e2e-submit-custom-page"
+                type="submit"
+                processing={methods.formState.isSubmitting}
+                bgColor={colors.blue500}
+              >
+                {formatMessage(messages.saveButton)}
+              </Button>
+            </Box>
+          }
+          flatTopBorder
+        >
           <SectionField>
             <Feedback
               successMessage={
@@ -167,7 +188,7 @@ const CustomPageSettingsForm = ({
                   : formatMessage(messages.messageCreatedSuccess)
               }
             />
-            <Box mb="30px">
+            <Box mb={fieldMarginBottom}>
               <InputMultilocWithLocaleSwitcher
                 name="title_multiloc"
                 label={formatMessage(messages.titleLabel)}
@@ -175,7 +196,7 @@ const CustomPageSettingsForm = ({
               />
             </Box>
             {showNavBarItemTitle && (
-              <Box mb="30px">
+              <Box mb={fieldMarginBottom}>
                 <InputMultilocWithLocaleSwitcher
                   label={formatMessage(messages.navbarItemTitle)}
                   type="text"
@@ -184,10 +205,17 @@ const CustomPageSettingsForm = ({
               </Box>
             )}
             {mode === 'edit' && (
-              <SlugInput slug={slug} pathnameWithoutSlug="pages" />
+              <Box mb={fieldMarginBottom}>
+                <SlugInput
+                  slug={slug}
+                  pathnameWithoutSlug="pages"
+                  showWarningMessage={slugHasChanged}
+                />
+              </Box>
             )}
+
             {advancedCustomPagesEnabled && (
-              <Box>
+              <Box mb={fieldMarginBottom}>
                 <Box display="flex" justifyContent="flex-start">
                   <Label>
                     <span>{formatMessage(messages.linkedProjectsLabel)}</span>
@@ -201,6 +229,7 @@ const CustomPageSettingsForm = ({
                   <Tabs
                     name="projects_filter_type"
                     items={projectsFilterTabs}
+                    minTabWidth={120}
                   />
                 </Box>
                 {methods.watch('projects_filter_type') === 'topics' && (
@@ -208,12 +237,7 @@ const CustomPageSettingsForm = ({
                     <MultipleSelect
                       name="topic_ids"
                       options={mapFilterEntityToOptions(topics)}
-                      label={
-                        <>
-                          {formatMessage(messages.selectedTagsLabel)}
-                          <IconTooltip content={'add some tags'} />
-                        </>
-                      }
+                      label={formatMessage(messages.selectedTagsLabel)}
                     />
                   </Box>
                 )}
@@ -223,21 +247,11 @@ const CustomPageSettingsForm = ({
                       name="area_id"
                       options={mapFilterEntityToOptions(areas)}
                       label={formatMessage(messages.selectedAreasLabel)}
-                      labelTooltipText="choose an area"
                     />
                   </Box>
                 )}
               </Box>
             )}
-            <Box display="flex">
-              <Button
-                data-cy="e2e-submit-custom-page"
-                type="submit"
-                processing={methods.formState.isSubmitting}
-              >
-                {formatMessage(messages.saveButton)}
-              </Button>
-            </Box>
           </SectionField>
         </SectionFormWrapper>
       </form>
