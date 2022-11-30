@@ -124,6 +124,7 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
+        {pageAttributes.projects_enabled && <ProjectsList />}
         {pageAttributes.bottom_info_section_enabled && (
           <InfoSection
             multilocContent={pageAttributes.bottom_info_section_multiloc}
