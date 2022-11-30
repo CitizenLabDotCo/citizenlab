@@ -142,7 +142,7 @@ ar-MA:
         question:
           title: ما سؤالك؟
         contribution:
-          title: ما مساهمتك؟
+          title: ما هي مساهمتك؟
         project:
           title: ما مشروعك؟
         issue:
@@ -152,7 +152,7 @@ ar-MA:
       details:
         title: التفاصيل 
       attachements:
-        title: الصور والمرفقات
+        title: الصور والمُرفقات
       extra:
         title: معلومات إضافية
   custom_field_options:
@@ -205,3 +205,6 @@ ar-MA:
       title: 'سؤالك'
       option1: 'الخيار 1'
       option2: 'الخيار 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
