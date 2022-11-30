@@ -87,13 +87,16 @@ RSpec.describe Notification, type: :model do
     end
 
     describe 'project_phase_started' do
+      let(:project) { create(:project_with_current_phase) }
+      let(:activity) { create(:activity, item: project.phases[2], action: 'started') }
+
+      let(:participant) { create(:user) }
+      let(:non_participant) { create(:user) }
+
+      let(:idea) { create(:idea, project_id: project.id, author_id: participant.id) }
+
       it 'only notifies users who participated in project' do
-        project = create(:project_with_current_phase)
-        activity = create :activity, item: project.phases[2], action: 'started'
-        participant = create(:user)
-        non_participant = create(:user)
-        idea = create(:idea, project_id: project.id, author_id: participant.id)
-        create :activity, item: idea, user_id: participant.id, action: 'published'
+        create(:activity, item: idea, user_id: participant.id, action: 'published')
         notifications = Notifications::ProjectPhaseStarted.make_notifications_on activity
         notification_ids = notifications.pluck(:recipient_id)
 
