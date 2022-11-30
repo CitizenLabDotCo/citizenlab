@@ -38,7 +38,7 @@ const Tab = styled.button<{ minWidth?: number }>`
   cursor: pointer;
   transition: all 80ms ease-out;
   justify-content: center;
-  ${(props) => props.minWidth && `min-width: ${props.minWidth}px`};
+  ${(props) => props.minWidth && `min-width: ${props.minWidth}px;`}
 
   &.first {
     border-top-left-radius: ${({ theme }) => theme.borderRadius};
