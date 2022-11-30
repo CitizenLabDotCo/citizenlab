@@ -22,7 +22,6 @@ import {
   getDateFilterLastPeriod,
   getInterval,
 } from '../../utils/query';
-import { deduceResolution } from './utils';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -126,9 +125,7 @@ export default function useVisitorsData({
 
         const translations = getTranslations(formatMessage);
 
-        const deducedResolution =
-          deduceResolution(response.data[2]) ?? resolution;
-        setDeducedResolution(deducedResolution);
+        setDeducedResolution(resolution);
 
         const stats = parseStats(response.data);
         setStats(stats);

@@ -15,7 +15,6 @@ import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { deduceResolution } from './utils';
 
 // typings
 import { QueryParameters, Response, TimeSeries, Stats } from './typings';
@@ -59,9 +58,7 @@ export default function useActiveUsers({
 
         const translations = getTranslations(formatMessage);
 
-        const deducedResolution =
-          deduceResolution(response.data[0]) ?? resolution;
-        setDeducedResolution(deducedResolution);
+        setDeducedResolution(resolution);
 
         const stats = parseStats(response.data);
         setStats(stats);

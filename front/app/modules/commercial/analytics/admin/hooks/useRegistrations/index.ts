@@ -13,9 +13,6 @@ import { query } from './query';
 // parse
 import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 
-// utils
-import { deduceResolution } from './utils';
-
 // typings
 import { QueryParameters, Response, TimeSeries, Stats } from './typings';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -56,10 +53,7 @@ export default function useRegistrations({
 
         const translations = getTranslations(formatMessage);
 
-        const deducedResolution =
-          deduceResolution(response.data[0]) ?? resolution;
-
-        setDeducedResolution(deducedResolution);
+        setDeducedResolution(resolution);
 
         const timeSeries = parseTimeSeries(
           response.data[0],
