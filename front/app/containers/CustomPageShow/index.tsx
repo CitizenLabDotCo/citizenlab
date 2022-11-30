@@ -7,6 +7,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
+import CustomPageEvents from './CustomPageEvents';
 import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from 'components/PageNotFound';
@@ -18,18 +19,15 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useCustomPage from 'hooks/useCustomPage';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isError, isNil, isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import useLocalize from 'hooks/useLocalize';
-import { injectIntl } from 'utils/cl-intl';
-
 // styling
 import styled from 'styled-components';
 import { fontSizes, isRtl, media } from 'utils/styleUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -125,7 +123,11 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-        {pageAttributes.projects_enabled && <ProjectsList />}
+        {pageAttributes.events_widget_enabled && (
+          <ContentContainer>
+            <CustomPageEvents page={page} />
+          </ContentContainer>
+        )}
         {pageAttributes.bottom_info_section_enabled && (
           <InfoSection
             multilocContent={pageAttributes.bottom_info_section_multiloc}
@@ -136,4 +138,4 @@ const CustomPageShow = () => {
   );
 };
 
-export default injectIntl(CustomPageShow);
+export default CustomPageShow;
