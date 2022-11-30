@@ -391,7 +391,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         )
       end
 
-      it 'has a category for each page' do
+      it 'has a category for each page, including the fixed survey end page' do
         en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
         expect(en_ui_schema).to eq({
           type: 'Categorization',
@@ -442,6 +442,15 @@ RSpec.describe InputUiSchemaGeneratorService do
                 id: 'page_3',
                 title: 'This is the end of the survey',
                 description: 'Thank you for participating 🚀'
+              },
+              elements: []
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'survey_end',
+                title: 'Survey end',
+                description: "Please submit your answers by selecting 'Submit survey' below."
               },
               elements: []
             }
@@ -608,6 +617,15 @@ RSpec.describe InputUiSchemaGeneratorService do
                   }
                 }
               ]
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'survey_end',
+                title: 'Survey end',
+                description: "Please submit your answers by selecting 'Submit survey' below."
+              },
+              elements: []
             }
           ]
         })

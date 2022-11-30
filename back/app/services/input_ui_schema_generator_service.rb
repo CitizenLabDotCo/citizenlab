@@ -57,21 +57,36 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     form_logic = FormLogicService.new(fields)
     current_page_schema = nil
     current_page_index = 0
-    fields.each_with_object([]) do |field, accu|
+    field_schemas = []
+    fields.each do |field|
       field_schema = visit field
       if field.page?
         current_page_index += 1
         field_schema[:options][:id] = "page_#{current_page_index}"
         rules = form_logic.ui_schema_rules_for(field)
         field_schema[:ruleArray] = rules if rules.present?
-        accu << field_schema
+        field_schemas << field_schema
         current_page_schema = field_schema
       elsif current_page_schema
         current_page_schema[:elements] << field_schema
       else
-        accu << field_schema
+        field_schemas << field_schema
       end
     end
+    field_schemas << end_page_schema
+    field_schemas
+  end
+
+  def end_page_schema
+    {
+      type: 'Page',
+      options: {
+        id: 'survey_end',
+        title: I18n.t('form_builder.survey_end_page.title'),
+        description: I18n.t('form_builder.survey_end_page.description')
+      },
+      elements: []
+    }
   end
 
   def categorization_schema_with(input_term, elements)
