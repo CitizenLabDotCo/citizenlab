@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Novo projeto",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Mais recentes",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Não é um valor válido",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Nenhum modelo encontrado",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Não pode estar vazio",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Forneça o máximo número de votos permitidos por usuário",

@@ -1,8 +1,15 @@
 # Changelog
 
+## Next
+
 ### Changed
 
 - [CL-2156] Notifications of Project Phase Started now sent only to Users who have participated in the relevant Project.
+
+### Fixed
+
+- [CL-2147] Do not trigger emails, notifications and toxicity detection when submitting survey responses.
+- [CL-2164] Phase upcoming notifications and emails were not arriving.
 
 ## 2022-11-29
 
