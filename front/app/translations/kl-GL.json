@@ -131,7 +131,7 @@
   "app.components.HookForm.SlugInput.brokenURLWarning": "URL allanngortikkukku, URL pisoqaq atorlugu quppernermut link-it atorsinnaajunnaassapput",
   "app.components.HookForm.SlugInput.pageUrl": "Quppernermi URL",
   "app.components.HookForm.SlugInput.resultingPageURL": "URL-ip inerneri",
-  "app.components.HookForm.SlugInput.slugTooltip": "The slug is the unique set of words at the end of page's web address, or URL",
+  "app.components.HookForm.SlugInput.slugTooltip": "Slug oqaasiupput immikkuullarissut webadressip imaluunniit URL-ip naaneraniittartut",
   "app.components.IdeaCards.showMore": "Allanik takusaqarit",
   "app.components.IdeaForm.adminFieldTooltip": "Field only visible to admins",
   "app.components.IdeaForm.author": "Allattoq",
