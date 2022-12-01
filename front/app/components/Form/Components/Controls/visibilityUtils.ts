@@ -130,17 +130,3 @@ export const isVisible = (
 
   return true;
 };
-
-export const hasShowRule = (uischema: ExtendedUISchema): boolean => {
-  if (!uischema.ruleArray) {
-    return false;
-  }
-
-  const result = uischema.ruleArray.find((ruleObject) => {
-    return (
-      ruleObject.effect === RuleEffect.SHOW ||
-      ruleObject.effect === RuleEffect.HIDE
-    );
-  });
-  return !!result;
-};
