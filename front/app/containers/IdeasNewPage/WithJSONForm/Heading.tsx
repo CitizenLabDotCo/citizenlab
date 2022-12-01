@@ -105,7 +105,7 @@ export const Heading = ({
                     buttonStyle="primary-inverse"
                     textDecorationHover="underline"
                     hidden={!canUserEditProject}
-                    mr="4px"
+                    mr="12px"
                   >
                     <FormattedMessage {...messages.editSurvey} />
                   </Button>

@@ -75,7 +75,7 @@ const LinearScaleControl = ({
                 style={{ lineHeight: '0px' }}
               >
                 <Box
-                  mt={isSmallerThanXlPhone ? '0px' : '0px'}
+                  mt="0"
                   mr="4px"
                   ml={isSmallerThanXlPhone ? '0px' : '5px'}
                   minHeight="24px"

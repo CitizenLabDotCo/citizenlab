@@ -119,12 +119,16 @@ export const Spacer = styled.div`
 const OptionalText = styled.div`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-weight: 400;
+
+  ${media.phone`
+    margin-top: 4px;
+  `}
 `;
 
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   ${isRtl`
     flex-direction: row-reverse;
   `}
