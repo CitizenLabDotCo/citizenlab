@@ -6,7 +6,7 @@ import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // components
 import {
@@ -15,9 +15,9 @@ import {
   RowTitle,
   RowButton,
   ActionsRowContainer,
-} from './StyledComponents';
-import DeleteProjectButton from './DeleteProjectButton';
-import PublicationStatusLabel from './PublicationStatusLabel';
+} from '../StyledComponents';
+import DeleteProjectButton from '../DeleteProjectButton';
+import PublicationStatusLabel from '../PublicationStatusLabel';
 import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Link from 'utils/cl-router/Link';
@@ -30,7 +30,7 @@ import useAuthUser from 'hooks/useAuthUser';
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
-const StyledStatusLabel = styled(StatusLabel)`
+export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
   margin-top: 4px;
   margin-bottom: 4px;
@@ -57,7 +57,7 @@ interface Props {
   className?: string;
 }
 
-export default ({
+const ProjectRow = ({
   publication,
   actions,
   hidePublicationStatusLabel,
@@ -227,3 +227,5 @@ export default ({
     </Container>
   );
 };
+
+export default ProjectRow;
