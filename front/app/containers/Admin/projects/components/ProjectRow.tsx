@@ -175,27 +175,6 @@ export default ({
     return <AdminStatusLabel />;
   };
 
-  const renderRowButton = (action: CustomButtonAction) => (
-    <RowButton
-      data-cy={`e2e-manage-button-${publication.publicationId}`}
-      key={action.icon}
-      type="button"
-      className={[
-        'e2e-admin-edit-publication',
-        publication.attributes.publication_title_multiloc?.['en-GB'],
-      ]
-        .filter((item) => item)
-        .join(' ')}
-      onClick={action.handler(publication.publicationId)}
-      buttonStyle="secondary"
-      icon={action.icon}
-      processing={action.processing}
-      disabled={isBeingDeleted}
-    >
-      {action.buttonContent}
-    </RowButton>
-  );
-
   return (
     <Container className={className}>
       <RowContent className="e2e-admin-projects-list-item">
@@ -215,7 +194,28 @@ export default ({
               } else if (action === 'manage') {
                 return ManageButton;
               } else {
-                return renderRowButton(action);
+                return (
+                  <RowButton
+                    data-cy={`e2e-manage-button-${publication.publicationId}`}
+                    key={action.icon}
+                    type="button"
+                    className={[
+                      'e2e-admin-edit-publication',
+                      publication.attributes.publication_title_multiloc?.[
+                        'en-GB'
+                      ],
+                    ]
+                      .filter((item) => item)
+                      .join(' ')}
+                    onClick={action.handler(publication.publicationId)}
+                    buttonStyle="secondary"
+                    icon={action.icon}
+                    processing={action.processing}
+                    disabled={isBeingDeleted}
+                  >
+                    {action.buttonContent}
+                  </RowButton>
+                );
               }
             })}
           </ActionsRowContainer>
