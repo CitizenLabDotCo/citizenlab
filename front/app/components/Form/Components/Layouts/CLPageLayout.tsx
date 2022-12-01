@@ -77,7 +77,7 @@ const CLPageLayout = memo(
       const visiblePages = (uischema as PageCategorization).elements.filter(
         (element) => {
           const isPageVisible = isVisible(
-            element as any,
+            element,
             formState.core?.data,
             '',
             customAjv
@@ -98,7 +98,12 @@ const CLPageLayout = memo(
       const currentPageCategorization = uiPages[currentStep];
       if (
         customAjv.validate(
-          getPageSchema(schema, currentPageCategorization),
+          getPageSchema(
+            schema,
+            currentPageCategorization,
+            formState.core?.data,
+            customAjv
+          ),
           getSanitizedFormData(data)
         )
       ) {

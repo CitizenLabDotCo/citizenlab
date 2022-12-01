@@ -13,8 +13,8 @@ import {
 } from '@jsonforms/core';
 import { isEmpty, has } from 'lodash-es';
 
-type ExtendedUISchema = {
-  ruleArray: Rule[];
+export type ExtendedUISchema = {
+  ruleArray?: Rule[];
 } & UISchemaElement;
 
 const isOrCondition = (condition: Condition): condition is OrCondition =>

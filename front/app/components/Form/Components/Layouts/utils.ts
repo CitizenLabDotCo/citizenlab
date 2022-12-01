@@ -4,10 +4,11 @@ import {
   JsonSchema,
   Layout,
   Tester,
-  UISchemaElement,
   uiTypeIs,
 } from '@jsonforms/core';
+import Ajv from 'ajv';
 import { forOwn, isEmpty } from 'lodash-es';
+import { ExtendedUISchema, isVisible } from '../Controls/visibilityUtils';
 
 export interface PageType extends Layout {
   type: 'Page';
@@ -21,7 +22,7 @@ export interface PageType extends Layout {
   };
 }
 
-export interface PageCategorization extends UISchemaElement {
+export interface PageCategorization extends ExtendedUISchema {
   type: 'Categorization';
   /**
    * The label of this categorization.
@@ -46,7 +47,9 @@ export const getSanitizedFormData = (data) => {
 
 export const getPageSchema = (
   schema: JsonSchema,
-  pageCategorization: PageCategorization | PageType
+  pageCategorization: PageCategorization | PageType,
+  data: any,
+  ajv: Ajv
 ) => {
   const currentPageElementNames: string[] = pageCategorization.elements.map(
     (e) => e.scope.split('/').pop()
@@ -59,10 +62,19 @@ export const getPageSchema = (
     }
   });
 
+  const hiddenElements = pageCategorization.elements
+    .filter((pageElement) => pageElement.rule)
+    .filter((pageElementWithRule) => {
+      return !isVisible(pageElementWithRule, data, '', ajv);
+    })
+    .map((element) => element['scope'].split('/').pop());
+
   const pageSchema = Object.assign({}, schema, {
-    required: (schema.required || []).filter((requiredElementName) =>
-      currentPageElementNames.includes(requiredElementName)
-    ),
+    required: (schema.required || [])
+      .filter((requiredElementName) =>
+        currentPageElementNames.includes(requiredElementName)
+      )
+      .filter((requiredElement) => !hiddenElements.includes(requiredElement)),
     properties: pageSchemaProperties,
   });
 
