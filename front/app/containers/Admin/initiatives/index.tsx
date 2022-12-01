@@ -17,28 +17,10 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // styles
-import styled from 'styled-components';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import Outlet from 'components/Outlet';
 import { insertConfiguration } from 'utils/moduleUtils';
 
-const TopContainer = styled.div`
-  width: 100%;
-  margin-top: -5px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  position: relative;
-`;
-
-const ActionsContainer = styled.div`
-  display: flex;
-
-  & > *:not(:last-child) {
-    margin-right: 15px;
-  }
-`;
 const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
   ({ intl: { formatMessage }, location }) => {
     const [tabs, setTabs] = useState<ITab[]>([
@@ -54,10 +36,6 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
       },
     ]);
 
-    const resource = {
-      title: formatMessage(messages.titleInitiatives),
-    };
-
     const onNewProposal = (pathname: string) => (_event) => {
       trackEventByName(tracks.clickNewProposal.name, {
         extra: { pathnameFrom: pathname },
@@ -68,6 +46,7 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
       setTabs(insertConfiguration<ITab>(data));
 
     const { pathname } = location;
+
     return (
       <>
         <Outlet
@@ -75,25 +54,27 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
           onData={handleData}
           formatMessage={formatMessage}
         />
-        <TopContainer>
-          <ActionsContainer>
-            <Button
-              id="e2e-new-proposal"
-              buttonStyle="cl-blue"
-              icon="initiatives"
-              linkTo={`/initiatives/new`}
-              text={formatMessage(messages.addNewProposal)}
-              onClick={onNewProposal(pathname)}
-            />
-          </ActionsContainer>
-        </TopContainer>
-        <TabbedResource resource={resource} tabs={tabs}>
+        <TabbedResource
+          resource={{
+            title: formatMessage(messages.titleInitiatives),
+            rightSideCTA: (
+              <Button
+                id="e2e-new-proposal"
+                buttonStyle="cl-blue"
+                icon="initiatives"
+                linkTo={`/initiatives/new`}
+                text={formatMessage(messages.addNewProposal)}
+                onClick={onNewProposal(pathname)}
+              />
+            ),
+          }}
+          tabs={tabs}
+        >
           <HelmetIntl
             title={messages.metaTitle}
             description={messages.metaDescription}
           />
           <div id="e2e-initiatives-admin-container">
-            {' '}
             <RouterOutlet />
           </div>
         </TabbedResource>

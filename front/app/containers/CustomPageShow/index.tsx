@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
 import TopInfoSection from './TopInfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
-import PageNotFound from './PageNotFound';
+import PageNotFound from 'components/PageNotFound';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
@@ -28,6 +28,7 @@ import { injectIntl } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { fontSizes, isRtl, media } from 'utils/styleUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -53,26 +54,34 @@ const AttachmentsContainer = styled(ContentContainer)`
 `;
 
 const CustomPageShow = () => {
-  const appConfiguration = useAppConfiguration();
-  const localize = useLocalize();
-
   const { slug } = useParams() as {
     slug: string;
   };
+  const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
   const page = useCustomPage({ customPageSlug: slug });
-
+  const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const remotePageFiles = useResourceFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
 
-  if (isError(page)) {
-    return <PageNotFound />;
-  }
-
   // when neither have loaded
   if (isNil(page) || isNilOrError(appConfiguration)) {
     return null;
+  }
+
+  if (
+    // if URL is mistyped, page is also an error
+    isError(page) ||
+    // If page loaded but it's /pages/initiatives but
+    // the initiatives feature is not enabled also show
+    // not found
+    (!isError(page) &&
+      page.attributes.code === 'proposals' &&
+      !proposalsEnabled)
+  ) {
+    return <PageNotFound />;
   }
 
   const pageAttributes = page.attributes;

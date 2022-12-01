@@ -24,7 +24,8 @@ class UrlValidationService
     %r{\A(https?)://(www\.)?google\.com/maps(/[a-z])?/embed\?([^&]*)=([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
     %r{\A(https?)://([-A-Z0-9.]+)\.slideshare(\.(net|com))/slideshow/embed_code/key/([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
     %r{\A(https?)://(www\.)?onedrive\.live\.([-A-Z0-9+&@#/%=~_|!:,.;?]+)}i,
-    %r{\A(https?)://.*pdf$}
+    %r{\A(https?)://.*pdf$},
+    %r{\A(https?)://(.+\.)abalancingact\.com}
   ].freeze
 
   VIDEO_WHITELIST = [

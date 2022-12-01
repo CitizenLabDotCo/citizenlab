@@ -297,7 +297,7 @@ describe JsonFormsService do
                   },
                   {
                     type: 'Category',
-                    label: 'Images and Attachements',
+                    label: 'Images and attachments',
                     options: { id: 'attachments' },
                     elements: [
                       {

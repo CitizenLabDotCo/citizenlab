@@ -10,8 +10,7 @@ const DEFAULT_END_ANGLE = -270;
 export const getPieConfig = <Row>(
   data: Row[],
   mapping: Mapping<Row>,
-  pie?: Pie,
-  annotations?: boolean | ((row: Row) => string)
+  pie?: Pie
 ) => {
   const { name, angle, fill, opacity } = mapping;
   const fillMapping = fill ?? categoricalColorScheme;
@@ -33,26 +32,9 @@ export const getPieConfig = <Row>(
       outerRadius: pie?.outerRadius ?? '100%',
       startAngle: pie?.startAngle ?? DEFAULT_START_ANGLE,
       endAngle: pie?.endAngle ?? DEFAULT_END_ANGLE,
-      label: getAnnotations(annotations, nameKey, dataKey),
     },
     cells,
   };
 
   return pieConfig;
-};
-
-const getAnnotations = <Row>(
-  annotations: undefined | boolean | ((row: Row) => string),
-  nameKey: string | undefined,
-  dataKey: string
-) => {
-  if (annotations === true) {
-    return nameKey === undefined
-      ? (row: Row) => `${row[dataKey]}`
-      : (row: Row) => `${row[nameKey]} : ${row[dataKey]}`;
-  }
-
-  if (typeof annotations === 'function') return annotations;
-
-  return;
 };

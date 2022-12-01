@@ -106,7 +106,7 @@ RSpec.describe Analytics::MatomoDataImporter do
         'dimension_date_last_action_id' => Date.new(2022, 10, 3),
         'duration' => 672,
         'pages_visited' => 3,
-        'returning_visitor' => false,
+        'returning_visitor' => true,
         'referrer_name' => nil,
         'referrer_url' => nil,
         'matomo_visit_id' => 8,

@@ -7,8 +7,7 @@ import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
-import SendFeedback from 'components/SendFeedback';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -20,7 +19,7 @@ import { FOOTER_PAGES, TFooterPage } from 'services/customPages';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -163,9 +162,6 @@ const PoweredBy = styled.div`
   display: flex;
   align-items: center;
   outline: none;
-  padding-right: 20px;
-  margin-right: 24px;
-  border-right: 2px solid ${colors.divider};
   ${media.tablet`
     flex-direction: column;
     padding: 0px;
@@ -196,12 +192,6 @@ const CitizenlabLink = styled.a`
   cursor: pointer;
 `;
 
-const StyledSendFeedback = styled(SendFeedback)`
-  ${media.tablet`
-    margin-top: 20px;
-  `}
-`;
-
 const CitizenLabLogo = styled(Icon)`
   height: 28px;
   fill: ${colors.textSecondary};
@@ -230,7 +220,6 @@ const PlatformFooter = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
-  const windowSize = useWindowSize();
   const customizedA11yHrefEnabled = useFeatureFlag({
     name: 'custom_accessibility_statement_link',
   });
@@ -259,8 +248,6 @@ const PlatformFooter = ({
       .custom_accessibility_statement_link.url;
   };
 
-  const smallerThanSmallTablet =
-    windowSize.windowWidth <= viewportWidths.tablet;
   const hasCustomizedA11yFooterLink = getHasCustomizedA11yFooterLink();
   const customizedA11yHref = getCustomizedA11yHref();
   const removeVendorBranding = useFeatureFlag({
@@ -322,7 +309,6 @@ const PlatformFooter = ({
               </CitizenlabLink>
             </PoweredBy>
           )}
-          <StyledSendFeedback showFeedbackText={smallerThanSmallTablet} />
         </Right>
       </FooterContainer>
     </Container>

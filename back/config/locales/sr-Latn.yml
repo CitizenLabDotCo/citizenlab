@@ -202,6 +202,6 @@ sr-Latn:
       assignee_email: 'E-pošta dodeljenog korisnika'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'Vaše pitanje'
+      option1: 'Opcija 1'
+      option2: 'Opcija 2'

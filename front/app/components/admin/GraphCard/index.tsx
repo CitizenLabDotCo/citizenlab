@@ -18,6 +18,7 @@ interface Props {
   infoTooltipContent?: React.ReactChild;
   exportMenu?: ReportExportMenuProps;
   viewToggle?: ViewToggleProps;
+  topRightStat?: string;
   children?: React.ReactNode;
 }
 
@@ -26,6 +27,7 @@ const GraphCard = ({
   infoTooltipContent,
   exportMenu,
   viewToggle,
+  topRightStat,
   children,
 }: Props) => (
   <Box p="10px" width="100%">
@@ -57,6 +59,7 @@ const GraphCard = ({
           )}
         </Box>
         <Box display="flex" flexDirection="row">
+          {topRightStat && <Box>{topRightStat}</Box>}
           {exportMenu && <ReportExportMenu {...exportMenu} />}
           {viewToggle && (
             <Box ml="12px">

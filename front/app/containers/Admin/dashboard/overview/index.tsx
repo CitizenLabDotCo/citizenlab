@@ -3,6 +3,7 @@ import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 
 // components
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import Outlet from 'components/Outlet';
 import ChartFilters from './ChartFilters';
@@ -11,7 +12,6 @@ import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-import IdeasByStatusChart from './charts/IdeasByStatusChart';
 
 // typings
 import { IOption } from 'typings';
@@ -23,6 +23,7 @@ import tracks from '../tracks';
 
 // i18n
 import messages from '../messages';
+import overviewMessages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -64,7 +65,6 @@ interface State {
   currentProjectFilterLabel: string | undefined;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
-  ideasByStatusChartHidden: boolean;
 }
 
 interface Tracks {
@@ -93,7 +93,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentProjectFilterLabel: undefined,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
-      ideasByStatusChartHidden: false,
     };
 
     this.resourceOptions = [
@@ -137,18 +136,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     this.setState({ currentResourceByProject: option.value });
   };
 
-  hideIdeasByStatusChart = () => {
-    this.setState({ ideasByStatusChartHidden: true });
-  };
-
   render() {
-    const {
-      resolution,
-      startAtMoment,
-      endAtMoment,
-      currentProjectFilter,
-      ideasByStatusChartHidden,
-    } = this.state;
+    const { resolution, startAtMoment, endAtMoment, currentProjectFilter } =
+      this.state;
 
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
@@ -176,60 +166,88 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             onChangeResolution={this.handleChangeResolution}
           />
           <GraphsContainer>
-            <LineBarChart
-              graphUnit="users"
-              graphUnitMessageKey="users"
-              graphTitle={formatMessage(messages.usersByTimeTitle)}
-              startAt={startAt}
-              endAt={endAt}
-              xlsxEndpoint={usersByTimeXlsxEndpoint}
-              lineStream={usersByTimeCumulativeStream}
-              barStream={usersByTimeStream}
-              className="e2e-active-users-chart"
-              {...this.state}
-            />
-            <BarChartActiveUsersByTime
-              graphUnit="users"
-              graphUnitMessageKey="activeUsers"
-              graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
-              startAt={startAt}
-              endAt={endAt}
-              xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
-              stream={activeUsersByTimeStream}
-              infoMessage={infoMessage}
-              className="e2e-users-by-time-cumulative-chart"
-              {...this.state}
-            />
-            <LineBarChart
-              graphTitle={formatMessage(messages.inputs)}
-              graphUnit="ideas"
-              graphUnitMessageKey="ideas"
-              startAt={startAt}
-              endAt={endAt}
-              xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-              className="e2e-ideas-chart"
-              lineStream={ideasByTimeCumulativeStream}
-              barStream={ideasByTimeStream}
-              {...this.state}
-            />
-            <LineBarChart
-              graphTitle={formatMessage(messages.commentsByTimeTitle)}
-              graphUnit="comments"
-              graphUnitMessageKey="comments"
-              startAt={startAt}
-              endAt={endAt}
-              xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
-              className="e2e-comments-chart"
-              lineStream={commentsByTimeCumulativeStream}
-              barStream={commentsByTimeStream}
-              {...this.state}
-            />
+            <Box width="100%" display="flex">
+              <LineBarChart
+                graphUnit="users"
+                graphUnitMessageKey="users"
+                graphTitle={formatMessage(messages.usersByTimeTitle)}
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={usersByTimeXlsxEndpoint}
+                lineStream={usersByTimeCumulativeStream}
+                barStream={usersByTimeStream}
+                className="e2e-active-users-chart"
+                {...this.state}
+              />
+              <BarChartActiveUsersByTime
+                graphUnit="users"
+                graphUnitMessageKey="activeUsers"
+                graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+                stream={activeUsersByTimeStream}
+                infoMessage={infoMessage}
+                className="e2e-users-by-time-cumulative-chart"
+                {...this.state}
+              />
+            </Box>
+            <Title
+              ml="12px"
+              mt="40px"
+              width="100%"
+              variant="h2"
+              color="primary"
+              fontWeight="normal"
+            >
+              {formatMessage(overviewMessages.projectsAndParticipation)}
+            </Title>
             <Column>
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.projectStatus"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+              <LineBarChart
+                graphTitle={formatMessage(messages.inputs)}
+                graphUnit="ideas"
+                graphUnitMessageKey="ideas"
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
+                className="e2e-ideas-chart fullWidth"
+                lineStream={ideasByTimeCumulativeStream}
+                barStream={ideasByTimeStream}
+                {...this.state}
+              />
+              <LineBarChart
+                graphTitle={formatMessage(messages.commentsByTimeTitle)}
+                graphUnit="comments"
+                graphUnitMessageKey="comments"
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
+                className="e2e-comments-chart fullWidth"
+                lineStream={commentsByTimeCumulativeStream}
+                barStream={commentsByTimeStream}
+                {...this.state}
+              />
               <LineBarChartVotesByTime
                 className="fullWidth e2e-votes-chart"
                 startAt={startAt}
                 endAt={endAt}
                 {...this.state}
+              />
+            </Column>
+            <Column>
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.proposals"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
               />
               <SelectableResourceByProjectChart
                 className="dynamicHeight fullWidth e2e-resource-by-project-chart"
@@ -239,24 +257,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 {...this.state}
               />
-            </Column>
-            <Column>
-              {!ideasByStatusChartHidden && (
-                <IdeasByStatusChart
-                  className="fullWidth dynamicHeight"
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-              )}
-              <Outlet
-                id="app.containers.Admin.dashboard.summary.postStatus"
-                projectId={currentProjectFilter}
-                startAtMoment={startAtMoment}
-                endAtMoment={endAtMoment}
-                resolution={resolution}
-                onMount={this.hideIdeasByStatusChart}
-              />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
                 onResourceByTopicChange={this.onResourceByTopicChange}
@@ -264,6 +264,49 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 startAt={startAt}
                 endAt={endAt}
                 {...this.state}
+              />
+            </Column>
+
+            <Title
+              ml="12px"
+              mt="40px"
+              width="100%"
+              variant="h2"
+              color="primary"
+              fontWeight="normal"
+            >
+              {formatMessage(overviewMessages.management)}
+            </Title>
+            <Column>
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.inputStatus"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.events"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+            </Column>
+            <Column>
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.emailDeliveries"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+              <Outlet
+                id="app.containers.Admin.dashboard.summary.invitations"
+                projectId={currentProjectFilter}
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
               />
             </Column>
           </GraphsContainer>

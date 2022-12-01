@@ -79,7 +79,7 @@ resource 'ProjectsAllowedInputTopics' do
       end
 
       let(:project) { create(:project, allowed_input_topics: create_list(:topic, 3)) }
-      let(:id) { project.projects_allowed_input_topics[1].id }
+      let(:id) { project.projects_allowed_input_topics.order(:ordering).last.id }
       let(:ordering) { 0 }
 
       example_request 'Reorder a project allowed input topic' do

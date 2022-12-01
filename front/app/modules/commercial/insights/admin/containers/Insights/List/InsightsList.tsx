@@ -152,7 +152,7 @@ const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
                 <Button
                   buttonStyle="white"
                   icon="delete"
-                  textColor={colors.primary}
+                  textColor={colors.textSecondary}
                   boxShadow="none"
                   onClick={handleDeleteClick(view.id)}
                 >

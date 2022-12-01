@@ -40,10 +40,8 @@ describe('Content builder navigation', () => {
 
   it('navigates to content builder when edit project description link clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
-    cy.get('#e2e-toggle-enable-content-builder')
-      .find('input')
-      .click({ force: true });
-    cy.get('#e2e-content-builder-link').click();
+    cy.acceptCookies();
+    cy.get('#e2e-content-builder-link').click({ force: true });
     cy.url().should(
       'eq',
       `${
@@ -76,10 +74,11 @@ describe('Content builder navigation', () => {
     );
   });
 
+  /** Commenting this out as it is very flaky. https://citizenlabco.slack.com/archives/C02PFSWEK6X/p1667892380157819?thread_ts=1667876187.090919&cid=C02PFSWEK6X
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
     const projectUrl = `/en/projects/${projectSlug}`;
 
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**\/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
 
@@ -104,9 +103,10 @@ describe('Content builder navigation', () => {
       'target',
       '_blank'
     );
-    cy.get('#e2e-view-project-button > a').invoke('attr', 'target', '_self');
+    cy.get('#e2e-view-project-button > a').invoke('removeAttr', 'target');
 
     cy.get('#e2e-view-project-button > a').click();
     cy.location('pathname').should('equal', projectUrl);
   });
+  */
 });

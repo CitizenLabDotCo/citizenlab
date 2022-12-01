@@ -202,6 +202,6 @@ sr-SP:
       assignee_email: 'Е-пошта додељеног корисника'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'Ваше питање'
+      option1: 'Опција 1'
+      option2: 'Опција 2'

@@ -1,5 +1,6 @@
 // utils
 import { roundPercentage } from 'utils/math';
+import { get } from 'utils/helperUtils';
 
 // typings
 import { ReferrerRow, ReferrersTotalRow, TableRow } from './typings';
@@ -18,7 +19,7 @@ export const parseTableData = (
     visitsPercentage: roundPercentage(row.count, totalVisits),
     visitors: row.count_visitor_id,
     visitorsPercentage: roundPercentage(row.count_visitor_id, totalVisitors),
-    referrerType: translations[row['dimension_referrer_type.name']],
+    referrerType: translations[get(row, 'dimension_referrer_type.name')],
     referrer: row.referrer_name ?? '',
   }));
 };

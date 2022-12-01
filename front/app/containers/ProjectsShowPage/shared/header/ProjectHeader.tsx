@@ -23,6 +23,8 @@ import messages from 'containers/ProjectsShowPage/messages';
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   padding-top: 30px;
@@ -89,7 +91,7 @@ interface Props {
 const ProjectHeader = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const [moduleActive, setModuleActive] = useState(false);
-
+    const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
     const project = useProject({ projectId });
     const authUser = useAuthUser();
     const projectFolderId = project?.attributes.folder_id;
@@ -107,17 +109,11 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
           <ContentContainer maxWidth={maxPageWidth}>
             {(projectFolderId || userCanEditProject) && (
               <TopBar>
-                {/*
-                  Needs to change: Outlet should always render.
-                  Condition needs to be inside the Outlet.
-                */}
-                {projectFolderId && (
-                  <Outlet
-                    id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
+                {projectFolderId && isProjectFoldersEnabled && (
+                  <ProjectFolderGoBackButton
                     projectFolderId={projectFolderId}
                   />
                 )}
-
                 {userCanEditProject && (
                   <EditButton
                     icon="edit"

@@ -6,6 +6,10 @@ const validPlatformLinks = [
     urls: ['https://citizenlabco.typeform.com/to/I3AaTInh'],
   },
   {
+    platform: 'BalancingAct',
+    urls: ['https://dummy.abalancingact.com/dummy'],
+  },
+  {
     platform: 'Enalyzer',
     urls: ['https://surveys.enalyzer.com/?pid=cefb4s4s'],
   },

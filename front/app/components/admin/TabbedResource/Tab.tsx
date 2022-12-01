@@ -33,13 +33,13 @@ const Container = styled.div`
   }
 
   &:not(.active):hover a {
-    color: ${colors.textPrimary};
+    color: ${colors.primary};
     border-color: #ddd;
   }
 
   &.active a {
-    color: ${colors.textPrimary};
-    border-color: ${colors.textPrimary};
+    color: ${colors.primary};
+    border-color: ${colors.primary};
   }
 `;
 

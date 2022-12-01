@@ -4,7 +4,6 @@ import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
 
 const HomePage = lazy(() => import('containers/HomePage'));
-const SignUpInPage = lazy(() => import('containers/SignUpInPage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const UsersShowPage = lazy(() => import('containers/UsersShowPage'));
@@ -24,6 +23,9 @@ const InitiativesShowPage = lazy(
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
 const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
+const ProjectFolderShowPage = lazy(
+  () => import('containers/ProjectFolderShowPage')
+);
 const EventsPage = lazy(() => import('containers/EventsPage'));
 const CookiePolicy = lazy(() => import('containers/CookiePolicy'));
 const AccessibilityStatement = lazy(
@@ -48,22 +50,6 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <HomePage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: 'sign-in',
-          element: (
-            <PageLoading>
-              <SignUpInPage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: 'sign-up',
-          element: (
-            <PageLoading>
-              <SignUpInPage />
             </PageLoading>
           ),
         },
@@ -222,6 +208,14 @@ export default function createRoutes() {
               ),
             },
           ],
+        },
+        {
+          path: 'folders/:slug',
+          element: (
+            <PageLoading>
+              <ProjectFolderShowPage />,
+            </PageLoading>
+          ),
         },
         {
           path: 'events',

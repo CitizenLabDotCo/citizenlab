@@ -52,13 +52,13 @@ describe('<VisitorsCard />', () => {
   const resolution = 'month';
 
   it('renders graph', () => {
-    const projectFilter = undefined;
+    const projectId = undefined;
 
     const { container } = render(
       <VisitorsCard
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        projectFilter={projectFilter}
+        projectId={projectId}
         resolution={resolution}
       />
     );
@@ -69,13 +69,13 @@ describe('<VisitorsCard />', () => {
   });
 
   it('renders visit duration and pageviews', () => {
-    const projectFilter = undefined;
+    const projectId = undefined;
 
     render(
       <VisitorsCard
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        projectFilter={projectFilter}
+        projectId={projectId}
         resolution={resolution}
       />
     );
@@ -87,13 +87,13 @@ describe('<VisitorsCard />', () => {
   });
 
   it('does not render tooltips for duration and pageviews if project filter not active', () => {
-    const projectFilter = undefined;
+    const projectId = undefined;
 
     const { container } = render(
       <VisitorsCard
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        projectFilter={projectFilter}
+        projectId={projectId}
         resolution={resolution}
       />
     );
@@ -102,13 +102,13 @@ describe('<VisitorsCard />', () => {
   });
 
   it('renders tooltips for duration and pageviews if project filter active', () => {
-    const projectFilter = '1111';
+    const projectId = '1111';
 
     const { container } = render(
       <VisitorsCard
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        projectFilter={projectFilter}
+        projectId={projectId}
         resolution={resolution}
       />
     );

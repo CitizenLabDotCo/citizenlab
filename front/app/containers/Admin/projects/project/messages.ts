@@ -79,6 +79,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitleText',
     defaultMessage: 'What do you want to do?',
   },
+  phaseMethodChangeWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning',
+    defaultMessage:
+      "Some participation methods aren't available for existing phases. A new phase will have to be created in these cases.",
+  },
+  projectMethodChangeWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning',
+    defaultMessage:
+      "Some participation methods aren't available for existing projects. A new project will have to be created in these cases.",
+  },
   participationMethodTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
     defaultMessage: 'Choose how users can participate.',

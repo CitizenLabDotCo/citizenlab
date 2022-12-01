@@ -5,10 +5,10 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
-
 import {
   IIdeasByTopic,
   ICommentsByTopic,
@@ -18,9 +18,8 @@ import {
   ICommentsByProject,
   IVotesByProject,
 } from 'services/stats';
-
+import { IUsersByBirthyear } from 'services/userCustomFieldStats';
 import { IGraphFormat, IParticipationByTopic } from 'typings';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 interface State {
   unconvertedSerie: ISupportedDataType | NilOrError;
@@ -38,6 +37,7 @@ export interface ISupportedDataTypeMap {
   ideasByStatus: IIdeasByStatus;
   votesByProject: IVotesByProject;
   commentsByProject: ICommentsByProject;
+  usersByBirthYear: IUsersByBirthyear;
 }
 
 export type ISupportedDataType =

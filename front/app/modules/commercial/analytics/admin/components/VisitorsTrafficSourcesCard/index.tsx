@@ -16,32 +16,25 @@ import { useIntl } from 'utils/cl-intl';
 
 // utils
 import getXlsxData from './getXlsxData';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Moment } from 'moment';
-import { isNilOrError } from 'utils/helperUtils';
+import { ProjectId, Dates } from '../../typings';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 
-interface Props {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  projectFilter: string | undefined;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates;
 
 const VisitorsTrafficSourcesCard = ({
+  projectId,
   startAtMoment,
   endAtMoment,
-  projectFilter,
-  resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
   const { pieData, xlsxData } = useVisitorReferrerTypes({
+    projectId,
     startAtMoment,
     endAtMoment,
-    projectId: projectFilter,
   });
   const [currentView, setCurrentView] = useState<View>('chart');
   const [modalOpen, setModalOpen] = useState(false);
@@ -72,7 +65,7 @@ const VisitorsTrafficSourcesCard = ({
           onDownload: () =>
             getXlsxData(
               {
-                projectId: projectFilter,
+                projectId,
                 startAtMoment,
                 endAtMoment,
               },
@@ -82,8 +75,7 @@ const VisitorsTrafficSourcesCard = ({
         },
         startAt,
         endAt,
-        currentProjectFilter: projectFilter,
-        resolution,
+        currentProjectFilter: projectId,
       }}
       viewToggle={{
         view: currentView,
@@ -96,7 +88,7 @@ const VisitorsTrafficSourcesCard = ({
 
       {currentView === 'table' && (
         <Table
-          projectId={projectFilter}
+          projectId={projectId}
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
           onOpenModal={openModal}
@@ -104,7 +96,7 @@ const VisitorsTrafficSourcesCard = ({
       )}
 
       <TableModal
-        projectId={projectFilter}
+        projectId={projectId}
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
         open={modalOpen}

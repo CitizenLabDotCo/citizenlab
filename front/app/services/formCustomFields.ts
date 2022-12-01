@@ -61,6 +61,38 @@ export type IFlatCustomFieldWithIndex = IFlatCustomField & {
   index: number;
 };
 
+const properties = [
+  'id',
+  'input_type',
+  'description_multiloc',
+  'required',
+  'title_multiloc',
+  'maximum_label_multiloc',
+  'minimum_label_multiloc',
+  'maximum',
+  'options',
+  'enabled',
+  'index',
+];
+
+const doesOjectHaveProperties = (
+  element: unknown,
+  propertyNames: string[]
+): boolean => {
+  let hasProperties = true;
+  propertyNames.forEach((propertyName) => {
+    if (!Object.prototype.hasOwnProperty.call(element, propertyName)) {
+      hasProperties = false;
+    }
+  });
+  return hasProperties;
+};
+
+export const isNewCustomFieldObject = (
+  element: unknown
+): element is IFlatCustomFieldWithIndex =>
+  doesOjectHaveProperties(element, properties);
+
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 export type IFlatCreateCustomField = Optional<

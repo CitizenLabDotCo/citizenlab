@@ -2,9 +2,13 @@
 
 module Analytics
   class QueryValidatorService
+    SCHEMA_FILE = Analytics::Engine.root / 'app' / 'services' / 'analytics' / 'query_schema.json.erb'
+
+    def self.schema
+      @schema ||= ERB.new(File.read(SCHEMA_FILE)).result(TOPLEVEL_BINDING)
+    end
+
     def initialize(query)
-      query_schema_file = 'engines/commercial/analytics/app/services/analytics/query_schema.json'
-      @query_schema = File.read(query_schema_file)
       @query = query
       @json_query = query.json_query
       @messages = []
@@ -17,25 +21,15 @@ module Analytics
     attr_reader :valid, :messages, :response_status
 
     def validate
-      validate_json
+      return unless validate_json
 
-      return if @valid == false
-
-      if @json_query.key?(:fields)
-        validate_fields(@query.fields, 'Fields')
-      end
+      validate_fields(@query.fields, 'Fields') if @json_query.key?(:fields)
+      validate_groups if @json_query.key?(:groups)
+      validate_aggregations if @json_query.key?(:aggregations)
 
       if @json_query.key?(:filters)
         validate_fields(@json_query[:filters].keys, 'Filters')
         validate_filters
-      end
-
-      if @json_query.key?(:groups)
-        validate_groups
-      end
-
-      if @json_query.key?(:aggregations)
-        validate_aggregations
       end
 
       return unless @json_query.key?(:sort)
@@ -51,10 +45,11 @@ module Analytics
     end
 
     def validate_json
-      json_errors = JSON::Validator.fully_validate(@query_schema, @json_query.to_unsafe_hash)
-      return if json_errors.empty?
+      json_errors = JSON::Validator.fully_validate(self.class.schema, @json_query.to_unsafe_hash)
+      return true if json_errors.empty?
 
       add_error(json_errors)
+      false
     end
 
     def validate_fields(fields, kind)

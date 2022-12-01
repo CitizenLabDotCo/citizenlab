@@ -310,18 +310,6 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: engines/commercial/project_folders
-  specs:
-    project_folders (0.1.0)
-      rails (~> 6.1)
-
-PATH
-  remote: engines/commercial/project_management
-  specs:
-    project_management (0.1.0)
-      rails (~> 6.1)
-
-PATH
   remote: engines/commercial/public_api
   specs:
     public_api (0.1.0)
@@ -376,15 +364,6 @@ PATH
     multi_tenancy (0.1.0)
       actionpack-cloudfront (~> 1.2.0)
       nlp
-      rails (~> 6.1)
-      ros-apartment (>= 2.9.0)
-
-PATH
-  remote: engines/free/customizable_navbar
-  specs:
-    customizable_navbar (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
 
@@ -618,7 +597,7 @@ GEM
       qonfig (~> 0.24)
     css_parser (1.11.0)
       addressable
-    dalli (2.7.11)
+    dalli (3.2.3)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.1)
@@ -813,6 +792,8 @@ GEM
     nokogiri (1.13.9-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.13.9-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.9-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.9-x86_64-linux)
       racc (~> 1.4)
@@ -1167,6 +1148,7 @@ GEM
 PLATFORMS
   aarch64-linux
   arm64-darwin-21
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
@@ -1197,8 +1179,7 @@ DEPENDENCIES
   custom_idea_statuses!
   custom_maps!
   custom_topics!
-  customizable_navbar!
-  dalli (~> 2.7)
+  dalli (~> 3.2.3)
   database_cleaner (~> 2.0.1)
   email_campaigns!
   factory_bot_rails
@@ -1258,8 +1239,6 @@ DEPENDENCIES
   pg_search (~> 2.3.5)
   polls!
   premailer-rails (~> 1.10.3)
-  project_folders!
-  project_management!
   project_permissions!
   pry
   pry-byebug

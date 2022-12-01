@@ -6,7 +6,6 @@
 #
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb
-#  body_multiloc                :jsonb
 #  slug                         :string
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
@@ -88,11 +87,6 @@ class StaticPage < ApplicationRecord
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
 
   mount_base64_uploader :header_bg, HeaderBgUploader
-
-  def body_multiloc=(value)
-    self.top_info_section_multiloc = value
-    super
-  end
 
   def custom?
     code == 'custom'

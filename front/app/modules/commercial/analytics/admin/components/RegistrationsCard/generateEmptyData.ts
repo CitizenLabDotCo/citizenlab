@@ -23,7 +23,7 @@ export const emptyStatsData: Stats = {
     value: '-',
     lastPeriod: '-',
   },
-  conversionRate: {
+  registrationRate: {
     value: '-',
     lastPeriod: '-',
   },

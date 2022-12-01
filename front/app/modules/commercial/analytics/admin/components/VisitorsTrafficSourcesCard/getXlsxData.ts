@@ -15,18 +15,18 @@ import { sanitizeQueryParameters } from 'utils/streams/utils';
 import { roundPercentages } from 'utils/math';
 
 // typings
-import {
-  QueryParametersWithoutPagination,
-  ReferrerListResponse,
-} from '../../hooks/useVisitorReferrers/typings';
+import { ProjectId, Dates } from '../../typings';
+import { ReferrerListResponse } from '../../hooks/useVisitorReferrers/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { FormatMessage } from 'typings';
+
+type QueryParameters = ProjectId & Dates;
 
 const query = ({
   projectId,
   startAtMoment,
   endAtMoment,
-}: QueryParametersWithoutPagination): Query => {
+}: QueryParameters): Query => {
   const query: QuerySchema = {
     fact: 'visit',
     filters: {
@@ -49,7 +49,7 @@ const query = ({
 };
 
 export default async function getXlsxData(
-  parameters: QueryParametersWithoutPagination,
+  parameters: QueryParameters,
   referrerTypesXlsxData: XlsxData,
   formatMessage: FormatMessage
 ): Promise<XlsxData> {

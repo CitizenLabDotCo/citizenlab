@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
@@ -56,6 +57,7 @@ const customRender: any = (ui: React.ReactElement, options?: RenderOptions) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
 // re-export everything
+// eslint-disable-next-line no-restricted-imports
 export * from '@testing-library/react';
 
 // override render method

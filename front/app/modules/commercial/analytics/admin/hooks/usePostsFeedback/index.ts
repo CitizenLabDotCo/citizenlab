@@ -118,7 +118,6 @@ export default function usePostsFeedback({
         const stackedBarsData = parseStackedBarsData(statusRows);
 
         const pieCenterValue = getPieCenterValue(feedbackRow);
-        const pieCenterLabel = translations.feedbackGiven;
 
         const days = getDays(feedbackRow);
 
@@ -146,7 +145,6 @@ export default function usePostsFeedback({
           progressBarsData,
           stackedBarsData,
           pieCenterValue,
-          pieCenterLabel,
           days,
           stackedBarColumns,
           statusColorById,

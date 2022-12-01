@@ -71,7 +71,7 @@ interface Props {
 
 const ReadMoreWrapper = memo<Props>(
   ({ className, value, fontSize, contentId }) => {
-    const theme: any = useTheme();
+    const theme = useTheme();
     const { windowWidth } = useWindowSize();
 
     const [expanded, setExpanded] = useState(false);

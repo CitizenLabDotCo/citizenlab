@@ -1,13 +1,9 @@
 import { Multiloc } from 'typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { Moment } from 'moment';
+import { ProjectId, Dates } from '../../typings';
 
-export interface QueryParameters {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-}
+export type QueryParameters = ProjectId & Dates;
 
 // Response
 export type Response = {
@@ -46,7 +42,6 @@ export interface PostFeedback {
   progressBarsData: ProgressBarsRow[];
   stackedBarsData: [StackedBarsRow];
   pieCenterValue: string;
-  pieCenterLabel: string;
   days: number;
   stackedBarColumns: string[];
   statusColorById: Record<string, string>;

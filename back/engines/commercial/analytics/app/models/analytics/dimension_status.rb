@@ -6,6 +6,7 @@
 #
 #  id             :uuid             primary key
 #  title_multiloc :jsonb
+#  code           :string
 #  color          :string
 #
 module Analytics

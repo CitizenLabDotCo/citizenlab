@@ -100,7 +100,8 @@ class SettingsService
         color_main: '#0A5159',
         color_secondary: '#008292',
         color_text: '#333',
-        lifecycle_stage: lifecycle_stage
+        lifecycle_stage: lifecycle_stage,
+        authentication_token_lifetime_in_days: 30
       }
     }
   end

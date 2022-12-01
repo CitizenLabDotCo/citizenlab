@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { IconTooltip, Radio, Text } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Radio,
+  Text,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import FeatureFlag from 'components/FeatureFlag';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -19,6 +24,7 @@ import { getMethodConfig } from 'utils/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { IPhase } from 'services/phases';
 import { IProjectData } from 'services/projects';
+import Warning from 'components/UI/Warning';
 
 interface Props {
   participation_method: ParticipationMethod;
@@ -51,7 +57,10 @@ export const ParticipationMethodPicker = ({
     return 'ideation';
   };
 
+  const isExistingProjectOrPhase =
+    !isNilOrError(project) || !isNilOrError(phase);
   const config = getMethodConfig(chooseParticipationMethod());
+
   return (
     <SectionField>
       <SubSectionTitle>
@@ -64,6 +73,17 @@ export const ParticipationMethodPicker = ({
           />
         )}
       </SubSectionTitle>
+      {isExistingProjectOrPhase && (
+        <Box id="e2e-participation-method-warning" mb="24px">
+          <Warning>
+            <FormattedMessage
+              {...(!isNilOrError(phase)
+                ? messages.phaseMethodChangeWarning
+                : messages.projectMethodChangeWarning)}
+            />
+          </Warning>
+        </Box>
+      )}
       {!config.isMethodLocked ? (
         <>
           <ParticipationMethodRadio
@@ -128,8 +148,10 @@ export const ParticipationMethodPicker = ({
               value="native_survey"
               name="participationmethod"
               id={'participationmethod-native_survey'}
+              disabled={isExistingProjectOrPhase}
               label={
                 <LabelHeaderDescription
+                  disabled={isExistingProjectOrPhase}
                   header={<FormattedMessage {...messages.createNativeSurvey} />}
                   description={
                     <FormattedMessage

@@ -35,7 +35,6 @@ const PieChart = <Row,>({
   mapping,
   pie,
   margin,
-  annotations,
   tooltip,
   centerLabel,
   legend,
@@ -55,7 +54,7 @@ const PieChart = <Row,>({
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
 
-  const pieConfig = getPieConfig(data, mapping, pie, annotations);
+  const pieConfig = getPieConfig(data, mapping, pie);
   const tooltipConfig = getTooltipConfig(tooltip);
 
   const handleMouseOver = (_, rowIndex: number, event: React.MouseEvent) => {

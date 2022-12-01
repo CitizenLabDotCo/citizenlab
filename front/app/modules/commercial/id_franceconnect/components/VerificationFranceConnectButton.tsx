@@ -27,9 +27,10 @@ const VerificationFranceConnectButton = ({
   const handleOnClick = () => {
     onClick(method);
     const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${removeUrlLocale(
-      window.location.pathname
-    )}`;
+    const pathname = removeUrlLocale(window.location.pathname);
+    // See id_franceconnect/app/lib/id_franceconnect/franceconnect_omniauth.rb:9 for how it works.
+    // Possibly, front/app/services/singleSignOn.ts#setHref could be used the next time we need to add more params.
+    window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${pathname}&sso_verification=true`;
   };
 
   return (

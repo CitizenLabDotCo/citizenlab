@@ -38,12 +38,12 @@ interface Props {
 
 const InitiativeInfoContent = memo<InjectedLocalized & Props>(
   ({ className, localize }) => {
-    const tenant = useAppConfiguration();
+    const appConfig = useAppConfiguration();
 
-    if (!isNilOrError(tenant)) {
+    if (!isNilOrError(appConfig)) {
       const voteThreshold =
-        tenant.attributes.settings.initiatives?.voting_threshold;
-      const daysLimit = tenant.attributes.settings.initiatives?.days_limit;
+        appConfig.attributes.settings.initiatives?.voting_threshold;
+      const daysLimit = appConfig.attributes.settings.initiatives?.days_limit;
 
       return (
         <Content className={className}>
@@ -67,7 +67,7 @@ const InitiativeInfoContent = memo<InjectedLocalized & Props>(
                 </Link>
               ),
               orgName: localize(
-                tenant.attributes.settings.core.organization_name
+                appConfig.attributes.settings.core.organization_name
               ),
             }}
           />

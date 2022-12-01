@@ -160,7 +160,7 @@ const ProposedNotVoted = ({
   initiativeSettings: { voting_threshold, threshold_reached_message },
   disabledReason,
 }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const voteCount = initiative.attributes.upvotes_count;
   const voteLimit = voting_threshold;
   const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);

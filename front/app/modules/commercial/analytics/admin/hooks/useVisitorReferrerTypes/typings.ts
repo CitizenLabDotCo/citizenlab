@@ -1,10 +1,6 @@
-import { Moment } from 'moment';
+import { ProjectId, Dates } from '../../typings';
 
-export interface QueryParameters {
-  projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null | undefined;
-}
+export type QueryParameters = ProjectId & Dates;
 
 // Response
 export interface Response {

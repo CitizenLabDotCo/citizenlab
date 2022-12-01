@@ -33,6 +33,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   updateFormCustomFields,
+  isNewCustomFieldObject,
 } from 'services/formCustomFields';
 
 // hooks
@@ -125,14 +126,16 @@ export const FormEdit = ({
     closeSettings();
   };
 
-  // TODO: Improve this to remove usage of type casting
   const onAddField = (field: IFlatCreateCustomField) => {
     const newField = {
       ...field,
       index: !isNilOrError(fields) ? fields.length : 0,
     };
-    append(newField);
-    setSelectedField(newField as IFlatCustomFieldWithIndex);
+
+    if (isNewCustomFieldObject(newField)) {
+      append(newField);
+      setSelectedField(newField);
+    }
   };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {

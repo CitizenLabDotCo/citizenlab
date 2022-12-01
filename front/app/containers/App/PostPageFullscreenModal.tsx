@@ -48,11 +48,20 @@ interface Props {
   slug: string | null;
   navbarRef?: HTMLElement | null;
   mobileNavbarRef?: HTMLElement | null;
+  signUpInModalOpened: boolean;
   close: () => void;
 }
 
 const PostPageFullscreenModal = memo<Props>(
-  ({ postId, slug, type, navbarRef, mobileNavbarRef, close }) => {
+  ({
+    postId,
+    slug,
+    type,
+    navbarRef,
+    mobileNavbarRef,
+    signUpInModalOpened,
+    close,
+  }) => {
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
 
@@ -118,12 +127,14 @@ const PostPageFullscreenModal = memo<Props>(
 
     return (
       <FullscreenModal
+        disableFocusOn={signUpInModalOpened}
         opened={!!(postId && slug && type)}
         close={onClose}
         url={slug ? `/${type}s/${slug}` : null}
         topBar={topBar}
         navbarRef={navbarRef}
         mobileNavbarRef={mobileNavbarRef}
+        zIndex={399}
       >
         {content}
       </FullscreenModal>

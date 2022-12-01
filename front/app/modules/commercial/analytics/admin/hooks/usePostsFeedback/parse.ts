@@ -4,6 +4,7 @@ import { colors } from 'components/admin/Graphs/styling';
 // utils
 import { sum, roundPercentage, roundPercentages } from 'utils/math';
 import { capitalize } from 'lodash-es';
+import { get } from 'utils/helperUtils';
 
 // typings
 import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';
@@ -87,7 +88,7 @@ export const parseStackedBarsData = (
     statusRows.reduce(
       (acc, row) => ({
         ...acc,
-        [row['dimension_status.id']]: row.count,
+        [get(row, 'dimension_status.id')]: row.count,
       }),
       {}
     ),
@@ -103,7 +104,7 @@ export const getStatusColorById = (statusRows: StatusRow[]) => {
   return statusRows.reduce(
     (acc, row) => ({
       ...acc,
-      [row['dimension_status.id']]: row.first_dimension_status_color,
+      [get(row, 'dimension_status.id')]: row.first_dimension_status_color,
     }),
     {}
   );

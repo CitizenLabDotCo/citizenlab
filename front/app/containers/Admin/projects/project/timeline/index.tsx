@@ -165,6 +165,7 @@ const AdminProjectTimelineIndex = ({
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </Button>
                     <Button
+                      data-cy={`e2e-edit-phase-${phase.id}`}
                       icon="edit"
                       buttonStyle="secondary"
                       linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}
