@@ -26,9 +26,14 @@ const LinearScaleControl = ({
   required,
   handleChange,
   id,
+  visible,
 }: ControlProps) => {
   const isSmallerThanXlPhone = useBreakpoint('phone');
   const maximum = schema?.maximum;
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <>
