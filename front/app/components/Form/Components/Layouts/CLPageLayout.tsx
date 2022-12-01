@@ -1,6 +1,10 @@
 import React, { memo, useState, useEffect, useContext } from 'react';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
-import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
+import {
+  JsonFormsDispatch,
+  withJsonFormsLayoutProps,
+  useJsonForms,
+} from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
 import Ajv from 'ajv';
 
@@ -28,7 +32,9 @@ import {
   getPageSchema,
   PageCategorization,
   isPageCategorization,
+  PageType,
 } from 'components/Form/Components/Layouts/utils';
+import { isVisible } from '../Controls/visibilityUtils';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -56,8 +62,11 @@ const CLPageLayout = memo(
     const { setShowSubmitButton, onSubmit, setShowAllErrors, formSubmitText } =
       useContext(FormContext);
     const [currentStep, setCurrentStep] = useState<number>(0);
-    const uiPages = (uischema as PageCategorization).elements;
-    const theme: any = useTheme();
+    const [uiPages, setUiPages] = useState<PageType[]>(
+      (uischema as PageCategorization).elements
+    );
+    const theme = useTheme();
+    const formState = useJsonForms();
     const isSmallerThanXlPhone = useBreakpoint('phone');
     const submitText = formSubmitText || messages.submit;
     const showSubmit = currentStep === uiPages.length - 1;
@@ -65,8 +74,20 @@ const CLPageLayout = memo(
     const hasPreviousPage = currentStep !== 0;
 
     useEffect(() => {
+      const visiblePages = (uischema as PageCategorization).elements.filter(
+        (element) => {
+          const isPageVisible = isVisible(
+            element as any,
+            formState.core?.data,
+            '',
+            customAjv
+          );
+          return isPageVisible;
+        }
+      );
+      setUiPages(visiblePages);
       setShowSubmitButton(false);
-    }, [setShowSubmitButton]);
+    }, [setShowSubmitButton, uischema]);
 
     const handleNextAndSubmit = () => {
       if (showSubmit) {
