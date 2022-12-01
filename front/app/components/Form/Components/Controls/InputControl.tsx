@@ -30,6 +30,7 @@ export const InputControl = ({
   required,
   uischema,
   label,
+  visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
@@ -58,6 +59,10 @@ export const InputControl = ({
       </Box>
     );
   };
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <>
