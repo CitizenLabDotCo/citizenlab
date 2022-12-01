@@ -22,7 +22,12 @@ const CheckboxControl = ({
   id,
   required,
   uischema,
+  visible,
 }: ControlProps & WrappedComponentProps) => {
+  if (!visible) {
+    return null;
+  }
+
   return (
     <>
       <FormLabel
