@@ -84,51 +84,49 @@ const EventsViewer = memo<Props>(
 
     if (shouldHideSection) {
       return null;
-    } else {
-      return (
-        <div className={className}>
-          <TopBar title={title} setProjectIds={onProjectIdsChange} />
-
-          {eventsError && (
-            <EventsMessage message={messages.errorWhenFetchingEvents} />
-          )}
-
-          {eventsLoading && <EventsSpinner />}
-
-          {!isNilOrError(events) && (
-            <>
-              {events.length > 0 &&
-                events.map((event, i) => (
-                  <StyledEventCard
-                    id={event.id}
-                    event={event}
-                    showProjectTitle
-                    onClickTitleGoToProjectAndScrollToEvent={
-                      onClickTitleGoToProjectAndScrollToEvent
-                    }
-                    showLocation
-                    showDescription
-                    showAttachments
-                    last={events.length - 1 === i}
-                    key={event.id}
-                  />
-                ))}
-
-              {events.length === 0 && (
-                <EventsMessage message={fallbackMessage} />
-              )}
-
-              <StyledPagination
-                currentPage={currentPage}
-                totalPages={lastPage}
-                loadPage={onCurrentPageChange}
-                useColorsTheme
-              />
-            </>
-          )}
-        </div>
-      );
     }
+
+    return (
+      <div className={className}>
+        <TopBar title={title} setProjectIds={onProjectIdsChange} />
+
+        {eventsError && (
+          <EventsMessage message={messages.errorWhenFetchingEvents} />
+        )}
+
+        {eventsLoading && <EventsSpinner />}
+
+        {!isNilOrError(events) && (
+          <>
+            {events.length > 0 &&
+              events.map((event, i) => (
+                <StyledEventCard
+                  id={event.id}
+                  event={event}
+                  showProjectTitle
+                  onClickTitleGoToProjectAndScrollToEvent={
+                    onClickTitleGoToProjectAndScrollToEvent
+                  }
+                  showLocation
+                  showDescription
+                  showAttachments
+                  last={events.length - 1 === i}
+                  key={event.id}
+                />
+              ))}
+
+            {events.length === 0 && <EventsMessage message={fallbackMessage} />}
+
+            <StyledPagination
+              currentPage={currentPage}
+              totalPages={lastPage}
+              loadPage={onCurrentPageChange}
+              useColorsTheme
+            />
+          </>
+        )}
+      </div>
+    );
   }
 );
 
