@@ -189,7 +189,7 @@ const SelectableResourceChart = ({
     ) {
       setShowMore(true);
     }
-  }, [containerRef.current?.clientHeight]);
+  }, [showMore, containerRef.current?.clientHeight]);
 
   const buttonClassname =
     showMore === null ? '' : showMore === true ? 'active' : 'inactive';
