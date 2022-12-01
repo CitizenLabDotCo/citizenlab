@@ -60,14 +60,14 @@ const getTranslatedFieldType = (field) => {
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
-  handleDragRow: (fromIndex: number, toIndex: number) => void;
+  dropRow?: (initialIndex: number, finalIndex: number) => void;
   isEditingDisabled: boolean;
   selectedFieldId?: string;
 }
 
 const FormFields = ({
   onEditField,
-  handleDragRow,
+  dropRow,
   selectedFieldId,
   isEditingDisabled,
 }: FormFieldsProps) => {
@@ -121,7 +121,7 @@ const FormFields = ({
                   rowHeight={field.input_type === 'page' ? '50px' : '70px'}
                   id={field.id}
                   index={index}
-                  moveRow={handleDragRow}
+                  dropRow={dropRow}
                 >
                   <Box
                     display="flex"

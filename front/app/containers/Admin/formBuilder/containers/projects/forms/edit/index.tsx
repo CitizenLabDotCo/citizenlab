@@ -150,8 +150,28 @@ export const FormEdit = ({
     }
   };
 
-  const handleDragRow = (fromIndex: number, toIndex: number) => {
+  const dropRow = (fromIndex: number, toIndex: number) => {
     const elementBeingDragged = fields[fromIndex];
+    const nextPageIndex = fields.findIndex(
+      (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
+    );
+
+    if (
+      fromIndex === 0 &&
+      elementBeingDragged.input_type === 'page' &&
+      nextPageIndex > toIndex
+    ) {
+      return;
+    } else if (
+      fromIndex === 0 &&
+      elementBeingDragged.input_type === 'page' &&
+      nextPageIndex <= toIndex
+    ) {
+      move(fromIndex, toIndex);
+      move(nextPageIndex - 1, 0);
+      return;
+    }
+
     // Only pages should be draggable to index 0
     const shouldMove =
       elementBeingDragged.input_type === 'page' || toIndex !== 0;
@@ -252,7 +272,7 @@ export const FormEdit = ({
                   >
                     <FormFields
                       onEditField={setSelectedField}
-                      handleDragRow={handleDragRow}
+                      dropRow={dropRow}
                       selectedFieldId={selectedField?.id}
                       isEditingDisabled={isEditingDisabled}
                     />
