@@ -48,7 +48,7 @@ const parseRow = (
   return {
     automated: row.automated,
     custom: row.custom,
-    date: getDate(row).format('YYYY-MM-DD'),
+    date: date.format('YYYY-MM-DD'),
   };
 };
 

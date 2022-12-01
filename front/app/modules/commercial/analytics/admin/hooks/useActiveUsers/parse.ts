@@ -27,7 +27,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
 
   return {
     activeUsers: row.count_dimension_user_id,
-    date: getDate(row).format('YYYY-MM-DD'),
+    date: date.format('YYYY-MM-DD'),
   };
 };
 

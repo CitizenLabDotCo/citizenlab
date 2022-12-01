@@ -27,7 +27,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
 
   return {
     registrations: row.count,
-    date: getDate(row).format('YYYY-MM-DD'),
+    date: date.format('YYYY-MM-DD'),
   };
 };
 
