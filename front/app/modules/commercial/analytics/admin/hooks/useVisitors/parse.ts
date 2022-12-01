@@ -29,7 +29,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   return {
     visitors: row.count_visitor_id,
     visits: row.count,
-    date: getDate(row).format('YYYY-MM-DD'),
+    date: date.format('YYYY-MM-DD'),
   };
 };
 

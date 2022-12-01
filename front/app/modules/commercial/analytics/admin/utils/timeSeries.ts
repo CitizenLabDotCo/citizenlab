@@ -60,7 +60,10 @@ export const parseMonths = <Row, ParsedRow>(
   getDate: (row: Row) => Moment,
   parseRow: (date: Moment, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {
-  const indexedTimeSeries = indexTimeSeries(timeSeries, getDate);
+  const indexedTimeSeries = indexTimeSeries(timeSeries, (row) => {
+    const date = getDate(row);
+    return roundDownToFirstDayOfMonth(date);
+  });
 
   const firstDateInData = getFirstDateInData(timeSeries, getDate);
   const lastDateInData = getLastDateInData(timeSeries, getDate);
@@ -91,7 +94,10 @@ export const parseWeeks = <Row, ParsedRow>(
   getDate: (row: Row) => Moment,
   parseRow: (date: Moment, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {
-  const indexedTimeSeries = indexTimeSeries(timeSeries, getDate);
+  const indexedTimeSeries = indexTimeSeries(timeSeries, (row) => {
+    const date = getDate(row);
+    return roundDownToMonday(date);
+  });
 
   const firstDateInData = getFirstDateInData(timeSeries, getDate);
   const lastDateInData = getLastDateInData(timeSeries, getDate);
@@ -154,7 +160,7 @@ export const roundDateToMidnight = (date: Moment) => {
   return moment(date.format('YYYY-MM-DD'));
 };
 
-export const indexTimeSeries = <Row>(
+const indexTimeSeries = <Row>(
   responseTimeSeries: Row[],
   getDate: (row: Row) => Moment
 ): Map<string, Row> => {
