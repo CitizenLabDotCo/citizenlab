@@ -66,7 +66,7 @@ const ProjectRow = ({
   const [deletionError, setDeletionError] = useState<string>('');
   const authUser = useAuthUser();
   const projectId = publication.publicationId;
-
+  const publicationStatus = publication.attributes.publication_status;
   const userCanModerateProject =
     !isNilOrError(authUser) &&
     canModerateProject(publication.publicationId, { data: authUser });
@@ -86,8 +86,6 @@ const ProjectRow = ({
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>
   );
-
-  const publicationStatus = publication.attributes.publication_status;
 
   return (
     <Container className={className}>
