@@ -42,18 +42,17 @@ const Container = styled.div`
   width: 100%;
 `;
 
+type CustomButtonAction = {
+  buttonContent: JSX.Element;
+  handler: (publicationId: string) => () => void;
+  icon: IconNames;
+  processing?: boolean;
+};
+type ButtenAction = CustomButtonAction | 'manage' | 'delete';
+
 interface Props {
   publication: IAdminPublicationContent;
-  actions?: (
-    | {
-        buttonContent: JSX.Element;
-        handler: (publicationId: string) => () => void;
-        icon: IconNames;
-        processing?: boolean;
-      }
-    | 'manage'
-    | 'delete'
-  )[];
+  actions?: ButtenAction[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
 }
@@ -176,7 +175,7 @@ export default ({
     return <AdminStatusLabel />;
   };
 
-  const renderRowButton = (action) => (
+  const renderRowButton = (action: CustomButtonAction) => (
     <RowButton
       data-cy={`e2e-manage-button-${publication.publicationId}`}
       key={action.icon}
