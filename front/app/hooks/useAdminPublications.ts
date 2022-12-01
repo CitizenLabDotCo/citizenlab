@@ -11,7 +11,6 @@ import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
 export interface BaseProps {
-  // to rename
   topicIds?: string[] | null;
   areaIds?: string[] | null;
   publicationStatusFilter: PublicationStatus[];

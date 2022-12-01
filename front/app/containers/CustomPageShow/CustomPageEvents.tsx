@@ -14,6 +14,9 @@ const CustomPageEvents = ({ page }: Props) => {
   const topicIds = page.relationships.topics.data.map((topic) => topic.id);
   const areaIds = page.relationships.areas.data.map((area) => area.id);
 
+  // Needs to be in sync with the projects list shown in
+  // the projects list config of the custom page in the admin.
+  // Comment reference to find it easily: 881dd218.
   const adminPublications = useAdminPublications({
     topicIds,
     areaIds,

@@ -27,11 +27,13 @@ const ProjectsListContent = ({
   areaIds: string[];
   topicIds: string[];
 }) => {
+  // Needs to be in sync with the projects list shown on the
+  // the citizen-facing custom page.
+  // Comment reference to find it easily: 881dd218.
   const { list: adminPublications } = useAdminPublications({
-    topicFilter: topicIds,
-    areaFilter: areaIds,
-    publicationStatusFilter: ['published'],
-    rootLevelOnly: true,
+    topicIds,
+    areaIds,
+    publicationStatusFilter: ['published', 'archived'],
   });
 
   const { customPageId } = useParams() as { customPageId: string };
