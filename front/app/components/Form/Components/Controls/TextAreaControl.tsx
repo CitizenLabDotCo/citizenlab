@@ -28,8 +28,13 @@ const TextAreaControl = ({
   id,
   required,
   uischema,
+  visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <>
