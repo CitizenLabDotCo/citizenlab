@@ -67,10 +67,11 @@ const commonRenderers = [
   { tester: orderedLayoutTester, renderer: OrderedLayout },
 ];
 
-export const selectRenderers = (formType: 'default' | 'input') => {
+export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
   switch (formType) {
     case 'default':
       return commonRenderers;
+    case 'survey':
     case 'input':
       return [
         { tester: linearScaleControlTester, renderer: LinearScaleControl },

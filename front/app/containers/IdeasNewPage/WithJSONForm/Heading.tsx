@@ -38,7 +38,9 @@ export const Heading = ({
   isSurvey,
 }: Props) => {
   const [searchParams] = useSearchParams();
-  const phaseId = searchParams.get('phase_id');
+  const phaseId =
+    searchParams.get('phase_id') ||
+    project.relationships.current_phase?.data?.id;
   const linkToSurveyBuilder = phaseId
     ? `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`
     : `/admin/projects/${project.id}/native-survey/edit`;
