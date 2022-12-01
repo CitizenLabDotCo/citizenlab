@@ -70,7 +70,7 @@ export const parseStats = (data: Response['data']): Stats => {
   return {
     registrations: {
       value: (registrationsWholePeriod?.count ?? 0).toString(),
-      lastPeriod: (registrationsWholePeriod?.count ?? 0).toString(),
+      lastPeriod: (registrationsLastPeriod?.count ?? 0).toString(),
     },
     registrationRate: {
       value: registrationRateWholePeriod,
