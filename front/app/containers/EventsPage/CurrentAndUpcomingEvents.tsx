@@ -15,6 +15,7 @@ const CurrentAndUpcomingEvents = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => (
   <StyledEventsViewer
+    showProjectFilter={true}
     title={formatMessage(messages.upcomingAndOngoingEvents)}
     fallbackMessage={messages.noUpcomingOrOngoingEvents}
     eventsTime="currentAndFuture"

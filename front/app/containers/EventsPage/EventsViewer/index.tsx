@@ -41,6 +41,7 @@ interface Props {
   projectIds?: string[];
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
   hideSectionIfNoEvents?: boolean;
+  showProjectFilter: boolean;
 }
 
 const EventsViewer = memo<Props>(
@@ -52,6 +53,7 @@ const EventsViewer = memo<Props>(
     projectIds,
     onClickTitleGoToProjectAndScrollToEvent,
     hideSectionIfNoEvents,
+    showProjectFilter,
   }) => {
     const {
       events,
@@ -88,7 +90,11 @@ const EventsViewer = memo<Props>(
 
     return (
       <div className={className}>
-        <TopBar title={title} setProjectIds={onProjectIdsChange} />
+        <TopBar
+          showProjectFilter={showProjectFilter}
+          title={title}
+          setProjectIds={onProjectIdsChange}
+        />
 
         {eventsError && (
           <EventsMessage message={messages.errorWhenFetchingEvents} />

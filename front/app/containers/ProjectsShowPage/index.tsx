@@ -215,6 +215,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
           padding={smallerThanMinTablet ? '20px' : '0px'}
         >
           <EventsViewer
+            showProjectFilter={false}
             projectIds={[projectId]}
             eventsTime="currentAndFuture"
             title={formatMessage(messages.upcomingAndOngoingEvents)}
@@ -223,6 +224,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
             hideSectionIfNoEvents={true}
           />
           <EventsViewer
+            showProjectFilter={false}
             projectIds={[projectId]}
             eventsTime="past"
             title={formatMessage(messages.pastEvents)}
