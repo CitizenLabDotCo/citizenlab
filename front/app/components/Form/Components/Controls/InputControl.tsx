@@ -36,9 +36,10 @@ export const InputControl = ({
 
   const onChange = useCallback(
     (value: string) => {
+      const stringValue = value === '' ? undefined : value;
       handleChange(
         path,
-        schema.type === 'number' && value ? parseInt(value, 10) : value
+        schema.type === 'number' && value ? parseInt(value, 10) : stringValue
       );
     },
     [schema.type, handleChange, path]
