@@ -90,16 +90,6 @@ const ProjectRow = ({
 
   const publicationStatus = publication.attributes.publication_status;
 
-  const DeleteButton = (
-    <DeleteProjectButton
-      publication={publication}
-      setDeleteIsProcessing={setIsBeingDeleted}
-      setDeletionError={setDeletionError}
-      processing={isBeingDeleted}
-      key="delete"
-    />
-  );
-
   const AdminTag = () => {
     if (publication.attributes?.publication_visible_to !== 'admins') {
       return null;
@@ -150,7 +140,15 @@ const ProjectRow = ({
           <ActionsRowContainer>
             {actions.map((action) => {
               if (action === 'delete') {
-                return DeleteButton;
+                return (
+                  <DeleteProjectButton
+                    publication={publication}
+                    setDeleteIsProcessing={setIsBeingDeleted}
+                    setDeletionError={setDeletionError}
+                    processing={isBeingDeleted}
+                    key="delete"
+                  />
+                );
               } else if (action === 'manage') {
                 return ManageButton;
               } else {
