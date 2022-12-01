@@ -5,6 +5,7 @@
 ### Fixed
 
 - [CL-2171] Fix excel export of visitor data for Dutch clients
+- [CL-2172] Fix visitor data not updating when switching projects
 
 ### Changed
 
