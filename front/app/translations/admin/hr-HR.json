@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectEdit.newProject": "Novi projekt",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Najnovije",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Nije valjani iznos",
+  "app.containers.AdminPage.ProjectEdit.noFolder": "No folder",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Nisu pronađeni predlošci",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Unesite naziv projekta",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Nije valjani broj",
