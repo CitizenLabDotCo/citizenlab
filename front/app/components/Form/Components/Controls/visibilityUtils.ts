@@ -43,7 +43,10 @@ export const resolveData = (instance: any, dataPath: string): any => {
   return dataPathSegments
     .map((segment) => decodeURIComponent(segment))
     .reduce((curInstance, decodedSegment) => {
-      if (!curInstance || !curInstance.hasOwnProperty(decodedSegment)) {
+      if (
+        !curInstance ||
+        !Object.prototype.hasOwnProperty.call(curInstance, decodedSegment)
+      ) {
         return undefined;
       }
 
