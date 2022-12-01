@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Atvainojiet, problēma bija mūsu pusē",
   "app.components.HookForm.Feedback.successMessage": "Veidlapa veiksmīgi iesniegta",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Ja nomainīsiet URL, saites uz šo lapu, izmantojot iepriekšējo URL, vairs nedarbosies",
-  "app.components.HookForm.SlugInput.pageUrl": "Lapas URL",
   "app.components.HookForm.SlugInput.resultingPageURL": "Rezultāta URL",
   "app.components.HookForm.SlugInput.slugTooltip": "Aprakstošā daļa ir unikāls vārdu kopums lapas tīmekļa adreses jeb URL beigās",
   "app.components.IdeaCards.showMore": "Parādīt vairāk",

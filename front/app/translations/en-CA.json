@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "There was a problem on our end, sorry",
   "app.components.HookForm.Feedback.successMessage": "Form successfully submitted",
   "app.components.HookForm.SlugInput.brokenURLWarning": "If you change the URL, links to this page using the old URL will no longer work",
-  "app.components.HookForm.SlugInput.pageUrl": "Page URL",
   "app.components.HookForm.SlugInput.resultingPageURL": "Resulting URL",
   "app.components.HookForm.SlugInput.slugTooltip": "The slug is the unique set of words at the end of page's web address, or URL",
   "app.components.IdeaCards.showMore": "Show more",

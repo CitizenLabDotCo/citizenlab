@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Ispričavamo se, došlo je do problema s naše strane.",
   "app.components.HookForm.Feedback.successMessage": "Obrazac uspješno poslan",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Ako promijenite URL, veze prema ovoj stranici pomoću starog URL-a više neće raditi",
-  "app.components.HookForm.SlugInput.pageUrl": "URL stranice",
   "app.components.HookForm.SlugInput.resultingPageURL": "Rezultirajući URL",
   "app.components.HookForm.SlugInput.slugTooltip": "„Puž“ je jedinstveni skup riječi na kraju web adrese stranice ili URL-a",
   "app.components.IdeaCards.showMore": "Prikaži više",

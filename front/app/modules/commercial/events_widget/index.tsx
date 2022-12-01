@@ -1,7 +1,9 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
-const EventsWidget = React.lazy(() => import('./citizen'));
+const EventsWidget = React.lazy(
+  () => import('components/LandingPages/citizen/EventsWidget')
+);
 import SectionToggle, {
   Props as SectionToggleProps,
 } from './admin/SectionToggle';
@@ -42,7 +44,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.HomePage.EventsWidget': () => {
       return (
         <RenderOnAllowedAndEnabled>
-          <EventsWidget />
+          <EventsWidget data-testid="e2e-homepage-events-widget-container" />
         </RenderOnAllowedAndEnabled>
       );
     },

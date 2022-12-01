@@ -143,7 +143,6 @@
   "app.components.HookForm.Feedback.submissionErrorTitle": "Нажалост, постоји проблем са наше стране",
   "app.components.HookForm.Feedback.successMessage": "Образац је успешно прослеђен",
   "app.components.HookForm.SlugInput.brokenURLWarning": "Ако промените URL, везе ка овој страници помоћу старог URL-a неће више радити",
-  "app.components.HookForm.SlugInput.pageUrl": "URL странице",
   "app.components.HookForm.SlugInput.resultingPageURL": "Добијени URL",
   "app.components.HookForm.SlugInput.slugTooltip": "Опис је јединствени скуп речи на крају веб адресе странице или URL",
   "app.components.IdeaCards.showMore": "Прикажи више",

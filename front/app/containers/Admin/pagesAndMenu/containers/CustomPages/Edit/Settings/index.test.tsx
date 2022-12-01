@@ -47,7 +47,7 @@ describe('EditCustomPageSettings', () => {
   describe('Edit custom page', () => {
     it('renders error in case of invalid slug', async () => {
       const { container } = render(<EditCustomPageSettings />);
-      fireEvent.change(screen.getByRole('textbox', { name: 'Page URL' }), {
+      fireEvent.change(screen.getByRole('textbox', { name: 'Page slug' }), {
         target: {
           value: 'existing-slug',
         },

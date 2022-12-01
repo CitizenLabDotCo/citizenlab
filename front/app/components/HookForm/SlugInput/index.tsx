@@ -30,7 +30,7 @@ const SlugInput = ({
     return (
       <>
         <Input
-          label={<FormattedMessage {...messages.pageUrl} />}
+          label={<FormattedMessage {...messages.pageSlug} />}
           labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
           id="slug"
           name="slug"
