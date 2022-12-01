@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect, useContext, useRef } from 'react';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
+import { defaultStyles } from 'utils/styleUtils';
 import styled, { useTheme } from 'styled-components';
 import Ajv from 'ajv';
 
@@ -34,12 +35,13 @@ import { isNilOrError } from 'utils/helperUtils';
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
   width: 100%;
-  padding-top: 0px;
-
+  padding: 32px 32px 0 32px;
   ${media.phone`
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: 24px 16px 0 16px;
   `}
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 const customAjv = new Ajv({ useDefaults: 'empty', removeAdditional: true });
@@ -116,30 +118,32 @@ const CLPageLayout = memo(
           maxWidth="700px"
           display="flex"
           flexDirection="column"
-          padding="0 20px 96px 20px"
+          padding="12px 20px 30px 20px"
           margin="auto"
         >
           {uiPages.map((page, index) => {
             return (
               currentStep === index && (
                 <StyledFormSection key={index}>
-                  <Box>
-                    <Title variant="h2" mb="32px" color="tenantText">
+                  {page.options.title && (
+                    <Title variant="h2" mt="0" mb="24px" color="tenantText">
                       {page.options.title}
                     </Title>
-                  </Box>
-                  <Box mb="16px">
-                    <QuillEditedContent
-                      fontWeight={400}
-                      textColor={theme.colors.tenantText}
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: page.options.description,
-                        }}
-                      />
-                    </QuillEditedContent>
-                  </Box>
+                  )}
+                  {page.options.description && (
+                    <Box mb="48px">
+                      <QuillEditedContent
+                        fontWeight={400}
+                        textColor={theme.colors.tenantText}
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: page.options.description,
+                          }}
+                        />
+                      </QuillEditedContent>
+                    </Box>
+                  )}
                   {page.elements.map((elementUiSchema, index) => (
                     <Box width="100%" mb="40px" key={index}>
                       <JsonFormsDispatch
@@ -173,6 +177,7 @@ const CLPageLayout = memo(
                 showSubmit ? theme.colors.green500 : theme.colors.primary
               }
               width="100%"
+              boxShadow={defaultStyles.boxShadow}
             >
               <FormattedMessage
                 {...(showSubmit ? submitText : messages.next)}
@@ -186,8 +191,7 @@ const CLPageLayout = memo(
                 }}
                 mb="20px"
                 icon="chevron-left"
-                bgColor="white"
-                buttonStyle="secondary-outlined"
+                buttonStyle="white"
                 width="100%"
                 marginRight={isSmallerThanXlPhone ? '0px' : '16px'}
               >

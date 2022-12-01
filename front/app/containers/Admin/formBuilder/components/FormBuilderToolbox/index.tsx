@@ -81,7 +81,7 @@ const FormBuilderToolbox = ({
       alignItems="center"
       bgColor="white"
       overflowY="auto"
-      borderRight={`1px solid ${colors.grey500}`}
+      borderRight={`1px solid ${colors.borderLight}`}
     >
       <Box w="100%" display="inline">
         <Title
