@@ -3,9 +3,11 @@
 ## Next release
 
 ### Fixed
+
 - [CL-2171] Fix excel export of visitor data for Dutch clients
 
 ### Changed
+
 - [CL-2109] Events display on Project page now matches the Events page. I.e. Events on Project page now displayed under "Current" and "Past" headers, and nearest event is displayed at the top of the list.
 
 ## 2022-11-30
