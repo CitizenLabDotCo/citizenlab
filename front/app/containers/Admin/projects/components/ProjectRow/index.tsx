@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 // i18n
@@ -20,8 +19,8 @@ import DeleteProjectButton from '../DeleteProjectButton';
 import PublicationStatusLabel from '../PublicationStatusLabel';
 import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
-import Link from 'utils/cl-router/Link';
 import GroupsTag from './GroupsTag';
+import AdminTag from './AdminTag';
 
 // resources
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -90,48 +89,23 @@ const ProjectRow = ({
 
   const publicationStatus = publication.attributes.publication_status;
 
-  const AdminTag = () => {
-    if (publication.attributes?.publication_visible_to !== 'admins') {
-      return null;
-    }
-
-    const AdminStatusLabel = () => {
-      return (
-        <StyledStatusLabel
-          text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-          backgroundColor={colors.teal}
-          icon="lock"
-        />
-      );
-    };
-
-    if (userCanModerateProject) {
-      return (
-        <Link
-          to={`${adminProjectsProjectPath(
-            publication.publicationId
-          )}/permissions`}
-        >
-          <AdminStatusLabel />
-        </Link>
-      );
-    }
-
-    return <AdminStatusLabel />;
-  };
-
   return (
     <Container className={className}>
       <RowContent className="e2e-admin-projects-list-item">
         <RowContentInner className="expand primary">
           <RowTitle value={publication.attributes.publication_title_multiloc} />
-          {publication.attributes?.publication_visible_to === 'groups' && (
+          {publication.attributes.publication_visible_to === 'groups' && (
             <GroupsTag
               projectId={projectId}
               userCanModerateProject={userCanModerateProject}
             />
           )}
-          <AdminTag />
+          {publication.attributes.publication_visible_to === 'admins' && (
+            <AdminTag
+              projectId={projectId}
+              userCanModerateProject={userCanModerateProject}
+            />
+          )}
           {!hidePublicationStatusLabel && (
             <PublicationStatusLabel publicationStatus={publicationStatus} />
           )}
