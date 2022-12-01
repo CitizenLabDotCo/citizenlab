@@ -21,9 +21,9 @@ import PublicationStatusLabel from '../PublicationStatusLabel';
 import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Link from 'utils/cl-router/Link';
+import GroupsTag from './GroupsTag';
 
 // resources
-import useProjectGroups from 'hooks/useProjectGroups';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import useAuthUser from 'hooks/useAuthUser';
 
@@ -66,10 +66,7 @@ const ProjectRow = ({
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [deletionError, setDeletionError] = useState<string>('');
   const authUser = useAuthUser();
-
-  const projectGroups = useProjectGroups({
-    projectId: publication.publicationId,
-  });
+  const projectId = publication.publicationId;
 
   const userCanModerateProject =
     !isNilOrError(authUser) &&
@@ -102,48 +99,6 @@ const ProjectRow = ({
       key="delete"
     />
   );
-
-  const GroupsTag = () => {
-    if (
-      publication.attributes?.publication_visible_to !== 'groups' ||
-      isNilOrError(projectGroups)
-    ) {
-      return null;
-    }
-
-    const GroupStatusLabel = () => {
-      return (
-        <StyledStatusLabel
-          text={
-            projectGroups.length > 0 ? (
-              <FormattedMessage
-                {...messages.xGroupsHaveAccess}
-                values={{ groupCount: projectGroups.length }}
-              />
-            ) : (
-              <FormattedMessage {...messages.onlyAdminsCanView} />
-            )
-          }
-          backgroundColor={colors.teal}
-          icon="lock"
-        />
-      );
-    };
-
-    if (userCanModerateProject) {
-      return (
-        <Link
-          to={`${adminProjectsProjectPath(
-            publication.publicationId
-          )}/permissions`}
-        >
-          <GroupStatusLabel />
-        </Link>
-      );
-    }
-
-    return <GroupStatusLabel />;
-  };
 
   const AdminTag = () => {
     if (publication.attributes?.publication_visible_to !== 'admins') {
@@ -180,7 +135,12 @@ const ProjectRow = ({
       <RowContent className="e2e-admin-projects-list-item">
         <RowContentInner className="expand primary">
           <RowTitle value={publication.attributes.publication_title_multiloc} />
-          <GroupsTag />
+          {publication.attributes?.publication_visible_to === 'groups' && (
+            <GroupsTag
+              projectId={projectId}
+              userCanModerateProject={userCanModerateProject}
+            />
+          )}
           <AdminTag />
           {!hidePublicationStatusLabel && (
             <PublicationStatusLabel publicationStatus={publicationStatus} />

@@ -35,6 +35,7 @@ export interface InputProps extends BaseProps {
 export type IAdminPublicationContent = {
   id: string;
   publicationType: AdminPublicationType;
+  // The id of the corresponding project or folder
   publicationId: string;
   attributes: IAdminPublicationData['attributes'];
   relationships: {
