@@ -182,10 +182,14 @@ const SelectableResourceChart = ({
   const xlsxEndpoint = XLSX_ENDPOINTS_MAP[currentSelectedResource + byWhat];
 
   useEffect(() => {
-    if (containerRef.current && containerRef.current?.clientHeight > 300) {
+    if (
+      showMore == null &&
+      containerRef.current &&
+      containerRef.current?.clientHeight > 300
+    ) {
       setShowMore(true);
     }
-  }, []);
+  }, [containerRef.current?.clientHeight]);
 
   const buttonClassname =
     showMore === null ? '' : showMore === true ? 'active' : 'inactive';
@@ -254,7 +258,7 @@ const SelectableResourceChart = ({
           >
             {showMore ? (
               <>
-                <Icon fill={colors.coolGrey600} name="arrow-left-circle" />{' '}
+                <Icon fill={colors.coolGrey600} name="refresh" />{' '}
                 {formatMessage(messages.showMore)}
               </>
             ) : (
