@@ -254,18 +254,18 @@ const OverviewDashboard = ({ projects }: DataProps) => {
           />
         </Column>
 
-        <Title
-          ml="12px"
-          mt="40px"
-          width="100%"
-          variant="h2"
-          color="primary"
-          fontWeight="normal"
-        >
-          {formatMessage(overviewMessages.management)}
-        </Title>
         {userIsAdmin && (
           <>
+            <Title
+              ml="12px"
+              mt="40px"
+              width="100%"
+              variant="h2"
+              color="primary"
+              fontWeight="normal"
+            >
+              {formatMessage(overviewMessages.management)}
+            </Title>
             <Column>
               <Outlet
                 id="app.containers.Admin.dashboard.summary.inputStatus"
