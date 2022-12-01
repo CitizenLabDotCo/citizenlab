@@ -32,11 +32,6 @@ const ProjectList = () => {
     return null;
   }
 
-  const areaIds = customPage.relationships.areas.data.map((area) => area.id);
-  const topicIds = customPage.relationships.topics.data.map(
-    (topic) => topic.id
-  );
-
   return (
     <>
       <HelmetIntl title={messages.pageMetaTitle} />
@@ -66,7 +61,7 @@ const ProjectList = () => {
           />
         }
       >
-        <ProjectsListContent areaIds={areaIds} topicIds={topicIds} />
+        <ProjectsListContent page={customPage} />
       </SectionFormWrapper>
     </>
   );

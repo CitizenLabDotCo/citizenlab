@@ -19,14 +19,15 @@ import { adminCustomPageSettingsPath } from '../../routes';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { ICustomPageData } from 'services/customPages';
 
-const ProjectsListContent = ({
-  areaIds,
-  topicIds,
-}: {
-  areaIds: string[];
-  topicIds: string[];
-}) => {
+interface Props {
+  page: ICustomPageData;
+}
+
+const ProjectsListContent = ({ page }: Props) => {
+  const areaIds = page.relationships.areas.data.map((area) => area.id);
+  const topicIds = page.relationships.topics.data.map((topic) => topic.id);
   // Needs to be in sync with the projects list shown on the
   // the citizen-facing custom page.
   // Comment reference to find it easily: 881dd218.
