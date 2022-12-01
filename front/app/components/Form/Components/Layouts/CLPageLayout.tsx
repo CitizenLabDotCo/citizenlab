@@ -87,7 +87,7 @@ const CLPageLayout = memo(
       );
       setUiPages(visiblePages);
       setShowSubmitButton(false);
-    }, [setShowSubmitButton, uischema]);
+    }, [setShowSubmitButton, formState.core?.data, uischema]);
 
     const handleNextAndSubmit = () => {
       if (showSubmit) {
