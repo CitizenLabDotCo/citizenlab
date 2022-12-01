@@ -1,26 +1,16 @@
 import React from 'react';
-
-// components
-import TopBar from './TopBar';
 import EventCard from 'components/EventCard';
 import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import VerticalCenterer from 'components/VerticalCenterer';
-
-// hooks
+import Link from 'utils/cl-router/Link';
 import useEvents from 'hooks/useEvents';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// styling
+import { useIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-
-// other
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
-import messages from 'containers/EventsPage/messages';
+import messages from './messages';
+import eventsPageMessages from 'containers/EventsPage/messages';
 
 const EventsWidgetContainer = styled.div`
   padding: 48px 0 124px 0;
@@ -68,30 +58,89 @@ const StyledEventCard = styled(EventCard)`
   padding: 20px;
 `;
 
-export default injectIntl<WrappedComponentProps>(({ intl }) => {
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #d1d1d1;
+  margin-bottom: 30px;
+
+  ${media.phone`
+    margin-bottom: 21px;
+  `}
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+`;
+
+const Title = styled.h2`
+  color: ${({ theme }) => theme.colors.tenantText};
+  font-size: ${fontSizes.xl}px;
+  font-weight: 500;
+  line-height: normal;
+  padding: 0;
+  margin: 0;
+
+  ${media.phone`
+    text-align: center;
+    margin: 0;
+  `};
+`;
+
+const EventPageLink = styled(Link)`
+  color: ${colors.textSecondary};
+  margin-top: auto;
+`;
+
+interface Props {
+  id?: string;
+  // null is reserved for the cases where you need to wait
+  // for projectIds to avoid flashing of all events. If you need
+  // all events, projectIds should be undefined.
+  projectIds?: string[] | null;
+}
+
+const EventsWidget = ({ id, projectIds }: Props) => {
+  const { formatMessage } = useIntl();
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,
     pageSize: 3,
     sort: 'oldest',
+    ...(projectIds && { projectIds }),
   });
+
+  // This avoids flashing of all events (if projectIds are undefined)
+  // as well as having to do projectIds checks before rendering this component.
+  // See CustomPageEvents.tsx for an example.
+  if (projectIds === null) {
+    return null;
+  }
 
   const eventsLoading = isNil(events);
   const eventsError = isError(events);
 
   return (
-    <EventsWidgetContainer data-testid="e2e-events-widget-container">
-      <TopBar />
+    <EventsWidgetContainer data-testid={id}>
+      <Header>
+        <Title>{formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
+        <EventPageLink to="/events">
+          {formatMessage(messages.viewAllEventsText)}
+        </EventPageLink>
+      </Header>
 
       {eventsLoading && <EventsSpinner />}
       {eventsError && (
-        <EventsMessage message={messages.errorWhenFetchingEvents} />
+        <EventsMessage message={eventsPageMessages.errorWhenFetchingEvents} />
       )}
 
       {!isNilOrError(events) && events.length === 0 && (
         <VerticalCenterer>
           <NoEventsText>
-            {intl.formatMessage(messages.noUpcomingOrOngoingEvents)}
+            {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
           </NoEventsText>
         </VerticalCenterer>
       )}
@@ -111,4 +160,6 @@ export default injectIntl<WrappedComponentProps>(({ intl }) => {
       )}
     </EventsWidgetContainer>
   );
-});
+};
+
+export default EventsWidget;
