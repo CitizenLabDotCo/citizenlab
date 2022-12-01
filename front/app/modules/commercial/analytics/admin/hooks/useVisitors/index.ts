@@ -64,12 +64,12 @@ export default function useVisitorsData({
           response.data[2],
           startAtMoment,
           endAtMoment,
-          currentResolution
+          resolution
         );
         setTimeSeries(timeSeries);
 
         setXlsxData(
-          parseExcelData(stats, timeSeries, translations, currentResolution)
+          parseExcelData(stats, timeSeries, translations, resolution)
         );
       }
     );

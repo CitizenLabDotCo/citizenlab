@@ -59,7 +59,7 @@ export default function useRegistrations({
           response.data[0],
           startAtMoment,
           endAtMoment,
-          currentResolution
+          resolution
         );
         setTimeSeries(timeSeries);
 
@@ -67,7 +67,7 @@ export default function useRegistrations({
         setStats(stats);
 
         setXlsxData(
-          parseExcelData(stats, timeSeries, currentResolution, translations)
+          parseExcelData(stats, timeSeries, resolution, translations)
         );
       }
     );

@@ -67,13 +67,13 @@ export default function useActiveUsers({
           response.data[0],
           startAtMoment,
           endAtMoment,
-          currentResolution
+          resolution
         );
 
         setTimeSeries(timeSeries);
 
         setXlsxData(
-          parseExcelData(stats, timeSeries, currentResolution, translations)
+          parseExcelData(stats, timeSeries, resolution, translations)
         );
       }
     );

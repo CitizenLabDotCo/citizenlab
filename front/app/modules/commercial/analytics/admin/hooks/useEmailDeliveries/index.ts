@@ -68,7 +68,7 @@ export default function useVisitorsData({
           preparedTimeSeries,
           startAtMoment,
           endAtMoment,
-          currentResolution
+          resolution
         );
         setTimeSeries(timeSeries);
 
