@@ -79,6 +79,16 @@ describe SideFxIdeaService do
         .to have_enqueued_job(LogActivityJob).with(idea, 'changed_status', user, idea.updated_at.to_i,
           payload: { change: [old_idea_status.id, new_idea_status.id] }).exactly(1).times
     end
+
+    # Test for regression of bugfix to prevent case where an exception occurs due to resource being
+    # deleted before the job to log an Activity recording its creation is run. See CL-1962.
+    it "logs a 'published' action when an idea is created & published and then immediately destroyed", active_job_inline_adapter: true do
+      idea = create(:idea, publication_status: 'published', author: user)
+      idea.destroy!
+      allow(PublishActivityToRabbitJob).to receive(:perform_later)
+      service.after_update(idea, user)
+      expect(Activity.where(action: 'published').first).to be_present
+    end
   end
 
   describe 'after_destroy' do
