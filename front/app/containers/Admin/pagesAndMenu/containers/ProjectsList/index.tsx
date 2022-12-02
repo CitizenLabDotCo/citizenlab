@@ -61,7 +61,7 @@ const ProjectList = () => {
           />
         }
       >
-        <ProjectsListContent page={customPage} />
+        <ProjectsListContent customPage={customPage} />
       </SectionFormWrapper>
     </>
   );

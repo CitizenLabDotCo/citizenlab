@@ -9,8 +9,6 @@ import Warning from 'components/UI/Warning';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
-import useCustomPage from 'hooks/useCustomPage';
-import { useParams } from 'react-router-dom';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -22,25 +20,24 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { ICustomPageData } from 'services/customPages';
 
 interface Props {
-  page: ICustomPageData;
+  customPage: ICustomPageData;
 }
 
-const ProjectsListContent = ({ page }: Props) => {
-  const areaIds = page.relationships.areas.data.map((area) => area.id);
-  const topicIds = page.relationships.topics.data.map((topic) => topic.id);
-  // Needs to be in sync with the projects list shown on the
-  // the citizen-facing custom page.
+const ProjectsListContent = ({ customPage }: Props) => {
+  const topicIds = customPage.relationships.topics.data.map(
+    (topic) => topic.id
+  );
+  const areaIds = customPage.relationships.areas.data.map((area) => area.id);
+  // Needs to be in sync with the projects list shown in
+  // the projects list config of the custom page in the admin.
   // Comment reference to find it easily: 881dd218.
-  const { list: adminPublications } = useAdminPublications({
+  const { list: adminPublicationsList } = useAdminPublications({
     topicIds,
     areaIds,
     publicationStatusFilter: ['published', 'archived'],
   });
 
-  const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage({ customPageId });
-
-  if (isNilOrError(adminPublications) || isNilOrError(customPage)) return null;
+  if (isNilOrError(adminPublicationsList)) return null;
 
   if (customPage.attributes.projects_filter_type === 'no_filter') {
     return (
@@ -55,7 +52,7 @@ const ProjectsListContent = ({ page }: Props) => {
   }
 
   const warningMessage =
-    adminPublications.length > 0
+    adminPublicationsList.length > 0
       ? messages.sectionDescription
       : messages.noAvailableProjects;
 
@@ -67,7 +64,7 @@ const ProjectsListContent = ({ page }: Props) => {
             {...warningMessage}
             values={{
               pageSettingsLink: (
-                <Link to={`${adminCustomPageSettingsPath(customPageId)}`}>
+                <Link to={`${adminCustomPageSettingsPath(customPage.id)}`}>
                   <FormattedMessage {...messages.pageSettingsLinkText} />
                 </Link>
               ),
@@ -76,15 +73,17 @@ const ProjectsListContent = ({ page }: Props) => {
         </Warning>
       </Box>
       <List>
-        {adminPublications.map((adminPublication, index: number) => (
-          <Row
-            id={adminPublication.id}
-            isLastItem={index === adminPublications.length - 1}
-            key={adminPublication.id}
-          >
-            <ProjectRow publication={adminPublication} actions={['manage']} />
-          </Row>
-        ))}
+        <>
+          {adminPublicationsList.map((adminPublication, index: number) => (
+            <Row
+              id={adminPublication.id}
+              isLastItem={index === adminPublicationsList.length - 1}
+              key={adminPublication.id}
+            >
+              <ProjectRow publication={adminPublication} actions={['manage']} />
+            </Row>
+          ))}
+        </>
       </List>
     </Box>
   );
