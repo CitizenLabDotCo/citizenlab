@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-12-02 (2)
+
+### Fixed
+
+- [CL-2188] Fix chart filters in dashboards looking weird
+
 ## 2022-12-02
 
 ### Fixed
