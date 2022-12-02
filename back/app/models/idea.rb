@@ -172,10 +172,28 @@ class Idea < ApplicationRecord
   end
 
   def input_term
+    return project.input_term if project.continuous?
+
     return creation_phase.input_term if participation_method_on_creation.form_in_phase?
 
     participation_context = ParticipationContextService.new.get_participation_context(project)
-    participation_context ? participation_context.input_term : project.input_term
+    return participation_context.input_term if participation_context&.can_contain_ideas?
+
+    case phases.size
+    when 0
+      ParticipationContext::DEFAULT_INPUT_TERM
+    when 1
+      phases[0].input_term
+    else
+      now = Time.zone.now
+      phases_with_ideas = phases.select(&:can_contain_ideas?).sort_by(&:start_at)
+      first_past_phase_with_ideas = phases_with_ideas.reverse_each.detect { |phase| phase.end_at <= now }
+      if first_past_phase_with_ideas
+        first_past_phase_with_ideas.input_term
+      else # now is before the first phase with ideas
+        phases_with_ideas.first.input_term
+      end
+    end
   end
 
   def participation_method_on_creation
