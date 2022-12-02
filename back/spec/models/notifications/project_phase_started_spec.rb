@@ -9,16 +9,13 @@ RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
 
     it 'only notifies users who participated in project' do
       participant = create(:user)
-      non_participant = create(:user)
+      _non_participant = create(:user)
 
       idea = create(:idea, project_id: project.id, author_id: participant.id)
       create(:activity, item: idea, user_id: participant.id, action: 'published')
 
       notifications = described_class.make_notifications_on activity
-      recipient_ids = notifications.pluck(:recipient_id)
-
-      expect(recipient_ids).to include participant.id
-      expect(recipient_ids).not_to include non_participant.id
+      expect(notifications.map(&:recipient_id)).to match_array [participant.id]
     end
 
     it 'only notifies users who can participate in project' do
@@ -34,7 +31,6 @@ RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
       create(:activity, item: idea2, user_id: other_user.id, action: 'published')
 
       notifications = described_class.make_notifications_on(activity)
-
       expect(notifications.map(&:recipient_id)).to match_array [group_member.id]
     end
   end
