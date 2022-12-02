@@ -50,7 +50,7 @@ export const query = ({
 
   const timeSeriesQuery: QuerySchema = {
     fact: 'email_delivery',
-    filters: { dateFilter },
+    filters: { ...dateFilter },
     groups: [`dimension_date_sent.${getInterval(resolution)}`, 'automated'],
     aggregations: {
       all: 'count',
