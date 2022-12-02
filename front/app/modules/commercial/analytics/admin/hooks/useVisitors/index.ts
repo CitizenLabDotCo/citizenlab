@@ -1,94 +1,23 @@
 import { useState, useEffect } from 'react';
 
 // services
-import {
-  analyticsStream,
-  Query,
-  QuerySchema,
-  AggregationsConfig,
-} from '../../services/analyticsFacts';
+import { analyticsStream } from '../../services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
+// query
+import { query } from './query';
+
 // parse
 import { parseStats, parseTimeSeries, parseExcelData } from './parse';
-
-// utils
-import {
-  getProjectFilter,
-  getDateFilter,
-  getDateFilterLastPeriod,
-  getInterval,
-} from '../../utils/query';
-import { deduceResolution } from './utils';
 
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-
-const getAggregations = (): AggregationsConfig => ({
-  all: 'count',
-  visitor_id: 'count',
-  duration: 'avg',
-  pages_visited: 'avg',
-});
-
-const query = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: QueryParameters): Query => {
-  const totalsWholePeriodQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter(
-        'dimension_date_last_action',
-        startAtMoment,
-        endAtMoment
-      ),
-    },
-    aggregations: getAggregations(),
-  };
-
-  const totalsLastPeriodQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilterLastPeriod('dimension_date_last_action', resolution),
-    },
-    aggregations: getAggregations(),
-  };
-
-  const timeSeriesQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      'dimension_user.role': ['citizen', null],
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter(
-        'dimension_date_last_action',
-        startAtMoment,
-        endAtMoment
-      ),
-    },
-    groups: `dimension_date_last_action.${getInterval(resolution)}`,
-    aggregations: {
-      all: 'count',
-      visitor_id: 'count',
-    },
-  };
-
-  return {
-    query: [totalsWholePeriodQuery, totalsLastPeriodQuery, timeSeriesQuery],
-  };
-};
 
 export default function useVisitorsData({
   projectId,
@@ -98,7 +27,7 @@ export default function useVisitorsData({
 }: QueryParameters) {
   const { formatMessage } = useIntl();
 
-  const [deducedResolution, setDeducedResolution] =
+  const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
@@ -120,15 +49,13 @@ export default function useVisitorsData({
           setStats(response);
           setTimeSeries(response);
           setXlsxData(response);
-          setDeducedResolution(resolution);
+          setCurrentResolution(resolution);
           return;
         }
 
         const translations = getTranslations(formatMessage);
 
-        const deducedResolution =
-          deduceResolution(response.data[2]) ?? resolution;
-        setDeducedResolution(deducedResolution);
+        setCurrentResolution(resolution);
 
         const stats = parseStats(response.data);
         setStats(stats);
@@ -137,12 +64,12 @@ export default function useVisitorsData({
           response.data[2],
           startAtMoment,
           endAtMoment,
-          deducedResolution
+          resolution
         );
         setTimeSeries(timeSeries);
 
         setXlsxData(
-          parseExcelData(stats, timeSeries, translations, deducedResolution)
+          parseExcelData(stats, timeSeries, translations, resolution)
         );
       }
     );
@@ -150,5 +77,5 @@ export default function useVisitorsData({
     return () => subscription.unsubscribe();
   }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
 
-  return { deducedResolution, stats, timeSeries, xlsxData };
+  return { currentResolution, stats, timeSeries, xlsxData };
 }

@@ -27,6 +27,7 @@ export const query = ({
     groups: `dimension_date_registration.${getInterval(resolution)}`,
     aggregations: {
       all: 'count',
+      'dimension_date_registration.date': 'first',
     },
   };
 
