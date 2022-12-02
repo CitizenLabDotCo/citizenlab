@@ -21,8 +21,8 @@ RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
     it 'only notifies users who can participate in project' do
       project.update!(visible_to: 'groups', groups: [create(:group)])
 
-      group_member = create(:user, email: 'user1@example.com', manual_groups: [project.groups.first])
-      other_user = create(:user, email: 'user2@example.com')
+      group_member = create(:user, manual_groups: [project.groups.first])
+      other_user = create(:user)
 
       # Both users participate in project and an activity exists for each participation event.
       idea1 = create(:idea, project_id: project.id, author_id: group_member.id)
