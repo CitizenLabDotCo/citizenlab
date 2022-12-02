@@ -110,13 +110,16 @@ const EventsWidget = ({ id, projectIds }: Props) => {
     currentAndFutureOnly: true,
     pageSize: 3,
     sort: 'oldest',
-    ...(projectIds && { projectIds }),
+    ...(projectIds && projectIds.length > 0 && { projectIds }),
   });
 
-  // This avoids flashing of all events (if projectIds are undefined)
-  // as well as having to do projectIds checks before rendering this component.
-  // See CustomPageEvents.tsx for an example.
-  if (projectIds === null) {
+  // This avoids flashing of all events.
+  // See CustomPageEvents.tsx for an example of projectIds === null. If we don't
+  // have adminPublications yet, projectIds is null andd it would show
+  // all events.
+  // The length check is needed if our area/topic doesn't have a admin publication/project.
+  // In that case, all events would still flash on the screen.
+  if (projectIds === null || (projectIds && projectIds.length === 0)) {
     return null;
   }
 

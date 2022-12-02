@@ -24,6 +24,8 @@ interface Props {
 }
 
 const ProjectsListContent = ({ customPage }: Props) => {
+  // There will be either topic or area ids if this component renders.
+  // To enable it, the page needs either a topic or area associated with it.
   const topicIds = customPage.relationships.topics.data.map(
     (topic) => topic.id
   );
