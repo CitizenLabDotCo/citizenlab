@@ -56,7 +56,7 @@ const ChartFilters = ({
           endAtMoment={endAtMoment}
           onChange={onChangeTimeRange}
         />
-        <Box ml="12px">
+        <Box ml="12px" maxWidth="350px">
           <ProjectFilter
             currentProjectFilter={currentProjectFilter}
             hideLabel
