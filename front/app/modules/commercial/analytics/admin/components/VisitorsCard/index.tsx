@@ -28,7 +28,7 @@ const VisitorsCard = ({
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { deducedResolution, stats, timeSeries, xlsxData } = useVisitors({
+  const { currentResolution, stats, timeSeries, xlsxData } = useVisitors({
     projectId,
     startAtMoment,
     endAtMoment,
@@ -50,7 +50,7 @@ const VisitorsCard = ({
         startAt,
         endAt,
         currentProjectFilter: projectId,
-        resolution: deducedResolution,
+        resolution: currentResolution,
       }}
     >
       <Box px="20px" width="100%" display="flex" flexDirection="row">
@@ -58,7 +58,7 @@ const VisitorsCard = ({
           <VisitorStats
             stats={stats}
             projectId={projectId}
-            resolution={deducedResolution}
+            resolution={currentResolution}
           />
         </Box>
 
@@ -68,7 +68,7 @@ const VisitorsCard = ({
               timeSeries={timeSeries}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
-              resolution={deducedResolution}
+              resolution={currentResolution}
               innerRef={graphRef}
             />
           </Box>
