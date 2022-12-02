@@ -91,7 +91,7 @@ export const projectStatusConfig: StatCardConfig = {
     endAtMoment,
   }: StatCardProps): Query => {
     const queryBase = (
-      status?: 'active' | 'archived' | 'finished' | 'draft'
+      status?: 'published' | 'archived' | 'finished' | 'draft'
     ): QuerySchema => {
       const querySchema: QuerySchema = {
         fact: 'project_status',
@@ -115,7 +115,7 @@ export const projectStatusConfig: StatCardConfig = {
     };
 
     const queryTotal: QuerySchema = queryBase();
-    const queryActive: QuerySchema = queryBase('active');
+    const queryActive: QuerySchema = queryBase('published');
     const queryArchived: QuerySchema = queryBase('archived');
     const queryFinished: QuerySchema = queryBase('finished');
     const queryDraft: QuerySchema = queryBase('draft');
@@ -131,6 +131,11 @@ export const projectStatusConfig: StatCardConfig = {
     if (startAtMoment && endAtMoment) {
       returnQuery = [queryArchived, queryFinished];
     }
+    console.log(
+      JSON.stringify({
+        query: returnQuery,
+      })
+    );
     return {
       query: returnQuery,
     };
