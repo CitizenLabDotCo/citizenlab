@@ -38,7 +38,9 @@ export const Heading = ({
   isSurvey,
 }: Props) => {
   const [searchParams] = useSearchParams();
-  const phaseId = searchParams.get('phase_id');
+  const phaseId =
+    searchParams.get('phase_id') ||
+    project.relationships.current_phase?.data?.id;
   const linkToSurveyBuilder = phaseId
     ? `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`
     : `/admin/projects/${project.id}/native-survey/edit`;
@@ -102,9 +104,10 @@ export const Heading = ({
                     data-cy="e2e-edit-survey-link"
                     icon="edit"
                     linkTo={linkToSurveyBuilder}
-                    buttonStyle="text"
+                    buttonStyle="primary-inverse"
                     textDecorationHover="underline"
                     hidden={!canUserEditProject}
+                    mr="12px"
                   >
                     <FormattedMessage {...messages.editSurvey} />
                   </Button>
