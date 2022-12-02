@@ -86,25 +86,6 @@ RSpec.describe Notification, type: :model do
       expect(notifications).to be_present
     end
 
-    describe 'project_phase_started' do
-      let(:project) { create(:project_with_current_phase) }
-      let(:activity) { create(:activity, item: project.phases[2], action: 'started') }
-
-      let(:participant) { create(:user) }
-      let(:non_participant) { create(:user) }
-
-      let(:idea) { create(:idea, project_id: project.id, author_id: participant.id) }
-
-      it 'only notifies users who participated in project' do
-        create(:activity, item: idea, user_id: participant.id, action: 'published')
-        notifications = Notifications::ProjectPhaseStarted.make_notifications_on activity
-        notification_ids = notifications.pluck(:recipient_id)
-
-        expect(notification_ids).to include participant.id
-        expect(notification_ids).not_to include non_participant.id
-      end
-    end
-
     it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_given' do
       project = create(:project)
       moderator = create(:project_moderator, projects: [project])
