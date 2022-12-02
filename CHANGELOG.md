@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Changed
+
+- [CL-2168] Added support for webp images.
+
 ## 2022-11-30
 
 ### Fixed
