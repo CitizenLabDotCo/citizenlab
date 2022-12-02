@@ -11,44 +11,46 @@
 
 WITH last_project_statuses AS -- project statuses that do not need to be calculated
          (SELECT DISTINCT ON (item_id) item_id as project_id, action as status, acted_at as timestamp
-FROM activities
-WHERE item_type = 'Project'
-  AND action IN ('draft', 'published', 'archived', 'deleted')
-ORDER BY item_id, acted_at DESC),
+          FROM activities
+          WHERE item_type = 'Project'
+            AND action IN ('draft', 'published', 'archived', 'deleted')
+          ORDER BY item_id, acted_at DESC),
 
-    finished_statuses_for_continuous_projects AS
-    (SELECT project_id, 'finished' as status, timestamp
-FROM last_project_statuses lps JOIN projects p ON lps.project_id = p.id
-where p.process_type = 'continuous' AND lps.status = 'archived'),
+     finished_statuses_for_continuous_projects AS
+         (SELECT project_id, 'finished' as status, timestamp
+          FROM last_project_statuses lps JOIN projects p ON lps.project_id = p.id
+          where p.process_type = 'continuous' AND lps.status = 'archived'),
 
-    finished_statuses_for_timeline_projects AS
--- The project is considered finished at the beginning of the day following the end
--- date of the last phase.
-    (SELECT phases.project_id, 'finished' as status, (MAX(phases.end_at) + 1)::timestamp as timestamp
-FROM phases JOIN projects ON phases.project_id = projects.id
-WHERE projects.process_type != 'draft' -- a project cannot be finished if it's a draft
-GROUP BY phases.project_id
-HAVING MAX(phases.end_at) < NOW()),
+     finished_statuses_for_timeline_projects AS
+         -- The project is considered finished at the beginning of the day following the end
+         -- date of the last phase.
+         (SELECT phases.project_id, 'finished' as status, (MAX(phases.end_at) + 1)::timestamp as timestamp
+          FROM phases JOIN projects ON phases.project_id = projects.id
+          WHERE projects.process_type != 'draft' -- a project cannot be finished if it's a draft
+          GROUP BY phases.project_id
+          HAVING MAX(phases.end_at) < NOW()),
 
-    project_statuses AS (
-SELECT * FROM last_project_statuses
-UNION
-SELECT * FROM finished_statuses_for_timeline_projects
-UNION
-SELECT * FROM finished_statuses_for_continuous_projects
-    ),
+     project_statuses AS (
+         SELECT * FROM last_project_statuses
+         UNION
+         SELECT * FROM finished_statuses_for_timeline_projects
+         UNION
+         SELECT * FROM finished_statuses_for_continuous_projects
+     ),
 
-    all_finished_projects AS (SELECT DISTINCT project_id FROM(
-    SELECT project_id FROM finished_statuses_for_timeline_projects
-    UNION
-    SELECT project_id FROM finished_statuses_for_continuous_projects
-    ) afp)
+    all_finished_projects AS (
+        SELECT DISTINCT project_id FROM(
+            SELECT project_id FROM finished_statuses_for_timeline_projects
+            UNION
+            SELECT project_id FROM finished_statuses_for_continuous_projects
+        ) afp)
 
-SELECT ps.project_id as dimension_project_id,
-       status,
-       CASE WHEN afp.project_id IS NULL THEN false ELSE true END AS finished,
+SELECT
+    ps.project_id as dimension_project_id,
+    status,
+    CASE WHEN afp.project_id IS NULL THEN false ELSE true END AS finished,
     timestamp,
     timestamp::DATE as dimension_date_id
 FROM project_statuses ps
-    LEFT JOIN all_finished_projects afp ON afp.project_id = ps.project_id
+LEFT JOIN all_finished_projects afp ON afp.project_id = ps.project_id
 ORDER BY timestamp DESC;
