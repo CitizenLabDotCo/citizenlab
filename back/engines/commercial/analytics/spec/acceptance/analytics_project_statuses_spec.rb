@@ -87,6 +87,5 @@ resource 'Analytics - ProjectStatus' do
         { count: 0 }
       ])
     end
-
   end
 end
