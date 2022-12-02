@@ -1,5 +1,13 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-2171] Fix excel export of visitor data for Dutch clients
+- [CL-2172] Fix visitor data not updating when switching projects
+- [CL-2178] Hide various cards on overview dashboard if user is project moderator
+
 ## 2022-12-01
 
 ### Changed
