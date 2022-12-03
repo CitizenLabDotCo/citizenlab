@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
   describe 'make_notifications_on' do
-    let!(:project) { create(:project_with_current_phase) }
-    let!(:activity) { create(:activity, item: project.phases[2], action: 'started') }
+    let(:project) { create(:project_with_current_phase) }
+    let(:activity) { create(:activity, item: project.phases[2], action: 'started') }
 
     it 'only notifies users who participated in project' do
       participant = create(:user)
