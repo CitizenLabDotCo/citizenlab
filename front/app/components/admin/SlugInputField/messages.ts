@@ -5,11 +5,6 @@ export default defineMessages({
     id: 'app.components.admin.SlugInput.url',
     defaultMessage: 'URL',
   },
-  urlSlugTooltip: {
-    id: 'app.components.admin.SlugInput.urlSlugTooltip',
-    defaultMessage:
-      'You can specify the last part of your URL (called the slug). For example, the current URL is {currentURL}, where {currentSlug} is the slug.',
-  },
   regexError: {
     id: 'app.components.admin.SlugInput.regexError',
     defaultMessage:

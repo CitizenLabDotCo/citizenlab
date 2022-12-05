@@ -4,7 +4,6 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import Error from 'components/UI/Error';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
 import { StyledSectionField } from './styling';
 import SlugInput from 'components/admin/SlugInput';
@@ -49,26 +48,6 @@ const SlugInputField = ({
       <StyledSectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.url} />
-          <IconTooltip
-            content={
-              // needs to change
-              <FormattedMessage
-                {...messages.urlSlugTooltip}
-                values={{
-                  currentURL: (
-                    <em>
-                      <b>{previewUrl}</b>
-                    </em>
-                  ),
-                  currentSlug: (
-                    <em>
-                      <b>{slug}</b>
-                    </em>
-                  ),
-                }}
-              />
-            }
-          />
         </SubSectionTitle>
         {slug && previewUrl && (
           <SlugInput
