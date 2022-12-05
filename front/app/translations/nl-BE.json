@@ -1208,7 +1208,7 @@
   "app.containers.SignIn.logIn": "Inloggen",
   "app.containers.SignIn.or": "Of",
   "app.containers.SignIn.passwordLabel": "Wachtwoord",
-  "app.containers.SignIn.rememberMeLabel": "Herinner mij",
+  "app.containers.SignIn.rememberMeLabel": "Ingelogd blijven",
   "app.containers.SignIn.rememberMeTooltip": "Niet selecteren bij gebruik van een openbare computer.",
   "app.containers.SignIn.signInError": "De ingevoerde informatie is niet correct. Klik op 'Wachtwoord vergeten' om je wachtwoord opnieuw in te stellen.",
   "app.containers.SignIn.signUp": "Registreren",
