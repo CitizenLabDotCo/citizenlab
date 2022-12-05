@@ -146,7 +146,6 @@
   "app.components.admin.ReportExportMenu.downloadSvg": "Als SVG herunterladen",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Excel herunterladen",
   "app.components.admin.SlugInput.regexError": "Der Slug darf nur normale Kleinbuchstaben (a-z), Zahlen (0-9) und Bindestriche (-) enthalten. Das erste und das letzte Zeichen dürfen keine Bindestriche sein. Aufeinanderfolgende Bindestriche (--) sind verboten.",
-  "app.components.admin.SlugInput.url": "URL",
   "app.components.admin.TerminologyConfig.saveButton": "Speichern",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Beitrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Weitere Informationen zum Einbetten eines Links für Google Forms finden Sie unter {googleFormsTooltipLink}.",
