@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-12-05
+
+### Changed
+
+- [CL-2156] Notifications of Project Phase Started now sent only to Users who have participated in the relevant Project.
+
 ## 2022-12-02 (2)
 
 ### Fixed
@@ -22,10 +28,6 @@
 - [CL-1933] Update overview dashboard layout and new charts
 
 ## 2022-11-30
-
-### Changed
-
-- [CL-2156] Notifications of Project Phase Started now sent only to Users who have participated in the relevant Project.
 
 ### Fixed
 
