@@ -13,7 +13,7 @@ import { slugRegEx } from 'utils/textUtils';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import SlugInput from 'components/admin/NewSlugInput';
+import SlugInput from 'components/admin/SlugInput';
 import Tabs from 'components/HookForm/Tabs';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';

@@ -7,7 +7,7 @@ import Error from 'components/UI/Error';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
 import { StyledSectionField } from './styling';
-import NewSlugInput from 'components/Admin/NewSlugInput';
+import SlugInput from 'components/admin/SlugInput';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -71,7 +71,7 @@ const SlugInputField = ({
           />
         </SubSectionTitle>
         {slug && previewUrl && (
-          <NewSlugInput
+          <SlugInput
             currentSlug={slug}
             onChange={onSlugChange}
             previewUrl={previewUrl}
