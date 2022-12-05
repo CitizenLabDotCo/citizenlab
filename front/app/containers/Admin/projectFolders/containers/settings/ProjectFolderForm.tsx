@@ -24,7 +24,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
 import {
   addProjectFolderFile,
@@ -443,6 +443,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SectionField data-cy="e2e-project-folder-title">
+          <SubSectionTitle>
+            <FormattedMessage {...messages.folderName} />
+          </SubSectionTitle>
           <InputMultilocWithLocaleSwitcher
             id="project-folder-title"
             valueMultiloc={titleMultiloc}
@@ -470,29 +473,35 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             </>
           </SectionField>
         )}
-        <SectionField data-cy="e2e-project-folder-short-description">
-          <TextAreaMultilocWithLocaleSwitcher
-            valueMultiloc={shortDescriptionMultiloc}
-            name="textAreaMultiloc"
-            onChange={getHandler(setShortDescriptionMultiloc)}
-            label={
-              <FormattedMessage {...messages.shortDescriptionInputLabel} />
-            }
-            labelTooltipText={
-              <FormattedMessage
-                {...messages.shortDescriptionInputLabelTooltip}
-              />
-            }
-          />
-        </SectionField>
-        <SectionField data-cy="e2e-project-folder-description">
-          <QuillMutilocWithLocaleSwitcher
-            id="description"
-            valueMultiloc={descriptionMultiloc}
-            onChange={getHandler(setDescriptionMultiloc)}
-            label={<FormattedMessage {...messages.descriptionInputLabel} />}
-            withCTAButton
-          />
+        <SectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.folderDescriptions} />
+          </SubSectionTitle>
+          <Box mb="35px" data-cy="e2e-project-folder-description">
+            <TextAreaMultilocWithLocaleSwitcher
+              data-cy="e2e-project-folder-short-description"
+              valueMultiloc={shortDescriptionMultiloc}
+              name="textAreaMultiloc"
+              onChange={getHandler(setShortDescriptionMultiloc)}
+              label={
+                <FormattedMessage {...messages.shortDescriptionInputLabel} />
+              }
+              labelTooltipText={
+                <FormattedMessage
+                  {...messages.shortDescriptionInputLabelTooltip}
+                />
+              }
+            />
+          </Box>
+          <Box data-cy="e2e-project-folder-description">
+            <QuillMutilocWithLocaleSwitcher
+              id="description"
+              valueMultiloc={descriptionMultiloc}
+              onChange={getHandler(setDescriptionMultiloc)}
+              label={<FormattedMessage {...messages.descriptionInputLabel} />}
+              withCTAButton
+            />
+          </Box>
         </SectionField>
 
         <SectionField key={'header_bg'}>
