@@ -3,6 +3,8 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { Input } from '@citizenlab/cl2-component-library';
 
+// Allow these props for forms that are not a
+// hook form yet.
 interface Props {
   onChange?: (slug: string) => void;
   slug?: string;
