@@ -15,6 +15,7 @@ module ParticipationContext
 
   PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering native_survey].freeze
   PRESENTATION_MODES    = %w[card map].freeze
+  POSTING_METHODS       = %w[unlimited limited].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
@@ -39,6 +40,7 @@ module ParticipationContext
           inclusion: { in: PRESENTATION_MODES }, allow_nil: true
 
         validates :posting_enabled, inclusion: { in: [true, false] }
+        validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
         validates :commenting_enabled, inclusion: { in: [true, false] }
         validates :voting_enabled, inclusion: { in: [true, false] }
         validates :upvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
@@ -51,6 +53,9 @@ module ParticipationContext
         before_validation :set_ideas_order
         before_validation :set_input_term
       end
+      validates :posting_limited_max, presence: true,
+        numericality: { only_integer: true, greater_than: 0 },
+        if: %i[can_contain_ideas? upvoting_limited?]
       validates :upvoting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
         if: %i[can_contain_ideas? upvoting_limited?]
@@ -95,6 +100,10 @@ module ParticipationContext
 
   def can_contain_input?
     can_contain_ideas? || native_survey?
+  end
+
+  def posting_limited?
+    posting_method == 'limited'
   end
 
   def upvoting_limited?
