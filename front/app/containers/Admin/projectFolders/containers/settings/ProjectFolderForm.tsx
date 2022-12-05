@@ -33,7 +33,7 @@ import {
 } from 'services/projectFolderFiles';
 import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
-import SlugInput from 'components/admin/SlugInput';
+import SlugInputField from 'components/admin/SlugInputField';
 import { validateSlug } from 'utils/textUtils';
 
 type Props = {
@@ -458,7 +458,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SectionField>
-          <SlugInput
+          <SlugInputField
             slug={slug}
             pathnameWithoutSlug={'folders'}
             apiErrors={errors}

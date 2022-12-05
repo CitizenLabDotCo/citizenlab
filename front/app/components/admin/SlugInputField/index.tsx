@@ -28,7 +28,7 @@ export interface Props {
   onSlugChange: (slug: string) => void;
 }
 
-const SlugInput = ({
+const SlugInputField = ({
   slug,
   pathnameWithoutSlug,
   apiErrors,
@@ -90,4 +90,4 @@ const SlugInput = ({
   return null;
 };
 
-export default injectIntl(SlugInput);
+export default injectIntl(SlugInputField);

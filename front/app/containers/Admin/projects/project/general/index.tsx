@@ -7,7 +7,7 @@ import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreatePro
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
-import SlugInput from 'components/admin/SlugInput';
+import SlugInputField from 'components/admin/SlugInputField';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
@@ -505,7 +505,7 @@ const AdminProjectsProjectGeneral = ({
 
         {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
         {slug && (
-          <SlugInput
+          <SlugInputField
             slug={slug}
             pathnameWithoutSlug={'projects'}
             apiErrors={apiErrors}
