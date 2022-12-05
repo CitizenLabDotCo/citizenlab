@@ -206,5 +206,5 @@ sr-Latn:
       option1: 'Opcija 1'
       option2: 'Opcija 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Kraj ankete'
+      description: "Prosledite svoje odgovore tako što ćete ispod izabrati „Prosledi anketu”."
