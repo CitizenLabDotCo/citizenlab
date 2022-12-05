@@ -4,13 +4,11 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import Error from 'components/UI/Error';
-import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField } from './styling';
 import SlugInput from 'components/admin/SlugInput';
 import SlugInputComponent from 'components/admin/SlugInput/InputComponent';
 
 // i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -47,10 +45,7 @@ const SlugInputField = ({
       : null;
 
     return (
-      <StyledSectionField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.url} />
-        </SubSectionTitle>
+      <>
         {previewUrl && (
           <SlugInput
             inputComponent={
@@ -66,7 +61,7 @@ const SlugInputField = ({
         {showSlugErrorMessage && (
           <Error text={formatMessage(messages.regexError)} />
         )}
-      </StyledSectionField>
+      </>
     );
   }
 

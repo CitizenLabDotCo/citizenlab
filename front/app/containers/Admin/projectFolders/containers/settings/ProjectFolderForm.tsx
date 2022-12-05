@@ -455,14 +455,19 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         {/* Only show this field when slug is already saved to folder (i.e. not when creating a new folder, which uses this form as well) */}
         {!isNilOrError(projectFolder) && slug && (
           <SectionField>
-            <SlugInputField
-              slug={slug}
-              pathnameWithoutSlug={'folders'}
-              apiErrors={errors}
-              showSlugErrorMessage={showSlugErrorMessage}
-              onSlugChange={handleSlugOnChange}
-              slugHasChanged={slug !== projectFolder.attributes.slug}
-            />
+            <>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.url} />
+              </SubSectionTitle>
+              <SlugInputField
+                slug={slug}
+                pathnameWithoutSlug={'folders'}
+                apiErrors={errors}
+                showSlugErrorMessage={showSlugErrorMessage}
+                onSlugChange={handleSlugOnChange}
+                slugHasChanged={slug !== projectFolder.attributes.slug}
+              />
+            </>
           </SectionField>
         )}
         <SectionField data-cy="e2e-project-folder-short-description">

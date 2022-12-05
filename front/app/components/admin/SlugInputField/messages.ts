@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  url: {
-    id: 'app.components.admin.SlugInput.url',
-    defaultMessage: 'URL',
-  },
   regexError: {
     id: 'app.components.admin.SlugInput.regexError',
     defaultMessage:
