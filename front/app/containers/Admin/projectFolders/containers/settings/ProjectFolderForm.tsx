@@ -12,8 +12,7 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import {
   SectionField,
@@ -36,10 +35,10 @@ import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInputField from 'components/admin/SlugInputField';
 import { validateSlug } from 'utils/textUtils';
 
-type Props = {
+interface Props {
   mode: 'edit' | 'new';
   projectFolderId: string;
-} & WrappedComponentProps;
+}
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const projectFolder = useProjectFolder({ projectFolderId });
@@ -574,4 +573,4 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   );
 };
 
-export default injectIntl(ProjectFolderForm);
+export default ProjectFolderForm;

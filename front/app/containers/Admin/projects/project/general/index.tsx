@@ -52,9 +52,8 @@ import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { validateSlug } from 'utils/textUtils';
@@ -70,9 +69,8 @@ export type TOnProjectAttributesDiffChangeFunction = (
   submitState?: ISubmitState
 ) => void;
 
-const AdminProjectsProjectGeneral = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const AdminProjectsProjectGeneral = () => {
+  const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const project = useProject({ projectId });
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
@@ -615,7 +613,7 @@ const AdminProjectsProjectGeneral = ({
   );
 };
 
-export default injectIntl(AdminProjectsProjectGeneral);
+export default AdminProjectsProjectGeneral;
 
 function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,
