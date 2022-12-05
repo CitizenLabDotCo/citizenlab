@@ -6,12 +6,8 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import Error from 'components/UI/Error';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
-import {
-  StyledSectionField,
-  StyledWarning,
-  StyledInput,
-  SlugPreview,
-} from './styling';
+import { StyledSectionField } from './styling';
+import NewSlugInput from 'components/Admin/NewSlugInput';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -25,7 +21,6 @@ import { isNilOrError } from 'utils/helperUtils';
 type TApiErrors = CLErrors | null;
 
 export interface Props {
-  inputFieldId?: string;
   slug: string | null;
   pathnameWithoutSlug: string;
   apiErrors: TApiErrors;
@@ -34,7 +29,6 @@ export interface Props {
 }
 
 const SlugInput = ({
-  inputFieldId,
   slug,
   pathnameWithoutSlug,
   apiErrors,
@@ -76,20 +70,12 @@ const SlugInput = ({
             }
           />
         </SubSectionTitle>
-        <StyledWarning>
-          <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
-        </StyledWarning>
-        <StyledInput
-          id={inputFieldId}
-          type="text"
-          label={<FormattedMessage {...messages.urlSlugLabel} />}
-          onChange={onSlugChange}
-          value={slug}
-        />
-        {previewUrl && (
-          <SlugPreview>
-            <b>{formatMessage(messages.resultingURL)}</b>: {previewUrl}
-          </SlugPreview>
+        {slug && previewUrl && (
+          <NewSlugInput
+            currentSlug={slug}
+            onChange={onSlugChange}
+            previewUrl={previewUrl}
+          />
         )}
         {/* Backend error */}
         {apiErrors && <Error fieldName="slug" apiErrors={apiErrors.slug} />}

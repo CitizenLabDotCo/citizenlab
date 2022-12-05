@@ -459,7 +459,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
         <SectionField>
           <SlugInput
-            inputFieldId="folder-slug"
             slug={slug}
             pathnameWithoutSlug={'folders'}
             apiErrors={errors}

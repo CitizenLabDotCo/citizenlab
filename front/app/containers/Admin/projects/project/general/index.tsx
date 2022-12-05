@@ -506,7 +506,6 @@ const AdminProjectsProjectGeneral = ({
         {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
         {slug && (
           <SlugInput
-            inputFieldId="project-slug"
             slug={slug}
             pathnameWithoutSlug={'projects'}
             apiErrors={apiErrors}
