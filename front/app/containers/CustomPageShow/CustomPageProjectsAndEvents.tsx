@@ -5,6 +5,7 @@ import useAdminPublications from 'hooks/useAdminPublications';
 import { ICustomPageData } from 'services/customPages';
 import ProjectsList from './ProjectsList';
 import ContentContainer from 'components/ContentContainer';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface Props {
   page: ICustomPageData;
@@ -21,6 +22,18 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     areaIds,
     publicationStatusFilter: ['published', 'archived'],
   });
+
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
+
+  const hideProjects =
+    !advancedCustomPagesEnabled ||
+    page.attributes.projects_filter_type === 'no_filter';
+  if (hideProjects) {
+    return null;
+  }
+
   if (isNilOrError(adminPublications.list)) {
     return null;
   }
