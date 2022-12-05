@@ -58,6 +58,11 @@ export const homepageBannerLayoutHeights = {
     tablet: 200,
     phone: 200,
   },
+  fixed_ratio: {
+    desktop: 280,
+    tablet: 280,
+    phone: 280,
+  },
 };
 
 const HeaderImageDropzone = ({
