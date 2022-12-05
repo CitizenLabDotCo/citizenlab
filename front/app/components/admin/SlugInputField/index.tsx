@@ -4,7 +4,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import Error from 'components/UI/Error';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Input } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
 import { StyledSectionField } from './styling';
 import SlugInput from 'components/admin/SlugInput';
@@ -72,8 +72,19 @@ const SlugInputField = ({
         </SubSectionTitle>
         {slug && previewUrl && (
           <SlugInput
-            currentSlug={slug}
-            onChange={onSlugChange}
+            inputComponent={
+              <Input
+                // label={<FormattedMessage {...messages.pageSlug} />}
+                // labelTooltipText={
+                //   <FormattedMessage {...messages.slugTooltip} />
+                // }
+                id="slug"
+                name="slug"
+                type="text"
+                onChange={onSlugChange}
+                value={slug}
+              />
+            }
             previewUrl={previewUrl}
           />
         )}

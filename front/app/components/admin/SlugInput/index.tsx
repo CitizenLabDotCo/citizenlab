@@ -1,5 +1,4 @@
-import React from 'react';
-import Input from 'components/HookForm/Input';
+import React, { ReactNode } from 'react';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Text } from '@citizenlab/cl2-component-library';
@@ -9,28 +8,17 @@ interface Props {
   // make required
   showWarningMessage?: boolean;
   previewUrl: string;
-  // You don't need to specify this in a hook form
-  onChange?: (slug: string) => void;
-  currentSlug?: string;
+  inputComponent: ReactNode;
 }
 
 const SlugInput = ({
   previewUrl,
   showWarningMessage,
-  onChange,
-  currentSlug,
+  inputComponent,
 }: Props) => {
   return (
     <>
-      <Input
-        label={<FormattedMessage {...messages.pageSlug} />}
-        labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
-        id="slug"
-        name="slug"
-        type="text"
-        onChange={onChange}
-        value={currentSlug}
-      />
+      {inputComponent}
       <Text mb={showWarningMessage ? '16px' : '0'}>
         <i>
           <FormattedMessage {...messages.resultingPageURL} />
