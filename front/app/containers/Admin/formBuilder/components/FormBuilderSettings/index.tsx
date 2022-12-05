@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 
-// styles
-import { colors } from 'utils/styleUtils';
-
 // components
 import {
   Box,
   Title,
   Text,
   stylingConsts,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
@@ -18,7 +16,7 @@ import Toggle from 'components/HookForm/Toggle';
 
 // intl
 import messages from '../messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 // types
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
@@ -29,6 +27,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import { getAdditionalSettings } from './utils';
+import Warning from 'components/UI/Warning';
 interface Props {
   field: IFlatCustomFieldWithIndex;
   onDelete: (fieldIndex: number) => void;
@@ -43,78 +42,12 @@ const FormBuilderSettings = ({
   isDeleteDisabled = false,
 }: Props) => {
   const locales = useAppConfigurationLocales();
+  const { formatMessage } = useIntl();
   const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
 
   if (isNilOrError(locales)) {
     return null;
   }
-
-  const Content = () => {
-    return (
-      <>
-        {field.input_type !== 'page' && (
-          <>
-            <SectionField id="e2e-required-toggle">
-              <Toggle
-                name={`customFields.${field.index}.required`}
-                label={
-                  <Text as="span" color="primary" variant="bodyM" my="0px">
-                    <FormattedMessage {...messages.requiredToggleLabel} />
-                  </Text>
-                }
-              />
-            </SectionField>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                id="e2e-title-multiloc"
-                name={`customFields.${field.index}.title_multiloc`}
-                label={<FormattedMessage {...messages.questionTitle} />}
-                type="text"
-              />
-            </SectionField>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                name={`customFields.${field.index}.description_multiloc`}
-                label={
-                  <FormattedMessage {...messages.questionDescriptionOptional} />
-                }
-                type="text"
-              />
-            </SectionField>
-          </>
-        )}
-        {getAdditionalSettings(field, locales)}
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          borderTop={`1px solid ${colors.divider}`}
-          pt="36px"
-        >
-          <Button
-            id="e2e-settings-done-button"
-            buttonStyle="secondary"
-            onClick={onClose}
-            minWidth="160px"
-          >
-            <FormattedMessage {...messages.done} />
-          </Button>
-          <Button
-            icon="delete"
-            buttonStyle="primary-outlined"
-            borderColor={colors.error}
-            textColor={colors.error}
-            iconColor={colors.error}
-            onClick={() => onDelete(field.index)}
-            minWidth="160px"
-            data-cy="e2e-delete-field"
-            disabled={isDeleteDisabled}
-          >
-            <FormattedMessage {...messages.delete} />
-          </Button>
-        </Box>
-      </>
-    );
-  };
 
   let translatedStringKey: MessageDescriptor | null = null;
   switch (field.input_type) {
@@ -135,6 +68,14 @@ const FormBuilderSettings = ({
       translatedStringKey = messages.linearScale;
       break;
   }
+
+  const tabNotActiveBorder = `1px solid ${colors.grey400}`;
+  const tabActiveBorder = `4px solid ${colors.primary}`;
+
+  const showTabbedSettings =
+    field.input_type === 'linear_scale' ||
+    field.input_type === 'multiselect' ||
+    field.input_type === 'select';
 
   return (
     <>
@@ -160,41 +101,177 @@ const FormBuilderSettings = ({
           />
         </Box>
         {translatedStringKey && (
-          <Title variant="h4" as="h2" mb="36px">
+          <Title variant="h4" as="h2" mb="8px">
             <FormattedMessage {...translatedStringKey} />
           </Title>
         )}
-        <Box display="flex" width="100%">
-          <Box
-            height="40px"
-            flexGrow={1}
-            borderBottom={
-              currentTab === 'logic' ? '4px solid grey' : '4px solid black'
-            }
-            onClick={() => {
-              setCurrentTab('content');
-            }}
-          >
-            <Text textAlign="center" color="placeholder">
-              Content
-            </Text>
+        {!showTabbedSettings && (
+          <Box mt="30px">
+            {field.input_type !== 'page' && (
+              <>
+                <SectionField id="e2e-required-toggle">
+                  <Toggle
+                    name={`customFields.${field.index}.required`}
+                    label={
+                      <Text as="span" color="primary" variant="bodyM" my="0px">
+                        <FormattedMessage {...messages.requiredToggleLabel} />
+                      </Text>
+                    }
+                  />
+                </SectionField>
+                <SectionField>
+                  <InputMultilocWithLocaleSwitcher
+                    id="e2e-title-multiloc"
+                    name={`customFields.${field.index}.title_multiloc`}
+                    label={<FormattedMessage {...messages.questionTitle} />}
+                    type="text"
+                  />
+                </SectionField>
+                <SectionField>
+                  <InputMultilocWithLocaleSwitcher
+                    name={`customFields.${field.index}.description_multiloc`}
+                    label={
+                      <FormattedMessage
+                        {...messages.questionDescriptionOptional}
+                      />
+                    }
+                    type="text"
+                  />
+                </SectionField>
+              </>
+            )}
+            {getAdditionalSettings(field, locales)}
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              borderTop={`1px solid ${colors.divider}`}
+              pt="36px"
+            >
+              <Button
+                id="e2e-settings-done-button"
+                buttonStyle="secondary"
+                onClick={onClose}
+                minWidth="160px"
+              >
+                <FormattedMessage {...messages.done} />
+              </Button>
+              <Button
+                icon="delete"
+                buttonStyle="primary-outlined"
+                borderColor={colors.error}
+                textColor={colors.error}
+                iconColor={colors.error}
+                onClick={() => onDelete(field.index)}
+                minWidth="160px"
+                data-cy="e2e-delete-field"
+                disabled={isDeleteDisabled}
+              >
+                <FormattedMessage {...messages.delete} />
+              </Button>
+            </Box>
           </Box>
-          <Box
-            height="40px"
-            flexGrow={1}
-            borderBottom={
-              currentTab === 'content' ? '4px solid grey' : '4px solid black'
-            }
-            onClick={() => {
-              setCurrentTab('logic');
-            }}
-          >
-            <Text pb="40px" textAlign="center" color="placeholder">
-              Logic
-            </Text>
+        )}
+        {showTabbedSettings && (
+          <Box display="flex" width="100%" mb="40px">
+            <Box
+              flexGrow={1}
+              borderBottom={
+                currentTab === 'content' ? tabActiveBorder : tabNotActiveBorder
+              }
+              onClick={() => {
+                setCurrentTab('content');
+              }}
+              style={{ cursor: 'pointer' }}
+            >
+              <Text mb="12px" textAlign="center" color="coolGrey600">
+                Content
+              </Text>
+            </Box>
+            <Box
+              flexGrow={1}
+              borderBottom={
+                currentTab === 'logic' ? tabActiveBorder : tabNotActiveBorder
+              }
+              onClick={() => {
+                setCurrentTab('logic');
+              }}
+              style={{ cursor: 'pointer' }}
+            >
+              <Text mb="12px" textAlign="center" color="coolGrey600">
+                Logic
+              </Text>
+            </Box>
           </Box>
-        </Box>
-        {currentTab === 'content' && <Content />}
+        )}
+        {showTabbedSettings && currentTab === 'content' && (
+          <Box mt="16px">
+            {field.input_type !== 'page' && (
+              <>
+                <SectionField id="e2e-required-toggle">
+                  <Toggle
+                    name={`customFields.${field.index}.required`}
+                    label={
+                      <Text as="span" color="primary" variant="bodyM" my="0px">
+                        <FormattedMessage {...messages.requiredToggleLabel} />
+                      </Text>
+                    }
+                  />
+                </SectionField>
+                <SectionField>
+                  <InputMultilocWithLocaleSwitcher
+                    id="e2e-title-multiloc"
+                    name={`customFields.${field.index}.title_multiloc`}
+                    label={<FormattedMessage {...messages.questionTitle} />}
+                    type="text"
+                  />
+                </SectionField>
+                <SectionField>
+                  <InputMultilocWithLocaleSwitcher
+                    name={`customFields.${field.index}.description_multiloc`}
+                    label={
+                      <FormattedMessage
+                        {...messages.questionDescriptionOptional}
+                      />
+                    }
+                    type="text"
+                  />
+                </SectionField>
+              </>
+            )}
+            {getAdditionalSettings(field, locales)}
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              borderTop={`1px solid ${colors.divider}`}
+              pt="36px"
+            >
+              <Button
+                id="e2e-settings-done-button"
+                buttonStyle="secondary"
+                onClick={onClose}
+                minWidth="160px"
+              >
+                <FormattedMessage {...messages.done} />
+              </Button>
+              <Button
+                icon="delete"
+                buttonStyle="primary-outlined"
+                borderColor={colors.error}
+                textColor={colors.error}
+                iconColor={colors.error}
+                onClick={() => onDelete(field.index)}
+                minWidth="160px"
+                data-cy="e2e-delete-field"
+                disabled={isDeleteDisabled}
+              >
+                <FormattedMessage {...messages.delete} />
+              </Button>
+            </Box>
+          </Box>
+        )}
+        {showTabbedSettings && currentTab === 'logic' && (
+          <Warning text={formatMessage(messages.logicWarning)} />
+        )}
       </Box>
     </>
   );

@@ -180,4 +180,9 @@ export default defineMessages({
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
+  logicWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.logicWarning',
+    defaultMessage:
+      'If no logic is added to an answer, the survey will follow its normal flow.',
+  },
 });
