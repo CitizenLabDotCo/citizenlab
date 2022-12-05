@@ -144,7 +144,7 @@ en:
         question:
           title: What is your question ?
         contribution:
-          title: What is your contribution ?
+          title: What is your contribution?
         project:
           title: What is your project ?
         issue:
@@ -154,7 +154,7 @@ en:
       details:
         title: Details
       attachements:
-        title: Images and Attachements
+        title: Images and attachments
       extra:
         title: Additional information
   custom_field_options:
