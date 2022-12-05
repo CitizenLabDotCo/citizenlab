@@ -604,7 +604,7 @@
   "app.containers.Admin.ideas.import": "استيراد",
   "app.containers.Admin.ideas.tabStatuses": "الحالات",
   "app.containers.Admin.initiatives.addNewProposal": "إضافة مقترح",
-  "app.containers.Admin.initiatives.enableProposals": "Enable proposals",
+  "app.containers.Admin.initiatives.enableProposals": "تمكين المقترحات",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "تقديم المُقترح",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "عدد الأيام للوصول إلى الحد المطلوب من الأصوات",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "حد التصويت المطلوب",
