@@ -1,3 +1,8 @@
+/*
+ Reference for some of the code in this file: https://github.com/eclipsesource/jsonforms/blob/master/packages/core/src/testers/testers.ts
+ * 
+*/
+
 import Ajv from 'ajv';
 import {
   UISchemaElement,
@@ -10,12 +15,26 @@ import {
   SchemaBasedCondition,
   Scopable,
   composeWithUi,
+  resolveData,
 } from '@jsonforms/core';
-import { isEmpty, has } from 'lodash-es';
+import { has } from 'lodash-es';
+
+export type ExtendedRule = {
+  /**
+   * The effect of the rule
+   */
+  effect: RuleEffect;
+  /**
+   * The condition of the rule that must evaluate to true in order
+   * to trigger the effect.
+   */
+  condition: Condition;
+} & Rule;
 
 export type ExtendedUISchema = {
-  ruleArray?: Rule[];
-} & UISchemaElement;
+  ruleArray?: ExtendedRule[];
+} & UISchemaElement &
+  Scopable;
 
 const isOrCondition = (condition: Condition): condition is OrCondition =>
   condition.type === 'OR';
@@ -32,26 +51,6 @@ const isSchemaCondition = (
 
 const getConditionScope = (condition: Scopable, path: string): string => {
   return composeWithUi(condition, path);
-};
-
-export const resolveData = (instance: any, dataPath: string): any => {
-  if (isEmpty(dataPath)) {
-    return instance;
-  }
-  const dataPathSegments = dataPath.split('.');
-
-  return dataPathSegments
-    .map((segment) => decodeURIComponent(segment))
-    .reduce((curInstance, decodedSegment) => {
-      if (
-        !curInstance ||
-        !Object.prototype.hasOwnProperty.call(curInstance, decodedSegment)
-      ) {
-        return undefined;
-      }
-
-      return curInstance[decodedSegment];
-    }, instance);
 };
 
 const evaluateCondition = (
@@ -91,7 +90,7 @@ const isRuleFulfilled = (
   return evaluateCondition(data, condition, path, ajv);
 };
 
-export const evalVisibility = (
+const evalVisibility = (
   uischema: ExtendedUISchema,
   data: any,
   path: string,
