@@ -295,8 +295,8 @@ describe IdeaPolicy do
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:by_slug) }
       it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -347,8 +347,8 @@ describe IdeaPolicy do
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:by_slug) }
       it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
