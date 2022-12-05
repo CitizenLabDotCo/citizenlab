@@ -86,53 +86,6 @@ RSpec.describe Notification, type: :model do
       expect(notifications).to be_present
     end
 
-    describe 'project_phase_started' do
-      it 'makes project_phase_started notifications on phase started' do
-        phase = create(:active_phase)
-        project = phase.project
-        project.visible_to = 'groups'
-        project.groups << create(:group)
-
-        # members
-        user = create(:user, email: 'user1@example.com', manual_groups: [project.groups.first])
-        _admin = create(:admin, email: 'admin@example.com', manual_groups: [project.groups.first])
-        # non-members
-        _other_user = create(:admin)
-        _other_admin = create(:user, email: 'user2@example.com')
-
-        activity = create(:activity, item: phase, action: 'started')
-
-        notifications = Notifications::ProjectPhaseStarted.make_notifications_on(activity)
-        expect(notifications.map(&:recipient_id)).to match_array [user.id]
-      end
-
-      context 'when the project is visible only to some groups' do
-        let(:phase) { create(:active_phase) }
-        let!(:project) do
-          phase.project.tap do |project|
-            project.visible_to = 'groups'
-            project.groups << create(:group)
-          end
-        end
-        let(:notifications) do
-          activity = create(:activity, item: phase, action: 'started')
-          Notifications::ProjectPhaseStarted.make_notifications_on(activity)
-        end
-
-        context 'and the user moderates the project' do
-          before { create(:project_moderator, projects: [project], manual_groups: [project.groups.first]) }
-
-          it { expect(notifications.map(&:recipient_id)).to eq [] }
-        end
-
-        context 'and the user moderates another project' do
-          let!(:user) { create(:project_moderator, manual_groups: [project.groups.first]) }
-
-          it { expect(notifications.map(&:recipient_id)).to eq [user.id] }
-        end
-      end
-    end
-
     it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_given' do
       project = create(:project)
       moderator = create(:project_moderator, projects: [project])

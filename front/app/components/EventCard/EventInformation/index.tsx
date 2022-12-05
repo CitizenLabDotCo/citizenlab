@@ -5,7 +5,7 @@ import moment from 'moment';
 // components
 import Link from 'utils/cl-router/Link';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Text } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
@@ -233,12 +233,20 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
   return (
     <EventInformationContainer data-testid="EventInformation">
       <EventTitleAndAttributes>
-        {showProjectTitle && projectTitle && (
-          <StyledLink to={`/projects/${projectSlug}`}>
-            <T value={projectTitle} />
-          </StyledLink>
-        )}
-
+        {showProjectTitle &&
+          projectTitle &&
+          onClickTitleGoToProjectAndScrollToEvent && (
+            <StyledLink to={`/projects/${projectSlug}`}>
+              <T value={projectTitle} />
+            </StyledLink>
+          )}
+        {showProjectTitle &&
+          projectTitle &&
+          !onClickTitleGoToProjectAndScrollToEvent && (
+            <Text color="textSecondary" fontSize="xs" margin="0 0  5px 0">
+              <T value={projectTitle} />
+            </Text>
+          )}
         {onClickTitleGoToProjectAndScrollToEvent && (
           <Link to={`/projects/${projectSlug}?scrollToEventId=${event.id}`}>
             <EventTitle fontSize={titleFontSize}>
