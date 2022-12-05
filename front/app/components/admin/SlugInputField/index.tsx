@@ -5,7 +5,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 // components
 import Error from 'components/UI/Error';
 import SlugInput from 'components/admin/SlugInput';
-import SlugInputComponent from 'components/admin/SlugInput/InputComponent';
+import InputComponent from 'components/admin/SlugInput/InputComponent';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -49,7 +49,7 @@ const SlugInputField = ({
         {previewUrl && (
           <SlugInput
             inputComponent={
-              <SlugInputComponent onChange={onSlugChange} slug={slug} />
+              <InputComponent onChange={onSlugChange} slug={slug} />
             }
             previewUrl={previewUrl}
             showWarningMessage={slugHasChanged}

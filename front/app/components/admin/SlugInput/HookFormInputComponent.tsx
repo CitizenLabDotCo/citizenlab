@@ -1,23 +1,22 @@
 import React from 'react';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { Input } from '@citizenlab/cl2-component-library';
+import Input from 'components/HookForm/Input';
 
 interface Props {
-  onChange: (slug: string) => void;
   slug: string;
 }
-const InputComponent = ({ onChange, slug }: Props) => {
+const HookFormInputComponent = ({ slug }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Input
       label={formatMessage(messages.urlSlugLabel)}
       labelTooltipText={formatMessage(messages.slugTooltip)}
       type="text"
-      onChange={onChange}
+      name="slug"
       value={slug}
     />
   );
 };
 
-export default InputComponent;
+export default HookFormInputComponent;
