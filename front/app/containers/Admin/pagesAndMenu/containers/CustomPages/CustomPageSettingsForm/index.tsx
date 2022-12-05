@@ -38,7 +38,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
 import { useIntl } from 'utils/cl-intl';
 
 // types
@@ -77,9 +76,8 @@ const CustomPageSettingsForm = ({
   mode,
   onSubmit,
   defaultValues,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const localize = useLocalize();
-  const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
