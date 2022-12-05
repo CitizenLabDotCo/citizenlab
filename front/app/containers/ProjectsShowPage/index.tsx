@@ -125,7 +125,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
         scrollToElement({ id: scrollToEventId });
       }, 1500);
     }
-  }, [mounted, scrollToEventId]);
+  }, [mounted, loading, scrollToEventId]);
 
   // UseEffect to handle modal state and phase parameters
   useEffect(() => {
