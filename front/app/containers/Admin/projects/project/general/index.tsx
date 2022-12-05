@@ -503,7 +503,7 @@ const AdminProjectsProjectGeneral = () => {
 
         {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
         {!isNilOrError(project) && slug && (
-          <>
+          <StyledSectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.url} />
             </SubSectionTitle>
@@ -515,7 +515,7 @@ const AdminProjectsProjectGeneral = () => {
               onSlugChange={handleSlugOnChange}
               slugHasChanged={slug !== project.attributes.slug}
             />
-          </>
+          </StyledSectionField>
         )}
 
         <StyledSectionField>
