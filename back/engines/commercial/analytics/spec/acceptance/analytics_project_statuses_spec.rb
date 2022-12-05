@@ -25,7 +25,7 @@ resource 'Analytics - ProjectStatus' do
       log_status_change(continuous_p2, 'published')
       log_status_change(continuous_p2, 'archived') # continuous and archived = finished
 
-      log_status_change(timeline_project, 'published')
+      log_status_change(timeline_project, 'published') # Should have a status of published but be finished
     end
 
     example 'gets counts by project status' do
@@ -45,6 +45,46 @@ resource 'Analytics - ProjectStatus' do
         { status: 'finished', count: 2 },
         { status: 'deleted', count: 1 },
         { status: 'archived', count: 1 }
+      ])
+    end
+
+    example 'gets published projects that are finished' do
+      do_request({
+        query: {
+          fact: 'project_status',
+          filters: {
+            status: 'published',
+            finished: true
+          },
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+
+      assert_status 200
+      expect(response_data).to eq([
+        { count: 1 }
+      ])
+    end
+
+    example 'gets published projects that NOT finished' do
+      do_request({
+        query: {
+          fact: 'project_status',
+          filters: {
+            status: 'published',
+            finished: false
+          },
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+
+      assert_status 200
+      expect(response_data).to eq([
+        { count: 0 }
       ])
     end
   end
