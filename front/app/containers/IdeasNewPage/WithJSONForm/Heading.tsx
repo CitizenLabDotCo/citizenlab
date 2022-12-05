@@ -48,6 +48,7 @@ export const Heading = ({
   const isSmallerThanXlPhone = useBreakpoint('phone');
   const showEditSurveyButton = !isSmallerThanXlPhone && canEditSurvey;
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const shouldCenterTopBarContent = !isSmallerThanXlPhone || !isSurvey;
   const openModal = () => {
     setShowLeaveModal(true);
   };
@@ -83,7 +84,7 @@ export const Heading = ({
       >
         <Box
           display="flex"
-          width={!isSmallerThanXlPhone ? '100%' : undefined}
+          width={shouldCenterTopBarContent ? '100%' : undefined}
           flexDirection="row"
           justifyContent={showEditSurveyButton ? 'flex-end' : 'space-between'}
           mb="14px"
@@ -91,6 +92,9 @@ export const Heading = ({
           maxWidth="700px"
           px="20px"
         >
+          {!isSurvey && (
+            <GoBackButton insideModal={false} projectId={project.id} />
+          )}
           {isSurvey && !isSmallerThanXlPhone && (
             <Box
               display="flex"
@@ -118,9 +122,6 @@ export const Heading = ({
                 onClick={openModal}
               />
             </Box>
-          )}
-          {!isSurvey && (
-            <GoBackButton insideModal={false} projectId={project.id} />
           )}
         </Box>
 
