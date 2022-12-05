@@ -224,7 +224,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
                 canUserEditProject={canUserEditProject}
               />
             }
-            config={'input'}
+            config={isSurvey ? 'survey' : 'input'}
             formSubmitText={isSurvey ? messages.submitSurvey : undefined}
           />
         </>

@@ -34,9 +34,15 @@ interface Props {
   field: IFlatCustomFieldWithIndex;
   onDelete: (fieldIndex: number) => void;
   onClose: () => void;
+  isDeleteDisabled?: boolean;
 }
 
-const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
+const FormBuilderSettings = ({
+  field,
+  onDelete,
+  onClose,
+  isDeleteDisabled = false,
+}: Props) => {
   const locales = useAppConfigurationLocales();
 
   if (isNilOrError(locales)) {
@@ -145,6 +151,7 @@ const FormBuilderSettings = ({ field, onDelete, onClose }: Props) => {
           onClick={() => onDelete(field.index)}
           minWidth="160px"
           data-cy="e2e-delete-field"
+          disabled={isDeleteDisabled}
         >
           <FormattedMessage {...messages.delete} />
         </Button>
