@@ -13,6 +13,7 @@ import { injectIntl } from '../../../../../../../utils/cl-intl';
 import messages from '../../../messages';
 import GenderChart from '../../../../../../../containers/Admin/dashboard/users/Charts/GenderChart';
 import AgeChart from '../../../../../../../containers/Admin/dashboard/users/Charts/AgeChart';
+import { IResolution } from '../../../../../../../components/admin/ResolutionControl';
 
 interface Props {
   title: string;
@@ -29,49 +30,37 @@ const AnalyticsChartWidget = ({
   startAtMoment,
   endAtMoment,
 }: Props) => {
+  const resolution: IResolution = 'month';
+  const analyticsChartProps = {
+    projectId,
+    startAtMoment,
+    endAtMoment,
+    resolution,
+    reportConfig: { title },
+  };
+
+  const statChartProps = {
+    startAt: startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss'),
+    // endAt: startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss'), // TODO: AgeChart doesn't like this being undefined
+    endAt: null,
+    className: 'fullWidth',
+    currentGroupFilter: undefined,
+    currentGroupFilterLabel: undefined,
+  };
+
   let chart = <></>;
   switch (chartType) {
     case 'VisitorsCard':
-      chart = (
-        <VisitorsCard
-          projectId={projectId}
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          resolution={'month'}
-          reportConfig={{ title }}
-        />
-      );
+      chart = <VisitorsCard {...analyticsChartProps} />;
       break;
     case 'VisitorsTrafficSourcesCard':
-      chart = (
-        <VisitorsTrafficSourcesCard
-          projectId={projectId}
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          reportConfig={{ title }}
-        />
-      );
+      chart = <VisitorsTrafficSourcesCard {...analyticsChartProps} />;
       break;
     case 'GenderChart':
-      // TODO: Plugin start & end dates
-      chart = (
-        <GenderChart
-          startAt={startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss')}
-          endAt={startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss')}
-          currentGroupFilter={undefined}
-          currentGroupFilterLabel={undefined}
-        />
-      );
+      chart = <GenderChart {...statChartProps} />;
       break;
     case 'AgeChart':
-      chart = (
-        <AgeChart
-          startAt={null}
-          endAt={null}
-          currentGroupFilter={undefined}
-          currentGroupFilterLabel={undefined}
-        />
-      );
+      chart = <AgeChart {...statChartProps} />;
       break;
   }
 
