@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::FactProjectStatus, type: :model do
-  subject { described_class.new }
-
   let(:user) { create(:user) }
 
   it { is_expected.to belong_to(:dimension_project) }
@@ -12,17 +10,13 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
 
   shared_examples 'project can have status' do |status|
     it "the project can have the #{status} status", :aggregate_failures do
-      LogActivityJob.perform_now(project, status, user, project.updated_at.to_i)
-
-
+      project.update!({ admin_publication_attributes: { publication_status: status } })
 
       expect(described_class.count).to be 1 # there will only ever be 1 status per project
 
       project_status = described_class.find_by(status: status)
       expect(project_status.timestamp.floor).to eq(project.updated_at.floor)
       expect(project_status.dimension_project_id).to eq(project.id)
-
-
     end
   end
 
@@ -32,16 +26,10 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
     include_examples 'project can have status', 'archived'
 
     it 'only reports the last status' do
-      LogActivityJob.perform_now(project, 'draft', user, project.updated_at.to_i - 10)
-      LogActivityJob.perform_now(project, 'published', user, project.updated_at.to_i)
+      project.update!({ admin_publication_attributes: { publication_status: 'draft' } })
+      project.update!({ admin_publication_attributes: { publication_status: 'published' } })
 
       expect(described_class.find_by(dimension_project_id: project.id, status: 'draft')).to be_nil
-    end
-
-    it "doesn't report unknown statuses" do
-      LogActivityJob.perform_now(project, 'unknown-status', user, project.updated_at.to_i)
-
-      expect(described_class.find_by(status: 'unknown-status')).to be_nil
     end
   end
 
@@ -51,7 +39,9 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
     context 'and archived' do
       let(:archived_at) { Time.now }
 
-      before { LogActivityJob.perform_now(project, 'archived', user, archived_at) }
+      before do
+        project.update!({ admin_publication_attributes: { publication_status: 'archived' } })
+      end
 
       it 'the project is also finished', :aggregate_failures do
         expect(described_class.count).to eq(1) # only 1 status - archived
@@ -81,9 +71,10 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
         expect(described_class.count).to eq(1)
 
         project_status = described_class.first
-        expect(project_status.timestamp).to eq (phase.end_at + 1).to_time(:utc)
         expect(project_status.dimension_project_id).to eq(project.id)
-        expect(project_status.status).to eq('finished')
+        expect(project_status.timestamp).to eq (phase.end_at + 1).to_time(:utc)
+        expect(project_status.status).to eq('published')
+        expect(project_status.finished).to be(true)
       end
     end
 
@@ -91,7 +82,13 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
       let(:end_date) { Time.zone.today + 10 }
 
       it 'the project is not finished', :aggregate_failures do
-        expect(described_class.count).to eq(0)
+        expect(described_class.count).to eq(1)
+
+        project_status = described_class.first
+        expect(project_status.dimension_project_id).to eq(project.id)
+        expect(project_status.timestamp.floor).to eq(project.updated_at.floor)
+        expect(project_status.status).to eq('published')
+        expect(project_status.finished).to be(false)
       end
     end
 
