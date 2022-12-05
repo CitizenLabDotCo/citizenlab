@@ -10,8 +10,7 @@ import { StyledSectionField } from './styling';
 import SlugInput from 'components/admin/SlugInput';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -34,10 +33,10 @@ const SlugInputField = ({
   apiErrors,
   showSlugErrorMessage,
   onSlugChange,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const locale = useLocale();
   const appConfig = useAppConfiguration();
+  const { formatMessage } = useIntl();
 
   if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
     const hostName = appConfig.attributes.host;
@@ -101,4 +100,4 @@ const SlugInputField = ({
   return null;
 };
 
-export default injectIntl(SlugInputField);
+export default SlugInputField;
