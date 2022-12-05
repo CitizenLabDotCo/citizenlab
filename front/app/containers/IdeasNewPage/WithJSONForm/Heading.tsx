@@ -81,49 +81,48 @@ export const Heading = ({
         top={isSurveyOnMobile ? '0px' : undefined}
         zIndex="3"
       >
-        {!isSmallerThanXlPhone && (
-          <Box
-            display="flex"
-            width="100%"
-            flexDirection="row"
-            justifyContent={canEditSurvey ? 'flex-end' : 'space-between'}
-            mb="14px"
-            alignItems="center"
-            maxWidth="700px"
-            px="20px"
-          >
-            {isSurvey ? (
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                {showEditSurveyButton && (
-                  <Button
-                    data-cy="e2e-edit-survey-link"
-                    icon="edit"
-                    linkTo={linkToSurveyBuilder}
-                    buttonStyle="primary-inverse"
-                    textDecorationHover="underline"
-                    hidden={!canUserEditProject}
-                    mr="12px"
-                  >
-                    <FormattedMessage {...messages.editSurvey} />
-                  </Button>
-                )}
+        <Box
+          display="flex"
+          width={!isSmallerThanXlPhone ? '100%' : undefined}
+          flexDirection="row"
+          justifyContent={showEditSurveyButton ? 'flex-end' : 'space-between'}
+          mb="14px"
+          alignItems="center"
+          maxWidth="700px"
+          px="20px"
+        >
+          {isSurvey && !isSmallerThanXlPhone && (
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+            >
+              {showEditSurveyButton && (
                 <Button
-                  icon="close"
-                  buttonStyle="text"
-                  padding="0px"
-                  onClick={openModal}
-                />
-              </Box>
-            ) : (
-              <GoBackButton insideModal={false} projectId={project.id} />
-            )}
-          </Box>
-        )}
+                  data-cy="e2e-edit-survey-link"
+                  icon="edit"
+                  linkTo={linkToSurveyBuilder}
+                  buttonStyle="primary-inverse"
+                  textDecorationHover="underline"
+                  hidden={!canUserEditProject}
+                  mr="12px"
+                >
+                  <FormattedMessage {...messages.editSurvey} />
+                </Button>
+              )}
+              <Button
+                icon="close"
+                buttonStyle="text"
+                padding="0px"
+                onClick={openModal}
+              />
+            </Box>
+          )}
+          {!isSurvey && (
+            <GoBackButton insideModal={false} projectId={project.id} />
+          )}
+        </Box>
 
         <Box width="100%">
           <Text
