@@ -146,7 +146,6 @@
   "app.components.admin.ReportExportMenu.downloadSvg": "SVG olarak indirin",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Excel'i indirin",
   "app.components.admin.SlugInput.regexError": "Adres kısa adında yalnızca küçük harf (a-z), rakam (0-9) ve tire (-) bulunabilir. İlk ve son karakterler tire olamaz. Ardışık tire kullanımına (--) izin verilmez.",
-  "app.components.admin.SlugInput.url": "URL",
   "app.components.admin.TerminologyConfig.saveButton": "Kaydet",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Katkı",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Google Formlar için bir bağlantının nasıl yerleştirileceği hakkında daha fazla bilgi {googleFormsTooltipLink} bulunabilir.",

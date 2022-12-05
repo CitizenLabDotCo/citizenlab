@@ -146,7 +146,6 @@
   "app.components.admin.ReportExportMenu.downloadSvg": "Ladda ned som SVG",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Ladda ner Excel",
   "app.components.admin.SlugInput.regexError": "En slug får bara innehålla små bokstäver (a–z), siffror (0–9) och bindestreck (-). Det första och sista tecknet får inte vara ett bindestreck. Två bindestreck i rad (--) får inte användas.",
-  "app.components.admin.SlugInput.url": "Webbadress",
   "app.components.admin.TerminologyConfig.saveButton": "Spara",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Bidrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Mer information om hur du bäddar in en länk för Google Formulär finns i {googleFormsTooltipLink}.",

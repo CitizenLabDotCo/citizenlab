@@ -146,7 +146,6 @@
   "app.components.admin.ReportExportMenu.downloadSvg": "Lejupielādēt kā SVG",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Lejupielādēt Excel dokumentu",
   "app.components.admin.SlugInput.regexError": "Aprakstošā daļa var ietvert tikai parastos mazos burtus (a-z), ciparus (0-9) un defises (-). Pirmā un pēdējā rakstu zīme nedrīkst būt defise. Aizliegts izmantot divas defises pēc kārtas (--).",
-  "app.components.admin.SlugInput.url": "URL",
   "app.components.admin.TerminologyConfig.saveButton": "Saglabāt",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Ieguldījums",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Vairāk informācijas par to, kā iestrādāt saiti uz Google Forms, var atrast sadaļā {googleFormsTooltipLink}.",

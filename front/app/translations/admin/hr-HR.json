@@ -146,7 +146,6 @@
   "app.components.admin.ReportExportMenu.downloadSvg": "Preuzmi format SVG",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Preuzmi Excel",
   "app.components.admin.SlugInput.regexError": "Opis može sadržavati samo obična mala slova (a-z), brojeve (0-9) i crtice (-). Crtica ne može biti na mjestu prvog i posljednjeg znaka. Dvije uzastopne crtice (--) su zabranjene.",
-  "app.components.admin.SlugInput.url": "URL",
   "app.components.admin.TerminologyConfig.saveButton": "Spremi",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Doprinos",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Više informacija o tome kako ugraditi vezu za Google Forms može se pronaći na {googleFormsTooltipLink}.",
