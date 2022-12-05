@@ -35,7 +35,7 @@ const ActiveUsersCard = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const { timeSeries, stats, xlsxData, deducedResolution } = useActiveUsers({
+  const { timeSeries, stats, xlsxData, currentResolution } = useActiveUsers({
     projectId,
     startAtMoment,
     endAtMoment,
@@ -64,7 +64,7 @@ const ActiveUsersCard = ({
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
-        resolution: deducedResolution,
+        resolution: currentResolution,
       }}
     >
       <Box display="flex" flexDirection={layout === 'wide' ? 'row' : 'column'}>
@@ -103,7 +103,7 @@ const ActiveUsersCard = ({
                 timeSeries={timeSeries}
                 startAtMoment={startAtMoment}
                 endAtMoment={endAtMoment}
-                resolution={deducedResolution}
+                resolution={currentResolution}
                 innerRef={graphRef}
                 layout={layout}
               />
@@ -117,7 +117,7 @@ const ActiveUsersCard = ({
               timeSeries={timeSeries}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
-              resolution={deducedResolution}
+              resolution={currentResolution}
               innerRef={graphRef}
               layout={layout}
             />
