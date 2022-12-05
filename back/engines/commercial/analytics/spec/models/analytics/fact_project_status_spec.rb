@@ -14,11 +14,15 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
     it "the project can have the #{status} status", :aggregate_failures do
       LogActivityJob.perform_now(project, status, user, project.updated_at.to_i)
 
-      expect(described_class.count).to be <= 2 # can also have the 'finished' status
+
+
+      expect(described_class.count).to be 1 # there will only ever be 1 status per project
 
       project_status = described_class.find_by(status: status)
-      expect(project_status.timestamp).to eq(project.updated_at.floor)
+      expect(project_status.timestamp.floor).to eq(project.updated_at.floor)
       expect(project_status.dimension_project_id).to eq(project.id)
+
+
     end
   end
 
@@ -26,7 +30,6 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
     include_examples 'project can have status', 'draft'
     include_examples 'project can have status', 'published'
     include_examples 'project can have status', 'archived'
-    include_examples 'project can have status', 'deleted'
 
     it 'only reports the last status' do
       LogActivityJob.perform_now(project, 'draft', user, project.updated_at.to_i - 10)
@@ -51,10 +54,11 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
       before { LogActivityJob.perform_now(project, 'archived', user, archived_at) }
 
       it 'the project is also finished', :aggregate_failures do
-        expect(described_class.count).to eq(2) # archived and finished
+        expect(described_class.count).to eq(1) # only 1 status - archived
 
-        project_status = described_class.find_by(status: 'finished')
+        project_status = described_class.find_by(status: 'archived')
         expect(project_status.dimension_project_id).to eq(project.id)
+        expect(project_status.finished).to be(true)
 
         # We round the timestamps for comparison because postgres timestamps are stored with
         # a smaller precision than Ruby timestamp when running the CI.
