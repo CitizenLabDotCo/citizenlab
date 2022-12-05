@@ -147,7 +147,6 @@
   "app.components.admin.ReportExportMenu.downloadXlsx": "Descarregar Excel",
   "app.components.admin.SlugInput.regexError": "L’identificador d’URL només pot contenir lletres minúscules regulars (az), números (0-9) i guions (-). El primer i l'últim caràcter no poden ser guions. Els guions consecutius (--) estan prohibits.",
   "app.components.admin.SlugInput.url": "URL",
-  "app.components.admin.SlugInput.urlSlugTooltip": "Podeu especificar l'última part de la vostra URL (anomenada Identificador d’URL). Per exemple, l'URL actual és {currentURL}, on {currentSlug} és l’identificador d’URL.",
   "app.components.admin.TerminologyConfig.saveButton": "Desar",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Contribució",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Trobareu més informació sobre com inserir un enllaç per a Google Forms a {googleFormsTooltipLink}.",

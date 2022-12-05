@@ -147,7 +147,6 @@
   "app.components.admin.ReportExportMenu.downloadXlsx": "Exel aaguk",
   "app.components.admin.SlugInput.regexError": "Uani slugimi taamaallaat naqinnerit minnerit naliginnaasut (a-z), kisitsisit (0-9) aamma kittoraatit (-) atorneqarsinnaapput. Naqinneq siulleq kingullerlu killiffilersuutaassanngilaq. Killifilersuutit tulleriit (--) inerteqqutaapput.",
   "app.components.admin.SlugInput.url": "URL",
-  "app.components.admin.SlugInput.urlSlugTooltip": "URL-ivit naggataa allassinnaavat (taaguutaa slug). Assersuutigalugu URL maannakkut atuuttoq tassaavoq {currentURL}, unalu {currentSlug} slug-itut atorneqarluni.",
   "app.components.admin.TerminologyConfig.saveButton": "Toqqoruk",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Ilanngussaq",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Google Forms-imut linki qanoq ilillugu atassusernissaa pillugu suli paasissutissanik ujarlerneq uani {googleFormsTooltipLink}.",

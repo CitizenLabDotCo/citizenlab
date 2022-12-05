@@ -147,7 +147,6 @@
   "app.components.admin.ReportExportMenu.downloadXlsx": "Hent Excel",
   "app.components.admin.SlugInput.regexError": "Slug'en kan kun indeholde almindelige små bogstaver (a-z), tal (0-9) og bindestreger (-). Det første og sidste tegn kan ikke være bindestreger. Det er forbudt at bruge på hinanden følgende bindestreger (--).",
   "app.components.admin.SlugInput.url": "URL",
-  "app.components.admin.SlugInput.urlSlugTooltip": "Du kan angive den sidste del af din URL (kaldet slug). Den aktuelle URL er f.eks. {currentURL}, hvor {currentSlug} er slug'en.",
   "app.components.admin.TerminologyConfig.saveButton": "Gem",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Bidrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Du kan finde flere oplysninger om, hvordan du indlejrer et link til Google Forms, i {googleFormsTooltipLink}.",

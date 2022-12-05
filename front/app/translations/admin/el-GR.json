@@ -147,7 +147,6 @@
   "app.components.admin.ReportExportMenu.downloadXlsx": "Λήψη Excel",
   "app.components.admin.SlugInput.regexError": "Το slug μπορεί να περιέχει μόνο κανονικά, πεζά γράμματα (a-z), αριθμούς (0-9) και παύλες (-). Ο πρώτος και ο τελευταίος χαρακτήρας δεν μπορούν να είναι παύλες. Οι διαδοχικές παύλες (--) απαγορεύονται.",
   "app.components.admin.SlugInput.url": "URL",
-  "app.components.admin.SlugInput.urlSlugTooltip": "Μπορείτε να καθορίσετε το τελευταίο μέρος της διεύθυνσης URL (που ονομάζεται slug). Για παράδειγμα, η τρέχουσα διεύθυνση URL είναι {currentURL}, όπου {currentSlug} είναι το slug.",
   "app.components.admin.TerminologyConfig.saveButton": "Αποθήκευση",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Συνεισφορά",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Περισσότερες πληροφορίες σχετικά με τον τρόπο ενσωμάτωσης ενός συνδέσμου για τις Φόρμες Google μπορείτε να βρείτε στο {googleFormsTooltipLink}.",

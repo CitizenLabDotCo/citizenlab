@@ -147,7 +147,6 @@
   "app.components.admin.ReportExportMenu.downloadXlsx": "Last ned som Excel",
   "app.components.admin.SlugInput.regexError": "Slug kan bare inneholde ordinære småbokstaver (a-z), nummer (0-9) og bindestrek (-). Det første og siste tegnet kan ikke være bindestrek. To bindestrek (--) etter hverandre er forbudt.",
   "app.components.admin.SlugInput.url": "URL-adresse",
-  "app.components.admin.SlugInput.urlSlugTooltip": "Du kan spesifisere den siste delen av URL-adressen (kalt kortbeskrivelse). Den gjeldende URL-adressen er for eksempel {currentURL}, mens kortbeskrivelsen er {currentSlug}.",
   "app.components.admin.TerminologyConfig.saveButton": "Lagre",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Bidrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Du finner mer informasjon om hvordan du integrerer en kobling til Google Forms i {googleFormsTooltipLink}.",
