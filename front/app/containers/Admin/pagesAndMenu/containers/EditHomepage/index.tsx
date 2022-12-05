@@ -11,7 +11,7 @@ import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 // i18n
 import messages from './messages';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
-import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
 // services, hooks, resources, and types
@@ -27,19 +27,16 @@ import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
 import clHistory from 'utils/cl-router/history';
+import { ISectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 
-export type TSectionToggleData = {
+export interface IHomepageSectionToggleData extends ISectionToggleData {
   name: THomepageEnabledSetting | 'homepage_banner';
-  titleMessageDescriptor: MessageDescriptor;
-  tooltipMessageDescriptor: MessageDescriptor;
-  linkToPath?: string;
-  hideToggle?: boolean;
-};
+}
 
 const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const [sectionTogglesData, setSectionTogglesData] = useState<
-    TSectionToggleData[]
+    IHomepageSectionToggleData[]
   >([
     {
       name: 'homepage_banner',
@@ -77,7 +74,7 @@ const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
     };
 
   const handleOnData = (
-    sectionToggleData: InsertConfigurationOptions<TSectionToggleData>
+    sectionToggleData: InsertConfigurationOptions<IHomepageSectionToggleData>
   ) => {
     setSectionTogglesData((currentSectionTogglesData) => {
       return insertConfiguration(sectionToggleData)(currentSectionTogglesData);
@@ -124,33 +121,20 @@ const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
             <FormattedMessage {...messages.sectionDescription} />
           </Warning>
         </Box>
-        {sectionTogglesData.map(
-          (
-            {
-              name,
-              titleMessageDescriptor,
-              tooltipMessageDescriptor,
-              linkToPath,
-              hideToggle,
-            },
-            index
-          ) => {
-            return (
-              <SectionToggle
-                key={name}
-                name={name}
-                checked={homepageSettings.attributes[name]}
-                onChangeSectionToggle={handleOnChangeToggle(name)}
-                onClickEditButton={handleOnClick}
-                editLinkPath={linkToPath}
-                titleMessageDescriptor={titleMessageDescriptor}
-                tooltipMessageDescriptor={tooltipMessageDescriptor}
-                isLastItem={index === sectionTogglesData.length - 1}
-                hideToggle={hideToggle}
-              />
-            );
-          }
-        )}
+        {sectionTogglesData.map((sectionToggleData, index) => {
+          return (
+            <SectionToggle
+              sectionToggleData={sectionToggleData}
+              key={sectionToggleData.name}
+              checked={homepageSettings.attributes[sectionToggleData.name]}
+              onChangeSectionToggle={handleOnChangeToggle(
+                sectionToggleData.name
+              )}
+              onClickEditButton={handleOnClick}
+              isLastItem={index === sectionTogglesData.length - 1}
+            />
+          );
+        })}
         <Outlet
           id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles"
           onData={handleOnData}

@@ -2,13 +2,15 @@ import React from 'react';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
-import SectionToggle from 'containers/Admin/pagesAndMenu/components/SectionToggle';
+import SectionToggle, {
+  ISectionToggleData,
+} from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
 
 // services
@@ -28,13 +30,10 @@ import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
-export type TCustomPageSectionToggleData = {
+export interface ICustomPageSectionToggleData extends ISectionToggleData {
   name: TCustomPageEnabledSetting;
-  titleMessageDescriptor: MessageDescriptor;
-  tooltipMessageDescriptor: MessageDescriptor;
-  linkToPath?: string;
   hideSection?: boolean;
-};
+}
 
 // types
 const CustomPagesEditContent = () => {
@@ -52,7 +51,7 @@ const CustomPagesEditContent = () => {
     !advancedCustomPagesEnabled ||
     customPage.attributes.projects_filter_type === 'no_filter';
 
-  const sectionTogglesData: TCustomPageSectionToggleData[] = [
+  const sectionTogglesData: ICustomPageSectionToggleData[] = [
     {
       name: 'banner_enabled',
       titleMessageDescriptor: sectionToggleMessages.heroBanner,
@@ -119,35 +118,23 @@ const CustomPagesEditContent = () => {
             <FormattedMessage {...messages.sectionDescription} />
           </Warning>
         </Box>
-        {sectionTogglesData.map(
-          (
-            {
-              name,
-              titleMessageDescriptor,
-              tooltipMessageDescriptor,
-              linkToPath,
-              hideSection,
-            },
-            index
-          ) => {
-            if (hideSection) {
-              return;
-            }
-            return (
-              <SectionToggle
-                key={name}
-                name={name}
-                checked={customPage.attributes[name]}
-                onChangeSectionToggle={handleOnChangeToggle(name)}
-                onClickEditButton={handleOnClick}
-                editLinkPath={linkToPath}
-                titleMessageDescriptor={titleMessageDescriptor}
-                tooltipMessageDescriptor={tooltipMessageDescriptor}
-                isLastItem={index === sectionTogglesData.length - 1}
-              />
-            );
+        {sectionTogglesData.map((sectionToggleData, index) => {
+          if (sectionToggleData.hideSection) {
+            return;
           }
-        )}
+          return (
+            <SectionToggle
+              key={sectionToggleData.name}
+              checked={customPage.attributes[sectionToggleData.name]}
+              onChangeSectionToggle={handleOnChangeToggle(
+                sectionToggleData.name
+              )}
+              onClickEditButton={handleOnClick}
+              isLastItem={index === sectionTogglesData.length - 1}
+              sectionToggleData={sectionToggleData}
+            />
+          );
+        })}
       </Box>
     </PageWrapper>
   );
