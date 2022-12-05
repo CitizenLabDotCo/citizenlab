@@ -206,5 +206,5 @@ ro:
       option1: 'Option 1'
       option2: 'Option 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Sfârșitul sondajului'
+      description: "Vă rugăm să trimiteți răspunsurile dvs. selectând \"Trimiteți sondajul\" de mai jos."
