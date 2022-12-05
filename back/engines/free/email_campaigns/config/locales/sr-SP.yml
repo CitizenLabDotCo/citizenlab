@@ -102,7 +102,7 @@ sr-SP:
       "link_terms_conditions": "Услови коришћења"
       "link_unsubscribe": "Одјави се"
       "powered_by": "Powered by"
-      "statement": "Овај емаил вам је послао CitizenLab у име %{organizationName}, јер сте регистровани корисник %{organizationLink}. Можете да %{unsubscribeLink} ако убудуће не желите да примате ове е-поруке."
+      "statement": "Овај емаил вам је послат од стране интернет странице %{organizationName}, јер сте регистровани корисник платформе %{organizationLink}. Можете да кликнете на %{unsubscribeLink} ако убудуће не желите да примате ове е-поруке."
       "unsubscribe_text": "одјавите се"
     comment_deleted_by_admin:
       reason: 'Разлог зашто је ваш коментар избрисан:'
