@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from analytics (originally 20221205110616)
 
 class RefactorFactProjectStatusesView < ActiveRecord::Migration[6.1]

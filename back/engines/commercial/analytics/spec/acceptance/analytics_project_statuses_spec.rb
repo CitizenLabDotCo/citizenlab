@@ -10,7 +10,6 @@ resource 'Analytics - ProjectStatus' do
   before { admin_header_token }
 
   post 'web_api/v1/analytics' do
-
     before_all do
       create(:continuous_project, admin_publication_attributes: { publication_status: 'draft' }) # continuous draft
       create(:continuous_project, admin_publication_attributes: { publication_status: 'published' }) # continuous published
