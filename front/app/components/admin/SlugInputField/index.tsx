@@ -20,11 +20,12 @@ import { isNilOrError } from 'utils/helperUtils';
 type TApiErrors = CLErrors | null;
 
 export interface Props {
-  slug: string | null;
+  slug: string;
   pathnameWithoutSlug: string;
   apiErrors: TApiErrors;
   showSlugErrorMessage: boolean;
   onSlugChange: (slug: string) => void;
+  slugHasChanged: boolean;
 }
 
 const SlugInputField = ({
@@ -33,6 +34,7 @@ const SlugInputField = ({
   apiErrors,
   showSlugErrorMessage,
   onSlugChange,
+  slugHasChanged,
 }: Props) => {
   const locale = useLocale();
   const appConfig = useAppConfiguration();
@@ -49,12 +51,13 @@ const SlugInputField = ({
         <SubSectionTitle>
           <FormattedMessage {...messages.url} />
         </SubSectionTitle>
-        {slug && previewUrl && (
+        {previewUrl && (
           <SlugInput
             inputComponent={
               <SlugInputComponent onChange={onSlugChange} slug={slug} />
             }
             previewUrl={previewUrl}
+            showWarningMessage={slugHasChanged}
           />
         )}
         {/* Backend error */}

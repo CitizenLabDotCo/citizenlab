@@ -403,11 +403,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     }
   };
 
-  // ---- Rendering
-  if (mode === 'edit' && isNilOrError(projectFolder)) {
-    return null;
-  }
-
   return (
     <form onSubmit={onSubmit}>
       <Section>
@@ -459,7 +454,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
 
         {/* Only show this field when slug is already saved to folder (i.e. not when creating a new folder, which uses this form as well) */}
-        {slug && (
+        {!isNilOrError(projectFolder) && slug && (
           <SectionField>
             <SlugInputField
               slug={slug}
@@ -467,6 +462,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               apiErrors={errors}
               showSlugErrorMessage={showSlugErrorMessage}
               onSlugChange={handleSlugOnChange}
+              slugHasChanged={slug !== projectFolder.attributes.slug}
             />
           </SectionField>
         )}
