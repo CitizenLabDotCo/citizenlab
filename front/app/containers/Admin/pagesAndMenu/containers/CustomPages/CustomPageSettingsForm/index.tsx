@@ -14,7 +14,7 @@ import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/Section
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import SlugInput from 'components/admin/SlugInput';
-import Input from 'components/HookForm/Input';
+import SlugInputComponent from 'components/admin/SlugInput/InputComponent';
 import Tabs from 'components/HookForm/Tabs';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
@@ -219,15 +219,7 @@ const CustomPageSettingsForm = ({
             {mode === 'edit' && previewUrl && (
               <Box mb={fieldMarginBottom}>
                 <SlugInput
-                  inputComponent={
-                    <Input
-                      label={formatMessage(messages.slugLabel)}
-                      labelTooltipText={formatMessage(messages.slugTooltip)}
-                      id="slug"
-                      name="slug"
-                      type="text"
-                    />
-                  }
+                  inputComponent={<SlugInputComponent />}
                   showWarningMessage={slugHasChanged}
                   previewUrl={previewUrl}
                 />
