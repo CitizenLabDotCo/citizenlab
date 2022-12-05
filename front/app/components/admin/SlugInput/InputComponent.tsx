@@ -13,7 +13,7 @@ const InputComponent = ({ onChange, slug }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Input
-      label={formatMessage(messages.pageSlug)}
+      label={formatMessage(messages.urlSlugLabel)}
       labelTooltipText={formatMessage(messages.slugTooltip)}
       type="text"
       onChange={onChange}

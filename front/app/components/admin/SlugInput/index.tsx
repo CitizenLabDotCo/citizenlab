@@ -20,13 +20,13 @@ const SlugInput = ({
       {inputComponent}
       <Text mb={showWarningMessage ? '16px' : '0'}>
         <i>
-          <FormattedMessage {...messages.resultingPageURL} />
+          <FormattedMessage {...messages.resultingURL} />
         </i>
         : {previewUrl}
       </Text>
       {showWarningMessage && (
         <Warning>
-          <FormattedMessage {...messages.brokenURLWarning} />
+          <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
         </Warning>
       )}
     </>
