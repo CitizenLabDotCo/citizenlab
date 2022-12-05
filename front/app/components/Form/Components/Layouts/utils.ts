@@ -22,6 +22,7 @@ export interface PageType extends Layout {
   };
 }
 
+// TODO: Capture the type of the schema with all our custom keys
 export interface PageCategorization extends ExtendedUISchema {
   type: 'Categorization';
   /**
