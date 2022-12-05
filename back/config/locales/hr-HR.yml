@@ -206,5 +206,5 @@ hr:
       option1: '1. opcija'
       option2: '2. opcija'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Kraj upitnika'
+      description: "Pošaljite svoje odgovore odabirom opcije „Pošalji upitnik“ u nastavku."
