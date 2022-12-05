@@ -56,28 +56,28 @@ export const projectStatusConfig: StatCardConfig = {
     total &&
       cardData.stats.push({
         label: labels.totalProjects,
-        value: formatCountValue(total[0].count_dimension_project_id),
+        value: formatCountValue(total[0].count),
         toolTip: labels.totalProjectsToolTip,
       });
     active &&
       cardData.stats.push({
         label: labels.active,
-        value: formatCountValue(active[0].count_dimension_project_id),
+        value: formatCountValue(active[0].count),
         toolTip: labels.activeToolTip,
       });
     cardData.stats.push({
       label: labels.archived,
-      value: formatCountValue(archived[0].count_dimension_project_id),
+      value: formatCountValue(archived[0].count),
     });
     cardData.stats.push({
       label: labels.finished,
-      value: formatCountValue(finished[0].count_dimension_project_id),
+      value: formatCountValue(finished[0].count),
       toolTip: labels.finishedToolTip,
     });
     draft &&
       cardData.stats.push({
         label: labels.draftProjects,
-        value: formatCountValue(draft[0].count_dimension_project_id),
+        value: formatCountValue(draft[0].count),
         display: 'corner',
       });
 
@@ -91,18 +91,18 @@ export const projectStatusConfig: StatCardConfig = {
     endAtMoment,
   }: StatCardProps): Query => {
     const queryBase = (
-      status?: 'published' | 'archived' | 'finished' | 'draft',
-      notFinished?: boolean
+      status?: 'published' | 'archived' | 'draft',
+      finished?: boolean
     ): QuerySchema => {
       const querySchema: QuerySchema = {
         fact: 'project_status',
         aggregations: {
-          dimension_project_id: 'count',
+          all: 'count',
         },
       };
 
       const statusFilter = status === undefined ? {} : { status };
-      const finishedFilter = notFinished ? { finished: false } : {};
+      const finishedFilter = finished === undefined ? {} : { finished };
 
       const filters = {
         ...statusFilter,
@@ -120,7 +120,7 @@ export const projectStatusConfig: StatCardConfig = {
     const queryTotal: QuerySchema = queryBase();
     const queryActive: QuerySchema = queryBase('published', false);
     const queryArchived: QuerySchema = queryBase('archived');
-    const queryFinished: QuerySchema = queryBase('finished');
+    const queryFinished: QuerySchema = queryBase(undefined, true);
     const queryDraft: QuerySchema = queryBase('draft', false);
 
     // Remove the total and active queries if there are start and end date filters

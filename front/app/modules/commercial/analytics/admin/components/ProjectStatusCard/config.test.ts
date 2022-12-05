@@ -44,11 +44,11 @@ describe('Project status card data parsing', () => {
     };
 
     const responseData = [
-      [{ count_dimension_project_id: 5 }],
-      [{ count_dimension_project_id: 4 }],
-      [{ count_dimension_project_id: 3 }],
-      [{ count_dimension_project_id: 2 }],
-      [{ count_dimension_project_id: 1 }],
+      [{ count: 5 }],
+      [{ count: 4 }],
+      [{ count: 3 }],
+      [{ count: 2 }],
+      [{ count: 1 }],
     ];
 
     const labels: ProjectStatusCardLabels = {
@@ -90,10 +90,7 @@ describe('Project status card data parsing', () => {
       ],
     };
 
-    const responseData = [
-      [{ count_dimension_project_id: 2 }],
-      [{ count_dimension_project_id: 1 }],
-    ];
+    const responseData = [[{ count: 2 }], [{ count: 1 }]];
 
     const labels: ProjectStatusCardLabels = {
       projects: 'Project status',
@@ -123,22 +120,23 @@ describe('Project status card data parsing', () => {
         {
           fact: 'project_status',
           aggregations: {
-            dimension_project_id: 'count',
+            all: 'count',
           },
         },
         {
           fact: 'project_status',
           aggregations: {
-            dimension_project_id: 'count',
+            all: 'count',
           },
           filters: {
+            finished: false,
             status: 'published',
           },
         },
         {
           fact: 'project_status',
           aggregations: {
-            dimension_project_id: 'count',
+            all: 'count',
           },
           filters: {
             status: 'archived',
@@ -147,18 +145,19 @@ describe('Project status card data parsing', () => {
         {
           fact: 'project_status',
           aggregations: {
-            dimension_project_id: 'count',
+            all: 'count',
           },
           filters: {
-            status: 'finished',
+            finished: true,
           },
         },
         {
           fact: 'project_status',
           aggregations: {
-            dimension_project_id: 'count',
+            all: 'count',
           },
           filters: {
+            finished: false,
             status: 'draft',
           },
         },
@@ -180,7 +179,7 @@ describe('Project status card data parsing', () => {
       query: [
         {
           fact: 'project_status',
-          aggregations: { dimension_project_id: 'count' },
+          aggregations: { all: 'count' },
           filters: {
             status: 'archived',
             'dimension_date.date': { from: '2020-10-31', to: '2021-10-31' },
@@ -189,9 +188,9 @@ describe('Project status card data parsing', () => {
         },
         {
           fact: 'project_status',
-          aggregations: { dimension_project_id: 'count' },
+          aggregations: { all: 'count' },
           filters: {
-            status: 'finished',
+            finished: true,
             'dimension_date.date': { from: '2020-10-31', to: '2021-10-31' },
             'dimension_project.id': 'PROJECT_ID',
           },
