@@ -30,14 +30,14 @@ RSpec.describe Notifications::ProjectPhaseUpcoming, type: :model do
       moderator_of_other_project_folder = create(:project_folder_moderator, project_folders: [other_project_folder])
 
       notifications = described_class.make_notifications_on activity
-      notification_ids = notifications.pluck(:recipient_id)
+      recipient_ids = notifications.pluck(:recipient_id)
 
-      expect(notification_ids).to include moderator_of_project.id
-      expect(notification_ids).to include moderator_of_project_folder.id
-      expect(notification_ids).to include admin.id
-      expect(notification_ids).not_to include regular_user.id
-      expect(notification_ids).not_to include moderator_of_other_project.id
-      expect(notification_ids).not_to include moderator_of_other_project_folder.id
+      expect(recipient_ids).to include moderator_of_project.id
+      expect(recipient_ids).to include moderator_of_project_folder.id
+      expect(recipient_ids).to include admin.id
+      expect(recipient_ids).not_to include regular_user.id
+      expect(recipient_ids).not_to include moderator_of_other_project.id
+      expect(recipient_ids).not_to include moderator_of_other_project_folder.id
     end
   end
 end
