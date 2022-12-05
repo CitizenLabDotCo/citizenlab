@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -29,7 +29,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import { getAdditionalSettings } from './utils';
-
 interface Props {
   field: IFlatCustomFieldWithIndex;
   onDelete: (fieldIndex: number) => void;
@@ -44,10 +43,78 @@ const FormBuilderSettings = ({
   isDeleteDisabled = false,
 }: Props) => {
   const locales = useAppConfigurationLocales();
+  const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
 
   if (isNilOrError(locales)) {
     return null;
   }
+
+  const Content = () => {
+    return (
+      <>
+        {field.input_type !== 'page' && (
+          <>
+            <SectionField id="e2e-required-toggle">
+              <Toggle
+                name={`customFields.${field.index}.required`}
+                label={
+                  <Text as="span" color="primary" variant="bodyM" my="0px">
+                    <FormattedMessage {...messages.requiredToggleLabel} />
+                  </Text>
+                }
+              />
+            </SectionField>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                id="e2e-title-multiloc"
+                name={`customFields.${field.index}.title_multiloc`}
+                label={<FormattedMessage {...messages.questionTitle} />}
+                type="text"
+              />
+            </SectionField>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                name={`customFields.${field.index}.description_multiloc`}
+                label={
+                  <FormattedMessage {...messages.questionDescriptionOptional} />
+                }
+                type="text"
+              />
+            </SectionField>
+          </>
+        )}
+        {getAdditionalSettings(field, locales)}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          borderTop={`1px solid ${colors.divider}`}
+          pt="36px"
+        >
+          <Button
+            id="e2e-settings-done-button"
+            buttonStyle="secondary"
+            onClick={onClose}
+            minWidth="160px"
+          >
+            <FormattedMessage {...messages.done} />
+          </Button>
+          <Button
+            icon="delete"
+            buttonStyle="primary-outlined"
+            borderColor={colors.error}
+            textColor={colors.error}
+            iconColor={colors.error}
+            onClick={() => onDelete(field.index)}
+            minWidth="160px"
+            data-cy="e2e-delete-field"
+            disabled={isDeleteDisabled}
+          >
+            <FormattedMessage {...messages.delete} />
+          </Button>
+        </Box>
+      </>
+    );
+  };
 
   let translatedStringKey: MessageDescriptor | null = null;
   switch (field.input_type) {
@@ -70,93 +137,66 @@ const FormBuilderSettings = ({
   }
 
   return (
-    <Box
-      position="fixed"
-      right="0"
-      top={`${stylingConsts.menuHeight}px`}
-      bottom="0"
-      zIndex="99999"
-      p="20px"
-      w="400px"
-      background="white"
-      boxShadow="-2px 0px 1px 0px rgba(0, 0, 0, 0.06)"
-      overflowY="auto"
-      overflowX="hidden"
-    >
-      <Box position="absolute" right="10px">
-        <CloseIconButton
-          a11y_buttonActionMessage={messages.close}
-          onClick={onClose}
-          iconColor={colors.textSecondary}
-          iconColorOnHover={'#000'}
-        />
-      </Box>
-      {translatedStringKey && (
-        <Title variant="h4" as="h2" mb="36px">
-          <FormattedMessage {...translatedStringKey} />
-        </Title>
-      )}
-      {field.input_type !== 'page' && (
-        <>
-          <SectionField id="e2e-required-toggle">
-            <Toggle
-              name={`customFields.${field.index}.required`}
-              label={
-                <Text as="span" color="primary" variant="bodyM" my="0px">
-                  <FormattedMessage {...messages.requiredToggleLabel} />
-                </Text>
-              }
-            />
-          </SectionField>
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              id="e2e-title-multiloc"
-              name={`customFields.${field.index}.title_multiloc`}
-              label={<FormattedMessage {...messages.questionTitle} />}
-              type="text"
-            />
-          </SectionField>
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              name={`customFields.${field.index}.description_multiloc`}
-              label={
-                <FormattedMessage {...messages.questionDescriptionOptional} />
-              }
-              type="text"
-            />
-          </SectionField>
-        </>
-      )}
-      {getAdditionalSettings(field, locales)}
+    <>
       <Box
-        display="flex"
-        justifyContent="space-between"
-        borderTop={`1px solid ${colors.divider}`}
-        pt="36px"
+        position="fixed"
+        right="0"
+        top={`${stylingConsts.menuHeight}px`}
+        bottom="0"
+        zIndex="99999"
+        p="20px"
+        w="400px"
+        background="white"
+        boxShadow="-2px 0px 1px 0px rgba(0, 0, 0, 0.06)"
+        overflowY="auto"
+        overflowX="hidden"
       >
-        <Button
-          id="e2e-settings-done-button"
-          buttonStyle="secondary"
-          onClick={onClose}
-          minWidth="160px"
-        >
-          <FormattedMessage {...messages.done} />
-        </Button>
-        <Button
-          icon="delete"
-          buttonStyle="primary-outlined"
-          borderColor={colors.error}
-          textColor={colors.error}
-          iconColor={colors.error}
-          onClick={() => onDelete(field.index)}
-          minWidth="160px"
-          data-cy="e2e-delete-field"
-          disabled={isDeleteDisabled}
-        >
-          <FormattedMessage {...messages.delete} />
-        </Button>
+        <Box position="absolute" right="10px">
+          <CloseIconButton
+            a11y_buttonActionMessage={messages.close}
+            onClick={onClose}
+            iconColor={colors.textSecondary}
+            iconColorOnHover={'#000'}
+          />
+        </Box>
+        {translatedStringKey && (
+          <Title variant="h4" as="h2" mb="36px">
+            <FormattedMessage {...translatedStringKey} />
+          </Title>
+        )}
+        <Box display="flex" width="100%">
+          <Box
+            height="40px"
+            flexGrow={1}
+            borderBottom={
+              currentTab === 'logic' ? '4px solid grey' : '4px solid black'
+            }
+            onClick={() => {
+              setCurrentTab('content');
+            }}
+          >
+            <Text textAlign="center" color="placeholder">
+              Content
+            </Text>
+          </Box>
+          <Box
+            height="40px"
+            flexGrow={1}
+            borderBottom={
+              currentTab === 'content' ? '4px solid grey' : '4px solid black'
+            }
+            onClick={() => {
+              setCurrentTab('logic');
+            }}
+          >
+            <Text pb="40px" textAlign="center" color="placeholder">
+              Logic
+            </Text>
+          </Box>
+        </Box>
+        {currentTab === 'content' && <Content />}
       </Box>
-    </Box>
+    </>
   );
 };
 
