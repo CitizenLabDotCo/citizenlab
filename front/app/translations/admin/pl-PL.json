@@ -147,7 +147,6 @@
   "app.components.admin.ReportExportMenu.downloadXlsx": "Pobierz Excel",
   "app.components.admin.SlugInput.regexError": "Url może zawierać tylko zwykłe, małe litery (a-z), cyfry (0-9) i myślniki (-). Pierwszy i ostatni znak nie mogą być myślnikami. Kolejne myślniki (--) są niedozwolone.",
   "app.components.admin.SlugInput.url": "URL",
-  "app.components.admin.SlugInput.urlSlugTooltip": "Możesz określić ostatnią część swojego adresu URL (zwaną slug). Na przykład, aktualny adres URL to {currentURL}, gdzie {currentSlug} to slug.",
   "app.components.admin.TerminologyConfig.saveButton": "Zapisz",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Wkład",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Więcej informacji o tym, jak osadzić link dla Google Forms można znaleźć w {googleFormsTooltipLink}.",

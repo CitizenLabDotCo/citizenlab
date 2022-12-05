@@ -147,7 +147,6 @@
   "app.components.admin.ReportExportMenu.downloadXlsx": "Download Excel",
   "app.components.admin.SlugInput.regexError": "De slug kan alleen gewone, kleine letters (a-z), cijfers (0-9) en koppeltekens (-) bevatten. De eerste en de laatste letter kunnen geen koppelteken zijn. Opeenvolgende koppeltekens (--) kunnen niet.",
   "app.components.admin.SlugInput.url": "URL",
-  "app.components.admin.SlugInput.urlSlugTooltip": "Je kunt het laatste deel van de URL specificeren (de 'slug' genaamd). Bijvoorbeeld, de huidige URL is {currentURL}, en {currentSlug} is de slug.",
   "app.components.admin.TerminologyConfig.saveButton": "Opslaan",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Onderwerp",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Meer informatie over het embedden van Google Forms vind je in {googleFormsTooltipLink}.",

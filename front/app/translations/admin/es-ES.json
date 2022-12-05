@@ -147,7 +147,6 @@
   "app.components.admin.ReportExportMenu.downloadXlsx": "Descargar Excel",
   "app.components.admin.SlugInput.regexError": "El slug sólo puede contener letras regulares, minúsculas (a-z), números (0-9) y guiones (-). El primer y el último carácter no pueden ser guiones, y los guiones consecutivos (-) no pueden ser utilizados.",
   "app.components.admin.SlugInput.url": "URL",
-  "app.components.admin.SlugInput.urlSlugTooltip": "Puede especificar la última parte de su URL (llamada \"slug\"). Por ejemplo, la URL actual es {currentURL}, donde {currentSlug} es el slug.",
   "app.components.admin.TerminologyConfig.saveButton": "Guardar",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Propuesta",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Puede encontrar más información sobre cómo insertar un enlace para Google Forms en {googleFormsTooltipLink}.",
