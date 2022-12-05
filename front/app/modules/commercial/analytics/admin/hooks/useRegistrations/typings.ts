@@ -1,4 +1,4 @@
-import { Dates, Resolution, Stat, GetTimeSeriesResponse } from '../../typings';
+import { Dates, Resolution, Stat } from '../../typings';
 
 export type QueryParameters = Dates & Resolution;
 
@@ -13,10 +13,11 @@ export type Response = {
   ];
 };
 
-type Prefix = 'dimension_date_registration';
+type TimeSeriesResponse = TimeSeriesResponseRow[];
 
-type TimeSeriesResponse = GetTimeSeriesResponse<Prefix, { count: number }>;
-export type TimeSeriesResponseRow = TimeSeriesResponse[number];
+export interface TimeSeriesResponseRow extends RegistrationsCountRow {
+  first_dimension_date_registration_date: string;
+}
 
 interface RegistrationsCountRow {
   count: number;
