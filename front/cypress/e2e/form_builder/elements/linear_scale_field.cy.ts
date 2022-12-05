@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Form builder number field', () => {
+describe('Form builder linear scale', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const questionTitle = randomString();
@@ -30,9 +30,9 @@ describe('Form builder number field', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('adds number field and tests validations', () => {
+  it('adds linear scale field and tests validations', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-    cy.get('[data-cy="e2e-number-field"]').click();
+    cy.get('[data-cy="e2e-linear-scale"]').click();
 
     // Save the survey
     cy.get('form').submit();
@@ -53,7 +53,7 @@ describe('Form builder number field', () => {
     cy.contains(questionTitle).should('exist');
 
     // Try saving without entering data for required field
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
     cy.location('pathname').should(
@@ -61,18 +61,10 @@ describe('Form builder number field', () => {
       `/en/projects/${projectSlug}/ideas/new`
     );
 
-    // Try entering text that isn't a number
-    cy.get(`#properties${questionTitle}`)
-      .clear()
-      .type('Test text', { force: true });
-    cy.get('.e2e-error-message');
-
-    // Enter a number
-    cy.get(`#properties${questionTitle}`).type('45', { force: true });
-    cy.get('.e2e-error-message').should('have.length', 0);
+    cy.get(`#${questionTitle}-radio-1`).click({ force: true });
 
     // Save survey response
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Check that we show a success message
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
