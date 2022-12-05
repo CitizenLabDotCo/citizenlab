@@ -15,7 +15,6 @@ import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { deduceResolution } from './utils';
 
 // typings
 import { QueryParameters, Response, TimeSeries, Stats } from './typings';
@@ -34,7 +33,7 @@ export default function useActiveUsers({
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [xlsxData, setXlsxData] = useState<XlsxData | NilOrError>();
 
-  const [deducedResolution, setDeducedResolution] =
+  const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
 
   useEffect(() => {
@@ -59,9 +58,7 @@ export default function useActiveUsers({
 
         const translations = getTranslations(formatMessage);
 
-        const deducedResolution =
-          deduceResolution(response.data[0]) ?? resolution;
-        setDeducedResolution(deducedResolution);
+        setCurrentResolution(resolution);
 
         const stats = parseStats(response.data);
         setStats(stats);
@@ -70,13 +67,13 @@ export default function useActiveUsers({
           response.data[0],
           startAtMoment,
           endAtMoment,
-          deducedResolution
+          resolution
         );
 
         setTimeSeries(timeSeries);
 
         setXlsxData(
-          parseExcelData(stats, timeSeries, deducedResolution, translations)
+          parseExcelData(stats, timeSeries, resolution, translations)
         );
       }
     );
@@ -84,5 +81,5 @@ export default function useActiveUsers({
     return () => subscription.unsubscribe();
   }, [projectId, startAtMoment, endAtMoment, resolution, formatMessage]);
 
-  return { timeSeries, stats, xlsxData, deducedResolution };
+  return { timeSeries, stats, xlsxData, currentResolution };
 }

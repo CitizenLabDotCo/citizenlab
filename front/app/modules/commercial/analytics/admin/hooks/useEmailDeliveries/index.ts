@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 
 // services
-import {
-  analyticsStream,
-  Query,
-  QuerySchema,
-} from '../../services/analyticsFacts';
+import { analyticsStream } from '../../services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
+
+// query
+import { query } from './query';
 
 // parse
 import {
@@ -19,84 +18,11 @@ import {
   parseExcelData,
 } from './parse';
 
-// utils
-import { getDateFilter, getInterval } from '../../utils/query';
-import { deduceResolution } from './utils';
-
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import {
-  QueryParameters,
-  Response,
-  Stats,
-  TimeSeries,
-  PreparedTimeSeriesResponse,
-} from './typings';
+import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-
-const query = ({
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: QueryParameters): Query => {
-  const dateFilter = getDateFilter(
-    'dimension_date_sent',
-    startAtMoment,
-    endAtMoment
-  );
-
-  const totalEmailsDeliveriesQuery: QuerySchema = {
-    fact: 'email_delivery',
-    filters: dateFilter,
-    aggregations: {
-      all: 'count',
-    },
-  };
-
-  const customEmailsDeliveriesQuery: QuerySchema = {
-    fact: 'email_delivery',
-    filters: {
-      ...dateFilter,
-      automated: false,
-    },
-    aggregations: {
-      all: 'count',
-      campaign_id: 'count',
-    },
-  };
-
-  const automatedEmailsDeliveriesQuery: QuerySchema = {
-    fact: 'email_delivery',
-    filters: {
-      ...dateFilter,
-      automated: true,
-    },
-    aggregations: {
-      all: 'count',
-      campaign_id: 'count',
-    },
-  };
-
-  const timeSeriesQuery: QuerySchema = {
-    fact: 'email_delivery',
-    filters: { dateFilter },
-    groups: [`dimension_date_sent.${getInterval(resolution)}`, 'automated'],
-    aggregations: {
-      all: 'count',
-      'dimension_date_sent.date': 'first',
-    },
-  };
-
-  return {
-    query: [
-      totalEmailsDeliveriesQuery,
-      customEmailsDeliveriesQuery,
-      automatedEmailsDeliveriesQuery,
-      timeSeriesQuery,
-    ],
-  };
-};
 
 export default function useVisitorsData({
   startAtMoment,
@@ -105,7 +31,7 @@ export default function useVisitorsData({
 }: QueryParameters) {
   const { formatMessage } = useIntl();
 
-  const [deducedResolution, setDeducedResolution] =
+  const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
   const [stats, setStats] = useState<Stats | NilOrError>();
   const [timeSeries, setTimeSeries] = useState<TimeSeries | NilOrError>();
@@ -126,28 +52,23 @@ export default function useVisitorsData({
           setStats(response);
           setTimeSeries(response);
           setXlsxData(response);
-          setDeducedResolution(resolution);
+          setCurrentResolution(resolution);
           return;
         }
-        const preparedTimeSeries = mergeTimeSeries(
-          response.data[3],
-          `dimension_date_sent.${getInterval(resolution)}`
-        );
+        const preparedTimeSeries = mergeTimeSeries(response.data[3]);
+
         const translations = getTranslations(formatMessage);
 
-        const deducedResolution =
-          deduceResolution(preparedTimeSeries as PreparedTimeSeriesResponse) ??
-          resolution;
-        setDeducedResolution(deducedResolution);
+        setCurrentResolution(resolution);
 
         const stats = parseStats(response.data);
         setStats(stats);
 
         const timeSeries = parseTimeSeries(
-          preparedTimeSeries as PreparedTimeSeriesResponse,
+          preparedTimeSeries,
           startAtMoment,
           endAtMoment,
-          deducedResolution
+          resolution
         );
         setTimeSeries(timeSeries);
 
@@ -158,5 +79,5 @@ export default function useVisitorsData({
     return () => subscription.unsubscribe();
   }, [startAtMoment, endAtMoment, resolution, formatMessage]);
 
-  return { deducedResolution, stats, timeSeries, xlsxData };
+  return { currentResolution, stats, timeSeries, xlsxData };
 }

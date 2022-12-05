@@ -6,6 +6,7 @@
 #
 #  dimension_project_id :uuid
 #  status               :string
+#  finished             :boolean
 #  timestamp            :datetime
 #  dimension_date_id    :date
 #
