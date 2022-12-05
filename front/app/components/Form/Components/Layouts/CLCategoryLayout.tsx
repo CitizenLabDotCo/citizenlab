@@ -6,12 +6,7 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
-import {
-  Box,
-  fontSizes,
-  media,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import styled from 'styled-components';
 import { FormElement } from 'components/IdeaForm';
@@ -41,8 +36,6 @@ const FormSectionTitleStyled = styled.h2`
 const CLCategoryLayout = memo(
   // here we can cast types because the tester made sure we only get categorization layouts
   ({ schema, uischema, path, renderers, cells, enabled }: LayoutProps) => {
-    const isSmallerThanXlPhone = useBreakpoint('phone');
-
     return (
       <Box
         width="100%"
@@ -51,7 +44,6 @@ const CLCategoryLayout = memo(
         flexDirection="column"
         padding="0 20px 30px 20px"
         margin="auto"
-        height={isSmallerThanXlPhone ? '100vh' : undefined}
       >
         {(uischema as Categorization).elements.map((e, index) => (
           <StyledFormSection key={index}>

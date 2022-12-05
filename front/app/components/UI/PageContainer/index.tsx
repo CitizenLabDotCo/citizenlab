@@ -6,6 +6,7 @@ export default styled(Box)`
   background: ${colors.background};
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   width: 100%;
+  height: 100%;
   position: relative;
 
   ${media.tablet`
