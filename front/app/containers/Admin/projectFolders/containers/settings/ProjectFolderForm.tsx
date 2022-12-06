@@ -32,7 +32,7 @@ import {
 } from 'services/projectFolderFiles';
 import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
-import SlugInputField from 'components/admin/SlugInputField';
+import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
 
 interface Props {
@@ -462,7 +462,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               <SubSectionTitle>
                 <FormattedMessage {...messages.url} />
               </SubSectionTitle>
-              <SlugInputField
+              <SlugInput
                 slug={slug}
                 pathnameWithoutSlug={'folders'}
                 apiErrors={errors}

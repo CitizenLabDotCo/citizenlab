@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import SlugInputField, { Props } from '.';
+import SlugInput, { Props } from '.';
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useAppConfiguration', () => () => ({
@@ -22,12 +22,12 @@ const defaultProps: Props = {
 
 describe('SlugInputField', () => {
   it('shows the correct preview URL', () => {
-    render(<SlugInputField {...defaultProps} />);
+    render(<SlugInput {...defaultProps} />);
     expect(screen.getByText(/\/en\/folders\/my-folder$/)).toBeInTheDocument();
   });
 
   it('shows an error message if validation fails', () => {
-    render(<SlugInputField {...defaultProps} slug="hyphen-at-the-end-" />);
+    render(<SlugInput {...defaultProps} slug="hyphen-at-the-end-" />);
     expect(
       screen.getByText(/The first and last characters cannot be hyphens/)
     ).toBeInTheDocument();

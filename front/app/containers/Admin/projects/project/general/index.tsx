@@ -7,7 +7,7 @@ import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreatePro
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
-import SlugInputField from 'components/admin/SlugInputField';
+import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
@@ -507,7 +507,7 @@ const AdminProjectsProjectGeneral = () => {
             <SubSectionTitle>
               <FormattedMessage {...messages.url} />
             </SubSectionTitle>
-            <SlugInputField
+            <SlugInput
               slug={slug}
               pathnameWithoutSlug={'projects'}
               apiErrors={apiErrors}

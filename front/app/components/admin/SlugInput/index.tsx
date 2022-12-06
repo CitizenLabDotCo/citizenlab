@@ -23,7 +23,7 @@ export interface Props {
   showSlugChangedWarning: boolean;
 }
 
-const SlugInputField = ({
+const SlugInput = ({
   slug,
   pathnameWithoutSlug,
   apiErrors,
@@ -74,4 +74,4 @@ const SlugInputField = ({
   return null;
 };
 
-export default SlugInputField;
+export default SlugInput;
