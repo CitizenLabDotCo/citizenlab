@@ -21,6 +21,7 @@
 #  maximum                :integer
 #  minimum_label_multiloc :jsonb            not null
 #  maximum_label_multiloc :jsonb            not null
+#  logic                  :jsonb            not null
 #
 # Indexes
 #
