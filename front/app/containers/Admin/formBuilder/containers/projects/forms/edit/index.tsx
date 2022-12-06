@@ -25,7 +25,6 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { getIndexForTitle } from '../../../../components/FormFields/utils';
 
 // services
 import {
@@ -79,6 +78,7 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+
   const isEditingDisabled = totalSubmissions > 0;
 
   const schema = object().shape({
@@ -227,29 +227,6 @@ export const FormEdit = ({
     selectedField?.input_type !== 'page' || isPageDeletable
   );
 
-  const getPageList = () => {
-    // TODO: Only select pages which come after the question. For this iteration though, we are not
-    // validating against cyclical form flows, so to not have an error state here,
-    // all pages should be available in the list.
-    const pageArray: { value: string; label: string }[] = [];
-    defaultValues.customFields?.map((field) => {
-      if (field.input_type === 'page') {
-        pageArray.push({
-          value: field.id || field.temp_id,
-          label: `${formatMessage(messages.page)} ${getIndexForTitle(
-            defaultValues.customFields,
-            field
-          )}`,
-        });
-      }
-    });
-    pageArray.push({
-      value: 'survey_end',
-      label: `${formatMessage(messages.surveyEnd)}`,
-    });
-    return pageArray;
-  };
-
   return (
     <Box
       display="flex"
@@ -310,7 +287,6 @@ export const FormEdit = ({
               </StyledRightColumn>
               {!isNilOrError(selectedField) && (
                 <FormBuilderSettings
-                  logicPageList={getPageList()}
                   key={selectedField.id}
                   field={selectedField}
                   onDelete={handleDelete}

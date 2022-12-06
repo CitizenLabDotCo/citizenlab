@@ -13,13 +13,17 @@ import { SectionField } from 'components/admin/Section';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
+import { getIndexForTitle } from '../../components/FormFields/utils';
 
 // intl
 import messages from '../messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 // types
-import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'services/formCustomFields';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -28,8 +32,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // utils
 import { getAdditionalSettings } from './utils';
 import { LogicSettings } from './LogicSettings';
+import { useFormContext } from 'react-hook-form';
 interface Props {
-  logicPageList: { value: string; label: string }[];
   field: IFlatCustomFieldWithIndex;
   onDelete: (fieldIndex: number) => void;
   onClose: () => void;
@@ -37,7 +41,6 @@ interface Props {
 }
 
 const FormBuilderSettings = ({
-  logicPageList,
   field,
   onDelete,
   onClose,
@@ -45,10 +48,36 @@ const FormBuilderSettings = ({
 }: Props) => {
   const locales = useAppConfigurationLocales();
   const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
+  const { formatMessage } = useIntl();
+  const { watch } = useFormContext();
 
   if (isNilOrError(locales)) {
     return null;
   }
+
+  const getPageList = () => {
+    // TODO: Only select pages which come after the question. For this iteration though, we are not
+    // validating against cyclical form flows, so to not have an error state here,
+    // all pages should be available in the list.
+    const formCustomFields: IFlatCustomField[] = watch('customFields');
+    const pageArray: { value: string; label: string }[] = [];
+    formCustomFields?.map((field) => {
+      if (field.input_type === 'page') {
+        pageArray.push({
+          value: field.id || field.temp_id,
+          label: `${formatMessage(messages.page)} ${getIndexForTitle(
+            formCustomFields,
+            field
+          )}`,
+        });
+      }
+    });
+    pageArray.push({
+      value: 'survey_end',
+      label: `${formatMessage(messages.surveyEnd)}`,
+    });
+    return pageArray;
+  };
 
   let translatedStringKey: MessageDescriptor | null = null;
   switch (field.input_type) {
@@ -199,7 +228,7 @@ const FormBuilderSettings = ({
               style={{ cursor: 'pointer' }}
             >
               <Text mb="12px" textAlign="center" color="coolGrey600">
-                <FormattedMessage {...messages.Logic} />
+                <FormattedMessage {...messages.logic} />
               </Text>
             </Box>
           </Box>
@@ -271,7 +300,7 @@ const FormBuilderSettings = ({
           </Box>
         )}
         {showTabbedSettings && currentTab === 'logic' && (
-          <LogicSettings pageOptions={logicPageList} field={field} />
+          <LogicSettings pageOptions={getPageList()} field={field} />
         )}
       </Box>
     </>

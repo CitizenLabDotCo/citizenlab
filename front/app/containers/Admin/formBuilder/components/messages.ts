@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.page',
     defaultMessage: 'Page',
   },
+  surveyEnd: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyEnd',
+    defaultMessage: 'Survey end',
+  },
   question: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.question',
     defaultMessage: 'Question',
@@ -65,8 +69,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.delete',
     defaultMessage: 'Delete',
   },
-  Logic: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.Logic',
+  logic: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.logic',
     defaultMessage: 'Logic',
   },
   done: {
