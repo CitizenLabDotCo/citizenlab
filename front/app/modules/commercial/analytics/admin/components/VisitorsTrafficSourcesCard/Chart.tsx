@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import PieChart from 'components/admin/Graphs/PieChart';
-import renderTooltip from './renderTooltip';
-import ReferrerListLink from './RefferListLink';
-
 // typings
 import { PieRow } from '../../hooks/useVisitorReferrerTypes/typings';
+import PieChart from 'components/admin/Graphs/PieChart';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import ReferrerListLink from './RefferListLink';
+import renderTooltip from './renderTooltip';
 
 interface Props {
   pieData: PieRow[];

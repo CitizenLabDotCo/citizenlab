@@ -1,48 +1,40 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import {
-  isNilOrError,
-  capitalizeParticipationContextType,
-} from 'utils/helperUtils';
+import { WrappedComponentProps } from 'react-intl';
 import { get, isEmpty, isUndefined } from 'lodash-es';
-
-// services
-import { updateBasket } from 'services/baskets';
-
+import { IParticipationContextType } from 'typings';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
-
-// styles
-import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
-
-// components
-import Button from 'components/UI/Button';
-import T from 'components/T';
-
-// tracking
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// services
+import { updateBasket } from 'services/baskets';
 // typings
 import { IIdeaData } from 'services/ideas';
-import { IParticipationContextType } from 'typings';
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import {
+  isNilOrError,
+  capitalizeParticipationContextType,
+} from 'utils/helperUtils';
+// styles
+import { colors, fontSizes } from 'utils/styleUtils';
+import messages from 'containers/ProjectsShowPage/messages';
+import T from 'components/T';
+// components
+import Button from 'components/UI/Button';
+import styled from 'styled-components';
+// tracking
+import tracks from './tracks';
 
 const Container = styled.div`
   padding: 10px;

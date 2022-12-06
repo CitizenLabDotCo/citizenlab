@@ -1,3 +1,13 @@
+import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import useLocalize from 'hooks/useLocalize';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
 import AvatarBubbles from 'components/AvatarBubbles';
 import {
   Container,
@@ -6,20 +16,10 @@ import {
   HeaderTitle,
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
-import { WrappedComponentProps } from 'react-intl';
 import Outlet from 'components/Outlet';
-import { openSignUpInModal } from 'events/openSignUpInModal';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import useLocalize from 'hooks/useLocalize';
-import React from 'react';
 import styled from 'styled-components';
-import { trackEventByName } from 'utils/analytics';
-import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { media } from 'utils/styleUtils';
-import messages from '../messages';
 import SignUpButton from '../SignUpButton';
+import messages from '../messages';
 import tracks from '../tracks';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`

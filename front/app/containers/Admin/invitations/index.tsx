@@ -1,14 +1,12 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import { injectIntl } from 'utils/cl-intl';
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 
 const InvitationsPage = (props: WrappedComponentProps) => {
   const tabs = [

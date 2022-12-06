@@ -1,6 +1,6 @@
+import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import React from 'react';
 import { Layout, LayoutProps, rankWith, optionIs } from '@jsonforms/core';
-import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 

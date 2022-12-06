@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import Table from './Table';
-import Button from 'components/UI/Button';
-import TableModal from './TableModal';
-
-// styling
-import { fontSizes } from 'utils/styleUtils';
-
-// i18n
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
 // typings
 import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';
+import { injectIntl } from 'utils/cl-intl';
+// styling
+import { fontSizes } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
 import { Props as FieldInfoProps } from '../FieldInfo';
+// i18n
+import messages from '../messages';
+import Table from './Table';
+import TableModal from './TableModal';
 
 interface Props extends FieldInfoProps {
   title: string;

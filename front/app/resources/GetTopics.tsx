@@ -2,6 +2,7 @@ import React from 'react';
 import { isEqual } from 'lodash-es';
 import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { Parameters as InputProps } from 'hooks/useTopics';
 import {
   ITopicData,
   ITopicsQueryParams,
@@ -9,7 +10,6 @@ import {
   topicsStream,
 } from 'services/topics';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
-import { Parameters as InputProps } from 'hooks/useTopics';
 
 type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;
 

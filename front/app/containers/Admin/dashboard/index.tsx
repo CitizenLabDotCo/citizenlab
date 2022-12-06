@@ -1,28 +1,22 @@
 import React, { memo, useState, useEffect } from 'react';
-import { insertConfiguration } from 'utils/moduleUtils';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
-// components
-import HelmetIntl from 'components/HelmetIntl';
-import DashboardTabs from './components/DashboardTabs';
-import Outlet from 'components/Outlet';
-
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
-
-// permissions
-import { isAdmin, isProjectModerator } from 'services/permissions/roles';
-
-// i18n
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
+import { Outlet as RouterOutlet } from 'react-router-dom';
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+// permissions
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
+import DashboardTabs from './components/DashboardTabs';
+// components
+import HelmetIntl from 'components/HelmetIntl';
+import Outlet from 'components/Outlet';
+// i18n
+import messages from './messages';
 
 export const DashboardsPage = memo(
   ({ intl: { formatMessage } }: WrappedComponentProps) => {

@@ -1,19 +1,16 @@
 import React, { memo } from 'react';
-
-// components
-import Button from 'components/UI/Button';
-import PageWrapper from 'components/admin/PageWrapper';
-import { PageTitle, SectionDescription } from 'components/admin/Section';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
+import { WrappedComponentProps } from 'react-intl';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import { colors } from 'utils/styleUtils';
+// components
+import Button from 'components/UI/Button';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import PageWrapper from 'components/admin/PageWrapper';
+import { PageTitle, SectionDescription } from 'components/admin/Section';
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import messages from './messages';
 
 const HeaderContainer = styled.div`
   display: flex;

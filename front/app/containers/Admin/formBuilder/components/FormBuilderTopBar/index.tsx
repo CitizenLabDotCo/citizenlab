@@ -1,17 +1,5 @@
 import React from 'react';
-
-// hooks
-import useProject from 'hooks/useProject';
-import useLocalize from 'hooks/useLocalize';
-import usePhase from 'hooks/usePhase';
-
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import Button from 'components/UI/Button';
-
-// styling
-import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import {
   Box,
   stylingConsts,
@@ -19,18 +7,24 @@ import {
   Title,
   StatusLabel,
 } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import useLocalize from 'hooks/useLocalize';
+import usePhase from 'hooks/usePhase';
+// hooks
+import useProject from 'hooks/useProject';
 import { getIsPostingEnabled } from 'containers/Admin/formBuilder/utils';
-
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
 // routing
 import clHistory from 'utils/cl-router/history';
-import { useParams } from 'react-router-dom';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+// styling
+import { colors } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+// components
+import GoBackButton from 'components/UI/GoBackButton';
+import styled from 'styled-components';
+// i18n
+import messages from '../messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;

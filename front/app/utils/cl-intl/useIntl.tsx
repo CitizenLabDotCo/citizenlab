@@ -4,9 +4,9 @@ import {
   useIntl as useOriginalUseIntl,
   MessageDescriptor,
 } from 'react-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
+import { isNilOrError } from 'utils/helperUtils';
 
 const useIntl = () => {
   const intl = useOriginalUseIntl();

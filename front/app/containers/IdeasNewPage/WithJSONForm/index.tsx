@@ -1,36 +1,29 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { PreviousPathnameContext } from 'context';
 import { useSearchParams } from 'react-router-dom';
-
-import { WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-
-import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
-import { isError, isNilOrError } from 'utils/helperUtils';
-import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import usePhase from 'hooks/usePhase';
-import useInputSchema from 'hooks/useInputSchema';
-
-import messages from '../messages';
-
-import IdeasNewMeta from '../IdeasNewMeta';
-import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
-
-import PageContainer from 'components/UI/PageContainer';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import { Heading } from 'containers/IdeasNewPage/WithJSONForm/Heading';
-import { addIdea } from 'services/ideas';
-import { geocode, reverseGeocode } from 'utils/locationTools';
-
 // for getting inital state from previous page
 import { parse } from 'qs';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import useAuthUser from 'hooks/useAuthUser';
+import useInputSchema from 'hooks/useInputSchema';
+import usePhase from 'hooks/usePhase';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
+import { addIdea } from 'services/ideas';
+import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import { getCurrentPhase } from 'services/phases';
+import { PreviousPathnameContext } from 'context';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import clHistory from 'utils/cl-router/history';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
+import { isError, isNilOrError } from 'utils/helperUtils';
+import { geocode, reverseGeocode } from 'utils/locationTools';
 import { getMethodConfig } from 'utils/participationMethodUtils';
+import { Heading } from 'containers/IdeasNewPage/WithJSONForm/Heading';
+import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
+import IdeasNewMeta from '../IdeasNewMeta';
+import messages from '../messages';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);

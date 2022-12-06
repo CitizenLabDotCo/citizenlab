@@ -1,5 +1,4 @@
 import React from 'react';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';

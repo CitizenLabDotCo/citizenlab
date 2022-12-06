@@ -1,42 +1,36 @@
 // libraries
 import React, { useState, useRef, useEffect } from 'react';
-import { includes } from 'lodash-es';
-import { locales } from 'containers/App/constants';
-import bowser from 'bowser';
-
-// components
-import NotificationMenu from './NotificationMenu';
-import DesktopNavbar from './DesktopNavbar';
-import UserMenu from './UserMenu';
-import TenantLogo from './TenantLogo';
-import LanguageSelector from 'containers/MainHeader/LanguageSelector';
-import Fragment from 'components/Fragment';
+import { WrappedComponentProps } from 'react-intl';
 import { IconButton, useWindowSize } from '@citizenlab/cl2-component-library';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
+import bowser from 'bowser';
+import { includes } from 'lodash-es';
+import { darken } from 'polished';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
-
-// utils
-import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
 import { openSignUpInModal } from 'events/openSignUpInModal';
-import eventEmitter from 'utils/eventEmitter';
-import clHistory from 'utils/cl-router/history';
-
+// analytics
+import { trackEventByName } from 'utils/analytics';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
+// utils
+import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
+import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
+import { locales } from 'containers/App/constants';
+import LanguageSelector from 'containers/MainHeader/LanguageSelector';
+import Fragment from 'components/Fragment';
 // style
 import styled, { useTheme } from 'styled-components';
-import { darken } from 'polished';
-import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
+import DesktopNavbar from './DesktopNavbar';
+// components
+import NotificationMenu from './NotificationMenu';
+import TenantLogo from './TenantLogo';
+import UserMenu from './UserMenu';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   width: 100vw;

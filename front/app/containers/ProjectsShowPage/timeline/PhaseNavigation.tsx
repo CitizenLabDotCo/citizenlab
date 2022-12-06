@@ -1,32 +1,25 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { findIndex } from 'lodash-es';
 import Tippy from '@tippyjs/react';
-
-// tracking
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
+import React, { memo, useState, useCallback, useEffect } from 'react';
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Button } from '@citizenlab/cl2-component-library';
-
-// services
-import { IPhaseData, getCurrentPhase } from 'services/phases';
-
-// events
-import { selectedPhase$, selectPhase } from './events';
-
+import { findIndex } from 'lodash-es';
 // hooks
 import usePhases from 'hooks/usePhases';
-
+// services
+import { IPhaseData, getCurrentPhase } from 'services/phases';
+// events
+import { selectedPhase$, selectPhase } from './events';
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, isRtl } from 'utils/styleUtils';
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
 // style
 import styled from 'styled-components';
-import { colors, isRtl } from 'utils/styleUtils';
+// tracking
+import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;

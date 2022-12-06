@@ -1,17 +1,14 @@
 import React, { memo } from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+import { Icon } from '@citizenlab/cl2-component-library';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
+import { fontSizes, isRtl } from 'utils/styleUtils';
 // components
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
-import { Icon } from '@citizenlab/cl2-component-library';
-
 // styling
 import styled, { useTheme } from 'styled-components';
-import { fontSizes, isRtl } from 'utils/styleUtils';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

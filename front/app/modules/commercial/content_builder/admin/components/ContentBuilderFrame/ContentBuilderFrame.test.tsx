@@ -1,7 +1,7 @@
 import React from 'react';
+import { Editor, SerializedNodes } from '@craftjs/core';
 import { render } from 'utils/testUtils/rtl';
 import ContentBuilderFrame from './';
-import { Editor, SerializedNodes } from '@craftjs/core';
 
 const mockEditorData: SerializedNodes = {
   nodeId: {

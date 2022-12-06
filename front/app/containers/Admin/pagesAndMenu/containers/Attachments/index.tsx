@@ -1,5 +1,7 @@
 import React from 'react';
-
+import { FormProvider, useForm } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
 // components
 import {
   Box,
@@ -7,44 +9,34 @@ import {
   IconTooltip,
   Label,
 } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
-import ShownOnPageBadge from '../../components/ShownOnPageBadge';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
-import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
-
-// i18n
-import HelmetIntl from 'components/HelmetIntl';
-import useLocalize from 'hooks/useLocalize';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
-import Feedback from 'components/HookForm/Feedback';
-import FileUploader from 'components/HookForm/FileUploader';
-import { FormProvider, useForm } from 'react-hook-form';
-import { mixed, object } from 'yup';
-
 // typings
 import { UploadFile } from 'typings';
-
-// services
-import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
-
+import { mixed, object } from 'yup';
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
-import { updateCustomPage } from 'services/customPages';
+import useLocalize from 'hooks/useLocalize';
 import useRemoteFiles from 'hooks/useRemoteFiles';
-import { useParams } from 'react-router-dom';
-
-// constants
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
-import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
-
+import { updateCustomPage } from 'services/customPages';
+// services
+import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+// constants
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
+// i18n
+import HelmetIntl from 'components/HelmetIntl';
+import Feedback from 'components/HookForm/Feedback';
+import FileUploader from 'components/HookForm/FileUploader';
+import { SectionField } from 'components/admin/Section';
+import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
+import messages from './messages';
 
 type FormValues = {
   local_page_files: UploadFile[] | null;

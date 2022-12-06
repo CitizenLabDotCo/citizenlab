@@ -1,10 +1,8 @@
 // Services
-import { IPhaseData, updatePhase } from 'services/phases';
-import { IProjectData, updateProject } from 'services/projects';
-
 // Typings
 import { Multiloc } from 'typings';
-
+import { IPhaseData, updatePhase } from 'services/phases';
+import { IProjectData, updateProject } from 'services/projects';
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
 

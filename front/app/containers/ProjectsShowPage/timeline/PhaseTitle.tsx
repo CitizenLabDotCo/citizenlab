@@ -1,21 +1,14 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-
+import useLocalize from 'hooks/useLocalize';
 // hooks
 import usePhase from 'hooks/usePhase';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
-
-// i18n
-import messages from 'containers/ProjectsShowPage/messages';
+import { IPhaseData } from 'services/phases';
 import { FormattedMessage } from 'utils/cl-intl';
-
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
-
-// style
-import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   media,
   colors,
@@ -23,7 +16,10 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
-import { IPhaseData } from 'services/phases';
+// i18n
+import messages from 'containers/ProjectsShowPage/messages';
+// style
+import styled from 'styled-components';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;

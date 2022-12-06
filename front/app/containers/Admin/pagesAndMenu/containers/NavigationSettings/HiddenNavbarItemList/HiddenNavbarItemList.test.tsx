@@ -1,11 +1,11 @@
-import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+import React from 'react';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { deleteCustomPage } from 'services/customPages';
-import React from 'react';
+import { addNavbarItem } from 'services/navbar';
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import HiddenNavbarItemList from '.';
-import { addNavbarItem } from 'services/navbar';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');

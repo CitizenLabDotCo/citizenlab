@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsCategories from './useInsightsCategories';
+import categories from 'modules/commercial/insights/fixtures/categories';
 import { Observable, Subscription } from 'rxjs';
-import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import { insightsCategoriesStream } from 'modules/commercial/insights/services/insightsCategories';
-import categories from 'modules/commercial/insights/fixtures/categories';
+import { waitFor } from 'utils/testUtils/rtl';
+import useInsightsCategories from './useInsightsCategories';
 
 const viewId = '1';
 

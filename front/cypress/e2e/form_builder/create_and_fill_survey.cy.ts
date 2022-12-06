@@ -1,5 +1,6 @@
 import { snakeCase } from 'lodash-es';
 import { randomString } from '../../support/commands';
+
 import moment = require('moment');
 
 describe('Survey builder', () => {

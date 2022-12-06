@@ -1,7 +1,9 @@
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import { first, last, sortBy } from 'lodash-es';
 import { IRelationship, Multiloc } from 'typings';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import streams, { IStreamParams } from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 import {
   ParticipationMethod,
   TSurveyService,
@@ -10,8 +12,6 @@ import {
   VotingMethod,
   PresentationMode,
 } from './participationContexts';
-import { isNilOrError } from 'utils/helperUtils';
-import { first, last, sortBy } from 'lodash-es';
 
 const apiEndpoint = `${API_PATH}/phases`;
 

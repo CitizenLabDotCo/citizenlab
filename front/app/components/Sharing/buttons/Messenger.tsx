@@ -1,22 +1,19 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { clickSocialSharingLink, Medium } from '../utils';
-
+import { WrappedComponentProps } from 'react-intl';
+import { Button } from '@citizenlab/cl2-component-library';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-import { Button } from '@citizenlab/cl2-component-library';
-
-// style
-import { colors } from 'utils/styleUtils';
-
+import { clickSocialSharingLink, Medium } from '../utils';
 // analytics
 import { trackEventByName } from 'utils/analytics';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+// style
+import { colors } from 'utils/styleUtils';
+import messages from '../messages';
 import tracks from '../tracks';
+
 interface Props {
   className?: string;
   url: string;

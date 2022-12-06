@@ -1,6 +1,5 @@
 // Implementation based on simple sorting example from docs
 // https://react-dnd.github.io/react-dnd/examples/sortable/simple
-
 import React, { useRef, FC } from 'react';
 import {
   DragObjectWithType,

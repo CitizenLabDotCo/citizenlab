@@ -1,12 +1,11 @@
 import React from 'react';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
-import Topics from 'components/PostShowComponents/Topics';
+import { WrappedComponentProps } from 'react-intl';
 import useIdea from 'hooks/useIdea';
-import { isNilOrError } from 'utils/helperUtils';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import Topics from 'components/PostShowComponents/Topics';
 import messages from './messages';
 
 interface Props {

@@ -2,9 +2,7 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-
 import 'jest-styled-components';
-
 // component to test
 import CategoryCard from './CategoryCard';
 import { registerDestination } from './destinations';

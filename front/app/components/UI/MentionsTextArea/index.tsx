@@ -1,23 +1,18 @@
 import React, { PureComponent } from 'react';
-import { isString, isEmpty, capitalize } from 'lodash-es';
-import { first } from 'rxjs/operators';
-
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';
-
-// services
-import { mentionsStream } from 'services/mentions';
-
-// components
-import Error from 'components/UI/Error';
-
-// style
-import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
+import { isString, isEmpty, capitalize } from 'lodash-es';
 import { transparentize } from 'polished';
-
+import { first } from 'rxjs/operators';
 // typings
 import { Locale } from 'typings';
+// services
+import { mentionsStream } from 'services/mentions';
+import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
+// components
+import Error from 'components/UI/Error';
+// style
+import styled, { withTheme } from 'styled-components';
 
 const Container = styled.div`
   position: relative;

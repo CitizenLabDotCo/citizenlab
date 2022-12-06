@@ -1,17 +1,14 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import { getBase64FromFile } from 'utils/fileUtils';
-import { UploadFile } from 'typings';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
-
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
+import { UploadFile } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
+import { getBase64FromFile } from 'utils/fileUtils';
+import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
+// styling
+import styled from 'styled-components';
+// i18n
+import messages from './messages';
 
 const Container = styled.div`
   margin-bottom: 10px;

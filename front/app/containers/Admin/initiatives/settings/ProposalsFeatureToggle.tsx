@@ -1,11 +1,9 @@
 import React from 'react';
-
-// components
-import { SectionField } from 'components/admin/Section';
 import { Toggle, Text } from '@citizenlab/cl2-component-library';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+// components
+import { SectionField } from 'components/admin/Section';
 import messages from '../messages';
 
 interface Props {

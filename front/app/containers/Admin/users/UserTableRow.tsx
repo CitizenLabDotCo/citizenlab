@@ -1,35 +1,29 @@
 // Libraries
+import Tippy from '@tippyjs/react';
 import React, { PureComponent, FormEvent } from 'react';
-import { isAdmin } from 'services/permissions/roles';
-import moment from 'moment';
-import clHistory from 'utils/cl-router/history';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-
+import { WrappedComponentProps } from 'react-intl';
 // Components
 import { Tr, Td, Toggle, Icon } from '@citizenlab/cl2-component-library';
-import Avatar from 'components/Avatar';
-import Checkbox from 'components/UI/Checkbox';
-import Tippy from '@tippyjs/react';
-
-// Translation
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// Events --- For error handling
-import eventEmitter from 'utils/eventEmitter';
-import events from './events';
-
-// Services
-import { IUserData, deleteUser } from 'services/users';
-
+import moment from 'moment';
+import { lighten } from 'polished';
 // Typings
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
+import { isAdmin } from 'services/permissions/roles';
+// Services
+import { IUserData, deleteUser } from 'services/users';
+import events from './events';
+// Translation
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+// Events --- For error handling
+import eventEmitter from 'utils/eventEmitter';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import Avatar from 'components/Avatar';
+import Checkbox from 'components/UI/Checkbox';
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import messages from './messages';
 
 const StyledCheckbox = styled(Checkbox)`
   margin-left: 5px;

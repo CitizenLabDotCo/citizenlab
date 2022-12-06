@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import {
   Dropdown,
@@ -11,20 +7,19 @@ import {
   Icon,
   Box,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Link from 'utils/cl-router/Link';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import useLocalize from 'hooks/useLocalize';
 // hooks
 import useProject from 'hooks/useProject';
-import useLocalize from 'hooks/useLocalize';
-
+// intl
+import { injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+// styling
+import styled from 'styled-components';
+import messages from './messages';
 
 const DropdownWrapper = styled.div``;
 

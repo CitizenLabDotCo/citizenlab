@@ -1,31 +1,21 @@
 import React, { memo, useEffect, useState } from 'react';
-import { IOpenPostPageModalEvent } from 'containers/App';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import CloseIconButton from 'components/UI/CloseIconButton';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
+import { darken } from 'polished';
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import usePhase from 'hooks/usePhase';
+import useProject from 'hooks/useProject';
+// typings
+import { IIdeaMarkerData } from 'services/ideas';
 import { setIdeaMapCardSelected } from './events';
 import {
   setLeafletMapHoveredMarker,
   leafletMapHoveredMarker$,
 } from 'components/UI/LeafletMap/events';
-
-// hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
-
-// i18n
-import T from 'components/T';
 import FormattedBudget from 'utils/currency/FormattedBudget';
-import messages from './messages';
-
-// styling
-import styled from 'styled-components';
+// events
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   defaultCardStyle,
   fontSizes,
@@ -33,11 +23,14 @@ import {
   viewportWidths,
   media,
 } from 'utils/styleUtils';
-
-import { darken } from 'polished';
-
-// typings
-import { IIdeaMarkerData } from 'services/ideas';
+import { IOpenPostPageModalEvent } from 'containers/App';
+// i18n
+import T from 'components/T';
+// components
+import CloseIconButton from 'components/UI/CloseIconButton';
+// styling
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   text-align: left;

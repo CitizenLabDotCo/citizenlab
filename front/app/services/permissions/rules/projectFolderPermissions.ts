@@ -1,16 +1,16 @@
-import { IUserData, IUser } from 'services/users';
-import { isAdmin, TRole } from 'services/permissions/roles';
-import { IProjectFolderData } from '../../projectFolders';
+import { IAppConfigurationData } from 'services/appConfiguration';
 import {
   definePermissionRule,
   IRouteItem,
 } from 'services/permissions/permissions';
+import { isAdmin, TRole } from 'services/permissions/roles';
 import {
   canAccessRoute,
   isModeratorRoute,
 } from 'services/permissions/rules/routePermissions';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IUserData, IUser } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
+import { IProjectFolderData } from '../../projectFolders';
 
 export function userModeratesFolder(
   user: IUserData | null,

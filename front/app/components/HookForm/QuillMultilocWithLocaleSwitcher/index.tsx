@@ -1,16 +1,14 @@
 import React from 'react';
-
-import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
+import { get } from 'lodash-es';
 import { Locale, CLError } from 'typings';
-
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { isNilOrError } from 'utils/helperUtils';
+import Error, { TFieldName } from 'components/UI/Error';
 // components
 import QuillMultilocWithLocaleSwitcherComponent, {
   Props as QuillMultilocWithLocaleSwitcherComponentProps,
 } from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { get } from 'lodash-es';
 
 type Props = {
   name: string;

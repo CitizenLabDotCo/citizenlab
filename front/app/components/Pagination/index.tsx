@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

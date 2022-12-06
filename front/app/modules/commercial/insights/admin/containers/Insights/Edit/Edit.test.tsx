@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-
 import InsightsEdit from './';
 
 jest.mock('modules', () => jest.fn());

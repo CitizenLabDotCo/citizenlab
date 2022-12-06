@@ -1,17 +1,14 @@
 // Libraries
 import React from 'react';
+import { take } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { take } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
 // Services
 import { getGroupMemberships } from 'services/groupMemberships';
 import { userByIdStream, IUser } from 'services/users';
-
+import { isNilOrError } from 'utils/helperUtils';
 // Components
 import Avatar from 'components/Avatar';
-
 // Style
 import styled, { css } from 'styled-components';
 

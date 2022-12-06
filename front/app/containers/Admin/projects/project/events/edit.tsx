@@ -1,36 +1,19 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
-import moment from 'moment';
-import { isEmpty, get, isError } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// libraries
-import clHistory from 'utils/cl-router/history';
-
-// components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import ErrorComponent from 'components/UI/Error';
-import DateTimePicker from 'components/admin/DateTimePicker';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
-import FileUploader from 'components/UI/FileUploader';
 import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
-
-// utils
-import unsubscribe from 'utils/unsubscribe';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// services
-import { localeStream } from 'services/locale';
+import { isEmpty, get, isError } from 'lodash-es';
+import moment from 'moment';
+import { Subscription, combineLatest, of } from 'rxjs';
+// typings
+import { Multiloc, CLError, Locale, UploadFile } from 'typings';
+// resources
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
+import { addEventFile, deleteEventFile } from 'services/eventFiles';
 import {
   eventStream,
   updateEvent,
@@ -38,16 +21,26 @@ import {
   IEvent,
   IUpdatedEventProperties,
 } from 'services/events';
-import { addEventFile, deleteEventFile } from 'services/eventFiles';
-
-// resources
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
-
-// typings
-import { Multiloc, CLError, Locale, UploadFile } from 'typings';
+// services
+import { localeStream } from 'services/locale';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+// libraries
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+// utils
+import unsubscribe from 'utils/unsubscribe';
+import ErrorComponent from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
+// components
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import DateTimePicker from 'components/admin/DateTimePicker';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import messages from './messages';
 
 interface DataProps {
   remoteEventFiles: GetRemoteFilesChildProps;

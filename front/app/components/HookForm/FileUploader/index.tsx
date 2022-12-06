@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { get } from 'lodash-es';
+import { UploadFile } from 'typings';
+import { TResourceType } from 'resources/GetRemoteFiles';
+import useRemoteFiles from 'hooks/useRemoteFiles';
+import Error from 'components/UI/Error';
 import FileUploaderComponent, {
   FileUploaderProps,
 } from 'components/UI/FileUploader';
-
-import Error from 'components/UI/Error';
-import { Controller, useFormContext } from 'react-hook-form';
-import { UploadFile } from 'typings';
-import useRemoteFiles from 'hooks/useRemoteFiles';
-import { TResourceType } from 'resources/GetRemoteFiles';
-import { get } from 'lodash-es';
 
 interface Props
   extends Omit<

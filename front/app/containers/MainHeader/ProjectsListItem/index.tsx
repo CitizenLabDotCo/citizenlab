@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
+import { colors, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 const ProjectsListItem = styled(Link)`
   color: ${colors.textSecondary};

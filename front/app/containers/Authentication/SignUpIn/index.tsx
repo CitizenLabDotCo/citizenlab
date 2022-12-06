@@ -1,26 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
-
-// events
-import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
-import { openSignUpInModal$ } from './SignUpInModal/events';
-import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
-
 // hooks
 import { useLocation } from 'react-router-dom';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// components
-import SignUpInModal from './SignUpInModal';
-
-// history
-import clHistory from 'utils/cl-router/history';
-
 // utils
 import { endsWith } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { TAuthUser } from 'hooks/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { openSignUpInModal$ } from './SignUpInModal/events';
+// events
+import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
+import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
+// history
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import SignUpInModal from './SignUpInModal';
 
 interface Props {
   authUser: TAuthUser;

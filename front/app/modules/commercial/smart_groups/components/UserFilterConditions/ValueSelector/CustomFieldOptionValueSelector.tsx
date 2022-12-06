@@ -1,21 +1,16 @@
 import React from 'react';
-
-// hooks
-import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
-
 // components
 import { Select } from '@citizenlab/cl2-component-library';
-
-// i18n
-import localize, { InjectedLocalized } from 'utils/localize';
-
+import { IOption } from 'typings';
+// hooks
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
+// i18n
+import localize, { InjectedLocalized } from 'utils/localize';
 // typings
 import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
-import { IOption } from 'typings';
-import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
 
 type Props = {
   rule: TRule;

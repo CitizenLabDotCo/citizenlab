@@ -1,17 +1,12 @@
 import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { cloneDeep, isNumber, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-
-// services
-import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
-
+import { cloneDeep, isNumber, get } from 'lodash-es';
+import { lighten } from 'polished';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetCommentVote, {
   GetCommentVoteChildProps,
@@ -19,27 +14,24 @@ import GetCommentVote, {
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
+// services
+import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { lighten } from 'polished';
-
 // a11y
 import { ScreenReaderOnly } from 'utils/a11y';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+// style
+import styled from 'styled-components';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.li`
   display: flex;

@@ -1,25 +1,19 @@
 import { useState, useEffect } from 'react';
-
 // services
 import { analyticsStream } from '../../services/analyticsFacts';
-
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// query
-import { query } from './query';
-
-// parse
-import { parseTimeSeries, parseStats, parseExcelData } from './parse';
-
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
+import { XlsxData } from 'components/admin/ReportExportMenu';
+import { IResolution } from 'components/admin/ResolutionControl';
+// parse
+import { parseTimeSeries, parseStats, parseExcelData } from './parse';
+// query
+import { query } from './query';
+import { getTranslations } from './translations';
 // typings
 import { QueryParameters, Response, TimeSeries, Stats } from './typings';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { XlsxData } from 'components/admin/ReportExportMenu';
 
 export default function useActiveUsers({
   projectId,

@@ -1,8 +1,4 @@
 import React from 'react';
-
-// styles
-import { colors } from 'utils/styleUtils';
-
 // components
 import {
   Box,
@@ -10,25 +6,23 @@ import {
   Text,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { SectionField } from 'components/admin/Section';
-import CloseIconButton from 'components/UI/CloseIconButton';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Toggle from 'components/HookForm/Toggle';
-
-// intl
-import messages from '../messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
-// types
-import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
-
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { isNilOrError } from 'utils/helperUtils';
-
+// types
+import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 // utils
 import { getAdditionalSettings } from './utils';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+// styles
+import { colors } from 'utils/styleUtils';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Toggle from 'components/HookForm/Toggle';
+import Button from 'components/UI/Button';
+import CloseIconButton from 'components/UI/CloseIconButton';
+import { SectionField } from 'components/admin/Section';
+// intl
+import messages from '../messages';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;

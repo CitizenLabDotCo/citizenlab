@@ -1,29 +1,23 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import { adopt } from 'react-adopt';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import HasPermission from 'components/HasPermission';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import { WrappedComponentProps } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // services
 import { deleteInitiative, IInitiativeData } from 'services/initiatives';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 // router
 import clHistory from 'utils/cl-router/history';
-
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import SpamReportForm from 'containers/SpamReport';
+// components
+import HasPermission from 'components/HasPermission';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
+import styled from 'styled-components';
+import messages from '../messages';
 
 const Container = styled.div``;
 

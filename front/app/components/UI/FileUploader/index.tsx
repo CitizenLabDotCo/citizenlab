@@ -1,20 +1,16 @@
 import React from 'react';
-
-// components
-import FileInput from './FileInput';
-import FileDisplay from './FileDisplay';
-import Error from 'components/UI/Error';
-
 // typings
 import { CLError, UploadFile } from 'typings';
-
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import Error from 'components/UI/Error';
 // style
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
-
+import FileDisplay from './FileDisplay';
+// components
+import FileInput from './FileInput';
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   width: 100%;

@@ -1,44 +1,39 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { isEmpty, isNaN, isEqual } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { API_PATH } from 'containers/App/constants';
+// typings
+import { Multiloc } from 'typings';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 import useCustomPage from 'hooks/useCustomPage';
-
+import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 // services
 import {
   updateAppConfiguration,
   ProposalsSettings,
 } from 'services/appConfiguration';
 import { updateCustomPage } from 'services/customPages';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
-
+import { API_PATH } from 'containers/App/constants';
+import Warning from 'components/UI/Warning';
 // components
 import {
   SectionTitle,
   SectionDescription,
   Section,
 } from 'components/admin/Section';
-import Warning from 'components/UI/Warning';
-import ProposalsFeatureToggle from './ProposalsFeatureToggle';
-import VotingThreshold from './VotingThreshold';
-import VotingLimit from './VotingLimit';
-import ThresholdReachedMessage from './ThresholdReachedMessage';
-import EligibilityCriteria from './EligibilityCriteria';
-import PageBody from './PageBody';
-import SubmitButton from './SubmitButton';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 // styling
 import styled from 'styled-components';
-
-// typings
-import { Multiloc } from 'typings';
+import messages from '../messages';
+import EligibilityCriteria from './EligibilityCriteria';
+import PageBody from './PageBody';
+import ProposalsFeatureToggle from './ProposalsFeatureToggle';
+import SubmitButton from './SubmitButton';
+import ThresholdReachedMessage from './ThresholdReachedMessage';
+import VotingLimit from './VotingLimit';
+import VotingThreshold from './VotingThreshold';
 
 const Container = styled.div``;
 

@@ -1,56 +1,48 @@
 import React, { PureComponent } from 'react';
-import { set, keys, difference, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { API_PATH } from 'containers/App/constants';
-import request from 'utils/request';
-
+// i18n
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Input } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import PasswordInput, {
-  hasPasswordMinimumLength,
-} from 'components/UI/PasswordInput';
-import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
-import Error from 'components/UI/Error';
-import { FormLabel } from 'components/UI/FormComponents';
-import Consent from 'components/AuthProviders/Consent';
-import { Options, Option } from '../styles';
-
-// utils
-import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
-import { isCLErrorJSON } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import { signUp } from 'services/auth';
-
+import { set, keys, difference, get } from 'lodash-es';
+// typings
+import { CLErrorsJSON } from 'typings';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+// services
+import { signUp } from 'services/auth';
+import { IUser } from 'services/users';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { isCLErrorJSON } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import request from 'utils/request';
+import { viewportWidths } from 'utils/styleUtils';
+// utils
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
+import { API_PATH } from 'containers/App/constants';
+import Consent from 'components/AuthProviders/Consent';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
+import PasswordInput, {
+  hasPasswordMinimumLength,
+} from 'components/UI/PasswordInput';
+import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 // style
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
-
-// typings
-import { CLErrorsJSON } from 'typings';
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
-import { IUser } from 'services/users';
+import { Options, Option } from '../styles';
+import tracks from '../tracks';
+import messages from './messages';
 
 const Container = styled.div``;
 

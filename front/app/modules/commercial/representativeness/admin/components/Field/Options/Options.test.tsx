@@ -1,7 +1,7 @@
 import React from 'react';
-import Options from '.';
-import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 import { indices } from 'utils/helperUtils';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
+import Options from '.';
 
 jest.mock('services/appConfiguration');
 jest.mock('hooks/useLocalize');

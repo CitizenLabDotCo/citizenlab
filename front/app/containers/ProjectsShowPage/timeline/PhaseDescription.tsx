@@ -1,20 +1,17 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
-
-// components
-import FileAttachments from 'components/UI/FileAttachments';
-import PhaseTitle from './PhaseTitle';
-import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
-
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'hooks/usePhase';
 import useResourceFiles from 'hooks/useResourceFiles';
-
+import { isNilOrError } from 'utils/helperUtils';
+import { defaultCardStyle, media } from 'utils/styleUtils';
+import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
+// components
+import FileAttachments from 'components/UI/FileAttachments';
 // style
 import styled from 'styled-components';
-import { defaultCardStyle, media } from 'utils/styleUtils';
+import PhaseTitle from './PhaseTitle';
 
 const Container = styled.div`
   padding: 30px;

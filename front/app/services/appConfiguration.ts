@@ -1,8 +1,9 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { TCategory } from 'components/ConsentManager/destinations';
 import { THomepageSettingKeyMap } from 'services/homepageSettings';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
+import { TCategory } from 'components/ConsentManager/destinations';
+
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 export interface AppConfigurationFeature {

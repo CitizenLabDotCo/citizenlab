@@ -1,20 +1,16 @@
 import React, { memo, useMemo } from 'react';
-
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import Link from 'utils/cl-router/Link';
-
 // typings
 import { ITab } from 'typings';
-
+import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { matchPathToUrl } from 'utils/helperUtils';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-
-// utils
-import { matchPathToUrl } from 'utils/helperUtils';
 
 interface Props {
   children?: React.ReactNode;

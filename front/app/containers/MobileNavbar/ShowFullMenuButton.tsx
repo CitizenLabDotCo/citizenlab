@@ -1,11 +1,11 @@
 import React from 'react';
-import { NavigationItem, NavigationLabel } from './';
 import { Icon } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { NavigationItem, NavigationLabel } from './';
+import messages from './messages';
 
 interface Props {
   onClick: () => void;

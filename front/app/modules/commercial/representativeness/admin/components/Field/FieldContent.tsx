@@ -1,29 +1,23 @@
+import Tippy from '@tippyjs/react';
 import React, { useState } from 'react';
-
-// hooks
-import useReferenceDistribution from '../../hooks/useReferenceDistribution';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Header from './Header';
-import Options from './Options';
-import Tippy from '@tippyjs/react';
+// hooks
+import useReferenceDistribution from '../../hooks/useReferenceDistribution';
+// typings
+import { Bins } from '../../services/referenceDistribution';
+// utils
+import { isSubmittingAllowed, FormValues } from '../../utils/form';
+import { FormattedMessage } from 'utils/cl-intl';
+// styling
+import { colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 import BinModal from './BinModal';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
+import Header from './Header';
+import Options from './Options';
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// utils
-import { isSubmittingAllowed, FormValues } from '../../utils/form';
-
-// typings
-import { Bins } from '../../services/referenceDistribution';
 
 interface Props {
   userCustomFieldId: string;

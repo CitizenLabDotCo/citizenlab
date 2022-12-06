@@ -3,9 +3,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import eventEmitter from 'utils/eventEmitter';
-
 import 'jest-styled-components';
-
 // component to test
 import Container from './Container';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { isEmpty } from 'lodash-es';
 // components
 import {
   BarChart,
@@ -9,17 +9,13 @@ import {
   LabelList,
   ResponsiveContainer,
 } from 'recharts';
-import { NoDataContainer } from 'components/admin/GraphWrappers';
-
-// i18n
-import messages from '../messages';
+import { parseData } from './utils';
 import { FormattedMessage } from 'utils/cl-intl';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-import { parseData } from './utils';
-
+import { NoDataContainer } from 'components/admin/GraphWrappers';
+// i18n
+import messages from '../messages';
 // typings
 import { ProgressBarsProps } from './typings';
 

@@ -1,6 +1,6 @@
 import 'cypress-file-upload';
-import './dnd';
 import { ParticipationMethod } from '../../app/services/participationContexts';
+import './dnd';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

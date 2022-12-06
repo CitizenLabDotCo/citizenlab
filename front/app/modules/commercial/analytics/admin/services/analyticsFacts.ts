@@ -1,5 +1,5 @@
-import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export const apiEndpoint = `${API_PATH}/analytics`;
 

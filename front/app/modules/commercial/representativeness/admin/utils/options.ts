@@ -1,12 +1,11 @@
 // utils
-import { roundPercentages } from 'utils/math';
-import { FormValues } from './form';
-import { forEachBin } from './bins';
-
-// typings
-import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
 import { Localize } from 'hooks/useLocalize';
 import { Bins } from '../services/referenceDistribution';
+// typings
+import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
+import { roundPercentages } from 'utils/math';
+import { forEachBin } from './bins';
+import { FormValues } from './form';
 
 /*
  * Takes a thousand-formatted locale string in the US format (e.g. 1,000,000)

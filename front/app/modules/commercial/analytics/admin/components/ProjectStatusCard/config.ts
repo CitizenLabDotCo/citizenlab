@@ -1,10 +1,4 @@
-import messages from './messages';
-
-// Utils
-import { formatCountValue } from '../../utils/parse';
-import { getDateFilter, getProjectFilter } from '../../utils/query';
 import { underscoreCase } from '../../hooks/useStatCard/parse';
-
 // Typings
 import {
   StatCardData,
@@ -12,6 +6,10 @@ import {
   StatCardConfig,
 } from '../../hooks/useStatCard/typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
+// Utils
+import { formatCountValue } from '../../utils/parse';
+import { getDateFilter, getProjectFilter } from '../../utils/query';
+import messages from './messages';
 
 // Type helps to keep this file and tests type safe although useStatCard returns a more generic object
 export interface ProjectStatusCardLabels {

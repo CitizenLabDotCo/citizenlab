@@ -1,30 +1,25 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetCommentChildProps } from 'resources/GetComment';
+import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
+import { GetPostChildProps } from 'resources/GetPost';
+// types
+import { GetUserChildProps } from 'resources/GetUser';
 // events
 import { commentReplyButtonClicked } from './events';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// types
-import { GetUserChildProps } from 'resources/GetUser';
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { GetCommentChildProps } from 'resources/GetComment';
-import { GetPostChildProps } from 'resources/GetPost';
-import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.li`
   display: flex;

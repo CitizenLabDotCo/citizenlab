@@ -1,11 +1,11 @@
 // @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
-
-import { getIdea } from 'services/ideas';
-import { mockTopicData } from 'services/__mocks__/topics';
 import { mockIdeaStatusData } from 'services/__mocks__/ideaStatuses';
 import { mockProposalStatusData } from 'services/__mocks__/proposalStatuses';
+import { mockTopicData } from 'services/__mocks__/topics';
+import { getIdea } from 'services/ideas';
+import { PostManager } from './';
 
 // mocking dependencies
 jest.mock('services/globalState');
@@ -28,8 +28,6 @@ jest.mock(
 jest.mock('./components/LazyPostPreview', () => 'LazyPostPreview');
 jest.mock('components/Outlet', () => 'Outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
-import { PostManager } from './';
 
 describe('<PostManager />', () => {
   const ideasList = [

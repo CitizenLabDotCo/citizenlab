@@ -6,27 +6,20 @@ import React, {
   useLayoutEffect,
   useMemo,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { CSSTransition } from 'react-transition-group';
-
-// components
-import Map, { Point } from 'components/Map';
-import IdeaButton from 'components/IdeaButton';
-import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
-import IdeaMapCard from './IdeaMapCard';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
-
+import { popup, LatLng, Map as LeafletMap } from 'leaflet';
+// typings
+import { Sort } from 'resources/GetIdeas';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
-
+import usePhase from 'hooks/usePhase';
+import useProject from 'hooks/useProject';
+import { getIdeaPostingRules } from 'services/actionTakingRules';
+import { IIdeaMarkerData } from 'services/ideas';
 // services
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
-import { getIdeaPostingRules } from 'services/actionTakingRules';
-
 // events
 import {
   setIdeaMapCardSelected,
@@ -43,20 +36,20 @@ import {
   leafletMapSelectedMarker$,
   leafletMapClicked$,
 } from 'components/UI/LeafletMap/events';
-
+import { ScreenReaderOnly } from 'utils/a11y';
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
-
+import { isNilOrError } from 'utils/helperUtils';
+import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import IdeaButton from 'components/IdeaButton';
+// components
+import Map, { Point } from 'components/Map';
 // styling
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
-
-// typings
-import { Sort } from 'resources/GetIdeas';
-import { IIdeaMarkerData } from 'services/ideas';
+import IdeaMapCard from './IdeaMapCard';
+import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
+import messages from './messages';
 
 const mapMarginDesktop = 70;
 const mapHeightDesktop = '83vh';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { Locale } from 'typings';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}

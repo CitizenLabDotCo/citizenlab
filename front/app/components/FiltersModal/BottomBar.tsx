@@ -1,12 +1,10 @@
 import React, { memo, FormEvent } from 'react';
-
+import { lighten } from 'polished';
+import { colors } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
-
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;

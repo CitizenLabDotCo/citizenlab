@@ -1,20 +1,17 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { omit } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
-
-// styles
-import { colors, fontSizes } from 'utils/styleUtils';
-import styled, { css } from 'styled-components';
-
+import { omit } from 'lodash-es';
+// typings
+import { Omit } from 'typings';
 // components
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+// styles
+import { colors, fontSizes } from 'utils/styleUtils';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
 } from 'components/UI/Button';
-
-// typings
-import { Omit } from 'typings';
+import styled, { css } from 'styled-components';
 
 export type ISubmitState =
   | 'disabled'

@@ -1,26 +1,7 @@
 import React from 'react';
-
-// types
-import { Multiloc, UploadFile } from 'typings';
-
 // form
 import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, mixed } from 'yup';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Input from 'components/HookForm/Input';
-import FileUploader from 'components/HookForm/FileUploader';
-import Feedback from 'components/HookForm/Feedback';
-import { SectionField } from 'components/admin/Section';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-// intl
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-
 // components
 import {
   IconTooltip,
@@ -28,18 +9,31 @@ import {
   Box,
   Text,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import Button from 'components/UI/Button';
-import NavbarTitleField from './NavbarTitleField';
-
+import { yupResolver } from '@hookform/resolvers/yup';
+// types
+import { Multiloc, UploadFile } from 'typings';
+import { string, object, mixed } from 'yup';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useCustomPage from 'hooks/useCustomPage';
+// hooks
+import useLocale from 'hooks/useLocale';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { slugRegEx } from 'utils/textUtils';
-
-// hooks
-import useLocale from 'hooks/useLocale';
-import useCustomPage from 'hooks/useCustomPage';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import Feedback from 'components/HookForm/Feedback';
+import FileUploader from 'components/HookForm/FileUploader';
+import Input from 'components/HookForm/Input';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
+import { SectionField } from 'components/admin/Section';
+import NavbarTitleField from './NavbarTitleField';
+// intl
+import messages from './messages';
 
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;

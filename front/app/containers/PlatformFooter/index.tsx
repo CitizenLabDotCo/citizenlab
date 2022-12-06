@@ -1,29 +1,23 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-
-// utils
-import Link from 'utils/cl-router/Link';
-import eventEmitter from 'utils/eventEmitter';
-
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import messages from './messages';
-
-// services
-import { FOOTER_PAGES, TFooterPage } from 'services/customPages';
-
-// style
-import styled, { css } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-
+import { isEmpty } from 'lodash-es';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+// services
+import { FOOTER_PAGES, TFooterPage } from 'services/customPages';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+// utils
+import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+// style
+import styled, { css } from 'styled-components';
+import messages from './messages';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
   display: flex;

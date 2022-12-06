@@ -1,13 +1,10 @@
 import React from 'react';
-
+import { Box } from '@citizenlab/cl2-component-library';
+// craft
+import { useNode } from '@craftjs/core';
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillEditor from 'components/UI/QuillEditor';
-
-// craft
-import { useNode } from '@craftjs/core';
-import { Box } from '@citizenlab/cl2-component-library';
-
 // hooks
 import { useTheme } from 'styled-components';
 

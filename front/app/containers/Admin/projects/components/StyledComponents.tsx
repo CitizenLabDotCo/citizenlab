@@ -1,10 +1,9 @@
 // styles
-import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-
+import T from 'components/T';
 // components
 import Button from 'components/UI/Button';
-import T from 'components/T';
+import styled from 'styled-components';
 
 export const RowContent = styled.div`
   flex: 1;

@@ -1,6 +1,6 @@
-import PageLoading from 'components/UI/PageLoading';
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
+import PageLoading from 'components/UI/PageLoading';
 
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
 const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));

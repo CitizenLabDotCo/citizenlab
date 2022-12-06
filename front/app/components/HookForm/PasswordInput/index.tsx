@@ -1,9 +1,7 @@
 import React from 'react';
-
-import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError } from 'typings';
-
+import Error, { TFieldName } from 'components/UI/Error';
 import PasswordInputComponent, {
   Props as PasswordInputComponentProps,
 } from 'components/UI/PasswordInput';

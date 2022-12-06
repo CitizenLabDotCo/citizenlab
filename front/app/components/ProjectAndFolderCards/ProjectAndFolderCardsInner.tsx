@@ -1,34 +1,27 @@
 import React, { useEffect } from 'react';
-
-// components
-import Topbar from './components/Topbar';
-import EmptyContainer from './components/EmptyContainer';
-import ProjectsList from './components/ProjectsList';
-import LoadingBox from './components/LoadingBox';
-import Footer from './components/Footer';
-
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
 import useAdminPublicationsStatusCounts, {
   IStatusCounts,
 } from 'hooks/useAdminPublicationsStatusCounts';
-
+import { getAvailableTabs } from './utils';
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled from 'styled-components';
-
-// i18n
-import messages from './messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getAvailableTabs } from './utils';
-
+import EmptyContainer from './components/EmptyContainer';
+import Footer from './components/Footer';
+import LoadingBox from './components/LoadingBox';
+import ProjectsList from './components/ProjectsList';
+// components
+import Topbar from './components/Topbar';
+// style
+import styled from 'styled-components';
 // typings
 import { PublicationTab, Props as BaseProps } from '.';
+// i18n
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;

@@ -1,22 +1,18 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Modal from 'components/UI/Modal';
-import SharingButtons from 'components/Sharing/SharingButtons';
-
+import { WrappedComponentProps } from 'react-intl';
+// style
+import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
-
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import messages from 'containers/ProjectsShowPage/messages';
+import SharingButtons from 'components/Sharing/SharingButtons';
 // i18n
 import T from 'components/T';
-import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// style
-import { Box } from '@citizenlab/cl2-component-library';
+// components
+import Modal from 'components/UI/Modal';
 
 interface Props {
   projectId: string;

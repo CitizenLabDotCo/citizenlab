@@ -1,5 +1,4 @@
 import moment, { Moment } from 'moment';
-
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 

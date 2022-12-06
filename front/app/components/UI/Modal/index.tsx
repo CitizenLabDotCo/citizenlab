@@ -1,33 +1,20 @@
 import React, { PureComponent, ReactElement } from 'react';
-import { createPortal } from 'react-dom';
 import { adopt } from 'react-adopt';
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+// animations
+import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import clHistory from 'utils/cl-router/history';
-import eventEmitter from 'utils/eventEmitter';
-import { FocusOn } from 'react-focus-on';
-
-// i18n
-import messages from './messages';
-
-// components
-import CloseIconButton from 'components/UI/CloseIconButton';
-import clickOutside from 'utils/containers/clickOutside';
-
 // resources
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-
-// animations
-import CSSTransition from 'react-transition-group/CSSTransition';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled from 'styled-components';
+import clHistory from 'utils/cl-router/history';
+import clickOutside from 'utils/containers/clickOutside';
+import eventEmitter from 'utils/eventEmitter';
 import {
   media,
   colors,
@@ -36,6 +23,13 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
+// components
+import CloseIconButton from 'components/UI/CloseIconButton';
+// style
+import styled from 'styled-components';
+// i18n
+import messages from './messages';
+import tracks from './tracks';
 
 const desktopOpacityTimeout = 500;
 const mobileOpacityTimeout = 250;

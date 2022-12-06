@@ -1,22 +1,19 @@
 import React, { PureComponent } from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-
-// utils
-import shallowCompare from 'utils/shallowCompare';
-import { roundPercentages } from 'utils/math';
-
+// services
+import {
+  usersByGenderStream,
+  IUsersByRegistrationField,
+  usersByGenderXlsxEndpoint,
+} from 'services/userCustomFieldStats';
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { roundPercentages } from 'utils/math';
+// utils
+import shallowCompare from 'utils/shallowCompare';
 import messages from 'containers/Admin/dashboard/messages';
-
-// styling
-import { withTheme } from 'styled-components';
-import { categoricalColorScheme } from 'components/admin/Graphs/styling';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   NoDataContainer,
   GraphCardHeader,
@@ -26,17 +23,14 @@ import {
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
 import PieChart from 'components/admin/Graphs/PieChart';
-import renderTooltip from './renderGenderTooltip';
-
-// services
-import {
-  usersByGenderStream,
-  IUsersByRegistrationField,
-  usersByGenderXlsxEndpoint,
-} from 'services/userCustomFieldStats';
-
 // typings
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { categoricalColorScheme } from 'components/admin/Graphs/styling';
+// components
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+// styling
+import { withTheme } from 'styled-components';
+import renderTooltip from './renderGenderTooltip';
 
 type State = {
   serie:

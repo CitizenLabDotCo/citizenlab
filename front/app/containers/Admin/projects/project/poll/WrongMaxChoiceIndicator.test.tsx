@@ -1,11 +1,8 @@
 // @ts-nocheck
 import React from 'react';
-
 import { shallow } from 'enzyme';
-
-import { WrongMaxChoiceIndicator } from './WrongMaxChoiceIndicator';
-
 import { mockOption } from 'services/__mocks__/pollOptions';
+import { WrongMaxChoiceIndicator } from './WrongMaxChoiceIndicator';
 
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 jest.mock('services/pollOptions');

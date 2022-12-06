@@ -1,25 +1,20 @@
 import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { clone } from 'lodash-es';
-import styled from 'styled-components';
-import { TRule } from './rules';
-
-// components
-import Button from 'components/UI/Button';
-import Rule from './Rule';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // tracking
 import { injectTracks } from 'utils/analytics';
-import tracks from 'containers/Admin/users/tracks';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 // styling
 import { colors } from 'utils/styleUtils';
-
+import tracks from 'containers/Admin/users/tracks';
+// components
+import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Controller, useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
+import Rule from './Rule';
+import messages from './messages';
+import { TRule } from './rules';
 
 const Container = styled.div`
   width: 560px;

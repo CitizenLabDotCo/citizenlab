@@ -1,7 +1,6 @@
 import React from 'react';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { render, screen } from 'utils/testUtils/rtl';
-
 import LinearScaleControl from './LinearScaleControl';
 
 jest.mock('utils/cl-intl');

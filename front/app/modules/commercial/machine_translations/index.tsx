@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const ActionBarTranslateButton = React.lazy(
   () => import('./citizen/components/ActionBarTranslateButton')
 );

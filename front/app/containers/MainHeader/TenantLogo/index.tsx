@@ -1,18 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
-// hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
-
 // components
 import { Image } from '@citizenlab/cl2-component-library';
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+import messages from '../messages';
 
 const LogoLink = styled(Link)`
   flex: 1 1 auto;

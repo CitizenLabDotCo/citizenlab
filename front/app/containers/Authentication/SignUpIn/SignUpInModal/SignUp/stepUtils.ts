@@ -1,9 +1,9 @@
 // i18n
-import messages from './messages';
-
+import { TAuthUser } from 'hooks/useAuthUser';
+import { UserCustomFieldsInfos } from 'services/userCustomFields';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import {
   TSignUpStep,
@@ -11,9 +11,7 @@ import {
   TSignUpStepConfigurationObject,
   ILocalState,
 } from '.';
-import { TAuthUser } from 'hooks/useAuthUser';
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
-import { UserCustomFieldsInfos } from 'services/userCustomFields';
+import messages from './messages';
 
 export function getDefaultSteps(
   userCustomFieldsSchema: UserCustomFieldsInfos

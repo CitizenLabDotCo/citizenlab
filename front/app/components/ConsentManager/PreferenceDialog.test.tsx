@@ -2,9 +2,7 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-
 import 'jest-styled-components';
-
 // component to test
 import PreferencesDialog from './PreferencesDialog';
 

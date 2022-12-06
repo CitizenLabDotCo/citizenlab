@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import moment, { Moment } from 'moment';
-
 import { DateInput } from '@citizenlab/cl2-component-library';
+import moment, { Moment } from 'moment';
 
 type Props = {
   value: string;

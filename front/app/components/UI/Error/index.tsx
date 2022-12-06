@@ -1,13 +1,13 @@
+import React, { useEffect, useRef } from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import { darken } from 'polished';
-import React, { useEffect, useRef } from 'react';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import { IInviteError } from 'services/invites';
-import styled from 'styled-components';
 import { CLError, Message } from 'typings';
+import { IInviteError } from 'services/invites';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import styled from 'styled-components';
 import messages from './messages';
 
 const timeout = 350;

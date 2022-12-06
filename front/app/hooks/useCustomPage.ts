@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import {
   ICustomPage,
@@ -7,6 +6,7 @@ import {
   customPageByIdStream,
   customPageBySlugStream,
 } from 'services/customPages';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   customPageId?: string | null;

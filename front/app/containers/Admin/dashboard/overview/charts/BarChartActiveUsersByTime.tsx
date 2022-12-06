@@ -1,18 +1,17 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { isEmpty } from 'lodash-es';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
-// typings
-import { IStreamParams, IStream } from 'utils/streams';
-import { IResourceByTime, IUsersByTime } from 'services/stats';
-
 // components
 import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { isEmpty } from 'lodash-es';
+import { Subscription } from 'rxjs';
+import { IResourceByTime, IUsersByTime } from 'services/stats';
+// intl
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+// typings
+import { IStreamParams, IStream } from 'utils/streams';
 import {
   IGraphUnit,
   GraphCard,
@@ -21,11 +20,8 @@ import {
   GraphCardTitle,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-
-// utils
-import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 type Row = { name: string; code: string; value: number };
 

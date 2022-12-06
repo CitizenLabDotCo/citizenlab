@@ -1,40 +1,34 @@
 import React from 'react';
-import { isError, isNilOrError } from 'utils/helperUtils';
-
-// components
-import TypeformSurvey from './TypeformSurvey';
-import SurveymonkeySurvey from './SurveymonkeySurvey';
-import GoogleFormsSurvey from './GoogleFormsSurvey';
-import EnalyzerSurvey from './EnalyzerSurvey';
-import QualtricsSurvey from './QualtricsSurvey';
-import SmartSurvey from './SmartSurvey';
-import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
-import SnapSurvey from './SnapSurvey';
-import Warning from 'components/UI/Warning';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
-
+import useAuthUser from 'hooks/useAuthUser';
+// hooks
+import usePhase from 'hooks/usePhase';
+import useProject from 'hooks/useProject';
 // services
 import {
   getSurveyTakingRules,
   ISurveyTakingDisabledReason,
 } from 'services/actionTakingRules';
-
-// i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
-
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
-
+// i18n
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { isError, isNilOrError } from 'utils/helperUtils';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import Warning from 'components/UI/Warning';
 // styling
 import styled from 'styled-components';
+import EnalyzerSurvey from './EnalyzerSurvey';
+import GoogleFormsSurvey from './GoogleFormsSurvey';
+import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
+import QualtricsSurvey from './QualtricsSurvey';
+import SmartSurvey from './SmartSurvey';
+import SnapSurvey from './SnapSurvey';
 import SurveyXact from './SurveyXact';
-
-// hooks
-import usePhase from 'hooks/usePhase';
-import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
+import SurveymonkeySurvey from './SurveymonkeySurvey';
+// components
+import TypeformSurvey from './TypeformSurvey';
+import messages from './messages';
 
 const Container = styled.div`
   position: relative;

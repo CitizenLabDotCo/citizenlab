@@ -1,15 +1,12 @@
 import React from 'react';
-
-// components
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import { SectionField } from 'components/admin/Section';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-
 // types
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
-
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
+// components
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import { SectionField } from 'components/admin/Section';
 import messages from './messages';
 
 type Props = {

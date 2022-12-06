@@ -1,8 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsCategories';
 import categories from 'modules/commercial/insights/fixtures/categories';
-
+import * as service from 'modules/commercial/insights/services/insightsCategories';
+import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
 import TableTitle from './TableTitle';
 
 const mockData = categories;

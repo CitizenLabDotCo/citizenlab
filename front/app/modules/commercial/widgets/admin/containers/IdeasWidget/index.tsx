@@ -1,23 +1,19 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import styled from 'styled-components';
+import { useForm, FormProvider } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { omitBy, isNil, isEmpty, isString, debounce } from 'lodash-es';
 import { stringify } from 'qs';
-
-import Form, { FormValues } from './Form';
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object, number, boolean, array } from 'yup';
-
-import WidgetPreview from '../WidgetPreview';
-import Modal from 'components/UI/Modal';
-import WidgetCode from '../WidgetCode';
-import Button from 'components/UI/Button';
-
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
 import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+import styled from 'styled-components';
+import messages from '../../messages';
+import WidgetCode from '../WidgetCode';
+import WidgetPreview from '../WidgetPreview';
+import Form, { FormValues } from './Form';
 import tracks from './tracks';
 
 const Container = styled.div`

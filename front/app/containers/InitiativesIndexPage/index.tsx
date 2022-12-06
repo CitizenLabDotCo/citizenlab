@@ -1,26 +1,22 @@
 import React from 'react';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import PageNotFound from 'components/PageNotFound';
-import InitiativesIndexMeta from './InitiativesIndexMeta';
-import InitiativesHeader from './InitiativesHeader';
-import InitiativeCards from 'components/InitiativeCards';
-import ContentContainer from 'components/ContentContainer';
-import CityLogoSection from 'components/CityLogoSection';
-import InitiativeButton from 'components/InitiativeButton';
-
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { isNilOrError } from 'utils/helperUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
+import CityLogoSection from 'components/CityLogoSection';
+import ContentContainer from 'components/ContentContainer';
+import InitiativeButton from 'components/InitiativeButton';
+import InitiativeCards from 'components/InitiativeCards';
+// components
+import PageNotFound from 'components/PageNotFound';
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import InitiativesHeader from './InitiativesHeader';
+import InitiativesIndexMeta from './InitiativesIndexMeta';
+import messages from './messages';
 
 const Container = styled.main``;
 

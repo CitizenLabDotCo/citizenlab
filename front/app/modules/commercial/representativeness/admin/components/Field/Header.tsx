@@ -1,12 +1,10 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-
+import { injectIntl } from 'utils/cl-intl';
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 const Header = ({ intl: { formatMessage } }: WrappedComponentProps) => (
   <Box display="flex">

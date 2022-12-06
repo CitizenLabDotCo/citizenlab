@@ -1,13 +1,13 @@
 import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import { Box } from '@citizenlab/cl2-component-library';
-import Breadcrumbs from 'components/UI/Breadcrumbs';
+import { injectIntl } from 'utils/cl-intl';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import HelmetIntl from 'components/HelmetIntl';
-import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import NewCustomPage from './NewCustomPage';
+import Breadcrumbs from 'components/UI/Breadcrumbs';
 import TabbedResource from 'components/admin/TabbedResource';
+import messages from '../messages';
+import NewCustomPage from './NewCustomPage';
 
 const CustomPagesNewSettings = ({
   intl: { formatMessage },

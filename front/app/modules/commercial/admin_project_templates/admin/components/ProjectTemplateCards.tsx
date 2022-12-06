@@ -1,25 +1,22 @@
 import React, { memo } from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 // hooks
 import useLocalize from 'hooks/useLocalize';
-
-// components
-import ProjectTemplateCard from './ProjectTemplateCard';
-import SearchInput from 'components/UI/SearchInput';
-import { Spinner } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import DepartmentFilter from '../components/DepartmentFilter';
-import PurposeFilter from './PurposeFilter';
-import ParticipationLevelFilter from './ParticipationLevelFilter';
-
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import { colors, fontSizes } from 'utils/styleUtils';
+import DepartmentFilter from '../components/DepartmentFilter';
+import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import ParticipationLevelFilter from './ParticipationLevelFilter';
+// components
+import ProjectTemplateCard from './ProjectTemplateCard';
+import PurposeFilter from './PurposeFilter';
+import messages from './messages';
 
 const Container = styled.div`
   margin-bottom: 15px;

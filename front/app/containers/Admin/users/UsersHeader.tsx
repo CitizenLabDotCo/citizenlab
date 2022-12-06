@@ -1,21 +1,18 @@
 // Libraries
 import React, { memo } from 'react';
 import { Multiloc } from 'typings';
-
-// Components
-import Button from 'components/UI/Button';
-import T from 'components/T';
-import SearchInput from 'components/UI/SearchInput';
-
+import { MembershipType } from 'services/groups';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// Styling
-import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
-import { MembershipType } from 'services/groups';
+import T from 'components/T';
+// Components
+import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
+// Styling
+import styled from 'styled-components';
+import messages from './messages';
 
 const TitleWrapper = styled.div`
   min-height: 105px;

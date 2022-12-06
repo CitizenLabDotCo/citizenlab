@@ -1,5 +1,6 @@
-import moment = require('moment');
 import { randomString, apiRemoveProject } from '../support/commands';
+
+import moment = require('moment');
 
 describe('Existing Timeline project', () => {
   before(() => {

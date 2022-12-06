@@ -1,45 +1,38 @@
 import React, { memo, FormEvent, useState } from 'react';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useBasket from 'hooks/useBasket';
+import useIdea from 'hooks/useIdea';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
+import { addBasket, updateBasket } from 'services/baskets';
+import { IIdeaData } from 'services/ideas';
+import { getCurrentPhase, getLatestRelevantPhase } from 'services/phases';
+// services
+import { IProjectData } from 'services/projects';
+import { IUserData } from 'services/users';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
+import { ScreenReaderOnly } from 'utils/a11y';
+// tracking
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 import {
   isNilOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
-import { openVerificationModal } from 'events/verificationModal';
-
-// components
-import Button from 'components/UI/Button';
-
-// services
-import { IProjectData } from 'services/projects';
-import { getCurrentPhase, getLatestRelevantPhase } from 'services/phases';
-import { addBasket, updateBasket } from 'services/baskets';
-
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
-import useIdea from 'hooks/useIdea';
-import useBasket from 'hooks/useBasket';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
-
 // utils
 import streams from 'utils/streams';
-import { openSignUpInModal } from 'events/openSignUpInModal';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-
+import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
+import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
+import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
+// components
+import Button from 'components/UI/Button';
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
-import { IIdeaData } from 'services/ideas';
-import { IUserData } from 'services/users';
+import messages from './messages';
 
 const IdeaCardContainer = styled.div`
   display: flex;

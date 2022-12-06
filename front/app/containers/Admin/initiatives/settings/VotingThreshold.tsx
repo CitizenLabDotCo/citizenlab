@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-
-// components
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { Input, Box } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import errorMessages from 'components/UI/Error/messages';
-import { StyledWarning } from '.';
-
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import Error from 'components/UI/Error';
+import errorMessages from 'components/UI/Error/messages';
+// components
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import { StyledWarning } from '.';
 import messages from '../messages';
 
 interface Props {

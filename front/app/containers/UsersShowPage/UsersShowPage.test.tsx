@@ -2,9 +2,9 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-import { intl } from 'utils/cl-intl';
 import useUser from 'hooks/useUser';
-
+import { makeUser } from 'services/__mocks__/users';
+import { intl } from 'utils/cl-intl';
 // component to test
 import { UsersShowPage } from './';
 
@@ -21,8 +21,6 @@ global.scrollTo = mockScroll;
 
 const user = makeUser().data;
 jest.mock('hooks/useUser', () => jest.fn());
-
-import { makeUser } from 'services/__mocks__/users';
 
 describe('<UsersShowPage />', () => {
   it('renders correctly by default', () => {

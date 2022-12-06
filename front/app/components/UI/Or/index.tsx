@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
-import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
 import messages from './messages';
 
 const OrContainer = styled.div`

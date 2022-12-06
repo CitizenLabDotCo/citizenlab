@@ -1,15 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
 import { addCustomFieldForUsers } from 'services/userCustomFields';
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
+import styled from 'styled-components';
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
-
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 const PageTitle = styled.h1`

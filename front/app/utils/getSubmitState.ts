@@ -1,5 +1,5 @@
-import { CLError } from 'typings';
 import { isEmpty, isError } from 'lodash-es';
+import { CLError } from 'typings';
 
 export type Errors =
   | {

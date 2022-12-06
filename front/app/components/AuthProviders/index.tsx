@@ -1,33 +1,28 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import { adopt } from 'react-adopt';
+import { WrappedComponentProps } from 'react-intl';
 import { isBoolean } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
-import Or from 'components/UI/Or';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
-import Outlet from 'components/Outlet';
-import Error from 'components/UI/Error';
-
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// styling
-import styled from 'styled-components';
-import { Options, Option } from './styles';
-
 // typings
 import { SSOProvider } from 'services/singleSignOn';
 import { ISignUpInMetaData } from 'events/openSignUpInModal';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import Outlet from 'components/Outlet';
+import Error from 'components/UI/Error';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
+import Or from 'components/UI/Or';
+// styling
+import styled from 'styled-components';
+// components
+import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
+import messages from './messages';
+import { Options, Option } from './styles';
 
 const Container = styled.div`
   display: flex;

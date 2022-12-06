@@ -1,5 +1,5 @@
-import 'services/homepageSettings';
 import { Multiloc } from 'typings';
+import 'services/homepageSettings';
 
 declare module 'services/homepageSettings' {
   interface CTASignedOutTypeMap {

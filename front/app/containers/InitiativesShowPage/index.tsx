@@ -1,30 +1,25 @@
 import React from 'react';
-import { isError } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
-
-// components
-import PageNotFound from 'components/PageNotFound';
-import InitiativesShow from 'containers/InitiativesShow';
-import Button from 'components/UI/Button';
-import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
-
+import { isError } from 'lodash-es';
 // resources
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
-
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import InitiativesShow from 'containers/InitiativesShow';
+// components
+import PageNotFound from 'components/PageNotFound';
+import Button from 'components/UI/Button';
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
+import messages from './messages';
 
 const InitiativeNotFoundWrapper = styled.div`
   height: calc(

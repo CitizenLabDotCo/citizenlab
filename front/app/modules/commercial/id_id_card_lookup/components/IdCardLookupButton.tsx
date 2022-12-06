@@ -1,14 +1,11 @@
 import React from 'react';
-
 // typings
 import {
   IDLookupMethod,
   TVerificationMethod,
 } from 'services/verificationMethods';
-
 // components
 import VerificationMethodButton from 'containers/Authentication/VerificationModal/VerificationMethodButton';
-
 // i18n
 import T from 'components/T';
 

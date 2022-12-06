@@ -1,5 +1,4 @@
 import React from 'react';
-
 // components
 import {
   IconTooltip,
@@ -7,9 +6,9 @@ import {
   Box,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 export interface Props {
   onChangeSectionToggle: () => void;

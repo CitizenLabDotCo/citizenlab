@@ -1,17 +1,15 @@
 import React from 'react';
-
-// components and theming
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import styled, { useTheme } from 'styled-components';
-import { PreviewDevice } from './BannerImageFields';
-
+import { UploadFile } from 'typings';
 // types
 import { ICustomPageAttributes } from 'services/customPages';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
-import { UploadFile } from 'typings';
+// components and theming
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import styled, { useTheme } from 'styled-components';
+import { PreviewDevice } from './BannerImageFields';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;

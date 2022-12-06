@@ -1,14 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
-import Link from 'utils/cl-router/Link';
-import { NavItem } from '.';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { Icon } from '@citizenlab/cl2-component-library';
-import CountBadge from 'components/UI/CountBadge';
-import HasPermission from 'components/HasPermission';
 import useFeatureFlags from 'hooks/useFeatureFlags';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import HasPermission from 'components/HasPermission';
+import CountBadge from 'components/UI/CountBadge';
+import styled from 'styled-components';
+import { NavItem } from '.';
+import messages from './messages';
 
 const Text = styled.div`
   flex: 1;

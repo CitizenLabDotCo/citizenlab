@@ -1,11 +1,4 @@
 import React, { useState } from 'react';
-
-import {
-  legacyColors,
-  sizes,
-  animation,
-} from 'components/admin/Graphs/styling';
-
 // components
 import {
   LineChart as RechartsLineChart,
@@ -15,23 +8,25 @@ import {
   YAxis,
   Tooltip,
 } from 'recharts';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+// utils
+import { getLineConfigs } from './utils';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-
-// styling
-import { colors } from '../styling';
-
-// utils
-import { getLineConfigs } from './utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
-
-// typings
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
+// styling
+import { colors } from '../styling';
+// typings
+import { Props } from './typings';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
 

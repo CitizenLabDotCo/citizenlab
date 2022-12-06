@@ -1,15 +1,12 @@
 import React from 'react';
-
 // components
 import { Box, Image } from '@citizenlab/cl2-component-library';
-import { NoDataContainer } from 'components/admin/GraphWrappers';
-
-import EmptyPieChartImageSrc from './empty.svg';
+import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
-
+import { NoDataContainer } from 'components/admin/GraphWrappers';
 // i18n
 import messages from 'components/admin/Graphs/messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import EmptyPieChartImageSrc from './empty.svg';
 
 const EmptyPieChart = () => (
   <NoDataContainer>

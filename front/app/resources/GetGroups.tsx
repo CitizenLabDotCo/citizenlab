@@ -1,7 +1,8 @@
 import React from 'react';
+// utils
+import { isEqual, get, isString, omitBy, isNil, isError } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
-
 // services
 import {
   getGroups,
@@ -10,13 +11,9 @@ import {
   MembershipType,
   GetGroupsQueryParameters,
 } from 'services/groups';
-
-// utils
-import { isEqual, get, isString, omitBy, isNil, isError } from 'lodash-es';
-import shallowCompare from 'utils/shallowCompare';
-
 // typings
 import { NilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export interface InputProps {
   pageNumber?: number;

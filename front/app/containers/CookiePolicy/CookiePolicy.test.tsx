@@ -1,7 +1,7 @@
 import React from 'react';
+import eventEmitter from 'utils/eventEmitter';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import CookiePolicy from '../CookiePolicy';
-import eventEmitter from 'utils/eventEmitter';
 
 jest.mock('utils/cl-intl');
 

@@ -1,5 +1,9 @@
 import React, { ReactNode } from 'react';
+import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const ProjectEditTab = React.lazy(
   () => import('./admin/components/ProjectEditTab')
 );
@@ -7,9 +11,6 @@ const SettingsTab = React.lazy(() => import('./admin/components/SettingsTab'));
 const TopicInputsTooltipExtraCopy = React.lazy(
   () => import('./admin/components/TopicInputsTooltipExtraCopy')
 );
-import { isNilOrError } from 'utils/helperUtils';
-import { IProjectData } from 'services/projects';
-import { IPhaseData } from 'services/phases';
 
 const AdminAllowedTopicsComponent = React.lazy(
   () => import('./admin/containers/ProjectAllowedInputTopics')

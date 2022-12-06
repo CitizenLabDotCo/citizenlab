@@ -1,32 +1,26 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
+import { WrappedComponentProps } from 'react-intl';
+import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
-
+// services
+import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+// intl
+import { injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
+import TopBar from '../../../components/TopBar';
+import Button from 'components/UI/Button';
+import PageTitle from 'components/admin/PageTitle';
 // components
 import PageWrapper from 'components/admin/PageWrapper';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
-import PageTitle from 'components/admin/PageTitle';
-import TopBar from '../../../components/TopBar';
-import Button from 'components/UI/Button';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
 // styles
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
-// services
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+import messages from '../messages';
 
 const StyledH2 = styled.h2`
   font-size: ${fontSizes.xl}px;

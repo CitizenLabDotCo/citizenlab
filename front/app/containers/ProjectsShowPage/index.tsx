@@ -1,18 +1,4 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
-import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-
-// components
-import ProjectHelmet from './shared/header/ProjectHelmet';
-import ProjectNotFound from './shared/header/ProjectNotFound';
-import ProjectNotVisible from './shared/header/ProjectNotVisible';
-import ProjectHeader from './shared/header/ProjectHeader';
-import ContinuousIdeas from './continuous/Ideas';
-import ContinuousSurvey from './continuous/Survey';
-import ContinuousPoll from './continuous/Poll';
-import ContinuousVolunteering from './continuous/Volunteering';
-import TimelineContainer from './timeline';
 import {
   Box,
   Spinner,
@@ -20,34 +6,43 @@ import {
   Image,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import Modal from 'components/UI/Modal';
-
+import rocket from 'assets/img/rocket.png';
+import { isError } from 'lodash-es';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAuthUser from 'hooks/useAuthUser';
+import useEvents from 'hooks/useEvents';
 // hooks
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useEvents from 'hooks/useEvents';
-import useAuthUser from 'hooks/useAuthUser';
-import { useIntl } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
-import rocket from 'assets/img/rocket.png';
-
+import useProject from 'hooks/useProject';
+import { getCurrentPhase } from 'services/phases';
 // typings
 import { IProjectData } from 'services/projects';
-
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
+import messages from 'utils/messages';
+import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
+import { scrollToElement } from 'utils/scroll';
+import { media, colors } from 'utils/styleUtils';
+import EventsViewer from 'containers/EventsPage/EventsViewer';
+import Modal from 'components/UI/Modal';
+import ForbiddenRoute from 'components/routing/forbiddenRoute';
+// style
+import styled from 'styled-components';
+import ContinuousIdeas from './continuous/Ideas';
+import ContinuousPoll from './continuous/Poll';
+import ContinuousSurvey from './continuous/Survey';
+import ContinuousVolunteering from './continuous/Volunteering';
 // other
 import { isValidPhase } from './phaseParam';
-import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
-import { getCurrentPhase } from 'services/phases';
-import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
-import EventsViewer from 'containers/EventsPage/EventsViewer';
-import messages from 'utils/messages';
-import { scrollToElement } from 'utils/scroll';
+import ProjectHeader from './shared/header/ProjectHeader';
+// components
+import ProjectHelmet from './shared/header/ProjectHelmet';
+import ProjectNotFound from './shared/header/ProjectNotFound';
+import ProjectNotVisible from './shared/header/ProjectNotVisible';
+import TimelineContainer from './timeline';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;

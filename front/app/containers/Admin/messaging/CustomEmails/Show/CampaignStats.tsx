@@ -1,13 +1,12 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import GetCampaignStats from 'resources/GetCampaignStats';
-import { isNilOrError } from 'utils/helperUtils';
-
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+import GetCampaignStats from 'resources/GetCampaignStats';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
+import messages from '../../messages';
 
 const Container = styled.div`
   display: flex;

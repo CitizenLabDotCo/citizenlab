@@ -1,9 +1,23 @@
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+// services
+import { isAdmin } from 'services/permissions/roles';
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
+// typings
+import { PublicationStatus } from 'services/projects';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+// types & services
+import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
+import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import {
   RowContent,
   RowContentInner,
@@ -11,36 +25,15 @@ import {
   RowButton,
   ActionsRowContainer,
 } from 'containers/Admin/projects/components/StyledComponents';
-
+import Error from 'components/UI/Error';
 // styles
 import styled from 'styled-components';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
 import messages from './messages';
-
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
-import useAdminPublications, {
-  IAdminPublicationContent,
-} from 'hooks/useAdminPublications';
-
-// services
-import { isAdmin } from 'services/permissions/roles';
-import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
-
-// typings
-import { PublicationStatus } from 'services/projects';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
 `;
-
-// types & services
-import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-import { colors } from 'utils/styleUtils';
-import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
-import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 24px;

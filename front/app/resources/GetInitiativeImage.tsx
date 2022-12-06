@@ -1,13 +1,13 @@
 import React from 'react';
+import { isString } from 'lodash-es';
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import {
   IInitiativeImageData,
   initiativeImageStream,
 } from 'services/initiativeImages';
-import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   initiativeId: string | null | undefined;

@@ -1,14 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest, of, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import shallowCompare from 'utils/shallowCompare';
 import { adopt } from 'react-adopt';
-
+// i18n
+import { WrappedComponentProps } from 'react-intl';
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
-import bowser from 'bowser';
-
 // components
 import {
   Box,
@@ -16,27 +11,24 @@ import {
   Input,
   LocationInput,
 } from '@citizenlab/cl2-component-library';
-import QuillEditor from 'components/UI/QuillEditor';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import UserSelect from 'components/UI/UserSelect';
-import Error from 'components/UI/Error';
-import HasPermission from 'components/HasPermission';
-import FileUploader from 'components/UI/FileUploader';
-import {
-  FormSection,
-  FormSectionTitle,
-  FormLabel,
-} from 'components/UI/FormComponents';
-import Link from 'utils/cl-router/Link';
-
-// services
-import { localeStream } from 'services/locale';
+import bowser from 'bowser';
+import { Subscription, combineLatest, of, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+// typings
+import { IOption, UploadFile, Locale } from 'typings';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
-import { projectByIdStream, IProject, IProjectData } from 'services/projects';
-import { phasesStream, IPhaseData } from 'services/phases';
 import {
   ideaFormSchemaStream,
   IIdeaFormSchemas,
@@ -46,40 +38,40 @@ import {
   ideaJsonFormsSchemaStream,
   IIdeaJsonFormSchemas,
 } from 'services/ideaJsonFormsSchema';
+// services
+import { localeStream } from 'services/locale';
+import { getInputTerm } from 'services/participationContexts';
+import { isAdmin } from 'services/permissions/roles';
+import { phasesStream, IPhaseData } from 'services/phases';
 import { getTopicIds } from 'services/projectAllowedInputTopics';
-
-// resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-
+import { projectByIdStream, IProject, IProjectData } from 'services/projects';
+import { IUserData } from 'services/users';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { isFieldEnabled } from 'utils/projectUtils';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
-
-// typings
-import { IOption, UploadFile, Locale } from 'typings';
-
+import { isFieldEnabled } from 'utils/projectUtils';
+import shallowCompare from 'utils/shallowCompare';
+import { media } from 'utils/styleUtils';
+import HasPermission from 'components/HasPermission';
+import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
+import {
+  FormSection,
+  FormSectionTitle,
+  FormLabel,
+} from 'components/UI/FormComponents';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import QuillEditor from 'components/UI/QuillEditor';
+import TopicsPicker from 'components/UI/TopicsPicker';
+import UserSelect from 'components/UI/UserSelect';
 // style
 import styled from 'styled-components';
-import TopicsPicker from 'components/UI/TopicsPicker';
-import { media } from 'utils/styleUtils';
-import { getInputTerm } from 'services/participationContexts';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { isAdmin } from 'services/permissions/roles';
-import { IUserData } from 'services/users';
+import messages from './messages';
 
 const Form = styled.form`
   width: 100%;

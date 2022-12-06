@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import {
   ideaByIdStream,
@@ -7,6 +6,7 @@ import {
   IIdea,
   IIdeaData,
 } from 'services/ideas';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   ideaId?: string | null;

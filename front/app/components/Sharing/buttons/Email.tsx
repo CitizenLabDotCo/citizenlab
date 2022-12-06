@@ -1,15 +1,14 @@
 import React from 'react';
-import { clickSocialSharingLink, Medium } from '../utils';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
 import { Button } from '@citizenlab/cl2-component-library';
-
+import { clickSocialSharingLink, Medium } from '../utils';
 // analytics
 import { trackEventByName } from 'utils/analytics';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 import tracks from '../tracks';
+
 interface Props {
   emailSubject: string | undefined;
   emailBody: string | undefined;

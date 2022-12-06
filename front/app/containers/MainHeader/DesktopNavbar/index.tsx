@@ -1,25 +1,20 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
-
-// components
-import DesktopNavbarItem from './DesktopNavbarItem';
-import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
-
-// style
-import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import getNavbarItemPropsArray from './getNavbarItemPropsArray';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { media, isRtl } from 'utils/styleUtils';
+// style
+import styled from 'styled-components';
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
+import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
+// components
+import DesktopNavbarItem from './DesktopNavbarItem';
+import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
 const Container = styled.nav`
   height: 100%;

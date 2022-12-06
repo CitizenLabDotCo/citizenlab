@@ -1,23 +1,18 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { memoize } from 'lodash-es';
-
-import { isNilOrError } from 'utils/helperUtils';
-
+import { WrappedComponentProps } from 'react-intl';
 // import { Select } from '@citizenlab/cl2-component-library';
 import { Dropdown } from 'semantic-ui-react';
-
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+import { memoize } from 'lodash-es';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import postManagerMessages from 'components/admin/PostManager/messages';
-
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { ManagerType } from 'components/admin/PostManager';
+import postManagerMessages from 'components/admin/PostManager/messages';
+import messages from './messages';
+import tracks from './tracks';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;

@@ -1,38 +1,5 @@
 import React from 'react';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
-import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
-import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
-import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
-import CommentOnYourIdeaNotification from '../CommentOnYourIdeaNotification';
-import CommentOnYourInitiativeNotification from '../CommentOnYourInitiativeNotification';
-import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
-import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
-import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
-import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
-import InviteAcceptedNotification from '../InviteAcceptedNotification';
-import MentionInCommentNotification from '../MentionInCommentNotification';
-import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
-import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
-import OfficialFeedbackOnCommentedInitiativeNotification from '../OfficialFeedbackOnCommentedInitiativeNotification';
-import OfficialFeedbackOnVotedIdeaNotification from '../OfficialFeedbackOnVotedIdeaNotification';
-import OfficialFeedbackOnVotedInitiativeNotification from '../OfficialFeedbackOnVotedInitiativeNotification';
-import OfficialFeedbackOnYourIdeaNotification from '../OfficialFeedbackOnYourIdeaNotification';
-import OfficialFeedbackOnYourInitiativeNotification from '../OfficialFeedbackOnYourInitiativeNotification';
-import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
-import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
-import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
-import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotification';
-import StatusChangeOfYourInitiativeNotification from '../StatusChangeOfYourInitiativeNotification';
-import StatusChangeOnCommentedIdeaNotification from '../StatusChangeOnCommentedIdeaNotification';
-import StatusChangeOnCommentedInitiativeNotification from '../StatusChangeOnCommentedInitiativeNotification';
-import StatusChangeOnVotedIdeaNotification from '../StatusChangeOnVotedIdeaNotification';
-import StatusChangeOnVotedInitiativeNotification from '../StatusChangeOnVotedInitiativeNotification';
-import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
-import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
-
 import {
   TNotificationData,
   IAdminRightsReceivedNotificationData,
@@ -66,8 +33,38 @@ import {
   IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
 } from 'services/notifications';
-import styled from 'styled-components';
 import Outlet from 'components/Outlet';
+import styled from 'styled-components';
+import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
+import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
+import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
+import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
+import CommentOnYourIdeaNotification from '../CommentOnYourIdeaNotification';
+import CommentOnYourInitiativeNotification from '../CommentOnYourInitiativeNotification';
+import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
+import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
+import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
+import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
+import InviteAcceptedNotification from '../InviteAcceptedNotification';
+import MentionInCommentNotification from '../MentionInCommentNotification';
+import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
+import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
+import OfficialFeedbackOnCommentedInitiativeNotification from '../OfficialFeedbackOnCommentedInitiativeNotification';
+import OfficialFeedbackOnVotedIdeaNotification from '../OfficialFeedbackOnVotedIdeaNotification';
+import OfficialFeedbackOnVotedInitiativeNotification from '../OfficialFeedbackOnVotedInitiativeNotification';
+import OfficialFeedbackOnYourIdeaNotification from '../OfficialFeedbackOnYourIdeaNotification';
+import OfficialFeedbackOnYourInitiativeNotification from '../OfficialFeedbackOnYourInitiativeNotification';
+import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
+import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
+import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
+import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
+import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotification';
+import StatusChangeOfYourInitiativeNotification from '../StatusChangeOfYourInitiativeNotification';
+import StatusChangeOnCommentedIdeaNotification from '../StatusChangeOnCommentedIdeaNotification';
+import StatusChangeOnCommentedInitiativeNotification from '../StatusChangeOnCommentedInitiativeNotification';
+import StatusChangeOnVotedIdeaNotification from '../StatusChangeOnVotedIdeaNotification';
+import StatusChangeOnVotedInitiativeNotification from '../StatusChangeOnVotedInitiativeNotification';
+import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 
 export const DeletedUser = styled.span`
   font-style: italic;

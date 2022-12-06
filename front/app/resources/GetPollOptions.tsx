@@ -2,10 +2,9 @@ import React from 'react';
 import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
-
 import { IPollOption, pollOptionsStream } from 'services/pollOptions';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   questionId: string;

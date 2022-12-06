@@ -1,12 +1,12 @@
-import {
-  IDestinationConfig,
-  registerDestination,
-} from 'components/ConsentManager/destinations';
 import { combineLatest } from 'rxjs';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { initializeFor, shutdownFor } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import {
+  IDestinationConfig,
+  registerDestination,
+} from 'components/ConsentManager/destinations';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {

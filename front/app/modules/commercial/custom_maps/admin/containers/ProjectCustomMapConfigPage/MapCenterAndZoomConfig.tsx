@@ -1,36 +1,29 @@
 import React, { memo, useState, useEffect } from 'react';
-import { isEmpty, inRange } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import { updateProjectMapConfig } from '../../../services/mapConfigs';
-
-// hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useMapConfig from '../../../hooks/useMapConfig';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import { SubSectionTitle } from 'components/admin/Section';
-
-// utils
-import { getCenter, getZoomLevel } from '../../../utils/map';
-
+import { isEmpty, inRange } from 'lodash-es';
+import useMapConfig from '../../../hooks/useMapConfig';
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+// services
+import { updateProjectMapConfig } from '../../../services/mapConfigs';
 // events
 import {
   setLeafletMapCenter,
   setLeafletMapZoom,
 } from 'components/UI/LeafletMap/events';
-
+// utils
+import { getCenter, getZoomLevel } from '../../../utils/map';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import { SubSectionTitle } from 'components/admin/Section';
 // styling
 import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

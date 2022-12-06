@@ -1,5 +1,5 @@
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import React from 'react';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

@@ -1,14 +1,11 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { forOwn, isEmpty } from 'lodash-es';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import { Section } from 'components/admin/Section';
-import Error from 'components/UI/Error';
-import Button from 'components/UI/Button';
-
+import { forOwn, isEmpty } from 'lodash-es';
+// typings
+import { Multiloc, Locale } from 'typings';
 // services
 import {
   addOfficialFeedbackToIdea,
@@ -16,25 +13,21 @@ import {
   updateOfficialFeedback,
   IOfficialFeedbackData,
 } from 'services/officialFeedback';
-
-// utils
-import { isPage, isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// typings
-import { Multiloc, Locale } from 'typings';
-
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+// utils
+import { isPage, isNilOrError } from 'utils/helperUtils';
 // stylings
 import { colors, fontSizes } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+import { Section } from 'components/admin/Section';
 import styled from 'styled-components';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div``;
 

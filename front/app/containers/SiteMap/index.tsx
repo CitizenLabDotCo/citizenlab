@@ -1,36 +1,31 @@
 import React, { useRef } from 'react';
 import { adopt } from 'react-adopt';
 import scrollToComponent from 'react-scroll-to-component';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
+// components
+import { Spinner } from '@citizenlab/cl2-component-library';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import useCustomPages from 'hooks/useCustomPages';
+// resources
+import useFeatureFlag from 'hooks/useFeatureFlag';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPages from 'hooks/useCustomPages';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
-import { Spinner } from '@citizenlab/cl2-component-library';
-import ContentContainer from 'components/ContentContainer';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Link from 'utils/cl-router/Link';
-import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
-import SiteMapMeta from './SiteMapMeta';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-
-// resources
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { TPageCode } from 'services/customPages';
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
-import { TPageCode } from 'services/customPages';
+// intl
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import ContentContainer from 'components/ContentContainer';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+// styles
+import styled from 'styled-components';
+import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
+import SiteMapMeta from './SiteMapMeta';
+import messages from './messages';
 
 const Container = styled.div`
   min-height: calc(

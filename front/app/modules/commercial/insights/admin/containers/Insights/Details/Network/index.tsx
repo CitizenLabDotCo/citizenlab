@@ -1,4 +1,3 @@
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import React, {
   useEffect,
   useRef,
@@ -6,47 +5,41 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-
 // graph
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from 'react-force-graph-2d';
-import { forceCollide } from 'd3-force';
-
-// hooks
-import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
-import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
-
-// types
-import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
-
-// utils
-import { isNilOrError, isError } from 'utils/helperUtils';
-import { cloneDeep } from 'lodash-es';
-import { colors } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
-import { saveAs } from 'file-saver';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
+import { forceCollide } from 'd3-force';
+import { saveAs } from 'file-saver';
+import { cloneDeep } from 'lodash-es';
+import { stringify } from 'qs';
+import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
+// hooks
+import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
+// types
+import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
+// tracking
+import { trackEventByName } from 'utils/analytics';
+// intl
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError, isError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 import Button from 'components/UI/Button';
 import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
-
-// intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
 // styles
 import styled from 'styled-components';
+import messages from '../../messages';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;

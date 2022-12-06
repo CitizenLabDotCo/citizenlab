@@ -1,31 +1,25 @@
 import React, { memo, useState } from 'react';
-import clHistory from 'utils/cl-router/history';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import HasPermission from 'components/HasPermission';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-
+import { WrappedComponentProps } from 'react-intl';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';
 import { ProcessType } from 'services/projects';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
+import clHistory from 'utils/cl-router/history';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import SpamReportForm from 'containers/SpamReport';
+// components
+import HasPermission from 'components/HasPermission';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 // styling
 import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div``;
 

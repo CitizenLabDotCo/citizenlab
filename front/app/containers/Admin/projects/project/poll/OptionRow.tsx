@@ -1,17 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
-
+// Typings
+import { Multiloc } from 'typings';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 // Components
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Row, TextCell } from 'components/admin/ResourceList';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import styled from 'styled-components';
 import messages from './messages';
-
-// Typings
-import { Multiloc } from 'typings';
 
 const StyledButton = styled(Button)`
   display: inline-block;

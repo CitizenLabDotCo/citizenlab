@@ -1,6 +1,6 @@
+import React from 'react';
 import { WrappedComponentProps, createIntl } from 'react-intl';
 import { shallow, ShallowRendererProps, ShallowWrapper } from 'enzyme';
-import React from 'react';
 import messages from 'i18n/en';
 
 const originalIntl = createIntl({ locale: 'en', messages });

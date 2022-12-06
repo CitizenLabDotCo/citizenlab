@@ -1,10 +1,10 @@
 import React, { ReactElement, FormEvent } from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import messages from './messages';
-import FranceConnectLogo from './FranceConnectLogo';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { fontSizes, colors } from 'utils/styleUtils';
+import styled from 'styled-components';
+import FranceConnectLogo from './FranceConnectLogo';
+import messages from './messages';
 
 const FranceConnectButtonWrapper = styled.div`
   display: flex;

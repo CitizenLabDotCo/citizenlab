@@ -1,10 +1,8 @@
 import React, { useRef, useState, useEffect, cloneElement } from 'react';
-import bowser from 'bowser';
-import { trackEventByName } from 'utils/analytics';
-
 // components
 import { Dropdown } from '@citizenlab/cl2-component-library';
-
+import bowser from 'bowser';
+import { trackEventByName } from 'utils/analytics';
 // styling
 import styled from 'styled-components';
 

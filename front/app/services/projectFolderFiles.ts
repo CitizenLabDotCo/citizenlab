@@ -1,5 +1,5 @@
-import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 const apiEndpoint = `${API_PATH}/project_folders`;
 

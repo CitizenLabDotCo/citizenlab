@@ -1,7 +1,6 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
 import useIdea from 'hooks/useIdea';
-
+import { render, screen } from 'utils/testUtils/rtl';
 import Idea from './';
 
 const mockIdeaData = {

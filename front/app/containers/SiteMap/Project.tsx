@@ -1,19 +1,16 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { H3, H4 } from './';
-import T from 'components/T';
-import Link from 'utils/cl-router/Link';
-
-// components
-import ContinuousProject from './ContinuousProject';
-import TimelineProject from './TimelineProject';
-
 // hooks
 import useEvents from 'hooks/useEvents';
 import useProject from 'hooks/useProject';
-
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import T from 'components/T';
+import { H3, H4 } from './';
+// components
+import ContinuousProject from './ContinuousProject';
+import TimelineProject from './TimelineProject';
 import messages from './messages';
 
 interface Props {

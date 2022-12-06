@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import PostPreview from './PostPreview';
 
 jest.mock('components/UI/SideModal', () => 'SideModal');
 jest.mock('components/UI/FullPageSpinner', () => 'FullPageSpinner');
@@ -7,8 +8,6 @@ jest.mock('./Idea/LazyAdminIdeaEdit', () => 'LazyAdminIdeaEdit');
 jest.mock('./Idea/LazyIdeaContent', () => 'LazyIdeaContent');
 jest.mock('./Initiative/LazyInitiativeEdit', () => 'LazyInitiativeEdit');
 jest.mock('./Initiative/LazyInitiativeContent', () => 'LazyInitiativeContent');
-
-import PostPreview from './PostPreview';
 
 describe('<PostPreview />', () => {
   let closePreview: jest.Mock;

@@ -1,24 +1,19 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-
-// components
-import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
-import ActionBarLayout from 'components/PostShowComponents/ActionBar';
-import InitiativeMoreActions from './InitiativeMoreActions';
-
 // resource
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
-import messages from '../messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
+import ActionBarLayout from 'components/PostShowComponents/ActionBar';
+// components
+import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
 // styling
 import styled from 'styled-components';
+import messages from '../messages';
+import InitiativeMoreActions from './InitiativeMoreActions';
 
 const StyledInitiativeMoreActions = styled(InitiativeMoreActions)``;
 

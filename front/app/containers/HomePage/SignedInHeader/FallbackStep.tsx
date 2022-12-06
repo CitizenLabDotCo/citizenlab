@@ -1,16 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
-import { OnboardingCampaignName } from 'services/onboardingCampaigns';
-import { Left, Right } from './';
-import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import T from 'components/T';
 import useAuthUser from 'hooks/useAuthUser';
-import Outlet from 'components/Outlet';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import { OnboardingCampaignName } from 'services/onboardingCampaigns';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { media, isRtl, fontSizes } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
+import T from 'components/T';
+import styled from 'styled-components';
+import messages from '../messages';
+import { Left, Right } from './';
 import OnboardingStep from './OnboardingStep';
 
 const HeaderContent = styled.div`

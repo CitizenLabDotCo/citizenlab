@@ -1,21 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // hooks
 import useIdeaStatus from 'hooks/useIdeaStatus';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { updateIdeaStatus } from 'services/ideaStatuses';
-
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
+import GoBackButton from 'components/UI/GoBackButton';
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
-import GoBackButton from 'components/UI/GoBackButton';
-import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
+import styled from 'styled-components';
+import messages from './messages';
 
 const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 25px;

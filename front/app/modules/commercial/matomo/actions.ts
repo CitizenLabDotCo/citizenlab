@@ -1,15 +1,13 @@
 // routes
 import createRoutes from 'routes';
-import matchPath, { getAllPathsFromRoutes } from './matchPath';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { tenantInfo, IEvent } from 'utils/analytics';
-import { getUrlLocale } from 'services/locale';
-import { getProjectId } from './getProjectId';
-
 // typings
 import { IAppConfiguration } from 'services/appConfiguration';
+import { getUrlLocale } from 'services/locale';
+import { tenantInfo, IEvent } from 'utils/analytics';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { getProjectId } from './getProjectId';
+import matchPath, { getAllPathsFromRoutes } from './matchPath';
 
 export const trackEvent = (
   event: IEvent,

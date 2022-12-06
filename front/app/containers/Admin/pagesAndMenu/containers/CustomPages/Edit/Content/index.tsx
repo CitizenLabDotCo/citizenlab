@@ -1,31 +1,25 @@
 import React from 'react';
-
-// components
-import PageWrapper from 'components/admin/PageWrapper';
-import SectionToggle from 'containers/Admin/pagesAndMenu/components/SectionToggle';
+// routing
+import { useParams } from 'react-router-dom';
 import { Box } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
-
+// hooks
+import useCustomPage from 'hooks/useCustomPage';
 // services
 import {
   updateCustomPage,
   TCustomPageEnabledSetting,
 } from 'services/customPages';
-
-// hooks
-import useCustomPage from 'hooks/useCustomPage';
-
-// routing
-import { useParams } from 'react-router-dom';
-
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 // utils
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import SectionToggle from 'containers/Admin/pagesAndMenu/components/SectionToggle';
+import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
+import Warning from 'components/UI/Warning';
+// components
+import PageWrapper from 'components/admin/PageWrapper';
+// i18n
+import messages from './messages';
 
 export type TCustomPageSectionToggleData = {
   name: TCustomPageEnabledSetting;

@@ -1,8 +1,8 @@
 import React from 'react';
-
 import { shallow } from 'enzyme';
-
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
+import * as pollQuestionsService from 'services/pollQuestions';
+import { QuestionDetailsForm } from './QuestionDetailsForm';
 
 jest.mock('utils/cl-intl');
 const Intl = require('utils/cl-intl/__mocks__/');
@@ -21,13 +21,11 @@ jest.mock('services/pollQuestions', () => ({
     return new Promise((resolve) => resolve);
   }),
 }));
-import * as pollQuestionsService from 'services/pollQuestions';
+
 const updatePollQuestionSpy = jest.spyOn(
   pollQuestionsService,
   'updatePollQuestion'
 );
-
-import { QuestionDetailsForm } from './QuestionDetailsForm';
 
 const getSelect = (Wrapper) => Wrapper.find('Select');
 const getInput = (Wrapper) => Wrapper.find('QuestionDetailsForm__StyledInput');

@@ -1,13 +1,12 @@
 // utils
+// typings
+import { Query, QuerySchema } from '../../services/analyticsFacts';
 import {
   getProjectFilter,
   getDateFilter,
   getDateFilterLastPeriod,
   getInterval,
 } from '../../utils/query';
-
-// typings
-import { Query, QuerySchema } from '../../services/analyticsFacts';
 import { QueryParameters } from './typings';
 
 export const query = ({

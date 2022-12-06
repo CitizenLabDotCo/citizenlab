@@ -1,22 +1,11 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { find, map } from 'lodash-es';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { getLocalized } from 'utils/i18n';
-import messages from './messages';
-
-// Components
-import Button from 'components/UI/Button';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import GroupAvatar from './GroupAvatar';
-import { List, Row } from 'components/admin/ResourceList';
-
-// Services
-import { localeStream } from 'services/locale';
+import { find, map } from 'lodash-es';
+import { Subscription, combineLatest } from 'rxjs';
+// Typings
+import { IOption, Locale } from 'typings';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { getGroups, IGroups, IGroupData } from 'services/groups';
 import {
@@ -25,12 +14,18 @@ import {
   groupsProjectsByProjectIdStream,
   IGroupsProjects,
 } from 'services/groupsProjects';
-
+// Services
+import { localeStream } from 'services/locale';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { getLocalized } from 'utils/i18n';
+// Components
+import Button from 'components/UI/Button';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import { List, Row } from 'components/admin/ResourceList';
 // Style
 import styled from 'styled-components';
-
-// Typings
-import { IOption, Locale } from 'typings';
+import GroupAvatar from './GroupAvatar';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

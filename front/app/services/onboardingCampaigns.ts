@@ -1,6 +1,6 @@
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
+import streams, { IStreamParams } from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export type OnboardingCampaignName =
   | 'complete_profile'

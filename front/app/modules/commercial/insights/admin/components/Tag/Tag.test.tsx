@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-
 import Tag, { TagProps } from './';
 
 const defaultTagProps = {

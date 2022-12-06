@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { isString } from 'lodash-es';
+import moment from 'moment';
 import { Locale } from 'typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 

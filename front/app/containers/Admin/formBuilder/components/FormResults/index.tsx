@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import { get, snakeCase } from 'lodash-es';
 import { useParams } from 'react-router-dom';
-
-// Hooks
-import useLocale from 'hooks/useLocale';
-
 // components
 import {
   Box,
@@ -15,23 +9,23 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import CompletionBar from 'containers/Admin/formBuilder/components/FormResults/CompletionBar';
-import T from 'components/T';
-
-// i18n
-import messages from '../messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
+import { get, snakeCase } from 'lodash-es';
 // hooks
 import useFormResults from 'hooks/useFormResults';
-import useProject from 'hooks/useProject';
+// Hooks
+import useLocale from 'hooks/useLocale';
 import usePhase from 'hooks/usePhase';
-
+import useProject from 'hooks/useProject';
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import CompletionBar from 'containers/Admin/formBuilder/components/FormResults/CompletionBar';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+// i18n
+import messages from '../messages';
 
 const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {

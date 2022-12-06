@@ -1,35 +1,30 @@
 import React, { useMemo } from 'react';
-
-// services
-import { getNavbarItemSlug, addNavbarItem } from 'services/navbar';
+import { WrappedComponentProps } from 'react-intl';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+import useCustomPages from 'hooks/useCustomPages';
+// hooks
+import useNavbarItems from 'hooks/useNavbarItems';
+import useRemovedDefaultNavbarItems from 'hooks/useRemovedDefaultNavbarItems';
 import {
   deleteCustomPage,
   FIXED_PAGES,
   ICustomPageData,
   TPageCode,
 } from 'services/customPages';
-
-// hooks
-import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPages from 'hooks/useCustomPages';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
-import useRemovedDefaultNavbarItems from 'hooks/useRemovedDefaultNavbarItems';
-
-// components
-import { List, Row } from 'components/admin/ResourceList';
-import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
-import Header from './Header';
-
+// services
+import { getNavbarItemSlug, addNavbarItem } from 'services/navbar';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// utils
-import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from 'utils/navbar';
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
+// utils
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+// components
+import { List, Row } from 'components/admin/ResourceList';
+import Header from './Header';
+import messages from './messages';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 const isNotFixedPage = (page: ICustomPageData) =>

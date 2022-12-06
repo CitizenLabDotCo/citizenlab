@@ -1,22 +1,18 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Fragment from 'components/Fragment';
-import { Image } from '@citizenlab/cl2-component-library';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
+import { Image } from '@citizenlab/cl2-component-library';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 // hooks
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
-
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import Fragment from 'components/Fragment';
 // style
 import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

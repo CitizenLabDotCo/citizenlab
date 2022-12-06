@@ -1,5 +1,6 @@
-import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
+
+import moment = require('moment');
 
 describe('Native survey project page actions', () => {
   const projectTitle = randomString();

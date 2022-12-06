@@ -1,9 +1,9 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsDetectedCategories from './useInsightsDetectedCategories';
 import { Observable, Subscription } from 'rxjs';
-import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import { insightsDetectedCategoriesStream } from 'modules/commercial/insights/services/insightsDetectCategories';
+import { waitFor } from 'utils/testUtils/rtl';
+import useInsightsDetectedCategories from './useInsightsDetectedCategories';
 
 const viewId = '1';
 const mockDetectedCategories = {

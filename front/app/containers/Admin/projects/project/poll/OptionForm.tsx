@@ -1,31 +1,27 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
+import { Icon } from 'semantic-ui-react';
 // Services / Data loading
 import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
-import { IPollQuestion } from 'services/pollQuestions';
 import { IPollOption, deletePollOption } from 'services/pollOptions';
-
+import { IPollQuestion } from 'services/pollQuestions';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 // Components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Icon } from 'semantic-ui-react';
 import { Row, TextCell, List } from 'components/admin/ResourceList';
+// Style
+import styled from 'styled-components';
 import FormOptionRow from './FormOptionRow';
 import OptionRow from './OptionRow';
 import QuestionDetailsForm from './QuestionDetailsForm';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// Style
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 const Container = styled.div``;
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Subscription, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { authUserStream } from 'services/auth';
 import {
   IConsentData,
   consentsStream,
   IConsents,
 } from 'services/campaignConsents';
 import { isNilOrError } from 'utils/helperUtils';
-import { authUserStream } from 'services/auth';
-import { switchMap } from 'rxjs/operators';
 
 interface InputProps {}
 

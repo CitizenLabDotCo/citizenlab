@@ -1,29 +1,25 @@
 // libraries
 import React from 'react';
 import { Helmet } from 'react-helmet';
-
+import { Box } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
 // i18n
 import { FormattedMessage, injectIntl, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 // events
 import eventEmitter from 'utils/eventEmitter';
-
-// components
-import Fragment from 'components/Fragment';
-
+import { colors } from 'utils/styleUtils';
 import {
   Container,
   StyledContentContainer,
   PageContent,
   PageTitle,
 } from 'containers/PagesShowPage';
-import { Box } from '@citizenlab/cl2-component-library';
+// components
+import Fragment from 'components/Fragment';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
+import messages from './messages';
 
 const StyledButton = styled.button`
   color: ${colors.teal};

@@ -1,28 +1,22 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { WrappedComponentProps } from 'react-intl';
+// components
+import { Select } from '@citizenlab/cl2-component-library';
 import { isString, get } from 'lodash-es';
-import styled from 'styled-components';
-
 // typings
 import { IOption } from 'typings';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-
 // services
 import { updateProject } from 'services/projects';
-
-// components
-import { Select } from '@citizenlab/cl2-component-library';
-
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 const StyledSelect = styled(Select)`
   width: 300px;

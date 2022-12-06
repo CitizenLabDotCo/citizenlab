@@ -1,12 +1,13 @@
 import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
   Select as SelectComponent,
   SelectProps,
 } from '@citizenlab/cl2-component-library';
-import Error, { TFieldName } from 'components/UI/Error';
-import { Controller, useFormContext } from 'react-hook-form';
-import { CLError } from 'typings';
 import { get } from 'lodash-es';
+import { CLError } from 'typings';
+import Error, { TFieldName } from 'components/UI/Error';
+
 interface Props extends Omit<SelectProps, 'onChange'> {
   name: string;
 }

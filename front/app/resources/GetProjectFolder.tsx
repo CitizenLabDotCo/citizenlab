@@ -2,13 +2,13 @@ import React from 'react';
 import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
-import shallowCompare from 'utils/shallowCompare';
 import {
   projectFolderByIdStream,
   projectFolderBySlugStream,
   IProjectFolderData,
 } from 'services/projectFolders';
+import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   projectFolderId?: string | null;

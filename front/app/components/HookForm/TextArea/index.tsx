@@ -1,10 +1,10 @@
 import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { CLError } from 'typings';
+import Error, { TFieldName } from 'components/UI/Error';
 import TextareaComponent, {
   Props as TextAreaProps,
 } from 'components/UI/TextArea';
-import Error, { TFieldName } from 'components/UI/Error';
-import { Controller, useFormContext } from 'react-hook-form';
-import { CLError } from 'typings';
 
 interface Props extends TextAreaProps {
   name: string;

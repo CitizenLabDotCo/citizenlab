@@ -1,7 +1,7 @@
-import PageLoading from 'components/UI/PageLoading';
-import createAdminRoutes from 'containers/Admin/routes';
-import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
+import moduleConfiguration from 'modules';
+import createAdminRoutes from 'containers/Admin/routes';
+import PageLoading from 'components/UI/PageLoading';
 
 const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));

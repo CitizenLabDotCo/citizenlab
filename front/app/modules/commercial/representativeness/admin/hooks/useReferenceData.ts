@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-
 // hooks
 import useLocale from 'hooks/useLocale';
-
+// typings
+import { IUserCustomFieldData } from 'services/userCustomFields';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
@@ -12,9 +12,6 @@ import {
   RepresentativenessRowMultiloc,
   IncludedUsers,
 } from './createRefDataSubscription';
-
-// typings
-import { IUserCustomFieldData } from 'services/userCustomFields';
 
 function useReferenceData(
   userCustomField: IUserCustomFieldData,

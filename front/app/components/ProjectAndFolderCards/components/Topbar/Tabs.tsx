@@ -1,21 +1,17 @@
 import React, { useRef, KeyboardEvent } from 'react';
-
-// components
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes, isRtl, colors, media } from 'utils/styleUtils';
+import { MessageDescriptor } from 'react-intl';
 import { rgba } from 'polished';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
+// components
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { fontSizes, isRtl, colors, media } from 'utils/styleUtils';
+// styling
+import styled from 'styled-components';
 import { PublicationTab } from '../..';
-import { MessageDescriptor } from 'react-intl';
+// i18n
+import messages from './messages';
 
 const TabsContainer = styled.div`
   display: flex;

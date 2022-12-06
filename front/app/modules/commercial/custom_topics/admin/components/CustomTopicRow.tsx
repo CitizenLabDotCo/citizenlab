@@ -1,16 +1,14 @@
 import React, { memo } from 'react';
 import { ITopicData } from 'services/topics';
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
-
+import Button from 'components/UI/Button';
 // components
 import { Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
+import styled from 'styled-components';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';
-
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Buttons = styled.div`
   display: flex;

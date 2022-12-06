@@ -1,15 +1,11 @@
 import React from 'react';
-
-// Components
-import CategoryCard from './CategoryCard';
-
-// Typing
-import { CategorizedDestinations, IPreferences } from '.';
-
+import { fontSizes, media } from 'utils/styleUtils';
 // Styling
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
-
+// Typing
+import { CategorizedDestinations, IPreferences } from '.';
+// Components
+import CategoryCard from './CategoryCard';
 // services
 import { TCategory } from './destinations';
 

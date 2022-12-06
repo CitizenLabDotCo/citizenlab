@@ -1,5 +1,20 @@
 import React, { lazy, Suspense } from 'react';
+// hooks
+import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
+// services
+import {
+  dismissOnboardingCampaign,
+  OnboardingCampaignName,
+} from 'services/onboardingCampaigns';
+// tracking
+import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
+import { media, fontSizes, isRtl } from 'utils/styleUtils';
+import Avatar from 'components/Avatar';
+// style
+import styled from 'styled-components';
+import tracks from '../tracks';
+import HeaderImage from './HeaderImage';
 
 // components
 const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
@@ -8,25 +23,6 @@ const VerificationOnboardingStep = lazy(
 );
 const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
 const FallbackStep = lazy(() => import('./FallbackStep'));
-import HeaderImage from './HeaderImage';
-import Avatar from 'components/Avatar';
-
-// services
-import {
-  dismissOnboardingCampaign,
-  OnboardingCampaignName,
-} from 'services/onboardingCampaigns';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
-// style
-import styled from 'styled-components';
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
-
-// hooks
-import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
 
 const Header = styled.div`
   width: 100%;

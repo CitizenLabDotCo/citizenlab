@@ -1,15 +1,12 @@
 import React from 'react';
-
-import { isNilOrError } from 'utils/helperUtils';
-
-// typings
-import { IUserData } from 'services/users';
-
-// utils
-import Form from 'components/Form';
+import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
 import useUserJsonFormsSchemas from 'hooks/useUserJsonFormSchemas';
-import { ErrorObject } from 'ajv';
+// typings
+import { IUserData } from 'services/users';
+import { isNilOrError } from 'utils/helperUtils';
+// utils
+import Form from 'components/Form';
 import messages from './messages';
 
 // Todo :

@@ -1,27 +1,23 @@
 import React from 'react';
 import useAuthUser from 'hooks/useAuthUser';
-import useLocalize from 'hooks/useLocalize';
 import useHomepageSettings from 'hooks/useHomepageSettings';
-
+import useLocalize from 'hooks/useLocalize';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 // utils
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'events/openSignUpInModal';
-
-// style
-import styled from 'styled-components';
-import { HeadingFontStyle } from 'components/LandingPages/citizen/HeaderContent';
 import { fontSizes } from 'utils/styleUtils';
-
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
 import CityLogoSection from 'components/CityLogoSection';
+import { HeadingFontStyle } from 'components/LandingPages/citizen/HeaderContent';
 import Button from 'components/UI/Button';
-
+// style
+import styled from 'styled-components';
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import tracks from './tracks';
 
 const FooterBanner = styled.div`
   background: ${({ theme }) => theme.colors.tenantPrimary};

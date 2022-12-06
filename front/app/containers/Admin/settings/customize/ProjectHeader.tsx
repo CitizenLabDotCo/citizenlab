@@ -1,5 +1,8 @@
 import React from 'react';
-
+// typings
+import { Multiloc } from 'typings';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 // components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
@@ -8,16 +11,9 @@ import {
   SectionField,
   SectionTitle,
 } from 'components/admin/Section';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // utils
 import { createCoreMultilocHandler } from './createHandler';
-
-// typings
-import { Multiloc } from 'typings';
+import messages from './messages';
 
 interface Props {
   currentlyWorkingOnText?: Multiloc | null;

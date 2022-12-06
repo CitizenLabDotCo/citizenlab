@@ -1,16 +1,13 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 // services
 import { addUserCustomFieldOption } from 'services/userCustomFieldOptions';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
+import messages from '../messages';
 import RegistrationCustomFieldOptionsForm, {
   FormValues,
 } from './RegistrationCustomFieldOptionsForm';

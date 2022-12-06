@@ -1,43 +1,43 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { media, defaultCardStyle } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
 import moment from 'moment';
-import messages from './messages';
-import {
-  InitiativeStatusCode,
-  IInitiativeStatusData,
-} from 'services/initiativeStatuses';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
 import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
-import { IInitiativeData } from 'services/initiatives';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { addVote, deleteVote } from 'services/initiativeVotes';
-import ProposedNotVoted from './ProposedNotVoted';
-import ProposedVoted from './ProposedVoted';
-import Expired from './Expired';
-import ThresholdReached from './ThresholdReached';
-import Answered from './Answered';
-import Ineligible from './Ineligible';
-import Custom from './Custom';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
-import { trackEventByName } from 'utils/analytics';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
+import {
+  InitiativeStatusCode,
+  IInitiativeStatusData,
+} from 'services/initiativeStatuses';
+import { addVote, deleteVote } from 'services/initiativeVotes';
+import { IInitiativeData } from 'services/initiatives';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { media, defaultCardStyle } from 'utils/styleUtils';
+import styled from 'styled-components';
+import Answered from './Answered';
+import Custom from './Custom';
+import Expired from './Expired';
+import Ineligible from './Ineligible';
+import ProposedNotVoted from './ProposedNotVoted';
+import ProposedVoted from './ProposedVoted';
+import ThresholdReached from './ThresholdReached';
+import messages from './messages';
 
 const Container = styled.div`
   ${media.desktop`

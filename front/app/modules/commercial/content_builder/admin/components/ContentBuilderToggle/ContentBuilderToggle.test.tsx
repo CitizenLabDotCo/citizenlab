@@ -1,6 +1,6 @@
-import { addContentBuilderLayout } from 'modules/commercial/content_builder/services/contentBuilder';
 import React from 'react';
 import { Multiloc } from 'typings';
+import { addContentBuilderLayout } from 'modules/commercial/content_builder/services/contentBuilder';
 import { render, screen } from 'utils/testUtils/rtl';
 import ContentBuilderToggle from './';
 

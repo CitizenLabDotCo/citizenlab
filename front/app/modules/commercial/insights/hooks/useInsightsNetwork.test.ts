@@ -1,9 +1,9 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsNetwork, { queryParameters } from './useInsightsNetwork';
 import { Observable } from 'rxjs';
-import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import { insightsNetworkStream } from 'modules/commercial/insights/services/insightsNetwork';
+import { waitFor } from 'utils/testUtils/rtl';
+import useInsightsNetwork, { queryParameters } from './useInsightsNetwork';
 
 const viewId = '1';
 

@@ -2,12 +2,11 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-
+// mocks
+import * as areaServices from 'services/areas';
 // component to test
 import GetArea from './GetArea';
 
-// mocks
-import * as areaServices from 'services/areas';
 // typescript struggles when using both mocked things and real ones
 // this the way I found to minimize the errors, and to have autocomplethin on the .mock object
 const areaByIdStream = areaServices.areaByIdStream as jest.Mock;

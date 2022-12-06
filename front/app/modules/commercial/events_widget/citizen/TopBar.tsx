@@ -1,16 +1,13 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 // components
 import Link from 'utils/cl-router/Link';
-
+import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 // i18n
 import messages from 'containers/HomePage/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const Header = styled.div`
   width: 100%;

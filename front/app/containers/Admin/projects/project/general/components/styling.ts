@@ -1,14 +1,12 @@
 // components
+import { fontSizes } from 'utils/styleUtils';
+import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import FileUploader from 'components/UI/FileUploader';
-import { SectionField } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
-
+import { SectionField } from 'components/admin/Section';
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
 // other
 import { TIMEOUT } from '..';
 

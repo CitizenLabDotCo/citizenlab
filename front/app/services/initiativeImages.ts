@@ -1,7 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-import { initiativeByIdStream } from 'services/initiatives';
 import { ImageSizes } from 'typings';
+import { initiativeByIdStream } from 'services/initiatives';
+import streams, { IStreamParams } from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export interface IInitiativeImageData {
   id: string;

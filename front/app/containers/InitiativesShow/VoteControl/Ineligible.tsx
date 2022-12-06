@@ -1,20 +1,16 @@
 import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-
-import { IInitiativeData } from 'services/initiatives';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
-
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
-
-import ProposalProgressBar from './ProposalProgressBar';
-import Button from 'components/UI/Button';
-
-import T from 'components/T';
-import messages from './messages';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeData } from 'services/initiatives';
 import { FormattedMessage } from 'utils/cl-intl';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import styled, { withTheme } from 'styled-components';
+import ProposalProgressBar from './ProposalProgressBar';
+import { StatusWrapper, StatusExplanation } from './SharedStyles';
+import messages from './messages';
 
 const Container = styled.div``;
 

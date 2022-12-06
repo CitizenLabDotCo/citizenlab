@@ -1,8 +1,7 @@
 import React from 'react';
-
 // react hook form
 import { Controller, useFormContext } from 'react-hook-form';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import {
   Box,
@@ -11,11 +10,9 @@ import {
   Text,
   Select,
 } from '@citizenlab/cl2-component-library';
-
+import { injectIntl } from 'utils/cl-intl';
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 interface Props {
   maximumName: string;

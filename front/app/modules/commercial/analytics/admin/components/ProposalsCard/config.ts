@@ -1,11 +1,5 @@
-import messages from './messages';
-
-// Utils
-import { getTimePeriodMoment } from '../../utils/resolution';
-import { formatCountValue } from '../../utils/parse';
-import { getDateFilter, getProjectFilter } from '../../utils/query';
+import moment, { Moment } from 'moment';
 import { underscoreCase } from '../../hooks/useStatCard/parse';
-
 // Typings
 import {
   StatCardData,
@@ -13,7 +7,11 @@ import {
   StatCardConfig,
 } from '../../hooks/useStatCard/typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
-import moment, { Moment } from 'moment';
+import { formatCountValue } from '../../utils/parse';
+import { getDateFilter, getProjectFilter } from '../../utils/query';
+// Utils
+import { getTimePeriodMoment } from '../../utils/resolution';
+import messages from './messages';
 
 // Type helps to keep this file and tests type safe although useStatCard returns a more generic object
 export interface ProposalsCardLabels {

@@ -1,26 +1,21 @@
 import React from 'react';
-
-// components
-import TopBar from './TopBar';
-import EventCard from 'components/EventCard';
-import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
-import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
-import VerticalCenterer from 'components/VerticalCenterer';
-
+import { WrappedComponentProps } from 'react-intl';
 // hooks
 import useEvents from 'hooks/useEvents';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-
 // other
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
+import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import messages from 'containers/EventsPage/messages';
+import EventCard from 'components/EventCard';
+import VerticalCenterer from 'components/VerticalCenterer';
+// styling
+import styled from 'styled-components';
+// components
+import TopBar from './TopBar';
 
 const EventsWidgetContainer = styled.div`
   padding: 48px 0 124px 0;

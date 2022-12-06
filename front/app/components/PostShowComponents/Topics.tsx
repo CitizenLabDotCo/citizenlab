@@ -1,19 +1,15 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
+import { transparentize } from 'polished';
 // hooks
 import useTopics from 'hooks/useTopics';
-
-// i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes, isRtl } from 'utils/styleUtils';
-import { transparentize } from 'polished';
-
 // typings
 import { ITopicData } from 'services/topics';
+import { isNilOrError } from 'utils/helperUtils';
+// i18n
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { fontSizes, isRtl } from 'utils/styleUtils';
+// styling
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
-import styled from 'styled-components';
-import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
-import messages from './messages';
+import { WrappedComponentProps } from 'react-intl';
 import { lighten } from 'polished';
+import useNavbarItems from 'hooks/useNavbarItems';
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+import styled from 'styled-components';
 import MobileNavbarItem from './MobileNavbarItem';
 import ShowFullMenuButton from './ShowFullMenuButton';
-const FullMobileNavMenu = lazy(() => import('./FullMobileNavMenu'));
-import { trackEventByName } from 'utils/analytics';
+import messages from './messages';
 import tracks from './tracks';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import useNavbarItems from 'hooks/useNavbarItems';
-import { isNilOrError } from 'utils/helperUtils';
+
+const FullMobileNavMenu = lazy(() => import('./FullMobileNavMenu'));
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;

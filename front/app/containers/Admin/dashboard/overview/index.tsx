@@ -1,6 +1,14 @@
 import React, { useState, useCallback, useMemo } from 'react';
+// components
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
-
+// resources
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import { isAdmin } from 'services/permissions/roles';
+// typings
+import { PublicationStatus } from 'services/projects';
 // services
 import {
   usersByTimeCumulativeStream,
@@ -15,41 +23,25 @@ import {
   ideasByTimeStream,
   usersByTimeXlsxEndpoint,
 } from 'services/stats';
-import { isAdmin } from 'services/permissions/roles';
-
-// resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
-
-// components
-import { Box, Title } from '@citizenlab/cl2-component-library';
-import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
-import Outlet from 'components/Outlet';
-import ChartFilters from './ChartFilters';
-import LineBarChart from './charts/LineBarChart';
-import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
-import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
-import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-
-// i18n
-import messages from '../messages';
-import overviewMessages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-// utils
-import { getSensibleResolution } from './getSensibleResolution';
-
 // tracks
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
-// typings
-import { PublicationStatus } from 'services/projects';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import Outlet from 'components/Outlet';
+import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
+import { IResolution } from 'components/admin/ResolutionControl';
+// i18n
+import messages from '../messages';
+import tracks from '../tracks';
+import ChartFilters from './ChartFilters';
+import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import LineBarChart from './charts/LineBarChart';
+import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
+import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
+import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
+// utils
+import { getSensibleResolution } from './getSensibleResolution';
+import overviewMessages from './messages';
 
 interface DataProps {
   projects: GetProjectsChildProps;

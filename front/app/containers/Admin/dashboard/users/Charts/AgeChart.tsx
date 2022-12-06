@@ -1,24 +1,20 @@
 // Libraries
 import React from 'react';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from 'containers/Admin/dashboard/messages';
-
 // services
 import {
   IUsersByBirthyear,
   usersByBirthyearStream,
   usersByBirthyearXlsxEndpoint,
 } from 'services/userCustomFieldStats';
-
-// components
-import BarChartByCategory from './BarChartByCategory';
-
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { binBirthyear } from 'utils/dataUtils';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { binBirthyear } from 'utils/dataUtils';
+import messages from 'containers/Admin/dashboard/messages';
+// components
+import BarChartByCategory from './BarChartByCategory';
 
 interface Props {
   startAt: string | null | undefined;

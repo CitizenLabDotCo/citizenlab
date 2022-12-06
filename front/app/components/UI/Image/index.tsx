@@ -1,12 +1,10 @@
 // Libraries
-import React, { PureComponent } from 'react';
-
 // Lazy Images observer
 import Observer from '@researchgate/react-intersection-observer';
-
+import React, { PureComponent } from 'react';
+import { colors } from 'utils/styleUtils';
 // Stylings
 import styled, { css } from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 const ImageElement = styled.img<{
   cover: boolean;

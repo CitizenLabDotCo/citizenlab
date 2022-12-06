@@ -1,12 +1,12 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { IntlProvider } from 'react-intl';
+import { Locale } from 'typings';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import { Locale } from 'typings';
 
 interface InputProps {}
 

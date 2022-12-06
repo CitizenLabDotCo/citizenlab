@@ -1,12 +1,14 @@
 import React, { memo, useCallback, useState } from 'react';
-import { get } from 'lodash-es';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import { Input } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import { get } from 'lodash-es';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+// services
+import { verifyBogus } from '../services/verify';
+import { isNilOrError } from 'utils/helperUtils';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 import {
   FormContainer,
   Title,
@@ -18,12 +20,7 @@ import {
   SubmitButton,
   CancelButton,
 } from 'components/AuthProviders/styles';
-
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
-
-// services
-import { verifyBogus } from '../services/verify';
+import Error from 'components/UI/Error';
 
 interface Props {
   onCancel: () => void;

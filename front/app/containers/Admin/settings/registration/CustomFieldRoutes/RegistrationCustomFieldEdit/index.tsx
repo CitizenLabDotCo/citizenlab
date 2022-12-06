@@ -1,29 +1,25 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import TabbedResource from 'components/admin/TabbedResource';
+import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
-
+import useLocalize from 'hooks/useLocalize';
+// hooks
+import useUserCustomField from 'hooks/useUserCustomField';
 // services
 import {
   IUserCustomFieldData,
   isBuiltInField,
   IUserCustomFieldInputType,
 } from 'services/userCustomFields';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import GoBackButton from 'components/UI/GoBackButton';
+import TabbedResource from 'components/admin/TabbedResource';
+import styled from 'styled-components';
 import messages from '../messages';
-
-// hooks
-import useUserCustomField from 'hooks/useUserCustomField';
-import useLocalize from 'hooks/useLocalize';
 
 const StyledGoBackButton = styled(GoBackButton)`
   display: flex;

@@ -1,29 +1,31 @@
 import React, { PureComponent } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
-
 // Resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
-
-// components
-import HelmetIntl from 'components/HelmetIntl';
-import Modal from 'components/UI/Modal';
-import GroupsListPanel from './GroupsListPanel';
-import GroupCreationStep1 from './GroupCreationStep1';
-import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-
 // Global state
 import {
   globalState,
   IAdminNoPadding,
   IGlobalStateService,
 } from 'services/globalState';
-
+// Services
+import { IGroupData, addGroup, MembershipType } from 'services/groups';
+// i18n
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { media } from 'utils/styleUtils';
+// components
+import HelmetIntl from 'components/HelmetIntl';
+import Outlet from 'components/Outlet';
+import Modal from 'components/UI/Modal';
 // Styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import GroupCreationStep1 from './GroupCreationStep1';
+import GroupsListPanel from './GroupsListPanel';
+import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
+import messages from './messages';
 
 const Wrapper = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px);
@@ -56,15 +58,6 @@ const ChildWrapper = styled.div`
   overflow-x: auto;
   overflow-y: auto;
 `;
-
-// i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
-
-// Services
-import { IGroupData, addGroup, MembershipType } from 'services/groups';
-
-import Outlet from 'components/Outlet';
 
 export interface Props {
   isVerificationEnabled: GetFeatureFlagChildProps;

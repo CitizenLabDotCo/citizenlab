@@ -1,36 +1,30 @@
 import React, { PureComponent } from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+// hooks
+import useUserCustomFields from 'hooks/useUserCustomFields';
 // services
 import {
   usersByRegFieldStream,
   IUsersByRegistrationField,
   usersByRegFieldXlsxEndpoint,
 } from 'services/userCustomFieldStats';
-
-// hooks
-import useUserCustomFields from 'hooks/useUserCustomFields';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
-import messages from 'containers/Admin/dashboard/messages';
-
-// components
-import BarChartByCategory from './BarChartByCategory';
-import PieChartByCategory from './PieChartByCategory';
-import AreaChart from './AreaChart';
-import GenderChart from './GenderChart';
-import AgeChart from './AgeChart';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
 // typings
 import {
   IUserCustomFieldInputType,
   IUserCustomFieldData,
 } from 'services/userCustomFields';
+// intl
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
+import messages from 'containers/Admin/dashboard/messages';
+import AgeChart from './AgeChart';
+import AreaChart from './AreaChart';
+// components
+import BarChartByCategory from './BarChartByCategory';
+import GenderChart from './GenderChart';
+import PieChartByCategory from './PieChartByCategory';
 
 interface InputProps {
   currentGroupFilter: string | undefined;

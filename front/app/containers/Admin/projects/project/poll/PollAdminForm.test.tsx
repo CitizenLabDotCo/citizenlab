@@ -1,10 +1,9 @@
 // @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
-
-import { PollAdminForm } from './PollAdminForm';
-
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
+import * as pollQuestionsService from 'services/pollQuestions';
+import { PollAdminForm } from './PollAdminForm';
 
 jest.mock('components/admin/ResourceList', () => ({ List: 'List' }));
 jest.mock('components/UI/Button', () => 'Button');
@@ -27,7 +26,7 @@ jest.mock('services/pollQuestions', () => ({
   }),
   deletePollQuestion: jest.fn(),
 }));
-import * as pollQuestionsService from 'services/pollQuestions';
+
 const addPollQuestionSpy = jest.spyOn(pollQuestionsService, 'addPollQuestion');
 const updatePollQuestionSpy = jest.spyOn(
   pollQuestionsService,

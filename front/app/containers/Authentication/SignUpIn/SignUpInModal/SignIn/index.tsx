@@ -1,31 +1,25 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-
-// components
-import PasswordSignin from './PasswordSignin';
+// utils
+import { handleOnSSOClick } from 'services/singleSignOn';
+// typings
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import AuthProviders, { AuthProvider } from 'components/AuthProviders';
 import Error from 'components/UI/Error';
+// style
+import styled from 'styled-components';
 import {
   StyledHeaderContainer,
   StyledHeaderTitle,
   StyledModalContentContainer,
 } from '../styles';
-
-// utils
-import { handleOnSSOClick } from 'services/singleSignOn';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
-
-// style
-import styled from 'styled-components';
-
-// typings
-import { ISignUpInMetaData } from 'events/openSignUpInModal';
+// components
+import PasswordSignin from './PasswordSignin';
+import messages from './messages';
 
 const Container = styled.div``;
 

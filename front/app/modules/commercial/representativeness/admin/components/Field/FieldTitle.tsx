@@ -1,7 +1,5 @@
 import React from 'react';
-// hooks
-import useLocalize from 'hooks/useLocalize';
-
+import { MessageDescriptor } from 'react-intl';
 // components
 import {
   Box,
@@ -9,19 +7,17 @@ import {
   Text,
   StatusLabel,
 } from '@citizenlab/cl2-component-library';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // typings
 import { Multiloc } from 'typings';
-import { MessageDescriptor } from 'react-intl';
+// hooks
+import useLocalize from 'hooks/useLocalize';
 import { Status } from '../../utils/form';
+import { FormattedMessage } from 'utils/cl-intl';
+import { colors } from 'utils/styleUtils';
+// styling
+import styled from 'styled-components';
+// i18n
+import messages from './messages';
 
 const DefaultStatusLabel = styled(StatusLabel)`
   color: ${colors.coolGrey600};

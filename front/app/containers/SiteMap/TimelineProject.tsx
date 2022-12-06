@@ -1,13 +1,12 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { IProjectData } from 'services/projects';
-import Link from 'utils/cl-router/Link';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import T from 'components/T';
-
+import { IProjectData } from 'services/projects';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import T from 'components/T';
 import messages from './messages';
 
 interface InputProps {

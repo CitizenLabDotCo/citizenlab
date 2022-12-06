@@ -1,46 +1,39 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { popup, LatLng, Map as LeafletMap } from 'leaflet';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { isNilOrError } from 'utils/helperUtils';
 import { Subscription } from 'rxjs';
-
-// Utils
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// Components
-import Map, { Point } from 'components/Map';
-import Warning from 'components/UI/Warning';
-import InitiativePreview from './InitiativePreview';
-
+// Resources
+import GetInitiativeMarkers, {
+  GetInitiativeMarkersChildProps,
+} from 'resources/GetInitiativeMarkers';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
+// Typing
+import { IGeotaggedInitiativeData } from 'services/initiatives';
 // Events
 import {
   leafletMapSelectedMarker$,
   leafletMapClicked$,
 } from 'components/UI/LeafletMap/events';
-
-// Resources
-import GetInitiativeMarkers, {
-  GetInitiativeMarkersChildProps,
-} from 'resources/GetInitiativeMarkers';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetInitiativesPermissions, {
-  GetInitiativesPermissionsChildProps,
-} from 'resources/GetInitiativesPermissions';
-
+// Utils
+import { trackEventByName } from 'utils/analytics';
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
-
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import InitiativeButton from 'components/InitiativeButton';
+// Components
+import Map, { Point } from 'components/Map';
+import Warning from 'components/UI/Warning';
 // Styling
 import styled from 'styled-components';
-
-// Typing
-import { IGeotaggedInitiativeData } from 'services/initiatives';
-import InitiativeButton from 'components/InitiativeButton';
+import InitiativePreview from './InitiativePreview';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   > .create-initiative-wrapper {

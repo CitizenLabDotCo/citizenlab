@@ -1,21 +1,21 @@
-import { Label } from '@citizenlab/cl2-component-library';
-import {
-  Section,
-  SectionField,
-  SubSectionTitle,
-} from 'components/admin/Section';
-import CTARadioButtons from 'components/LandingPages/admin/CTARadioButtons';
 import React from 'react';
+import { Label } from '@citizenlab/cl2-component-library';
+import { CLErrors, Multiloc } from 'typings';
 import {
   CTASignedInType,
   CTASignedOutType,
   IHomepageSettingsAttributes,
 } from 'services/homepageSettings';
-import styled from 'styled-components';
-import { CLErrors, Multiloc } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
 import 'utils/moduleUtils';
 import { colors } from 'utils/styleUtils';
+import CTARadioButtons from 'components/LandingPages/admin/CTARadioButtons';
+import {
+  Section,
+  SectionField,
+  SubSectionTitle,
+} from 'components/admin/Section';
+import styled from 'styled-components';
 import messages from './messages';
 
 const SettingsLabel = styled(Label)`

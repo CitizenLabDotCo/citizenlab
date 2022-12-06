@@ -1,25 +1,19 @@
 import React from 'react';
-
-// services
-import { IInviteData, deleteInvite } from 'services/invites';
-
-// hooks
-import useUser from 'hooks/useUser';
-
+import { FormattedDate } from 'react-intl';
 // components
 import { Button as SemanticButton, Popup } from 'semantic-ui-react';
 import { Tr, Td, Badge } from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
+// hooks
+import useUser from 'hooks/useUser';
+// services
+import { IInviteData, deleteInvite } from 'services/invites';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedDate } from 'react-intl';
-import messages from '../messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+// styling
+import { colors } from 'utils/styleUtils';
+import messages from '../messages';
 
 interface InputProps {
   invite: IInviteData;

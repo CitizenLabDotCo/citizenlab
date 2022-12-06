@@ -1,21 +1,18 @@
 // libraries
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+import { IGraphFormat } from 'typings';
+// resources
+import GetSerieFromStream from 'resources/GetSerieFromStream';
+import {
+  IUsersByBirthyear,
+  IUsersByRegistrationField,
+} from 'services/userCustomFieldStats';
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
-// utils
-import renderTooltip from './renderPieChartByCategoryTooltip';
 import { roundPercentages } from 'utils/math';
-
-// styling
-import { withTheme } from 'styled-components';
-import { categoricalColorScheme } from 'components/admin/Graphs/styling';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+// typings
+import { IStreamParams, IStream } from 'utils/streams';
 import {
   IGraphUnit,
   NoDataContainer,
@@ -26,18 +23,15 @@ import {
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
 import PieChart from 'components/admin/Graphs/PieChart';
-
-// resources
-import GetSerieFromStream from 'resources/GetSerieFromStream';
-
-// typings
-import { IStreamParams, IStream } from 'utils/streams';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { IGraphFormat } from 'typings';
-import {
-  IUsersByBirthyear,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
+import { categoricalColorScheme } from 'components/admin/Graphs/styling';
+// components
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+// styling
+import { withTheme } from 'styled-components';
+import messages from '../../messages';
+// utils
+import renderTooltip from './renderPieChartByCategoryTooltip';
 
 interface DataProps {
   serie: IGraphFormat;

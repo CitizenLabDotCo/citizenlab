@@ -1,6 +1,6 @@
-import { API_PATH } from 'containers/App/constants';
 import { IRelationship, Multiloc } from 'typings';
 import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export type IInitiativeStatusChange = {
   id: string;

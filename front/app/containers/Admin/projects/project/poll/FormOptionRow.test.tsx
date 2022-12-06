@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { shallow } from 'enzyme';
 import { mockOption } from 'services/__mocks__/pollOptions';
+import * as pollOptionsService from 'services/pollOptions';
+import { FormOptionRow, Props, State } from './FormOptionRow';
 
 jest.mock('services/pollOptions', () => ({
   addPollOption: jest.fn((_id, _type, title) => {
@@ -13,11 +16,8 @@ jest.mock('services/pollOptions', () => ({
   }),
 }));
 
-import * as pollOptionsService from 'services/pollOptions';
 const addPollOptionSpy = jest.spyOn(pollOptionsService, 'addPollOption');
 const updatePollOptionSpy = jest.spyOn(pollOptionsService, 'updatePollOption');
-
-import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 
 jest.mock('@citizenlab/cl2-component-library', () => ({
   Input: 'Input',
@@ -34,8 +34,6 @@ jest.mock(
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
-import { FormOptionRow, Props, State } from './FormOptionRow';
 
 let closeRow = jest.fn();
 const getTitleMultiloc = (title: string) => ({ en: title });

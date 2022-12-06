@@ -1,8 +1,8 @@
 import { IRelationship, Multiloc } from 'typings';
-import { API_PATH } from 'containers/App/constants';
 import { TPageSlugById } from 'hooks/useCustomPageSlugById';
-import streams from 'utils/streams';
 import { IItemNotInNavbar } from 'utils/navbar';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 

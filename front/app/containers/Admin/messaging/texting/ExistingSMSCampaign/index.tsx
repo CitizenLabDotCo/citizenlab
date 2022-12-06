@@ -1,30 +1,25 @@
 import React from 'react';
-
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from '../components/TextingHeader';
-import FormattedStatusLabel from '../components/FormattedStatusLabel';
-import SMSCampaignForm from '../components/SMSCampaignForm';
 // i18n
 import { FormattedTime, FormattedDate } from 'react-intl';
-
-// utils
-import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useTextingCampaign from 'hooks/useTextingCampaign';
-
 // services
 import {
   ITextingCampaignData,
   TTextingCampaignStatus,
 } from 'services/textingCampaigns';
-
+// utils
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import FormattedStatusLabel from '../components/FormattedStatusLabel';
+import SMSCampaignForm from '../components/SMSCampaignForm';
+import TextingHeader from '../components/TextingHeader';
+import HelmetIntl from 'components/HelmetIntl';
 // styling
 import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 
 const StyledSMSCampaignForm = styled(SMSCampaignForm)`
   width: 500px;

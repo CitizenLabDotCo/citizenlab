@@ -1,14 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { get, isUndefined, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-
-// components
-import Card from 'components/UI/Card';
 import { Icon } from '@citizenlab/cl2-component-library';
-import Author from 'components/Author';
-import VoteIndicator from './VoteIndicator';
-
+import { get, isUndefined, isString } from 'lodash-es';
 // resources
 import GetInitiative, {
   GetInitiativeChildProps,
@@ -17,22 +10,23 @@ import GetInitiativeImage, {
   GetInitiativeImageChildProps,
 } from 'resources/GetInitiativeImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import eventEmitter from 'utils/eventEmitter';
-
+import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// styles
-import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
+import Author from 'components/Author';
+// components
+import Card from 'components/UI/Card';
+// styles
+import styled from 'styled-components';
+import VoteIndicator from './VoteIndicator';
+import messages from './messages';
 
 const StyledAuthor = styled(Author)`
   margin-left: -4px;

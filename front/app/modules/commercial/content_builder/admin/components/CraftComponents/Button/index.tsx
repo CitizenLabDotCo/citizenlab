@@ -1,22 +1,17 @@
 import React from 'react';
-
-// craft
-import { useNode, useEditor } from '@craftjs/core';
-
 // components
 import { Radio, Box, Title, Input } from '@citizenlab/cl2-component-library';
-import ButtonComponent from 'components/UI/Button';
-
+// craft
+import { useNode, useEditor } from '@craftjs/core';
+import { darken } from 'polished';
+import { injectIntl } from 'utils/cl-intl';
 // styles
 import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
-
+import ButtonComponent from 'components/UI/Button';
 // hooks
 import { useTheme } from 'styled-components';
-
 // intl
 import messages from '../../../messages';
-import { injectIntl } from 'utils/cl-intl';
 
 type ButtonProps = {
   text: string;

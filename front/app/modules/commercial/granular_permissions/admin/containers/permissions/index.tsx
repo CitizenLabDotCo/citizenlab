@@ -1,14 +1,14 @@
 import React, { memo } from 'react';
-import { Section, SectionTitle } from 'components/admin/Section';
-import ActionsForm from '../../../admin/containers/Granular/ActionsForm';
 import GetGlobalPermissions, {
   GetGlobalPermissionsChildProps,
 } from 'resources/GetGlobalPermissions';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { isNilOrError } from 'utils/helperUtils';
 import { updateGlobalPermission } from 'services/actionPermissions';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import ActionsForm from '../../../admin/containers/Granular/ActionsForm';
 import FeatureFlag from 'components/FeatureFlag';
+import { Section, SectionTitle } from 'components/admin/Section';
+import messages from './messages';
 
 interface DataProps {
   permissions: GetGlobalPermissionsChildProps;

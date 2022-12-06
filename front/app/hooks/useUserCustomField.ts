@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
 // typings
 import {
   userCustomFieldStream,
   IUserCustomField,
   IUserCustomFieldData,
 } from 'services/userCustomFields';
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 export default function useUserCustomField(userCustomFieldId: string) {
   const [userCustomField, setUserCustomField] = useState<

@@ -1,11 +1,11 @@
 import moment, { Moment } from 'moment';
-
+import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 // utils
 import { timeSeriesParser } from '../../utils/timeSeries';
-import { roundPercentage } from 'utils/math';
 import { keys, get } from 'utils/helperUtils';
-import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
-
+import { roundPercentage } from 'utils/math';
+import { IResolution } from 'components/admin/ResolutionControl';
+import { Translations } from './translations';
 // typings
 import {
   Response,
@@ -14,8 +14,6 @@ import {
   TimeSeriesRow,
   Stats,
 } from './typings';
-import { Translations } from './translations';
-import { IResolution } from 'components/admin/ResolutionControl';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),

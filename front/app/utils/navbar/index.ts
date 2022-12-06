@@ -1,6 +1,6 @@
-import { INavbarItem, TNavbarItemCode } from 'services/navbar';
-import { ICustomPageData, TPageCode } from 'services/customPages';
 import { Multiloc } from 'typings';
+import { ICustomPageData, TPageCode } from 'services/customPages';
+import { INavbarItem, TNavbarItemCode } from 'services/navbar';
 
 interface IDefaultItemNotInNavbar {
   type: 'default_item';

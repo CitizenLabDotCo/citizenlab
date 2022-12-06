@@ -1,3 +1,7 @@
+import React from 'react';
+// hooks
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   Container,
   Header,
@@ -5,14 +9,8 @@ import {
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import HeaderContent from './HeaderContent';
-
-// hooks
-import useHomepageSettings from 'hooks/useHomepageSettings';
 
 export interface Props {
   className?: string;

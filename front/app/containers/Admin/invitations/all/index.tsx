@@ -1,33 +1,28 @@
 import React, { useState } from 'react';
-
 // components
 import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
-import Pagination from 'components/admin/Pagination';
-import Button from 'components/UI/Button';
-import TableHeader from './TableHeader';
-import TableRow from './TableRow';
-import SearchInput from 'components/UI/SearchInput';
-
+import { saveAs } from 'file-saver';
+import { isEmpty } from 'lodash-es';
 // resources
 import GetInvites, {
   GetInvitesChildProps,
   SortAttribute,
 } from 'resources/GetInvites';
-
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
-import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
+import { requestBlob } from 'utils/request';
 import { colors, stylingConsts } from 'utils/styleUtils';
-
 // utils
 import { API_PATH } from 'containers/App/constants';
-import { requestBlob } from 'utils/request';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-import { saveAs } from 'file-saver';
+import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
+import Pagination from 'components/admin/Pagination';
+// styling
+import styled from 'styled-components';
+// i18n
+import messages from '../messages';
+import TableHeader from './TableHeader';
+import TableRow from './TableRow';
 
 const Container = styled.div`
   th::after {

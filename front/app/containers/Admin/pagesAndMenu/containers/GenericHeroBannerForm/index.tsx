@@ -1,21 +1,17 @@
 import React, { ReactElement } from 'react';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import { Section } from 'components/admin/Section';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
-import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import SectionFormWrapper from '../../components/SectionFormWrapper';
 // typings
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-
 // constants
 import Warning from 'components/UI/Warning';
+import { Section } from 'components/admin/Section';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
+import messages from './messages';
 
 interface Props {
   breadcrumbs: TBreadcrumbs;

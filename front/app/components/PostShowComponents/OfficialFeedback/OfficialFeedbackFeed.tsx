@@ -1,24 +1,20 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-
-// components
-import Button from 'components/UI/Button';
-import OfficialFeedbackPost from './OfficialFeedbackPost';
-
+import { WrappedComponentProps, FormattedDate } from 'react-intl';
 // resources
 import GetOfficialFeedbacks, {
   GetOfficialFeedbacksChildProps,
 } from 'resources/GetOfficialFeedbacks';
-
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
+// components
+import Button from 'components/UI/Button';
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-
+import OfficialFeedbackPost from './OfficialFeedbackPost';
 // i18n
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, FormattedDate } from 'react-intl';
 
 const Container = styled.div`
   &.hasTopMargin {

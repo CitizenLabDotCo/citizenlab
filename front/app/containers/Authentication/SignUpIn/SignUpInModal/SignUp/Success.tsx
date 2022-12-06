@@ -1,19 +1,15 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
-import Button from 'components/UI/Button';
-
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes, media } from 'utils/styleUtils';
+// components
+import Button from 'components/UI/Button';
 // style
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+import messages from './messages';
 import success from './success.jpg';
 
 const Container = styled.div`

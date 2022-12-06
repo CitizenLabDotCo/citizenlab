@@ -1,5 +1,5 @@
-import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 const getInsightsBatchEndpoint = (viewId: string) =>
   `insights/views/${viewId}/batch/`;

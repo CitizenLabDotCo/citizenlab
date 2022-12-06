@@ -1,9 +1,10 @@
 // @ts-nocheck
 import React from 'react';
-
 import { shallow } from 'enzyme';
-import { makeUser } from '../../services/__mocks__/users';
 import { getAppConfiguration } from '../../services/__mocks__/appConfiguration';
+import { makeUser } from '../../services/__mocks__/users';
+import { addInitiative, updateInitiative } from '../../services/initiatives';
+import { InitiativesNewFormWrapper } from './InitiativesNewFormWrapper';
 
 jest.mock('components/InitiativeForm', () => 'InitiativeForm');
 jest.mock('services/initiatives'); // TODO
@@ -16,10 +17,6 @@ jest.mock('utils/loggingUtils');
 
 jest.mock('lodash-es/debounce', () => jest.fn((fn) => fn));
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
-import { addInitiative, updateInitiative } from '../../services/initiatives';
-
-import { InitiativesNewFormWrapper } from './InitiativesNewFormWrapper';
 
 describe('InitiativesNewPage', () => {
   // jest.useRealTimers();

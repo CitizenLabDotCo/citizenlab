@@ -1,21 +1,17 @@
 // libraries
 import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import { isEmpty, map, orderBy } from 'lodash-es';
-
+import { IGraphFormat } from 'typings';
+// resources
+import GetSerieFromStream from 'resources/GetSerieFromStream';
+// types
+import { ideasByStatusStream, ideasByStatusXlsxEndpoint } from 'services/stats';
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
-// styling
-import {
-  legacyColors,
-  sizes,
-  DEFAULT_BAR_CHART_MARGIN,
-} from 'components/admin/Graphs/styling';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import {
   GraphCardHeader,
   GraphCardTitle,
@@ -23,17 +19,15 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-
-// resources
-import GetSerieFromStream from 'resources/GetSerieFromStream';
-
-// types
-import { ideasByStatusStream, ideasByStatusXlsxEndpoint } from 'services/stats';
-import { IGraphFormat } from 'typings';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+// styling
+import {
+  legacyColors,
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
+// components
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+import messages from '../messages';
 
 interface DataProps {
   serie?: IGraphFormat | null | Error;

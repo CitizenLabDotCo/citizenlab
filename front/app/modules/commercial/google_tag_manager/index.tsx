@@ -1,15 +1,15 @@
 import React from 'react';
+import { combineLatest } from 'rxjs';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
+import { initializeFor } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { ModuleConfiguration } from 'utils/moduleUtils';
 import {
   IDestinationConfig,
   registerDestination,
 } from 'components/ConsentManager/destinations';
-import { initializeFor } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { combineLatest } from 'rxjs';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { isNilOrError } from 'utils/helperUtils';
-import { ModuleConfiguration } from 'utils/moduleUtils';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {

@@ -1,14 +1,12 @@
 import React from 'react';
+import { IContentBuilderLayoutData } from '../../services/contentBuilder';
+import eventEmitter from 'utils/eventEmitter';
 import { screen, render, act } from 'utils/testUtils/rtl';
-
 import {
   ContentBuilderPage,
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
 } from './';
-
-import { IContentBuilderLayoutData } from '../../services/contentBuilder';
-import eventEmitter from 'utils/eventEmitter';
 
 const mockEditorData: IContentBuilderLayoutData = {
   id: '2',

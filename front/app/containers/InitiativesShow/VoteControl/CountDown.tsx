@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { convertSecondsToDDHHMM } from 'utils/dateUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

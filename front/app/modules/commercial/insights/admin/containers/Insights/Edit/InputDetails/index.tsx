@@ -1,40 +1,33 @@
 import React, { useState, useRef } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
-
-// components
-import Category from 'modules/commercial/insights/admin/components/Category';
-import Idea from 'modules/commercial/insights/admin/components/Idea';
-import { Label, Spinner, Icon, Box } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
 import Creatable from 'react-select/creatable';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import Navigation, {
-  NavigationProps,
-} from 'modules/commercial/insights/admin/components/Navigation';
-
+import { Label, Spinner, Icon, Box } from '@citizenlab/cl2-component-library';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// styles
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
+import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+// services
+import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
 // tracking
 import { trackEventByName } from 'utils/analytics';
+// intl
+import { injectIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import selectStyles from 'components/UI/MultipleSelect/styles';
+// components
+import Category from 'modules/commercial/insights/admin/components/Category';
+import Idea from 'modules/commercial/insights/admin/components/Idea';
+import Navigation, {
+  NavigationProps,
+} from 'modules/commercial/insights/admin/components/Navigation';
+// styles
+import styled from 'styled-components';
+import messages from '../../messages';
 
 type InputDetailsProps = {
   previewedInputId: string;

@@ -2,12 +2,12 @@ import React from 'react';
 import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
-import { isNilOrError } from 'utils/helperUtils';
 import {
   phasePermissions,
   IPCPermissionData,
 } from 'services/actionPermissions';
+import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   phaseId?: string | null;

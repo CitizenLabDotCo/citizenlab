@@ -1,31 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { get, has, isEmpty, omitBy } from 'lodash-es';
-
-// components
-import { Section, SectionTitle } from 'components/admin/Section';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import Branding from './Branding';
-import ProjectHeader from './ProjectHeader';
-
-// style
-import styled, { withTheme } from 'styled-components';
-
-// utils
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
-import getSubmitState from './getSubmitState';
-import { isNilOrError } from 'utils/helperUtils';
-import { isCLErrorJSON } from 'utils/errorUtils';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import sharedSettingsMessages from '../messages';
-
-// services
-import { localeStream } from 'services/locale';
+import { get, has, isEmpty, omitBy } from 'lodash-es';
+import { Subscription, combineLatest, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+// typings
+import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
 import {
   currentAppConfigurationStream,
   updateAppConfiguration,
@@ -35,9 +15,23 @@ import {
   IUpdatedAppConfigurationProperties,
   TAppConfigurationSetting,
 } from 'services/appConfiguration';
-
-// typings
-import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
+// services
+import { localeStream } from 'services/locale';
+import { injectIntl } from 'utils/cl-intl';
+import { isCLErrorJSON } from 'utils/errorUtils';
+// utils
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import { Section, SectionTitle } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+// style
+import styled, { withTheme } from 'styled-components';
+import sharedSettingsMessages from '../messages';
+import Branding from './Branding';
+import ProjectHeader from './ProjectHeader';
+import getSubmitState from './getSubmitState';
+import messages from './messages';
 
 interface Props {
   theme: any;

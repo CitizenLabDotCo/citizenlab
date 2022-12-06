@@ -1,19 +1,15 @@
 import React from 'react';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
-import Button from 'components/UI/Button';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // typings
 import { IOption } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
+// styling
+import { colors } from 'utils/styleUtils';
+import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
+import Button from 'components/UI/Button';
+// i18n
+import messages from '../messages';
 
 interface Props {
   currentProjectFilter?: string;

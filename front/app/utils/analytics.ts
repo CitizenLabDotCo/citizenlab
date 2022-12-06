@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEqual, mapValues } from 'lodash-es';
 import { Subject, Observable, concat, combineLatest } from 'rxjs';
 import {
   buffer,
@@ -9,21 +10,18 @@ import {
   distinctUntilChanged,
   map,
 } from 'rxjs/operators';
-import { isEqual, mapValues } from 'lodash-es';
-import eventEmitter from 'utils/eventEmitter';
-
 import {
   IAppConfigurationData,
   currentAppConfigurationStream,
 } from 'services/appConfiguration';
-
+import { authUserStream } from 'services/auth';
+import eventEmitter from 'utils/eventEmitter';
+import { ISavedDestinations } from 'components/ConsentManager/consent';
 import {
   getDestinationConfig,
   IDestination,
   isDestinationActive,
 } from 'components/ConsentManager/destinations';
-import { ISavedDestinations } from 'components/ConsentManager/consent';
-import { authUserStream } from 'services/auth';
 
 export interface IEvent {
   name: string;

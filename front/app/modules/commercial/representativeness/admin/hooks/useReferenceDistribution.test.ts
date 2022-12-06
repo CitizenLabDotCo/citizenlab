@@ -1,8 +1,8 @@
-import { getRemoteFormValues } from './useReferenceDistribution';
 import {
   IBinnedDistributionData,
   ICategoricalDistributionData,
 } from '../services/referenceDistribution';
+import { getRemoteFormValues } from './useReferenceDistribution';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/locale');

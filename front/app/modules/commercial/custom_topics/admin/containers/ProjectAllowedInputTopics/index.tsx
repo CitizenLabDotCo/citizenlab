@@ -1,17 +1,15 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import HasPermission from 'components/HasPermission';
 import {
   SectionTitle,
   SectionDescription,
   StyledLink,
 } from 'components/admin/Section';
+import styled from 'styled-components';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
-import HasPermission from 'components/HasPermission';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const Container = styled.div`

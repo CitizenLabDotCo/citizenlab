@@ -1,6 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { GetProjectsChildProps } from 'resources/GetProjects';
 import * as service from 'modules/commercial/insights/services/insightsViews';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { CreateInsightsView } from './CreateInsightsView';
 
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   addInsightsView: jest.fn(),
@@ -11,9 +13,6 @@ jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('resources/GetProjects', () => {});
 jest.mock('hooks/useLocalize');
 jest.mock('services/locale');
-
-import { CreateInsightsView } from './CreateInsightsView';
-import { GetProjectsChildProps } from 'resources/GetProjects';
 
 const closeModal = jest.fn();
 

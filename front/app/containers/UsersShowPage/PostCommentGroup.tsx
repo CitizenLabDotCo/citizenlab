@@ -1,38 +1,31 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+// Components
+import { Icon } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-
+import { darken } from 'polished';
 // resources & typings
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-
-// permissions
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
 // typings
 import { ICommentData } from 'services/comments';
-import { IOpenPostPageModalEvent } from 'containers/App';
-
+// permissions
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 // utils
 import eventEmitter from 'utils/eventEmitter';
-
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { IOpenPostPageModalEvent } from 'containers/App';
+import CommentBody from 'components/PostShowComponents/Comments/CommentBody';
+import CommentHeader from 'components/PostShowComponents/Comments/CommentHeader';
+import T from 'components/T';
 // style
 import styled from 'styled-components';
-import { colors, media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { darken } from 'polished';
-
-// Components
-import { Icon } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-import CommentHeader from 'components/PostShowComponents/Comments/CommentHeader';
-import CommentBody from 'components/PostShowComponents/Comments/CommentBody';
-
 // intl
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 
 const Container = styled.div`
   width: 100%;

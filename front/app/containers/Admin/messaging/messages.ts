@@ -3,7 +3,6 @@
  *
  * This contains all the text for the admins email.
  */
-
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({

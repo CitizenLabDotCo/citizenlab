@@ -1,9 +1,9 @@
-import { isNilOrError, endsWith } from 'utils/helperUtils';
 import { parse } from 'qs';
-import { openSignUpInModal } from 'events/openSignUpInModal';
-import { SSOParams } from 'services/singleSignOn';
-import clHistory from 'utils/cl-router/history';
 import { TAuthUser } from 'hooks/useAuthUser';
+import { SSOParams } from 'services/singleSignOn';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError, endsWith } from 'utils/helperUtils';
 
 export default function openSignUpInModalIfNecessary(
   authUser: TAuthUser,

@@ -1,13 +1,11 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
+import { colors, fontSizes } from 'utils/styleUtils';
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import messages from '../../messages';
 
 const Container = styled.div`
   text-align: center;

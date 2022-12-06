@@ -1,20 +1,17 @@
 import React from 'react';
-import { Medium } from '../utils';
-import { FacebookShareButton } from 'react-share';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
+import { FacebookShareButton } from 'react-share';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-
-// style
-import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
-import styled from 'styled-components';
-
+import { Medium } from '../utils';
 // analytics
 import { trackEventByName } from 'utils/analytics';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+// style
+import { colors } from 'utils/styleUtils';
+import styled from 'styled-components';
+import messages from '../messages';
 import tracks from '../tracks';
 
 interface Props {

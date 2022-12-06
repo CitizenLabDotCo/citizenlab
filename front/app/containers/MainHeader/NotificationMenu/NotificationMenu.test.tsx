@@ -1,16 +1,15 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { makeUser } from 'services/__mocks__/users';
 // component to test
 import { NotificationMenu } from './';
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
 
-import { makeUser } from 'services/__mocks__/users';
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const mockUserFromResource: GetAuthUserChildProps = makeUser({

@@ -1,29 +1,24 @@
 import React, { memo, useState, useMemo } from 'react';
-import styled from 'styled-components';
-import { darken } from 'polished';
-import useIdea from 'hooks/useIdea';
-import { isNilOrError } from 'utils/helperUtils';
-import { isNil } from 'lodash-es';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Icon, colors } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import Map, { Point } from 'components/Map';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
-
-// utils
-import { getAddressOrFallbackDMS } from 'utils/map';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// styling
-import { isRtl, fontSizes, media } from 'utils/styleUtils';
-
 // typings
 import { LatLngTuple } from 'leaflet';
+import { isNil } from 'lodash-es';
+import { darken } from 'polished';
+import useIdea from 'hooks/useIdea';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+// utils
+import { getAddressOrFallbackDMS } from 'utils/map';
+// styling
+import { isRtl, fontSizes, media } from 'utils/styleUtils';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import Map, { Point } from 'components/Map';
+import Modal from 'components/UI/Modal';
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

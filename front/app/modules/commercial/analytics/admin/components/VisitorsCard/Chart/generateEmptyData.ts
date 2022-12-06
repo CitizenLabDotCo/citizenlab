@@ -1,9 +1,8 @@
 // utils
-import { getEmptyRow } from '../../../hooks/useVisitors/parse';
-import { emptyDateRange } from '../../../utils/timeSeries';
-
 // typings
 import { Moment } from 'moment';
+import { getEmptyRow } from '../../../hooks/useVisitors/parse';
+import { emptyDateRange } from '../../../utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export const generateEmptyData = (

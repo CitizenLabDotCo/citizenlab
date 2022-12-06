@@ -1,7 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
+import { IRelationship, Multiloc } from 'typings';
 import request from 'utils/request';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc } from 'typings';
+import { API_PATH } from 'containers/App/constants';
 
 interface CommentAttributes {
   upvotes_count: number;

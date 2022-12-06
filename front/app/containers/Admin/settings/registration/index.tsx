@@ -1,32 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import getSubmitState from 'utils/getSubmitState';
-import { isCLErrorJSON } from 'utils/errorUtils';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { CLError, Multiloc } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// components
-import {
-  SectionTitle,
-  SubSectionTitle,
-  SectionField,
-  SectionDescription,
-} from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import CustomFieldSettings from './CustomFieldSettings';
-import ToggleUserConfirmation from './ToggleUserConfirmation';
-import CustomFieldsSignupText from './CustomFieldsSignupText';
-
-// i18n
-import messages from 'containers/Admin/settings/messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // typings
 import {
   IAppConfigurationSettings,
@@ -34,6 +11,25 @@ import {
   updateAppConfiguration,
   TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isCLErrorJSON } from 'utils/errorUtils';
+import getSubmitState from 'utils/getSubmitState';
+import { isNilOrError } from 'utils/helperUtils';
+// i18n
+import messages from 'containers/Admin/settings/messages';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+// components
+import {
+  SectionTitle,
+  SubSectionTitle,
+  SectionField,
+  SectionDescription,
+} from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import styled from 'styled-components';
+import CustomFieldSettings from './CustomFieldSettings';
+import CustomFieldsSignupText from './CustomFieldsSignupText';
+import ToggleUserConfirmation from './ToggleUserConfirmation';
 
 export const LabelTooltip = styled.div`
   display: flex;

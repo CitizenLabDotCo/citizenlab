@@ -1,24 +1,20 @@
 import React, { memo } from 'react';
+import useLocale from 'hooks/useLocale';
+// hooks
+import useUser from 'hooks/useUser';
+// services
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
+import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
-// hooks
-import useUser from 'hooks/useUser';
-import useLocale from 'hooks/useLocale';
-
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { timeAgo } from 'utils/dateUtils';
 
 const Container = styled.div`
   display: flex;

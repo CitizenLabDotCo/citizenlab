@@ -1,18 +1,14 @@
 import React from 'react';
-
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
-
-// components
-import UserCustomFieldsFormOld from './UserCustomFieldsFormOld';
-import UserCustomFieldsFormMigrated from './UserCustomFieldsFormMigrated';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { IUserData } from 'services/users';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import UserCustomFieldsFormMigrated from './UserCustomFieldsFormMigrated';
+// components
+import UserCustomFieldsFormOld from './UserCustomFieldsFormOld';
 
 type FormData = Record<string, any>;
 

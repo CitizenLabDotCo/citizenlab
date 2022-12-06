@@ -1,6 +1,6 @@
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
-import { PublicationTab } from './';
 import { keys } from 'utils/helperUtils';
+import { PublicationTab } from './';
 
 export function getCurrentTab(
   statusCounts: IStatusCounts,

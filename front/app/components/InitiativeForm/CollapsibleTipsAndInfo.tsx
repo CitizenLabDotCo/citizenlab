@@ -1,15 +1,13 @@
 import React, { memo } from 'react';
-
-// components
-import CollapsibleBox from 'components/UI/CollapsibleBox';
-const TipsContent = React.lazy(() => import('./TipsContent'));
-
-// styling
-import { colors } from 'utils/styleUtils';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+// styling
+import { colors } from 'utils/styleUtils';
+// components
+import CollapsibleBox from 'components/UI/CollapsibleBox';
 import messages from './messages';
+
+const TipsContent = React.lazy(() => import('./TipsContent'));
 
 export interface Props {
   className?: string;

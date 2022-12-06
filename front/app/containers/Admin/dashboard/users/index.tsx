@@ -1,15 +1,13 @@
 // libraries
 import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
-
-// components
-import ChartFilters from './ChartFilters';
-import { GraphsContainer } from 'components/admin/GraphWrappers';
-import Charts from './Charts';
-
 // tracking
 import { injectTracks } from 'utils/analytics';
+import { GraphsContainer } from 'components/admin/GraphWrappers';
 import tracks from '../tracks';
+// components
+import ChartFilters from './ChartFilters';
+import Charts from './Charts';
 
 interface State {
   startAtMoment?: Moment | null;

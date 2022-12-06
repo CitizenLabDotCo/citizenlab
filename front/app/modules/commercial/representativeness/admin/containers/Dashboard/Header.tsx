@@ -1,5 +1,4 @@
 import React from 'react';
-
 // components
 import {
   Title,
@@ -7,15 +6,13 @@ import {
   Text,
   StatusLabel,
 } from '@citizenlab/cl2-component-library';
-// import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
-
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
+import { colors } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+// import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
+// i18n
+import messages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
   margin-left: 8px;

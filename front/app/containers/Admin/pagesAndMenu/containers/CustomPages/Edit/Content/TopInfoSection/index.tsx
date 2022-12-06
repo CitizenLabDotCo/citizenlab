@@ -1,10 +1,10 @@
-import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
-import useCustomPage from 'hooks/useCustomPage';
-import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import useCustomPage from 'hooks/useCustomPage';
+import useLocalize from 'hooks/useLocalize';
 import { ICustomPageAttributes, updateCustomPage } from 'services/customPages';
 import { isNilOrError } from 'utils/helperUtils';
+import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
 
 const TopInfoSection = () => {
   const localize = useLocalize();

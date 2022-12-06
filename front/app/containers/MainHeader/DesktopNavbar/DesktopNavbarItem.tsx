@@ -1,16 +1,13 @@
 import React from 'react';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
-
+import { Multiloc } from 'typings';
 // components
 import Link from 'utils/cl-router/Link';
-
+import { fontSizes } from 'utils/styleUtils';
 // i18n
 import T from 'components/T';
-import { Multiloc } from 'typings';
+// styling
+import styled from 'styled-components';
 
 const NavigationItemBorder = styled.div`
   height: 6px;

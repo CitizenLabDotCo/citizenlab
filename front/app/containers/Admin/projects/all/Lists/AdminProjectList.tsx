@@ -1,28 +1,23 @@
 import React, { memo } from 'react';
-
-// style
-import styled from 'styled-components';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import ProjectRow from '../../components/ProjectRow';
-import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
-import { ListHeader, HeaderTitle } from '../StyledComponents';
-import Button from 'components/UI/Button';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// services
-import { reorderAdminPublication } from 'services/adminPublications';
 import useAdminPublications, {
   IAdminPublicationContent,
 } from 'hooks/useAdminPublications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+// services
+import { reorderAdminPublication } from 'services/adminPublications';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import ProjectRow from '../../components/ProjectRow';
+import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
+import Button from 'components/UI/Button';
+// components
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+// style
+import styled from 'styled-components';
+import { ListHeader, HeaderTitle } from '../StyledComponents';
+import messages from '../messages';
 
 const StyledSortableRow = styled(SortableRow)`
   & .sortablerow-draghandle {

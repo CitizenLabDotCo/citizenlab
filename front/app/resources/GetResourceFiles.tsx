@@ -2,35 +2,34 @@ import React from 'react';
 import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
-import {
-  projectFilesStream,
-  IProjectFileData,
-  IProjectFiles,
-} from 'services/projectFiles';
-import {
-  phaseFilesStream,
-  IPhaseFileData,
-  IPhaseFiles,
-} from 'services/phaseFiles';
 import {
   eventFilesStream,
   IEventFileData,
   IEventFiles,
 } from 'services/eventFiles';
-import {
-  pageFilesStream,
-  ICustomPageFileData,
-  ICustomPageFiles,
-} from 'services/pageFiles';
 import { ideaFilesStream, IIdeaFileData, IIdeaFiles } from 'services/ideaFiles';
 import {
   initiativeFilesStream,
   IInitiativeFileData,
   IInitiativeFiles,
 } from 'services/initiativeFiles';
-
+import {
+  pageFilesStream,
+  ICustomPageFileData,
+  ICustomPageFiles,
+} from 'services/pageFiles';
+import {
+  phaseFilesStream,
+  IPhaseFileData,
+  IPhaseFiles,
+} from 'services/phaseFiles';
+import {
+  projectFilesStream,
+  IProjectFileData,
+  IProjectFiles,
+} from 'services/projectFiles';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export type ResourceType =
   | 'project'

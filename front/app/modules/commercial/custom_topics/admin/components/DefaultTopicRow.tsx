@@ -1,16 +1,13 @@
 import React, { memo } from 'react';
-
 import { ITopicData } from 'services/topics';
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
-
 // components
 import { Row } from 'components/admin/ResourceList';
+import styled from 'styled-components';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';
-
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const DefaultTopicLabel = styled.span``;
 

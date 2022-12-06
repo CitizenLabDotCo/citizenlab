@@ -1,14 +1,11 @@
 import React from 'react';
-
-// components
-import Icon from './Icon';
-
-// styling
-import { colors } from '../../styling';
-
 // utils
 import { itemsMatch, getLegendTranslate } from './utils';
-
+// styling
+import { colors } from '../../styling';
+import { Margin } from '../../typings';
+// components
+import Icon from './Icon';
 // typings
 import {
   LegendItem,
@@ -16,7 +13,6 @@ import {
   LegendDimensions,
   Position,
 } from './typings';
-import { Margin } from '../../typings';
 
 interface Props {
   items: LegendItem[];

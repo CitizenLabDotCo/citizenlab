@@ -1,25 +1,20 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
-import { signOut } from 'services/auth';
-import tracks from './tracks';
-
 // components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import SignIn from './SignIn';
-import SignUp, { TSignUpStep } from './SignUp';
-
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { trackEventByName } from 'utils/analytics';
-
+import { signOut } from 'services/auth';
 // events
 import { closeSignUpInModal, signUpActiveStepChange$ } from './events';
 import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
-
+import { trackEventByName } from 'utils/analytics';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import Modal from 'components/UI/Modal';
+import SignIn from './SignIn';
+import SignUp, { TSignUpStep } from './SignUp';
+import tracks from './tracks';
 // typings
 import { TSignUpInFlow } from './typings';
 

@@ -1,24 +1,20 @@
 import React, { memo, useState, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { globalState } from 'services/globalState';
 import { Outlet as RouterOutlet } from 'react-router-dom';
-
-// permissions
-import useAuthUser from 'hooks/useAuthUser';
-import { usePermission } from 'services/permissions';
-import HasPermission from 'components/HasPermission';
-
-// components
-import Sidebar from './sideBar/';
-import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
-
-// utils
-import clHistory from 'utils/cl-router/history';
-import { endsWith } from 'utils/helperUtils';
-
 // stlying
 import 'assets/semantic/semantic.min.css';
+// permissions
+import useAuthUser from 'hooks/useAuthUser';
+import { globalState } from 'services/globalState';
+import { usePermission } from 'services/permissions';
+// utils
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { endsWith } from 'utils/helperUtils';
+import { colors, media } from 'utils/styleUtils';
+import HasPermission from 'components/HasPermission';
+import styled from 'styled-components';
+// components
+import Sidebar from './sideBar/';
 
 const Container = styled.div`
   display: flex;

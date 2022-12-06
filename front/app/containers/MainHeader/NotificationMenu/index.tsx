@@ -1,17 +1,14 @@
 import React, { lazy, Suspense } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-import styled from 'styled-components';
-
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { markAllAsRead } from 'services/notifications';
 import { trackEventByName } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
+import NotificationCount from './components/NotificationCount';
+import styled from 'styled-components';
 import tracks from './tracks';
 
-import NotificationCount from './components/NotificationCount';
 const NotificationsDropdown = lazy(() => import('./NotificationsDropdown'));
-
-import { markAllAsRead } from 'services/notifications';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
   position: relative;

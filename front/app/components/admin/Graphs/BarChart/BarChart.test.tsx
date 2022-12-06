@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
-import BarChart from './';
 import { NilOrError } from 'utils/helperUtils';
+import { render, screen } from 'utils/testUtils/rtl';
 import { legacyColors } from '../styling';
+import BarChart from './';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');

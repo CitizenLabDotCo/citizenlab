@@ -1,15 +1,15 @@
 import React, { memo } from 'react';
-import { IStatusChangeOnVotedIdeaNotificationData } from 'services/notifications';
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-import NotificationWrapper from '../NotificationWrapper';
 import useIdea from 'hooks/useIdea';
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import { isNilOrError } from 'utils/helperUtils';
+import useProject from 'hooks/useProject';
+import { IStatusChangeOnVotedIdeaNotificationData } from 'services/notifications';
 import { getInputTerm } from 'services/participationContexts';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
+import T from 'components/T';
+import messages from '../../messages';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IStatusChangeOnVotedIdeaNotificationData;

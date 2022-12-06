@@ -1,45 +1,37 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { isEmpty, isString } from 'lodash-es';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-
-// Components
-import UsersHeader from './UsersHeader';
-import Modal from 'components/UI/Modal';
-import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-import UserManager from './UserManager';
-
-// Events
-import eventEmitter from 'utils/eventEmitter';
-import events from './events';
-
-// i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
-// Resources
-import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
+import { isEmpty, isString } from 'lodash-es';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
-
+// Resources
+import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
+import { deleteMembershipByUserId } from 'services/groupMemberships';
 // Services
 import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
-import { deleteMembershipByUserId } from 'services/groupMemberships';
-
+import events from './events';
 // tracking
 import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
-
+import { injectIntl } from 'utils/cl-intl';
+// i18n
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// Events
+import eventEmitter from 'utils/eventEmitter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 import Outlet from 'components/Outlet';
+import Modal from 'components/UI/Modal';
+import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
+import UserManager from './UserManager';
+// Components
+import UsersHeader from './UsersHeader';
+import messages from './messages';
+import tracks from './tracks';
 
 export interface InputProps {}
 

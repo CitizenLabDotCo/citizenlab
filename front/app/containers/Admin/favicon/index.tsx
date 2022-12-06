@@ -1,39 +1,31 @@
 import React, { PureComponent } from 'react';
-
 // components
 import { Label } from '@citizenlab/cl2-component-library';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { Section, SectionField } from 'components/admin/Section';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-
-// utils
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import getSubmitState from 'utils/getSubmitState';
-
+// typings
+import { CLError, UploadFile } from 'typings';
+// resources
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 // services
 import {
   updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
 } from 'services/appConfiguration';
-
-// resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
-// intl
-import messages from './messages';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-
+import { isCLErrorJSON } from 'utils/errorUtils';
+// utils
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import getSubmitState from 'utils/getSubmitState';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { Section, SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 // styling
 import styled from 'styled-components';
-
-// typings
-import { CLError, UploadFile } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
+// intl
+import messages from './messages';
 
 const MainDropzone = styled(ImagesDropzone)`
   margin-top: 20px;

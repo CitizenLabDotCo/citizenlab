@@ -1,13 +1,12 @@
 import React, { useState, lazy, Suspense } from 'react';
+import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
-// components
-import User from './User';
-const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
-
 // style
 import styled from 'styled-components';
-import useAuthUser from 'hooks/useAuthUser';
+// components
+import User from './User';
+
+const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
 
 const Container = styled.div`
   height: 100%;

@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   color: ${colors.red600};

@@ -1,5 +1,5 @@
-import 'services/verificationMethods';
 import { Multiloc } from 'typings';
+import 'services/verificationMethods';
 
 declare module 'services/verificationMethods' {
   export interface IVerificationMethodNamesMap {

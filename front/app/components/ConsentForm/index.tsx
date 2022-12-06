@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import { Icon } from '@citizenlab/cl2-component-library';
 import {
   IConsentData,
   updateConsent,
@@ -6,28 +8,22 @@ import {
   updateConsentWithToken,
   getCategorizedConsents,
 } from 'services/campaignConsents';
-
-// components
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import T from 'components/T';
-import Button from 'components/UI/Button';
-import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
-import Checkbox from 'components/UI/Checkbox';
 import { ScreenReaderOnly } from 'utils/a11y';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
-
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
+import { colors } from 'utils/styleUtils';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import Checkbox from 'components/UI/Checkbox';
+import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
+import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
+// components
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
-import { CSSTransition } from 'react-transition-group';
+// i18n
+import messages from './messages';
 
 const timeout = 400;
 

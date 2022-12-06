@@ -1,18 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
-
-// components
-import { Section, SubSectionTitle } from 'components/admin/Section';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import ModeratorList from '../components/ModeratorList';
 import UserSearch from '../components/UserSearch';
+// components
+import { Section, SubSectionTitle } from 'components/admin/Section';
+import styled from 'styled-components';
+import messages from './messages';
 
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 30px;

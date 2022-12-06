@@ -1,33 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
-
-// intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import messages from '../../messages';
-
-// styling
-import styled from 'styled-components';
-import {
-  sizes,
-  DEFAULT_BAR_CHART_MARGIN,
-} from 'components/admin/Graphs/styling';
-import { media, colors } from 'utils/styleUtils';
-
+import { Select, Box, Icon } from '@citizenlab/cl2-component-library';
+import { IGraphFormat, IOption } from 'typings';
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
-import {
-  GraphCard,
-  GraphCardInner,
-  GraphCardHeaderWithFilter,
-} from 'components/admin/GraphWrappers';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Select, Box, Icon } from '@citizenlab/cl2-component-library';
-import { HiddenLabel } from 'utils/a11y';
-import BarChart from 'components/admin/Graphs/BarChart';
-
 // typings
 import {
   IIdeasByTopic,
@@ -43,12 +19,30 @@ import {
   votesByTopicXlsxEndpoint,
   votesByProjectXlsxEndpoint,
 } from 'services/stats';
-import { IStreamParams, IStream } from 'utils/streams';
-import { IResource } from '..';
-import { IGraphFormat, IOption } from 'typings';
-
+import { HiddenLabel } from 'utils/a11y';
+// intl
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { IStreamParams, IStream } from 'utils/streams';
+import { media, colors } from 'utils/styleUtils';
+import {
+  GraphCard,
+  GraphCardInner,
+  GraphCardHeaderWithFilter,
+} from 'components/admin/GraphWrappers';
+import BarChart from 'components/admin/Graphs/BarChart';
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
+// components
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { IResolution } from 'components/admin/ResolutionControl';
+// styling
+import styled from 'styled-components';
+import { IResource } from '..';
+import messages from '../../messages';
 
 const GraphCardTitle = styled.h3`
   margin: 0;

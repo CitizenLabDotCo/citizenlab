@@ -1,19 +1,15 @@
 // libraries
 import React, { memo } from 'react';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
-// styling
-import styled from 'styled-components';
-import { legacyColors } from 'components/admin/Graphs/styling';
-
-// resources
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
+import { LabelList } from 'recharts';
+// types
+import { IGraphPoint } from 'typings';
+// intl
+import { injectIntl } from 'utils/cl-intl';
+// resources
+import { isNilOrError } from 'utils/helperUtils';
 import {
   IGraphUnit,
   GraphCardHeader,
@@ -21,11 +17,10 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { LabelList } from 'recharts';
-
-// types
-import { IGraphPoint } from 'typings';
+import { legacyColors } from 'components/admin/Graphs/styling';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
+// styling
+import styled from 'styled-components';
 
 interface Props {
   serie: IGraphPoint[] | undefined;

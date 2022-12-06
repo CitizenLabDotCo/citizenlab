@@ -1,17 +1,4 @@
 import React, { useState, FormEvent } from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-import messages from './messages';
-import Error from 'components/UI/Error';
-import { confirm, resendCode, IConfirmation } from 'services/confirmation';
-import useAuthUser from 'hooks/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
-import { CLErrors, CLError } from 'typings';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
-
 import {
   Box,
   Icon,
@@ -19,9 +6,21 @@ import {
   Label,
   Success,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import { CLErrors, CLError } from 'typings';
+import useAuthUser from 'hooks/useAuthUser';
+import { confirm, resendCode, IConfirmation } from 'services/confirmation';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
+import styled from 'styled-components';
+import messages from './messages';
+import tracks from './tracks';
 
 const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;

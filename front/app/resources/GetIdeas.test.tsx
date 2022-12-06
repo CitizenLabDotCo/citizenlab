@@ -2,12 +2,11 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-
+// mocks
+import * as ideasServices from 'services/ideas';
 // component to test
 import GetIdeas from './GetIdeas';
 
-// mocks
-import * as ideasServices from 'services/ideas';
 // typescript struggles when using both mocked things and real ones
 // this the way I found to minimize the errors, and to have autocomplethin on the .mock object
 const ideasStream = ideasServices.ideasStream as jest.Mock;

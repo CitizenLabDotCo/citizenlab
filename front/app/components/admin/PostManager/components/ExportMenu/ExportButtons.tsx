@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { ManagerType } from '../../';
+import { exportType } from './';
 // components
 import ExportIdeasButton from './ExportIdeasButton';
 import ExportIdeasCommentsButton from './ExportIdeasCommentsButton';
 import ExportInitiativesButton from './ExportInitiativesButton';
 import ExportInitiativesCommentsButton from './ExportInitiativesCommentsButton';
-import { exportType } from './';
-import { ManagerType } from '../../';
 
 const Container = styled.div`
   display: flex;

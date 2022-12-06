@@ -1,32 +1,27 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
-import { IOpenPostPageModalEvent } from 'containers/App';
-
-// components
-import T from 'components/T';
-import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
-import Body from 'components/PostShowComponents/Body';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { get } from 'lodash-es';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
-
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { FormattedMessage } from 'utils/cl-intl';
+// utils
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { colors, media, fontSizes } from 'utils/styleUtils';
+import { IOpenPostPageModalEvent } from 'containers/App';
+import Body from 'components/PostShowComponents/Body';
+// components
+import T from 'components/T';
+import Button from 'components/UI/Button';
 // style
 import styled from 'styled-components';
-import { colors, media, fontSizes } from 'utils/styleUtils';
+import messages from './messages';
 
 const Container = styled.div`
   flex: 1;

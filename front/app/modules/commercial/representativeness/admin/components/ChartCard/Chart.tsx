@@ -1,20 +1,16 @@
 import React from 'react';
-
+// typings
+import { RepresentativenessData } from '../../hooks/createRefDataSubscription';
+// utils
+import { formatPercentage, emptyString } from './utils';
+// components
+import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 // styling
 import {
   colors,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
-
-// components
-import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import renderTooltip from './renderTooltip';
-
-// utils
-import { formatPercentage, emptyString } from './utils';
-
-// typings
-import { RepresentativenessData } from '../../hooks/createRefDataSubscription';
 
 interface Props {
   currentChartRef: React.RefObject<SVGElement | undefined>;

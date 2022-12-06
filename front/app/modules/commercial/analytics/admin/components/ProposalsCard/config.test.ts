@@ -1,7 +1,7 @@
-import { Query } from '../../services/analyticsFacts';
 import moment from 'moment';
-import { ProposalsCardLabels, proposalsConfig } from './config';
 import { StatCardData } from '../../hooks/useStatCard/typings';
+import { Query } from '../../services/analyticsFacts';
+import { ProposalsCardLabels, proposalsConfig } from './config';
 
 describe('Proposals card data parsing', () => {
   beforeAll(() => {

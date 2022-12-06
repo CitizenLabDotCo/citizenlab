@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import { basketByIdStream, IBasket, IBasketData } from 'services/baskets';
+import { isNilOrError } from 'utils/helperUtils';
 
 export default function useBasket(basketId: string | null | undefined) {
   const [basket, setBasket] = useState<IBasketData | undefined | null>(

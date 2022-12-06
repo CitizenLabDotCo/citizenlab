@@ -1,22 +1,6 @@
 // libraries
 import React, { memo } from 'react';
-
-// intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
-// styling
-import styled from 'styled-components';
-import {
-  legacyColors,
-  sizes,
-  animation,
-} from 'components/admin/Graphs/styling';
-
-// resources
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import {
   BarChart,
@@ -27,6 +11,12 @@ import {
   Cell,
   LabelList,
 } from 'recharts';
+// types
+import { IGraphPoint } from 'typings';
+// intl
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+// resources
+import { isNilOrError } from 'utils/helperUtils';
 import {
   IGraphUnit,
   NoDataContainer,
@@ -35,10 +25,15 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-
-// types
-import { IGraphPoint } from 'typings';
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
+// styling
+import styled from 'styled-components';
+import messages from '../messages';
 
 interface VoteGraphPoint extends IGraphPoint {
   up: number;

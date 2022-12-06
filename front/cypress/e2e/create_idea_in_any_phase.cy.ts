@@ -1,4 +1,5 @@
 import { randomString } from '../support/commands';
+
 import moment = require('moment');
 
 describe('Idea creation', () => {

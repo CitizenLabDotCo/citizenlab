@@ -1,6 +1,6 @@
+import { isEqual, isNumber } from 'lodash-es';
 import { Bins } from '../services/referenceDistribution';
 import { indices } from 'utils/helperUtils';
-import { isEqual, isNumber } from 'lodash-es';
 
 export const getBinId = (
   lowerBound: number | null,

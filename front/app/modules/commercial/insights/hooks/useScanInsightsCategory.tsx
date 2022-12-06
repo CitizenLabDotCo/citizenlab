@@ -1,21 +1,17 @@
 import { useEffect, useState, useRef } from 'react';
-import { API_PATH } from 'containers/App/constants';
-
+import { BehaviorSubject } from 'rxjs';
+import { tap, delay } from 'rxjs/operators';
 // services
 import {
   insightsCategoriesSuggestionsTasksStream,
   insightsTriggerCategoriesSuggestionsTasks,
   insightsDeleteCategoriesSuggestionsTasks,
 } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
-
-import { BehaviorSubject } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
-
 import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 export type ScanStatus =
   | 'isIdle'

@@ -1,16 +1,13 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
 // services
 import { InputTerm } from 'services/participationContexts';
-
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import messages from './../messages';
-import { WrappedComponentProps } from 'react-intl';
-
+import { getInputTermMessage } from 'utils/i18n';
 // components
 import Button from 'components/UI/Button';
-import { getInputTermMessage } from 'utils/i18n';
+import messages from './../messages';
 
 interface Props {
   linkTo: string;

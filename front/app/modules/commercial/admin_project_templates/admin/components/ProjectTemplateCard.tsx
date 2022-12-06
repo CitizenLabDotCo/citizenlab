@@ -1,24 +1,19 @@
 import React, { memo, useCallback, useState } from 'react';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
-
+import { darken } from 'polished';
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-
-// components
-import Button from 'components/UI/Button';
-import UseTemplateModal from './UseTemplateModal';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+// utils
+import eventEmitter from 'utils/eventEmitter';
+import { colors, fontSizes } from 'utils/styleUtils';
+// components
+import Button from 'components/UI/Button';
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import tracks from '../../tracks';
+import UseTemplateModal from './UseTemplateModal';
+import messages from './messages';
 
 const duration = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';

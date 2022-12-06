@@ -1,8 +1,9 @@
 import React, { lazy } from 'react';
+import PageLoading from 'components/UI/PageLoading';
+
 const AdminUsersIndex = lazy(() => import('.'));
 const AdminAllUsers = lazy(() => import('./AllUsers'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
-import PageLoading from 'components/UI/PageLoading';
 
 const createAdminUsersRoutes = () => ({
   path: 'users',

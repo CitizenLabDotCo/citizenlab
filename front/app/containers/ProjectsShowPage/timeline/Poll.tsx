@@ -1,19 +1,15 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Poll from '../shared/poll';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
-
 // hooks
 import usePhase from 'hooks/usePhase';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import messages from 'containers/ProjectsShowPage/messages';
-
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 // styling
 import styled from 'styled-components';
+// components
+import Poll from '../shared/poll';
 
 const Container = styled.div``;
 

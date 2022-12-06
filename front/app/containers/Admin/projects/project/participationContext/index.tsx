@@ -1,18 +1,16 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { IOption } from '@citizenlab/cl2-component-library';
+import { isEqual } from 'lodash-es';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { isEqual } from 'lodash-es';
-
-// components
-import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
-import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
-import PollInputs from './components/PollInputs';
-import SurveyInputs from './components/SurveyInputs';
-import { Container, StyledSection } from './components/styling';
-
-// services
-import { projectByIdStream, IProject, IProjectData } from 'services/projects';
-import { phaseStream, IPhase } from 'services/phases';
+// typings
+import { CLErrors } from 'typings';
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 import {
   ParticipationMethod,
   TSurveyService,
@@ -21,28 +19,24 @@ import {
   InputTerm,
   INPUT_TERMS,
 } from 'services/participationContexts';
-import eventEmitter from 'utils/eventEmitter';
-
-// resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import messages from '../messages';
-
-// typings
-import { CLErrors } from 'typings';
-import { adopt } from 'react-adopt';
-import { IOption } from '@citizenlab/cl2-component-library';
-
+import { phaseStream, IPhase } from 'services/phases';
+// services
+import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 // utils
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
 import { anyIsDefined } from 'utils/helperUtils';
 import IdeationInputs from './components/IdeationInputs';
+// components
+import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
+import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
+import PollInputs from './components/PollInputs';
+import SurveyInputs from './components/SurveyInputs';
+import { Container, StyledSection } from './components/styling';
+import messages from '../messages';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;

@@ -1,8 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import { requestBlob } from 'utils/request';
-
 import views from 'modules/commercial/insights/fixtures/views';
+import { requestBlob } from 'utils/request';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import Export from './Export';
 
 const viewId = '1';

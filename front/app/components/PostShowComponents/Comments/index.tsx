@@ -1,39 +1,32 @@
 // libraries
-import React, { memo, useState, useCallback } from 'react';
-import { get, isUndefined } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
-
+import React, { memo, useState, useCallback } from 'react';
+import { adopt } from 'react-adopt';
+import { Title } from '@citizenlab/cl2-component-library';
+import { get, isUndefined } from 'lodash-es';
+import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 // resources
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import ParentCommentForm from './ParentCommentForm';
-import Comments from './Comments';
-import CommentingDisabled from './CommentingDisabled';
-import CommentSorting from './CommentSorting';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { Title } from '@citizenlab/cl2-component-library';
-
 // typings
 import { CommentsSort } from 'services/comments';
 import { IdeaCommentingDisabledReason } from 'services/ideas';
-import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
+// style
+import styled from 'styled-components';
+import CommentSorting from './CommentSorting';
+import CommentingDisabled from './CommentingDisabled';
+import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
+import Comments from './Comments';
+// components
+import ParentCommentForm from './ParentCommentForm';
+import messages from './messages';
 import tracks from './tracks';
 
 const Container = styled.div``;

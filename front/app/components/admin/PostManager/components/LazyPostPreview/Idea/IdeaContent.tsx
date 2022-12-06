@@ -1,57 +1,51 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
-
-// components
-import Title from 'components/PostShowComponents/Title';
-import PostedBy from 'containers/IdeasShow/PostedBy';
-import Body from 'components/PostShowComponents/Body';
-import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import Comments from 'components/PostShowComponents/Comments';
-import FileAttachments from 'components/UI/FileAttachments';
-import FeedbackSettings from './FeedbackSettings';
-import VotePreview from './VotePreview';
+import { WrappedComponentProps } from 'react-intl';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Link from 'utils/cl-router/Link';
-import T from 'components/T';
-import { Top, Content, Container } from '../PostPreview';
-
-// services
-import { deleteIdea } from 'services/ideas';
-import { ProcessType } from 'services/projects';
-
-// resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
+import { get } from 'lodash-es';
+import { darken } from 'polished';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-
-// utils
-import { getAddressOrFallbackDMS } from 'utils/map';
-
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// resources
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
+// services
+import { deleteIdea } from 'services/ideas';
+import { ProcessType } from 'services/projects';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-
+// utils
+import { getAddressOrFallbackDMS } from 'utils/map';
+import { colors, fontSizes } from 'utils/styleUtils';
+import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
+import PostedBy from 'containers/IdeasShow/PostedBy';
+import Body from 'components/PostShowComponents/Body';
+import Comments from 'components/PostShowComponents/Comments';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+// components
+import Title from 'components/PostShowComponents/Title';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import FileAttachments from 'components/UI/FileAttachments';
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { Top, Content, Container } from '../PostPreview';
+import messages from '../messages';
+import FeedbackSettings from './FeedbackSettings';
+import VotePreview from './VotePreview';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;

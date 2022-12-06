@@ -1,20 +1,15 @@
 import { useState, useEffect } from 'react';
-
 // services
 import { analyticsStream } from '../../services/analyticsFacts';
-
+import { getPageNumberFromUrl } from '../../utils/pagination';
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 // parse
 import { parseTableData } from './parse';
-
 // utils
 import { referrersListQuery, referrersTotalQuery } from './query';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { getPageNumberFromUrl } from '../../utils/pagination';
-
+import { getTranslations } from './translations';
 // typings
 import {
   QueryParameters,

@@ -1,28 +1,17 @@
 import React, { memo, useEffect, useState } from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
 import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
+// typing
+import { Multiloc, IOption } from 'typings';
+import useMapConfig from '../../../hooks/useMapConfig';
+// hooks
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // services
 import {
   updateProjectMapLayer,
   IMapLayerAttributes,
 } from '../../../services/mapLayers';
-
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useMapConfig from '../../../hooks/useMapConfig';
-
-// components
-import {
-  Section,
-  SectionField,
-  SubSectionTitle,
-} from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
-
 // utils
 import {
   getLayerColor,
@@ -30,17 +19,21 @@ import {
   makiIconNames,
   getUnnamedLayerTitleMultiloc,
 } from '../../../utils/map';
-
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+// components
+import {
+  Section,
+  SectionField,
+  SubSectionTitle,
+} from 'components/admin/Section';
 // styling
 import styled from 'styled-components';
-
-// typing
-import { Multiloc, IOption } from 'typings';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

@@ -1,53 +1,44 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, memoize } from 'lodash-es';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from '../messages';
-
-// typings
-import { IOption } from 'typings';
-
-// styles
-import styled from 'styled-components';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Select, Label } from '@citizenlab/cl2-component-library';
-
-// services
-import { updateInitiative } from 'services/initiatives';
-
-// resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetInitiativeStatuses, {
-  GetInitiativeStatusesChildProps,
-} from 'resources/GetInitiativeStatuses';
-import GetInitiativeAllowedTransitions, {
-  GetInitiativeAllowedTransitionsChildProps,
-} from 'resources/GetInitiativeAllowedTransitions';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
+import { get, memoize } from 'lodash-es';
+// typings
+import { IOption } from 'typings';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-import { WrappedComponentProps } from 'react-intl';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
+import GetInitiativeAllowedTransitions, {
+  GetInitiativeAllowedTransitionsChildProps,
+} from 'resources/GetInitiativeAllowedTransitions';
+import GetInitiativeStatuses, {
+  GetInitiativeStatusesChildProps,
+} from 'resources/GetInitiativeStatuses';
+// resources
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+// services
+import { updateInitiative } from 'services/initiatives';
 import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+// events
+import eventEmitter from 'utils/eventEmitter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+// styles
+import styled from 'styled-components';
+import tracks from '../../../tracks';
+import messages from '../messages';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;

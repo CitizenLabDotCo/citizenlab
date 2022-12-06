@@ -1,20 +1,20 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import React from 'react';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import ErrorDisplay from '../ErrorDisplay';
+import { FormLabel } from 'components/UI/FormComponents';
 import UserSelect from 'components/UI/UserSelect';
 import messages from '../../messages';
+import ErrorDisplay from '../ErrorDisplay';
 import controlMessages from './messages';
-import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
 const UserPickerControl = ({
   data,

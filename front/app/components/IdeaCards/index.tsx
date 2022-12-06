@@ -1,26 +1,23 @@
 import React, { lazy, Suspense, memo } from 'react';
+import { MessageDescriptor } from 'react-intl';
+import { IParticipationContextType } from 'typings';
+import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+// typings
+import {
+  ParticipationMethod,
+  IdeaDefaultSortMethod,
+} from 'services/participationContexts';
+import { ScreenReaderOnly } from 'utils/a11y';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+// styling
+import styled from 'styled-components';
 
 // components
 const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));
 const IdeasWithoutFiltersSidebar = lazy(
   () => import('./IdeasWithoutFiltersSidebar')
 );
-
-// styling
-import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-
-// typings
-import {
-  ParticipationMethod,
-  IdeaDefaultSortMethod,
-} from 'services/participationContexts';
-import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
-import { IParticipationContextType } from 'typings';
-import { MessageDescriptor } from 'react-intl';
 
 const Container = styled.div`
   width: 100%;

@@ -1,13 +1,11 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { isString, isEmpty } from 'lodash-es';
-
+// Styles
+import styled from 'styled-components';
 // Components
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
-
-// Styles
-import styled from 'styled-components';
 
 const Container = styled.div``;
 

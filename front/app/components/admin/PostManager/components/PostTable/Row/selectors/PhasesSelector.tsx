@@ -1,7 +1,7 @@
 import React from 'react';
+import { Label, Popup } from 'semantic-ui-react';
 import { xor } from 'lodash-es';
 import { IPhaseData, canContainIdeas } from 'services/phases';
-import { Label, Popup } from 'semantic-ui-react';
 import T from 'components/T';
 
 type Props = {

@@ -1,8 +1,9 @@
-import { AUTH_PATH } from 'containers/App/constants';
-import { ISignUpInMetaData, TSignUpInError } from 'events/openSignUpInModal';
-import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
+import { stringify } from 'qs';
+import { ISignUpInMetaData, TSignUpInError } from 'events/openSignUpInModal';
 import { isProjectContext } from 'events/verificationModal';
+import { AUTH_PATH } from 'containers/App/constants';
+
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
   facebook: 'facebook';

@@ -1,13 +1,9 @@
 // libraries
 import React from 'react';
 import { map, orderBy } from 'lodash-es';
-
-// components
-import SelectableResourceChart from './SelectableResourceChart';
-
+import { IOption } from 'typings';
 // hooks
 import useLocalize from 'hooks/useLocalize';
-
 // typings
 import {
   IIdeasByProject,
@@ -17,9 +13,10 @@ import {
   IVotesByProject,
   votesByProjectStream,
 } from 'services/stats';
-import { IOption } from 'typings';
-import { IResource } from '..';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { IResource } from '..';
+// components
+import SelectableResourceChart from './SelectableResourceChart';
 
 interface QueryProps {
   startAt: string | null | undefined;

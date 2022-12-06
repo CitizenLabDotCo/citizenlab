@@ -1,6 +1,6 @@
-import { API_PATH } from 'containers/App/constants';
 import { IVerifiedResponse } from 'services/verify';
 import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export function verifyGentRrn(rrn: string) {
   return streams.add<IVerifiedResponse>(

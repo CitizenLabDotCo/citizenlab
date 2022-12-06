@@ -1,9 +1,9 @@
 import React from 'react';
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import { TPermissionItem, hasPermission } from 'services/permissions';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   item: TPermissionItem | null;

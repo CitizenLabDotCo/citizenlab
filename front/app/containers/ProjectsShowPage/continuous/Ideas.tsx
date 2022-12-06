@@ -1,28 +1,24 @@
 import React, { memo } from 'react';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
+// hooks
+import useProject from 'hooks/useProject';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import ContentContainer from 'components/ContentContainer';
-import IdeaCards from 'components/IdeaCards';
-import PBExpenses from '../shared/pb/PBExpenses';
+import { getInputTermMessage } from 'utils/i18n';
+import { viewportWidths, colors } from 'utils/styleUtils';
+import messages from 'containers/ProjectsShowPage/messages';
 import {
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+// components
+import ContentContainer from 'components/ContentContainer';
+import IdeaCards from 'components/IdeaCards';
 import SectionContainer from 'components/SectionContainer';
-
-// hooks
-import useProject from 'hooks/useProject';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-import { getInputTermMessage } from 'utils/i18n';
-
 // style
 import styled from 'styled-components';
-import { viewportWidths, colors } from 'utils/styleUtils';
+import PBExpenses from '../shared/pb/PBExpenses';
 
 const Container = styled.div``;
 

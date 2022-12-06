@@ -1,6 +1,6 @@
+import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 export const Container = styled.div`
   min-height: calc(

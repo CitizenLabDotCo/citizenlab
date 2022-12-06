@@ -1,19 +1,7 @@
+import * as Sentry from '@sentry/react';
+import { wrapUseRoutes } from '@sentry/react';
 import React, { useEffect } from 'react';
 import { render } from 'react-dom';
-
-import 'assets/css/reset.min.css';
-import 'assets/fonts/fonts.css';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/themes/light.css';
-import App from 'containers/App';
-import LanguageProvider from 'containers/LanguageProvider';
-import createRoutes from './routes';
-import * as Sentry from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
-import OutletsProvider from 'containers/OutletsProvider';
-import modules from 'modules';
-import history from 'utils/browserHistory';
-
 import {
   createRoutesFromChildren,
   matchRoutes,
@@ -22,7 +10,17 @@ import {
   useRoutes,
   unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
-import { wrapUseRoutes } from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
+import 'assets/css/reset.min.css';
+import 'assets/fonts/fonts.css';
+import modules from 'modules';
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/themes/light.css';
+import history from 'utils/browserHistory';
+import App from 'containers/App';
+import LanguageProvider from 'containers/LanguageProvider';
+import OutletsProvider from 'containers/OutletsProvider';
+import createRoutes from './routes';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,

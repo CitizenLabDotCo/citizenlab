@@ -1,10 +1,7 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { getInputTerm } from 'services/participationContexts';
-
-// components
-import SharingButtons from 'components/Sharing/SharingButtons';
+// i18n
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import {
   Spinner,
   Box,
@@ -12,9 +9,8 @@ import {
   Title,
   Image,
 } from '@citizenlab/cl2-component-library';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+// style
+import rocket from 'assets/img/rocket.png';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -23,23 +19,22 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { PostType } from 'resources/GetPost';
-
-// i18n
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import localize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
-
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { getInputTerm } from 'services/participationContexts';
 // tracking
 import { trackEventByName } from 'utils/analytics';
+import injectIntl from 'utils/cl-intl/injectIntl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import localize, { InjectedLocalized } from 'utils/localize';
+// components
+import SharingButtons from 'components/Sharing/SharingButtons';
+import messages from './messages';
 import tracks from './tracks';
-
-// style
-import rocket from 'assets/img/rocket.png';
 
 interface InputProps {
   postType: PostType;

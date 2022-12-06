@@ -1,19 +1,16 @@
 import React from 'react';
 import { POLICY_PAGES } from 'services/customPages';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
-// components
-import Link from 'utils/cl-router/Link';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import PageEditor from './PageEditor';
-
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+// components
+import Link from 'utils/cl-router/Link';
+import { colors } from 'utils/styleUtils';
 import pagesAndMenuMessages from 'containers/Admin/pagesAndMenu/messages';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
+// styling
+import styled from 'styled-components';
+import PageEditor from './PageEditor';
+import messages from './messages';
 
 export const StyledLink = styled(Link)`
   color: ${colors.textSecondary};

@@ -1,29 +1,7 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import { WrappedComponentProps } from 'react-intl';
 import { get } from 'lodash-es';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
-
-// components
-import Title from 'components/PostShowComponents/Title';
-import Body from 'components/PostShowComponents/Body';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import PostedBy from 'containers/InitiativesShow/PostedBy';
-import Comments from 'components/PostShowComponents/Comments';
-import FileAttachments from 'components/UI/FileAttachments';
-import FeedbackSettings from './FeedbackSettings';
-import Button from 'components/UI/Button';
-import { Top, Content, Container } from '../PostPreview';
-import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
-
-// services
-import { deleteInitiative } from 'services/initiatives';
-
-// resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -31,16 +9,33 @@ import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
+// resources
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
+// services
+import { deleteInitiative } from 'services/initiatives';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
+import { colors, fontSizes } from 'utils/styleUtils';
+import PostedBy from 'containers/InitiativesShow/PostedBy';
+import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
+import Body from 'components/PostShowComponents/Body';
+import Comments from 'components/PostShowComponents/Comments';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+// components
+import Title from 'components/PostShowComponents/Title';
+import Button from 'components/UI/Button';
+import FileAttachments from 'components/UI/FileAttachments';
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { Top, Content, Container } from '../PostPreview';
+import messages from '../messages';
+import FeedbackSettings from './FeedbackSettings';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;

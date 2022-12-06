@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import {
   inappropriateContentFlagByIdStream,
   IInappropriateContentFlag,
   IInappropriateContentFlagData,
 } from '../services/inappropriateContentFlags';
+import { isNilOrError } from 'utils/helperUtils';
 
 export default function useInappropriateContentFlag(
   inappropriateContentFlagId: string

@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { render, screen } from 'utils/testUtils/rtl';
-
 import Button from 'components/UI/Button';
 
 jest.mock('hooks/useLocale');

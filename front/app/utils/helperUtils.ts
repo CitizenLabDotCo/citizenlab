@@ -1,3 +1,4 @@
+import { trim, isUndefined } from 'lodash-es';
 import {
   Locale,
   Multiloc,
@@ -5,7 +6,6 @@ import {
   IParticipationContextType,
   CLErrorsJSON,
 } from 'typings';
-import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
 import { viewportWidths } from 'utils/styleUtils';
 

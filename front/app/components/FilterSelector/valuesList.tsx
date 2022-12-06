@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react';
+import { Dropdown } from '@citizenlab/cl2-component-library';
 import { includes, isNil } from 'lodash-es';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 // components
 import Checkbox from 'components/UI/Checkbox';
-import { Dropdown } from '@citizenlab/cl2-component-library';
-
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const List = styled.ul`
   margin: 0;

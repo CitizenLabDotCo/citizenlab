@@ -1,45 +1,38 @@
 import React from 'react';
-
-// libraries
-import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// services
-import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
-import { ITopicData } from 'services/topics';
-
-// resources
-import HasPermission from 'components/HasPermission';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetRemoteFiles, {
   GetRemoteFilesChildProps,
 } from 'resources/GetRemoteFiles';
-import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
+// services
+import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
+import { ITopicData } from 'services/topics';
+import { PreviousPathnameContext } from 'context';
+// libraries
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // utils
 import { isNilOrError, isError } from 'utils/helperUtils';
-
-// components
-import PageNotFound from 'components/PageNotFound';
-import InitiativesEditMeta from './InitiativesEditMeta';
-import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
-import PageLayout from 'components/InitiativeForm/PageLayout';
-
 // style
 import { media } from 'utils/styleUtils';
+// resources
+import HasPermission from 'components/HasPermission';
+import PageLayout from 'components/InitiativeForm/PageLayout';
+// components
+import PageNotFound from 'components/PageNotFound';
 import styled from 'styled-components';
+import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
+import InitiativesEditMeta from './InitiativesEditMeta';
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;

@@ -1,9 +1,8 @@
 import React from 'react';
 import { ScreenReaderOnly } from 'utils/a11y';
-
+import { FormattedMessage } from 'utils/cl-intl';
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   upvotesCount: number;

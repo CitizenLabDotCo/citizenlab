@@ -1,13 +1,13 @@
 import React from 'react';
+import { isString } from 'lodash-es';
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import {
   IInitiativeAllowedTransitions,
   initiativeAllowedTransitionsStream,
 } from 'services/initiatives';
-import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   id: string | null;

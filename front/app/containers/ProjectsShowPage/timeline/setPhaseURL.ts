@@ -1,6 +1,6 @@
+import { Locale } from 'typings';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
-import { Locale } from 'typings';
 
 export default function setPhaseUrl(
   selectedPhaseId: string,

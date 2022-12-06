@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-
 // services
 import {
   referenceDistributionStream,
@@ -12,10 +11,9 @@ import {
   userCustomFieldStream,
   IUserCustomField,
 } from 'services/userCustomFields';
-
+import { forEachBin } from '../utils/bins';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { forEachBin } from '../utils/bins';
 
 /*
  * This is an intermediate data structure that is able to represent

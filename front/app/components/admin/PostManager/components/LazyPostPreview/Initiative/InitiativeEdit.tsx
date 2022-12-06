@@ -1,10 +1,9 @@
 import React from 'react';
-
 // libraries
 import { adopt } from 'react-adopt';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
+// typings
+import { Locale } from 'typings';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
@@ -14,28 +13,23 @@ import GetInitiative, {
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetRemoteFiles, {
   GetRemoteFilesChildProps,
 } from 'resources/GetRemoteFiles';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-
+import { ITopicData } from 'services/topics';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import { isNilOrError, isError } from 'utils/helperUtils';
-
+import { colors } from 'utils/styleUtils';
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
-import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { Content, Top, Container } from '../PostPreview';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { colors } from 'utils/styleUtils';
-
-// typings
-import { Locale } from 'typings';
-import { ITopicData } from 'services/topics';
 
 export interface InputProps {
   initiativeId: string;

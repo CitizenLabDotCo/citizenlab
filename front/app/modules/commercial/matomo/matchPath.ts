@@ -1,6 +1,5 @@
 // Adapted from https://github.com/ReactTraining/react-router/blob/master/packages/react-router/modules/matchPath.js
 // Because I couldn't find an equivalent in react router v3
-
 import { pathToRegexp } from 'path-to-regexp';
 import { RouteConfiguration } from 'utils/moduleUtils';
 

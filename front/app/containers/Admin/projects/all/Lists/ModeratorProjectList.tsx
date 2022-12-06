@@ -1,20 +1,16 @@
 import React, { memo } from 'react';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// components
-import { List, Row } from 'components/admin/ResourceList';
-import ProjectRow from '../../components/ProjectRow';
-import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
-import { ListHeader, HeaderTitle } from '../StyledComponents';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import ProjectRow from '../../components/ProjectRow';
+import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
+// components
+import { List, Row } from 'components/admin/ResourceList';
+import { ListHeader, HeaderTitle } from '../StyledComponents';
 import messages from '../messages';
 
 interface Props {}

@@ -1,26 +1,21 @@
 import React, { memo } from 'react';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
-import { DeletedUser } from '../Notification';
-
-// data
-import { ICommentOnYourIdeaNotificationData } from 'services/notifications';
-
-// i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// components
-import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
-import { getInputTermMessage } from 'utils/i18n';
-
 // hooks
 import useIdea from 'hooks/useIdea';
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-
+import useProject from 'hooks/useProject';
+// data
+import { ICommentOnYourIdeaNotificationData } from 'services/notifications';
 // services
 import { getInputTerm } from 'services/participationContexts';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+// i18n
+import messages from '../../messages';
+import { DeletedUser } from '../Notification';
+// components
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: ICommentOnYourIdeaNotificationData;

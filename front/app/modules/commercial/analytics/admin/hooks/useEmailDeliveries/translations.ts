@@ -1,10 +1,9 @@
 // i18n
-import messages from './messages';
-import moduleMessages from '../../messages';
-import cardMessages from '../../components/EmailDeliveriesCard/messages';
-
 // typings
 import { FormatMessage } from 'typings';
+import cardMessages from '../../components/EmailDeliveriesCard/messages';
+import moduleMessages from '../../messages';
+import messages from './messages';
 
 export interface Translations {
   stats: string;

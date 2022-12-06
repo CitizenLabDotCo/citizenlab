@@ -1,51 +1,44 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
-import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Button from 'components/UI/Button';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Avatar from 'components/Avatar';
-import clickOutside from 'utils/containers/clickOutside';
-import Link from 'utils/cl-router/Link';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { get } from 'lodash-es';
+import { hideVisually } from 'polished';
+import { Subscription } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 // services
 import {
   addCommentToIdeaComment,
   addCommentToInitiativeComment,
 } from 'services/comments';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
 // events
 import { commentReplyButtonClicked$, commentAdded } from './events';
-
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import clickOutside from 'utils/containers/clickOutside';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
+import Avatar from 'components/Avatar';
+// components
+import Button from 'components/UI/Button';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
 // style
 import styled from 'styled-components';
-import { hideVisually } from 'polished';
-import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;

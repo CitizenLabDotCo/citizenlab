@@ -1,38 +1,32 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import { IOfficialFeedbackData } from 'services/officialFeedback';
-
-// resources
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-
-// intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
-// components
-import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
 import {
   Radio,
   Input,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-import { Section } from 'components/admin/Section';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Error from 'components/UI/Error';
-import Button from 'components/UI/Button';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
 // typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
+// resources
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
+// services
+import { IOfficialFeedbackData } from 'services/officialFeedback';
+// intl
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+// components
+import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+import { Section } from 'components/admin/Section';
+// styling
+import styled from 'styled-components';
+import messages from '../../messages';
 
 const StyledSection = styled(Section)``;
 

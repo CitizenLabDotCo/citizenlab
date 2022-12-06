@@ -1,13 +1,11 @@
 import React from 'react';
-
+import { IIdeaData } from 'services/ideas';
 // components
 import StatusBadge from 'components/StatusBadge';
 import VoteControl from 'components/VoteControl';
-import { IIdeaData } from 'services/ideas';
-import CommentCount from './CommentCount';
-
 // styles
 import styled from 'styled-components';
+import CommentCount from './CommentCount';
 
 const Container = styled.footer`
   display: flex;

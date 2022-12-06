@@ -1,20 +1,16 @@
 import React from 'react';
-
-// hooks
-import useUserCustomFields from 'hooks/useUserCustomFields';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Field from '../../components/Field';
-import Warning from 'components/UI/Warning';
-
-// i18n
-import messages from './messages';
+// hooks
+import useUserCustomFields from 'hooks/useUserCustomFields';
+import { isShown, isSupported } from '../Dashboard/utils';
 import { FormattedMessage } from 'utils/cl-intl';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isShown, isSupported } from '../Dashboard/utils';
+import Field from '../../components/Field';
+import Warning from 'components/UI/Warning';
+// i18n
+import messages from './messages';
 
 const Fields = () => {
   const userCustomFields = useUserCustomFields({

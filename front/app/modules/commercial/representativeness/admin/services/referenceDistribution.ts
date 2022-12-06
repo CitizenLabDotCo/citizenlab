@@ -1,10 +1,10 @@
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import { apiEndpoint as statsEndpoint } from 'services/stats';
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'services/userCustomFields';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 import { getEndpoint as getRScoreEndpoint } from './rScore';
 
 const ENDPOINT_BY_CODE = {

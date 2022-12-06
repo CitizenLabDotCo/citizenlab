@@ -1,7 +1,13 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import bowser from 'bowser';
+import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'modules/commercial/custom_maps/hooks/useMapConfig';
+import {
+  getLayerColor,
+  getLayerIcon,
+} from 'modules/commercial/custom_maps/utils/map';
 import {
   media,
   isRtl,
@@ -9,13 +15,7 @@ import {
   colors,
   defaultCardStyle,
 } from 'utils/styleUtils';
-import { Multiloc } from 'typings';
-import {
-  getLayerColor,
-  getLayerIcon,
-} from 'modules/commercial/custom_maps/utils/map';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import bowser from 'bowser';
+import styled from 'styled-components';
 
 const Container = styled.div`
   padding: 25px;

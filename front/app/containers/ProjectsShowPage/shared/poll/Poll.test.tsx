@@ -1,20 +1,17 @@
 // @ts-nocheck
 import React from 'react';
-
 import { shallow } from 'enzyme';
+import { mockPhasePollData } from 'services/__mocks__/phases';
+import { mockQuestion } from 'services/__mocks__/pollQuestions';
+import { getProject } from 'services/__mocks__/projects';
+import { makeUser } from 'services/__mocks__/users';
+import { Poll } from './';
 
 jest.mock('./FormCompleted', () => 'FormCompleted');
 jest.mock('./PollForm', () => 'PollForm');
 jest.mock('components/UI/Warning', () => 'Warning');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
-import { makeUser } from 'services/__mocks__/users';
-import { mockQuestion } from 'services/__mocks__/pollQuestions';
-import { getProject } from 'services/__mocks__/projects';
-import { mockPhasePollData } from 'services/__mocks__/phases';
-
-import { Poll } from './';
 
 describe('<Poll/>', () => {
   describe('boundaries', () => {

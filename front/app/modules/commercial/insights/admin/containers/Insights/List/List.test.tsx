@@ -1,8 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsViews';
 import views from 'modules/commercial/insights/fixtures/views';
-
+import * as service from 'modules/commercial/insights/services/insightsViews';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import InsightsList from './';
 
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({

@@ -1,8 +1,8 @@
 import React from 'react';
-import CustomPageSettingsForm from '../CustomPageSettingsForm';
-import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 import { createCustomPage } from 'services/customPages';
 import clHistory from 'utils/cl-router/history';
+import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
+import CustomPageSettingsForm from '../CustomPageSettingsForm';
 
 const NewCustomPage = () => {
   const handleOnSubmit = async (formValues: FormValues) => {

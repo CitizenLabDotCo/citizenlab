@@ -1,10 +1,10 @@
 import React from 'react';
-import { TRule } from '../rules';
+import { Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import { Select } from '@citizenlab/cl2-component-library';
-import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
+import { TRule } from '../rules';
 
 type Props = {
   rule: TRule;

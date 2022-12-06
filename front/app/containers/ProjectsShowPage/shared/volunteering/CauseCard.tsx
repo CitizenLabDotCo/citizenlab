@@ -1,31 +1,16 @@
 import React, { memo, useCallback } from 'react';
-
-// services
-import { addVolunteer, deleteVolunteer } from 'services/volunteers';
-import { ICauseData } from 'services/causes';
-
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
-
-// components
-import Image from 'components/UI/Image';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Warning from 'components/UI/Warning';
-
-// utils
-import { isEmptyMultiloc } from 'utils/helperUtils';
+import { ICauseData } from 'services/causes';
+// services
+import { addVolunteer, deleteVolunteer } from 'services/volunteers';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ScreenReaderOnly } from 'utils/a11y';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from './messages';
-
-// styling
-import styled, { useTheme } from 'styled-components';
+// utils
+import { isEmptyMultiloc } from 'utils/helperUtils';
 import {
   fontSizes,
   colors,
@@ -34,6 +19,15 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+// components
+import Image from 'components/UI/Image';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import Warning from 'components/UI/Warning';
+// styling
+import styled, { useTheme } from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   padding: 20px;

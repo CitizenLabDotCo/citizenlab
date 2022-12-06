@@ -1,18 +1,15 @@
 import React, { memo, useState, useEffect } from 'react';
-
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
-import SelectSort from 'components/IdeaCards/SortFilterDropdown';
-import SearchInput from 'components/UI/SearchInput';
-import IdeaMapCard from '../IdeaMapCard';
-
+// typings
+import { Sort } from 'resources/GetIdeas';
+import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaMarkers from 'hooks/useIdeaMarkers';
 // hooks
 import useLocale from 'hooks/useLocale';
-import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useProject from 'hooks/useProject';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-
+// services
+import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 // events
 import {
   setIdeasSearch,
@@ -22,23 +19,18 @@ import {
   ideasSearch$,
   ideasTopics$,
 } from '../events';
-
-// services
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
-
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// typings
-import { Sort } from 'resources/GetIdeas';
-
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import SelectSort from 'components/IdeaCards/SortFilterDropdown';
+import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
+import SearchInput from 'components/UI/SearchInput';
+// style
+import styled from 'styled-components';
+import IdeaMapCard from '../IdeaMapCard';
+// i18n
+import messages from '../messages';
 
 const Container = styled.div`
   width: 100%;

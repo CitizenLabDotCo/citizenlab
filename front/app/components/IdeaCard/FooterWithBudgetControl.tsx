@@ -1,17 +1,14 @@
 import React from 'react';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-
-// components
-import AssignBudgetControl from 'components/AssignBudgetControl';
-import CommentCount from './CommentCount';
-
 // types
 import { IParticipationContextType } from 'typings';
 import { IIdeaData } from 'services/ideas';
-
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import { colors, fontSizes } from 'utils/styleUtils';
+// components
+import AssignBudgetControl from 'components/AssignBudgetControl';
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import CommentCount from './CommentCount';
 
 const Footer = styled.footer`
   display: flex;

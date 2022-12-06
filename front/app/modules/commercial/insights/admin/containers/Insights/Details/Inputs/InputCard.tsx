@@ -1,22 +1,17 @@
 import React from 'react';
+// hooks
+import useIdea from 'hooks/useIdea';
+// types
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
+import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-
-// hooks
-import useIdea from 'hooks/useIdea';
-
-// types
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+// styles
+import styled from 'styled-components';
 
 const InputTitle = styled.h2`
   color: ${colors.textPrimary};

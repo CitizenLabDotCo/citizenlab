@@ -1,12 +1,4 @@
 import React, { useState } from 'react';
-
-// styling
-import {
-  legacyColors,
-  sizes,
-  animation,
-} from 'components/admin/Graphs/styling';
-
 // components
 import {
   BarChart as RechartsBarChart,
@@ -17,20 +9,24 @@ import {
   LabelList,
   Tooltip,
 } from 'recharts';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+// utils
+import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-
-// utils
-import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
-
-// typings
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+// styling
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
+// typings
+import { Props } from './typings';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
 

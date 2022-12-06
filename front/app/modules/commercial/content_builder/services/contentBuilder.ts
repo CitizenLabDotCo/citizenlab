@@ -1,8 +1,8 @@
 import { SerializedNode } from '@craftjs/core';
-import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
-import streams from 'utils/streams';
 import { reportError } from 'utils/loggingUtils';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export const PROJECT_DESCRIPTION_CODE = 'project_description';
 

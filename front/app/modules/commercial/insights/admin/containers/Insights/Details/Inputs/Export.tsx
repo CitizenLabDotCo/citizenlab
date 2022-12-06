@@ -1,27 +1,22 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { API_PATH } from 'containers/App/constants';
-import { saveAs } from 'file-saver';
-
-// components
-import Button from 'components/UI/Button';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
-
-// utils
-import { colors } from 'utils/styleUtils';
-import { requestBlob } from 'utils/request';
-import { isNilOrError } from 'utils/helperUtils';
-
+import { Box } from '@citizenlab/cl2-component-library';
+import { saveAs } from 'file-saver';
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
-
 // services
 import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';
+// intl
+import { injectIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { requestBlob } from 'utils/request';
+// utils
+import { colors } from 'utils/styleUtils';
+import { API_PATH } from 'containers/App/constants';
+// components
+import Button from 'components/UI/Button';
+import messages from '../../messages';
 
 type ExportProps = WithRouterProps & WrappedComponentProps;
 

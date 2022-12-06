@@ -1,3 +1,10 @@
+import React from 'react';
+import {
+  IHomepageSettingsAttributes,
+  THomepageBannerLayout,
+} from 'services/homepageSettings';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 const LayoutSettingField = React.lazy(
   () =>
@@ -5,12 +12,7 @@ const LayoutSettingField = React.lazy(
       'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField'
     )
 );
-import React from 'react';
-import {
-  IHomepageSettingsAttributes,
-  THomepageBannerLayout,
-} from 'services/homepageSettings';
-import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const CTASettings = React.lazy(() => import('./admin/CTASettings'));
 const CTA = React.lazy(() => import('./citizen/CTA'));
 const TwoColumnLayout = React.lazy(() => import('./citizen/TwoColumnLayout'));

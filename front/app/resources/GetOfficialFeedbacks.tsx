@@ -1,6 +1,5 @@
 import React from 'react';
 import { get, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 import {
@@ -8,6 +7,7 @@ import {
   officialFeedbacksForIdeaStream,
   officialFeedbacksForInitiativeStream,
 } from 'services/officialFeedback';
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface InputProps {
   postId: string | null;

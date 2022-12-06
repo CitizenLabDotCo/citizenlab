@@ -1,7 +1,7 @@
-import { Query } from '../../services/analyticsFacts';
 import moment from 'moment';
-import { InvitationsCardLabels, invitationsConfig } from './config';
 import { StatCardData } from '../../hooks/useStatCard/typings';
+import { Query } from '../../services/analyticsFacts';
+import { InvitationsCardLabels, invitationsConfig } from './config';
 
 describe('Invitations card data parsing', () => {
   beforeAll(() => {

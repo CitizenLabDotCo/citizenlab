@@ -1,14 +1,12 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { reorderArea, IAreaData, deleteArea } from 'services/areas';
-
-import messages from '../messages';
-import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-
+import { isNilOrError } from 'utils/helperUtils';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   SortableList,
   SortableRow,
@@ -19,8 +17,7 @@ import {
   SectionDescription,
   SectionTitle,
 } from 'components/admin/Section';
-import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
+import messages from '../messages';
 import AreaTermConfig from './AreaTermConfig';
 
 interface InputProps {}

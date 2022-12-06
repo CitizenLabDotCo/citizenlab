@@ -1,3 +1,5 @@
+import { LatLngTuple } from 'leaflet';
+import { isEqual } from 'lodash-es';
 import {
   distinctUntilChanged,
   map,
@@ -5,9 +7,7 @@ import {
   refCount,
   debounceTime,
 } from 'rxjs/operators';
-import { isEqual } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
-import { LatLngTuple } from 'leaflet';
 
 enum events {
   leafletMapCenterChange = 'leafletMapCenterChange',

@@ -1,23 +1,20 @@
 // libraries
 import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
-import { isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useIdea from 'hooks/useIdea';
-import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
-
+import useProject from 'hooks/useProject';
+import { injectIntl } from 'utils/cl-intl';
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { isNilOrError } from 'utils/helperUtils';
+// i18n
+import messages from './messages';
 
 interface Props {
   ideaId: string;

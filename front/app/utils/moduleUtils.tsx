@@ -1,44 +1,13 @@
-import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
-import { Moment } from 'moment';
 import React, {
   FunctionComponent,
   KeyboardEvent,
   MouseEvent,
   ReactElement,
 } from 'react';
-
-import PageLoading from 'components/UI/PageLoading';
-import { OutletRenderProps } from 'components/Outlet';
-import { ITabItem } from 'components/UI/Tabs';
-import { GroupCreationModal } from 'containers/Admin/users';
-import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
-import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
-import { IProjectData } from 'services/projects';
-
-import { ManagerType } from 'components/admin/PostManager';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { AuthProvider } from 'components/AuthProviders';
-import { Point } from 'components/UI/LeafletMap/typings';
-import { TVerificationStep } from 'events/verificationModal';
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { NavItem } from 'containers/Admin/sideBar';
-import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
+import { IntlFormatters } from 'react-intl';
 import { LatLngTuple } from 'leaflet';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
-import { GetIdeaChildProps } from 'resources/GetIdea';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
-import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { CustomizedButtonConfig } from 'services/appConfiguration';
-import { ICommentData } from 'services/comments';
-import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { THomepageBannerLayout } from 'services/homepageSettings';
-import { TNotificationData } from 'services/notifications';
-import { IPhaseData } from 'services/phases';
-import { TVerificationMethod } from 'services/verificationMethods';
-import { TSignUpInFlow } from 'events/openSignUpInModal';
+import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
+import { Moment } from 'moment';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
@@ -46,8 +15,37 @@ import {
   Locale,
   Multiloc,
 } from 'typings';
-import { IntlFormatters } from 'react-intl';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
+import { CustomizedButtonConfig } from 'services/appConfiguration';
+import { ICommentData } from 'services/comments';
+import { IGroupDataAttributes, MembershipType } from 'services/groups';
+import { THomepageBannerLayout } from 'services/homepageSettings';
+import { TNotificationData } from 'services/notifications';
+import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'services/projects';
+import { TVerificationMethod } from 'services/verificationMethods';
+import { TSignUpInFlow } from 'events/openSignUpInModal';
+import { TVerificationStep } from 'events/verificationModal';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { NavItem } from 'containers/Admin/sideBar';
+import { GroupCreationModal } from 'containers/Admin/users';
+import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
+import { AuthProvider } from 'components/AuthProviders';
+import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
+import { OutletRenderProps } from 'components/Outlet';
+import { Point } from 'components/UI/LeafletMap/typings';
+import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
+import PageLoading from 'components/UI/PageLoading';
+import { ITabItem } from 'components/UI/Tabs';
+import { ManagerType } from 'components/admin/PostManager';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
+import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];

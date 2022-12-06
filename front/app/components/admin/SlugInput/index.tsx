@@ -1,26 +1,23 @@
 import React from 'react';
-import useLocale from 'hooks/useLocale';
+// i18n
+import { WrappedComponentProps } from 'react-intl';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
+// typings
+import { CLErrors } from 'typings';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-
+import useLocale from 'hooks/useLocale';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import Error from 'components/UI/Error';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
+import messages from './messages';
 import {
   StyledSectionField,
   StyledWarning,
   StyledInput,
   SlugPreview,
 } from './styling';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// typings
-import { CLErrors } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
 type TApiErrors = CLErrors | null;
 

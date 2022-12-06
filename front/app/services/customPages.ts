@@ -1,8 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
-import streams, { IStreamParams } from 'utils/streams';
-import { THomepageBannerLayout } from './homepageSettings';
 import { apiEndpoint as navbarEndpoint } from 'services/navbar';
+import streams, { IStreamParams } from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
+import { THomepageBannerLayout } from './homepageSettings';
 
 export interface ICustomPage {
   data: ICustomPageData;

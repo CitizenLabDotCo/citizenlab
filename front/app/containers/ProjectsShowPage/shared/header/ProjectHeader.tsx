@@ -1,30 +1,27 @@
 import React, { useState, memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { WrappedComponentProps } from 'react-intl';
+import useAuthUser from 'hooks/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+// hooks
+import useProject from 'hooks/useProject';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { media, isRtl } from 'utils/styleUtils';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import messages from 'containers/ProjectsShowPage/messages';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectInfo from './ProjectInfo';
+import Outlet from 'components/Outlet';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
-import Outlet from 'components/Outlet';
-
-// hooks
-import useProject from 'hooks/useProject';
-import useAuthUser from 'hooks/useAuthUser';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import ProjectInfo from './ProjectInfo';
 
 const Container = styled.div`
   padding-top: 30px;

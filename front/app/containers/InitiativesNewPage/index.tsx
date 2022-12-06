@@ -1,35 +1,30 @@
 import React from 'react';
-import { isNumber } from 'lodash-es';
-
-// libraries
-import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { reverseGeocode } from 'utils/locationTools';
+import { isNumber } from 'lodash-es';
 import { parse } from 'qs';
-
+import { ILocationInfo } from 'typings';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import { PreviousPathnameContext } from 'context';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'services/permissions/roles';
-
-// components
-import PageNotFound from 'components/PageNotFound';
-import InitiativesNewMeta from './InitiativesNewMeta';
-import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
-import PageLayout from 'components/InitiativeForm/PageLayout';
-import { ILocationInfo } from 'typings';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { isAdmin } from 'services/permissions/roles';
+import { PreviousPathnameContext } from 'context';
+// libraries
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { reverseGeocode } from 'utils/locationTools';
+import PageLayout from 'components/InitiativeForm/PageLayout';
+// components
+import PageNotFound from 'components/PageNotFound';
+import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
+import InitiativesNewMeta from './InitiativesNewMeta';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;

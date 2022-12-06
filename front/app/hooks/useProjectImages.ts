@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import {
   IProjectImages,
   IProjectImageData,
   projectImagesStream,
 } from 'services/projectImages';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId: string | null;

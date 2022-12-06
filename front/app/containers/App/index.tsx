@@ -1,49 +1,25 @@
 import { configureScope } from '@sentry/react';
+import React, { lazy, PureComponent, Suspense } from 'react';
+import { adopt } from 'react-adopt';
 import 'focus-visible';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
 import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
-import React, { lazy, PureComponent, Suspense } from 'react';
-import { adopt } from 'react-adopt';
 import { combineLatest, Subscription } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
-import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import {
-  endsWith,
-  isDesktop,
-  isNilOrError,
-  isNil,
-  isPage,
-} from 'utils/helperUtils';
-
-// constants
-import { appLocalesMomentPairs, locales } from 'containers/App/constants';
-
-// context
-import { PreviousPathnameContext } from 'context';
-import { trackPage } from 'utils/analytics';
-
-// analytics
-const ConsentManager = lazy(() => import('components/ConsentManager'));
-
-// components
-import ErrorBoundary from 'components/ErrorBoundary';
-import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import Authentication from 'containers/Authentication';
-import MainHeader from 'containers/MainHeader';
-import MobileNavbar from 'containers/MobileNavbar';
-import Meta from './Meta';
-const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
-const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
-const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
-
-// auth
-import HasPermission from 'components/HasPermission';
-
+// typings
+import { Locale } from 'typings';
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
+import { TAuthUser } from 'hooks/useAuthUser';
 // services
 import {
   currentAppConfigurationStream,
@@ -56,28 +32,43 @@ import {
   signOutAndDeleteAccount,
 } from 'services/auth';
 import { localeStream } from 'services/locale';
-import { TAuthUser } from 'hooks/useAuthUser';
-
-// resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
-
-// style
-import styled, { ThemeProvider } from 'styled-components';
-import { getTheme, media } from 'utils/styleUtils';
-
-// typings
-import { Locale } from 'typings';
-
+// context
+import { PreviousPathnameContext } from 'context';
+import { trackPage } from 'utils/analytics';
+import clHistory from 'utils/cl-router/history';
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// events
+import eventEmitter from 'utils/eventEmitter';
+import {
+  endsWith,
+  isDesktop,
+  isNilOrError,
+  isNil,
+  isPage,
+} from 'utils/helperUtils';
+import { getTheme, media } from 'utils/styleUtils';
+// constants
+import { appLocalesMomentPairs, locales } from 'containers/App/constants';
+import Authentication from 'containers/Authentication';
+import MainHeader from 'containers/MainHeader';
+import MobileNavbar from 'containers/MobileNavbar';
+// components
+import ErrorBoundary from 'components/ErrorBoundary';
+// auth
+import HasPermission from 'components/HasPermission';
+import ForbiddenRoute from 'components/routing/forbiddenRoute';
+// style
+import styled, { ThemeProvider } from 'styled-components';
+import Meta from './Meta';
+
+// analytics
+const ConsentManager = lazy(() => import('components/ConsentManager'));
+
+const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
+const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
+const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 const Container = styled.div<{
   disableScroll?: boolean;

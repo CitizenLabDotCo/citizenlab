@@ -1,5 +1,4 @@
 import React from 'react';
-
 // components
 import { StatCardProps } from '../hooks/useStatCard/typings';
 import ProjectStatusCard from '../components/ProjectStatusCard';

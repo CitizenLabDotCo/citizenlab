@@ -1,18 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
-
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField } from './styling';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 // typings
 import { UploadFile } from 'typings';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { SubSectionTitle } from 'components/admin/Section';
+import styled from 'styled-components';
+import messages from '../messages';
+import { StyledSectionField } from './styling';
 
 // Would have loved to put this in styling.ts, but
 // that results in some arcane typescript error

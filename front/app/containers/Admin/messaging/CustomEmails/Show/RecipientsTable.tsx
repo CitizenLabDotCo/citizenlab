@@ -1,17 +1,17 @@
 import React from 'react';
+import { StatusLabel } from '@citizenlab/cl2-component-library';
 import GetCampaignRecipients, {
   GetCampaignDeliveriesChildProps,
 } from 'resources/GetCampaignDeliveries';
-import { isNilOrError } from 'utils/helperUtils';
-import { List, Row, TextCell } from 'components/admin/ResourceList';
 import GetUser from 'resources/GetUser';
-import { StatusLabel } from '@citizenlab/cl2-component-library';
 import { IDeliveryData } from 'services/campaigns';
-import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-import Pagination from 'components/admin/Pagination';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 import Avatar from 'components/Avatar';
+import Pagination from 'components/admin/Pagination';
+import { List, Row, TextCell } from 'components/admin/ResourceList';
+import messages from '../../messages';
 
 const statusColorMapping: {
   [k in IDeliveryData['attributes']['delivery_status']]: keyof typeof colors;

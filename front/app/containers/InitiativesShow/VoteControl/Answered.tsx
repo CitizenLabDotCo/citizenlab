@@ -1,18 +1,15 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
-import { IInitiativeData } from 'services/initiatives';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
-
 import { Icon } from '@citizenlab/cl2-component-library';
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
-import Button from 'components/UI/Button';
-
-import T from 'components/T';
-import messages from './messages';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeData } from 'services/initiatives';
 import { FormattedMessage } from 'utils/cl-intl';
+import { fontSizes } from 'utils/styleUtils';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import styled from 'styled-components';
+import { StatusWrapper, StatusExplanation } from './SharedStyles';
+import messages from './messages';
 
 const Container = styled.div``;
 

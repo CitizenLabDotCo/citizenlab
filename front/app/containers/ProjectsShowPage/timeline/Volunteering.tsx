@@ -1,15 +1,12 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Volunteering from '../shared/volunteering';
-
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-
+import { isNilOrError } from 'utils/helperUtils';
 // styling
 import styled from 'styled-components';
+// components
+import Volunteering from '../shared/volunteering';
 
 const Container = styled.div``;
 

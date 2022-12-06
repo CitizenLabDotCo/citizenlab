@@ -1,10 +1,13 @@
 import React, { memo, useCallback } from 'react';
-
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-
-// styling
-import styled, { withTheme } from 'styled-components';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+// intl
+import { FormattedMessage } from 'utils/cl-intl';
+// utils
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   colors,
   fontSizes,
@@ -12,18 +15,10 @@ import {
   viewportWidths,
   defaultCardStyle,
 } from 'utils/styleUtils';
-
 // components
 import Button from 'components/UI/Button';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
-
-// utils
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'events/openSignUpInModal';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
+// styling
+import styled, { withTheme } from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div``;

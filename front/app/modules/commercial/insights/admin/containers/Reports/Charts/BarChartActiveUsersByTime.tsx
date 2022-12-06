@@ -1,19 +1,17 @@
 // libraries
 import React from 'react';
-import { Subscription } from 'rxjs';
+import { WrappedComponentProps } from 'react-intl';
+import { Popup } from 'semantic-ui-react';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { map, isEmpty } from 'lodash-es';
-
+import { Subscription } from 'rxjs';
+import { IGraphFormat } from 'typings';
+import { IResourceByTime, IUsersByTime } from 'services/stats';
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
+import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
-import { IResourceByTime, IUsersByTime } from 'services/stats';
-import { IGraphFormat } from 'typings';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
   GraphCard,
@@ -22,14 +20,11 @@ import {
   GraphCardTitle,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
+// components
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
-
 // styling
 import styled from 'styled-components';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 const InfoIcon = styled(Icon)`
   display: flex;

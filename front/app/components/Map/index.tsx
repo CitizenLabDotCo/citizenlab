@@ -6,16 +6,13 @@ import React, {
   Suspense,
   useCallback,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import Outlet from 'components/Outlet';
-const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
-
+// typings
+import { LatLngTuple, Map as ILeafletMap } from 'leaflet';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-
+import { isNilOrError } from 'utils/helperUtils';
 // utils
 import {
   getCenter,
@@ -23,14 +20,13 @@ import {
   getTileProvider,
   getTileOptions,
 } from 'utils/map';
+import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
-
 // styling
 import styled from 'styled-components';
-import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 
-// typings
-import { LatLngTuple, Map as ILeafletMap } from 'leaflet';
+const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
 
 export interface Point extends GeoJSON.Point {
   data?: any;

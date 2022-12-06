@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
+import { unionBy, isString } from 'lodash-es';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { IRelationship } from 'typings';
 import {
   listAdminPublications,
   IAdminPublicationData,
@@ -7,8 +9,6 @@ import {
 } from 'services/adminPublications';
 import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
-import { unionBy, isString } from 'lodash-es';
-import { IRelationship } from 'typings';
 
 export interface BaseProps {
   topicFilter?: string[];

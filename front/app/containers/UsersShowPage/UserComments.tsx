@@ -1,27 +1,23 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { groupBy } from 'lodash-es';
-
-// components
-import PostCommentGroup from './PostCommentGroup';
-import Button from 'components/UI/Button';
-
+import { darken, rgba } from 'polished';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // resources
 import GetCommentsForUser, {
   GetCommentsForUserChildProps,
 } from 'resources/GetCommentsForUser';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
-// style
-import styled, { withTheme } from 'styled-components';
-
+import { ScreenReaderOnly } from 'utils/a11y';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { darken, rgba } from 'polished';
+import { isNilOrError } from 'utils/helperUtils';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import Button from 'components/UI/Button';
+// style
+import styled, { withTheme } from 'styled-components';
+// components
+import PostCommentGroup from './PostCommentGroup';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

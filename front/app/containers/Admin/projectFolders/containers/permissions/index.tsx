@@ -1,39 +1,35 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import styled from 'styled-components';
+// i18n
+import { WrappedComponentProps } from 'react-intl';
 import AsyncSelect from 'react-select/async';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { first } from 'rxjs/operators';
 import { IOption } from 'typings';
+import useAuthUser from 'hooks/useAuthUser';
+// services
+import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
+import { isAdmin } from 'services/permissions/roles';
 import {
   isProjectFolderModerator,
   userModeratesFolder,
 } from 'services/permissions/rules/projectFolderPermissions';
-
-// utils
-import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
-
-// services
-import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
-import { IUsers, IUserData, usersStream } from 'services/users';
-import useAuthUser from 'hooks/useAuthUser';
 import {
   addFolderModerator,
   deleteFolderModerator,
 } from 'services/projectFolderModerators';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import { IUsers, IUserData, usersStream } from 'services/users';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
+import Avatar from 'components/Avatar';
+import Button from 'components/UI/Button';
+import selectStyles from 'components/UI/MultipleSelect/styles';
+import { List, Row } from 'components/admin/ResourceList';
 // components
 import { SubSectionTitle } from 'components/admin/Section';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { List, Row } from 'components/admin/ResourceList';
-import Avatar from 'components/Avatar';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import { isAdmin } from 'services/permissions/roles';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

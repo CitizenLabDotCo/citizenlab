@@ -1,10 +1,10 @@
 import React from 'react';
-import { xor } from 'lodash-es';
 import { Menu, Divider } from 'semantic-ui-react';
-import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
+import { xor } from 'lodash-es';
+import { ITopicData } from 'services/topics';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { ITopicData } from 'services/topics';
+import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 
 interface Props {
   selectableTopics: ITopicData[];

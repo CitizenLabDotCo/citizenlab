@@ -1,10 +1,9 @@
 // utils
-import { roundPercentage } from 'utils/math';
 import { get } from 'utils/helperUtils';
-
+import { roundPercentage } from 'utils/math';
+import { Translations } from './translations';
 // typings
 import { ReferrerRow, ReferrersTotalRow, TableRow } from './typings';
-import { Translations } from './translations';
 
 export const parseTableData = (
   referrerRows: ReferrerRow[],

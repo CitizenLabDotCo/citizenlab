@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { IIdeaMarkerData, ideasMarkersStream } from 'services/ideas';
 import { Sort } from 'resources/GetIdeas';
+import { IIdeaMarkerData, ideasMarkersStream } from 'services/ideas';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   phaseId?: string | null;

@@ -1,26 +1,21 @@
 // Libraries
 import React from 'react';
-
 // Services & Resources
 import { IPollQuestion } from 'services/pollQuestions';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import T from 'components/T';
 // Components
 import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
-
-import T from 'components/T';
-
 import styled from 'styled-components';
+import WrongOptionsIndicator from './WrongOptionsIndicator';
+import messages from './messages';
 
 // Inline block so the button acts as a character and is stuck to the end of the title to make it clear it will edit the title text
 const EditTitleButton = styled(Button)`
   display: inline-block;
 `;
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import WrongOptionsIndicator from './WrongOptionsIndicator';
 
 const QuestionRow = ({
   question,

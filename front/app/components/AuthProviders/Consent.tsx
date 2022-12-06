@@ -1,20 +1,17 @@
 import React, { memo } from 'react';
-
-// components
-import Link from 'utils/cl-router/Link';
-import Checkbox from 'components/UI/Checkbox';
-import Error from 'components/UI/Error';
-import { AuthProvider } from 'components/AuthProviders';
-import { Box } from '@citizenlab/cl2-component-library';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+import { Box } from '@citizenlab/cl2-component-library';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+// components
+import Link from 'utils/cl-router/Link';
+import { fontSizes } from 'utils/styleUtils';
+import { AuthProvider } from 'components/AuthProviders';
+import Checkbox from 'components/UI/Checkbox';
+import Error from 'components/UI/Error';
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

@@ -1,4 +1,5 @@
 import { IPollQuestion } from 'services/pollQuestions';
+
 export const mockQuestion = (
   id,
   titleEn,

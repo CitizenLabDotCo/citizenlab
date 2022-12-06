@@ -1,5 +1,8 @@
 import React, { ReactNode } from 'react';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { INLPFlagNotificationData } from 'services/notifications';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const RenderOnNotificationType = React.lazy(
   () => import('modules/utilComponents/RenderOnNotificationType')
 );
@@ -19,8 +22,6 @@ const EmptyMessageModerationsWithFlag = React.lazy(
 const NLPFlagNotification = React.lazy(
   () => import('./citizen/components/NLPFlagNotification')
 );
-import { INLPFlagNotificationData } from 'services/notifications';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type RenderOnSelectedTabValueProps = {
   isTabSelected: boolean;

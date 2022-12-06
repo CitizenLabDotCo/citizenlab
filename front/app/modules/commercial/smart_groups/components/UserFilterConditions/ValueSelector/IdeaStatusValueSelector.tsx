@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
+import { Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 import useIdeaStatuses from 'hooks/useIdeaStatuses';
 import useLocalize from 'hooks/useLocalize';
-import { Select } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {

@@ -1,14 +1,11 @@
 import React, { memo } from 'react';
-
 import { IOfficialFeedbackOnCommentedInitiativeNotificationData } from 'services/notifications';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import T from 'components/T';
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // components
 import NotificationWrapper from '../NotificationWrapper';
-import T from 'components/T';
 
 interface Props {
   notification: IOfficialFeedbackOnCommentedInitiativeNotificationData;

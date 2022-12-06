@@ -4,6 +4,7 @@ import { WrappedComponentProps } from 'react-intl';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   GraphCard,
@@ -11,9 +12,8 @@ import {
   GraphsContainer,
   NoDataContainer,
 } from 'components/admin/GraphWrappers';
-import QuestionReport from './QuestionReport';
 import { SubSectionTitle } from 'components/admin/Section';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import QuestionReport from './QuestionReport';
 import messages from './messages';
 
 interface InputProps {

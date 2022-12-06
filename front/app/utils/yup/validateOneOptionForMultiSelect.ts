@@ -1,5 +1,5 @@
-import { IOptionsType } from 'services/formCustomFields';
 import { object, array } from 'yup';
+import { IOptionsType } from 'services/formCustomFields';
 
 const validateOneOptionForMultiSelect = (message: string) => {
   return array()

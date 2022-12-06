@@ -1,13 +1,13 @@
-import { Box } from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { forOwn, size, trim } from 'lodash-es';
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import { Box } from '@citizenlab/cl2-component-library';
+import { forOwn, size, trim } from 'lodash-es';
+import { Multiloc } from 'typings';
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
-import { Multiloc } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import messages from './messages';
 
 interface Props {

@@ -1,40 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// services
-import { coreSettings } from 'services/appConfiguration';
-
-// hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useTopics from 'hooks/useTopics';
-import useAreas from 'hooks/useAreas';
-import useLocalize from 'hooks/useLocalize';
-
-// components
-import Tabs from './Tabs';
-import { ScreenReaderOnly } from 'utils/a11y';
-import SelectTopics from './SelectTopics';
-import SelectAreas from './SelectAreas';
-import SearchInput from 'components/UI/SearchInput';
-
-// styling
-import styled from 'styled-components';
-import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getShowFilters, getShowFiltersLabel } from './show';
 import { useSearchParams } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
-
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAreas from 'hooks/useAreas';
+import useLocalize from 'hooks/useLocalize';
+import useTopics from 'hooks/useTopics';
+// services
+import { coreSettings } from 'services/appConfiguration';
+import { ScreenReaderOnly } from 'utils/a11y';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
+import SearchInput from 'components/UI/SearchInput';
+// styling
+import styled from 'styled-components';
 import { PublicationTab } from '../..';
+import SelectAreas from './SelectAreas';
+import SelectTopics from './SelectTopics';
+// components
+import Tabs from './Tabs';
+import messages from './messages';
+import { getShowFilters, getShowFiltersLabel } from './show';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};

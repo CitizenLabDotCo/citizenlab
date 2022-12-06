@@ -1,17 +1,14 @@
 import React, { memo, useState } from 'react';
-
-// components
-import MapLayersList from './MapLayersList';
-import MapLayerConfig from './MapLayerConfig';
-import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 // styling
 import styled from 'styled-components';
+import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
+import MapLayerConfig from './MapLayerConfig';
+// components
+import MapLayersList from './MapLayersList';
+import messages from './messages';
 
 const Container = styled.div``;
 

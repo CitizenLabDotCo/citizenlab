@@ -1,24 +1,20 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import ContentContainer from 'components/ContentContainer';
-import Survey from '../shared/survey';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import SectionContainer from 'components/SectionContainer';
-
-// hooks
-import useProject from 'hooks/useProject';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// hooks
+import useProject from 'hooks/useProject';
+import { ScreenReaderOnly } from 'utils/a11y';
 import injectIntl from 'utils/cl-intl/injectIntl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 import messages from 'containers/ProjectsShowPage/messages';
-
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+// components
+import ContentContainer from 'components/ContentContainer';
+import SectionContainer from 'components/SectionContainer';
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import Survey from '../shared/survey';
 
 const Container = styled.div``;
 

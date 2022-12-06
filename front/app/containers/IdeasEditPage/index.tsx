@@ -1,70 +1,60 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { Box } from '@citizenlab/cl2-component-library';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
-
-// router
-import clHistory from 'utils/cl-router/history';
-
-// components
-import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import IdeasEditButtonBar from './IdeasEditButtonBar';
-import IdeasEditMeta from './IdeasEditMeta';
-import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// feature flag variant
-import IdeasEditPageWithJSONForm from './WithJSONForm';
-
-// services
-import { localeStream } from 'services/locale';
+// typings
+import { UploadFile, Multiloc, Locale } from 'typings';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// resource components
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
+import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import {
   ideaImageStream,
   addIdeaImage,
   deleteIdeaImage,
 } from 'services/ideaImages';
-import { hasPermission } from 'services/permissions';
-import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
+import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
+// services
+import { localeStream } from 'services/locale';
 import { getInputTerm } from 'services/participationContexts';
-
+import { hasPermission } from 'services/permissions';
+import { trackEventByName } from 'utils/analytics';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { getInputTermMessage } from 'utils/i18n';
-
+// router
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { geocode } from 'utils/locationTools';
-
-// typings
-import { UploadFile, Multiloc, Locale } from 'typings';
-
 // style
 import { media, fontSizes, colors } from 'utils/styleUtils';
+import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
+// components
+import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import styled from 'styled-components';
-
-// resource components
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
+import IdeasEditButtonBar from './IdeasEditButtonBar';
+import IdeasEditMeta from './IdeasEditMeta';
+// feature flag variant
+import IdeasEditPageWithJSONForm from './WithJSONForm';
+import messages from './messages';
 // tracks
 import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   background: ${colors.background};

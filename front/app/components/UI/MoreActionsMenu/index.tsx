@@ -1,14 +1,12 @@
 // Libraries
+import Tippy from '@tippyjs/react';
 import React, { PureComponent } from 'react';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-
 // Components
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
-
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   position: relative;

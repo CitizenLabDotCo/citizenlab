@@ -1,11 +1,9 @@
 // libraries
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { Helmet } from 'react-helmet';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { WrappedComponentProps } from 'react-intl';
+import { get } from 'lodash-es';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -13,23 +11,22 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
-
-// i18n
-import messages from './messages';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-// utils
-import { stripHtml } from 'utils/textUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+// utils
+import { stripHtml } from 'utils/textUtils';
+// i18n
+import messages from './messages';
 
 interface InputProps {
   initiativeId: string;

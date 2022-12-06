@@ -1,11 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
-import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
 import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
+import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
 import clHistory from 'utils/cl-router/history';
-
+import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
 import Preview from './';
 
 const viewId = '1';

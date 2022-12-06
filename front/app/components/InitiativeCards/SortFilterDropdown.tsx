@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
-
-// components
-import FilterSelector from 'components/FilterSelector';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+// components
+import FilterSelector from 'components/FilterSelector';
 import messages from './messages';
 
 type Props = {

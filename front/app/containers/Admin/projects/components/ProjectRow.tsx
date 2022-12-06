@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
-
+import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
+// types
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import useAuthUser from 'hooks/useAuthUser';
+// resources
+import useProjectGroups from 'hooks/useProjectGroups';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import Error from 'components/UI/Error';
+import styled from 'styled-components';
 import messages from '../messages';
-
+import DeleteProjectButton from './DeleteProjectButton';
+import PublicationStatusLabel from './PublicationStatusLabel';
 // components
 import {
   RowContent,
@@ -16,18 +24,6 @@ import {
   RowButton,
   ActionsRowContainer,
 } from './StyledComponents';
-import DeleteProjectButton from './DeleteProjectButton';
-import PublicationStatusLabel from './PublicationStatusLabel';
-import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-
-// resources
-import useProjectGroups from 'hooks/useProjectGroups';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-import useAuthUser from 'hooks/useAuthUser';
-
-// types
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;

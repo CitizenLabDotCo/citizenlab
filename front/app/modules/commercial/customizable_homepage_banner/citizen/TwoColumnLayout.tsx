@@ -1,11 +1,11 @@
+import React from 'react';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import { isNilOrError } from 'utils/helperUtils';
+import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import {
   Container,
   HeaderImage,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
-import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 const TwoColumnLayout = () => {
   const homepageSettings = useHomepageSettings();

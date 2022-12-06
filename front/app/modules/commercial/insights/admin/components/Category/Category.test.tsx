@@ -1,13 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import Category from './';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
   addInsightsInputCategory: jest.fn(),
 }));
-
-import Category from './';
 
 const viewId = '1';
 const inputId = '2';

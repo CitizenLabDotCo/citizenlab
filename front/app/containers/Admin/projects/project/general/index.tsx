@@ -1,45 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Multiloc, UploadFile } from 'typings';
-import { isEmpty, get, isString } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
-
-// components
-import ProjectStatusPicker from './components/ProjectStatusPicker';
-import ProjectNameInput from './components/ProjectNameInput';
-import SlugInput from 'components/admin/SlugInput';
-import ProjectTypePicker from './components/ProjectTypePicker';
-import TopicInputs from './components/TopicInputs';
-import GeographicAreaInputs from './components/GeographicAreaInputs';
-import HeaderImageDropzone from './components/HeaderImageDropzone';
-import ProjectImageDropzone from './components/ProjectImageDropzone';
-import AttachmentsDropzone from './components/AttachmentsDropzone';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-  SubSectionTitle,
-} from 'components/admin/Section';
-import ParticipationContext, {
-  IParticipationContextConfig,
-} from '../participationContext';
-import {
-  StyledForm,
-  ProjectType,
-  StyledSectionField,
-  ParticipationContextWrapper,
-} from './components/styling';
-import ProjectFolderSelect from './components/ProjectFolderSelect';
-
+import { isEmpty, get, isString } from 'lodash-es';
+import { Multiloc, UploadFile } from 'typings';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 // hooks
 import useProject from 'hooks/useProject';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
-import { useParams } from 'react-router-dom';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
+import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
+import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 // services
 import {
   IUpdatedProjectProperties,
@@ -48,20 +20,43 @@ import {
   IProjectFormState,
   IProjectData,
 } from 'services/projects';
-import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
-import { addProjectImage, deleteProjectImage } from 'services/projectImages';
-
+import validateTitle from './utils/validateTitle';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-
-// utils
-import { validateSlug } from 'utils/textUtils';
-import validateTitle from './utils/validateTitle';
-import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+// utils
+import { validateSlug } from 'utils/textUtils';
+import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+import AttachmentsDropzone from './components/AttachmentsDropzone';
+import GeographicAreaInputs from './components/GeographicAreaInputs';
+import HeaderImageDropzone from './components/HeaderImageDropzone';
+import ProjectFolderSelect from './components/ProjectFolderSelect';
+import ProjectImageDropzone from './components/ProjectImageDropzone';
+import ProjectNameInput from './components/ProjectNameInput';
+// components
+import ProjectStatusPicker from './components/ProjectStatusPicker';
+import ProjectTypePicker from './components/ProjectTypePicker';
+import TopicInputs from './components/TopicInputs';
+import {
+  StyledForm,
+  ProjectType,
+  StyledSectionField,
+  ParticipationContextWrapper,
+} from './components/styling';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+} from 'components/admin/Section';
+import SlugInput from 'components/admin/SlugInput';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import ParticipationContext, {
+  IParticipationContextConfig,
+} from '../participationContext';
+import messages from './messages';
 
 export const TIMEOUT = 350;
 

@@ -1,14 +1,12 @@
+import L from 'leaflet';
+import { isEmpty, cloneDeep, reverse } from 'lodash-es';
 import {
   isNilOrError,
   isFunction,
   isString,
   isOrReturnsString,
 } from 'utils/helperUtils';
-import L from 'leaflet';
-import { isEmpty, cloneDeep, reverse } from 'lodash-es';
-
-import { getMarkerIcon } from './markers';
-
+import { DEFAULT_MARKER_ICON } from '../config';
 import {
   GeoJSONLayer,
   IMarkerStringOrObjectOrFunctionForLayer,
@@ -16,8 +14,7 @@ import {
   ITooltipStringOrObjectOrFunctionForLayer,
   IPopupStringOrObjectOrFunctionForLayer,
 } from '../typings';
-
-import { DEFAULT_MARKER_ICON } from '../config';
+import { getMarkerIcon } from './markers';
 
 export function addPopupToLayer(
   layer: L.GeoJSON,

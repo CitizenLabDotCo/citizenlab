@@ -1,5 +1,4 @@
 import React from 'react';
-
 // components
 import {
   Box,
@@ -8,13 +7,11 @@ import {
   Toggle,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import Divider from 'components/admin/Divider';
-
 // craft
 import { useNode, UserComponent } from '@craftjs/core';
-
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
+import Divider from 'components/admin/Divider';
 import messages from '../../../messages';
 
 const WhiteSpace: UserComponent = ({ size, withDivider }) => {

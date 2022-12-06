@@ -1,19 +1,15 @@
 import React, { memo } from 'react';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+// utils
+import eventEmitter from 'utils/eventEmitter';
+import ButtonBar from 'components/ButtonBar';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import ButtonBar from 'components/ButtonBar';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
-
 // style
 import styled from 'styled-components';
+import messages from './messages';
 
 const ButtonBarInner = styled.div`
   width: 100%;

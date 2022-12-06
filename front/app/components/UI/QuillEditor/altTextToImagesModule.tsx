@@ -1,7 +1,6 @@
 // Implementation inspired by:
 // https://quilljs.com/guides/cloning-medium-with-parchment/
 // https://gist.github.com/tranduongms1/584d43ec7d8ddeab458f087adbeef950
-
 import Quill, { QuillOptionsStatic } from 'quill';
 
 const Module = Quill.import('core/module');

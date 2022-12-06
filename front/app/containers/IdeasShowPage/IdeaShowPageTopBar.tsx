@@ -1,24 +1,19 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
+import { lighten } from 'polished';
+import useAuthUser from 'hooks/useAuthUser';
 // hooks
 import useProject from 'hooks/useProject';
-import useAuthUser from 'hooks/useAuthUser';
-
-// components
-import VoteControl from 'components/VoteControl';
-import GoBackButton from 'containers/IdeasShow/GoBackButton';
-
-// utils
-import { openVerificationModal } from 'events/verificationModal';
-
-// styling
-import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
-import { lighten } from 'polished';
-
 // typings
 import { IdeaVotingDisabledReason } from 'services/ideas';
+// utils
+import { openVerificationModal } from 'events/verificationModal';
+import { isNilOrError } from 'utils/helperUtils';
+import { media, colors } from 'utils/styleUtils';
+import GoBackButton from 'containers/IdeasShow/GoBackButton';
+// components
+import VoteControl from 'components/VoteControl';
+// styling
+import styled from 'styled-components';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;

@@ -1,9 +1,5 @@
 import React, { ReactNode } from 'react';
-
-// intl
-import { FormattedMessage } from './cl-intl';
-import messages from './messages';
-
+import { IIdea } from 'services/ideas';
 // services
 import {
   ParticipationMethod,
@@ -11,14 +7,14 @@ import {
 } from 'services/participationContexts';
 import { getCurrentPhase, IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
-
+import clHistory from 'utils/cl-router/history';
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-
+// intl
+import { FormattedMessage } from './cl-intl';
 // utils
 import { isNilOrError } from './helperUtils';
-import clHistory from 'utils/cl-router/history';
-import { IIdea } from 'services/ideas';
+import messages from './messages';
 
 type FormSubmissionMethodProps = {
   project?: IProjectData;

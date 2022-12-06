@@ -1,10 +1,10 @@
 import React from 'react';
-import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import { TRule } from '../rules';
 
 type Props = {
   rule: TRule;

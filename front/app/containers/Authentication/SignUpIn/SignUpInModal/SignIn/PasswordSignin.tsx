@@ -1,48 +1,39 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-
-// libraries
-import Link from 'utils/cl-router/Link';
-
+// i18n
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Input, Checkbox, Box } from '@citizenlab/cl2-component-library';
-import PasswordInput from 'components/UI/PasswordInput';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import { FormLabel } from 'components/UI/FormComponents';
-import { Options, Option } from '../styles';
-
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
-
 // services
 import { signIn } from 'services/auth';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
-import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
-import { isNilOrError } from 'utils/helperUtils';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+// libraries
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { viewportWidths } from 'utils/styleUtils';
+// utils
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
+import PasswordInput from 'components/UI/PasswordInput';
 // style
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
-
+import { Options, Option } from '../styles';
+import tracks from '../tracks';
 // typings
 import { ISignUpInMetaData } from '../typings';
+import messages from './messages';
 
 const Container = styled.div`
   flex: 1 1 auto;

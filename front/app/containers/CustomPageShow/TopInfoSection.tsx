@@ -1,17 +1,13 @@
 import React from 'react';
+import { Multiloc } from 'typings';
 import { isEmptyMultiloc } from 'utils/helperUtils';
-
+// components
+import ContentContainer from 'components/ContentContainer';
+// typings
+import { StyledQuillEditedContent } from 'components/LandingPages/citizen/InfoSection';
 // i18n
 import ResolveTextVariables from 'components/ResolveTextVariables';
 import T from 'components/T';
-
-// typings
-import { StyledQuillEditedContent } from 'components/LandingPages/citizen/InfoSection';
-import { Multiloc } from 'typings';
-
-// components
-import ContentContainer from 'components/ContentContainer';
-
 // style
 import styled from 'styled-components';
 

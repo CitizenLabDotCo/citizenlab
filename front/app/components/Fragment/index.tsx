@@ -1,11 +1,6 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import qs from 'qs';
-
-// styling
-import styled from 'styled-components';
-
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -13,6 +8,9 @@ import GetAppConfiguration, {
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
+import { isNilOrError } from 'utils/helperUtils';
+// styling
+import styled from 'styled-components';
 
 const StyledIframe = styled.iframe`
   border: 0;

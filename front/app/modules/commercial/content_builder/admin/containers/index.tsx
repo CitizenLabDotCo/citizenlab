@@ -2,40 +2,34 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams, useLocation } from 'react-router-dom';
-
-// styles
-import styled from 'styled-components';
-import { stylingConsts, colors } from 'utils/styleUtils';
-
-// components
-import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import ContentBuilderEditModePreview from '../components/ContentBuilderEditModePreview';
-
-// craft
-import Editor from '../components/Editor';
-import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
-import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
-import ContentBuilderFrame from '../components/ContentBuilderFrame';
-import ContentBuilderSettings from '../components/ContentBuilderSettings';
-
-// hooks
-import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
-import useLocale from 'hooks/useLocale';
-import useContentBuilderLayout from '../../hooks/useContentBuilder';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
+import useContentBuilderLayout from '../../hooks/useContentBuilder';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+// hooks
+import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import eventEmitter from 'utils/eventEmitter';
-
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { stylingConsts, colors } from 'utils/styleUtils';
+// components
+import { RightColumn } from 'containers/Admin';
+import ContentBuilderEditModePreview from '../components/ContentBuilderEditModePreview';
+import ContentBuilderFrame from '../components/ContentBuilderFrame';
+import ContentBuilderSettings from '../components/ContentBuilderSettings';
+import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
+import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
+// craft
+import Editor from '../components/Editor';
+import Error from 'components/UI/Error';
+// styles
+import styled from 'styled-components';
 // intl
 import messages from '../messages';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);

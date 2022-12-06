@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
+import { unionBy } from 'lodash-es';
 import {
   insightsInputsStream,
   IInsightsInputData,
 } from '../services/insightsInputs';
-import { isNilOrError } from 'utils/helperUtils';
-import { unionBy } from 'lodash-es';
 import { trackEventByName } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 const defaultPageSize = 20;

@@ -1,20 +1,16 @@
 import React, { memo, FormEvent } from 'react';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-
 // services
 import { deleteProject } from 'services/projects';
-
-// components
-import { RowButton } from './StyledComponents';
-import { ButtonContainerProps } from 'components/UI/Button';
-
+import { injectIntl } from 'utils/cl-intl';
 // styles
 import { colors } from 'utils/styleUtils';
+import { ButtonContainerProps } from 'components/UI/Button';
+// components
+import { RowButton } from './StyledComponents';
+import messages from './messages';
 
 interface Props extends ButtonContainerProps {
   publication: IAdminPublicationContent;

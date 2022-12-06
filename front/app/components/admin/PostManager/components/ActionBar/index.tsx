@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import ActionBarSingle from './ActionBarSingle';
-import ActionBarMulti from './ActionBarMulti';
 import { ManagerType } from '../..';
+import ActionBarMulti from './ActionBarMulti';
+import ActionBarSingle from './ActionBarSingle';
 
 const Container = styled.div`
   display: flex;

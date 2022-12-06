@@ -1,28 +1,22 @@
 import React, { memo, useCallback, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import FeatureFlag from 'components/FeatureFlag';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'components/PostShowComponents/Comments/messages';
-
-// events
-import { commentTranslateButtonClicked } from 'components/PostShowComponents/Comments/events';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/PostShowComponents/Comments/tracks';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 // types
 import { GetCommentChildProps } from 'resources/GetComment';
 import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+// events
+import { commentTranslateButtonClicked } from 'components/PostShowComponents/Comments/events';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+// components
+import FeatureFlag from 'components/FeatureFlag';
+import messages from 'components/PostShowComponents/Comments/messages';
+import tracks from 'components/PostShowComponents/Comments/tracks';
+// style
+import styled from 'styled-components';
 
 const Container = styled.li`
   display: flex;

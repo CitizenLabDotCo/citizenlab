@@ -1,39 +1,32 @@
 import React from 'react';
-
-// craft
-import { useEditor } from '@craftjs/core';
-
+import { WrappedComponentProps } from 'react-intl';
 // Router
 import { useParams } from 'react-router-dom';
-
-// intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// components
-import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import Text from '../CraftComponents/Text';
-import TwoColumn from '../CraftComponents/TwoColumn';
-import ThreeColumn from '../CraftComponents/ThreeColumn';
-import Image from '../CraftComponents/Image';
-import Iframe from '../CraftComponents/Iframe';
-import AboutBox from '../CraftComponents/AboutBox';
-import Accordion from '../CraftComponents/Accordion';
-import WhiteSpace from '../CraftComponents/WhiteSpace';
-import Button from '../CraftComponents/Button';
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
-import ImageTextCards from '../CraftSections/ImageTextCards';
-
-// intl
-import messages from '../../messages';
-
-// styles
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
+// craft
+import { useEditor } from '@craftjs/core';
 // types
 import { Locale } from 'typings';
+// intl
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { colors } from 'utils/styleUtils';
+// styles
+import styled from 'styled-components';
+// intl
+import messages from '../../messages';
+import AboutBox from '../CraftComponents/AboutBox';
+import Accordion from '../CraftComponents/Accordion';
+import Button from '../CraftComponents/Button';
+import Iframe from '../CraftComponents/Iframe';
+import Image from '../CraftComponents/Image';
+import Text from '../CraftComponents/Text';
+import ThreeColumn from '../CraftComponents/ThreeColumn';
+import TwoColumn from '../CraftComponents/TwoColumn';
+import WhiteSpace from '../CraftComponents/WhiteSpace';
+import ImageTextCards from '../CraftSections/ImageTextCards';
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+// components
+import ToolboxItem from './ToolboxItem';
 
 const DraggableElement = styled.div`
   cursor: move;

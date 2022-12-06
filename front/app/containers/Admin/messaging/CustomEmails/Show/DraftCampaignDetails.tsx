@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { ICampaignData, deleteCampaign } from 'services/campaigns';
-import clHistory from 'utils/cl-router/history';
-
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import { WrappedComponentProps } from 'react-intl';
 import GetCampaign from 'resources/GetCampaign';
+import { ICampaignData, deleteCampaign } from 'services/campaigns';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
-import { WrappedComponentProps } from 'react-intl';
-import PreviewFrame from './PreviewFrame';
 import styled from 'styled-components';
+import messages from '../../messages';
+import PreviewFrame from './PreviewFrame';
 
 const ButtonWrapper = styled.div`
   margin: 40px 0;

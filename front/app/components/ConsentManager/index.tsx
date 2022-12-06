@@ -1,6 +1,22 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+// components
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { IAppConfigurationData } from 'services/appConfiguration';
+import eventEmitter from 'utils/eventEmitter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import Container from './Container';
+import {
+  getConsent,
+  IConsentCookie,
+  ISavedDestinations,
+  setConsent,
+} from './consent';
 import {
   allCategories,
   getDestinationConfigs,
@@ -9,26 +25,6 @@ import {
   isDestinationActive,
   TCategory,
 } from './destinations';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import Container from './Container';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import {
-  getConsent,
-  IConsentCookie,
-  ISavedDestinations,
-  setConsent,
-} from './consent';
-import eventEmitter from 'utils/eventEmitter';
-import { IAppConfigurationData } from 'services/appConfiguration';
 
 // the format in which the user will make its choices,
 export type IPreferences = Partial<Record<TCategory, boolean>>;

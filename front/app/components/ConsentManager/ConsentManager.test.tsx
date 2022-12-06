@@ -2,9 +2,12 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-
+import { getAppConfigurationData } from 'services/__mocks__/appConfiguration';
+import { makeUser } from 'services/__mocks__/users';
 // component to test
 import { ConsentManager } from './';
+import * as consent from './consent';
+import { getDestinationConfigs, registerDestination } from './destinations';
 
 // mock depencies
 jest.mock('services/appConfiguration');
@@ -18,12 +21,6 @@ jest.mock('./consent', () => ({
   getConsent: jest.fn(() => null),
   setConsent: jest.fn(),
 }));
-
-import * as consent from './consent';
-
-import { makeUser } from 'services/__mocks__/users';
-import { getAppConfigurationData } from 'services/__mocks__/appConfiguration';
-import { getDestinationConfigs, registerDestination } from './destinations';
 
 registerDestination({
   key: 'google_analytics',

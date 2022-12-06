@@ -1,9 +1,8 @@
 // utils
+import { Query, QuerySchema } from '../../services/analyticsFacts';
 import { getDateFilter, getInterval } from '../../utils/query';
-
 // typings
 import { QueryParameters } from './typings';
-import { Query, QuerySchema } from '../../services/analyticsFacts';
 
 export const query = ({
   startAtMoment,

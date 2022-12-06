@@ -1,39 +1,33 @@
+import Tippy from '@tippyjs/react';
 import React, { memo } from 'react';
-import moment from 'moment';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Tr, Td, Icon } from '@citizenlab/cl2-component-library';
-import ModerationContentCell from './ModerationContentCell';
-import Checkbox from 'components/UI/Checkbox';
-import Outlet from 'components/Outlet';
-import Tippy from '@tippyjs/react';
-import Link from 'utils/cl-router/Link';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import useLocalize from 'hooks/useLocalize';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import moment from 'moment';
 import { rgba } from 'polished';
-
+import useLocalize from 'hooks/useLocalize';
+// hooks
+import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
 // typings
 import {
   IModerationData,
   TBelongsTo,
   TModeratableType,
 } from '../../services/moderations';
-
-// hooks
-import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
+import Checkbox from 'components/UI/Checkbox';
+// styling
+import styled from 'styled-components';
+import ModerationContentCell from './ModerationContentCell';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled(Tr)<{ bgColor: string; flagged: boolean }>`
   background: ${({ bgColor, flagged }) =>

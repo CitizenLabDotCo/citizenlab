@@ -16,8 +16,8 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { initiativesCount } from 'services/stats';
-import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export interface InputProps {
   authorId?: string;

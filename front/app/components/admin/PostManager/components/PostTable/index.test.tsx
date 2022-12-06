@@ -1,9 +1,9 @@
 // @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
-
-import { getIdea } from 'services/ideas';
 import { makeStatus } from 'services/ideaStatuses';
+import { getIdea } from 'services/ideas';
+import PostTable from './';
 
 // mocking dependencies
 jest.mock('services/globalState');
@@ -14,8 +14,6 @@ jest.mock('./NoPost', () => 'NoPost');
 jest.mock('./header/IdeaHeaderRow', () => 'IdeaHeaderRow');
 jest.mock('./header/InitiativesHeaderRow', () => 'InitiativesHeaderRow');
 jest.mock('components/admin/Pagination', () => 'Pagination');
-
-import PostTable from './';
 
 describe('<PostTable />', () => {
   let onChangeSort: jest.Mock;

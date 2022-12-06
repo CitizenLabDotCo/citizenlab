@@ -1,11 +1,8 @@
 import React from 'react';
-
-// components
-import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
-
 // utils
 import { convertMapping, convertBars } from './utils';
-
+// components
+import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 // typings
 import { Props } from './typings';
 

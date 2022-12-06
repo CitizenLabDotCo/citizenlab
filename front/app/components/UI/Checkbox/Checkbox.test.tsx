@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Checkbox from '.';
 import 'jest-styled-components';
+import Checkbox from '.';
 
 describe('Checkbox UI component', () => {
   let onChange: jest.Mock;

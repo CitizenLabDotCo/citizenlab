@@ -1,38 +1,34 @@
 import React, { lazy } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import moduleConfiguration from 'modules';
-
-// routes
-import createDashboardRoutes from './dashboard/routes';
-import createAdminInitiativesRoutes from './initiatives/routes';
-import createAdminUsersRoutes from './users/routes';
-import invitationsRoutes from './invitations/routes';
-import createAdminProjectsRoutes from './projects/routes';
-import settingsRoutes from './settings/routes';
-import createAdminMessagingRoutes from './messaging/routes';
-import ideasRoutes from './ideas/routes';
-import pagesAndMenuRoutes from './pagesAndMenu/routes';
-import customFieldRoutes from './settings/registration/CustomFieldRoutes/routes';
-import projectFoldersRoutes from './projectFolders/routes';
-
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+// typings
+import { IAppConfigurationData } from 'services/appConfiguration';
+// hooks
+import { usePermission } from 'services/permissions';
+// utils
+import { isModerator } from 'services/permissions/roles';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { isNilOrError, isUUID } from 'utils/helperUtils';
 // components
 import PageLoading from 'components/UI/PageLoading';
-import { Navigate, useLocation } from 'react-router-dom';
+// routes
+import createDashboardRoutes from './dashboard/routes';
+import ideasRoutes from './ideas/routes';
+import createAdminInitiativesRoutes from './initiatives/routes';
+import invitationsRoutes from './invitations/routes';
+import createAdminMessagingRoutes from './messaging/routes';
+import pagesAndMenuRoutes from './pagesAndMenu/routes';
+import projectFoldersRoutes from './projectFolders/routes';
+import createAdminProjectsRoutes from './projects/routes';
+import customFieldRoutes from './settings/registration/CustomFieldRoutes/routes';
+import settingsRoutes from './settings/routes';
+import createAdminUsersRoutes from './users/routes';
+
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminWorkshops = lazy(() => import('containers/Admin/workshops'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
-
-// hooks
-import { usePermission } from 'services/permissions';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
-
-// utils
-import { isModerator } from 'services/permissions/roles';
-import { isNilOrError, isUUID } from 'utils/helperUtils';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-
-// typings
-import { IAppConfigurationData } from 'services/appConfiguration';
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&

@@ -1,15 +1,13 @@
 import React from 'react';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import { media, colors } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
-import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
-import InitiativesCTABox from './InitiativesCTABox';
-
+import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
-
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import InitiativesCTABox from './InitiativesCTABox';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${colors.background};

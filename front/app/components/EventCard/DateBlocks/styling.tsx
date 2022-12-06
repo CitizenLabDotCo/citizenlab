@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { colors, media, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 export const EventDateBlockWrapper = styled.div`
   display: flex;

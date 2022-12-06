@@ -1,19 +1,16 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import { HeaderContent, Left, Text, Right } from './';
-import T from 'components/T';
-
-// services
-import { OnboardingCampaignName } from 'services/onboardingCampaigns';
-
 // hooks
 import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
+import useLocalize from 'hooks/useLocalize';
+// services
+import { OnboardingCampaignName } from 'services/onboardingCampaigns';
+import { isNilOrError } from 'utils/helperUtils';
+import T from 'components/T';
+// components
+import { HeaderContent, Left, Text, Right } from './';
+import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
-import AcceptButton from './AcceptButton';
-import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   currentOnboardingCampaignName: OnboardingCampaignName;

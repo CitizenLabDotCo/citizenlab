@@ -1,24 +1,19 @@
 import React, { PureComponent } from 'react';
-
-// dataloading
-import { isNilOrError } from 'utils/helperUtils';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import Author from 'components/Author';
-import Link from 'utils/cl-router/Link';
-
-// intl
-import T from 'components/T';
-
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
+import Link from 'utils/cl-router/Link';
+// dataloading
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import Author from 'components/Author';
+// intl
+import T from 'components/T';
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import tracks from './tracks';
 
 const Container = styled.div`
   width: 300px;

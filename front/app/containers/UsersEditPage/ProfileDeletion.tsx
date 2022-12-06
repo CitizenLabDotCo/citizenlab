@@ -1,21 +1,17 @@
 // Libraries
 import React, { PureComponent } from 'react';
-
-// Styles
-import styled from 'styled-components';
-
-// components
-import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
-import Button from 'components/UI/Button';
-import Modal from 'components/UI/Modal';
-
+import { WrappedComponentProps } from 'react-intl';
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import Button from 'components/UI/Button';
+// components
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
+import Modal from 'components/UI/Modal';
+// Styles
+import styled from 'styled-components';
 // utils
 import DeletionDialog from './DeletionDialog';
+import messages from './messages';
 
 const Row = styled.div`
   display: flex;

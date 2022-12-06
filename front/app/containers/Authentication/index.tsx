@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { TAuthUser } from 'hooks/useAuthUser';
 import SignUpIn from './SignUpIn';
 import VerificationModal from './VerificationModal';

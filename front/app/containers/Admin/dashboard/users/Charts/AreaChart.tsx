@@ -1,26 +1,22 @@
 // Libraries
 import React from 'react';
-import { orderBy } from 'lodash-es';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
-import messages from 'containers/Admin/dashboard/messages';
-
+import { orderBy } from 'lodash-es';
 // services
 import {
   IUsersByDomicile,
   usersByDomicileStream,
   usersByDomicileXlsxEndpoint,
 } from 'services/userCustomFieldStats';
-
-// components
-import HorizontalBarChart from './HorizontalBarChart';
-
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { convertDomicileData } from 'utils/dataUtils';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { convertDomicileData } from 'utils/dataUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
+import messages from 'containers/Admin/dashboard/messages';
+// components
+import HorizontalBarChart from './HorizontalBarChart';
 
 interface Props {
   startAt: string | null | undefined;

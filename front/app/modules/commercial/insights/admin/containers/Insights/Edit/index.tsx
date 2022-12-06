@@ -1,13 +1,11 @@
 import React from 'react';
-
-// styles
-import styled from 'styled-components';
 import { stylingConsts, media } from 'utils/styleUtils';
-
 // components
 import TopBar, { topBarHeight } from '../../../components/TopBar';
-import InputsTable from './InputsTable';
+// styles
+import styled from 'styled-components';
 import Categories from './Categories';
+import InputsTable from './InputsTable';
 
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);

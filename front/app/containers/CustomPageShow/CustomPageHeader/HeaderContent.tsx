@@ -1,3 +1,9 @@
+import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import useLocalize from 'hooks/useLocalize';
+import { ICustomPageAttributes } from 'services/customPages';
+import { injectIntl } from 'utils/cl-intl';
+import BannerButton from 'components/LandingPages/citizen/BannerButton';
 import {
   Container,
   getAlignItems,
@@ -5,12 +11,6 @@ import {
   HeaderTitle,
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
-import useLocalize from 'hooks/useLocalize';
-import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import BannerButton from 'components/LandingPages/citizen/BannerButton';
-import { ICustomPageAttributes } from 'services/customPages';
 
 interface Props {
   fontColors: 'light' | 'dark';

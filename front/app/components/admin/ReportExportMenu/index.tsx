@@ -1,30 +1,26 @@
 // libraries
 import React, { useState } from 'react';
 import { findDOMNode } from 'react-dom';
-import { trackEventByName } from 'utils/analytics';
-import { Canvg } from 'canvg';
-import XLSX from 'xlsx';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
-// components
-import Button from 'components/UI/Button';
-import { Dropdown } from '@citizenlab/cl2-component-library';
-import { saveAs } from 'file-saver';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { IResolution } from 'components/admin/ResolutionControl';
-
-// utils
-import { requestBlob } from 'utils/request';
-import { reportError } from 'utils/loggingUtils';
-import { truncate } from 'utils/textUtils';
-
+import { Dropdown } from '@citizenlab/cl2-component-library';
+import { Canvg } from 'canvg';
+import { saveAs } from 'file-saver';
 // typings
 import { OneOf } from 'typings';
+import XLSX from 'xlsx';
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { reportError } from 'utils/loggingUtils';
+// utils
+import { requestBlob } from 'utils/request';
+import { fontSizes } from 'utils/styleUtils';
+import { truncate } from 'utils/textUtils';
+// components
+import Button from 'components/UI/Button';
+import { IResolution } from 'components/admin/ResolutionControl';
+// styling
+import styled from 'styled-components';
+import messages from './messages';
 
 const DropdownButton = styled(Button)``;
 

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 export const StatusWrapper = styled.div`
   display: flex;

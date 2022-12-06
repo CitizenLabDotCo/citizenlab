@@ -1,27 +1,23 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import ContentContainer from 'components/ContentContainer';
-import Poll from '../shared/poll';
+// i18n
+import { WrappedComponentProps } from 'react-intl';
+// hooks
+import useProject from 'hooks/useProject';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+import messages from 'containers/ProjectsShowPage/messages';
 import {
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+// components
+import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
-
-// hooks
-import useProject from 'hooks/useProject';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import Poll from '../shared/poll';
 
 const Container = styled.div``;
 

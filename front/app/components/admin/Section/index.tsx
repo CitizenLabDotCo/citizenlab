@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { remCalc, colors, fontSizes, isRtl } from 'utils/styleUtils';
-import Link from 'utils/cl-router/Link';
 import { Box } from '@citizenlab/cl2-component-library';
+import Link from 'utils/cl-router/Link';
+import { remCalc, colors, fontSizes, isRtl } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 export const Section = styled.div`
   margin-bottom: 0;

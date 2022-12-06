@@ -1,17 +1,14 @@
 import React, { memo } from 'react';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
-
 // services
 import { IInviteAcceptedNotificationData } from 'services/notifications';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
+import { DeletedUser } from '../Notification';
 // components
 import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
-import { DeletedUser } from '../Notification';
 
 interface Props {
   notification: IInviteAcceptedNotificationData;

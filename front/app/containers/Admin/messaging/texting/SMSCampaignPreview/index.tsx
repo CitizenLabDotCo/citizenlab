@@ -1,29 +1,24 @@
 import React, { useState } from 'react';
-
-// components
-import Button from 'components/UI/Button';
-import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from '../components/TextingHeader';
-import Modal from 'components/UI/Modal';
 import { Box, Text, Error } from '@citizenlab/cl2-component-library';
-
-// utils
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-
 // hooks
 import useTextingCampaign from 'hooks/useTextingCampaign';
-
 // services
 import {
   deleteTextingCampaign,
   sendTextingCampaign,
 } from 'services/textingCampaigns';
-
+import clHistory from 'utils/cl-router/history';
+// utils
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
+import TextingHeader from '../components/TextingHeader';
+import HelmetIntl from 'components/HelmetIntl';
+// components
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 const StyledModalButton = styled(Button)`
   margin-right: 10px;

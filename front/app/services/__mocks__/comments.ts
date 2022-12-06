@@ -1,5 +1,5 @@
-import { ICommentData, IComment, IComments } from 'services/comments';
 import { BehaviorSubject } from 'rxjs';
+import { ICommentData, IComment, IComments } from 'services/comments';
 
 export const makeCommentData = (
   id = 'commentId',

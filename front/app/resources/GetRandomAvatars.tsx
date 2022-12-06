@@ -1,9 +1,9 @@
 import React from 'react';
 import { isEqual } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { IAvatars, randomAvatarsStream } from 'services/avatars';
 import { isNilOrError } from 'utils/helperUtils';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 interface InputProps {
   limit?: number;

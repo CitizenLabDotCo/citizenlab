@@ -1,4 +1,6 @@
 import React from 'react';
+import categories from 'modules/commercial/insights/fixtures/categories';
+import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 import {
   render,
   screen,
@@ -6,9 +8,6 @@ import {
   within,
   waitFor,
 } from 'utils/testUtils/rtl';
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
-import categories from 'modules/commercial/insights/fixtures/categories';
-
 import Detect from './';
 
 let mockData = categories;

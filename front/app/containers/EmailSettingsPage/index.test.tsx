@@ -1,15 +1,14 @@
 // @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
+import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';
+import { EmailSettingPage } from './';
 
 jest.mock('services/campaignConsents');
-import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';
 
 jest.mock('components/ConsentForm', () => 'ConsentForm');
 jest.mock('./InitialUnsubscribeFeedback', () => 'InitialUnsubscribeFeedback');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
-import { EmailSettingPage } from './';
 
 // mock withRouter
 const location = {

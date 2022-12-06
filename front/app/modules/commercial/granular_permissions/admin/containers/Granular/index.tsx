@@ -1,15 +1,13 @@
 import React from 'react';
 import { IProjectData } from 'services/projects';
-import styled from 'styled-components';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { Section, SubSectionTitle } from 'components/admin/Section';
+import styled from 'styled-components';
+import Continuous from './Continuous';
 // components
 import Timeline from './Timeline';
-import Continuous from './Continuous';
-import { Section, SubSectionTitle } from 'components/admin/Section';
+import messages from './messages';
 
 const StyledSection = styled(Section)`
   margin-bottom: 30px;

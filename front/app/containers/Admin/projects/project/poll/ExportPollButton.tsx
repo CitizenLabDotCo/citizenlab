@@ -1,22 +1,18 @@
 // Libraries
 import React from 'react';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// typings
-import { IParticipationContextType } from 'typings';
-
-// components
-import Button from 'components/UI/Button';
-import { exportPollResponses } from 'services/pollResponses';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 import { snakeCase } from 'lodash-es';
+// typings
+import { IParticipationContextType } from 'typings';
+import { exportPollResponses } from 'services/pollResponses';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+// components
+import Button from 'components/UI/Button';
+import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   participationContextType: IParticipationContextType;

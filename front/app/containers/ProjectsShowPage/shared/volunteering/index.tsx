@@ -1,23 +1,18 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// resource hooks
-import useCauses from 'hooks/useCauses';
-
-// resource components
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-
-// components
-import CauseCard from './CauseCard';
-
-// styling
-import styled from 'styled-components';
-
 // typings
 import { IParticipationContextType } from 'typings';
+// resource components
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// resource hooks
+import useCauses from 'hooks/useCauses';
+import { isNilOrError } from 'utils/helperUtils';
+// styling
+import styled from 'styled-components';
+// components
+import CauseCard from './CauseCard';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

@@ -1,20 +1,16 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+// components
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-
+import { colors, media } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
 // styles
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
-
 // assets
 import insights from '../../../assets/insightsView.png';
 import messages from '../messages';
-
-// components
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div`
   background-color: ${colors.white};

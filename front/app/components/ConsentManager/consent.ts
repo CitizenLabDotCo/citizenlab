@@ -1,9 +1,9 @@
+import { get, set, remove } from 'js-cookie';
+import { SECURE_COOKIE } from '../../utils/cookie';
 import {
   IDestination,
   TCategory,
 } from 'components/ConsentManager/destinations';
-import { get, set, remove } from 'js-cookie';
-import { SECURE_COOKIE } from '../../utils/cookie';
 
 const COOKIE_NAME = 'cl2_consent';
 

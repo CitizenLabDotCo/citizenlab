@@ -1,37 +1,30 @@
 // Libraries
 import React from 'react';
-
-// Services
-import { DeleteReasonCode } from 'services/comments';
-
-// Components
-import Button from 'components/UI/Button';
-import { SectionField } from 'components/admin/Section';
-import { Box } from '@citizenlab/cl2-component-library';
-
 // form
 import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import TextArea from 'components/HookForm/TextArea';
-import Feedback from 'components/HookForm/Feedback';
-import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
-
 // i18n
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-
-// Styling
-import styled from 'styled-components';
-
+import { Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object } from 'yup';
+// Services
+import { DeleteReasonCode } from 'services/comments';
+import { injectIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 // utils
 import { keys } from 'utils/helperUtils';
+import Feedback from 'components/HookForm/Feedback';
+import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
+import TextArea from 'components/HookForm/TextArea';
+// Components
+import Button from 'components/UI/Button';
+import { SectionField } from 'components/admin/Section';
+// Styling
+import styled from 'styled-components';
+import messages from './messages';
 
 const ButtonsWrapper = styled.div`
   display: flex;

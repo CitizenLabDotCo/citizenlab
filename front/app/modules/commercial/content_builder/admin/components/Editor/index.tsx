@@ -1,24 +1,22 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-
-// craft
-import Container from '../CraftComponents/Container';
-import Text from '../CraftComponents/Text';
-import TwoColumn from '../CraftComponents/TwoColumn';
-import ThreeColumn from '../CraftComponents/ThreeColumn';
-import Image from '../CraftComponents/Image';
-import RenderNode from '../RenderNode';
-import Iframe from '../CraftComponents/Iframe';
+import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
-import WhiteSpace from '../CraftComponents/WhiteSpace';
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
-import ImageTextCards from '../CraftSections/ImageTextCards';
 import Button from '../CraftComponents/Button';
+// craft
+import Container from '../CraftComponents/Container';
+import Iframe from '../CraftComponents/Iframe';
+import Image from '../CraftComponents/Image';
+import Text from '../CraftComponents/Text';
+import ThreeColumn from '../CraftComponents/ThreeColumn';
+import TwoColumn from '../CraftComponents/TwoColumn';
+import WhiteSpace from '../CraftComponents/WhiteSpace';
+import ImageTextCards from '../CraftSections/ImageTextCards';
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import RenderNode from '../RenderNode';
 
 type EditorProps = {
   children?: React.ReactNode;

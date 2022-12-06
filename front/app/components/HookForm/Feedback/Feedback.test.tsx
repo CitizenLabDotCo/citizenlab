@@ -1,11 +1,11 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import Feedback from './';
-import Input from '../Input';
 import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object } from 'yup';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import Input from '../Input';
+import Feedback from './';
 
 const schema = object({
   input: string().required('Error message'),

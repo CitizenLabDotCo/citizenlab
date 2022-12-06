@@ -1,22 +1,19 @@
 import React, { memo } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
-
-// types
-import { ITopicData } from 'services/topics';
-
-// intl
-import T from 'components/T';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // hooks
 import useTopics from 'hooks/useTopics';
+// types
+import { ITopicData } from 'services/topics';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+// intl
+import T from 'components/T';
+// styles
+import styled from 'styled-components';
+import messages from './messages';
 
 const TopicsContainer = styled.div`
   display: flex;

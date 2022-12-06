@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useState } from 'react';
-
 // components
 import {
   Thead,
@@ -8,20 +7,6 @@ import {
   Text,
   Checkbox,
 } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
-import Outlet from 'components/Outlet';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// utils
-import { insertConfiguration } from 'utils/moduleUtils';
-import { roundPercentage } from 'utils/math';
-
 // typings
 import {
   CellConfiguration,
@@ -29,7 +14,17 @@ import {
   Override,
 } from 'typings';
 import { SortAttribute as IdeasSortAttribute } from 'resources/GetIdeas';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { roundPercentage } from 'utils/math';
+// utils
+import { insertConfiguration } from 'utils/moduleUtils';
 import { SortDirection } from 'utils/paginationUtils';
+// styling
+import { colors } from 'utils/styleUtils';
+import FeatureFlag from 'components/FeatureFlag';
+import Outlet from 'components/Outlet';
+import messages from '../../../messages';
 
 interface SortableHeaderCellProps {
   sortAttribute?: IdeasSortAttribute;

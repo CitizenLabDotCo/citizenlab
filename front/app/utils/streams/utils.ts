@@ -1,4 +1,5 @@
 // utils
+import stringify from 'json-stable-stringify';
 import {
   forOwn,
   isArray,
@@ -9,8 +10,6 @@ import {
   isUndefined,
 } from 'lodash-es';
 import { isUUID } from 'utils/helperUtils';
-import stringify from 'json-stable-stringify';
-
 // typings
 import { IObject } from '.';
 

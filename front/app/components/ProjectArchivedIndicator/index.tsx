@@ -1,18 +1,14 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
 import useProject from 'hooks/useProject';
-
-// components
-import Warning from 'components/UI/Warning';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import Warning from 'components/UI/Warning';
 // style
 import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

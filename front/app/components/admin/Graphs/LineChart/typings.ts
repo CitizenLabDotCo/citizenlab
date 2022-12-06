@@ -1,8 +1,7 @@
 import {
   BaseProps,
   AxisProps,
-  KeyOfType,
-  // BaseLabels,
+  KeyOfType, // BaseLabels,
 } from '../typings';
 
 // PROPS

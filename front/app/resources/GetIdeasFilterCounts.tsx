@@ -1,9 +1,9 @@
 import React from 'react';
+import { isEqual, omitBy, isNil } from 'lodash-es';
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import { isEqual, omitBy, isNil } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import { IIdeasFilterCounts, ideasFilterCountsStream } from 'services/ideas';
+import { isNilOrError } from 'utils/helperUtils';
 import { IQueryParameters } from './GetIdeas';
 
 type children = (

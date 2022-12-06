@@ -1,11 +1,10 @@
 // utils
-import { getEmptyRow } from '../../hooks/useRegistrations/parse';
-import { emptyDateRange } from '../../utils/timeSeries';
-
 // typings
 import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { getEmptyRow } from '../../hooks/useRegistrations/parse';
 import { Stats } from '../../hooks/useRegistrations/typings';
+import { emptyDateRange } from '../../utils/timeSeries';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export const generateEmptyData = (
   startAtMoment: Moment | null | undefined,

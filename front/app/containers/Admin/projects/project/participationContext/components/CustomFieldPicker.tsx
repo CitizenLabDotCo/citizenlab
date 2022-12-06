@@ -1,16 +1,13 @@
 import React from 'react';
-
-// components
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { StyledSelect } from './styling';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-
+import { IOption } from '@citizenlab/cl2-component-library';
 // typings
 import { InputTerm } from 'services/participationContexts';
-import { IOption } from '@citizenlab/cl2-component-library';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+// components
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import messages from '../../messages';
+import { StyledSelect } from './styling';
 
 interface Props {
   input_term: InputTerm | undefined;

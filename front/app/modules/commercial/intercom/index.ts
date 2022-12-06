@@ -1,6 +1,7 @@
 import { combineLatest } from 'rxjs';
-import { authUserStream } from 'services/auth';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
+import { authUserStream } from 'services/auth';
+import { isAdmin, isModerator } from 'services/permissions/roles';
 import {
   bufferUntilInitialized,
   events$,
@@ -10,12 +11,11 @@ import {
   tenantInfo,
 } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
+import { ModuleConfiguration } from 'utils/moduleUtils';
 import {
   IDestinationConfig,
   registerDestination,
 } from 'components/ConsentManager/destinations';
-import { isAdmin, isModerator } from 'services/permissions/roles';
-import { ModuleConfiguration } from 'utils/moduleUtils';
 
 export const INTERCOM_APP_ID = process.env.INTERCOM_APP_ID;
 

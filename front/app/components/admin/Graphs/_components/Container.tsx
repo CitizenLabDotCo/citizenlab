@@ -1,14 +1,10 @@
 import React, { useMemo } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
-
-// components
-import { ResponsiveContainer } from 'recharts';
-import FakeLegend from './Legend/FakeLegend';
 import { Box } from '@citizenlab/cl2-component-library';
-
 // utils
 import { debounce, isEqual } from 'lodash-es';
-
+// components
+import { ResponsiveContainer } from 'recharts';
 // typings
 import { Percentage } from 'typings';
 import {
@@ -16,6 +12,7 @@ import {
   LegendDimensions,
 } from '../_components/Legend/typings';
 import { Legend } from '../typings';
+import FakeLegend from './Legend/FakeLegend';
 
 interface Props {
   width?: number | Percentage;

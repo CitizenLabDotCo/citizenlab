@@ -1,21 +1,17 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import UserName from 'components/UI/UserName';
-import Avatar from 'components/Avatar';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { FormattedDate } from 'react-intl';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
 // hooks
 import useIdea from 'hooks/useIdea';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
+import Avatar from 'components/Avatar';
+// components
+import UserName from 'components/UI/UserName';
+// styling
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

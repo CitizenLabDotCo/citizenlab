@@ -1,14 +1,21 @@
 // libraries
 import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import { isEmpty } from 'lodash-es';
-
+import { IGraphFormat } from 'typings';
+// resources
+import GetSerieFromStream from 'resources/GetSerieFromStream';
+import {
+  IUsersByBirthyear,
+  IUsersByDomicile,
+  IUsersByRegistrationField,
+} from 'services/userCustomFieldStats';
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+// types
+import { IStreamParams, IStream } from 'utils/streams';
 import {
   IGraphUnit,
   GraphCardHeader,
@@ -18,21 +25,9 @@ import {
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
-
-// resources
-import GetSerieFromStream from 'resources/GetSerieFromStream';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// types
-import { IStreamParams, IStream } from 'utils/streams';
-import { IGraphFormat } from 'typings';
-import {
-  IUsersByBirthyear,
-  IUsersByDomicile,
-  IUsersByRegistrationField,
-} from 'services/userCustomFieldStats';
+// components
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+import messages from '../../messages';
 
 interface DataProps {
   serie: IGraphFormat;

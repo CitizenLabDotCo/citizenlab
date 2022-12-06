@@ -1,4 +1,11 @@
 import React from 'react';
+import categories from 'modules/commercial/insights/fixtures/categories';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import views from 'modules/commercial/insights/fixtures/views';
+import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
+import * as batchService from 'modules/commercial/insights/services/batchAssignment';
+import * as service from 'modules/commercial/insights/services/insightsInputs';
+import clHistory from 'utils/cl-router/history';
 import {
   render,
   screen,
@@ -7,14 +14,7 @@ import {
   act,
   waitFor,
 } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsInputs';
-import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
-import * as batchService from 'modules/commercial/insights/services/batchAssignment';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
-import categories from 'modules/commercial/insights/fixtures/categories';
-import views from 'modules/commercial/insights/fixtures/views';
-
-import clHistory from 'utils/cl-router/history';
+import InputsTable from './';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
@@ -25,8 +25,6 @@ jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
   batchAssignCategories: jest.fn(),
   batchUnassignCategories: jest.fn(),
 }));
-
-import InputsTable from './';
 
 const viewId = '1';
 

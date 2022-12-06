@@ -1,23 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
-
-import ActionsForm from './ActionsForm';
-
 import GetProjectPermissions, {
   GetProjectPermissionsChildProps,
 } from 'resources/GetProjectPermissions';
-import { isNilOrError } from 'utils/helperUtils';
+import useProject from 'hooks/useProject';
 import {
   IPermissionData,
   updateProjectPermission,
 } from 'services/actionPermissions';
-
-import { fontSizes } from 'utils/styleUtils';
-import useProject from 'hooks/useProject';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   getMethodConfig,
   ParticipationMethodConfig,
 } from 'utils/participationMethodUtils';
+import { fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
+import ActionsForm from './ActionsForm';
 
 const Container = styled.div`
   display: flex;

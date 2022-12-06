@@ -1,5 +1,5 @@
-import { randomString } from '../support/commands';
 import { skipOn } from '@cypress/skip-test';
+import { randomString } from '../support/commands';
 
 describe('Existing continuous project with survey', () => {
   before(() => {

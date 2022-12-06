@@ -1,11 +1,10 @@
 import React from 'react';
 import { IProjectData } from 'services/projects';
-import Link from 'utils/cl-router/Link';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import Link from 'utils/cl-router/Link';
 import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 interface InputProps {
   project: IProjectData;

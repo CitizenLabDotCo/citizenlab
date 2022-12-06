@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
+import { Observable, of } from 'rxjs';
 import {
   ideaFormSchemaStream,
   IIdeaFormSchemas,
 } from 'services/ideaCustomFieldsSchemas';
-import { Observable, of } from 'rxjs';
 import {
   ideaJsonFormsSchemaStream,
   IIdeaJsonFormSchemas,

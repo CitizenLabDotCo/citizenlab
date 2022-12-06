@@ -1,34 +1,31 @@
 import React from 'react';
-
 // components
 import {
   Toggle,
   IconTooltip,
   IOption,
 } from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
+// typings
+import {
+  IdeaDefaultSortMethod,
+  InputTerm,
+} from 'services/participationContexts';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import Error from 'components/UI/Error';
-import { LabelBudgetingInput } from './labels';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import { ApiErrors } from '..';
+import messages from '../../messages';
 import CustomFieldPicker from './CustomFieldPicker';
 import DefaultViewPicker from './DefaultViewPicker';
 import SortingPicker from './SortingPicker';
+import { LabelBudgetingInput } from './labels';
 import {
   ToggleRow,
   ToggleLabel,
   BudgetingAmountInput,
   BudgetingAmountInputError,
 } from './styling';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// typings
-import {
-  IdeaDefaultSortMethod,
-  InputTerm,
-} from 'services/participationContexts';
-import { ApiErrors } from '..';
 
 interface Props {
   isCustomInputTermEnabled: boolean;

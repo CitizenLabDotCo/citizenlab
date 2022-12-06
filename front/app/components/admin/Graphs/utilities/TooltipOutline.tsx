@@ -1,8 +1,6 @@
 import React from 'react';
-
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
-
 // styling
 import { colors } from 'utils/styleUtils';
 

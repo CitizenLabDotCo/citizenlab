@@ -1,9 +1,9 @@
-import { XlsxData } from 'components/admin/ReportExportMenu';
-import { StatCardData, StatCardLabels } from './typings';
-import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
-import { FormatMessage } from '../../../../../../typings';
-import { IResolution } from '../../../../../../components/admin/ResolutionControl';
 import { MessageDescriptor } from 'react-intl';
+import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
+import { IResolution } from '../../../../../../components/admin/ResolutionControl';
+import { XlsxData } from 'components/admin/ReportExportMenu';
+import { FormatMessage } from '../../../../../../typings';
+import { StatCardData, StatCardLabels } from './typings';
 
 export const parseExcelData = (data: StatCardData): XlsxData => {
   const xlsxDataSheet = {};

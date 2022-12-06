@@ -1,7 +1,6 @@
 import { PureComponent } from 'react';
 import { get } from 'lodash-es';
 import { Subscription } from 'rxjs';
-
 // services
 import {
   currentAppConfigurationStream,

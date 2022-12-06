@@ -1,8 +1,8 @@
-import { Streams } from '.';
+import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
+import { authApiEndpoint } from 'services/auth';
 // @ts-ignore
 import _request, { __setResponseFor } from 'utils/request';
-import { authApiEndpoint } from 'services/auth';
-import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
+import { Streams } from '.';
 
 const request = _request as jest.MockedFunction<any>;
 

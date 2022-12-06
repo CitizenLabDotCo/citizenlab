@@ -1,35 +1,32 @@
 import * as React from 'react';
-import { get } from 'lodash-es';
-import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { WrappedComponentProps } from 'react-intl';
 import scrollToComponent from 'react-scroll-to-component';
-
+import { Input, LocationInput } from '@citizenlab/cl2-component-library';
+import bowser from 'bowser';
+import { get } from 'lodash-es';
+// typings
+import { Multiloc, Locale, UploadFile } from 'typings';
+import { ITopicData } from 'services/topics';
+import { MessageDescriptor, injectIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
+import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
 // Components
 import {
   FormSection,
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
-import { SectionField } from 'components/admin/Section';
-import TopicsPicker from 'components/UI/TopicsPicker';
-import { Input, LocationInput } from '@citizenlab/cl2-component-library';
-import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import FileUploader from 'components/UI/FileUploader';
-import Error from 'components/UI/Error';
-import Link from 'utils/cl-router/Link';
-
+import QuillEditor from 'components/UI/QuillEditor';
+import TopicsPicker from 'components/UI/TopicsPicker';
+import { SectionField } from 'components/admin/Section';
+import styled from 'styled-components';
+import { FormSubmitFooter } from './SubmitFooter';
 // intl
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { MessageDescriptor, injectIntl, FormattedMessage } from 'utils/cl-intl';
-
-// typings
-import { Multiloc, Locale, UploadFile } from 'typings';
-import bowser from 'bowser';
-import { ITopicData } from 'services/topics';
-import { FormSubmitFooter } from './SubmitFooter';
 
 const Form = styled.form`
   display: flex;

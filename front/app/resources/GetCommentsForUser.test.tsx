@@ -2,16 +2,15 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-
-// component to test
-import GetCommentsForUser from './GetCommentsForUser';
-
 // mocks
 import {
   commentsForUserStream,
   __setMockCommentsForUser,
   makeComments,
 } from 'services/comments';
+// component to test
+import GetCommentsForUser from './GetCommentsForUser';
+
 // typescript struggles when using both mocked things and real ones
 // this the way I found to minimize the errors, and to have autocomplethin on the .mock object
 

@@ -1,22 +1,18 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import { H3, H4 } from 'containers/SiteMap';
-import T from 'components/T';
-import Link from 'utils/cl-router/Link';
-import Project from 'containers/SiteMap/Project';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/SiteMap/messages';
-
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
 import useProjectFolder from 'hooks/useProjectFolder';
-
 // typings
 import { PublicationStatus } from 'services/projects';
+// intl
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import { H3, H4 } from 'containers/SiteMap';
+import Project from 'containers/SiteMap/Project';
+import messages from 'containers/SiteMap/messages';
+import T from 'components/T';
 
 interface Props {
   hightestTitle: 'h3' | 'h4';

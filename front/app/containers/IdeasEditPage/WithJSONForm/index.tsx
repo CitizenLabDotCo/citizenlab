@@ -1,35 +1,30 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import { PreviousPathnameContext } from 'context';
-
-import { WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-
-import { isError, isNilOrError } from 'utils/helperUtils';
-import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import useInputSchema from 'hooks/useInputSchema';
-import useIdeaImages from 'hooks/useIdeaImages';
-import useResourceFiles from 'hooks/useResourceFiles';
-import { getInputTerm } from 'services/participationContexts';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import ideaFormMessages from 'containers/IdeasNewPage/messages';
-
-import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
-
-import PageContainer from 'components/UI/PageContainer';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Box } from '@citizenlab/cl2-component-library';
-import { updateIdea } from 'services/ideas';
-import { geocode } from 'utils/locationTools';
+import useAuthUser from 'hooks/useAuthUser';
 import useIdea from 'hooks/useIdea';
-import IdeasEditMeta from '../IdeasEditMeta';
-import { usePermission } from 'services/permissions';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import useIdeaImages from 'hooks/useIdeaImages';
+import useInputSchema from 'hooks/useInputSchema';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
+import useResourceFiles from 'hooks/useResourceFiles';
 import { deleteIdeaImage } from 'services/ideaImages';
+import { updateIdea } from 'services/ideas';
+import { getInputTerm } from 'services/participationContexts';
+import { usePermission } from 'services/permissions';
+import { PreviousPathnameContext } from 'context';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
+import { isError, isNilOrError } from 'utils/helperUtils';
+import { geocode } from 'utils/locationTools';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
+import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
+import IdeasEditMeta from '../IdeasEditMeta';
+import messages from '../messages';
 
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);

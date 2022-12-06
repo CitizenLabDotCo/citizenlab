@@ -1,12 +1,11 @@
-import moment, { Moment } from 'moment';
-
 // utils
 import { groupBy } from 'lodash-es';
+import moment, { Moment } from 'moment';
 import { timeSeriesParser } from '../../utils/timeSeries';
 import { keys, get } from 'utils/helperUtils';
-
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
+import { Translations } from './translations';
 import {
   Response,
   Stats,
@@ -16,7 +15,6 @@ import {
   PreparedTimeSeriesResponse,
   PreparedTimeSeriesResponseRow,
 } from './typings';
-import { Translations } from './translations';
 
 export const mergeTimeSeries = (timeSeriesQuery: TimeSeriesResponseRow[]) => {
   const dateColumn = 'first_dimension_date_sent_date';

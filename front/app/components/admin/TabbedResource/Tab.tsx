@@ -1,10 +1,10 @@
-import { StatusLabel } from '@citizenlab/cl2-component-library';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import styled from 'styled-components';
+import { StatusLabel } from '@citizenlab/cl2-component-library';
 import { ITab } from 'typings';
 import Link from 'utils/cl-router/Link';
 import { colors, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 const Container = styled.div`
   list-style: none;

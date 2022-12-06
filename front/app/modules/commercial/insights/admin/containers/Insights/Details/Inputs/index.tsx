@@ -1,45 +1,38 @@
 import React, { useCallback, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// utils
-import clHistory from 'utils/cl-router/history';
-import { stringify, parse } from 'qs';
-import { isNilOrError } from 'utils/helperUtils';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
-import Search from 'components/UI/SearchInput';
-import InputCard from './InputCard';
-import Empty from './Empty';
+import { stringify, parse } from 'qs';
+// hooks
+import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
+// types
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+// tracking
+import { trackEventByName } from 'utils/analytics';
+// intl
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 import Button from 'components/UI/Button';
-import Tag from 'modules/commercial/insights/admin/components/Tag';
 import Modal from 'components/UI/Modal';
-import CreateCategory from './CreateCategory';
-import Export from './Export';
+import Search from 'components/UI/SearchInput';
 import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import Tag from 'modules/commercial/insights/admin/components/Tag';
+// styles
+import styled from 'styled-components';
 import messages from '../../messages';
-
-// types
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
-
-// hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
+import CreateCategory from './CreateCategory';
+import Empty from './Empty';
+import Export from './Export';
+import InputCard from './InputCard';
 
 const InputsContainer = styled.div`
   flex: 0 0 420px;

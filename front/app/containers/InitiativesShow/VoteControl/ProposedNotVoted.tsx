@@ -1,26 +1,21 @@
-import React from 'react';
-
-import styled, { useTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { StatusExplanation } from './SharedStyles';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
-
-import { IInitiativeData } from 'services/initiatives';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
-
-import CountDown from './CountDown';
-import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
-
-import Button from 'components/UI/Button';
-import ProposalProgressBar from './ProposalProgressBar';
-
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
-import T from 'components/T';
-import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
-import { darken } from 'polished';
 import Tippy from '@tippyjs/react';
+import React from 'react';
+import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeData } from 'services/initiatives';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import styled, { useTheme } from 'styled-components';
+import CountDown from './CountDown';
+import ProposalProgressBar from './ProposalProgressBar';
+import { StatusExplanation } from './SharedStyles';
+import messages from './messages';
 
 const Container = styled.div``;
 

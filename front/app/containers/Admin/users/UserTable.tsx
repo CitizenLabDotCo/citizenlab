@@ -1,34 +1,27 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { isAdmin, TRole } from 'services/permissions/roles';
-import { includes, get, isArray } from 'lodash-es';
-
 // Components
 import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
-import Pagination from 'components/Pagination';
-import UserTableRow from './UserTableRow';
-
-// Services
-import { IUserData, updateUser } from 'services/users';
-
+import { includes, get, isArray } from 'lodash-es';
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
-// Events --- For error handling
-import eventEmitter from 'utils/eventEmitter';
+import { isAdmin, TRole } from 'services/permissions/roles';
+// Services
+import { IUserData, updateUser } from 'services/users';
 import events from './events';
-
 // tracking
 import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
-
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+// Events --- For error handling
+import eventEmitter from 'utils/eventEmitter';
+import Pagination from 'components/Pagination';
 // Styles
 import styled from 'styled-components';
+import UserTableRow from './UserTableRow';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   flex: 1;

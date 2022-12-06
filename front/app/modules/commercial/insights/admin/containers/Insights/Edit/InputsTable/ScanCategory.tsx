@@ -1,21 +1,17 @@
 import React from 'react';
-
-// styles
-import styled, { css, keyframes } from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-
-// intl
-import messages from '../../messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCategory';
+import { injectIntl } from 'utils/cl-intl';
+import { fontSizes, colors } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+// styles
+import styled, { css, keyframes } from 'styled-components';
+// intl
+import messages from '../../messages';
 
 const ScanContainer = styled.div`
   width: 100%;

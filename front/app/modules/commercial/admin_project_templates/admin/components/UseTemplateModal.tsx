@@ -1,56 +1,48 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { get, isEmpty, transform } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
-import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
-import bowser from 'bowser';
-import moment from 'moment';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
-
+import { WrappedComponentProps } from 'react-intl';
 // graphql
 import { gql, useQuery, useMutation } from '@apollo/client';
-import { client } from '../../utils/apolloUtils';
-
+// components
+import { Input, Icon, Select, Box } from '@citizenlab/cl2-component-library';
+import bowser from 'bowser';
+import { get, isEmpty, transform } from 'lodash-es';
+import moment from 'moment';
+import { darken } from 'polished';
+// typings
+import { Locale, Multiloc, IOption } from 'typings';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useAuthUser from 'hooks/useAuthUser';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useLocalize from 'hooks/useLocalize';
 import useProjectFolders from 'hooks/useProjectFolders';
+import { isAdmin } from 'services/permissions/roles';
 import {
   userModeratesFolder,
   isProjectFolderModerator,
 } from 'services/permissions/rules/projectFolderPermissions';
-import { isAdmin } from 'services/permissions/roles';
-import useLocalize from 'hooks/useLocalize';
-
-// components
-import { Input, Icon, Select, Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Modal from 'components/UI/Modal';
-import Error from 'components/UI/Error';
-import Link from 'utils/cl-router/Link';
-import T from 'components/T';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import { client } from '../../utils/apolloUtils';
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import eventEmitter from 'utils/eventEmitter';
+import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
+import streams from 'utils/streams';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { API_PATH } from 'containers/App/constants';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import Modal from 'components/UI/Modal';
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
-
-// typings
-import { Locale, Multiloc, IOption } from 'typings';
+import tracks from '../../tracks';
+import messages from './messages';
 
 const Content = styled.div`
   padding-left: 30px;

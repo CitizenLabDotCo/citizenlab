@@ -1,12 +1,10 @@
 import React from 'react';
-
-// i18n
-import messages from 'containers/Admin/dashboard/messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // components
 import { Text } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
+import { FormattedMessage } from 'utils/cl-intl';
+// i18n
+import messages from 'containers/Admin/dashboard/messages';
 import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 
 interface CustomTooltipProps {

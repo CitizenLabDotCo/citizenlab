@@ -1,9 +1,9 @@
 import React, { memo, useCallback, FormEvent } from 'react';
-import { pull } from 'lodash-es';
 import { Label, Icon } from 'semantic-ui-react';
-import T from 'components/T';
+import { pull } from 'lodash-es';
 import useTopics from 'hooks/useTopics';
 import { isNilOrError } from 'utils/helperUtils';
+import T from 'components/T';
 import styled from 'styled-components';
 
 const StyledLabel = styled(Label)`

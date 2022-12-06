@@ -1,8 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { IRelationship } from 'typings';
-import { apiEndpoint as projectsApiEndpoint } from './projects';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
+import { apiEndpoint as projectsApiEndpoint } from './projects';
 
 const apiEndpoint = `${API_PATH}/projects_allowed_input_topics`;
 const getListEndpoint = (projectId: string) =>

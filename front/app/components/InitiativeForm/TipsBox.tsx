@@ -1,16 +1,13 @@
 import React, { memo } from 'react';
-
-// components
-import TipsContent from './TipsContent';
-
+import { darken } from 'polished';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // style
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { darken } from 'polished';
+// components
+import TipsContent from './TipsContent';
+import messages from './messages';
 
 interface Props {
   className?: string;

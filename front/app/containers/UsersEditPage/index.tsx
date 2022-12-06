@@ -1,30 +1,25 @@
 // Libraries
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// router
-import clHistory from 'utils/cl-router/history';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// Components
-import ProfileForm from './ProfileForm';
-import CampaignsConsentForm from './CampaignsConsentForm';
-import ProfileDeletion from './ProfileDeletion';
-import UsersEditPageMeta from './UsersEditPageMeta';
-import FragmentForm from './FragmentForm';
-
-// Styles
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-
 // Hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
+import { ScreenReaderOnly } from 'utils/a11y';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+// router
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+// Styles
+import styled from 'styled-components';
+import CampaignsConsentForm from './CampaignsConsentForm';
+import FragmentForm from './FragmentForm';
+import ProfileDeletion from './ProfileDeletion';
+// Components
+import ProfileForm from './ProfileForm';
+import UsersEditPageMeta from './UsersEditPageMeta';
 import VerificationStatus from './VerificationStatus';
+import messages from './messages';
 
 const Container = styled.main`
   width: 100%;

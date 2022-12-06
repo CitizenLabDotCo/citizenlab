@@ -1,26 +1,21 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
+// utils
+import { matchPathToUrl } from 'utils/helperUtils';
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-
-// utils
-import { matchPathToUrl } from 'utils/helperUtils';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Insights: React.FC<WrappedComponentProps & WithRouterProps> = ({
   location: { pathname },

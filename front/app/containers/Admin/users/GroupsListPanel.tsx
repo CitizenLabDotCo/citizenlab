@@ -1,36 +1,30 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
+import { rgba } from 'polished';
 import { Subscription } from 'rxjs';
-
 // Resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
 import { IGroupData } from 'services/groups';
-
-// Events
-import eventEmitter from 'utils/eventEmitter';
 import events, { MembershipAdd } from './events';
-
-// Components
-import Button from 'components/UI/Button';
-import T from 'components/T';
-
-// i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
-
 // tracking
 import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
-
+// i18n
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import Link from 'utils/cl-router/Link';
+// Events
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
+import T from 'components/T';
+// Components
+import Button from 'components/UI/Button';
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
-import Outlet from 'components/Outlet';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   flex: 1;

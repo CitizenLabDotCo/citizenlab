@@ -1,24 +1,8 @@
 import React from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { map, isEmpty } from 'lodash-es';
-
-// intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
-// typings
-import { IStreamParams, IStream } from 'utils/streams';
-import {
-  IResourceByTime,
-  IVotesByTime,
-  IUsersByTime,
-  IIdeasByTime,
-  ICommentsByTime,
-} from 'services/stats';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { Popup } from 'semantic-ui-react';
+import { Icon } from '@citizenlab/cl2-component-library';
+import { map, isEmpty } from 'lodash-es';
 import {
   ComposedChart,
   CartesianGrid,
@@ -31,6 +15,21 @@ import {
   Label,
   ResponsiveContainer,
 } from 'recharts';
+import { Subscription, combineLatest } from 'rxjs';
+import {
+  IResourceByTime,
+  IVotesByTime,
+  IUsersByTime,
+  IIdeasByTime,
+  ICommentsByTime,
+} from 'services/stats';
+// intl
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+// utils
+import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+// typings
+import { IStreamParams, IStream } from 'utils/streams';
 import {
   IGraphUnit,
   GraphCard,
@@ -42,17 +41,13 @@ import {
   GraphCardFigure,
   GraphCardFigureChange,
 } from 'components/admin/GraphWrappers';
-import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { legacyColors, sizes } from 'components/admin/Graphs/styling';
+// components
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { isNilOrError } from 'utils/helperUtils';
-
 // styling
 import styled from 'styled-components';
-import { legacyColors, sizes } from 'components/admin/Graphs/styling';
-
-// utils
-import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
+import messages from '../../messages';
 
 const InfoIcon = styled(Icon)`
   display: flex;

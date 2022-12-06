@@ -1,5 +1,4 @@
 import React from 'react';
-
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 
 interface Props {

@@ -1,16 +1,13 @@
 import React from 'react';
-import clHistory from 'utils/cl-router/history';
-
+import { addArea } from 'services/areas';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
+import clHistory from 'utils/cl-router/history';
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 import AreaForm, { FormValues } from '../AreaForm';
-
-import { addArea } from 'services/areas';
+import messages from '../messages';
 
 const New = () => {
   const handleSubmit = async (values: FormValues) => {

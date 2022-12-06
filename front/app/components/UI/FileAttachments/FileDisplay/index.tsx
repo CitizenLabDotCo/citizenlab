@@ -1,21 +1,18 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { returnFileSize } from 'utils/fileUtils';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { lighten } from 'polished';
-
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-
+import { lighten } from 'polished';
+import { IEventFileData } from 'services/eventFiles';
+import { IIdeaFileData } from 'services/ideaFiles';
+import { ICustomPageFileData } from 'services/pageFiles';
+import { IPhaseFileData } from 'services/phaseFiles';
 // services
 import { IProjectFileData } from 'services/projectFiles';
-import { IPhaseFileData } from 'services/phaseFiles';
-import { IEventFileData } from 'services/eventFiles';
-import { ICustomPageFileData } from 'services/pageFiles';
-import { IIdeaFileData } from 'services/ideaFiles';
+import { returnFileSize } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+// styles
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

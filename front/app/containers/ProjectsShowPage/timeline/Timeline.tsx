@@ -1,37 +1,29 @@
 import React, { useCallback, FormEvent, KeyboardEvent, useRef } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import moment from 'moment';
-
-// tracking
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import PhaseDescriptions from './PhaseDescriptions';
-
+import moment from 'moment';
+import { darken, rgba } from 'polished';
+import useLocalize from 'hooks/useLocalize';
 // hooks
 import usePhases from 'hooks/usePhases';
-import useLocalize from 'hooks/useLocalize';
-
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
-
 // events
 import { selectPhase } from './events';
-
-// i18n
-import messages from 'containers/ProjectsShowPage/messages';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-
 // utils
 import { getIsoDateUtc } from 'utils/dateUtils';
-
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
+// i18n
+import messages from 'containers/ProjectsShowPage/messages';
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { darken, rgba } from 'polished';
+import PhaseDescriptions from './PhaseDescriptions';
+// tracking
+import tracks from './tracks';
 
 const MIN_PHASE_WIDTH_PX = 110;
 const CONTAINER_PADDING_PX = 20;

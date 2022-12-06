@@ -1,13 +1,13 @@
 import React from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import {
   SearchInput,
   SearchInputProps,
   Label,
 } from '@citizenlab/cl2-component-library';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 export interface Props {
   placeholder?: string;

@@ -1,26 +1,22 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import streams from 'utils/streams';
-
-// components
-import VerificationMethods from './VerificationMethods';
-import Outlet from 'components/Outlet';
-
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useVerificationMethods from 'hooks/useVerificationMethods';
-
-// style
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
-import { isNilOrError } from 'utils/helperUtils';
 import {
   ContextShape,
   IVerificationError,
   TVerificationStep,
 } from 'events/verificationModal';
+import { isNilOrError } from 'utils/helperUtils';
+import streams from 'utils/streams';
+import { media } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
+// style
+import styled from 'styled-components';
+// components
+import VerificationMethods from './VerificationMethods';
 
 const Container = styled.div`
   display: flex;

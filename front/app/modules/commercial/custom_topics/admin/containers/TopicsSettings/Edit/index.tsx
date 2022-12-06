@@ -1,24 +1,19 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 // hooks
 import useTopic from 'hooks/useTopic';
-
 // services
 import { updateTopic, ITopicUpdate } from '../../../../services/topics';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 import TopicForm from '../TopicForm';
+import messages from '../messages';
 
 // typings
 

@@ -1,12 +1,12 @@
-import { isString } from 'lodash-es';
 // eslint-disable-next-line no-restricted-imports
 import { Location } from 'history';
+import { isString } from 'lodash-es';
+import { Locale } from 'typings';
 import {
   getUrlLocale,
   replacePathnameLocale,
   setPathnameLocale,
 } from 'services/locale';
-import { Locale } from 'typings';
 
 type LocationDescriptorObject = Partial<Location> | string;
 

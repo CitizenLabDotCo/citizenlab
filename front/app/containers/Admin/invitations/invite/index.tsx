@@ -1,27 +1,25 @@
 import React from 'react';
-import { isString, isEmpty, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import TextArea from 'components/UI/TextArea';
-import Error from 'components/UI/Error';
+// i18n
+import { WrappedComponentProps } from 'react-intl';
 import {
   Radio,
   IconTooltip,
   Toggle,
   Label,
 } from '@citizenlab/cl2-component-library';
-import Tabs from 'components/UI/Tabs';
-import Collapse from 'components/UI/Collapse';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-import QuillEditor from 'components/UI/QuillEditor';
-import HelmetIntl from 'components/HelmetIntl';
-import Button from 'components/UI/Button';
-import Warning from 'components/UI/Warning';
-
+import { saveAs } from 'file-saver';
+import { isString, isEmpty, get } from 'lodash-es';
+import { darken } from 'polished';
+// typings
+import { Locale, IOption } from 'typings';
+// resources
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // services
 import {
   bulkInviteXLSX,
@@ -29,34 +27,29 @@ import {
   IInviteError,
   INewBulkInvite,
 } from 'services/invites';
-
-// resources
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { API_PATH, appLocalePairs } from 'containers/App/constants';
-import { getLocalized } from 'utils/i18n';
-
 // utils
 import { getBase64FromFile } from 'utils/fileUtils';
-import { saveAs } from 'file-saver';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLocalized } from 'utils/i18n';
 import { requestBlob } from 'utils/request';
-
+import { colors, fontSizes } from 'utils/styleUtils';
+import { API_PATH, appLocalePairs } from 'containers/App/constants';
+import HelmetIntl from 'components/HelmetIntl';
+import Button from 'components/UI/Button';
+import Collapse from 'components/UI/Collapse';
+import Error from 'components/UI/Error';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import QuillEditor from 'components/UI/QuillEditor';
+import Tabs from 'components/UI/Tabs';
+// components
+import TextArea from 'components/UI/TextArea';
+import Warning from 'components/UI/Warning';
+import { Section, SectionField, SectionTitle } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
-
-// typings
-import { Locale, IOption } from 'typings';
+import messages from '../messages';
 
 const InvitationOptions = styled.div`
   width: 497px;

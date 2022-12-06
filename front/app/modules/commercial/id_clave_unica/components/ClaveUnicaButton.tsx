@@ -1,18 +1,15 @@
 import React from 'react';
-import { AUTH_PATH } from 'containers/App/constants';
 import { removeUrlLocale } from 'services/locale';
-import { getJwt } from 'utils/auth/jwt';
-
-// style
-import styled from 'styled-components';
-import icon from './clave-unica-icon.svg';
-
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
-
+import { getJwt } from 'utils/auth/jwt';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { AUTH_PATH } from 'containers/App/constants';
+// style
+import styled from 'styled-components';
 import messages from '../messages';
+import icon from './clave-unica-icon.svg';
 
 const Container = styled.div<{ last: boolean }>`
   margin-bottom: ${({ last }) => (last ? '0px' : '15px')};

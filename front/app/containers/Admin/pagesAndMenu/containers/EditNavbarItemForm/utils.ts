@@ -3,8 +3,8 @@ import {
   MAX_TITLE_LENGTH,
   INavbarItemUpdate,
 } from 'services/navbar';
-import { FormValues } from '../../components/NavbarItemForm';
 import { truncateMultiloc } from 'utils/textUtils';
+import { FormValues } from '../../components/NavbarItemForm';
 
 export const getInitialFormValues = (navbarItem: INavbarItem): FormValues => ({
   nav_bar_item_title_multiloc: truncateMultiloc(

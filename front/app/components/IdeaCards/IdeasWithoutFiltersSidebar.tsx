@@ -1,50 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// components
-import TopicFilterDropdown from './TopicFilterDropdown';
-import SelectSort from './SortFilterDropdown';
-import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
-import SearchInput from 'components/UI/SearchInput';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-import IdeasView from './IdeasView';
-
-// resources
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
+import { IParticipationContextType } from 'typings';
+import GetIdeaCustomFieldsSchemas, {
+  GetIdeaCustomFieldsSchemasChildProps,
+} from 'resources/GetIdeaCustomFieldsSchemas';
 import GetIdeas, {
   Sort,
   GetIdeasChildProps,
   InputProps as GetIdeasInputProps,
 } from 'resources/GetIdeas';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdeaCustomFieldsSchemas, {
-  GetIdeaCustomFieldsSchemasChildProps,
-} from 'resources/GetIdeaCustomFieldsSchemas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
-
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// resources
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 // typings
 import {
   IdeaDefaultSortMethod,
   ParticipationMethod,
   ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
-import { IParticipationContextType } from 'typings';
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
+import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
+import SearchInput from 'components/UI/SearchInput';
+// style
+import styled from 'styled-components';
+import IdeasView from './IdeasView';
+import SelectSort from './SortFilterDropdown';
+// components
+import TopicFilterDropdown from './TopicFilterDropdown';
+// i18n
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   width: 100%;

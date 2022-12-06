@@ -1,13 +1,11 @@
 // services
-import { projectBySlugStream, IProject } from 'services/projects';
-import { ideaBySlugStream, IIdea } from 'services/ideas';
-
-// utils
-import { slugRegEx } from 'utils/textUtils';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
 // typings
 import { Subscription } from 'rxjs';
+import { ideaBySlugStream, IIdea } from 'services/ideas';
+import { projectBySlugStream, IProject } from 'services/projects';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+// utils
+import { slugRegEx } from 'utils/textUtils';
 
 export const getProjectId = async (path: string) => {
   if (isProjectPage(path)) {

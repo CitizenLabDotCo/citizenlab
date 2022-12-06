@@ -1,6 +1,7 @@
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const InitiativeSettingsTab = React.lazy(
   () => import('./admin/components/InitiativeSettingsTab')
 );

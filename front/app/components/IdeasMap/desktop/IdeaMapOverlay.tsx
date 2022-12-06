@@ -1,22 +1,18 @@
 import React, { memo, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
-
-// events
-import { ideaMapCardSelected$, setIdeaMapCardSelected } from '../events';
-
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 // hooks
 import useProject from 'hooks/useProject';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-
-// components
-import MapIdeasList from './MapIdeasList';
+// events
+import { ideaMapCardSelected$, setIdeaMapCardSelected } from '../events';
+import { isNilOrError } from 'utils/helperUtils';
+import { defaultCardStyle } from 'utils/styleUtils';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
-
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
+// components
+import MapIdeasList from './MapIdeasList';
 
 const timeout = 200;
 

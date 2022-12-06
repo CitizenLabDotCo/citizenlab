@@ -1,35 +1,16 @@
 // libraries
 import React, { Component } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { isEqual, clone } from 'lodash-es';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
-import T from 'components/T';
-
-// components
-import Button from 'components/UI/Button';
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import {
   Toggle,
   Badge,
   IconTooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
-
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-  SubSectionTitle,
-} from 'components/admin/Section';
-
+import { isEqual, clone } from 'lodash-es';
+import useUserCustomFields from 'hooks/useUserCustomFields';
 // services
 import {
   IUserCustomFieldData,
@@ -39,10 +20,24 @@ import {
   isBuiltInField,
   isHiddenField,
 } from 'services/userCustomFields';
-
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 // styling
 import { colors } from 'utils/styleUtils';
-import useUserCustomFields from 'hooks/useUserCustomFields';
+import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
+import T from 'components/T';
+// components
+import Button from 'components/UI/Button';
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+} from 'components/admin/Section';
+import styled from 'styled-components';
+import messages from './messages';
 
 const Buttons = styled.div`
   display: flex;

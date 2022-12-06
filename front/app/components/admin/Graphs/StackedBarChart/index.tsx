@@ -1,12 +1,4 @@
 import React, { useState } from 'react';
-
-// styling
-import {
-  legacyColors,
-  sizes,
-  animation,
-} from 'components/admin/Graphs/styling';
-
 // components
 import {
   BarChart as RechartsBarChart,
@@ -17,22 +9,26 @@ import {
   LabelList,
   Tooltip,
 } from 'recharts';
+import { getRechartsLayout, getLabelConfig } from '../MultiBarChart/utils';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+// utils
+import { getBarConfigs } from './utils';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-
-// utils
-import { getBarConfigs } from './utils';
-import { getRechartsLayout, getLabelConfig } from '../MultiBarChart/utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
-import { DEFAULT_LEGEND_OFFSET } from '../MultiBarChart';
-
-// typings
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+// styling
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
+import { DEFAULT_LEGEND_OFFSET } from '../MultiBarChart';
+// typings
+import { Props } from './typings';
 
 const StackedBarChart = <Row,>({
   width,

@@ -1,8 +1,6 @@
 import React from 'react';
-
 // components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-
 // craft
 import { UserComponent, Element } from '@craftjs/core';
 import Container from '../Container';

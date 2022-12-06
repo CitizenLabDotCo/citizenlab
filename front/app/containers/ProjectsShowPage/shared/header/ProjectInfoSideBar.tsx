@@ -5,42 +5,35 @@ import React, {
   useState,
   FormEvent,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isNumber } from 'lodash-es';
-import moment from 'moment';
-
-// hooks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import useEvents from 'hooks/useEvents';
-import useAuthUser from 'hooks/useAuthUser';
-
-// router
-import clHistory from 'utils/cl-router/history';
-
-// services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import ProjectSharingModal from './ProjectSharingModal';
-import ProjectActionBar from './ProjectActionBar';
-import ProjectActionButtons from './ProjectActionButtons';
-
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { scrollToElement } from 'utils/scroll';
-
+import { isNumber } from 'lodash-es';
+import moment from 'moment';
+import useAuthUser from 'hooks/useAuthUser';
+import useEvents from 'hooks/useEvents';
+import usePhases from 'hooks/usePhases';
+// hooks
+import useProject from 'hooks/useProject';
+// services
+import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-import { getInputTermMessage } from 'utils/i18n';
+// router
+import clHistory from 'utils/cl-router/history';
 import FormattedBudget from 'utils/currency/FormattedBudget';
-
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import { scrollToElement } from 'utils/scroll';
+import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
+import messages from 'containers/ProjectsShowPage/messages';
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
-import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
+import ProjectActionBar from './ProjectActionBar';
+import ProjectActionButtons from './ProjectActionButtons';
+import ProjectSharingModal from './ProjectSharingModal';
 
 const Container = styled.div``;
 

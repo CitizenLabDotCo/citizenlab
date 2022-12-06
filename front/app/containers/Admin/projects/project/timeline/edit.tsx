@@ -1,13 +1,17 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
+import { adopt } from 'react-adopt';
+import { WrappedComponentProps } from 'react-intl';
+// Components
+import { Label } from '@citizenlab/cl2-component-library';
+import { get, isEmpty } from 'lodash-es';
+import moment, { Moment } from 'moment';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import moment, { Moment } from 'moment';
-import { get, isEmpty } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
-import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
+// Typings
+import { CLError, Locale, UploadFile, Multiloc } from 'typings';
+// Resources
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // Services
 import { localeStream } from 'services/locale';
 import {
@@ -22,39 +26,28 @@ import {
   IPhase,
   IUpdatedPhaseProperties,
 } from 'services/phases';
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import eventEmitter from 'utils/eventEmitter';
-
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 // Utils
 import shallowCompare from 'utils/shallowCompare';
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
-
-// Components
-import { Label } from '@citizenlab/cl2-component-library';
+import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Error from 'components/UI/Error';
 import DateRangePicker from 'components/admin/DateRangePicker';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+// Styling
+import styled from 'styled-components';
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import FileUploader from 'components/UI/FileUploader';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-
-// Styling
-import styled from 'styled-components';
-
-// Typings
-import { CLError, Locale, UploadFile, Multiloc } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-
-// Resources
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 const PhaseForm = styled.form``;
 

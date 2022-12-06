@@ -1,20 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
-import styled from 'styled-components';
-import { get, map, merge, set } from 'lodash-es';
-import { Subscription } from 'rxjs';
-import { isNilOrError } from 'utils/helperUtils';
-
-// typings
-import { CLError, Multiloc, IOption } from 'typings';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { appLocalePairs } from 'containers/App/constants';
-import messages from '../messages';
-
-// components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
   Input,
   IconTooltip,
@@ -23,17 +9,10 @@ import {
   Error,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import {
-  Section,
-  SectionTitle,
-  SubSectionTitle,
-  SectionField,
-  SectionDescription,
-} from 'components/admin/Section';
-import Outlet from 'components/Outlet';
-
+import { get, map, merge, set } from 'lodash-es';
+import { Subscription } from 'rxjs';
+// typings
+import { CLError, Multiloc, IOption } from 'typings';
 // services
 import {
   currentAppConfigurationStream,
@@ -42,10 +21,26 @@ import {
   IAppConfigurationData,
   TAppConfigurationSettingWithEnabled,
 } from 'services/appConfiguration';
-
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isCLErrorJSON } from 'utils/errorUtils';
 // Utils
 import getSubmitState from 'utils/getSubmitState';
-import { isCLErrorJSON } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { appLocalePairs } from 'containers/App/constants';
+import Outlet from 'components/Outlet';
+// components
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import {
+  Section,
+  SectionTitle,
+  SubSectionTitle,
+  SectionField,
+  SectionDescription,
+} from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import styled from 'styled-components';
+import messages from '../messages';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;

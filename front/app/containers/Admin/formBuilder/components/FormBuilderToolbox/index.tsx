@@ -1,29 +1,23 @@
 import React from 'react';
-
-// intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
-// components
-import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
-
-// styles
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
+// Hooks
+import useLocale from 'hooks/useLocale';
 // types
 import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
 } from 'services/formCustomFields';
-
-// Hooks
-import useLocale from 'hooks/useLocale';
-
+// intl
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+// styles
+import styled from 'styled-components';
+import messages from '../messages';
+// components
+import ToolboxItem from './ToolboxItem';
 
 const DraggableElement = styled.div`
   cursor: move;

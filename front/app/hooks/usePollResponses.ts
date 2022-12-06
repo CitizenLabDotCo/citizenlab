@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
+import { IParticipationContextType } from 'typings';
 import {
   getPollResponses,
   IPollResponseAttributes,
 } from 'services/pollResponses';
-import { IParticipationContextType } from 'typings';
 
 interface Params {
   participationContextId: string;

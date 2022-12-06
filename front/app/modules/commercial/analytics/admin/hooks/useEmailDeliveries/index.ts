@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
-
 // services
 import { analyticsStream } from '../../services/analyticsFacts';
-
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// query
-import { query } from './query';
-
+// typings
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { XlsxData } from 'components/admin/ReportExportMenu';
+import { IResolution } from 'components/admin/ResolutionControl';
 // parse
 import {
   parseStats,
@@ -17,12 +14,10 @@ import {
   mergeTimeSeries,
   parseExcelData,
 } from './parse';
-
-// typings
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { XlsxData } from 'components/admin/ReportExportMenu';
+// query
+import { query } from './query';
+import { getTranslations } from './translations';
 import { QueryParameters, Response, Stats, TimeSeries } from './typings';
-import { IResolution } from 'components/admin/ResolutionControl';
 
 export default function useVisitorsData({
   startAtMoment,

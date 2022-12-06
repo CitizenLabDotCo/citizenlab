@@ -1,3 +1,4 @@
+import { JsonForms } from '@jsonforms/react';
 import React, {
   memo,
   ReactElement,
@@ -5,17 +6,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { JsonForms } from '@jsonforms/react';
-
-import {
-  createAjv,
-  JsonSchema7,
-  UISchemaElement,
-  isCategorization,
-  Translator,
-} from '@jsonforms/core';
-import styled from 'styled-components';
-
+import { WrappedComponentProps } from 'react-intl';
 import {
   Box,
   fontSizes,
@@ -23,20 +14,25 @@ import {
   stylingConsts,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import ButtonBar from './Components/ButtonBar';
-
-import useObserveEvent from 'hooks/useObserveEvent';
-
-import { CLErrors, Message } from 'typings';
-import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  createAjv,
+  JsonSchema7,
+  UISchemaElement,
+  isCategorization,
+  Translator,
+} from '@jsonforms/core';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
-import { APIErrorsContext, FormContext } from './contexts';
+import { CLErrors, Message } from 'typings';
 import useLocale from 'hooks/useLocale';
+import useObserveEvent from 'hooks/useObserveEvent';
+import { APIErrorsContext, FormContext } from './contexts';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
+import styled from 'styled-components';
+import ButtonBar from './Components/ButtonBar';
 import { selectRenderers } from './formConfig';
 
 // hopefully we can standardize this someday

@@ -1,23 +1,19 @@
 import React from 'react';
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// components
-import InitiativeCard from 'components/InitiativeCard';
 import { Spinner, Button } from '@citizenlab/cl2-component-library';
-
+import { rgba } from 'polished';
 // resources
 import { IInitiativeData } from 'services/initiatives';
-
-// i18n
-import messages from './messages';
+// tracks
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-
+import { media } from 'utils/styleUtils';
+// components
+import InitiativeCard from 'components/InitiativeCard';
 // style
 import styled, { useTheme } from 'styled-components';
-import { media } from 'utils/styleUtils';
-import { rgba } from 'polished';
+// i18n
+import messages from './messages';
+import tracks from './tracks';
 
 const Loading = styled.div`
   width: 100%;

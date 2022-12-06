@@ -1,21 +1,17 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import clHistory from 'utils/cl-router/history';
-
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
-
+import { lighten } from 'polished';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import clHistory from 'utils/cl-router/history';
+// utils
+import eventEmitter from 'utils/eventEmitter';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import messages from './messages';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;

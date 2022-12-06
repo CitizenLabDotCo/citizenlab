@@ -1,13 +1,10 @@
 import React from 'react';
-
-// components
-import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from '../components/TextingHeader';
-import SMSCampaignForm from '../components/SMSCampaignForm';
-
 // utils
 import clHistory from 'utils/cl-router/history';
-
+import SMSCampaignForm from '../components/SMSCampaignForm';
+import TextingHeader from '../components/TextingHeader';
+// components
+import HelmetIntl from 'components/HelmetIntl';
 // styling
 import styled from 'styled-components';
 

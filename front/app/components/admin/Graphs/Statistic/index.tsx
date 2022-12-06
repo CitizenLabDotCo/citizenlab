@@ -1,5 +1,4 @@
 import React from 'react';
-
 // components
 import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
 

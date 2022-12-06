@@ -1,6 +1,17 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import moment from 'moment';
+// For DateInput to work
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+// i18n
+import { WrappedComponentProps } from 'react-intl';
+// libraries
+import Form, { FieldProps } from 'react-jsonschema-form';
+import {
+  Input,
+  IconTooltip,
+  Select,
+  DateInput,
+} from '@citizenlab/cl2-component-library';
 import {
   isBoolean,
   forOwn,
@@ -10,48 +21,29 @@ import {
   isEmpty,
   isString,
 } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// libraries
-import Form, { FieldProps } from 'react-jsonschema-form';
-
+import moment from 'moment';
+import { Subscription } from 'rxjs';
+// typings
+import { IOption } from 'typings';
 // hooks
 import useUserCustomFieldsSchema, {
   UserCustomFieldsSchema,
 } from 'hooks/useUserCustomFieldsSchema';
-
-// For DateInput to work
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-
-// components
-import { FormLabel } from 'components/UI/FormComponents';
-import TextArea from 'components/UI/TextArea';
-import {
-  Input,
-  IconTooltip,
-  Select,
-  DateInput,
-} from '@citizenlab/cl2-component-library';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import Checkbox from 'components/UI/Checkbox';
-import { SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// styling
-import styled from 'styled-components';
-
-// typings
-import { IOption } from 'typings';
 import { IUserData } from 'services/users';
-
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+import Checkbox from 'components/UI/Checkbox';
+import Error from 'components/UI/Error';
+// components
+import { FormLabel } from 'components/UI/FormComponents';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import TextArea from 'components/UI/TextArea';
+import { SectionField } from 'components/admin/Section';
+// styling
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div``;
 

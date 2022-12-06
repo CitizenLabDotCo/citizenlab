@@ -1,10 +1,9 @@
 import React from 'react';
+// typings
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 // components
 const Tab = React.lazy(() => import('./admin/components/Tab'));
-
-// typings
-import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const DashboardContainer = React.lazy(
   () => import('./admin/containers/Dashboard')

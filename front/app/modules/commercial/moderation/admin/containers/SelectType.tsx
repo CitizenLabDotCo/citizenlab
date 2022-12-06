@@ -1,12 +1,10 @@
 import React, { memo, useCallback } from 'react';
-import FilterSelector from 'components/FilterSelector';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // services
 import { TModeratableType } from '../../services/moderations';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import FilterSelector from 'components/FilterSelector';
+import messages from './messages';
 
 interface Props {
   onChange: (newModeratableType: TModeratableType[]) => void;

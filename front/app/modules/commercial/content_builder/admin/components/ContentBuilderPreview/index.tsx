@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
+import useFeatureFlag from 'hooks/useFeatureFlag';
 // hooks
 import useProject from 'hooks/useProject';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// components
-import Preview from './Preview';
-
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+// components
+import Preview from './Preview';
 
 type ContentBuilderPreviewProps = {
   onMount: () => void;

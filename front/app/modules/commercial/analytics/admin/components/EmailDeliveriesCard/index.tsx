@@ -1,21 +1,17 @@
 import React, { useRef } from 'react';
-
+import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useEmailDeliveries from '../../hooks/useEmailDeliveries';
-
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import GraphCard from 'components/admin/GraphCard';
-import { Box } from '@citizenlab/cl2-component-library';
-import EmailDeliveriesStats from './EmailDeliveriesStats';
-import Chart from './Chart';
-
-// i18n
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
 // typings
 import { ProjectId, Dates, Resolution } from '../../typings';
-import { isNilOrError } from 'utils/helperUtils';
+import Chart from './Chart';
+import EmailDeliveriesStats from './EmailDeliveriesStats';
+// i18n
+import messages from './messages';
 
 type Props = ProjectId & Dates & Resolution;
 

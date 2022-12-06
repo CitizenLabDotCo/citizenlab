@@ -1,41 +1,34 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// intl
-import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
-
-// hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-
-// services
-import { deleteInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
-
-// styles
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
-// utils
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
-import { isNilOrError } from 'utils/helperUtils';
-import { injectIntl } from 'utils/cl-intl';
-
-// components
-import Modal from 'components/UI/Modal';
 import {
   Dropdown,
   DropdownListItem,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import { stringify } from 'qs';
+// hooks
+import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+// services
+import { deleteInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+// components
+import Modal from 'components/UI/Modal';
 import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
-import Button from 'components/UI/Button';
+// styles
+import styled from 'styled-components';
+// intl
+import messages from '../../messages';
 import RenameCategory from '../RenameCategory';
-
-import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 const DropdownWrapper = styled.div`
   margin-top: 40px;

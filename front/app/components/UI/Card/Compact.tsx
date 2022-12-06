@@ -1,17 +1,15 @@
 import React, { memo, MouseEvent } from 'react';
 import bowser from 'bowser';
-
 // components
 import Link from 'utils/cl-router/Link';
-import Image from 'components/UI/Image';
-
-// styling
-import styled from 'styled-components';
 import {
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
 } from 'utils/styleUtils';
+import Image from 'components/UI/Image';
+// styling
+import styled from 'styled-components';
 
 const cardPadding = '17px';
 const cardInnerHeight = '162px';

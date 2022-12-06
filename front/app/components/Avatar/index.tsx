@@ -2,26 +2,21 @@
  * This component is invisible to screen readers, if you ever need to show it to
  * screen readers, please adapt inner content to be intelligible before removing aria-hidden prop
  */
-
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
-import Link from 'utils/cl-router/Link';
-
+import { lighten } from 'polished';
 // hooks
 import useUser from 'hooks/useUser';
-
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { WrappedComponentProps } from 'react-intl';
-
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+import FeatureFlag from 'components/FeatureFlag';
 // styles
 import styled from 'styled-components';
-import { lighten } from 'polished';
-import { colors } from 'utils/styleUtils';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;

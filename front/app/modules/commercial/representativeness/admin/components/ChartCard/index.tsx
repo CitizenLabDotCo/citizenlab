@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+import {
+  RepresentativenessRow,
+  RepresentativenessRowMultiloc,
+} from '../../hooks/createRefDataSubscription';
+import useRScore from '../../hooks/useRScore';
+import useReferenceData from '../../hooks/useReferenceData';
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useReferenceData from '../../hooks/useReferenceData';
-import useRScore from '../../hooks/useRScore';
-
 // services
 import {
   usersByRegFieldXlsxEndpoint,
@@ -12,35 +17,24 @@ import {
   usersByDomicileXlsxEndpoint,
   usersByAgeXlsxEndpoint,
 } from 'services/userCustomFieldStats';
-
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import EmptyCard from './EmptyCard';
-import Header from './Header';
-import Chart from './Chart';
-import Table from './Table';
-import Footer from './Footer';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import fieldMessages from '../Field/messages';
-
-// utils
-import { getLegendLabels } from './utils';
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'services/userCustomFields';
-import {
-  RepresentativenessRow,
-  RepresentativenessRowMultiloc,
-} from '../../hooks/createRefDataSubscription';
+// utils
+import { getLegendLabels } from './utils';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { View } from 'components/admin/GraphCard/ViewToggle';
+import fieldMessages from '../Field/messages';
+import Chart from './Chart';
+import EmptyCard from './EmptyCard';
+import Footer from './Footer';
+import Header from './Header';
+import Table from './Table';
+import messages from './messages';
 
 interface Props {
   userCustomField: IUserCustomFieldData;

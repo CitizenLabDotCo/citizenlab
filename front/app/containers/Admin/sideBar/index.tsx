@@ -1,25 +1,13 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
-
-// router
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// components
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import MenuItem from './MenuItem';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import styled from 'styled-components';
-import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
+// components
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 import { lighten } from 'polished';
-
+import { InsertConfigurationOptions } from 'typings';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // resources
 import GetIdeasCount, {
   GetIdeasCountChildProps,
@@ -27,11 +15,18 @@ import GetIdeasCount, {
 import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import Outlet from 'components/Outlet';
-import { InsertConfigurationOptions } from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
 import { TAppConfigurationSetting } from 'services/appConfiguration';
+import { injectIntl } from 'utils/cl-intl';
+// router
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
+import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
+// style
+import styled from 'styled-components';
+import MenuItem from './MenuItem';
+import messages from './messages';
 
 const Menu = styled.div`
   z-index: 10;

@@ -1,16 +1,9 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { WrappedComponentProps } from 'react-intl';
 import { get, isEmpty } from 'lodash-es';
-
-// Styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// components
-import StatusChangeForm from './StatusChangeForm';
-
-// resources
-import { isNilOrError } from 'utils/helperUtils';
+// Typings
+import { Multiloc, MultilocFormValues } from 'typings';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
@@ -23,21 +16,22 @@ import GetInitiativeStatus, {
 import GetOfficialFeedbacks, {
   GetOfficialFeedbacksChildProps,
 } from 'resources/GetOfficialFeedbacks';
-
 // services
 import {
   updateInitiativeStatusWithExistingFeedback,
   updateInitiativeStatusAddFeedback,
 } from 'services/initiativeStatusChanges';
-
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
+// resources
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import T from 'components/T';
-
-// Typings
-import { Multiloc, MultilocFormValues } from 'typings';
+// Styling
+import styled from 'styled-components';
+import messages from '../../messages';
+// components
+import StatusChangeForm from './StatusChangeForm';
 
 const Container = styled.div`
   background: ${colors.background};

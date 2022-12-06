@@ -1,13 +1,13 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StyledIconTooltip, Indicator } from './WrongOptionsIndicator';
+import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { StyledIconTooltip, Indicator } from './WrongOptionsIndicator';
+import messages from './messages';
 
 const StyledIndicator = styled(Indicator)`
   margin-right: 15px;

@@ -1,12 +1,10 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
 // styling
 import { StatusLabel, colors, Text } from '@citizenlab/cl2-component-library';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 interface StatusLabelTextProps {
   text: string;

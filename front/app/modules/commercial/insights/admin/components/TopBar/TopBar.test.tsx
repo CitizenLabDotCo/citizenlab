@@ -1,8 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import { deleteInsightsView } from 'modules/commercial/insights/services/insightsViews';
 import clHistory from 'utils/cl-router/history';
-
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import TopBar from './';
 
 const DEFAULT_MOCK_VIEW_DATA = {

@@ -1,27 +1,22 @@
 import React from 'react';
-
-// services
-import { coreSettings } from 'services/appConfiguration';
-
-// hooks
-import useTopics from 'hooks/useTopics';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useLocalize from 'hooks/useLocalize';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField } from './styling';
-import TopicsPicker from 'components/UI/TopicsPicker';
-import Outlet from 'components/Outlet';
-
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
+// hooks
+import useTopics from 'hooks/useTopics';
+// services
+import { coreSettings } from 'services/appConfiguration';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import Outlet from 'components/Outlet';
+import TopicsPicker from 'components/UI/TopicsPicker';
+import { SubSectionTitle } from 'components/admin/Section';
+import messages from '../messages';
+import { StyledSectionField } from './styling';
 
 interface Props {
   selectedTopicIds: string[];

@@ -1,20 +1,16 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 // hooks
 import useUserCustomFieldOption from 'hooks/useUserCustomFieldOption';
-
 // services
 import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
+import messages from '../messages';
 import RegistrationCustomFieldOptionsForm, {
   FormValues,
 } from './RegistrationCustomFieldOptionsForm';

@@ -1,5 +1,5 @@
-import { IInitiativeAction } from 'services/initiatives';
 import { IParticipationContextType, IPCAction } from 'typings';
+import { IInitiativeAction } from 'services/initiatives';
 import eventEmitter from 'utils/eventEmitter';
 
 // search for verification_error in back to find these

@@ -1,15 +1,12 @@
 import React from 'react';
-
-// components
-import Button from 'components/UI/Button';
-
-// styling
-import styled, { useTheme } from 'styled-components';
-import { media } from 'utils/styleUtils';
 import { rgba } from 'polished';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { media } from 'utils/styleUtils';
+// components
+import Button from 'components/UI/Button';
+// styling
+import styled, { useTheme } from 'styled-components';
 import messages from '../messages';
 
 const Container = styled.div`

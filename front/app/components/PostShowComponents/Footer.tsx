@@ -1,12 +1,9 @@
 import React, { memo, Suspense, lazy } from 'react';
-
-// components
-import LoadingComments from './Comments/LoadingComments';
-const LazyComments = lazy(() => import('./Comments'));
-
+import { media } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+// components
+import LoadingComments from './Comments/LoadingComments';
 import {
   columnsGapDesktop,
   rightColumnWidthDesktop,
@@ -14,6 +11,8 @@ import {
   rightColumnWidthTablet,
   postPageContentMaxWidth,
 } from './styleConstants';
+
+const LazyComments = lazy(() => import('./Comments'));
 
 const Container = styled.div`
   flex: 1 1 auto;

@@ -1,18 +1,14 @@
 import React from 'react';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
-
 // hooks
 import useIdeaStatus from 'hooks/useIdeaStatus';
-
-// components
-import StatusBadge from 'components/StatusBadge';
-
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+// components
+import StatusBadge from 'components/StatusBadge';
+// i18n
+import messages from './messages';
 
 interface Props {
   statusId: string;

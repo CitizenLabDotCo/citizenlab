@@ -1,19 +1,15 @@
 import React, { memo, useState, useCallback, FormEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Button, { Props as ButtonProps } from 'components/UI/Button';
-import ProjectFolderSharingModal from 'components/ProjectFolders/ProjectFolderSharingModal';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-
 // typings
 import { IProjectFolderData } from 'services/projectFolders';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import ProjectFolderSharingModal from 'components/ProjectFolders/ProjectFolderSharingModal';
+// components
+import Button, { Props as ButtonProps } from 'components/UI/Button';
+// style
+import styled from 'styled-components';
+// i18n
+import messages from './messages';
 
 const Container = styled.div``;
 

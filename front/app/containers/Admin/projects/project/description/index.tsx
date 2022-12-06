@@ -1,14 +1,22 @@
 import React, { memo, useEffect, useCallback, useState } from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { Success } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
+// Typing
+import { Multiloc, Locale } from 'typings';
 // Hooks
 import useProject from 'hooks/useProject';
-
 // Services
 import { updateProject } from 'services/projects';
-
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import Outlet from 'components/Outlet';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 // Components
 import {
   Section,
@@ -16,23 +24,9 @@ import {
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import { Success } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-
 // Styling
 import styled from 'styled-components';
-
-// Typing
-import { Multiloc, Locale } from 'typings';
-import Outlet from 'components/Outlet';
+import messages from './messages';
 
 const Container = styled.div``;
 

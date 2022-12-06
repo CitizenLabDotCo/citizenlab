@@ -1,37 +1,31 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { MessageDescriptor } from 'react-intl';
 import { IParticipationContextType } from 'typings';
-
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetPollQuestions, {
+  GetPollQuestionsChildProps,
+} from 'resources/GetPollQuestions';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 // services
 import {
   getPollTakingRules,
   IPollTakingDisabledReason,
 } from 'services/actionTakingRules';
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetPollQuestions, {
-  GetPollQuestionsChildProps,
-} from 'resources/GetPollQuestions';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-
-// components
-import FormCompleted from './FormCompleted';
-import PollForm from './PollForm';
-import Warning from 'components/UI/Warning';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { MessageDescriptor } from 'react-intl';
-
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import Warning from 'components/UI/Warning';
 import styled from 'styled-components';
+// components
+import FormCompleted from './FormCompleted';
+import PollForm from './PollForm';
+import messages from './messages';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

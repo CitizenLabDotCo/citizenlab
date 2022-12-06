@@ -1,12 +1,11 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
-import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
+import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-
 // style
 import { colors, media, fontSizes } from 'utils/styleUtils';
-import useAuthUser from 'hooks/useAuthUser';
+import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
+import styled, { useTheme } from 'styled-components';
 import VerificationBadge from './VerificationBadge';
 
 const UserNameContainer = styled.div`

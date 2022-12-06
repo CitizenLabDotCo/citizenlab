@@ -1,13 +1,3 @@
-import {
-  startWith,
-  scan,
-  filter,
-  distinctUntilChanged,
-  refCount,
-  publishReplay,
-} from 'rxjs/operators';
-import modules from 'modules';
-
 // utils
 import {
   includes,
@@ -25,9 +15,21 @@ import {
   union,
   uniq,
 } from 'lodash-es';
-import request from 'utils/request';
-import { reportError } from 'utils/loggingUtils';
-import { RequestError } from 'utils/requestError';
+import modules from 'modules';
+// typings
+import { Observer, Observable, Subscription } from 'rxjs';
+import {
+  startWith,
+  scan,
+  filter,
+  distinctUntilChanged,
+  refCount,
+  publishReplay,
+} from 'rxjs/operators';
+import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
+// constants
+import { authApiEndpoint } from 'services/auth';
+import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 import {
   deepFreeze,
   sanitizeQueryParameters,
@@ -35,14 +37,9 @@ import {
   isSingleItemStream,
   getStreamId,
 } from './utils';
-
-// typings
-import { Observer, Observable, Subscription } from 'rxjs';
-
-// constants
-import { authApiEndpoint } from 'services/auth';
-import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
-import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
+import { reportError } from 'utils/loggingUtils';
+import request from 'utils/request';
+import { RequestError } from 'utils/requestError';
 
 export type pureFn<T> = (arg: T) => T;
 

@@ -1,54 +1,44 @@
+import Tippy from '@tippyjs/react';
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { Icon } from '@citizenlab/cl2-component-library';
+// typings
+import { LatLng } from 'leaflet';
+import { darken } from 'polished';
 import { stringify } from 'qs';
-
 // typings
 import { IParticipationContextType } from 'typings';
-
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 // services
 import {
   getIdeaPostingRules,
   IIdeaPostingDisabledReason,
 } from 'services/actionTakingRules';
 import { getInputTerm } from 'services/participationContexts';
-
-// resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
-// components
-import Button, { Props as ButtonProps } from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
-import { Icon } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
-
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 // utils
 import { openSignUpInModal } from 'events/openSignUpInModal';
-
 // events
 import { openVerificationModal } from 'events/verificationModal';
-
 // tracks
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import { fontSizes, colors } from 'utils/styleUtils';
+// components
+import Button, { Props as ButtonProps } from 'components/UI/Button';
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { darken } from 'polished';
-
-// typings
-import { LatLng } from 'leaflet';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div``;
 

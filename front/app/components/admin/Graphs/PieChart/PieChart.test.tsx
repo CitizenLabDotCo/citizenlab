@@ -1,7 +1,7 @@
 import React from 'react';
+import { NilOrError } from 'utils/helperUtils';
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import PieChart from './';
-import { NilOrError } from 'utils/helperUtils';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');

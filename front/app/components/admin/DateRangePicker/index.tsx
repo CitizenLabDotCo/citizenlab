@@ -1,19 +1,16 @@
 import React, { PureComponent } from 'react';
-import { Omit } from 'typings';
-
+import { DateRangePicker, DateRangePickerShape } from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import { DateRangePicker, DateRangePickerShape } from 'react-dates';
-
-// styles
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { omit } from 'lodash-es';
+import { Omit } from 'typings';
+import { injectIntl } from 'utils/cl-intl';
+import { fontSizes, colors } from 'utils/styleUtils';
+// styles
+import styled from 'styled-components';
+// i18n
+import messages from './messages';
 
 interface Props
   extends Omit<

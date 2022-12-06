@@ -1,19 +1,18 @@
 import React from 'react';
-import Button from 'components/UI/Button';
+import { WrappedComponentProps } from 'react-intl';
+import { saveAs } from 'file-saver';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isString } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
+import { requestBlob } from 'utils/request';
 import { fontSizes } from 'utils/styleUtils';
-
+import { API_PATH } from 'containers/App/constants';
+import Button from 'components/UI/Button';
 // i18n
 import messages from '../../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { exportType } from '../ExportMenu';
-import { isString } from 'utils/helperUtils';
-import { requestBlob } from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
-import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
-import { saveAs } from 'file-saver';
-import { reportError } from 'utils/loggingUtils';
-import { WrappedComponentProps } from 'react-intl';
+import { exportType } from '../ExportMenu';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];

@@ -1,48 +1,41 @@
 import React, { memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// components
-import Timeline from './Timeline';
-import PBExpenses from '../shared/pb/PBExpenses';
-import PhaseSurvey from './Survey';
-import PhasePoll from './Poll';
-import PhaseVolunteering from './Volunteering';
-import PhaseIdeas from './Ideas';
-import ContentContainer from 'components/ContentContainer';
-import PhaseNavigation from './PhaseNavigation';
-import {
-  ProjectPageSectionTitle,
-  maxPageWidth,
-} from 'containers/ProjectsShowPage/styles';
-import SectionContainer from 'components/SectionContainer';
-
+import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useLocale from 'hooks/useLocale';
+import usePhases from 'hooks/usePhases';
+// hooks
+import useProject from 'hooks/useProject';
 // services
 import {
   IPhaseData,
   getLatestRelevantPhase,
   getCurrentPhase,
 } from 'services/phases';
-
 // events
 import { selectedPhase$, selectPhase } from './events';
-
-// hooks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-import useLocale from 'hooks/useLocale';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
+import {
+  ProjectPageSectionTitle,
+  maxPageWidth,
+} from 'containers/ProjectsShowPage/styles';
+import ContentContainer from 'components/ContentContainer';
+import SectionContainer from 'components/SectionContainer';
 // style
 import styled from 'styled-components';
-import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
-
 // other
 import { isValidPhase } from '../phaseParam';
+import PBExpenses from '../shared/pb/PBExpenses';
+import PhaseIdeas from './Ideas';
+import PhaseNavigation from './PhaseNavigation';
+import PhasePoll from './Poll';
+import PhaseSurvey from './Survey';
+// components
+import Timeline from './Timeline';
+import PhaseVolunteering from './Volunteering';
 import setPhaseURL from './setPhaseURL';
 
 const Container = styled.div``;

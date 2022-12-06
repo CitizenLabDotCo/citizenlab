@@ -1,22 +1,17 @@
 import React from 'react';
-
 // components
 import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
-import { SortableHeaderCell } from './IdeaHeaderRow';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// utils
-import { roundPercentage } from 'utils/math';
-
 // typings
 import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+// utils
+import { roundPercentage } from 'utils/math';
 import { SortDirection } from 'utils/paginationUtils';
+// styling
+import { colors } from 'utils/styleUtils';
+import messages from '../../../messages';
+import { SortableHeaderCell } from './IdeaHeaderRow';
 
 const TOTAL_WIDTH = 11;
 const getWidth = (width: number) => `${roundPercentage(width, TOTAL_WIDTH)}%`;

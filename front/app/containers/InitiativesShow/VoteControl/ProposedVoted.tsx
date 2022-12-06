@@ -1,21 +1,15 @@
 import React, { PureComponent } from 'react';
-
-import styled, { keyframes } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { darken } from 'polished';
-
-import { getDaysRemainingUntil } from 'utils/dateUtils';
-
-import { IInitiativeData } from 'services/initiatives';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
-
 import { Icon } from '@citizenlab/cl2-component-library';
-
+import { darken } from 'polished';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeData } from 'services/initiatives';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import styled, { keyframes } from 'styled-components';
 import ProposalProgressbar from './ProposalProgressBar';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

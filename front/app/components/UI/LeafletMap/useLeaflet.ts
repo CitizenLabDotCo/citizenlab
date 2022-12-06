@@ -1,4 +1,12 @@
 import { useEffect, useState } from 'react';
+import L from 'leaflet';
+import 'leaflet.markercluster';
+import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
+import marker from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import 'leaflet/dist/leaflet.css';
+import { isEqual } from 'lodash-es';
+import { combineLatest } from 'rxjs';
 import {
   distinctUntilChanged,
   debounceTime,
@@ -6,14 +14,7 @@ import {
   pairwise,
   tap,
 } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
-import { isEqual } from 'lodash-es';
-import {
-  DEFAULT_MARKER_ICON,
-  DEFAULT_MARKER_HOVER_ICON,
-  DEFAULT_MARKER_ACTIVE_ICON,
-} from './config';
-
+import service from './services';
 // events
 import {
   setLeafletMapSelectedMarker,
@@ -25,17 +26,12 @@ import {
   leafletMapCenter$,
   leafletMapZoom$,
 } from './events';
-
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import 'leaflet.markercluster';
+import {
+  DEFAULT_MARKER_ICON,
+  DEFAULT_MARKER_HOVER_ICON,
+  DEFAULT_MARKER_ACTIVE_ICON,
+} from './config';
 import './simplestyle';
-import marker from 'leaflet/dist/images/marker-icon.png';
-import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-
-import service from './services';
-
 import {
   Point,
   IMarkerStringOrObjectOrFunctionForLayer,

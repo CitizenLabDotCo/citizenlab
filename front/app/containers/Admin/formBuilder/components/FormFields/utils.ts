@@ -1,5 +1,5 @@
-import { IFlatCustomField } from 'services/formCustomFields';
 import { colors } from '@citizenlab/cl2-component-library';
+import { IFlatCustomField } from 'services/formCustomFields';
 
 export const isFieldSelected = (
   selectedFieldId: string | undefined,

@@ -1,14 +1,14 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useCallback, useState } from 'react';
 import { Box, Input } from '@citizenlab/cl2-component-library';
 import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
-import React, { useCallback, useState } from 'react';
-import ErrorDisplay from '../ErrorDisplay';
-import { FormLabel } from 'components/UI/FormComponents';
 import {
   sanitizeForClassname,
   getFieldNameFromPath,
 } from 'utils/JSONFormUtils';
 import { isString } from 'utils/helperUtils';
+import { FormLabel } from 'components/UI/FormComponents';
+import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 
 export const TitleControl = ({

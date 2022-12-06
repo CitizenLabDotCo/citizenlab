@@ -1,6 +1,6 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { IRelationship } from 'typings';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export interface Report {
   user_id?: string;

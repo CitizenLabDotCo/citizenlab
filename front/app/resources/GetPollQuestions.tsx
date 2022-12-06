@@ -2,11 +2,10 @@ import React from 'react';
 import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
-
+import { IParticipationContextType } from 'typings';
 import { IPollQuestion, pollQuestionsStream } from 'services/pollQuestions';
 import { isNilOrError } from 'utils/helperUtils';
-import { IParticipationContextType } from 'typings';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   participationContextId: string;

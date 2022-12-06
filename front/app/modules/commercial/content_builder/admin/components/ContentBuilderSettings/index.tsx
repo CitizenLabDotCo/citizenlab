@@ -1,26 +1,21 @@
 import React from 'react';
-
-// styles
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
 // components
 import { Title, Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import CloseIconButton from 'components/UI/CloseIconButton';
-
 // craft
 import { useEditor } from '@craftjs/core';
 import { ROOT_NODE } from '@craftjs/utils';
-import { getComponentNameMessage } from '../RenderNode';
-
-// intl
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
 // events
 import eventEmitter from 'utils/eventEmitter';
+import { colors } from 'utils/styleUtils';
 import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from '../../containers';
+import Button from 'components/UI/Button';
+import CloseIconButton from 'components/UI/CloseIconButton';
+// styles
+import styled from 'styled-components';
+// intl
+import messages from '../../messages';
+import { getComponentNameMessage } from '../RenderNode';
 
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);

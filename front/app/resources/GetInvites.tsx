@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEqual, omitBy, isString, isEmpty, isNil } from 'lodash-es';
 import {
   Subscription,
   Subject,
@@ -14,14 +15,13 @@ import {
   debounceTime,
 } from 'rxjs/operators';
 import { IInviteData, invitesStream } from 'services/invites';
-import shallowCompare from 'utils/shallowCompare';
-import { isEqual, omitBy, isString, isEmpty, isNil } from 'lodash-es';
 import {
   getPageNumberFromUrl,
   getSortAttribute,
   getSortDirection,
   SortDirection,
 } from 'utils/paginationUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export type SortAttribute =
   | 'email'

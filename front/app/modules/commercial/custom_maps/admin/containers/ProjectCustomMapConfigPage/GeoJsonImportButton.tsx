@@ -1,27 +1,20 @@
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import { createProjectMapLayer } from '../../../services/mapLayers';
-
-// components
-import Error from 'components/UI/Error';
-
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
+// services
+import { createProjectMapLayer } from '../../../services/mapLayers';
 // utils
 import { getUnnamedLayerTitleMultiloc } from '../../../utils/map';
-
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
-import styled from 'styled-components';
-
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
+// components
+import Error from 'components/UI/Error';
+// styling
+import styled from 'styled-components';
+// i18n
+import messages from './messages';
 
 const Container = styled.div``;
 

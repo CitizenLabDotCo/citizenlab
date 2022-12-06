@@ -1,29 +1,24 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import {
-  PublicationStatus,
-  updateProjectFolderMembership,
-} from 'services/projects';
-import { isAdmin } from 'services/permissions/roles';
-
 // hooks
 import useAdminPublications, {
   IAdminPublicationContent,
 } from 'hooks/useAdminPublications';
 import useAuthUser from 'hooks/useAuthUser';
-
-// localisation
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-
 // style
 import { reorderAdminPublication } from 'services/adminPublications';
+import { isAdmin } from 'services/permissions/roles';
+// services
+import {
+  PublicationStatus,
+  updateProjectFolderMembership,
+} from 'services/projects';
+// localisation
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
+// components
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import messages from '../messages';
 
 const publicationStatuses: PublicationStatus[] = [
   'draft',

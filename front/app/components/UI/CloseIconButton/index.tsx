@@ -1,9 +1,8 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import { colors, IconButton } from '@citizenlab/cl2-component-library';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 interface Props {

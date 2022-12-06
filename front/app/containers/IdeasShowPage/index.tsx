@@ -1,25 +1,21 @@
 import React from 'react';
-import { isError } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
-
+// hooks
+import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { isError } from 'lodash-es';
+import useIdea from 'hooks/useIdea';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 // components
 import IdeasShow from 'containers/IdeasShow';
 import Button from 'components/UI/Button';
-import IdeaShowPageTopBar from './IdeaShowPageTopBar';
-import Link from 'utils/cl-router/Link';
-
-// hooks
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-import useIdea from 'hooks/useIdea';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
+import IdeaShowPageTopBar from './IdeaShowPageTopBar';
+import messages from './messages';
 
 const IdeaNotFoundWrapper = styled.div`
   height: calc(

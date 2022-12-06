@@ -1,24 +1,20 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Fragment from 'components/Fragment';
-import FileAttachments from 'components/UI/FileAttachments';
-import ProjectInfoSideBar from './ProjectInfoSideBar';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
-
+import { useWindowSize, Title } from '@citizenlab/cl2-component-library';
 // hooks
 import useProject from 'hooks/useProject';
 import useProjectFiles from 'hooks/useProjectFiles';
-import { useWindowSize, Title } from '@citizenlab/cl2-component-library';
-
+import { isNilOrError } from 'utils/helperUtils';
+import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
+// components
+import Fragment from 'components/Fragment';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 // i18n
 import T from 'components/T';
-
+import FileAttachments from 'components/UI/FileAttachments';
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import ProjectInfoSideBar from './ProjectInfoSideBar';
 
 const Container = styled.div`
   display: flex;

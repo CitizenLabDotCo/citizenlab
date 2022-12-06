@@ -1,13 +1,13 @@
 import { renderHook, act } from '@testing-library/react-hooks';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import { Observable, Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { insightsInputsStream } from 'modules/commercial/insights/services/insightsInputs';
+import { waitFor } from 'utils/testUtils/rtl';
 import useInsightsInputs, {
   defaultPageSize,
   QueryParameters,
 } from './useInsightsInputs';
-import { Observable, Subscription } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { waitFor } from 'utils/testUtils/rtl';
-import { insightsInputsStream } from 'modules/commercial/insights/services/insightsInputs';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
 
 const viewId = '1';
 

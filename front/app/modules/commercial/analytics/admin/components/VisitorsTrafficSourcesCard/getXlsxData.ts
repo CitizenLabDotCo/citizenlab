@@ -1,24 +1,20 @@
-import request from 'utils/request';
-
-// services
-import { apiEndpoint, QuerySchema, Query } from '../../services/analyticsFacts';
-
-// i18n
-import messages from './messages';
+import { FormatMessage } from 'typings';
 import referrerTypeMessages from '../../hooks/useVisitorReferrerTypes/messages';
 import { getTranslations as getReferrerTranslations } from '../../hooks/useVisitorReferrers/translations';
-
+import { ReferrerListResponse } from '../../hooks/useVisitorReferrers/typings';
+// services
+import { apiEndpoint, QuerySchema, Query } from '../../services/analyticsFacts';
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
 import { reportError } from 'utils/loggingUtils';
-import { sanitizeQueryParameters } from 'utils/streams/utils';
 import { roundPercentages } from 'utils/math';
-
+import request from 'utils/request';
+import { sanitizeQueryParameters } from 'utils/streams/utils';
+import { XlsxData } from 'components/admin/ReportExportMenu';
 // typings
 import { ProjectId, Dates } from '../../typings';
-import { ReferrerListResponse } from '../../hooks/useVisitorReferrers/typings';
-import { XlsxData } from 'components/admin/ReportExportMenu';
-import { FormatMessage } from 'typings';
+// i18n
+import messages from './messages';
 
 type QueryParameters = ProjectId & Dates;
 

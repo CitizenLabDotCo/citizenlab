@@ -1,37 +1,30 @@
 // Libraries
 import React, { memo } from 'react';
-import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// Services
-import { isAdmin } from 'services/permissions/roles';
-
-// Utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// Components
-import GoBackButton from 'components/UI/GoBackButton';
-import TabbedResource from 'components/admin/TabbedResource';
-import Button from 'components/UI/Button';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
 // Localisation
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // Resources
 import GetProjectFolder, {
   GetProjectFolderChildProps,
 } from 'resources/GetProjectFolder';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
-// style
-import styled from 'styled-components';
-
 // hooks
 import useLocalize from 'hooks/useLocalize';
+// Services
+import { isAdmin } from 'services/permissions/roles';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// Utils
+import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
+// Components
+import GoBackButton from 'components/UI/GoBackButton';
+import TabbedResource from 'components/admin/TabbedResource';
+// style
+import styled from 'styled-components';
+import messages from './messages';
 
 const TopContainer = styled.div`
   width: 100%;

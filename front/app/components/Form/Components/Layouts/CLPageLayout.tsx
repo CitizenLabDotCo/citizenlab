@@ -1,10 +1,5 @@
-import React, { memo, useState, useEffect, useContext, useRef } from 'react';
-import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
-import { defaultStyles } from 'utils/styleUtils';
-import styled, { useTheme } from 'styled-components';
-import Ajv from 'ajv';
-
+import React, { memo, useState, useEffect, useContext, useRef } from 'react';
 // Components
 import {
   Box,
@@ -13,16 +8,10 @@ import {
   useBreakpoint,
   media,
 } from '@citizenlab/cl2-component-library';
-import { FormSection } from 'components/UI/FormComponents';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
+import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
+import Ajv from 'ajv';
 // Context
 import { FormContext } from 'components/Form/contexts';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-
 // Utils
 import {
   getSanitizedFormData,
@@ -30,7 +19,14 @@ import {
   PageCategorization,
   isPageCategorization,
 } from 'components/Form/Components/Layouts/utils';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { defaultStyles } from 'utils/styleUtils';
+import { FormSection } from 'components/UI/FormComponents';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import styled, { useTheme } from 'styled-components';
+import messages from '../../messages';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;

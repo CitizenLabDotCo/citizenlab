@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import { IOption } from 'typings';
-import useTopics from 'hooks/useTopics';
 import useLocalize from 'hooks/useLocalize';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import { isNilOrError } from 'utils/helperUtils';
+import useTopics from 'hooks/useTopics';
 import { ITopicData } from 'services/topics';
+import { isNilOrError } from 'utils/helperUtils';
+import MultipleSelect from 'components/UI/MultipleSelect';
 
 export interface Props {
   value: string;

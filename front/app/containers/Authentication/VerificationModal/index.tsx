@@ -1,17 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-// components
-import Modal from 'components/UI/Modal';
-// TODO: Change when we move to container
-import VerificationSteps from '../SignUpIn/SignUpInModal/SignUp/VerificationSignUpStep/VerificationSteps';
-import VerificationError from './VerificationError';
-import VerificationSuccess from './VerificationSuccess';
-
+import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useAuthUser from 'hooks/useAuthUser';
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
-import useAuthUser from 'hooks/useAuthUser';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-
 // events
 import {
   ContextShape,
@@ -22,12 +13,18 @@ import {
   closeVerificationModal,
   isVerificationError,
 } from 'events/verificationModal';
-
-// style
-import styled from 'styled-components';
+import useQuery from 'utils/cl-router/useQuery';
+import { isNilOrError } from 'utils/helperUtils';
 import { viewportWidths } from 'utils/styleUtils';
 import ErrorBoundary from 'components/ErrorBoundary';
-import useQuery from 'utils/cl-router/useQuery';
+// components
+import Modal from 'components/UI/Modal';
+// style
+import styled from 'styled-components';
+// TODO: Change when we move to container
+import VerificationSteps from '../SignUpIn/SignUpInModal/SignUp/VerificationSignUpStep/VerificationSteps';
+import VerificationError from './VerificationError';
+import VerificationSuccess from './VerificationSuccess';
 
 // typings
 const Container = styled.div`

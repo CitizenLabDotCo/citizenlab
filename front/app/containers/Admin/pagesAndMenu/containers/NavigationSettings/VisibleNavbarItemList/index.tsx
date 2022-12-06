@@ -1,5 +1,9 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
+// hooks
+import useNavbarItems from 'hooks/useNavbarItems';
+import { deleteCustomPage } from 'services/customPages';
 // services
 import {
   getNavbarItemSlug,
@@ -7,8 +11,13 @@ import {
   removeNavbarItem,
   reorderNavbarItem,
 } from 'services/navbar';
-import { deleteCustomPage } from 'services/customPages';
-
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
+// utils
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 // components
 import {
   LockedRow,
@@ -16,21 +25,7 @@ import {
   SortableRow,
 } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
-import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
-
-// hooks
-import useNavbarItems from 'hooks/useNavbarItems';
-import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-
-// utils
-import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },

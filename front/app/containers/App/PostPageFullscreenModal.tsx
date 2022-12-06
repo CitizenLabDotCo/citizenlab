@@ -1,23 +1,19 @@
 import React, { memo, useCallback, useMemo } from 'react';
-
-// components
-import FullscreenModal from 'components/UI/FullscreenModal';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
+// hooks
+import useIdea from 'hooks/useIdea';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { media, viewportWidths } from 'utils/styleUtils';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from 'containers/InitiativesShowPage/InitiativeShowPageTopBar';
 import PlatformFooter from 'containers/PlatformFooter';
-
-// hooks
-import useIdea from 'hooks/useIdea';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
+// components
+import FullscreenModal from 'components/UI/FullscreenModal';
 // style
 import styled from 'styled-components';
-import { media, viewportWidths } from 'utils/styleUtils';
 
 // note: StyledIdeasShow styles defined here should match that in IdeasShowPage!
 const StyledIdeasShow = styled(IdeasShow)`

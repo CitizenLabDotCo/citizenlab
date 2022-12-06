@@ -1,14 +1,23 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { Label } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-
+// Typing
+import { Multiloc, Locale, UploadFile } from 'typings';
+import useCause from 'hooks/useCause';
 // Services
 import { updateCause } from 'services/causes';
-import useCause from 'hooks/useCause';
-
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 // Components
 import {
   Section,
@@ -16,23 +25,9 @@ import {
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import { Label } from '@citizenlab/cl2-component-library';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-
 // Styling
 import styled from 'styled-components';
-
-// Typing
-import { Multiloc, Locale, UploadFile } from 'typings';
+import messages from './messages';
 
 const Container = styled.div``;
 

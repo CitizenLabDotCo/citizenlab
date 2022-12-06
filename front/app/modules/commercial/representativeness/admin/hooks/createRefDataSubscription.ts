@@ -1,4 +1,7 @@
 // services
+import { zipObject } from 'lodash-es';
+// typings
+import { Multiloc, Locale } from 'typings';
 import {
   usersByGenderStream,
   usersByAgeStream,
@@ -6,15 +9,10 @@ import {
   IUsersByAge,
   IUsersByRegistrationField,
 } from 'services/userCustomFieldStats';
-
+import { forEachBin } from '../utils/bins';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { zipObject } from 'lodash-es';
 import { sum, roundPercentage, roundPercentages } from 'utils/math';
-import { forEachBin } from '../utils/bins';
-
-// typings
-import { Multiloc, Locale } from 'typings';
 
 interface RepresentativenessRowBase {
   actualPercentage: number;

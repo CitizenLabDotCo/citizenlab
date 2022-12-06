@@ -1,14 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-
-// components
-import FilterSelector from 'components/FilterSelector';
-
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-
 // i18n
 import localize, { InjectedLocalized } from 'utils/localize';
+// components
+import FilterSelector from 'components/FilterSelector';
 
 type DataProps = {
   projects: GetProjectsChildProps;

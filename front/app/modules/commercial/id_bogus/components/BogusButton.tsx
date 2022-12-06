@@ -1,8 +1,6 @@
 import React from 'react';
-
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
-
 // components
 import VerificationMethodButton from 'containers/Authentication/VerificationModal/VerificationMethodButton';
 

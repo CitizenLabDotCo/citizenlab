@@ -1,12 +1,13 @@
 // @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
-import { localizeProps } from 'utils/testUtils/localizeProps';
-import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
-import { getIdea } from 'services/__mocks__/ideas';
 import { getAppConfigurationData } from 'services/__mocks__/appConfiguration';
+import { getIdea } from 'services/__mocks__/ideas';
 import { getLocale } from 'services/__mocks__/locale';
 import { getProject } from 'services/__mocks__/projects';
+import { localizeProps } from 'utils/testUtils/localizeProps';
+import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
+import { IdeaContent } from './IdeaContent';
 
 jest.mock('containers/IdeasShow/PostedBy', () => 'PostedBy');
 jest.mock(
@@ -60,8 +61,6 @@ jest.mock('utils/styleUtils', () => ({
 }));
 
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
-import { IdeaContent } from './IdeaContent';
 
 describe('<IdeaContent />', () => {
   let closePreview: jest.Mock;

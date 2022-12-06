@@ -1,25 +1,21 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
 import { get } from 'lodash-es';
-
-// i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// permissions
-import { isAdmin, isProjectModerator } from 'services/permissions/roles';
-
-// components
-import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
-import T from 'components/T';
-
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
+// permissions
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import T from 'components/T';
+// i18n
+import messages from '../../messages';
+// components
+import NotificationWrapper from '../NotificationWrapper';
 
 type DataProps = {
   authUser: GetAuthUserChildProps;

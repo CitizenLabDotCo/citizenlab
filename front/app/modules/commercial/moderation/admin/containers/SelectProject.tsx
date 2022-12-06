@@ -1,15 +1,13 @@
 import React, { memo, useCallback } from 'react';
 import { adopt } from 'react-adopt';
-import FilterSelector from 'components/FilterSelector';
-import useLocalize from 'hooks/useLocalize';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import useLocalize from 'hooks/useLocalize';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import FilterSelector from 'components/FilterSelector';
+import messages from './messages';
 
 interface InputProps {
   onChange: (projectIds: string[]) => void;

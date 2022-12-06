@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Observable, of, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   ITopicData,
   topicByIdStream,
@@ -6,8 +8,6 @@ import {
   Code,
   ITopicsQueryParams,
 } from 'services/topics';
-import { Observable, of, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 export interface Parameters {

@@ -1,22 +1,19 @@
 // Libraries
 import React, { PureComponent } from 'react';
-
-// Components
-import ConsentForm from 'components/ConsentForm';
-import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
-
-// Styles
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
+import { Multiloc } from 'typings';
+import GetCampaignConsentsWithToken from 'resources/GetCampaignConsentsWithToken';
 // services
 import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';
-import GetCampaignConsentsWithToken from 'resources/GetCampaignConsentsWithToken';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
+import { colors } from 'utils/styleUtils';
 import { API_PATH } from 'containers/App/constants';
-import { Multiloc } from 'typings';
+// Components
+import ConsentForm from 'components/ConsentForm';
+// Styles
+import styled from 'styled-components';
+import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 
 const Container = styled.div`
   width: 100%;

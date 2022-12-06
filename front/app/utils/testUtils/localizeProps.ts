@@ -1,9 +1,8 @@
 // i18n
-import { getLocalized } from 'utils/i18n';
-import { InjectedLocalized } from 'utils/localize';
-
 // Typing
 import { Multiloc } from 'typings';
+import { getLocalized } from 'utils/i18n';
+import { InjectedLocalized } from 'utils/localize';
 
 /* A mock object to replace injectLocalize function : pass this to the child of injectLocalize as a prop
  ** ex :

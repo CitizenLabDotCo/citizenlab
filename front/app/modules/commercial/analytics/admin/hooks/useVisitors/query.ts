@@ -1,18 +1,17 @@
 // utils
 import {
+  Query,
+  QuerySchema,
+  AggregationsConfig,
+} from '../../services/analyticsFacts';
+import {
   getProjectFilter,
   getDateFilter,
   getDateFilterLastPeriod,
   getInterval,
 } from '../../utils/query';
-
 // typings
 import { QueryParameters } from './typings';
-import {
-  Query,
-  QuerySchema,
-  AggregationsConfig,
-} from '../../services/analyticsFacts';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',

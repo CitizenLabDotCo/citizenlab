@@ -1,12 +1,12 @@
-import FeatureFlag from 'components/FeatureFlag';
-import TranslateButton from 'components/UI/TranslateButton';
 import React from 'react';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { viewportWidths } from 'utils/styleUtils';
+import FeatureFlag from 'components/FeatureFlag';
+import TranslateButton from 'components/UI/TranslateButton';
+import styled from 'styled-components';
 
 const StyledTranslateButtonMobile = styled(TranslateButton)`
   width: fit-content;

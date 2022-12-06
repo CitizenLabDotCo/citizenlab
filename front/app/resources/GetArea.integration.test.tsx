@@ -1,8 +1,9 @@
 // @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
-import GetArea from './GetArea';
 import request, { __setResponseFor } from 'utils/request';
+import GetArea from './GetArea';
+
 jest.mock('utils/request');
 jest.mock('services/auth');
 jest.mock('services/appConfiguration');

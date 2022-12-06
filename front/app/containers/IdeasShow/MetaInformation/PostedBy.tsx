@@ -1,22 +1,18 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, FormattedDate } from 'react-intl';
-import messages from './messages';
-
 // hooks
 import useIdea from 'hooks/useIdea';
-
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+// components
+import Avatar from 'components/Avatar';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import UserName from 'components/UI/UserName';
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import messages from './messages';
 
 const UserWrapper = styled.div`
   display: flex;

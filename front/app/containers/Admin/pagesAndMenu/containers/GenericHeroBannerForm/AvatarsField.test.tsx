@@ -1,6 +1,6 @@
 import React from 'react';
-import AvatarsField from './AvatarsField';
 import { render, screen } from 'utils/testUtils/rtl';
+import AvatarsField from './AvatarsField';
 
 jest.mock('utils/cl-intl');
 

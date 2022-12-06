@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
+import usePhases from 'hooks/usePhases';
+// hooks
+import useProject from 'hooks/useProject';
 // services
 import {
   IPermissionData,
@@ -10,18 +10,14 @@ import {
   IPCPermissionAction,
 } from 'services/actionPermissions';
 import { getInputTerm } from 'services/participationContexts';
-
-// components
-import ActionForm from './ActionForm';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
-
-// hooks
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
+import styled from 'styled-components';
+// components
+import ActionForm from './ActionForm';
+import messages from './messages';
 
 const ActionPermissionWrapper = styled.div`
   margin-bottom: 30px;

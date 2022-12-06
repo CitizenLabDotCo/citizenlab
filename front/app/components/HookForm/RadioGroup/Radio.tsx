@@ -1,9 +1,9 @@
 import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
   Radio as RadioComponent,
   RadioProps,
 } from '@citizenlab/cl2-component-library';
-import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props extends Omit<RadioProps, 'onChange'> {
   id: string;

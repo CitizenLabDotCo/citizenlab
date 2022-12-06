@@ -2,9 +2,9 @@ import React from 'react';
 import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import { IUserData, userBySlugStream, userByIdStream } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   id?: string | null;

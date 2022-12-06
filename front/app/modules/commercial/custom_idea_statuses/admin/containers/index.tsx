@@ -1,41 +1,37 @@
 // libraries
-import React, { useMemo } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
-import { isNilOrError } from 'utils/helperUtils';
-import { colors } from 'utils/styleUtils';
-
-// i18n
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import React, { useMemo } from 'react';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 // hooks
 import useIdeaStatuses from 'hooks/useIdeaStatuses';
-
 // streams
 import {
   updateIdeaStatus,
   deleteIdeaStatus,
   IIdeaStatusData,
 } from 'services/ideaStatuses';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+// i18n
+import T from 'components/T';
+import Button from 'components/UI/Button';
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-} from 'components/admin/Section';
 import {
   Row,
   SortableList,
   SortableRow,
   TextCell,
 } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
+import styled from 'styled-components';
+import messages from './messages';
 
 const Buttons = styled.div`
   display: flex;

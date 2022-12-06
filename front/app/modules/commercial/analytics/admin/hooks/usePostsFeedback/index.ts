@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-
+// i18n
+import useLocalize from 'hooks/useLocalize';
 // services
 import {
   analyticsStream,
   Query,
   QuerySchema,
 } from '../../services/analyticsFacts';
-
-// i18n
-import useLocalize from 'hooks/useLocalize';
+import { getProjectFilter, getDateFilter } from '../../utils/query';
+import { isEmptyResponse } from './utils';
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 // parsing
 import {
   parsePieData,
@@ -24,12 +24,7 @@ import {
   parseStackedBarsLegendItems,
   parseExcelData,
 } from './parse';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { isEmptyResponse } from './utils';
-import { getProjectFilter, getDateFilter } from '../../utils/query';
-
+import { getTranslations } from './translations';
 // typings
 import {
   QueryParameters,

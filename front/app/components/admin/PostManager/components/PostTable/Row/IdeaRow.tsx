@@ -1,49 +1,43 @@
 import React, { ChangeEvent, useState } from 'react';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { uniq, isEmpty, get } from 'lodash-es';
-import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd-cjs';
-
-// services
-import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
-import { IPhaseData } from 'services/phases';
-import { IIdeaStatusData } from 'services/ideaStatuses';
-
-// components
-import { TitleLink } from '.';
-import { Box, colors, Td } from '@citizenlab/cl2-component-library';
-import StyledRow from './StyledRow';
-import SubRow from './SubRow';
-import { Icon } from 'semantic-ui-react';
-import T from 'components/T';
-import Outlet from 'components/Outlet';
-import Checkbox from 'components/UI/Checkbox';
-import FeatureFlag from 'components/FeatureFlag';
-
-// utils
-import localize, { InjectedLocalized } from 'utils/localize';
-import { timeAgo } from 'utils/dateUtils';
-
+import { findDOMNode } from 'react-dom';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-import { TFilterMenu, ManagerType } from '../../..';
+import { Icon } from 'semantic-ui-react';
+import { Box, colors, Td } from '@citizenlab/cl2-component-library';
+import { uniq, isEmpty, get } from 'lodash-es';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
   Locale,
   Override,
 } from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
-
+import { IIdeaStatusData } from 'services/ideaStatuses';
+// services
+import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
+import { IPhaseData } from 'services/phases';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import { timeAgo } from 'utils/dateUtils';
 // hooks
 import { isNilOrError } from 'utils/helperUtils';
+// utils
+import localize, { InjectedLocalized } from 'utils/localize';
+import { insertConfiguration } from 'utils/moduleUtils';
+import FeatureFlag from 'components/FeatureFlag';
+import Outlet from 'components/Outlet';
+import T from 'components/T';
+import Checkbox from 'components/UI/Checkbox';
+// components
+import { TitleLink } from '.';
+import { TFilterMenu, ManagerType } from '../../..';
+import messages from '../../../messages';
+import tracks from '../../../tracks';
+import StyledRow from './StyledRow';
+import SubRow from './SubRow';
 
 type InputProps = {
   type: ManagerType;

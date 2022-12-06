@@ -1,12 +1,10 @@
 // styling
-import { categoricalColorScheme } from 'components/admin/Graphs/styling';
-
 // utils
 import { roundPercentages } from 'utils/math';
-
+import { categoricalColorScheme } from 'components/admin/Graphs/styling';
+import { Translations } from './translations';
 // typings
 import { Response, PieRow } from './typings';
-import { Translations } from './translations';
 
 export const parsePieData = (
   data: Response['data'],

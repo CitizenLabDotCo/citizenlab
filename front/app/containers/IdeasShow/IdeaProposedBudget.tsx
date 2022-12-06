@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
 import FormattedBudget from 'utils/currency/FormattedBudget';
-
+import { media } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   color: ${(props) => props.theme.colors.tenantText};

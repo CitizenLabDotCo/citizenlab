@@ -1,23 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import streams from 'utils/streams';
-
-// services
-import { updateUser } from 'services/users';
-import GetLockedFields, {
-  GetLockedFieldsChildProps,
-} from 'resources/GetLockedFields';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+// components
+import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+// typings
+import { IOption, UploadFile, Multiloc } from 'typings';
+import { string, object, mixed } from 'yup';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import GetLockedFields, {
+  GetLockedFieldsChildProps,
+} from 'resources/GetLockedFields';
+// services
+import { updateUser } from 'services/users';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-
-// components
-import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
+import { isNilOrError } from 'utils/helperUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
+import streams from 'utils/streams';
+// i18n
+import { appLocalePairs, API_PATH } from 'containers/App/constants';
+import Feedback from 'components/HookForm/Feedback';
+import ImagesDropzone from 'components/HookForm/ImagesDropzone';
+import Input from 'components/HookForm/Input';
+import PasswordInput from 'components/HookForm/PasswordInput';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Select from 'components/HookForm/Select';
 import {
   FormSection,
   FormLabel,
@@ -25,36 +43,10 @@ import {
 } from 'components/UI/FormComponents';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, mixed } from 'yup';
-import ImagesDropzone from 'components/HookForm/ImagesDropzone';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Input from 'components/HookForm/Input';
-import PasswordInput from 'components/HookForm/PasswordInput';
-import Select from 'components/HookForm/Select';
-import Feedback from 'components/HookForm/Feedback';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-// i18n
-import { appLocalePairs, API_PATH } from 'containers/App/constants';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
-
+import { SectionField } from 'components/admin/Section';
 // styling
 import styled from 'styled-components';
-
-// typings
-import { IOption, UploadFile, Multiloc } from 'typings';
-
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import eventEmitter from 'utils/eventEmitter';
+import messages from './messages';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;

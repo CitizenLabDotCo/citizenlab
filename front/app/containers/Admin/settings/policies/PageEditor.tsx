@@ -1,30 +1,23 @@
 import React, { useState } from 'react';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
+// animations
+import CSSTransition from 'react-transition-group/CSSTransition';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import PageForm, { FormValues } from 'components/PageForm';
-
+import useCustomPage from 'hooks/useCustomPage';
+// hooks
+import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 // services
 import { updateCustomPage } from 'services/customPages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
-
-// hooks
-import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
-import useCustomPage from 'hooks/useCustomPage';
-
+import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-// animations
-import CSSTransition from 'react-transition-group/CSSTransition';
-
+import { colors, fontSizes } from 'utils/styleUtils';
+import PageForm, { FormValues } from 'components/PageForm';
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+// i18n
+import messages from './messages';
 
 const timeout = 350;
 

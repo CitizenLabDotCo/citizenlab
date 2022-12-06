@@ -1,11 +1,20 @@
 import React, { memo, useCallback, useState } from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { Label } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-
+// Typing
+import { Multiloc, Locale, UploadFile } from 'typings';
 // Services
 import { addCause } from 'services/causes';
-
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 // Components
 import {
   Section,
@@ -13,23 +22,9 @@ import {
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { Label } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-
 // Styling
 import styled from 'styled-components';
-
-// Typing
-import { Multiloc, Locale, UploadFile } from 'typings';
+import messages from './messages';
 
 const Container = styled.div``;
 

@@ -1,19 +1,16 @@
 import React from 'react';
-
+// typings
+import { Multiloc, Locale } from 'typings';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 // components
 import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import { StyledSectionDescription } from '.';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-
-// typings
-import { Multiloc, Locale } from 'typings';
 
 interface Props {
   value: Multiloc;

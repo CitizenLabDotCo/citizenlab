@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { get } from 'lodash-es';
-
 // react hook form
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import {
   Box,
@@ -16,20 +14,17 @@ import {
   Input,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
-import { List, SortableRow } from 'components/admin/ResourceList';
-import Error, { TFieldName } from 'components/UI/Error';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import { get } from 'lodash-es';
 // Typings
 import { Locale, CLError } from 'typings';
-
+// i18n
+import { injectIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import Error, { TFieldName } from 'components/UI/Error';
+import { List, SortableRow } from 'components/admin/ResourceList';
+import { SectionField } from 'components/admin/Section';
+import messages from './messages';
 
 interface Props {
   name: string;

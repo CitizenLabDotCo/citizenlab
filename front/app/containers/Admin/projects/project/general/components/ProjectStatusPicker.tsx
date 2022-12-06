@@ -1,16 +1,13 @@
 import React from 'react';
-
 // components
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
-import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField } from './styling';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 // typings
 import { PublicationStatus } from 'services/projects';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { SubSectionTitle } from 'components/admin/Section';
+import messages from '../messages';
+import { StyledSectionField } from './styling';
 
 interface Props {
   publicationStatus: PublicationStatus;

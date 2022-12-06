@@ -1,19 +1,15 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import IdeaCards from 'components/IdeaCards';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
-
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
+import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
-
+import messages from 'containers/ProjectsShowPage/messages';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+// components
+import IdeaCards from 'components/IdeaCards';
 // style
 import styled from 'styled-components';
 

@@ -1,8 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
 import { IParticipationContextType } from 'typings';
+import { requestBlob } from 'utils/request';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export interface IPollResponseAttributes {
   series: { [key: string]: number };

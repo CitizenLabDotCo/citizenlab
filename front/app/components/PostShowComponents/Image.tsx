@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 const Image = styled.img`
   width: 100%;

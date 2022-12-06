@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
-import QuillEditor from 'components/UI/QuillEditor';
+import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import ErrorDisplay from '../ErrorDisplay';
-import { injectIntl } from 'utils/cl-intl';
-import { FormLabel } from 'components/UI/FormComponents';
+import { Box } from '@citizenlab/cl2-component-library';
+import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import {
   getLabel,
   sanitizeForClassname,
   getFieldNameFromPath,
 } from 'utils/JSONFormUtils';
-import { Box } from '@citizenlab/cl2-component-library';
+import { injectIntl } from 'utils/cl-intl';
+import { FormLabel } from 'components/UI/FormComponents';
+import QuillEditor from 'components/UI/QuillEditor';
+import ErrorDisplay from '../ErrorDisplay';
 
 const DescriptionControl = ({
   data,

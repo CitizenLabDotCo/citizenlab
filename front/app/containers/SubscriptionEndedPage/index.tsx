@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import messages from './messages';
 
 const Container = styled.div`
   min-height: calc(

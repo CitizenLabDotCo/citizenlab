@@ -1,22 +1,17 @@
 import React, { memo, useState } from 'react';
-
-// components
-import FilterSelector from 'components/FilterSelector';
-
-// services
-import { getTopicIds } from 'services/projectAllowedInputTopics';
-
-// i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // hooks
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
 import useTopics from 'hooks/useTopics';
-
+// services
+import { getTopicIds } from 'services/projectAllowedInputTopics';
+import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+// i18n
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+// components
+import FilterSelector from 'components/FilterSelector';
+import messages from './messages';
 
 interface Props {
   alignment: 'left' | 'right';

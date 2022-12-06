@@ -1,24 +1,19 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// services
-import { isAdmin } from 'services/permissions/roles';
-
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-
+// services
+import { isAdmin } from 'services/permissions/roles';
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import { HeaderTitle } from 'containers/Admin/projects/all/StyledComponents';
-import ItemsInFolder from './ItemsInFolder';
-import ItemsNotInFolder from './ItemsNotInFolder';
-
 // style
 import styled from 'styled-components';
+import messages from '../messages';
+import ItemsInFolder from './ItemsInFolder';
+import ItemsNotInFolder from './ItemsNotInFolder';
 
 const Container = styled.div`
   min-height: 60vh;

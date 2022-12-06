@@ -1,7 +1,7 @@
 import { Layout } from '@jsonforms/core';
-import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 import { CustomFieldCodes } from './ideaCustomFieldsSchemas';
 
 export interface JSONSFormsSchemaObject {

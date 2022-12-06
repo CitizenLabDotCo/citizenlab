@@ -1,5 +1,4 @@
 import React from 'react';
-
 // components
 import {
   IconTooltip,
@@ -7,24 +6,22 @@ import {
   Text,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import FeatureFlag from 'components/FeatureFlag';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Error from 'components/UI/Error';
-import { LabelHeaderDescription } from './labels';
-import { ParticipationMethodRadio } from './styling';
-
-// i18n
-import messages from '../../messages';
-
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
-import { ApiErrors } from '..';
-import { getMethodConfig } from 'utils/participationMethodUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { IPhase } from 'services/phases';
 import { IProjectData } from 'services/projects';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
+import FeatureFlag from 'components/FeatureFlag';
+import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import { ApiErrors } from '..';
+// i18n
+import messages from '../../messages';
+import { LabelHeaderDescription } from './labels';
+import { ParticipationMethodRadio } from './styling';
 
 interface Props {
   participation_method: ParticipationMethod;

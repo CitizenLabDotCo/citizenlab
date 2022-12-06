@@ -1,9 +1,14 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
-
+// i18n
+import { WrappedComponentProps } from 'react-intl';
+import { StatusLabel, IconTooltip } from '@citizenlab/cl2-component-library';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetCampaign from 'resources/GetCampaign';
+import GetGroup from 'resources/GetGroup';
 // services & resources
 import {
   sendCampaign,
@@ -11,33 +16,23 @@ import {
   ICampaignData,
   isDraft,
 } from 'services/campaigns';
-import GetCampaign from 'resources/GetCampaign';
-import GetGroup from 'resources/GetGroup';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-import localize, { InjectedLocalized } from 'utils/localize';
-
-// components
-import Button from 'components/UI/Button';
-import { StatusLabel, IconTooltip } from '@citizenlab/cl2-component-library';
-import DraftCampaignDetails from './DraftCampaignDetails';
-import SentCampaignDetails from './SentCampaignDetails';
-import T from 'components/T';
-import Modal from 'components/UI/Modal';
-import Stamp from './Stamp';
-
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
+import localize, { InjectedLocalized } from 'utils/localize';
 // styling
 import { fontSizes } from 'utils/styleUtils';
+import T from 'components/T';
+// components
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+import styled from 'styled-components';
+import messages from '../../messages';
+import DraftCampaignDetails from './DraftCampaignDetails';
+import SentCampaignDetails from './SentCampaignDetails';
+import Stamp from './Stamp';
 
 const Container = styled.div``;
 

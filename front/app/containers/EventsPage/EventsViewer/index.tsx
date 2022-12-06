@@ -1,24 +1,19 @@
 import React, { memo, useEffect } from 'react';
-
-// components
-import TopBar from './TopBar';
-import EventsMessage from './EventsMessage';
-import EventsSpinner from './EventsSpinner';
-import EventCard from 'components/EventCard';
-import Pagination from 'components/Pagination';
-
-// i18n
-import messages from '../messages';
 import { MessageDescriptor } from 'react-intl';
-
 // hooks
 import useEvents from 'hooks/useEvents';
-
-// styling
-import styled from 'styled-components';
-
 // other
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+import EventCard from 'components/EventCard';
+import Pagination from 'components/Pagination';
+// styling
+import styled from 'styled-components';
+// i18n
+import messages from '../messages';
+import EventsMessage from './EventsMessage';
+import EventsSpinner from './EventsSpinner';
+// components
+import TopBar from './TopBar';
 
 interface IStyledEventCard {
   last: boolean;

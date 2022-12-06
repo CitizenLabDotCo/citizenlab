@@ -1,17 +1,18 @@
 import React from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
+import {
+  IDLookupMethod,
+  TVerificationMethodName,
+} from 'services/verificationMethods';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import isLastVerificationMethod from 'containers/Authentication/VerificationModal/isLastVerificationMethod';
+
 const IdCardLookupButton = React.lazy(
   () => import('./components/IdCardLookupButton')
 );
 const IdCardLookupForm = React.lazy(
   () => import('./components/IdCardLookupForm')
 );
-import {
-  IDLookupMethod,
-  TVerificationMethodName,
-} from 'services/verificationMethods';
-import isLastVerificationMethod from 'containers/Authentication/VerificationModal/isLastVerificationMethod';
 
 const verificationMethodName: TVerificationMethodName = 'id_card_lookup';
 const configuration: ModuleConfiguration = {

@@ -1,9 +1,9 @@
 import React from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object } from 'yup';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import ColorPicker from './';
-import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 const schema = object({
   color: string().required('Error message'),

@@ -1,14 +1,14 @@
-import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 import {
   IHomepageSettingsAttributes,
   updateHomepageSettings,
 } from 'services/homepageSettings';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { homeBreadcrumb } from '../../breadcrumbs';
 import GenericBottomInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericBottomInfoSection';
+import { homeBreadcrumb } from '../../breadcrumbs';
 
 const BottomInfoSection = ({
   intl: { formatMessage },

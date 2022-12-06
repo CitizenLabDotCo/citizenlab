@@ -1,20 +1,17 @@
 import React, { lazy, Suspense } from 'react';
-import { ManagerType, TFilterMenu } from '../../..';
-
-// services
-import { IIdeaData } from 'services/ideas';
-import { IInitiativeData } from 'services/initiatives';
-import { IPhaseData } from 'services/phases';
-import { IIdeaStatusData } from 'services/ideaStatuses';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
-
-// style
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
 import useLocale from 'hooks/useLocale';
+import { IIdeaStatusData } from 'services/ideaStatuses';
+// services
+import { IIdeaData } from 'services/ideas';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeData } from 'services/initiatives';
+import { IPhaseData } from 'services/phases';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+// style
+import styled from 'styled-components';
+import { ManagerType, TFilterMenu } from '../../..';
 
 // lazy-loaded components
 const IdeaRow = lazy(() => import('./IdeaRow'));

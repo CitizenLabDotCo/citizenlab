@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import { CLErrors, Multiloc } from 'typings';
-
-// components
-import { ISubmitState } from 'components/admin/SubmitWrapper';
-import Outlet from 'components/Outlet';
+// resources
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import {
+  IHomepageSettingsAttributes,
+  updateHomepageSettings,
+} from 'services/homepageSettings';
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
+import messages from '../../containers/GenericHeroBannerForm/messages';
 import {
   homeBreadcrumb,
   pagesAndMenuBreadcrumb,
@@ -12,23 +20,11 @@ import GenericHeroBannerForm from 'containers/Admin/pagesAndMenu/containers/Gene
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerHeaderMultilocField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderMultilocField';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
-import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
-
-// resources
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import {
-  IHomepageSettingsAttributes,
-  updateHomepageSettings,
-} from 'services/homepageSettings';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // i18n
 import HelmetIntl from 'components/HelmetIntl';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../../containers/GenericHeroBannerForm/messages';
+import Outlet from 'components/Outlet';
+// components
+import { ISubmitState } from 'components/admin/SubmitWrapper';
 
 const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },

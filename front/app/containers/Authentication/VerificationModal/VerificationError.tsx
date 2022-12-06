@@ -1,16 +1,13 @@
 import React from 'react';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // components
 import { Icon, Title } from '@citizenlab/cl2-component-library';
-
+import { IVerificationError } from 'events/verificationModal';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { fontSizes, colors } from 'utils/styleUtils';
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { IVerificationError } from 'events/verificationModal';
+import messages from './messages';
 
 // Types
 const Container = styled.div`

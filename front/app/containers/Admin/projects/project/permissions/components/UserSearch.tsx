@@ -1,31 +1,25 @@
 // Libraries
 import React, { memo, useState } from 'react';
-import { get } from 'lodash-es';
-import { first } from 'rxjs/operators';
-import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
-
-// Services
-import { findMembership, addMembership } from 'services/projectModerators';
-import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
-
-// hooks
-import useProjectModerators from 'hooks/useProjectModerators';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// Components
-import Button from 'components/UI/Button';
 import AsyncSelect from 'react-select/async';
-
-// Style
-import styled from 'styled-components';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-
+import { get } from 'lodash-es';
+import { first } from 'rxjs/operators';
 // Typings
 import { IOption } from 'typings';
+// hooks
+import useProjectModerators from 'hooks/useProjectModerators';
+import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
+// Services
+import { findMembership, addMembership } from 'services/projectModerators';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
+// Components
+import Button from 'components/UI/Button';
+import selectStyles from 'components/UI/MultipleSelect/styles';
+// Style
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

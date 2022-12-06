@@ -1,13 +1,7 @@
 import React, { useState, useMemo } from 'react';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
+// resources
+import { adopt } from 'react-adopt';
+import { CSSTransition } from 'react-transition-group';
 // components
 import {
   Input,
@@ -16,30 +10,29 @@ import {
   Spinner,
   Label,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
-import Checkbox from 'components/UI/Checkbox';
-import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
-import { CSSTransition } from 'react-transition-group';
-
-// resources
-import { adopt } from 'react-adopt';
+// typings
+import { CLErrors } from 'typings';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import { PublicationStatus } from 'services/projects';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useProjectFolders from 'hooks/useProjectFolders';
-
 // services
 import { addInsightsView } from 'modules/commercial/insights/services/insightsViews';
-
+import { PublicationStatus } from 'services/projects';
+// intl
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-
-// typings
-import { CLErrors } from 'typings';
+import { colors, fontSizes } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+import Checkbox from 'components/UI/Checkbox';
+import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
+import Error from 'components/UI/Error';
+import { SectionField } from 'components/admin/Section';
+// styles
+import styled from 'styled-components';
+import messages from '../messages';
 
 const Title = styled.h1`
   text-align: center;

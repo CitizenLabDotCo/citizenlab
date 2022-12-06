@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { fontSizes } from 'utils/styleUtils';
 // styles
 import styled, { withTheme } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import messages from './messages';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

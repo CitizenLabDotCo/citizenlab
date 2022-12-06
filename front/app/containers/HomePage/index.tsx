@@ -1,21 +1,19 @@
 import React, { lazy, Suspense } from 'react';
-
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import Fragment from 'components/Fragment';
 import { Container, Content } from 'components/LandingPages/citizen';
 import LoadingBox from 'components/ProjectAndFolderCards/components/LoadingBox';
 import SignedInHeader from './SignedInHeader';
 import SignedOutHeader from './SignedOutHeader';
+
 const MainContent = lazy(() => import('./MainContent'));
 const HomepageInfoSection = lazy(() => import('./HomepageInfoSection'));
 const Footer = lazy(() => import('./Footer'));
-
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
-import useHomepageSettings from 'hooks/useHomepageSettings';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 const HomePage = () => {
   const homepageSettings = useHomepageSettings();

@@ -1,7 +1,7 @@
 import { Label, Image } from '@citizenlab/cl2-component-library';
+import { fontSizes, media, defaultOutline } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import styled from 'styled-components';
-import { fontSizes, media, defaultOutline } from 'utils/styleUtils';
 
 export const Options = styled.div`
   display: flex;

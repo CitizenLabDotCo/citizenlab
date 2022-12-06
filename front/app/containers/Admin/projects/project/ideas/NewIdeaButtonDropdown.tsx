@@ -1,10 +1,5 @@
 import React from 'react';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
 import { WrappedComponentProps } from 'react-intl';
-
 // components
 import {
   Box,
@@ -13,17 +8,18 @@ import {
   Text,
   Icon,
 } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { colors } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import { getMethodConfig } from 'utils/participationMethodUtils';
-
 // hooks & services
 import useLocalize from 'hooks/useLocalize';
-import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'services/projects';
+// intl
+import { injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
+import { colors } from 'utils/styleUtils';
+import messages from '../messages';
 
 interface Props {
   phases: IPhaseData[] | null;

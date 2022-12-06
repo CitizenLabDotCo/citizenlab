@@ -1,10 +1,9 @@
 import React from 'react';
-import { IPhaseData } from 'services/phases';
 import { Menu, Divider } from 'semantic-ui-react';
-import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
+import { IPhaseData } from 'services/phases';
 import { FormattedMessage } from 'utils/cl-intl';
-
 import messages from '../../messages';
+import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 
 type Props = {
   phases?: IPhaseData[];

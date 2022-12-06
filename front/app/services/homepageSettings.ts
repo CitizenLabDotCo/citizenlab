@@ -1,6 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { ImageSizes, Multiloc } from 'typings';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
+
 const homepageSettingsEndpoint = `${API_PATH}/home_page`;
 
 // Enabled values for sections that have a corresponding

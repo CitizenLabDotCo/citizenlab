@@ -1,34 +1,27 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import { darken } from 'polished';
-
-// components
-import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import T from 'components/T';
-import Modal from 'components/UI/Modal';
-import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
-
-// routing
-import clHistory from 'utils/cl-router/history';
-
-// i18n
-import messages from '../messages';
-import { Multiloc } from 'typings';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
 import { useParams } from 'react-router-dom';
+// components
+import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import { Multiloc } from 'typings';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
-
-// styles
-import { colors } from 'utils/styleUtils';
-
 // services
 import { deleteFormResults } from 'services/formCustomFields';
+import { injectIntl } from 'utils/cl-intl';
+// routing
+import clHistory from 'utils/cl-router/history';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+// styles
+import { colors } from 'utils/styleUtils';
+import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+// i18n
+import messages from '../messages';
 
 type FormActionsProps = {
   phaseId?: string;

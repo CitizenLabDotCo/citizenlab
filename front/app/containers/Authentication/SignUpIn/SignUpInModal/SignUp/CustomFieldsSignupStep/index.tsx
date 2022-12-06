@@ -1,31 +1,26 @@
 import React, { FormEvent, FC, memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isObject } from 'lodash-es';
-
-// components
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
+// i18n
+import { WrappedComponentProps } from 'react-intl';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
-
+import { isObject } from 'lodash-es';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
-import { media } from 'utils/styleUtils';
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
+// components
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 // style
 import styled from 'styled-components';
+import messages from '../messages';
+import tracks from './tracks';
 
 const Loading = styled.div`
   padding-top: 15px;

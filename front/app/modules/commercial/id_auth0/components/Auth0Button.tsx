@@ -1,14 +1,13 @@
 import React from 'react';
-import { AUTH_PATH } from 'containers/App/constants';
 import { removeUrlLocale } from 'services/locale';
-import { getJwt } from 'utils/auth/jwt';
 import {
   TVerificationMethod,
   IDAuth0Method,
 } from 'services/verificationMethods';
+import { getJwt } from 'utils/auth/jwt';
+import { AUTH_PATH } from 'containers/App/constants';
 // components
 import VerificationMethodButton from 'containers/Authentication/VerificationModal/VerificationMethodButton';
-
 // i18n
 import T from 'components/T';
 

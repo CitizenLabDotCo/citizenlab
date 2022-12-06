@@ -1,20 +1,22 @@
-import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import React, { ReactNode } from 'react';
 import { MembershipType } from 'services/groups';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { RulesFormValues } from './containers/RulesGroupFormWithValidation/RulesGroupForm';
+import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
+import SmartGroupType, {
+  SmartGroupTypeProps,
+} from './components/SmartGroupType';
+
 const HeaderIcon = React.lazy(() => import('./components/HeaderIcon'));
 
 const ListItemIcon = React.lazy(() => import('./components/ListItemIcon'));
 const SmartGroupModalHeader = React.lazy(
   () => import('./components/SmartGroupModalHeader')
 );
-import SmartGroupType, {
-  SmartGroupTypeProps,
-} from './components/SmartGroupType';
+
 const RulesGroupFormWithValidation = React.lazy(
   () => import('./containers/RulesGroupFormWithValidation')
 );
-import { RulesFormValues } from './containers/RulesGroupFormWithValidation/RulesGroupForm';
 
 interface RenderOnTypeProps {
   type: MembershipType;

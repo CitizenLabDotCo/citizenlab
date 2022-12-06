@@ -1,23 +1,18 @@
 import { useState, useEffect } from 'react';
-
 // services
 import { analyticsStream } from '../../services/analyticsFacts';
-
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// query
-import { query } from './query';
-
-// parse
-import { parseStats, parseTimeSeries, parseExcelData } from './parse';
-
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 import { IResolution } from 'components/admin/ResolutionControl';
+// parse
+import { parseStats, parseTimeSeries, parseExcelData } from './parse';
+// query
+import { query } from './query';
+import { getTranslations } from './translations';
+import { QueryParameters, Response, Stats, TimeSeries } from './typings';
 
 export default function useVisitorsData({
   projectId,

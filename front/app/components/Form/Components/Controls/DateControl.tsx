@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import moment from 'moment';
-
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useState } from 'react';
 import { Box, DateInput } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -9,10 +7,11 @@ import {
   rankWith,
   isDateControl,
 } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
+import moment from 'moment';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { FormLabel } from 'components/UI/FormComponents';
 import styled from 'styled-components';
+import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 
 const StyledDateInput = styled(DateInput)`

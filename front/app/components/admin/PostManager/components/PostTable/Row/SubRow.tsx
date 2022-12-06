@@ -1,22 +1,19 @@
 import React from 'react';
-
 // components
 import { Tr, Td } from '@citizenlab/cl2-component-library';
-import PhasesSelector from './selectors/PhasesSelector';
-import TopicsSelector from './selectors/TopicsSelector';
-import ProjectSelector from './selectors/ProjectSelector';
-import IdeasStatusSelector from './selectors/IdeasStatusSelector';
-import InitiativesStatusSelector from './selectors/InitiativesStatusSelector';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// typings
-import { TFilterMenu } from '../../..';
-import { IPhaseData } from 'services/phases';
+import { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
+import { IPhaseData } from 'services/phases';
+// styling
+import { colors } from 'utils/styleUtils';
+// typings
+import { TFilterMenu } from '../../..';
+import IdeasStatusSelector from './selectors/IdeasStatusSelector';
+import InitiativesStatusSelector from './selectors/InitiativesStatusSelector';
+import PhasesSelector from './selectors/PhasesSelector';
+import ProjectSelector from './selectors/ProjectSelector';
+import TopicsSelector from './selectors/TopicsSelector';
 
 interface Props {
   active: boolean;

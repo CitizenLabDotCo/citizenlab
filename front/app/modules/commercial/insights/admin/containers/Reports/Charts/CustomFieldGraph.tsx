@@ -1,36 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { isEmpty } from 'lodash-es';
-import { combineLatest } from 'rxjs';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from 'containers/Admin/dashboard/messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import T from 'components/T';
-
-// styling
-import {
-  sizes,
-  DEFAULT_BAR_CHART_MARGIN,
-} from 'components/admin/Graphs/styling';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
-import {
-  GraphCardHeader,
-  GraphCardTitle,
-  GraphCard,
-  GraphCardInner,
-} from 'components/admin/GraphWrappers';
-import { Tooltip } from 'recharts';
-import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
-
-// typings
-import { IUserCustomFieldData } from 'services/userCustomFields';
-import { IStream } from 'utils/streams';
-
+import { isEmpty } from 'lodash-es';
+import { Tooltip } from 'recharts';
+import { combineLatest } from 'rxjs';
 // services
 import {
   usersByRegFieldStream,
@@ -43,9 +16,30 @@ import {
   usersByDomicileXlsxEndpoint,
   ICustomFieldParams,
 } from 'services/userCustomFieldStats';
-
+// typings
+import { IUserCustomFieldData } from 'services/userCustomFields';
+// intl
+import { injectIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { IStream } from 'utils/streams';
+import messages from 'containers/Admin/dashboard/messages';
+import T from 'components/T';
+import {
+  GraphCardHeader,
+  GraphCardTitle,
+  GraphCard,
+  GraphCardInner,
+} from 'components/admin/GraphWrappers';
+import BarChart from 'components/admin/Graphs/BarChart';
+// styling
+import {
+  sizes,
+  DEFAULT_BAR_CHART_MARGIN,
+} from 'components/admin/Graphs/styling';
+// components
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import createConvertAndMergeSeries, {
   ISupportedDataType,
   TOutput,

@@ -15,10 +15,10 @@ import {
   debounceTime,
   switchMap,
 } from 'rxjs/operators';
-import { ideasCount } from 'services/stats';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
-import shallowCompare from 'utils/shallowCompare';
+import { ideasCount } from 'services/stats';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export interface InputProps {
   projectIds?: string[];

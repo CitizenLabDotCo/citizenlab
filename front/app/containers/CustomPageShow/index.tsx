@@ -1,34 +1,29 @@
 import React from 'react';
-
-// components
-import ContentContainer from 'components/ContentContainer';
-import Fragment from 'components/Fragment';
-import FileAttachments from 'components/UI/FileAttachments';
-import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
-import CustomPageHeader from './CustomPageHeader';
-import TopInfoSection from './TopInfoSection';
-import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
-import PageNotFound from 'components/PageNotFound';
+import { useParams } from 'react-router-dom';
 import { Box } from '@citizenlab/cl2-component-library';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useCustomPage from 'hooks/useCustomPage';
-import useResourceFiles from 'hooks/useResourceFiles';
-import { useParams } from 'react-router-dom';
-
-// utils
-import { isError, isNil, isNilOrError } from 'utils/helperUtils';
-
+import useFeatureFlag from 'hooks/useFeatureFlag';
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import useResourceFiles from 'hooks/useResourceFiles';
 import { injectIntl } from 'utils/cl-intl';
-
+// utils
+import { isError, isNil, isNilOrError } from 'utils/helperUtils';
+import { fontSizes, isRtl, media } from 'utils/styleUtils';
+// components
+import ContentContainer from 'components/ContentContainer';
+import Fragment from 'components/Fragment';
+import { Container, Content } from 'components/LandingPages/citizen';
+import PageNotFound from 'components/PageNotFound';
+import FileAttachments from 'components/UI/FileAttachments';
 // styling
 import styled from 'styled-components';
-import { fontSizes, isRtl, media } from 'utils/styleUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import CustomPageHeader from './CustomPageHeader';
+import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
+import TopInfoSection from './TopInfoSection';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};

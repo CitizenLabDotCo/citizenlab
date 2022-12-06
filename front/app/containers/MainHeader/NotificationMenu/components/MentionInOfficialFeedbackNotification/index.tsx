@@ -1,18 +1,15 @@
 import React, { memo } from 'react';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
-
 // services
 import { IMentionInOfficialFeedbackNotificationData } from 'services/notifications';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+import T from 'components/T';
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
+import { DeletedUser } from '../Notification';
 // components
 import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
-import { DeletedUser } from '../Notification';
-import T from 'components/T';
 
 interface Props {
   notification: IMentionInOfficialFeedbackNotificationData;

@@ -1,50 +1,43 @@
+import eventsWidgetConfiguration from './commercial/events_widget';
 import { loadModules } from 'utils/moduleUtils';
-
-import smartGroupsConfiguration from './commercial/smart_groups';
-import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
-import granularPermissionsConfiguration from './commercial/granular_permissions';
-import ideaAssignmentConfiguration from './commercial/idea_assignment';
-import moderationConfiguration from './commercial/moderation';
-import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
-import geographicDashboardConfiguration from './commercial/geographic_dashboard';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
-import machineTranslationsConfiguration from './commercial/machine_translations';
-import similarIdeaConfiguration from './commercial/similar_ideas';
-import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
-
-import projectVisibilityConfiguration from './free/project_visibility';
-
-import customMapsConfiguration from './commercial/custom_maps';
-import googleTagManagerConfiguration from './commercial/google_tag_manager';
-import googleAnalyticsConfiguration from './commercial/google_analytics';
-import intercomConfiguration from './commercial/intercom';
-import satismeterConfiguration from './commercial/satismeter';
-import segmentConfiguration from './commercial/segment';
-import matomoConfiguration from './commercial/matomo';
+import analyticsConfiguration from './commercial/analytics';
+import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
-import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
+import customMapsConfiguration from './commercial/custom_maps';
 import customTopicsConfiguration from './commercial/custom_topics';
-import impactTrackingConfiguration from './commercial/impact_tracking';
-
+import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
+import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
+import geographicDashboardConfiguration from './commercial/geographic_dashboard';
+import googleAnalyticsConfiguration from './commercial/google_analytics';
+import googleTagManagerConfiguration from './commercial/google_tag_manager';
+import granularPermissionsConfiguration from './commercial/granular_permissions';
 import idAuth0Configuration from './commercial/id_auth0';
-import idBosaFasConfiguration from './commercial/id_bosa_fas';
-import idCowConfiguration from './commercial/id_cow';
 import idBogusConfiguration from './commercial/id_bogus';
-import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
+import idBosaFasConfiguration from './commercial/id_bosa_fas';
+import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
+import idCowConfiguration from './commercial/id_cow';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
+import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
-import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
-
-import widgetsConfiguration from './commercial/widgets';
-import eventsWidgetConfiguration from './commercial/events_widget';
-
-import insightsConfiguration from './commercial/insights';
-import analyticsConfiguration from './commercial/analytics';
-
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
+import ideaAssignmentConfiguration from './commercial/idea_assignment';
+import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
+import impactTrackingConfiguration from './commercial/impact_tracking';
+import insightsConfiguration from './commercial/insights';
+import intercomConfiguration from './commercial/intercom';
+import machineTranslationsConfiguration from './commercial/machine_translations';
+import matomoConfiguration from './commercial/matomo';
+import moderationConfiguration from './commercial/moderation';
 import representativenessConfiguration from './commercial/representativeness';
+import satismeterConfiguration from './commercial/satismeter';
+import segmentConfiguration from './commercial/segment';
+import similarIdeaConfiguration from './commercial/similar_ideas';
+import smartGroupsConfiguration from './commercial/smart_groups';
+import widgetsConfiguration from './commercial/widgets';
+import projectVisibilityConfiguration from './free/project_visibility';
 
 // eslint-disable-next-line no-var
 declare var CL_CONFIG: any;

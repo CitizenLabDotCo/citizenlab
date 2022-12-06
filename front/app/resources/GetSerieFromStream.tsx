@@ -2,13 +2,7 @@
 import { PureComponent } from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-
-// utils
-import shallowCompare from 'utils/shallowCompare';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
-// typings
-import { IStreamParams, IStream } from 'utils/streams';
+import { IGraphFormat, IParticipationByTopic } from 'typings';
 import {
   IIdeasByTopic,
   ICommentsByTopic,
@@ -19,7 +13,11 @@ import {
   IVotesByProject,
 } from 'services/stats';
 import { IUsersByBirthyear } from 'services/userCustomFieldStats';
-import { IGraphFormat, IParticipationByTopic } from 'typings';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+// utils
+import shallowCompare from 'utils/shallowCompare';
+// typings
+import { IStreamParams, IStream } from 'utils/streams';
 
 interface State {
   unconvertedSerie: ISupportedDataType | NilOrError;

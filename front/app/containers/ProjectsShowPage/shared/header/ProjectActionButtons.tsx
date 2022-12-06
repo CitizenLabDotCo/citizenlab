@@ -5,41 +5,33 @@ import React, {
   useState,
   FormEvent,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { useLocation } from 'react-router-dom';
 import { isNumber } from 'lodash-es';
-
+import useAuthUser from 'hooks/useAuthUser';
+import usePhases from 'hooks/usePhases';
 // hooks
 import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
-
+import { getSurveyTakingRules } from 'services/actionTakingRules';
+import { getInputTerm } from 'services/participationContexts';
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { getInputTerm } from 'services/participationContexts';
-import { getSurveyTakingRules } from 'services/actionTakingRules';
-
-// components
-import Button from 'components/UI/Button';
-import IdeaButton from 'components/IdeaButton';
-
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { scrollToElement } from 'utils/scroll';
-
+import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-import { getInputTermMessage } from 'utils/i18n';
-
-// style
-import styled from 'styled-components';
-import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
-
 // router
 import clHistory from 'utils/cl-router/history';
-import { useLocation } from 'react-router-dom';
-
-import { openSignUpInModal } from 'events/openSignUpInModal';
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import { scrollToElement } from 'utils/scroll';
+import messages from 'containers/ProjectsShowPage/messages';
+import IdeaButton from 'components/IdeaButton';
+// components
+import Button from 'components/UI/Button';
+// style
+import styled from 'styled-components';
 
 const Container = styled.div``;
 

@@ -2,8 +2,8 @@ import React from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import SortableRow from './SortableRow';
 import SortableList from './SortableList';
+import SortableRow from './SortableRow';
 
 const items = [
   { id: '_1', attributes: { ordering: 0 } },

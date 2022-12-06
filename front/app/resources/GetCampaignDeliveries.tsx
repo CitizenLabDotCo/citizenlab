@@ -1,10 +1,10 @@
 import React from 'react';
 import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import { IDeliveryData, listCampaignDeliveries } from 'services/campaigns';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   campaignId: string;

@@ -1,15 +1,12 @@
 // Libraries
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
+// Typings
+import { WrappedComponentProps } from 'react-intl';
 // Components
 import { Icon, Dropdown, Checkbox } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-
 // Services
 import {
   batchAssignCategories,
@@ -19,14 +16,15 @@ import {
   addInsightsInputCategories,
   IInsightsInputData,
 } from 'modules/commercial/insights/services/insightsInputs';
-
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import messages from '../../messages';
 
 const ActionButtons = styled.div`
   display: flex;
@@ -97,10 +95,6 @@ const DropdownFooterButton = styled(Button)`
     border-top-right-radius: 0;
   }
 `;
-
-// Typings
-import { WrappedComponentProps } from 'react-intl';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 interface Props {
   className?: string;

@@ -1,6 +1,5 @@
-import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
-
 import * as serviceLocale from 'services/locale';
+import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
 
 jest.mock('modules', () => ({ streamsToReset: [] }));
 

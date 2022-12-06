@@ -1,15 +1,13 @@
 // must be at the top, before other imports!
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-
 // libraries
 import React from 'react';
-import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
-
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import moment from 'moment';
+import { fontSizes } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 245px;

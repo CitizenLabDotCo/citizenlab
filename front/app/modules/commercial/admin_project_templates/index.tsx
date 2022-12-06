@@ -1,10 +1,12 @@
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+
 const CreateProjectFromTemplate = React.lazy(
   () => import('./admin/containers/CreateProjectFromTemplate')
 );
 const Tab = React.lazy(() => import('./admin/components/Tab'));
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+
 const ProjectTemplatePreviewAdminWithEventWrapper = React.lazy(
   () => import('./admin/containers/ProjectTemplatePreviewAdminWithEventWrapper')
 );

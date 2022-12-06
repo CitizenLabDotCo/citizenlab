@@ -1,11 +1,12 @@
 import React from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
-const EventsWidget = React.lazy(() => import('./citizen'));
+import { ModuleConfiguration } from 'utils/moduleUtils';
 import SectionToggle, {
   Props as SectionToggleProps,
 } from './admin/SectionToggle';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+
+const EventsWidget = React.lazy(() => import('./citizen'));
 
 // The events section toggle should be rendered if the customer is Allowed to use the feature
 const RenderOnFeatureAllowed = ({ children }) => {

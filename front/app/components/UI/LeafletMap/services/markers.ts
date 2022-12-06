@@ -1,15 +1,14 @@
 import L from 'leaflet';
 import { compact } from 'lodash-es';
 import {
+  setLeafletMapHoveredMarker,
+  setLeafletMapSelectedMarker,
+} from '../events';
+import {
   DEFAULT_MARKER_ICON_SIZE,
   DEFAULT_MARKER_ANCHOR_SIZE,
   DEFAULT_MARKER_ICON,
 } from '../config';
-import {
-  setLeafletMapHoveredMarker,
-  setLeafletMapSelectedMarker,
-} from '../events';
-
 import { Point, MarkerIconProps } from '../typings';
 
 export function getMarkerIcon({ url, iconSize, iconAnchor }: MarkerIconProps) {

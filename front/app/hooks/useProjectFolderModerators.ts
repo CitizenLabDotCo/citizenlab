@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { IUserData } from 'services/users';
 import { folderModeratorsStream } from 'services/projectFolderModerators';
+import { IUserData } from 'services/users';
 
 export default function useProjectFolderModerators(projectFolderId: string) {
   const [folderModerators, setFolderModerators] = useState<

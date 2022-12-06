@@ -1,26 +1,21 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Warning from 'components/UI/Warning';
-
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// events
-import { openVerificationModal } from 'events/verificationModal';
-import { openSignUpInModal } from 'events/openSignUpInModal';
-
-// styling
-import styled from 'styled-components';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+// events
+import { openVerificationModal } from 'events/verificationModal';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import Warning from 'components/UI/Warning';
+// styling
+import styled from 'styled-components';
+// i18n
+import messages from './messages';
 
 const Container = styled.div`
   margin-bottom: 30px;

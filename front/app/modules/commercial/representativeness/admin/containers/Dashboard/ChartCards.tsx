@@ -1,15 +1,12 @@
 import React from 'react';
-
 // hooks
 import useUserCustomFields from 'hooks/useUserCustomFields';
-
+import { isShown, isSupported, sortUserCustomFields } from './utils';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import ChartCard from '../../components/ChartCard';
 import EmptyCard from '../../components/ChartCard/EmptyCard';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isShown, isSupported, sortUserCustomFields } from './utils';
 
 interface Props {
   projectFilter?: string;

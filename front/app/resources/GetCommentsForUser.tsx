@@ -1,4 +1,5 @@
 import React from 'react';
+import { get, isString } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { switchMap, distinctUntilChanged } from 'rxjs/operators';
 import {
@@ -6,7 +7,6 @@ import {
   commentsForUserStream,
   IComments,
 } from 'services/comments';
-import { get, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {

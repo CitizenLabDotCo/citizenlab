@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
-
-import { UploadFile, CLErrors } from 'typings';
-
-import { API_PATH } from 'containers/App/constants';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
+import { UploadFile, CLErrors } from 'typings';
+// resources
+import { addIdeaImportFile } from 'services/ideaFiles';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import { requestBlob } from 'utils/request';
-
+import { API_PATH } from 'containers/App/constants';
+import Button from 'components/UI/Button';
 // components
 import FileUploader from 'components/UI/FileUploader';
 import { SectionField } from 'components/admin/Section';
-import Button from 'components/UI/Button';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
-
-// resources
-import { addIdeaImportFile } from 'services/ideaFiles';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const Import = () => {

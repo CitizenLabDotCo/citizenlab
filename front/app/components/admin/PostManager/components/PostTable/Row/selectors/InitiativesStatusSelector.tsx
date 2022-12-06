@@ -1,7 +1,7 @@
 import React from 'react';
 import { Popup } from 'semantic-ui-react';
-import { IInitiativeAllowedTransitions } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeAllowedTransitions } from 'services/initiatives';
 import T from 'components/T';
 import styled from 'styled-components';
 

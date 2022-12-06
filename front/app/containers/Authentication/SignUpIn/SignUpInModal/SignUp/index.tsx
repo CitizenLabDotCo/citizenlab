@@ -1,29 +1,42 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-
-// services
-import { handleOnSSOClick } from 'services/singleSignOn';
-import { completeRegistration } from 'services/users';
-
-// components
-import Header from './Header';
-import AuthProviders, { AuthProvider } from 'components/AuthProviders';
-import PasswordSignup from './PasswordSignup';
-import ConfirmationSignupStep from './ConfirmationSignupStep';
-import CustomFieldsSignupStep from './CustomFieldsSignupStep';
-import Success from './Success';
-import Error from 'components/UI/Error';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { StyledModalContentContainer } from '../styles';
-import VerificationSignUpStep from './VerificationSignUpStep';
-
+import { MessageDescriptor } from 'react-intl';
+import { Multiloc } from 'typings';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
-import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
+import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
+import { IAppConfigurationData } from 'services/appConfiguration';
+// services
+import { handleOnSSOClick } from 'services/singleSignOn';
+import { UserCustomFieldsInfos } from 'services/userCustomFields';
+import { completeRegistration } from 'services/users';
+// events
+import { signUpActiveStepChange } from '../events';
+// typings
+import { ISignUpInMetaData, openSignUpInModal } from 'events/openSignUpInModal';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { useIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import AuthProviders, { AuthProvider } from 'components/AuthProviders';
+import T from 'components/T';
+import Error from 'components/UI/Error';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+// style
+import styled, { useTheme } from 'styled-components';
+import { StyledModalContentContainer } from '../styles';
+import tracks from '../tracks';
+import ConfirmationSignupStep from './ConfirmationSignupStep';
+import CustomFieldsSignupStep from './CustomFieldsSignupStep';
+// components
+import Header from './Header';
+import PasswordSignup from './PasswordSignup';
+import Success from './Success';
+import VerificationSignUpStep from './VerificationSignUpStep';
+import messages from './messages';
 import {
   getDefaultSteps,
   getActiveStep,
@@ -32,28 +45,6 @@ import {
   getNumberOfSteps,
   getActiveStepNumber,
 } from './stepUtils';
-
-// events
-import { signUpActiveStepChange } from '../events';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { MessageDescriptor } from 'react-intl';
-import T from 'components/T';
-import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
-// style
-import styled, { useTheme } from 'styled-components';
-
-// typings
-import { ISignUpInMetaData, openSignUpInModal } from 'events/openSignUpInModal';
-import { Multiloc } from 'typings';
-import { IAppConfigurationData } from 'services/appConfiguration';
-import { UserCustomFieldsInfos } from 'services/userCustomFields';
 
 const Container = styled.div`
   width: 100%;

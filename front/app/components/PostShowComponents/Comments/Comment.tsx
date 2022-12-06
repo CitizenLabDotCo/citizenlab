@@ -1,30 +1,25 @@
 // libraries
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
-
-// components
-import CommentHeader from './CommentHeader';
-import CommentBody from './CommentBody';
-import CommentFooter from './CommentFooter';
+import { WrappedComponentProps } from 'react-intl';
 import { Icon } from '@citizenlab/cl2-component-library';
-
-// services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
+import { get } from 'lodash-es';
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-
+// services
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import CommentBody from './CommentBody';
+import CommentFooter from './CommentFooter';
+// components
+import CommentHeader from './CommentHeader';
+import messages from './messages';
 
 const Container = styled.div``;
 

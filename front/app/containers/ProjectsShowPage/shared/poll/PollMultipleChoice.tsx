@@ -1,20 +1,20 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
-import { adopt } from 'react-adopt';
 import { IPollQuestion } from 'services/pollQuestions';
-import styled from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
+import styled from 'styled-components';
 import {
   QuestionContainer,
   Question,
   QuestionNumber,
   QuestionText,
 } from './PollForm';
-import { isNilOrError } from 'utils/helperUtils';
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const StyledFieldSet = styled.fieldset`

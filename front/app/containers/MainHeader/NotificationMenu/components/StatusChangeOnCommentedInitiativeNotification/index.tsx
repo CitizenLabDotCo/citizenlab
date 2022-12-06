@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { IStatusChangeOnCommentedInitiativeNotificationData } from 'services/notifications';
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
+import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {

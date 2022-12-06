@@ -1,19 +1,15 @@
 import React, { memo } from 'react';
 import { isBoolean } from 'lodash-es';
-
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // resource hooks
 import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// components
-import OfficialFeedbackForm from './OfficialFeedbackForm';
-import OfficialFeedbackFeed from './OfficialFeedbackFeed';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
 // stylings
 import styled from 'styled-components';
+import OfficialFeedbackFeed from './OfficialFeedbackFeed';
+// components
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 
 interface Props {
   postId: string;

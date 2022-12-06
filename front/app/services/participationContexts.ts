@@ -1,10 +1,10 @@
-import { isNilOrError } from 'utils/helperUtils';
+import { getPhaseInputTerm, IPhaseData } from 'services/phases';
 import {
   getProjectInputTerm,
   IProjectData,
   ProcessType,
 } from 'services/projects';
-import { getPhaseInputTerm, IPhaseData } from 'services/phases';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type TSurveyService =
   | 'typeform'

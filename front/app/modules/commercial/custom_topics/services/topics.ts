@@ -1,6 +1,6 @@
-import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 import { apiEndpoint, ITopic } from 'services/topics';
+import streams from 'utils/streams';
 
 export interface ITopicUpdate {
   title_multiloc: Multiloc;

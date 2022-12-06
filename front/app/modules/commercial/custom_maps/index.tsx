@@ -1,13 +1,15 @@
 import React, { ReactNode } from 'react';
+import { IPhaseData } from 'services/phases';
+import { IProjectData } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const Tab = React.lazy(() => import('./admin/components/Tab'));
 const LeafletConfig = React.lazy(
   () => import('./shared/components/Map/LeafletConfig')
 );
 const Legend = React.lazy(() => import('./shared/components/Map/Legend'));
-import { isNilOrError } from 'utils/helperUtils';
-import { IProjectData } from 'services/projects';
-import { IPhaseData } from 'services/phases';
+
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const CustomMapConfigComponent = React.lazy(

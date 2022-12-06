@@ -1,5 +1,4 @@
 // Requirements : multiloc fields must en with _multiloc, you can't nest multilocs.
-
 import { isString } from 'lodash-es';
 
 export function getFieldNameFromPath(val: string) {

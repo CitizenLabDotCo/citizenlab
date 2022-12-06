@@ -1,9 +1,7 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import PasswordInputComponent from './PasswordInput';
 

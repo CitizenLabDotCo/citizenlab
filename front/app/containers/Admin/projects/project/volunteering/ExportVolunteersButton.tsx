@@ -1,16 +1,13 @@
 // Libraries
 import React from 'react';
-
 // typings
 import { IParticipationContextType } from 'typings';
-
-// components
-import Button from 'components/UI/Button';
-
+import { exportVolunteers } from 'services/volunteers';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+// components
+import Button from 'components/UI/Button';
 import messages from './messages';
-import { exportVolunteers } from 'services/volunteers';
 
 interface Props {
   participationContextType: IParticipationContextType;

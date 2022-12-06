@@ -1,23 +1,19 @@
 import React, { memo, useCallback } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import StatusFilter from 'components/FilterBoxes/StatusFilter';
-
 // resources
 import GetIdeaStatuses, {
   GetIdeaStatusesChildProps,
 } from 'resources/GetIdeaStatuses';
+// typings
+import { IQueryParameters } from 'resources/GetIdeas';
 import GetIdeasFilterCounts, {
   GetIdeasFilterCountsChildProps,
 } from 'resources/GetIdeasFilterCounts';
-
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import StatusFilter from 'components/FilterBoxes/StatusFilter';
 // styling
 import styled from 'styled-components';
-
-// typings
-import { IQueryParameters } from 'resources/GetIdeas';
 
 const Container = styled.div``;
 

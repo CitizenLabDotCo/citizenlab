@@ -1,33 +1,28 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
+import { WrappedComponentProps } from 'react-intl';
+import { get } from 'lodash-es';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { get } from 'lodash-es';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import { WrappedComponentProps } from 'react-intl';
-
 // Services
 import { ICommentData, markForDeletion } from 'services/comments';
 import { hasPermission } from 'services/permissions';
-
-// Components
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-import Button from 'components/UI/Button';
-import HasPermission from 'components/HasPermission';
-import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
-
 // events
 import { deleteCommentModalClosed, commentDeleted } from './events';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
+import { isRtl } from 'utils/styleUtils';
+import SpamReportForm from 'containers/SpamReport';
+import HasPermission from 'components/HasPermission';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+// Components
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 // Styling
 import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
+import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

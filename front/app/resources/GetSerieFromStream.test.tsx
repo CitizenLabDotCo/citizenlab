@@ -1,8 +1,8 @@
 // @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
-import GetSerieFromStream, { ISupportedDataType } from './GetSerieFromStream';
 import { BehaviorSubject } from 'rxjs';
+import GetSerieFromStream, { ISupportedDataType } from './GetSerieFromStream';
 
 jest.mock('services/areas');
 jest.mock('modules', () => ({ streamsToReset: [] }));

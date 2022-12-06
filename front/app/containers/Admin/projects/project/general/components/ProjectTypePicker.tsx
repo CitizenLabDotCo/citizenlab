@@ -1,13 +1,11 @@
 import React from 'react';
-
 // components
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import { SubSectionTitle } from 'components/admin/Section';
-import { StyledWarning } from './styling';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { SubSectionTitle } from 'components/admin/Section';
 import messages from '../messages';
+import { StyledWarning } from './styling';
 
 interface Props {
   projectType: 'continuous' | 'timeline';

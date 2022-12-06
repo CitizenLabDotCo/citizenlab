@@ -1,22 +1,18 @@
-import { AUTH_PATH } from 'containers/App/constants';
 import React from 'react';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
-import { TOnContinueFunction } from 'components/AuthProviders/AuthProviderButton';
-import { StyledAuthProviderButton } from 'components/AuthProviders';
-import ViennaIcon from './ViennaIcon';
-
+import { Box, Text } from '@citizenlab/cl2-component-library';
 // typings
 import { TSignUpInFlow } from 'events/openSignUpInModal';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { fontSizes } from 'utils/styleUtils';
+import { AUTH_PATH } from 'containers/App/constants';
+import { StyledAuthProviderButton } from 'components/AuthProviders';
+// components
+import { TOnContinueFunction } from 'components/AuthProviders/AuthProviderButton';
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import ViennaIcon from './ViennaIcon';
+import messages from './messages';
 
 const Container = styled(Box)`
   display: flex;

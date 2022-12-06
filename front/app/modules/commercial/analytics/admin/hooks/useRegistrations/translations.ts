@@ -1,11 +1,10 @@
 // i18n
-import messages from './messages';
-import moduleMessages from '../../messages';
-import cardMessages from '../../components/RegistrationsCard/messages';
-import { getTimePeriodTranslations } from '../../utils/resolution';
-
 // typings
 import { FormatMessage } from 'typings';
+import { getTimePeriodTranslations } from '../../utils/resolution';
+import cardMessages from '../../components/RegistrationsCard/messages';
+import moduleMessages from '../../messages';
+import messages from './messages';
 
 export interface Translations {
   stats: string;

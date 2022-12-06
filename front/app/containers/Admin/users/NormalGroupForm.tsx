@@ -1,25 +1,24 @@
 import React from 'react';
-
 // form
 import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// Components
-import { SectionField } from 'components/admin/Section';
 import { Button } from '@citizenlab/cl2-component-library';
-
+import { yupResolver } from '@hookform/resolvers/yup';
 // Typings
 import { Multiloc } from 'typings';
+import { object } from 'yup';
+import { MembershipType } from 'services/groups';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+// Components
+import { SectionField } from 'components/admin/Section';
+// Style
+import styled from 'styled-components';
+import messages from './messages';
 
 type Props = {
   onSubmit: (formValues: NormalFormValues) => void | Promise<void>;
@@ -30,10 +29,6 @@ export interface NormalFormValues {
   title_multiloc: Multiloc;
   membership_type: MembershipType;
 }
-
-// Style
-import styled from 'styled-components';
-import { MembershipType } from 'services/groups';
 
 export const Fill = styled.div`
   padding-top: 40px;

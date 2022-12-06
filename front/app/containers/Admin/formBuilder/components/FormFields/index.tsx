@@ -2,23 +2,6 @@ import React from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { useFormContext } from 'react-hook-form';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import {
-  isFieldSelected,
-  getFieldBackgroundColor,
-  getTitleColor,
-  getIndexForTitle,
-  getIndexTitleColor,
-} from './utils';
-
-// components
-import { List } from 'components/admin/ResourceList';
 import {
   Box,
   Badge,
@@ -26,18 +9,30 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import T from 'components/T';
-import { SortableRow } from '../SortableRow';
-
-// styling
-import styled from 'styled-components';
-
 // hooks and services
 import useLocale from 'hooks/useLocale';
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
+import {
+  isFieldSelected,
+  getFieldBackgroundColor,
+  getTitleColor,
+  getIndexForTitle,
+  getIndexTitleColor,
+} from './utils';
+// intl
+import { FormattedMessage } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import T from 'components/T';
+// components
+import { List } from 'components/admin/ResourceList';
+// styling
+import styled from 'styled-components';
+import { SortableRow } from '../SortableRow';
+import messages from '../messages';
 
 // Assign field badge text
 const getTranslatedFieldType = (field) => {

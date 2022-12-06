@@ -1,24 +1,19 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
-
-// hooks
-import useIdea from 'hooks/useIdea';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// styles
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
 // components
 import { Checkbox, Td } from '@citizenlab/cl2-component-library';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+// hooks
+import useIdea from 'hooks/useIdea';
+// services
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 import T from 'components/T';
 import Category from 'modules/commercial/insights/admin/components/Category';
+// styles
+import styled from 'styled-components';
 
 const CategoryList = styled.div`
   > *:not(:only-of-type) {

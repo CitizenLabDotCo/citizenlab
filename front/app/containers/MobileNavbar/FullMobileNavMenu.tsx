@@ -1,31 +1,27 @@
 import React from 'react';
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// hooks
-import useNavbarItems from 'hooks/useNavbarItems';
+import { WrappedComponentProps } from 'react-intl';
+import { darken } from 'polished';
 import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 import useLocalize from 'hooks/useLocalize';
-
-// components
-import FullscreenModal from 'components/UI/FullscreenModal';
-import FullMobileNavMenuItem from './FullMobileNavMenuItem';
-import TenantLogo from './TenantLogo';
-
-// styles
-import styled, { css } from 'styled-components';
-import { media, colors, hexToRgb } from 'utils/styleUtils';
-import { darken } from 'polished';
+// hooks
+import useNavbarItems from 'hooks/useNavbarItems';
+import { trackEventByName } from 'utils/analytics';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import mainHeaderMessages from '../MainHeader/messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
+import { media, colors, hexToRgb } from 'utils/styleUtils';
 import CloseIconButton from 'components/UI/CloseIconButton';
+// components
+import FullscreenModal from 'components/UI/FullscreenModal';
+// styles
+import styled, { css } from 'styled-components';
+import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
+import mainHeaderMessages from '../MainHeader/messages';
+import FullMobileNavMenuItem from './FullMobileNavMenuItem';
+import TenantLogo from './TenantLogo';
+import messages from './messages';
+import tracks from './tracks';
 
 const containerBackgroundColorRgb = hexToRgb(colors.textSecondary);
 

@@ -1,17 +1,14 @@
 import React from 'react';
-import { AUTH_PATH } from 'containers/App/constants';
+import { WrappedComponentProps } from 'react-intl';
 import { removeUrlLocale } from 'services/locale';
-import { getJwt } from 'utils/auth/jwt';
-
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
-
-// components
-import FranceConnectButton from 'components/UI/FranceConnectButton';
-
+import { getJwt } from 'utils/auth/jwt';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { AUTH_PATH } from 'containers/App/constants';
+// components
+import FranceConnectButton from 'components/UI/FranceConnectButton';
 import messages from '../messages';
 
 interface Props {

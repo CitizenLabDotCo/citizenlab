@@ -1,19 +1,14 @@
 import React from 'react';
-
-// messages
-import messages from '../../messages';
-
-// typings
-import { TTextingCampaignStatus } from 'services/textingCampaigns';
-
 // components
 import { StatusLabel } from '@citizenlab/cl2-component-library';
-
+// typings
+import { TTextingCampaignStatus } from 'services/textingCampaigns';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-
 // styling
 import { colors } from 'utils/styleUtils';
+// messages
+import messages from '../../messages';
 
 interface FormattedStatusLabelProps {
   width?: string;

@@ -1,9 +1,8 @@
 import React from 'react';
-import CreateCategory from './CreateCategory';
-
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import categories from 'modules/commercial/insights/fixtures/categories';
 import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import CreateCategory from './CreateCategory';
 
 const viewId = '1';
 

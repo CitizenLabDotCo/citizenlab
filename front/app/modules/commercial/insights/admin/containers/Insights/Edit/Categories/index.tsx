@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { stringify } from 'qs';
-
-// styles
-import styled from 'styled-components';
-import { darken } from 'polished';
-
+// intl
+import { WrappedComponentProps } from 'react-intl';
 // components
 import {
   Input,
@@ -16,40 +11,36 @@ import {
   Icon,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
-import Error from 'components/UI/Error';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { colors, fontSizes } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
-
+import { darken } from 'polished';
+import { stringify } from 'qs';
+// types
+import { CLErrors } from 'typings';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
-
-// intl
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
-// types
-import { CLErrors } from 'typings';
-
+import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
 // services
 import {
   addInsightsCategory,
   deleteInsightsCategories,
   deleteInsightsCategory,
 } from 'modules/commercial/insights/services/insightsCategories';
-
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 // tracking
 import { trackEventByName } from 'utils/analytics';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+// styles
+import styled from 'styled-components';
+import messages from '../../messages';
 
 const CategoriesLabel = styled.div`
   display: flex;

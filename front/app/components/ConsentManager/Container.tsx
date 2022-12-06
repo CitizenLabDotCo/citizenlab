@@ -1,21 +1,16 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { Subscription } from 'rxjs';
-
+import { FormattedMessage } from 'utils/cl-intl';
 // Events
 import eventEmitter from 'utils/eventEmitter';
-
+import Modal from 'components/UI/Modal';
+import styled from 'styled-components';
+import { CategorizedDestinations, IPreferences } from './';
 // Components
 import Banner from './Banner';
-import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import Footer from './Footer';
-import Modal from 'components/UI/Modal';
-
-import { FormattedMessage } from 'utils/cl-intl';
+import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import messages from './messages';
-
-import { CategorizedDestinations, IPreferences } from './';
-
-import styled from 'styled-components';
 
 export const ButtonContainer = styled.div`
   width: 100%;

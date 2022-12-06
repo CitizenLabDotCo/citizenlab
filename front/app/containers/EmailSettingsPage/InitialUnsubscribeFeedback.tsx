@@ -1,17 +1,14 @@
 import React, { memo } from 'react';
-
+import { Multiloc } from 'typings';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { colors, fontSizes } from 'utils/styleUtils';
+import T from 'components/T';
 // components
 import { FormSection } from 'components/UI/FormComponents';
-
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { Multiloc } from 'typings';
-import T from 'components/T';
+import messages from './messages';
 
 const Message = styled.div<{ status: 'error' | 'success' | 'loading' }>`
   color: ${colors.teal700};

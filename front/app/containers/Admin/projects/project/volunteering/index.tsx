@@ -1,23 +1,20 @@
 // Libraries
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
-import styled from 'styled-components';
-
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // Services / Data loading
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-
-// Components
-import ExportVolunteersButton from './ExportVolunteersButton';
-import AllCauses from './AllCauses';
+import { FormattedMessage } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-
+import styled from 'styled-components';
+import AllCauses from './AllCauses';
+// Components
+import ExportVolunteersButton from './ExportVolunteersButton';
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   display: flex;

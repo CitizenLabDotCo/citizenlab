@@ -1,13 +1,10 @@
 import React from 'react';
-
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
-
-// components
-import VerificationMethodButton from 'containers/Authentication/VerificationModal/VerificationMethodButton';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+// components
+import VerificationMethodButton from 'containers/Authentication/VerificationModal/VerificationMethodButton';
 import messages from '../messages';
 
 interface Props {

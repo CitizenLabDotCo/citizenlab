@@ -1,38 +1,32 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { Spinner } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
+import { darken } from 'polished';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
-
-// components
-import Comment from './Comment';
-import ChildCommentForm from './ChildCommentForm';
-import { Spinner } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
-// services
-import { childCommentsStream, IComments } from 'services/comments';
-
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled, { withTheme } from 'styled-components';
-import { darken } from 'polished';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
+// services
+import { childCommentsStream, IComments } from 'services/comments';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
+// style
+import styled, { withTheme } from 'styled-components';
+import ChildCommentForm from './ChildCommentForm';
+// components
+import Comment from './Comment';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   position: relative;

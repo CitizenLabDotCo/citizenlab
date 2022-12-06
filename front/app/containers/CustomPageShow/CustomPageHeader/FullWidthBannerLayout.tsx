@@ -1,3 +1,5 @@
+import React from 'react';
+import { ICustomPageData } from 'services/customPages';
 import {
   Container,
   Header,
@@ -5,10 +7,9 @@ import {
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
-import React from 'react';
-import { ICustomPageData } from 'services/customPages';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
+
 export interface Props {
   className?: string;
   imageColor?: string;

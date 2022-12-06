@@ -1,9 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent, act, waitFor } from 'utils/testUtils/rtl';
+import categories from 'modules/commercial/insights/fixtures/categories';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
-import categories from 'modules/commercial/insights/fixtures/categories';
-
+import { render, screen, fireEvent, act, waitFor } from 'utils/testUtils/rtl';
 import Categories from './';
 
 let mockData = categories;

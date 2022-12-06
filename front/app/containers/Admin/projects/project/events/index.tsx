@@ -1,24 +1,21 @@
 // libraries
 import React from 'react';
-import styled from 'styled-components';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// services
-import { deleteEvent } from 'services/events';
-
 // hooks
 import useEvents from 'hooks/useEvents';
-
+// services
+import { deleteEvent } from 'services/events';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import styled from 'styled-components';
+import messages from './messages';
 
 const ListWrapper = styled.div`
   display: flex;

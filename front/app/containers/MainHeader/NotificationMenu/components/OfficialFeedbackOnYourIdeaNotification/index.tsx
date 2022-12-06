@@ -1,21 +1,18 @@
 import React, { memo } from 'react';
 import useIdea from 'hooks/useIdea';
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import { isNilOrError } from 'utils/helperUtils';
-import { getInputTerm } from 'services/participationContexts';
-
+import useProject from 'hooks/useProject';
 import { IOfficialFeedbackOnYourIdeaNotificationData } from 'services/notifications';
-
+import { getInputTerm } from 'services/participationContexts';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import T from 'components/T';
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { getInputTermMessage } from 'utils/i18n';
-
 // components
 import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
-import T from 'components/T';
 
 interface Props {
   notification: IOfficialFeedbackOnYourIdeaNotificationData;

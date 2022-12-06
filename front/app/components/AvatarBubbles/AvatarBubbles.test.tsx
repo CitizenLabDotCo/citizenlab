@@ -1,8 +1,8 @@
 import React from 'react';
 import { IAvatarData } from 'services/avatars';
+import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { render, screen } from 'utils/testUtils/rtl';
 import { AvatarBubbles } from './';
-import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 
 jest.mock('services/locale');
 jest.mock('services/avatars');

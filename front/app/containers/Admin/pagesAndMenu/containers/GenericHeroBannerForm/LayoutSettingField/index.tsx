@@ -1,22 +1,6 @@
 import React from 'react';
-
 // components
 import { Box, fontSizes, Radio } from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-
-import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
-import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';
-import TwoColumnLayoutActive from './layout_previews/two_column_layout_active.jpg';
-import TwoColumnLayoutInactive from './layout_previews/two_column_layout_inactive.jpg';
-import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
-import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
-
-// style
-import styled from 'styled-components';
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
@@ -25,6 +9,18 @@ import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+// style
+import styled from 'styled-components';
+import messages from '../messages';
+import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
+import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';
+import TwoColumnLayoutActive from './layout_previews/two_column_layout_active.jpg';
+import TwoColumnLayoutInactive from './layout_previews/two_column_layout_inactive.jpg';
+import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
+import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
 
 const LayoutPreview = styled.img`
   width: 200px;

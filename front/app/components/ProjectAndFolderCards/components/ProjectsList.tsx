@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
-
-// components
-import ProjectsTabPanel from './ProjectsTabPanel';
-
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
-
+import { isEqual } from 'lodash-es';
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { TLayout } from '..';
 import { PublicationTab } from '../';
-
+// components
+import ProjectsTabPanel from './ProjectsTabPanel';
 // utils
 import getCardSizes from './getCardSizes';
-import { isEqual } from 'lodash-es';
 
 export type TCardSize = 'small' | 'medium' | 'large';
 

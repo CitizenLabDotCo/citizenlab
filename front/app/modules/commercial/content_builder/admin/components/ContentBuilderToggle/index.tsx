@@ -1,36 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// Typings
-import { Locale, Multiloc } from 'typings';
-
-// Style
-import styled from 'styled-components';
-
-// Hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useContentBuilderLayout from '../../../hooks/useContentBuilder';
-
-// Utils
-import Link from 'utils/cl-router/Link';
-import { fontSizes } from 'utils/styleUtils';
-
+import { WrappedComponentProps } from 'react-intl';
 // Components
 import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+// Typings
+import { Locale, Multiloc } from 'typings';
+import useContentBuilderLayout from '../../../hooks/useContentBuilder';
+// Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
 } from 'modules/commercial/content_builder/services/contentBuilder';
-
-// Messages
-import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
+// Utils
+import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // Helpers
 import { isNil, isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
+// Style
+import styled from 'styled-components';
+// Messages
+import messages from '../../messages';
 
 type ContentBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;

@@ -1,31 +1,27 @@
 import React, { useState, useContext, memo } from 'react';
 import { Helmet } from 'react-helmet';
-import { PreviousPathnameContext } from 'context';
-import { isNilOrError } from 'utils/helperUtils';
-import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// components
-import IdeaCards from 'components/IdeaCards';
-import ContentContainer from 'components/ContentContainer';
-import UsersShowPageMeta from './UsersShowPageMeta';
-import Button from 'components/UI/Button';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import { isError } from 'lodash-es';
 // hooks
 import useUser from 'hooks/useUser';
-
+import { PreviousPathnameContext } from 'context';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import ContentContainer from 'components/ContentContainer';
+// components
+import IdeaCards from 'components/IdeaCards';
+import Button from 'components/UI/Button';
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import UserComments from './UserComments';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
-import UserComments from './UserComments';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import UsersShowPageMeta from './UsersShowPageMeta';
+import messages from './messages';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);

@@ -1,19 +1,16 @@
 import React from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
-
-// style
-import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import FormattedAnchor from 'components/FormattedAnchor';
-
+import Modal from 'components/UI/Modal';
+// style
+import styled from 'styled-components';
 // images
 import illustration from './illustration.png';
-import Modal from 'components/UI/Modal';
-import { WrappedComponentProps } from 'react-intl';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

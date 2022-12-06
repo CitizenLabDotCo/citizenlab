@@ -1,6 +1,5 @@
 import React from 'react';
 import { isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import {
   Subscription,
   BehaviorSubject,
@@ -9,18 +8,19 @@ import {
   Observable,
 } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
-import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
-import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
-import { pageFilesStream, ICustomPageFiles } from 'services/pageFiles';
+import { UploadFile } from 'typings';
 import { eventFilesStream, IEventFiles } from 'services/eventFiles';
 import { ideaFilesStream, IIdeaFiles } from 'services/ideaFiles';
 import {
   initiativeFilesStream,
   IInitiativeFiles,
 } from 'services/initiativeFiles';
+import { pageFilesStream, ICustomPageFiles } from 'services/pageFiles';
+import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
+import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
-import { UploadFile } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 // Converted file objects (to JS objects of type File).
 // Useful when you combining local files and remote files,

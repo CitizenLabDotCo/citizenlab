@@ -1,20 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
-
+// typings
+import { Multiloc, Locale } from 'typings';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 // components
 import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
+import styled from 'styled-components';
 import { StyledSectionDescription } from '.';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-
-// typings
-import { Multiloc, Locale } from 'typings';
 
 const StyledSectionField = styled(SectionField)`
   margin-top: 45px;

@@ -1,5 +1,5 @@
-import 'services/appConfiguration';
 import { Multiloc } from 'typings';
+import 'services/appConfiguration';
 
 declare module 'services/appConfiguration' {
   export interface IAppConfigurationSettings {

@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useNavbarItems from './useNavbarItems';
 import { Observable, Subscription } from 'rxjs';
-import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
-import navbarItems from './fixtures/navbarItems';
 import { navbarItemsStream } from 'services/navbar';
+import { waitFor } from 'utils/testUtils/rtl';
+import navbarItems from './fixtures/navbarItems';
+import useNavbarItems from './useNavbarItems';
 
 const mockInput = {
   data: navbarItems,

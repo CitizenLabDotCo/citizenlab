@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import {
   Text,
@@ -10,10 +8,12 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
+import { injectIntl } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
 import CloseIconButton from 'components/UI/CloseIconButton';
+import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
 import messages from './messages';
-import { get } from 'lodash-es';
 
 type FeedbackProps = {
   successMessage?: string;

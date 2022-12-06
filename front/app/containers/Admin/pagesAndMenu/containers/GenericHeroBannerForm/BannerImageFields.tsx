@@ -1,3 +1,6 @@
+import React, { useEffect, useMemo, useState } from 'react';
+// i18n
+import { WrappedComponentProps } from 'react-intl';
 import {
   Box,
   ColorPickerInput,
@@ -6,26 +9,20 @@ import {
   Label,
   Select,
 } from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { debounce } from 'lodash-es';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useTheme } from 'styled-components';
 import { UploadFile } from 'typings';
-import HeaderImageDropzone from './HeaderImageDropzone';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNil, isNilOrError } from 'utils/helperUtils';
-
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
-
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 import RangeInput from 'components/UI/RangeInput';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import { ISubmitState } from 'components/admin/SubmitWrapper';
+import { useTheme } from 'styled-components';
+import HeaderImageDropzone from './HeaderImageDropzone';
+import messages from './messages';
+
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
 interface Props {

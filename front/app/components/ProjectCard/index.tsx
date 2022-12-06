@@ -1,43 +1,31 @@
-import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty, get, isNumber, round } from 'lodash-es';
-import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
-import bowser from 'bowser';
-
-// router
-import Link from 'utils/cl-router/Link';
-
+import React, { memo, useState } from 'react';
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import Image from 'components/UI/Image';
-import AvatarBubbles from 'components/AvatarBubbles';
-
-// services
-import { getProjectUrl } from 'services/projects';
-import { getInputTerm } from 'services/participationContexts';
-import { getIdeaPostingRules } from 'services/actionTakingRules';
-
-// resources
-import useProject from 'hooks/useProject';
+import bowser from 'bowser';
+import { isEmpty, get, isNumber, round } from 'lodash-es';
+import moment from 'moment';
+import { rgba, darken } from 'polished';
+import useAuthUser from 'hooks/useAuthUser';
 import usePhase from 'hooks/usePhase';
 import usePhases from 'hooks/usePhases';
-import useAuthUser from 'hooks/useAuthUser';
+// resources
+import useProject from 'hooks/useProject';
 import useProjectImages from 'hooks/useProjectImages';
-
-// i18n
-import T from 'components/T';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import messages from './messages';
-
+import { getIdeaPostingRules } from 'services/actionTakingRules';
+import { getInputTerm } from 'services/participationContexts';
+// services
+import { getProjectUrl } from 'services/projects';
+import { ScreenReaderOnly } from 'utils/a11y';
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled, { useTheme } from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
+// router
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
 import {
   media,
   colors,
@@ -46,9 +34,14 @@ import {
   defaultCardHoverStyle,
   isRtl,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { rgba, darken } from 'polished';
-import { getInputTermMessage } from 'utils/i18n';
+import AvatarBubbles from 'components/AvatarBubbles';
+// i18n
+import T from 'components/T';
+import Image from 'components/UI/Image';
+// style
+import styled, { useTheme } from 'styled-components';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);

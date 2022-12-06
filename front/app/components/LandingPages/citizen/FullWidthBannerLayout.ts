@@ -1,6 +1,6 @@
+import { media } from 'utils/styleUtils';
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 export const Container = styled.div`
   width: 100%;

@@ -1,19 +1,16 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { WrappedComponentProps } from 'react-intl';
 import { Select } from 'semantic-ui-react';
 import { memoize } from 'lodash-es';
-
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import messages from '../../messages';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;

@@ -1,9 +1,5 @@
-import { TFieldName } from 'components/UI/Error';
-import {
-  appGraphqlLocalePairs,
-  appLocalePairs,
-} from 'containers/App/constants';
 import { FC } from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import { TableCellProps } from 'semantic-ui-react';
 import {
   TAppConfigurationSetting,
@@ -11,7 +7,11 @@ import {
 } from 'services/appConfiguration';
 import { IIdeaAction } from 'services/ideas';
 import { IProjectAction } from 'services/projects';
-import { WrappedComponentProps } from 'react-intl';
+import {
+  appGraphqlLocalePairs,
+  appLocalePairs,
+} from 'containers/App/constants';
+import { TFieldName } from 'components/UI/Error';
 
 declare global {
   interface Function {

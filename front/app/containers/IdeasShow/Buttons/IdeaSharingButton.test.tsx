@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
+import translationMessages from 'i18n/en';
 import IdeaSharingButton from './IdeaSharingButton';
 import SharingButtonComponent from './SharingButtonComponent';
-import translationMessages from 'i18n/en';
 
 const mockProjectData = {
   id: '2',

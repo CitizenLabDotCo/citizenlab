@@ -1,21 +1,14 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
-import useLocalize from 'hooks/useLocalize';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { isEqual } from 'lodash-es';
-
-// resources
-import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import styled from 'styled-components';
-import messages from './messages';
-import ResolutionControl, {
-  IResolution,
-} from 'components/admin/ResolutionControl';
-import { GraphsContainer } from 'components/admin/GraphWrappers';
-
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import useLocalize from 'hooks/useLocalize';
+// services
+import { ParticipationMethod } from 'services/participationContexts';
 import {
   activeUsersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeStream,
@@ -26,27 +19,28 @@ import {
   commentsByTimeCumulativeStream,
   commentsByTimeStream,
 } from 'services/stats';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// resources
+import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
-
-// services
-import { ParticipationMethod } from 'services/participationContexts';
-
+import T from 'components/T';
+import { GraphsContainer } from 'components/admin/GraphWrappers';
+import ResolutionControl, {
+  IResolution,
+} from 'components/admin/ResolutionControl';
 // components
 import { SectionTitle, PageTitle } from 'components/admin/Section';
-import T from 'components/T';
-
+import styled from 'styled-components';
+import BarChartActiveUsersByTime from './Charts/BarChartActiveUsersByTime';
 import HorizontalBarChartWithoutStream from './Charts/HorizontalBarChartWithoutStream';
 import IdeasByStatusChart from './Charts/IdeasByStatusChart';
-import ParticipationPerTopic from './Charts/ParticipationPerTopic';
 import LineBarChart from './Charts/LineBarChart';
 import LineBarChartVotesByTime from './Charts/LineBarChartVotesByTime';
-import BarChartActiveUsersByTime from './Charts/BarChartActiveUsersByTime';
-import PollReport from './PollReport';
+import ParticipationPerTopic from './Charts/ParticipationPerTopic';
 import UserCharts from './Charts/UserCharts';
-
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import PollReport from './PollReport';
+import messages from './messages';
 
 const Section = styled.div`
   margin-bottom: 20px;

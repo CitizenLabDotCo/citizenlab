@@ -1,5 +1,4 @@
 import React from 'react';
-
 // components
 import {
   Box,
@@ -7,23 +6,18 @@ import {
   Input,
   Text,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-
-// intl
-import messages from '../../../messages';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-
 // craft
 import { useNode } from '@craftjs/core';
-
+// types
+import { Locale } from 'typings';
+import { isValidUrl } from './utils';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // events
 import eventEmitter from 'utils/eventEmitter';
 import { CONTENT_BUILDER_ERROR_EVENT } from '../../../containers';
-
-// types
-import { Locale } from 'typings';
-
-import { isValidUrl } from './utils';
+import Error from 'components/UI/Error';
+// intl
+import messages from '../../../messages';
 
 interface Props {
   url: string;

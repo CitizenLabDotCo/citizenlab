@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
+import { combineLatest } from 'rxjs';
+import { ActionPermission } from 'services/actionTakingRules';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
+import { authUserStream } from 'services/auth';
 import {
   getInitiativeActionDescriptors,
   IInitiativeAction,
 } from 'services/initiatives';
 import { isNilOrError } from 'utils/helperUtils';
-import { ActionPermission } from 'services/actionTakingRules';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { authUserStream } from 'services/auth';
-import { combineLatest } from 'rxjs';
 
 export type IInitiativeDisabledReason = 'notPermitted';
 

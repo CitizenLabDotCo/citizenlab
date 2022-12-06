@@ -1,30 +1,27 @@
 import React, { PureComponent } from 'react';
-import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import CommentVote from './CommentVote';
-import CommentReplyButton from './CommentReplyButton';
-import CommentsMoreActions from './CommentsMoreActions';
-
+import { get } from 'lodash-es';
 // resources
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
-
-// style
-import styled from 'styled-components';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
+// style
+import styled from 'styled-components';
+import CommentReplyButton from './CommentReplyButton';
+// components
+import CommentVote from './CommentVote';
+import CommentsMoreActions from './CommentsMoreActions';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';

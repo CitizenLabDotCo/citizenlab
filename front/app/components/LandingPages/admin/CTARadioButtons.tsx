@@ -1,12 +1,11 @@
-import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
-import Error, { TFieldName } from 'components/UI/Error';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import React from 'react';
+import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
+import { CLErrors, Multiloc } from 'typings';
 import { TCustomPageCTAType } from 'services/customPages';
 import { CTASignedInType, CTASignedOutType } from 'services/homepageSettings';
-import { CLErrors, Multiloc } from 'typings';
-
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import Error, { TFieldName } from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import messages from './messages';
 
 type CTAType = TCustomPageCTAType | CTASignedInType | CTASignedOutType;

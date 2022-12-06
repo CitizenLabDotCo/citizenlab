@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
+import { WrappedComponentProps } from 'react-intl';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import { isEmpty } from 'lodash-es';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetPermission from 'resources/GetPermission';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import GetPermission from 'resources/GetPermission';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 
 type Props = {
   canManageAutomatedCampaigns: boolean | null;

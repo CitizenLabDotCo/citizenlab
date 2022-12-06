@@ -1,4 +1,5 @@
 import React from 'react';
+import { unionBy, isString, get } from 'lodash-es';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -13,7 +14,6 @@ import {
   commentsForInitiativeStream,
   CommentsSort,
 } from 'services/comments';
-import { unionBy, isString, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 type children = (renderProps: GetCommentsChildProps) => JSX.Element | null;

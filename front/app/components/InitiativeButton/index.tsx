@@ -1,14 +1,14 @@
 import React, { useCallback } from 'react';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import { trackEventByName } from 'utils/analytics';
-import clHistory from 'utils/cl-router/history';
-import { openVerificationModal } from 'events/verificationModal';
-import { FormattedMessage } from 'utils/cl-intl';
-import Button from 'components/UI/Button';
-import messages from './messages';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import Button from 'components/UI/Button';
+import messages from './messages';
 
 interface Props {
   lat?: number | null;

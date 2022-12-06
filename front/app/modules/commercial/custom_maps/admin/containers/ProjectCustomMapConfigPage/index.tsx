@@ -1,25 +1,17 @@
+import Tippy from '@tippyjs/react';
 import React, { memo, useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { WrappedComponentProps } from 'react-intl';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { isEqual } from 'lodash-es';
 import { combineLatest } from 'rxjs';
-
-// components
-import Map from 'components/Map';
-import MapConfigOverview from './MapConfigOverview';
-import { Spinner } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
-
+import useMapConfig from '../../../hooks/useMapConfig';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useMapConfig from '../../../hooks/useMapConfig';
-
 // services
 import {
   createProjectMapConfig,
   updateProjectMapConfig,
 } from '../../../services/mapConfigs';
-
 // events
 import {
   leafletMapCenter$,
@@ -27,18 +19,19 @@ import {
   setLeafletMapCenter,
   setLeafletMapZoom,
 } from 'components/UI/LeafletMap/events';
-
 // utils
 import { getCenter, getZoomLevel } from '../../../utils/map';
-import { isNilOrError } from 'utils/helperUtils';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import Map from 'components/Map';
+import Button from 'components/UI/Button';
 // styling
 import styled from 'styled-components';
+import MapConfigOverview from './MapConfigOverview';
+import messages from './messages';
 
 const Loading = styled.div`
   width: 100%;

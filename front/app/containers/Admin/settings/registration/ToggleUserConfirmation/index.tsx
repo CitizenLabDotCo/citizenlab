@@ -7,9 +7,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
-import messages from './messages';
-import styled from 'styled-components';
 import { SubSectionTitle } from 'components/admin/Section';
+import styled from 'styled-components';
+import messages from './messages';
 
 const StyledToggle = styled(Toggle)`
   flex-direction: row-reverse;

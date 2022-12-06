@@ -1,3 +1,5 @@
+import moment from 'moment';
+import 'moment-timezone';
 import {
   pastPresentOrFuture,
   getIsoDateUtc,
@@ -5,8 +7,6 @@ import {
   getIsoDateForToday,
   timeAgo,
 } from './dateUtils';
-import moment from 'moment';
-import 'moment-timezone';
 
 // test date is 1AM June 15 2020 UTC time (Z)
 const testDateStr = '2020-06-15T01:00:00Z';

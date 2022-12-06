@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from 'utils/testUtils/rtl';
-
 import ContentBuilderEditModePreview from '.';
 
 jest.mock('services/locale');

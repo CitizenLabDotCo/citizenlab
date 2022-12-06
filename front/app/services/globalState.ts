@@ -1,3 +1,4 @@
+import { isObject, isEmpty, has } from 'lodash-es';
 import { Observer, Observable } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -9,13 +10,10 @@ import {
   publishReplay,
   first,
 } from 'rxjs/operators';
-import { isObject, isEmpty, has } from 'lodash-es';
-
-// utils
-import shallowCompare from 'utils/shallowCompare';
-
 // typings
 import { UploadFile } from 'typings';
+// utils
+import shallowCompare from 'utils/shallowCompare';
 
 export interface IIdeasPageGlobalState {
   title: string | null;

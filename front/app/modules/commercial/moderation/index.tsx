@@ -1,5 +1,6 @@
-import { ModuleConfiguration } from 'utils/moduleUtils';
 import React from 'react';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const NavItem = React.lazy(() => import('./admin/components/NavItem'));
 
 const AdminModerationComponent = React.lazy(() => import('./admin/containers'));

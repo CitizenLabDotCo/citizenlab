@@ -1,54 +1,47 @@
 import React, { PureComponent } from 'react';
-import { reject } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// i18n
+import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
-
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import Button from 'components/UI/Button';
-import TabbedResource from 'components/admin/TabbedResource';
-import Outlet from 'components/Outlet';
 import { Box } from '@citizenlab/cl2-component-library';
-import NewIdeaButton from './ideas/NewIdeaButton';
-import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
-import FeatureFlag from 'components/FeatureFlag';
-import Tab from './permissions/components/Tab';
-
+import { reject } from 'lodash-es';
+// typings
+import { InsertConfigurationOptions, ITab } from 'typings';
 // resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { PreviousPathnameContext } from 'context';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
-
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled from 'styled-components';
-
-// typings
-import { InsertConfigurationOptions, ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
-
+import { PreviousPathnameContext } from 'context';
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
 import {
   getMethodConfig,
   showInputManager,
 } from 'utils/participationMethodUtils';
+import Tab from './permissions/components/Tab';
+import FeatureFlag from 'components/FeatureFlag';
+import Outlet from 'components/Outlet';
+import Button from 'components/UI/Button';
+// components
+import GoBackButton from 'components/UI/GoBackButton';
+import TabbedResource from 'components/admin/TabbedResource';
+// style
+import styled from 'styled-components';
+import NewIdeaButton from './ideas/NewIdeaButton';
+import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
+import messages from './messages';
+import tracks from './tracks';
 
 const TopContainer = styled.div`
   width: 100%;

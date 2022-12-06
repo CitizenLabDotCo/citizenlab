@@ -1,11 +1,9 @@
 import React from 'react';
-
-// components
-import { SubSectionTitle } from 'components/admin/Section';
 import { Box } from '@citizenlab/cl2-component-library';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+// components
+import { SubSectionTitle } from 'components/admin/Section';
 import messages from './messages';
 
 interface Props {

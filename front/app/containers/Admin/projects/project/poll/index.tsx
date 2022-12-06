@@ -1,30 +1,27 @@
 // Libraries
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
-import styled from 'styled-components';
 import { isError } from 'lodash-es';
-
-// Services / Data loading
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
+// Services / Data loading
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { FormattedMessage } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 // Components
 import FeatureFlag from 'components/FeatureFlag';
-import ExportPollButton from './ExportPollButton';
-import PollAdminForm from './PollAdminForm';
 import T from 'components/T';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-
+import styled from 'styled-components';
+import ExportPollButton from './ExportPollButton';
+import PollAdminForm from './PollAdminForm';
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
   display: flex;

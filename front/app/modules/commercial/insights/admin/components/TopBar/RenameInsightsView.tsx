@@ -1,26 +1,20 @@
 import React, { useState } from 'react';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
 // intl
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-
 // components
 import { Button, Input } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-
-// services
-import { updateInsightsView } from 'modules/commercial/insights/services/insightsViews';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // types
 import { CLErrors } from 'typings';
+// services
+import { updateInsightsView } from 'modules/commercial/insights/services/insightsViews';
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import Error from 'components/UI/Error';
+// styles
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

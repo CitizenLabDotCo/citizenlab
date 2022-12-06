@@ -1,7 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
-
+import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import RenameCategory from './RenameCategory';
 
 const viewId = '1';

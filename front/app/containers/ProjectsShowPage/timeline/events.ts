@@ -4,8 +4,8 @@ import {
   publishReplay,
   refCount,
 } from 'rxjs/operators';
-import eventEmitter from 'utils/eventEmitter';
 import { IPhaseData } from 'services/phases';
+import eventEmitter from 'utils/eventEmitter';
 
 enum events {
   selectedPhaseChange = 'selectedPhaseChange',

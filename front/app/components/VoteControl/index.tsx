@@ -8,40 +8,35 @@ import {
   of,
 } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// components
-import ScreenReaderContent from './ScreenReaderContent';
-import VoteButton from './VoteButton';
-
+// typings
+import { IParticipationContextType } from 'typings';
 // services
 import { authUserStream } from 'services/auth';
+import { voteStream, addVote, deleteVote, TVoteMode } from 'services/ideaVotes';
 import {
   ideaByIdStream,
   IIdea,
   IdeaVotingDisabledReason,
 } from 'services/ideas';
-import { IUser } from 'services/users';
-import { voteStream, addVote, deleteVote, TVoteMode } from 'services/ideaVotes';
-import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import {
   phaseStream,
   IPhase,
   IPhaseData,
   getLatestRelevantPhase,
 } from 'services/phases';
-
+import { projectByIdStream, IProject, IProjectData } from 'services/projects';
+import { IUser } from 'services/users';
 // utils
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
-
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { isRtl } from 'utils/styleUtils';
 // style
 import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
-
-// typings
-import { IParticipationContextType } from 'typings';
+// components
+import ScreenReaderContent from './ScreenReaderContent';
+import VoteButton from './VoteButton';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';

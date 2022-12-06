@@ -1,5 +1,5 @@
-import { TCardSize } from './ProjectsList';
 import { viewportWidths } from 'utils/styleUtils';
+import { TCardSize } from './ProjectsList';
 
 export default function getCardSizes(
   adminPublicationsLength: number,

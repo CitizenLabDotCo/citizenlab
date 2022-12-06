@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import {
   projectFolderByIdStream,
   projectFolderBySlugStream,
   IProjectFolderData,
 } from 'services/projectFolders';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectFolderId?: string | null;

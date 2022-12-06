@@ -1,26 +1,22 @@
 // libraries
 import React from 'react';
 import { Helmet } from 'react-helmet';
-
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAuthUser from 'hooks/useAuthUser';
 // hooks
 import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useAuthUser from 'hooks/useAuthUser';
-
 // services
 import { IUserData } from 'services/users';
-
+import { injectIntl } from 'utils/cl-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getLocalized } from 'utils/i18n';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+// i18n
+import messages from './messages';
 
 interface Props {
   user: IUserData;

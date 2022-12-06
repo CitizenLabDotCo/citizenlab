@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useState } from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import {
   ControlProps,
   RankedTester,
   rankWith,
   optionIs,
 } from '@jsonforms/core';
-import QuillEditor from 'components/UI/QuillEditor';
-import { WrappedComponentProps } from 'react-intl';
-import ErrorDisplay from '../ErrorDisplay';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import QuillEditor from 'components/UI/QuillEditor';
+import ErrorDisplay from '../ErrorDisplay';
 
 const WYSIWYGControl = ({
   data,

@@ -1,13 +1,11 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
-
+import useUserCustomField from 'hooks/useUserCustomField';
 import {
   updateCustomFieldForUsers,
   isBuiltInField,
 } from 'services/userCustomFields';
-import useUserCustomField from 'hooks/useUserCustomField';
-
+import { isNilOrError } from 'utils/helperUtils';
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';

@@ -1,28 +1,23 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import { Helmet } from 'react-helmet';
-
-// hooks
-import useLocale from 'hooks/useLocale';
+import { WrappedComponentProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'hooks/useAuthUser';
-
-// utils
-import { stripHtml } from 'utils/textUtils';
-import { imageSizes } from 'utils/fileUtils';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-
-// i18n
-import { getLocalized } from 'utils/i18n';
-import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
+// hooks
+import useLocale from 'hooks/useLocale';
 // typings
 import { IProjectData } from 'services/projects';
+import { injectIntl } from 'utils/cl-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+// i18n
+import { getLocalized } from 'utils/i18n';
+// utils
+import { stripHtml } from 'utils/textUtils';
+import messages from 'containers/ProjectsShowPage/messages';
 
 interface Props {
   project: IProjectData;

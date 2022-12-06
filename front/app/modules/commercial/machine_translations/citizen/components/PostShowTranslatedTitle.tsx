@@ -1,11 +1,10 @@
 import React from 'react';
-
-import { Title } from 'components/PostShowComponents/Title';
+import { Locale } from 'typings';
 import GetMachineTranslation, {
   GetMachineTranslationChildProps,
 } from 'modules/commercial/machine_translations/resources/GetMachineTranslation';
 import { isNilOrError } from 'utils/helperUtils';
-import { Locale } from 'typings';
+import { Title } from 'components/PostShowComponents/Title';
 
 const parseTranslation = (
   translation: GetMachineTranslationChildProps,

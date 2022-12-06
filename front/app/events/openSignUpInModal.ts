@@ -1,5 +1,5 @@
-import { IInitiativeAction } from 'services/initiatives';
 import { IPCAction, IParticipationContextType } from 'typings';
+import { IInitiativeAction } from 'services/initiatives';
 import eventEmitter from 'utils/eventEmitter';
 
 export type ProjectContext = {

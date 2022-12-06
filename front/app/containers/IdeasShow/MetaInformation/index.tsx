@@ -1,21 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Status from './Status';
-import Location from './Location';
-import Attachments from './Attachments';
-import IdeaTopics from './IdeaTopics';
-import PostedBy from './PostedBy';
-
+import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 // hooks & services
 import useLocale from 'hooks/useLocale';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-import Outlet from 'components/Outlet';
-
+import { isNilOrError } from 'utils/helperUtils';
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
+import Outlet from 'components/Outlet';
+import styled from 'styled-components';
+import Attachments from './Attachments';
+import IdeaTopics from './IdeaTopics';
+import Location from './Location';
+import PostedBy from './PostedBy';
+// components
+import Status from './Status';
 
 const Container = styled.div`
   width: 100%;

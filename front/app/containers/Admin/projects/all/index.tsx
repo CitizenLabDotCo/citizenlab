@@ -1,33 +1,28 @@
 import React, { memo, Suspense, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
+import { Spinner } from '@citizenlab/cl2-component-library';
 // resources
 import useAuthUser from 'hooks/useAuthUser';
-
-// localisation
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import useFeatureFlag from 'hooks/useFeatureFlag';
 // utils
 import { isAdmin } from 'services/permissions/roles';
 import { isProjectFolderModerator } from 'services/permissions/rules/projectFolderPermissions';
-
-// components
-import CreateProject from './CreateProject';
+// localisation
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import HasPermission from 'components/HasPermission';
+import Outlet from 'components/Outlet';
 import PageWrapper from 'components/admin/PageWrapper';
 import { PageTitle, SectionDescription } from 'components/admin/Section';
-import HasPermission from 'components/HasPermission';
-import { Spinner } from '@citizenlab/cl2-component-library';
-import Outlet from 'components/Outlet';
+// style
+import styled from 'styled-components';
+// components
+import CreateProject from './CreateProject';
+import messages from './messages';
 
 const ModeratorProjectList = React.lazy(
   () => import('./Lists/ModeratorProjectList')
 );
 const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
-
-// style
-import styled from 'styled-components';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div``;
 

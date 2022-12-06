@@ -2,17 +2,17 @@ import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { SectionTitle } from 'components/admin/Section';
-import { List, Row } from 'components/admin/ResourceList';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   RowButton,
   RowContent,
   RowTitle,
 } from 'containers/Admin/projects/components/StyledComponents';
 import PageWrapper from 'components/admin/PageWrapper';
+import { List, Row } from 'components/admin/ResourceList';
+import { SectionTitle } from 'components/admin/Section';
+import messages from './messages';
 
 interface DataProps {
   projects: GetProjectsChildProps;

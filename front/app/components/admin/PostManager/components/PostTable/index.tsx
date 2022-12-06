@@ -1,29 +1,8 @@
 import React from 'react';
-import { every, isEmpty, isFunction } from 'lodash-es';
-
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 // components
 import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
-import Row from './Row';
-import Pagination from 'components/admin/Pagination';
-import NoPost from './NoPost';
-import IdeaHeaderRow from './header/IdeaHeaderRow';
-import InitiativesHeaderRow from './header/InitiativesHeaderRow';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-
-// services
-import { IIdeaData } from 'services/ideas';
-import { IInitiativeData } from 'services/initiatives';
-import { IPhaseData } from 'services/phases';
-import { IIdeaStatusData } from 'services/ideaStatuses';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
-
-// styling
-import styled from 'styled-components';
-import { colors, stylingConsts } from 'utils/styleUtils';
-
-// i18n
-import { ManagerType, TFilterMenu } from '../..';
-
+import { every, isEmpty, isFunction } from 'lodash-es';
 // typings
 import {
   Sort as IdeasSort,
@@ -33,7 +12,23 @@ import {
   Sort as InitiativesSort,
   SortAttribute as InitiativesSortAttribute,
 } from 'resources/GetInitiatives';
+import { IIdeaStatusData } from 'services/ideaStatuses';
+// services
+import { IIdeaData } from 'services/ideas';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeData } from 'services/initiatives';
+import { IPhaseData } from 'services/phases';
 import { SortDirection } from 'utils/paginationUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
+import Pagination from 'components/admin/Pagination';
+// styling
+import styled from 'styled-components';
+// i18n
+import { ManagerType, TFilterMenu } from '../..';
+import NoPost from './NoPost';
+import Row from './Row';
+import IdeaHeaderRow from './header/IdeaHeaderRow';
+import InitiativesHeaderRow from './header/InitiativesHeaderRow';
 
 const Container = styled.div`
   .ui.table {

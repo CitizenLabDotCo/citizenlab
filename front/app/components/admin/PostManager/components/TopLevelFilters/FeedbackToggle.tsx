@@ -1,16 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 import { isFunction } from 'lodash-es';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// styles
-import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
 // resources
 import GetIdeasCount, {
   GetIdeasCountChildProps,
@@ -18,12 +8,17 @@ import GetIdeasCount, {
 import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
-
-// typings
-import { ManagerType } from '../..';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import CountBadge from 'components/UI/CountBadge';
+// styles
+import styled, { css } from 'styled-components';
+// typings
+import { ManagerType } from '../..';
+import messages from '../../messages';
 
 const size = 21;
 const padding = 4;

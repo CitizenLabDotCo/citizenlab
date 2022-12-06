@@ -1,13 +1,11 @@
 // styling
-import { legacyColors } from './styling';
-
 // utils
 import { isEmpty } from 'lodash-es';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
+import { LegendDimensions } from './_components/Legend/typings';
+import { legacyColors } from './styling';
 // typings
 import { Tooltip, TooltipConfig, Margin, Legend } from './typings';
-import { LegendDimensions } from './_components/Legend/typings';
 
 export const hasNoData = (data: any[] | NilOrError): data is NilOrError =>
   isNilOrError(data) || data.every(isEmpty) || data.length <= 0;

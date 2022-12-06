@@ -1,24 +1,10 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, isNumber } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Spinner } from '@citizenlab/cl2-component-library';
-import SortFilterDropdown from './SortFilterDropdown';
-import StatusFilterBox from './StatusFilterBox';
-import TopicFilterBox from './TopicFilterBox';
-import SearchInput from 'components/UI/SearchInput';
-import TopBar from 'components/FiltersModal/TopBar';
-import BottomBar from 'components/FiltersModal/BottomBar';
-import FullscreenModal from 'components/UI/FullscreenModal';
-import Button from 'components/UI/Button';
-import IdeasView from './IdeasView';
-
+import { get, isNumber } from 'lodash-es';
+import { IParticipationContextType } from 'typings';
 // resources
 import GetIdeas, {
   Sort,
@@ -32,14 +18,17 @@ import GetIdeasFilterCounts, {
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-
-// i18n
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+// typings
+import {
+  IdeaDefaultSortMethod,
+  ParticipationMethod,
+  ideaDefaultSortMethodFallback,
+} from 'services/participationContexts';
+import { ScreenReaderOnly } from 'utils/a11y';
+// tracking
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-
-// style
-import styled, { withTheme } from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   media,
   colors,
@@ -48,15 +37,20 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// typings
-import {
-  IdeaDefaultSortMethod,
-  ParticipationMethod,
-  ideaDefaultSortMethodFallback,
-} from 'services/participationContexts';
-import { IParticipationContextType } from 'typings';
+import BottomBar from 'components/FiltersModal/BottomBar';
+import TopBar from 'components/FiltersModal/TopBar';
+import Button from 'components/UI/Button';
+import FullscreenModal from 'components/UI/FullscreenModal';
+import SearchInput from 'components/UI/SearchInput';
+// style
+import styled, { withTheme } from 'styled-components';
+import IdeasView from './IdeasView';
+import SortFilterDropdown from './SortFilterDropdown';
+import StatusFilterBox from './StatusFilterBox';
+import TopicFilterBox from './TopicFilterBox';
+// i18n
+import messages from './messages';
+import tracks from './tracks';
 
 const gapWidth = 35;
 

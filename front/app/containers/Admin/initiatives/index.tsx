@@ -1,25 +1,21 @@
 import React, { memo, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
-// components
-import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
-import Button from 'components/UI/Button';
-
-// i18n
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
+import { Outlet as RouterOutlet } from 'react-router-dom';
 // styles
 import { InsertConfigurationOptions, ITab } from 'typings';
-import Outlet from 'components/Outlet';
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { insertConfiguration } from 'utils/moduleUtils';
+// components
+import HelmetIntl from 'components/HelmetIntl';
+import Outlet from 'components/Outlet';
+import Button from 'components/UI/Button';
+import TabbedResource from 'components/admin/TabbedResource';
+// i18n
+import messages from './messages';
+import tracks from './tracks';
 
 const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
   ({ intl: { formatMessage }, location }) => {

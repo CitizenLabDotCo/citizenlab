@@ -1,6 +1,6 @@
 // style
-import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 export default styled.h1`
   font-size: ${fontSizes.xxxl}px;

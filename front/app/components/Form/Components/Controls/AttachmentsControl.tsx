@@ -1,22 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import FileUploader from 'components/UI/FileUploader';
 import { UploadFile } from 'typings';
-import ErrorDisplay from '../ErrorDisplay';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { FormContext } from 'components/Form/contexts';
 import useResourceFiles from 'hooks/useResourceFiles';
-import { isNilOrError } from 'utils/helperUtils';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
-import { Box } from '@citizenlab/cl2-component-library';
+import { FormContext } from 'components/Form/contexts';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import FileUploader from 'components/UI/FileUploader';
+import { FormLabel } from 'components/UI/FormComponents';
+import ErrorDisplay from '../ErrorDisplay';
 
 const AttachmentsControl = ({
   uischema,

@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { combineLatest, of, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { projectFilesStream } from 'services/projectFiles';
-import { phaseFilesStream } from 'services/phaseFiles';
-import { pageFilesStream } from 'services/pageFiles';
+import { UploadFile } from 'typings';
+import { InputProps } from 'resources/GetRemoteFiles';
 import { eventFilesStream } from 'services/eventFiles';
 import { ideaFilesStream } from 'services/ideaFiles';
 import { initiativeFilesStream } from 'services/initiativeFiles';
+import { pageFilesStream } from 'services/pageFiles';
+import { phaseFilesStream } from 'services/phaseFiles';
+import { projectFilesStream } from 'services/projectFiles';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
-import { UploadFile } from 'typings';
-import { InputProps } from 'resources/GetRemoteFiles';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type RemoteFiles = UploadFile[] | null;
 

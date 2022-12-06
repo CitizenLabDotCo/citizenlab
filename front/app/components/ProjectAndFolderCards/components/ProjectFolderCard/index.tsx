@@ -1,26 +1,17 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-import bowser from 'bowser';
-
-// router
-import Link from 'utils/cl-router/Link';
-
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import Image from 'components/UI/Image';
-
-// i18n
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import bowser from 'bowser';
+import { isEmpty } from 'lodash-es';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import useProjectFolderImages from 'hooks/useProjectFolderImages';
+import { ScreenReaderOnly } from 'utils/a11y';
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
+// router
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   media,
   colors,
@@ -28,9 +19,13 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import useProjectFolderImages from 'hooks/useProjectFolderImages';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+// i18n
+import T from 'components/T';
+import Image from 'components/UI/Image';
+// style
+import styled from 'styled-components';
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);

@@ -1,33 +1,30 @@
 import React from 'react';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { Multiloc } from 'typings';
-import { ideaStatusCodes, TIdeaStatusCode } from 'services/ideaStatuses';
-
-// components
-import { Section, SectionField } from 'components/admin/Section';
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
 import {
   Label,
   IconTooltip,
   Box,
   Button,
 } from '@citizenlab/cl2-component-library';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Multiloc } from 'typings';
 import { string, object } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
-import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
-import ColorPicker from 'components/HookForm/ColorPicker';
-import Feedback from 'components/HookForm/Feedback';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
+import { ideaStatusCodes, TIdeaStatusCode } from 'services/ideaStatuses';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import ColorPicker from 'components/HookForm/ColorPicker';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
+import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
+// components
+import { Section, SectionField } from 'components/admin/Section';
+import styled from 'styled-components';
 import messages from './messages';
 
 export interface FormValues {

@@ -1,46 +1,42 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isArray, isNil, omitBy, includes } from 'lodash-es';
-import { saveAs } from 'file-saver';
-
-// Components
-import Checkbox from 'components/UI/Checkbox';
+import { WrappedComponentProps } from 'react-intl';
 import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
-import T from 'components/T';
-import Button from 'components/UI/Button';
-
-// Services
-import { IGroupData, MembershipType } from 'services/groups';
+import { saveAs } from 'file-saver';
+import { isArray, isNil, omitBy, includes } from 'lodash-es';
+import { rgba } from 'polished';
+// Typings
+import { CLErrorsJSON } from 'typings';
+// Resources
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import {
   addGroupMembership,
   IGroupMembership,
 } from 'services/groupMemberships';
-
-// Utils
-import { requestBlob } from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-
-// Events
-import eventEmitter from 'utils/eventEmitter';
+// Services
+import { IGroupData, MembershipType } from 'services/groups';
 import events, { MembershipAdd } from './events';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// Resources
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
+import { isCLErrorJSON } from 'utils/errorUtils';
+// Events
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+// Utils
+import { requestBlob } from 'utils/request';
+import streams from 'utils/streams';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { API_PATH } from 'containers/App/constants';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+// Components
+import Checkbox from 'components/UI/Checkbox';
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
+import messages from './messages';
+import tracks from './tracks';
 
 const TableOptions = styled.div`
   min-height: 60px;
@@ -155,11 +151,6 @@ const DropdownFooterButton = styled(Button)`
     border-top-right-radius: 0;
   }
 `;
-
-// Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
-import { WrappedComponentProps } from 'react-intl';
 
 interface InputProps {
   groupType?: MembershipType;

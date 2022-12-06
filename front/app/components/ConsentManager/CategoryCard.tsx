@@ -1,14 +1,14 @@
 import React, { Fragment, FormEvent } from 'react';
-import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { transparentize } from 'polished';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from '@citizenlab/cl2-component-library';
-import { getDestinationConfig, IDestination, TCategory } from './destinations';
+import { transparentize } from 'polished';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import { isNilOrError } from 'utils/helperUtils';
 import { IAppConfigurationData } from 'services/appConfiguration';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { getDestinationConfig, IDestination, TCategory } from './destinations';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

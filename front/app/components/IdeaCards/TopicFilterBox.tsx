@@ -1,18 +1,14 @@
 import React, { memo, useCallback } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
-
 // resources
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-
-// styling
-import styled from 'styled-components';
-
 // typings
 import { ITopicData } from 'services/topics';
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
+// styling
+import styled from 'styled-components';
 
 const Container = styled.div``;
 

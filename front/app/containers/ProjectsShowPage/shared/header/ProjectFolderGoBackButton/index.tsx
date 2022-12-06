@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
-import clHistory from 'utils/cl-router/history';
 import { Button } from '@citizenlab/cl2-component-library';
-import useProjectFolder from 'hooks/useProjectFolder';
 import useLocalize from 'hooks/useLocalize';
+import useProjectFolder from 'hooks/useProjectFolder';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {

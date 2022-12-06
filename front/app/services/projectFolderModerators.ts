@@ -1,6 +1,6 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { IUsers } from 'services/users';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 const indexPath = (projectFolderId: string) =>
   `${API_PATH}/project_folders/${projectFolderId}/moderators`;

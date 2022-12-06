@@ -1,40 +1,40 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import clHistory from 'utils/cl-router/history';
+import { WrappedComponentProps } from 'react-intl';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
+import useAdminPublication from 'hooks/useAdminPublication';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useProjectFolder from 'hooks/useProjectFolder';
+import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
+import useProjectFolderImages from 'hooks/useProjectFolderImages';
+import {
+  addProjectFolderFile,
+  deleteProjectFolderFile,
+} from 'services/projectFolderFiles';
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
 } from 'services/projectFolderImages';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import useProjectFolderImages from 'hooks/useProjectFolderImages';
-import useProjectFolder from 'hooks/useProjectFolder';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
+import clHistory from 'utils/cl-router/history';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { validateSlug } from 'utils/textUtils';
+import FileUploader from 'components/UI/FileUploader';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import {
   SectionField,
   Section,
   SubSectionTitle,
 } from 'components/admin/Section';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import FileUploader from 'components/UI/FileUploader';
-import {
-  addProjectFolderFile,
-  deleteProjectFolderFile,
-} from 'services/projectFolderFiles';
-import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
-import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
-import { validateSlug } from 'utils/textUtils';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import messages from '../messages';
 
 type Props = {
   mode: 'edit' | 'new';

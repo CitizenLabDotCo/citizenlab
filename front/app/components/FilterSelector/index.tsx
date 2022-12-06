@@ -8,14 +8,12 @@ import {
   includes,
   without,
 } from 'lodash-es';
-
+import { media, isRtl } from 'utils/styleUtils';
+// style
+import styled from 'styled-components';
 // components
 import Title from './title';
 import ValuesList from './valuesList';
-
-// style
-import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: inline-block;

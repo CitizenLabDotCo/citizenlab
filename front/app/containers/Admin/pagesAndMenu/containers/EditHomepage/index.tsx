@@ -1,32 +1,28 @@
 import React, { useState } from 'react';
-
-// components
-import SectionToggle from '../../components/SectionToggle';
-import { Box, Title } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import AdminViewButton from './AdminViewButton';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
-
-// i18n
-import messages from './messages';
-import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
-import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
-// services, hooks, resources, and types
-import Outlet from 'components/Outlet';
+import { Box, Title } from '@citizenlab/cl2-component-library';
+import { InsertConfigurationOptions } from 'typings';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 import {
   updateHomepageSettings,
   THomepageEnabledSetting,
 } from 'services/homepageSettings';
-import useHomepageSettings from 'hooks/useHomepageSettings';
-
+import { FormattedMessage, injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
-import { InsertConfigurationOptions } from 'typings';
-import clHistory from 'utils/cl-router/history';
+import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+// components
+import SectionToggle from '../../components/SectionToggle';
+// services, hooks, resources, and types
+import Outlet from 'components/Outlet';
+import Warning from 'components/UI/Warning';
+import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
+import AdminViewButton from './AdminViewButton';
+// i18n
+import messages from './messages';
 
 export type TSectionToggleData = {
   name: THomepageEnabledSetting | 'homepage_banner';

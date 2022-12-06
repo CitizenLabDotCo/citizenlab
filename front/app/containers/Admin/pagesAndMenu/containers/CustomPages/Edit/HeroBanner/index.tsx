@@ -1,38 +1,33 @@
 import React, { useEffect, useState } from 'react';
-
-// types
-import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { CLErrors, Multiloc } from 'typings';
-
-// components
-import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
-import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
-import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
-import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
-import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
-import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
-
-// utils
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
-import { isNilOrError, isNil } from 'utils/helperUtils';
-
-// resources
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { CLErrors, Multiloc } from 'typings';
 import useCustomPage from 'hooks/useCustomPage';
+import useLocalize from 'hooks/useLocalize';
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
   TCustomPageCTAType,
   updateCustomPage,
 } from 'services/customPages';
-
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError, isNil } from 'utils/helperUtils';
+// utils
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
+// components
+import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
+import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
+import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
+import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
+// resources
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
+import HelmetIntl from 'components/HelmetIntl';
+// types
+import { ISubmitState } from 'components/admin/SubmitWrapper';
+import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 // i18n
 import messages from '../../../GenericHeroBannerForm/messages';
-import HelmetIntl from 'components/HelmetIntl';
-import useLocalize from 'hooks/useLocalize';
-import { injectIntl } from 'utils/cl-intl';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,

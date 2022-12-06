@@ -1,24 +1,19 @@
 import React from 'react';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
-import TextCampaignListRow from './TextCampaignListRow';
-
 // resources
 import useTextingCampaigns from 'hooks/useTextingCampaigns';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
+// components
+import Button from 'components/UI/Button';
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import messages from '../../messages';
+import TextCampaignListRow from './TextCampaignListRow';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;

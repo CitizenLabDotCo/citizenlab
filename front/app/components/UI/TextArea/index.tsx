@@ -1,17 +1,14 @@
 import React from 'react';
-import { isEmpty } from 'lodash-es';
-
-// components
-import Error from 'components/UI/Error';
 import TextareaAutosize from 'react-autosize-textarea';
 import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
-
-// style
-import styled from 'styled-components';
-import { colors, defaultInputStyle, isRtl } from 'utils/styleUtils';
-
+import { isEmpty } from 'lodash-es';
 // typings
 import { Locale } from 'typings';
+import { colors, defaultInputStyle, isRtl } from 'utils/styleUtils';
+// components
+import Error from 'components/UI/Error';
+// style
+import styled from 'styled-components';
 
 const Container = styled.div``;
 

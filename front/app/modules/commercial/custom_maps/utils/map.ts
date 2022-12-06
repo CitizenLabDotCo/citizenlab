@@ -1,10 +1,10 @@
-import { isNilOrError } from 'utils/helperUtils';
-import { IMapConfigState } from '../hooks/useMapConfig';
-import { IAppConfigurationData } from 'services/appConfiguration';
-import { IMapLayerAttributes } from '../services/mapLayers';
-import { Locale } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { isNumber } from 'lodash-es';
+import { Locale } from 'typings';
+import { IMapConfigState } from '../hooks/useMapConfig';
+import { IMapLayerAttributes } from '../services/mapLayers';
+import { IAppConfigurationData } from 'services/appConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   getCenter as baseGetCenter,
   getZoomLevel as baseGetZoomLevel,

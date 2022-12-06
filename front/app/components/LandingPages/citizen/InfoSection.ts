@@ -1,6 +1,6 @@
+import { colors } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 export const StyledQuillEditedContent = styled(QuillEditedContent)`
   h1,

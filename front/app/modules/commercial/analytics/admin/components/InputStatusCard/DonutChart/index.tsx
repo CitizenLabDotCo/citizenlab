@@ -1,21 +1,16 @@
 import React from 'react';
-
-// components
-import PieChart from 'components/admin/Graphs/PieChart';
-import CenterLabel from './CenterLabel';
-
-// styling
-import { colors } from 'components/admin/Graphs/styling';
-
 // i18n
 import messages from '../../../hooks/usePostsFeedback/messages';
-import { useIntl } from 'utils/cl-intl';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
 // typings
 import { PostFeedback } from '../../../hooks/usePostsFeedback/typings';
+import { useIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+// components
+import PieChart from 'components/admin/Graphs/PieChart';
+// styling
+import { colors } from 'components/admin/Graphs/styling';
+import CenterLabel from './CenterLabel';
 
 interface Props {
   data: PostFeedback | NilOrError;

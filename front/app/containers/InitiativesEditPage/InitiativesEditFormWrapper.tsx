@@ -1,47 +1,42 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-// components
-import InitiativeForm, {
-  FormValues,
-  SimpleFormValues,
-} from 'components/InitiativeForm';
-
+import { Point } from 'geojson';
+import { isEqual, pick, get, omitBy } from 'lodash-es';
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import {
-  updateInitiative,
-  IInitiativeData,
-  IInitiativeAdd,
-} from 'services/initiatives';
+  deleteInitiativeFile,
+  addInitiativeFile,
+} from 'services/initiativeFiles';
 import {
   addInitiativeImage,
   deleteInitiativeImage,
   IInitiativeImageData,
 } from 'services/initiativeImages';
 import {
-  deleteInitiativeFile,
-  addInitiativeFile,
-} from 'services/initiativeFiles';
+  updateInitiative,
+  IInitiativeData,
+  IInitiativeAdd,
+} from 'services/initiatives';
 import { ITopicData } from 'services/topics';
-
+import { trackEventByName } from 'utils/analytics';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isEqual, pick, get, omitBy } from 'lodash-es';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-
 // geoJson
 import { geocode } from 'utils/locationTools';
-import { Point } from 'geojson';
-
+// components
+import InitiativeForm, {
+  FormValues,
+  SimpleFormValues,
+} from 'components/InitiativeForm';
 // tracks
 import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;

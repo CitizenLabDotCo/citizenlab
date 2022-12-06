@@ -1,14 +1,14 @@
-import React from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { render, RenderOptions } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from 'styled-components';
-import { getTheme } from 'utils/styleUtils';
-import GlobalStyle from 'global-styles';
+import React from 'react';
 import { IntlProvider } from 'react-intl';
-import messages from 'i18n/en';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
+import GlobalStyle from 'global-styles';
 import history from 'utils/browserHistory';
+import { getTheme } from 'utils/styleUtils';
+import messages from 'i18n/en';
+import { ThemeProvider } from 'styled-components';
 
 window.confirm = jest.fn(() => true);
 window.scrollTo = jest.fn();

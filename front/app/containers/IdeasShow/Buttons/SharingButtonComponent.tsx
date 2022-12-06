@@ -1,10 +1,9 @@
 import React from 'react';
-import IdeaCTAButton from './IdeaCTAButton';
-
+import { WrappedComponentProps } from 'react-intl';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
+import IdeaCTAButton from './IdeaCTAButton';
 
 interface Props {
   onClick?: () => void;

@@ -1,40 +1,34 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
+import { FormattedDate, WrappedComponentProps } from 'react-intl';
+import { transparentize } from 'polished';
 // typings
 import { Locale, Multiloc } from 'typings';
-
-// components
-import OfficialFeedbackForm from './OfficialFeedbackForm';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import T from 'components/T';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// styles
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import styled from 'styled-components';
-import { transparentize } from 'polished';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedDate, WrappedComponentProps } from 'react-intl';
-import { getLocalized } from 'utils/i18n';
-
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 // services
 import {
   IOfficialFeedbackData,
   deleteOfficialFeedbackFromIdea,
   deleteOfficialFeedbackFromInitiative,
 } from 'services/officialFeedback';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLocalized } from 'utils/i18n';
+// styles
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
+import T from 'components/T';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import styled from 'styled-components';
+// components
+import OfficialFeedbackForm from './OfficialFeedbackForm';
+// i18n
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

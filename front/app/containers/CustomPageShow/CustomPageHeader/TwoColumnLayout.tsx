@@ -1,9 +1,9 @@
+import React from 'react';
+import { ICustomPageData } from 'services/customPages';
 import {
   Container,
   HeaderImage,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
-import React from 'react';
-import { ICustomPageData } from 'services/customPages';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 

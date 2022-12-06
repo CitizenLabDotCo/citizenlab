@@ -1,47 +1,14 @@
 import React from 'react';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { uniq, get } from 'lodash-es';
-import { findDOMNode } from 'react-dom';
-import { DragSource } from 'react-dnd-cjs';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import {
-  IInitiativeData,
-  updateInitiative,
-  initiativeByIdStream,
-} from 'services/initiatives';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
-
-// components
-import { TitleLink } from '.';
-import StyledRow from './StyledRow';
-import { Icon } from 'semantic-ui-react';
-import T from 'components/T';
-import Checkbox from 'components/UI/Checkbox';
-import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
-import SubRow from './SubRow';
-import AssigneeSelect from '../AssigneeSelect';
-
-// utils
-import localize, { InjectedLocalized } from 'utils/localize';
-
+import { DragSource } from 'react-dnd-cjs';
+import { findDOMNode } from 'react-dom';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-
-// typings
-import { TFilterMenu, ManagerType } from '../../..';
-
+import { Icon } from 'semantic-ui-react';
+import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
+import { uniq, get } from 'lodash-es';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -49,13 +16,37 @@ import GetAppConfiguration, {
 import GetInitiativeAllowedTransitions, {
   GetInitiativeAllowedTransitionsChildProps,
 } from 'resources/GetInitiativeAllowedTransitions';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
+// services
+import {
+  IInitiativeData,
+  updateInitiative,
+  initiativeByIdStream,
+} from 'services/initiatives';
 import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
+// events
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+// utils
+import localize, { InjectedLocalized } from 'utils/localize';
+// styling
+import { colors } from 'utils/styleUtils';
+import T from 'components/T';
+import Checkbox from 'components/UI/Checkbox';
+// components
+import { TitleLink } from '.';
+// typings
+import { TFilterMenu, ManagerType } from '../../..';
+import tracks from '../../../tracks';
+import AssigneeSelect from '../AssigneeSelect';
+import StyledRow from './StyledRow';
+import SubRow from './SubRow';
 
 interface DataProps {
   tenant: GetAppConfigurationChildProps;

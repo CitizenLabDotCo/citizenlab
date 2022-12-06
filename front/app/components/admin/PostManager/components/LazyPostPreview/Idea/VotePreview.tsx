@@ -1,21 +1,17 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-
 // resources
 import GetIdeaVotesCount, {
   GetIdeaVotesCountChildProps,
 } from 'resources/GetIdeaVotesCount';
-
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+// i18n
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

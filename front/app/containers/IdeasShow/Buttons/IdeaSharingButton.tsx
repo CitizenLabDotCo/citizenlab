@@ -1,20 +1,18 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { getInputTerm } from 'services/participationContexts';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-import { getInputTermMessage } from 'utils/i18n';
-
+import useAuthUser from 'hooks/useAuthUser';
 // hooks
 import useIdea from 'hooks/useIdea';
 import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
+import { getInputTerm } from 'services/participationContexts';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
 import SharingButtons from 'components/Sharing/SharingButtons';
+import messages from '../messages';
 
 interface Props {
   className?: string;

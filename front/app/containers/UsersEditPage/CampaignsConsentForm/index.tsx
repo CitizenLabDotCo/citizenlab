@@ -1,8 +1,8 @@
 import React from 'react';
-import tracks from './tracks';
+import GetCampaignConsents from 'resources/GetCampaignConsents';
 import { isNilOrError } from 'utils/helperUtils';
 import ConsentForm from 'components/ConsentForm';
-import GetCampaignConsents from 'resources/GetCampaignConsents';
+import tracks from './tracks';
 
 export default () => (
   <GetCampaignConsents>

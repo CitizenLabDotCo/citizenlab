@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
-
 // services
 import { analyticsStream } from '../../services/analyticsFacts';
-
+import { useIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { formatLabels, parseExcelData } from './parse';
-import { useIntl } from 'utils/cl-intl';
-
 // typings
 import {
   SingleCountResponse,

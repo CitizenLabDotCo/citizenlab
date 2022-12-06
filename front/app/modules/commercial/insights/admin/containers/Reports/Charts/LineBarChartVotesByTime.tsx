@@ -1,25 +1,7 @@
 // libraries
 import React from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import { WrappedComponentProps } from 'react-intl';
 import { map, isEmpty } from 'lodash-es';
-
-// styling
-import {
-  legacyColors,
-  sizes,
-  animation,
-} from 'components/admin/Graphs/styling';
-
-// services
-import {
-  votesByTimeStream,
-  votesByTimeCumulativeStream,
-  votesByTimeXlsxEndpoint,
-  IVotesByTime,
-} from 'services/stats';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   Line,
   Label,
@@ -32,6 +14,15 @@ import {
   Legend,
   ComposedChart,
 } from 'recharts';
+import { Subscription, combineLatest } from 'rxjs';
+// services
+import {
+  votesByTimeStream,
+  votesByTimeCumulativeStream,
+  votesByTimeXlsxEndpoint,
+  IVotesByTime,
+} from 'services/stats';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import {
   GraphCard,
   NoDataContainer,
@@ -42,12 +33,17 @@ import {
   GraphCardFigure,
   GraphCardFigureChange,
 } from 'components/admin/GraphWrappers';
+// styling
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
+// components
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-
 // i18n
 import messages from '../messages';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 type ISerie = {
   cumulatedTotal: number;

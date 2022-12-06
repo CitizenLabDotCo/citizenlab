@@ -1,15 +1,13 @@
 import React, { memo } from 'react';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
-
-// style
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { fontSizes, colors } from 'utils/styleUtils';
+// style
+import styled from 'styled-components';
 import messages from '../messages';
 
 const Content = styled.div`

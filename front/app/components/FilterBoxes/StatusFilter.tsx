@@ -1,27 +1,23 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import { capitalize, get } from 'lodash-es';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
-import T from 'components/T';
 import { Icon } from '@citizenlab/cl2-component-library';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes, colors, defaultCardStyle, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
-import { Header, Title } from './styles';
-
+import { IIdeaStatusData } from 'services/ideaStatuses';
 // typings
 import { IIdeasFilterCounts } from 'services/ideas';
-import { IIdeaStatusData } from 'services/ideaStatuses';
-import { IInitiativesFilterCounts } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativesFilterCounts } from 'services/initiatives';
+import { ScreenReaderOnly } from 'utils/a11y';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { fontSizes, colors, defaultCardStyle, isRtl } from 'utils/styleUtils';
+// components
+import T from 'components/T';
+// styling
+import styled from 'styled-components';
+import messages from './messages';
+import { Header, Title } from './styles';
 
 const Container = styled.div`
   width: 100%;

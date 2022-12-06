@@ -1,42 +1,34 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
+import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { get } from 'lodash-es';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// Services
-import { updateComment, IUpdatedComment } from 'services/comments';
-
-// Resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+// Typings
+import { CLErrorsJSON, CLErrors } from 'typings';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-
+// Resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+// Services
+import { updateComment, IUpdatedComment } from 'services/comments';
 import { commentTranslateButtonClicked$ } from './events';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import { isCLErrorJSON } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// Components
-import MentionsTextArea from 'components/UI/MentionsTextArea';
+import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+// Components
+import MentionsTextArea from 'components/UI/MentionsTextArea';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
 // Styling
 import styled, { withTheme } from 'styled-components';
-
-// Typings
-import { CLErrorsJSON, CLErrors } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
-
-import Outlet from 'components/Outlet';
+import messages from './messages';
 
 const Container = styled.div``;
 

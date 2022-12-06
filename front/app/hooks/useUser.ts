@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
-import { isNilOrError } from 'utils/helperUtils';
 import {
   IUser,
   IUserData,
   userByIdStream,
   userBySlugStream,
 } from 'services/users';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Params {
   userId?: string | null;

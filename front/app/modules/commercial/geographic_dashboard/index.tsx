@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const Tab = React.lazy(() => import('./admin/components/Tab'));
 
 const AdminDashboardMapComponent = React.lazy(

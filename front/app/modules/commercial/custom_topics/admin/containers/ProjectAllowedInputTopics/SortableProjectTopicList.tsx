@@ -1,32 +1,8 @@
 import React, { memo, FormEvent, useState, useMemo } from 'react';
-import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// utils
-import { isNilOrError, byId } from 'utils/helperUtils';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
-import Button from 'components/UI/Button';
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import {
-  RowContent,
-  RowContentInner,
-  RowTitle,
-} from '../../components/RowStyles';
-import Warning from 'components/UI/Warning';
-import Modal, {
-  ModalContentContainer,
-  Content,
-  ButtonsWrapper,
-} from 'components/UI/Modal';
-import { StyledLink } from 'components/admin/Section';
-import VerticalCenterer from 'components/VerticalCenterer';
 import { Spinner } from '@citizenlab/cl2-component-library';
-
+// hooks
+import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
+import useTopics from 'hooks/useTopics';
 // services
 import {
   deleteProjectAllowedInputTopic,
@@ -34,10 +10,29 @@ import {
   getTopicIds,
   IProjectAllowedInputTopic,
 } from 'services/projectAllowedInputTopics';
-
-// hooks
-import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
-import useTopics from 'hooks/useTopics';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError, byId } from 'utils/helperUtils';
+import {
+  RowContent,
+  RowContentInner,
+  RowTitle,
+} from '../../components/RowStyles';
+// components
+import Button from 'components/UI/Button';
+import Modal, {
+  ModalContentContainer,
+  Content,
+  ButtonsWrapper,
+} from 'components/UI/Modal';
+import Warning from 'components/UI/Warning';
+import VerticalCenterer from 'components/VerticalCenterer';
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import { StyledLink } from 'components/admin/Section';
+import styled from 'styled-components';
+import messages from './messages';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;

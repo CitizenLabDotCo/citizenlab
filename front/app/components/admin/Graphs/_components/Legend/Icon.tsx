@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { LegendItem } from './typings';
 
 // Adapted from https://github.com/recharts/recharts/blob/master/src/component/DefaultLegendContent.tsx

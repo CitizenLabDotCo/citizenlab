@@ -1,26 +1,21 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-
 // components
 import { IconNames } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Consent from './Consent';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-
-// styling
-import styled from 'styled-components';
 import { darken } from 'polished';
-import { colors } from 'utils/styleUtils';
-
 // typings
 import { TSignUpInFlow } from 'events/openSignUpInModal';
+// analytics
+import { trackEventByName } from 'utils/analytics';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { colors } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+// styling
+import styled from 'styled-components';
 import { AuthProvider } from './';
+import Consent from './Consent';
+import messages from './messages';
 
 const tracks = {
   signInWithSSOClicked: 'Sign in with SSO button clicked',

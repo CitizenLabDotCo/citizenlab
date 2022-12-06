@@ -1,18 +1,17 @@
 import React, { memo, FormEvent } from 'react';
-import { isError } from 'lodash-es';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import Button from 'components/UI/Button';
-import { List, Row } from 'components/admin/ResourceList';
-import Avatar from 'components/Avatar';
-import { isNilOrError } from 'utils/helperUtils';
-import { deleteProjectModerator } from 'services/projectModerators';
 import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
-
+import { isError } from 'lodash-es';
+import useAuthUser from 'hooks/useAuthUser';
 // hooks
 import useProjectModerators from 'hooks/useProjectModerators';
-import useAuthUser from 'hooks/useAuthUser';
+import { deleteProjectModerator } from 'services/projectModerators';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import Avatar from 'components/Avatar';
+import Button from 'components/UI/Button';
+import { List, Row } from 'components/admin/ResourceList';
+import styled from 'styled-components';
+import messages from './messages';
 
 const PendingInvitation = styled.span`
   font-style: italic;

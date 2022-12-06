@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import {
   projectByIdStream,
@@ -7,6 +6,7 @@ import {
   IProject,
   IProjectData,
 } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId?: string | null;

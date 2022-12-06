@@ -1,27 +1,22 @@
 import React from 'react';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import { pick } from 'lodash-es';
-
+// typings
+import { Multiloc, Locale } from 'typings';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 // components
 import {
   SectionFieldPageContent,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import { StyledSectionDescription } from '.';
-import Link from 'utils/cl-router/Link';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-
-// typings
-import { Multiloc, Locale } from 'typings';
 
 interface Props {
   value: Multiloc;

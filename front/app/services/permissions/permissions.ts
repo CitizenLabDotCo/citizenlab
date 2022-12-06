@@ -1,14 +1,14 @@
-import { authUserStream } from 'services/auth';
-import { IUser } from 'services/users';
 import { isObject } from 'lodash-es';
 import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAuthUser from 'hooks/useAuthUser';
 import {
   currentAppConfigurationStream,
   IAppConfigurationData,
 } from 'services/appConfiguration';
-import { map } from 'rxjs/operators';
-import useAuthUser from 'hooks/useAuthUser';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import { authUserStream } from 'services/auth';
+import { IUser } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface IRouteItem {

@@ -1,61 +1,51 @@
 // Copied IdeaEditPage and made the minimal modifications for this use.
-
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
-
-// router
-import clHistory from 'utils/cl-router/history';
-
-// components
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import { Content, Top, Container } from '../PostPreview';
-
-// services
-import { localeStream } from 'services/locale';
+// typings
+import { UploadFile, Multiloc, Locale, ILocationInfo } from 'typings';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+// resource components
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { ideaByIdStream, updateIdea } from 'services/ideas';
+import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import {
   ideaImageStream,
   addIdeaImage,
   deleteIdeaImage,
 } from 'services/ideaImages';
+import { ideaByIdStream, updateIdea } from 'services/ideas';
+// services
+import { localeStream } from 'services/locale';
 import { hasPermission } from 'services/permissions';
-import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
-
+import { trackEventByName } from 'utils/analytics';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
+// router
+import clHistory from 'utils/cl-router/history';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
-
-// typings
-import { UploadFile, Multiloc, Locale, ILocationInfo } from 'typings';
-
 // style
 import { colors } from 'utils/styleUtils';
+import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
+// components
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 import styled from 'styled-components';
-
-// resource components
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
+import { Content, Top, Container } from '../PostPreview';
+import messages from '../messages';
 // tracks
 import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
 
 const ButtonWrapper = styled.div`
   display: flex;

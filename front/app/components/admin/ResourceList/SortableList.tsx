@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { clone, find } from 'lodash-es';
-
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { List } from 'components/admin/ResourceList';
+import { clone, find } from 'lodash-es';
 // import { itemOrderWasUpdated, orderingIsValid } from './utils';
 import { itemOrderWasUpdated } from './utils';
+import { List } from 'components/admin/ResourceList';
 
 export interface Item {
   id: string;

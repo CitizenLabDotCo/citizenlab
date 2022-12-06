@@ -1,21 +1,17 @@
 import React, { memo, useCallback, useState } from 'react';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-
+import { WrappedComponentProps } from 'react-intl';
 // graphql
 import { gql, useQuery } from '@apollo/client';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+// hooks
+import useLocalize from 'hooks/useLocalize';
 import { client } from '../../utils/apolloUtils';
-
+// i18n
+import { injectIntl } from 'utils/cl-intl';
 // components
 import FilterSelector, {
   IFilterSelectorValue,
 } from 'components/FilterSelector';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {

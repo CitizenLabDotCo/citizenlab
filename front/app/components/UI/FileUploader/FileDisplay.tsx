@@ -1,20 +1,17 @@
 import React from 'react';
-import { returnFileSize } from 'utils/fileUtils';
-import { lighten } from 'polished';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Icon, IconButton } from '@citizenlab/cl2-component-library';
+import { lighten } from 'polished';
 import { UploadFile } from 'typings';
-
+import { ScreenReaderOnly } from 'utils/a11y';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { returnFileSize } from 'utils/fileUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+// styles
+import styled from 'styled-components';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;

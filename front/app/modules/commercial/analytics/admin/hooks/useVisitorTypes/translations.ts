@@ -1,9 +1,8 @@
 // i18n
-import messages from './messages';
-import cardMessages from '../../components/VisitorsTypeCard/messages';
-
 // typings
 import { FormatMessage } from 'typings';
+import cardMessages from '../../components/VisitorsTypeCard/messages';
+import messages from './messages';
 
 export interface Translations {
   newVisitors: string;

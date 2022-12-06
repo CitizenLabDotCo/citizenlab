@@ -1,20 +1,16 @@
 // Libraries
 import React from 'react';
-
 // typings
 import { IParticipationContextType } from 'typings';
-
+import { exportSurveyResults } from 'services/surveyResults';
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// components
-import Button from 'components/UI/Button';
-import { exportSurveyResults } from 'services/surveyResults';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+// components
+import Button from 'components/UI/Button';
 import messages from '../messages';
+import tracks from './tracks';
 
 interface Props {
   type: IParticipationContextType;

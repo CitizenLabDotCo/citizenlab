@@ -1,35 +1,30 @@
 import React, { memo, FormEvent } from 'react';
-import { IOpenPostPageModalEvent } from 'containers/App';
-
-// components
-import UserName from 'components/UI/UserName';
-import Card from 'components/UI/Card/Compact';
 import { Icon } from '@citizenlab/cl2-component-library';
-import Avatar from 'components/Avatar';
-import FooterWithVoteControl from './FooterWithVoteControl';
-import FooterWithBudgetControl from './FooterWithBudgetControl';
-
-// types
-import { ParticipationMethod } from 'services/participationContexts';
+// utils
+import { get } from 'lodash-es';
+import { transparentize } from 'polished';
 import { IParticipationContextType } from 'typings';
-
 // hooks
 import useIdea from 'hooks/useIdea';
 import useIdeaImage from 'hooks/useIdeaImage';
-import useProject from 'hooks/useProject';
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
-
-// utils
-import { get } from 'lodash-es';
+import useProject from 'hooks/useProject';
+// types
+import { ParticipationMethod } from 'services/participationContexts';
+import { timeAgo } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { IOpenPostPageModalEvent } from 'containers/App';
+import Avatar from 'components/Avatar';
+import Card from 'components/UI/Card/Compact';
+// components
+import UserName from 'components/UI/UserName';
 // styles
 import styled from 'styled-components';
-import { transparentize } from 'polished';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { timeAgo } from 'utils/dateUtils';
-import useLocale from 'hooks/useLocale';
+import FooterWithBudgetControl from './FooterWithBudgetControl';
+import FooterWithVoteControl from './FooterWithVoteControl';
 
 const BodyWrapper = styled.div`
   display: flex;

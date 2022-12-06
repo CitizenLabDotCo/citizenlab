@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
+// components
+import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
-
+import useReferenceDistribution, {
+  RemoteFormValues,
+} from '../../hooks/useReferenceDistribution';
+import useUserCustomField from 'hooks/useUserCustomField';
+// hooks
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
 // services
 import {
   createReferenceDistribution,
@@ -9,21 +16,9 @@ import {
   Bins,
   TReferenceDistributionData,
 } from '../../services/referenceDistribution';
-
-// hooks
-import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
-import useReferenceDistribution, {
-  RemoteFormValues,
-} from '../../hooks/useReferenceDistribution';
-import useUserCustomField from 'hooks/useUserCustomField';
-
-// components
-import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
-import FieldTitle from './FieldTitle';
-import FieldContent from './FieldContent';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+// typings
+import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
+import { isSupported } from '../../containers/Dashboard/utils';
 import {
   getInitialValues,
   getSubmitAction,
@@ -31,10 +26,11 @@ import {
   parseFormValues,
   convertBinsToFormValues,
 } from '../../utils/form';
-import { isSupported } from '../../containers/Dashboard/utils';
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import FieldContent from './FieldContent';
+import FieldTitle from './FieldTitle';
 
-// typings
-import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
 interface Props {
   userCustomFieldId: string;
 }

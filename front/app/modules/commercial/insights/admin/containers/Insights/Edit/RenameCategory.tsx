@@ -1,30 +1,24 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
 // intl
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
-
 // components
 import { Button, Input } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-
-// services
-import { updateInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // types
 import { CLErrors } from 'typings';
-
+// services
+import { updateInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 // tracking
 import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import Error from 'components/UI/Error';
+// styles
+import styled from 'styled-components';
+import messages from '../messages';
 
 const Container = styled.div`
   width: 100%;

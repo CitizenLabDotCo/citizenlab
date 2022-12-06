@@ -1,21 +1,17 @@
 import React from 'react';
-
-// libraries
-import clHistory from 'utils/cl-router/history';
-
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import TipsBox from './TipsBox';
-import ContentContainer from 'components/ContentContainer';
-import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
-import Fragment from 'components/Fragment';
-
-// style
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
-
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
+// libraries
+import clHistory from 'utils/cl-router/history';
+// style
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import ContentContainer from 'components/ContentContainer';
+import Fragment from 'components/Fragment';
+// components
+import GoBackButton from 'components/UI/GoBackButton';
+import styled from 'styled-components';
+import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
+import TipsBox from './TipsBox';
 import messages from './messages';
 
 const Container = styled.main`

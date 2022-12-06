@@ -1,25 +1,20 @@
 // Libraries
 import React, { PureComponent } from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+import { Select, Input } from '@citizenlab/cl2-component-library';
+// Typings
+import { IOption } from 'typings';
 // Services / Data loading
 import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
-
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 // Components
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
-import { Select, Input } from '@citizenlab/cl2-component-library';
-import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
-
-// Typings
-import { IOption } from 'typings';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 // Style
 import styled from 'styled-components';
-import { WrappedComponentProps } from 'react-intl';
+import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
+import messages from './messages';
 
 const FormContainer = styled.div`
   display: flex;

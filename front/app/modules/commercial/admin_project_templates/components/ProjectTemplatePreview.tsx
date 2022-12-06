@@ -1,32 +1,26 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import * as clipboard from 'clipboard-polyfill';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-
 // graphql
 import { gql, useQuery } from '@apollo/client';
-import { client } from '../utils/apolloUtils';
-
-// components
-import Button from 'components/UI/Button';
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import T from 'components/T';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import * as clipboard from 'clipboard-polyfill';
+import { lighten } from 'polished';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+// hooks
+import useLocalize from 'hooks/useLocalize';
+import { client } from '../utils/apolloUtils';
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import T from 'components/T';
+// components
+import Button from 'components/UI/Button';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import tracks from '../tracks';
+import messages from './messages';
 
 const Arrow = (props: React.SVGProps<SVGSVGElement>) => {
   return (

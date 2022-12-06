@@ -1,17 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
-
-// i18n
-import messages from '../../messages';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
-
 // styling
 import { colors, fontSizes } from 'utils/styleUtils';
-
 // components
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { ManagerType } from '../..';
+// i18n
+import messages from '../../messages';
 
 export const NoPostPage = styled.div`
   display: flex;

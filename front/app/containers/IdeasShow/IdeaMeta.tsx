@@ -1,32 +1,29 @@
 // libraries
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { Helmet } from 'react-helmet';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+// i18n
+import { WrappedComponentProps } from 'react-intl';
+import { get } from 'lodash-es';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-// utils
-import { stripHtml } from 'utils/textUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileUtils';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+// utils
+import { stripHtml } from 'utils/textUtils';
 
 interface InputProps {
   ideaId: string;

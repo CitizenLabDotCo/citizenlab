@@ -1,18 +1,14 @@
 // libraries
 import React, { PureComponent } from 'react';
-
-// Services
-import { sendSpamReport, Report } from 'services/spamReports';
-
-// Components
-import ReportForm from './SpamReportForm';
-import { ModalContentContainer } from 'components/UI/Modal';
-
 // Typings
 import { CRUDParams, CLErrorsJSON } from 'typings';
-
+// Services
+import { sendSpamReport, Report } from 'services/spamReports';
 // Utils
 import { isCLErrorJSON } from 'utils/errorUtils';
+import { ModalContentContainer } from 'components/UI/Modal';
+// Components
+import ReportForm from './SpamReportForm';
 
 interface Props {
   resourceType: 'comments' | 'ideas' | 'initiatives';

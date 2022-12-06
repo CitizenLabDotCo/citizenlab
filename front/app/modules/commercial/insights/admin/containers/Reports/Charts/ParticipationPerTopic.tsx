@@ -1,10 +1,10 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { map, sortBy } from 'lodash-es';
-import styled from 'styled-components';
-
+import { IParticipationByTopic } from 'typings';
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
+import useLocalize from 'hooks/useLocalize';
 import {
   IIdeasByTopic,
   ideasByTopicStream,
@@ -13,14 +13,11 @@ import {
   IVotesByTopic,
   votesByTopicStream,
 } from 'services/stats';
-import { IParticipationByTopic } from 'typings';
-import { fontSizes, colors } from 'utils/styleUtils';
-
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from '../messages';
-import useLocalize from 'hooks/useLocalize';
+import { fontSizes, colors } from 'utils/styleUtils';
 import {
   GraphCard,
   GraphCardInner,
@@ -28,7 +25,8 @@ import {
   GraphCardHeader,
   NoDataContainer,
 } from 'components/admin/GraphWrappers';
-import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+import messages from '../messages';
 
 interface InputProps {
   projectId: string | null;

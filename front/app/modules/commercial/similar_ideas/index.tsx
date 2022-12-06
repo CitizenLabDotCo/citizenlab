@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const SimilarIdeas = React.lazy(() => import('./components/SimilarIdeas'));
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 

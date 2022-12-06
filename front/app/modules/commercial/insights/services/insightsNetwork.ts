@@ -1,5 +1,5 @@
-import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 const getInsightsNetworkEndpoint = (viewId: string) =>
   `insights/views/${viewId}/network`;

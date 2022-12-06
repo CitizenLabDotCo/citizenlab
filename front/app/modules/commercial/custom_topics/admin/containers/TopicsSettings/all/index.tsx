@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-
-// resources
-import { deleteTopic } from '../../../../services/topics';
-
 // hooks
 import useTopics from 'hooks/useTopics';
-
-// i18n
-import messages from '../messages';
+// resources
+import { deleteTopic } from '../../../../services/topics';
 import { FormattedMessage } from 'utils/cl-intl';
-
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import TopicTermConfig from '../../../components/TopicTermConfig';
+import TopicsList from '../../../components/TopicsList';
+import Button from 'components/UI/Button';
+import Modal, {
+  ModalContentContainer,
+  ButtonsWrapper,
+  Content,
+} from 'components/UI/Modal';
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 // components
 import {
   Section,
@@ -17,18 +22,8 @@ import {
   SectionTitle,
   StyledLink,
 } from 'components/admin/Section';
-import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
-import TopicTermConfig from '../../../components/TopicTermConfig';
-import TopicsList from '../../../components/TopicsList';
-import Modal, {
-  ModalContentContainer,
-  ButtonsWrapper,
-  Content,
-} from 'components/UI/Modal';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+// i18n
+import messages from '../messages';
 
 const AllTopics = () => {
   const topics = useTopics();

@@ -1,14 +1,14 @@
 import {
+  IUsersByRegistrationField,
+  IUsersByAge,
+} from 'services/userCustomFieldStats';
+import {
   regFieldToReferenceData,
   regFieldToIncludedUsers,
   ageFieldToReferenceData,
   ageFieldToIncludedUsers,
   RepresentativenessRowMultiloc,
 } from './createRefDataSubscription';
-import {
-  IUsersByRegistrationField,
-  IUsersByAge,
-} from 'services/userCustomFieldStats';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');

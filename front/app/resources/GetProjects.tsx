@@ -15,9 +15,9 @@ import {
   IProjectData,
   PublicationStatus,
 } from 'services/projects';
-import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export type Sort =
   | 'new'

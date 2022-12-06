@@ -1,17 +1,17 @@
 import React from 'react';
 import { isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
 import {
   IInitiativeData,
   initiativeByIdStream,
   initiativeBySlugStream,
 } from 'services/initiatives';
-import { GetIdeaChildProps } from 'resources/GetIdea';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 export type PostType = 'idea' | 'initiative';
 interface InputProps {

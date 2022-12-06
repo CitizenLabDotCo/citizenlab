@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { updateCampaign, ICampaignData } from 'services/campaigns';
-import clHistory from 'utils/cl-router/history';
-
-import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import GetCampaign from 'resources/GetCampaign';
+import { updateCampaign, ICampaignData } from 'services/campaigns';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+import GoBackButton from 'components/UI/GoBackButton';
+import messages from '../../messages';
+import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
 interface Props {
   campaign: ICampaignData;

@@ -1,14 +1,22 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-
-// components
-import InitiativeForm, {
-  FormValues,
-  SimpleFormValues,
-} from 'components/InitiativeForm';
-
+import { Point } from 'geojson';
+import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import {
+  deleteInitiativeFile,
+  addInitiativeFile,
+} from 'services/initiativeFiles';
+import {
+  addInitiativeImage,
+  deleteInitiativeImage,
+} from 'services/initiativeImages';
 import {
   addInitiative,
   updateInitiative,
@@ -16,38 +24,23 @@ import {
   IInitiativeAdd,
 } from 'services/initiatives';
 import { ITopicData } from 'services/topics';
-
+import { trackEventByName } from 'utils/analytics';
+import clHistory from 'utils/cl-router/history';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-// style
-import { media } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import styled from 'styled-components';
-
 // intl
 import { geocode } from 'utils/locationTools';
-import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
-import { Point } from 'geojson';
-import {
-  addInitiativeImage,
-  deleteInitiativeImage,
-} from 'services/initiativeImages';
-import {
-  deleteInitiativeFile,
-  addInitiativeFile,
-} from 'services/initiativeFiles';
 import { reportError } from 'utils/loggingUtils';
-
+// style
+import { media } from 'utils/styleUtils';
+// components
+import InitiativeForm, {
+  FormValues,
+  SimpleFormValues,
+} from 'components/InitiativeForm';
+import styled from 'styled-components';
 // tracks
 import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;

@@ -1,33 +1,28 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// utils
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
+import { WrappedComponentProps } from 'react-intl';
+import useLocalize from 'hooks/useLocalize';
+// hooks
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
 // services
 import {
   IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
   deleteUserCustomFieldOption,
 } from 'services/userCustomFieldOptions';
-
-// hooks
-import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
-import useLocalize from 'hooks/useLocalize';
-
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 // components
 import {
   SortableList,
   SortableRow,
   TextCell,
 } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
-
 // i18n
 import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 const RegistrationCustomFieldOptions = memo(
   ({

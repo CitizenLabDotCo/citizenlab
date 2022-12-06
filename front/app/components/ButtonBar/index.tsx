@@ -1,5 +1,4 @@
 import React from 'react';
-
 // style
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';

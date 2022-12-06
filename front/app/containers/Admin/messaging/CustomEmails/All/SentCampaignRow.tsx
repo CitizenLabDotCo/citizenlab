@@ -1,13 +1,13 @@
 import React from 'react';
-import { Row, TextCell } from 'components/admin/ResourceList';
+import { FormattedDate, FormattedTime } from 'react-intl';
+import { Box, StatusLabel } from '@citizenlab/cl2-component-library';
 import { ICampaignData } from 'services/campaigns';
+import { FormattedMessage } from 'utils/cl-intl';
+import { colors } from 'utils/styleUtils';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Box, StatusLabel } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
+import { Row, TextCell } from 'components/admin/ResourceList';
 import messages from '../../messages';
-import { FormattedDate, FormattedTime } from 'react-intl';
-import { colors } from 'utils/styleUtils';
 
 interface Props {
   campaign: ICampaignData;

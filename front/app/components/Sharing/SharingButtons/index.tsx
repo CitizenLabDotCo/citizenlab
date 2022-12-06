@@ -1,21 +1,18 @@
 import React, { memo } from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Facebook from '../buttons/Facebook';
-import Twitter from '../buttons/Twitter';
-import Messenger from '../buttons/Messenger';
-import WhatsApp from '../buttons/WhatsApp';
-import Email from '../buttons/Email';
-import CopyLink from '../buttons/CopyLink';
-
-// i18n
-import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-
 // utils
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import CopyLink from '../buttons/CopyLink';
+import Email from '../buttons/Email';
+import Facebook from '../buttons/Facebook';
+import Messenger from '../buttons/Messenger';
+import Twitter from '../buttons/Twitter';
+import WhatsApp from '../buttons/WhatsApp';
+// i18n
+import messages from '../messages';
 
 interface Props {
   context: 'idea' | 'project' | 'initiative' | 'folder';

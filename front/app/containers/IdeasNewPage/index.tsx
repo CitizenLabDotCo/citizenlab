@@ -1,58 +1,50 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import { adopt } from 'react-adopt';
-import { isEmpty, isNumber, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { parse } from 'qs';
-
-// libraries
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-
-// components
-import IdeasNewButtonBar from './IdeasNewButtonBar';
-import NewIdeaForm from './NewIdeaForm';
-import IdeasNewMeta from './IdeasNewMeta';
+import { createPortal } from 'react-dom';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// feature flag variant
-import IdeasNewPageWithJSONForm from './WithJSONForm';
-
-// services
-import { addIdea, IIdeaAdd } from 'services/ideas';
-import { addIdeaFile } from 'services/ideaFiles';
-import { addIdeaImage } from 'services/ideaImages';
+import { isEmpty, isNumber, get } from 'lodash-es';
+import { parse } from 'qs';
+import { UploadFile } from 'typings';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 import {
   globalState,
   IGlobalStateService,
   IIdeasPageGlobalState,
 } from 'services/globalState';
+import { addIdeaFile } from 'services/ideaFiles';
+import { addIdeaImage } from 'services/ideaImages';
+// services
+import { addIdea, IIdeaAdd } from 'services/ideas';
 import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
-
+import { trackEventByName } from 'utils/analytics';
+import clHistory from 'utils/cl-router/history';
+// libraries
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 // utils
 import { geocode, reverseGeocode } from 'utils/locationTools';
-
+import { getParticipationMethod } from 'utils/participationMethodUtils';
 // style
 import { media, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
-
+// components
+import IdeasNewButtonBar from './IdeasNewButtonBar';
+import IdeasNewMeta from './IdeasNewMeta';
+import NewIdeaForm from './NewIdeaForm';
+// feature flag variant
+import IdeasNewPageWithJSONForm from './WithJSONForm';
 // tracks
 import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { UploadFile } from 'typings';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import { getParticipationMethod } from 'utils/participationMethodUtils';
 
 const Container = styled.div`
   background: ${colors.background};

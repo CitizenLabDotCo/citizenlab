@@ -2,23 +2,19 @@
 import React, { PureComponent } from 'react';
 import { isArray, includes } from 'lodash-es';
 import { Subscription } from 'rxjs';
-
+import GetAuthUser from 'resources/GetAuthUser';
+// Resources
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+// Services
+import { MembershipType } from 'services/groups';
+import events from './events';
+// Events
+import eventEmitter from 'utils/eventEmitter';
+import Error from 'components/UI/Error';
+import NoUsers from './NoUsers';
 // Components
 import UserTable from './UserTable';
 import UserTableActions from './UserTableActions';
-import Error from 'components/UI/Error';
-import NoUsers from './NoUsers';
-
-// Events
-import eventEmitter from 'utils/eventEmitter';
-import events from './events';
-
-// Resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetAuthUser from 'resources/GetAuthUser';
-
-// Services
-import { MembershipType } from 'services/groups';
 
 // Typings
 interface InputProps {

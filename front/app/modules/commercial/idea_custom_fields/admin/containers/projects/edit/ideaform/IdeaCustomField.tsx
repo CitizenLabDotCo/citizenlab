@@ -1,12 +1,4 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import {
-  IIdeaCustomFieldData,
-  IUpdatedIdeaCustomFieldProperties /* Visibility */,
-} from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
-
 // components
 import {
   IconTooltip,
@@ -15,20 +7,23 @@ import {
   Box,
   Title,
 } from '@citizenlab/cl2-component-library';
-
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-
-// i18n
-import T from 'components/T';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
 // typings
 import { Multiloc } from 'typings';
+// services
+import {
+  IIdeaCustomFieldData,
+  IUpdatedIdeaCustomFieldProperties,
+  /* Visibility */
+} from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+// i18n
+import T from 'components/T';
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+// styling
+import styled from 'styled-components';
+import messages from './messages';
 
 const Toggles = styled.div`
   margin-bottom: 30px;

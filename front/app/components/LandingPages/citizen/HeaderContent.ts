@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
+import styled, { css } from 'styled-components';
 
 export type TAlign = 'center' | 'left';
 export const getAlignItems = (align: TAlign) => {

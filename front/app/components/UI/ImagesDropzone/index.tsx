@@ -1,28 +1,23 @@
 import React, { PureComponent } from 'react';
 import Dropzone, { Accept } from 'react-dropzone';
-import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
-import { reportError } from 'utils/loggingUtils';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
-import { getBase64FromFile } from 'utils/fileUtils';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
-
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
+import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 // typings
 import { UploadFile } from 'typings';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { getBase64FromFile } from 'utils/fileUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
+import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
+import Error from 'components/UI/Error';
+// style
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-
 import ProjectFolderSelect from './';
 
 jest.mock('services/appConfiguration');

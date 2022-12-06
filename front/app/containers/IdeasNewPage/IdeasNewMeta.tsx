@@ -1,31 +1,27 @@
 // libraries
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { Helmet } from 'react-helmet';
 import { WrappedComponentProps } from 'react-intl';
-import { getInputTermMessage } from 'utils/i18n';
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// services
+import { getInputTerm } from 'services/participationContexts';
+import { injectIntl } from 'utils/cl-intl';
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// services
-import { getInputTerm } from 'services/participationContexts';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+// i18n
+import messages from './messages';
 
 interface InputProps {}
 

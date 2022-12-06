@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { isNilOrError, isString } from 'utils/helperUtils';
+import { useParams } from 'react-router-dom';
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField, StyledMultipleSelect } from './styling';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import { IOption, isIOption } from 'typings';
 import useAreas from 'hooks/useAreas';
-import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
+import useProject from 'hooks/useProject';
 import { IAreaData } from 'services/areas';
-import { useParams } from 'react-router-dom';
-import { TOnProjectAttributesDiffChangeFunction } from '..';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, isString } from 'utils/helperUtils';
 import { LabelHeaderDescription } from '../../participationContext/components/labels';
-
+import { SubSectionTitle } from 'components/admin/Section';
 // styles
 import styled from 'styled-components';
+import { TOnProjectAttributesDiffChangeFunction } from '..';
+import messages from '../messages';
+import { StyledSectionField, StyledMultipleSelect } from './styling';
 
 interface Props {
   areaIds: string[] | undefined;

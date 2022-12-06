@@ -1,7 +1,7 @@
 import React from 'react';
-// components
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-
+// i18n
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import {
   Setting,
   ToggleLabel,
@@ -10,9 +10,8 @@ import {
   LabelTitle,
   LabelDescription,
 } from 'containers/Admin/settings/general';
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+// components
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import messages from './messages';
 
 interface Props {

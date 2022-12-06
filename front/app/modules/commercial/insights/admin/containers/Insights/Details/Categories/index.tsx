@@ -1,37 +1,30 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
+import { WrappedComponentProps } from 'react-intl';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
-
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-
-// components
-import Tag from 'modules/commercial/insights/admin/components/Tag';
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// intl
-import messages from '../../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-
 import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+import Button from 'components/UI/Button';
 import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
+// components
+import Tag from 'modules/commercial/insights/admin/components/Tag';
+// styles
+import styled from 'styled-components';
+// intl
+import messages from '../../messages';
 
 type CategoryProps = WithRouterProps & WrappedComponentProps;
 

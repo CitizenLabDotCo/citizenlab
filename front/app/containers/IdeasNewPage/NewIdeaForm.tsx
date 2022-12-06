@@ -1,18 +1,13 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { Subscription } from 'rxjs';
-import { isNilOrError } from 'utils/helperUtils';
-import { parse } from 'qs';
-
-// components
-import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import GoBackButton from 'containers/IdeasShow/GoBackButton';
 import { Box } from '@citizenlab/cl2-component-library';
-
+import { parse } from 'qs';
+import { Subscription } from 'rxjs';
+// typings
+import { UploadFile } from 'typings';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-
 // services
 import {
   globalState,
@@ -20,18 +15,17 @@ import {
   IIdeasPageGlobalState,
 } from 'services/globalState';
 import { getInputTerm } from 'services/participationContexts';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
-
-// typings
-import { UploadFile } from 'typings';
-
 // style
 import { media, fontSizes } from 'utils/styleUtils';
+import GoBackButton from 'containers/IdeasShow/GoBackButton';
+// components
+import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

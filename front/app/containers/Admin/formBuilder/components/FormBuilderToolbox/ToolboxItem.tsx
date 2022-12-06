@@ -1,10 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-
 // Components
 import { Box, Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
-
 import { colors } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 interface Props {
   label: string;

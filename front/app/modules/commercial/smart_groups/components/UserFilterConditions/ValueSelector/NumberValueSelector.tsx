@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Input } from '@citizenlab/cl2-component-library';
 
 type Props = {

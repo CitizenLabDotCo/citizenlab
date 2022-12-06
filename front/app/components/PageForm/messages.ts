@@ -3,7 +3,6 @@
  *
  * This contains all the text for the Pages Form component.
  */
-
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({

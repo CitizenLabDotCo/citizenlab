@@ -1,16 +1,8 @@
 // libraries
 import React from 'react';
 import { isEqual } from 'lodash-es';
-
-// components
-import CustomFieldGraph from './CustomFieldGraph';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
 import useUserCustomFields from 'hooks/useUserCustomFields';
-
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
@@ -18,6 +10,10 @@ import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
 } from 'services/userCustomFields';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import CustomFieldGraph from './CustomFieldGraph';
 
 interface Props {
   startAt: string;

@@ -1,3 +1,4 @@
+import { Margin } from '../../typings';
 import {
   Position,
   ItemCoordinates,
@@ -5,7 +6,6 @@ import {
   LegendDimensions,
   LegendItem,
 } from './typings';
-import { Margin } from '../../typings';
 
 export const getLegendTranslate = (
   position: Position,

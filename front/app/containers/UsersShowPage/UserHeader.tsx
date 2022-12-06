@@ -1,31 +1,27 @@
 import React from 'react';
-
-import { isEmpty, forOwn } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
-
-// components
-import Avatar from 'components/Avatar';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Button from 'components/UI/Button';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from './messages';
-
-// style
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAuthUser from 'hooks/useAuthUser';
-import useUser from 'hooks/useUser';
 import {
   useBreakpoint,
   Box,
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty, forOwn } from 'lodash-es';
+import moment from 'moment';
+import useAuthUser from 'hooks/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUser from 'hooks/useUser';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+// components
+import Avatar from 'components/Avatar';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+// style
+import styled from 'styled-components';
+import messages from './messages';
 
 const Bio = styled.div`
   line-height: 1.25;

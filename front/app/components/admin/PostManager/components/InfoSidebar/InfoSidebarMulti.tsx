@@ -1,6 +1,6 @@
 import React from 'react';
-import InfoSidebarMultiItem from './InfoSidebarMultiItem';
 import { Segment, List } from 'semantic-ui-react';
+import InfoSidebarMultiItem from './InfoSidebarMultiItem';
 
 interface Props {
   postIds: string[];

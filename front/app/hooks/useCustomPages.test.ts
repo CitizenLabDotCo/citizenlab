@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useCustomPages from './useCustomPages';
 import { Observable, Subscription } from 'rxjs';
-import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
-import pages from './fixtures/customPages';
 import { listCustomPages, customPageByIdStream } from 'services/customPages';
+import { waitFor } from 'utils/testUtils/rtl';
+import pages from './fixtures/customPages';
+import useCustomPages from './useCustomPages';
 
 const mockInputListPages = {
   data: pages,

@@ -1,9 +1,9 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import useContentBuilderLayout from './useContentBuilder';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { contentBuilderLayoutStream } from '../services/contentBuilder';
 import { waitFor } from 'utils/testUtils/rtl';
+import useContentBuilderLayout from './useContentBuilder';
 
 const projectId = 'TestID';
 const code = 'TestCode';

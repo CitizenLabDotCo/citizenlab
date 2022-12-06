@@ -1,33 +1,28 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import AvatarBubbles from 'components/AvatarBubbles';
-import InitiativeInfoContent from './InitiativeInfoContent';
-import Warning from 'components/UI/Warning';
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import T from 'components/T';
-
-// images
-import InitiativeButton from 'components/InitiativeButton';
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import { ScreenReaderOnly } from 'utils/a11y';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { media, fontSizes } from 'utils/styleUtils';
+// components
+import AvatarBubbles from 'components/AvatarBubbles';
+// images
+import InitiativeButton from 'components/InitiativeButton';
+import T from 'components/T';
+import Warning from 'components/UI/Warning';
+// style
+import styled from 'styled-components';
+import InitiativeInfoContent from './InitiativeInfoContent';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-
-// styling
-import { animation } from '../styling';
-
 // components
 import {
   PieChart as RechartsPieChart,
@@ -11,20 +7,20 @@ import {
   Cell,
   Label,
 } from 'recharts';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+// utils
+import { getPieConfig } from './utils';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-
-// utils
-import { getPieConfig } from './utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
-
-// typings
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+// styling
+import { animation } from '../styling';
+// typings
+import { Props } from './typings';
 
 const DEFAULT_LEGEND_OFFSET = 16;
 

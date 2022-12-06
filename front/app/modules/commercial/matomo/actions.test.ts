@@ -1,7 +1,7 @@
-import { trackPageChange } from './actions';
-import { mockRoutes } from './mockRoutes.mock';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { trackPageChange } from './actions';
+import { mockRoutes } from './mockRoutes.mock';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');

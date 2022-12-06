@@ -1,40 +1,33 @@
 import React from 'react';
-import { useTheme } from 'styled-components';
-
+import { FormProvider, useForm } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import Button from 'components/UI/Button';
-import ShownOnPageBadge from '../../components/ShownOnPageBadge';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
-import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
-
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
-import Feedback from 'components/HookForm/Feedback';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import { FormProvider, useForm } from 'react-hook-form';
-import { object } from 'yup';
-
-// i18n
-import HelmetIntl from 'components/HelmetIntl';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 // typings
 import { Multiloc } from 'typings';
-
-// constants
-import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
-
+import { object } from 'yup';
 // services and hooks
 import { ICustomPageData } from 'services/customPages';
 import { IHomepageSettingsData } from 'services/homepageSettings';
-
+import { injectIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 // utils
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
+// i18n
+import HelmetIntl from 'components/HelmetIntl';
+import Feedback from 'components/HookForm/Feedback';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
+import Button from 'components/UI/Button';
+import { useTheme } from 'styled-components';
+// constants
+import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
+import messages from './messages';
 
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;

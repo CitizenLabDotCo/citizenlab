@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen, waitFor } from 'utils/testUtils/rtl';
-import MultiBarChart from './';
 import { NilOrError } from 'utils/helperUtils';
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import { legacyColors } from '../styling';
+import MultiBarChart from './';
 
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');

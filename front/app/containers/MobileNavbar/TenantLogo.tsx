@@ -1,10 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
+import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
 
 const Logo = styled.img`
   max-width: 100%;

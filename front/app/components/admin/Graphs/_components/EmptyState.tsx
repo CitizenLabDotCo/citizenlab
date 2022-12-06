@@ -1,11 +1,9 @@
 import React from 'react';
-
+import { FormattedMessage } from 'utils/cl-intl';
 // components
 import { NoDataContainer } from 'components/admin/GraphWrappers';
-
 // i18n
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   emptyContainerContent?: React.ReactNode;

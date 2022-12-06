@@ -1,15 +1,12 @@
 import React from 'react';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // components
 import { Text, Icon } from '@citizenlab/cl2-component-library';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import { colors } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+// i18n
+import messages from './messages';
 
 const TableViewButton = styled.button`
   all: unset;

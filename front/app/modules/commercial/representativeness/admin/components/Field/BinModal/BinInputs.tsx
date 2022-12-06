@@ -1,29 +1,24 @@
 import React, { useState } from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Box, Text, Input, Icon } from '@citizenlab/cl2-component-library';
-import BinInputsHeader from './BinInputsHeader';
-
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
+import { clamp } from 'lodash-es';
+// typings
+import { Bins } from '../../../services/referenceDistribution';
 // utils
 import {
   getLowerBoundLimits,
   getUpperBoundLimits,
   parseLabel,
 } from '../../../utils/bins';
-import { clamp } from 'lodash-es';
+import { injectIntl } from 'utils/cl-intl';
 import { indices } from 'utils/helperUtils';
-
-// typings
-import { Bins } from '../../../services/referenceDistribution';
+import { colors } from 'utils/styleUtils';
+// styling
+import styled from 'styled-components';
+import BinInputsHeader from './BinInputsHeader';
+// i18n
+import messages from './messages';
 
 const RemoveBinButton = styled.button`
   cursor: pointer;

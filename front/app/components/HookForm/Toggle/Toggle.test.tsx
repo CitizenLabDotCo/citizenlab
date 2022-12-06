@@ -1,9 +1,9 @@
 import React from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { boolean, object } from 'yup';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import Toggle from './';
-import { useForm, FormProvider } from 'react-hook-form';
-import { boolean, object } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 const schema = object({
   toggle: boolean().oneOf([true], 'Error message'),

@@ -1,7 +1,6 @@
 import React from 'react';
-import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import { Locale } from 'typings';
-
+import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 // Components
 import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSwitcher';
 import LinearScaleSettings from './LinearScaleSettings';

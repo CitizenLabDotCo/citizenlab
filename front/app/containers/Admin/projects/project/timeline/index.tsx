@@ -1,35 +1,29 @@
 // Libraries
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+// Hooks
+import { useParams } from 'react-router-dom';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+// Resources
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+// Services
+import { deletePhase } from 'services/phases';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
 // Utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-
-// Services
-import { deletePhase } from 'services/phases';
-
-// Resources
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-
+// Styling
+import { fontSizes, colors } from 'utils/styleUtils';
 // Components
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import Modal from 'components/UI/Modal';
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-
-// Styling
-import { fontSizes, colors } from 'utils/styleUtils';
-
-// Hooks
-import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import messages from './messages';
 
 // Styles
 const ListWrapper = styled.div`

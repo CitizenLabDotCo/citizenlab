@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 // module
 import { InsertConfigurationOptions, ITab } from 'typings';
+import { injectIntl } from 'utils/cl-intl';
 import { insertConfiguration } from 'utils/moduleUtils';
-
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
+import TabbedResource from 'components/admin/TabbedResource';
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 
 const IdeasPage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const [tabs, setTabs] = useState<ITab[]>([

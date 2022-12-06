@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// styles
-import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
-
+// intl
+import { WrappedComponentProps } from 'react-intl';
 // components
 import {
   Dropdown,
   DropdownListItem,
   Button,
 } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import RenameInsightsView from './RenameInsightsView';
-import ProjectButton from './ProjectButton';
-import ProjectsDropdown from './ProjectsDropdown';
-
-// intl
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// utils
-import clHistory from 'utils/cl-router/history';
-import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError, isError } from 'utils/helperUtils';
-
-// services
-import { deleteInsightsView } from '../../../services/insightsViews';
-
 // hooks
 import useInsightsView from '../../../hooks/useInsightsView';
+// services
+import { deleteInsightsView } from '../../../services/insightsViews';
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError, isError } from 'utils/helperUtils';
+// styles
+import { colors, fontSizes } from 'utils/styleUtils';
+import Modal from 'components/UI/Modal';
+import styled from 'styled-components';
+import ProjectButton from './ProjectButton';
+import ProjectsDropdown from './ProjectsDropdown';
+import RenameInsightsView from './RenameInsightsView';
+import messages from './messages';
 
 export const topBarHeight = 60;
 

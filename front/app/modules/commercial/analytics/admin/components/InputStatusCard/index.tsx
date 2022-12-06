@@ -1,28 +1,23 @@
 import React, { useRef } from 'react';
-
+import { Box } from '@citizenlab/cl2-component-library';
+// hooks
+import usePostsFeedback from '../../hooks/usePostsFeedback';
+// i18n
+import hookMessages from '../../hooks/usePostsFeedback/messages';
+import { useIntl } from 'utils/cl-intl';
+// typings
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes, media } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
 // components
 import GraphCard from 'components/admin/GraphCard';
-import { Box } from '@citizenlab/cl2-component-library';
+// stylings
+import styled from 'styled-components';
+import { ProjectId, Dates, Resolution } from '../../typings';
 import DonutChart from './DonutChart';
 import ProgressBars from './ProgressBars';
 import StackedBars from './StackedBars';
-import Button from 'components/UI/Button';
-
-// stylings
-import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
-
-// i18n
-import hookMessages from '../../hooks/usePostsFeedback/messages';
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-// hooks
-import usePostsFeedback from '../../hooks/usePostsFeedback';
-
-// typings
-import { isNilOrError } from 'utils/helperUtils';
-import { ProjectId, Dates, Resolution } from '../../typings';
 
 type Props = ProjectId & Dates & Resolution;
 

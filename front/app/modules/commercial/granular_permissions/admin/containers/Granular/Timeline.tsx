@@ -1,29 +1,24 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { fontSizes } from 'utils/styleUtils';
-
-// components
-import Collapse from 'components/UI/Collapse';
-import ActionsForm from './ActionsForm';
-
+import GetPhasePermissions from 'resources/GetPhasePermissions';
+// resources
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // services
 import {
   updatePhasePermission,
   IPCPermissionData,
 } from 'services/actionPermissions';
-
-// resources
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetPhasePermissions from 'resources/GetPhasePermissions';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
+import { fontSizes } from 'utils/styleUtils';
 // i18n
 import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+// components
+import Collapse from 'components/UI/Collapse';
 // styling
 import styled from 'styled-components';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import ActionsForm from './ActionsForm';
+import messages from './messages';
 
 const Container = styled.div`
   margin-bottom: 20px;

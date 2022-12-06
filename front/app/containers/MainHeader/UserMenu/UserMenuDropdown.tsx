@@ -1,22 +1,18 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import Button from 'components/UI/Button';
 import { Dropdown } from '@citizenlab/cl2-component-library';
-import HasPermission from 'components/HasPermission';
-
-// services
-import { signOut } from 'services/auth';
-
 // resources
 import useAuthUser from 'hooks/useAuthUser';
-// style
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
+// services
+import { signOut } from 'services/auth';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+import HasPermission from 'components/HasPermission';
+// components
+import Button from 'components/UI/Button';
+// style
+import styled from 'styled-components';
 import messages from './messages';
 
 const DropdownListItem = styled(Button)``;

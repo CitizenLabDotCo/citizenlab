@@ -1,15 +1,12 @@
 import React, { memo } from 'react';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import { fontSizes } from 'utils/styleUtils';
 // components
 import UserName from 'components/UI/UserName';
-
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   display: flex;

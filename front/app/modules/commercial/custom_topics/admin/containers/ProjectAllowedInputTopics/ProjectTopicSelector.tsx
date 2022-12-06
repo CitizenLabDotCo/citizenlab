@@ -1,33 +1,27 @@
 // Libraries
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// Hooks
-import useTopics from 'hooks/useTopics';
-import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-// Components
-import Button from 'components/UI/Button';
-import MultipleSelect from 'components/UI/MultipleSelect';
-
-// Style
-import styled from 'styled-components';
-
 // Typings
 import { IOption } from 'typings';
-
+import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
+// Hooks
+import useTopics from 'hooks/useTopics';
 // Services
 import {
   addProjectAllowedInputTopic,
   getTopicIds,
 } from 'services/projectAllowedInputTopics';
+import { injectIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+// Components
+import Button from 'components/UI/Button';
+import MultipleSelect from 'components/UI/MultipleSelect';
+// Style
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

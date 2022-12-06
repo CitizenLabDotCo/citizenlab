@@ -1,17 +1,4 @@
 import React, { useState } from 'react';
-
-// hooks
-import useProject from 'hooks/useProject';
-import useLocalize from 'hooks/useLocalize';
-import { useEditor, SerializedNodes } from '@craftjs/core';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import Button from 'components/UI/Button';
-
-// styling
-import { colors } from 'utils/styleUtils';
 import {
   Box,
   stylingConsts,
@@ -21,26 +8,31 @@ import {
   Toggle,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// routing
-import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
+import { useEditor, SerializedNodes } from '@craftjs/core';
+// types
+import { Locale } from 'typings';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
+// hooks
+import useProject from 'hooks/useProject';
 // services
 import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
 } from '../../../services/contentBuilder';
-
-// types
-import { Locale } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
+// routing
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+// styling
+import { colors } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+// components
+import GoBackButton from 'components/UI/GoBackButton';
+// i18n
+import messages from './messages';
 
 type ContentBuilderTopBarProps = {
   hasPendingState?: boolean;

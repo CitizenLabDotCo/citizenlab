@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from 'components/UI/Button';
 import { IconNames } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 interface Props {
   className?: string;

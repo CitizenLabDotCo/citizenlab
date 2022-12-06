@@ -1,15 +1,12 @@
 import React from 'react';
-
 import useAuthUser from 'hooks/useAuthUser';
 import { createCampaign } from 'services/campaigns';
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
 import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
-
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
 const New = () => {
   const authUser = useAuthUser();

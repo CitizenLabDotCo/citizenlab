@@ -1,12 +1,12 @@
+import { isEqual } from 'lodash-es';
 import {
   distinctUntilChanged,
   map,
   publishReplay,
   refCount,
 } from 'rxjs/operators';
-import { isEqual } from 'lodash-es';
-import eventEmitter from 'utils/eventEmitter';
 import { Sort } from 'resources/GetIdeas';
+import eventEmitter from 'utils/eventEmitter';
 
 enum events {
   ideaMapCardSelectedChange = 'ideaMapCardSelectedChange',

@@ -1,16 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { distinctUntilChanged } from 'rxjs/operators';
-
+// typings
+import { BaseProps } from 'hooks/useAdminPublications';
 // services
 import {
   adminPublicationsStatusCounts,
   IStatusCountsBase,
 } from 'services/adminPublications';
-
-// typings
-import { BaseProps } from 'hooks/useAdminPublications';
 import { PublicationStatus } from 'services/projects';
-
 // utils
 import { isNilOrError, keys } from 'utils/helperUtils';
 

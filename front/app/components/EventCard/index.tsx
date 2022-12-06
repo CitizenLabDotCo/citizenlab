@@ -1,20 +1,16 @@
 import React, { memo } from 'react';
 import moment from 'moment';
-
-// components
-import DateBlocks from './DateBlocks';
-import EventInformation from './EventInformation';
-
 // services
 import { IEventData } from 'services/events';
-
-// style
-import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
-
 // other
 import { getIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { defaultCardStyle } from 'utils/styleUtils';
+// style
+import styled from 'styled-components';
+// components
+import DateBlocks from './DateBlocks';
+import EventInformation from './EventInformation';
 
 const Container = styled.div<{ clickable?: boolean }>`
   ${defaultCardStyle};

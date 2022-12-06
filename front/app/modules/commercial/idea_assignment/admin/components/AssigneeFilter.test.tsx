@@ -1,17 +1,15 @@
 // @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
-
 import { makeUser } from 'services/__mocks__/users';
 import { intl } from 'utils/cl-intl';
+import { AssigneeFilter } from './AssigneeFilter';
 
 // mocking dependencies
 jest.mock('resources/GetUsers', () => 'GetUsers');
 jest.mock('resources/GetAuthUser', () => 'GetAuthUser');
 jest.mock('utils/cl-intl');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
-import { AssigneeFilter } from './AssigneeFilter';
 
 describe('<AssigneeFilter />', () => {
   let handleAssigneeFilterChange: jest.Mock;

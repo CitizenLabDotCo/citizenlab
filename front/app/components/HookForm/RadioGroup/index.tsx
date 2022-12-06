@@ -1,11 +1,9 @@
 import React from 'react';
-
-import Error, { TFieldName } from 'components/UI/Error';
 import { useFormContext } from 'react-hook-form';
-import { CLError } from 'typings';
-
-import Radio from './Radio';
 import { Box } from '@citizenlab/cl2-component-library';
+import { CLError } from 'typings';
+import Error, { TFieldName } from 'components/UI/Error';
+import Radio from './Radio';
 
 interface Props {
   name: string;

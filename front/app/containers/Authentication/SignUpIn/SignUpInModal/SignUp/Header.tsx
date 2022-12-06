@@ -1,12 +1,10 @@
 import React from 'react';
-
-// components
-import { StyledHeaderContainer, StyledHeaderTitle } from '../styles';
 import ReactResizeDetector from 'react-resize-detector';
-import { HeaderSubtitle } from 'components/UI/Modal';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { HeaderSubtitle } from 'components/UI/Modal';
+// components
+import { StyledHeaderContainer, StyledHeaderTitle } from '../styles';
 import messages from './messages';
 
 interface Props {

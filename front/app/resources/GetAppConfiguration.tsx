@@ -1,6 +1,5 @@
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-
 // typings
 import { IAppConfigurationData } from 'services/appConfiguration';
 import { NilOrError } from 'utils/helperUtils';

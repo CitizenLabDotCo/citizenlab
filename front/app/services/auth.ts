@@ -1,12 +1,12 @@
-import { IUser, deleteUser } from 'services/users';
 import { IHttpMethod, Locale } from 'typings';
-import { API_PATH, AUTH_PATH } from 'containers/App/constants';
+import { IUser, deleteUser } from 'services/users';
 import { getJwt, setJwt, removeJwt, decode } from 'utils/auth/jwt';
+import clHistory from 'utils/cl-router/history';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { endsWith } from 'utils/helperUtils';
 import request from 'utils/request';
 import streams from 'utils/streams';
-import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { API_PATH, AUTH_PATH } from 'containers/App/constants';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 

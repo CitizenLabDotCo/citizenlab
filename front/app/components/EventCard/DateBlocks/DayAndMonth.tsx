@@ -1,10 +1,8 @@
 import React from 'react';
-
-// components
-import { EventDay, EventMonth } from './styling';
-
 // hooks
 import useLocale from 'hooks/useLocale';
+// components
+import { EventDay, EventMonth } from './styling';
 
 interface Props {
   day?: string;

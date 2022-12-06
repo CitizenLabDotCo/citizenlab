@@ -1,9 +1,9 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import { IGeotaggedIdeaData, geotaggedIdeasStream } from 'services/ideas';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   phaseId?: string;

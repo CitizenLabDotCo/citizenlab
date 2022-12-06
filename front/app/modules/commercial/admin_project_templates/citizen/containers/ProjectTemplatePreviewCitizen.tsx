@@ -1,27 +1,22 @@
 import React, { memo } from 'react';
-import { get } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-
-// components
-import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 import { Icon } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'services/permissions/roles';
-
+import { get } from 'lodash-es';
+import { darken } from 'polished';
 // resources
 import useAuthUser from 'hooks/useAuthUser';
-
+import { isAdmin } from 'services/permissions/roles';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 import messages from '../../admin/containers/messages';
-
+// components
+import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 // styling
 import styled from 'styled-components';
-import { colors, media, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 const Container = styled.div`
   width: 100%;

@@ -1,27 +1,22 @@
 import React from 'react';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// styles
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
-// components
-import Button from 'components/UI/Button';
-import FormattedAnchor from 'components/FormattedAnchor';
-import Link from 'utils/cl-router/Link';
-import clHistory from 'utils/cl-router/history';
-
+import { WrappedComponentProps } from 'react-intl';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import eventEmitter from 'utils/eventEmitter';
 import useLocalize from 'hooks/useLocalize';
-import { WrappedComponentProps } from 'react-intl';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
+import FormattedAnchor from 'components/FormattedAnchor';
+// components
+import Button from 'components/UI/Button';
+// styles
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   padding: 0px 10px;

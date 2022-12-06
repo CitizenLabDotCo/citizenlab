@@ -2,7 +2,7 @@ import React from 'react';
 import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
+import { Locale } from 'typings';
 import {
   IMachineTranslationData,
   machineTranslationByIdeaIdStream,
@@ -10,7 +10,7 @@ import {
   machineTranslationByInitiativeIdStream,
 } from 'modules/commercial/machine_translations/services/machineTranslations';
 import { isNilOrError } from 'utils/helperUtils';
-import { Locale } from 'typings';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   attributeName: 'body_multiloc' | 'title_multiloc';

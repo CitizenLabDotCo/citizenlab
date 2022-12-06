@@ -1,17 +1,13 @@
 import React from 'react';
-
-// styles
-import { fontSizes } from 'utils/styleUtils';
-
-// components
-import Button from 'components/UI/Button';
-import T from 'components/T';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // hooks
 import useProject from 'hooks/useProject';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+// styles
+import { fontSizes } from 'utils/styleUtils';
+import T from 'components/T';
+// components
+import Button from 'components/UI/Button';
 
 interface ProjectButtonProps {
   projectId: string;

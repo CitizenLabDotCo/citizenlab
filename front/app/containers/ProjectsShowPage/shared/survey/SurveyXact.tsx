@@ -1,12 +1,10 @@
 import React, { memo, useState } from 'react';
-
+import Iframe from 'react-iframe';
+// components
+import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 // styling
 import { defaultCardStyle, viewportWidths } from 'utils/styleUtils';
 import styled from 'styled-components';
-
-// components
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
-import Iframe from 'react-iframe';
 
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';

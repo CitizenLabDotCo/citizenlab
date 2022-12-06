@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
-
 // typings
 import { Locale } from 'typings';
-
-// styling
-import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
+// styling
+import styled from 'styled-components';
 
 const Container = styled.div<{ align: 'left' | 'center' }>`
   width: ${({ align }) => (align === 'left' ? '100%' : 'auto')};

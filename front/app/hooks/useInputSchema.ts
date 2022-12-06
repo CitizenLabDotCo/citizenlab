@@ -1,5 +1,5 @@
-import { Layout } from '@jsonforms/core';
 import { useEffect, useState } from 'react';
+import { Layout } from '@jsonforms/core';
 import {
   ideaJsonFormsSchemaStream,
   JsonFormsSchema,

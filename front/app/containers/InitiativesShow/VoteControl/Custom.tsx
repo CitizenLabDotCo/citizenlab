@@ -1,20 +1,16 @@
 import React, { PureComponent } from 'react';
-
-import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
-import { StatusExplanation } from './SharedStyles';
-
-import { IInitiativeData } from 'services/initiatives';
-import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
-
-import CountDown from './CountDown';
-import Button from 'components/UI/Button';
-import ProposalProgressBar from './ProposalProgressBar';
-
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeData } from 'services/initiatives';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { fontSizes, media } from 'utils/styleUtils';
 import T from 'components/T';
+import Button from 'components/UI/Button';
+import styled from 'styled-components';
+import CountDown from './CountDown';
+import ProposalProgressBar from './ProposalProgressBar';
+import { StatusExplanation } from './SharedStyles';
+import messages from './messages';
 
 const Container = styled.div``;
 

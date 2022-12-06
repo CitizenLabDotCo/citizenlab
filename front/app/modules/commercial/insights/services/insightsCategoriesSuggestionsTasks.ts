@@ -1,5 +1,6 @@
-import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
+
 export interface IInsightsCategorySuggestionsTasks {
   count: number;
 }

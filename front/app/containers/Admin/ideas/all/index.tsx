@@ -1,13 +1,11 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import PostManager, { TFilterMenu } from 'components/admin/PostManager';
-
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
+// components
+import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 interface DataProps {
   projects: GetProjectsChildProps;

@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsInput from './useInsightsInput';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
 import { Observable, Subscription } from 'rxjs';
-import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import { insightsInputStream } from 'modules/commercial/insights/services/insightsInputs';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
+import { waitFor } from 'utils/testUtils/rtl';
+import useInsightsInput from './useInsightsInput';
 
 const viewId = '1';
 const inputId = inputs[0].id;

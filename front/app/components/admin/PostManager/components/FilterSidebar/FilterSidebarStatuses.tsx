@@ -1,12 +1,11 @@
 import React from 'react';
+import { Menu, Divider } from 'semantic-ui-react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { Menu, Divider } from 'semantic-ui-react';
-import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
 import messages from '../../messages';
+import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 
 interface Props {
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | null;

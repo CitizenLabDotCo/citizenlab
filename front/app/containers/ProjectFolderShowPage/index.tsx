@@ -1,37 +1,32 @@
 import React, { memo } from 'react';
-import { isError, isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { isNilOrError } from 'utils/helperUtils';
-import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
-
-// components
-import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
-import ProjectFolderHeader from './ProjectFolderHeader';
-import ProjectFolderDescription from './ProjectFolderDescription';
-import ProjectFolderProjectCards from './ProjectFolderProjectCards';
-import Button from 'components/UI/Button';
 import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
-import ContentContainer from 'components/ContentContainer';
-
+import { isError, isUndefined } from 'lodash-es';
+import useAdminPublications from 'hooks/useAdminPublications';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFolder from 'hooks/useProjectFolder';
-import useAdminPublications from 'hooks/useAdminPublications';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-import { maxPageWidth } from './styles';
-import { media, fontSizes, colors } from 'utils/styleUtils';
-
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 // typings
 import { IProjectFolderData } from 'services/projectFolders';
 import { PublicationStatus } from 'services/projects';
+import { FormattedMessage } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
+import ContentContainer from 'components/ContentContainer';
+import Button from 'components/UI/Button';
+// style
+import styled from 'styled-components';
+import ProjectFolderDescription from './ProjectFolderDescription';
+import ProjectFolderHeader from './ProjectFolderHeader';
+import ProjectFolderProjectCards from './ProjectFolderProjectCards';
+// components
+import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
+// i18n
+import messages from './messages';
+import { maxPageWidth } from './styles';
 
 const Container = styled.main`
   flex: 1 0 auto;

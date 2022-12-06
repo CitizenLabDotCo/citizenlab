@@ -1,7 +1,7 @@
-import { Query } from '../../services/analyticsFacts';
 import moment from 'moment';
-import { EventsCardLabels, eventsConfig } from './config';
 import { StatCardData } from '../../hooks/useStatCard/typings';
+import { Query } from '../../services/analyticsFacts';
+import { EventsCardLabels, eventsConfig } from './config';
 
 describe('Events card data parsing', () => {
   beforeAll(() => {

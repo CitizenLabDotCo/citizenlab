@@ -1,13 +1,12 @@
-import moment, { Moment } from 'moment';
-
 // utils
 import { round } from 'lodash-es';
+import moment, { Moment } from 'moment';
+import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 import { timeSeriesParser } from '../../utils/timeSeries';
 import { keys, get } from 'utils/helperUtils';
-import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
-
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
+import { Translations } from './translations';
 import {
   Response,
   Stats,
@@ -15,7 +14,6 @@ import {
   TimeSeriesResponseRow,
   TimeSeriesRow,
 } from './typings';
-import { Translations } from './translations';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),

@@ -1,7 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-import { IUsers } from 'services/users';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
+import { IUsers } from 'services/users';
+import streams, { IStreamParams } from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export function projectModeratorsStream(projectId: string) {
   return streams.get<IUsers>({

@@ -1,25 +1,19 @@
 import React, { useState } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
 // components
 import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
-
-// services
-import { updateLocale } from 'services/locale';
-
-// hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-
-// i18n
-import { shortenedAppLocalePairs } from 'containers/App/constants';
-
 // typings
 import { Locale } from 'typings';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+// hooks
+import useLocale from 'hooks/useLocale';
+// services
+import { updateLocale } from 'services/locale';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+// i18n
+import { shortenedAppLocalePairs } from 'containers/App/constants';
+// style
+import styled from 'styled-components';
 
 const DropdownButtonText = styled.div`
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};

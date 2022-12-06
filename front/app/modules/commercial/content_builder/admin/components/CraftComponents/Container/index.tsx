@@ -1,8 +1,6 @@
 import React from 'react';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-
 // craft
 import { UserComponent } from '@craftjs/core';
 

@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
-import moment, { Moment } from 'moment';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
+import moment, { Moment } from 'moment';
+import { IOption } from 'typings';
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
-import Charts from './Charts';
-
 // utils
 import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
-
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
-import { IOption } from 'typings';
+import Charts from './Charts';
 
 const Visitors = () => {
   const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(

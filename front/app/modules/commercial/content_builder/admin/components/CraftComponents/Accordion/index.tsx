@@ -1,11 +1,4 @@
 import React from 'react';
-
-// components
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import QuillEditor from 'components/UI/QuillEditor';
-
-// craft
-import { useNode } from '@craftjs/core';
 import {
   Box,
   Accordion as AccordionComponent,
@@ -13,13 +6,16 @@ import {
   Input,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-
+// craft
+import { useNode } from '@craftjs/core';
+import { injectIntl } from 'utils/cl-intl';
+// components
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import QuillEditor from 'components/UI/QuillEditor';
 // hooks
 import { useTheme } from 'styled-components';
-
 // intl
 import messages from '../../../messages';
-import { injectIntl } from 'utils/cl-intl';
 
 const Accordion = ({ text, title, openByDefault }) => {
   const theme = useTheme();

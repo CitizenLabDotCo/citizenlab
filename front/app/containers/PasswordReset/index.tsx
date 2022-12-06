@@ -1,42 +1,36 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// router
-import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
-import { parse } from 'qs';
-
-// components
-import { Success } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import PasswordInput, {
-  hasPasswordMinimumLength,
-} from 'components/UI/PasswordInput';
-import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import { Helmet } from 'react-helmet';
-import ContentContainer from 'components/ContentContainer';
-import { FormLabel } from 'components/UI/FormComponents';
-import Error from 'components/UI/Error';
-
-// services
-import { resetPassword } from 'services/auth';
-import { CLError } from 'typings';
-
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-import messages from './messages';
-import { fontSizes, colors } from 'utils/styleUtils';
-
+// components
+import { Success } from '@citizenlab/cl2-component-library';
+import { isString } from 'lodash-es';
+import { parse } from 'qs';
+import { CLError } from 'typings';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+// services
+import { resetPassword } from 'services/auth';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+// router
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import ContentContainer from 'components/ContentContainer';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
+import PasswordInput, {
+  hasPasswordMinimumLength,
+} from 'components/UI/PasswordInput';
+import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
+// style
+import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

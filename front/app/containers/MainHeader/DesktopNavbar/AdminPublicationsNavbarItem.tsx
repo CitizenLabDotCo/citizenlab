@@ -1,33 +1,27 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
 // components
 import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-import ProjectsListItem from '../ProjectsListItem';
-import T from 'components/T';
-
+import { rgba, darken } from 'polished';
+// typings
+import { Multiloc } from 'typings';
 // hooks
 import useAdminPublications, {
   IAdminPublicationContent,
 } from 'hooks/useAdminPublications';
-import useLocalize from 'hooks/useLocalize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// utils
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
+import useLocalize from 'hooks/useLocalize';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
+import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// utils
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { fontSizes, isRtl } from 'utils/styleUtils';
+import T from 'components/T';
 // style
 import styled from 'styled-components';
-import { rgba, darken } from 'polished';
-import { fontSizes, isRtl } from 'utils/styleUtils';
-
-// typings
-import { Multiloc } from 'typings';
+import ProjectsListItem from '../ProjectsListItem';
+import messages from '../messages';
 
 const NavigationDropdown = styled.li`
   display: flex;

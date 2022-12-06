@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-
 import { combineLatest, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-
 import {
   ICustomFieldInputType,
   IFlatCustomField,

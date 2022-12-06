@@ -1,13 +1,10 @@
 import { useEffect } from 'react';
-
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// i18n
-import messages from './messages';
-
 // typings
 import { ITabsOutlet } from 'utils/moduleUtils';
+// i18n
+import messages from './messages';
 
 const Tab = ({ onData, formatMessage }: ITabsOutlet) => {
   const visitorsDashboardEnabled = useFeatureFlag({

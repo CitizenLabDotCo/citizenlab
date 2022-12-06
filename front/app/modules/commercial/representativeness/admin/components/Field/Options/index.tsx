@@ -1,32 +1,27 @@
 import React, { useState } from 'react';
-
+import { WrappedComponentProps } from 'react-intl';
+// components
+import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
+import useLocalize from 'hooks/useLocalize';
 // hooks
 import useUserCustomField from 'hooks/useUserCustomField';
 import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
-import useLocalize from 'hooks/useLocalize';
-
-// components
-import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
-import OptionInput from './OptionInput';
-import Button from 'components/UI/Button';
-
-// i18n
-import messages from './messages';
-import binMessages from '../BinModal/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import { Bins } from '../../../services/referenceDistribution';
+// typings
+import { FormValues } from '../../../utils/form';
 import {
   getPercentages,
   formatUserCustomFieldOptions,
   formatBinOptions,
 } from '../../../utils/options';
-
-// typings
-import { FormValues } from '../../../utils/form';
-import { Bins } from '../../../services/referenceDistribution';
+import { injectIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
+import binMessages from '../BinModal/messages';
+import OptionInput from './OptionInput';
+// i18n
+import messages from './messages';
 
 interface Props {
   userCustomFieldId: string;

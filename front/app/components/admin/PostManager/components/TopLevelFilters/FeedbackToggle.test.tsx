@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
-
+import 'jest-styled-components';
 import { FeedbackToggle } from './FeedbackToggle';
 
 jest.mock('services/stats');
@@ -13,8 +13,6 @@ jest.mock('resources/GetInitiativesCount', () => 'GetInitiativesCount');
 jest.mock('components/UI/CountBadge', () => 'CountBadge');
 jest.mock('utils/cl-intl');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
-import 'jest-styled-components';
 
 describe('<FeedbackToggle />', () => {
   let onChange: jest.Mock;

@@ -1,7 +1,6 @@
 // TODO - move to Auth container when we create it
-
-import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 export const confirmationApiEndpoint = `${API_PATH}/user/confirm`;
 export const resendCodeApiEndpoint = `${API_PATH}/user/resend_code`;

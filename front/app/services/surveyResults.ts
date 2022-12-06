@@ -1,7 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
-import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
 import { IParticipationContextType } from 'typings';
+import { requestBlob } from 'utils/request';
+import { API_PATH } from 'containers/App/constants';
 
 export const exportSurveyResults = async (queryParameter: {
   type: IParticipationContextType;

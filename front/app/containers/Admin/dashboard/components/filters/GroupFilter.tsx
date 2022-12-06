@@ -1,22 +1,17 @@
 import React from 'react';
-
-// resources
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-
 // components
 import { Select } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
-import useLocalize, { Localize } from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { FormatMessage, IOption } from 'typings';
+// resources
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import useLocalize, { Localize } from 'hooks/useLocalize';
 import { IGroupData } from 'services/groups';
+import { useIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+// i18n
+import messages from './messages';
 
 interface DataProps {
   groups: GetGroupsChildProps;

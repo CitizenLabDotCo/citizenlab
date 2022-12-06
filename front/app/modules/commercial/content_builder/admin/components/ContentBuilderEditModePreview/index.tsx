@@ -1,13 +1,10 @@
 import React, { memo, useState } from 'react';
-
 // components
 import { Box, Icon, Button } from '@citizenlab/cl2-component-library';
-
-// styles
-import { stylingConsts, colors } from 'utils/styleUtils';
-
 // hooks
 import useLocale from 'hooks/useLocale';
+// styles
+import { stylingConsts, colors } from 'utils/styleUtils';
 
 type ContentBuilderPreviewProps = {
   projectId: string;

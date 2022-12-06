@@ -1,25 +1,8 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, isNumber } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// components
-import InitiativesMap from 'components/InitiativesMap';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import SortFilterDropdown from './SortFilterDropdown';
-import StatusFilterBox from './StatusFilterBox';
-import TopicFilterBox from './TopicFilterBox';
-import SearchInput from 'components/UI/SearchInput';
-import TopBar from 'components/FiltersModal/TopBar';
-import BottomBar from 'components/FiltersModal/BottomBar';
-import FullscreenModal from 'components/UI/FullscreenModal';
-import Button from 'components/UI/Button';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-
+import { get, isNumber } from 'lodash-es';
 // resources
 import GetInitiatives, {
   Sort,
@@ -32,14 +15,11 @@ import GetInitiativesFilterCounts, {
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-
-// i18n
-import messages from './messages';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { ScreenReaderOnly } from 'utils/a11y';
+// tracks
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-
-// style
-import styled, { withTheme } from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   media,
   colors,
@@ -47,9 +27,24 @@ import {
   viewportWidths,
   defaultCardStyle,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import BottomBar from 'components/FiltersModal/BottomBar';
+import TopBar from 'components/FiltersModal/TopBar';
+// components
+import InitiativesMap from 'components/InitiativesMap';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+import Button from 'components/UI/Button';
+import FullscreenModal from 'components/UI/FullscreenModal';
+import SearchInput from 'components/UI/SearchInput';
+// style
+import styled, { withTheme } from 'styled-components';
 import EmptyProposals from './EmptyProposals';
 import ProposalsList from './ProposalsList';
+import SortFilterDropdown from './SortFilterDropdown';
+import StatusFilterBox from './StatusFilterBox';
+import TopicFilterBox from './TopicFilterBox';
+// i18n
+import messages from './messages';
+import tracks from './tracks';
 
 const gapWidth = 35;
 

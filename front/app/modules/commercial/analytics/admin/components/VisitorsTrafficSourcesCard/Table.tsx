@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-
-// hooks
-import useVisitorReferrers from '../../hooks/useVisitorReferrers';
-
 // components
 import {
   Box,
@@ -14,21 +10,19 @@ import {
   Td,
   Text,
 } from '@citizenlab/cl2-component-library';
-import Pagination from 'components/Pagination';
-import ReferrerListLink from './RefferListLink';
-
-// i18n
-import messages from './messages';
+// hooks
+import useVisitorReferrers from '../../hooks/useVisitorReferrers';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
-import { colors, stylingConsts } from 'utils/styleUtils';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
+// styling
+import { colors, stylingConsts } from 'utils/styleUtils';
+import Pagination from 'components/Pagination';
 // typings
 import { ProjectId, Dates } from '../../typings';
+import ReferrerListLink from './RefferListLink';
+// i18n
+import messages from './messages';
 
 const Percentage = ({ children }) => (
   <Text

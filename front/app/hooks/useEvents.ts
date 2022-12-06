@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
+import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
 
 type sort = 'newest' | 'oldest';
 

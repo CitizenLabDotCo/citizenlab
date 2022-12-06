@@ -1,23 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
-
-// resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-
-// i18n
-import useLocalize, { Localize } from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { IOption, FormatMessage } from 'typings';
+// resources
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+// i18n
+import useLocalize, { Localize } from 'hooks/useLocalize';
 import { IProjectData, PublicationStatus } from 'services/projects';
+import { useIntl } from 'utils/cl-intl';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+import messages from './messages';
 
 const StyledSelect = styled(Select)<{ padding?: string }>`
   ${({ padding }) =>

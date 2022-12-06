@@ -1,9 +1,9 @@
-import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
+import { MessageDescriptor } from 'react-intl';
 import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
+import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
+import { InputTerm } from 'services/participationContexts';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
-import { InputTerm } from 'services/participationContexts';
-import { MessageDescriptor } from 'react-intl';
 
 type IInputTermMessages = {
   [key in InputTerm]: MessageDescriptor;

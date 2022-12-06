@@ -1,13 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
-import Attachment from './Attachment';
+import { WrappedComponentProps } from 'react-intl';
 import useResourceFiles from 'hooks/useResourceFiles';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
-import { isNilOrError } from 'utils/helperUtils';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+import styled from 'styled-components';
+import Attachment from './Attachment';
 import messages from './messages';
 
 const Container = styled.div``;

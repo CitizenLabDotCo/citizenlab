@@ -1,19 +1,15 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
-
-// Services
-import { localeStream } from 'services/locale';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
-
-// hooks
-import { Localize } from 'hooks/useLocalize';
-
-// i18n
-import { getLocalizedWithFallback } from 'utils/i18n';
-
 // Typing
 import { Locale } from 'typings';
+// hooks
+import { Localize } from 'hooks/useLocalize';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
+// Services
+import { localeStream } from 'services/locale';
+// i18n
+import { getLocalizedWithFallback } from 'utils/i18n';
 import { isNilOrError } from './helperUtils';
 
 export interface InjectedLocalized {

@@ -1,18 +1,16 @@
 import React, { PureComponent, Fragment } from 'react';
 import { pick, clone, omit } from 'lodash-es';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import { colors } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+// Styling
+import styled from 'styled-components';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
 import ValueSelector from './ValueSelector';
-import Button from 'components/UI/Button';
-import { TRule, ruleTypeConstraints } from './rules';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// Styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { TRule, ruleTypeConstraints } from './rules';
 
 const Container = styled.div`
   display: flex;

@@ -1,16 +1,13 @@
 import React from 'react';
-
 // hooks
 import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
-
+import ActiveUsersCard from '../../components/ActiveUsersCard';
+import RegistrationsCard from '../../components/RegistrationsCard';
 // components
 import VisitorsCard from '../../components/VisitorsCard';
-import VisitorsTrafficSourcesCard from '../../components/VisitorsTrafficSourcesCard';
-import RegistrationsCard from '../../components/RegistrationsCard';
-import ActiveUsersCard from '../../components/ActiveUsersCard';
 import VisitorsLanguageCard from '../../components/VisitorsLanguageCard';
+import VisitorsTrafficSourcesCard from '../../components/VisitorsTrafficSourcesCard';
 import VisitorsTypeCard from '../../components/VisitorsTypeCard';
-
 // typings
 import { ProjectId, Dates, Resolution } from '../../typings';
 

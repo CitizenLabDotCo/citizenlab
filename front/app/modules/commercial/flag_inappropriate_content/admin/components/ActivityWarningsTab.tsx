@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
+import { WrappedComponentProps } from 'react-intl';
 import { InsertConfigurationOptions } from 'typings';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
 import { ITabItem } from 'components/UI/Tabs';
+import messages from './messages';
 
 declare module 'modules/commercial/moderation/admin/containers/index' {
   export interface ITabNamesMap {

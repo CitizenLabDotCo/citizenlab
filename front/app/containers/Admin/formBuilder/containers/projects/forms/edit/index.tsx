@@ -1,31 +1,16 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-import { useParams } from 'react-router-dom';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { object, boolean, array, string, number } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-
-// styles
-import styled from 'styled-components';
-import { stylingConsts, colors } from 'utils/styleUtils';
-
-// components
-import { RightColumn } from 'containers/Admin';
+// intl
+import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
-import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
-import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
-import FormFields from 'containers/Admin/formBuilder/components/FormFields';
-import Error from 'components/UI/Error';
-import Feedback from 'components/HookForm/Feedback';
-import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, boolean, array, string, number } from 'yup';
+// hooks
+import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 // services
 import {
   IFlatCreateCustomField,
@@ -34,16 +19,25 @@ import {
   updateFormCustomFields,
   isNewCustomFieldObject,
 } from 'services/formCustomFields';
-
-// hooks
-import useFormCustomFields from 'hooks/useFormCustomFields';
-import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
-
-// intl
-import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { stylingConsts, colors } from 'utils/styleUtils';
 import validateElementTitle from 'utils/yup/validateElementTitle';
+import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+// components
+import { RightColumn } from 'containers/Admin';
+import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
+import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
+import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
+import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
+import FormFields from 'containers/Admin/formBuilder/components/FormFields';
+import Feedback from 'components/HookForm/Feedback';
+import Error from 'components/UI/Error';
+// styles
+import styled from 'styled-components';
+import messages from '../messages';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);

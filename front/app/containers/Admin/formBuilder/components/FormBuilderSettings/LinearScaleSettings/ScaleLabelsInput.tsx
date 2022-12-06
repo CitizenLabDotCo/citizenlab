@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
 // react hook form
 import { Controller, useFormContext } from 'react-hook-form';
-
+import { WrappedComponentProps } from 'react-intl';
 // components
 import {
   Box,
@@ -11,13 +10,11 @@ import {
   Input,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-
+import { Locale } from 'typings';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   minimumLabelName: string;

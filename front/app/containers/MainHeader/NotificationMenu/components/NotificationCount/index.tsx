@@ -1,18 +1,15 @@
 import React from 'react';
-import { isNumber } from 'lodash-es';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-
 // components
 import { IconButton } from '@citizenlab/cl2-component-library';
-
+import { isNumber } from 'lodash-es';
+import { darken } from 'polished';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { colors, fontSizes } from 'utils/styleUtils';
 // style
 import styled, { useTheme } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import messages from '../../messages';
 
 const Container = styled.div`
   position: relative;

@@ -1,8 +1,8 @@
 import React from 'react';
+import useIdea from 'hooks/useIdea';
+import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import GoToCommentsButton from '../../Buttons/GoToCommentsButton';
-import { isNilOrError } from 'utils/helperUtils';
-import useIdea from 'hooks/useIdea';
 
 const Container = styled.div``;
 

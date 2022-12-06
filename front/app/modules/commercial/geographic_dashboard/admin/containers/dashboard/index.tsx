@@ -1,33 +1,28 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+// Components
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { Subscription } from 'rxjs';
-
 // Data loading
 import GetGeotaggedIdeas, {
   GetGeotaggedIdeasChildProps,
 } from 'resources/GetGeotaggedIdeas';
 import { IGeotaggedIdeaData } from 'services/ideas';
-import { isNilOrError } from 'utils/helperUtils';
-
 // events
 import { leafletMapSelectedMarker$ } from 'components/UI/LeafletMap/events';
-
-// Components
-import { Spinner } from '@citizenlab/cl2-component-library';
-import Map from 'components/Map';
-import IdeaPane from './IdeaPane';
-import Warning from 'components/UI/Warning';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+// intl
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { colors } from 'utils/styleUtils';
+import Map from 'components/Map';
+import Warning from 'components/UI/Warning';
 import ServerError from 'components/admin/ServerError';
+import styled from 'styled-components';
+import IdeaPane from './IdeaPane';
+import messages from './messages';
+import tracks from './tracks';
 
 // styles
 const SpinnerContainer = styled.div`

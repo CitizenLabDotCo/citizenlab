@@ -1,13 +1,12 @@
 import React, { memo } from 'react';
-import { stringify } from 'qs';
-import { omitBy, isNil } from 'lodash-es';
-
+import Iframe from 'react-iframe';
 // components
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import Iframe from 'react-iframe';
-
+import { omitBy, isNil } from 'lodash-es';
+import { stringify } from 'qs';
 // styling
 import styled from 'styled-components';
+
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';
 

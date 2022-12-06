@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import { phasesStream, IPhaseData, IPhases } from 'services/phases';
+import { isNilOrError } from 'utils/helperUtils';
 
 export default function useProject(projectId: string | null | undefined) {
   const [phases, setPhases] = useState<IPhaseData[] | undefined | null | Error>(

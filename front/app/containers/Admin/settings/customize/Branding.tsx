@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-
+import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
+// typings
+import { UploadFile } from 'typings';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+// utils
+import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import Warning from 'components/UI/Warning';
 // components
 import {
   Section,
@@ -9,24 +17,12 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
-import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Warning from 'components/UI/Warning';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
-import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
-import { get } from 'lodash-es';
+import styled from 'styled-components';
 import {
   createAddUploadHandler,
   createRemoveUploadHandler,
 } from './createHandler';
-
-// typings
-import { UploadFile } from 'typings';
+import messages from './messages';
 
 const ContrastWarning = styled(Warning)`
   margin-top: 10px;

@@ -1,26 +1,21 @@
 import { useState, useEffect } from 'react';
-
 // services
 import {
   analyticsStream,
   Query,
   QuerySchema,
 } from '../../services/analyticsFacts';
-
+// utils
+import { getProjectFilter, getDateFilter } from '../../utils/query';
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// parse
-import { parsePieData, parseExcelData } from './parse';
-
 // typings
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { XlsxData } from 'components/admin/ReportExportMenu';
+// parse
+import { parsePieData, parseExcelData } from './parse';
+import { getTranslations } from './translations';
 import { Response, PieRow, QueryParameters } from './typings';
-
-// utils
-import { getProjectFilter, getDateFilter } from '../../utils/query';
 
 const query = ({
   projectId,

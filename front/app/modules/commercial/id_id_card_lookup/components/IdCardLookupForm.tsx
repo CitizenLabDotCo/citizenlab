@@ -1,14 +1,20 @@
 import React, { memo, useCallback, useState } from 'react';
-import { isEmpty, get } from 'lodash-es';
-import { reportError } from 'utils/loggingUtils';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-import { isNilOrError } from 'utils/helperUtils';
-
+// i18n
+import { WrappedComponentProps } from 'react-intl';
 // components
 import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import Collapse from 'components/UI/Collapse';
+import { isEmpty, get } from 'lodash-es';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+// services
+import { verifyIDLookup } from '../services/verify';
+// typings
+import { IDLookupMethod } from 'services/verificationMethods';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 import {
   FormContainer,
   Title,
@@ -21,21 +27,10 @@ import {
   CancelButton,
   HelpImage,
 } from 'components/AuthProviders/styles';
-
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
-
-// services
-import { verifyIDLookup } from '../services/verify';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import T from 'components/T';
-
-// typings
-import { IDLookupMethod } from 'services/verificationMethods';
+import Collapse from 'components/UI/Collapse';
+import Error from 'components/UI/Error';
+import messages from '../messages';
 
 interface Props {
   onCancel: () => void;

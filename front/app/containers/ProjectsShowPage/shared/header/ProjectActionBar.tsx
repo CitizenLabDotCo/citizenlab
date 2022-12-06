@@ -1,28 +1,23 @@
 import React, { memo, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { isNilOrError } from 'utils/helperUtils';
 import { CSSTransition } from 'react-transition-group';
-
+import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { lighten } from 'polished';
+import usePhases from 'hooks/usePhases';
 // hooks
 import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
-
+import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes, media, colors, viewportWidths } from 'utils/styleUtils';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaButton from 'components/IdeaButton';
-
 // i18n
 import T from 'components/T';
-
 // style
 import styled from 'styled-components';
-import { lighten } from 'polished';
-import { fontSizes, media, colors, viewportWidths } from 'utils/styleUtils';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const slideInOutTimeout = 250;
 const slideInOutDistance = 14;

@@ -1,14 +1,12 @@
 import React, { memo } from 'react';
 import moment from 'moment';
-
-// components
-import { EventDateBlockWrapper } from './styling';
-import DateBlockSingleYear from './DateBlockSingleYear';
-import DateBlocksMultiYear from './DateBlocksMultiYear';
-
+import { media } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import DateBlockSingleYear from './DateBlockSingleYear';
+import DateBlocksMultiYear from './DateBlocksMultiYear';
+// components
+import { EventDateBlockWrapper } from './styling';
 
 const EventDateBlocks = styled.div`
   flex: 0 0 75px;

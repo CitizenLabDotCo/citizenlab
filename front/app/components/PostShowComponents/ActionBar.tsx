@@ -1,13 +1,11 @@
 import React, { memo } from 'react';
-
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { colors, media } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
 // styles
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
 import { postPageContentMaxWidth } from './styleConstants';
-import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
-
-import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   width: 100%;

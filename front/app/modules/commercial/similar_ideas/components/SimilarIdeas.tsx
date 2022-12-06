@@ -1,27 +1,22 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { WrappedComponentProps } from 'react-intl';
 import { darken } from 'polished';
-
-// components
-import T from 'components/T';
-import Link from 'utils/cl-router/Link';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
 // hooks
 import useSimilarIdeas from '../hooks/useSimilarIdeas';
-
+// analytics
+import { trackEventByName } from 'utils/analytics';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+// components
+import T from 'components/T';
+// styles
+import styled from 'styled-components';
 import messages from '../messages';
+import tracks from '../tracks';
 
 const IdeaList = styled.ul`
   margin: 0;

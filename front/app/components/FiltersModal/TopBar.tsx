@@ -1,16 +1,13 @@
 import React, { MouseEvent } from 'react';
-
-// components
-import CloseIconButton from 'components/UI/CloseIconButton';
-
+import { lighten } from 'polished';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+import { media, colors, fontSizes } from 'utils/styleUtils';
+// components
+import CloseIconButton from 'components/UI/CloseIconButton';
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import messages from './messages';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
