@@ -1,4 +1,3 @@
-// import ReactCrop, { centerCrop, makeAspectCrop, Crop } from 'react-image-crop';
 import Cropper from 'react-easy-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -160,18 +159,11 @@ const BannerImageField = ({
         />
       </SubSectionTitle>
       {bannerLayout === 'fixed_ratio' && (
-        <>
-          <CropComponent
-            headerLocalDisplayImage={headerLocalDisplayImage}
-            onRemoveImage={bannerImageRemoveHandler}
-            onAddImage={bannerImageAddHandler}
-          />
-        </>
-        // <CropComponent
-        //   headerLocalDisplayImage={headerLocalDisplayImage}
-        //   onRemoveImage={bannerImageRemoveHandler}
-        //   onAddImage={onAddImage}
-        // />
+        <CropComponent
+          headerLocalDisplayImage={headerLocalDisplayImage}
+          onRemoveImage={bannerImageRemoveHandler}
+          onAddImage={bannerImageAddHandler}
+        />
       )}
       {bannerLayout !== 'fixed_ratio' && (
         <SectionField>
@@ -252,130 +244,43 @@ const BannerImageField = ({
 
 export default injectIntl(BannerImageField);
 
-// function centerAspectCrop(
-//   mediaWidth: number,
-//   mediaHeight: number,
-//   aspect: number
-// ) {
-//   return centerCrop(
-//     makeAspectCrop(
-//       {
-//         unit: '%',
-//         width: 100,
-//       },
-//       aspect,
-//       mediaWidth,
-//       mediaHeight
-//     ),
-//     mediaWidth,
-//     mediaHeight
-//   );
-// }
-
-// type CropComponentProps = {
-//   headerLocalDisplayImage: UploadFile[] | null;
-//   onRemoveImage: () => void;
-//   onAddImage: (newImageBase64: string) => void;
-// };
-
-// function CropComponent({
-//   headerLocalDisplayImage,
-//   onRemoveImage,
-//   onAddImage,
-// }: CropComponentProps) {
-//   const imgRef = useRef<HTMLImageElement>(null);
-//   const [crop, setCrop] = useState<Crop>();
-//   const [image, setImage] = useState<string | null>(null);
-
-//   const bannerImageAddHandler = (newImage: UploadFile[]) => {
-//     // this base64 value is sent to the API
-
-//     // this value is used for local display
-//     setCrop(undefined); // Makes crop preview update between images.
-//     const reader = new FileReader();
-//     reader.addEventListener('load', () =>
-//       setImage(reader.result?.toString() || '')
-//     );
-//     reader.readAsDataURL(newImage[0]);
-//   };
-
-//   const bannerImageRemoveHandler = () => {
-//     onRemoveImage();
-//     setImage(null);
-//   };
-//   const aspect = 16 / 9;
-
-//   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-//     const { width, height } = e.currentTarget;
-//     setCrop(centerAspectCrop(width, height, aspect));
-//   }
-
-//   const remoteImage =
-//     headerLocalDisplayImage && headerLocalDisplayImage[0].remote;
-
-//   const displayImageHeaderDropzone = remoteImage || !image;
-//   return (
-//     <div>
-//       {displayImageHeaderDropzone && (
-//         <HeaderImageDropzone
-//           onAdd={bannerImageAddHandler}
-//           onRemove={bannerImageRemoveHandler}
-//           overlayColor={'#fff'}
-//           overlayOpacity={null}
-//           headerError={null}
-//           header_bg={headerLocalDisplayImage}
-//           previewDevice={'desktop'}
-//           layout={'full_width_banner_layout'}
-//         />
-//       )}
-//       {image && !headerLocalDisplayImage && (
-//         <ReactCrop
-//           crop={crop}
-//           onChange={(_, percentCrop) => {
-//             setCrop(percentCrop);
-//             onAddImage(image);
-//           }}
-//           aspect={aspect}
-//           keepSelection
-//           maxHeight={300}
-//         >
-//           <img ref={imgRef} alt="Crop me" src={image} onLoad={onImageLoad} />
-//         </ReactCrop>
-//       )}
-//     </div>
-//   );
-// }
+type CropComponentProps = {
+  headerLocalDisplayImage: UploadFile[] | null;
+  onRemoveImage: () => void;
+  onAddImage: (newImage: UploadFile[]) => void;
+};
 
 const CropComponent = ({
   headerLocalDisplayImage,
   onRemoveImage,
   onAddImage,
-}) => {
+}: CropComponentProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
-  console.log(headerLocalDisplayImage);
 
   const remoteImage =
     !headerLocalDisplayImage ||
     (headerLocalDisplayImage && headerLocalDisplayImage[0].remote);
 
   const displayImageHeaderDropzone = remoteImage;
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+  const onCropComplete = useCallback((_, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
   const showCroppedImage = useCallback(async () => {
-    try {
-      const croppedImage = await getCroppedImg(
-        headerLocalDisplayImage[0].base64,
-        croppedAreaPixels
-      );
+    if (headerLocalDisplayImage) {
+      try {
+        const croppedImage = await getCroppedImg(
+          headerLocalDisplayImage[0].base64,
+          croppedAreaPixels
+        );
 
-      setCroppedImage(croppedImage);
-    } catch (e) {
-      console.error(e);
+        setCroppedImage(croppedImage);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }, [croppedAreaPixels, headerLocalDisplayImage]);
 
@@ -391,7 +296,7 @@ const CropComponent = ({
           <HeaderImageDropzone
             onAdd={onAddImage}
             onRemove={bannerImageRemoveHandler}
-            overlayColor={'#fff'}
+            overlayColor={null}
             overlayOpacity={null}
             headerError={null}
             header_bg={headerLocalDisplayImage}
