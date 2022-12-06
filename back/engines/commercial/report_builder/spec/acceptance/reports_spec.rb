@@ -46,7 +46,10 @@ resource 'Reports' do
           id: report.id,
           type: 'report',
           attributes: { name: report.name, updated_at: report.updated_at.iso8601(3) },
-          relationships: { layout: { data: { id: layout.id, type: 'content_builder_layout' } } }
+          relationships: {
+            layout: { data: { id: layout.id, type: 'content_builder_layout' } },
+            owner: { data: { id: report.owner_id, type: 'user' } }
+          }
         )
 
         included = json_response_body[:included]
@@ -94,7 +97,10 @@ resource 'Reports' do
           id: be_a(String),
           type: 'report',
           attributes: { name: name, updated_at: be_a(String) },
-          relationships: { layout: { data: { id: be_a(String), type: 'content_builder_layout' } } }
+          relationships: {
+            layout: { data: { id: be_a(String), type: 'content_builder_layout' } },
+            owner: { data: { id: be_a(String), type: 'user' } }
+          }
         )
 
         layout_id = response_data.dig(:relationships, :layout, :data, :id)
