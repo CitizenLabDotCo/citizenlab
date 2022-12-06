@@ -17,6 +17,7 @@ const defaultProps: Props = {
   pathnameWithoutSlug: 'folders',
   showSlugErrorMessage: true,
   slug,
+  showSlugChangedWarning: false,
 };
 
 describe('SlugInput', () => {

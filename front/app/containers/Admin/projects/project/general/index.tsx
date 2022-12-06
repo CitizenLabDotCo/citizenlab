@@ -52,9 +52,8 @@ import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { validateSlug } from 'utils/textUtils';
@@ -70,9 +69,8 @@ export type TOnProjectAttributesDiffChangeFunction = (
   submitState?: ISubmitState
 ) => void;
 
-const AdminProjectsProjectGeneral = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const AdminProjectsProjectGeneral = () => {
+  const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const project = useProject({ projectId });
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
@@ -504,15 +502,20 @@ const AdminProjectsProjectGeneral = ({
         />
 
         {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-        {slug && (
-          <SlugInput
-            inputFieldId="project-slug"
-            slug={slug}
-            pathnameWithoutSlug={'projects'}
-            apiErrors={apiErrors}
-            showSlugErrorMessage={showSlugErrorMessage}
-            onSlugChange={handleSlugOnChange}
-          />
+        {!isNilOrError(project) && slug && (
+          <StyledSectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.url} />
+            </SubSectionTitle>
+            <SlugInput
+              slug={slug}
+              pathnameWithoutSlug={'projects'}
+              apiErrors={apiErrors}
+              showSlugErrorMessage={showSlugErrorMessage}
+              onSlugChange={handleSlugOnChange}
+              showSlugChangedWarning={slug !== project.attributes.slug}
+            />
+          </StyledSectionField>
         )}
 
         <StyledSectionField>
@@ -615,7 +618,7 @@ const AdminProjectsProjectGeneral = ({
   );
 };
 
-export default injectIntl(AdminProjectsProjectGeneral);
+export default AdminProjectsProjectGeneral;
 
 function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,
