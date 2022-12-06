@@ -226,7 +226,7 @@ const BannerImageField = ({
             />
           </SectionField>
           <SectionField>
-            <Label htmlFor="opacityInput">
+            <Label>
               <FormattedMessage {...messages.imageOverlayOpacity} />
             </Label>
             <RangeInput
