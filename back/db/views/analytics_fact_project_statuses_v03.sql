@@ -1,8 +1,9 @@
--- This view has one record for each project with last status of each project.
--- Deleted projects are not included.
--- The additional 'finished' column isis computed based on whether the archived status
--- or where the last phase has been completed. It enables querying of projects that
--- are currently published (ie not finished via timeline) and projects that are finished.
+-- This view has one record for each project with the last status of each project. 
+-- Deleted projects are not included. 
+-- The additional 'finished' column is computed based on whether the project has an
+-- archived status or whether the last phase has been completed. It enables querying
+-- of projects that are currently published (i.e. not finished via timeline) and 
+-- projects that are finished.
 
 WITH finished_statuses_for_timeline_projects AS
     -- The project is considered finished at the beginning of the day following the end
