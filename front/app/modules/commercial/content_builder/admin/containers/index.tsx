@@ -2,13 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 
 // styles
-import styled from 'styled-components';
 import { stylingConsts } from 'utils/styleUtils';
 
 // components
-import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
 import ContentBuilderEditModePreview from '../components/ContentBuilderEditModePreview';
 
 // craft
@@ -16,6 +13,7 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import Editor from '../components/Editor';
 import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
+import FrameWrapper from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
@@ -29,24 +27,10 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// intl
-import messages from '../messages';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-
 // typings
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
-
-const StyledRightColumn = styled(RightColumn)`
-  height: calc(100vh - ${stylingConsts.menuHeight}px);
-  z-index: 2;
-  margin: 0;
-  max-width: 100%;
-  align-items: center;
-  padding-bottom: 100px;
-  overflow-y: auto;
-`;
 
 export const ContentBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
@@ -167,23 +151,9 @@ export const ContentBuilderPage = () => {
           {selectedLocale && (
             <ContentBuilderToolbox selectedLocale={selectedLocale} />
           )}
-          <StyledRightColumn>
-            <Box width="1000px">
-              {localesWithError.length > 0 && (
-                <Error
-                  text={
-                    <FormattedMessage
-                      {...messages.errorMessage}
-                      values={{
-                        locale: localesWithError[0].toUpperCase(),
-                      }}
-                    />
-                  }
-                />
-              )}
-              <ContentBuilderFrame editorData={getEditorData()} />
-            </Box>
-          </StyledRightColumn>
+          <FrameWrapper localesWithError={localesWithError}>
+            <ContentBuilderFrame editorData={getEditorData()} />
+          </FrameWrapper>
           <ContentBuilderSettings />
         </Box>
       </Editor>

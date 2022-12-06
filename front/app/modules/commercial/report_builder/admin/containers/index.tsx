@@ -18,6 +18,13 @@ import { Box } from '@citizenlab/cl2-component-library';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import Editor from '../components/Editor';
 import TopBar from '../components/TopBar';
+import Toolbox from '../components/Toolbox';
+import FrameWrapper from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import Frame from 'components/admin/ContentBuilder/Frame';
+import Settings from 'components/admin/ContentBuilder/Settings';
+
+// styling
+import { stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -61,6 +68,21 @@ const ReportBuilder = () => {
       const { [id]: _id, ...rest } = contentBuilderErrors;
       return rest;
     });
+  }, []);
+
+  // TODO
+  const contentBuilderLayout: any = undefined;
+
+  const getEditorData = useCallback(() => {
+    if (!isNilOrError(contentBuilderLayout) && selectedLocale) {
+      if (draftData && draftData[selectedLocale]) {
+        return draftData[selectedLocale];
+      } else {
+        return contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[
+          selectedLocale
+        ];
+      }
+    } else return undefined;
   }, []);
 
   const handleEditorChange = useCallback((nodes: SerializedNodes) => {
@@ -113,7 +135,16 @@ const ReportBuilder = () => {
           onSelectLocale={handleSelectedLocaleChange}
           draftEditorData={draftData}
         />
-        <Box p="20px">Hello world!</Box>
+        <Box
+          mt={`${stylingConsts.menuHeight}px`}
+          display={previewEnabled ? 'none' : 'flex'}
+        >
+          {selectedLocale && <Toolbox selectedLocale={selectedLocale} />}
+          <FrameWrapper localesWithError={localesWithError}>
+            <Frame editorData={getEditorData()} />
+          </FrameWrapper>
+          <Settings />
+        </Box>
       </Editor>
     </FullscreenContentBuilder>
   );
