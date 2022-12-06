@@ -18,11 +18,14 @@ describe('LayoutSettingField', () => {
     );
   });
 
-  it('two_column_layout option is visible when the banner layout is two_column_layout option', async () => {
+  it('two_column_layout option is visible when the banner layout is two_column_layout', async () => {
     const onChange = jest.fn();
 
     render(
-      <LayoutSettingField bannerLayout={'two_row_layout'} onChange={onChange} />
+      <LayoutSettingField
+        bannerLayout={'two_column_layout'}
+        onChange={onChange}
+      />
     );
 
     await waitFor(() => {
