@@ -119,7 +119,7 @@ describe('CustomPageSettingsForm', () => {
       });
 
       // Set slug field
-      fireEvent.change(screen.getByRole('textbox', { name: 'Page slug' }), {
+      fireEvent.change(screen.getByRole('textbox', { name: 'Slug' }), {
         target: {
           value: 'new-slug',
         },
@@ -164,7 +164,7 @@ describe('CustomPageSettingsForm', () => {
         <CustomPageSettingsForm mode={mode} {...defaultProps} />
       );
 
-      fireEvent.change(screen.getByRole('textbox', { name: 'Page slug' }), {
+      fireEvent.change(screen.getByRole('textbox', { name: 'Slug' }), {
         target: {
           // invalid slug
           value: '%%%',

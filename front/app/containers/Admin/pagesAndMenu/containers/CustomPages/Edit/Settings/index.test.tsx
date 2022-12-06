@@ -21,6 +21,7 @@ jest.mock('hooks/useCustomPage', () =>
     attributes: {
       title_multiloc: { en: 'title' },
       nav_bar_item_title_multiloc: { en: 'user generated content' },
+      slug: 'my-custom-page',
     },
   }))
 );
@@ -47,7 +48,7 @@ describe('EditCustomPageSettings', () => {
   describe('Edit custom page', () => {
     it('renders error in case of invalid slug', async () => {
       const { container } = render(<EditCustomPageSettings />);
-      fireEvent.change(screen.getByRole('textbox', { name: 'Page slug' }), {
+      fireEvent.change(screen.getByRole('textbox', { name: 'Slug' }), {
         target: {
           value: 'existing-slug',
         },
