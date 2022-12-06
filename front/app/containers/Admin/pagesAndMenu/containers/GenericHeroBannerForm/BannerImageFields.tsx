@@ -17,8 +17,7 @@ import { UploadFile } from 'typings';
 import HeaderImageDropzone from './HeaderImageDropzone';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
@@ -52,7 +51,6 @@ interface Props {
 }
 
 const BannerImageField = ({
-  intl: { formatMessage },
   bannerOverlayColor,
   bannerOverlayOpacity,
   bannerLayout,
@@ -62,7 +60,8 @@ const BannerImageField = ({
   setFormStatus,
   onOverlayColorChange,
   onOverlayOpacityChange,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const theme = useTheme();
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
@@ -204,43 +203,45 @@ const BannerImageField = ({
           />
         </SectionField>
       )}
-      {/* We only allow the overlay for the full-width banner layout for the moment. */}
-      {bannerLayout === 'full_width_banner_layout' && headerLocalDisplayImage && (
-        <>
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.imageOverlayColor} />
-            </Label>
-            <ColorPickerInput
-              type="text"
-              value={
-                // default values come from the theme
-                bannerOverlayColor ?? theme.colors.tenantPrimary
-              }
-              onChange={handleOverlayColorOnChange}
-            />
-          </SectionField>
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.imageOverlayOpacity} />
-            </Label>
-            <RangeInput
-              step={1}
-              min={0}
-              max={100}
-              value={
-                bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
-              }
-              onChange={debouncedHandleOverlayOpacityOnChange}
-            />
-          </SectionField>
-        </>
-      )}
+      {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
+      {(bannerLayout === 'full_width_banner_layout' ||
+        bannerLayout === 'fixed_ratio_layout') &&
+        headerLocalDisplayImage && (
+          <>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.imageOverlayColor} />
+              </Label>
+              <ColorPickerInput
+                type="text"
+                value={
+                  // default values come from the theme
+                  bannerOverlayColor ?? theme.colors.tenantPrimary
+                }
+                onChange={handleOverlayColorOnChange}
+              />
+            </SectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.imageOverlayOpacity} />
+              </Label>
+              <RangeInput
+                step={1}
+                min={0}
+                max={100}
+                value={
+                  bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
+                }
+                onChange={debouncedHandleOverlayOpacityOnChange}
+              />
+            </SectionField>
+          </>
+        )}
     </>
   );
 };
 
-export default injectIntl(BannerImageField);
+export default BannerImageField;
 
 type CropComponentProps = {
   headerLocalDisplayImage: UploadFile[] | null;
