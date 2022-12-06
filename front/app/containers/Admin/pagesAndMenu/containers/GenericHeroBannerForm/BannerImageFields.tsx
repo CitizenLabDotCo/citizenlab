@@ -131,6 +131,13 @@ const BannerImageField = ({
     [debounceHandleOverlayOpacityOnChange]
   );
 
+  const displayImageCropper =
+    headerLocalDisplayImage && !headerLocalDisplayImage[0].remote;
+
+  const displayPreviewDevice =
+    !isNilOrError(headerLocalDisplayImage) &&
+    bannerLayout !== 'fixed_ratio_layout';
+
   return (
     <>
       <SubSectionTitle>
@@ -156,45 +163,40 @@ const BannerImageField = ({
           }
         />
       </SubSectionTitle>
-      {bannerLayout === 'fixed_ratio_layout' && (
-        <CropComponent
-          headerLocalDisplayImage={headerLocalDisplayImage}
-          onRemoveImageFile={bannerImageRemoveHandler}
-          onAddImageFile={bannerImageAddHandler}
-          overlayColor={bannerOverlayColor}
-          overlayOpacity={bannerOverlayOpacity}
-          onAddCroppedImage={onAddImage}
-        />
-      )}
-      {bannerLayout !== 'fixed_ratio_layout' && (
-        <SectionField>
-          {!isNilOrError(headerLocalDisplayImage) && (
-            <>
-              <Label>
-                <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
-              </Label>
-              <Box mb="20px">
-                <Select
-                  options={[
-                    {
-                      value: 'desktop',
-                      label: formatMessage(messages.desktop),
-                    },
-                    {
-                      value: 'tablet',
-                      label: formatMessage(messages.tablet),
-                    },
-                    {
-                      value: 'phone',
-                      label: formatMessage(messages.phone),
-                    },
-                  ]}
-                  onChange={(option: IOption) => setPreviewDevice(option.value)}
-                  value={previewDevice}
-                />
-              </Box>
-            </>
-          )}
+      <SectionField>
+        {displayPreviewDevice && (
+          <>
+            <Label>
+              <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
+            </Label>
+            <Box mb="20px">
+              <Select
+                options={[
+                  {
+                    value: 'desktop',
+                    label: formatMessage(messages.desktop),
+                  },
+                  {
+                    value: 'tablet',
+                    label: formatMessage(messages.tablet),
+                  },
+                  {
+                    value: 'phone',
+                    label: formatMessage(messages.phone),
+                  },
+                ]}
+                onChange={(option: IOption) => setPreviewDevice(option.value)}
+                value={previewDevice}
+              />
+            </Box>
+          </>
+        )}
+        {displayImageCropper ? (
+          <ImageCropper
+            image={headerLocalDisplayImage}
+            onComplete={onAddImage}
+          />
+        ) : (
           <HeaderImageDropzone
             onAdd={bannerImageAddHandler}
             onRemove={bannerImageRemoveHandler}
@@ -205,8 +207,8 @@ const BannerImageField = ({
             previewDevice={previewDevice}
             layout={bannerLayout || 'full_width_banner_layout'}
           />
-        </SectionField>
-      )}
+        )}
+      </SectionField>
       {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
       {(bannerLayout === 'full_width_banner_layout' ||
         bannerLayout === 'fixed_ratio_layout') &&
@@ -246,56 +248,3 @@ const BannerImageField = ({
 };
 
 export default BannerImageField;
-
-type CropComponentProps = {
-  headerLocalDisplayImage: UploadFile[] | null;
-  onRemoveImageFile: () => void;
-  onAddImageFile: (newImage: UploadFile[]) => void;
-  onAddCroppedImage: (newImage: string) => void;
-  overlayColor: string | null;
-  overlayOpacity: number | null;
-};
-
-const CropComponent = ({
-  headerLocalDisplayImage,
-  onRemoveImageFile,
-  onAddImageFile,
-  onAddCroppedImage,
-  overlayColor,
-  overlayOpacity,
-}: CropComponentProps) => {
-  const remoteImage =
-    !headerLocalDisplayImage ||
-    (headerLocalDisplayImage && headerLocalDisplayImage[0].remote);
-
-  const displayImageHeaderDropzone = remoteImage;
-
-  const bannerImageRemoveHandler = () => {
-    onRemoveImageFile();
-  };
-
-  return (
-    <div>
-      <SectionField>
-        {displayImageHeaderDropzone && (
-          <HeaderImageDropzone
-            onAdd={onAddImageFile}
-            onRemove={bannerImageRemoveHandler}
-            overlayColor={overlayColor}
-            overlayOpacity={overlayOpacity}
-            headerError={null}
-            header_bg={headerLocalDisplayImage}
-            previewDevice="desktop"
-            layout="full_width_banner_layout"
-          />
-        )}
-        {!displayImageHeaderDropzone && (
-          <ImageCropper
-            image={headerLocalDisplayImage}
-            onComplete={onAddCroppedImage}
-          />
-        )}
-      </SectionField>
-    </div>
-  );
-};

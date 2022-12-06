@@ -59,9 +59,9 @@ export const homepageBannerLayoutHeights = {
     phone: 200,
   },
   fixed_ratio_layout: {
-    desktop: 280,
-    tablet: 280,
-    phone: 280,
+    desktop: 450,
+    tablet: 450,
+    phone: 450,
   },
 };
 
@@ -95,7 +95,8 @@ const HeaderImageDropzone = ({
     overlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
 
   const previewOverlayElement =
-    layout === 'full_width_banner_layout' &&
+    (layout === 'full_width_banner_layout' ||
+      layout === 'fixed_ratio_layout') &&
     displayOverlayColor &&
     displayOverlayOpacity ? (
       <HeaderImageOverlay
