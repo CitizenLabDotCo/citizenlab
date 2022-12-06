@@ -1,32 +1,41 @@
-import React, { ReactNode } from 'react';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { Text } from '@citizenlab/cl2-component-library';
+import React from 'react';
+import slugInputMessages from 'components/HookForm/SlugInput/messages';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { Text, Input } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
 interface Props {
   showWarningMessage: boolean;
   previewUrl: string;
-  inputComponent: ReactNode;
+  onChange: (slug: string) => void;
+  slug: string;
 }
 
 const SlugInput = ({
   previewUrl,
   showWarningMessage,
-  inputComponent,
+  onChange,
+  slug,
 }: Props) => {
+  const { formatMessage } = useIntl();
   return (
     <>
-      {inputComponent}
+      <Input
+        label={formatMessage(slugInputMessages.urlSlugLabel)}
+        labelTooltipText={formatMessage(slugInputMessages.slugTooltip)}
+        type="text"
+        onChange={onChange}
+        value={slug}
+      />
       <Text mb={showWarningMessage ? '16px' : '0'}>
         <i>
-          <FormattedMessage {...messages.resultingURL} />
+          <FormattedMessage {...slugInputMessages.resultingURL} />
         </i>
         : {previewUrl}
       </Text>
       {showWarningMessage && (
         <Warning>
-          <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
+          <FormattedMessage {...slugInputMessages.urlSlugBrokenLinkWarning} />
         </Warning>
       )}
     </>
