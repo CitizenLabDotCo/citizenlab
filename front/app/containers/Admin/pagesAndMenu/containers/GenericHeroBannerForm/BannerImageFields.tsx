@@ -1,4 +1,4 @@
-import Cropper from 'react-easy-crop';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import {
   Box,
@@ -11,7 +11,7 @@ import {
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { debounce } from 'lodash-es';
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+
 import { useTheme } from 'styled-components';
 import { UploadFile } from 'typings';
 import HeaderImageDropzone from './HeaderImageDropzone';
@@ -27,6 +27,7 @@ import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
 import RangeInput from 'components/UI/RangeInput';
+import ImageCropper from 'components/admin/ImageCropper';
 
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
@@ -160,6 +161,8 @@ const BannerImageField = ({
           headerLocalDisplayImage={headerLocalDisplayImage}
           onRemoveImage={bannerImageRemoveHandler}
           onAddImage={bannerImageAddHandler}
+          overlayColor={bannerOverlayColor}
+          overlayOpacity={bannerOverlayOpacity}
         />
       )}
       {bannerLayout !== 'fixed_ratio_layout' && (
@@ -247,131 +250,46 @@ type CropComponentProps = {
   headerLocalDisplayImage: UploadFile[] | null;
   onRemoveImage: () => void;
   onAddImage: (newImage: UploadFile[]) => void;
+  overlayColor: string | null;
+  overlayOpacity: number | null;
 };
 
 const CropComponent = ({
   headerLocalDisplayImage,
   onRemoveImage,
   onAddImage,
+  overlayColor,
+  overlayOpacity,
 }: CropComponentProps) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
-
   const remoteImage =
     !headerLocalDisplayImage ||
     (headerLocalDisplayImage && headerLocalDisplayImage[0].remote);
 
   const displayImageHeaderDropzone = remoteImage;
-  const onCropComplete = useCallback((_, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  }, []);
-
-  const showCroppedImage = useCallback(async () => {
-    if (headerLocalDisplayImage) {
-      try {
-        const croppedImage = await getCroppedImg(
-          headerLocalDisplayImage[0].base64,
-          croppedAreaPixels
-        );
-
-        setCroppedImage(croppedImage);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }, [croppedAreaPixels, headerLocalDisplayImage]);
 
   const bannerImageRemoveHandler = () => {
     onRemoveImage();
-    setCroppedImage(null);
   };
 
   return (
     <div>
-      <div style={{ position: 'relative', height: '300px' }}>
+      <SectionField>
         {displayImageHeaderDropzone && (
           <HeaderImageDropzone
             onAdd={onAddImage}
             onRemove={bannerImageRemoveHandler}
-            overlayColor={null}
-            overlayOpacity={null}
+            overlayColor={overlayColor}
+            overlayOpacity={overlayOpacity}
             headerError={null}
             header_bg={headerLocalDisplayImage}
-            previewDevice={'desktop'}
-            layout={'full_width_banner_layout'}
+            previewDevice="desktop"
+            layout="full_width_banner_layout"
           />
         )}
         {!displayImageHeaderDropzone && (
-          <Cropper
-            image={headerLocalDisplayImage[0].base64}
-            crop={crop}
-            zoom={zoom}
-            aspect={16 / 9}
-            onCropChange={setCrop}
-            onCropComplete={onCropComplete}
-            onZoomChange={setZoom}
-            showGrid={false}
-          />
+          <ImageCropper image={headerLocalDisplayImage} onComplete={() => {}} />
         )}
-      </div>
-      <button onClick={showCroppedImage}>show</button>
-      {croppedImage && <img src={croppedImage} alt="" />}
+      </SectionField>
     </div>
   );
 };
-
-export const createImage = (url: string): Promise<any> =>
-  new Promise((resolve, reject) => {
-    const image = new Image();
-    image.addEventListener('load', () => resolve(image));
-    image.addEventListener('error', (error) => reject(error));
-    image.setAttribute('crossOrigin', 'anonymous');
-    image.src = url;
-  });
-
-async function getCroppedImg(
-  imageSrc: string,
-  pixelCrop: Record<string, any>
-): Promise<any> {
-  const image = await createImage(imageSrc);
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-
-  if (!ctx) {
-    return null;
-  }
-
-  // set canvas size to match the bounding box
-  canvas.width = image.width;
-  canvas.height = image.height;
-
-  // translate canvas context to a central location to allow rotating and flipping around the center
-  ctx.translate(image.width / 2, image.height / 2);
-
-  ctx.scale(1, 1);
-  ctx.translate(-image.width / 2, -image.height / 2);
-
-  // draw rotated image
-  ctx.drawImage(image, 0, 0);
-
-  // croppedAreaPixels values are bounding box relative
-  // extract the cropped image using these values
-  const data = ctx.getImageData(
-    pixelCrop.x,
-    pixelCrop.y,
-    pixelCrop.width,
-    pixelCrop.height
-  );
-
-  // set canvas width to final desired crop size - this will clear existing context
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
-
-  // paste generated rotate image at the top left corner
-  ctx.putImageData(data, 0, 0);
-
-  // As Base64 string
-  return canvas.toDataURL('image/jpeg');
-}
