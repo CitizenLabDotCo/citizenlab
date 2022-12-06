@@ -4,26 +4,28 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // i18n
+import messages from '../../messages';
+import accordionMessages from 'components/admin/ContentBuilder/Widgets/Accordion/messages';
+import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
-import Text from '../CraftComponents/Text';
-import TwoColumn from '../CraftComponents/TwoColumn';
-import ThreeColumn from '../CraftComponents/ThreeColumn';
-import Image from '../CraftComponents/Image';
-import Iframe from '../CraftComponents/Iframe';
-import AboutBox from '../CraftComponents/AboutBox';
-import Accordion from '../CraftComponents/Accordion';
-import WhiteSpace from '../CraftComponents/WhiteSpace';
-import Button from '../CraftComponents/Button';
+
+// widgets
+import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
+import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
+import Accordion from 'components/admin/ContentBuilder/Widgets/Accordion';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import Button from 'components/admin/ContentBuilder/Widgets/Button';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
-
-// intl
-import messages from '../../messages';
 
 // types
 import { Locale } from 'typings';
@@ -60,49 +62,49 @@ const ContentBuilderToolbox = ({
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-two-column"
-        component={<TwoColumn columnLayout="1-1" id="twoColumn" />}
+        component={<TwoColumn columnLayout="1-1" />}
         icon="layout-2column-1"
-        label={formatMessage(messages.twoColumn)}
+        label={formatMessage(TwoColumn.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-three-column"
         component={<ThreeColumn />}
         icon="layout-3column"
-        label={formatMessage(messages.threeColumn)}
+        label={formatMessage(ThreeColumn.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-white-space"
         component={<WhiteSpace size="small" />}
         icon="layout-white-space"
-        label={formatMessage(messages.whiteSpace)}
+        label={formatMessage(WhiteSpace.craft?.custom.title)}
       />
       <SectionTitle>
         <FormattedMessage {...messages.content} />
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-text"
-        component={<Text text={formatMessage(messages.textValue)} />}
+        component={<Text text={formatMessage(textMessages.textValue)} />}
         icon="text"
-        label={formatMessage(messages.text)}
+        label={formatMessage(Text.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-button"
         component={
           <Button
-            text={formatMessage(messages.button)}
+            text={formatMessage(Button.craft.custom.title)}
             url={''}
             type={'primary'}
             alignment={'left'}
           />
         }
         icon="button"
-        label={formatMessage(messages.button)}
+        label={formatMessage(Button.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-image"
         component={<Image alt="" />}
         icon="image"
-        label={formatMessage(messages.image)}
+        label={formatMessage(Image.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-iframe"
@@ -115,25 +117,25 @@ const ContentBuilderToolbox = ({
           />
         }
         icon="code"
-        label={formatMessage(messages.url)}
+        label={formatMessage(Iframe.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-about-box"
         component={<AboutBox projectId={projectId} />}
         icon="info-solid"
-        label={formatMessage(messages.aboutBox)}
+        label={formatMessage(AboutBox.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-accordion"
         component={
           <Accordion
-            title={formatMessage(messages.accordionTitleValue)}
-            text={formatMessage(messages.accordionTextValue)}
+            title={formatMessage(accordionMessages.accordionTitleValue)}
+            text={formatMessage(accordionMessages.accordionTextValue)}
             openByDefault={false}
           />
         }
         icon="accordion"
-        label={formatMessage(messages.accordion)}
+        label={formatMessage(Accordion.craft.custom.title)}
       />
     </Container>
   );
