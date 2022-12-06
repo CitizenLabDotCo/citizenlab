@@ -380,6 +380,10 @@ module MultiTenancy
             visitors_dashboard: {
               enabled: true,
               allowed: true
+            },
+            report_builder: {
+              enabled: true,
+              allowed: true
             }
           })
         )
