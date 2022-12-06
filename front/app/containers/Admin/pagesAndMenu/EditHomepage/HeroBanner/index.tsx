@@ -3,7 +3,6 @@ import { CLErrors, Multiloc } from 'typings';
 
 // components
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import Outlet from 'components/Outlet';
 import {
   homeBreadcrumb,
   pagesAndMenuBreadcrumb,
@@ -18,6 +17,7 @@ import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import {
   IHomepageSettingsAttributes,
+  THomepageBannerLayout,
   updateHomepageSettings,
 } from 'services/homepageSettings';
 
@@ -30,6 +30,7 @@ import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../containers/GenericHeroBannerForm/messages';
 import CTASettings from '../../containers/GenericHeroBannerForm//CTASettings';
+import LayoutSettingField from '../../containers/GenericHeroBannerForm/LayoutSettingField';
 
 const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
@@ -208,13 +209,14 @@ const EditHomepageHeroBannerForm = ({
               )}
             />
           }
-          outletSectionStart={
-            <Outlet
-              id="app.containers.Admin.settings.customize.headerSectionStart"
+          layoutSettingFieldComponent={
+            <LayoutSettingField
               bannerLayout={
                 localSettings.banner_layout ?? 'full_width_banner_layout'
               }
-              onChange={handleOnChange}
+              onChange={(bannerLayout: THomepageBannerLayout) => {
+                handleOnChange('banner_layout', bannerLayout);
+              }}
             />
           }
           bannerMultilocFieldComponent={

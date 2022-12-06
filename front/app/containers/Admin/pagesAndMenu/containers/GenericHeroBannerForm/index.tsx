@@ -25,7 +25,6 @@ interface Props {
   onSave: () => void;
   onSaveAndEnable?: () => void | undefined;
   isLoading: boolean;
-  outletSectionStart?: ReactElement;
   layoutSettingFieldComponent?: ReactElement;
   bannerImageFieldsComponent: ReactElement;
   bannerHeaderFieldsComponent: ReactElement;
@@ -44,7 +43,6 @@ const GenericHeroBannerForm = ({
   isLoading,
   title,
   breadcrumbs,
-  outletSectionStart,
   avatarsFieldComponent,
   ctaSettingsComponent,
   bannerMultilocFieldComponent,
@@ -92,7 +90,6 @@ const GenericHeroBannerForm = ({
             <Warning>
               <FormattedMessage {...messages.heroBannerInfoBar} />
             </Warning>
-            {outletSectionStart}
             {layoutSettingFieldComponent}
             {bannerImageFieldsComponent}
             {bannerHeaderFieldsComponent}
