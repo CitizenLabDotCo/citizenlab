@@ -21,14 +21,8 @@ SELECT
        WHEN fsftp.project_id IS NOT NULL AND ap.publication_status != 'draft' THEN true
        ELSE false
     END as finished,
-    CASE
-       WHEN fsftp.project_id IS NOT NULL THEN fsftp.timestamp
-       ELSE ap.updated_at
-    END as timestamp,
-    CASE
-       WHEN fsftp.project_id IS NOT NULL THEN fsftp.timestamp::DATE
-       ELSE ap.updated_at::DATE
-    END as dimension_date_id
+    COALESCE(fsftp.timestamp, ap.updated_at) as timestamp,
+    COALESCE(fsftp.timestamp::DATE, ap.updated_at::DATE) as dimension_date_id
 FROM admin_publications ap
 LEFT JOIN projects p ON ap.publication_id = p.id
 LEFT JOIN finished_statuses_for_timeline_projects fsftp ON fsftp.project_id = ap.publication_id
