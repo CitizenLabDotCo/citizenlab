@@ -37,9 +37,6 @@ export const getFormSchemaAndData = (
       parentSchema.type === 'Page'
         ? isPageVisible && isElementVisible
         : isElementVisible;
-    if (key === 'location_description') {
-      debugger;
-    }
 
     if (showInData) {
       dataWithoutHiddenElements[key] = data[key];
