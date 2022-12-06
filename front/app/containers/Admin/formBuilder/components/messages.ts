@@ -180,9 +180,18 @@ export default defineMessages({
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
+  // Logic Settings
   logicWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.logicWarning',
     defaultMessage:
       'If no logic is added to an answer, the survey will follow its normal flow.',
+  },
+  goToPageInputLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.goToPageInputLabel',
+    defaultMessage: 'Then next page is:',
+  },
+  ruleForAnswerLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.ruleForAnswerLabel',
+    defaultMessage: 'If answer is:',
   },
 });

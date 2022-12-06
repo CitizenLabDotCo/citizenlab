@@ -7,6 +7,8 @@ import {
   Text,
   stylingConsts,
   colors,
+  Icon,
+  Select,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
@@ -28,6 +30,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // utils
 import { getAdditionalSettings } from './utils';
 import Warning from 'components/UI/Warning';
+import { LogicSettings } from './LogicSettings';
 interface Props {
   field: IFlatCustomFieldWithIndex;
   onDelete: (fieldIndex: number) => void;
@@ -270,7 +273,7 @@ const FormBuilderSettings = ({
           </Box>
         )}
         {showTabbedSettings && currentTab === 'logic' && (
-          <Warning text={formatMessage(messages.logicWarning)} />
+          <LogicSettings field={field} locales={locales} />
         )}
       </Box>
     </>
