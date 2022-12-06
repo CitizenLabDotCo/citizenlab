@@ -15,7 +15,7 @@ import messages from './messages';
 import { useTheme } from 'styled-components';
 
 const Text = ({ text }) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   return (
     <Box id="e2e-text-box" minHeight="26px">

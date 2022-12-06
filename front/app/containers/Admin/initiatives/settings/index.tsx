@@ -1,15 +1,19 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { isEmpty, isNaN, omit, isEqual } from 'lodash-es';
+import { isEmpty, isNaN, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-
+import { API_PATH } from 'containers/App/constants';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 import useCustomPage from 'hooks/useCustomPage';
 
 // services
-import { updateAppConfiguration } from 'services/appConfiguration';
+import {
+  updateAppConfiguration,
+  ProposalsSettings,
+} from 'services/appConfiguration';
 import { updateCustomPage } from 'services/customPages';
+import streams from 'utils/streams';
 
 // components
 import {
@@ -18,6 +22,7 @@ import {
   Section,
 } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
+import ProposalsFeatureToggle from './ProposalsFeatureToggle';
 import VotingThreshold from './VotingThreshold';
 import VotingLimit from './VotingLimit';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
@@ -41,16 +46,14 @@ export const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
 `;
 
-export const StyledSectionDescription = styled(SectionDescription)`
-  margin-bottom: 20px;
+const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 10px;
 `;
 
-interface ProposalsSettings {
-  days_limit: number;
-  eligibility_criteria: Multiloc;
-  threshold_reached_message: Multiloc;
-  voting_threshold: number;
-}
+export const StyledSectionDescription = styled(SectionDescription)`
+  margin-top: 0;
+  margin-bottom: 20px;
+`;
 
 type ProposalsSettingName = keyof ProposalsSettings;
 
@@ -67,10 +70,7 @@ const InitiativesSettingsPage = () => {
       return null;
     }
 
-    return omit(appConfiguration.attributes.settings.initiatives, [
-      'allowed',
-      'enabled',
-    ]);
+    return appConfiguration.attributes.settings.initiatives;
   }, [appConfiguration]);
 
   const [localProposalsSettings, setLocalProposalsSettings] =
@@ -180,6 +180,9 @@ const InitiativesSettingsPage = () => {
       }
 
       await Promise.all(promises);
+      await streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/nav_bar_items`],
+      });
 
       setProcessing(false);
       setSuccess(true);
@@ -205,16 +208,25 @@ const InitiativesSettingsPage = () => {
     setSuccess(false);
   };
 
+  const onToggle = () => {
+    if (appConfiguration.attributes.settings.initiatives) {
+      setLocalProposalsSettings({
+        ...localProposalsSettings,
+        enabled: !localProposalsSettings.enabled,
+      });
+    }
+  };
+
   return (
     <Container>
-      <SectionTitle>
+      <StyledSectionTitle>
         <FormattedMessage {...messages.settingsTabTitle} />
-      </SectionTitle>
-      <SectionDescription>
-        <FormattedMessage {...messages.settingsTabSubtitle} />
-      </SectionDescription>
-
+      </StyledSectionTitle>
       <Section>
+        <ProposalsFeatureToggle
+          enabled={localProposalsSettings.enabled}
+          onToggle={onToggle}
+        />
         <VotingThreshold
           value={localProposalsSettings.voting_threshold}
           onChange={updateProposalsSetting('voting_threshold')}

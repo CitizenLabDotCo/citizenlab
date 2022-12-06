@@ -475,7 +475,7 @@ const ProjectCard = memo<Props>(
         : null;
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
-    const theme: any = useTheme();
+    const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
 

@@ -14,6 +14,8 @@ require 'rails_helper'
 RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
   subject(:generator) { described_class.new participation_context }
 
+  # Create a page to describe that it is not included in the survey results.
+  let!(:page_field) { create(:custom_field_page, resource: form) }
   let(:text_field) do
     create(
       :custom_field,

@@ -66,7 +66,14 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   private
 
   def assign_attributes
-    @page.assign_attributes permitted_attributes(StaticPage)
+    attributes = permitted_attributes(StaticPage).to_h
+    nav_bar_item_title = attributes.delete(:nav_bar_item_title_multiloc)
+    if nav_bar_item_title.present? && @page.nav_bar_item_id.present?
+      attributes[:nav_bar_item_attributes] ||= {}
+      attributes[:nav_bar_item_attributes][:id] = @page.nav_bar_item_id
+      attributes[:nav_bar_item_attributes][:title_multiloc] = nav_bar_item_title
+    end
+    @page.assign_attributes attributes
   end
 
   def set_page
@@ -74,5 +81,3 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
     authorize @page
   end
 end
-
-::WebApi::V1::StaticPagesController.prepend CustomizableNavbar::WebApi::V1::Patches::StaticPagesController
