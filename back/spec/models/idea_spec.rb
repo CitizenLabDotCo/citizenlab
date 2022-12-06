@@ -185,7 +185,7 @@ RSpec.describe Idea, type: :model do
         end
       end
 
-      context 'when there is no active ideation phase' do
+      context 'when there is no active ideation or budgeting phase' do
         context 'when the idea does not belong to any phase' do
           # The project and the phase are given an input_term to describe that they
           # do not provide the input_term for the idea without phases.
@@ -249,7 +249,7 @@ RSpec.describe Idea, type: :model do
           end
         end
 
-        context 'in a timeline project when created in an ideation phase, and the current phase is information' do
+        context 'when the idea belongs to an ideation phase, and the current phase is information' do
           let(:project) { create :project_with_past_ideation_and_current_information_phase, input_term: 'issue' }
           let(:ideation_phase) { project.phases.first }
           let(:idea) { build(:idea, project: project, phases: [ideation_phase]) }
