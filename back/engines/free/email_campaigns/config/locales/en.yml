@@ -82,7 +82,7 @@ en:
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project managers
       "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase - all users
+      "project_phase_started": New project phase - project participants
       "project_phase_upcoming": Upcoming new project phase - admins and project managers
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
       "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
