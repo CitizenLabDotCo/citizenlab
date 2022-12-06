@@ -127,6 +127,7 @@ interface Props {
   availableTabs: PublicationTab[];
   showTitle: boolean;
   showSearch?: boolean;
+  showFilters: boolean;
   hasPublications: boolean;
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
@@ -142,6 +143,7 @@ const Header = ({
   availableTabs,
   showTitle,
   showSearch,
+  showFilters,
   hasPublications,
   onChangeTopics,
   onChangeAreas,
@@ -188,13 +190,15 @@ const Header = ({
   });
 
   const showTabs = !noAdminPublicationsAtAll;
-  const showFilters = getShowFilters({
-    smallerThanXlPhone,
-    hasPublications,
-    statusCounts,
-    selectedTopics,
-    selectedAreas,
-  });
+  const displayFilters =
+    showFilters &&
+    getShowFilters({
+      smallerThanXlPhone,
+      hasPublications,
+      statusCounts,
+      selectedTopics,
+      selectedAreas,
+    });
   const showFiltersLabel = getShowFiltersLabel(
     topics,
     areas,
@@ -215,7 +219,7 @@ const Header = ({
     setSearchInputRef(ref);
   };
 
-  const shouldShowAreaAndTagFilters = !smallerThanXlPhone && showFilters;
+  const shouldShowAreaAndTagFilters = !smallerThanXlPhone && displayFilters;
 
   return (
     <div className={className}>
@@ -265,7 +269,7 @@ const Header = ({
         )}
       </Container>
 
-      {smallerThanXlPhone && showFilters && (
+      {smallerThanXlPhone && displayFilters && (
         <MobileFilters>
           <StyledSelectTopics
             selectedTopics={selectedTopics}

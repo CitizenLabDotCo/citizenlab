@@ -5,7 +5,9 @@ import useAdminPublications from 'hooks/useAdminPublications';
 import { ICustomPageData } from 'services/customPages';
 import ContentContainer from 'components/ContentContainer';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
+import { PublicationStatus } from 'services/projects';
+import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
+import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
 
 interface Props {
   page: ICustomPageData;
@@ -16,12 +18,34 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   // To enable it, the page needs either a topic or area associated with it.
   const topicIds = page.relationships.topics.data.map((topic) => topic.id);
   const areaIds = page.relationships.areas.data.map((area) => area.id);
+  const publicationStatusFilter: PublicationStatus[] = [
+    'published',
+    'archived',
+  ];
 
   const adminPublications = useAdminPublications({
     topicIds,
     areaIds,
-    publicationStatusFilter: ['published', 'archived'],
+    publicationStatusFilter: publicationStatusFilter,
   });
+
+  const paginatedAdminPublications = useAdminPublications({
+    pageSize: 6,
+    topicIds,
+    areaIds,
+    publicationStatusFilter: publicationStatusFilter,
+    rootLevelOnly: true,
+    removeNotAllowedParents: true,
+  });
+
+  const { counts: statusCountsWithoutFilters } =
+    useAdminPublicationsStatusCounts({
+      topicIds,
+      areaIds,
+      publicationStatusFilter,
+      rootLevelOnly: true,
+      removeNotAllowedParents: true,
+    });
 
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
@@ -45,10 +69,17 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     <>
       {page.attributes.projects_enabled && (
         <ContentContainer>
-          <ProjectAndFolderCards
-            publicationStatusFilter={['published', 'archived']}
+          <ProjectAndFolderCardsInner
+            statusCounts={statusCountsWithoutFilters}
+            publicationStatusFilter={publicationStatusFilter}
+            onChangeTopics={() => {}}
+            onChangeAreas={() => {}}
+            onChangeSearch={() => {}}
             showTitle={false}
+            showFilters={false}
             showSearch={false}
+            adminPublications={paginatedAdminPublications}
+            statusCountsWithoutFilters={statusCountsWithoutFilters}
             layout="dynamic"
           />
         </ContentContainer>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
@@ -7,13 +7,13 @@ import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCou
 import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentTab } from './utils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // typings
 import { PublicationStatus } from 'services/projects';
+import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
 
 export type PublicationTab = PublicationStatus | 'all';
 
@@ -44,14 +44,19 @@ const ProjectAndFolderCards = ({
       removeNotAllowedParents: true,
     });
 
-  const [currentTab, setCurrentTab] = useState<PublicationTab | undefined>(
-    undefined
-  );
+  const adminPublications = useAdminPublications({
+    pageSize: 6,
+    publicationStatusFilter,
+    rootLevelOnly,
+    removeNotAllowedParents: true,
+  });
 
-  useEffect(() => {
-    if (isNilOrError(counts) || currentTab) return;
-    setCurrentTab((currentTab) => getCurrentTab(counts, currentTab));
-  }, [counts, currentTab]);
+  const { counts: statusCountsWithoutFilters } =
+    useAdminPublicationsStatusCounts({
+      publicationStatusFilter,
+      rootLevelOnly: true,
+      removeNotAllowedParents: true,
+    });
 
   const handleSearchChange = (search: string | null) => {
     // set search term locally to calculate depth
@@ -63,25 +68,17 @@ const ProjectAndFolderCards = ({
     trackEventByName(tracks.searchTermChanged, { searchTerm: search });
   };
 
-  const onChangeTab = (tab: PublicationTab) => {
-    setCurrentTab(tab);
-  };
-
-  if (isNilOrError(counts) || !currentTab) {
-    return null;
-  }
-
   return (
     <ProjectAndFolderCardsInner
-      currentTab={currentTab}
       statusCounts={counts}
       publicationStatusFilter={publicationStatusFilter}
       onChangeTopics={onChangeTopics}
       onChangeAreas={onChangeAreas}
-      onChangeTab={onChangeTab}
       onChangeSearch={handleSearchChange}
       showSearch={showSearch}
-      rootLevelOnly={rootLevelOnly}
+      showFilters={true}
+      adminPublications={adminPublications}
+      statusCountsWithoutFilters={statusCountsWithoutFilters}
       {...otherProps}
     />
   );
