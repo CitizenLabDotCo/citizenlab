@@ -1,7 +1,23 @@
 import React from 'react';
 
-const Toolbox = (_: any) => {
-  return <>Toolbox</>;
+// components
+import Container from 'components/admin/ContentBuilder/Toolbox/Container';
+import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
+
+// types
+import { Locale } from 'typings';
+
+type Props = {
+  selectedLocale: Locale;
 };
 
-export default Toolbox;
+const ContentBuilderToolbox = ({}: // selectedLocale,
+Props) => {
+  return (
+    <Container>
+      <SectionTitle>Widgets</SectionTitle>
+    </Container>
+  );
+};
+
+export default ContentBuilderToolbox;
