@@ -13,8 +13,7 @@ import { slugRegEx } from 'utils/textUtils';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import SlugInput from 'components/admin/SlugInput';
-import HookFormInputComponent from 'components/admin/SlugInput/HookFormInputComponent';
+import SlugInput from 'components/HookForm/SlugInput';
 import Tabs from 'components/HookForm/Tabs';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
@@ -219,7 +218,7 @@ const CustomPageSettingsForm = ({
             {slug && previewUrl && (
               <Box mb={fieldMarginBottom}>
                 <SlugInput
-                  inputComponent={<HookFormInputComponent slug={slug} />}
+                  slug={slug}
                   showWarningMessage={slugHasChanged}
                   previewUrl={previewUrl}
                 />
