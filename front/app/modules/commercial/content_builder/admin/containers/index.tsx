@@ -28,12 +28,15 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
 
 // intl
 import messages from '../messages';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+
+// typings
+import { SerializedNodes } from '@craftjs/core';
+import { Locale } from 'typings';
+import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -44,11 +47,6 @@ const StyledRightColumn = styled(RightColumn)`
   padding-bottom: 100px;
   overflow-y: auto;
 `;
-
-type ContentBuilderErrors = Record<
-  string,
-  { hasError: boolean; selectedLocale: Locale }
->;
 
 export const ContentBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
