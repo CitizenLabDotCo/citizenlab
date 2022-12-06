@@ -513,7 +513,7 @@ const AdminProjectsProjectGeneral = () => {
               apiErrors={apiErrors}
               showSlugErrorMessage={showSlugErrorMessage}
               onSlugChange={handleSlugOnChange}
-              slugHasChanged={slug !== project.attributes.slug}
+              showSlugChangedWarning={slug !== project.attributes.slug}
             />
           </StyledSectionField>
         )}

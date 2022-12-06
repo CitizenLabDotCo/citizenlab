@@ -468,7 +468,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 apiErrors={errors}
                 showSlugErrorMessage={showSlugErrorMessage}
                 onSlugChange={handleSlugOnChange}
-                slugHasChanged={slug !== projectFolder.attributes.slug}
+                showSlugChangedWarning={slug !== projectFolder.attributes.slug}
               />
             </>
           </SectionField>

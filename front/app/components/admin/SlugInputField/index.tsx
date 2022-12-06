@@ -1,13 +1,11 @@
 import React from 'react';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-
-// components
+import { Text, Input } from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
-import SlugInput from 'components/admin/SlugInput';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import slugInputMessages from 'components/HookForm/SlugInput/messages';
 import messages from './messages';
 
 // typings
@@ -22,7 +20,7 @@ export interface Props {
   apiErrors: TApiErrors;
   showSlugErrorMessage: boolean;
   onSlugChange: (slug: string) => void;
-  slugHasChanged: boolean;
+  showSlugChangedWarning: boolean;
 }
 
 const SlugInputField = ({
@@ -31,7 +29,7 @@ const SlugInputField = ({
   apiErrors,
   showSlugErrorMessage,
   onSlugChange,
-  slugHasChanged,
+  showSlugChangedWarning,
 }: Props) => {
   const locale = useLocale();
   const appConfig = useAppConfiguration();
@@ -43,15 +41,25 @@ const SlugInputField = ({
       ? `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`
       : null;
 
-    return (
+    return previewUrl ? (
       <>
-        {previewUrl && (
-          <SlugInput
-            onChange={onSlugChange}
-            slug={slug}
-            previewUrl={previewUrl}
-            showWarningMessage={slugHasChanged}
-          />
+        <Input
+          label={formatMessage(slugInputMessages.urlSlugLabel)}
+          labelTooltipText={formatMessage(slugInputMessages.slugTooltip)}
+          type="text"
+          onChange={onSlugChange}
+          value={slug}
+        />
+        <Text mb={showSlugChangedWarning ? '16px' : '0'}>
+          <i>
+            <FormattedMessage {...slugInputMessages.resultingURL} />
+          </i>
+          : {previewUrl}
+        </Text>
+        {showSlugChangedWarning && (
+          <Warning>
+            <FormattedMessage {...slugInputMessages.urlSlugBrokenLinkWarning} />
+          </Warning>
         )}
         {/* Backend error */}
         {apiErrors && <Error fieldName="slug" apiErrors={apiErrors.slug} />}
@@ -60,7 +68,7 @@ const SlugInputField = ({
           <Error text={formatMessage(messages.regexError)} />
         )}
       </>
-    );
+    ) : null;
   }
 
   return null;
