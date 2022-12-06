@@ -87,7 +87,7 @@ const RenderNode = ({ render }) => {
     }
   }, [
     isActive,
-    name,
+    isContainer,
     parentNode,
     parentId,
     isChildOfComplexComponent,
