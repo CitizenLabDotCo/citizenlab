@@ -12,6 +12,16 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
     before { create :idea_status_proposed }
 
+    describe '#assign_defaults_for_participation_context' do
+      let(:participation_context) { build :continuous_native_survey_project }
+
+      it 'sets the limits posting to max one' do
+        participation_method.assign_defaults_for_participation_context
+        expect(participation_context.posting_method).to eq 'limited'
+        expect(participation_context.posting_limited_max).to eq 1
+      end
+    end
+
     it 'sets and persists the id as the slug of the input' do
       input.update_column :slug, nil
       participation_method.assign_slug(input)

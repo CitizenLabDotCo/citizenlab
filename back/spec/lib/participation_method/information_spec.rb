@@ -8,6 +8,15 @@ RSpec.describe ParticipationMethod::Information do
   let(:input) { create :idea }
   let(:project) { create :continuous_project }
 
+  describe '#assign_defaults_for_participation_context' do
+    let(:project) { build :continuous_project }
+
+    it 'sets the posting method to unlimited' do
+      participation_method.assign_defaults_for_participation_context
+      expect(project.posting_method).to eq 'unlimited'
+    end
+  end
+
   describe '#assign_slug' do
     it 'does not change the input' do
       participation_method.assign_slug input

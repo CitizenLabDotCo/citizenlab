@@ -32,6 +32,7 @@ module ParticipationContext
       validate :validate_participation_method_change, on: :update
 
       before_validation :set_participation_method, on: :create
+      before_validation :set_participation_method_defaults, on: :create
       before_validation :set_presentation_mode, on: :create
 
       # ideation? or budgeting?
@@ -134,6 +135,10 @@ module ParticipationContext
 
   def set_participation_method
     self.participation_method ||= 'ideation'
+  end
+
+  def set_participation_method_defaults
+    Factory.instance.participation_method_for(self).assign_defaults_for_participation_context
   end
 
   def set_presentation_mode
