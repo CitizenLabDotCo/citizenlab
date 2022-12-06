@@ -284,6 +284,11 @@ export interface IUpdatedAppConfigurationProperties {
   style?: IAppConfigurationStyle;
 }
 
+export interface CustomizedButtonConfig {
+  text: Multiloc;
+  url: string;
+}
+
 export function currentAppConfigurationStream() {
   return streams.get<IAppConfiguration>({
     apiEndpoint: currentAppConfigurationEndpoint,
