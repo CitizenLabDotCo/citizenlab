@@ -16,11 +16,8 @@ WITH finished_statuses_for_timeline_projects AS
 SELECT
     ap.publication_id as dimension_project_id,
     ap.publication_status as status,
-    CASE
-       WHEN p.process_type = 'continuous' AND ap.publication_status = 'archived' THEN true
-       WHEN fsftp.project_id IS NOT NULL AND ap.publication_status != 'draft' THEN true
-       ELSE false
-    END as finished,
+    (p.process_type = 'continuous' AND ap.publication_status = 'archived') OR
+    (fsftp.project_id IS NOT NULL AND ap.publication_status != 'draft') as finished,
     COALESCE(fsftp.timestamp, ap.updated_at) as timestamp,
     COALESCE(fsftp.timestamp::DATE, ap.updated_at::DATE) as dimension_date_id
 FROM admin_publications ap
