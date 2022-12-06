@@ -1,3 +1,20 @@
 {
-  "singleQuote": true
+  "singleQuote": true,
+  "importOrder": [
+    "react",
+    "<THIRD_PARTY_MODULES>",
+    "@/(.*)",
+    "resources",
+    "hooks",
+    "services",
+    "context",
+    "events",
+    "utils",
+    "i18n",
+    "containers",
+    "components",
+    "^[./]",
+    "^[../]"
+  ],
+  "importOrderSeparation": false
 }
