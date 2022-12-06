@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-12-06
+
+### Added
+
+- [CL-1893] Added Pages to in-platform survey tool
+
 ## 2022-12-05
 
 ### Changed
