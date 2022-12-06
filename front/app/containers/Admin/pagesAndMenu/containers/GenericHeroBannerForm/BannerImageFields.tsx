@@ -1,5 +1,4 @@
 import Cropper from 'react-easy-crop';
-import 'react-image-crop/dist/ReactCrop.css';
 
 import {
   Box,
@@ -45,8 +44,7 @@ interface Props {
     | ICustomPageAttributes['banner_overlay_opacity'];
   bannerLayout:
     | IHomepageSettingsAttributes['banner_layout']
-    | ICustomPageAttributes['banner_layout']
-    | 'fixed_ratio';
+    | ICustomPageAttributes['banner_layout'];
   headerBg:
     | IHomepageSettingsAttributes['header_bg']
     | ICustomPageAttributes['header_bg'];
@@ -158,14 +156,14 @@ const BannerImageField = ({
           }
         />
       </SubSectionTitle>
-      {bannerLayout === 'fixed_ratio' && (
+      {bannerLayout === 'fixed_ratio_layout' && (
         <CropComponent
           headerLocalDisplayImage={headerLocalDisplayImage}
           onRemoveImage={bannerImageRemoveHandler}
           onAddImage={bannerImageAddHandler}
         />
       )}
-      {bannerLayout !== 'fixed_ratio' && (
+      {bannerLayout !== 'fixed_ratio_layout' && (
         <SectionField>
           {!isNilOrError(headerLocalDisplayImage) && (
             <>

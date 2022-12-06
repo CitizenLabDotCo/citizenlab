@@ -133,17 +133,17 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
             <Radio
               onChange={onChange}
               currentValue={bannerLayout}
-              value="fixed_ratio"
+              value="fixed_ratio_layout"
               name="banner-layout"
-              id="banner-fixed-ratio"
+              id="banner_fixed_ratio_layout"
             />
             <LayoutOptionTextWrapper>Fixed ratio</LayoutOptionTextWrapper>
           </LayoutOptionTop>
           <LayoutPreview
             src={
-              bannerLayout === 'two_row_layout'
-                ? TwoRowLayoutActive
-                : TwoRowLayoutInactive
+              bannerLayout === 'fixed_ratio_layout'
+                ? FullWidthBannerLayoutActive
+                : FullWidthBannerLayoutInactive
             }
           />
         </LayoutOption>
