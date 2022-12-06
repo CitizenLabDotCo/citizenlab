@@ -26,6 +26,8 @@ min-height: 160px;`
       : `cursor:move;`}
 `;
 
+const CONTAINER = 'Container';
+
 const RenderNode = ({ render }) => {
   const {
     id,
@@ -76,14 +78,11 @@ const RenderNode = ({ render }) => {
     }
   }, [isHover, id, isChildOfComplexComponent, parentId]);
 
+  const isContainer = name === CONTAINER;
+
   // Handle selected state
   useEffect(() => {
-    if (
-      isActive &&
-      name === 'Container' &&
-      parentNode &&
-      isChildOfComplexComponent
-    ) {
+    if (isActive && isContainer && parentNode && isChildOfComplexComponent) {
       selectNode(parentId);
     }
   }, [
@@ -98,12 +97,9 @@ const RenderNode = ({ render }) => {
   const isSelectable = title !== undefined;
 
   const nodeLabelIsVisible =
-    isActive &&
-    isSelectable &&
-    id !== ROOT_NODE &&
-    isDeletable &&
-    name !== 'Container';
-  const nodeIsHovered = isHover && id !== ROOT_NODE && name !== 'Container';
+    isActive && isSelectable && id !== ROOT_NODE && isDeletable && !isContainer;
+
+  const nodeIsHovered = isHover && id !== ROOT_NODE && !isContainer;
   const solidBorderIsVisible =
     isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
 
