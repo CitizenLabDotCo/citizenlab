@@ -3,9 +3,9 @@ import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 import { isNilOrError } from 'utils/helperUtils';
 import useAdminPublications from 'hooks/useAdminPublications';
 import { ICustomPageData } from 'services/customPages';
-import ProjectsList from './ProjectsList';
 import ContentContainer from 'components/ContentContainer';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 
 interface Props {
   page: ICustomPageData;
@@ -45,7 +45,12 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     <>
       {page.attributes.projects_enabled && (
         <ContentContainer>
-          <ProjectsList adminPublications={adminPublications.list} />
+          <ProjectAndFolderCards
+            publicationStatusFilter={['published', 'archived']}
+            showTitle={false}
+            showSearch={false}
+            layout="dynamic"
+          />
         </ContentContainer>
       )}
       {page.attributes.events_widget_enabled && (
