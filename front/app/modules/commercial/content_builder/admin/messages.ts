@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.oneColumnLayout',
     defaultMessage: '1 column',
   },
-  error: {
-    id: 'app.containers.admin.ContentBuilder.error',
-    defaultMessage: 'error',
-  },
   errorMessage: {
     id: 'app.containers.admin.ContentBuilder.errorMessage',
     defaultMessage:
@@ -37,10 +33,6 @@ export default defineMessages({
   infoWithAccordions: {
     id: 'app.containers.admin.ContentBuilder.infoWithAccordions',
     defaultMessage: 'Info & accordions',
-  },
-  delete: {
-    id: 'app.containers.admin.ContentBuilder.delete',
-    defaultMessage: 'Delete',
   },
   default: {
     id: 'app.containers.admin.ContentBuilder.default',
@@ -63,9 +55,5 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.layoutBuilderWarning',
     defaultMessage:
       'Using the Content Builder will let you use more advanced layout options. For languages where no content is available in the content builder, the regular project description content will be displayed instead.',
-  },
-  a11y_closeSettingsPanel: {
-    id: 'app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel',
-    defaultMessage: 'Close settings panel',
   },
 });

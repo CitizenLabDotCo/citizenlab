@@ -12,7 +12,7 @@ import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 
 // intl
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from './messages';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>

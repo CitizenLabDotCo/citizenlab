@@ -6,19 +6,16 @@ import useProject from 'hooks/useProject';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import Preview from './Preview';
+import Viewer from './Viewer';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-type ContentBuilderPreviewProps = {
+type ContentViewerProps = {
   onMount: () => void;
 } & WithRouterProps;
 
-const ContentBuilderPreview = ({
-  onMount,
-  params: { slug },
-}: ContentBuilderPreviewProps) => {
+const ContentViewer = ({ onMount, params: { slug } }: ContentViewerProps) => {
   const project = useProject({ projectSlug: slug });
   const featureEnabled = useFeatureFlag({ name: 'content_builder' });
 
@@ -32,11 +29,11 @@ const ContentBuilderPreview = ({
   }
 
   return (
-    <Preview
+    <Viewer
       projectId={project.id}
       projectTitle={project.attributes.title_multiloc}
     />
   );
 };
 
-export default withRouter(ContentBuilderPreview);
+export default withRouter(ContentViewer);
