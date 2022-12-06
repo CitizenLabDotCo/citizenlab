@@ -65,6 +65,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.delete',
     defaultMessage: 'Delete',
   },
+  Logic: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.Logic',
+    defaultMessage: 'Logic',
+  },
   done: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.done',
     defaultMessage: 'Done',

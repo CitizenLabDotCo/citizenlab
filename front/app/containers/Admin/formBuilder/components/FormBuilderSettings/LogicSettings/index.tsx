@@ -21,20 +21,24 @@ type LogicSettingsProps = {
 export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
+
   if (isNilOrError(locale)) {
     return null;
   } else {
-    // If select field
-    let questions = field.options?.map((option) => ({
-      label: option.title_multiloc['en']?.toString(),
+    // Select Field
+    let answers = field.options?.map((option) => ({
+      key: option.id?.toString(),
+      label: option.title_multiloc[locale]?.toString(),
     }));
-    // If linear scale field
+
+    // Linear Scale Field
     if (field.input_type === 'linear_scale') {
       const linearScaleOptionArray = Array.from(
         { length: field.maximum },
         (_, i) => i + 1
       );
-      questions = linearScaleOptionArray.map((option) => ({
+      answers = linearScaleOptionArray.map((option) => ({
+        key: option.toString(),
         label: option.toString(),
       }));
     }
@@ -45,12 +49,13 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
           <Warning text={formatMessage(messages.logicWarning)} />
         </Box>
         {/* For each option in the field, provide the rule input */}
-        {questions &&
-          questions.map((question, i) => (
+        {answers &&
+          answers.map((answer, i) => (
             <Box key={i}>
               <RuleInput
-                questionTitle={question.label || ''}
-                options={pageOptions}
+                name={`customFields.${field.index}.logic`}
+                answer={answer}
+                pages={pageOptions}
               />
             </Box>
           ))}

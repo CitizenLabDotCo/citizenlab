@@ -199,7 +199,7 @@ const FormBuilderSettings = ({
               style={{ cursor: 'pointer' }}
             >
               <Text mb="12px" textAlign="center" color="coolGrey600">
-                Logic
+                <FormattedMessage {...messages.Logic} />
               </Text>
             </Box>
           </Box>

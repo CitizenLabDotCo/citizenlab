@@ -96,6 +96,8 @@ export const FormEdit = ({
         minimum_label_multiloc: object(),
         maximum_label_multiloc: object(),
         required: boolean(),
+        temp_id: string(),
+        logic: object(),
       })
     ),
   });
@@ -193,13 +195,16 @@ export const FormEdit = ({
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
+        temp_id: field.temp_id,
+        ...(field.input_type !== 'page' && {
+          logic: field.logic,
+        }),
         required: field.required,
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
         description_multiloc: field.description_multiloc || {},
         ...((field.input_type === 'multiselect' ||
           field.input_type === 'select') && {
-          // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
         }),
         ...(field.input_type === 'linear_scale' && {
@@ -227,17 +232,20 @@ export const FormEdit = ({
     // validating against cyclical form flows, so to not have an error state here,
     // all pages should be available in the list.
     const pageArray: { value: string; label: string }[] = [];
-    fields?.map((field) => {
+    defaultValues.customFields?.map((field) => {
       if (field.input_type === 'page') {
-        const page = {
-          value: field.id,
-          label: `${formatMessage(messages.Page)} ${getIndexForTitle(
-            fields,
+        pageArray.push({
+          value: field.id || field.temp_id,
+          label: `${formatMessage(messages.page)} ${getIndexForTitle(
+            defaultValues.customFields,
             field
           )}`,
-        };
-        pageArray.push(page);
+        });
       }
+    });
+    pageArray.push({
+      value: 'survey_end',
+      label: `${formatMessage(messages.surveyEnd)}`,
     });
     return pageArray;
   };
