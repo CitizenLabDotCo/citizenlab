@@ -159,10 +159,11 @@ const BannerImageField = ({
       {bannerLayout === 'fixed_ratio_layout' && (
         <CropComponent
           headerLocalDisplayImage={headerLocalDisplayImage}
-          onRemoveImage={bannerImageRemoveHandler}
-          onAddImage={bannerImageAddHandler}
+          onRemoveImageFile={bannerImageRemoveHandler}
+          onAddImageFile={bannerImageAddHandler}
           overlayColor={bannerOverlayColor}
           overlayOpacity={bannerOverlayOpacity}
+          onAddCroppedImage={onAddImage}
         />
       )}
       {bannerLayout !== 'fixed_ratio_layout' && (
@@ -248,16 +249,18 @@ export default BannerImageField;
 
 type CropComponentProps = {
   headerLocalDisplayImage: UploadFile[] | null;
-  onRemoveImage: () => void;
-  onAddImage: (newImage: UploadFile[]) => void;
+  onRemoveImageFile: () => void;
+  onAddImageFile: (newImage: UploadFile[]) => void;
+  onAddCroppedImage: (newImage: string) => void;
   overlayColor: string | null;
   overlayOpacity: number | null;
 };
 
 const CropComponent = ({
   headerLocalDisplayImage,
-  onRemoveImage,
-  onAddImage,
+  onRemoveImageFile,
+  onAddImageFile,
+  onAddCroppedImage,
   overlayColor,
   overlayOpacity,
 }: CropComponentProps) => {
@@ -268,7 +271,7 @@ const CropComponent = ({
   const displayImageHeaderDropzone = remoteImage;
 
   const bannerImageRemoveHandler = () => {
-    onRemoveImage();
+    onRemoveImageFile();
   };
 
   return (
@@ -276,7 +279,7 @@ const CropComponent = ({
       <SectionField>
         {displayImageHeaderDropzone && (
           <HeaderImageDropzone
-            onAdd={onAddImage}
+            onAdd={onAddImageFile}
             onRemove={bannerImageRemoveHandler}
             overlayColor={overlayColor}
             overlayOpacity={overlayOpacity}
@@ -287,7 +290,10 @@ const CropComponent = ({
           />
         )}
         {!displayImageHeaderDropzone && (
-          <ImageCropper image={headerLocalDisplayImage} onComplete={() => {}} />
+          <ImageCropper
+            image={headerLocalDisplayImage}
+            onComplete={onAddCroppedImage}
+          />
         )}
       </SectionField>
     </div>
