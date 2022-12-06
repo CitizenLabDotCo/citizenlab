@@ -129,7 +129,6 @@ describe('Project status card data parsing', () => {
             all: 'count',
           },
           filters: {
-            finished: false,
             status: 'published',
           },
         },

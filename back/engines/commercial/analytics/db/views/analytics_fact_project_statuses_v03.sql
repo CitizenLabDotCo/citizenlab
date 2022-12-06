@@ -1,8 +1,9 @@
--- This view has one record for each project with last status of each project.
--- Deleted projects are not included.
--- The additional 'finished' column isis computed based on whether the archived status
--- or where the last phase has been completed. It enables querying of projects that
--- are currently published (ie not finished via timeline) and projects that are finished.
+-- This view has one record for each project with the last status of each project. 
+-- Deleted projects are not included. 
+-- The additional 'finished' column is computed based on whether the project has an
+-- archived status or whether the last phase has been completed. It enables querying
+-- of projects that are currently published (i.e. not finished via timeline) and 
+-- projects that are finished.
 
 WITH finished_statuses_for_timeline_projects AS
     -- The project is considered finished at the beginning of the day following the end
@@ -15,19 +16,10 @@ WITH finished_statuses_for_timeline_projects AS
 SELECT
     ap.publication_id as dimension_project_id,
     ap.publication_status as status,
-    CASE
-       WHEN p.process_type = 'continuous' AND ap.publication_status = 'archived' THEN true
-       WHEN fsftp.project_id IS NOT NULL AND ap.publication_status != 'draft' THEN true
-       ELSE false
-    END as finished,
-    CASE
-       WHEN fsftp.project_id IS NOT NULL THEN fsftp.timestamp
-       ELSE ap.updated_at
-    END as timestamp,
-    CASE
-       WHEN fsftp.project_id IS NOT NULL THEN fsftp.timestamp::DATE
-       ELSE ap.updated_at::DATE
-    END as dimension_date_id
+    (p.process_type = 'continuous' AND ap.publication_status = 'archived') OR
+    (fsftp.project_id IS NOT NULL AND ap.publication_status != 'draft') as finished,
+    COALESCE(fsftp.timestamp, ap.updated_at) as timestamp,
+    COALESCE(fsftp.timestamp::DATE, ap.updated_at::DATE) as dimension_date_id
 FROM admin_publications ap
 LEFT JOIN projects p ON ap.publication_id = p.id
 LEFT JOIN finished_statuses_for_timeline_projects fsftp ON fsftp.project_id = ap.publication_id

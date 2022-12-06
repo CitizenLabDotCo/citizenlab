@@ -118,7 +118,7 @@ export const projectStatusConfig: StatCardConfig = {
     };
 
     const queryTotal: QuerySchema = queryBase();
-    const queryActive: QuerySchema = queryBase('published', false);
+    const queryActive: QuerySchema = queryBase('published');
     const queryArchived: QuerySchema = queryBase('archived');
     const queryFinished: QuerySchema = queryBase(undefined, true);
     const queryDraft: QuerySchema = queryBase('draft', false);

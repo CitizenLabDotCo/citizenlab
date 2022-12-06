@@ -1751,19 +1751,9 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
           )
    SELECT ap.publication_id AS dimension_project_id,
       ap.publication_status AS status,
-          CASE
-              WHEN (((p.process_type)::text = 'continuous'::text) AND ((ap.publication_status)::text = 'archived'::text)) THEN true
-              WHEN ((fsftp.project_id IS NOT NULL) AND ((ap.publication_status)::text <> 'draft'::text)) THEN true
-              ELSE false
-          END AS finished,
-          CASE
-              WHEN (fsftp.project_id IS NOT NULL) THEN fsftp."timestamp"
-              ELSE ap.updated_at
-          END AS "timestamp",
-          CASE
-              WHEN (fsftp.project_id IS NOT NULL) THEN (fsftp."timestamp")::date
-              ELSE (ap.updated_at)::date
-          END AS dimension_date_id
+      ((((p.process_type)::text = 'continuous'::text) AND ((ap.publication_status)::text = 'archived'::text)) OR ((fsftp.project_id IS NOT NULL) AND ((ap.publication_status)::text <> 'draft'::text))) AS finished,
+      COALESCE(fsftp."timestamp", ap.updated_at) AS "timestamp",
+      COALESCE((fsftp."timestamp")::date, (ap.updated_at)::date) AS dimension_date_id
      FROM ((admin_publications ap
        LEFT JOIN projects p ON ((ap.publication_id = p.id)))
        LEFT JOIN finished_statuses_for_timeline_projects fsftp ON ((fsftp.project_id = ap.publication_id)))
