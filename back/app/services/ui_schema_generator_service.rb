@@ -80,6 +80,10 @@ class UiSchemaGeneratorService < FieldVisitorService
     }
   end
 
+  def visit_page(_field)
+    nil
+  end
+
   protected
 
   def generate_for_current_locale(fields)
