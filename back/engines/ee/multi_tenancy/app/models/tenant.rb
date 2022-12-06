@@ -241,6 +241,10 @@ class Tenant < ApplicationRecord
     active? && changed_lifecycle_stage
   end
 
+  def deleted?
+    !!deleted_at
+  end
+
   private
 
   def create_app_configuration

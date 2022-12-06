@@ -109,10 +109,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            user_custom_fields: {
-              enabled: true,
-              allowed: true
-            },
             representativeness: {
               enabled: true,
               allowed: true
