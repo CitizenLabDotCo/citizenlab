@@ -37,7 +37,7 @@ const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
           image={image[0].base64}
           crop={crop}
           zoom={1}
-          aspect={16 / 9}
+          aspect={3}
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
           showGrid={false}
