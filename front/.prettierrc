@@ -2,8 +2,9 @@
   "singleQuote": true,
   "importOrder": [
     "react",
+    "styled-components",
     "<THIRD_PARTY_MODULES>",
-    "@/(.*)",
+    "@",
     "resources",
     "hooks",
     "services",
