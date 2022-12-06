@@ -7,8 +7,6 @@ import {
   Text,
   stylingConsts,
   colors,
-  Icon,
-  Select,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
@@ -18,7 +16,7 @@ import Toggle from 'components/HookForm/Toggle';
 
 // intl
 import messages from '../messages';
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // types
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
@@ -29,9 +27,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import { getAdditionalSettings } from './utils';
-import Warning from 'components/UI/Warning';
 import { LogicSettings } from './LogicSettings';
 interface Props {
+  logicPageList: { value: string; label: string }[];
   field: IFlatCustomFieldWithIndex;
   onDelete: (fieldIndex: number) => void;
   onClose: () => void;
@@ -39,13 +37,13 @@ interface Props {
 }
 
 const FormBuilderSettings = ({
+  logicPageList,
   field,
   onDelete,
   onClose,
   isDeleteDisabled = false,
 }: Props) => {
   const locales = useAppConfigurationLocales();
-  const { formatMessage } = useIntl();
   const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
 
   if (isNilOrError(locales)) {
@@ -273,7 +271,7 @@ const FormBuilderSettings = ({
           </Box>
         )}
         {showTabbedSettings && currentTab === 'logic' && (
-          <LogicSettings field={field} locales={locales} />
+          <LogicSettings pageOptions={logicPageList} field={field} />
         )}
       </Box>
     </>

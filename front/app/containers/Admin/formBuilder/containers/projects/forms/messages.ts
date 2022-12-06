@@ -30,4 +30,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadAllResults',
     defaultMessage: 'Download all survey results',
   },
+  Page: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.Page',
+    defaultMessage: 'Page',
+  },
 });

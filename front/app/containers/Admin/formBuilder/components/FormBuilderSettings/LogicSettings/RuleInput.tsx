@@ -10,28 +10,30 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { SectionField } from 'components/admin/Section';
 
 // intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-export const RuleInput = () => {
+type RuleInputProps = {
+  questionTitle: string;
+  options:
+    | {
+        value: string | undefined;
+        label: string;
+      }[]
+    | undefined;
+};
+export const RuleInput = ({ options, questionTitle }: RuleInputProps) => {
   const [selectedPage, setSelectedPage] = useState<string | null>('id1');
   const [showRuleInput, setShowRuleInput] = useState<boolean>(false);
-
-  // Get options --> will be all the pages from the field to survey_end
-  const options = [
-    { value: 'id1', label: 'Page 1' },
-    { value: 'id2', label: 'Page 2' },
-  ];
 
   const onStatusChange = (option: IOption) => {
     setSelectedPage(option.value);
   };
 
   return (
-    <SectionField>
+    <>
       <Box
         mb="0px"
         display="flex"
@@ -45,7 +47,7 @@ export const RuleInput = () => {
         </Box>
         <Box width="215px" flexGrow={0} flexShrink={0} flexWrap="wrap">
           <Text fontSize="s" fontWeight="bold">
-            Lorem ipsum dolor sit
+            {questionTitle}
           </Text>
         </Box>
         {!showRuleInput && (
@@ -68,18 +70,20 @@ export const RuleInput = () => {
         )}
       </Box>
       {showRuleInput && (
-        <Box display="flex">
+        <Box mb="24px" display="flex">
           <Box flexGrow={0} flexShrink={0} width="320px">
-            <Select
-              value={selectedPage}
-              options={options}
-              label={
-                <Text mb="0px" margin="0px" color="coolGrey600" fontSize="s">
-                  <FormattedMessage {...messages.goToPageInputLabel} />
-                </Text>
-              }
-              onChange={onStatusChange}
-            />
+            {options && (
+              <Select
+                value={selectedPage}
+                options={options}
+                label={
+                  <Text mb="0px" margin="0px" color="coolGrey600" fontSize="s">
+                    <FormattedMessage {...messages.goToPageInputLabel} />
+                  </Text>
+                }
+                onChange={onStatusChange}
+              />
+            )}
           </Box>
           <Box ml="auto" flexGrow={0} flexShrink={0}>
             <Button
@@ -97,6 +101,6 @@ export const RuleInput = () => {
           </Box>
         </Box>
       )}
-    </SectionField>
+    </>
   );
 };
