@@ -57,7 +57,7 @@ class HomePage < ApplicationRecord
 
   validates :banner_avatars_enabled, inclusion: [true, false]
 
-  validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
+  validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout]
   validates :banner_signed_in_header_multiloc, multiloc: true
 
   validates :banner_signed_out_header_multiloc, multiloc: true
