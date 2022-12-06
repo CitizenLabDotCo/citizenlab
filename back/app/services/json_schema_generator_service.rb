@@ -189,7 +189,10 @@ class JsonSchemaGeneratorService < FieldVisitorService
 
   def generate_for_current_locale(fields)
     field_properties = fields.each_with_object({}) do |field, accu|
-      accu[field.key] = visit field
+      field_schema = visit field
+      next unless field_schema
+
+      accu[field.key] = field_schema
     end
     {
       type: 'object',

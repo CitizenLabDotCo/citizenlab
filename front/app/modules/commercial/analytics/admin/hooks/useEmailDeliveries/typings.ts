@@ -1,9 +1,4 @@
-import {
-  Dates,
-  Resolution,
-  // Stat,
-  GetTimeSeriesResponse,
-} from '../../typings';
+import { Dates, Resolution } from '../../typings';
 
 export type QueryParameters = Dates & Resolution;
 
@@ -27,20 +22,21 @@ interface StatRow {
   count_campaign_id?: string | null;
 }
 
-type Prefix = 'dimension_date_sent';
-export type TimeSeriesResponse = GetTimeSeriesResponse<Prefix, BaseRow>;
-export type TimeSeriesResponseRow = TimeSeriesResponse[number];
+export type TimeSeriesResponse = TimeSeriesResponseRow[];
+
+export interface TimeSeriesResponseRow extends BaseRow {
+  first_dimension_date_sent_date: string;
+}
 
 interface PreparedBaseRow {
   automated: number;
   custom: number;
 }
 
-export type PreparedTimeSeriesResponse = GetTimeSeriesResponse<
-  Prefix,
-  PreparedBaseRow
->;
-export type PreparedTimeSeriesResponseRow = PreparedTimeSeriesResponse[number];
+export type PreparedTimeSeriesResponse = PreparedTimeSeriesResponseRow[];
+export interface PreparedTimeSeriesResponseRow extends PreparedBaseRow {
+  first_dimension_date_sent_date: string;
+}
 
 // Hook return value
 export interface TimeSeriesRow {
