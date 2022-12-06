@@ -85,27 +85,30 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
             }
           />
         </LayoutOption>
-        <LayoutOption>
-          <LayoutOptionTop data-cy="e2e-two-column-layout-option">
-            <Radio
-              onChange={onChange}
-              currentValue={bannerLayout}
-              value="two_column_layout"
-              name="banner-layout"
-              id="banner-two-column-layout"
+
+        {bannerLayout === 'two_column_layout' && (
+          <LayoutOption>
+            <LayoutOptionTop data-cy="e2e-two-column-layout-option">
+              <Radio
+                onChange={onChange}
+                currentValue={bannerLayout}
+                value="two_column_layout"
+                name="banner-layout"
+                id="banner-two-column-layout"
+              />
+              <LayoutOptionTextWrapper>
+                <FormattedMessage {...messages.TwoColumnLayout} />
+              </LayoutOptionTextWrapper>
+            </LayoutOptionTop>
+            <LayoutPreview
+              src={
+                bannerLayout === 'two_column_layout'
+                  ? TwoColumnLayoutActive
+                  : TwoColumnLayoutInactive
+              }
             />
-            <LayoutOptionTextWrapper>
-              <FormattedMessage {...messages.TwoColumnLayout} />
-            </LayoutOptionTextWrapper>
-          </LayoutOptionTop>
-          <LayoutPreview
-            src={
-              bannerLayout === 'two_column_layout'
-                ? TwoColumnLayoutActive
-                : TwoColumnLayoutInactive
-            }
-          />
-        </LayoutOption>
+          </LayoutOption>
+        )}
 
         <LayoutOption>
           <LayoutOptionTop>
