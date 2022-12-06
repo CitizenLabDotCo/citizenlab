@@ -81,7 +81,7 @@ const ContentBuilderTopBar = ({
           <Text mb="0px" color="textSecondary">
             <FormattedMessage {...messages.reportCreator} />
           </Text>
-          <Title variant="h4" as="h1">
+          <Title variant="h4" as="h1" color="primary">
             Report title goes here
           </Title>
         </Box>
