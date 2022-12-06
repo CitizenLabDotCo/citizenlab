@@ -1,3 +1,4 @@
+import { RuleEffect } from '@jsonforms/core';
 import Ajv from 'ajv';
 import {
   getPageSchema,
@@ -185,6 +186,109 @@ describe('getPageSchema', () => {
       data,
       customAjv
     );
+    expect(pageSchema).toEqual(expectedPageSchema);
+  });
+
+  it('should remove hidden fields that are required from the required key of the page ', () => {
+    const schema = {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        multiple_choice: {
+          type: 'string',
+          oneOf: [
+            {
+              const: 'mangoes',
+              title: 'Mangoes',
+            },
+            {
+              const: 'pineapples',
+              title: 'Pineapples',
+            },
+          ],
+        },
+        number: {
+          type: 'number',
+        },
+      },
+      required: ['multiple_choice', 'number'],
+    };
+
+    const pageCategorization: PageType = {
+      type: 'Page',
+      label: 'Testlabel',
+      options: {
+        id: 'extra',
+      },
+      elements: [
+        {
+          type: 'Control',
+          scope: '#/properties/multiple_choice',
+          label: 'Fruits',
+          options: {
+            description: '',
+            isAdminField: false,
+          },
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/number',
+          label: 'Number',
+          options: {
+            description: '',
+            isAdminField: false,
+          },
+          ruleArray: [
+            {
+              effect: RuleEffect.SHOW,
+              condition: {
+                scope: '#/properties/multiple_choice',
+                schema: {
+                  enum: ['pineapples'],
+                },
+              },
+            },
+          ],
+        },
+      ],
+    };
+
+    const data = {
+      multiple_choice: 'mangoes',
+      number: 45,
+    };
+
+    const expectedPageSchema = {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        multiple_choice: {
+          type: 'string',
+          oneOf: [
+            {
+              const: 'mangoes',
+              title: 'Mangoes',
+            },
+            {
+              const: 'pineapples',
+              title: 'Pineapples',
+            },
+          ],
+        },
+        number: {
+          type: 'number',
+        },
+      },
+      required: ['multiple_choice'],
+    };
+
+    const pageSchema = getPageSchema(
+      schema,
+      pageCategorization,
+      data,
+      customAjv
+    );
+
     expect(pageSchema).toEqual(expectedPageSchema);
   });
 });

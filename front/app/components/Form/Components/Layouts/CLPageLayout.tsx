@@ -34,7 +34,7 @@ import {
   isPageCategorization,
   PageType,
 } from 'components/Form/Components/Layouts/utils';
-import { ExtendedUISchema, isVisible } from '../Controls/visibilityUtils';
+import { isVisible } from '../Controls/visibilityUtils';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
