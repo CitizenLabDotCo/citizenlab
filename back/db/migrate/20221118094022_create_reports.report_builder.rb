@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from report_builder (originally 20221109151729)
 
 class CreateReports < ActiveRecord::Migration[6.1]
