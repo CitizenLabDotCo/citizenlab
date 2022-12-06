@@ -39,7 +39,7 @@ const ContentBuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
-  draftEditorData,
+  // draftEditorData,
   localesWithError,
   hasPendingState,
 }: ContentBuilderTopBarProps) => {
@@ -57,7 +57,6 @@ const ContentBuilderTopBar = ({
       try {
         setLoading(true);
         // TODO
-        console.log(draftEditorData);
       } catch {
         // Do nothing
       }

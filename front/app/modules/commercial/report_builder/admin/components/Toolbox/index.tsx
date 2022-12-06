@@ -11,8 +11,10 @@ type Props = {
   selectedLocale: Locale;
 };
 
-const ContentBuilderToolbox = ({}: // selectedLocale,
-Props) => {
+const ContentBuilderToolbox = (
+  _: // selectedLocale,
+  Props
+) => {
   return (
     <Container>
       <SectionTitle>Widgets</SectionTitle>

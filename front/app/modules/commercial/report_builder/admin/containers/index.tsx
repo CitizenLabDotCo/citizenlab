@@ -83,7 +83,7 @@ const ReportBuilder = () => {
         ];
       }
     } else return undefined;
-  }, []);
+  }, [contentBuilderLayout, selectedLocale, draftData]);
 
   const handleEditorChange = useCallback((nodes: SerializedNodes) => {
     iframeRef.current &&
@@ -100,7 +100,10 @@ const ReportBuilder = () => {
       editorData: SerializedNodes;
     }) => {
       if (selectedLocale && selectedLocale !== locale) {
-        setDraftData({ ...draftData, [selectedLocale]: editorData });
+        setDraftData((draftData) => ({
+          ...draftData,
+          [selectedLocale]: editorData,
+        }));
       }
 
       iframeRef.current &&
@@ -112,7 +115,7 @@ const ReportBuilder = () => {
 
       setSelectedLocale(locale);
     },
-    []
+    [selectedLocale]
   );
 
   return (
