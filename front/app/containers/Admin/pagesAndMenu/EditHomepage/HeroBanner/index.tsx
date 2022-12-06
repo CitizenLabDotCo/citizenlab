@@ -29,6 +29,7 @@ import HelmetIntl from 'components/HelmetIntl';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../containers/GenericHeroBannerForm/messages';
+import CTASettings from '../../containers/GenericHeroBannerForm//CTASettings';
 
 const EditHomepageHeroBannerForm = ({
   intl: { formatMessage },
@@ -228,9 +229,8 @@ const EditHomepageHeroBannerForm = ({
               onChange={handleOnChangeBannerAvatarsEnabled}
             />
           }
-          outletSectionEnd={
-            <Outlet
-              id="app.containers.Admin.settings.customize.headerSectionEnd"
+          ctaSettingsComponent={
+            <CTASettings
               localHomepageSettings={localSettings}
               onChange={handleOnChange}
               apiErrors={apiErrors}

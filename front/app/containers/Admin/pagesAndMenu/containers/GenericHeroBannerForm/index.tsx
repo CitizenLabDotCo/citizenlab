@@ -32,7 +32,7 @@ interface Props {
   bannerMultilocFieldComponent?: ReactElement;
   avatarsFieldComponent?: ReactElement;
   ctaButtonFieldsComponent?: ReactElement;
-  outletSectionEnd?: ReactElement;
+  ctaSettingsComponent?: ReactElement;
   badge?: JSX.Element;
   linkToViewPage?: string;
 }
@@ -46,7 +46,7 @@ const GenericHeroBannerForm = ({
   breadcrumbs,
   outletSectionStart,
   avatarsFieldComponent,
-  outletSectionEnd,
+  ctaSettingsComponent,
   bannerMultilocFieldComponent,
   bannerHeaderFieldsComponent,
   bannerImageFieldsComponent,
@@ -100,11 +100,7 @@ const GenericHeroBannerForm = ({
             {avatarsFieldComponent}
             {/* The custom page hero banner form has the CTA button fields inserted via the core */}
             {ctaButtonFieldsComponent}
-            {/*
-          The home page hero banner form has CTA button fields inserted
-          via the outlet below (customizable_homepage_banner module)
-        */}
-            {outletSectionEnd}
+            {ctaSettingsComponent}
           </Box>
         </Section>
       </SectionFormWrapper>

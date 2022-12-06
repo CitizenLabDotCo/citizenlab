@@ -10,7 +10,6 @@ import {
   THomepageBannerLayout,
 } from 'services/homepageSettings';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const CTASettings = React.lazy(() => import('./admin/CTASettings'));
 
 declare module 'utils/moduleUtils' {
   export interface OutletsPropertyMap {
@@ -34,9 +33,6 @@ const configuration: ModuleConfiguration = {
         onChange('banner_layout', bannerLayout);
       };
       return <LayoutSettingField onChange={handleOnChange} {...otherProps} />;
-    },
-    'app.containers.Admin.settings.customize.headerSectionEnd': (props) => {
-      return <CTASettings {...props} />;
     },
   },
 };
