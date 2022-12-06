@@ -4,7 +4,7 @@
 
 ### Added
 
-- [CL-1893] Added Pages to in-platform survey tool
+- [CL-1892] Added Pages to in-platform survey tool
 
 ## 2022-12-05
 
