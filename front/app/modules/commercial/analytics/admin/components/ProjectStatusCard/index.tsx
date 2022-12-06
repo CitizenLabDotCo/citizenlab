@@ -18,6 +18,7 @@ const ProjectStatusCard = ({
       endAtMoment={endAtMoment}
       resolution={resolution}
       showExportMenu={false}
+      alignItems="center"
     />
   );
 };
