@@ -17,7 +17,8 @@ export interface SortableRowProps {
   isLastItem?: boolean;
   rowHeight?: string;
   children?: React.ReactNode;
-  moveRow: (dragIndex: number, hoverIndex: number) => void;
+  moveRow?: (dragIndex: number, hoverIndex: number) => void;
+  dropRow?: (initialIndex: number, finalIndex: number) => void;
 }
 
 interface DragItem {
@@ -33,6 +34,7 @@ export const SortableRow: FC<SortableRowProps> = ({
   children,
   index,
   moveRow,
+  dropRow,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<
@@ -82,7 +84,9 @@ export const SortableRow: FC<SortableRowProps> = ({
       }
 
       // Perform the move action
-      moveRow(dragIndex, hoverIndex);
+      if (moveRow) {
+        moveRow(dragIndex, hoverIndex);
+      }
       item.index = hoverIndex;
     },
   });
@@ -92,6 +96,11 @@ export const SortableRow: FC<SortableRowProps> = ({
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    end(item: DragItem) {
+      if (dropRow) {
+        dropRow(index, item.index);
+      }
+    },
   });
 
   const opacity = isDragging ? 0.8 : 1;

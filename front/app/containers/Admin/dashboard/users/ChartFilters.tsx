@@ -2,52 +2,44 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import ProjectFilter from '../components/filters/ProjectFilter';
 import GroupFilter from '../components/filters/GroupFilter';
-import TopicFilter from '../components/filters/TopicFilter';
+import TimeControl from '../components/TimeControl';
 
 // typings
 import { IOption } from 'typings';
+import { Moment } from 'moment';
 
 interface Props {
-  currentProjectFilter?: string;
+  startAtMoment?: Moment | null | undefined;
+  endAtMoment: Moment | null;
   currentGroupFilter?: string;
-  currentTopicFilter?: string;
-  onProjectFilter?: (filter: IOption) => void;
-  onGroupFilter?: (filter: IOption) => void;
-  onTopicFilter?: (filter: IOption) => void;
+  onChangeTimeRange: (
+    startAtMoment: Moment | null,
+    endAtMoment: Moment | null
+  ) => void;
+  onGroupFilter: (filter: IOption) => void;
 }
 
 const ChartFilters = ({
-  currentProjectFilter,
+  startAtMoment,
+  endAtMoment,
   currentGroupFilter,
-  currentTopicFilter,
-  onProjectFilter,
   onGroupFilter,
-  onTopicFilter,
+  onChangeTimeRange,
 }: Props) => {
   return (
-    <Box display="flex" width="100%" justifyContent="space-between">
-      {onProjectFilter && (
-        <ProjectFilter
-          currentProjectFilter={currentProjectFilter}
-          onProjectFilter={onProjectFilter}
-        />
-      )}
-
-      {onGroupFilter && (
+    <Box width="100%" display="flex" mt="-10px">
+      <TimeControl
+        startAtMoment={startAtMoment}
+        endAtMoment={endAtMoment}
+        onChange={onChangeTimeRange}
+      />
+      <Box ml="12px">
         <GroupFilter
           currentGroupFilter={currentGroupFilter}
           onGroupFilter={onGroupFilter}
         />
-      )}
-
-      {onTopicFilter && (
-        <TopicFilter
-          currentTopicFilter={currentTopicFilter}
-          onTopicFilter={onTopicFilter}
-        />
-      )}
+      </Box>
     </Box>
   );
 };

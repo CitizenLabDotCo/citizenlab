@@ -1,30 +1,10 @@
 // i18n
 import messages from '../messages';
-import { isMonth, isWeek } from './timeSeries';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { FormatMessage } from 'typings';
-import { DateRow, DateColumn } from '../typings';
 import moment from 'moment';
-
-export const resolutionDeducer =
-  <Prefix extends string>(prefix: Prefix) =>
-  (series: DateRow<Prefix>[]): IResolution | null =>
-    deduceResolution(series[0], prefix);
-
-const deduceResolution = <Prefix extends string>(
-  row: DateRow<Prefix>,
-  prefix: Prefix
-): IResolution => {
-  const monthColumn: DateColumn<Prefix, 'month'> = `${prefix}.month`;
-  if (isMonth(row, monthColumn)) return 'month';
-
-  const weekColumn: DateColumn<Prefix, 'week'> = `${prefix}.week`;
-  if (isWeek(row, weekColumn)) return 'week';
-
-  return 'day';
-};
 
 interface TimePeriodTranslations {
   last30Days: string;

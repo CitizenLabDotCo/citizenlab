@@ -8,8 +8,10 @@ import messages from './messages';
 
 export default injectIntl<WrappedComponentProps>(({ intl }) => (
   <EventsViewer
+    showProjectFilter={true}
     title={intl.formatMessage(messages.pastEvents)}
     fallbackMessage={messages.noPastEvents}
     eventsTime="past"
+    onClickTitleGoToProjectAndScrollToEvent={true}
   />
 ));

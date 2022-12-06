@@ -94,7 +94,7 @@ interface Props {
    */
   inputId?: string;
   formSubmitText?: MessageDescriptor;
-  config?: 'default' | 'input';
+  config?: 'default' | 'input' | 'survey';
 }
 
 const Form = memo(
@@ -206,6 +206,7 @@ const Form = memo(
       },
       [formatMessage, getAjvErrorMessage]
     );
+
     const layoutType = isCategorization(uiSchema) ? 'fullpage' : 'inline';
     const renderers = selectRenderers(config || 'default');
 
@@ -213,14 +214,16 @@ const Form = memo(
       <Box
         as="form"
         minHeight={
-          isSmallerThanXlPhone && layoutType === 'fullpage'
+          isSmallerThanXlPhone &&
+          layoutType === 'fullpage' &&
+          config !== 'survey'
             ? `calc(100vh - ${stylingConsts.menuHeight}px)`
             : '100%'
         }
         height={
           isSmallerThanXlPhone
             ? '100%'
-            : layoutType === 'fullpage'
+            : layoutType === 'fullpage' && config !== 'survey'
             ? '100vh'
             : '100%'
         }
@@ -229,7 +232,7 @@ const Form = memo(
         maxHeight={
           layoutType === 'inline'
             ? 'auto'
-            : isSmallerThanXlPhone
+            : isSmallerThanXlPhone || config === 'survey'
             ? 'auto'
             : `calc(100vh - ${stylingConsts.menuHeight}px)`
         }
