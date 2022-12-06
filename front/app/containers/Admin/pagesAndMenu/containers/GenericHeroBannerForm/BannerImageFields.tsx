@@ -31,7 +31,7 @@ import ImageCropper from 'components/admin/ImageCropper';
 
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
-interface Props {
+export interface Props {
   onAddImage: (newImageBase64: string) => void;
   onRemoveImage: () => void;
   onOverlayColorChange: (color: string) => void;
@@ -87,7 +87,6 @@ const BannerImageField = ({
 
     const headerFileInfo = headerBg?.large;
     convertHeaderToUploadFile(headerFileInfo);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerBg]);
 
   // set error and disable save button if header is removed,
@@ -138,6 +137,11 @@ const BannerImageField = ({
     !isNilOrError(headerLocalDisplayImage) &&
     bannerLayout !== 'fixed_ratio_layout';
 
+  const displayOverlayControls =
+    (bannerLayout === 'full_width_banner_layout' ||
+      bannerLayout === 'fixed_ratio_layout') &&
+    headerLocalDisplayImage;
+
   return (
     <>
       <SubSectionTitle>
@@ -165,31 +169,28 @@ const BannerImageField = ({
       </SubSectionTitle>
       <SectionField>
         {displayPreviewDevice && (
-          <>
-            <Label>
-              <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
-            </Label>
-            <Box mb="20px">
-              <Select
-                options={[
-                  {
-                    value: 'desktop',
-                    label: formatMessage(messages.desktop),
-                  },
-                  {
-                    value: 'tablet',
-                    label: formatMessage(messages.tablet),
-                  },
-                  {
-                    value: 'phone',
-                    label: formatMessage(messages.phone),
-                  },
-                ]}
-                onChange={(option: IOption) => setPreviewDevice(option.value)}
-                value={previewDevice}
-              />
-            </Box>
-          </>
+          <Box mb="20px">
+            <Select
+              label={formatMessage(messages.bgHeaderPreviewSelectLabel)}
+              id="display-preview-device"
+              options={[
+                {
+                  value: 'desktop',
+                  label: formatMessage(messages.desktop),
+                },
+                {
+                  value: 'tablet',
+                  label: formatMessage(messages.tablet),
+                },
+                {
+                  value: 'phone',
+                  label: formatMessage(messages.phone),
+                },
+              ]}
+              onChange={(option: IOption) => setPreviewDevice(option.value)}
+              value={previewDevice}
+            />
+          </Box>
         )}
         {displayImageCropper ? (
           <ImageCropper
@@ -210,39 +211,36 @@ const BannerImageField = ({
         )}
       </SectionField>
       {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
-      {(bannerLayout === 'full_width_banner_layout' ||
-        bannerLayout === 'fixed_ratio_layout') &&
-        headerLocalDisplayImage && (
-          <>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayColor} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={
-                  // default values come from the theme
-                  bannerOverlayColor ?? theme.colors.tenantPrimary
-                }
-                onChange={handleOverlayColorOnChange}
-              />
-            </SectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={
-                  bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
-                }
-                onChange={debouncedHandleOverlayOpacityOnChange}
-              />
-            </SectionField>
-          </>
-        )}
+      {displayOverlayControls && (
+        <>
+          <SectionField>
+            <ColorPickerInput
+              id="image-overlay-color"
+              label={formatMessage(messages.imageOverlayColor)}
+              type="text"
+              value={
+                // default values come from the theme
+                bannerOverlayColor ?? theme.colors.tenantPrimary
+              }
+              onChange={handleOverlayColorOnChange}
+            />
+          </SectionField>
+          <SectionField>
+            <Label htmlFor="opacityInput">
+              <FormattedMessage {...messages.imageOverlayOpacity} />
+            </Label>
+            <RangeInput
+              step={1}
+              min={0}
+              max={100}
+              value={
+                bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
+              }
+              onChange={debouncedHandleOverlayOpacityOnChange}
+            />
+          </SectionField>
+        </>
+      )}
     </>
   );
 };

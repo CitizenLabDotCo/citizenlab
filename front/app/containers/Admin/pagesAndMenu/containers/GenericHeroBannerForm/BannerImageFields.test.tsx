@@ -1,32 +1,122 @@
 import React from 'react';
-import BannerImageFields from './BannerImageFields';
-import { render, screen } from 'utils/testUtils/rtl';
+import BannerImageFields, { Props } from './BannerImageFields';
+import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
 
 jest.mock('utils/cl-intl');
 
-// note: this component mostly relies on an image retrieved from the server/aws
-// so most testing should be done in e2e tests
+const props = {
+  bannerOverlayColor: '#fff',
+  bannerOverlayOpacity: 90,
+  bannerLayout: 'full_width_banner_layout',
+  headerBg: {
+    small: 'url',
+    medium: 'medium',
+    large: 'https://demo.stg.citizenlab.co/upload.png',
+  },
+  onAddImage: jest.fn(),
+  onRemoveImage: jest.fn(),
+  setFormStatus: jest.fn(),
+  onOverlayColorChange: jest.fn(),
+  onOverlayOpacityChange: jest.fn(),
+} as Props;
 
 describe('BannerImageFields', () => {
   it('renders properly', () => {
-    render(
-      <BannerImageFields
-        bannerOverlayColor={'#fff'}
-        bannerOverlayOpacity={90}
-        bannerLayout="full_width_banner_layout"
-        headerBg={{
-          small: 'url',
-          medium: 'medium',
-          large: 'http://www.fakeserver.com/testimage.png',
-        }}
-        onAddImage={jest.fn()}
-        onRemoveImage={jest.fn()}
-        setFormStatus={jest.fn()}
-        onOverlayColorChange={jest.fn()}
-        onOverlayOpacityChange={jest.fn()}
-      />
-    );
+    render(<BannerImageFields {...props} />);
 
     expect(screen.getByText('Header image')).toBeInTheDocument();
+  });
+  it('shows display preview select when the layout type is not fixed_ratio_layout', async () => {
+    render(<BannerImageFields {...props} />);
+
+    await waitFor(() => {
+      const select = screen.getByRole('combobox');
+      expect(select).toBeInTheDocument();
+    });
+  });
+
+  it('does not show display preview select when the layout type is fixed_ratio_layout', async () => {
+    render(<BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />);
+
+    await waitFor(() => {
+      const select = screen.queryByLabelText('Show preview for');
+      expect(select).not.toBeInTheDocument();
+    });
+  });
+
+  it('shows overlay controls correctly when full_width_banner_layout', async () => {
+    render(<BannerImageFields {...props} />);
+
+    await waitFor(() => {
+      const overlayInput = screen.getByLabelText('Image overlay color');
+      expect(overlayInput).toBeInTheDocument();
+    });
+  });
+
+  it('shows overlay controls correctly when fixed_ratio_layout', async () => {
+    render(<BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />);
+
+    await waitFor(() => {
+      const overlayInput = screen.getByLabelText('Image overlay color');
+      expect(overlayInput).toBeInTheDocument();
+    });
+  });
+
+  it('does not show overlay controls correctly when two_row_layout', async () => {
+    render(<BannerImageFields {...props} bannerLayout="two_row_layout" />);
+
+    await waitFor(() => {
+      const overlayInput = screen.queryByLabelText('Image overlay color');
+      expect(overlayInput).not.toBeInTheDocument();
+    });
+  });
+  it('does not show overlay controls correctly when two_column_layout', async () => {
+    render(<BannerImageFields {...props} bannerLayout="two_column_layout" />);
+
+    await waitFor(() => {
+      const overlayInput = screen.queryByLabelText('Image overlay color');
+      expect(overlayInput).not.toBeInTheDocument();
+    });
+  });
+
+  it('does not show react-easy-crop when image is remote for full_width_banner_layout', async () => {
+    const { container } = render(
+      <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
+    );
+
+    const file = new File(['file'], 'file.png', {
+      type: 'image/png',
+    });
+
+    await waitFor(() =>
+      fireEvent.change(container.querySelector('#header-dropzone'), {
+        target: { files: [file] },
+      })
+    );
+
+    await waitFor(() => {
+      const cropContainer = container.querySelector('.reactEasyCrop_Container');
+      expect(cropContainer).not.toBeInTheDocument();
+    });
+  });
+  it('shows react-easy-crop container when image is not remote for fixed_ratio_layout', async () => {
+    const { container } = render(
+      <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
+    );
+
+    const file = new File(['file'], 'file.png', {
+      type: 'image/png',
+    });
+
+    await waitFor(() =>
+      fireEvent.change(container.querySelector('#header-dropzone'), {
+        target: { files: [file] },
+      })
+    );
+
+    await waitFor(() => {
+      const cropContainer = container.querySelector('.reactEasyCrop_Container');
+      expect(cropContainer).toBeInTheDocument();
+    });
   });
 });
