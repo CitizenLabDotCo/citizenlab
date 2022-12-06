@@ -82,7 +82,7 @@ pl:
       "password_reset": Zmiana hasła - wszyscy użytkownicy
       "project_moderation_rights_received": Otrzymanie prawa do zarządzania projektem - menadżerowie projektu
       "project_folder_moderation_rights_received": Przydzielono uprawnienia menedżera folderów
-      "project_phase_started": Nowy etap projektu - wszyscy użytkownicy
+      "project_phase_started": Nowy etap projektu - uczestnicy projektu
       "project_phase_upcoming": Nowy etap projektu - administratorzy i menadżerowie projektu
       "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałeś - wszyscy użytkownicy
       "status_change_of_commented_initiative": Zmiana statusu propozycji, którą skomentowałeś - wszyscy użytkownicy
