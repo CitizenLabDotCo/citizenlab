@@ -20,7 +20,7 @@ const defaultProps: Props = {
   showSlugChangedWarning: false,
 };
 
-describe('SlugInputField', () => {
+describe('SlugInput', () => {
   it('shows the correct preview URL', () => {
     render(<SlugInput {...defaultProps} />);
     expect(screen.getByText(/\/en\/folders\/my-folder$/)).toBeInTheDocument();
