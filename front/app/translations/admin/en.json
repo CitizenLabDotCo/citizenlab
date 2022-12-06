@@ -1119,6 +1119,7 @@
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Project status",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Set up and personalize your project.",
+  "app.containers.AdminPage.ProjectEdit.survey.Page": "Page",
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Add answer",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Add survey content",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Cancel",
