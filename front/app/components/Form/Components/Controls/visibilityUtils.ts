@@ -18,6 +18,7 @@ import {
   resolveData,
 } from '@jsonforms/core';
 import { has } from 'lodash-es';
+import { PageType } from '../Layouts/utils';
 
 export type ExtendedRule = {
   /**
@@ -33,6 +34,7 @@ export type ExtendedRule = {
 
 export type ExtendedUISchema = {
   ruleArray?: ExtendedRule[];
+  label?: string;
 } & UISchemaElement &
   Scopable;
 
@@ -91,7 +93,7 @@ const isRuleFulfilled = (
 };
 
 const evalVisibility = (
-  uischema: ExtendedUISchema,
+  uischema: ExtendedUISchema | PageType,
   data: any,
   path: string,
   ajv: Ajv
@@ -118,7 +120,7 @@ const evalVisibility = (
 };
 
 export const isVisible = (
-  uischema: ExtendedUISchema,
+  uischema: ExtendedUISchema | PageType,
   data: any,
   path: string,
   ajv: Ajv

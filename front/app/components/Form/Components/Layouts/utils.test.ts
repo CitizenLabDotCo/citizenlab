@@ -1,8 +1,8 @@
 import Ajv from 'ajv';
 import {
   getPageSchema,
-  PageCategorization,
   isPageCategorization,
+  PageType,
 } from 'components/Form/Components/Layouts/utils';
 
 const customAjv = new Ajv({ useDefaults: 'empty', removeAdditional: true });
@@ -15,9 +15,6 @@ describe('getPageSchema', () => {
       properties: {
         short_answer: {
           type: 'string',
-        },
-        boolean: {
-          type: 'boolean',
         },
         multiple_choice: {
           type: 'string',
@@ -53,11 +50,6 @@ describe('getPageSchema', () => {
             },
           ],
         },
-        linear_scale: {
-          type: 'number',
-          minimum: 1,
-          maximum: 5,
-        },
         number: {
           type: 'number',
         },
@@ -82,16 +74,10 @@ describe('getPageSchema', () => {
           ],
         },
       },
-      required: [
-        'short_answer',
-        'multiple_choice',
-        'areas',
-        'linear_scale',
-        'number',
-      ],
+      required: ['short_answer', 'multiple_choice', 'areas', 'number'],
     };
 
-    const pageCategorization = {
+    const pageCategorization: PageType = {
       type: 'Page',
       label: 'Testlabel',
       options: {
@@ -109,10 +95,6 @@ describe('getPageSchema', () => {
         },
         {
           type: 'Control',
-          scope: '#/properties/boolean',
-        },
-        {
-          type: 'Control',
           scope: '#/properties/multiple_choice',
           label: 'Fruits',
           options: {
@@ -127,17 +109,6 @@ describe('getPageSchema', () => {
           options: {
             description: '',
             isAdminField: false,
-          },
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/linear_scale',
-          label: 'Linear scale',
-          options: {
-            description: '',
-            isAdminField: false,
-            minimum_label: '',
-            maximum_label: '',
           },
         },
         {
@@ -167,9 +138,6 @@ describe('getPageSchema', () => {
         short_answer: {
           type: 'string',
         },
-        boolean: {
-          type: 'boolean',
-        },
         multiple_choice: {
           type: 'string',
           oneOf: [
@@ -204,27 +172,16 @@ describe('getPageSchema', () => {
             },
           ],
         },
-        linear_scale: {
-          type: 'number',
-          minimum: 1,
-          maximum: 5,
-        },
         number: {
           type: 'number',
         },
       },
-      required: [
-        'short_answer',
-        'multiple_choice',
-        'areas',
-        'linear_scale',
-        'number',
-      ],
+      required: ['short_answer', 'multiple_choice', 'areas', 'number'],
     };
 
     const pageSchema = getPageSchema(
       schema,
-      pageCategorization as any as PageCategorization,
+      pageCategorization,
       data,
       customAjv
     );

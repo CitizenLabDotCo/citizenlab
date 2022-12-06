@@ -34,7 +34,7 @@ import {
   isPageCategorization,
   PageType,
 } from 'components/Form/Components/Layouts/utils';
-import { isVisible } from '../Controls/visibilityUtils';
+import { ExtendedUISchema, isVisible } from '../Controls/visibilityUtils';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -62,9 +62,10 @@ const CLPageLayout = memo(
     const { setShowSubmitButton, onSubmit, setShowAllErrors, formSubmitText } =
       useContext(FormContext);
     const [currentStep, setCurrentStep] = useState<number>(0);
-    const [uiPages, setUiPages] = useState<PageType[]>(
-      (uischema as PageCategorization).elements
-    );
+    // We can cast types because the tester made sure we only get correct values
+    const pageTypeElements = (uischema as PageCategorization)
+      .elements as PageType[];
+    const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
     const theme = useTheme();
     const formState = useJsonForms();
     const isSmallerThanXlPhone = useBreakpoint('phone');
@@ -74,17 +75,18 @@ const CLPageLayout = memo(
     const hasPreviousPage = currentStep !== 0;
 
     useEffect(() => {
-      const visiblePages = (uischema as PageCategorization).elements.filter(
-        (element) => {
-          const isPageVisible = isVisible(
-            element,
-            formState.core?.data,
-            '',
-            customAjv
-          );
-          return isPageVisible;
-        }
-      );
+      // We can cast types because the tester made sure we only get correct values
+      const allPageTypeElements = (uischema as PageCategorization)
+        .elements as PageType[];
+      const visiblePages = allPageTypeElements.filter((element) => {
+        const isPageVisible = isVisible(
+          element as any as ExtendedUISchema,
+          formState.core?.data,
+          '',
+          customAjv
+        );
+        return isPageVisible;
+      });
       setUiPages(visiblePages);
       setShowSubmitButton(false);
     }, [setShowSubmitButton, formState.core?.data, uischema]);
@@ -130,18 +132,20 @@ const CLPageLayout = memo(
                 <Title variant="h2" mb="32px" color="tenantText">
                   {page.options.title}
                 </Title>
-                <Box mb="16px">
-                  <QuillEditedContent
-                    fontWeight={400}
-                    textColor={theme.colors.tenantText}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: page.options.description,
-                      }}
-                    />
-                  </QuillEditedContent>
-                </Box>
+                {page.options?.description && (
+                  <Box mb="16px">
+                    <QuillEditedContent
+                      fontWeight={400}
+                      textColor={theme.colors.tenantText}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: page.options.description,
+                        }}
+                      />
+                    </QuillEditedContent>
+                  </Box>
+                )}
                 {page.elements.map((elementUiSchema, index) => (
                   <Box width="100%" mb="40px" key={index}>
                     <JsonFormsDispatch
