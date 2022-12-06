@@ -16,7 +16,7 @@ type TApiErrors = CLErrors | null;
 
 export interface Props {
   slug: string;
-  pathnameWithoutSlug: string;
+  pathnameWithoutSlug: 'projects' | 'folders';
   apiErrors: TApiErrors;
   showSlugErrorMessage: boolean;
   onSlugChange: (slug: string) => void;
@@ -37,11 +37,9 @@ const SlugInput = ({
 
   if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
     const hostName = appConfig.attributes.host;
-    const previewUrl = slug
-      ? `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`
-      : null;
+    const previewUrl = `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`;
 
-    return previewUrl ? (
+    return (
       <>
         <Input
           label={formatMessage(slugInputMessages.urlSlugLabel)}
@@ -68,7 +66,7 @@ const SlugInput = ({
           <Error text={formatMessage(messages.regexError)} />
         )}
       </>
-    ) : null;
+    );
   }
 
   return null;
