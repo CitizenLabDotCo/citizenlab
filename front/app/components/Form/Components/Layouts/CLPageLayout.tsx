@@ -80,7 +80,7 @@ const CLPageLayout = memo(
         .elements as PageType[];
       const visiblePages = allPageTypeElements.filter((element) => {
         const isPageVisible = isVisible(
-          element as any as ExtendedUISchema,
+          element,
           formState.core?.data,
           '',
           customAjv
