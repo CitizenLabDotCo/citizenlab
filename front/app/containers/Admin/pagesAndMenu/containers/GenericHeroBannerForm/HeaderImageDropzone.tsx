@@ -58,6 +58,12 @@ export const homepageBannerLayoutHeights = {
     tablet: 200,
     phone: 200,
   },
+  fixed_ratio_layout: {
+    // Values, etc. wrong - just added to get FE working with new layout option
+    desktop: 450,
+    tablet: 350,
+    phone: 300,
+  },
 };
 
 const HeaderImageDropzone = ({
