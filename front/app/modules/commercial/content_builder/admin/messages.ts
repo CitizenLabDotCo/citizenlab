@@ -21,11 +21,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.oneColumnLayout',
     defaultMessage: '1 column',
   },
-  errorMessage: {
-    id: 'app.containers.admin.ContentBuilder.errorMessage',
-    defaultMessage:
-      'There is an error on { locale } content, please fix the issue to be able to save your changes',
-  },
   imageTextCards: {
     id: 'app.containers.admin.ContentBuilder.imageTextCards',
     defaultMessage: 'Image & text cards',
