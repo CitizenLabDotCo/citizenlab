@@ -1,4 +1,6 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 import useAuthUser from 'hooks/useAuthUser';
 // hooks
 import usePhase from 'hooks/usePhase';
@@ -16,8 +18,6 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { isError, isNilOrError } from 'utils/helperUtils';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 import Warning from 'components/UI/Warning';
-// styling
-import styled from 'styled-components';
 import EnalyzerSurvey from './EnalyzerSurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';

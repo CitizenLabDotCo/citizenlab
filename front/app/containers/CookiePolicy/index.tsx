@@ -1,8 +1,10 @@
 // libraries
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Box } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 import { darken } from 'polished';
+import { Box } from '@citizenlab/cl2-component-library';
 // i18n
 import { FormattedMessage, injectIntl, useIntl } from 'utils/cl-intl';
 // events
@@ -17,8 +19,6 @@ import {
 // components
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-// styles
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledButton = styled.button`

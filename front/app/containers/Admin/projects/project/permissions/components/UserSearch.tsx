@@ -3,6 +3,8 @@ import React, { memo, useState } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
 import AsyncSelect from 'react-select/async';
+// Style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 import { first } from 'rxjs/operators';
 // Typings
@@ -17,8 +19,6 @@ import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 // Components
 import Button from 'components/UI/Button';
 import selectStyles from 'components/UI/MultipleSelect/styles';
-// Style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

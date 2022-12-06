@@ -1,14 +1,14 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { IconButton } from '@citizenlab/cl2-component-library';
+// style
+import styled, { useTheme } from 'styled-components';
 import { isNumber } from 'lodash-es';
 import { darken } from 'polished';
+// components
+import { IconButton } from '@citizenlab/cl2-component-library';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { colors, fontSizes } from 'utils/styleUtils';
-// style
-import styled, { useTheme } from 'styled-components';
 import messages from '../../messages';
 
 const Container = styled.div`

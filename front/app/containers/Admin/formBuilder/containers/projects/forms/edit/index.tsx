@@ -5,9 +5,11 @@ import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 // intl
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
+// styles
+import styled from 'styled-components';
+import { object, boolean, array, string, number } from 'yup';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, boolean, array, string, number } from 'yup';
 // hooks
 import useFormCustomFields from 'hooks/useFormCustomFields';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
@@ -35,8 +37,6 @@ import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuild
 import FormFields from 'containers/Admin/formBuilder/components/FormFields';
 import Feedback from 'components/HookForm/Feedback';
 import Error from 'components/UI/Error';
-// styles
-import styled from 'styled-components';
 import messages from '../messages';
 
 const StyledRightColumn = styled(RightColumn)`

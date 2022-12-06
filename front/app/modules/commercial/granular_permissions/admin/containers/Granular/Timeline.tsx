@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// styling
+import styled from 'styled-components';
 import GetPhasePermissions from 'resources/GetPhasePermissions';
 // resources
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -15,8 +17,6 @@ import { fontSizes } from 'utils/styleUtils';
 import T from 'components/T';
 // components
 import Collapse from 'components/UI/Collapse';
-// styling
-import styled from 'styled-components';
 import ActionsForm from './ActionsForm';
 import messages from './messages';
 

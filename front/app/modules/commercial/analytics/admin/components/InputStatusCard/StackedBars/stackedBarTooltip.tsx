@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box } from '@citizenlab/cl2-component-library';
 // components
 import { Tooltip } from 'recharts';
+import { Box } from '@citizenlab/cl2-component-library';
 // typings
 import { StackedBarsRow } from '../../../hooks/usePostsFeedback/typings';
 import { FormattedMessage } from 'utils/cl-intl';

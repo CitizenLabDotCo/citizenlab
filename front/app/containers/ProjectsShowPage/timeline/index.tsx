@@ -1,4 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
+// style
+import styled from 'styled-components';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
@@ -24,8 +26,6 @@ import {
 } from 'containers/ProjectsShowPage/styles';
 import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
-// style
-import styled from 'styled-components';
 // other
 import { isValidPhase } from '../phaseParam';
 import PBExpenses from '../shared/pb/PBExpenses';

@@ -1,8 +1,10 @@
 import React, { FormEvent, FC, memo, useEffect, useState } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { Spinner } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { isObject } from 'lodash-es';
+import { Spinner } from '@citizenlab/cl2-component-library';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
@@ -17,8 +19,6 @@ import { media } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
-// style
-import styled from 'styled-components';
 import messages from '../messages';
 import tracks from './tracks';
 

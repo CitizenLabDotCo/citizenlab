@@ -1,7 +1,7 @@
 import React, { memo, Suspense, lazy } from 'react';
-import { media } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 // components
 import LoadingComments from './Comments/LoadingComments';
 import {

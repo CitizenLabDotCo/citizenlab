@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 import { FormattedDate } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // hooks
 import useIdea from 'hooks/useIdea';
 // i18n
@@ -9,8 +11,6 @@ import { fontSizes } from 'utils/styleUtils';
 import Avatar from 'components/Avatar';
 // components
 import UserName from 'components/UI/UserName';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

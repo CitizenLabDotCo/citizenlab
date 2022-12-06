@@ -1,4 +1,6 @@
 import React, { memo, MouseEvent } from 'react';
+// styling
+import styled from 'styled-components';
 import bowser from 'bowser';
 // components
 import Link from 'utils/cl-router/Link';
@@ -8,8 +10,6 @@ import {
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
 import Image from 'components/UI/Image';
-// styling
-import styled from 'styled-components';
 
 const Container = styled(Link)`
   width: 100%;

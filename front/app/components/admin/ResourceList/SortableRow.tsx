@@ -1,9 +1,9 @@
 import React from 'react';
 import { DragSource, DropTarget } from 'react-dnd-cjs';
 import { findDOMNode } from 'react-dom';
+import styled from 'styled-components';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 
 const DragHandle = styled.div`
   cursor: move;

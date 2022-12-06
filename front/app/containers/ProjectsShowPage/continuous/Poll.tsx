@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // hooks
 import useProject from 'hooks/useProject';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -15,8 +17,6 @@ import {
 // components
 import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
-// styling
-import styled from 'styled-components';
 import Poll from '../shared/poll';
 
 const Container = styled.div``;

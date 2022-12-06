@@ -2,17 +2,19 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
+import { saveAs } from 'file-saver';
+import { isString, isEmpty, get } from 'lodash-es';
+import { darken } from 'polished';
+// typings
+import { Locale, IOption } from 'typings';
 import {
   Radio,
   IconTooltip,
   Toggle,
   Label,
 } from '@citizenlab/cl2-component-library';
-import { saveAs } from 'file-saver';
-import { isString, isEmpty, get } from 'lodash-es';
-import { darken } from 'polished';
-// typings
-import { Locale, IOption } from 'typings';
 // resources
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
@@ -47,8 +49,6 @@ import TextArea from 'components/UI/TextArea';
 import Warning from 'components/UI/Warning';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-// styling
-import styled from 'styled-components';
 import messages from '../messages';
 
 const InvitationOptions = styled.div`

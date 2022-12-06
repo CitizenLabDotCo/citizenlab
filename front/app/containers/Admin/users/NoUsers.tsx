@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { darken } from 'polished';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { MembershipType } from 'services/groups';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from './messages';
 
 const NoUsersPage = styled.div`

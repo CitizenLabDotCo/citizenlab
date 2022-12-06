@@ -1,7 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

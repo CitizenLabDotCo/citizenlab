@@ -1,4 +1,6 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
@@ -8,8 +10,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { media } from 'utils/styleUtils';
 // components
 import ProjectCard from 'components/ProjectCard';
-// style
-import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

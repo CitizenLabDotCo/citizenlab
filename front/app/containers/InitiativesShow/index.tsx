@@ -4,8 +4,10 @@ import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Spinner } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { isUndefined, isString } from 'lodash-es';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -57,8 +59,6 @@ import SharingButtons from 'components/Sharing/SharingButtons';
 import FileAttachments from 'components/UI/FileAttachments';
 // components
 import Modal from 'components/UI/Modal';
-// style
-import styled from 'styled-components';
 import ActionBar from './ActionBar';
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 import InitiativeMeta from './InitiativeMeta';

@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+// stylings
+import styled from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import usePostsFeedback from '../../hooks/usePostsFeedback';
@@ -11,8 +13,6 @@ import { fontSizes, media } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 // components
 import GraphCard from 'components/admin/GraphCard';
-// stylings
-import styled from 'styled-components';
 import { ProjectId, Dates, Resolution } from '../../typings';
 import DonutChart from './DonutChart';
 import ProgressBars from './ProgressBars';

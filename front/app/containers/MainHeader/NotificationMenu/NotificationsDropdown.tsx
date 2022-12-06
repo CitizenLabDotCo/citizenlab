@@ -1,6 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import InfiniteScroll from 'react-infinite-scroller';
+import styled from 'styled-components';
 import { Spinner, Dropdown } from '@citizenlab/cl2-component-library';
 import GetNotifications, {
   GetNotificationsChildProps,
@@ -9,7 +10,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes, colors } from 'utils/styleUtils';
 import Notification from './components/Notification';
-import styled from 'styled-components';
 import EmptyStateImg from './assets/no_notification_image.svg';
 import messages from './messages';
 

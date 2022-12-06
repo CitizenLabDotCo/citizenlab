@@ -1,6 +1,6 @@
 import React, { ReactElement, memo, useState, useCallback } from 'react';
-import { gql, useQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash-es';
+import { gql, useQuery } from '@apollo/client';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';

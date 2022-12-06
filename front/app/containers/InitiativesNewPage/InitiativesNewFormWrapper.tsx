@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import { Point } from 'geojson';
 import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 // services
@@ -38,7 +39,6 @@ import InitiativeForm, {
   FormValues,
   SimpleFormValues,
 } from 'components/InitiativeForm';
-import styled from 'styled-components';
 // tracks
 import tracks from './tracks';
 

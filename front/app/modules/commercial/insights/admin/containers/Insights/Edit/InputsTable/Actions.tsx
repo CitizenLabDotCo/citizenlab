@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 // Typings
 import { WrappedComponentProps } from 'react-intl';
+// Styling
+import styled from 'styled-components';
 // Components
 import { Icon, Dropdown, Checkbox } from '@citizenlab/cl2-component-library';
 // Hooks
@@ -22,8 +24,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
-// Styling
-import styled from 'styled-components';
 import messages from '../../messages';
 
 const ActionButtons = styled.div`

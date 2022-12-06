@@ -1,5 +1,6 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 // styles
 import { darken } from 'polished';
 // hooks
@@ -11,7 +12,6 @@ import { injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Name = styled.span<{

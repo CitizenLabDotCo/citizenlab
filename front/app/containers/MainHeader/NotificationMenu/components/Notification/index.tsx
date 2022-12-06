@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import {
   TNotificationData,
@@ -34,7 +35,6 @@ import {
   IProjectFolderModerationRightsReceivedNotificationData,
 } from 'services/notifications';
 import Outlet from 'components/Outlet';
-import styled from 'styled-components';
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';

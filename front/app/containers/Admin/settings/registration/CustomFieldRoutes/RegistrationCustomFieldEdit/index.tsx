@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 // hooks
 import useUserCustomField from 'hooks/useUserCustomField';
@@ -18,7 +19,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
-import styled from 'styled-components';
 import messages from '../messages';
 
 const StyledGoBackButton = styled(GoBackButton)`

@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+// Styling
+import styled from 'styled-components';
 import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { Subscription } from 'rxjs';
 // Resources
@@ -29,8 +31,6 @@ import InitiativeButton from 'components/InitiativeButton';
 // Components
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
-// Styling
-import styled from 'styled-components';
 import InitiativePreview from './InitiativePreview';
 import messages from './messages';
 import tracks from './tracks';

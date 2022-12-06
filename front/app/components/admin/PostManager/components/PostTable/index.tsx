@@ -1,8 +1,10 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+// styling
+import styled from 'styled-components';
+import { every, isEmpty, isFunction } from 'lodash-es';
 // components
 import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
-import { every, isEmpty, isFunction } from 'lodash-es';
 // typings
 import {
   Sort as IdeasSort,
@@ -21,8 +23,6 @@ import { IPhaseData } from 'services/phases';
 import { SortDirection } from 'utils/paginationUtils';
 import { colors, stylingConsts } from 'utils/styleUtils';
 import Pagination from 'components/admin/Pagination';
-// styling
-import styled from 'styled-components';
 // i18n
 import { ManagerType, TFilterMenu } from '../..';
 import NoPost from './NoPost';

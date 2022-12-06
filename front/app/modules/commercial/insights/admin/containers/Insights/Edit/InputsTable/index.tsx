@@ -1,5 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
+import { stringify } from 'qs';
 // components
 import {
   Table,
@@ -10,7 +13,6 @@ import {
   Icon,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { stringify } from 'qs';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 // hooks
 import useInsightsInputs, {
@@ -32,8 +34,6 @@ import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import SearchInput from 'components/UI/SearchInput';
 import SideModal from 'components/UI/SideModal';
 import Divider from 'components/admin/Divider';
-// styles
-import styled from 'styled-components';
 import messages from '../../messages';
 import InputDetails from '../InputDetails';
 import Actions from './Actions';

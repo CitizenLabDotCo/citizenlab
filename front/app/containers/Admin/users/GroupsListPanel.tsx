@@ -1,6 +1,8 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
+// Styling
+import styled from 'styled-components';
 import { rgba } from 'polished';
 import { Subscription } from 'rxjs';
 // Resources
@@ -21,8 +23,6 @@ import Outlet from 'components/Outlet';
 import T from 'components/T';
 // Components
 import Button from 'components/UI/Button';
-// Styling
-import styled from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

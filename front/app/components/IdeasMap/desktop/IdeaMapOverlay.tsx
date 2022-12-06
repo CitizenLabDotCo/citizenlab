@@ -1,5 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
+// styling
+import styled from 'styled-components';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 // hooks
 import useProject from 'hooks/useProject';
@@ -9,8 +11,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultCardStyle } from 'utils/styleUtils';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
-// styling
-import styled from 'styled-components';
 // components
 import MapIdeasList from './MapIdeasList';
 

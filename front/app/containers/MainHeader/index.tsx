@@ -1,10 +1,12 @@
 // libraries
 import React, { useState, useRef, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { IconButton, useWindowSize } from '@citizenlab/cl2-component-library';
+// style
+import styled, { useTheme } from 'styled-components';
 import bowser from 'bowser';
 import { includes } from 'lodash-es';
 import { darken } from 'polished';
+import { IconButton, useWindowSize } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -22,8 +24,6 @@ import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
 import { locales } from 'containers/App/constants';
 import LanguageSelector from 'containers/MainHeader/LanguageSelector';
 import Fragment from 'components/Fragment';
-// style
-import styled, { useTheme } from 'styled-components';
 import DesktopNavbar from './DesktopNavbar';
 // components
 import NotificationMenu from './NotificationMenu';

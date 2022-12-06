@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { FormattedDate, WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { transparentize } from 'polished';
 // typings
 import { Locale, Multiloc } from 'typings';
@@ -24,7 +25,6 @@ import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import T from 'components/T';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import styled from 'styled-components';
 // components
 import OfficialFeedbackForm from './OfficialFeedbackForm';
 // i18n

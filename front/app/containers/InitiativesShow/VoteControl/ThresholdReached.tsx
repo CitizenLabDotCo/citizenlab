@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import styled, { withTheme } from 'styled-components';
 // components
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
@@ -10,7 +11,6 @@ import { fontSizes } from 'utils/styleUtils';
 // i18n
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import styled, { withTheme } from 'styled-components';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import messages from './messages';
 

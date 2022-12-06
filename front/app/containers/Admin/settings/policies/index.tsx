@@ -1,4 +1,6 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 import { POLICY_PAGES } from 'services/customPages';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -7,8 +9,6 @@ import Link from 'utils/cl-router/Link';
 import { colors } from 'utils/styleUtils';
 import pagesAndMenuMessages from 'containers/Admin/pagesAndMenu/messages';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import PageEditor from './PageEditor';
 import messages from './messages';
 

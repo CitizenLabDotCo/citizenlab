@@ -7,9 +7,11 @@ import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
+// Styling
+import styled from 'styled-components';
+import { string, object } from 'yup';
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
 // Services
 import { DeleteReasonCode } from 'services/comments';
 import { injectIntl } from 'utils/cl-intl';
@@ -22,8 +24,6 @@ import TextArea from 'components/HookForm/TextArea';
 // Components
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
-// Styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const ButtonsWrapper = styled.div`

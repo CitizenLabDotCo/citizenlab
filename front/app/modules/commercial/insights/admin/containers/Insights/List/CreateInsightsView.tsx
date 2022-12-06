@@ -2,6 +2,10 @@ import React, { useState, useMemo } from 'react';
 // resources
 import { adopt } from 'react-adopt';
 import { CSSTransition } from 'react-transition-group';
+// styles
+import styled from 'styled-components';
+// typings
+import { CLErrors } from 'typings';
 // components
 import {
   Input,
@@ -10,8 +14,6 @@ import {
   Spinner,
   Label,
 } from '@citizenlab/cl2-component-library';
-// typings
-import { CLErrors } from 'typings';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -30,8 +32,6 @@ import Checkbox from 'components/UI/Checkbox';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import Error from 'components/UI/Error';
 import { SectionField } from 'components/admin/Section';
-// styles
-import styled from 'styled-components';
 import messages from '../messages';
 
 const Title = styled.h1`

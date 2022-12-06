@@ -1,13 +1,13 @@
 import React from 'react';
 // intl
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 // components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { colors, fontSizes } from 'utils/styleUtils';
-// styles
-import styled from 'styled-components';
 import messages from '../messages';
 
 const StyledLink = styled(Link)`

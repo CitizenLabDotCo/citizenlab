@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import styled, { keyframes } from 'styled-components';
 import { darken } from 'polished';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IInitiativeData } from 'services/initiatives';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import styled, { keyframes } from 'styled-components';
 import ProposalProgressbar from './ProposalProgressBar';
 import messages from './messages';
 

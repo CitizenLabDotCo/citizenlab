@@ -1,6 +1,6 @@
+import styled from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 import { colors, media } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 export default styled(Box)`
   background: ${colors.background};

@@ -1,11 +1,11 @@
 import React from 'react';
+import styled, { css } from 'styled-components';
 import { fontSizes, defaultOutline, media } from 'utils/styleUtils';
 import {
   HeaderContainer,
   HeaderTitle,
   ModalContentContainer,
 } from 'components/UI/Modal';
-import styled, { css } from 'styled-components';
 
 export const Options = styled.div`
   display: flex;

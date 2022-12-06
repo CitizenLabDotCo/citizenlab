@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { Icon } from '@citizenlab/cl2-component-library';
+import styled, { withTheme } from 'styled-components';
 import { get } from 'lodash-es';
+import { Icon } from '@citizenlab/cl2-component-library';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -17,7 +18,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes, colors } from 'utils/styleUtils';
 import ProposalProgressBar from 'containers/InitiativesShow/VoteControl/ProposalProgressBar';
 import T from 'components/T';
-import styled, { withTheme } from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div``;

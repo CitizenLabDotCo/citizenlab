@@ -3,12 +3,12 @@ import { DateRangePicker, DateRangePickerShape } from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 import { omit } from 'lodash-es';
 import { Omit } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 import { fontSizes, colors } from 'utils/styleUtils';
-// styles
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

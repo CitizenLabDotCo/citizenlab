@@ -2,10 +2,12 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { map, isEmpty } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { IGraphFormat } from 'typings';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { IResourceByTime, IUsersByTime } from 'services/stats';
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -23,8 +25,6 @@ import BarChart from 'components/admin/Graphs/BarChart';
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-// styling
-import styled from 'styled-components';
 
 const InfoIcon = styled(Icon)`
   display: flex;

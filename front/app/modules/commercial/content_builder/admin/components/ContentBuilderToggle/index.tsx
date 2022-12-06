@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// Components
-import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
+// Style
+import styled from 'styled-components';
 // Typings
 import { Locale, Multiloc } from 'typings';
+// Components
+import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -20,8 +22,6 @@ import { isNil, isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
-// Style
-import styled from 'styled-components';
 // Messages
 import messages from '../../messages';
 

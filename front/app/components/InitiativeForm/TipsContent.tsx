@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
+// styles
+import styled, { withTheme } from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes } from 'utils/styleUtils';
-// styles
-import styled, { withTheme } from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

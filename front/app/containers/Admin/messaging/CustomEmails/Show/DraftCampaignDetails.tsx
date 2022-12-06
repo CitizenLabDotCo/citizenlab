@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import GetCampaign from 'resources/GetCampaign';
 import { ICampaignData, deleteCampaign } from 'services/campaigns';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
-import styled from 'styled-components';
 import messages from '../../messages';
 import PreviewFrame from './PreviewFrame';
 

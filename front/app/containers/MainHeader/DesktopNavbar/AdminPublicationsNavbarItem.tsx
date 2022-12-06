@@ -1,9 +1,11 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-// components
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 // typings
 import { Multiloc } from 'typings';
+// components
+import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 // hooks
 import useAdminPublications, {
   IAdminPublicationContent,
@@ -18,8 +20,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { fontSizes, isRtl } from 'utils/styleUtils';
 import T from 'components/T';
-// style
-import styled from 'styled-components';
 import ProjectsListItem from '../ProjectsListItem';
 import messages from '../messages';
 

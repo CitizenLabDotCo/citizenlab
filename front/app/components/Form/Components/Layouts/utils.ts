@@ -1,3 +1,4 @@
+import { forOwn, isEmpty } from 'lodash-es';
 import {
   and,
   isCategorization,
@@ -7,7 +8,6 @@ import {
   UISchemaElement,
   uiTypeIs,
 } from '@jsonforms/core';
-import { forOwn, isEmpty } from 'lodash-es';
 
 export interface PageType extends Layout {
   type: 'Page';

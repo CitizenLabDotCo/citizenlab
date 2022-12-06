@@ -1,11 +1,11 @@
 import React, { PureComponent, Fragment } from 'react';
+// Styling
+import styled from 'styled-components';
 import { pick, clone, omit } from 'lodash-es';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
-// Styling
-import styled from 'styled-components';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
 import ValueSelector from './ValueSelector';

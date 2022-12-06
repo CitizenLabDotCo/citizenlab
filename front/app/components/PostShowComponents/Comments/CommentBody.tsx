@@ -1,6 +1,8 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
+// Styling
+import styled, { withTheme } from 'styled-components';
 import { get } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -26,8 +28,6 @@ import Error from 'components/UI/Error';
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-// Styling
-import styled, { withTheme } from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div``;

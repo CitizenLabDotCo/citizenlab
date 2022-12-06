@@ -1,4 +1,6 @@
 import React, { lazy, Suspense } from 'react';
+// style
+import styled from 'styled-components';
 // hooks
 import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
 // services
@@ -11,8 +13,6 @@ import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import Avatar from 'components/Avatar';
-// style
-import styled from 'styled-components';
 import tracks from '../tracks';
 import HeaderImage from './HeaderImage';
 

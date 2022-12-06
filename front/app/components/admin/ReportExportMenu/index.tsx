@@ -2,12 +2,14 @@
 import React, { useState } from 'react';
 import { findDOMNode } from 'react-dom';
 import { WrappedComponentProps } from 'react-intl';
-import { Dropdown } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { Canvg } from 'canvg';
 import { saveAs } from 'file-saver';
 // typings
 import { OneOf } from 'typings';
 import XLSX from 'xlsx';
+import { Dropdown } from '@citizenlab/cl2-component-library';
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { reportError } from 'utils/loggingUtils';
@@ -18,8 +20,6 @@ import { truncate } from 'utils/textUtils';
 // components
 import Button from 'components/UI/Button';
 import { IResolution } from 'components/admin/ResolutionControl';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const DropdownButton = styled(Button)``;

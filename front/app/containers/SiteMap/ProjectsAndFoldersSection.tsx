@@ -1,10 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
 import useAdminPublications from 'hooks/useAdminPublications';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 import { H2 } from '.';
 import Project from './Project';
 import ProjectFolderSiteMapItem from './ProjectFolderSiteMapItem';

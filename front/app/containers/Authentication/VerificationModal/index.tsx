@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+// style
+import styled from 'styled-components';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'hooks/useAuthUser';
 // hooks
@@ -19,8 +21,6 @@ import { viewportWidths } from 'utils/styleUtils';
 import ErrorBoundary from 'components/ErrorBoundary';
 // components
 import Modal from 'components/UI/Modal';
-// style
-import styled from 'styled-components';
 // TODO: Change when we move to container
 import VerificationSteps from '../SignUpIn/SignUpInModal/SignUp/VerificationSignUpStep/VerificationSteps';
 import VerificationError from './VerificationError';

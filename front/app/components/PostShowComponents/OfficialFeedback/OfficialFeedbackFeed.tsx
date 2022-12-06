@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps, FormattedDate } from 'react-intl';
+// styles
+import styled from 'styled-components';
 // resources
 import GetOfficialFeedbacks, {
   GetOfficialFeedbacksChildProps,
@@ -10,8 +12,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
-// styles
-import styled from 'styled-components';
 import OfficialFeedbackPost from './OfficialFeedbackPost';
 // i18n
 import messages from './messages';

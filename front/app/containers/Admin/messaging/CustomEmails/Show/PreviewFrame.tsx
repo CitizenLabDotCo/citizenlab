@@ -1,8 +1,8 @@
 import React from 'react';
 import Frame from 'react-frame-component';
+import styled from 'styled-components';
 import request from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
-import styled from 'styled-components';
 
 const StyledFrame = styled(Frame)`
   border-radius: ${(props: any) => props.theme.borderRadius};

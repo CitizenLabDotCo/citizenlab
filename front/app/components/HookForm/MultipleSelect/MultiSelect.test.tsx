@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import selectEvent from 'react-select-event';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { array, object } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import MultiSelect from './';
 

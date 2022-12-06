@@ -1,8 +1,9 @@
 import Tippy from '@tippyjs/react';
 import React from 'react';
 import { FormattedDate } from 'react-intl';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import styled, { keyframes } from 'styled-components';
 import { lighten } from 'polished';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'hooks/useAuthUser';
 import useIdea from 'hooks/useIdea';
 import useLocalize from 'hooks/useLocalize';
@@ -13,7 +14,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
-import styled, { keyframes } from 'styled-components';
 import messages from './messages';
 
 type TSize = '1' | '2' | '3' | '4';

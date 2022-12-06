@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// styles
+import styled from 'styled-components';
 import { darken, lighten } from 'polished';
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -11,8 +13,6 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 // intl
 import T from 'components/T';
-// styles
-import styled from 'styled-components';
 import messages from './messages';
 
 const TopicsContainer = styled.div`

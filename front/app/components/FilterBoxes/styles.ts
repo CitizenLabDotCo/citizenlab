@@ -1,5 +1,5 @@
-import { fontSizes, isRtl } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { fontSizes, isRtl } from 'utils/styleUtils';
 
 export const Header = styled.div`
   display: flex;

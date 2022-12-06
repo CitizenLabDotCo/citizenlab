@@ -1,14 +1,14 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
-// components
-import { Image } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 // svg
 import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
+// components
+import { Image } from '@citizenlab/cl2-component-library';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { defaultCardStyle, media, fontSizes } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;

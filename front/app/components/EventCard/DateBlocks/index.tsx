@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
-import moment from 'moment';
-import { media } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
+import moment from 'moment';
+import { media } from 'utils/styleUtils';
 import DateBlockSingleYear from './DateBlockSingleYear';
 import DateBlocksMultiYear from './DateBlocksMultiYear';
 // components

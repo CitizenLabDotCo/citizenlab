@@ -6,10 +6,12 @@ import React, {
   Suspense,
   useCallback,
 } from 'react';
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 // typings
 import { LatLngTuple, Map as ILeafletMap } from 'leaflet';
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,8 +25,6 @@ import {
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
-// styling
-import styled from 'styled-components';
 
 const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
 

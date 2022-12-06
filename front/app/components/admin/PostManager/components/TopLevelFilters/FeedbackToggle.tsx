@@ -1,5 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+// styles
+import styled, { css } from 'styled-components';
 import { isFunction } from 'lodash-es';
 // resources
 import GetIdeasCount, {
@@ -14,8 +16,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import CountBadge from 'components/UI/CountBadge';
-// styles
-import styled, { css } from 'styled-components';
 // typings
 import { ManagerType } from '../..';
 import messages from '../../messages';

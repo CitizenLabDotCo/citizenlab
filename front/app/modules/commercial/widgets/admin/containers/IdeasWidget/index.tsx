@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { yupResolver } from '@hookform/resolvers/yup';
+import styled from 'styled-components';
 import { omitBy, isNil, isEmpty, isString, debounce } from 'lodash-es';
 import { stringify } from 'qs';
 import { string, object, number, boolean, array } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
-import styled from 'styled-components';
 import messages from '../../messages';
 import WidgetCode from '../WidgetCode';
 import WidgetPreview from '../WidgetPreview';

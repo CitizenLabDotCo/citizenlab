@@ -1,5 +1,6 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 // components
 import { Image } from '@citizenlab/cl2-component-library';
 // hooks
@@ -8,7 +9,6 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import { injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 import messages from '../messages';
 
 const LogoLink = styled(Link)`

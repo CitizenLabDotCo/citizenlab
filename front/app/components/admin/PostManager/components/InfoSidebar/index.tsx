@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 import { Sticky } from '../..';
 import InfoSidebarMulti from './InfoSidebarMulti';
 import InfoSidebarSingle from './InfoSidebarSingle';

@@ -1,7 +1,7 @@
 import React from 'react';
+import { IOption } from 'typings';
 // components
 import { Select } from '@citizenlab/cl2-component-library';
-import { IOption } from 'typings';
 // hooks
 import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
 import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';

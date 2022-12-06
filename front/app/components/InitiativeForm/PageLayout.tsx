@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 // libraries
@@ -9,7 +10,6 @@ import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
-import styled from 'styled-components';
 import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
 import TipsBox from './TipsBox';
 import messages from './messages';

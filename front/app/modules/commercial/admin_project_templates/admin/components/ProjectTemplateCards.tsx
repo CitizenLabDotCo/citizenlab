@@ -1,7 +1,9 @@
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Spinner } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
+import { Spinner } from '@citizenlab/cl2-component-library';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 // i18n
@@ -10,8 +12,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import DepartmentFilter from '../components/DepartmentFilter';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
-// style
-import styled from 'styled-components';
 import ParticipationLevelFilter from './ParticipationLevelFilter';
 // components
 import ProjectTemplateCard from './ProjectTemplateCard';

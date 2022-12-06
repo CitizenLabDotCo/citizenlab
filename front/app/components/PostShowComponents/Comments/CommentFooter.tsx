@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+// style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 // resources
 import GetAppConfigurationLocales, {
@@ -16,8 +18,6 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
-// style
-import styled from 'styled-components';
 import CommentReplyButton from './CommentReplyButton';
 // components
 import CommentVote from './CommentVote';

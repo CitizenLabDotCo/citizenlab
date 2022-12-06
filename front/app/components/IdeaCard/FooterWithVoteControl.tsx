@@ -1,10 +1,10 @@
 import React from 'react';
+// styles
+import styled from 'styled-components';
 import { IIdeaData } from 'services/ideas';
 // components
 import StatusBadge from 'components/StatusBadge';
 import VoteControl from 'components/VoteControl';
-// styles
-import styled from 'styled-components';
 import CommentCount from './CommentCount';
 
 const Container = styled.footer`

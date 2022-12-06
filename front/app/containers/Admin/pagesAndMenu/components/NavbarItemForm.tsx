@@ -2,11 +2,11 @@ import React from 'react';
 // form
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { Box } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
 // typings
 import { Multiloc } from 'typings';
 import { object } from 'yup';
+import { Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';

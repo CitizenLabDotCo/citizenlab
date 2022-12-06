@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled, { useTheme } from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { fontSizes, isRtl } from 'utils/styleUtils';
 // components
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
-// styling
-import styled, { useTheme } from 'styled-components';
 import messages from '../messages';
 
 const Container = styled.div`

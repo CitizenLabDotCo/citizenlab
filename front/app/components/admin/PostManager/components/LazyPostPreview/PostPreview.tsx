@@ -1,10 +1,10 @@
 import React, { Suspense, PureComponent } from 'react';
+// styling
+import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 // components
 import SideModal from 'components/UI/SideModal';
-// styling
-import styled from 'styled-components';
 // typings
 import { ManagerType } from '../..';
 import LazyAdminIdeaEdit from './Idea/LazyAdminIdeaEdit';

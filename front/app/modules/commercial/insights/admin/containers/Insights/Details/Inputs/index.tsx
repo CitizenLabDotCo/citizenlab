@@ -1,8 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
+import { stringify, parse } from 'qs';
 // components
 import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
-import { stringify, parse } from 'qs';
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
@@ -26,8 +28,6 @@ import {
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
-// styles
-import styled from 'styled-components';
 import messages from '../../messages';
 import CreateCategory from './CreateCategory';
 import Empty from './Empty';

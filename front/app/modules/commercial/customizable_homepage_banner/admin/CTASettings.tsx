@@ -1,6 +1,7 @@
 import React from 'react';
-import { Label } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { CLErrors, Multiloc } from 'typings';
+import { Label } from '@citizenlab/cl2-component-library';
 import {
   CTASignedInType,
   CTASignedOutType,
@@ -15,7 +16,6 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const SettingsLabel = styled(Label)`

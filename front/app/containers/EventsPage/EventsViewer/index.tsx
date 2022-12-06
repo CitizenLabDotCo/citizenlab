@@ -1,13 +1,13 @@
 import React, { memo, useEffect } from 'react';
 import { MessageDescriptor } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // hooks
 import useEvents from 'hooks/useEvents';
 // other
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from '../messages';
 import EventsMessage from './EventsMessage';

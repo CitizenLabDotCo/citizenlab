@@ -1,6 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { get, isEmpty, isUndefined } from 'lodash-es';
 import { IParticipationContextType } from 'typings';
 // resources
@@ -32,7 +33,6 @@ import messages from 'containers/ProjectsShowPage/messages';
 import T from 'components/T';
 // components
 import Button from 'components/UI/Button';
-import styled from 'styled-components';
 // tracking
 import tracks from './tracks';
 

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// styling
+import styled from 'styled-components';
 import { Box, Text, Error } from '@citizenlab/cl2-component-library';
 // hooks
 import useTextingCampaign from 'hooks/useTextingCampaign';
@@ -17,8 +19,6 @@ import HelmetIntl from 'components/HelmetIntl';
 // components
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
-// styling
-import styled from 'styled-components';
 
 const StyledModalButton = styled(Button)`
   margin-right: 10px;

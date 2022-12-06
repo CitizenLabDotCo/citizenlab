@@ -1,13 +1,13 @@
 import React from 'react';
 import { DropTarget } from 'react-dnd-cjs';
 import { Menu } from 'semantic-ui-react';
+import styled from 'styled-components';
 import { flow, get } from 'lodash-es';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
-import styled from 'styled-components';
 import messages from '../../messages';
 
 const ItemWrapper = styled.div`

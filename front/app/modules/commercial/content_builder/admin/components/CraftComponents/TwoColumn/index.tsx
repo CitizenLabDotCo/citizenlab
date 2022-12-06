@@ -1,4 +1,6 @@
 import React from 'react';
+// styles
+import styled from 'styled-components';
 // components
 import { Box, Radio, Title, Icon } from '@citizenlab/cl2-component-library';
 // craft
@@ -7,8 +9,6 @@ import { useNode, UserComponent, Element } from '@craftjs/core';
 import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import { colors, media } from 'utils/styleUtils';
-// styles
-import styled from 'styled-components';
 import messages from '../../../messages';
 import Container from '../Container';
 

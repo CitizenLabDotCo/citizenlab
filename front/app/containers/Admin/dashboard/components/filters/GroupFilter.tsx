@@ -1,8 +1,8 @@
 import React from 'react';
-// components
-import { Select } from '@citizenlab/cl2-component-library';
 // typings
 import { FormatMessage, IOption } from 'typings';
+// components
+import { Select } from '@citizenlab/cl2-component-library';
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import useLocalize, { Localize } from 'hooks/useLocalize';

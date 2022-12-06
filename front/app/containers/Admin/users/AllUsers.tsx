@@ -1,8 +1,8 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { isString, isEmpty } from 'lodash-es';
 // Styles
 import styled from 'styled-components';
+import { isString, isEmpty } from 'lodash-es';
 // Components
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';

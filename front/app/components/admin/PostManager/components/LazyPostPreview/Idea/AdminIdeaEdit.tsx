@@ -1,6 +1,7 @@
 // Copied IdeaEditPage and made the minimal modifications for this use.
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 // typings
@@ -41,7 +42,6 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import styled from 'styled-components';
 import { Content, Top, Container } from '../PostPreview';
 import messages from '../messages';
 // tracks

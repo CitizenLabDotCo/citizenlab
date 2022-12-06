@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
+import { stringify } from 'qs';
 import {
   Dropdown,
   DropdownListItem,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { stringify } from 'qs';
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 // services
@@ -24,8 +26,6 @@ import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
-// styles
-import styled from 'styled-components';
 // intl
 import messages from '../../messages';
 import RenameCategory from '../RenameCategory';

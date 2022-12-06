@@ -2,14 +2,16 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
-// Components
-import { Label } from '@citizenlab/cl2-component-library';
+// Styling
+import styled from 'styled-components';
 import { get, isEmpty } from 'lodash-es';
 import moment, { Moment } from 'moment';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 // Typings
 import { CLError, Locale, UploadFile, Multiloc } from 'typings';
+// Components
+import { Label } from '@citizenlab/cl2-component-library';
 // Resources
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // Services
@@ -42,8 +44,6 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import DateRangePicker from 'components/admin/DateRangePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-// Styling
-import styled from 'styled-components';
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';

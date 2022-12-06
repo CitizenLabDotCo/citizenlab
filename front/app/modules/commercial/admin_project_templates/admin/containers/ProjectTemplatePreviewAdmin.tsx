@@ -1,4 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
+// styling
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -11,8 +13,6 @@ import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 import UseTemplateModal from '../components/UseTemplateModal';
 // components
 import Button from 'components/UI/Button';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

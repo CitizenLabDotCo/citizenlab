@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { media, fontSizes } from 'utils/styleUtils';
 import styled, { css } from 'styled-components';
+import { media, fontSizes } from 'utils/styleUtils';
 import useLeaflet, { ILeafletMapConfig } from './useLeaflet';
 
 const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`

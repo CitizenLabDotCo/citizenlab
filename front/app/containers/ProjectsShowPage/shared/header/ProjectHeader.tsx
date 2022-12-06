@@ -1,5 +1,7 @@
 import React, { useState, memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 import useAuthUser from 'hooks/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 // hooks
@@ -18,8 +20,6 @@ import Outlet from 'components/Outlet';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
-// style
-import styled from 'styled-components';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 import ProjectInfo from './ProjectInfo';
 

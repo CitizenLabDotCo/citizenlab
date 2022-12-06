@@ -1,11 +1,11 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 // typings
 import { CLError, UploadFile } from 'typings';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import Error from 'components/UI/Error';
-// style
-import styled from 'styled-components';
 import FileDisplay from './FileDisplay';
 // components
 import FileInput from './FileInput';

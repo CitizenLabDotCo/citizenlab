@@ -1,12 +1,12 @@
 import React from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
+import styled from 'styled-components';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { getLocalized } from 'utils/i18n';
 import { isRtl } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 type Props = {
   'data-cy'?: string;

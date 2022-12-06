@@ -4,6 +4,8 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
+// style
+import styled from 'styled-components';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 // resources
@@ -25,8 +27,6 @@ import {
 } from 'utils/styleUtils';
 // components
 import CloseIconButton from 'components/UI/CloseIconButton';
-// style
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 import tracks from './tracks';

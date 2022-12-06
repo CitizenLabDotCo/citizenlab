@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { transparentize } from 'polished';
+import { Icon } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { MembershipType } from 'services/groups';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -15,7 +16,6 @@ import {
   GroupName,
 } from 'containers/Admin/users/GroupCreationStep1';
 import adminUsersMessages from 'containers/Admin/users/messages';
-import styled from 'styled-components';
 import messages from './messages';
 
 const GroupType = styled(BaseGroupType)`

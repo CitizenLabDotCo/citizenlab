@@ -1,9 +1,11 @@
 import React, { memo, useCallback, useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Label } from '@citizenlab/cl2-component-library';
+// Styling
+import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 // Typing
 import { Multiloc, Locale, UploadFile } from 'typings';
+import { Label } from '@citizenlab/cl2-component-library';
 // Services
 import { addCause } from 'services/causes';
 // i18n
@@ -22,8 +24,6 @@ import {
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
-// Styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div``;

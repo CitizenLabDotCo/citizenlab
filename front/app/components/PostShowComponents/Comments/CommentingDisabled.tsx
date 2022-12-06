@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+// styling
+import styled from 'styled-components';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -13,8 +15,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 // components
 import Warning from 'components/UI/Warning';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

@@ -1,7 +1,7 @@
 import React from 'react';
+import { Tooltip } from 'recharts';
 // components
 import { Text } from '@citizenlab/cl2-component-library';
-import { Tooltip } from 'recharts';
 import { FormattedMessage } from 'utils/cl-intl';
 // i18n
 import messages from 'containers/Admin/dashboard/messages';

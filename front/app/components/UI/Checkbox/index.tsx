@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { isBoolean } from 'lodash-es';
 import { darken, hideVisually } from 'polished';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { colors, defaultOutline, isRtl } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
   margin-right: ${({ hasLabel }) => (hasLabel ? '10px' : '0px')};

@@ -1,4 +1,6 @@
 import React, { memo, Suspense, useState } from 'react';
+// style
+import styled from 'styled-components';
 import { Spinner } from '@citizenlab/cl2-component-library';
 // resources
 import useAuthUser from 'hooks/useAuthUser';
@@ -13,8 +15,6 @@ import HasPermission from 'components/HasPermission';
 import Outlet from 'components/Outlet';
 import PageWrapper from 'components/admin/PageWrapper';
 import { PageTitle, SectionDescription } from 'components/admin/Section';
-// style
-import styled from 'styled-components';
 // components
 import CreateProject from './CreateProject';
 import messages from './messages';

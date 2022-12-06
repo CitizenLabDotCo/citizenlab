@@ -1,7 +1,9 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { Icon } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 import { get, isUndefined, isString } from 'lodash-es';
+import { Icon } from '@citizenlab/cl2-component-library';
 // resources
 import GetInitiative, {
   GetInitiativeChildProps,
@@ -23,8 +25,6 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import Author from 'components/Author';
 // components
 import Card from 'components/UI/Card';
-// styles
-import styled from 'styled-components';
 import VoteIndicator from './VoteIndicator';
 import messages from './messages';
 

@@ -1,10 +1,12 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { Spinner } from '@citizenlab/cl2-component-library';
+// style
+import styled, { withTheme } from 'styled-components';
 import { get } from 'lodash-es';
 import { darken } from 'polished';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
+import { Spinner } from '@citizenlab/cl2-component-library';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
@@ -20,8 +22,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
-// style
-import styled, { withTheme } from 'styled-components';
 import ChildCommentForm from './ChildCommentForm';
 // components
 import Comment from './Comment';

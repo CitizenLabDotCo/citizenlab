@@ -1,4 +1,6 @@
 import React, { lazy, Suspense } from 'react';
+// style
+import styled from 'styled-components';
 // hooks
 import useLocale from 'hooks/useLocale';
 import { IIdeaStatusData } from 'services/ideaStatuses';
@@ -9,8 +11,6 @@ import { IInitiativeData } from 'services/initiatives';
 import { IPhaseData } from 'services/phases';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 import { ManagerType, TFilterMenu } from '../../..';
 
 // lazy-loaded components

@@ -1,12 +1,12 @@
 import React, { MouseEvent } from 'react';
+// styling
+import styled from 'styled-components';
 import { lighten } from 'polished';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 // components
 import CloseIconButton from 'components/UI/CloseIconButton';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

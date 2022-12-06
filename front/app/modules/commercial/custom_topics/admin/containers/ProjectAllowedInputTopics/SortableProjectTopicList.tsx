@@ -1,4 +1,5 @@
 import React, { memo, FormEvent, useState, useMemo } from 'react';
+import styled from 'styled-components';
 import { Spinner } from '@citizenlab/cl2-component-library';
 // hooks
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
@@ -31,7 +32,6 @@ import Warning from 'components/UI/Warning';
 import VerticalCenterer from 'components/VerticalCenterer';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import { StyledLink } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledWarning = styled(Warning)`

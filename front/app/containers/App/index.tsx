@@ -1,6 +1,8 @@
 import { configureScope } from '@sentry/react';
 import React, { lazy, PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
+// style
+import styled, { ThemeProvider } from 'styled-components';
 import 'focus-visible';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
@@ -59,8 +61,6 @@ import ErrorBoundary from 'components/ErrorBoundary';
 // auth
 import HasPermission from 'components/HasPermission';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-// style
-import styled, { ThemeProvider } from 'styled-components';
 import Meta from './Meta';
 
 // analytics

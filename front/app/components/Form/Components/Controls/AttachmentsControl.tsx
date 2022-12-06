@@ -1,5 +1,6 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import React, { useContext, useEffect, useState } from 'react';
+import { UploadFile } from 'typings';
 import { Box } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -7,7 +8,6 @@ import {
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import { UploadFile } from 'typings';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import { FormContext } from 'components/Form/contexts';

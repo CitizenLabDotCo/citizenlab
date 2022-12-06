@@ -1,10 +1,10 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { CLError } from 'typings';
 import {
   ColorPickerInput,
   ColorPickerInputProps,
 } from '@citizenlab/cl2-component-library';
-import { CLError } from 'typings';
 import Error, { TFieldName } from 'components/UI/Error';
 
 interface Props

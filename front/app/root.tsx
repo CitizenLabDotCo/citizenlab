@@ -10,12 +10,12 @@ import {
   useRoutes,
   unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
-import { BrowserTracing } from '@sentry/tracing';
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
 import modules from 'modules';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
+import { BrowserTracing } from '@sentry/tracing';
 import history from 'utils/browserHistory';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';

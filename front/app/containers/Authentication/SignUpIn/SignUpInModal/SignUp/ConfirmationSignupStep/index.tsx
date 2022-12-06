@@ -1,4 +1,7 @@
 import React, { useState, FormEvent } from 'react';
+import styled from 'styled-components';
+import { darken } from 'polished';
+import { CLErrors, CLError } from 'typings';
 import {
   Box,
   Icon,
@@ -6,8 +9,6 @@ import {
   Label,
   Success,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import { CLErrors, CLError } from 'typings';
 import useAuthUser from 'hooks/useAuthUser';
 import { confirm, resendCode, IConfirmation } from 'services/confirmation';
 import { trackEventByName } from 'utils/analytics';
@@ -18,7 +19,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
-import styled from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

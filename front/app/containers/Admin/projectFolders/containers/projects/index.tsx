@@ -1,4 +1,6 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 // services
@@ -9,8 +11,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 // components
 import { HeaderTitle } from 'containers/Admin/projects/all/StyledComponents';
-// style
-import styled from 'styled-components';
 import messages from '../messages';
 import ItemsInFolder from './ItemsInFolder';
 import ItemsNotInFolder from './ItemsNotInFolder';

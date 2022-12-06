@@ -1,5 +1,6 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
 import { clone } from 'lodash-es';
 // tracking
 import { injectTracks } from 'utils/analytics';
@@ -11,7 +12,6 @@ import tracks from 'containers/Admin/users/tracks';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import styled from 'styled-components';
 import Rule from './Rule';
 import messages from './messages';
 import { TRule } from './rules';

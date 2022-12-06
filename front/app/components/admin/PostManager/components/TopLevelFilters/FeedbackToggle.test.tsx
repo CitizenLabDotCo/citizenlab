@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
-import { shallow } from 'enzyme';
 import 'jest-styled-components';
+import { shallow } from 'enzyme';
 import { FeedbackToggle } from './FeedbackToggle';
 
 jest.mock('services/stats');

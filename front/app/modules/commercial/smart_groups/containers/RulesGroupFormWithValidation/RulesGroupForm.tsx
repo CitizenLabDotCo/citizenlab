@@ -3,11 +3,13 @@ import React from 'react';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { Button, Label } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
+// Styling
+import styled from 'styled-components';
 // Typings
 import { Multiloc } from 'typings';
 import { string, object, array, number } from 'yup';
+import { Button, Label } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -20,8 +22,6 @@ import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 // Components
 import { SectionField } from 'components/admin/Section';
-// Styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const SSectionField = styled(SectionField)`

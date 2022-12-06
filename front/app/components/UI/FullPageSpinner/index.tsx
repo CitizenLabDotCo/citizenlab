@@ -1,9 +1,9 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 // components
 import { Spinner } from '@citizenlab/cl2-component-library';
 import { media } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 
 export interface Props {
   admin?: boolean;

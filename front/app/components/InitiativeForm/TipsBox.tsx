@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
+import styled from 'styled-components';
 import { darken } from 'polished';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 // style
 import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
 // components
 import TipsContent from './TipsContent';
 import messages from './messages';

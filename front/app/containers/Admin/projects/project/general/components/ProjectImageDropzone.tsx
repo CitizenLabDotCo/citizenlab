@@ -1,13 +1,13 @@
 import React from 'react';
-// components
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 // typings
 import { UploadFile } from 'typings';
+// components
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { SubSectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from '../messages';
 import { StyledSectionField } from './styling';
 

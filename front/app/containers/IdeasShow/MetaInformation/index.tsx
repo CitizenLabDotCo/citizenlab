@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 // hooks & services
 import useLocale from 'hooks/useLocale';
@@ -6,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
 import Outlet from 'components/Outlet';
-import styled from 'styled-components';
 import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
 import Location from './Location';

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // components
 import {
   Dropdown,
@@ -17,8 +19,6 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const DropdownWrapper = styled.div``;

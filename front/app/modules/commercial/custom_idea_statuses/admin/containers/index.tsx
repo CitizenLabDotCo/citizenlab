@@ -1,6 +1,7 @@
 // libraries
 import Tippy from '@tippyjs/react';
 import React, { useMemo } from 'react';
+import styled from 'styled-components';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 // hooks
 import useIdeaStatuses from 'hooks/useIdeaStatuses';
@@ -30,7 +31,6 @@ import {
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Buttons = styled.div`

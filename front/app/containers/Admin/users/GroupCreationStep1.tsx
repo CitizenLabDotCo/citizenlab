@@ -1,9 +1,11 @@
 // Libraries
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// Styling
+import styled from 'styled-components';
+import { darken, transparentize } from 'polished';
 // Components
 import { Icon } from '@citizenlab/cl2-component-library';
-import { darken, transparentize } from 'polished';
 // Typings
 import { IGroupData, MembershipType } from 'services/groups';
 import { injectIntl } from 'utils/cl-intl';
@@ -12,8 +14,6 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import { colors, fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
-// Styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

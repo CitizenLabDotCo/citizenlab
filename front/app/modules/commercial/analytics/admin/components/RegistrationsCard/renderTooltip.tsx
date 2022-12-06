@@ -1,7 +1,7 @@
 import React from 'react';
+import { Tooltip } from 'recharts';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import { Tooltip } from 'recharts';
 import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import { toFullMonth } from 'utils/dateUtils';

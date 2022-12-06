@@ -1,4 +1,6 @@
 import React, { memo, useState } from 'react';
+// styles
+import styled from 'styled-components';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import useAdminPublications, {
@@ -26,8 +28,6 @@ import {
   ActionsRowContainer,
 } from 'containers/Admin/projects/components/StyledComponents';
 import Error from 'components/UI/Error';
-// styles
-import styled from 'styled-components';
 import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
 import messages from './messages';
 

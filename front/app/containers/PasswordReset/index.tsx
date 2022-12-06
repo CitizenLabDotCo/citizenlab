@@ -3,11 +3,13 @@ import { adopt } from 'react-adopt';
 import { Helmet } from 'react-helmet';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Success } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { isString } from 'lodash-es';
 import { parse } from 'qs';
 import { CLError } from 'typings';
+// components
+import { Success } from '@citizenlab/cl2-component-library';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -28,8 +30,6 @@ import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
 import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

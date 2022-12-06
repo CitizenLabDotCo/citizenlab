@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled, { withTheme } from 'styled-components';
 import { get, has, isEmpty, omitBy } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -25,8 +27,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-// style
-import styled, { withTheme } from 'styled-components';
 import sharedSettingsMessages from '../messages';
 import Branding from './Branding';
 import ProjectHeader from './ProjectHeader';

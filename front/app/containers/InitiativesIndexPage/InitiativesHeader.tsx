@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+// style
+import styled from 'styled-components';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -19,8 +21,6 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import InitiativeButton from 'components/InitiativeButton';
 import T from 'components/T';
 import Warning from 'components/UI/Warning';
-// style
-import styled from 'styled-components';
 import InitiativeInfoContent from './InitiativeInfoContent';
 import messages from './messages';
 

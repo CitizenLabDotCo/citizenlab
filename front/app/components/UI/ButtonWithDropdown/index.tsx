@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect, cloneElement } from 'react';
-// components
-import { Dropdown } from '@citizenlab/cl2-component-library';
-import bowser from 'bowser';
-import { trackEventByName } from 'utils/analytics';
 // styling
 import styled from 'styled-components';
+import bowser from 'bowser';
+// components
+import { Dropdown } from '@citizenlab/cl2-component-library';
+import { trackEventByName } from 'utils/analytics';
 
 const Container = styled.div`
   position: relative;

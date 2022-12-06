@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 // form
 import { useFormContext } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
+// Styling
+import styled from 'styled-components';
 import { Label } from '@citizenlab/cl2-component-library';
 import GetProjects from 'resources/GetProjects';
 // Resources
@@ -21,8 +23,6 @@ import Toggle from 'components/HookForm/Toggle';
 import Collapse from 'components/UI/Collapse';
 // Components
 import { Section, SectionField } from 'components/admin/Section';
-// Styling
-import styled from 'styled-components';
 import messages from '../../messages';
 
 const StyledCollapse = styled(Collapse)`

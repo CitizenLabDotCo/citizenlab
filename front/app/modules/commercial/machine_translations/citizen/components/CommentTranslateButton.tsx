@@ -1,4 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
+// style
+import styled from 'styled-components';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 // types
 import { GetCommentChildProps } from 'resources/GetComment';
@@ -15,8 +17,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import FeatureFlag from 'components/FeatureFlag';
 import messages from 'components/PostShowComponents/Comments/messages';
 import tracks from 'components/PostShowComponents/Comments/tracks';
-// style
-import styled from 'styled-components';
 
 const Container = styled.li`
   display: flex;

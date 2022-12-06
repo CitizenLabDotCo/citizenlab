@@ -1,13 +1,13 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { colors, media } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
-// styles
-import styled from 'styled-components';
 // assets
 import insights from '../../../assets/insightsView.png';
 import messages from '../messages';

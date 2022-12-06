@@ -1,5 +1,5 @@
-import { fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 export const HeaderTitle = styled.h3`
   display: flex;

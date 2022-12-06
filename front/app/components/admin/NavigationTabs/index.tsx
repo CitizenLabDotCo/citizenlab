@@ -1,6 +1,6 @@
 // style
-import { colors, defaultStyles } from 'utils/styleUtils';
 import styled, { css } from 'styled-components';
+import { colors, defaultStyles } from 'utils/styleUtils';
 // components
 import Tab from './Tab';
 import TabsPageLayout from './TabsPageLayout';

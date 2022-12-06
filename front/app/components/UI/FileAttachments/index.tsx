@@ -1,11 +1,11 @@
 import React from 'react';
+import styled from 'styled-components';
 import { IEventFileData } from 'services/eventFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
 import { IInitiativeFileData } from 'services/initiativeFiles';
 import { ICustomPageFileData } from 'services/pageFiles';
 import { IPhaseFileData } from 'services/phaseFiles';
 import { IProjectFileData } from 'services/projectFiles';
-import styled from 'styled-components';
 import FileDisplay from './FileDisplay';
 
 const Container = styled.div`

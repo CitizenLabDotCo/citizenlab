@@ -11,12 +11,14 @@ import ForceGraph2D, {
   NodeObject,
 } from 'react-force-graph-2d';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 import { forceCollide } from 'd3-force';
 import { saveAs } from 'file-saver';
 import { cloneDeep } from 'lodash-es';
 import { stringify } from 'qs';
+// components
+import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
@@ -37,8 +39,6 @@ import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
-// styles
-import styled from 'styled-components';
 import messages from '../../messages';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
+import { clamp } from 'lodash-es';
 // components
 import { Box, Text, Input, Icon } from '@citizenlab/cl2-component-library';
-import { clamp } from 'lodash-es';
 // typings
 import { Bins } from '../../../services/referenceDistribution';
 // utils
@@ -14,8 +16,6 @@ import {
 import { injectIntl } from 'utils/cl-intl';
 import { indices } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 import BinInputsHeader from './BinInputsHeader';
 // i18n
 import messages from './messages';

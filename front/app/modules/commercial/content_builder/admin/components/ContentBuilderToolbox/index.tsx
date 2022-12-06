@@ -2,16 +2,16 @@ import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 // Router
 import { useParams } from 'react-router-dom';
+// styles
+import styled from 'styled-components';
+// types
+import { Locale } from 'typings';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 // craft
 import { useEditor } from '@craftjs/core';
-// types
-import { Locale } from 'typings';
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
-// styles
-import styled from 'styled-components';
 // intl
 import messages from '../../messages';
 import AboutBox from '../CraftComponents/AboutBox';

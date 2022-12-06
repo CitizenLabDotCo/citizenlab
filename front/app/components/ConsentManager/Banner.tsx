@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { rgba } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -6,7 +7,6 @@ import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

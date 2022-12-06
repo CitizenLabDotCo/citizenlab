@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 // craft
@@ -7,7 +8,6 @@ import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import { FormattedMessage } from 'utils/cl-intl';
 // styles
 import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from '../../messages';
 
 const CONTAINER = 'Container';

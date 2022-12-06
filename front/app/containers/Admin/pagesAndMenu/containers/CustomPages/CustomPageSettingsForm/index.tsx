@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { Box } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
 // types
 import { Multiloc } from 'typings';
 import { object, string } from 'yup';
+import { Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { injectIntl } from 'utils/cl-intl';
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';

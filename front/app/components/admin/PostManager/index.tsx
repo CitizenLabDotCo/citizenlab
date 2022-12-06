@@ -3,6 +3,7 @@ import { adopt } from 'react-adopt';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { Input } from 'semantic-ui-react';
+import styled from 'styled-components';
 import { isFunction } from 'lodash-es';
 // resources
 import GetIdeaStatuses, {
@@ -39,7 +40,6 @@ import PostTable from './components/PostTable';
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 import Outlet from 'components/Outlet';
-import styled from 'styled-components';
 
 const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;

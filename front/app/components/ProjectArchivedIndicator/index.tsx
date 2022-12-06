@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 // hooks
 import useProject from 'hooks/useProject';
 // i18n
@@ -6,8 +8,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 // components
 import Warning from 'components/UI/Warning';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

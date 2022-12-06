@@ -1,9 +1,9 @@
 import React from 'react';
-// components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Moment } from 'moment';
 // typings
 import { IOption } from 'typings';
+// components
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import TimeControl from '../components/TimeControl';
 import ProjectFilter from '../components/filters/ProjectFilter';

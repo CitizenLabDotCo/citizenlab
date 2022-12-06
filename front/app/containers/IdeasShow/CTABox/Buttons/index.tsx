@@ -1,7 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
 import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 import GoToCommentsButton from '../../Buttons/GoToCommentsButton';
 
 const Container = styled.div``;

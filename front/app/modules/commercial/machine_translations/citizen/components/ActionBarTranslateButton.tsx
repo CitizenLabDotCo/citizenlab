@@ -1,11 +1,11 @@
 import React from 'react';
+import styled from 'styled-components';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { media } from 'utils/styleUtils';
 import FeatureFlag from 'components/FeatureFlag';
 import TranslateButton from 'components/UI/TranslateButton';
-import styled from 'styled-components';
 
 const StyledTranslateButton = styled(TranslateButton)`
   ${media.phone`

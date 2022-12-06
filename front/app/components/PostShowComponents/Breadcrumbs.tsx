@@ -1,18 +1,18 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 import { darken } from 'polished';
 // typings
 import { Multiloc } from 'typings';
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 // i18n
 import { injectIntl, FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { fontSizes, colors, media } from 'utils/styleUtils';
-// styles
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

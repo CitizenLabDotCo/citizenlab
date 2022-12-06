@@ -1,4 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
+// styling
+import styled from 'styled-components';
 import { isError, includes } from 'lodash-es';
 import { darken } from 'polished';
 // typings
@@ -13,8 +15,6 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { fontSizes, colors, defaultCardStyle } from 'utils/styleUtils';
 // components
 import T from 'components/T';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 import { Header, Title } from './styles';
 

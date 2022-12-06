@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Box, Title } from '@citizenlab/cl2-component-library';
 import { InsertConfigurationOptions } from 'typings';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import {
   updateHomepageSettings,

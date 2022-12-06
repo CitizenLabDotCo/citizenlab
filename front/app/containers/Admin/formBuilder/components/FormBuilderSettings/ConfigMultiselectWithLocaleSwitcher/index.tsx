@@ -4,6 +4,9 @@ import HTML5Backend from 'react-dnd-html5-backend-cjs';
 // react hook form
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
+import { get } from 'lodash-es';
+// Typings
+import { Locale, CLError } from 'typings';
 // components
 import {
   Box,
@@ -14,9 +17,6 @@ import {
   Input,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
-// Typings
-import { Locale, CLError } from 'typings';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 // utils

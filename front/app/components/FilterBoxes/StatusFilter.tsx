@@ -1,7 +1,9 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 // typings
 import { IIdeasFilterCounts } from 'services/ideas';
@@ -14,8 +16,6 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { fontSizes, colors, defaultCardStyle, isRtl } from 'utils/styleUtils';
 // components
 import T from 'components/T';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 import { Header, Title } from './styles';
 

@@ -2,6 +2,8 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Icon } from 'semantic-ui-react';
+// Style
+import styled from 'styled-components';
 // Services / Data loading
 import GetPollOptions, {
   GetPollOptionsChildProps,
@@ -16,8 +18,6 @@ import { colors } from 'utils/styleUtils';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Row, TextCell, List } from 'components/admin/ResourceList';
-// Style
-import styled from 'styled-components';
 import FormOptionRow from './FormOptionRow';
 import OptionRow from './OptionRow';
 import QuestionDetailsForm from './QuestionDetailsForm';

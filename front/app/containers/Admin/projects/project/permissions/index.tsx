@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 // hooks
 import useProject from 'hooks/useProject';
@@ -10,8 +12,6 @@ import ProjectManagement from './containers/ProjectManagement';
 import Outlet from 'components/Outlet';
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledSection = styled(Section)`

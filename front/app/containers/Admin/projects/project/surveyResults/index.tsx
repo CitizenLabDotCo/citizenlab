@@ -1,6 +1,7 @@
 // Libraries
 import React, { Fragment } from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // Services / Data loading
@@ -10,7 +11,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import styled from 'styled-components';
 // i18n
 import messages from '../messages';
 // Components

@@ -1,5 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+// styles
+import styled, { css, keyframes } from 'styled-components';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 // hooks
@@ -8,8 +10,6 @@ import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCat
 import { injectIntl } from 'utils/cl-intl';
 import { fontSizes, colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
-// styles
-import styled, { css, keyframes } from 'styled-components';
 // intl
 import messages from '../../messages';
 

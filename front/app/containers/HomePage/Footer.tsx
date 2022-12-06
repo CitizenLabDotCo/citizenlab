@@ -1,4 +1,6 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 import useAuthUser from 'hooks/useAuthUser';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
@@ -13,8 +15,6 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import CityLogoSection from 'components/CityLogoSection';
 import { HeadingFontStyle } from 'components/LandingPages/citizen/HeaderContent';
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 import tracks from './tracks';

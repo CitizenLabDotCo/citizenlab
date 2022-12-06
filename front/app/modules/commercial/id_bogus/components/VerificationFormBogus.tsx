@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
+import { get } from 'lodash-es';
 // components
 import { Input } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 // services

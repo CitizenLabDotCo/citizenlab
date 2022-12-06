@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
 } from 'resources/GetProjectFolder';
@@ -9,7 +10,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from '../messages';
 import ProjectFolderForm from './ProjectFolderForm';
 

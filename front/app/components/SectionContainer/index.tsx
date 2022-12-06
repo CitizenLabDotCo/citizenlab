@@ -1,5 +1,5 @@
-import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 export default styled.section`
   padding-top: 60px;

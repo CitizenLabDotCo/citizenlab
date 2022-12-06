@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import { Spinner } from '@citizenlab/cl2-component-library';
+// style
+import styled, { withTheme } from 'styled-components';
 import { get, isNumber } from 'lodash-es';
+import { Spinner } from '@citizenlab/cl2-component-library';
 // resources
 import GetInitiatives, {
   Sort,
@@ -35,8 +37,6 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import Button from 'components/UI/Button';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import SearchInput from 'components/UI/SearchInput';
-// style
-import styled, { withTheme } from 'styled-components';
 import EmptyProposals from './EmptyProposals';
 import ProposalsList from './ProposalsList';
 import SortFilterDropdown from './SortFilterDropdown';

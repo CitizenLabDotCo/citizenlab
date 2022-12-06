@@ -1,9 +1,9 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Subscription } from 'rxjs';
+// components
+import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import { IResourceByTime, IUsersByTime } from 'services/stats';
 // intl
 import { injectIntl } from 'utils/cl-intl';

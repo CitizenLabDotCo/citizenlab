@@ -2,9 +2,9 @@
 import React, { ReactNode } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { remCalc, fontSizes, colors } from 'utils/styleUtils';
 // Style
 import styled from 'styled-components';
+import { remCalc, fontSizes, colors } from 'utils/styleUtils';
 
 // Components
 export { default as SortableList } from './SortableList';

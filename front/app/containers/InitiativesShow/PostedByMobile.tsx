@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
+// styling
+import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes } from 'utils/styleUtils';
 // components
 import UserName from 'components/UI/UserName';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import GetProjectPermissions, {
   GetProjectPermissionsChildProps,
 } from 'resources/GetProjectPermissions';
@@ -13,7 +14,6 @@ import {
   ParticipationMethodConfig,
 } from 'utils/participationMethodUtils';
 import { fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
 import ActionsForm from './ActionsForm';
 
 const Container = styled.div`

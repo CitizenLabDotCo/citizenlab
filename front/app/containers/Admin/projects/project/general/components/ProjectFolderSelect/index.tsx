@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+// typings
+import { IOption } from 'typings';
 // components
 import {
   Radio,
@@ -7,8 +10,6 @@ import {
   IconTooltip,
   Error,
 } from '@citizenlab/cl2-component-library';
-// typings
-import { IOption } from 'typings';
 import useAuthUser from 'hooks/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 // hooks
@@ -23,7 +24,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { isNilOrError, isNil } from 'utils/helperUtils';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledSectionField = styled(SectionField)`

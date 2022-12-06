@@ -1,13 +1,13 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import FormattedAnchor from 'components/FormattedAnchor';
 import Modal from 'components/UI/Modal';
-// style
-import styled from 'styled-components';
 // images
 import illustration from './illustration.png';
 import messages from './messages';

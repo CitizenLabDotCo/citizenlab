@@ -2,10 +2,10 @@ import React from 'react';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { Button, Box } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Multiloc } from 'typings';
 import { object, boolean, string } from 'yup';
+import { Button, Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { IUserCustomFieldInputType } from 'services/userCustomFields';
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';

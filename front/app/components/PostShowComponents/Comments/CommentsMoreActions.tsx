@@ -1,6 +1,8 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// Styling
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -19,8 +21,6 @@ import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 // Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-// Styling
-import styled from 'styled-components';
 import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 import messages from './messages';
 

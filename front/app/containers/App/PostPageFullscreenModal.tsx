@@ -1,4 +1,6 @@
 import React, { memo, useCallback, useMemo } from 'react';
+// style
+import styled from 'styled-components';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -12,8 +14,6 @@ import InitiativeShowPageTopBar from 'containers/InitiativesShowPage/InitiativeS
 import PlatformFooter from 'containers/PlatformFooter';
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
-// style
-import styled from 'styled-components';
 
 // note: StyledIdeasShow styles defined here should match that in IdeasShowPage!
 const StyledIdeasShow = styled(IdeasShow)`

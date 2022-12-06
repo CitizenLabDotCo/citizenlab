@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+// style
+import styled from 'styled-components';
 import {
   isArray,
   find,
@@ -9,8 +11,6 @@ import {
   without,
 } from 'lodash-es';
 import { media, isRtl } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 // components
 import Title from './title';
 import ValuesList from './valuesList';

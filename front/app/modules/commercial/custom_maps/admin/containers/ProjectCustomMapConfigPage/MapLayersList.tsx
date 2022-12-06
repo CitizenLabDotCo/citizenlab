@@ -1,6 +1,8 @@
 import Tippy from '@tippyjs/react';
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 // hooks
 import useMapConfig from '../../../hooks/useMapConfig';
@@ -19,8 +21,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import GeoJsonImportButton from './GeoJsonImportButton';
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,

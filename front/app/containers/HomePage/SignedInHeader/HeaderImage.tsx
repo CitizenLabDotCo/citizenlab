@@ -1,9 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Image } from '@citizenlab/cl2-component-library';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
 import { media, isRtl } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 const HeaderImageContainer = styled.div`
   position: absolute;

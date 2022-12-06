@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import moment from 'moment';
 import { FormattedMessage } from 'utils/cl-intl';
 import { convertSecondsToDDHHMM } from 'utils/dateUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

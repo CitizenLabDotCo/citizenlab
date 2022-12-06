@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 // Resources
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -12,7 +13,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 // Components
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from '../messages';
 
 const StyledDiv = styled.div`

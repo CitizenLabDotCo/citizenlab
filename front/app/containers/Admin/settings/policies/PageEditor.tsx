@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
+// styling
+import styled from 'styled-components';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import useCustomPage from 'hooks/useCustomPage';
@@ -14,8 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
 import PageForm, { FormValues } from 'components/PageForm';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

@@ -1,13 +1,13 @@
 import React from 'react';
-// components
-import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 // images
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
+// components
+import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
-// styling
-import styled from 'styled-components';
 import EmptyStateImage from '../../assets/empty_status.svg';
 // i18n
 import messages from './messages';

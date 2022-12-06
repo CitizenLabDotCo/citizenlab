@@ -1,5 +1,7 @@
 // Libraries
 import React, { PureComponent } from 'react';
+// Styles
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import GetCampaignConsentsWithToken from 'resources/GetCampaignConsentsWithToken';
 // services
@@ -11,8 +13,6 @@ import { colors } from 'utils/styleUtils';
 import { API_PATH } from 'containers/App/constants';
 // Components
 import ConsentForm from 'components/ConsentForm';
-// Styles
-import styled from 'styled-components';
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 
 const Container = styled.div`

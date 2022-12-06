@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+// styling
+import styled from 'styled-components';
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
-// styling
-import styled from 'styled-components';
 // components
 import Volunteering from '../shared/volunteering';
 

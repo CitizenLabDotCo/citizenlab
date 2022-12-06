@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Box } from '@citizenlab/cl2-component-library';
 import { CLError } from 'typings';
+import { Box } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import Radio from './Radio';
 

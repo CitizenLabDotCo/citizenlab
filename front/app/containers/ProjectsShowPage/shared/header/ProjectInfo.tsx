@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 import { useWindowSize, Title } from '@citizenlab/cl2-component-library';
 // hooks
 import useProject from 'hooks/useProject';
@@ -12,8 +14,6 @@ import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 // i18n
 import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
-// style
-import styled from 'styled-components';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
 
 const Container = styled.div`

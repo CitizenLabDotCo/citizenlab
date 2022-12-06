@@ -1,3 +1,4 @@
+import { css } from 'styled-components';
 import {
   viewportWidths,
   media,
@@ -16,7 +17,6 @@ import {
   calculateContrastRatio,
   hexToRgb,
 } from '@citizenlab/cl2-component-library';
-import { css } from 'styled-components';
 
 const isRtl = (style, ...args) => css`
   ${(props) => (props.theme.isRtl ? css(style, ...args) : '')}

@@ -1,7 +1,8 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Input, IconButton, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { darken } from 'polished';
+import { Input, IconButton, colors } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -9,7 +10,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import Error from 'components/UI/Error';
-import styled from 'styled-components';
 import { Props as WrapperProps } from './';
 import messages from './messages';
 

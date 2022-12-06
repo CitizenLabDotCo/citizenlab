@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 import useAdminPublications, {
   IAdminPublicationContent,
 } from 'hooks/useAdminPublications';
@@ -14,8 +16,6 @@ import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 import Button from 'components/UI/Button';
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-// style
-import styled from 'styled-components';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
 import messages from '../messages';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { parse, stringify } from 'qs';
 import styled from 'styled-components';
+import { parse, stringify } from 'qs';
 
 const Container = styled.div`
   display: flex;

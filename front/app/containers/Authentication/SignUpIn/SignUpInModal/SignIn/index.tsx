@@ -1,4 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
+// style
+import styled from 'styled-components';
 // utils
 import { handleOnSSOClick } from 'services/singleSignOn';
 // typings
@@ -9,8 +11,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import AuthProviders, { AuthProvider } from 'components/AuthProviders';
 import Error from 'components/UI/Error';
-// style
-import styled from 'styled-components';
 import {
   StyledHeaderContainer,
   StyledHeaderTitle,

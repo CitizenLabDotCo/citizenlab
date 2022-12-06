@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { CLError, Multiloc } from 'typings';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -26,7 +27,6 @@ import {
   SectionDescription,
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import styled from 'styled-components';
 import CustomFieldSettings from './CustomFieldSettings';
 import CustomFieldsSignupText from './CustomFieldsSignupText';
 import ToggleUserConfirmation from './ToggleUserConfirmation';

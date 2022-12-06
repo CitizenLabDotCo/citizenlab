@@ -1,6 +1,6 @@
-import snippet from '@segment/snippet';
 import { get, isFunction } from 'lodash-es';
 import { combineLatest } from 'rxjs';
+import snippet from '@segment/snippet';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import {

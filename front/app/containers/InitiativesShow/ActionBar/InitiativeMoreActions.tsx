@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // services
 import { deleteInitiative, IInitiativeData } from 'services/initiatives';
@@ -16,7 +17,6 @@ import SpamReportForm from 'containers/SpamReport';
 import HasPermission from 'components/HasPermission';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import styled from 'styled-components';
 import messages from '../messages';
 
 const Container = styled.div``;

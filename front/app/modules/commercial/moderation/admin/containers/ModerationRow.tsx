@@ -1,10 +1,12 @@
 import Tippy from '@tippyjs/react';
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Tr, Td, Icon } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import moment from 'moment';
 import { rgba } from 'polished';
+// components
+import { Tr, Td, Icon } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 // hooks
 import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
@@ -23,8 +25,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 import Checkbox from 'components/UI/Checkbox';
-// styling
-import styled from 'styled-components';
 import ModerationContentCell from './ModerationContentCell';
 import messages from './messages';
 import tracks from './tracks';

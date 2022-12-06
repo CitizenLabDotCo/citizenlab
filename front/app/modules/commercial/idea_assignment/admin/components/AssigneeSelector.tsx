@@ -1,11 +1,12 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Select } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { isString, get } from 'lodash-es';
 // typings
 import { IOption } from 'typings';
+// components
+import { Select } from '@citizenlab/cl2-component-library';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
@@ -14,7 +15,6 @@ import { updateProject } from 'services/projects';
 import { injectIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

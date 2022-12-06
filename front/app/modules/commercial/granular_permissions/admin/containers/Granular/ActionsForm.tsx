@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 import usePhases from 'hooks/usePhases';
 // hooks
@@ -14,7 +15,6 @@ import { getInputTerm } from 'services/participationContexts';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
-import styled from 'styled-components';
 // components
 import ActionForm from './ActionForm';
 import messages from './messages';

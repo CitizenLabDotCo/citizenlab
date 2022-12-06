@@ -1,4 +1,8 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
+// style
+import styled from 'styled-components';
+import rocket from 'assets/img/rocket.png';
+import { isError } from 'lodash-es';
 import {
   Box,
   Spinner,
@@ -6,8 +10,6 @@ import {
   Image,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import rocket from 'assets/img/rocket.png';
-import { isError } from 'lodash-es';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import useEvents from 'hooks/useEvents';
@@ -29,8 +31,6 @@ import { media, colors } from 'utils/styleUtils';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import Modal from 'components/UI/Modal';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-// style
-import styled from 'styled-components';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousSurvey from './continuous/Survey';

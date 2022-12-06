@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useState } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+import { isEmpty, get } from 'lodash-es';
 // components
 import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
-import { isEmpty, get } from 'lodash-es';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 // services

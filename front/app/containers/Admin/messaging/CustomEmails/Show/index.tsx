@@ -2,6 +2,7 @@ import * as React from 'react';
 import { adopt } from 'react-adopt';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { StatusLabel, IconTooltip } from '@citizenlab/cl2-component-library';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -28,7 +29,6 @@ import T from 'components/T';
 // components
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
-import styled from 'styled-components';
 import messages from '../../messages';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';

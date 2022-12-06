@@ -1,4 +1,6 @@
 import React, { memo, useState } from 'react';
+// styling
+import styled from 'styled-components';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // services
@@ -11,8 +13,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 // components
 import Error from 'components/UI/Error';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

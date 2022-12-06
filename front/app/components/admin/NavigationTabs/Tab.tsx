@@ -1,6 +1,6 @@
 // style
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled, { css } from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 import {
   tabLineHeight,
   tabPadding,

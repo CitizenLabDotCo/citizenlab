@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import { IParticipationContextType } from 'typings';
 import { IPollQuestion } from 'services/pollQuestions';
 import { addPollResponse } from 'services/pollResponses';
@@ -7,7 +8,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 import { fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
-import styled from 'styled-components';
 import PollMultipleChoice from './PollMultipleChoice';
 import PollSingleChoice from './PollSingleChoice';
 import messages from './messages';

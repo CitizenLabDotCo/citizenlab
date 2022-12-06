@@ -4,6 +4,13 @@ import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
+// style
+import styled from 'styled-components';
+import bowser from 'bowser';
+import { Subscription, combineLatest, of, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+// typings
+import { IOption, UploadFile, Locale } from 'typings';
 // components
 import {
   Box,
@@ -11,11 +18,6 @@ import {
   Input,
   LocationInput,
 } from '@citizenlab/cl2-component-library';
-import bowser from 'bowser';
-import { Subscription, combineLatest, of, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-// typings
-import { IOption, UploadFile, Locale } from 'typings';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // resources
 import GetFeatureFlag, {
@@ -69,8 +71,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import QuillEditor from 'components/UI/QuillEditor';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import UserSelect from 'components/UI/UserSelect';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Form = styled.form`

@@ -1,7 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { capitalize } from 'lodash-es';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 // hooks
 import useLocalize from 'hooks/useLocalize';

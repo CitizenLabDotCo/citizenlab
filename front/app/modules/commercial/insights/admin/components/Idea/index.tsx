@@ -1,4 +1,6 @@
 import React from 'react';
+// styles
+import styled from 'styled-components';
 // hooks
 import useIdea from 'hooks/useIdea';
 // utils
@@ -6,8 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import T from 'components/T';
-// styles
-import styled from 'styled-components';
 
 type IdeaProps = {
   ideaId: string;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
-// components
-import { Box } from '@citizenlab/cl2-component-library';
 import { isEqual } from 'lodash-es';
 import { Percentage } from 'typings';
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 // utils
 import { getJustifyContent, getLegendDimensions } from './utils';
 import Icon from './Icon';

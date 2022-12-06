@@ -1,10 +1,10 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import GetCampaign from 'resources/GetCampaign';
 import { ICampaignData } from 'services/campaigns';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import PageWrapper from 'components/admin/PageWrapper';
-import styled from 'styled-components';
 import messages from '../../messages';
 import CampaignStats from './CampaignStats';
 import PreviewFrame from './PreviewFrame';

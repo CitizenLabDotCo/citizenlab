@@ -1,9 +1,11 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import ReactResizeDetector from 'react-resize-detector';
-// hooks
-import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
+// style
+import styled, { useTheme } from 'styled-components';
 import { isEmpty } from 'lodash-es';
 import { Multiloc } from 'typings';
+// hooks
+import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import {
   fontSizes,
@@ -18,8 +20,6 @@ import T from 'components/T';
 // components
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-// style
-import styled, { useTheme } from 'styled-components';
 
 const desktopCollapsedContentMaxHeight = 380;
 const mobileCollapsedContentMaxHeight = 180;

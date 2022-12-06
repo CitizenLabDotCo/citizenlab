@@ -1,8 +1,10 @@
 import React, { memo, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { lighten } from 'polished';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 import usePhases from 'hooks/usePhases';
 // hooks
 import useProject from 'hooks/useProject';
@@ -16,8 +18,6 @@ import ContentContainer from 'components/ContentContainer';
 import IdeaButton from 'components/IdeaButton';
 // i18n
 import T from 'components/T';
-// style
-import styled from 'styled-components';
 
 const slideInOutTimeout = 250;
 const slideInOutDistance = 14;

@@ -2,7 +2,8 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { map, isEmpty } from 'lodash-es';
 import {
   ComposedChart,
@@ -17,6 +18,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Subscription, combineLatest } from 'rxjs';
+import { Icon } from '@citizenlab/cl2-component-library';
 import {
   IResourceByTime,
   IVotesByTime,
@@ -44,8 +46,6 @@ import { legacyColors, sizes } from 'components/admin/Graphs/styling';
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-// styling
-import styled from 'styled-components';
 import messages from '../messages';
 
 const InfoIcon = styled(Icon)`

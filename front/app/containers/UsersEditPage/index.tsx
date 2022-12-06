@@ -1,5 +1,7 @@
 // Libraries
 import React from 'react';
+// Styles
+import styled from 'styled-components';
 // Hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
@@ -10,8 +12,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
-// Styles
-import styled from 'styled-components';
 import CampaignsConsentForm from './CampaignsConsentForm';
 import FragmentForm from './FragmentForm';
 import ProfileDeletion from './ProfileDeletion';

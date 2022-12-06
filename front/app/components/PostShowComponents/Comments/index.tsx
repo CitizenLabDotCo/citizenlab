@@ -2,8 +2,10 @@
 import Observer from '@researchgate/react-intersection-observer';
 import React, { memo, useState, useCallback } from 'react';
 import { adopt } from 'react-adopt';
-import { Title } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { get, isUndefined } from 'lodash-es';
+import { Title } from '@citizenlab/cl2-component-library';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 // resources
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
@@ -18,8 +20,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 import CommentSorting from './CommentSorting';
 import CommentingDisabled from './CommentingDisabled';
 import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';

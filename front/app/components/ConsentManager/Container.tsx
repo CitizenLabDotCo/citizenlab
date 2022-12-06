@@ -1,10 +1,10 @@
 import React, { PureComponent, FormEvent } from 'react';
+import styled from 'styled-components';
 import { Subscription } from 'rxjs';
 import { FormattedMessage } from 'utils/cl-intl';
 // Events
 import eventEmitter from 'utils/eventEmitter';
 import Modal from 'components/UI/Modal';
-import styled from 'styled-components';
 import { CategorizedDestinations, IPreferences } from './';
 // Components
 import Banner from './Banner';

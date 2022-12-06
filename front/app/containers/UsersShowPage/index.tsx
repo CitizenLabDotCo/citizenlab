@@ -1,6 +1,8 @@
 import React, { useState, useContext, memo } from 'react';
 import { Helmet } from 'react-helmet';
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 import { isError } from 'lodash-es';
 // hooks
 import useUser from 'hooks/useUser';
@@ -15,8 +17,6 @@ import ContentContainer from 'components/ContentContainer';
 // components
 import IdeaCards from 'components/IdeaCards';
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 import UserComments from './UserComments';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';

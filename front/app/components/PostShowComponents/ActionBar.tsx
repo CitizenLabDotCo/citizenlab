@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
+// styles
+import styled from 'styled-components';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { colors, media } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
-// styles
-import styled from 'styled-components';
 import { postPageContentMaxWidth } from './styleConstants';
 
 const Container = styled.div`

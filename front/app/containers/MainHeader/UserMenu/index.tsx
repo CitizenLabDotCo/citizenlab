@@ -1,8 +1,8 @@
 import React, { useState, lazy, Suspense } from 'react';
-import useAuthUser from 'hooks/useAuthUser';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // style
 import styled from 'styled-components';
+import useAuthUser from 'hooks/useAuthUser';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // components
 import User from './User';
 

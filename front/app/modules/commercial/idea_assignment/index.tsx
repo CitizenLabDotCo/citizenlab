@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
+import styled from 'styled-components';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import styled from 'styled-components';
 
 const AssigneeFilter = React.lazy(
   () => import('./admin/components/AssigneeFilter')

@@ -1,6 +1,11 @@
 import React, { PureComponent, FormEvent } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { get, map, merge, set } from 'lodash-es';
+import { Subscription } from 'rxjs';
+// typings
+import { CLError, Multiloc, IOption } from 'typings';
 import {
   Input,
   IconTooltip,
@@ -9,10 +14,6 @@ import {
   Error,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-import { get, map, merge, set } from 'lodash-es';
-import { Subscription } from 'rxjs';
-// typings
-import { CLError, Multiloc, IOption } from 'typings';
 // services
 import {
   currentAppConfigurationStream,
@@ -39,7 +40,6 @@ import {
   SectionDescription,
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import styled from 'styled-components';
 import messages from '../messages';
 
 const StyledSection = styled(Section)`

@@ -1,12 +1,12 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
+// style
+import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes, colors } from 'utils/styleUtils';
 // components
 import VerticalCenterer from 'components/VerticalCenterer';
-// style
-import styled from 'styled-components';
 
 const Container = styled(VerticalCenterer)`
   font-size: ${fontSizes.l}px;

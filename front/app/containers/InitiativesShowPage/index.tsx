@@ -1,5 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+// style
+import styled from 'styled-components';
 import { isError } from 'lodash-es';
 // resources
 import GetInitiative, {
@@ -16,8 +18,6 @@ import InitiativesShow from 'containers/InitiativesShow';
 // components
 import PageNotFound from 'components/PageNotFound';
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 import messages from './messages';
 

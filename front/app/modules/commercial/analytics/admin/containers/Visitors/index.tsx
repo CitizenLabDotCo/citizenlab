@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-// components
-import { Box } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
 import { IOption } from 'typings';
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';

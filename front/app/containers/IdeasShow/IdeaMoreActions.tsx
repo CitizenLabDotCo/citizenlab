@@ -1,5 +1,7 @@
 import React, { memo, useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
@@ -17,8 +19,6 @@ import SpamReportForm from 'containers/SpamReport';
 import HasPermission from 'components/HasPermission';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div``;

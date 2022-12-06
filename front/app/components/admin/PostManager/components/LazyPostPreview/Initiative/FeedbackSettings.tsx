@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Select, Label } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 import { get, memoize } from 'lodash-es';
 // typings
 import { IOption } from 'typings';
+// components
+import { Select, Label } from '@citizenlab/cl2-component-library';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -35,8 +37,6 @@ import eventEmitter from 'utils/eventEmitter';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-// styles
-import styled from 'styled-components';
 import tracks from '../../../tracks';
 import messages from '../messages';
 

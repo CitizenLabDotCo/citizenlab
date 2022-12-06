@@ -1,10 +1,10 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import { colors, fontSizes } from 'utils/styleUtils';
-// styles
-import styled from 'styled-components';
 import messages from '../../messages';
 
 const Container = styled.div`

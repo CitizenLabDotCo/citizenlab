@@ -1,9 +1,10 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { TwitterShareButton } from 'react-share';
+import styled from 'styled-components';
+import { darken } from 'polished';
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
 import { Medium } from '../utils';
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -11,7 +12,6 @@ import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 // style
 import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from '../messages';
 import tracks from '../tracks';
 

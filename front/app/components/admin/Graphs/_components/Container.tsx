@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
-import { Box } from '@citizenlab/cl2-component-library';
 // utils
 import { debounce, isEqual } from 'lodash-es';
 // components
 import { ResponsiveContainer } from 'recharts';
 // typings
 import { Percentage } from 'typings';
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   GraphDimensions,
   LegendDimensions,

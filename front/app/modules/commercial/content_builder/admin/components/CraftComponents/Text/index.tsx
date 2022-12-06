@@ -1,12 +1,12 @@
 import React from 'react';
+// hooks
+import { useTheme } from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 // craft
 import { useNode } from '@craftjs/core';
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillEditor from 'components/UI/QuillEditor';
-// hooks
-import { useTheme } from 'styled-components';
 
 const Text = ({ text }) => {
   const theme = useTheme();

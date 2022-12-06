@@ -1,4 +1,6 @@
 import React, { memo, useCallback } from 'react';
+// styling
+import styled, { withTheme } from 'styled-components';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -17,8 +19,6 @@ import {
 } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
-// styling
-import styled, { withTheme } from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div``;

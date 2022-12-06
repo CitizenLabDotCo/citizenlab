@@ -1,16 +1,16 @@
 import React, { memo, useState, useCallback, MouseEvent } from 'react';
-// components
-import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { truncate } from 'lodash-es';
 import { darken } from 'polished';
 // typings
 import { Multiloc, Locale } from 'typings';
+// components
+import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

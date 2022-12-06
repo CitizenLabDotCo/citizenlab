@@ -1,4 +1,10 @@
 import React, { ChangeEvent, useState } from 'react';
+// typings
+import {
+  CellConfiguration,
+  InsertConfigurationOptions,
+  Override,
+} from 'typings';
 // components
 import {
   Thead,
@@ -7,12 +13,6 @@ import {
   Text,
   Checkbox,
 } from '@citizenlab/cl2-component-library';
-// typings
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  Override,
-} from 'typings';
 import { SortAttribute as IdeasSortAttribute } from 'resources/GetIdeas';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

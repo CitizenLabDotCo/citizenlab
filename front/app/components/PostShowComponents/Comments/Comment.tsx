@@ -2,8 +2,10 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
-import { Icon } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
+import { Icon } from '@citizenlab/cl2-component-library';
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -13,8 +15,6 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
 // components

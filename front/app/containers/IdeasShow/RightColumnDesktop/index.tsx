@@ -1,11 +1,11 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 import Buttons from 'containers/IdeasShow/CTABox/Buttons';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import VoteControl from 'components/VoteControl';
-// styling
-import styled from 'styled-components';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 // components

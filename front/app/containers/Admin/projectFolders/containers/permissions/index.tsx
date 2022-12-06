@@ -2,9 +2,10 @@ import React, { useState, useMemo, useCallback } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
 import AsyncSelect from 'react-select/async';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { first } from 'rxjs/operators';
 import { IOption } from 'typings';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'hooks/useAuthUser';
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
@@ -28,7 +29,6 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 import { List, Row } from 'components/admin/ResourceList';
 // components
 import { SubSectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

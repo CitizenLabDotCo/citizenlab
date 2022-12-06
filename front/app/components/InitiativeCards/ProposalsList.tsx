@@ -1,6 +1,8 @@
 import React from 'react';
-import { Spinner, Button } from '@citizenlab/cl2-component-library';
+// style
+import styled, { useTheme } from 'styled-components';
 import { rgba } from 'polished';
+import { Spinner, Button } from '@citizenlab/cl2-component-library';
 // resources
 import { IInitiativeData } from 'services/initiatives';
 // tracks
@@ -9,8 +11,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { media } from 'utils/styleUtils';
 // components
 import InitiativeCard from 'components/InitiativeCard';
-// style
-import styled, { useTheme } from 'styled-components';
 // i18n
 import messages from './messages';
 import tracks from './tracks';

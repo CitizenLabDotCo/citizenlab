@@ -1,11 +1,12 @@
 // libraries
 import React, { PureComponent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { forOwn, isEmpty } from 'lodash-es';
 // typings
 import { Multiloc, Locale } from 'typings';
+// components
+import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 // services
 import {
   addOfficialFeedbackToIdea,
@@ -25,7 +26,6 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Section } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

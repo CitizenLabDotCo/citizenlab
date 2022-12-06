@@ -1,12 +1,12 @@
 import React, { Fragment, FormEvent } from 'react';
-import { Radio } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { transparentize } from 'polished';
+import { Radio } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { IAppConfigurationData } from 'services/appConfiguration';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import styled from 'styled-components';
 import { getDestinationConfig, IDestination, TCategory } from './destinations';
 import messages from './messages';
 

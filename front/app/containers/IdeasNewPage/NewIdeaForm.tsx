@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { parse } from 'qs';
 import { Subscription } from 'rxjs';
 // typings
 import { UploadFile } from 'typings';
+import { Box } from '@citizenlab/cl2-component-library';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -24,7 +25,6 @@ import { media, fontSizes } from 'utils/styleUtils';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
 // components
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

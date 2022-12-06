@@ -1,5 +1,6 @@
 import React, { memo, FormEvent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { isError } from 'lodash-es';
 import useAuthUser from 'hooks/useAuthUser';
 // hooks
@@ -10,7 +11,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 import messages from './messages';
 
 const PendingInvitation = styled.span`

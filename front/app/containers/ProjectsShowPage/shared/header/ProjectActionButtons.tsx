@@ -6,6 +6,8 @@ import React, {
   FormEvent,
 } from 'react';
 import { useLocation } from 'react-router-dom';
+// style
+import styled from 'styled-components';
 import { isNumber } from 'lodash-es';
 import useAuthUser from 'hooks/useAuthUser';
 import usePhases from 'hooks/usePhases';
@@ -30,8 +32,6 @@ import messages from 'containers/ProjectsShowPage/messages';
 import IdeaButton from 'components/IdeaButton';
 // components
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 
 const Container = styled.div``;
 

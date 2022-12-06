@@ -1,8 +1,10 @@
 import React from 'react';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+// style
+import styled, { css } from 'styled-components';
+import { isEmpty } from 'lodash-es';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import { isEmpty } from 'lodash-es';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -15,8 +17,6 @@ import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-// style
-import styled, { css } from 'styled-components';
 import messages from './messages';
 
 const Container = styled.footer<{ insideModal?: boolean }>`

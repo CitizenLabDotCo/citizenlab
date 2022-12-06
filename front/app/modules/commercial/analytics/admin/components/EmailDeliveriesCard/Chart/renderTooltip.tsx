@@ -1,7 +1,7 @@
 import React from 'react';
+import { Tooltip } from 'recharts';
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import { Tooltip } from 'recharts';
 // typings
 import { TimeSeriesRow } from '../../../hooks/useEmailDeliveries/typings';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';

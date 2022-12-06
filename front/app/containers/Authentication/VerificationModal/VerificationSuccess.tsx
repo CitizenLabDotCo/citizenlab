@@ -1,4 +1,6 @@
 import React, { memo, useCallback } from 'react';
+// style
+import styled from 'styled-components';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 // i18n
@@ -9,8 +11,6 @@ import { Title } from 'components/AuthProviders/styles';
 // components
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 // svg
 import illustration from './illustration.svg';
 import messages from './messages';

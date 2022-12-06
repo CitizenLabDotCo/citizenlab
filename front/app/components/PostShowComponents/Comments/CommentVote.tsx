@@ -1,10 +1,12 @@
 import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { cloneDeep, isNumber, get } from 'lodash-es';
 import { lighten } from 'polished';
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
@@ -28,8 +30,6 @@ import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Radio } from '@citizenlab/cl2-component-library';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import { IPermissionData } from 'services/actionPermissions';
@@ -7,7 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import localize, { InjectedLocalized } from 'utils/localize';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledFieldset = styled.fieldset`

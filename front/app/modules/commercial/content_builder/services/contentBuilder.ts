@@ -1,5 +1,5 @@
-import { SerializedNode } from '@craftjs/core';
 import { Locale } from 'typings';
+import { SerializedNode } from '@craftjs/core';
 import { reportError } from 'utils/loggingUtils';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';

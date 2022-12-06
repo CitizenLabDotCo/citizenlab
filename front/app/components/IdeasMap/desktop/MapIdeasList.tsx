@@ -1,4 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
+// style
+import styled from 'styled-components';
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 // typings
@@ -26,8 +28,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import SelectSort from 'components/IdeaCards/SortFilterDropdown';
 import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
-// style
-import styled from 'styled-components';
 import IdeaMapCard from '../IdeaMapCard';
 // i18n
 import messages from '../messages';

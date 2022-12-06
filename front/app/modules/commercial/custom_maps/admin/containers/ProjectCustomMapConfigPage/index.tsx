@@ -1,9 +1,11 @@
 import Tippy from '@tippyjs/react';
 import React, { memo, useEffect, useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Spinner } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { isEqual } from 'lodash-es';
 import { combineLatest } from 'rxjs';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import useMapConfig from '../../../hooks/useMapConfig';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -28,8 +30,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Map from 'components/Map';
 import Button from 'components/UI/Button';
-// styling
-import styled from 'styled-components';
 import MapConfigOverview from './MapConfigOverview';
 import messages from './messages';
 

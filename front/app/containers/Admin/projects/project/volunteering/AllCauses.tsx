@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { clone } from 'lodash-es';
 import useCauses from 'hooks/useCauses';
 import { ICauseData, reorderCause, deleteCause } from 'services/causes';
@@ -11,7 +12,6 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div``;

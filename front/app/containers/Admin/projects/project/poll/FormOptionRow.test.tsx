@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { shallow } from 'enzyme';
+import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { mockOption } from 'services/__mocks__/pollOptions';
 import * as pollOptionsService from 'services/pollOptions';
 import { FormOptionRow, Props, State } from './FormOptionRow';

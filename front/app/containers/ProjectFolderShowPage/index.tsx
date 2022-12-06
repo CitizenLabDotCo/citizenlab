@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { isError, isUndefined } from 'lodash-es';
+import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import useAdminPublications from 'hooks/useAdminPublications';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 // hooks
@@ -17,8 +19,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';

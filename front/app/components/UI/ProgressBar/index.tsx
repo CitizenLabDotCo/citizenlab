@@ -1,7 +1,7 @@
 import Observer from '@researchgate/react-intersection-observer';
 import React, { PureComponent } from 'react';
-import { clamp } from 'lodash-es';
 import styled from 'styled-components';
+import { clamp } from 'lodash-es';
 import warningPattern from './warning_pattern.svg';
 
 const Container = styled.div``;

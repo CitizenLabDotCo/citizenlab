@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+// style
+import styled from 'styled-components';
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 // i18n
@@ -10,8 +12,6 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 // components
 import IdeaCards from 'components/IdeaCards';
-// style
-import styled from 'styled-components';
 
 const Container = styled.div``;
 

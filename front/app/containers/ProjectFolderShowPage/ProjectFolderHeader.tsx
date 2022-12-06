@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 // typings
@@ -7,8 +9,6 @@ import { media } from 'utils/styleUtils';
 import ProjectFolderShareButton from '../../components/ProjectFolders/ProjectFolderShareButton';
 // components
 import Image from 'components/UI/Image';
-// style
-import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;

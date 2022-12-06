@@ -1,9 +1,11 @@
 import Tippy from '@tippyjs/react';
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
+import { findIndex } from 'lodash-es';
 // components
 import { Button } from '@citizenlab/cl2-component-library';
-import { findIndex } from 'lodash-es';
 // hooks
 import usePhases from 'hooks/usePhases';
 // services
@@ -16,8 +18,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { colors, isRtl } from 'utils/styleUtils';
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-// style
-import styled from 'styled-components';
 // tracking
 import tracks from './tracks';
 

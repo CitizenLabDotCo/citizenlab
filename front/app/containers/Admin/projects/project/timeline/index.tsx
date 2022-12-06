@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 // Hooks
 import { useParams } from 'react-router-dom';
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import moment from 'moment';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 // Resources
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // Services
@@ -22,7 +23,6 @@ import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 // Styles

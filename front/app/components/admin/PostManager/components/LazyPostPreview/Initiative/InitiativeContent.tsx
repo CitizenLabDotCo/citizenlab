@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 import GetInitiative, {
   GetInitiativeChildProps,
@@ -31,8 +33,6 @@ import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Title from 'components/PostShowComponents/Title';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
-// style
-import styled from 'styled-components';
 import { Top, Content, Container } from '../PostPreview';
 import messages from '../messages';
 import FeedbackSettings from './FeedbackSettings';

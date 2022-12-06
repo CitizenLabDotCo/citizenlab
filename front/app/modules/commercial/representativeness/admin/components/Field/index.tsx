@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { omit } from 'lodash-es';
 // components
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
-import { omit } from 'lodash-es';
 import useReferenceDistribution, {
   RemoteFormValues,
 } from '../../hooks/useReferenceDistribution';

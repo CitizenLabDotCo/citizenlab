@@ -1,5 +1,5 @@
-import { Layout } from '@jsonforms/core';
 import { Locale } from 'typings';
+import { Layout } from '@jsonforms/core';
 import streams, { IStreamParams } from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { CustomFieldCodes } from './ideaCustomFieldsSchemas';

@@ -4,7 +4,6 @@ import { findDOMNode } from 'react-dom';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
 import { Icon } from 'semantic-ui-react';
-import { Box, colors, Td } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty, get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -14,6 +13,7 @@ import {
   Locale,
   Override,
 } from 'typings';
+import { Box, colors, Td } from '@citizenlab/cl2-component-library';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 // services
 import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';

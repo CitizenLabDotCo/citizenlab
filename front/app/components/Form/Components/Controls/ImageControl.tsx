@@ -1,5 +1,6 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import React, { useContext, useEffect, useState } from 'react';
+import { UploadFile } from 'typings';
 import { Box } from '@citizenlab/cl2-component-library';
 import {
   RankedTester,
@@ -7,7 +8,6 @@ import {
   scopeEndsWith,
   ControlProps,
 } from '@jsonforms/core';
-import { UploadFile } from 'typings';
 import { FormContext } from '../../contexts';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';

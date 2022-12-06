@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import styled from 'styled-components';
 // stlying
 import 'assets/semantic/semantic.min.css';
 // permissions
@@ -12,7 +13,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { endsWith } from 'utils/helperUtils';
 import { colors, media } from 'utils/styleUtils';
 import HasPermission from 'components/HasPermission';
-import styled from 'styled-components';
 // components
 import Sidebar from './sideBar/';
 

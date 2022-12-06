@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
+// style
+import styled from 'styled-components';
 import { IParticipationContextType } from 'typings';
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
@@ -30,8 +32,6 @@ import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
-// style
-import styled from 'styled-components';
 import IdeasView from './IdeasView';
 import SelectSort from './SortFilterDropdown';
 // components

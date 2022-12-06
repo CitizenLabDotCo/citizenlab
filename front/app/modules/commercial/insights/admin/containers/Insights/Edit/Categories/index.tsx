@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 // intl
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
+import { darken } from 'polished';
+import { stringify } from 'qs';
+// types
+import { CLErrors } from 'typings';
 // components
 import {
   Input,
@@ -11,10 +17,6 @@ import {
   Icon,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import { stringify } from 'qs';
-// types
-import { CLErrors } from 'typings';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
@@ -38,8 +40,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-// styles
-import styled from 'styled-components';
 import messages from '../../messages';
 
 const CategoriesLabel = styled.div`

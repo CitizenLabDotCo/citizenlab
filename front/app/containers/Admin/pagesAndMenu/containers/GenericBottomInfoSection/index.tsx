@@ -2,13 +2,14 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+import { useTheme } from 'styled-components';
+// typings
+import { Multiloc } from 'typings';
+import { object } from 'yup';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
-// typings
-import { Multiloc } from 'typings';
-import { object } from 'yup';
 // services and hooks
 import { ICustomPageData } from 'services/customPages';
 import { IHomepageSettingsData } from 'services/homepageSettings';
@@ -22,7 +23,6 @@ import Feedback from 'components/HookForm/Feedback';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Button from 'components/UI/Button';
-import { useTheme } from 'styled-components';
 // constants
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';

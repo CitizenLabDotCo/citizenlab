@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
+// styling
+import styled from 'styled-components';
+import { darken } from 'polished';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { fontSizes, colors } from 'utils/styleUtils';
 import UserName from 'components/UI/UserName';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

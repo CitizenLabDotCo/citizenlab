@@ -1,6 +1,6 @@
 import React from 'react';
-import { Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
+import { Select } from '@citizenlab/cl2-component-library';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
 import localize, { InjectedLocalized } from 'utils/localize';

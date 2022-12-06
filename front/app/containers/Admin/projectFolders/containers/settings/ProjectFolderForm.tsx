@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import useAdminPublication from 'hooks/useAdminPublication';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFolder from 'hooks/useProjectFolder';

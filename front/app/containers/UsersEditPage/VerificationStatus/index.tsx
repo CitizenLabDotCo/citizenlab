@@ -1,6 +1,8 @@
 import React, { memo, useCallback } from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { darken } from 'polished';
+import { Icon } from '@citizenlab/cl2-component-library';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import { openVerificationModal } from 'events/verificationModal';
@@ -14,8 +16,6 @@ import Avatar from 'components/Avatar';
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 import { FormSection } from 'components/UI/FormComponents';
-// styling
-import styled from 'styled-components';
 
 const Container = styled(FormSection)`
   display: flex;

@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
+// stylings
+import styled from 'styled-components';
 import { isBoolean } from 'lodash-es';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // resource hooks
 import useLocale from 'hooks/useLocale';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-// stylings
-import styled from 'styled-components';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
 // components
 import OfficialFeedbackForm from './OfficialFeedbackForm';

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
+import { Select } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import useTopics from 'hooks/useTopics';
 import { ITopicData } from 'services/topics';

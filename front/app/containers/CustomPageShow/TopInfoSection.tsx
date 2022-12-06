@@ -1,4 +1,6 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { isEmptyMultiloc } from 'utils/helperUtils';
 // components
@@ -8,8 +10,6 @@ import { StyledQuillEditedContent } from 'components/LandingPages/citizen/InfoSe
 // i18n
 import ResolveTextVariables from 'components/ResolveTextVariables';
 import T from 'components/T';
-// style
-import styled from 'styled-components';
 
 export const StyledTopInfoSectionContainer = styled(ContentContainer)`
   width: 100%;

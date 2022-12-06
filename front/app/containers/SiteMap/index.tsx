@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import { adopt } from 'react-adopt';
 import scrollToComponent from 'react-scroll-to-component';
+// styles
+import styled from 'styled-components';
 // components
 import { Spinner } from '@citizenlab/cl2-component-library';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -21,8 +23,6 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-// styles
-import styled from 'styled-components';
 import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
 import SiteMapMeta from './SiteMapMeta';
 import messages from './messages';

@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
+// styling
+import styled from 'styled-components';
 // resource
 import GetInitiative, {
   GetInitiativeChildProps,
@@ -10,8 +12,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import ActionBarLayout from 'components/PostShowComponents/ActionBar';
 // components
 import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
-// styling
-import styled from 'styled-components';
 import messages from '../messages';
 import InitiativeMoreActions from './InitiativeMoreActions';
 

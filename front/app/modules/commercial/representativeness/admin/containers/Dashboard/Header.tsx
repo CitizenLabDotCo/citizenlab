@@ -1,4 +1,6 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 // components
 import {
   Title,
@@ -8,8 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 // import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
 // i18n
 import messages from './messages';

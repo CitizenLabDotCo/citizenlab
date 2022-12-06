@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
@@ -6,8 +8,6 @@ import CityLogoSection from 'components/CityLogoSection';
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
-// style
-import styled from 'styled-components';
 import IdeasIndexMeta from './IdeaIndexMeta';
 import messages from './messages';
 

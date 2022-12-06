@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+import styled from 'styled-components';
+import { omit } from 'lodash-es';
 import {
   Box,
   BoxBackgroundProps,
@@ -17,7 +19,6 @@ import {
   Icon,
   IconNames,
 } from '@citizenlab/cl2-component-library';
-import { omit } from 'lodash-es';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { isString } from 'utils/helperUtils';
 import {
@@ -28,7 +29,6 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from './messages';
 
 export const FormSection = styled.div`

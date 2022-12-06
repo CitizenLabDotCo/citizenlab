@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { darken } from 'polished';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { APIErrorsContext, FormContext } from '../contexts';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getDefaultApiErrorMessage } from 'utils/errorUtils';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from '../messages';
 
 const timeout = 350;

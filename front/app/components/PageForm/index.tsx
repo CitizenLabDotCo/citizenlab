@@ -2,6 +2,9 @@ import React from 'react';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
+// types
+import { Multiloc, UploadFile } from 'typings';
+import { string, object, mixed } from 'yup';
 // components
 import {
   IconTooltip,
@@ -10,9 +13,6 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-// types
-import { Multiloc, UploadFile } from 'typings';
-import { string, object, mixed } from 'yup';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useCustomPage from 'hooks/useCustomPage';
 // hooks

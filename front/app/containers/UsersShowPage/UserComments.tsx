@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
+// style
+import styled, { withTheme } from 'styled-components';
 import { groupBy } from 'lodash-es';
 import { darken, rgba } from 'polished';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -13,8 +15,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
-// style
-import styled, { withTheme } from 'styled-components';
 // components
 import PostCommentGroup from './PostCommentGroup';
 import messages from './messages';

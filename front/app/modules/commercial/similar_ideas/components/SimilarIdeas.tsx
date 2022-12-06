@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 import { darken } from 'polished';
 // hooks
 import useSimilarIdeas from '../hooks/useSimilarIdeas';
@@ -13,8 +15,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 // components
 import T from 'components/T';
-// styles
-import styled from 'styled-components';
 import messages from '../messages';
 import tracks from '../tracks';
 

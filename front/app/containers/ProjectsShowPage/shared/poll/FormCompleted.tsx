@@ -1,7 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes, media, defaultCardStyle } from 'utils/styleUtils';
-import styled from 'styled-components';
 import Illustration from './Illustration';
 import messages from './messages';
 

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IInitiativeData } from 'services/initiatives';
@@ -6,7 +7,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes, media } from 'utils/styleUtils';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import styled from 'styled-components';
 import CountDown from './CountDown';
 import ProposalProgressBar from './ProposalProgressBar';
 import { StatusExplanation } from './SharedStyles';

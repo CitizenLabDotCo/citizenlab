@@ -1,7 +1,7 @@
 import React from 'react';
+import { Tooltip } from 'recharts';
 // components
 import { Box, Text, TextProps } from '@citizenlab/cl2-component-library';
-import { Tooltip } from 'recharts';
 // typings
 import { RepresentativenessRow } from '../../hooks/createRefDataSubscription';
 // utils

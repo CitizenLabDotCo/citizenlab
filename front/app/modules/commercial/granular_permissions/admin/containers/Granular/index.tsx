@@ -1,9 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
 import { IProjectData } from 'services/projects';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { Section, SubSectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import Continuous from './Continuous';
 // components
 import Timeline from './Timeline';

@@ -1,4 +1,6 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 // components
 import { Box, fontSizes, Radio } from '@citizenlab/cl2-component-library';
 import {
@@ -12,8 +14,6 @@ import {
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-// style
-import styled from 'styled-components';
 import messages from '../messages';
 import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
 import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';

@@ -1,6 +1,8 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 import { isBoolean } from 'lodash-es';
 // resources
 import GetAppConfiguration, {
@@ -17,8 +19,6 @@ import Outlet from 'components/Outlet';
 import Error from 'components/UI/Error';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
-// styling
-import styled from 'styled-components';
 // components
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import messages from './messages';

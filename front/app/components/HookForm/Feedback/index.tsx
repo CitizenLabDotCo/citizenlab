@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
+import { get } from 'lodash-es';
 import {
   Text,
   Title,
@@ -8,7 +9,6 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
 import { injectIntl } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
 import CloseIconButton from 'components/UI/CloseIconButton';

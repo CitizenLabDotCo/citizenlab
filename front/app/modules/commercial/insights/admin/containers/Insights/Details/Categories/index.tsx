@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 import { stringify } from 'qs';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
@@ -21,8 +23,6 @@ import {
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
-// styles
-import styled from 'styled-components';
 // intl
 import messages from '../../messages';
 

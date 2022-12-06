@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 // typings
 import { UploadFile } from 'typings';
+import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 // utils
@@ -17,7 +18,6 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
-import styled from 'styled-components';
 import {
   createAddUploadHandler,
   createRemoveUploadHandler,

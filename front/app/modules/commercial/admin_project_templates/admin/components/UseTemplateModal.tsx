@@ -1,15 +1,17 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// graphql
-import { gql, useQuery, useMutation } from '@apollo/client';
-// components
-import { Input, Icon, Select, Box } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import bowser from 'bowser';
 import { get, isEmpty, transform } from 'lodash-es';
 import moment from 'moment';
 import { darken } from 'polished';
 // typings
 import { Locale, Multiloc, IOption } from 'typings';
+// graphql
+import { gql, useQuery, useMutation } from '@apollo/client';
+// components
+import { Input, Icon, Select, Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'hooks/useAuthUser';
@@ -39,8 +41,6 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
-// styling
-import styled from 'styled-components';
 import tracks from '../../tracks';
 import messages from './messages';
 

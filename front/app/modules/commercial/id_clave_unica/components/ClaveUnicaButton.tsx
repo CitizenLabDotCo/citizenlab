@@ -1,4 +1,6 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 import { removeUrlLocale } from 'services/locale';
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
@@ -6,8 +8,6 @@ import { getJwt } from 'utils/auth/jwt';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { AUTH_PATH } from 'containers/App/constants';
-// style
-import styled from 'styled-components';
 import messages from '../messages';
 import icon from './clave-unica-icon.svg';
 

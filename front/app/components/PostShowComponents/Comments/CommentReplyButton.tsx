@@ -1,4 +1,6 @@
 import React, { memo, useCallback } from 'react';
+// style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { GetCommentChildProps } from 'resources/GetComment';
@@ -16,8 +18,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

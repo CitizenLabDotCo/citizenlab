@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 // hooks
 import useProject from 'hooks/useProject';
@@ -16,8 +18,6 @@ import {
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import SectionContainer from 'components/SectionContainer';
-// style
-import styled from 'styled-components';
 import PBExpenses from '../shared/pb/PBExpenses';
 
 const Container = styled.div``;

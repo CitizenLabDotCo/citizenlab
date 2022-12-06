@@ -4,9 +4,11 @@
  */
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
+import { lighten } from 'polished';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import { lighten } from 'polished';
 // hooks
 import useUser from 'hooks/useUser';
 // i18n
@@ -15,8 +17,6 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import FeatureFlag from 'components/FeatureFlag';
-// styles
-import styled from 'styled-components';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;

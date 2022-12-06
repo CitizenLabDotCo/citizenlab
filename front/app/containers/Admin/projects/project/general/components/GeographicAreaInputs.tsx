@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 import { IOption, isIOption } from 'typings';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import useAreas from 'hooks/useAreas';
 import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
@@ -11,8 +13,6 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError, isString } from 'utils/helperUtils';
 import { LabelHeaderDescription } from '../../participationContext/components/labels';
 import { SubSectionTitle } from 'components/admin/Section';
-// styles
-import styled from 'styled-components';
 import { TOnProjectAttributesDiffChangeFunction } from '..';
 import messages from '../messages';
 import { StyledSectionField, StyledMultipleSelect } from './styling';

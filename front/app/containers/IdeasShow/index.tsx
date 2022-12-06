@@ -4,8 +4,10 @@ import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { isUndefined, isString } from 'lodash-es';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 // resources
 import GetIdeaImages, {
@@ -51,8 +53,6 @@ import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import Title from 'components/PostShowComponents/Title';
 import Modal from 'components/UI/Modal';
-// style
-import styled from 'styled-components';
 // components
 import IdeaSharingButton from './Buttons/IdeaSharingButton';
 import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';

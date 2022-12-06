@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Icon, Text, Button } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { isEqual } from 'lodash-es';
+import { Box, Icon, Text, Button } from '@citizenlab/cl2-component-library';
 // typings
 import { Bins } from '../../../services/referenceDistribution';
 // utils
@@ -18,8 +20,6 @@ import { colors } from 'utils/styleUtils';
 // components
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
-// styling
-import styled from 'styled-components';
 import BinInputs from './BinInputs';
 // i18n
 import messages from './messages';

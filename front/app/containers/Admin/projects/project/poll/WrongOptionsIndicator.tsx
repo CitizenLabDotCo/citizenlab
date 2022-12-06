@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import GetPollOptions, {
   GetPollOptionsChildProps,
@@ -8,7 +9,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import { TextCell } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 import messages from './messages';
 
 export const Indicator = styled(TextCell)<{ isWarning?: boolean }>`

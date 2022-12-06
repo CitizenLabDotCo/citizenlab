@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useState, Suspense } from 'react';
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
-// components
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import { colors, fontSizes, media } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
+import { darken } from 'polished';
+// components
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const timeout = 300;
 

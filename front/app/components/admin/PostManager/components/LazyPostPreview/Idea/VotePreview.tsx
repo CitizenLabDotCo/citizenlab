@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// styling
+import styled from 'styled-components';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 // resources
@@ -8,8 +10,6 @@ import GetIdeaVotesCount, {
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from '../messages';
 

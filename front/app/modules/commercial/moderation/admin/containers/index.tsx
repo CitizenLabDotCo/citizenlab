@@ -1,5 +1,9 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
+// typings
+import { IOption, InsertConfigurationOptions } from 'typings';
 // components
 import {
   Table,
@@ -12,8 +16,6 @@ import {
   Select,
   Error,
 } from '@citizenlab/cl2-component-library';
-// typings
-import { IOption, InsertConfigurationOptions } from 'typings';
 // hooks
 import useModerations from '../../hooks/useModerations';
 import useModerationsCount from '../../hooks/useModerationsCount';
@@ -38,8 +40,6 @@ import Checkbox from 'components/UI/Checkbox';
 import SearchInput from 'components/UI/SearchInput';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import ModerationRow from './ModerationRow';
 import SelectProject from './SelectProject';
 import SelectType from './SelectType';

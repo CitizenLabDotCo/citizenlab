@@ -1,9 +1,11 @@
 import React, { memo, useEffect, useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
 // typing
 import { Multiloc, IOption } from 'typings';
+import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
 import useMapConfig from '../../../hooks/useMapConfig';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -31,8 +33,6 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

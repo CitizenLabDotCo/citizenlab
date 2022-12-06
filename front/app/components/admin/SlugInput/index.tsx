@@ -1,9 +1,9 @@
 import React from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 // typings
 import { CLErrors } from 'typings';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

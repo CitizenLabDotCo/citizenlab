@@ -1,9 +1,9 @@
 // @ts-nocheck
 // libraries
 import React from 'react';
+import 'jest-styled-components';
 import { shallow } from 'enzyme';
 import eventEmitter from 'utils/eventEmitter';
-import 'jest-styled-components';
 // component to test
 import Container from './Container';
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import useResourceFiles from 'hooks/useResourceFiles';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
-import styled from 'styled-components';
 import Attachment from './Attachment';
 import messages from './messages';
 

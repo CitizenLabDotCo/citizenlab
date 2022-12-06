@@ -7,6 +7,10 @@ import React, {
   useEffect,
 } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { ErrorObject } from 'ajv';
+import { forOwn } from 'lodash-es';
+import { CLErrors, Message } from 'typings';
 import {
   Box,
   fontSizes,
@@ -21,9 +25,6 @@ import {
   isCategorization,
   Translator,
 } from '@jsonforms/core';
-import { ErrorObject } from 'ajv';
-import { forOwn } from 'lodash-es';
-import { CLErrors, Message } from 'typings';
 import useLocale from 'hooks/useLocale';
 import useObserveEvent from 'hooks/useObserveEvent';
 import { APIErrorsContext, FormContext } from './contexts';
@@ -31,7 +32,6 @@ import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
-import styled from 'styled-components';
 import ButtonBar from './Components/ButtonBar';
 import { selectRenderers } from './formConfig';
 

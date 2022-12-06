@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import HasPermission from 'components/HasPermission';
@@ -7,7 +8,6 @@ import {
   SectionDescription,
   StyledLink,
 } from 'components/admin/Section';
-import styled from 'styled-components';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
 import messages from './messages';

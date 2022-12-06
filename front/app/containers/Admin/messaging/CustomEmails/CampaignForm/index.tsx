@@ -3,11 +3,12 @@ import * as React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+import { string, object, array } from 'yup';
 // components
 import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Multiloc } from 'typings';
-import { string, object, array } from 'yup';
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -27,7 +28,6 @@ import MultipleSelect from 'components/HookForm/MultipleSelect';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from '../../messages';
 
 const StyledSection = styled(Section)`

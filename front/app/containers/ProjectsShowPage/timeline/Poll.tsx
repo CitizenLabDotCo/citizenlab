@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// styling
+import styled from 'styled-components';
 // hooks
 import usePhase from 'hooks/usePhase';
 // i18n
@@ -6,8 +8,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from 'containers/ProjectsShowPage/messages';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
-// styling
-import styled from 'styled-components';
 // components
 import Poll from '../shared/poll';
 

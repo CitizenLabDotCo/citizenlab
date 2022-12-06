@@ -1,7 +1,8 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Toggle } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { isUndefined } from 'lodash-es';
+import { Toggle } from '@citizenlab/cl2-component-library';
 import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { ICampaignData, updateCampaign } from 'services/campaigns';
 // i18n
@@ -14,7 +15,6 @@ import {
   Row,
   TextCell,
 } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 import messages from '../messages';
 
 const StyledWarning = styled(Warning)`

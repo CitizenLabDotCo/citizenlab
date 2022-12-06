@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { MessageDescriptor } from 'react-intl';
+import styled from 'styled-components';
 import { IParticipationContextType } from 'typings';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -21,7 +22,6 @@ import { openVerificationModal } from 'events/verificationModal';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import Warning from 'components/UI/Warning';
-import styled from 'styled-components';
 // components
 import FormCompleted from './FormCompleted';
 import PollForm from './PollForm';

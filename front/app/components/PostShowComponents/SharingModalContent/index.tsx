@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 // i18n
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+// style
+import rocket from 'assets/img/rocket.png';
 import {
   Spinner,
   Box,
@@ -9,8 +11,6 @@ import {
   Title,
   Image,
 } from '@citizenlab/cl2-component-library';
-// style
-import rocket from 'assets/img/rocket.png';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';

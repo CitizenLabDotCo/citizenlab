@@ -1,4 +1,6 @@
 import React, { memo, useCallback } from 'react';
+// styling
+import styled, { useTheme } from 'styled-components';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -25,8 +27,6 @@ import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
-// styling
-import styled, { useTheme } from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

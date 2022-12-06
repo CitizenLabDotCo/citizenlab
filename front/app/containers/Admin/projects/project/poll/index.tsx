@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import { isError } from 'lodash-es';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -17,7 +18,6 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import FeatureFlag from 'components/FeatureFlag';
 import T from 'components/T';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import styled from 'styled-components';
 import ExportPollButton from './ExportPollButton';
 import PollAdminForm from './PollAdminForm';
 // i18n

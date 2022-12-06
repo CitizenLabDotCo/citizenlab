@@ -1,4 +1,6 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
@@ -12,8 +14,6 @@ import InitiativeButton from 'components/InitiativeButton';
 import InitiativeCards from 'components/InitiativeCards';
 // components
 import PageNotFound from 'components/PageNotFound';
-// style
-import styled from 'styled-components';
 import InitiativesHeader from './InitiativesHeader';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import messages from './messages';

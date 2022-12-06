@@ -1,5 +1,7 @@
 // Libraries
 import React from 'react';
+// Style
+import styled, { css } from 'styled-components';
 import { take } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -9,8 +11,6 @@ import { userByIdStream, IUser } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 // Components
 import Avatar from 'components/Avatar';
-// Style
-import styled, { css } from 'styled-components';
 
 const AvatarWrapper = styled.div`
   padding: 2px;

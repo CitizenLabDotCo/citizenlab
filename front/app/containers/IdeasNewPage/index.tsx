@@ -1,10 +1,11 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { createPortal } from 'react-dom';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { isEmpty, isNumber, get } from 'lodash-es';
 import { parse } from 'qs';
 import { UploadFile } from 'typings';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -36,7 +37,6 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 import { getParticipationMethod } from 'utils/participationMethodUtils';
 // style
 import { media, colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 // components
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import IdeasNewMeta from './IdeasNewMeta';

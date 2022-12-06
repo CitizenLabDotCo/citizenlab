@@ -1,6 +1,8 @@
 // libraries
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // components
 import {
   BarChart,
@@ -31,8 +33,6 @@ import {
   animation,
 } from 'components/admin/Graphs/styling';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-// styling
-import styled from 'styled-components';
 import messages from '../messages';
 
 interface VoteGraphPoint extends IGraphPoint {

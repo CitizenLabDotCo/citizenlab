@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 import { darken } from 'polished';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
@@ -40,8 +42,6 @@ import Title from 'components/PostShowComponents/Title';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
-// style
-import styled from 'styled-components';
 import { Top, Content, Container } from '../PostPreview';
 import messages from '../messages';
 import FeedbackSettings from './FeedbackSettings';

@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import bowser from 'bowser';
 import { isNumber } from 'lodash-es';
 import { stylingConsts, media } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 const Outer = styled.div`
   width: 100%;

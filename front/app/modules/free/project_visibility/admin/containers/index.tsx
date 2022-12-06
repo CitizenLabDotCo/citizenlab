@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { Radio } from '@citizenlab/cl2-component-library';
 // hooks
 import useProject from 'hooks/useProject';
@@ -17,7 +18,6 @@ import {
   SubSectionTitle,
   SectionField,
 } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const ViewingRightsSection = styled(Section)`

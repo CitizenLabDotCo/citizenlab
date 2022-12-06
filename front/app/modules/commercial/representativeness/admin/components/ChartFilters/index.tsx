@@ -1,8 +1,8 @@
 import React from 'react';
-// components
-import { Box } from '@citizenlab/cl2-component-library';
 // typings
 import { IOption } from 'typings';
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 // styling
 import { colors } from 'utils/styleUtils';

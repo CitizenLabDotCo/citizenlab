@@ -1,5 +1,5 @@
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 export const SectionTitle = styled.h2`
   color: ${colors.primary};

@@ -1,9 +1,11 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Select, Input } from '@citizenlab/cl2-component-library';
+// Style
+import styled from 'styled-components';
 // Typings
 import { IOption } from 'typings';
+import { Select, Input } from '@citizenlab/cl2-component-library';
 // Services / Data loading
 import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 // i18n
@@ -11,8 +13,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 // Components
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
-// Style
-import styled from 'styled-components';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 import messages from './messages';
 

@@ -1,4 +1,8 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
+// styling
+import styled from 'styled-components';
+// typings
+import { Multiloc } from 'typings';
 // components
 import {
   IconTooltip,
@@ -7,8 +11,6 @@ import {
   Box,
   Title,
 } from '@citizenlab/cl2-component-library';
-// typings
-import { Multiloc } from 'typings';
 // services
 import {
   IIdeaCustomFieldData,
@@ -21,8 +23,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // i18n
 import T from 'components/T';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Toggles = styled.div`

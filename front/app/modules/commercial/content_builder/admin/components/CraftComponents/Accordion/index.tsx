@@ -1,4 +1,6 @@
 import React from 'react';
+// hooks
+import { useTheme } from 'styled-components';
 import {
   Box,
   Accordion as AccordionComponent,
@@ -12,8 +14,6 @@ import { injectIntl } from 'utils/cl-intl';
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillEditor from 'components/UI/QuillEditor';
-// hooks
-import { useTheme } from 'styled-components';
 // intl
 import messages from '../../../messages';
 

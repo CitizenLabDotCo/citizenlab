@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { MessageDescriptor } from 'react-intl';
+// style
+import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -25,8 +27,6 @@ import AuthProviders, { AuthProvider } from 'components/AuthProviders';
 import T from 'components/T';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-// style
-import styled, { useTheme } from 'styled-components';
 import { StyledModalContentContainer } from '../styles';
 import tracks from '../tracks';
 import ConfirmationSignupStep from './ConfirmationSignupStep';

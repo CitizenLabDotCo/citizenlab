@@ -1,4 +1,6 @@
 import React from 'react';
+// types
+import { Locale } from 'typings';
 // components
 import {
   Box,
@@ -8,8 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 // craft
 import { useNode } from '@craftjs/core';
-// types
-import { Locale } from 'typings';
 import { isValidUrl } from './utils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // events

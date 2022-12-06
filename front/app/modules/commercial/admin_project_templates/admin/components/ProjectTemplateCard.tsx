@@ -1,4 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
+// style
+import styled from 'styled-components';
 import { darken } from 'polished';
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -9,8 +11,6 @@ import eventEmitter from 'utils/eventEmitter';
 import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 import tracks from '../../tracks';
 import UseTemplateModal from './UseTemplateModal';
 import messages from './messages';

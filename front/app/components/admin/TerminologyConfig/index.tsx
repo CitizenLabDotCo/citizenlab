@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+// styling
+import styled from 'styled-components';
 import { mapValues, lowerCase } from 'lodash-es';
 // typings
 import { Multiloc } from 'typings';
@@ -11,8 +13,6 @@ import Collapse from 'components/UI/Collapse';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { SectionField } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.form`

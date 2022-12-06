@@ -3,10 +3,12 @@ import { adopt } from 'react-adopt';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Box } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { isFunction, compact } from 'lodash-es';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Box } from '@citizenlab/cl2-component-library';
 // resource
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 // tracking
@@ -16,8 +18,6 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 import { media } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';

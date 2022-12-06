@@ -1,5 +1,6 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { Box, IOption, Select } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -9,7 +10,6 @@ import {
 } from '@jsonforms/core';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { FormLabel } from 'components/UI/FormComponents';
-import styled from 'styled-components';
 import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 import { getOptions } from './controlUtils';

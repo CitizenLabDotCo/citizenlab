@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import Creatable from 'react-select/creatable';
+// styles
+import styled from 'styled-components';
 import { Label, Spinner, Icon, Box } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 // hooks
@@ -25,8 +27,6 @@ import Idea from 'modules/commercial/insights/admin/components/Idea';
 import Navigation, {
   NavigationProps,
 } from 'modules/commercial/insights/admin/components/Navigation';
-// styles
-import styled from 'styled-components';
 import messages from '../../messages';
 
 type InputDetailsProps = {

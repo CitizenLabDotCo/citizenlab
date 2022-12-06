@@ -1,5 +1,7 @@
 import React, { useRef, KeyboardEvent } from 'react';
 import { MessageDescriptor } from 'react-intl';
+// styling
+import styled from 'styled-components';
 import { rgba } from 'polished';
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
@@ -7,8 +9,6 @@ import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes, isRtl, colors, media } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 import { PublicationTab } from '../..';
 // i18n
 import messages from './messages';

@@ -1,7 +1,9 @@
 import React from 'react';
+// styles
+import styled from 'styled-components';
+import { lighten } from 'polished';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import { lighten } from 'polished';
 import { IEventFileData } from 'services/eventFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
 import { ICustomPageFileData } from 'services/pageFiles';
@@ -11,8 +13,6 @@ import { IProjectFileData } from 'services/projectFiles';
 import { returnFileSize } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-// styles
-import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

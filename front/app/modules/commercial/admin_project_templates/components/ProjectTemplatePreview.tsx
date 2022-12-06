@@ -1,9 +1,11 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
+// style
+import styled from 'styled-components';
+import * as clipboard from 'clipboard-polyfill';
+import { lighten } from 'polished';
 // graphql
 import { gql, useQuery } from '@apollo/client';
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import * as clipboard from 'clipboard-polyfill';
-import { lighten } from 'polished';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -17,8 +19,6 @@ import T from 'components/T';
 // components
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-// style
-import styled from 'styled-components';
 import tracks from '../tracks';
 import messages from './messages';
 

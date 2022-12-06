@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
+// styling
+import styled from 'styled-components';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
@@ -19,8 +21,6 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 import SearchInput from 'components/UI/SearchInput';
-// styling
-import styled from 'styled-components';
 import { PublicationTab } from '../..';
 import SelectAreas from './SelectAreas';
 import SelectTopics from './SelectTopics';

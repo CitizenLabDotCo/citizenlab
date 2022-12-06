@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
+// styling
+import styled from 'styled-components';
 // typings
 import { IParticipationContextType } from 'typings';
 // resource components
@@ -9,8 +11,6 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 // resource hooks
 import useCauses from 'hooks/useCauses';
 import { isNilOrError } from 'utils/helperUtils';
-// styling
-import styled from 'styled-components';
 // components
 import CauseCard from './CauseCard';
 

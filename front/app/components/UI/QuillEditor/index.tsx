@@ -1,8 +1,8 @@
 import Tippy from '@tippyjs/react';
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { debounce } from 'lodash-es';
 // quill
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
@@ -10,6 +10,8 @@ import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 // typings
 import { Locale } from 'typings';
+// components
+import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 import usePrevious from 'hooks/usePrevious';
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -23,8 +25,6 @@ import {
   defaultStyles,
   isRtl,
 } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 import {
   ImageBlot,
   AltTextToImagesModule,

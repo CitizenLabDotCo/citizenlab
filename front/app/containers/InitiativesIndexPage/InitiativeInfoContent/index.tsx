@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -6,8 +8,6 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { fontSizes, colors } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 import messages from '../messages';
 
 const Content = styled.div`

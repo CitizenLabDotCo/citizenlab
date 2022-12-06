@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import {
   fontSizes,
   Toggle,
@@ -8,7 +9,6 @@ import {
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 import { SubSectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledToggle = styled(Toggle)`

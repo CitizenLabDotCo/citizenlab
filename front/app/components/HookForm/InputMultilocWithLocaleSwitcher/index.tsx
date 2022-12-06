@@ -1,11 +1,11 @@
 import React from 'react';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
+import { get } from 'lodash-es';
+import { CLError, Locale } from 'typings';
 import {
   InputMultilocWithLocaleSwitcher as InputMultilocWithLocaleSwitcherComponent,
   InputMultilocWithLocaleSwitcherProps,
 } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
-import { CLError, Locale } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import Error, { TFieldName } from 'components/UI/Error';

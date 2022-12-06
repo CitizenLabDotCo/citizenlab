@@ -1,7 +1,8 @@
 import Tippy from '@tippyjs/react';
 import React from 'react';
-import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
+import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -11,7 +12,6 @@ import { getDaysRemainingUntil } from 'utils/dateUtils';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import styled, { useTheme } from 'styled-components';
 import CountDown from './CountDown';
 import ProposalProgressBar from './ProposalProgressBar';
 import { StatusExplanation } from './SharedStyles';

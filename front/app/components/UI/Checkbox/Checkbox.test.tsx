@@ -1,6 +1,6 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import 'jest-styled-components';
+import { shallow } from 'enzyme';
 import Checkbox from '.';
 
 describe('Checkbox UI component', () => {

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box, media, Button, Spinner } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 import { rgba } from 'polished';
 import { IParticipationContextType } from 'typings';
+import { Box, media, Button, Spinner } from '@citizenlab/cl2-component-library';
 import { IIdeaData } from 'services/ideas';
 import { ParticipationMethod } from 'services/participationContexts';
 import { FormattedMessage } from 'utils/cl-intl';
 import IdeaCard from 'components/IdeaCard';
-import styled, { useTheme } from 'styled-components';
 import EmptyIdeas from './EmptyIdeas';
 import messages from './messages';
 

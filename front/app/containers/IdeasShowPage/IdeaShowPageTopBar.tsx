@@ -1,4 +1,6 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 import { lighten } from 'polished';
 import useAuthUser from 'hooks/useAuthUser';
 // hooks
@@ -12,8 +14,6 @@ import { media, colors } from 'utils/styleUtils';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
 // components
 import VoteControl from 'components/VoteControl';
-// styling
-import styled from 'styled-components';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;

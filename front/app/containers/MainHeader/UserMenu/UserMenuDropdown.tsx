@@ -1,4 +1,6 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
+// style
+import styled from 'styled-components';
 import { Dropdown } from '@citizenlab/cl2-component-library';
 // resources
 import useAuthUser from 'hooks/useAuthUser';
@@ -11,8 +13,6 @@ import { colors } from 'utils/styleUtils';
 import HasPermission from 'components/HasPermission';
 // components
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const DropdownListItem = styled(Button)``;

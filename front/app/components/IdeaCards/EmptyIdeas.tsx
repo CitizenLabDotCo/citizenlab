@@ -1,8 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from './messages';
 
 const EmptyContainer = styled.div`

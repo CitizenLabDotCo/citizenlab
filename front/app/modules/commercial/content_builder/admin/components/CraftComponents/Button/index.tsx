@@ -1,15 +1,15 @@
 import React from 'react';
+// hooks
+import { useTheme } from 'styled-components';
+import { darken } from 'polished';
 // components
 import { Radio, Box, Title, Input } from '@citizenlab/cl2-component-library';
 // craft
 import { useNode, useEditor } from '@craftjs/core';
-import { darken } from 'polished';
 import { injectIntl } from 'utils/cl-intl';
 // styles
 import { colors } from 'utils/styleUtils';
 import ButtonComponent from 'components/UI/Button';
-// hooks
-import { useTheme } from 'styled-components';
 // intl
 import messages from '../../../messages';
 

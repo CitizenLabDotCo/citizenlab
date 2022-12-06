@@ -1,8 +1,8 @@
 import React from 'react';
-// components
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 // typings
 import { UploadFile, CLErrors } from 'typings';
+// components
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { SubSectionTitle } from 'components/admin/Section';

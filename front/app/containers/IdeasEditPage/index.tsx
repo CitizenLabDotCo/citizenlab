@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 // typings
 import { UploadFile, Multiloc, Locale } from 'typings';
+import { Box } from '@citizenlab/cl2-component-library';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -47,7 +48,6 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 // components
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import styled from 'styled-components';
 import IdeasEditButtonBar from './IdeasEditButtonBar';
 import IdeasEditMeta from './IdeasEditMeta';
 // feature flag variant

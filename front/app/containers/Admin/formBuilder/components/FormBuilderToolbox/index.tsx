@@ -1,5 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 // Hooks
 import useLocale from 'hooks/useLocale';
@@ -13,8 +15,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
-// styles
-import styled from 'styled-components';
 import messages from '../messages';
 // components
 import ToolboxItem from './ToolboxItem';

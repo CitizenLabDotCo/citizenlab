@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
+// typings
+import { Multiloc, Locale, MultilocFormValues } from 'typings';
 import {
   Radio,
   Input,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-// typings
-import { Multiloc, Locale, MultilocFormValues } from 'typings';
 // resources
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
@@ -24,8 +26,6 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Section } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import messages from '../../messages';
 
 const StyledSection = styled(Section)``;

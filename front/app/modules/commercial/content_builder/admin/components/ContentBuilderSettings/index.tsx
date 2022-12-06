@@ -1,4 +1,6 @@
 import React from 'react';
+// styles
+import styled from 'styled-components';
 // components
 import { Title, Box, stylingConsts } from '@citizenlab/cl2-component-library';
 // craft
@@ -11,8 +13,6 @@ import { colors } from 'utils/styleUtils';
 import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from '../../containers';
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
-// styles
-import styled from 'styled-components';
 // intl
 import messages from '../../messages';
 import { getComponentNameMessage } from '../RenderNode';

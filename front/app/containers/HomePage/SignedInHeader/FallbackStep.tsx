@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 import useAuthUser from 'hooks/useAuthUser';
 import useHomepageSettings from 'hooks/useHomepageSettings';
@@ -8,7 +9,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { media, isRtl, fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 import T from 'components/T';
-import styled from 'styled-components';
 import messages from '../messages';
 import { Left, Right } from './';
 import OnboardingStep from './OnboardingStep';

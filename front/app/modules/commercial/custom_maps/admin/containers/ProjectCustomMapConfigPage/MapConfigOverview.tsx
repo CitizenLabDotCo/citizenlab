@@ -1,9 +1,9 @@
 import React, { memo, useState } from 'react';
+// styling
+import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
 import MapLayerConfig from './MapLayerConfig';
 // components

@@ -1,12 +1,12 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 // components
 import { Icon, Title } from '@citizenlab/cl2-component-library';
 import { IVerificationError } from 'events/verificationModal';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes, colors } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 // Types

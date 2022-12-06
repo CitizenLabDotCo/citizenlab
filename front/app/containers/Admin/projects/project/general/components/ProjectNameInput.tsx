@@ -1,7 +1,7 @@
 import React from 'react';
+import { Multiloc, CLErrors } from 'typings';
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import { Multiloc, CLErrors } from 'typings';
 // typings
 import { IUpdatedProjectProperties } from 'services/projects';
 // i18n

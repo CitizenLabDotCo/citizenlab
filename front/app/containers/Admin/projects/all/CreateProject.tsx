@@ -2,9 +2,10 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { transparentize } from 'polished';
 import { InsertConfigurationOptions } from 'typings';
+import { Icon } from '@citizenlab/cl2-component-library';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 // i18n
@@ -21,7 +22,6 @@ import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 // components
 import Outlet from 'components/Outlet';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
-import styled from 'styled-components';
 import { HeaderTitle } from './StyledComponents';
 import messages from './messages';
 import tracks from './tracks';

@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Spinner } from '@citizenlab/cl2-component-library';
+// style
+import styled, { withTheme } from 'styled-components';
 import { get, isNumber } from 'lodash-es';
 import { IParticipationContextType } from 'typings';
+// components
+import { Spinner } from '@citizenlab/cl2-component-library';
 // resources
 import GetIdeas, {
   Sort,
@@ -42,8 +44,6 @@ import TopBar from 'components/FiltersModal/TopBar';
 import Button from 'components/UI/Button';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import SearchInput from 'components/UI/SearchInput';
-// style
-import styled, { withTheme } from 'styled-components';
 import IdeasView from './IdeasView';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';

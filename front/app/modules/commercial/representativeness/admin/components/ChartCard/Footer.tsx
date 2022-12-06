@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 // i18n
@@ -9,7 +10,6 @@ import Warning from 'components/UI/Warning';
 // typings
 import { View } from 'components/admin/GraphCard/ViewToggle';
 import Legend from 'components/admin/Graphs/Legend';
-import styled from 'styled-components';
 import FieldInfo, { Props as FieldInfoProps } from './FieldInfo';
 import messages from './messages';
 

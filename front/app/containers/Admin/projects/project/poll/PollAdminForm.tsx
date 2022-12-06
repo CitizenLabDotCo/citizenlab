@@ -2,6 +2,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import styled from 'styled-components';
 import { isEqual, clone } from 'lodash-es';
 // Typings
 import { Multiloc, IParticipationContextType } from 'typings';
@@ -19,7 +20,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 // Components
 import { List } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 import FormQuestionRow from './FormQuestionRow';
 import OptionForm from './OptionForm';
 import QuestionRow from './QuestionRow';

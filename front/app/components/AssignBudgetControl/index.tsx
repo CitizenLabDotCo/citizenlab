@@ -1,4 +1,6 @@
 import React, { memo, FormEvent, useState } from 'react';
+// styles
+import styled from 'styled-components';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useBasket from 'hooks/useBasket';
@@ -30,8 +32,6 @@ import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 // components
 import Button from 'components/UI/Button';
-// styles
-import styled from 'styled-components';
 import messages from './messages';
 
 const IdeaCardContainer = styled.div`

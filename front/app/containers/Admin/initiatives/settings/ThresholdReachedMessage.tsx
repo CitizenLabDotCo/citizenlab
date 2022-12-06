@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 // typings
 import { Multiloc, Locale } from 'typings';
 // i18n
@@ -9,7 +10,6 @@ import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
-import styled from 'styled-components';
 import { StyledSectionDescription } from '.';
 import messages from '../messages';
 

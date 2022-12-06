@@ -5,10 +5,10 @@ import { findDOMNode } from 'react-dom';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
 import { Icon } from 'semantic-ui-react';
-import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
 import { uniq, get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,

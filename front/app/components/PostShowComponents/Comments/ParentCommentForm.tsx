@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 import { isString, trim, get } from 'lodash-es';
 import { hideVisually } from 'polished';
 import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
@@ -31,8 +33,6 @@ import Avatar from 'components/Avatar';
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // components
@@ -9,8 +11,6 @@ import { fontSizes } from 'utils/styleUtils';
 import { AuthProvider } from 'components/AuthProviders';
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

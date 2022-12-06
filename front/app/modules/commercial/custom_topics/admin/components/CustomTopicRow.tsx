@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
+import styled from 'styled-components';
 import { ITopicData } from 'services/topics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 // components
 import { Row } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';
 // i18n
 import messages from './messages';

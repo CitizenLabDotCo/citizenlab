@@ -1,11 +1,12 @@
 import React, { memo, useState, useMemo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Icon, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 // typings
 import { LatLngTuple } from 'leaflet';
 import { isNil } from 'lodash-es';
 import { darken } from 'polished';
+// components
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 import useIdea from 'hooks/useIdea';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -17,7 +18,6 @@ import { isRtl, fontSizes, media } from 'utils/styleUtils';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 import Map, { Point } from 'components/Map';
 import Modal from 'components/UI/Modal';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

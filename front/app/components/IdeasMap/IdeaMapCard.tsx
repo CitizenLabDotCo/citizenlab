@@ -1,6 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { darken } from 'polished';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import usePhase from 'hooks/usePhase';
@@ -28,8 +30,6 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import T from 'components/T';
 // components
 import CloseIconButton from 'components/UI/CloseIconButton';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

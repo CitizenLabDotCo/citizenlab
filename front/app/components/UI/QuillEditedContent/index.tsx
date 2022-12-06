@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import { quillEditedContent } from 'utils/styleUtils';
 import styled, { withTheme } from 'styled-components';
+import { quillEditedContent } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   ${(props: any) =>

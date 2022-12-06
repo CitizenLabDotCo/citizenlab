@@ -4,10 +4,10 @@ import React from 'react';
 import { SingleDatePicker } from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import moment from 'moment';
-import { fontSizes } from 'utils/styleUtils';
 // styling
 import styled from 'styled-components';
+import moment from 'moment';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 245px;

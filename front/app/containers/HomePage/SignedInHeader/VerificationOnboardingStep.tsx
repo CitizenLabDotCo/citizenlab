@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'hooks/useAuthUser';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
@@ -6,7 +7,6 @@ import { openVerificationModal } from 'events/verificationModal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 import { HeaderContent, Left, Right, Text, Icons, StyledAvatar } from '.';
 import messages from '../messages';
 import AcceptButton from './AcceptButton';

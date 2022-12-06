@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 // components
 import { Input, Checkbox, Box } from '@citizenlab/cl2-component-library';
 // resources
@@ -27,8 +29,6 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import PasswordInput from 'components/UI/PasswordInput';
-// style
-import styled from 'styled-components';
 import { Options, Option } from '../styles';
 import tracks from '../tracks';
 // typings

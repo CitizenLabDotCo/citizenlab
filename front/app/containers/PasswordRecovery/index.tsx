@@ -2,6 +2,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 // components
 import { Input, Success } from '@citizenlab/cl2-component-library';
 // services
@@ -13,8 +15,6 @@ import { isValidEmail } from 'utils/validate';
 import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';
 import { FormLabel } from 'components/UI/FormComponents';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

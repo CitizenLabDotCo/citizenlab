@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Tooltip } from 'recharts';
 import { combineLatest } from 'rxjs';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 // services
 import {
   usersByRegFieldStream,

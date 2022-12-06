@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { JsonSchema7, Layout } from '@jsonforms/core';
 import { isEmpty, get } from 'lodash-es';
+import { JsonSchema7, Layout } from '@jsonforms/core';
 import useLocale from 'hooks/useLocale';
 import { userJsonFormSchemasStream } from 'services/userCustomFields';
 import { isNilOrError } from 'utils/helperUtils';

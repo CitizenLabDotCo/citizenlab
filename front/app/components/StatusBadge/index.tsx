@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
+import styled from 'styled-components';
 import { transparentize } from 'polished';
 import useIdeaStatus from 'hooks/useIdeaStatus';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import T from 'components/T';
-import styled from 'styled-components';
 
 const Container = styled.div<{ color: string }>`
   color: ${({ color }) => color};

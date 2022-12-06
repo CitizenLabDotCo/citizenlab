@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container: any = styled.span`
   padding: 0 3px;

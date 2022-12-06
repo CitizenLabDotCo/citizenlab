@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   Box,
   stylingConsts,
@@ -22,7 +23,6 @@ import { colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
-import styled from 'styled-components';
 // i18n
 import messages from '../messages';
 

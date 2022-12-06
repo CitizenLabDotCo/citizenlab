@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-// components
-import { Th } from '@citizenlab/cl2-component-library';
 // typings
 import { CellConfiguration, InsertConfigurationOptions } from 'typings';
+// components
+import { Th } from '@citizenlab/cl2-component-library';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';

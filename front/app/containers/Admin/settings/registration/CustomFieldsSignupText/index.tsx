@@ -1,6 +1,6 @@
 import React from 'react';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { TAppConfigurationSettingCore } from 'services/appConfiguration';
 import { FormattedMessage } from 'utils/cl-intl';
 import { LabelTooltip } from 'containers/Admin/settings/registration';

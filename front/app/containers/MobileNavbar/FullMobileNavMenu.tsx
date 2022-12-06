@@ -1,5 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 import useLocalize from 'hooks/useLocalize';
@@ -14,8 +16,6 @@ import { media, colors, hexToRgb } from 'utils/styleUtils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
-// styles
-import styled, { css } from 'styled-components';
 import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
 import mainHeaderMessages from '../MainHeader/messages';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';

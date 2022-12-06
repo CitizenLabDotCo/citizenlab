@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from '../messages';
 
 const StyledDiv = styled.div`

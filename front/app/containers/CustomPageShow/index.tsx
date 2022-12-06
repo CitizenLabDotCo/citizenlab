@@ -1,6 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
+// styling
+import styled from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -19,8 +21,6 @@ import Fragment from 'components/Fragment';
 import { Container, Content } from 'components/LandingPages/citizen';
 import PageNotFound from 'components/PageNotFound';
 import FileAttachments from 'components/UI/FileAttachments';
-// styling
-import styled from 'styled-components';
 import CustomPageHeader from './CustomPageHeader';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import TopInfoSection from './TopInfoSection';

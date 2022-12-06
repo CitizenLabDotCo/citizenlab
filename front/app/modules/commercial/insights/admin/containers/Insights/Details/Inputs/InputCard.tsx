@@ -1,4 +1,6 @@
 import React from 'react';
+// styles
+import styled from 'styled-components';
 // hooks
 import useIdea from 'hooks/useIdea';
 // types
@@ -10,8 +12,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-// styles
-import styled from 'styled-components';
 
 const InputTitle = styled.h2`
   color: ${colors.textPrimary};

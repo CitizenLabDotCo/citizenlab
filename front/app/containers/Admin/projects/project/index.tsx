@@ -3,10 +3,12 @@ import { adopt } from 'react-adopt';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
-import { Box } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { reject } from 'lodash-es';
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
+import { Box } from '@citizenlab/cl2-component-library';
 // resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
@@ -36,8 +38,6 @@ import Button from 'components/UI/Button';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
-// style
-import styled from 'styled-components';
 import NewIdeaButton from './ideas/NewIdeaButton';
 import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
 import messages from './messages';

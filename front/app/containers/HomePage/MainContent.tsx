@@ -1,12 +1,12 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { media, colors } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
-// style
-import styled from 'styled-components';
 import InitiativesCTABox from './InitiativesCTABox';
 
 const StyledContentContainer = styled(ContentContainer)`

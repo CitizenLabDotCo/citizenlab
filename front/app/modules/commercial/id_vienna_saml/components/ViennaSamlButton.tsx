@@ -1,4 +1,6 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 // typings
 import { TSignUpInFlow } from 'events/openSignUpInModal';
@@ -9,8 +11,6 @@ import { AUTH_PATH } from 'containers/App/constants';
 import { StyledAuthProviderButton } from 'components/AuthProviders';
 // components
 import { TOnContinueFunction } from 'components/AuthProviders/AuthProviderButton';
-// styling
-import styled from 'styled-components';
 import ViennaIcon from './ViennaIcon';
 import messages from './messages';
 

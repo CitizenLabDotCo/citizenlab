@@ -1,12 +1,14 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+// Styling
+import styled from 'styled-components';
 import { saveAs } from 'file-saver';
 import { isArray, isNil, omitBy, includes } from 'lodash-es';
 import { rgba } from 'polished';
 // Typings
 import { CLErrorsJSON } from 'typings';
+import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 // Resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import {
@@ -33,8 +35,6 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 // Components
 import Checkbox from 'components/UI/Checkbox';
-// Styling
-import styled from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

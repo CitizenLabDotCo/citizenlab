@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
 import { adopt } from 'react-adopt';
 import ReactSelect, { OptionTypeBase } from 'react-select';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { debounce } from 'lodash-es';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import useUser from 'hooks/useUser';
 import { IUserData } from 'services/users';
 import Button from 'components/UI/Button';
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import styled from 'styled-components';
 
 interface DataProps {
   users: GetUsersChildProps;

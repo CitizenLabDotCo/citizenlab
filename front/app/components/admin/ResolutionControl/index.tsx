@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import Tabs from 'components/UI/Tabs';
-import styled from 'styled-components';
 import messages from './messages';
 
 export type IResolution = 'day' | 'week' | 'month';

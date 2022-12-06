@@ -1,5 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import { adopt } from 'react-adopt';
+// styling
+import styled from 'styled-components';
 // resources
 import GetIdeaStatuses, {
   GetIdeaStatusesChildProps,
@@ -12,8 +14,6 @@ import GetIdeasFilterCounts, {
 import { isNilOrError } from 'utils/helperUtils';
 // components
 import StatusFilter from 'components/FilterBoxes/StatusFilter';
-// styling
-import styled from 'styled-components';
 
 const Container = styled.div``;
 

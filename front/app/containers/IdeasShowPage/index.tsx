@@ -1,8 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+// style
+import styled from 'styled-components';
+import { isError } from 'lodash-es';
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
-import { isError } from 'lodash-es';
 import useIdea from 'hooks/useIdea';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -12,8 +14,6 @@ import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 // components
 import IdeasShow from 'containers/IdeasShow';
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 import messages from './messages';
 

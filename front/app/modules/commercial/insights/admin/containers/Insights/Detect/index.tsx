@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
@@ -18,8 +20,6 @@ import PageTitle from 'components/admin/PageTitle';
 // components
 import PageWrapper from 'components/admin/PageWrapper';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
-// styles
-import styled from 'styled-components';
 import messages from '../messages';
 
 const StyledH2 = styled.h2`

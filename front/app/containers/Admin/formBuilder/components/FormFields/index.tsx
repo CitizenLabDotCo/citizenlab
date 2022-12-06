@@ -2,6 +2,8 @@ import React from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { useFormContext } from 'react-hook-form';
+// styling
+import styled from 'styled-components';
 import {
   Box,
   Badge,
@@ -29,8 +31,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 // components
 import { List } from 'components/admin/ResourceList';
-// styling
-import styled from 'styled-components';
 import { SortableRow } from '../SortableRow';
 import messages from '../messages';
 

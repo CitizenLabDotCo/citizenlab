@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
@@ -8,7 +9,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import styled from 'styled-components';
 import {
   QuestionContainer,
   Question,

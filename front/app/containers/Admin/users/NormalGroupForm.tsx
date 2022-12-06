@@ -2,11 +2,13 @@ import React from 'react';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { Button } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
+// Style
+import styled from 'styled-components';
 // Typings
 import { Multiloc } from 'typings';
 import { object } from 'yup';
+import { Button } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { MembershipType } from 'services/groups';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -16,8 +18,6 @@ import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 // Components
 import { SectionField } from 'components/admin/Section';
-// Style
-import styled from 'styled-components';
 import messages from './messages';
 
 type Props = {

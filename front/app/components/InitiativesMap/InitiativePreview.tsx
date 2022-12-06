@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { Icon } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
+import { Icon } from '@citizenlab/cl2-component-library';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -19,8 +21,6 @@ import Body from 'components/PostShowComponents/Body';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

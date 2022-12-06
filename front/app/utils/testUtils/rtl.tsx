@@ -3,12 +3,12 @@ import { render, RenderOptions } from '@testing-library/react';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
+import { ThemeProvider } from 'styled-components';
 import GlobalStyle from 'global-styles';
+import userEvent from '@testing-library/user-event';
 import history from 'utils/browserHistory';
 import { getTheme } from 'utils/styleUtils';
 import messages from 'i18n/en';
-import { ThemeProvider } from 'styled-components';
 
 window.confirm = jest.fn(() => true);
 window.scrollTo = jest.fn();

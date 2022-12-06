@@ -1,8 +1,8 @@
 import React, { ReactElement, FormEvent } from 'react';
+import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes, colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 import FranceConnectLogo from './FranceConnectLogo';
 import messages from './messages';
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 import { StyledIconTooltip, Indicator } from './WrongOptionsIndicator';
 import messages from './messages';
 

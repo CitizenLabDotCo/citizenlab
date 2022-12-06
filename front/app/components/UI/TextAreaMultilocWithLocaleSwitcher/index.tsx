@@ -1,11 +1,13 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
+// style
+import styled from 'styled-components';
+// typings
+import { Locale, Multiloc } from 'typings';
 import {
   IconTooltip,
   LocaleSwitcher,
   Label,
 } from '@citizenlab/cl2-component-library';
-// typings
-import { Locale, Multiloc } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -13,8 +15,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 // components
 import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
-// style
-import styled from 'styled-components';
 
 const Container = styled.div``;
 

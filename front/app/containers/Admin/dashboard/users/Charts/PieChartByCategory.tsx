@@ -1,6 +1,8 @@
 // libraries
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import { withTheme } from 'styled-components';
 import { IGraphFormat } from 'typings';
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -27,8 +29,6 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-// styling
-import { withTheme } from 'styled-components';
 import messages from '../../messages';
 // utils
 import renderTooltip from './renderPieChartByCategoryTooltip';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 import { UploadFile, CLErrors } from 'typings';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 // resources
 import { addIdeaImportFile } from 'services/ideaFiles';
 // i18n

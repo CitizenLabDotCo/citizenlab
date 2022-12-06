@@ -1,4 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
+// style
+import styled from 'styled-components';
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useVerificationMethods from 'hooks/useVerificationMethods';
@@ -13,8 +15,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 import { media } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
-// style
-import styled from 'styled-components';
 // components
 import VerificationMethods from './VerificationMethods';
 

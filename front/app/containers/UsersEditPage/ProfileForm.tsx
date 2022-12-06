@@ -3,12 +3,14 @@ import { adopt } from 'react-adopt';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
+// styling
+import styled from 'styled-components';
 // typings
 import { IOption, UploadFile, Multiloc } from 'typings';
 import { string, object, mixed } from 'yup';
+// components
+import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -44,8 +46,6 @@ import {
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 import { SectionField } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledIconTooltip = styled(IconTooltip)`

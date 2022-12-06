@@ -1,9 +1,9 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
-// styling
-import styled from 'styled-components';
 import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
 // components
 import EventsPageMeta from './EventsPageMeta';

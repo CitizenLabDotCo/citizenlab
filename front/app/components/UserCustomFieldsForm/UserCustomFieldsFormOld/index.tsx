@@ -6,12 +6,8 @@ import 'react-dates/lib/css/_datepicker.css';
 import { WrappedComponentProps } from 'react-intl';
 // libraries
 import Form, { FieldProps } from 'react-jsonschema-form';
-import {
-  Input,
-  IconTooltip,
-  Select,
-  DateInput,
-} from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import {
   isBoolean,
   forOwn,
@@ -25,6 +21,12 @@ import moment from 'moment';
 import { Subscription } from 'rxjs';
 // typings
 import { IOption } from 'typings';
+import {
+  Input,
+  IconTooltip,
+  Select,
+  DateInput,
+} from '@citizenlab/cl2-component-library';
 // hooks
 import useUserCustomFieldsSchema, {
   UserCustomFieldsSchema,
@@ -41,8 +43,6 @@ import { FormLabel } from 'components/UI/FormComponents';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import TextArea from 'components/UI/TextArea';
 import { SectionField } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div``;

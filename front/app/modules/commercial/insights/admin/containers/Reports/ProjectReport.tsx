@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { isEqual } from 'lodash-es';
 import moment from 'moment';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
@@ -31,7 +32,6 @@ import ResolutionControl, {
 } from 'components/admin/ResolutionControl';
 // components
 import { SectionTitle, PageTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import BarChartActiveUsersByTime from './Charts/BarChartActiveUsersByTime';
 import HorizontalBarChartWithoutStream from './Charts/HorizontalBarChartWithoutStream';
 import IdeasByStatusChart from './Charts/IdeasByStatusChart';

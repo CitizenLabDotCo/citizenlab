@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 import { isEmpty, get, isError } from 'lodash-es';
 import moment from 'moment';
 import { Subscription, combineLatest, of } from 'rxjs';
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
+import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 // resources
 import GetRemoteFiles, {
   GetRemoteFilesChildProps,

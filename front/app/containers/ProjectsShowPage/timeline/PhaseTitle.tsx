@@ -1,6 +1,8 @@
 import React from 'react';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import moment from 'moment';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 // hooks
 import usePhase from 'hooks/usePhase';
@@ -18,8 +20,6 @@ import {
 } from 'utils/styleUtils';
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-// style
-import styled from 'styled-components';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;

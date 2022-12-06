@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 // intl
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Button, Input } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 // types
 import { CLErrors } from 'typings';
+// components
+import { Button, Input } from '@citizenlab/cl2-component-library';
 // services
 import { updateInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 // tracking
@@ -16,8 +18,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 import Error from 'components/UI/Error';
-// styles
-import styled from 'styled-components';
 import messages from '../messages';
 
 const Container = styled.div`

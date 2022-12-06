@@ -4,6 +4,8 @@ import { adopt } from 'react-adopt';
 // Localisation
 import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+// style
+import styled from 'styled-components';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // Resources
 import GetProjectFolder, {
@@ -22,8 +24,6 @@ import Button from 'components/UI/Button';
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const TopContainer = styled.div`

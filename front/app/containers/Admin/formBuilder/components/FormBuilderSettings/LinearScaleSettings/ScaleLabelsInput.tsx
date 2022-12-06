@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 // react hook form
 import { Controller, useFormContext } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
+import { Locale } from 'typings';
 // components
 import {
   Box,
@@ -10,7 +11,6 @@ import {
   Input,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-import { Locale } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 // i18n

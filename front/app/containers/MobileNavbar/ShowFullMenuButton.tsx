@@ -1,9 +1,9 @@
 import React from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { darken } from 'polished';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 import { NavigationItem, NavigationLabel } from './';
 import messages from './messages';
 

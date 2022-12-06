@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetInitiative, {
   GetInitiativeChildProps,
@@ -30,7 +31,6 @@ import HasPermission from 'components/HasPermission';
 import PageLayout from 'components/InitiativeForm/PageLayout';
 // components
 import PageNotFound from 'components/PageNotFound';
-import styled from 'styled-components';
 import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import InitiativesEditMeta from './InitiativesEditMeta';
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
 import useFeatureFlags from 'hooks/useFeatureFlags';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -6,7 +7,6 @@ import Link from 'utils/cl-router/Link';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import HasPermission from 'components/HasPermission';
 import CountBadge from 'components/UI/CountBadge';
-import styled from 'styled-components';
 import { NavItem } from '.';
 import messages from './messages';
 

@@ -1,4 +1,3 @@
-import { Locale } from '@citizenlab/cl2-component-library';
 import {
   IRelationship,
   Multiloc,
@@ -6,6 +5,7 @@ import {
   UploadFile,
   CLError,
 } from 'typings';
+import { Locale } from '@citizenlab/cl2-component-library';
 import { IAppConfiguration } from 'services/appConfiguration';
 import streams, { IStreamParams } from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';

@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
+import { rgba } from 'polished';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import { rgba } from 'polished';
 // resources
 import GetUserStats, { GetUserStatsChildProps } from 'resources/GetUserStats';
 // i18n
@@ -10,7 +11,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // styles
 import { fontSizes, media } from 'utils/styleUtils';
-import styled from 'styled-components';
 import { UserTab } from './';
 import messages from './messages';
 

@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+// Styling
+import styled from 'styled-components';
 // Resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
@@ -20,8 +22,6 @@ import { media } from 'utils/styleUtils';
 import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
-// Styling
-import styled from 'styled-components';
 import GroupCreationStep1 from './GroupCreationStep1';
 import GroupsListPanel from './GroupsListPanel';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';

@@ -1,8 +1,10 @@
 import React, { memo, useState, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
+import { isEmpty, inRange } from 'lodash-es';
 // components
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
-import { isEmpty, inRange } from 'lodash-es';
 import useMapConfig from '../../../hooks/useMapConfig';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -21,8 +23,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

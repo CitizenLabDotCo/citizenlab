@@ -1,8 +1,9 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { Segment, Menu, Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IPhaseData } from 'services/phases';
@@ -10,7 +11,6 @@ import { IProjectData } from 'services/projects';
 import { ITopicData } from 'services/topics';
 import { injectIntl } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from '../../messages';
 import PhasesMenu from './FilterSidebarPhases';
 import ProjectsMenu from './FilterSidebarProjects';

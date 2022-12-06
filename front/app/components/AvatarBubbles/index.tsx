@@ -1,5 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 import { isNumber, isError } from 'lodash-es';
 import GetAvatars from 'resources/GetAvatars';
 // resources
@@ -11,8 +13,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const getFontSize = (size: number, digits: number) => {

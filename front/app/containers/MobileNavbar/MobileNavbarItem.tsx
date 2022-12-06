@@ -1,12 +1,12 @@
 import React from 'react';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { darken } from 'polished';
 import { Multiloc } from 'typings';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import { media, colors } from 'utils/styleUtils';
 import T from 'components/T';
-// styling
-import styled from 'styled-components';
 // components
 import { NavigationItem, NavigationLabel } from './';
 

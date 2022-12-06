@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import moment, { Moment } from 'moment';
+import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
 import DateRangePicker from 'components/admin/DateRangePicker';
-// styling
-import styled from 'styled-components';
 import messages from '../messages';
 
 const Container = styled.div`

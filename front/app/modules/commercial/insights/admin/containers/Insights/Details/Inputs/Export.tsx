@@ -1,7 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Box } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
+import { Box } from '@citizenlab/cl2-component-library';
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 // services

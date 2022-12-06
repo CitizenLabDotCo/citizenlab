@@ -1,9 +1,11 @@
 import React, { memo, FormEvent } from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 // utils
 import { get } from 'lodash-es';
 import { transparentize } from 'polished';
 import { IParticipationContextType } from 'typings';
+import { Icon } from '@citizenlab/cl2-component-library';
 // hooks
 import useIdea from 'hooks/useIdea';
 import useIdeaImage from 'hooks/useIdeaImage';
@@ -21,8 +23,6 @@ import Avatar from 'components/Avatar';
 import Card from 'components/UI/Card/Compact';
 // components
 import UserName from 'components/UI/UserName';
-// styles
-import styled from 'styled-components';
 import FooterWithBudgetControl from './FooterWithBudgetControl';
 import FooterWithVoteControl from './FooterWithVoteControl';
 

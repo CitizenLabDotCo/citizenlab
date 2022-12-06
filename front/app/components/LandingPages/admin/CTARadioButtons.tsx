@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
+import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
 import { TCustomPageCTAType } from 'services/customPages';
 import { CTASignedInType, CTASignedOutType } from 'services/homepageSettings';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';

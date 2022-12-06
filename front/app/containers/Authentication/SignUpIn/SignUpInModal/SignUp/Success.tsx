@@ -1,4 +1,6 @@
 import React, { memo, useCallback } from 'react';
+// style
+import styled from 'styled-components';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 // i18n
@@ -7,8 +9,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes, media } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 import success from './success.jpg';
 

@@ -1,4 +1,6 @@
 import React, { memo, useCallback, Fragment } from 'react';
+// style
+import styled from 'styled-components';
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 // hooks
@@ -17,8 +19,6 @@ import Outlet from 'components/Outlet';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Or from 'components/UI/Or';
-// style
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

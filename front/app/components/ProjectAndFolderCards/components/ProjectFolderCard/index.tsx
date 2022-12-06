@@ -1,8 +1,10 @@
 import React, { memo, useCallback } from 'react';
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import bowser from 'bowser';
 import { isEmpty } from 'lodash-es';
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -22,8 +24,6 @@ import {
 // i18n
 import T from 'components/T';
 import Image from 'components/UI/Image';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+// styles
+import styled from 'styled-components';
 import { isFunction } from 'lodash-es';
 // resources
 import GetInitiativesCount, {
@@ -8,8 +10,6 @@ import GetInitiativesCount, {
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-// styles
-import styled from 'styled-components';
 import messages from '../messages';
 
 const Container = styled.div`

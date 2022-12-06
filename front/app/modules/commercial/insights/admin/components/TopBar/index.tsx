@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // intl
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 // components
 import {
   Dropdown,
@@ -19,7 +20,6 @@ import { isNilOrError, isError } from 'utils/helperUtils';
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
 import Modal from 'components/UI/Modal';
-import styled from 'styled-components';
 import ProjectButton from './ProjectButton';
 import ProjectsDropdown from './ProjectsDropdown';
 import RenameInsightsView from './RenameInsightsView';

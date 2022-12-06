@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 import moment from 'moment';
 // services
 import { IEventData } from 'services/events';
@@ -6,8 +8,6 @@ import { IEventData } from 'services/events';
 import { getIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { defaultCardStyle } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 // components
 import DateBlocks from './DateBlocks';
 import EventInformation from './EventInformation';

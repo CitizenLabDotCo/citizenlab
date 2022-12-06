@@ -1,4 +1,6 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 // hooks
@@ -8,8 +10,6 @@ import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-// style
-import styled from 'styled-components';
 import messages from '../messages';
 import { Left, Right, Text, HeaderContent, Icons, StyledAvatar } from './';
 import AcceptButton from './AcceptButton';

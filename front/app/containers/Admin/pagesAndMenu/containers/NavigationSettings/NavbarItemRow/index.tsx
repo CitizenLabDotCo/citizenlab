@@ -1,7 +1,9 @@
 import React from 'react';
-import { Box } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 // typings
 import { Multiloc } from 'typings';
+import { Box } from '@citizenlab/cl2-component-library';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -10,8 +12,6 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 // components
 import { TextCell } from 'components/admin/ResourceList';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

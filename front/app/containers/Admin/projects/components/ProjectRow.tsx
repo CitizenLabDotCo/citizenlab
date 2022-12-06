@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -12,7 +13,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import Error from 'components/UI/Error';
-import styled from 'styled-components';
 import messages from '../messages';
 import DeleteProjectButton from './DeleteProjectButton';
 import PublicationStatusLabel from './PublicationStatusLabel';

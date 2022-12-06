@@ -1,5 +1,5 @@
-import { JsonSchema7, Layout } from '@jsonforms/core';
 import { IRelationship, Locale, Multiloc } from 'typings';
+import { JsonSchema7, Layout } from '@jsonforms/core';
 import streams, { IStreamParams } from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 

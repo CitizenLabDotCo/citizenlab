@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-// components
-import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { saveAs } from 'file-saver';
 import { isEmpty } from 'lodash-es';
+// components
+import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
 // resources
 import GetInvites, {
   GetInvitesChildProps,
@@ -17,8 +19,6 @@ import { API_PATH } from 'containers/App/constants';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 import Pagination from 'components/admin/Pagination';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from '../messages';
 import TableHeader from './TableHeader';

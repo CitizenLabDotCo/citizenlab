@@ -1,7 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import { Select, Box, Icon } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { IGraphFormat, IOption } from 'typings';
+import { Select, Box, Icon } from '@citizenlab/cl2-component-library';
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 // typings
@@ -39,8 +41,6 @@ import {
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-// styling
-import styled from 'styled-components';
 import { IResource } from '..';
 import messages from '../../messages';
 

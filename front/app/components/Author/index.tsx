@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 import useLocale from 'hooks/useLocale';
 // hooks
 import useUser from 'hooks/useUser';
@@ -12,8 +14,6 @@ import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import moment from 'moment';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -29,7 +30,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { media, defaultCardStyle } from 'utils/styleUtils';
-import styled from 'styled-components';
 import Answered from './Answered';
 import Custom from './Custom';
 import Expired from './Expired';

@@ -1,9 +1,11 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Success } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 // typings
 import { Multiloc } from 'typings';
+import { Success } from '@citizenlab/cl2-component-library';
 // module specific
 import useIdeaCustomFields from 'modules/commercial/idea_custom_fields/hooks/useIdeaCustomFields';
 import { IIdeaCustomFieldData } from '../../../../../services/ideaCustomFields';
@@ -25,8 +27,6 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

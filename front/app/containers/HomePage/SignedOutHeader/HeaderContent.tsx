@@ -1,5 +1,6 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
@@ -17,7 +18,6 @@ import {
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
 import Outlet from 'components/Outlet';
-import styled from 'styled-components';
 import SignUpButton from '../SignUpButton';
 import messages from '../messages';
 import tracks from '../tracks';

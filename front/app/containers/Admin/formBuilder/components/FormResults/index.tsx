@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { get, snakeCase } from 'lodash-es';
 // components
 import {
   Box,
@@ -9,7 +10,6 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { get, snakeCase } from 'lodash-es';
 // hooks
 import useFormResults from 'hooks/useFormResults';
 // Hooks

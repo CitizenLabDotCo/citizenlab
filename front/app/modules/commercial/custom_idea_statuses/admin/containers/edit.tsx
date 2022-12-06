@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // hooks
 import useIdeaStatus from 'hooks/useIdeaStatus';
@@ -11,7 +12,6 @@ import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 import GoBackButton from 'components/UI/GoBackButton';
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledGoBackButton = styled(GoBackButton)`

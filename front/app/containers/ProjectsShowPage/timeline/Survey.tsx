@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// styling
+import styled from 'styled-components';
 // hooks
 import usePhase from 'hooks/usePhase';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -6,8 +8,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from 'containers/ProjectsShowPage/messages';
-// styling
-import styled from 'styled-components';
 // components
 import Survey from '../shared/survey';
 

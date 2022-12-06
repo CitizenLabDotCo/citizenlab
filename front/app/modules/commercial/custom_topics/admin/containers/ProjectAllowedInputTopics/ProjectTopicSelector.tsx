@@ -2,6 +2,8 @@
 import React, { memo, useState } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// Style
+import styled from 'styled-components';
 // Typings
 import { IOption } from 'typings';
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
@@ -19,8 +21,6 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 // Components
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
-// Style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

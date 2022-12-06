@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
@@ -8,8 +10,6 @@ import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import PageWrapper from 'components/admin/PageWrapper';
 import { PageTitle, SectionDescription } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const HeaderContainer = styled.div`

@@ -1,6 +1,8 @@
 import React from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 import { Image } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 // hooks
@@ -10,8 +12,6 @@ import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 // components
 import Fragment from 'components/Fragment';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

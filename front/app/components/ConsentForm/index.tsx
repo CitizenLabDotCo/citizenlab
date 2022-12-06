@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { CSSTransition } from 'react-transition-group';
+// styling
+import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
 import {
   IConsentData,
@@ -20,8 +22,6 @@ import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
 // components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

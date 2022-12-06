@@ -1,5 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// style
+import styled from 'styled-components';
 import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
@@ -8,8 +10,6 @@ import { injectIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { media, isRtl } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 import messages from '../messages';
 import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
 // components

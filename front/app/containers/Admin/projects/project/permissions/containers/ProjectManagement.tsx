@@ -1,5 +1,6 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 // i18n
@@ -8,7 +9,6 @@ import ModeratorList from '../components/ModeratorList';
 import UserSearch from '../components/UserSearch';
 // components
 import { Section, SubSectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const ModeratorSubSection = styled(Section)`

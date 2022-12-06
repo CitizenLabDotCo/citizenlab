@@ -1,4 +1,6 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -9,8 +11,6 @@ import { defaultCardStyle, media } from 'utils/styleUtils';
 import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreWrapper';
 // components
 import FileAttachments from 'components/UI/FileAttachments';
-// style
-import styled from 'styled-components';
 import PhaseTitle from './PhaseTitle';
 
 const Container = styled.div`

@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
-import { Select } from '@citizenlab/cl2-component-library';
 import { keys } from 'lodash-es';
 import { IOption } from 'typings';
+import { Select } from '@citizenlab/cl2-component-library';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useUserCustomFields from 'hooks/useUserCustomFields';

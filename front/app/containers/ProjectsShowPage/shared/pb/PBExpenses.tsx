@@ -1,11 +1,13 @@
 import Tippy from '@tippyjs/react';
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Icon } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { round } from 'lodash-es';
 import moment from 'moment';
 // typings
 import { IParticipationContextType } from 'typings';
+import { Icon } from '@citizenlab/cl2-component-library';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useBasket from 'hooks/useBasket';
@@ -28,8 +30,6 @@ import messages from 'containers/ProjectsShowPage/messages';
 // components
 import Button from 'components/UI/Button';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
-// styling
-import styled from 'styled-components';
 import PBBasket from './PBBasket';
 import tracks from './tracks';
 

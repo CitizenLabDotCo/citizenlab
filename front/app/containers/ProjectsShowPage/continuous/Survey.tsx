@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // hooks
 import useProject from 'hooks/useProject';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -12,8 +14,6 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 // components
 import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
-// styling
-import styled from 'styled-components';
 import Survey from '../shared/survey';
 
 const Container = styled.div``;

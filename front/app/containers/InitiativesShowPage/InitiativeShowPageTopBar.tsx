@@ -1,7 +1,9 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
+// styling
+import styled from 'styled-components';
+import { lighten } from 'polished';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import { lighten } from 'polished';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -9,8 +11,6 @@ import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

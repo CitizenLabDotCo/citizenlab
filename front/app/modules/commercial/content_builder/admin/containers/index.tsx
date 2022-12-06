@@ -2,9 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams, useLocation } from 'react-router-dom';
+// styles
+import styled from 'styled-components';
+import { Locale } from 'typings';
 import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
 import useContentBuilderLayout from '../../hooks/useContentBuilder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -26,8 +28,6 @@ import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 // craft
 import Editor from '../components/Editor';
 import Error from 'components/UI/Error';
-// styles
-import styled from 'styled-components';
 // intl
 import messages from '../messages';
 

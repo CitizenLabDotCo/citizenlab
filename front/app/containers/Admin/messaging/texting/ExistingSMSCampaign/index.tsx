@@ -1,6 +1,8 @@
 import React from 'react';
 // i18n
 import { FormattedTime, FormattedDate } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 // hooks
@@ -18,8 +20,6 @@ import FormattedStatusLabel from '../components/FormattedStatusLabel';
 import SMSCampaignForm from '../components/SMSCampaignForm';
 import TextingHeader from '../components/TextingHeader';
 import HelmetIntl from 'components/HelmetIntl';
-// styling
-import styled from 'styled-components';
 
 const StyledSMSCampaignForm = styled(SMSCampaignForm)`
   width: 500px;

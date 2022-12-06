@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
+// styling
+import styled from 'styled-components';
 import { isEmpty, isNaN, isEqual } from 'lodash-es';
 // typings
 import { Multiloc } from 'typings';
@@ -24,8 +26,6 @@ import {
   SectionDescription,
   Section,
 } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 import messages from '../messages';
 import EligibilityCriteria from './EligibilityCriteria';
 import PageBody from './PageBody';

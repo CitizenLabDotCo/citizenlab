@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 import { map, sortBy } from 'lodash-es';
 import { IParticipationByTopic } from 'typings';
 // resources
@@ -25,7 +26,6 @@ import {
   GraphCardHeader,
   NoDataContainer,
 } from 'components/admin/GraphWrappers';
-import styled from 'styled-components';
 import messages from '../messages';
 
 interface InputProps {

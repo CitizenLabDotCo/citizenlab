@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// types
+import { Locale } from 'typings';
 import {
   Box,
   stylingConsts,
@@ -9,8 +11,6 @@ import {
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-// types
-import { Locale } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
 // hooks

@@ -2,11 +2,13 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Input } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { set, keys, difference, get } from 'lodash-es';
 // typings
 import { CLErrorsJSON } from 'typings';
+// components
+import { Input } from '@citizenlab/cl2-component-library';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -38,8 +40,6 @@ import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
-// style
-import styled from 'styled-components';
 import { Options, Option } from '../styles';
 import tracks from '../tracks';
 import messages from './messages';

@@ -1,7 +1,7 @@
 import React from 'react';
-import { fontSizes, media } from 'utils/styleUtils';
 // Styling
 import styled from 'styled-components';
+import { fontSizes, media } from 'utils/styleUtils';
 // Typing
 import { CategorizedDestinations, IPreferences } from '.';
 // Components

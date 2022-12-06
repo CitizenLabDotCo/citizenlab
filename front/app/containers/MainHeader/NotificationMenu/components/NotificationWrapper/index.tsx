@@ -1,6 +1,7 @@
 import React from 'react';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { darken } from 'polished';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 // hooks
 import useLocale from 'hooks/useLocale';
 import { trackEventByName } from 'utils/analytics';
@@ -9,7 +10,6 @@ import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 // utils
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import styled from 'styled-components';
 import tracks from '../../tracks';
 
 const Container = styled.button`

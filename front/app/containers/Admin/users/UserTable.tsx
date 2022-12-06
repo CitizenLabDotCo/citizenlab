@@ -1,8 +1,10 @@
 // Libraries
 import React, { PureComponent } from 'react';
+// Styles
+import styled from 'styled-components';
+import { includes, get, isArray } from 'lodash-es';
 // Components
 import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
-import { includes, get, isArray } from 'lodash-es';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
@@ -17,8 +19,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
 import Pagination from 'components/Pagination';
-// Styles
-import styled from 'styled-components';
 import UserTableRow from './UserTableRow';
 import messages from './messages';
 import tracks from './tracks';

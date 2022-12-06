@@ -1,8 +1,8 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import styled from 'styled-components';
 import EventsViewer from './EventsViewer';
 import messages from './messages';
 

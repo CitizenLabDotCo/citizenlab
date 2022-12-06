@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import styled from 'styled-components';
 import { stringify } from 'qs';
 // hooks
 import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
@@ -15,7 +16,6 @@ import Navigation from 'modules/commercial/insights/admin/components/Navigation'
 import TopBar, {
   topBarHeight,
 } from 'modules/commercial/insights/admin/components/TopBar';
-import styled from 'styled-components';
 import Categories from './Categories';
 import Inputs from './Inputs';
 import Network from './Network';

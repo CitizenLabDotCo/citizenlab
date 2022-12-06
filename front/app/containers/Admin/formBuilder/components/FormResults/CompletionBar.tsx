@@ -1,7 +1,7 @@
 import React from 'react';
+import { Multiloc } from 'typings';
 // components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
 import T from 'components/T';
 
 type CompletionBarProps = {

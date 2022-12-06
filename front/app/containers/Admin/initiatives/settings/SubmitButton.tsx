@@ -1,11 +1,11 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
-// styling
-import styled from 'styled-components';
 import messages from '../messages';
 
 const ButtonContainer = styled.div`

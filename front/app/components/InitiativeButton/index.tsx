@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
+import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';

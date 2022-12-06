@@ -1,8 +1,10 @@
 import React, { memo, useRef, useState, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Icon, Text } from '@citizenlab/cl2-component-library';
+// styling
+import styled, { useTheme } from 'styled-components';
 import { isEmpty, every } from 'lodash-es';
 import moment from 'moment';
+import { Icon, Text } from '@citizenlab/cl2-component-library';
 import useProject from 'hooks/useProject';
 // hooks
 import useResourceFiles from 'hooks/useResourceFiles';
@@ -18,8 +20,6 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-// styling
-import styled, { useTheme } from 'styled-components';
 import messages from '../messages';
 // other
 import checkTextOverflow from './checkTextOverflow';

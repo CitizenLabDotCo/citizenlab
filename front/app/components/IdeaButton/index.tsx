@@ -2,13 +2,15 @@ import Tippy from '@tippyjs/react';
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import { Icon } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 // typings
 import { LatLng } from 'leaflet';
 import { darken } from 'polished';
 import { stringify } from 'qs';
 // typings
 import { IParticipationContextType } from 'typings';
+import { Icon } from '@citizenlab/cl2-component-library';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -35,8 +37,6 @@ import { getInputTermMessage } from 'utils/i18n';
 import { fontSizes, colors } from 'utils/styleUtils';
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
-// styling
-import styled from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

@@ -1,14 +1,14 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// Styles
+import styled from 'styled-components';
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 // components
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Modal from 'components/UI/Modal';
-// Styles
-import styled from 'styled-components';
 // utils
 import DeletionDialog from './DeletionDialog';
 import messages from './messages';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { shallow } from 'enzyme';
+import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { FormQuestionRow, Props, State } from './FormQuestionRow';
 
 jest.mock('@citizenlab/cl2-component-library', () => ({

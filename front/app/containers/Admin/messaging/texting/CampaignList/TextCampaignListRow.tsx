@@ -1,6 +1,8 @@
 import React from 'react';
 // i18n
 import { FormattedTime, FormattedDate } from 'react-intl';
+// style
+import styled from 'styled-components';
 // typings
 import { ITextingCampaignData } from 'services/textingCampaigns';
 // utils
@@ -9,8 +11,6 @@ import { fontSizes } from 'utils/styleUtils';
 import { truncate } from 'utils/textUtils';
 // components
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
-// style
-import styled from 'styled-components';
 
 interface Props {
   campaign: ITextingCampaignData;

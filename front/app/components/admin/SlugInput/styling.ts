@@ -1,10 +1,10 @@
 // components
+// styling
+import styled from 'styled-components';
 import { Input } from '@citizenlab/cl2-component-library';
 import { fontSizes } from 'utils/styleUtils';
 import Warning from 'components/UI/Warning';
 import { SectionField } from 'components/admin/Section';
-// styling
-import styled from 'styled-components';
 
 export const StyledSectionField = styled(SectionField)`
   max-width: 100%;

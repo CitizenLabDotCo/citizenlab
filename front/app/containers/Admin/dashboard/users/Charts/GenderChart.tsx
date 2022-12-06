@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import { withTheme } from 'styled-components';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 // services
@@ -28,8 +30,6 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-// styling
-import { withTheme } from 'styled-components';
 import renderTooltip from './renderGenderTooltip';
 
 type State = {

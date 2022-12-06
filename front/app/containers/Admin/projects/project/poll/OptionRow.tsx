@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 // Typings
 import { Multiloc } from 'typings';
 // i18n
@@ -7,7 +8,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Row, TextCell } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledButton = styled(Button)`

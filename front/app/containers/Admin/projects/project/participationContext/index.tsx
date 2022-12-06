@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import { IOption } from '@citizenlab/cl2-component-library';
 import { isEqual } from 'lodash-es';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 // typings
 import { CLErrors } from 'typings';
+import { IOption } from '@citizenlab/cl2-component-library';
 // resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,

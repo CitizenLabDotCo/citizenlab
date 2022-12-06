@@ -1,5 +1,9 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
+// styling
+import styled from 'styled-components';
+// typings
+import { Multiloc } from 'typings';
 // components
 import {
   Box,
@@ -7,15 +11,11 @@ import {
   Text,
   StatusLabel,
 } from '@citizenlab/cl2-component-library';
-// typings
-import { Multiloc } from 'typings';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import { Status } from '../../utils/form';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

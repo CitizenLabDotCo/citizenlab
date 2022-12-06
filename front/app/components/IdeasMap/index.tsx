@@ -7,8 +7,10 @@ import React, {
   useMemo,
 } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 import { popup, LatLng, Map as LeafletMap } from 'leaflet';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 // typings
 import { Sort } from 'resources/GetIdeas';
 // hooks
@@ -45,8 +47,6 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import IdeaButton from 'components/IdeaButton';
 // components
 import Map, { Point } from 'components/Map';
-// styling
-import styled from 'styled-components';
 import IdeaMapCard from './IdeaMapCard';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 import messages from './messages';

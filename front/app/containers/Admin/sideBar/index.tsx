@@ -2,11 +2,13 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 import { lighten } from 'polished';
 import { InsertConfigurationOptions } from 'typings';
+// components
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // resources
 import GetIdeasCount, {
@@ -23,8 +25,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
-// style
-import styled from 'styled-components';
 import MenuItem from './MenuItem';
 import messages from './messages';
 

@@ -1,10 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import AssigneeSelector from '../components/AssigneeSelector';
 import { Section, SubSectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 // i18n
 import messages from './messages';
 

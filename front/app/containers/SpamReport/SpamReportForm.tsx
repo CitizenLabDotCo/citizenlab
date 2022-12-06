@@ -4,9 +4,11 @@ import { WrappedComponentProps } from 'react-intl';
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { Label, Radio } from '@citizenlab/cl2-component-library';
+// Style
+import styled from 'styled-components';
 // Typings
 import { CRUDParams } from 'typings';
+import { Label, Radio } from '@citizenlab/cl2-component-library';
 // Services
 import { Report } from 'services/spamReports';
 // i18n
@@ -18,8 +20,6 @@ import TextArea from 'components/UI/TextArea';
 // Components
 import { SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-// Style
-import styled from 'styled-components';
 import messages from './messages';
 
 const timeout = 300;

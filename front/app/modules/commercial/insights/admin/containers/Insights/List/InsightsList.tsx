@@ -1,5 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 import { darken } from 'polished';
 // services
 import {
@@ -13,8 +15,6 @@ import Button from 'components/UI/Button';
 import Divider from 'components/admin/Divider';
 // components
 import PageTitle from 'components/admin/PageTitle';
-// styles
-import styled from 'styled-components';
 import messages from '../messages';
 
 const StyledDescription = styled.p`

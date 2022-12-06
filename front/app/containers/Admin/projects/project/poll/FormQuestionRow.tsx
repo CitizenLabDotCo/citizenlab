@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-// Components
-import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 // Typings
 import { Multiloc, Locale } from 'typings';
+// Components
+import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';

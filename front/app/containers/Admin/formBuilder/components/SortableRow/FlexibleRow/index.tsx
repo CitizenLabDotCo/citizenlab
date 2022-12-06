@@ -1,10 +1,10 @@
 // Libraries
 import React, { ReactNode } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Box } from '@citizenlab/cl2-component-library';
-import { fontSizes, colors } from 'utils/styleUtils';
 // Style
 import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const timeout = 200;
 

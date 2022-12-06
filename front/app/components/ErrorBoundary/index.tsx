@@ -3,12 +3,12 @@
 import { withScope, showReportDialog } from '@sentry/react';
 import React, { Component } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
 import { fontSizes, colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

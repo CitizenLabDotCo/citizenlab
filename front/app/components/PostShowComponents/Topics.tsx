@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// styling
+import styled from 'styled-components';
 import { transparentize } from 'polished';
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -8,8 +10,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { fontSizes, isRtl } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

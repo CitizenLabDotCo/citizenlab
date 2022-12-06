@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import bowser from 'bowser';
 import { Multiloc } from 'typings';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'modules/commercial/custom_maps/hooks/useMapConfig';
 import {
@@ -15,7 +16,6 @@ import {
   colors,
   defaultCardStyle,
 } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 const Container = styled.div`
   padding: 25px;

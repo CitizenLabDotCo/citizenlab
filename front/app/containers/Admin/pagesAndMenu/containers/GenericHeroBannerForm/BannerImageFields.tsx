@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+import { useTheme } from 'styled-components';
+import { debounce } from 'lodash-es';
+import { UploadFile } from 'typings';
 import {
   Box,
   ColorPickerInput,
@@ -9,8 +12,6 @@ import {
   Label,
   Select,
 } from '@citizenlab/cl2-component-library';
-import { debounce } from 'lodash-es';
-import { UploadFile } from 'typings';
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -19,7 +20,6 @@ import { isNil, isNilOrError } from 'utils/helperUtils';
 import RangeInput from 'components/UI/RangeInput';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { useTheme } from 'styled-components';
 import HeaderImageDropzone from './HeaderImageDropzone';
 import messages from './messages';
 

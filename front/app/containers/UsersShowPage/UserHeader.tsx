@@ -1,12 +1,14 @@
 import React from 'react';
+// style
+import styled from 'styled-components';
+import { isEmpty, forOwn } from 'lodash-es';
+import moment from 'moment';
 import {
   useBreakpoint,
   Box,
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { isEmpty, forOwn } from 'lodash-es';
-import moment from 'moment';
 import useAuthUser from 'hooks/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUser from 'hooks/useUser';
@@ -19,8 +21,6 @@ import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Bio = styled.div`

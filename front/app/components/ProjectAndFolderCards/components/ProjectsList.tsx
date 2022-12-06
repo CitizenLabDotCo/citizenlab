@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { isEqual } from 'lodash-es';
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
-import { isEqual } from 'lodash-es';
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { TLayout } from '..';

@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
+// style
+import styled from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 // components
 import Author from 'components/Author';
-// style
-import styled from 'styled-components';
 import AdminBadge from './AdminBadge';
 
 const Container = styled.div`

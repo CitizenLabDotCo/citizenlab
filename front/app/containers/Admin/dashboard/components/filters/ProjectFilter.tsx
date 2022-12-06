@@ -1,8 +1,9 @@
 import React from 'react';
-// components
-import { Box, Select } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 // typings
 import { IOption, FormatMessage } from 'typings';
+// components
+import { Box, Select } from '@citizenlab/cl2-component-library';
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // i18n
@@ -11,7 +12,6 @@ import { IProjectData, PublicationStatus } from 'services/projects';
 import { useIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledSelect = styled(Select)<{ padding?: string }>`

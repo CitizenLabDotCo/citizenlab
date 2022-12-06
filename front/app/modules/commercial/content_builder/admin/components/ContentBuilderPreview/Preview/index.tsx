@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 // types
 import { Multiloc } from 'typings';
+import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 // hooks
 import useContentBuilderLayout from '../../../../hooks/useContentBuilder';
 import useLocale from 'hooks/useLocale';

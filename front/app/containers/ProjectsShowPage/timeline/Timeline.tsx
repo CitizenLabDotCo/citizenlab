@@ -1,8 +1,10 @@
 import React, { useCallback, FormEvent, KeyboardEvent, useRef } from 'react';
-// components
-import { Box } from '@citizenlab/cl2-component-library';
+// style
+import styled, { css } from 'styled-components';
 import moment from 'moment';
 import { darken, rgba } from 'polished';
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 // hooks
 import usePhases from 'hooks/usePhases';
@@ -19,8 +21,6 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-// style
-import styled, { css } from 'styled-components';
 import PhaseDescriptions from './PhaseDescriptions';
 // tracking
 import tracks from './tracks';

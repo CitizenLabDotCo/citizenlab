@@ -2,6 +2,8 @@
 import React, { PureComponent } from 'react';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
+// Style
+import styled from 'styled-components';
 import { find, map } from 'lodash-es';
 import { Subscription, combineLatest } from 'rxjs';
 // Typings
@@ -22,8 +24,6 @@ import { getLocalized } from 'utils/i18n';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import { List, Row } from 'components/admin/ResourceList';
-// Style
-import styled from 'styled-components';
 import GroupAvatar from './GroupAvatar';
 import messages from './messages';
 

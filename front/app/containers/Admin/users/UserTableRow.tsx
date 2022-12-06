@@ -2,10 +2,12 @@
 import Tippy from '@tippyjs/react';
 import React, { PureComponent, FormEvent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// Components
-import { Tr, Td, Toggle, Icon } from '@citizenlab/cl2-component-library';
+// Styling
+import styled from 'styled-components';
 import moment from 'moment';
 import { lighten } from 'polished';
+// Components
+import { Tr, Td, Toggle, Icon } from '@citizenlab/cl2-component-library';
 // Typings
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isAdmin } from 'services/permissions/roles';
@@ -21,8 +23,6 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
-// Styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledCheckbox = styled(Checkbox)`

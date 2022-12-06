@@ -1,4 +1,6 @@
 import React from 'react';
+// styling
+import styled from 'styled-components';
 // components
 import { Tr, Td } from '@citizenlab/cl2-component-library';
 // typings
@@ -6,8 +8,6 @@ import { RepresentativenessRow } from '../../../hooks/createRefDataSubscription'
 // utils
 import { formatPercentage } from '../utils';
 import { colors } from 'utils/styleUtils';
-// styling
-import styled from 'styled-components';
 
 const AbsoluteValue = styled.span`
   color: ${colors.textSecondary};

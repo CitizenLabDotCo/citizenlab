@@ -1,9 +1,9 @@
 import React from 'react';
 // libraries
 import { adopt } from 'react-adopt';
-import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
 // typings
 import { Locale } from 'typings';
+import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';

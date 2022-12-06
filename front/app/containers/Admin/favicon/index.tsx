@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-// components
-import { Label } from '@citizenlab/cl2-component-library';
+// styling
+import styled from 'styled-components';
 // typings
 import { CLError, UploadFile } from 'typings';
+// components
+import { Label } from '@citizenlab/cl2-component-library';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -22,8 +24,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-// styling
-import styled from 'styled-components';
 // intl
 import messages from './messages';
 

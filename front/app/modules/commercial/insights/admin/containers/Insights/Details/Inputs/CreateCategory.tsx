@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Input, Box } from '@citizenlab/cl2-component-library';
+// styles
+import styled from 'styled-components';
 // typings
 import { CLErrors } from 'typings';
+// components
+import { Input, Box } from '@citizenlab/cl2-component-library';
 // services
 import {
   addInsightsCategory,
@@ -17,8 +19,6 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { SectionField } from 'components/admin/Section';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
-// styles
-import styled from 'styled-components';
 import messages from '../../messages';
 
 type CreateCategoryProps = {

@@ -1,9 +1,9 @@
 import React from 'react';
+// styles
+import styled from 'styled-components';
 import { stylingConsts, media } from 'utils/styleUtils';
 // components
 import TopBar, { topBarHeight } from '../../../components/TopBar';
-// styles
-import styled from 'styled-components';
 import Categories from './Categories';
 import InputsTable from './InputsTable';
 

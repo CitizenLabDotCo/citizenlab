@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div<{ flatTopBorder: boolean }>`
   background: #fff;

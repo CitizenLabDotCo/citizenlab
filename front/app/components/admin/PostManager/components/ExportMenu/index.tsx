@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
+// style
+import styled from 'styled-components';
 // components
 import { Dropdown } from '@citizenlab/cl2-component-library';
 // typings
 import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
-// style
-import styled from 'styled-components';
 import { ManagerType } from '../../';
 import messages from '../../messages';
 import ExportButtons from './ExportButtons';

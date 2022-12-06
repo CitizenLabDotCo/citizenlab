@@ -1,5 +1,7 @@
 // Libraries
 import React, { memo } from 'react';
+// Styling
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { MembershipType } from 'services/groups';
 // i18n
@@ -10,8 +12,6 @@ import T from 'components/T';
 // Components
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
-// Styling
-import styled from 'styled-components';
 import messages from './messages';
 
 const TitleWrapper = styled.div`

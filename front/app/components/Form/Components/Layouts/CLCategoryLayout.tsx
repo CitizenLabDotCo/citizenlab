@@ -1,5 +1,6 @@
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import React, { memo } from 'react';
+import styled from 'styled-components';
 import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import {
   Categorization,
@@ -9,7 +10,6 @@ import {
 } from '@jsonforms/core';
 import { FormElement } from 'components/IdeaForm';
 import { FormSection } from 'components/UI/FormComponents';
-import styled from 'styled-components';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;

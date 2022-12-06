@@ -1,5 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styling
+import styled from 'styled-components';
 // hooks
 import useEvents from 'hooks/useEvents';
 // i18n
@@ -12,8 +14,6 @@ import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import messages from 'containers/EventsPage/messages';
 import EventCard from 'components/EventCard';
 import VerticalCenterer from 'components/VerticalCenterer';
-// styling
-import styled from 'styled-components';
 // components
 import TopBar from './TopBar';
 

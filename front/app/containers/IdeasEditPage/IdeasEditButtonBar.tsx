@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+// style
+import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 // utils
@@ -7,8 +9,6 @@ import ButtonBar from 'components/ButtonBar';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const ButtonBarInner = styled.div`

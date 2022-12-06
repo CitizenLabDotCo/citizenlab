@@ -1,5 +1,5 @@
-import { fontSizes, isRtl, colors } from 'utils/styleUtils';
 import { createGlobalStyle } from 'styled-components';
+import { fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 const GlobalStyle = createGlobalStyle`
   html {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { Box } from '@citizenlab/cl2-component-library';
 import { forOwn, size, trim } from 'lodash-es';
 import { Multiloc } from 'typings';
+import { Box } from '@citizenlab/cl2-component-library';
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import { injectIntl } from 'utils/cl-intl';

@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { isEmptyMultiloc } from 'utils/helperUtils';
 import { media } from 'utils/styleUtils';
@@ -6,7 +7,6 @@ import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 import { StyledQuillEditedContent } from 'components/LandingPages/citizen/InfoSection';
 import T from 'components/T';
-import styled from 'styled-components';
 
 const CustomSectionContentContainer = styled(ContentContainer)`
   width: 100%;

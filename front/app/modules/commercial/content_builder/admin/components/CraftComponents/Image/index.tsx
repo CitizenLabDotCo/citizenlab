@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UploadFile } from 'typings';
 // components
 import {
   Box,
@@ -9,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 // craft
 import { useEditor, useNode } from '@craftjs/core';
-import { UploadFile } from 'typings';
 // image upload
 import { addContentBuilderImage } from 'modules/commercial/content_builder/services/contentBuilderImages';
 // intl

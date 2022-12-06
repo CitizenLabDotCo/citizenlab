@@ -1,5 +1,7 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
@@ -14,8 +16,6 @@ import { fontSizes } from 'utils/styleUtils';
 import FormattedAnchor from 'components/FormattedAnchor';
 // components
 import Button from 'components/UI/Button';
-// styles
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

@@ -1,9 +1,11 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-// Components
-import { Icon } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { get } from 'lodash-es';
 import { darken } from 'polished';
+// Components
+import { Icon } from '@citizenlab/cl2-component-library';
 // resources & typings
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -22,8 +24,6 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import CommentBody from 'components/PostShowComponents/Comments/CommentBody';
 import CommentHeader from 'components/PostShowComponents/Comments/CommentHeader';
 import T from 'components/T';
-// style
-import styled from 'styled-components';
 // intl
 import messages from './messages';
 

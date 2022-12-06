@@ -1,4 +1,6 @@
 import React from 'react';
+// styles
+import styled from 'styled-components';
 // types
 import { IParticipationContextType } from 'typings';
 import { IIdeaData } from 'services/ideas';
@@ -6,8 +8,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import AssignBudgetControl from 'components/AssignBudgetControl';
-// styles
-import styled from 'styled-components';
 import CommentCount from './CommentCount';
 
 const Footer = styled.footer`

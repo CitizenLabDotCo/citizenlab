@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { WrappedComponentProps } from 'react-intl';
+// Styling
+import styled from 'styled-components';
 import { get, isEmpty } from 'lodash-es';
 // Typings
 import { Multiloc, MultilocFormValues } from 'typings';
@@ -27,8 +29,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
 import T from 'components/T';
-// Styling
-import styled from 'styled-components';
 import messages from '../../messages';
 // components
 import StatusChangeForm from './StatusChangeForm';

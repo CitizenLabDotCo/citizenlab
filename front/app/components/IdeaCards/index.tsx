@@ -1,5 +1,7 @@
 import React, { lazy, Suspense, memo } from 'react';
 import { MessageDescriptor } from 'react-intl';
+// styling
+import styled from 'styled-components';
 import { IParticipationContextType } from 'typings';
 import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 // typings
@@ -10,8 +12,6 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-// styling
-import styled from 'styled-components';
 
 // components
 const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));

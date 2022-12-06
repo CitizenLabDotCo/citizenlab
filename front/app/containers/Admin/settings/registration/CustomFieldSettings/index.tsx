@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { isEqual, clone } from 'lodash-es';
 import {
   Toggle,
   Badge,
   IconTooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { isEqual, clone } from 'lodash-es';
 import useUserCustomFields from 'hooks/useUserCustomFields';
 // services
 import {
@@ -36,7 +37,6 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const Buttons = styled.div`

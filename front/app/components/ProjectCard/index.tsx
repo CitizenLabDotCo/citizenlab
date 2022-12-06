@@ -1,12 +1,14 @@
 import Observer from '@researchgate/react-intersection-observer';
 import React, { memo, useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+// style
+import styled, { useTheme } from 'styled-components';
 import bowser from 'bowser';
 import { isEmpty, get, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import { rgba, darken } from 'polished';
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'hooks/useAuthUser';
 import usePhase from 'hooks/usePhase';
 import usePhases from 'hooks/usePhases';
@@ -38,8 +40,6 @@ import AvatarBubbles from 'components/AvatarBubbles';
 // i18n
 import T from 'components/T';
 import Image from 'components/UI/Image';
-// style
-import styled, { useTheme } from 'styled-components';
 import messages from './messages';
 import tracks from './tracks';
 

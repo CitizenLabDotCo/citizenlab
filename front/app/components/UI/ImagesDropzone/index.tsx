@@ -2,11 +2,13 @@ import React, { PureComponent } from 'react';
 import Dropzone, { Accept } from 'react-dropzone';
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 // typings
 import { UploadFile } from 'typings';
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl } from 'utils/cl-intl';
 // utils
@@ -15,8 +17,6 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
 import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
 import Error from 'components/UI/Error';
-// style
-import styled from 'styled-components';
 import messages from './messages';
 
 const Container = styled.div`

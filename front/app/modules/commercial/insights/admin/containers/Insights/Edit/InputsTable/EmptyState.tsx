@@ -1,13 +1,13 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+// styles
+import styled from 'styled-components';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 import { injectIntl } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { fontSizes, colors } from 'utils/styleUtils';
-// styles
-import styled from 'styled-components';
 // intl
 import messages from '../../messages';
 

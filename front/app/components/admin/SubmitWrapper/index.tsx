@@ -1,5 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
+import styled, { css } from 'styled-components';
 import { omit } from 'lodash-es';
 // typings
 import { Omit } from 'typings';
@@ -11,7 +12,6 @@ import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
 } from 'components/UI/Button';
-import styled, { css } from 'styled-components';
 
 export type ISubmitState =
   | 'disabled'

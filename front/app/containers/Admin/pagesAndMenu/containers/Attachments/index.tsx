@@ -2,6 +2,9 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
+// typings
+import { UploadFile } from 'typings';
+import { mixed, object } from 'yup';
 // components
 import {
   Box,
@@ -11,9 +14,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
-// typings
-import { UploadFile } from 'typings';
-import { mixed, object } from 'yup';
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
 import useLocalize from 'hooks/useLocalize';

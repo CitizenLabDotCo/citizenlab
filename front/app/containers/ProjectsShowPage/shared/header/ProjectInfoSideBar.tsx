@@ -5,10 +5,12 @@ import React, {
   useState,
   FormEvent,
 } from 'react';
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { isNumber } from 'lodash-es';
 import moment from 'moment';
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'hooks/useAuthUser';
 import useEvents from 'hooks/useEvents';
 import usePhases from 'hooks/usePhases';
@@ -29,8 +31,6 @@ import { getInputTermMessage } from 'utils/i18n';
 import { scrollToElement } from 'utils/scroll';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import messages from 'containers/ProjectsShowPage/messages';
-// style
-import styled from 'styled-components';
 import ProjectActionBar from './ProjectActionBar';
 import ProjectActionButtons from './ProjectActionButtons';
 import ProjectSharingModal from './ProjectSharingModal';

@@ -1,5 +1,6 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { Box } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -11,7 +12,6 @@ import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { isString } from 'utils/helperUtils';
 import { FormLabel } from 'components/UI/FormComponents';
 import TextArea from 'components/UI/TextArea';
-import styled from 'styled-components';
 import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 

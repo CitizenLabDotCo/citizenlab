@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+import { Subscription } from 'rxjs';
 // Components
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { Subscription } from 'rxjs';
 // Data loading
 import GetGeotaggedIdeas, {
   GetGeotaggedIdeasChildProps,
@@ -19,7 +20,6 @@ import { colors } from 'utils/styleUtils';
 import Map from 'components/Map';
 import Warning from 'components/UI/Warning';
 import ServerError from 'components/admin/ServerError';
-import styled from 'styled-components';
 import IdeaPane from './IdeaPane';
 import messages from './messages';
 import tracks from './tracks';

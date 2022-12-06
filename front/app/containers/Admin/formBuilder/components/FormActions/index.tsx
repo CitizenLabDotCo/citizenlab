@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 // hooks
 import { useParams } from 'react-router-dom';
-// components
-import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import { Multiloc } from 'typings';
+// components
+import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 // services
 import { deleteFormResults } from 'services/formCustomFields';

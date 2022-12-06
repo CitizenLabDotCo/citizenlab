@@ -1,9 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 const StyledLink = styled(Link)`
   color: ${colors.textSecondary};

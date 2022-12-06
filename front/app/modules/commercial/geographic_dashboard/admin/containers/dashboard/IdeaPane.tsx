@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+// styling
+import styled from 'styled-components';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -11,8 +13,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import Author from 'components/Author';
 // intl
 import T from 'components/T';
-// styling
-import styled from 'styled-components';
 import tracks from './tracks';
 
 const Container = styled.div`

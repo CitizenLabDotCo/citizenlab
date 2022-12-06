@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
+import moment, { Moment } from 'moment';
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import moment, { Moment } from 'moment';
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // hooks

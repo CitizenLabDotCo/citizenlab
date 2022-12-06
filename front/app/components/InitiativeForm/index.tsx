@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import scrollToComponent from 'react-scroll-to-component';
-import { Input, LocationInput } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import bowser from 'bowser';
 import { get } from 'lodash-es';
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
+import { Input, LocationInput } from '@citizenlab/cl2-component-library';
 import { ITopicData } from 'services/topics';
 import { MessageDescriptor, injectIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -23,7 +24,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import QuillEditor from 'components/UI/QuillEditor';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { SectionField } from 'components/admin/Section';
-import styled from 'styled-components';
 import { FormSubmitFooter } from './SubmitFooter';
 // intl
 import messages from './messages';

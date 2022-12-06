@@ -1,6 +1,7 @@
 // libraries
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import moment from 'moment';
 // hooks
 import useEvents from 'hooks/useEvents';
@@ -14,7 +15,6 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const ListWrapper = styled.div`

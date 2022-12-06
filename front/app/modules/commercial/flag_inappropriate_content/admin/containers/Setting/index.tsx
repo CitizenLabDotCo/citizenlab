@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 import tracks from '../../../tracks';
 import messages from './messages';
 

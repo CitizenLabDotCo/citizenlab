@@ -1,4 +1,6 @@
 import React, { PureComponent, MouseEvent, KeyboardEvent } from 'react';
+// style
+import styled from 'styled-components';
 import { isString, get, isEmpty, includes } from 'lodash-es';
 import {
   BehaviorSubject,
@@ -32,8 +34,6 @@ import { openVerificationModal } from 'events/verificationModal';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { isRtl } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 // components
 import ScreenReaderContent from './ScreenReaderContent';
 import VoteButton from './VoteButton';

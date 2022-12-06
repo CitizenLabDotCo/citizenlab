@@ -1,5 +1,6 @@
 // Libraries
 import React from 'react';
+import styled from 'styled-components';
 // Services & Resources
 import { IPollQuestion } from 'services/pollQuestions';
 // i18n
@@ -8,7 +9,6 @@ import T from 'components/T';
 // Components
 import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 import WrongOptionsIndicator from './WrongOptionsIndicator';
 import messages from './messages';
 

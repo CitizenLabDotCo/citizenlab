@@ -3,16 +3,16 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+// style
+import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import eventEmitter from 'utils/eventEmitter';
 import { media, colors } from 'utils/styleUtils';
-// style
-import styled from 'styled-components';
 // Translation
 import messages from './messages';
 

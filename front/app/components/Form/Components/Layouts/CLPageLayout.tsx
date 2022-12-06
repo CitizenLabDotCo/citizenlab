@@ -1,5 +1,7 @@
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import React, { memo, useState, useEffect, useContext, useRef } from 'react';
+import styled, { useTheme } from 'styled-components';
+import Ajv from 'ajv';
 // Components
 import {
   Box,
@@ -9,7 +11,6 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
-import Ajv from 'ajv';
 // Context
 import { FormContext } from 'components/Form/contexts';
 // Utils
@@ -25,7 +26,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultStyles } from 'utils/styleUtils';
 import { FormSection } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import styled, { useTheme } from 'styled-components';
 import messages from '../../messages';
 
 const StyledFormSection = styled(FormSection)`

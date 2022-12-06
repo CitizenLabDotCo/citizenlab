@@ -1,4 +1,5 @@
 import React from 'react';
+import styled, { useTheme } from 'styled-components';
 import { UploadFile } from 'typings';
 // types
 import { ICustomPageAttributes } from 'services/customPages';
@@ -8,7 +9,6 @@ import {
 } from 'services/homepageSettings';
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import styled, { useTheme } from 'styled-components';
 import { PreviewDevice } from './BannerImageFields';
 
 const HeaderImageOverlay = styled.div<{

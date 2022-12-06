@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { addIdeaStatus } from 'services/ideaStatuses';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -8,7 +9,6 @@ import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
 import messages from './messages';
 
 const StyledSectionTitle = styled(SectionTitle)`

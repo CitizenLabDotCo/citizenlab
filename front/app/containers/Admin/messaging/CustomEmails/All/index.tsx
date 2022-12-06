@@ -1,5 +1,6 @@
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
 import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/campaigns';
@@ -10,7 +11,6 @@ import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import Pagination from 'components/admin/Pagination';
 import { List } from 'components/admin/ResourceList';
-import styled from 'styled-components';
 import messages from '../../messages';
 import DraftCampaignRow from './DraftCampaignRow';
 import SentCampaignRow from './SentCampaignRow';
