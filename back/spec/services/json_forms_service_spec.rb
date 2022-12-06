@@ -352,7 +352,7 @@ describe JsonFormsService do
           receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
         )
 
-        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil)[:ui_schema_multiloc]
+        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'option')[:ui_schema_multiloc]
         expect(ui_schema.dig('en', :elements, 0, :elements, 0, :options, :description)).to eq 'Description with text images'
       end
 
@@ -365,7 +365,7 @@ describe JsonFormsService do
           receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
         )
 
-        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil)[:ui_schema_multiloc]
+        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'question')[:ui_schema_multiloc]
         expect(ui_schema.dig('en', :elements, 0, :options, :description)).to eq 'Description with text images'
       end
     end
