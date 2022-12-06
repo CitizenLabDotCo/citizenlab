@@ -76,7 +76,7 @@ const ContentBuilderToolbox = ({
         id="e2e-draggable-white-space"
         component={<WhiteSpace size="small" />}
         icon="layout-white-space"
-        label={formatMessage(WhiteSpace.craft?.custom.title)}
+        label={formatMessage(WhiteSpace.craft.custom.title)}
       />
       <SectionTitle>
         <FormattedMessage {...messages.content} />
