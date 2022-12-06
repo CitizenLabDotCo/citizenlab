@@ -60,7 +60,7 @@ const BannerImageField = ({
   onOverlayColorChange,
   onOverlayOpacityChange,
 }: Props & WrappedComponentProps) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null

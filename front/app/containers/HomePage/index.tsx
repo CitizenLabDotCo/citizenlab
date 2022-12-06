@@ -25,7 +25,7 @@ const HomePage = () => {
     <>
       <Container id="e2e-landing-page">
         {!isNilOrError(authUser) ? (
-          <SignedInHeader homepageSettings={homepageSettings} />
+          <SignedInHeader />
         ) : (
           <Fragment name="signed-out-header">
             <SignedOutHeader />

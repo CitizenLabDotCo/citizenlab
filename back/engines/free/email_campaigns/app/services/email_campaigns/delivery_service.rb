@@ -35,6 +35,7 @@ module EmailCampaigns
       Campaigns::OfficialFeedbackOnVotedInitiative,
       Campaigns::OfficialFeedbackOnYourIdea,
       Campaigns::OfficialFeedbackOnYourInitiative,
+      Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
@@ -166,4 +167,3 @@ end
 
 EmailCampaigns::DeliveryService.prepend_if_ee('FlagInappropriateContent::Patches::EmailCampaigns::DeliveryService')
 EmailCampaigns::DeliveryService.prepend_if_ee('IdeaAssignment::Patches::EmailCampaigns::DeliveryService')
-EmailCampaigns::DeliveryService.prepend_if_ee('ProjectFolders::Patches::EmailCampaigns::DeliveryService')

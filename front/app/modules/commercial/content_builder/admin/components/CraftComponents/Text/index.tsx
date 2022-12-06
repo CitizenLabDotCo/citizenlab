@@ -12,7 +12,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 const Text = ({ text }) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   return (
     <Box id="e2e-text-box" minHeight="26px">

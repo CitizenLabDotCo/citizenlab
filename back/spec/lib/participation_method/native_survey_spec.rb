@@ -21,18 +21,24 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   end
 
   describe '#create_default_form!' do
-    it 'persists a default form for the participation context' do
+    it 'persists a default form with a page for the participation context' do
       expect(participation_context.custom_form).to be_nil
 
       participation_method.create_default_form!
 
-      expect(participation_context.custom_form.custom_fields.size).to eq 1
-      field = participation_context.custom_form.custom_fields.first
+      expect(participation_context.custom_form.custom_fields.size).to eq 2
+
+      question_page = participation_context.custom_form.custom_fields[0]
+      expect(question_page.title_multiloc).to eq({})
+      expect(question_page.description_multiloc).to eq({})
+
+      field = participation_context.custom_form.custom_fields[1]
       expect(field.title_multiloc).to match({
         'en' => 'Default question',
         'fr-FR' => 'Question par défaut',
         'nl-NL' => 'Standaardvraag'
       })
+      expect(field.description_multiloc).to eq({})
       options = field.options
       expect(options.size).to eq 2
       expect(options[0].key).to eq 'option1'
@@ -141,6 +147,18 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe '#extra_fields_category_translation_key' do
     it 'returns nil' do
       expect(participation_method.extra_fields_category_translation_key).to be_nil
+    end
+  end
+
+  describe '#supports_toxicity_detection?' do
+    it 'returns false' do
+      expect(participation_method.supports_toxicity_detection?).to be false
+    end
+  end
+
+  describe '#include_data_in_email?' do
+    it 'returns false' do
+      expect(participation_method.include_data_in_email?).to be false
     end
   end
 

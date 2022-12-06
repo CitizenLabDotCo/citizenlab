@@ -79,6 +79,10 @@ module XlsxExport
       # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
+    def visit_page(field)
+      # The field does not capture data, so there is no value.
+    end
+
     private
 
     attr_reader :model, :option_index

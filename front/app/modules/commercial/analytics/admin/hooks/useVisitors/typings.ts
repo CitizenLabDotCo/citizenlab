@@ -1,10 +1,4 @@
-import {
-  ProjectId,
-  Dates,
-  Resolution,
-  Stat,
-  GetTimeSeriesResponse,
-} from '../../typings';
+import { ProjectId, Dates, Resolution, Stat } from '../../typings';
 
 export type QueryParameters = ProjectId & Dates & Resolution;
 
@@ -23,9 +17,10 @@ interface TotalsRow extends BaseRow {
   avg_pages_visited: string | null;
 }
 
-type Prefix = 'dimension_date_last_action';
-export type TimeSeriesResponse = GetTimeSeriesResponse<Prefix, BaseRow>;
-export type TimeSeriesResponseRow = TimeSeriesResponse[number];
+export type TimeSeriesResponse = TimeSeriesResponseRow[];
+export interface TimeSeriesResponseRow extends BaseRow {
+  first_dimension_date_last_action_date: string;
+}
 
 // Hook return value
 export interface TimeSeriesRow {

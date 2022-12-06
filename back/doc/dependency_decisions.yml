@@ -179,9 +179,3 @@
       but merely executing it in its distributed form as a rake task.
     :versions: []
     :when: 2022-06-17 14:33:30.806575129 Z
-- - :approve
-  - customizable_navbar
-  - :who: 
-    :why: 
-    :versions: []
-    :when: 2022-10-11 20:41:20.553607345 Z

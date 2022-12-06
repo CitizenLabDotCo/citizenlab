@@ -25,6 +25,13 @@ class WebApi::V1::FilesController < ApplicationController
       file_relationship: :project_files,
       container_id: :project_id
     },
+    'ProjectFolder' => {
+      container_class: ProjectFolders::Folder,
+      file_class: ProjectFolders::File,
+      policy_scope_class: ProjectFolders::FilePolicy::Scope,
+      file_relationship: :files,
+      container_id: :project_folder_id
+    },
     'Event' => {
       container_class: Event,
       file_class: EventFile,
@@ -82,25 +89,6 @@ class WebApi::V1::FilesController < ApplicationController
     else
       head :internal_server_error
     end
-  end
-
-  # TODO: move this to a service?
-  #
-  # @param [String] container_type
-  # @param [Class] container_class
-  # @param [Class] file_class
-  # @param [Class] policy_scope_class
-  # @param [Symbol] file_relationship
-  # @param [Symbol] container_id
-  # @return [void]
-  def self.register_container(container_type, container_class, file_class, policy_scope_class, file_relationship, container_id)
-    CONSTANTIZER[container_type] = {
-      container_class: container_class,
-      file_class: file_class,
-      policy_scope_class: policy_scope_class,
-      file_relationship: file_relationship,
-      container_id: container_id
-    }
   end
 
   private

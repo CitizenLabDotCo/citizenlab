@@ -45,7 +45,7 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
   <UsersShowPage__Container
     id="e2e-usersshowpage"
   >
-    <WrappedUserHeader
+    <UserHeader
       userSlug="test-citizenlab"
     />
     <WrappedUserNavbar
@@ -118,7 +118,7 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
   <UsersShowPage__Container
     id="e2e-usersshowpage"
   >
-    <WrappedUserHeader
+    <UserHeader
       userSlug="test-citizenlab"
     />
     <WrappedUserNavbar

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_18_094022) do
+ActiveRecord::Schema.define(version: 2022_12_02_110054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1743,6 +1743,14 @@ ActiveRecord::Schema.define(version: 2022_11_18_094022) do
       users.invite_status
      FROM users;
   SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.created_at)::date AS dimension_date_created_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
+  SQL
   create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
       WITH last_project_statuses AS (
            SELECT DISTINCT ON (activities.item_id) activities.item_id AS project_id,
@@ -1782,20 +1790,24 @@ ActiveRecord::Schema.define(version: 2022_11_18_094022) do
               finished_statuses_for_continuous_projects.status,
               finished_statuses_for_continuous_projects."timestamp"
              FROM finished_statuses_for_continuous_projects
+          ), all_finished_projects AS (
+           SELECT DISTINCT afp_1.project_id
+             FROM ( SELECT finished_statuses_for_timeline_projects.project_id
+                     FROM finished_statuses_for_timeline_projects
+                  UNION
+                   SELECT finished_statuses_for_continuous_projects.project_id
+                     FROM finished_statuses_for_continuous_projects) afp_1
           )
-   SELECT project_statuses.project_id AS dimension_project_id,
-      project_statuses.status,
-      project_statuses."timestamp",
-      (project_statuses."timestamp")::date AS dimension_date_id
-     FROM project_statuses
-    ORDER BY project_statuses."timestamp" DESC;
-  SQL
-  create_view "analytics_fact_events", sql_definition: <<-SQL
-      SELECT events.id,
-      events.project_id AS dimension_project_id,
-      (events.created_at)::date AS dimension_date_created_id,
-      (events.start_at)::date AS dimension_date_start_id,
-      (events.end_at)::date AS dimension_date_end_id
-     FROM events;
+   SELECT ps.project_id AS dimension_project_id,
+      ps.status,
+          CASE
+              WHEN (afp.project_id IS NULL) THEN false
+              ELSE true
+          END AS finished,
+      ps."timestamp",
+      (ps."timestamp")::date AS dimension_date_id
+     FROM (project_statuses ps
+       LEFT JOIN all_finished_projects afp ON ((afp.project_id = ps.project_id)))
+    ORDER BY ps."timestamp" DESC;
   SQL
 end

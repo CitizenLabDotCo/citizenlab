@@ -45,16 +45,16 @@ const LinearScaleControl = ({
         flexDirection="row"
         gap="16px"
         overflow="visible"
-        flexWrap="wrap"
+        flexWrap="nowrap"
+        alignItems="flex-end"
+        mb="4px"
       >
         {uischema.options?.minimum_label && (
-          <Box
-            pt={isSmallerThanXlPhone ? '0px' : '28px'}
-            mb={'0px'}
-            alignSelf="center"
-          >
+          <Box mb={isSmallerThanXlPhone ? '12px' : '0'}>
             <Text
               mr="8px"
+              mt="0"
+              mb="0"
               color="textSecondary"
               textAlign={isSmallerThanXlPhone ? 'left' : 'right'}
             >
@@ -75,7 +75,7 @@ const LinearScaleControl = ({
                 style={{ lineHeight: '0px' }}
               >
                 <Box
-                  mt={isSmallerThanXlPhone ? '0px' : '16px'}
+                  mt="0"
                   mr="4px"
                   ml={isSmallerThanXlPhone ? '0px' : '5px'}
                   minHeight="24px"
@@ -95,7 +95,7 @@ const LinearScaleControl = ({
             );
           })}
         </>
-        <Box pt={isSmallerThanXlPhone ? '4px' : '28px'} alignSelf="center">
+        <Box>
           <Text mr="8px" mt="0" mb="0" color="textSecondary">
             {uischema.options?.maximum_label}
           </Text>
