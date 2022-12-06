@@ -40,12 +40,15 @@ const AnalyticsChartWidget = ({
   };
 
   const statChartProps = {
-    startAt: startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss'),
-    // endAt: startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss'), // TODO: AgeChart doesn't like this being undefined
-    endAt: null,
+    startAt: startAtMoment
+      ? startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss')
+      : null,
+    endAt: endAtMoment ? endAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss') : null,
     className: 'fullWidth',
     currentGroupFilter: undefined,
     currentGroupFilterLabel: undefined,
+    title,
+    showExportMenu: false,
   };
 
   let chart = <></>;
