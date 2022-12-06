@@ -42,9 +42,10 @@ import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
+import representativenessConfiguration from './commercial/representativeness';
+import reportBuilderConfiguration from './commercial/report_builder';
 
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
-import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
 declare var CL_CONFIG: any;
@@ -205,5 +206,9 @@ export default loadModules([
   {
     configuration: impactTrackingConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/impact_tracking'],
+  },
+  {
+    configuration: reportBuilderConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/report_builder'],
   },
 ]);
