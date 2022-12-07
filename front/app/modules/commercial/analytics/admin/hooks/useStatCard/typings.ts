@@ -30,6 +30,7 @@ export type StatCardProps = ProjectId & Dates & Resolution;
 export interface StatCardTemplateProps extends StatCardProps {
   config: StatCardConfig;
   showExportMenu?: boolean;
+  alignItems?: 'stretch' | 'center';
 }
 
 export interface StatCardQueryParameters extends StatCardProps {
