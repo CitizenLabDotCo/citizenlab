@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Zoumaachen",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Closed",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Yes, delete survey results",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Inhalt",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Standardastellung",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Läschen",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Läschen",
