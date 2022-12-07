@@ -2,6 +2,8 @@
 
 ## Next
 
+## 2022-12-06
+
 ### Changed
 
 - [CL-2168] Removed support for many old image formats, and added support for webp images. The supported formats are now jpg, jpeg, gif, png, webp, svg.
