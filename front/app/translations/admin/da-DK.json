@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Luk",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Lukket",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Ja, slet undersøgelsesresultater",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Indhold",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Standard",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Slet",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Slet",
