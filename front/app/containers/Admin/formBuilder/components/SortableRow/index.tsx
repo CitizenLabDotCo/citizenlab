@@ -59,7 +59,6 @@ export const SortableRow: FC<SortableRowProps> = ({
     void,
     { handlerId: Identifier | null }
   >({
-    // accept: 'ROW',
     accept,
     collect(monitor) {
       return {
@@ -113,7 +112,6 @@ export const SortableRow: FC<SortableRowProps> = ({
   });
 
   const [{ isDragging }, drag] = useDrag({
-    // item: { type: 'ROW', id, index } as DragObjectWithType,
     item: { type: dragType, id, index, pageIndex } as DragObjectWithType,
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),

@@ -74,15 +74,15 @@ const FormFields = ({
     return null;
   }
 
-  const nestedData: PageStructure[] = [];
+  const nestedPageData: PageStructure[] = [];
   formCustomFields.forEach((field) => {
     if (field.input_type === 'page') {
-      nestedData.push({
+      nestedPageData.push({
         page: field,
         questions: [],
       });
     } else {
-      const lastPage = nestedData[nestedData.length - 1];
+      const lastPage = nestedPageData[nestedPageData.length - 1];
       lastPage.questions.push({
         ...field,
       });
@@ -92,8 +92,8 @@ const FormFields = ({
   return (
     <DndProvider backend={HTML5Backend}>
       <Box py="32px" height="100%" overflowY="auto" overflowX="hidden">
-        <List key={nestedData.length}>
-          {nestedData.map((pageGrouping, index) => {
+        <List key={nestedPageData.length}>
+          {nestedPageData.map((pageGrouping, index) => {
             const pageId = pageGrouping.page.id;
 
             return (
@@ -105,7 +105,6 @@ const FormFields = ({
               >
                 <FieldElement
                   key={pageId}
-                  // dropRow={dropField}
                   field={pageGrouping.page}
                   pageIndex={index}
                   isEditingDisabled={isEditingDisabled}
