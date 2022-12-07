@@ -34,8 +34,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.Page',
     defaultMessage: 'Page',
   },
-  surveyEnd: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyEnd',
-    defaultMessage: 'Survey end',
-  },
 });
