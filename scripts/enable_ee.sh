@@ -11,7 +11,7 @@ then
   echo "ERROR: Generating .env-back failed because citizenlab-ee/.env-back-secret is missing. Get its content from LastPass ('citizenlab .env-back-secret' note) and retry."
   exit 1
 fi
-cat .env-back-safe .env-back-secret | tee ../citizenlab/.env-back > /dev/null
+cat .env-back-safe .env-back-secret > ../citizenlab/.env-back
 echo "Copied .env-back"
 
 
@@ -20,5 +20,5 @@ then
   echo "ERROR: Generating .env-front failed because citizenlab-ee/.env-front-secret is missing. Get its content from LastPass ('citizenlab .env-front-secret' note) and retry."
   exit 1
 fi
-cat .env-front-safe .env-front-secret | tee ../citizenlab/.env-front > /dev/null
+cat .env-front-safe .env-front-secret > ../citizenlab/.env-front
 echo "Copied .env-front"
