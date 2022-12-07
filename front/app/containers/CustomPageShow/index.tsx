@@ -51,6 +51,15 @@ const AttachmentsContainer = styled(ContentContainer)`
   margin-bottom: 30px;
 `;
 
+const NoBannerContainer = styled(ContentContainer)`
+  background: #fff;
+  padding: 50px 50px 50px 50px;
+
+  ${media.tablet`
+    padding: 50px 20px 50px 20px;
+  `}
+`;
+
 const CustomPageShow = () => {
   const { slug } = useParams() as {
     slug: string;
@@ -96,20 +105,18 @@ const CustomPageShow = () => {
       {pageAttributes.banner_enabled ? (
         <CustomPageHeader pageData={page} />
       ) : (
-        <Box zIndex="4">
-          <AdminCustomPageEditButton pageId={page.id} />
-        </Box>
+        <NoBannerContainer>
+          {/* show page text title if the banner is disabled */}
+          <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
+          <Box zIndex="40000">
+            <AdminCustomPageEditButton pageId={page.id} />
+          </Box>
+        </NoBannerContainer>
       )}
       <Content>
         <Fragment
           name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
         />
-        {/* show page text title if the banner is disabled */}
-        {!pageAttributes.banner_enabled && (
-          <ContentContainer>
-            <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
-          </ContentContainer>
-        )}
         {pageAttributes.top_info_section_enabled && (
           <InfoSection
             multilocContent={pageAttributes.top_info_section_multiloc}
