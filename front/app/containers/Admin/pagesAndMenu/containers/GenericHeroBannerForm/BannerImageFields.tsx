@@ -131,9 +131,7 @@ const BannerImageField = ({
   );
 
   const isImageSaved =
-    headerLocalDisplayImage && headerLocalDisplayImage[0].remote;
-
-  const displayImageCropper = !isImageSaved;
+    headerLocalDisplayImage && !headerLocalDisplayImage[0].remote;
 
   const displayPreviewDevice =
     !isNilOrError(headerLocalDisplayImage) &&
@@ -194,7 +192,7 @@ const BannerImageField = ({
             />
           </Box>
         )}
-        {displayImageCropper ? (
+        {isImageSaved ? (
           <ImageCropper
             image={headerLocalDisplayImage}
             onComplete={onAddImage}
