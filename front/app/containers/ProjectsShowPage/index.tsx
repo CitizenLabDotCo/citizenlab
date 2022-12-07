@@ -123,7 +123,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     if (scrollToEventId && mounted && !loading) {
       setTimeout(() => {
         scrollToElement({ id: scrollToEventId });
-      }, 1500);
+      }, 2000);
     }
   }, [mounted, loading, scrollToEventId]);
 
@@ -142,7 +142,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
         if (!showModal) {
           setShowModal(JSON.parse(showModalParam));
         }
-      }, 2000);
+      }, 1500);
     }
     // Clear URL parameters for continuous projects
     // (handled elsewhere for timeline projects)
