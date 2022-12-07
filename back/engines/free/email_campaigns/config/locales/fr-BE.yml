@@ -82,7 +82,7 @@ fr-BE:
       "password_reset": Réinitialisation du mot de passe (tous les utilisateurs)
       "project_moderation_rights_received": Droits de modération de projet reçus - administrateurs projet
       "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
-      "project_phase_started": Nouvelle phase de projet - tous les utilisateurs
+      "project_phase_started": Nouvelle phase de projet - participants au projet
       "project_phase_upcoming": Nouvelle phase de projet à venir - administrateurs et administrateurs projet
       "status_change_of_commented_idea": Changement de statut d'une idée que vous avez commentée (tous les utilisateurs)
       "status_change_of_commented_initiative": Changement de statut d'une proposition que vous avez commentée - tous les utilisateurs

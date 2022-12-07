@@ -82,7 +82,7 @@ ro:
       "password_reset": Resetare parolă - toți utilizatorii
       "project_moderation_rights_received": Drepturi de moderare a proiectului primite - manageri de proiect
       "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": Faza proiectului nou - toți utilizatorii
+      "project_phase_started": Faza proiectului nou - participanții la proiect
       "project_phase_upcoming": Faza următoare a noului proiect - administratori și manageri de proiect
       "status_change_of_commented_idea": Schimbarea stării unei idei pe care ați comentat-o - toți utilizatorii
       "status_change_of_commented_initiative": Modificarea stării unei propuneri pe care ați comentat-o - toți utilizatorii
