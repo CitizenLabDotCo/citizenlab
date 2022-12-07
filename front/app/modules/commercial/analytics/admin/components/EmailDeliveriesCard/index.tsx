@@ -28,7 +28,7 @@ const EmailDeliveriesCard = ({
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { deducedResolution, stats, timeSeries, xlsxData } = useEmailDeliveries(
+  const { currentResolution, stats, timeSeries, xlsxData } = useEmailDeliveries(
     {
       startAtMoment,
       endAtMoment,
@@ -50,7 +50,7 @@ const EmailDeliveriesCard = ({
         startAt,
         endAt,
         currentProjectFilter: projectId,
-        resolution: deducedResolution,
+        resolution: currentResolution,
       }}
     >
       <Box px="20px" width="100%" display="flex" flexDirection="row">
@@ -64,7 +64,7 @@ const EmailDeliveriesCard = ({
               timeSeries={timeSeries}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
-              resolution={deducedResolution}
+              resolution={currentResolution}
               innerRef={graphRef}
             />
           </Box>
