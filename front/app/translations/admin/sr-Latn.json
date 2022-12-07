@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Zatvori",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Zatvoreno",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Da, izbriši rezultate ankete",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Sadržaj",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Podrazumevano",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Izbriši",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Izbriši",
