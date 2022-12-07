@@ -12,10 +12,6 @@ import { isNilOrError, isNil, isError } from 'utils/helperUtils';
 import messages from './messages';
 import eventsPageMessages from 'containers/EventsPage/messages';
 
-const EventsWidgetContainer = styled.div`
-  padding: 48px 0 124px 0;
-`;
-
 const NoEventsText = styled.div`
   margin: auto 0px;
   text-align: center;
@@ -124,7 +120,7 @@ const EventsWidget = ({ id, projectIds }: Props) => {
   const eventsError = isError(events);
 
   return (
-    <EventsWidgetContainer data-testid={id}>
+    <div data-testid={id}>
       <Header>
         <Title>{formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
         <EventPageLink to="/events">
@@ -158,7 +154,7 @@ const EventsWidget = ({ id, projectIds }: Props) => {
           ))}
         </CardsContainer>
       )}
-    </EventsWidgetContainer>
+    </div>
   );
 };
 
