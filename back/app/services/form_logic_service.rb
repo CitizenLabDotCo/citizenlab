@@ -139,7 +139,7 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
-    if %w[select multiselect].include? field.input_type
+    if field.input_type == 'select'
       value = option_index[value].key
     end
     {
