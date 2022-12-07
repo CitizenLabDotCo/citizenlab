@@ -7,6 +7,7 @@ type sort = 'newest' | 'oldest';
 
 interface InputParameters {
   projectIds?: string[];
+  staticPageId?: string;
   currentAndFutureOnly?: boolean;
   pastOnly?: boolean;
   pageSize?: number;
@@ -59,6 +60,9 @@ export default function useEvents(parameters: InputParameters) {
     const streamParams: IEventsStreamParams = {
       queryParameters: {
         ...(projectIds && { project_ids: projectIds }),
+        ...(parameters.staticPageId && {
+          static_page_id: parameters.staticPageId,
+        }),
       },
     };
 

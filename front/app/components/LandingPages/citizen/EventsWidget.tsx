@@ -92,35 +92,24 @@ const EventPageLink = styled(Link)`
 `;
 
 interface Props {
-  id?: string;
-  // null is reserved for the cases where you need to wait
-  // for projectIds to avoid flashing of all events. If you need
-  // all events, projectIds should be undefined.
-  projectIds?: string[] | null;
+  staticPageId?: string;
 }
 
-const EventsWidget = ({ id, projectIds }: Props) => {
+const EventsWidget = ({ staticPageId }: Props) => {
   const { formatMessage } = useIntl();
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,
     pageSize: 3,
     sort: 'oldest',
-    ...(projectIds && { projectIds }),
+    ...(staticPageId && { staticPageId }),
   });
-
-  // This avoids flashing of all events (if projectIds are undefined)
-  // as well as having to do projectIds checks before rendering this component.
-  // See CustomPageEvents.tsx for an example.
-  if (projectIds === null) {
-    return null;
-  }
 
   const eventsLoading = isNil(events);
   const eventsError = isError(events);
 
   return (
-    <Box display="flex" flexDirection="column" data-testid={id}>
+    <Box display="flex" flexDirection="column">
       <Header>
         <Title>{formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
       </Header>
