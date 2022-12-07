@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Tancar",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Tancat",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Sí, suprimiu els resultats de l'enquesta",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Contingut",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Per defecte",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Eliminar",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Eliminar",
