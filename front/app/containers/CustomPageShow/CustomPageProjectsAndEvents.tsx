@@ -1,6 +1,5 @@
 import React from 'react';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
-import { isNilOrError } from 'utils/helperUtils';
 import useAdminPublications from 'hooks/useAdminPublications';
 import { ICustomPageData } from 'services/customPages';
 import ContentContainer from 'components/ContentContainer';
@@ -24,12 +23,6 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   ];
 
   const adminPublications = useAdminPublications({
-    topicIds,
-    areaIds,
-    publicationStatusFilter,
-  });
-
-  const paginatedAdminPublications = useAdminPublications({
     pageSize: 6,
     topicIds,
     areaIds,
@@ -55,13 +48,9 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     !advancedCustomPagesEnabled ||
     page.attributes.projects_filter_type === 'no_filter';
 
-  if (hideProjects || isNilOrError(adminPublications.list)) {
+  if (hideProjects) {
     return null;
   }
-
-  const projectIds = adminPublications.list.map(
-    (adminPublication) => adminPublication.relationships.publication.data.id
-  );
 
   return (
     <>
@@ -73,7 +62,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
             showTitle={false}
             showFilters={false}
             showSearch={false}
-            adminPublications={paginatedAdminPublications}
+            adminPublications={adminPublications}
             statusCountsWithoutFilters={statusCountsWithoutFilters}
             layout="dynamic"
           />
@@ -81,7 +70,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
       )}
       {page.attributes.events_widget_enabled && (
         <ContentContainer>
-          <EventsWidget projectIds={projectIds} />
+          <EventsWidget staticPageId={page.id} />
         </ContentContainer>
       )}
     </>
