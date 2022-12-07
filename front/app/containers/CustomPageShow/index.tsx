@@ -47,9 +47,15 @@ const PageTitle = styled.h1`
   `}
 `;
 
-const AttachmentsContainer = styled(ContentContainer)`
+const AttachmentsContainer = styled(ContentContainer)<{
+  topInfoSectionEnabled: boolean;
+}>`
   background: #fff;
-  padding: 50px 20px 50px;
+  padding-top: ${({ topInfoSectionEnabled }) =>
+    topInfoSectionEnabled ? '0' : '50px'};
+  padding-bottom: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
 
   ${media.tablet`
     padding-top: 30px;
@@ -131,7 +137,9 @@ const CustomPageShow = () => {
         {pageAttributes.files_section_enabled &&
           !isNilOrError(remotePageFiles) &&
           remotePageFiles.length > 0 && (
-            <AttachmentsContainer>
+            <AttachmentsContainer
+              topInfoSectionEnabled={pageAttributes.top_info_section_enabled}
+            >
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
