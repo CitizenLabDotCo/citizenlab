@@ -59,12 +59,11 @@ class IdeaPolicy < ApplicationPolicy
 
   def update?
     return false if record.participation_method_on_creation.never_update?
-
-    pcs = ParticipationContextService.new
-    pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
     return true if record.draft? || (user && UserRoleService.new.can_moderate_project?(record.project, user))
     return false unless active? && owner? && ProjectPolicy.new(user, record.project).show?
 
+    pcs = ParticipationContextService.new
+    pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
     raise_not_authorized(pcs_posting_reason) if pcs_posting_reason && EXCLUDED_REASONS_FOR_UPDATE.exclude?(pcs_posting_reason)
     true
   end

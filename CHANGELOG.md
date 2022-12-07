@@ -4,7 +4,7 @@
 
 ### Changed
 
-- [CL-2159] Do not allow registered user to take a native survey twice
+- [CL-2159] Do not allow registered users to take a native survey twice
 
 ## 2022-12-07
 

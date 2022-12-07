@@ -100,7 +100,7 @@ describe IdeaPolicy do
     context 'when there is a posting idea disabled reason' do
       before do
         allow_any_instance_of(ParticipationContextService)
-          .to receive(:posting_idea_disabled_reason_for_context).with(project, user).and_return(disabled_reason)
+          .to receive(:posting_idea_disabled_reason_for_project).and_return(disabled_reason)
       end
 
       described_class::EXCLUDED_REASONS_FOR_UPDATE.each do |disabled_reason|
@@ -136,36 +136,36 @@ describe IdeaPolicy do
           end
         end
       end
-    end
 
-    context "when the disabled reason is not excluded for update: 'not_ideation'" do
-      let(:disabled_reason) { 'not_ideation' }
+      context "when the disabled reason is not excluded for update: 'not_ideation'" do
+        let(:disabled_reason) { 'not_ideation' }
 
-      context 'for an admin' do
-        let(:user) { create :admin }
+        context 'for an admin' do
+          let(:user) { create :admin }
 
-        it { is_expected.to permit(:show)    }
-        it { is_expected.to permit(:by_slug) }
-        it { is_expected.to permit(:create)  }
-        it { is_expected.to permit(:update)  }
-        it { is_expected.to permit(:destroy) }
+          it { is_expected.to permit(:show)    }
+          it { is_expected.to permit(:by_slug) }
+          it { is_expected.to permit(:create)  }
+          it { is_expected.to permit(:update)  }
+          it { is_expected.to permit(:destroy) }
 
-        it 'indexes the idea' do
-          expect(scope.resolve.size).to eq 1
+          it 'indexes the idea' do
+            expect(scope.resolve.size).to eq 1
+          end
         end
-      end
 
-      context 'for the author' do
-        let(:user) { idea.author }
+        context 'for the author' do
+          let(:user) { idea.author }
 
-        it { is_expected.to permit(:show)    }
-        it { is_expected.to permit(:by_slug) }
-        it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-        it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
-        it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+          it { is_expected.to permit(:show)    }
+          it { is_expected.to permit(:by_slug) }
+          it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+          it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+          it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
-        it 'indexes the idea' do
-          expect(scope.resolve.size).to eq 1
+          it 'indexes the idea' do
+            expect(scope.resolve.size).to eq 1
+          end
         end
       end
     end

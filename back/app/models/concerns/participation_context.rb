@@ -56,7 +56,7 @@ module ParticipationContext
       end
       validates :posting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
-        if: %i[can_contain_ideas? upvoting_limited?]
+        if: %i[can_contain_input? posting_limited?]
       validates :upvoting_limited_max, presence: true,
         numericality: { only_integer: true, greater_than: 0 },
         if: %i[can_contain_ideas? upvoting_limited?]
