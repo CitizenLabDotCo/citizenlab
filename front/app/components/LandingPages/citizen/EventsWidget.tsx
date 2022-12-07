@@ -12,6 +12,7 @@ import { isNilOrError, isNil, isError } from 'utils/helperUtils';
 import messages from './messages';
 import eventsPageMessages from 'containers/EventsPage/messages';
 import { Box } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
 
 const NoEventsText = styled.div`
   margin: auto 0px;
@@ -89,6 +90,11 @@ const Title = styled.h2`
 const EventPageLink = styled(Link)`
   color: ${colors.textSecondary};
   margin-top: auto;
+
+  &:hover {
+    color: ${darken(0.2, colors.textSecondary)};
+    text-decoration: underline;
+  }
 `;
 
 interface Props {
