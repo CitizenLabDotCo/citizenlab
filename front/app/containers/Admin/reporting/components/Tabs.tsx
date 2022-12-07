@@ -54,8 +54,10 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
   useEffect(() => {
     if (redirected) return;
     if (tabs.length === 0) return;
+    if (pathname.endsWith('/admin/reporting')) {
+      clHistory.push(tabs[0].url);
+    }
 
-    clHistory.push(tabs[0].url);
     setRedirected(true);
   }, [redirected, tabs]);
 

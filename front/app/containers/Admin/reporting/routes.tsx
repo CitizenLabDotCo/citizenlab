@@ -4,6 +4,7 @@ import PageLoading from 'components/UI/PageLoading';
 
 const ReportingWrapper = lazy(() => import('.'));
 const ReportBuilderPage = lazy(() => import('./containers/ReportBuilderPage'));
+const ReportBuilder = lazy(() => import('./containers/ReportBuilder'));
 
 const reportingRoutes = () => {
   return {
@@ -17,6 +18,10 @@ const reportingRoutes = () => {
       {
         path: 'report-creator',
         element: <ReportBuilderPage />,
+      },
+      {
+        path: 'report-creator/:reportId',
+        element: <ReportBuilder />,
       },
       ...moduleConfiguration.routes['admin.reporting'],
     ],

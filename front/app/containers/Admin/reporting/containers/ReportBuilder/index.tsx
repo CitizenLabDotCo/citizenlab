@@ -16,9 +16,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
-import Editor from '../components/Editor';
-import TopBar from '../components/TopBar';
-import Toolbox from '../components/Toolbox';
+import Editor from '../../components/ReportBuilder/Editor';
+import TopBar from '../../components/ReportBuilder/TopBar';
+import Toolbox from '../../components/ReportBuilder/Toolbox';
 import FrameWrapper from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
@@ -158,7 +158,9 @@ const ReportBuilderWrapper = () => {
   const { pathname } = useLocation();
 
   const renderReportBuilder =
-    reportBuilderEnabled && pathname.includes('admin/report-builder');
+    reportBuilderEnabled && pathname.includes('admin/reporting/report-creator');
+
+  console.log(pathname);
 
   if (!renderReportBuilder) return null;
 
