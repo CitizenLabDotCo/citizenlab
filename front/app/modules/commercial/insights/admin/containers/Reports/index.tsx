@@ -54,7 +54,7 @@ const ReportTab = memo(({ projects }: DataProps) => {
                     className={`
                         e2e-admin-edit-publication intercom-admin-project-edit-button
                       `}
-                    linkTo={`/admin/insights/reports/${project.id}`}
+                    linkTo={`/admin/reporting/reports/${project.id}`}
                     buttonStyle="secondary"
                     icon="eye"
                     type="button"

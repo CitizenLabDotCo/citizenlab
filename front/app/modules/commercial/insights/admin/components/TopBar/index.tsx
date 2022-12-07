@@ -79,7 +79,7 @@ const TopBar = ({
 
   useEffect(() => {
     if (isError(view)) {
-      clHistory.push('/admin/insights');
+      clHistory.push('/admin/reporting/insights');
     }
   }, [view]);
 
@@ -106,7 +106,7 @@ const TopBar = ({
 
     if (window.confirm(deleteMessage)) {
       await deleteInsightsView(viewId);
-      clHistory.push('/admin/insights');
+      clHistory.push('/admin/reporting/insights');
     }
   };
 

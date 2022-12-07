@@ -46,7 +46,7 @@ const Detect = ({
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const detectedCategories = useDetectedCategories(viewId);
 
-  const backRoute = `/admin/insights/${viewId}/edit`;
+  const backRoute = `/admin/reporting/insights/${viewId}/edit`;
   if (isNilOrError(detectedCategories)) {
     return null;
   }
