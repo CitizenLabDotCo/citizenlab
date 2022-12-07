@@ -1784,6 +1784,7 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "Remove {numberOfItems, plural, one {content warning} other {# content warnings}}",
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Reported as inappropriate by a platform user.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Content Warnings",
+  "app.modules.commercial.report_builder.admin.components.TopBar.reportCreator": "Report creator",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Access rights",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pages shown on your navigation bar",
