@@ -140,9 +140,7 @@ describe('Timeline project with poll phase', () => {
               type: 'multiple_options',
             },
           ],
-          [
-            ['Vanilla', 'Chocolate', 'Pistachio'],
-          ]
+          [['Vanilla', 'Chocolate', 'Pistachio']]
         );
       });
   });
