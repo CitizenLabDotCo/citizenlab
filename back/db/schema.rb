@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_05_112729) do
+ActiveRecord::Schema.define(version: 2022_12_02_110054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1752,21 +1752,62 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
      FROM events;
   SQL
   create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
-      WITH finished_statuses_for_timeline_projects AS (
+      WITH last_project_statuses AS (
+           SELECT DISTINCT ON (activities.item_id) activities.item_id AS project_id,
+              activities.action AS status,
+              activities.acted_at AS "timestamp"
+             FROM activities
+            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY (ARRAY[('draft'::character varying)::text, ('published'::character varying)::text, ('archived'::character varying)::text, ('deleted'::character varying)::text])))
+            ORDER BY activities.item_id, activities.acted_at DESC
+          ), finished_statuses_for_continuous_projects AS (
+           SELECT lps.project_id,
+              'finished'::text AS status,
+              lps."timestamp"
+             FROM (last_project_statuses lps
+               JOIN projects p ON ((lps.project_id = p.id)))
+            WHERE (((p.process_type)::text = 'continuous'::text) AND ((lps.status)::text = 'archived'::text))
+          ), finished_statuses_for_timeline_projects AS (
            SELECT phases.project_id,
+              'finished'::text AS status,
               ((max(phases.end_at) + 1))::timestamp without time zone AS "timestamp"
-             FROM phases
+             FROM (phases
+               JOIN projects ON ((phases.project_id = projects.id)))
+            WHERE ((projects.process_type)::text <> 'draft'::text)
             GROUP BY phases.project_id
            HAVING (max(phases.end_at) < now())
+          ), project_statuses AS (
+           SELECT last_project_statuses.project_id,
+              last_project_statuses.status,
+              last_project_statuses."timestamp"
+             FROM last_project_statuses
+          UNION
+           SELECT finished_statuses_for_timeline_projects.project_id,
+              finished_statuses_for_timeline_projects.status,
+              finished_statuses_for_timeline_projects."timestamp"
+             FROM finished_statuses_for_timeline_projects
+          UNION
+           SELECT finished_statuses_for_continuous_projects.project_id,
+              finished_statuses_for_continuous_projects.status,
+              finished_statuses_for_continuous_projects."timestamp"
+             FROM finished_statuses_for_continuous_projects
+          ), all_finished_projects AS (
+           SELECT DISTINCT afp_1.project_id
+             FROM ( SELECT finished_statuses_for_timeline_projects.project_id
+                     FROM finished_statuses_for_timeline_projects
+                  UNION
+                   SELECT finished_statuses_for_continuous_projects.project_id
+                     FROM finished_statuses_for_continuous_projects) afp_1
           )
-   SELECT ap.publication_id AS dimension_project_id,
-      ap.publication_status AS status,
-      ((((p.process_type)::text = 'continuous'::text) AND ((ap.publication_status)::text = 'archived'::text)) OR ((fsftp.project_id IS NOT NULL) AND ((ap.publication_status)::text <> 'draft'::text))) AS finished,
-      COALESCE(fsftp."timestamp", ap.updated_at) AS "timestamp",
-      COALESCE((fsftp."timestamp")::date, (ap.updated_at)::date) AS dimension_date_id
-     FROM ((admin_publications ap
-       LEFT JOIN projects p ON ((ap.publication_id = p.id)))
-       LEFT JOIN finished_statuses_for_timeline_projects fsftp ON ((fsftp.project_id = ap.publication_id)))
-    WHERE ((ap.publication_type)::text = 'Project'::text);
+   SELECT ps.project_id AS dimension_project_id,
+      ps.status,
+          CASE
+              WHEN (afp.project_id IS NULL) THEN false
+              ELSE true
+          END AS finished,
+      ps."timestamp",
+      (ps."timestamp")::date AS dimension_date_id
+     FROM (project_statuses ps
+       LEFT JOIN all_finished_projects afp ON ((afp.project_id = ps.project_id)))
+    ORDER BY ps."timestamp" DESC;
   SQL
 end
