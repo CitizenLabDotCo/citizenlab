@@ -12,7 +12,7 @@ describe FormLogicService do
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_linear_scale, :for_custom_form),
       create(:custom_field_page, :for_custom_form, resource: form),
-      create(:custom_field, :for_custom_form, resource: form),
+      create(:custom_field_select, :for_custom_form, :with_options, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form)
@@ -24,10 +24,13 @@ describe FormLogicService do
     let(:question1) { fields[1] }
     let(:page2) { fields[2] }
     let(:question2) { fields[3] }
+    let(:option1) { question2.options[0] }
+    let(:option2) { question2.options[1] }
     let(:page3) { fields[4] }
     let(:page4) { fields[5] }
     let(:page5) { fields[6] }
-    let(:value) { 1 }
+    let(:question1_value) { 1 }
+    let(:question2_answer) { option2 }
 
     context 'when there is no logic' do
       before do
@@ -48,7 +51,10 @@ describe FormLogicService do
     context 'when an answer triggers going to a page' do
       before do
         question1.update!(logic: {
-          'rules' => [{ 'if' => value, 'goto_page_id' => page4.id }]
+          'rules' => [{ 'if' => question1_value, 'goto_page_id' => page4.id }]
+        })
+        question2.update!(logic: {
+          'rules' => [{ 'if' => question2_answer.id, 'goto_page_id' => page5.id }]
         })
       end
 
@@ -60,7 +66,7 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question1.key}",
             schema: {
-              enum: [value]
+              enum: [question1_value]
             }
           }
         }])
@@ -70,11 +76,27 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question1.key}",
             schema: {
-              enum: [value]
+              enum: [question1_value]
+            }
+          }
+        }, {
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [question2_answer.key]
             }
           }
         }])
-        expect(form_logic.ui_schema_rules_for(page4)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page4)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [question2_answer.key]
+            }
+          }
+        }])
         expect(form_logic.ui_schema_rules_for(page5)).to be_nil
       end
     end
@@ -82,7 +104,7 @@ describe FormLogicService do
     context 'when an answer triggers going to the next page' do
       before do
         question1.update!(logic: {
-          'rules' => [{ 'if' => value, 'goto_page_id' => page2.id }]
+          'rules' => [{ 'if' => question1_value, 'goto_page_id' => page2.id }]
         })
       end
 
@@ -100,7 +122,7 @@ describe FormLogicService do
     context 'when an answer triggers going to the last page' do
       before do
         question1.update!(logic: {
-          'rules' => [{ 'if' => value, 'goto_page_id' => page5.id }]
+          'rules' => [{ 'if' => question1_value, 'goto_page_id' => page5.id }]
         })
       end
 
@@ -112,7 +134,7 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question1.key}",
             schema: {
-              enum: [value]
+              enum: [question1_value]
             }
           }
         }])
@@ -122,7 +144,7 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question1.key}",
             schema: {
-              enum: [value]
+              enum: [question1_value]
             }
           }
         }])
@@ -131,7 +153,7 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question1.key}",
             schema: {
-              enum: [value]
+              enum: [question1_value]
             }
           }
         }])
@@ -142,7 +164,7 @@ describe FormLogicService do
     context 'when an answer triggers going to the survey end' do
       before do
         question1.update!(logic: {
-          'rules' => [{ 'if' => value, 'goto_page_id' => 'survey_end' }]
+          'rules' => [{ 'if' => question1_value, 'goto_page_id' => 'survey_end' }]
         })
       end
 
@@ -154,7 +176,7 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question1.key}",
             schema: {
-              enum: [value]
+              enum: [question1_value]
             }
           }
         }])
@@ -164,7 +186,7 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question1.key}",
             schema: {
-              enum: [value]
+              enum: [question1_value]
             }
           }
         }])
@@ -173,7 +195,7 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question1.key}",
             schema: {
-              enum: [value]
+              enum: [question1_value]
             }
           }
         }])
@@ -182,7 +204,7 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question1.key}",
             schema: {
-              enum: [value]
+              enum: [question1_value]
             }
           }
         }])

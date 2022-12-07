@@ -506,15 +506,7 @@ RSpec.describe InputUiSchemaGeneratorService do
           input_type: 'select',
           key: 'how_often_do_you_choose_to_cycle',
           title_multiloc: { 'en' => 'When considering travel near your home, how often do you choose to CYCLE?' },
-          description_multiloc: { 'en' => '' },
-          logic: {
-            rules: [
-              {
-                if: 'never',
-                goto_page_id: page4.id
-              }
-            ]
-          }
+          description_multiloc: { 'en' => '' }
         )
       end
       let!(:every_day_option) do
@@ -540,6 +532,17 @@ RSpec.describe InputUiSchemaGeneratorService do
           title_multiloc: { 'en' => '' },
           description_multiloc: { 'en' => '' }
         )
+      end
+
+      before do
+        field_in_page2.update!(logic: {
+          rules: [
+            {
+              if: never_option.id,
+              goto_page_id: page4.id
+            }
+          ]
+        })
       end
 
       it 'includes rules for logic' do
@@ -612,7 +615,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                   condition: {
                     scope: "#/properties/#{field_in_page2.key}",
                     schema: {
-                      enum: ['never']
+                      enum: [never_option.key]
                     }
                   }
                 }
