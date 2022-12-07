@@ -7,12 +7,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { isEmptyMultiloc } from 'utils/helperUtils';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const StyledQuillEditedContent = styled(QuillEditedContent)`
   h1,
   h2 {
+    font-weight: 500;
     color: ${(props) => props.theme.colors.tenantText};
+    font-size: ${fontSizes.xl}px;
   }
 
   p,
