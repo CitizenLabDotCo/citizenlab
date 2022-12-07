@@ -98,13 +98,13 @@ const FormFields = ({
 
             return (
               <PageRow
-                id={pageGrouping.page.id}
+                id={pageId}
                 pageIndex={index}
                 dropRow={dropPage}
                 py="0px"
+                key={index}
               >
                 <FieldElement
-                  key={pageId}
                   field={pageGrouping.page}
                   pageIndex={index}
                   isEditingDisabled={isEditingDisabled}
