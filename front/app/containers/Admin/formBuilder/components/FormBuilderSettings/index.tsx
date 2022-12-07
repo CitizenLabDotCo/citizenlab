@@ -98,11 +98,9 @@ const FormBuilderSettings = ({
 
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
-
+  const fieldType = watch(`customFields.${field.index}.input_type`);
   const showTabbedSettings =
-    field.input_type === 'linear_scale' ||
-    field.input_type === 'multiselect' ||
-    field.input_type === 'select';
+    fieldType === 'linear_scale' || fieldType === 'select';
 
   return (
     <>
