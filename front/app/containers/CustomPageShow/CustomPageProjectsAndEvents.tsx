@@ -26,14 +26,14 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   const adminPublications = useAdminPublications({
     topicIds,
     areaIds,
-    publicationStatusFilter: publicationStatusFilter,
+    publicationStatusFilter,
   });
 
   const paginatedAdminPublications = useAdminPublications({
     pageSize: 6,
     topicIds,
     areaIds,
-    publicationStatusFilter: publicationStatusFilter,
+    publicationStatusFilter,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
@@ -54,13 +54,11 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   const hideProjects =
     !advancedCustomPagesEnabled ||
     page.attributes.projects_filter_type === 'no_filter';
-  if (hideProjects) {
+
+  if (hideProjects || isNilOrError(adminPublications.list)) {
     return null;
   }
 
-  if (isNilOrError(adminPublications.list)) {
-    return null;
-  }
   const projectIds = adminPublications.list.map(
     (adminPublication) => adminPublication.relationships.publication.data.id
   );
@@ -72,9 +70,6 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
           <ProjectAndFolderCardsInner
             statusCounts={statusCountsWithoutFilters}
             publicationStatusFilter={publicationStatusFilter}
-            onChangeTopics={() => {}}
-            onChangeAreas={() => {}}
-            onChangeSearch={() => {}}
             showTitle={false}
             showFilters={false}
             showSearch={false}

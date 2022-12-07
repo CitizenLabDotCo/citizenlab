@@ -37,9 +37,9 @@ const StyledTopbar = styled(Topbar)`
 
 interface Props extends BaseProps {
   statusCounts: IStatusCounts | Error | null | undefined;
-  onChangeTopics: (topics: string[]) => void;
-  onChangeAreas: (areas: string[]) => void;
-  onChangeSearch: (search: string | null) => void;
+  onChangeTopics?: (topics: string[]) => void;
+  onChangeAreas?: (areas: string[]) => void;
+  onChangeSearch?: (search: string | null) => void;
   showFilters: boolean;
   adminPublications: IUseAdminPublicationsOutput;
   statusCountsWithoutFilters: IStatusCounts | undefined | null | Error;
@@ -58,9 +58,7 @@ const ProjectAndFolderCardsInner = ({
   adminPublications,
   statusCountsWithoutFilters,
 }: Props) => {
-  const [currentTab, setCurrentTab] = useState<PublicationTab | undefined>(
-    undefined
-  );
+  const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
 
   useEffect(() => {
     if (isNilOrError(statusCounts) || currentTab) return;
@@ -91,18 +89,20 @@ const ProjectAndFolderCardsInner = ({
 
   const handleChangeSearch = React.useCallback(
     (search: string | null) => {
-      onChangeSearch(search);
+      onChangeSearch && onChangeSearch(search);
       adminPublications.onChangeSearch(search);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [onChangeSearch]
   );
 
-  if (isNilOrError(statusCounts) || !currentTab) {
+  if (
+    isNilOrError(statusCounts) ||
+    !currentTab ||
+    isNilOrError(statusCountsWithoutFilters)
+  ) {
     return null;
   }
-
-  if (isNilOrError(statusCountsWithoutFilters)) return null;
 
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
   const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
@@ -113,12 +113,12 @@ const ProjectAndFolderCardsInner = ({
   };
 
   const handleChangeTopics = (topics: string[]) => {
-    onChangeTopics(topics);
+    onChangeTopics && onChangeTopics(topics);
     adminPublications.onChangeTopics(topics);
   };
 
   const handleChangeAreas = (areas: string[]) => {
-    onChangeAreas(areas);
+    onChangeAreas && onChangeAreas(areas);
     adminPublications.onChangeAreas(areas);
   };
 
