@@ -96,11 +96,13 @@ const ProjectAndFolderCardsInner = ({
     [onChangeSearch]
   );
 
-  if (isNilOrError(statusCounts) || !currentTab) {
+  if (
+    isNilOrError(statusCounts) ||
+    !currentTab ||
+    isNilOrError(statusCountsWithoutFilters)
+  ) {
     return null;
   }
-
-  if (isNilOrError(statusCountsWithoutFilters)) return null;
 
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
   const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;

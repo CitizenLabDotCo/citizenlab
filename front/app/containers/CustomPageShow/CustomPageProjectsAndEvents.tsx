@@ -54,13 +54,11 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   const hideProjects =
     !advancedCustomPagesEnabled ||
     page.attributes.projects_filter_type === 'no_filter';
-  if (hideProjects) {
+
+  if (hideProjects || isNilOrError(adminPublications.list)) {
     return null;
   }
 
-  if (isNilOrError(adminPublications.list)) {
-    return null;
-  }
   const projectIds = adminPublications.list.map(
     (adminPublication) => adminPublication.relationships.publication.data.id
   );
