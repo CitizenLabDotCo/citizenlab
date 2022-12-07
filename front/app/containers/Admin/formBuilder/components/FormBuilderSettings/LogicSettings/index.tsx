@@ -13,6 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import { useFormContext } from 'react-hook-form';
 
 type LogicSettingsProps = {
   pageOptions: { value: string; label: string }[];
@@ -20,21 +21,23 @@ type LogicSettingsProps = {
 };
 export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
+  const { watch } = useFormContext();
   const locale = useLocale();
+  const selectOptions = watch(`customFields.${field.index}.options`);
+  const linearScaleMaximum = watch(`customFields.${field.index}.maximum`);
 
   if (isNilOrError(locale)) {
     return null;
   } else {
     // Select Field
-    let answers = field.options?.map((option) => ({
+    let answers = selectOptions.map((option) => ({
       key: option.id?.toString(),
       label: option.title_multiloc[locale]?.toString(),
     }));
-
     // Linear Scale Field
     if (field.input_type === 'linear_scale') {
       const linearScaleOptionArray = Array.from(
-        { length: field.maximum },
+        { length: linearScaleMaximum },
         (_, i) => i + 1
       );
       answers = linearScaleOptionArray.map((option) => ({
