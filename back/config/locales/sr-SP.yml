@@ -108,7 +108,7 @@ sr-SP:
         title: Образовање
     ideas:
       title:
-        title: Наслов
+        title: Назив
         description:
       body:
         title: Опис
@@ -142,7 +142,7 @@ sr-SP:
         question:
           title: Шта је ваше питање ?
         contribution:
-          title: Шта је ваш прилог ?
+          title: Шта је то чиме ћете допринети?
         project:
           title: Шта је ваш пројекат ?
         issue:
@@ -205,3 +205,6 @@ sr-SP:
       title: 'Ваше питање'
       option1: 'Опција 1'
       option2: 'Опција 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
