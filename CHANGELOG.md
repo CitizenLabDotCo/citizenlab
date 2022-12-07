@@ -1,5 +1,19 @@
 # Changelog
 
+## Next
+
+## 2022-12-06
+
+### Changed
+
+- [CL-2168] Removed support for many old image formats, and added support for webp images. The supported formats are now jpg, jpeg, gif, png, webp, svg.
+
+## 2022-12-05
+
+### Changed
+
+- [CL-2156] Notifications of Project Phase Started now sent only to Users who have participated in the relevant Project.
+
 ## 2022-12-02 (2)
 
 ### Fixed

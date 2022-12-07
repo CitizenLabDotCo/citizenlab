@@ -82,7 +82,7 @@ ar:
       "password_reset": تمت إعادة تعيين كلمة المرور - جميع المستخدمين
       "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع - مديري المشاريع
       "project_folder_moderation_rights_received": تم استلام حقوق الإشراف على مجلد المشروع
-      "project_phase_started": مرحلة مشروع جديدة - جميع المستخدمين
+      "project_phase_started": مرحلة مشروع جديدة - المشاركون في المشروع
       "project_phase_upcoming": مرحلة مشروع جديدة قائمة - المسؤولين ومديري المشاريع
       "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقتَ عليها - جميع المستخدمين
       "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقتَ عليه - جميع المستخدمين

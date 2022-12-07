@@ -23,7 +23,6 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
@@ -44,6 +43,7 @@ import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import validateElementTitle from 'utils/yup/validateElementTitle';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -83,7 +83,7 @@ export const FormEdit = ({
   const schema = object().shape({
     customFields: array().of(
       object().shape({
-        title_multiloc: validateAtLeastOneLocale(
+        title_multiloc: validateElementTitle(
           formatMessage(messages.emptyTitleError)
         ),
         description_multiloc: object(),
@@ -122,7 +122,19 @@ export const FormEdit = ({
   };
 
   const handleDelete = (fieldIndex: number) => {
-    remove(fieldIndex);
+    const field = fields[fieldIndex];
+
+    // When the first page is deleted, it's questions go to the next page
+    if (fieldIndex === 0 && field.input_type === 'page') {
+      const nextPageIndex = fields.findIndex(
+        (feild, fieldIndex) => feild.input_type === 'page' && fieldIndex !== 0
+      );
+      move(nextPageIndex, 0);
+      remove(1);
+    } else {
+      remove(fieldIndex);
+    }
+
     closeSettings();
   };
 
@@ -138,8 +150,36 @@ export const FormEdit = ({
     }
   };
 
-  const handleDragRow = (fromIndex: number, toIndex: number) => {
-    move(fromIndex, toIndex);
+  const dropRow = (fromIndex: number, toIndex: number) => {
+    const elementBeingDragged = fields[fromIndex];
+    const nextPageIndex = fields.findIndex(
+      (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
+    );
+
+    if (
+      fromIndex === 0 &&
+      elementBeingDragged.input_type === 'page' &&
+      nextPageIndex > toIndex
+    ) {
+      return;
+    } else if (
+      fromIndex === 0 &&
+      elementBeingDragged.input_type === 'page' &&
+      nextPageIndex <= toIndex
+    ) {
+      move(fromIndex, toIndex);
+      move(nextPageIndex - 1, 0);
+      return;
+    }
+
+    // Only pages should be draggable to index 0
+    const shouldMove =
+      elementBeingDragged.input_type === 'page' || toIndex !== 0;
+
+    if (shouldMove) {
+      move(fromIndex, toIndex);
+    }
+
     if (!isNilOrError(selectedField)) {
       setSelectedField({ ...selectedField, index: toIndex });
     }
@@ -173,6 +213,13 @@ export const FormEdit = ({
       handleHookFormSubmissionError(error, setError, 'customFields');
     }
   };
+
+  // Page is only deletable when we have more than one page
+  const isPageDeletable =
+    fields.filter((field) => field.input_type === 'page').length > 1;
+  const isDeleteDisabled = !(
+    selectedField?.input_type !== 'page' || isPageDeletable
+  );
 
   return (
     <Box
@@ -217,10 +264,15 @@ export const FormEdit = ({
                       redirectToSurveyPage
                     />
                   )}
-                  <Box bgColor="white" minHeight="300px">
+                  <Box
+                    borderRadius="3px"
+                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
+                    bgColor="white"
+                    minHeight="300px"
+                  >
                     <FormFields
                       onEditField={setSelectedField}
-                      handleDragRow={handleDragRow}
+                      dropRow={dropRow}
                       selectedFieldId={selectedField?.id}
                       isEditingDisabled={isEditingDisabled}
                     />
@@ -233,6 +285,7 @@ export const FormEdit = ({
                   field={selectedField}
                   onDelete={handleDelete}
                   onClose={closeSettings}
+                  isDeleteDisabled={isDeleteDisabled}
                 />
               )}
             </Box>

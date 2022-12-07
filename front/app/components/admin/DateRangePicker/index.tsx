@@ -52,14 +52,14 @@ class OurDateRangePicker extends PureComponent<
   Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       focusedInput: null,
     };
   }
 
-  handleFocusChange = (focusedInput: 'startDate' | 'endDate') => {
+  handleFocusChange = (focusedInput: 'startDate' | 'endDate' | null) => {
     this.setState({ focusedInput });
   };
 

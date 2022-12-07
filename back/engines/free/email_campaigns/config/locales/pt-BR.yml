@@ -82,7 +82,7 @@ pt:
       "password_reset": Redefinição de senha - todos os usuários
       "project_moderation_rights_received": Direitos de moderação de projeto recebidos - gerentes de projeto
       "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
-      "project_phase_started": Nova fase do projeto - todos os usuários
+      "project_phase_started": Nova fase do projeto - participantes do projeto
       "project_phase_upcoming": Próxima nova fase do projeto - administradores e gerentes de projeto
       "status_change_of_commented_idea": Mudança de status de uma ideia que você comentou - todos os usuários
       "status_change_of_commented_initiative": Mudança de status de uma proposta que você comentou - todos os usuários
