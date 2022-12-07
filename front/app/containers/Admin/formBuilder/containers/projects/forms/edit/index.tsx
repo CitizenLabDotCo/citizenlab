@@ -155,18 +155,18 @@ export const FormEdit = ({
     const nextPageIndex = fields.findIndex(
       (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
     );
+    const shouldMovePageToBeforeNextPage =
+      fromIndex === 0 &&
+      elementBeingDragged.input_type === 'page' &&
+      nextPageIndex > toIndex;
+    const shouldMovePageToNextPage =
+      fromIndex === 0 &&
+      elementBeingDragged.input_type === 'page' &&
+      nextPageIndex <= toIndex;
 
-    if (
-      fromIndex === 0 &&
-      elementBeingDragged.input_type === 'page' &&
-      nextPageIndex > toIndex
-    ) {
+    if (shouldMovePageToBeforeNextPage) {
       return;
-    } else if (
-      fromIndex === 0 &&
-      elementBeingDragged.input_type === 'page' &&
-      nextPageIndex <= toIndex
-    ) {
+    } else if (shouldMovePageToNextPage) {
       move(fromIndex, toIndex);
       move(nextPageIndex - 1, 0);
       return;

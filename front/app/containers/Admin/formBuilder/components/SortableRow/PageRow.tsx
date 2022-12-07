@@ -16,11 +16,10 @@ export interface SortableRowProps {
   index: number;
   isLastItem?: boolean;
   rowHeight?: string;
+  py?: string;
   children?: React.ReactNode;
   moveRow?: (dragIndex: number, hoverIndex: number) => void;
   dropRow?: (initialIndex: number, finalIndex: number) => void;
-  accept: string | string[];
-  dragType: string;
 }
 
 interface DragItem {
@@ -29,16 +28,15 @@ interface DragItem {
   type: string;
 }
 
-export const SortableRow: FC<SortableRowProps> = ({
+export const PageRow: FC<SortableRowProps> = ({
   id,
   isLastItem,
   rowHeight,
+  py,
   children,
   index,
   moveRow,
   dropRow,
-  accept,
-  dragType,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<
@@ -46,8 +44,7 @@ export const SortableRow: FC<SortableRowProps> = ({
     void,
     { handlerId: Identifier | null }
   >({
-    // accept: 'ROW',
-    accept,
+    accept: ['PAGEROW', 'ROW'],
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
@@ -97,8 +94,7 @@ export const SortableRow: FC<SortableRowProps> = ({
   });
 
   const [{ isDragging }, drag] = useDrag({
-    // item: { type: 'ROW', id, index } as DragObjectWithType,
-    item: { type: dragType, id, index } as DragObjectWithType,
+    item: { type: 'PAGEROW', id, index } as DragObjectWithType,
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -120,7 +116,12 @@ export const SortableRow: FC<SortableRowProps> = ({
         style={{ cursor: 'move', opacity }}
         data-handler-id={handlerId}
       >
-        <FlexibleRow rowHeight={rowHeight} isLastItem={isLastItem}>
+        <FlexibleRow
+          rowHeight={rowHeight}
+          isLastItem={isLastItem}
+          flexDirection="column"
+          py={py}
+        >
           {children}
         </FlexibleRow>
       </div>

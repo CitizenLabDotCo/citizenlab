@@ -63,6 +63,8 @@ export const FlexibleRow = ({
   children,
   isLastItem,
   rowHeight,
+  flexDirection,
+  py,
   'data-testid': dataTestId,
 }: {
   id?: string;
@@ -70,6 +72,8 @@ export const FlexibleRow = ({
   children: ReactNode;
   isLastItem?: boolean;
   rowHeight?: string;
+  py?: string;
+  flexDirection?: 'row' | 'column';
   'data-testid'?: string;
 }) => (
   <div data-testid={dataTestId}>
@@ -82,8 +86,9 @@ export const FlexibleRow = ({
       >
         <Box
           display="flex"
+          flexDirection={flexDirection || 'row'}
           alignContent="center"
-          py="8px"
+          py={py || '8px'}
           minHeight={rowHeight}
         >
           {children}

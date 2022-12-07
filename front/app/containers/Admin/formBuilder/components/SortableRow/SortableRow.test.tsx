@@ -22,6 +22,8 @@ describe('<SortableRow />', () => {
             id={item.id}
             index={i}
             moveRow={handleDragRow}
+            accept="ROW"
+            dragType="ROW"
           >
             {`ITEM ID: ${item.id}`}
           </SortableRow>
