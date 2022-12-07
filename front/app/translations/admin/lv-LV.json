@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Aizvērt",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Slēgts",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Jā, dzēst apsekojuma rezultātus",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Saturs",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Noklusējums",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Dzēst",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Dzēst",
