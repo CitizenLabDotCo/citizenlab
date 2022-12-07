@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Schließen",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Geschlossen",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Ja, Umfrageergebnisse löschen",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Inhalt",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Standard",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Löschen",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Löschen",
