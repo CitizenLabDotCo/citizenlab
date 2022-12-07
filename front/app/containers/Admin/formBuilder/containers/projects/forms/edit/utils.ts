@@ -13,30 +13,24 @@ export const movePageWithQuestions = (
     usedToIndex = fromIndex;
   }
 
-  // First, find the starting index of the page we want to move
-  let pageStartIndex = -1;
-  for (let i = 0; i < fields.length; i++) {
-    const item = fields[i];
-    if (item.type === 'custom_field' && item.input_type === 'page') {
-      // We found a page - check if it's the page we want to move
+  let pageStartIndex = fields.findIndex((field) => {
+    if (field.input_type === 'page') {
       if (usedFromIndex === 0) {
-        pageStartIndex = i;
-        break;
+        return true;
       }
       usedFromIndex--;
     }
-  }
+    return false;
+  });
 
-  // If we didn't find the page, return the original array
   if (pageStartIndex === -1) {
     return fields;
   }
 
-  // Now, find the ending index of the page we want to move
   let pageEndIndex = -1;
   for (let i = pageStartIndex + 1; i < fields.length; i++) {
     const item = fields[i];
-    if (item.type === 'custom_field' && item.input_type === 'page') {
+    if (item.input_type === 'page') {
       // We found another page, so the previous page must have ended
       pageEndIndex = i - 1;
       break;
@@ -48,41 +42,29 @@ export const movePageWithQuestions = (
     pageEndIndex = fields.length - 1;
   }
 
-  // Create a new array that contains the items from the original array,
-  // except for the page we want to move
-  const newArray: IFlatCustomField[] = [];
-  for (let i = 0; i < fields.length; i++) {
-    if (i < pageStartIndex || i > pageEndIndex) {
-      newArray.push(fields[i]);
-    }
-  }
+  const result = [...fields];
+  result.splice(pageStartIndex, pageEndIndex - pageStartIndex + 1);
 
-  // Find the index where we want to insert the page
-  let insertIndex = -1;
-  for (let i = 0; i < fields.length; i++) {
-    const item = fields[i];
-    if (item.type === 'custom_field' && item.input_type === 'page') {
-      // We found a page - check if it's the page after which we want to insert
+  let insertIndex = fields.findIndex((field) => {
+    if (field.input_type === 'page') {
       if (usedToIndex === 0) {
-        insertIndex = i;
-        break;
+        return true;
       }
       usedToIndex--;
     }
-  }
+    return false;
+  });
 
-  // If we didn't find the insert index, it must be at the end of the array
   if (insertIndex === -1) {
     insertIndex = fields.length;
   }
 
-  // Finally, insert the page we want to move into the new array at the desired index
-  for (let i = pageStartIndex; i <= pageEndIndex; i++) {
-    newArray.splice(insertIndex, 0, fields[i]);
-    insertIndex++;
-  }
-
-  return newArray;
+  result.splice(
+    insertIndex,
+    0,
+    ...fields.slice(pageStartIndex, pageEndIndex + 1)
+  );
+  return result;
 };
 
 type MoveType = {
