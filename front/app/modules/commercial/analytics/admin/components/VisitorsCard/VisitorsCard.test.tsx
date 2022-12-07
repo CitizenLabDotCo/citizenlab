@@ -28,7 +28,7 @@ const mockTimeSeries = [
 ];
 
 jest.mock('../../hooks/useVisitors', () => () => ({
-  deducedResolution: 'month',
+  currentResolution: 'month',
   stats: mockStats,
   timeSeries: mockTimeSeries,
   xlsxData: {},

@@ -1,8 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-import { ControlBar } from 'components/admin/GraphWrappers';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
@@ -11,8 +10,7 @@ import TimeControl from '../components/TimeControl';
 
 // i18n
 import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // typings
 import { IOption } from 'typings';
@@ -31,38 +29,46 @@ interface Props {
   onChangeResolution: (resolution: IResolution) => void;
 }
 
-const ChartFilters = injectIntl(
-  ({
-    startAtMoment,
-    endAtMoment,
-    currentProjectFilter,
-    resolution,
-    onChangeTimeRange,
-    onProjectFilter,
-    onChangeResolution,
-    intl: { formatMessage },
-  }: Props & WrappedComponentProps) => (
-    <ControlBar>
-      <Box display="flex" flexDirection="row">
+const ChartFilters = ({
+  startAtMoment,
+  endAtMoment,
+  currentProjectFilter,
+  resolution,
+  onChangeTimeRange,
+  onProjectFilter,
+  onChangeResolution,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const smallerThanSmallDesktop = useBreakpoint('smallDesktop');
+
+  return (
+    <Box
+      width="100%"
+      display="flex"
+      mt="-10px"
+      mb="20px"
+      justifyContent="space-between"
+      flexDirection={smallerThanSmallDesktop ? 'column' : 'row'}
+    >
+      <Box display="flex" mb={smallerThanSmallDesktop ? '12px' : undefined}>
         <TimeControl
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
           onChange={onChangeTimeRange}
         />
-        <Box ml="16px" mr="16px" maxWidth="320px">
+        <Box ml="12px" maxWidth="350px">
           <ProjectFilter
             currentProjectFilter={currentProjectFilter}
             hideLabel
             placeholder={formatMessage(messages.selectProject)}
-            width="100%"
             padding="11px"
             onProjectFilter={onProjectFilter}
           />
         </Box>
       </Box>
       <ResolutionControl value={resolution} onChange={onChangeResolution} />
-    </ControlBar>
-  )
-);
+    </Box>
+  );
+};
 
 export default ChartFilters;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // form
 import Feedback from 'components/HookForm/Feedback';
@@ -29,6 +29,8 @@ import useTopics from 'hooks/useTopics';
 import useAreas from 'hooks/useAreas';
 import useLocalize from 'hooks/useLocalize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 // utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -36,8 +38,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // types
 import { Multiloc } from 'typings';
@@ -72,16 +73,20 @@ const fieldMarginBottom = '40px';
 
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
-  intl: { formatMessage },
   mode,
   onSubmit,
   defaultValues,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const localize = useLocalize();
-  const [_titleErrors, _setTitleErrors] = useState<Multiloc>({});
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
+  const areas = useAreas();
+  const appConfig = useAppConfiguration();
+  const locale = useLocale();
+  const topics = useTopics();
+  const { formatMessage } = useIntl();
+
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.titleMultilocError)
@@ -137,9 +142,6 @@ const CustomPageSettingsForm = ({
     });
   };
 
-  const areas = useAreas();
-  const topics = useTopics();
-
   const projectsFilterTabs: { name: ProjectsFilterTypes; label: string }[] = [
     {
       name: 'no_filter',
@@ -155,9 +157,18 @@ const CustomPageSettingsForm = ({
     },
   ];
 
-  if (isNilOrError(areas) || isNilOrError(topics)) {
+  if (
+    isNilOrError(areas) ||
+    isNilOrError(topics) ||
+    isNilOrError(locale) ||
+    isNilOrError(appConfig)
+  ) {
     return null;
   }
+
+  const previewUrl = slug
+    ? `${appConfig.attributes.host}/${locale}/pages/${slug}`
+    : null;
 
   return (
     <FormProvider {...methods}>
@@ -204,12 +215,12 @@ const CustomPageSettingsForm = ({
                 />
               </Box>
             )}
-            {mode === 'edit' && (
+            {slug && previewUrl && (
               <Box mb={fieldMarginBottom}>
                 <SlugInput
                   slug={slug}
-                  pathnameWithoutSlug="pages"
                   showWarningMessage={slugHasChanged}
+                  previewUrl={previewUrl}
                 />
               </Box>
             )}
@@ -259,4 +270,4 @@ const CustomPageSettingsForm = ({
   );
 };
 
-export default injectIntl(CustomPageSettingsForm);
+export default CustomPageSettingsForm;

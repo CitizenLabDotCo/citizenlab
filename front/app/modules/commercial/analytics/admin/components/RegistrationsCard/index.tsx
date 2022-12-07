@@ -36,7 +36,7 @@ const RegistrationsCard = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const { timeSeries, stats, xlsxData, deducedResolution } = useRegistrations({
+  const { timeSeries, stats, xlsxData, currentResolution } = useRegistrations({
     startAtMoment,
     endAtMoment,
     resolution,
@@ -65,7 +65,7 @@ const RegistrationsCard = ({
         xlsx: !isNilOrError(xlsxData) ? { data: xlsxData } : undefined,
         startAt,
         endAt,
-        resolution: deducedResolution,
+        resolution: currentResolution,
       }}
     >
       <Box display="flex" flexDirection={layout === 'wide' ? 'row' : 'column'}>
@@ -105,7 +105,7 @@ const RegistrationsCard = ({
                 projectId={projectId}
                 startAtMoment={startAtMoment}
                 endAtMoment={endAtMoment}
-                resolution={deducedResolution}
+                resolution={currentResolution}
                 innerRef={graphRef}
                 layout={layout}
               />
@@ -120,7 +120,7 @@ const RegistrationsCard = ({
               projectId={projectId}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
-              resolution={deducedResolution}
+              resolution={currentResolution}
               innerRef={graphRef}
               layout={layout}
             />

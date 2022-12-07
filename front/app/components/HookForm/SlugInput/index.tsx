@@ -1,57 +1,41 @@
 import React from 'react';
-import Input from 'components/HookForm/Input';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { Text } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
-import { isNilOrError } from 'utils/helperUtils';
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import Input from 'components/HookForm/Input';
 
 interface Props {
-  slug?: string;
-  pathnameWithoutSlug: string;
-  showWarningMessage?: boolean;
+  showWarningMessage: boolean;
+  previewUrl: string;
+  slug: string;
 }
 
-const SlugInput = ({
-  slug,
-  pathnameWithoutSlug,
-  showWarningMessage,
-}: Props) => {
-  const appConfig = useAppConfiguration();
-  const locale = useLocale();
+const SlugInput = ({ previewUrl, showWarningMessage, slug }: Props) => {
+  const { formatMessage } = useIntl();
 
-  if (!isNilOrError(appConfig)) {
-    const previewUrl = slug
-      ? `${appConfig.attributes.host}/${locale}/${pathnameWithoutSlug}/${slug}`
-      : null;
-
-    return (
-      <>
-        <Input
-          label={<FormattedMessage {...messages.pageSlug} />}
-          labelTooltipText={<FormattedMessage {...messages.slugTooltip} />}
-          id="slug"
-          name="slug"
-          type="text"
-        />
-        <Text mb={showWarningMessage ? '16px' : '0'}>
-          <i>
-            <FormattedMessage {...messages.resultingPageURL} />
-          </i>
-          : {previewUrl}
-        </Text>
-        {showWarningMessage && (
-          <Warning>
-            <FormattedMessage {...messages.brokenURLWarning} />
-          </Warning>
-        )}
-      </>
-    );
-  }
-
-  return null;
+  return (
+    <>
+      <Input
+        label={formatMessage(messages.urlSlugLabel)}
+        labelTooltipText={formatMessage(messages.slugTooltip)}
+        type="text"
+        name="slug"
+        value={slug}
+      />
+      <Text mb={showWarningMessage ? '16px' : '0'}>
+        <i>
+          <FormattedMessage {...messages.resultingURL} />
+        </i>
+        : {previewUrl}
+      </Text>
+      {showWarningMessage && (
+        <Warning>
+          <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
+        </Warning>
+      )}
+    </>
+  );
 };
 
 export default SlugInput;
