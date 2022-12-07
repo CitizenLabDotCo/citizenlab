@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Kapat",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Kapalı",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Yes, delete survey results",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "İçerik",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Varsayılan",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Sil",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Sil",
