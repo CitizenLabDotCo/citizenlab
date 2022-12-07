@@ -36,7 +36,7 @@ const AnalyticsChartWidget = ({
     startAtMoment,
     endAtMoment,
     resolution,
-    reportConfig: { title },
+    title,
   };
 
   const statChartProps = {
@@ -48,7 +48,7 @@ const AnalyticsChartWidget = ({
     currentGroupFilter: undefined,
     currentGroupFilterLabel: undefined,
     title,
-    showExportMenu: false,
+    interactive: false,
   };
 
   let chart = <></>;

@@ -62,9 +62,8 @@ export interface Stat {
 // Component layouts
 export type Layout = 'wide' | 'narrow';
 
-// Report specifics
-export interface ReportChartConfig {
-  reportConfig?: {
-    title: string;
-  };
+// Specifics of displaying chart
+export interface ChartDisplay {
+  title?: string;
+  interactive?: boolean;
 }

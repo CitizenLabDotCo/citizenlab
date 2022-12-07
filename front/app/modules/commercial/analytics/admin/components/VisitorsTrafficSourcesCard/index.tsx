@@ -19,16 +19,17 @@ import getXlsxData from './getXlsxData';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { ProjectId, Dates, ReportChartConfig } from '../../typings';
+import { ProjectId, Dates, ChartDisplay } from '../../typings';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 
-type Props = ProjectId & Dates & ReportChartConfig;
+type Props = ProjectId & Dates & ChartDisplay;
 
 const VisitorsTrafficSourcesCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
-  reportConfig,
+  title,
+  interactive = true,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -43,8 +44,8 @@ const VisitorsTrafficSourcesCard = ({
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const cardTitle = reportConfig
-    ? reportConfig.title
+  const cardTitle = title
+    ? title
     : formatMessage(messages.visitorsTrafficSources);
 
   if (isNilOrError(pieData) || isNilOrError(xlsxData)) {
@@ -58,9 +59,8 @@ const VisitorsTrafficSourcesCard = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  const exportMenu = reportConfig
-    ? undefined
-    : {
+  const exportMenu = interactive
+    ? {
         name: cardTitle,
         svgNode: currentView === 'chart' ? graphRef : undefined,
         xlsx: {
@@ -78,9 +78,10 @@ const VisitorsTrafficSourcesCard = ({
         startAt,
         endAt,
         currentProjectFilter: projectId,
-      };
+      }
+    : undefined;
 
-  const viewToggle = reportConfig
+  const viewToggle = interactive
     ? undefined
     : {
         view: currentView,
@@ -98,7 +99,7 @@ const VisitorsTrafficSourcesCard = ({
           pieData={pieData}
           innerRef={graphRef}
           onOpenModal={openModal}
-          hideReferrers={reportConfig !== undefined}
+          hideReferrers={interactive !== undefined}
         />
       )}
 

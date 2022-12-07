@@ -14,18 +14,19 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { ProjectId, Dates, Resolution, ReportChartConfig } from '../../typings';
+import { ProjectId, Dates, Resolution, ChartDisplay } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 import VisitorStatsReport from './VisitorStatsReport';
 
-type Props = ProjectId & Dates & Resolution & ReportChartConfig;
+type Props = ProjectId & Dates & Resolution & ChartDisplay;
 
 const VisitorsCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
-  reportConfig,
+  title,
+  interactive = true,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -37,15 +38,12 @@ const VisitorsCard = ({
     resolution,
   });
 
-  const cardTitle = reportConfig
-    ? reportConfig.title
-    : formatMessage(messages.visitors);
+  const cardTitle = title ? title : formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  const exportMenu = reportConfig
-    ? undefined
-    : {
+  const exportMenu = interactive
+    ? {
         name: cardTitle,
         svgNode: graphRef,
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
@@ -53,13 +51,14 @@ const VisitorsCard = ({
         endAt,
         currentProjectFilter: projectId,
         resolution: deducedResolution,
-      };
+      }
+    : undefined;
 
-  const infoTooltipContent = reportConfig
+  const infoTooltipContent = interactive
     ? undefined
     : formatMessage(messages.cardTitleTooltipMessage);
 
-  const visitorStatBox = reportConfig ? (
+  const visitorStatBox = interactive ? (
     <VisitorStatsReport stats={stats} />
   ) : (
     <VisitorStats
