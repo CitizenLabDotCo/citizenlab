@@ -9,16 +9,19 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { PublicationStatus } from 'services/projects';
 import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
 import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
+import { colors } from 'utils/styleUtils';
 
 const ProjectCardsContentContainer = styled(ContentContainer)`
   padding-top: 50px;
   padding-bottom: 50px;
 `;
 
-const EventsContentContainer = styled(ContentContainer)`
-  padding-top: 50px;
+const EventsContentContainer = styled(ContentContainer)<{
+  projectsEnabled: boolean;
+}>`
+  padding-top: ${({ projectsEnabled }) => (projectsEnabled ? '0px' : '50px')};
   padding-bottom: 50px;
-  background: #fff;
+  background: ${colors.grey200};
 `;
 
 interface Props {
@@ -92,7 +95,9 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
         </ProjectCardsContentContainer>
       )}
       {page.attributes.events_widget_enabled && (
-        <EventsContentContainer>
+        <EventsContentContainer
+          projectsEnabled={page.attributes.projects_enabled}
+        >
           <EventsWidget projectIds={projectIds} />
         </EventsContentContainer>
       )}
