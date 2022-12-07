@@ -11,6 +11,7 @@ import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
 import messages from './messages';
 import eventsPageMessages from 'containers/EventsPage/messages';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const NoEventsText = styled.div`
   margin: auto 0px;
@@ -57,7 +58,6 @@ const StyledEventCard = styled(EventCard)`
 const Header = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   padding-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
@@ -120,41 +120,53 @@ const EventsWidget = ({ id, projectIds }: Props) => {
   const eventsError = isError(events);
 
   return (
-    <div data-testid={id}>
+    <Box display="flex" flexDirection="column" data-testid={id}>
       <Header>
         <Title>{formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
-        <EventPageLink to="/events">
-          {formatMessage(messages.viewAllEventsText)}
-        </EventPageLink>
       </Header>
 
-      {eventsLoading && <EventsSpinner />}
-      {eventsError && (
-        <EventsMessage message={eventsPageMessages.errorWhenFetchingEvents} />
-      )}
+      {eventsLoading ? (
+        <EventsSpinner />
+      ) : (
+        <>
+          <Box mb="32px">
+            {eventsError && (
+              <EventsMessage
+                message={eventsPageMessages.errorWhenFetchingEvents}
+              />
+            )}
 
-      {!isNilOrError(events) && events.length === 0 && (
-        <VerticalCenterer>
-          <NoEventsText>
-            {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
-          </NoEventsText>
-        </VerticalCenterer>
-      )}
+            {!isNilOrError(events) && events.length === 0 && (
+              <VerticalCenterer>
+                <NoEventsText>
+                  {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
+                </NoEventsText>
+              </VerticalCenterer>
+            )}
 
-      {!isNilOrError(events) && events.length > 0 && (
-        <CardsContainer>
-          {events.map((event) => (
-            <StyledEventCard
-              event={event}
-              key={event.id}
-              titleFontSize={18}
-              showProjectTitle
-              onClickTitleGoToProjectAndScrollToEvent
-            />
-          ))}
-        </CardsContainer>
+            {!isNilOrError(events) && events.length > 0 && (
+              <CardsContainer>
+                {events.map((event) => (
+                  <StyledEventCard
+                    event={event}
+                    key={event.id}
+                    titleFontSize={18}
+                    showProjectTitle
+                    onClickTitleGoToProjectAndScrollToEvent
+                  />
+                ))}
+              </CardsContainer>
+            )}
+          </Box>
+
+          <Box alignSelf="center">
+            <EventPageLink to="/events">
+              {formatMessage(messages.viewAllEventsText)}
+            </EventPageLink>
+          </Box>
+        </>
       )}
-    </div>
+    </Box>
   );
 };
 
