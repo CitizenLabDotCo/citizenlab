@@ -1,5 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+
+// hooks
 import { useLocation } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import NavigationTabs, {
@@ -15,6 +18,7 @@ import messages from '../messages';
 
 // utils
 import { matchPathToUrl } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // typings
 import { ITab } from 'typings';
@@ -26,18 +30,36 @@ interface Props {
 const DashboardTabs = ({ children }: Props) => {
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
+  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
 
-  const [tabs, setTabs] = useState<ITab[]>([
-    {
-      label: formatMessage(messages.reportCreator),
-      url: '/admin/reporting/report-creator',
-      name: 'report_creator',
-    },
-  ]);
+  const [additionalTabs, setAdditionalTabs] = useState<ITab[]>([]);
+  const [redirected, setRedirected] = useState(false);
 
-  const handleData = useCallback((newTabs: ITab[]) => {
-    setTabs((tabs) => [...tabs, ...newTabs]);
-  }, []);
+  const tabs = useMemo(
+    () => [
+      ...(reportBuilderEnabled
+        ? [
+            {
+              label: formatMessage(messages.reportCreator),
+              url: '/admin/reporting/report-creator',
+              name: 'report_creator',
+            },
+          ]
+        : []),
+      ...additionalTabs,
+    ],
+    [reportBuilderEnabled, additionalTabs]
+  );
+
+  useEffect(() => {
+    if (redirected) return;
+    if (tabs.length === 0) return;
+
+    clHistory.push(tabs[0].url);
+    setRedirected(true);
+  }, [redirected, tabs]);
+
+  if (reportBuilderEnabled === undefined) return null;
 
   return (
     <>
@@ -51,7 +73,7 @@ const DashboardTabs = ({ children }: Props) => {
       <TabsPageLayout>{children}</TabsPageLayout>
       <Outlet
         id="app.containers.Admin.reporting.components.Tabs"
-        onData={handleData}
+        onData={setAdditionalTabs}
       />
     </>
   );

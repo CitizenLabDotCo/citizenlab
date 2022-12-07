@@ -3,7 +3,7 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import DashboardTabs from './components/Tabs';
+import Tabs from './components/Tabs';
 
 // i18n
 import messages from './messages';
@@ -14,11 +14,11 @@ export const ReportingPage = () => (
       title={messages.helmetTitle}
       description={messages.helmetDescription}
     />
-    <DashboardTabs>
+    <Tabs>
       <div id="e2e-insights-container">
         <RouterOutlet />
       </div>
-    </DashboardTabs>
+    </Tabs>
   </>
 );
 
