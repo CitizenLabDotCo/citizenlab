@@ -1,5 +1,13 @@
 # Changelog
 
+## Next
+
+## 2022-12-07
+
+### Fixed
+
+- [CL-2184] Fixed project status dashboard widget to show correct stats
+
 ## 2022-12-06
 
 ### Changed
