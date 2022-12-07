@@ -48,7 +48,7 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
 
     const logic = watch(name) as LogicType;
 
-    // Rewrite any existing rule
+    // Remove any existing rule
     if (logic.rules && logic.rules.length > 0) {
       logic.rules = logic.rules.filter((rule) => rule.if !== answer.key);
     }
