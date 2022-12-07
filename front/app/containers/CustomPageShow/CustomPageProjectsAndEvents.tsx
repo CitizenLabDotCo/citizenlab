@@ -70,9 +70,6 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
           <ProjectAndFolderCardsInner
             statusCounts={statusCountsWithoutFilters}
             publicationStatusFilter={publicationStatusFilter}
-            onChangeTopics={() => {}}
-            onChangeAreas={() => {}}
-            onChangeSearch={() => {}}
             showTitle={false}
             showFilters={false}
             showSearch={false}
