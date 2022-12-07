@@ -30,10 +30,12 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
     return null;
   } else {
     // Select Field
-    let answers = selectOptions.map((option) => ({
-      key: option.id?.toString(),
-      label: option.title_multiloc[locale]?.toString(),
-    }));
+    let answers = selectOptions
+      ? selectOptions.map((option) => ({
+          key: option.id?.toString(),
+          label: option.title_multiloc[locale]?.toString(),
+        }))
+      : undefined;
     // Linear Scale Field
     if (field.input_type === 'linear_scale') {
       const linearScaleOptionArray = Array.from(

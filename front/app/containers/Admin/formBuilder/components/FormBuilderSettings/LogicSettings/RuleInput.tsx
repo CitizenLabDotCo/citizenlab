@@ -31,9 +31,10 @@ type LogicType = { rules: { if: string; goto_page_id: string }[] };
 
 export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
   const { setValue, watch, control } = useFormContext();
-  const initialValue = (watch(name) as LogicType).rules.filter(
-    (rule) => rule.if === answer.key
-  )[0];
+  const rules = (watch(name) as LogicType).rules;
+  const initialValue = rules
+    ? rules.filter((rule) => rule.if === answer.key)[0]
+    : undefined;
 
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
     initialValue ? initialValue.goto_page_id : undefined
