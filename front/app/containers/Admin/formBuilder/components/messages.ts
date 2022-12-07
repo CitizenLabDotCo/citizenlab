@@ -73,6 +73,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.logic',
     defaultMessage: 'Logic',
   },
+  content: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.content',
+    defaultMessage: 'Content',
+  },
   done: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.done',
     defaultMessage: 'Done',
