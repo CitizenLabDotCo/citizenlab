@@ -82,7 +82,7 @@ da:
       "password_reset": Nulstilling af kodeord - alle brugere
       "project_moderation_rights_received": Modtager rettigheder til projektmoderation - projektledere
       "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
-      "project_phase_started": Ny projektfase - alle brugere
+      "project_phase_started": Ny projektfase - projektdeltagere
       "project_phase_upcoming": Kommende ny projektfase - administratorer og projektledere
       "status_change_of_commented_idea": Statusændring af en idé, som du har kommenteret - alle brugere
       "status_change_of_commented_initiative": Statusændring af et forslag, som du har kommenteret - alle brugere
