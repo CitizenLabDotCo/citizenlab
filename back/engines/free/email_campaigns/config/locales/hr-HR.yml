@@ -82,7 +82,7 @@ hr:
       "password_reset": Resetovanje lozinke - svi korisnici
       "project_moderation_rights_received": Dodeljena prava za moderaciju projekta - menadžeri projekata
       "project_folder_moderation_rights_received": Stečena su prava menadžera projekta
-      "project_phase_started": Nova faza projekta - svi korisnici
+      "project_phase_started": Nova faza projekta - sudionici projekta
       "project_phase_upcoming": Buduće faze projekta - administratori i menadžeri projekata
       "status_change_of_commented_idea": Promena statusa ideje koju ste komentarisali - svi korisnici
       "status_change_of_commented_initiative": Promena statusa predloga koji ste komentarisali - svi korisnici

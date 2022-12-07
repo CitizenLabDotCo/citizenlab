@@ -1,3 +1,5 @@
+import React, { useEffect, useMemo, useState } from 'react';
+
 import {
   Box,
   ColorPickerInput,
@@ -9,14 +11,13 @@ import {
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { debounce } from 'lodash-es';
-import React, { useEffect, useMemo, useState } from 'react';
+
 import { useTheme } from 'styled-components';
 import { UploadFile } from 'typings';
 import HeaderImageDropzone from './HeaderImageDropzone';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
@@ -26,9 +27,11 @@ import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
 import RangeInput from 'components/UI/RangeInput';
+import ImageCropper from 'components/admin/ImageCropper';
+
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
-interface Props {
+export interface Props {
   onAddImage: (newImageBase64: string) => void;
   onRemoveImage: () => void;
   onOverlayColorChange: (color: string) => void;
@@ -49,7 +52,6 @@ interface Props {
 }
 
 const BannerImageField = ({
-  intl: { formatMessage },
   bannerOverlayColor,
   bannerOverlayOpacity,
   bannerLayout,
@@ -59,14 +61,14 @@ const BannerImageField = ({
   setFormStatus,
   onOverlayColorChange,
   onOverlayOpacityChange,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const theme = useTheme();
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
   >(null);
   const [bannerError, setBannerError] = useState<string | null>(null);
-
   useEffect(() => {
     // the image file sent from the API needs to be converted
     // to a format that can be displayed. this is done locally
@@ -85,7 +87,6 @@ const BannerImageField = ({
 
     const headerFileInfo = headerBg?.large;
     convertHeaderToUploadFile(headerFileInfo);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerBg]);
 
   // set error and disable save button if header is removed,
@@ -121,13 +122,25 @@ const BannerImageField = ({
 
   const debounceHandleOverlayOpacityOnChange = debounce(
     handleOverlayOpacityOnChange,
-    15
+    10
   );
 
   const debouncedHandleOverlayOpacityOnChange = useMemo(
     () => debounceHandleOverlayOpacityOnChange,
     [debounceHandleOverlayOpacityOnChange]
   );
+
+  const isImageSaved =
+    headerLocalDisplayImage && !headerLocalDisplayImage[0].remote;
+
+  const displayPreviewDevice =
+    !isNilOrError(headerLocalDisplayImage) &&
+    bannerLayout !== 'fixed_ratio_layout';
+
+  const displayOverlayControls =
+    (bannerLayout === 'full_width_banner_layout' ||
+      bannerLayout === 'fixed_ratio_layout') &&
+    headerLocalDisplayImage;
 
   return (
     <>
@@ -155,52 +168,55 @@ const BannerImageField = ({
         />
       </SubSectionTitle>
       <SectionField>
-        {!isNilOrError(headerLocalDisplayImage) && (
-          <>
-            <Label>
-              <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
-            </Label>
-            <Box mb="20px">
-              <Select
-                options={[
-                  {
-                    value: 'desktop',
-                    label: formatMessage(messages.desktop),
-                  },
-                  {
-                    value: 'tablet',
-                    label: formatMessage(messages.tablet),
-                  },
-                  {
-                    value: 'phone',
-                    label: formatMessage(messages.phone),
-                  },
-                ]}
-                onChange={(option: IOption) => setPreviewDevice(option.value)}
-                value={previewDevice}
-              />
-            </Box>
-          </>
+        {displayPreviewDevice && (
+          <Box mb="20px">
+            <Select
+              label={formatMessage(messages.bgHeaderPreviewSelectLabel)}
+              id="display-preview-device"
+              options={[
+                {
+                  value: 'desktop',
+                  label: formatMessage(messages.desktop),
+                },
+                {
+                  value: 'tablet',
+                  label: formatMessage(messages.tablet),
+                },
+                {
+                  value: 'phone',
+                  label: formatMessage(messages.phone),
+                },
+              ]}
+              onChange={(option: IOption) => setPreviewDevice(option.value)}
+              value={previewDevice}
+            />
+          </Box>
         )}
-        <HeaderImageDropzone
-          onAdd={bannerImageAddHandler}
-          onRemove={bannerImageRemoveHandler}
-          overlayColor={bannerOverlayColor}
-          overlayOpacity={bannerOverlayOpacity}
-          headerError={bannerError}
-          header_bg={headerLocalDisplayImage}
-          previewDevice={previewDevice}
-          layout={bannerLayout || 'full_width_banner_layout'}
-        />
+        {isImageSaved ? (
+          <ImageCropper
+            image={headerLocalDisplayImage}
+            onComplete={onAddImage}
+          />
+        ) : (
+          <HeaderImageDropzone
+            onAdd={bannerImageAddHandler}
+            onRemove={bannerImageRemoveHandler}
+            overlayColor={bannerOverlayColor}
+            overlayOpacity={bannerOverlayOpacity}
+            headerError={bannerError}
+            header_bg={headerLocalDisplayImage}
+            previewDevice={previewDevice}
+            layout={bannerLayout || 'full_width_banner_layout'}
+          />
+        )}
       </SectionField>
-      {/* We only allow the overlay for the full-width banner layout for the moment. */}
-      {bannerLayout === 'full_width_banner_layout' && headerLocalDisplayImage && (
+      {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
+      {displayOverlayControls && (
         <>
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.imageOverlayColor} />
-            </Label>
             <ColorPickerInput
+              id="image-overlay-color"
+              label={formatMessage(messages.imageOverlayColor)}
               type="text"
               value={
                 // default values come from the theme
@@ -229,4 +245,4 @@ const BannerImageField = ({
   );
 };
 
-export default injectIntl(BannerImageField);
+export default BannerImageField;
