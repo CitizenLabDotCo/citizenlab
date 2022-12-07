@@ -82,7 +82,7 @@ nl:
       "password_reset": Wachtwoord resetten - alle gebruikers
       "project_moderation_rights_received": Projectmoderatorrechten ontvangen - projectbeheerders
       "project_folder_moderation_rights_received": Mapbeheerdersrechten ontvangen
-      "project_phase_started": Nieuwe projectfase - alle gebruikers
+      "project_phase_started": Nieuwe projectfase - deelnemers aan project
       "project_phase_upcoming": Opkomende nieuwe projectfase - admins en projectbeheerders
       "status_change_of_commented_idea": Statuswijziging van een idee waar je op reageerde - alle gebruikers
       "status_change_of_commented_initiative": Statuswijziging van een initiatief waar je op reageerde - alle gebruikers
