@@ -9,6 +9,7 @@ import { SectionTitle } from 'components/admin/Section';
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';
 import PageWrapper from 'components/admin/PageWrapper';
 import { Text } from '@citizenlab/cl2-component-library';
+import ReportRow from '../../components/ReportBuilderPage/ReportRow';
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
 
 // i18n
@@ -42,9 +43,12 @@ const ReportBuilder = () => {
         <EmptyState onOpenModal={openModal} />
       ) : (
         <PageWrapper>
-          <Text fontSize="l" color="primary">
+          <Text fontSize="l" color="primary" mt="0px" mb="32px">
             <FormattedMessage {...messages.viewReports} />
           </Text>
+          {reports.map((report) => (
+            <ReportRow key={report.id} report={report} />
+          ))}
         </PageWrapper>
       )}
       <CreateReportModal open={modalOpen} onClose={closeModal} />

@@ -30,12 +30,16 @@ export interface Reports {
   data: Report[];
 }
 
+export function reportsStream() {
+  return streams.get<Reports>({ apiEndpoint });
+}
+
 export async function createReport(name: string) {
   return streams.add(apiEndpoint, {
     report: { name },
   });
 }
 
-export function reportsStream() {
-  return streams.get<Reports>({ apiEndpoint });
+export async function deleteReport(id: string) {
+  return streams.delete(`${apiEndpoint}/${id}`, id);
 }
