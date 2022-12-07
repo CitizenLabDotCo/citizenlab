@@ -198,10 +198,10 @@ export const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(field.input_type === 'linear_scale' ||
-          (field.input_type === 'select' && {
-            logic: field.logic,
-          })),
+        ...((field.input_type === 'linear_scale' ||
+          field.input_type === 'select') && {
+          logic: field.logic,
+        }),
         required: field.required,
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
