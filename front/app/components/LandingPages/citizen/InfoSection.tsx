@@ -1,13 +1,13 @@
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { colors, media } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
+import ResolveTextVariables from 'components/ResolveTextVariables';
 import T from 'components/T';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import React from 'react';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { isEmptyMultiloc } from 'utils/helperUtils';
-import ResolveTextVariables from 'components/ResolveTextVariables';
+import { colors, media } from 'utils/styleUtils';
 
 const StyledQuillEditedContent = styled(QuillEditedContent)`
   h1,
@@ -23,7 +23,6 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
 
 const StyledContentContainer = styled(ContentContainer)`
   width: 100%;
-  max-width: 750px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 80px;
