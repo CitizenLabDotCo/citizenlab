@@ -22,7 +22,11 @@ const StyledBackgroundImage = styled(Image)`
   position: absolute;
 `;
 
-const EmptyState = () => {
+interface Props {
+  onOpenModal: () => void;
+}
+
+const EmptyState = ({ onOpenModal }: Props) => {
   return (
     <Box background="white" mb="36px" position="relative" height="460px">
       <StyledBackgroundImage alt="" src={EmptyProjectsImage} />
@@ -40,7 +44,12 @@ const EmptyState = () => {
           <Text>
             <FormattedMessage {...messages.emptyStateDescription} />
           </Text>
-          <Button mt="8px" py="6px" bgColor={colors.primary}>
+          <Button
+            mt="8px"
+            py="6px"
+            bgColor={colors.primary}
+            onClick={onOpenModal}
+          >
             <FormattedMessage {...messages.emptyStateButtonText} />
           </Button>
         </Box>
