@@ -82,7 +82,7 @@ it:
       "password_reset": Reset della password - tutti gli utenti
       "project_moderation_rights_received": Diritti di moderazione del progetto ricevuti - responsabili del progetto
       "project_folder_moderation_rights_received": Diritti di gestione delle cartelle ricevuti
-      "project_phase_started": Nuova fase del progetto - tutti gli utenti
+      "project_phase_started": Nuova fase del progetto - partecipanti al progetto
       "project_phase_upcoming": Prossima nuova fase del progetto - amministratori e responsabili di progetto
       "status_change_of_commented_idea": Cambio di stato di un'idea che hai commentato - tutti gli utenti
       "status_change_of_commented_initiative": Cambio di stato di una proposta che hai commentato - tutti gli utenti
@@ -280,7 +280,7 @@ it:
       by_author: 'da %{authorName}'
       commented: '%{authorFirstName} ha commentato:'
       cta_reply_to: 'Visualizza il commento di %{commentAuthor}''s'
-      days_ago: '%{numberOfDays} giorni fa'
+      days_ago: '%{numberOfDays} giorni fa da'
       event_description: '%{authorName} ha aggiunto un nuovo commento sulla tua piattaforma.'
       main_header: '%{firstName}, un nuovo commento è stato inserito sulla tua piattaforma'
       subject: 'Un nuovo commento è stato inserito sulla piattaforma di %{organizationName}'
@@ -305,7 +305,7 @@ it:
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} ha commentato:'
       cta_reply_to: 'Rispondi a %{commentAuthor}'
-      days_ago: '%{numberOfDays} giorni fa'
+      days_ago: '%{numberOfDays} giorni fa da'
       event_description: '%{commentAuthor} ha commentato l''idea ''%{ideaTitle}'' che hai votato. Partecipa alla discussione sulla piattaforma di %{organizationName}!'
       main_header: '%{firstName}, c''è un nuovo commento sull''idea che hai votato'
       subject: 'C''è un nuovo commento sull''idea che hai votato'
@@ -324,7 +324,7 @@ it:
       by_author: 'da %{authorName}'
       commented: '%{authorFirstName} ha commentato:'
       cta_reply_to: 'Dai un feedback a %{authorName}'
-      days_ago: '%{numberOfDays} giorni fa'
+      days_ago: '%{numberOfDays} giorni fa da'
       event_description: '%{authorName} ha pubblicato una nuova idea sulla tua piattaforma. Scoprila subito, dai un feedback o cambia il suo stato!'
       main_header: '%{firstName}, una nuova idea è stata pubblicata sulla tua piattaforma'
       subject: 'Qualcuno ha pubblicato una nuova idea sulla piattaforma di %{organizationName}'
