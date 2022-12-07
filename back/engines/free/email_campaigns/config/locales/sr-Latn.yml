@@ -82,7 +82,7 @@ sr-Latn:
       "password_reset": Resetovanje lozinke - svi korisnici
       "project_moderation_rights_received": Dodeljena prava za moderaciju projekta - menadžeri projekata
       "project_folder_moderation_rights_received": Stečena su prava menadžera projekta
-      "project_phase_started": Nova faza projekta - svi korisnici
+      "project_phase_started": Nova faza projekta - učesnici projekta
       "project_phase_upcoming": Buduće faze projekta - administratori i menadžeri projekata
       "status_change_of_commented_idea": Promena statusa ideje koju ste komentarisali - svi korisnici
       "status_change_of_commented_initiative": Promena statusa predloga koji ste komentarisali - svi korisnici
@@ -102,7 +102,7 @@ sr-Latn:
       "link_terms_conditions": "Uslovi korišćenja"
       "link_unsubscribe": "Odjavi se"
       "powered_by": "Powered by"
-      "statement": "Ovaj email vam je poslao CitizenLab u ime %{organizationName}, jer ste registrovani korisnik %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
+      "statement": "Ovaj email vam je poslat od strane internet stranice %{organizationName}, jer ste registrovani korisnik platforme %{organizationLink}. Možete da kliknete na %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
       "unsubscribe_text": "odjavitе se"
     comment_deleted_by_admin:
       reason: 'Razlog zašto je vaš komentar izbrisan:'
@@ -353,7 +353,7 @@ sr-Latn:
       event_description: '%{officialName} je objavio novost o ideji ''%{ideaTitle}''. Kliknite na dugme u nastavku da biste započeli konverzaciju sa %{officialName}.'
       subject: 'Ideja za koju ste glasali zvanično je ažurirana na platformi %{organizationName}'
       preheader: '%{officialName} je objavio zvanično obaveštenje o ideji za koju ste glasali'
-      main_header: "[empty string]"
+      main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'od %{authorName}'
       updated: '%{officialName} je napisao:'
@@ -528,13 +528,13 @@ sr-Latn:
       preheader: 'Evo šta možete da uradite na %{organizationName} platformi '
     idea_published:
       action_add_image: '%{addImageLink} da biste povećali vidljivost'
-      action_published_idea: 'Postavljena objava'
+      action_published_idea: 'Objavljena ideja'
       action_send_email: 'Pošaljite kontaktima %{sendEmailLink}'
       action_share_fb: 'Obavestite svoje prijatelje na %{fbLink}'
       action_share_link: 'Delite putem bilo kog kanala kopiranjem %{link}'
       action_share_twitter: 'Obavestite svoje pratioce na %{twitterLink}'
       add_image: 'Dodajte sliku'
-      cta_view_idea: 'Idite na svoj post'
+      cta_view_idea: 'Idite na svoju ideju'
       event_description: '%{firstName}, vaša objava je postavljena na %{organizationName} participativnu platformu. Bićete obavešteni kada ljudi stupe u interakciju sa njom. U nastavku saznajte koje sledeće korake možete preduzeti.'
       link: link
       main_header: 'Objavili ste ideju! Hajde da se pobrinemo da bude pročitana.'
@@ -543,7 +543,7 @@ sr-Latn:
       see_you: 'Vidimo se uskoro na platformi!'
       send_email: e-mail
       subject: 'Vaša ideja na %{organizationName} platformi'
-      message_next_steps: "[empty string]"
+      message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Nedeljno obaveštenje o vašim predlozima'
       preheader: 'Šta se dogodilo sa vašim predlozima u proteklih nedelju dana?'
