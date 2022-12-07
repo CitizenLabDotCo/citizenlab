@@ -4,22 +4,27 @@ class FormLogicService
   def initialize(fields)
     @fields = fields
     @field_index = fields.index_by(&:id)
+    @option_index = fields.flat_map(&:options).index_by(&:id)
   end
 
   def ui_schema_rules_for(target_field)
     target_field_rules[target_field.id]
   end
 
-  def replace_temp_ids!(temp_ids_to_ids_mapping)
+  def replace_temp_ids!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
     fields.each do |field|
       next if field.logic.blank?
 
       logic = field.logic
       rules = logic.fetch('rules', [])
       rules.each do |rule|
+        value = rule['if']
+        if option_temp_ids_to_ids_mapping.include?(value)
+          rule['if'] = option_temp_ids_to_ids_mapping[value]
+        end
         target_id = rule['goto_page_id']
-        if temp_ids_to_ids_mapping.include?(target_id)
-          rule['goto_page_id'] = temp_ids_to_ids_mapping[target_id]
+        if page_temp_ids_to_ids_mapping.include?(target_id)
+          rule['goto_page_id'] = page_temp_ids_to_ids_mapping[target_id]
         end
       end
       field.update! logic: logic
@@ -34,7 +39,7 @@ class FormLogicService
 
   private
 
-  attr_reader :fields, :field_index
+  attr_reader :fields, :field_index, :option_index
 
   def no_logic?(field)
     field.logic == {}
@@ -134,6 +139,9 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
+    if %w[select multiselect].include? field.input_type
+      value = option_index[value].key
+    end
     {
       effect: 'HIDE',
       condition: {
