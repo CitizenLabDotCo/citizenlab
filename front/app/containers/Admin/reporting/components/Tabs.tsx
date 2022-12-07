@@ -24,13 +24,13 @@ import clHistory from 'utils/cl-router/history';
 import { ITab } from 'typings';
 
 interface Props {
+  reportBuilderEnabled: boolean;
   children?: React.ReactNode;
 }
 
-const DashboardTabs = ({ children }: Props) => {
+const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
 
   const [additionalTabs, setAdditionalTabs] = useState<ITab[]>([]);
   const [redirected, setRedirected] = useState(false);
@@ -79,4 +79,15 @@ const DashboardTabs = ({ children }: Props) => {
   );
 };
 
-export default DashboardTabs;
+const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
+  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
+  if (reportBuilderEnabled === undefined) return null;
+
+  return (
+    <DashboardTabs reportBuilderEnabled={reportBuilderEnabled}>
+      {children}
+    </DashboardTabs>
+  );
+};
+
+export default DashboardTabsWrapper;
