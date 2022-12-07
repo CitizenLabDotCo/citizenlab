@@ -64,7 +64,7 @@ const FormBuilderSettings = ({
     formCustomFields?.map((field) => {
       if (field.input_type === 'page') {
         pageArray.push({
-          value: field.id || field.temp_id,
+          value: field.temp_id || field.id,
           label: `${formatMessage(messages.page)} ${getIndexForTitle(
             formCustomFields,
             field

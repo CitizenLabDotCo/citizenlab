@@ -24,7 +24,7 @@ export type IOptionsType = {
 
 export interface IAttributes {
   temp_id: string;
-  logic: { rules: { if: string; goto_page_id: string }[] };
+  logic: { rules: { if: string | number; goto_page_id: string }[] };
   key: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;

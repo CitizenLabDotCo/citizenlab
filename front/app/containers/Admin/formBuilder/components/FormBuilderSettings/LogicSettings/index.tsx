@@ -32,7 +32,7 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
     // Select Field
     let answers = selectOptions
       ? selectOptions.map((option) => ({
-          key: option.id?.toString(),
+          key: option.id || option.temp_id,
           label: option.title_multiloc[locale]?.toString(),
         }))
       : undefined;
@@ -43,7 +43,7 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
         (_, i) => i + 1
       );
       answers = linearScaleOptionArray.map((option) => ({
-        key: option.toString(),
+        key: option,
         label: option.toString(),
       }));
     }

@@ -51,7 +51,7 @@ const FormBuilderToolbox = ({
 
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
-      temp_id: `${uuid4()}`,
+      temp_id: `TEMP-ID-${uuid4()}`,
       logic: {
         rules: [],
       },

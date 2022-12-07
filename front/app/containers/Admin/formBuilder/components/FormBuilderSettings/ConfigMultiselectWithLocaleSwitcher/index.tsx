@@ -30,6 +30,7 @@ import { Locale, CLError } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { uuid4 } from '@sentry/utils';
 
 interface Props {
   name: string;
@@ -167,6 +168,14 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                     updatedChoices[index].title_multiloc[
                                       selectedLocale
                                     ] = value;
+                                    if (
+                                      !updatedChoices[index].id &&
+                                      !updatedChoices[index].temp_id
+                                    ) {
+                                      updatedChoices[
+                                        index
+                                      ].temp_id = `TEMP-ID-${uuid4()}`;
+                                    }
                                     setValue(name, updatedChoices);
                                   }}
                                 />
