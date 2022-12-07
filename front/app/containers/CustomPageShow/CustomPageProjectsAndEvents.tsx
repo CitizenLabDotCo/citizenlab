@@ -26,14 +26,14 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   const adminPublications = useAdminPublications({
     topicIds,
     areaIds,
-    publicationStatusFilter: publicationStatusFilter,
+    publicationStatusFilter,
   });
 
   const paginatedAdminPublications = useAdminPublications({
     pageSize: 6,
     topicIds,
     areaIds,
-    publicationStatusFilter: publicationStatusFilter,
+    publicationStatusFilter,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });

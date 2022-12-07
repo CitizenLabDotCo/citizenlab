@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
+import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
 
 // components
 import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
@@ -13,7 +13,6 @@ import tracks from './tracks';
 // typings
 import { PublicationStatus } from 'services/projects';
 import useAdminPublications from 'hooks/useAdminPublications';
-import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
 
 export type PublicationTab = PublicationStatus | 'all';
 
@@ -38,7 +37,7 @@ const ProjectAndFolderCards = ({
   const rootLevelOnly = !search || search.length === 0;
 
   const { counts, onChangeTopics, onChangeAreas, onChangeSearch } =
-    useAdminPublicationsStatusCount({
+    useAdminPublicationsStatusCounts({
       publicationStatusFilter,
       rootLevelOnly,
       removeNotAllowedParents: true,
