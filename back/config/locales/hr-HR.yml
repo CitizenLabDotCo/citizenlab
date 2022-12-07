@@ -142,7 +142,7 @@ hr:
         question:
           title: Šta je vaše pitanje ?
         contribution:
-          title: Šta je vaš prilog ?
+          title: Čime ćete doprinijeti?
         project:
           title: Šta je vaš projekat ?
         issue:
@@ -152,7 +152,7 @@ hr:
       details:
         title: Pojedinosti
       attachements:
-        title: Slike i prilozi
+        title: Slike i privici
       extra:
         title: Dodatne informacije
   custom_field_options:
@@ -205,3 +205,6 @@ hr:
       title: 'Vaše pitanje'
       option1: '1. opcija'
       option2: '2. opcija'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
