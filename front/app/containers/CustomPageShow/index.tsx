@@ -48,7 +48,13 @@ const PageTitle = styled.h1`
 `;
 
 const AttachmentsContainer = styled(ContentContainer)`
-  margin-bottom: 30px;
+  background: #fff;
+  padding: 50px 20px 50px;
+
+  ${media.tablet`
+    padding-top: 30px;
+    padding-bottom: 30px;
+  `}
 `;
 
 const NoBannerContainer = styled(ContentContainer)`
