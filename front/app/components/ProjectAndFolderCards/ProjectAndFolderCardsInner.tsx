@@ -58,9 +58,7 @@ const ProjectAndFolderCardsInner = ({
   adminPublications,
   statusCountsWithoutFilters,
 }: Props) => {
-  const [currentTab, setCurrentTab] = useState<PublicationTab | undefined>(
-    undefined
-  );
+  const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
 
   useEffect(() => {
     if (isNilOrError(statusCounts) || currentTab) return;
