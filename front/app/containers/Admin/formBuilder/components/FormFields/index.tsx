@@ -49,6 +49,7 @@ type PageStructure = {
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   dropRow?: (initialIndex: number, finalIndex: number) => void;
+  dropPage?: (initialIndex: number, finalIndex: number) => void;
   isEditingDisabled: boolean;
   selectedFieldId?: string;
 }
@@ -56,6 +57,7 @@ interface FormFieldsProps {
 const FormFields = ({
   onEditField,
   dropRow,
+  dropPage,
   selectedFieldId,
   isEditingDisabled,
 }: FormFieldsProps) => {
@@ -91,7 +93,7 @@ const FormFields = ({
               <PageRow
                 id={pageGrouping.page.id}
                 index={index}
-                dropRow={dropRow}
+                dropRow={dropPage}
                 py="0px"
               >
                 <FieldElement

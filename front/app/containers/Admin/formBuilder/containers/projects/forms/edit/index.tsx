@@ -25,6 +25,7 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { movePageWithQuestions } from './utils';
 
 // services
 import {
@@ -112,7 +113,7 @@ export const FormEdit = ({
     formState: { isSubmitting, errors },
   } = methods;
 
-  const { fields, append, remove, move } = useFieldArray({
+  const { fields, append, remove, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -183,6 +184,11 @@ export const FormEdit = ({
     if (!isNilOrError(selectedField)) {
       setSelectedField({ ...selectedField, index: toIndex });
     }
+  };
+
+  const dropPage = (fromIndex: number, toIndex: number) => {
+    const newFields = movePageWithQuestions(fields, fromIndex, toIndex);
+    replace(newFields);
   };
 
   const hasErrors = !!Object.keys(errors).length;
@@ -273,6 +279,7 @@ export const FormEdit = ({
                     <FormFields
                       onEditField={setSelectedField}
                       dropRow={dropRow}
+                      dropPage={dropPage}
                       selectedFieldId={selectedField?.id}
                       isEditingDisabled={isEditingDisabled}
                     />
