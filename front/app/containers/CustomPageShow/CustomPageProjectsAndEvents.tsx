@@ -70,7 +70,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   return (
     <>
       {page.attributes.projects_enabled && (
-        <ProjectCardsContentContainer>
+        <ProjectCardsContentContainer mode="page">
           <ProjectAndFolderCardsInner
             statusCounts={statusCountsWithoutFilters}
             publicationStatusFilter={publicationStatusFilter}
@@ -85,6 +85,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
       )}
       {page.attributes.events_widget_enabled && (
         <EventsContentContainer
+          mode="page"
           projectsEnabled={page.attributes.projects_enabled}
         >
           <EventsWidget staticPageId={page.id} />
