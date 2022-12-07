@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Затвори",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Closed",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Yes, delete survey results",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Садржај",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Подразумевано",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Избриши",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Избриши",
