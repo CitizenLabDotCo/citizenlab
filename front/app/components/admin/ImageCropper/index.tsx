@@ -40,7 +40,6 @@ const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
           aspect={3}
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
-          showGrid={false}
           objectFit="contain"
         />
       )}

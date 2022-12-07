@@ -130,8 +130,11 @@ const BannerImageField = ({
     [debounceHandleOverlayOpacityOnChange]
   );
 
-  const isImageSaved =
+  const imageIsNotSaved =
     headerLocalDisplayImage && !headerLocalDisplayImage[0].remote;
+
+  const displayImageCropper =
+    imageIsNotSaved && bannerLayout === 'fixed_ratio_layout';
 
   const displayPreviewDevice =
     !isNilOrError(headerLocalDisplayImage) &&
@@ -192,7 +195,7 @@ const BannerImageField = ({
             />
           </Box>
         )}
-        {isImageSaved ? (
+        {displayImageCropper ? (
           <ImageCropper
             image={headerLocalDisplayImage}
             onComplete={onAddImage}
