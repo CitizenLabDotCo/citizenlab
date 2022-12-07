@@ -1552,7 +1552,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Διεξαγωγή άσκησης κατανομής του προϋπολογισμού",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "Δημιουργία έρευνας εντός της πλατφόρμας",
   "app.utils.AdminPage.ProjectEdit.createPoll": "Δημιουργία δημοσκόπησης",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Ενσωμάτωση εξωτερικής έρευνας",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "Δημιουργία εξωτερικής έρευνας",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Εύρεση εθελοντών",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Συλλογή εισηγήσεων και ανατροφοδότησης",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Κοινοποιείστε πληροφορίες",
