@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Sluiten",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Gesloten",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Ja, verwijder enquêteresultaten",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Inhoud",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Standaard",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Verwijder",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Verwijder",
