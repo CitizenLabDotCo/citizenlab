@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Stäng",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Stängd",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Ja, ta bort undersökningsresultat",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Innehåll",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Standard",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Radera",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Radera",
