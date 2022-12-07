@@ -44,7 +44,7 @@ class FormLogicService
     logic = field.logic
     if logic.keys == ['rules']
       all_rules_are_valid = logic['rules'].all? do |rule|
-        rule.keys == %w[if goto_page_id] || (rule.keys == %w[if goto] && rule['goto'] == 'survey_end')
+        rule.keys == %w[if goto_page_id]
       end
       return true if all_rules_are_valid
     end
@@ -61,9 +61,8 @@ class FormLogicService
 
   def valid_rules?(field)
     field.logic['rules'].all? do |rule|
-      next true if rule.key? 'goto' # Value for `goto` has already been checked in `valid_structure?`
-
       target_id = rule['goto_page_id'] # Present because we passed the `valid_structure?` check.
+      next true if target_id == 'survey_end'
 
       # Order is important here, because `target_after_source?` and `target_is_page?`
       # rely on `valid_target_id?` to return true. In those methods,
@@ -154,10 +153,10 @@ class FormLogicService
 
         rules.each do |rule|
           value = rule['if']
-          pages_to_hide = if rule['goto'] == 'survey_end'
+          target_id = rule['goto_page_id']
+          pages_to_hide = if target_id == 'survey_end'
             pages_after(index)
           else
-            target_id = rule['goto_page_id']
             pages_in_between(index, target_id)
           end
           pages_to_hide.each do |page|
