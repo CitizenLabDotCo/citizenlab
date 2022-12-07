@@ -1,28 +1,12 @@
 import moment, { Moment } from 'moment';
 import { parseMonths, parseWeeks, parseDays } from './timeSeries';
 
-interface BaseRow {
-  count: number;
-  count_visitor_id: number;
-}
-
 type TimeSeriesResponse = TimeSeriesResponseRow[];
 
-type TimeSeriesResponseRow =
-  | TimeSeriesResponseMonth
-  | TimeSeriesResponseWeek
-  | TimeSeriesResponseDay;
-
-interface TimeSeriesResponseMonth extends BaseRow {
-  'dimension_date_last_action.month': string;
-}
-
-interface TimeSeriesResponseWeek extends BaseRow {
-  'dimension_date_last_action.week': string;
-}
-
-interface TimeSeriesResponseDay extends BaseRow {
-  'dimension_date_last_action.date': string;
+interface TimeSeriesResponseRow {
+  count: number;
+  count_visitor_id: number;
+  first_dimension_date_last_action_date: string;
 }
 
 interface TimeSeriesRow {
@@ -40,7 +24,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   return {
     visitors: row.count_visitor_id,
     visits: row.count,
-    date: getDate(row).format('YYYY-MM-DD'),
+    date: date.format('YYYY-MM-DD'),
   };
 };
 
@@ -51,15 +35,7 @@ const getEmptyRow = (date: Moment) => ({
 });
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  if ('dimension_date_last_action.month' in row) {
-    return moment(row['dimension_date_last_action.month']);
-  }
-
-  if ('dimension_date_last_action.week' in row) {
-    return moment(row['dimension_date_last_action.week']);
-  }
-
-  return moment(row['dimension_date_last_action.date']);
+  return moment(row['first_dimension_date_last_action_date']);
 };
 
 describe('parseMonths', () => {
@@ -67,22 +43,22 @@ describe('parseMonths', () => {
     {
       count: 3,
       count_visitor_id: 3,
-      'dimension_date_last_action.month': '2022-01',
+      first_dimension_date_last_action_date: '2022-01-30',
     },
     {
       count: 1,
       count_visitor_id: 1,
-      'dimension_date_last_action.month': '2021-11',
+      first_dimension_date_last_action_date: '2021-11-11',
     },
     {
       count: 4,
       count_visitor_id: 4,
-      'dimension_date_last_action.month': '2022-02',
+      first_dimension_date_last_action_date: '2022-02-01',
     },
     {
       count: 2,
       count_visitor_id: 2,
-      'dimension_date_last_action.month': '2021-12',
+      first_dimension_date_last_action_date: '2021-12-02',
     },
   ];
 
@@ -248,12 +224,12 @@ describe('parseMonths', () => {
   it('works with large gap', () => {
     const data = [
       {
-        'dimension_date_last_action.month': '2021-10',
+        first_dimension_date_last_action_date: '2021-10-11',
         count_visitor_id: 1,
         count: 1,
       },
       {
-        'dimension_date_last_action.month': '2022-02',
+        first_dimension_date_last_action_date: '2022-02-02',
         count_visitor_id: 1,
         count: 1,
       },
@@ -278,22 +254,22 @@ describe('parseWeeks', () => {
     {
       count: 3,
       count_visitor_id: 3,
-      'dimension_date_last_action.month': '2022-01-03',
+      first_dimension_date_last_action_date: '2022-01-07',
     },
     {
       count: 1,
       count_visitor_id: 1,
-      'dimension_date_last_action.week': '2021-12-20',
+      first_dimension_date_last_action_date: '2021-12-20',
     },
     {
       count: 4,
       count_visitor_id: 4,
-      'dimension_date_last_action.month': '2022-01-10',
+      first_dimension_date_last_action_date: '2022-01-12',
     },
     {
       count: 2,
       count_visitor_id: 2,
-      'dimension_date_last_action.month': '2021-12-27',
+      first_dimension_date_last_action_date: '2021-12-27',
     },
   ];
 
@@ -459,12 +435,12 @@ describe('parseWeeks', () => {
   it('works with large gap', () => {
     const data = [
       {
-        'dimension_date_last_action.month': '2022-01-03',
+        first_dimension_date_last_action_date: '2022-01-03',
         count_visitor_id: 1,
         count: 1,
       },
       {
-        'dimension_date_last_action.month': '2022-02-07',
+        first_dimension_date_last_action_date: '2022-02-07',
         count_visitor_id: 1,
         count: 1,
       },
@@ -489,12 +465,12 @@ describe('parseDays', () => {
   it('works', () => {
     const data: TimeSeriesResponse = [
       {
-        'dimension_date_last_action.date': '2021-12-30',
+        first_dimension_date_last_action_date: '2021-12-30',
         count: 1,
         count_visitor_id: 1,
       },
       {
-        'dimension_date_last_action.date': '2022-01-02',
+        first_dimension_date_last_action_date: '2022-01-02',
         count: 1,
         count_visitor_id: 1,
       },

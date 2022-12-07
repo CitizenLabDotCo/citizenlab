@@ -45,15 +45,6 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.navbarItemTitle',
     defaultMessage: 'Title in navigation bar',
   },
-  slugLabel: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugLabel',
-    defaultMessage: 'Page slug',
-  },
-  slugTooltip: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugTooltip',
-    defaultMessage:
-      'The slug is the unique set of words at the end of the page’s web address, or URL.',
-  },
   slugRegexError: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRegexError',
     defaultMessage:

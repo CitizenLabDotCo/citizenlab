@@ -82,7 +82,7 @@ sv:
       "password_reset": Lösenordsåterställning – alla användare
       "project_moderation_rights_received": Rättigheter för projektmoderering har erhållits – projektledare
       "project_folder_moderation_rights_received": Rättigheter som mapphanterare har erhållits
-      "project_phase_started": Ny projektfas – alla användare
+      "project_phase_started": Ny projektfas – projektdeltagare
       "project_phase_upcoming": Kommande ny projektfas – administratörer och projektledare
       "status_change_of_commented_idea": Statusändring för en idé du kommenterat – alla användare
       "status_change_of_commented_initiative": Statusändring för ett förslag du kommenterat – alla användare

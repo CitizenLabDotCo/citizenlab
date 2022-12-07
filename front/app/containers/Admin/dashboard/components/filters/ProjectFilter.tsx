@@ -4,23 +4,20 @@ import styled from 'styled-components';
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
-// hooks
+// i18n
 import useLocalize, { Localize } from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
 
-// typings
-import { IOption } from 'typings';
-import { IProjectData, PublicationStatus } from 'services/projects';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { IOption, FormatMessage } from 'typings';
+import { IProjectData, PublicationStatus } from 'services/projects';
 
 const StyledSelect = styled(Select)<{ padding?: string }>`
   ${({ padding }) =>
@@ -51,7 +48,7 @@ interface Props extends DataProps, InputProps {}
 const generateProjectOptions = (
   projectsList: IProjectData[],
   localize: Localize,
-  { formatMessage }: WrappedComponentProps['intl']
+  formatMessage: FormatMessage
 ): IOption[] => {
   const projectOptions = projectsList.map((project) => ({
     value: project.id,
@@ -69,29 +66,26 @@ const ProjectFilter = ({
   currentProjectFilter,
   hideLabel,
   placeholder,
-  width,
   padding,
   onProjectFilter,
-  intl,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   if (isNilOrError(projectsList)) return null;
 
   const projectFilterOptions = generateProjectOptions(
     projectsList,
     localize,
-    intl
+    formatMessage
   );
 
   return (
-    <Box width={width ?? '32%'} className="intercom-admin-project-filter">
+    <Box className="intercom-admin-project-filter">
       <StyledSelect
         id="projectFilter"
         label={
-          !hideLabel ? (
-            <FormattedMessage {...messages.labelProjectFilter} />
-          ) : undefined
+          !hideLabel ? formatMessage(messages.labelProjectFilter) : undefined
         }
         onChange={onProjectFilter}
         value={currentProjectFilter || ''}
@@ -102,8 +96,6 @@ const ProjectFilter = ({
     </Box>
   );
 };
-
-const ProjectFilterWithIntl = injectIntl(ProjectFilter);
 
 const publicationStatuses: PublicationStatus[] = [
   'draft',
@@ -116,6 +108,6 @@ export default (props: InputProps) => (
     publicationStatuses={publicationStatuses}
     filterCanModerate={true}
   >
-    {(projects) => <ProjectFilterWithIntl projects={projects} {...props} />}
+    {(projects) => <ProjectFilter projects={projects} {...props} />}
   </GetProjects>
 );

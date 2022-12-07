@@ -65,25 +65,15 @@ module Notifications
       phase = activity.item
 
       if phase.project
-        user_scope = User.where.not(id: UserRoleService.new.moderators_for(phase))
-        ActiveRecord::Base.transaction do
-          # We're using a transaction to garantee that
-          # created notifications are rolled back when
-          # something went wrong, thereby preventing users
-          # to receive multiple notifications, for each
-          # time the background job is retried. With
-          # PostgreSQL's default repeatable read isolation
-          # level, this transaction cannot be obstructed by
-          # other transactions.
-          ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
-            next unless service.participation_possible_for_context? phase, recipient
+        user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
+        ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
+          next unless service.participation_possible_for_context? phase, recipient
 
-            new(
-              recipient: recipient,
-              phase: phase,
-              project: phase.project
-            )
-          end
+          new(
+            recipient: recipient,
+            phase: phase,
+            project: phase.project
+          )
         end
       else
         []
