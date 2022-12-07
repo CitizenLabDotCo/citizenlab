@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Changed
+
+- [CL-2159] Do not allow registered user to take a native survey twice
+
 ## 2022-12-02 (2)
 
 ### Fixed
