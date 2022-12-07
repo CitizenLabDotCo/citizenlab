@@ -130,9 +130,10 @@ const BannerImageField = ({
     [debounceHandleOverlayOpacityOnChange]
   );
 
-  const isImageSaved = headerLocalDisplayImage[0].remote;
+  const isImageSaved =
+    headerLocalDisplayImage && headerLocalDisplayImage[0].remote;
 
-  const displayImageCropper = headerLocalDisplayImage && !isImageSaved;
+  const displayImageCropper = !isImageSaved;
 
   const displayPreviewDevice =
     !isNilOrError(headerLocalDisplayImage) &&
