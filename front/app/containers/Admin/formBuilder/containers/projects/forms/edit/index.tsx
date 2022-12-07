@@ -25,7 +25,7 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { movePageWithQuestions } from './utils';
+import { movePageWithQuestions, moveField } from './utils';
 
 // services
 import {
@@ -151,38 +151,23 @@ export const FormEdit = ({
     }
   };
 
-  const dropRow = (fromIndex: number, toIndex: number) => {
-    const elementBeingDragged = fields[fromIndex];
-    const nextPageIndex = fields.findIndex(
-      (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
-    );
-    const shouldMovePageToBeforeNextPage =
-      fromIndex === 0 &&
-      elementBeingDragged.input_type === 'page' &&
-      nextPageIndex > toIndex;
-    const shouldMovePageToNextPage =
-      fromIndex === 0 &&
-      elementBeingDragged.input_type === 'page' &&
-      nextPageIndex <= toIndex;
-
-    if (shouldMovePageToBeforeNextPage) {
-      return;
-    } else if (shouldMovePageToNextPage) {
-      move(fromIndex, toIndex);
-      move(nextPageIndex - 1, 0);
-      return;
-    }
-
-    // Only pages should be draggable to index 0
-    const shouldMove =
-      elementBeingDragged.input_type === 'page' || toIndex !== 0;
-
-    if (shouldMove) {
-      move(fromIndex, toIndex);
-    }
+  const dropField = (
+    fromFieldIndex: number,
+    toFieldIndex: number,
+    fromPageIndex: number,
+    toPageIndex: number
+  ) => {
+    moveField({
+      fields,
+      fromFieldIndex,
+      toFieldIndex,
+      fromPageIndex,
+      toPageIndex,
+      move,
+    });
 
     if (!isNilOrError(selectedField)) {
-      setSelectedField({ ...selectedField, index: toIndex });
+      setSelectedField({ ...selectedField, index: toFieldIndex });
     }
   };
 
@@ -278,7 +263,7 @@ export const FormEdit = ({
                   >
                     <FormFields
                       onEditField={setSelectedField}
-                      dropRow={dropRow}
+                      dropField={dropField}
                       dropPage={dropPage}
                       selectedFieldId={selectedField?.id}
                       isEditingDisabled={isEditingDisabled}

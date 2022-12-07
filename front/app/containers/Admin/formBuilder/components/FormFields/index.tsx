@@ -48,7 +48,12 @@ type PageStructure = {
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
-  dropRow?: (initialIndex: number, finalIndex: number) => void;
+  dropField?: (
+    initialFieldIndex: number,
+    finalFieldIndex: number,
+    initialPageIndex?: number,
+    finalPageIndex?: number
+  ) => void;
   dropPage?: (initialIndex: number, finalIndex: number) => void;
   isEditingDisabled: boolean;
   selectedFieldId?: string;
@@ -56,7 +61,7 @@ interface FormFieldsProps {
 
 const FormFields = ({
   onEditField,
-  dropRow,
+  dropField,
   dropPage,
   selectedFieldId,
   isEditingDisabled,
@@ -89,17 +94,20 @@ const FormFields = ({
       <Box py="32px" height="100%" overflowY="auto" overflowX="hidden">
         <List key={nestedData.length}>
           {nestedData.map((pageGrouping, index) => {
+            const pageId = pageGrouping.page.id;
+
             return (
               <PageRow
                 id={pageGrouping.page.id}
-                index={index}
+                pageIndex={index}
                 dropRow={dropPage}
                 py="0px"
               >
                 <FieldElement
-                  key={pageGrouping.page.id}
-                  dropRow={dropRow}
+                  key={pageId}
+                  // dropRow={dropField}
                   field={pageGrouping.page}
+                  pageIndex={index}
                   isEditingDisabled={isEditingDisabled}
                   getTranslatedFieldType={getTranslatedFieldType}
                   selectedFieldId={selectedFieldId}
@@ -109,7 +117,8 @@ const FormFields = ({
                   return (
                     <FieldElement
                       key={question.id}
-                      dropRow={dropRow}
+                      dropRow={dropField}
+                      pageIndex={index}
                       field={question}
                       isEditingDisabled={isEditingDisabled}
                       getTranslatedFieldType={getTranslatedFieldType}

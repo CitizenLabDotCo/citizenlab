@@ -13,7 +13,7 @@ import { FlexibleRow } from './FlexibleRow';
 
 export interface SortableRowProps {
   id: string;
-  index: number;
+  pageIndex: number;
   isLastItem?: boolean;
   rowHeight?: string;
   py?: string;
@@ -23,7 +23,7 @@ export interface SortableRowProps {
 }
 
 interface DragItem {
-  index: number;
+  pageIndex: number;
   id: string;
   type: string;
 }
@@ -34,7 +34,7 @@ export const PageRow: FC<SortableRowProps> = ({
   rowHeight,
   py,
   children,
-  index,
+  pageIndex,
   moveRow,
   dropRow,
 }) => {
@@ -54,8 +54,8 @@ export const PageRow: FC<SortableRowProps> = ({
       if (!ref.current) {
         return;
       }
-      const dragIndex = item.index;
-      const hoverIndex = index;
+      const dragIndex = item.pageIndex;
+      const hoverIndex = pageIndex;
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -89,18 +89,18 @@ export const PageRow: FC<SortableRowProps> = ({
       if (moveRow) {
         moveRow(dragIndex, hoverIndex);
       }
-      item.index = hoverIndex;
+      item.pageIndex = hoverIndex;
     },
   });
 
   const [{ isDragging }, drag] = useDrag({
-    item: { type: 'PAGEROW', id, index } as DragObjectWithType,
+    item: { type: 'PAGEROW', id, pageIndex } as DragObjectWithType,
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
     end(item: DragItem) {
       if (dropRow) {
-        dropRow(index, item.index);
+        dropRow(pageIndex, item.pageIndex);
       }
     },
   });

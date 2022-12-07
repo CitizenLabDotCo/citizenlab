@@ -47,7 +47,13 @@ type Props = {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   getTranslatedFieldType: (fieldType: string) => MessageDescriptor;
   selectedFieldId?: string;
-  dropRow?: (initialIndex: number, finalIndex: number) => void;
+  dropRow?: (
+    initialFieldIndex: number,
+    finalFieldIndex: number,
+    initialPageIndex?: number,
+    finalPageIndex?: number
+  ) => void;
+  pageIndex: number;
 };
 
 export const FieldElement = (props: Props) => {
@@ -58,6 +64,7 @@ export const FieldElement = (props: Props) => {
     getTranslatedFieldType,
     selectedFieldId,
     dropRow,
+    pageIndex,
   } = props;
   const {
     watch,
@@ -165,6 +172,7 @@ export const FieldElement = (props: Props) => {
           rowHeight="70px"
           id={field.id}
           index={index}
+          pageIndex={pageIndex}
           dropRow={dropRow}
           accept="ROW"
           dragType="ROW"

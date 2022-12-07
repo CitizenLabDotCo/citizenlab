@@ -14,17 +14,29 @@ import { FlexibleRow } from './FlexibleRow';
 export interface SortableRowProps {
   id: string;
   index: number;
+  pageIndex: number;
   isLastItem?: boolean;
   rowHeight?: string;
   children?: React.ReactNode;
-  moveRow?: (dragIndex: number, hoverIndex: number) => void;
-  dropRow?: (initialIndex: number, finalIndex: number) => void;
+  moveRow?: (
+    dragIndex: number,
+    hoverIndex: number,
+    dragPageIndex?: number,
+    hoverPageIndex?: number
+  ) => void;
+  dropRow?: (
+    initialFieldIndex: number,
+    finalFieldIndex: number,
+    initialPageIndex: number,
+    finalPageIndex: number
+  ) => void;
   accept: string | string[];
   dragType: string;
 }
 
 interface DragItem {
   index: number;
+  pageIndex: number;
   id: string;
   type: string;
 }
@@ -35,6 +47,7 @@ export const SortableRow: FC<SortableRowProps> = ({
   rowHeight,
   children,
   index,
+  pageIndex,
   moveRow,
   dropRow,
   accept,
@@ -59,6 +72,8 @@ export const SortableRow: FC<SortableRowProps> = ({
       }
       const dragIndex = item.index;
       const hoverIndex = index;
+      const dragPageIndex = item.pageIndex;
+      const hoverPageIndex = pageIndex;
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -90,21 +105,22 @@ export const SortableRow: FC<SortableRowProps> = ({
 
       // Perform the move action
       if (moveRow) {
-        moveRow(dragIndex, hoverIndex);
+        moveRow(dragIndex, hoverIndex, dragPageIndex, hoverPageIndex);
       }
       item.index = hoverIndex;
+      item.pageIndex = hoverPageIndex;
     },
   });
 
   const [{ isDragging }, drag] = useDrag({
     // item: { type: 'ROW', id, index } as DragObjectWithType,
-    item: { type: dragType, id, index } as DragObjectWithType,
+    item: { type: dragType, id, index, pageIndex } as DragObjectWithType,
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
     end(item: DragItem) {
       if (dropRow) {
-        dropRow(index, item.index);
+        dropRow(index, item.index, pageIndex, item.pageIndex);
       }
     },
   });

@@ -84,3 +84,71 @@ export const movePageWithQuestions = (
 
   return newArray;
 };
+
+type MoveType = {
+  fields: IFlatCustomField[];
+  fromFieldIndex: number;
+  toFieldIndex: number;
+  fromPageIndex: number;
+  toPageIndex: number;
+  move: (indexA: number, indexB: number) => void;
+};
+
+export const moveField = ({
+  fields,
+  fromFieldIndex,
+  toFieldIndex,
+  toPageIndex,
+  move,
+}: MoveType) => {
+  const elementBeingDragged = fields[fromFieldIndex];
+  const nextPageIndex = fields.findIndex(
+    (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
+  );
+
+  const toPageField = fields
+    .filter((field) => field.input_type === 'page')
+    .find((_page, pageIndex) => toPageIndex === pageIndex);
+  const toPageFieldIndexFromFields = fields.findIndex(
+    (field) => field.id === toPageField?.id
+  );
+  const hasMoreElements = fields.length > toPageFieldIndexFromFields + 1;
+  const hasQuestions =
+    hasMoreElements &&
+    fields[toPageFieldIndexFromFields + 1].input_type !== 'page';
+
+  if (!hasQuestions) {
+    move(fromFieldIndex, toPageFieldIndexFromFields + 1);
+    return;
+  }
+
+  if (fromFieldIndex === toFieldIndex) {
+    move(fromFieldIndex, fromFieldIndex + 1);
+    return;
+  }
+
+  const shouldMovePageToBeforeNextPage =
+    fromFieldIndex === 0 &&
+    elementBeingDragged.input_type === 'page' &&
+    nextPageIndex > toFieldIndex;
+  const shouldMovePageToNextPage =
+    fromFieldIndex === 0 &&
+    elementBeingDragged.input_type === 'page' &&
+    nextPageIndex <= toFieldIndex;
+
+  if (shouldMovePageToBeforeNextPage) {
+    return;
+  } else if (shouldMovePageToNextPage) {
+    move(fromFieldIndex, toFieldIndex);
+    move(nextPageIndex - 1, 0);
+    return;
+  }
+
+  // Only pages should be draggable to index 0
+  const shouldMove =
+    elementBeingDragged.input_type === 'page' || toFieldIndex !== 0;
+
+  if (shouldMove) {
+    move(fromFieldIndex, toFieldIndex);
+  }
+};
