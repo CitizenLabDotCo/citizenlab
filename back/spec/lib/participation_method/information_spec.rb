@@ -11,9 +11,10 @@ RSpec.describe ParticipationMethod::Information do
   describe '#assign_defaults_for_participation_context' do
     let(:project) { build :continuous_project }
 
-    it 'sets the posting method to unlimited' do
-      participation_method.assign_defaults_for_participation_context
-      expect(project.posting_method).to eq 'unlimited'
+    it 'does not change the participation context' do
+      expect do
+        participation_method.assign_defaults_for_participation_context
+      end.not_to change(project, :posting_method)
     end
   end
 

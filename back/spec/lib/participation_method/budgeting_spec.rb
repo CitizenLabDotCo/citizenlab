@@ -14,16 +14,6 @@ RSpec.describe ParticipationMethod::Budgeting do
       participation_method.assign_defaults_for_participation_context
       expect(project.posting_method).to eq 'unlimited'
     end
-
-    describe do
-      let(:project) { build :continuous_budgeting_project, posting_method: 'limited', posting_limited_max: 4 }
-
-      it 'keeps assigned posting method attributes' do
-        participation_method.assign_defaults_for_participation_context
-        expect(project.posting_method).to eq 'limited'
-        expect(project.posting_limited_max).to eq 4
-      end
-    end
   end
 
   describe '#assign_slug' do

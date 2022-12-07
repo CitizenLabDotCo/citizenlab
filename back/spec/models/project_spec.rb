@@ -148,12 +148,5 @@ RSpec.describe Project, type: :model do
       expect_any_instance_of(ParticipationMethod::Base).to receive(:assign_defaults_for_participation_context).once
       create :continuous_project
     end
-
-    # it 'can be set during creation' do # TODO: move to participation method spec
-    #   expect_any_instance_of(ParticipationMethod::Base).not_to receive(:initialize_posting_method_posting_limited_max).once
-    #   project = create :continuous_project, posting_method: 'limited', posting_limited_max: 4
-    #   expect(project.posting_method).to eq 'limited'
-    #   expect(project.posting_limited_max).to eq 4
-    # end
   end
 end

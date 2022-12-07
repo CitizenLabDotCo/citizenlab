@@ -3,8 +3,8 @@
 module ParticipationMethod
   class NativeSurvey < Base
     def assign_defaults_for_participation_context
-      participation_context.posting_method ||= 'limited'
-      participation_context.posting_limited_max ||= 1
+      participation_context.posting_method = 'limited'
+      participation_context.posting_limited_max = 1
     end
 
     # Survey responses do not have a fixed field that can be used

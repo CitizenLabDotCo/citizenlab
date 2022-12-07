@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def assign_defaults_for_participation_context
-      participation_context.posting_method ||= 'unlimited'
+      # Default is to do nothing.
     end
 
     def assign_slug(input)

@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class Ideation < Base
+    def assign_defaults_for_participation_context
+      participation_context.posting_method = 'unlimited'
+    end
+
     # This method is invoked after creation of the input,
     # so store the new slug.
     def assign_slug(input)
