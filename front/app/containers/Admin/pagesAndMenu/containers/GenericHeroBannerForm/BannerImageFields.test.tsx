@@ -79,7 +79,7 @@ describe('BannerImageFields', () => {
     });
   });
 
-  it('does not show react-easy-crop when image is remote for full_width_banner_layout', async () => {
+  it('does not show react-easy-crop when image is saved for full_width_banner_layout', async () => {
     const { container } = render(
       <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
     );
@@ -99,7 +99,7 @@ describe('BannerImageFields', () => {
       expect(cropContainer).not.toBeInTheDocument();
     });
   });
-  it('shows react-easy-crop container when image is not remote for fixed_ratio_layout', async () => {
+  it('shows react-easy-crop container when image is uploaded but not saved for fixed_ratio_layout', async () => {
     const { container } = render(
       <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
     );

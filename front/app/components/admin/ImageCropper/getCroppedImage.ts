@@ -12,9 +12,9 @@ const getCroppedImage = async (
 ): Promise<any> => {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvasContext = canvas.getContext('2d');
 
-  if (!ctx) {
+  if (!canvasContext) {
     return null;
   }
 
@@ -23,17 +23,17 @@ const getCroppedImage = async (
   canvas.height = image.height;
 
   // translate canvas context to a central location to allow rotating and flipping around the center
-  ctx.translate(image.width / 2, image.height / 2);
+  canvasContext.translate(image.width / 2, image.height / 2);
 
-  ctx.scale(1, 1);
-  ctx.translate(-image.width / 2, -image.height / 2);
+  canvasContext.scale(1, 1);
+  canvasContext.translate(-image.width / 2, -image.height / 2);
 
   // draw rotated image
-  ctx.drawImage(image, 0, 0);
+  canvasContext.drawImage(image, 0, 0);
 
   // croppedAreaPixels values are bounding box relative
   // extract the cropped image using these values
-  const data = ctx.getImageData(
+  const data = canvasContext.getImageData(
     pixelCrop.x,
     pixelCrop.y,
     pixelCrop.width,
@@ -45,7 +45,7 @@ const getCroppedImage = async (
   canvas.height = pixelCrop.height;
 
   // paste generated rotate image at the top left corner
-  ctx.putImageData(data, 0, 0);
+  canvasContext.putImageData(data, 0, 0);
 
   // As Base64 string
   return canvas.toDataURL('image/jpeg');

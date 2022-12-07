@@ -122,7 +122,7 @@ const BannerImageField = ({
 
   const debounceHandleOverlayOpacityOnChange = debounce(
     handleOverlayOpacityOnChange,
-    15
+    10
   );
 
   const debouncedHandleOverlayOpacityOnChange = useMemo(
@@ -130,8 +130,9 @@ const BannerImageField = ({
     [debounceHandleOverlayOpacityOnChange]
   );
 
-  const displayImageCropper =
-    headerLocalDisplayImage && !headerLocalDisplayImage[0].remote;
+  const isImageSaved = headerLocalDisplayImage[0].remote;
+
+  const displayImageCropper = headerLocalDisplayImage && !isImageSaved;
 
   const displayPreviewDevice =
     !isNilOrError(headerLocalDisplayImage) &&
