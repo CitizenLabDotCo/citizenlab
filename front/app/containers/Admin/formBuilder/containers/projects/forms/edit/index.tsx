@@ -205,6 +205,7 @@ export const FormEdit = ({
         description_multiloc: field.description_multiloc || {},
         ...((field.input_type === 'multiselect' ||
           field.input_type === 'select') && {
+          // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
         }),
         ...(field.input_type === 'linear_scale' && {

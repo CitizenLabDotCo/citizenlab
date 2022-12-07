@@ -53,7 +53,6 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
         <Box mb="24px">
           <Warning text={formatMessage(messages.logicWarning)} />
         </Box>
-        {/* For each option in the field, provide the rule input */}
         {answers &&
           answers.map((answer, i) => (
             <Box key={i}>
