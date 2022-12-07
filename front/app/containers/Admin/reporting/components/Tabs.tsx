@@ -59,8 +59,6 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
     setRedirected(true);
   }, [redirected, tabs]);
 
-  if (reportBuilderEnabled === undefined) return null;
-
   return (
     <>
       <NavigationTabs>
