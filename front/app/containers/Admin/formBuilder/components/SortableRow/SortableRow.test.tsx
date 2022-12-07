@@ -40,6 +40,6 @@ describe('<SortableRow />', () => {
     fireEvent.dragOver(middleItem);
 
     expect(handleDragRow).toHaveBeenCalledTimes(1);
-    expect(handleDragRow).toHaveBeenCalledWith(2, 1);
+    expect(handleDragRow).toHaveBeenCalledWith(2, 1, 0, 0);
   });
 });
