@@ -195,7 +195,9 @@ export const FormEdit = ({
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
-        temp_id: field.temp_id,
+        ...(field.input_type === 'page' && {
+          temp_id: field.temp_id,
+        }),
         ...(field.input_type !== 'page' && {
           logic: field.logic,
         }),
