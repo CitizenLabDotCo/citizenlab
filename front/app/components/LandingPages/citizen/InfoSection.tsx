@@ -25,13 +25,13 @@ const StyledContentContainer = styled(ContentContainer)`
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 50px;
+  padding-bottom: 50px;
   background: #fff;
 
-  ${media.phone`
-    padding-top: 40px;
-    padding-bottom: 40px;
+  ${media.tablet`
+    padding-top: 30px;
+    padding-bottom: 30px;
   `}
 `;
 

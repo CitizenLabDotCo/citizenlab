@@ -36,11 +36,11 @@ const PageTitle = styled.h1`
   text-align: left;
   margin: 0;
   padding: 0;
-  padding-top: 50px;
 
   ${media.tablet`
-    font-size: ${fontSizes.xxxl};
+    font-size: ${fontSizes.xxxl}px;
   `}
+
   ${isRtl`
     text-align: right;
     direction: rtl;
