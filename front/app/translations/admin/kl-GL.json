@@ -1131,6 +1131,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.close": "Matujuk",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Matoqqavoq",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Yes, delete survey results",
+  "app.containers.AdminPage.ProjectEdit.survey.content": "Imarisai",
   "app.containers.AdminPage.ProjectEdit.survey.default": "Nalinginnaasoq",
   "app.containers.AdminPage.ProjectEdit.survey.delete": "Piiaruk",
   "app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel": "Piiaruk",
