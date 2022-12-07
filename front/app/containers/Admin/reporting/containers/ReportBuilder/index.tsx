@@ -160,8 +160,6 @@ const ReportBuilderWrapper = () => {
   const renderReportBuilder =
     reportBuilderEnabled && pathname.includes('admin/reporting/report-creator');
 
-  console.log(pathname);
-
   if (!renderReportBuilder) return null;
 
   return <ReportBuilder />;
