@@ -82,7 +82,7 @@ sr-SP:
       "password_reset": Поништавање лозинке - сви корисници
       "project_moderation_rights_received": Примљена права за модерацију пројекта - менаџери пројекта
       "project_folder_moderation_rights_received": Stečena su prava menadžera projekta
-      "project_phase_started": Нова фаза пројекта - сви корисници
+      "project_phase_started": Нова фаза пројекта - учесници пројекта
       "project_phase_upcoming": Предстојећа нова фаза пројекта - администратори и менаџери пројекта
       "status_change_of_commented_idea": Промена статуса идеје коју сте коментарисали - сви корисници
       "status_change_of_commented_initiative": Промена статуса понуде коју сте коментарисали - сви корисници
