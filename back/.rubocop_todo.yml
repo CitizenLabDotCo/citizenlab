@@ -169,11 +169,6 @@ RSpec/MessageSpies:
 RSpec/MissingExampleGroupArgument:
   Enabled: false
 
-# Offense count: 380
-# Configuration parameters: AllowSubject.
-RSpec/MultipleMemoizedHelpers:
-  Max: 37
-
 # Offense count: 29
 # Configuration parameters: IgnoreSharedExamples.
 RSpec/NamedSubject:
