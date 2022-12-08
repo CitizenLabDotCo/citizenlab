@@ -38,6 +38,7 @@ import { APIErrorsContext, FormContext } from './contexts';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { selectRenderers } from './formConfig';
+import { getFormSchemaAndData } from './utils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -176,7 +177,13 @@ const Form = memo(
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
       setShowAllErrors(true);
-      if (customAjv.validate(schema, sanitizedFormData)) {
+      const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
+        schema,
+        uiSchema,
+        data,
+        customAjv
+      );
+      if (customAjv.validate(schemaToUse, dataWithoutHiddenFields)) {
         setLoading(true);
         try {
           await onSubmit(data as FormData);
