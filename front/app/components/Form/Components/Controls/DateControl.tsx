@@ -28,8 +28,14 @@ const DateControl = ({
   schema,
   id,
   required,
+  visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+
+  if (!visible) {
+    return null;
+  }
+
   return (
     <>
       <FormLabel

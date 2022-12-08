@@ -22,8 +22,14 @@ const DescriptionControl = ({
   uischema,
   schema,
   required,
+  visible,
 }: ControlProps & WrappedComponentProps) => {
   const [didBlur, setDidBlur] = useState(false);
+
+  if (!visible) {
+    return null;
+  }
+
   return (
     <Box id="e2e-idea-description-input">
       <FormLabel

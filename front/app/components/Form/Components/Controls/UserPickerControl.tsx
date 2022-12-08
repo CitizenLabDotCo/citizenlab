@@ -26,6 +26,7 @@ const UserPickerControl = ({
   id,
   schema,
   required,
+  visible,
 }: ControlProps & WrappedComponentProps) => {
   const FieldLabel = () => {
     return (
@@ -44,6 +45,10 @@ const UserPickerControl = ({
       </Box>
     );
   };
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <>

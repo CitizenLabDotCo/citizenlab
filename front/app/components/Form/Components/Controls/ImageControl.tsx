@@ -25,6 +25,7 @@ const ImageControl = ({
   schema,
   id,
   required,
+  visible,
 }: ControlProps) => {
   const handleUploadOnAdd = (imageFiles: UploadFile[]) => {
     handleChange(path, [{ image: imageFiles[0].base64 }]);
@@ -58,6 +59,10 @@ const ImageControl = ({
       })();
     }
   }, [data, inputId]);
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Box id="e2e-idea-image-upload">
