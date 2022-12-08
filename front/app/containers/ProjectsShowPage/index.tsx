@@ -99,6 +99,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const { formatMessage } = useIntl();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const locale = useLocale();
   const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
@@ -112,14 +113,19 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     return anyIsUndefined(locale, appConfig, project, phases, events);
   }, [locale, appConfig, project, phases, events]);
 
+  // Check that all child components are mounted
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // UseEffect to scroll to event when provided
   useEffect(() => {
-    if (scrollToEventId && !loading) {
+    if (scrollToEventId && mounted && !loading) {
       setTimeout(() => {
         scrollToElement({ id: scrollToEventId });
-      }, 1500);
+      }, 2000);
     }
-  }, [loading, scrollToEventId]);
+  }, [mounted, loading, scrollToEventId]);
 
   // UseEffect to handle modal state and phase parameters
   useEffect(() => {
