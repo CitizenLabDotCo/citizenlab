@@ -61,4 +61,22 @@ describe('Form builder page element', () => {
     // Check that we show a success message on submit
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
   });
+
+  it.only('does not let the user delete the page if there is only one page', () => {
+    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-page-title-multiloc').type('Page title', { force: true });
+    cy.get('[data-cy="e2e-page-description-multiloc"]')
+      .click()
+      .type('Page description');
+    cy.get('#e2e-settings-done-button').click();
+
+    // Click to show the settings
+    cy.contains('Page title').should('exist').click();
+    cy.get(`[data-cy="e2e-delete-field"]`).click();
+
+    // Check to see that the first and now only page is not deletable
+    cy.get('[data-cy="e2e-field-row"]').first().click();
+    cy.get('[data-cy="e2e-delete-field"]').should('have.attr', 'disabled');
+  });
 });

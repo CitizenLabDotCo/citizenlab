@@ -1,9 +1,9 @@
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 
 // utils
 import { getConversionRate } from '../useRegistrations/parse';
-import { dateGetter, timeSeriesParser } from '../../utils/timeSeries';
-import { keys } from 'utils/helperUtils';
+import { timeSeriesParser } from '../../utils/timeSeries';
+import { keys, get } from 'utils/helperUtils';
 import { RESOLUTION_TO_MESSAGE_KEY } from '../../utils/resolution';
 
 // typings
@@ -27,11 +27,14 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
 
   return {
     activeUsers: row.count_dimension_user_id,
-    date: getDate(row).format('YYYY-MM-DD'),
+    date: date.format('YYYY-MM-DD'),
   };
 };
 
-const getDate = dateGetter('dimension_date_created');
+const getDate = (row: TimeSeriesResponseRow) => {
+  return moment(get(row, 'first_dimension_date_created_date'));
+};
+
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (

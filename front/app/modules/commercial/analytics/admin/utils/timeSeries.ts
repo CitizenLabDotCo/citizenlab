@@ -1,11 +1,7 @@
 import moment, { Moment } from 'moment';
 
-// utils
-import { get } from 'utils/helperUtils';
-
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
-import { MonthRow, WeekRow, DateRow, DateColumn } from '../typings';
 
 export const timeSeriesParser =
   <Row, ParsedRow>(
@@ -64,7 +60,10 @@ export const parseMonths = <Row, ParsedRow>(
   getDate: (row: Row) => Moment,
   parseRow: (date: Moment, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {
-  const indexedTimeSeries = indexTimeSeries(timeSeries, getDate);
+  const indexedTimeSeries = indexTimeSeries(timeSeries, (row) => {
+    const date = getDate(row);
+    return roundDownToFirstDayOfMonth(date);
+  });
 
   const firstDateInData = getFirstDateInData(timeSeries, getDate);
   const lastDateInData = getLastDateInData(timeSeries, getDate);
@@ -95,7 +94,10 @@ export const parseWeeks = <Row, ParsedRow>(
   getDate: (row: Row) => Moment,
   parseRow: (date: Moment, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {
-  const indexedTimeSeries = indexTimeSeries(timeSeries, getDate);
+  const indexedTimeSeries = indexTimeSeries(timeSeries, (row) => {
+    const date = getDate(row);
+    return roundDownToMonday(date);
+  });
 
   const firstDateInData = getFirstDateInData(timeSeries, getDate);
   const lastDateInData = getLastDateInData(timeSeries, getDate);
@@ -145,39 +147,6 @@ export const parseDays = <Row, ParsedRow>(
   });
 };
 
-export const dateGetter =
-  <Prefix extends string>(prefix: Prefix) =>
-  (row: DateRow<Prefix>) =>
-    getDate(row, prefix);
-
-const getDate = <Prefix extends string>(
-  row: DateRow<Prefix>,
-  prefix: Prefix
-) => {
-  const monthColumn: DateColumn<Prefix, 'month'> = `${prefix}.month`;
-  if (isMonth(row, monthColumn)) return moment(get(row, monthColumn));
-
-  const weekColumn: DateColumn<Prefix, 'week'> = `${prefix}.week`;
-  if (isWeek(row, weekColumn)) return moment(get(row, weekColumn));
-
-  const dayColumn: DateColumn<Prefix, 'date'> = `${prefix}.date`;
-  return moment(get(row, dayColumn));
-};
-
-export const isMonth = <Prefix extends string>(
-  row: DateRow<Prefix>,
-  columnName: `${Prefix}.month`
-): row is MonthRow<Prefix> => {
-  return columnName in row;
-};
-
-export const isWeek = <Prefix extends string>(
-  row: DateRow<Prefix>,
-  columnName: `${Prefix}.week`
-): row is WeekRow<Prefix> => {
-  return columnName in row;
-};
-
 const roundDownToFirstDayOfMonth = (date: Moment) => {
   return moment(`${date.format('YYYY-MM')}-01`);
 };
@@ -191,7 +160,7 @@ export const roundDateToMidnight = (date: Moment) => {
   return moment(date.format('YYYY-MM-DD'));
 };
 
-export const indexTimeSeries = <Row>(
+const indexTimeSeries = <Row>(
   responseTimeSeries: Row[],
   getDate: (row: Row) => Moment
 ): Map<string, Row> => {

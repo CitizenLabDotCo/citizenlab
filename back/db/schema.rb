@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_15_113353) do
+ActiveRecord::Schema.define(version: 2022_12_02_110054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1109,6 +1109,15 @@ ActiveRecord::Schema.define(version: 2022_11_15_113353) do
     t.jsonb "value", default: {}, null: false
   end
 
+  create_table "report_builder_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "owner_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_report_builder_reports_on_name", unique: true
+    t.index ["owner_id"], name: "index_report_builder_reports_on_owner_id"
+  end
+
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "spam_reportable_id", null: false
     t.string "spam_reportable_type", null: false
@@ -1396,6 +1405,7 @@ ActiveRecord::Schema.define(version: 2022_11_15_113353) do
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
+  add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
@@ -1734,13 +1744,21 @@ ActiveRecord::Schema.define(version: 2022_11_15_113353) do
       users.invite_status
      FROM users;
   SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.created_at)::date AS dimension_date_created_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
+  SQL
   create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
       WITH last_project_statuses AS (
            SELECT DISTINCT ON (activities.item_id) activities.item_id AS project_id,
               activities.action AS status,
               activities.acted_at AS "timestamp"
              FROM activities
-            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY ((ARRAY['draft'::character varying, 'published'::character varying, 'archived'::character varying, 'deleted'::character varying])::text[])))
+            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY (ARRAY[('draft'::character varying)::text, ('published'::character varying)::text, ('archived'::character varying)::text, ('deleted'::character varying)::text])))
             ORDER BY activities.item_id, activities.acted_at DESC
           ), finished_statuses_for_continuous_projects AS (
            SELECT lps.project_id,
@@ -1773,20 +1791,24 @@ ActiveRecord::Schema.define(version: 2022_11_15_113353) do
               finished_statuses_for_continuous_projects.status,
               finished_statuses_for_continuous_projects."timestamp"
              FROM finished_statuses_for_continuous_projects
+          ), all_finished_projects AS (
+           SELECT DISTINCT afp_1.project_id
+             FROM ( SELECT finished_statuses_for_timeline_projects.project_id
+                     FROM finished_statuses_for_timeline_projects
+                  UNION
+                   SELECT finished_statuses_for_continuous_projects.project_id
+                     FROM finished_statuses_for_continuous_projects) afp_1
           )
-   SELECT project_statuses.project_id AS dimension_project_id,
-      project_statuses.status,
-      project_statuses."timestamp",
-      (project_statuses."timestamp")::date AS dimension_date_id
-     FROM project_statuses
-    ORDER BY project_statuses."timestamp" DESC;
-  SQL
-  create_view "analytics_fact_events", sql_definition: <<-SQL
-      SELECT events.id,
-      events.project_id AS dimension_project_id,
-      (events.created_at)::date AS dimension_date_created_id,
-      (events.start_at)::date AS dimension_date_start_id,
-      (events.end_at)::date AS dimension_date_end_id
-     FROM events;
+   SELECT ps.project_id AS dimension_project_id,
+      ps.status,
+          CASE
+              WHEN (afp.project_id IS NULL) THEN false
+              ELSE true
+          END AS finished,
+      ps."timestamp",
+      (ps."timestamp")::date AS dimension_date_id
+     FROM (project_statuses ps
+       LEFT JOIN all_finished_projects afp ON ((afp.project_id = ps.project_id)))
+    ORDER BY ps."timestamp" DESC;
   SQL
 end

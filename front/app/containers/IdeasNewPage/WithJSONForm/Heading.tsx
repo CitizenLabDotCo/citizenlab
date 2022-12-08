@@ -38,7 +38,9 @@ export const Heading = ({
   isSurvey,
 }: Props) => {
   const [searchParams] = useSearchParams();
-  const phaseId = searchParams.get('phase_id');
+  const phaseId =
+    searchParams.get('phase_id') ||
+    project.relationships.current_phase?.data?.id;
   const linkToSurveyBuilder = phaseId
     ? `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`
     : `/admin/projects/${project.id}/native-survey/edit`;
@@ -46,6 +48,7 @@ export const Heading = ({
   const isSmallerThanXlPhone = useBreakpoint('phone');
   const showEditSurveyButton = !isSmallerThanXlPhone && canEditSurvey;
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const shouldCenterTopBarContent = !isSmallerThanXlPhone || !isSurvey;
   const openModal = () => {
     setShowLeaveModal(true);
   };
@@ -79,48 +82,48 @@ export const Heading = ({
         top={isSurveyOnMobile ? '0px' : undefined}
         zIndex="3"
       >
-        {!isSmallerThanXlPhone && (
-          <Box
-            display="flex"
-            width="100%"
-            flexDirection="row"
-            justifyContent={canEditSurvey ? 'flex-end' : 'space-between'}
-            mb="14px"
-            alignItems="center"
-            maxWidth="700px"
-            px="20px"
-          >
-            {isSurvey ? (
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="center"
-              >
-                {showEditSurveyButton && (
-                  <Button
-                    data-cy="e2e-edit-survey-link"
-                    icon="edit"
-                    linkTo={linkToSurveyBuilder}
-                    buttonStyle="text"
-                    textDecorationHover="underline"
-                    hidden={!canUserEditProject}
-                  >
-                    <FormattedMessage {...messages.editSurvey} />
-                  </Button>
-                )}
+        <Box
+          display="flex"
+          width={shouldCenterTopBarContent ? '100%' : undefined}
+          flexDirection="row"
+          justifyContent={showEditSurveyButton ? 'flex-end' : 'space-between'}
+          mb="14px"
+          alignItems="center"
+          maxWidth="700px"
+          px="20px"
+        >
+          {!isSurvey && (
+            <GoBackButton insideModal={false} projectId={project.id} />
+          )}
+          {isSurvey && !isSmallerThanXlPhone && (
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+            >
+              {showEditSurveyButton && (
                 <Button
-                  icon="close"
-                  buttonStyle="text"
-                  padding="0px"
-                  onClick={openModal}
-                />
-              </Box>
-            ) : (
-              <GoBackButton insideModal={false} projectId={project.id} />
-            )}
-          </Box>
-        )}
+                  data-cy="e2e-edit-survey-link"
+                  icon="edit"
+                  linkTo={linkToSurveyBuilder}
+                  buttonStyle="primary-inverse"
+                  textDecorationHover="underline"
+                  hidden={!canUserEditProject}
+                  mr="12px"
+                >
+                  <FormattedMessage {...messages.editSurvey} />
+                </Button>
+              )}
+              <Button
+                icon="close"
+                buttonStyle="text"
+                padding="0px"
+                onClick={openModal}
+              />
+            </Box>
+          )}
+        </Box>
 
         <Box width="100%">
           <Text
