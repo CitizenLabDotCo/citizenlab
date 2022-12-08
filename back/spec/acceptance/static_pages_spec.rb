@@ -71,6 +71,7 @@ resource 'StaticPages' do
         parameter :banner_cta_button_multiloc, 'multiloc content for the CTA button'
         parameter :banner_cta_button_type, 'type of the CTA, one of: customized_button no_button'
         parameter :banner_cta_button_url, 'url for the CTA'
+        parameter :banner_signed_in_image_enabled, 'if banner image is enabled when signed_in'
         parameter :banner_header_multiloc, 'multiloc content for the banner header'
         parameter :banner_subheader_multiloc, 'multiloc content for the banner subheader'
         parameter :top_info_section_enabled, 'if the top info section is enabled'
@@ -148,6 +149,30 @@ resource 'StaticPages' do
             json_response = json_parse(response_body)
             expect(response_status).to eq 200
             expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(0)
+          end
+        end
+      end
+
+      describe 'updating banner_signed_in_image_enabled' do
+        let(:banner_signed_in_image_enabled) { false }
+
+        context 'when the page uses the banner fixed ratio layout' do
+          before { page.update!(banner_layout: 'fixed_ratio_layout') }
+
+          example_request 'set banner signed in image enabled to false' do
+            json_response = json_parse(response_body)
+            expect(response_status).to eq 200
+            expect(json_response.dig(:data, :attributes, :banner_signed_in_image_enabled)).to be(false)
+          end
+        end
+
+        context 'when the page does not use the banner fixed ratio layout' do
+          before { page.update!(banner_layout: 'full_width_banner_layout') }
+
+          example_request '[error] set banner signed in image enabled to false' do
+            json_response = json_parse(response_body)
+            expect(response_status).to eq 422
+            expect(json_response).to include_response_error(:banner_layout, 'inclusion')
           end
         end
       end

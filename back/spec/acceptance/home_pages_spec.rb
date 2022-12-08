@@ -44,6 +44,7 @@ resource 'Home Page' do
         parameter :banner_cta_signed_out_text_multiloc, 'multiloc content for the CTA for signed out users'
         parameter :banner_cta_signed_out_type, 'type of the CTA for signed out users, one of: sign_up_button customized_button no_button'
         parameter :banner_cta_signed_out_url, 'url for the CTA for signed out users'
+        parameter :banner_signed_in_image_enabled, 'if banner image is enabled when signed_in'
         parameter :header_bg, 'image for the header background'
         parameter :top_info_section_enabled, 'if the top info section is enabled'
         parameter :top_info_section_multiloc, 'multiloc content for the top info section'
@@ -135,6 +136,30 @@ resource 'Home Page' do
             json_response = json_parse(response_body)
             expect(response_status).to eq 200
             expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(0)
+          end
+        end
+      end
+
+      describe 'updating banner_signed_in_image_enabled' do
+        let(:banner_signed_in_image_enabled) { false }
+
+        context 'when the home page uses the banner fixed ratio layout' do
+          before { home_page.update!(banner_layout: 'fixed_ratio_layout') }
+
+          example_request 'set banner signed in image enabled to false' do
+            json_response = json_parse(response_body)
+            expect(response_status).to eq 200
+            expect(json_response.dig(:data, :attributes, :banner_signed_in_image_enabled)).to be(false)
+          end
+        end
+
+        context 'when the home page does not use the banner fixed ratio layout' do
+          before { home_page.update!(banner_layout: 'full_width_banner_layout') }
+
+          example_request '[error] set banner signed in image enabled to false' do
+            json_response = json_parse(response_body)
+            expect(response_status).to eq 422
+            expect(json_response).to include_response_error(:banner_layout, 'inclusion')
           end
         end
       end
