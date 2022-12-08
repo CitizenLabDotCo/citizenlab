@@ -62,7 +62,7 @@ const HeaderContent = ({
     openSignUpInModal();
   };
   const buttonStyle = getButtonStyle(fontColors);
-  // Flag should not be here, but inside module.
+
   const customizableHomepageBannerEnabled = useFeatureFlag({
     name: 'customizable_homepage_banner',
   });
@@ -113,7 +113,7 @@ const HeaderContent = ({
           <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         )}
         <FeatureFlag name="customizable_homepage_banner">
-          <CTA signedIn={signUpIn} buttonStyle={buttonStyle} />
+          <CTA signedIn={false} buttonStyle={buttonStyle} signUpIn={signUpIn} />
         </FeatureFlag>
       </Container>
     );
