@@ -31,7 +31,7 @@ import { SortableRow } from '../SortableRow';
 import { FieldRuleDisplay } from './FieldRuleDisplay';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 // hooks and services
 import useLocale from 'hooks/useLocale';
@@ -79,6 +79,7 @@ const FormFields = ({
   } = useFormContext();
   const locale = useLocale();
   const { formatMessage } = useIntl();
+  const theme = useTheme();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   if (isNilOrError(locale)) {
@@ -170,7 +171,12 @@ const FormFields = ({
                         <Icon
                           ml="28px"
                           width="12px"
-                          fill={getIndexTitleColor(selectedFieldId, field)}
+                          fill={
+                            isFieldSelected(selectedFieldId, field.id) &&
+                            field.input_type === 'page'
+                              ? 'white'
+                              : theme.colors.tenantPrimary
+                          }
                           name="sort"
                         />
                       </Box>
