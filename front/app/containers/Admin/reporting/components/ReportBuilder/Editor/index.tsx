@@ -13,8 +13,8 @@ import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
-import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -36,8 +36,8 @@ const Editor: React.FC<EditorProps> = ({
         ThreeColumn,
         Text,
         Image,
-        Iframe,
         WhiteSpace,
+        AnalyticsChartWidget,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
