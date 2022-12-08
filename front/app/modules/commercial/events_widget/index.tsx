@@ -1,6 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
+import { Box } from '@citizenlab/cl2-component-library';
 const EventsWidget = React.lazy(
   () => import('components/LandingPages/citizen/EventsWidget')
 );
@@ -44,7 +45,9 @@ const configuration: ModuleConfiguration = {
     'app.containers.HomePage.EventsWidget': () => {
       return (
         <RenderOnAllowedAndEnabled>
-          <EventsWidget data-testid="e2e-homepage-events-widget-container" />
+          <Box mb="72px">
+            <EventsWidget data-testid="e2e-homepage-events-widget-container" />
+          </Box>
         </RenderOnAllowedAndEnabled>
       );
     },

@@ -41,6 +41,7 @@ const Title = styled.h2<{ hasPublications: boolean }>`
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
+  margin: 0;
   padding: 0;
   width: 100%;
   text-align: center;
