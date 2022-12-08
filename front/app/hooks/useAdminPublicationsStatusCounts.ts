@@ -95,6 +95,7 @@ export default function useAdminPublicationsStatusCounts({
     publicationStatuses,
     rootLevelOnly,
     removeNotAllowedParents,
+    onlyProjects,
     search,
   ]);
 
