@@ -211,6 +211,7 @@ export default function useAdminPublications({
     publicationStatuses,
     rootLevelOnly,
     removeNotAllowedParents,
+    onlyProjects,
     childrenOfId,
   ]);
 
