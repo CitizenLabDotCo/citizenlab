@@ -1,6 +1,10 @@
 import React, { memo, useState, useEffect, useContext, useRef } from 'react';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
-import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
+import {
+  JsonFormsDispatch,
+  withJsonFormsLayoutProps,
+  useJsonForms,
+} from '@jsonforms/react';
 import { defaultStyles } from 'utils/styleUtils';
 import styled, { useTheme } from 'styled-components';
 import Ajv from 'ajv';
@@ -29,7 +33,9 @@ import {
   getPageSchema,
   PageCategorization,
   isPageCategorization,
+  PageType,
 } from 'components/Form/Components/Layouts/utils';
+import { isVisible } from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 const StyledFormSection = styled(FormSection)`
@@ -60,8 +66,12 @@ const CLPageLayout = memo(
       useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
-    const uiPages = (uischema as PageCategorization).elements;
-    const theme: any = useTheme();
+    // We can cast types because the tester made sure we only get correct values
+    const pageTypeElements = (uischema as PageCategorization)
+      .elements as PageType[];
+    const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
+    const theme = useTheme();
+    const formState = useJsonForms();
     const isSmallerThanXlPhone = useBreakpoint('phone');
     const submitText = formSubmitText || messages.submit;
     const showSubmit = currentStep === uiPages.length - 1;
@@ -73,8 +83,21 @@ const CLPageLayout = memo(
       topAnchorRef.current;
 
     useEffect(() => {
+      // We can cast types because the tester made sure we only get correct values
+      const allPageTypeElements = (uischema as PageCategorization)
+        .elements as PageType[];
+      const visiblePages = allPageTypeElements.filter((element) => {
+        const isPageVisible = isVisible(
+          element,
+          formState.core?.data,
+          '',
+          customAjv
+        );
+        return isPageVisible;
+      });
+      setUiPages(visiblePages);
       setShowSubmitButton(false);
-    }, [setShowSubmitButton]);
+    }, [setShowSubmitButton, formState.core?.data, uischema]);
 
     const scrollToTop = () => {
       if (useTopAnchor) {
@@ -92,7 +115,12 @@ const CLPageLayout = memo(
       const currentPageCategorization = uiPages[currentStep];
       if (
         customAjv.validate(
-          getPageSchema(schema, currentPageCategorization),
+          getPageSchema(
+            schema,
+            currentPageCategorization,
+            formState.core?.data,
+            customAjv
+          ),
           getSanitizedFormData(data)
         )
       ) {
