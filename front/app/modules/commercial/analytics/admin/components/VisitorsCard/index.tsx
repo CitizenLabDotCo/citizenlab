@@ -55,17 +55,17 @@ const VisitorsCard = ({
     : undefined;
 
   const infoTooltipContent = interactive
-    ? undefined
-    : formatMessage(messages.cardTitleTooltipMessage);
+    ? formatMessage(messages.cardTitleTooltipMessage)
+    : undefined;
 
   const visitorStatBox = interactive ? (
-    <VisitorStatsReport stats={stats} />
-  ) : (
     <VisitorStats
       stats={stats}
       projectId={projectId}
       resolution={deducedResolution}
     />
+  ) : (
+    <VisitorStatsReport stats={stats} />
   );
 
   return (

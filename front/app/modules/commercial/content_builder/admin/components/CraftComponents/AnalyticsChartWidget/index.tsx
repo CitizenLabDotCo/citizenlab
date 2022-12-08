@@ -1,35 +1,44 @@
 import React from 'react';
 
-// craft
 import { useNode } from '@craftjs/core';
+
+// Components
 import { Box, Input, Title } from '@citizenlab/cl2-component-library';
-import { Moment } from 'moment';
-import TimeControl from '../../../../../../../containers/Admin/dashboard/components/TimeControl';
-import ProjectFilter from '../../../../../../../containers/Admin/dashboard/components/filters/ProjectFilter';
-import { IOption } from 'typings';
 import VisitorsCard from '../../../../../analytics/admin/components/VisitorsCard';
 import VisitorsTrafficSourcesCard from '../../../../../analytics/admin/components/VisitorsTrafficSourcesCard';
-import { injectIntl } from '../../../../../../../utils/cl-intl';
-import messages from '../../../messages';
 import GenderChart from '../../../../../../../containers/Admin/dashboard/users/Charts/GenderChart';
 import AgeChart from '../../../../../../../containers/Admin/dashboard/users/Charts/AgeChart';
+
+// Utils
+import moment, { Moment } from 'moment';
+import { injectIntl } from '../../../../../../../utils/cl-intl';
+
+// Settings
+import TimeControl from '../../../../../../../containers/Admin/dashboard/components/TimeControl';
+import ProjectFilter from '../../../../../../../containers/Admin/dashboard/components/filters/ProjectFilter';
+import messages from '../../../messages';
+
+// Types
+import { IOption } from 'typings';
 import { IResolution } from '../../../../../../../components/admin/ResolutionControl';
 
 interface Props {
   title: string;
   chartType: string;
   projectId: string | undefined;
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
+  startAt: string | undefined;
+  endAt: string | undefined;
 }
 
 const AnalyticsChartWidget = ({
   title,
   chartType,
   projectId,
-  startAtMoment,
-  endAtMoment,
+  startAt,
+  endAt,
 }: Props) => {
+  const startAtMoment = startAt ? moment(startAt) : null;
+  const endAtMoment = endAt ? moment(endAt) : null;
   const resolution: IResolution = 'month';
   const analyticsChartProps = {
     projectId,
@@ -37,13 +46,14 @@ const AnalyticsChartWidget = ({
     endAtMoment,
     resolution,
     title,
+    interactive: false,
   };
 
+  console.log(`dates: ${startAt} | ${endAt}`);
+
   const statChartProps = {
-    startAt: startAtMoment
-      ? startAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss')
-      : null,
-    endAt: endAtMoment ? endAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss') : null,
+    startAt,
+    endAt: endAt ? endAt : null,
     className: 'fullWidth',
     currentGroupFilter: undefined,
     currentGroupFilterLabel: undefined,
@@ -86,8 +96,10 @@ const AnalyticsChartWidgetSettings = injectIntl(
     } = useNode((node) => ({
       title: node.data.props.title,
       projectId: node.data.props.projectId,
-      startAtMoment: node.data.props.startAtMoment,
-      endAtMoment: node.data.props.endAtMoment,
+      startAtMoment: node.data.props.startAt
+        ? moment(node.data.props.startAt)
+        : null,
+      endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
       chartType: node.data.props.chartType,
     }));
 
@@ -98,12 +110,12 @@ const AnalyticsChartWidgetSettings = injectIntl(
     };
 
     const handleChangeTimeRange = (
-      startAtMoment: Moment | null,
-      endAtMoment: Moment | null
+      newStartAtMoment: Moment | null,
+      newEndAtMoment: Moment | null
     ) => {
       setProp((props) => {
-        props.startAtMoment = startAtMoment;
-        props.endAtMoment = endAtMoment;
+        props.startAt = newStartAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
+        props.endAt = newEndAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
       });
     };
 

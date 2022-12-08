@@ -14,10 +14,15 @@ interface Props {
   pieData: PieRow[];
   innerRef: React.RefObject<any>;
   onOpenModal: () => void;
-  hideReferrers?: boolean;
+  showReferrers?: boolean;
 }
 
-const Chart = ({ pieData, innerRef, onOpenModal, hideReferrers }: Props) => {
+const Chart = ({
+  pieData,
+  innerRef,
+  onOpenModal,
+  showReferrers = true,
+}: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
@@ -36,12 +41,12 @@ const Chart = ({ pieData, innerRef, onOpenModal, hideReferrers }: Props) => {
     })
   );
 
-  const referrersLink = hideReferrers ? (
-    <></>
-  ) : (
+  const referrersLink = showReferrers ? (
     <Box ml="20px" mt="40px">
       <ReferrerListLink onOpenModal={onOpenModal} />
     </Box>
+  ) : (
+    <></>
   );
 
   return (

@@ -82,11 +82,8 @@ const VisitorsTrafficSourcesCard = ({
     : undefined;
 
   const viewToggle = interactive
-    ? undefined
-    : {
-        view: currentView,
-        onChangeView: setCurrentView,
-      };
+    ? { view: currentView, onChangeView: setCurrentView }
+    : undefined;
 
   return (
     <GraphCard
@@ -99,7 +96,7 @@ const VisitorsTrafficSourcesCard = ({
           pieData={pieData}
           innerRef={graphRef}
           onOpenModal={openModal}
-          hideReferrers={interactive !== undefined}
+          showReferrers={interactive}
         />
       )}
 

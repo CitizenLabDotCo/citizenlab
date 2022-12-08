@@ -326,8 +326,8 @@ const ContentBuilderToolbox = ({
                 chartType="VisitorsCard"
                 title={formatMessage(messages.visitorTimeline)}
                 projectId={undefined}
-                startAtMoment={undefined}
-                endAtMoment={null}
+                startAt={undefined}
+                endAt={undefined}
               />,
               {
                 onCreate: (node) => {
@@ -352,8 +352,8 @@ const ContentBuilderToolbox = ({
                 chartType="VisitorsTrafficSourcesCard"
                 title={formatMessage(messages.trafficSources)}
                 projectId={undefined}
-                startAtMoment={undefined}
-                endAtMoment={null}
+                startAt={undefined}
+                endAt={undefined}
               />,
               {
                 onCreate: (node) => {
@@ -378,8 +378,8 @@ const ContentBuilderToolbox = ({
                 chartType="GenderChart"
                 title={formatMessage(messages.usersByGender)}
                 projectId={undefined}
-                startAtMoment={undefined}
-                endAtMoment={null}
+                startAt={undefined}
+                endAt={undefined}
               />,
               {
                 onCreate: (node) => {
@@ -404,8 +404,8 @@ const ContentBuilderToolbox = ({
                 chartType="AgeChart"
                 title={formatMessage(messages.usersByAge)}
                 projectId={undefined}
-                startAtMoment={undefined}
-                endAtMoment={null}
+                startAt={undefined}
+                endAt={undefined}
               />,
               {
                 onCreate: (node) => {
