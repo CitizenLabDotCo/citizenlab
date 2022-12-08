@@ -139,30 +139,6 @@ resource 'Home Page' do
           end
         end
       end
-
-      describe 'updating banner_signed_in_image_enabled' do
-        let(:banner_signed_in_image_enabled) { false }
-
-        context 'when the home page uses the banner fixed ratio layout' do
-          before { home_page.update!(banner_layout: 'fixed_ratio_layout') }
-
-          example_request 'set banner signed in image enabled to false' do
-            json_response = json_parse(response_body)
-            expect(response_status).to eq 200
-            expect(json_response.dig(:data, :attributes, :banner_signed_in_image_enabled)).to be(false)
-          end
-        end
-
-        context 'when the home page does not use the banner fixed ratio layout' do
-          before { home_page.update!(banner_layout: 'full_width_banner_layout') }
-
-          example_request '[error] set banner signed in image enabled to false' do
-            json_response = json_parse(response_body)
-            expect(response_status).to eq 422
-            expect(json_response).to include_response_error(:banner_layout, 'inclusion')
-          end
-        end
-      end
     end
   end
 end
