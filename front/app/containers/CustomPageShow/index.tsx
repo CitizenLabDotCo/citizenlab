@@ -7,7 +7,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
-import CustomPageEvents from './CustomPageEvents';
+import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
 import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from 'components/PageNotFound';
@@ -122,11 +122,7 @@ const CustomPageShow = () => {
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-        {pageAttributes.events_widget_enabled && (
-          <ContentContainer>
-            <CustomPageEvents page={page} />
-          </ContentContainer>
-        )}
+        <CustomPageProjectsAndEvents page={page} />
         {pageAttributes.bottom_info_section_enabled && (
           <InfoSection
             multilocContent={pageAttributes.bottom_info_section_multiloc}

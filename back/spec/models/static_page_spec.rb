@@ -63,6 +63,28 @@ RSpec.describe StaticPage, type: :model do
     end
   end
 
+  describe '#filter_projects' do
+    it 'filters projects by topics' do
+      topic = create(:topic)
+      project = create(:project, topics: [topic])
+      project2 = create(:project, topics: [])
+      page = create(:static_page, topics: [topic], projects_filter_type: 'topics')
+
+      expect(page.filter_projects(Project.all)).to include(project)
+      expect(page.filter_projects(Project.all)).not_to include(project2)
+    end
+
+    it 'filters projects by areas' do
+      area = create(:area)
+      project = create(:project, areas: [area])
+      project2 = create(:project, areas: [])
+      page = create(:static_page, areas: [area], projects_filter_type: 'areas')
+
+      expect(page.filter_projects(Project.all)).to include(project)
+      expect(page.filter_projects(Project.all)).not_to include(project2)
+    end
+  end
+
   describe 'when create new static page with no value for slug' do
     subject(:static_page) { build(:static_page) }
 

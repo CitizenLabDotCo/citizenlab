@@ -4,7 +4,7 @@ import { keys } from 'utils/helperUtils';
 
 export function getCurrentTab(
   statusCounts: IStatusCounts,
-  currentTab?: PublicationTab
+  currentTab: PublicationTab | null
 ): PublicationTab {
   if (currentTab) {
     const count = statusCounts[currentTab];
