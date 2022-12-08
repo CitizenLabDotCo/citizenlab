@@ -28,6 +28,7 @@
 #  bottom_info_section_enabled  :boolean          default(FALSE), not null
 #  bottom_info_section_multiloc :jsonb            not null
 #  header_bg                    :string
+#  banner_image_enabled         :boolean          default(TRUE), not null
 #
 # Indexes
 #
