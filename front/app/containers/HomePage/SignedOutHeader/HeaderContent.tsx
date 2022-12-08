@@ -109,15 +109,11 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
-        {/*
-          This should use a mechanisme similar to navbarModuleActive instead.
-          The core shouldn't have feature flags about modularized features.
-        */}
         {!customizableHomepageBannerEnabled && (
           <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         )}
         <FeatureFlag name="customizable_homepage_banner">
-          <CTA signedIn={false} buttonStyle={buttonStyle} />
+          <CTA signedIn={signUpIn} buttonStyle={buttonStyle} />
         </FeatureFlag>
       </Container>
     );
