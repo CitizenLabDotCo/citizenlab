@@ -206,5 +206,5 @@ da:
       option1: 'Mulighed 1'
       option2: 'Mulighed 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Undersøgelse slut'
+      description: "Indsend dine svar ved at vælge \"Indsend undersøgelse\" nedenfor."
