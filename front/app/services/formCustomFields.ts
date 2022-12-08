@@ -20,6 +20,7 @@ export type ICustomFieldInputType =
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;
+  temp_id?: string;
 };
 
 export interface IAttributes {

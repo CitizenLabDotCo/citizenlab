@@ -4,7 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { useFormContext } from 'react-hook-form';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
@@ -28,6 +28,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import { SortableRow } from '../SortableRow';
+import { FieldRuleDisplay } from './FieldRuleDisplay';
 
 // styling
 import styled from 'styled-components';
@@ -38,6 +39,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
+import { surveyEndOption } from '../FormBuilderSettings/utils';
 
 // Assign field badge text
 const getTranslatedFieldType = (field) => {
@@ -76,6 +78,7 @@ const FormFields = ({
     formState: { errors },
   } = useFormContext();
   const locale = useLocale();
+  const { formatMessage } = useIntl();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   if (isNilOrError(locale)) {
@@ -87,6 +90,38 @@ const FormFields = ({
       cursor: pointer;
     }
   `;
+
+  const getTitleFromAnswerId = (
+    field: IFlatCustomField,
+    answerId: string | number
+  ) => {
+    // If number, this is a linear scale option. Return the value as a string.
+    if (typeof answerId === 'number') {
+      return answerId.toString();
+    }
+    // Otherwise this is an option ID, return the related option title
+    const option = field?.options?.find(
+      (option) => option.id === answerId || option.temp_id === answerId
+    );
+    return option?.title_multiloc[locale];
+  };
+
+  const getTitleFromPageId = (pageId: string | number) => {
+    // Return the related page title for the provided ID
+    if (pageId === surveyEndOption) {
+      return `${formatMessage(messages.surveyEnd)}`;
+    }
+    const page = formCustomFields.find(
+      (field) => field.id === pageId || field.temp_id === pageId
+    );
+    if (!isNilOrError(page)) {
+      return `${formatMessage(messages.page)} ${getIndexForTitle(
+        formCustomFields,
+        page
+      )}`;
+    }
+    return undefined;
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -139,34 +174,56 @@ const FormFields = ({
                           name="sort"
                         />
                       </Box>
-
-                      <Text
-                        as="span"
-                        color={getIndexTitleColor(selectedFieldId, field)}
-                        fontSize="base"
-                        mt="auto"
-                        mb="auto"
-                        fontWeight="bold"
-                        mx="12px"
-                      >
-                        <>
-                          <FormattedMessage
-                            {...(field.input_type === 'page'
-                              ? messages.page
-                              : messages.question)}
-                          />
-                          {getIndexForTitle(formCustomFields, field)}
-                        </>
-                      </Text>
-                      <Text
-                        as="span"
-                        fontSize="base"
-                        mt="auto"
-                        mb="auto"
-                        color={getTitleColor(selectedFieldId, field)}
-                      >
-                        <T value={field.title_multiloc} />
-                      </Text>
+                      <Box m="0px" display="block">
+                        <Box>
+                          <Text
+                            as="span"
+                            color={getIndexTitleColor(selectedFieldId, field)}
+                            fontSize="base"
+                            mt="auto"
+                            mb="auto"
+                            fontWeight="bold"
+                            mx="12px"
+                          >
+                            <>
+                              <FormattedMessage
+                                {...(field.input_type === 'page'
+                                  ? messages.page
+                                  : messages.question)}
+                              />
+                              {getIndexForTitle(formCustomFields, field)}
+                            </>
+                          </Text>
+                          <Text
+                            as="span"
+                            fontSize="base"
+                            mt="auto"
+                            mb="auto"
+                            color={getTitleColor(selectedFieldId, field)}
+                          >
+                            <T value={field.title_multiloc} />
+                          </Text>
+                        </Box>
+                        {field.input_type !== 'page' && field.logic.rules && (
+                          <Box>
+                            {field.logic.rules.map((rule) => {
+                              return (
+                                <Box key={rule.if}>
+                                  <FieldRuleDisplay
+                                    answerTitle={getTitleFromAnswerId(
+                                      field,
+                                      rule.if
+                                    )}
+                                    targetPage={getTitleFromPageId(
+                                      rule.goto_page_id
+                                    )}
+                                  />
+                                </Box>
+                              );
+                            })}
+                          </Box>
+                        )}
+                      </Box>
                     </Box>
                     <Box
                       pr="32px"
