@@ -53,7 +53,7 @@
   "app.components.ConfirmationModal.changeYourEmail": "Promijenite svoju adresu e-pošte.",
   "app.components.ConfirmationModal.close": "Zatvori",
   "app.components.ConfirmationModal.codeInput": "Kod:",
-  "app.components.ConfirmationModal.confirmYourAccount": "Potvrdite svoju adresu e-pošte",
+  "app.components.ConfirmationModal.confirmYourAccount": "Potvrdite svoju e-mail adresu",
   "app.components.ConfirmationModal.confirmationCodeSent": "Poslan je novi kod",
   "app.components.ConfirmationModal.didntGetAnEmail": "Niste primili e-poruku?",
   "app.components.ConfirmationModal.email": "E-pošta",
