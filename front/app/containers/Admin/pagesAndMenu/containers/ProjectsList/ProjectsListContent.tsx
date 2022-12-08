@@ -37,6 +37,7 @@ const ProjectsListContent = ({ customPage }: Props) => {
     topicIds,
     areaIds,
     publicationStatusFilter: ['published', 'archived'],
+    onlyProjects: true,
   });
 
   if (isNilOrError(adminPublicationsList)) return null;
