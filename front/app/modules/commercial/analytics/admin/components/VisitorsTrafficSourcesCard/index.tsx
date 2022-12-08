@@ -19,15 +19,17 @@ import getXlsxData from './getXlsxData';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { ProjectId, Dates } from '../../typings';
+import { ProjectId, Dates, ChartDisplay } from '../../typings';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 
-type Props = ProjectId & Dates;
+type Props = ProjectId & Dates & ChartDisplay;
 
 const VisitorsTrafficSourcesCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
+  title,
+  interactive = true,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -42,7 +44,9 @@ const VisitorsTrafficSourcesCard = ({
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const cardTitle = formatMessage(messages.visitorsTrafficSources);
+  const cardTitle = title
+    ? title
+    : formatMessage(messages.visitorsTrafficSources);
 
   if (isNilOrError(pieData) || isNilOrError(xlsxData)) {
     return (
@@ -55,10 +59,8 @@ const VisitorsTrafficSourcesCard = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  return (
-    <GraphCard
-      title={cardTitle}
-      exportMenu={{
+  const exportMenu = interactive
+    ? {
         name: cardTitle,
         svgNode: currentView === 'chart' ? graphRef : undefined,
         xlsx: {
@@ -76,14 +78,26 @@ const VisitorsTrafficSourcesCard = ({
         startAt,
         endAt,
         currentProjectFilter: projectId,
-      }}
-      viewToggle={{
-        view: currentView,
-        onChangeView: setCurrentView,
-      }}
+      }
+    : undefined;
+
+  const viewToggle = interactive
+    ? { view: currentView, onChangeView: setCurrentView }
+    : undefined;
+
+  return (
+    <GraphCard
+      title={cardTitle}
+      exportMenu={exportMenu}
+      viewToggle={viewToggle}
     >
       {currentView === 'chart' && (
-        <Chart pieData={pieData} innerRef={graphRef} onOpenModal={openModal} />
+        <Chart
+          pieData={pieData}
+          innerRef={graphRef}
+          onOpenModal={openModal}
+          showReferrers={interactive}
+        />
       )}
 
       {currentView === 'table' && (

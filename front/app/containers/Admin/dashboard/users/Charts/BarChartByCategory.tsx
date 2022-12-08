@@ -58,6 +58,7 @@ interface InputProps {
   className?: string;
   customId?: string;
   xlsxEndpoint: string;
+  interactive?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -82,6 +83,7 @@ export class BarChartByCategory extends React.PureComponent<
       serie,
       intl: { formatMessage },
       graphUnit,
+      interactive = true,
     } = this.props;
 
     const noData =
@@ -96,7 +98,7 @@ export class BarChartByCategory extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            {!noData && (
+            {!noData && interactive && (
               <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}

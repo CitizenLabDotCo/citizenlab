@@ -20,6 +20,39 @@ export interface Pagination {
   pageNumber: number;
 }
 
+// Response values
+export type GetTimeSeriesResponse<
+  DateColumnPrefix extends string,
+  OtherColumns extends object
+> =
+  | (MonthRow<DateColumnPrefix> & OtherColumns)[]
+  | (WeekRow<DateColumnPrefix> & OtherColumns)[]
+  | (DayRow<DateColumnPrefix> & OtherColumns)[];
+
+export type MonthRow<DateColumnPrefix extends string> = TimeSeriesRow<
+  DateColumn<DateColumnPrefix, 'month'>
+>;
+
+export type WeekRow<DateColumnPrefix extends string> = TimeSeriesRow<
+  DateColumn<DateColumnPrefix, 'week'>
+>;
+
+type DayRow<DateColumnPrefix extends string> = TimeSeriesRow<
+  DateColumn<DateColumnPrefix, 'date'>
+>;
+
+export type DateRow<Prefix extends string> =
+  | MonthRow<Prefix>
+  | WeekRow<Prefix>
+  | DayRow<Prefix>;
+
+type TimeSeriesRow<DateColumn extends string> = { [K in DateColumn]: string };
+
+export type DateColumn<
+  DateColumnPrefix extends string,
+  Period extends 'month' | 'week' | 'date'
+> = `${DateColumnPrefix}.${Period}`;
+
 // Hook return values
 export interface Stat {
   value: string;
@@ -28,3 +61,9 @@ export interface Stat {
 
 // Component layouts
 export type Layout = 'wide' | 'narrow';
+
+// Specifics of displaying chart
+export interface ChartDisplay {
+  title?: string;
+  interactive?: boolean;
+}

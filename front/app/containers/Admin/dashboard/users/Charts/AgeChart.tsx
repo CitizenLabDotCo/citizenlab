@@ -26,6 +26,8 @@ interface Props {
   currentGroupFilter: string | undefined;
   currentGroupFilterLabel: string | undefined;
   className?: string;
+  title?: string;
+  interactive?: boolean;
 }
 
 const AgeChart = (props: Props & WrappedComponentProps) => {
@@ -37,10 +39,14 @@ const AgeChart = (props: Props & WrappedComponentProps) => {
     });
   };
 
+  const cardTitle = props.title
+    ? props.title
+    : props.intl.formatMessage(messages.usersByAgeTitle);
+
   return (
     <BarChartByCategory
       {...props}
-      graphTitleString={props.intl.formatMessage(messages.usersByAgeTitle)}
+      graphTitleString={cardTitle}
       graphUnit="users"
       stream={usersByBirthyearStream}
       xlsxEndpoint={usersByBirthyearXlsxEndpoint}
