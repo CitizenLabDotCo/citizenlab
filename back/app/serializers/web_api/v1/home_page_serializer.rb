@@ -8,7 +8,7 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     :projects_enabled,
     :projects_header_multiloc,
     :banner_avatars_enabled,
-    :banner_image_enabled,
+    :signed_in_banner_image_enabled,
     :banner_layout,
     :banner_signed_in_header_multiloc,
     :banner_cta_signed_in_text_multiloc,
