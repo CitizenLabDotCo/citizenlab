@@ -106,7 +106,9 @@ commands:
           git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> ~/citizenlab
 
       - run: |
-          cd citizenlab-ee && sh scripts/enable_ee.sh
+          cd citizenlab-ee &&                                \
+          cp citizenlab.config.ee.json ../citizenlab/ &&     \
+          cp -r back/engines/ee ../citizenlab/back/engines/
 
   pending_citizenlab_github_status:
     steps:
