@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
 
 // components
 import {
@@ -21,6 +16,7 @@ import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import GroupsTag from './GroupsTag';
 import AdminTag from './AdminTag';
+import ManageButton from './ManageButton';
 
 // resources
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -71,22 +67,6 @@ const ProjectRow = ({
     !isNilOrError(authUser) &&
     canModerateProject(publication.publicationId, { data: authUser });
 
-  const ManageButton = (
-    <RowButton
-      className={`
-        e2e-admin-edit-publication intercom-admin-project-edit-button
-      `}
-      linkTo={adminProjectsProjectPath(publication.publicationId)}
-      buttonStyle="secondary"
-      icon="edit"
-      type="button"
-      key="manage"
-      disabled={isBeingDeleted || !userCanModerateProject}
-    >
-      <FormattedMessage {...messages.editButtonLabel} />
-    </RowButton>
-  );
-
   return (
     <Container className={className}>
       <RowContent className="e2e-admin-projects-list-item">
@@ -122,7 +102,12 @@ const ProjectRow = ({
                   />
                 );
               } else if (action === 'manage') {
-                return ManageButton;
+                return (
+                  <ManageButton
+                    isDisabled={isBeingDeleted || !userCanModerateProject}
+                    publicationId={publication.publicationId}
+                  />
+                );
               } else {
                 return (
                   <RowButton
@@ -150,7 +135,10 @@ const ProjectRow = ({
             })}
           </ActionsRowContainer>
         ) : (
-          ManageButton
+          <ManageButton
+            isDisabled={isBeingDeleted || !userCanModerateProject}
+            publicationId={publication.publicationId}
+          />
         )}
       </RowContent>
       {deletionError && <Error text={deletionError} />}
