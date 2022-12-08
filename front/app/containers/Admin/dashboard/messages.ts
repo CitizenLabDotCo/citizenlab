@@ -258,4 +258,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ReportsTab.customFieldTitleExport',
     defaultMessage: '{fieldName}_repartition',
   },
+  showMore: {
+    id: 'app.containers.AdminPage.DashboardPage.overview.showMore',
+    defaultMessage: 'Show more',
+  },
+  showLess: {
+    id: 'app.containers.AdminPage.DashboardPage.overview.showLess',
+    defaultMessage: 'Show less',
+  },
 });

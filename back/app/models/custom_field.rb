@@ -35,17 +35,19 @@ class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
-  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale].freeze
+  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale page].freeze
   CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
                                                                                                   message: 'only letters, numbers and underscore' }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: { presence: true }
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
@@ -89,6 +91,10 @@ class CustomField < ApplicationRecord
     key == 'domicile' && code == 'domicile'
   end
 
+  def page?
+    input_type == 'page'
+  end
+
   def accept(visitor)
     case input_type
     when 'text'
@@ -121,6 +127,8 @@ class CustomField < ApplicationRecord
       visitor.visit_point self
     when 'linear_scale'
       visitor.visit_linear_scale self
+    when 'page'
+      visitor.visit_page self
     else
       raise "Unsupported input type: #{input_type}"
     end
@@ -145,7 +153,10 @@ class CustomField < ApplicationRecord
 
   def sanitize_description_multiloc
     service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc description_multiloc, %i[decoration link list title]
+    self.description_multiloc = service.sanitize_multiloc(
+      description_multiloc,
+      %i[title alignment list decoration link image video]
+    )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
   end

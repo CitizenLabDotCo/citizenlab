@@ -34,7 +34,7 @@ const Tab = styled.button<{ minWidth?: number }>`
   padding: 11px 18px;
   background: #fff;
   border-radius: 0;
-  border: solid 1px #aaa;
+  border: solid 1px ${colors.grey700};
   cursor: pointer;
   transition: all 80ms ease-out;
   justify-content: center;

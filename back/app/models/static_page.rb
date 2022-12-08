@@ -110,6 +110,20 @@ class StaticPage < ApplicationRecord
     code == 'custom'
   end
 
+  def filter_projects(projects_scope)
+    options =
+      case projects_filter_type
+      when self.class.projects_filter_types.fetch(:areas)
+        { areas: areas_static_pages.pluck(:area_id) }
+      when self.class.projects_filter_types.fetch(:topics)
+        { topics: static_pages_topics.pluck(:topic_id) }
+      else
+        {}
+      end
+
+    ProjectsFilteringService.new.filter(projects_scope, options)
+  end
+
   private
 
   def confirm_is_custom

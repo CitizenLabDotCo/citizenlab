@@ -11,10 +11,8 @@ import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
 import messages from './messages';
 import eventsPageMessages from 'containers/EventsPage/messages';
-
-const EventsWidgetContainer = styled.div`
-  padding: 48px 0 124px 0;
-`;
+import { Box } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
 
 const NoEventsText = styled.div`
   margin: auto 0px;
@@ -61,7 +59,6 @@ const StyledEventCard = styled(EventCard)`
 const Header = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   padding-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
@@ -93,75 +90,78 @@ const Title = styled.h2`
 const EventPageLink = styled(Link)`
   color: ${colors.textSecondary};
   margin-top: auto;
+
+  &:hover {
+    color: ${darken(0.2, colors.textSecondary)};
+    text-decoration: underline;
+  }
 `;
 
 interface Props {
-  id?: string;
-  // null is reserved for the cases where you need to wait
-  // for projectIds to avoid flashing of all events. If you need
-  // all events, projectIds should be undefined.
-  projectIds?: string[] | null;
+  staticPageId?: string;
 }
 
-const EventsWidget = ({ id, projectIds }: Props) => {
+const EventsWidget = ({ staticPageId }: Props) => {
   const { formatMessage } = useIntl();
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,
     pageSize: 3,
     sort: 'oldest',
-    ...(projectIds && projectIds.length > 0 && { projectIds }),
+    ...(staticPageId && { staticPageId }),
   });
-
-  // This avoids flashing of all events.
-  // See CustomPageEvents.tsx for an example of projectIds === null. If we don't
-  // have adminPublications yet, projectIds is null andd it would show
-  // all events.
-  // The length check is needed if our area/topic doesn't have a admin publication/project.
-  // In that case, all events would still flash on the screen.
-  if (projectIds === null || (projectIds && projectIds.length === 0)) {
-    return null;
-  }
 
   const eventsLoading = isNil(events);
   const eventsError = isError(events);
 
   return (
-    <EventsWidgetContainer data-testid={id}>
+    <Box display="flex" flexDirection="column">
       <Header>
         <Title>{formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
-        <EventPageLink to="/events">
-          {formatMessage(messages.viewAllEventsText)}
-        </EventPageLink>
       </Header>
 
-      {eventsLoading && <EventsSpinner />}
-      {eventsError && (
-        <EventsMessage message={eventsPageMessages.errorWhenFetchingEvents} />
-      )}
+      {eventsLoading ? (
+        <EventsSpinner />
+      ) : (
+        <>
+          <Box mb="32px">
+            {eventsError && (
+              <EventsMessage
+                message={eventsPageMessages.errorWhenFetchingEvents}
+              />
+            )}
 
-      {!isNilOrError(events) && events.length === 0 && (
-        <VerticalCenterer>
-          <NoEventsText>
-            {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
-          </NoEventsText>
-        </VerticalCenterer>
-      )}
+            {!isNilOrError(events) && events.length === 0 && (
+              <VerticalCenterer>
+                <NoEventsText>
+                  {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
+                </NoEventsText>
+              </VerticalCenterer>
+            )}
 
-      {!isNilOrError(events) && events.length > 0 && (
-        <CardsContainer>
-          {events.map((event) => (
-            <StyledEventCard
-              event={event}
-              key={event.id}
-              titleFontSize={18}
-              showProjectTitle
-              onClickTitleGoToProjectAndScrollToEvent
-            />
-          ))}
-        </CardsContainer>
+            {!isNilOrError(events) && events.length > 0 && (
+              <CardsContainer>
+                {events.map((event) => (
+                  <StyledEventCard
+                    event={event}
+                    key={event.id}
+                    titleFontSize={18}
+                    showProjectTitle
+                    onClickTitleGoToProjectAndScrollToEvent
+                  />
+                ))}
+              </CardsContainer>
+            )}
+          </Box>
+
+          <Box alignSelf="center">
+            <EventPageLink to="/events">
+              {formatMessage(messages.viewAllEventsText)}
+            </EventPageLink>
+          </Box>
+        </>
       )}
-    </EventsWidgetContainer>
+    </Box>
   );
 };
 

@@ -7,7 +7,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { Container, Content } from 'components/LandingPages/citizen';
 import { Helmet } from 'react-helmet';
 import CustomPageHeader from './CustomPageHeader';
-import CustomPageEvents from './CustomPageEvents';
+import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
 import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from 'components/PageNotFound';
@@ -36,19 +36,40 @@ const PageTitle = styled.h1`
   text-align: left;
   margin: 0;
   padding: 0;
-  padding-top: 50px;
 
   ${media.tablet`
-    font-size: ${fontSizes.xxxl};
+    font-size: ${fontSizes.xxxl}px;
   `}
+
   ${isRtl`
     text-align: right;
     direction: rtl;
   `}
 `;
 
-const AttachmentsContainer = styled(ContentContainer)`
-  margin-bottom: 30px;
+const AttachmentsContainer = styled(ContentContainer)<{
+  topInfoSectionEnabled: boolean;
+}>`
+  background: #fff;
+  padding-top: ${({ topInfoSectionEnabled }) =>
+    topInfoSectionEnabled ? '0' : '50px'};
+  padding-bottom: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  ${media.tablet`
+    padding-top: 30px;
+    padding-bottom: 30px;
+  `}
+`;
+
+const NoBannerContainer = styled(ContentContainer)`
+  background: #fff;
+  padding: 50px 50px 50px 50px;
+
+  ${media.tablet`
+    padding: 50px 20px 50px 20px;
+  `}
 `;
 
 const CustomPageShow = () => {
@@ -96,20 +117,18 @@ const CustomPageShow = () => {
       {pageAttributes.banner_enabled ? (
         <CustomPageHeader pageData={page} />
       ) : (
-        <Box zIndex="4">
-          <AdminCustomPageEditButton pageId={page.id} />
-        </Box>
+        <NoBannerContainer>
+          {/* show page text title if the banner is disabled */}
+          <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
+          <Box zIndex="40000">
+            <AdminCustomPageEditButton pageId={page.id} />
+          </Box>
+        </NoBannerContainer>
       )}
       <Content>
         <Fragment
           name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}
         />
-        {/* show page text title if the banner is disabled */}
-        {!pageAttributes.banner_enabled && (
-          <ContentContainer>
-            <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
-          </ContentContainer>
-        )}
         {pageAttributes.top_info_section_enabled && (
           <InfoSection
             multilocContent={pageAttributes.top_info_section_multiloc}
@@ -118,15 +137,13 @@ const CustomPageShow = () => {
         {pageAttributes.files_section_enabled &&
           !isNilOrError(remotePageFiles) &&
           remotePageFiles.length > 0 && (
-            <AttachmentsContainer>
+            <AttachmentsContainer
+              topInfoSectionEnabled={pageAttributes.top_info_section_enabled}
+            >
               <FileAttachments files={remotePageFiles} />
             </AttachmentsContainer>
           )}
-        {pageAttributes.events_widget_enabled && (
-          <ContentContainer>
-            <CustomPageEvents page={page} />
-          </ContentContainer>
-        )}
+        <CustomPageProjectsAndEvents page={page} />
         {pageAttributes.bottom_info_section_enabled && (
           <InfoSection
             multilocContent={pageAttributes.bottom_info_section_multiloc}

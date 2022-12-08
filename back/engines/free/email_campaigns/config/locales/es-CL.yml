@@ -82,7 +82,7 @@ es-CL:
       "password_reset": 'Restablecimiento de contraseña: todos los usuarios'
       "project_moderation_rights_received": Derechos de administrador de proyecto recibidos - administradores de proyecto
       "project_folder_moderation_rights_received": Derechos de administrador de carpetas recibidos
-      "project_phase_started": 'Nueva fase del proyecto: todos los usuarios'
+      "project_phase_started": 'Nueva fase del proyecto: participantes del proyecto'
       "project_phase_upcoming": Próxima nueva fase del proyecto - administradores y administradores de proyecto
       "status_change_of_commented_idea": 'Cambio de estado de una idea que has comentado: todos los usuarios'
       "status_change_of_commented_initiative": 'Cambio de estado de una propuesta que has comentado: todos los usuarios'

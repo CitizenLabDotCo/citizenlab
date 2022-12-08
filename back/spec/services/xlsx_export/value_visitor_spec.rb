@@ -485,5 +485,14 @@ describe XlsxExport::ValueVisitor do
         expect(visitor.visit_point(field)).to be_nil
       end
     end
+
+    describe '#visit_page' do
+      let(:input_type) { 'page' }
+      let(:model) { instance_double Idea } # The model is irrelevant for this test.
+
+      it 'returns nil, because the field does not capture data' do
+        expect(visitor.visit_page(field)).to be_nil
+      end
+    end
   end
 end
