@@ -29,7 +29,7 @@
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
 #  header_bg                                :string
-#  signed_in_banner_image_enabled           :boolean          default(TRUE), not null
+#  banner_signed_in_image_enabled           :boolean          default(TRUE), not null
 #
 class HomePage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
@@ -81,8 +81,8 @@ class HomePage < ApplicationRecord
     validates :banner_cta_signed_out_url, presence: true, url: true
   end
 
-  validates :signed_in_banner_image_enabled, inclusion: [true, false]
-  with_options if: -> { signed_in_banner_image_enabled == false } do
+  validates :banner_signed_in_image_enabled, inclusion: [true, false]
+  with_options if: -> { banner_signed_in_image_enabled == false } do
     validates :banner_layout, presence: true, inclusion: %w[fixed_ratio_layout]
   end
 

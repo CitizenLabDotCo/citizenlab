@@ -40,7 +40,7 @@ class StaticPagePolicy < ApplicationPolicy
       { top_info_section_multiloc: CL2_SUPPORTED_LOCALES },
       :slug,
       :banner_enabled,
-      :signed_in_banner_image_enabled,
+      :banner_signed_in_image_enabled,
       :banner_layout,
       :banner_overlay_color,
       :banner_overlay_opacity,
