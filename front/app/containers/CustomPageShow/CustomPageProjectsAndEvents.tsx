@@ -74,7 +74,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
           <ProjectAndFolderCardsInner
             statusCounts={statusCountsWithoutFilters}
             publicationStatusFilter={publicationStatusFilter}
-            showTitle={true}
+            showTitle={false}
             showFilters={false}
             showSearch={false}
             adminPublications={adminPublications}
