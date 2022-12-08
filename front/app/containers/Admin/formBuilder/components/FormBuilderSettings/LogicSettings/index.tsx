@@ -62,8 +62,8 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
         <Warning text={formatMessage(messages.logicWarning)} />
       </Box>
       {answers &&
-        answers.map((answer, i) => (
-          <Box key={i}>
+        answers.map((answer) => (
+          <Box key={answer.key}>
             <RuleInput
               name={`customFields.${field.index}.logic`}
               answer={answer}

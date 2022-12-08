@@ -58,6 +58,8 @@ const FormBuilderSettings = ({
     // all pages should be available in the list.
     const formCustomFields: IFlatCustomField[] = watch('customFields');
     const pageArray: { value: string; label: string }[] = [];
+    const surveyEndOption = 'survey_end';
+
     formCustomFields?.map((field) => {
       if (field.input_type === 'page') {
         pageArray.push({
@@ -70,7 +72,7 @@ const FormBuilderSettings = ({
       }
     });
     pageArray.push({
-      value: 'survey_end',
+      value: surveyEndOption,
       label: `${formatMessage(messages.surveyEnd)}`,
     });
     return pageArray;
