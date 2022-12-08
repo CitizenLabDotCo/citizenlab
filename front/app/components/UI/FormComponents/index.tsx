@@ -128,7 +128,7 @@ const OptionalText = styled.div`
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   ${isRtl`
     flex-direction: row-reverse;
   `}
