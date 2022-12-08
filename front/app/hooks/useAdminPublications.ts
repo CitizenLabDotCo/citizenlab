@@ -11,7 +11,6 @@ import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
 export interface BaseProps {
-  // to rename
   topicIds?: string[] | null;
   areaIds?: string[] | null;
   publicationStatusFilter: PublicationStatus[];
@@ -37,6 +36,7 @@ export interface InputProps extends BaseProps {
 export type IAdminPublicationContent = {
   id: string;
   publicationType: AdminPublicationType;
+  // The id of the corresponding project or folder
   publicationId: string;
   attributes: IAdminPublicationData['attributes'];
   relationships: {

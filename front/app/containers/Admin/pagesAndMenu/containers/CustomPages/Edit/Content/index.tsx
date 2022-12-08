@@ -75,6 +75,7 @@ const CustomPagesEditContent = () => {
       titleMessageDescriptor: sectionToggleMessages.projectsList,
       tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
       hideSection: hideProjects,
+      linkToPath: 'projects',
     },
     {
       name: 'events_widget_enabled',
