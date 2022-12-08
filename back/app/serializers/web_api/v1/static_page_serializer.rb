@@ -15,6 +15,7 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
     :banner_cta_button_type,
     :banner_cta_button_url,
     :banner_header_multiloc,
+    :banner_image_enabled,
     :banner_subheader_multiloc,
     :top_info_section_enabled,
     :files_section_enabled,
