@@ -18,6 +18,7 @@ export interface BaseProps {
   rootLevelOnly?: boolean;
   // to be clarified
   removeNotAllowedParents?: boolean;
+  onlyProjects?: boolean;
 }
 
 export interface InputProps extends BaseProps {
@@ -70,6 +71,7 @@ export default function useAdminPublications({
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
+  onlyProjects = false,
   childrenOfId,
 }: InputProps): IUseAdminPublicationsOutput {
   const [list, setList] = useState<
@@ -147,6 +149,7 @@ export default function useAdminPublications({
       ...(areas && { areas }),
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
+      only_projects: onlyProjects,
       folder: childrenOfId,
     };
 

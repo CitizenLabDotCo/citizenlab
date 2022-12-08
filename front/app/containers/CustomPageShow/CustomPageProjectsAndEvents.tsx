@@ -44,6 +44,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     publicationStatusFilter,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
+    onlyProjects: true,
   });
 
   const { counts: statusCountsWithoutFilters } =
@@ -53,6 +54,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
       publicationStatusFilter,
       rootLevelOnly: true,
       removeNotAllowedParents: true,
+      onlyProjects: true,
     });
 
   const advancedCustomPagesEnabled = useFeatureFlag({
