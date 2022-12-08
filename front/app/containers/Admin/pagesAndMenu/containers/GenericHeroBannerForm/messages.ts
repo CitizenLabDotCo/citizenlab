@@ -160,4 +160,16 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner',
     defaultMessage: 'Save and enable hero banner',
   },
+  ctaHeader: {
+    id: 'app.containers.AdminPage.SettingsPage.ctaHeader',
+    defaultMessage: 'Buttons',
+  },
+  signed_out: {
+    id: 'app.containers.AdminPage.SettingsPage.signed_out',
+    defaultMessage: 'Button for non-registered visitors',
+  },
+  signed_in: {
+    id: 'app.containers.AdminPage.SettingsPage.signed_in',
+    defaultMessage: 'Button for registered visitors',
+  },
 });

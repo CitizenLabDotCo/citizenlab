@@ -7,7 +7,6 @@ import {
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
 import { WrappedComponentProps } from 'react-intl';
-import Outlet from 'components/Outlet';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useHomepageSettings from 'hooks/useHomepageSettings';
@@ -21,6 +20,8 @@ import { media } from 'utils/styleUtils';
 import messages from '../messages';
 import SignUpButton from '../SignUpButton';
 import tracks from '../tracks';
+import CTA from './CTA';
+import FeatureFlag from 'components/FeatureFlag';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
@@ -61,7 +62,7 @@ const HeaderContent = ({
     openSignUpInModal();
   };
   const buttonStyle = getButtonStyle(fontColors);
-  // Flag should not be here, but inside module.
+
   const customizableHomepageBannerEnabled = useFeatureFlag({
     name: 'customizable_homepage_banner',
   });
@@ -108,18 +109,12 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
-        {/*
-          This should use a mechanisme similar to navbarModuleActive instead.
-          The core shouldn't have feature flags about modularized features.
-        */}
         {!customizableHomepageBannerEnabled && (
           <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         )}
-        <Outlet
-          id="app.containers.HomePage.SignedOutHeader.CTA"
-          buttonStyle={buttonStyle}
-          signUpIn={signUpIn}
-        />
+        <FeatureFlag name="customizable_homepage_banner">
+          <CTA signedIn={false} buttonStyle={buttonStyle} signUpIn={signUpIn} />
+        </FeatureFlag>
       </Container>
     );
   }

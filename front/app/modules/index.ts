@@ -10,7 +10,6 @@ import geographicDashboardConfiguration from './commercial/geographic_dashboard'
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
-import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
 import projectVisibilityConfiguration from './free/project_visibility';
 
@@ -117,10 +116,6 @@ export default loadModules([
   {
     configuration: customTopicsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
-  },
-  {
-    configuration: customizableHomepageBannerConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/customizable_homepage_banner'],
   },
   {
     configuration: geographicDashboardConfiguration,
