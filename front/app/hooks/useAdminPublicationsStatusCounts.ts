@@ -24,6 +24,7 @@ export default function useAdminPublicationsStatusCounts({
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
+  onlyProjects = false,
 }: BaseProps) {
   const [counts, setCounts] = useState<
     IStatusCounts | undefined | null | Error
@@ -73,6 +74,7 @@ export default function useAdminPublicationsStatusCounts({
       ...(areas && { areas }),
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
+      only_projects: onlyProjects,
       search,
     };
 
@@ -93,6 +95,7 @@ export default function useAdminPublicationsStatusCounts({
     publicationStatuses,
     rootLevelOnly,
     removeNotAllowedParents,
+    onlyProjects,
     search,
   ]);
 
