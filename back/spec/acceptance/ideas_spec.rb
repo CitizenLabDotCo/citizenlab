@@ -956,7 +956,7 @@ resource 'Ideas' do
             expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
           end
 
-          example '[error] Create an idea when there is a posting disabled reason' do
+          example '[error] Update an idea when there is a posting disabled reason' do
             expect_any_instance_of(ParticipationContextService)
               .to receive(:posting_idea_disabled_reason_for_context).with(@project, @user).and_return('i_dont_like_you')
 
