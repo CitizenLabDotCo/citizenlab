@@ -89,7 +89,7 @@ const ProjectAndFolderCardsInner = ({
 
   const handleChangeSearch = React.useCallback(
     (search: string | null) => {
-      onChangeSearch && onChangeSearch(search);
+      onChangeSearch?.(search);
       adminPublications.onChangeSearch(search);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,12 +113,12 @@ const ProjectAndFolderCardsInner = ({
   };
 
   const handleChangeTopics = (topics: string[]) => {
-    onChangeTopics && onChangeTopics(topics);
+    onChangeTopics?.(topics);
     adminPublications.onChangeTopics(topics);
   };
 
   const handleChangeAreas = (areas: string[]) => {
-    onChangeAreas && onChangeAreas(areas);
+    onChangeAreas?.(areas);
     adminPublications.onChangeAreas(areas);
   };
 
