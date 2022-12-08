@@ -7,19 +7,23 @@ import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
 
+// Typings
+import { Locale } from 'typings';
+
 // intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { getAdditionalSettings } from '../utils';
+import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 
 type ContentSettingsProps = {
-  field: any;
-  locales: any;
-  onClose: any;
-  isDeleteDisabled: boolean;
-  onDelete: any;
+  field: IFlatCustomFieldWithIndex;
+  onDelete: (fieldIndex: number) => void;
+  onClose: () => void;
+  isDeleteDisabled?: boolean;
+  locales: Locale[];
 };
 
 export const ContentSettings = ({

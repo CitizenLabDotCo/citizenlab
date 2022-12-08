@@ -17,7 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Controller, useFormContext } from 'react-hook-form';
 
 type RuleInputProps = {
-  answer: { key: string | undefined; label: string | undefined };
+  answer: { key: string | number | undefined; label: string | undefined };
   name: string;
   pages:
     | {
@@ -27,13 +27,14 @@ type RuleInputProps = {
     | undefined;
 };
 
-type LogicType = { rules: { if: string; goto_page_id: string }[] };
+type LogicType = { rules: { if: string | number; goto_page_id: string }[] };
 
 export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
   const { setValue, watch, control } = useFormContext();
   const rules = (watch(name) as LogicType).rules;
+  const logic = watch(name) as LogicType;
   const initialValue = rules
-    ? rules.filter((rule) => rule.if === answer.key)[0]
+    ? rules.find((rule) => rule.if === answer.key)
     : undefined;
 
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
@@ -45,8 +46,6 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
 
   const onSelectionChange = (page: IOption) => {
     setSelectedPage(page.value);
-
-    const logic = watch(name) as LogicType;
 
     // Remove any existing rule
     if (logic.rules && logic.rules.length > 0) {
@@ -73,7 +72,6 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
 
   const removeRuleForAnswer = () => {
     // Remove any existing rule
-    const logic = watch(name) as LogicType;
     if (logic.rules && logic.rules.length > 0) {
       logic.rules = logic.rules.filter((rule) => rule.if !== answer.key);
     }

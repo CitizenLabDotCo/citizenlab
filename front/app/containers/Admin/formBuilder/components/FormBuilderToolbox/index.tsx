@@ -24,7 +24,7 @@ import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { uuid4 } from '@sentry/utils';
+import { generateTempId } from '../FormBuilderSettings/utils';
 
 const DraggableElement = styled.div`
   cursor: move;
@@ -51,7 +51,7 @@ const FormBuilderToolbox = ({
 
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
-      temp_id: `TEMP-ID-${uuid4()}`,
+      temp_id: generateTempId(),
       logic: {
         rules: [],
       },

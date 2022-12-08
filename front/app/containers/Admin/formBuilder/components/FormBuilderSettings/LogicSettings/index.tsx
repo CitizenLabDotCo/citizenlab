@@ -19,6 +19,14 @@ type LogicSettingsProps = {
   pageOptions: { value: string; label: string }[];
   field: IFlatCustomFieldWithIndex;
 };
+
+export type AnswersType =
+  | {
+      key: string | number;
+      label: string | undefined;
+    }[]
+  | undefined;
+
 export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
@@ -28,43 +36,42 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
 
   if (isNilOrError(locale)) {
     return null;
-  } else {
-    // Select Field
-    let answers = selectOptions
-      ? selectOptions.map((option) => ({
-          key: option.id || option.temp_id,
-          label: option.title_multiloc[locale]?.toString(),
-        }))
-      : undefined;
-    // Linear Scale Field
-    if (field.input_type === 'linear_scale') {
-      const linearScaleOptionArray = Array.from(
-        { length: linearScaleMaximum },
-        (_, i) => i + 1
-      );
-      answers = linearScaleOptionArray.map((option) => ({
-        key: option,
-        label: option.toString(),
-      }));
-    }
-
-    return (
-      <>
-        <Box mb="24px">
-          <Warning text={formatMessage(messages.logicWarning)} />
-        </Box>
-        {answers &&
-          answers.map((answer, i) => (
-            <Box key={i}>
-              <RuleInput
-                name={`customFields.${field.index}.logic`}
-                answer={answer}
-                pages={pageOptions}
-              />
-            </Box>
-          ))}
-        <Box borderTop={`1px solid ${colors.divider}`} py="24px" />
-      </>
-    );
   }
+  // For Select Field
+  let answers: AnswersType = selectOptions
+    ? selectOptions.map((option) => ({
+        key: option.id || option.temp_id,
+        label: option.title_multiloc[locale]?.toString(),
+      }))
+    : undefined;
+  // For Linear Scale Field
+  if (field.input_type === 'linear_scale') {
+    const linearScaleOptionArray = Array.from(
+      { length: linearScaleMaximum },
+      (_, i) => i + 1
+    );
+    answers = linearScaleOptionArray.map((option) => ({
+      key: option,
+      label: option.toString(),
+    }));
+  }
+
+  return (
+    <>
+      <Box mb="24px">
+        <Warning text={formatMessage(messages.logicWarning)} />
+      </Box>
+      {answers &&
+        answers.map((answer, i) => (
+          <Box key={i}>
+            <RuleInput
+              name={`customFields.${field.index}.logic`}
+              answer={answer}
+              pages={pageOptions}
+            />
+          </Box>
+        ))}
+      <Box borderTop={`1px solid ${colors.divider}`} py="24px" />
+    </>
+  );
 };
