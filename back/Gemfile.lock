@@ -796,13 +796,13 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.9-aarch64-linux)
+    nokogiri (1.13.10-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.13.9-arm64-darwin)
+    nokogiri (1.13.10-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.9-x86_64-darwin)
+    nokogiri (1.13.10-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.9-x86_64-linux)
+    nokogiri (1.13.10-x86_64-linux)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.9)
@@ -880,7 +880,7 @@ GEM
     que-web (0.9.3)
       que (~> 1.0.0.beta3)
       sinatra
-    racc (1.6.0)
+    racc (1.6.1)
     rack (2.2.4)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
@@ -1230,7 +1230,7 @@ DEPENDENCIES
   moderation!
   multi_tenancy!
   nlp!
-  nokogiri (>= 1.13.9)
+  nokogiri (>= 1.13.10)
   okcomputer
   omniauth (~> 1.9.1)
   omniauth-azure-activedirectory!
