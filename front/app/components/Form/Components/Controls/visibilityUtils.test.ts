@@ -59,4 +59,32 @@ describe('isVisible', () => {
     };
     expect(isVisible(uischema, { foo: 'baz' }, '', customAjv)).toBe(false);
   });
+
+  it('should return false if any of ruleArray is not fulfilled', () => {
+    const uischema: ExtendedUISchema = {
+      type: 'Control',
+      scope: '#/properties/foo',
+      ruleArray: [
+        {
+          effect: RuleEffect.SHOW,
+          condition: {
+            scope: '#/properties/foo',
+            schema: {
+              enum: ['bar'],
+            },
+          },
+        },
+        {
+          effect: RuleEffect.SHOW,
+          condition: {
+            scope: '#/properties/foo',
+            schema: {
+              enum: ['baz'],
+            },
+          },
+        },
+      ],
+    };
+    expect(isVisible(uischema, { foo: 'baz' }, '', customAjv)).toBe(false);
+  });
 });
