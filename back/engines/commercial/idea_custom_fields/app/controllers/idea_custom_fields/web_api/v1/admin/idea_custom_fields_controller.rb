@@ -122,7 +122,8 @@ module IdeaCustomFields
             SideFxCustomFieldService.new.after_create(field, current_user)
           end
           if options_params
-            option_temp_ids_to_ids_mapping = update_options field, options_params, errors, index
+            option_temp_ids_to_ids_mapping_in_field_logic = update_options field, options_params, errors, index
+            option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
           field.move_to_bottom
         end
@@ -198,8 +199,8 @@ module IdeaCustomFields
             end
             SideFxCustomFieldOptionService.new.after_update option, current_user
           else
-            update_params = option_params.except('temp_id')
-            option = CustomFieldOption.new update_params.merge(custom_field: field)
+            create_params = option_params.except('temp_id')
+            option = CustomFieldOption.new create_params.merge(custom_field: field)
             SideFxCustomFieldOptionService.new.before_create option, current_user
             if option.save
               option_temp_ids_to_ids_mapping[option_params[:temp_id]] = option.id if option_params[:temp_id]
