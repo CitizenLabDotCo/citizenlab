@@ -35,6 +35,7 @@ import { colors } from 'utils/styleUtils';
 
 // types
 import { Locale } from 'typings';
+import moment from 'moment';
 
 const DraggableElement = styled.div`
   cursor: move;
@@ -53,6 +54,9 @@ const ContentBuilderToolbox = ({
     connectors,
     actions: { selectNode },
   } = useEditor();
+
+  // Default end date for charts (today)
+  const chartEndDate = moment().format('YYYY-MM-DDTHH:mm:ss.sss');
 
   return (
     <Box
@@ -327,7 +331,7 @@ const ContentBuilderToolbox = ({
                 title={formatMessage(messages.visitorTimeline)}
                 projectId={undefined}
                 startAt={undefined}
-                endAt={undefined}
+                endAt={chartEndDate}
               />,
               {
                 onCreate: (node) => {
@@ -353,7 +357,7 @@ const ContentBuilderToolbox = ({
                 title={formatMessage(messages.trafficSources)}
                 projectId={undefined}
                 startAt={undefined}
-                endAt={undefined}
+                endAt={chartEndDate}
               />,
               {
                 onCreate: (node) => {
@@ -379,7 +383,7 @@ const ContentBuilderToolbox = ({
                 title={formatMessage(messages.usersByGender)}
                 projectId={undefined}
                 startAt={undefined}
-                endAt={undefined}
+                endAt={chartEndDate}
               />,
               {
                 onCreate: (node) => {
@@ -405,7 +409,7 @@ const ContentBuilderToolbox = ({
                 title={formatMessage(messages.usersByAge)}
                 projectId={undefined}
                 startAt={undefined}
-                endAt={undefined}
+                endAt={chartEndDate}
               />,
               {
                 onCreate: (node) => {

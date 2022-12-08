@@ -60,7 +60,7 @@ interface Props extends QueryProps {
   currentGroupFilterLabel: string | undefined;
   className?: string;
   title?: string;
-  showExportMenu?: boolean;
+  interactive?: boolean;
 }
 
 const options = ['male', 'female', 'unspecified', '_blank'];
@@ -162,7 +162,7 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
       currentGroupFilter,
       currentGroupFilterLabel,
       title,
-      showExportMenu = true,
+      interactive = true,
     } = this.props;
     const { serie } = this.state;
 
@@ -177,7 +177,7 @@ class GenderChart extends PureComponent<Props & WrappedComponentProps, State> {
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{cardTitle}</GraphCardTitle>
-            {serie && showExportMenu && (
+            {serie && interactive && (
               <ReportExportMenu
                 name={formatMessage(messages.usersByGenderTitle)}
                 svgNode={this.currentChart}

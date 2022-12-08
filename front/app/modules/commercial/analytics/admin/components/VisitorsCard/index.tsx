@@ -28,6 +28,8 @@ const VisitorsCard = ({
   title,
   interactive = true,
 }: Props) => {
+  console.log(startAtMoment, endAtMoment);
+
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 

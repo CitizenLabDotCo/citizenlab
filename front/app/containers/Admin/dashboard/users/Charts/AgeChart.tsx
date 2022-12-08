@@ -27,7 +27,7 @@ interface Props {
   currentGroupFilterLabel: string | undefined;
   className?: string;
   title?: string;
-  showExportMenu?: boolean;
+  interactive?: boolean;
 }
 
 const AgeChart = (props: Props & WrappedComponentProps) => {
