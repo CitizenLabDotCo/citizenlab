@@ -40,21 +40,21 @@ module MultiTenancy
             facebook_login: {
               allowed: true,
               enabled: true,
-              app_id: '***REMOVED***',
-              app_secret: '***REMOVED***'
+              app_id: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_ID'),
+              app_secret: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_SECRET')
             },
             google_login: {
               allowed: true,
               enabled: true,
-              client_id: '***REMOVED***',
-              client_secret: '***REMOVED***'
+              client_id: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_ID'),
+              client_secret: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_SECRET')
             },
             franceconnect_login: {
               allowed: true,
               enabled: true,
               environment: 'integration',
-              identifier: '***REMOVED***',
-              secret: '***REMOVED***'
+              identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER'),
+              secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET')
             },
             vienna_citizen_login: {
               allowed: true,
@@ -77,7 +77,7 @@ module MultiTenancy
             maps: {
               enabled: true,
               allowed: true,
-              tile_provider: 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=***REMOVED***',
+              tile_provider: ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER'),
               map_center: {
                 lat: '50.8503',
                 long: '4.3517'

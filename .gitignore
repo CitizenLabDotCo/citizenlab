@@ -1,1 +1,3 @@
 *.DS_Store
+.env-back-secret
+.env-front-secret
