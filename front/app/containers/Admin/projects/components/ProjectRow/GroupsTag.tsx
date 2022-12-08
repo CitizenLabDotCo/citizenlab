@@ -2,7 +2,6 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import { StyledStatusLabel } from '.';
-import ConditionalWrapper from 'components/ConditionalWrapper';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import useProjectGroups from 'hooks/useProjectGroups';
@@ -14,6 +13,23 @@ interface Props {
   userCanModerateProject: boolean;
 }
 
+const StatusLabel = ({ groupCount }: { groupCount: number }) => (
+  <StyledStatusLabel
+    text={
+      groupCount > 0 ? (
+        <FormattedMessage
+          {...messages.xGroupsHaveAccess}
+          values={{ groupCount }}
+        />
+      ) : (
+        <FormattedMessage {...messages.onlyAdminsCanView} />
+      )
+    }
+    backgroundColor={colors.teal}
+    icon="lock"
+  />
+);
+
 const GroupsTag = ({ projectId, userCanModerateProject }: Props) => {
   const projectGroups = useProjectGroups({
     projectId,
@@ -23,31 +39,17 @@ const GroupsTag = ({ projectId, userCanModerateProject }: Props) => {
     return null;
   }
 
-  return (
-    <ConditionalWrapper
-      condition={userCanModerateProject}
-      wrapper={(children: React.ReactNode) => (
-        <Link to={`${adminProjectsProjectPath(projectId)}/permissions`}>
-          {children}
-        </Link>
-      )}
-    >
-      <StyledStatusLabel
-        text={
-          projectGroups.length > 0 ? (
-            <FormattedMessage
-              {...messages.xGroupsHaveAccess}
-              values={{ groupCount: projectGroups.length }}
-            />
-          ) : (
-            <FormattedMessage {...messages.onlyAdminsCanView} />
-          )
-        }
-        backgroundColor={colors.teal}
-        icon="lock"
-      />
-    </ConditionalWrapper>
-  );
+  const groupCount = projectGroups.length;
+
+  if (userCanModerateProject) {
+    return (
+      <Link to={`${adminProjectsProjectPath(projectId)}/permissions`}>
+        <StatusLabel groupCount={groupCount} />
+      </Link>
+    );
+  }
+
+  return <StatusLabel groupCount={groupCount} />;
 };
 
 export default GroupsTag;
