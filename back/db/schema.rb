@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_05_112729) do
+ActiveRecord::Schema.define(version: 2022_12_08_093814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -424,6 +424,7 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "header_bg"
+    t.boolean "banner_signed_in_image_enabled", default: true, null: false
   end
 
   create_table "id_id_card_lookup_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1165,6 +1166,7 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.string "header_bg"
+    t.boolean "banner_signed_in_image_enabled", default: true, null: false
     t.index ["code"], name: "index_static_pages_on_code"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
   end
