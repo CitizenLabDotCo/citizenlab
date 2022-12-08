@@ -23,6 +23,7 @@ const StatCard = ({
   endAtMoment,
   resolution,
   showExportMenu = true,
+  alignItems = 'stretch',
 }: StatCardTemplateProps) => {
   const data = useStatCard({
     messages: config.messages,
@@ -62,8 +63,8 @@ const StatCard = ({
   cardData.stats.forEach((stat, index, arr) => {
     columnStats.push(
       <Box
-        pr="20px"
-        pl="20px"
+        pr="10px"
+        pl="10px"
         width="100%"
         key={index}
         borderRight={
@@ -99,7 +100,13 @@ const StatCard = ({
       exportMenu={exportMenu}
       topRightStat={cornerStat}
     >
-      <Box width="100%" display="flex" flexDirection="row" pl="20px">
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="row"
+        pl="20px"
+        alignItems={alignItems}
+      >
         {columnStats}
       </Box>
     </GraphCard>
