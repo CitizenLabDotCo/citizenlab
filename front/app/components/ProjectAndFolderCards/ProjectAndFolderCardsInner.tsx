@@ -73,7 +73,7 @@ const ProjectAndFolderCardsInner = ({
     ? currentTab === 'all'
       ? publicationStatusFilter
       : [currentTab]
-    : undefined;
+    : null;
 
   const publicationStatusesForCurrentTabStringified = JSON.stringify(
     publicationStatusesForCurrentTab

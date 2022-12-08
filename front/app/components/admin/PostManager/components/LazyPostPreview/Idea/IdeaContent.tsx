@@ -14,7 +14,7 @@ import Comments from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import VotePreview from './VotePreview';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
@@ -307,7 +307,9 @@ export class IdeaContent extends PureComponent<
                 )}
 
                 {ideaFiles && !isNilOrError(ideaFiles) && (
-                  <FileAttachments files={ideaFiles} />
+                  <Box mb="25px">
+                    <FileAttachments files={ideaFiles} />
+                  </Box>
                 )}
 
                 <StyledOfficialFeedback

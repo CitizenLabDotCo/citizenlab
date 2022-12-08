@@ -1,18 +1,20 @@
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { colors, media } from 'utils/styleUtils';
 import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
+import ResolveTextVariables from 'components/ResolveTextVariables';
 import T from 'components/T';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import React from 'react';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { isEmptyMultiloc } from 'utils/helperUtils';
-import ResolveTextVariables from 'components/ResolveTextVariables';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const StyledQuillEditedContent = styled(QuillEditedContent)`
   h1,
   h2 {
+    font-weight: 500;
     color: ${(props) => props.theme.colors.tenantText};
+    font-size: ${fontSizes.xl}px;
   }
 
   p,
@@ -23,16 +25,15 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
 
 const StyledContentContainer = styled(ContentContainer)`
   width: 100%;
-  max-width: 750px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 50px;
+  padding-bottom: 50px;
   background: #fff;
 
-  ${media.phone`
-    padding-top: 40px;
-    padding-bottom: 40px;
+  ${media.tablet`
+    padding-top: 30px;
+    padding-bottom: 30px;
   `}
 `;
 

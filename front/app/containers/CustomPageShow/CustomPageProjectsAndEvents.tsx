@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 import useAdminPublications from 'hooks/useAdminPublications';
 import { ICustomPageData } from 'services/customPages';
@@ -7,6 +8,20 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { PublicationStatus } from 'services/projects';
 import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
 import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
+import { colors } from 'utils/styleUtils';
+
+const ProjectCardsContentContainer = styled(ContentContainer)`
+  padding-top: 50px;
+  padding-bottom: 50px;
+`;
+
+const EventsContentContainer = styled(ContentContainer)<{
+  projectsEnabled: boolean;
+}>`
+  padding-top: ${({ projectsEnabled }) => (projectsEnabled ? '0px' : '50px')};
+  padding-bottom: 50px;
+  background: ${colors.grey200};
+`;
 
 interface Props {
   page: ICustomPageData;
@@ -55,7 +70,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   return (
     <>
       {page.attributes.projects_enabled && (
-        <ContentContainer>
+        <ProjectCardsContentContainer mode="page">
           <ProjectAndFolderCardsInner
             statusCounts={statusCountsWithoutFilters}
             publicationStatusFilter={publicationStatusFilter}
@@ -66,12 +81,15 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
             statusCountsWithoutFilters={statusCountsWithoutFilters}
             layout="dynamic"
           />
-        </ContentContainer>
+        </ProjectCardsContentContainer>
       )}
       {page.attributes.events_widget_enabled && (
-        <ContentContainer>
+        <EventsContentContainer
+          mode="page"
+          projectsEnabled={page.attributes.projects_enabled}
+        >
           <EventsWidget staticPageId={page.id} />
-        </ContentContainer>
+        </EventsContentContainer>
       )}
     </>
   );
