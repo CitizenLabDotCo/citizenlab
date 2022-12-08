@@ -75,7 +75,7 @@ class StaticPage < ApplicationRecord
   end
 
   validates :banner_signed_in_image_enabled, inclusion: [true, false]
-  with_options if: -> { banner_signed_in_image_enabled == false } do
+  with_options unless: :banner_signed_in_image_enabled do
     validates :banner_layout, presence: true, inclusion: %w[fixed_ratio_layout]
   end
 
