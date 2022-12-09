@@ -159,7 +159,7 @@ jobs:
     steps:
       - run: bundle exec license_finder
 
-  back-web-api-docs:
+  back-essential-web-api-docs:
     resource_class: small
     executor:
       name: back-essential
@@ -413,7 +413,7 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-web-api-docs:
+      - back-essential-web-api-docs:
           context: docker-hub-access
           requires:
             - back-essential-test
