@@ -82,7 +82,7 @@ de:
       "password_reset": Passwort zurücksetzen - alle NutzerInnen
       "project_moderation_rights_received": Projektmanagementrechte erhalten - ProjektmanagerInnen
       "project_folder_moderation_rights_received": Moderationsrechte für Projektordner erhalten
-      "project_phase_started": Neue Projektphase - alle BenutzerInnen
+      "project_phase_started": Neue Projektphase - Projektteilnehmende
       "project_phase_upcoming": Bevorstehende neue Projektphase - Admins und ProjektmanagerInnen
       "status_change_of_commented_idea": Statusänderung einer kommentierten Idee - alle BenutzerInnen
       "status_change_of_commented_initiative": Statusänderung eines kommentierten Vorschlags - alle BenutzerInnen
