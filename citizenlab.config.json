@@ -14,6 +14,7 @@
     "free/seo": true,
     "free/surveys": true,
     "free/user_confirmation": true,
-    "free/volunteering": true
+    "free/volunteering": true,
+    "free/native_surveys": true
   }
 }

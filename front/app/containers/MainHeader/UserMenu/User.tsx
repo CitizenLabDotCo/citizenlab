@@ -6,8 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import { colors, media, fontSizes } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 import useAuthUser from 'hooks/useAuthUser';
+import VerificationBadge from './VerificationBadge';
 
 const UserNameContainer = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ const StyledUserName = styled(UserName)`
   align-items: flex-end;
   transition: all 100ms ease-out;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -34,7 +34,7 @@ interface Props {
 }
 
 const User = ({ userId }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const authUser = useAuthUser();
 
   if (isNilOrError(authUser)) {
@@ -50,20 +50,17 @@ const User = ({ userId }: Props) => {
     <>
       <UserNameContainer>
         <StyledUserName
-          color={theme.navbarTextColor || theme.colorText}
+          color={theme.navbarTextColor || theme.colors.tenantText}
           userId={userId}
           hideLastName
         />
-        <Outlet
-          id="app.containers.Navbar.UserMenu.UserNameContainer"
-          isVerified={isVerified}
-        />
+        <VerificationBadge isVerified={isVerified} />
       </UserNameContainer>
 
       <Avatar
         userId={userId}
         size={30}
-        fillColor={theme?.navbarTextColor || colors.label}
+        fillColor={theme?.navbarTextColor || colors.textSecondary}
         addVerificationBadge
       />
     </>

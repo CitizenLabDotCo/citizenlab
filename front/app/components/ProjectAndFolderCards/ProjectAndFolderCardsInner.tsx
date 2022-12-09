@@ -42,25 +42,30 @@ const StyledTopbar = styled(Topbar)`
 interface Props extends BaseProps {
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
+  rootLevelOnly: boolean;
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
+  onChangeSearch: (search: string | null) => void;
 }
 
 const ProjectAndFolderCardsInner = ({
   currentTab,
   statusCounts,
   showTitle,
+  showSearch,
   layout,
   publicationStatusFilter,
   onChangeTopics,
   onChangeAreas,
   onChangeTab,
+  onChangeSearch,
+  rootLevelOnly,
 }: Props) => {
   const adminPublications = useAdminPublications({
     pageSize: 6,
     publicationStatusFilter,
-    rootLevelOnly: true,
+    rootLevelOnly,
     removeNotAllowedParents: true,
   });
 
@@ -89,6 +94,15 @@ const ProjectAndFolderCardsInner = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicationStatusesForCurrentTabStringified]);
 
+  const handleChangeSearch = React.useCallback(
+    (search: string | null) => {
+      onChangeSearch(search);
+      adminPublications.onChangeSearch(search);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [onChangeSearch]
+  );
+
   if (isNilOrError(statusCountsWithoutFilters)) return null;
 
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
@@ -116,6 +130,7 @@ const ProjectAndFolderCardsInner = ({
     <Container id="e2e-projects-container">
       <StyledTopbar
         showTitle={showTitle}
+        showSearch={showSearch}
         currentTab={currentTab}
         statusCounts={statusCounts}
         noAdminPublicationsAtAll={noAdminPublicationsAtAll}
@@ -123,6 +138,7 @@ const ProjectAndFolderCardsInner = ({
         hasPublications={hasPublications}
         onChangeTopics={handleChangeTopics}
         onChangeAreas={handleChangeAreas}
+        onChangeSearch={handleChangeSearch}
         onChangeTab={onChangeTab}
       />
 

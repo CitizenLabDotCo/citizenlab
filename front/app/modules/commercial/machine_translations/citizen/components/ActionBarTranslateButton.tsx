@@ -9,7 +9,7 @@ import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 const StyledTranslateButton = styled(TranslateButton)`
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import ActionsForm from './ActionsForm';
@@ -13,6 +13,11 @@ import {
 } from 'services/actionPermissions';
 
 import { fontSizes } from 'utils/styleUtils';
+import useProject from 'hooks/useProject';
+import {
+  getMethodConfig,
+  ParticipationMethodConfig,
+} from 'utils/participationMethodUtils';
 
 const Container = styled.div`
   display: flex;
@@ -33,41 +38,44 @@ interface InputProps {
 interface DataProps {
   permissions: GetProjectPermissionsChildProps;
 }
+
 interface Props extends InputProps, DataProps {}
 
-class Continuous extends PureComponent<Props> {
-  handlePermissionChange = (
+const Continuous = ({ permissions, projectId }: Props) => {
+  const project = useProject({ projectId });
+
+  const handlePermissionChange = (
     permission: IPermissionData,
     permittedBy: IPermissionData['attributes']['permitted_by'],
     groupIds: string[]
   ) => {
     updateProjectPermission(
       permission.id,
-      this.props.projectId,
+      projectId,
       permission.attributes.action,
       { permitted_by: permittedBy, group_ids: groupIds }
     );
   };
 
-  render() {
-    const { permissions, projectId } = this.props;
+  const config: ParticipationMethodConfig | null = !isNilOrError(project)
+    ? getMethodConfig(project.attributes.participation_method)
+    : null;
 
-    if (!isNilOrError(permissions)) {
-      return (
-        <Container>
-          <ActionsForm
-            permissions={permissions}
-            onChange={this.handlePermissionChange}
-            postType="idea"
-            projectId={projectId}
-          />
-        </Container>
-      );
-    }
-
-    return null;
+  if (!isNilOrError(permissions) && !isNilOrError(config)) {
+    return (
+      <Container>
+        <ActionsForm
+          permissions={permissions}
+          onChange={handlePermissionChange}
+          postType={config.postType}
+          projectId={projectId}
+        />
+      </Container>
+    );
   }
-}
+
+  return null;
+};
 
 export default (inputProps: InputProps) => (
   <GetProjectPermissions projectId={inputProps.projectId}>

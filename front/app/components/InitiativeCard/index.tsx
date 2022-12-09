@@ -54,15 +54,13 @@ const Spacer = styled.div`
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 24px;
-  height: 24px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 2px;
 `;
 
 const CommentCount = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
 `;

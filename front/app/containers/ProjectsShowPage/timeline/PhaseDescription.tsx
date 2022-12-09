@@ -21,7 +21,7 @@ const Container = styled.div`
   padding-bottom: 35px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 20px;
   `}
 `;

@@ -29,7 +29,7 @@ module UserCustomFields
       authorize :custom_field, policy_class: UserCustomFieldPolicy
       fields = CustomField.with_resource_type(@resource_type)
 
-      render json: ui_and_json_multiloc_schemas(fields, current_user)
+      render json: user_ui_and_json_multiloc_schemas(fields)
     end
 
     def show
@@ -54,6 +54,7 @@ module UserCustomFields
     def update
       @custom_field.assign_attributes custom_field_params(@custom_field)
       authorize @custom_field, policy_class: UserCustomFieldPolicy
+      SideFxCustomFieldService.new.before_update @custom_field, current_user
       if @custom_field.save
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
         render json: serialize_custom_fields(@custom_field.reload, params: fastjson_params), status: :ok
@@ -90,8 +91,8 @@ module UserCustomFields
       custom_field_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
     end
 
-    def ui_and_json_multiloc_schemas(fields, current_user)
-      json_forms_service.ui_and_json_multiloc_schemas(fields, current_user)
+    def user_ui_and_json_multiloc_schemas(fields)
+      json_forms_service.user_ui_and_json_multiloc_schemas(fields)
     end
 
     def custom_field_service

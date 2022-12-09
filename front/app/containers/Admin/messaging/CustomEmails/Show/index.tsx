@@ -19,7 +19,7 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -143,7 +143,7 @@ interface Props
   extends InputProps,
     DataProps,
     WithRouterProps,
-    InjectedIntlProps,
+    WrappedComponentProps,
     InjectedLocalized {}
 
 interface State {
@@ -244,7 +244,7 @@ class Show extends React.Component<Props, State> {
                 />
               ) : (
                 <StatusLabel
-                  backgroundColor="clGreenSuccess"
+                  backgroundColor="success"
                   text={<FormattedMessage {...messages.sent} />}
                 />
               )}

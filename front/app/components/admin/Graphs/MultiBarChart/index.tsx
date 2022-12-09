@@ -1,161 +1,183 @@
-import React, { RefObject } from 'react';
-import { isEmpty } from 'lodash-es';
+import React, { useState } from 'react';
 
 // styling
-import { colors, sizes, animation } from 'components/admin/Graphs/styling';
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
 
 // components
 import {
-  ResponsiveContainer,
   BarChart as RechartsBarChart,
   Bar,
   XAxis,
   YAxis,
   Cell,
+  LabelList,
+  Tooltip,
 } from 'recharts';
-import { NoDataContainer } from 'components/admin/GraphWrappers';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import Container from '../_components/Container';
+import EmptyState from '../_components/EmptyState';
+import Legend from '../_components/Legend';
 
 // utils
-import {
-  parseBarProps,
-  BarProps,
-  getRechartsLayout,
-  Mapping,
-  applyChannel,
-  Layout,
-} from './utils';
-import { isNilOrError } from 'utils/helperUtils';
+import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 // typings
-import { Margin, Data, AxisProps } from 'components/admin/Graphs/typings';
+import { Props } from './typings';
+import {
+  GraphDimensions,
+  LegendDimensions,
+} from '../_components/Legend/typings';
 
-interface RenderLabelsProps {
-  fill: string;
-  fontSize: number;
-  position: 'top' | 'right';
-}
+export const DEFAULT_LEGEND_OFFSET = 10;
 
-interface RenderTooltipProps {
-  isAnimationActive: false;
-  cursor: { fill: string };
-}
-
-export interface Props {
-  width?: string | number;
-  height?: string | number;
-  data?: Data | null | Error;
-  mapping: Mapping;
-  layout?: Layout;
-  margin?: Margin;
-  bars?: BarProps;
-  xaxis?: AxisProps;
-  yaxis?: AxisProps;
-  renderLabels?: (props: RenderLabelsProps) => React.ReactNode;
-  renderTooltip?: (props: RenderTooltipProps) => React.ReactNode;
-  emptyContainerContent?: React.ReactNode;
-  className?: string;
-  innerRef?: RefObject<any>;
-}
-
-const MultiBarChart = ({
+const MultiBarChart = <Row,>({
   width,
   height,
   data,
   mapping,
+  bars,
   layout = 'vertical',
   margin,
-  bars,
   xaxis,
   yaxis,
-  renderLabels,
-  renderTooltip,
+  labels,
+  tooltip,
+  legend,
   emptyContainerContent,
-  className,
   innerRef,
-}: Props) => {
-  const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
+  onMouseOver,
+  onMouseOut,
+}: Props<Row>) => {
+  const [graphDimensions, setGraphDimensions] = useState<
+    GraphDimensions | undefined
+  >();
+  const [legendDimensions, setLegendDimensions] = useState<
+    LegendDimensions | undefined
+  >();
 
-  if (noData) {
-    return (
-      <NoDataContainer>
-        {emptyContainerContent ? (
-          <>{emptyContainerContent}</>
-        ) : (
-          <FormattedMessage {...messages.noData} />
-        )}
-      </NoDataContainer>
-    );
+  if (hasNoData(data)) {
+    return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
 
-  const { length, fill, opacity } = mapping;
+  const barConfigs = getBarConfigs(data, mapping, bars);
   const rechartsLayout = getRechartsLayout(layout);
-  const parsedBarProps = parseBarProps(colors.barFill, length.length, bars);
+
+  const category = mapping.category;
+  if (typeof category === 'symbol') return null;
 
   const labelPosition = layout === 'vertical' ? 'top' : 'right';
+  const labelConfig = getLabelConfig(labels, labelPosition);
+  const tooltipConfig = getTooltipConfig(tooltip);
+
+  const handleMouseOver =
+    (barIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
+      onMouseOver &&
+        onMouseOver(
+          {
+            row: data[rowIndex],
+            rowIndex,
+            barIndex,
+          },
+          event
+        );
+    };
+
+  const handleMouseOut =
+    (barIndex: number) => (_, rowIndex: number, event: React.MouseEvent) => {
+      onMouseOut &&
+        onMouseOut(
+          {
+            row: data[rowIndex],
+            rowIndex,
+            barIndex,
+          },
+          event
+        );
+    };
 
   return (
-    <ResponsiveContainer className={className} width={width} height={height}>
+    <Container
+      width={width}
+      height={height}
+      legend={legend}
+      graphDimensions={graphDimensions}
+      legendDimensions={legendDimensions}
+      defaultLegendOffset={DEFAULT_LEGEND_OFFSET}
+      onUpdateGraphDimensions={setGraphDimensions}
+      onUpdateLegendDimensions={setLegendDimensions}
+    >
       <RechartsBarChart
         data={data}
         layout={rechartsLayout}
-        margin={margin}
+        margin={parseMargin(
+          margin,
+          legend,
+          legendDimensions,
+          DEFAULT_LEGEND_OFFSET
+        )}
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
       >
-        {renderTooltip &&
-          renderTooltip({
-            isAnimationActive: false,
-            cursor: { fill: colors.barHover },
-          })}
+        {legend && graphDimensions && legendDimensions && (
+          <g className="graph-legend">
+            <Legend
+              items={legend.items}
+              graphDimensions={graphDimensions}
+              legendDimensions={legendDimensions}
+              position={legend.position}
+              textColor={legend.textColor}
+              margin={margin}
+            />
+          </g>
+        )}
 
-        {parsedBarProps.map((parallelBarProps, index) => (
+        {(typeof tooltip === 'object' || tooltip === true) && (
+          <Tooltip {...tooltipConfig} />
+        )}
+        {typeof tooltip === 'function' && tooltip(tooltipConfig)}
+
+        {barConfigs.map((barConfig, barIndex) => (
           <Bar
-            dataKey={length[index]}
+            key={barIndex}
             animationDuration={animation.duration}
             animationBegin={animation.begin}
-            {...parallelBarProps}
-            key={index}
+            {...barConfig.props}
+            onMouseOver={handleMouseOver(barIndex)}
+            onMouseOut={handleMouseOut(barIndex)}
           >
-            {renderLabels &&
-              renderLabels({
-                fill: colors.chartLabel,
-                fontSize: sizes.chartLabel,
-                position: labelPosition,
-              })}
+            {(typeof labels === 'object' || labels === true) && (
+              <LabelList {...labelConfig} />
+            )}
+            {typeof labels === 'function' && labels(labelConfig)}
 
-            {(fill || opacity) &&
-              data.map((row, fillIndex) => (
-                <Cell
-                  key={`cell-${index}-${fillIndex}`}
-                  fill={applyChannel(row, index, fill) || parallelBarProps.fill}
-                  opacity={applyChannel(row, index, opacity) || 1}
-                />
-              ))}
+            {barConfig.cells.map((cell, cellIndex) => (
+              <Cell key={`cell-${barIndex}-${cellIndex}`} {...cell} />
+            ))}
           </Bar>
         ))}
 
         <XAxis
-          dataKey={layout === 'vertical' ? 'name' : undefined}
+          dataKey={layout === 'vertical' ? category : undefined}
           type={layout === 'vertical' ? 'category' : 'number'}
-          stroke={colors.chartLabel}
+          stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
           tick={{ transform: 'translate(0, 7)' }}
           {...xaxis}
         />
         <YAxis
-          dataKey={layout === 'horizontal' ? 'name' : undefined}
+          dataKey={layout === 'horizontal' ? category : undefined}
           type={layout === 'horizontal' ? 'category' : 'number'}
-          stroke={colors.chartLabel}
+          stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
           {...yaxis}
         />
       </RechartsBarChart>
-    </ResponsiveContainer>
+    </Container>
   );
 };
 

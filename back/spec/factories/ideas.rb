@@ -21,7 +21,7 @@ FactoryBot.define do
     association :project, factory: :continuous_project
     author
     idea_status
-    location_point_geojson { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
+    location_point_geojson { { 'type' => 'Point', 'coordinates' => [51.11520776293035, 3.921154106874878] } }
     location_description { 'Some road' }
     factory :idea_with_topics do
       transient do

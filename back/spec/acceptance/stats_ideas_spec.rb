@@ -47,8 +47,8 @@ resource 'Stats - Ideas' do
     AppConfiguration.instance.update!(created_at: now - 3.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
-    @project1 = create(:project)
-    @project2 = create(:project)
+    @project1 = create(:continuous_project)
+    @project2 = create(:continuous_project)
     @proposed = create(:idea_status, code: 'proposed')
     @ideas_with_topics = []
     @ideas_with_status = []
@@ -63,6 +63,7 @@ resource 'Stats - Ideas' do
       @ideas_with_topics += create_list(:idea_with_topics, 3, project: @project1, idea_status: @proposed)
       create(:idea, project: @project2, idea_status: @proposed)
     end
+    create :idea, project: create(:continuous_native_survey_project)
   end
 
   get 'web_api/v1/stats/ideas_count' do
@@ -75,7 +76,7 @@ resource 'Stats - Ideas' do
     example_request 'Count all ideas' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:count]).to eq Idea.published.count
+      expect(json_response[:count]).to eq 7
     end
 
     describe 'with feedback_needed filter' do
@@ -84,7 +85,7 @@ resource 'Stats - Ideas' do
       example_request 'Count all ideas that need feedback' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq Idea.published.count - 1
+        expect(json_response[:count]).to eq 6
       end
 
       if CitizenLab.ee?
@@ -134,7 +135,7 @@ resource 'Stats - Ideas' do
 
       before do
         topic = create(:topic)
-        @project = create(:project, allowed_input_topics: [topic])
+        @project = create(:continuous_project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           create(:idea, project: @project, topics: [topic])
           create(:idea)
@@ -181,7 +182,7 @@ resource 'Stats - Ideas' do
 
       before do
         topic = create(:topic)
-        @project = create(:project, allowed_input_topics: [topic])
+        @project = create(:continuous_project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           create(:idea, project: @project, topics: [topic])
           create(:idea)
@@ -245,7 +246,7 @@ resource 'Stats - Ideas' do
       let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
-        @project = create(:project)
+        @project = create(:continuous_project)
         travel_to start_at + 2.months do
           create(:idea, project: @project, idea_status: @proposed)
         end
@@ -291,7 +292,7 @@ resource 'Stats - Ideas' do
 
       before do
         topic = create(:topic)
-        @project = create(:project, allowed_input_topics: [topic])
+        @project = create(:continuous_project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           create(:idea, project: @project, topics: [topic])
           create(:idea)
@@ -528,7 +529,7 @@ resource 'Stats - Ideas' do
           expect(json_response[:series][:ideas].size).to eq end_at.yday
           # monotonically increasing
           expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+          expect(json_response[:series][:ideas].values.last).to eq 7
         end
       end
 
@@ -541,7 +542,7 @@ resource 'Stats - Ideas' do
           json_response = json_parse(response_body)
           # monotonically increasing
           expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+          expect(json_response[:series][:ideas].values.last).to eq 7
         end
       end
 
@@ -555,7 +556,7 @@ resource 'Stats - Ideas' do
           json_response = json_parse(response_body)
           # monotonically increasing
           expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+          expect(json_response[:series][:ideas].values.last).to eq 7
         end
       end
 
@@ -568,7 +569,7 @@ resource 'Stats - Ideas' do
           json_response = json_parse(response_body)
           # monotonically increasing
           expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+          expect(json_response[:series][:ideas].values.last).to eq 7
         end
       end
     end
@@ -638,7 +639,7 @@ resource 'Stats - Ideas' do
         _header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
 
-        expect(amounts.last).to eq Idea.published.count
+        expect(amounts.last).to eq 7
       end
     end
   end

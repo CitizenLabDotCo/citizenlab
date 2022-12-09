@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
@@ -97,7 +97,7 @@ const UserSelect = ({
         {avatarSrc ? (
           <AvatarImage className="avatarImage" src={avatarSrc} alt="" />
         ) : (
-          <AvatarIcon className="avatarIcon" name="user" />
+          <AvatarIcon className="avatarIcon" name="user-circle" />
         )}
       </>
     );
@@ -109,7 +109,7 @@ const UserSelect = ({
         <Button
           onClick={handleLoadMore}
           processing={users.isLoading}
-          icon="showMore"
+          icon="refresh"
           buttonStyle="text"
           padding="0px"
         />
@@ -138,29 +138,31 @@ const UserSelect = ({
     : usersList;
 
   return (
-    <ReactSelect
-      id={id}
-      inputId={inputId}
-      className={className}
-      isSearchable
-      blurInputOnSelect
-      backspaceRemovesValue={false}
-      menuShouldScrollIntoView={false}
-      isClearable
-      filterOption={filterOption}
-      value={selectedUser}
-      placeholder={placeholder as string}
-      options={options}
-      getOptionValue={getOptionId}
-      getOptionLabel={getOptionLabel}
-      onChange={handleChange}
-      onInputChange={handleInputChange}
-      isDisabled={disabled}
-      menuPlacement="auto"
-      styles={selectStyles}
-      onMenuScrollToBottom={handleMenuScrollToBottom}
-      onMenuOpen={handleClear}
-    />
+    <Box id="e2e-user-select">
+      <ReactSelect
+        id={id}
+        inputId={inputId}
+        className={className}
+        isSearchable
+        blurInputOnSelect
+        backspaceRemovesValue={false}
+        menuShouldScrollIntoView={false}
+        isClearable
+        filterOption={filterOption}
+        value={selectedUser}
+        placeholder={placeholder as string}
+        options={options}
+        getOptionValue={getOptionId}
+        getOptionLabel={getOptionLabel}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        isDisabled={disabled}
+        menuPlacement="auto"
+        styles={selectStyles}
+        onMenuScrollToBottom={handleMenuScrollToBottom}
+        onMenuOpen={handleClear}
+      />
+    </Box>
   );
 };
 

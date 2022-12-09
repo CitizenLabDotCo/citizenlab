@@ -11,7 +11,7 @@ import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {
@@ -23,13 +23,14 @@ const VerificationFranceConnectButton = ({
   method,
   intl: { formatMessage },
   onClick,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const handleOnClick = () => {
     onClick(method);
     const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${removeUrlLocale(
-      window.location.pathname
-    )}`;
+    const pathname = removeUrlLocale(window.location.pathname);
+    // See id_franceconnect/app/lib/id_franceconnect/franceconnect_omniauth.rb:9 for how it works.
+    // Possibly, front/app/services/singleSignOn.ts#setHref could be used the next time we need to add more params.
+    window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${pathname}&sso_verification=true`;
   };
 
   return (

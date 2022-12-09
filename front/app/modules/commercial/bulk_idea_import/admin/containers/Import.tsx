@@ -59,16 +59,11 @@ const Import = () => {
       <Title>
         <FormattedMessage {...messages.importInputs} />
       </Title>
-      <Text color="adminTextColor" fontSize="base">
+      <Text color="primary" fontSize="base">
         <FormattedMessage {...messages.importDescription} />
       </Text>
       <SectionField>
-        <Text
-          mb="16px"
-          variant="bodyL"
-          fontWeight="bold"
-          color="adminTextColor"
-        >
+        <Text mb="16px" variant="bodyL" fontWeight="bold" color="primary">
           <FormattedMessage {...messages.importStepOne} />
         </Text>
         <Box display="flex" alignItems="flex-start">
@@ -81,12 +76,7 @@ const Import = () => {
             <FormattedMessage {...messages.downloadTemplate} />
           </Button>
         </Box>
-        <Text
-          mb="16px"
-          variant="bodyL"
-          fontWeight="bold"
-          color="adminTextColor"
-        >
+        <Text mb="16px" variant="bodyL" fontWeight="bold" color="primary">
           <FormattedMessage {...messages.importStepTwo} />
         </Text>
         <FileUploader
@@ -109,7 +99,7 @@ const Import = () => {
           </Button>
         </Box>
         {!isLoading && isSuccessful && (
-          <Text color="clGreenSuccess">
+          <Text color="success">
             <FormattedMessage {...messages.successMessage} />
           </Text>
         )}

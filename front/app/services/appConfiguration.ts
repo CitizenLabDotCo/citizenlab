@@ -59,8 +59,17 @@ export type IAppConfigurationSettingsCore = {
   area_term?: Multiloc;
   topics_term?: Multiloc;
   topic_term?: Multiloc;
+  authentication_token_lifetime_in_days: number;
 };
 
+export type ProposalsSettings = {
+  allowed: boolean;
+  enabled: boolean;
+  days_limit: number;
+  eligibility_criteria: Multiloc;
+  threshold_reached_message: Multiloc;
+  voting_threshold: number;
+};
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   customizable_homepage_banner: {
@@ -78,6 +87,7 @@ export interface IAppConfigurationSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
+    enable_signup: boolean;
     phone?: boolean;
     minimum_length?: number;
     phone_email_pattern?: string;
@@ -120,14 +130,7 @@ export interface IAppConfigurationSettings {
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   participatory_budgeting?: AppConfigurationFeature;
-  initiatives?: {
-    allowed: boolean;
-    enabled: boolean;
-    days_limit: number;
-    eligibility_criteria: Multiloc;
-    threshold_reached_message: Multiloc;
-    voting_threshold: number;
-  };
+  initiatives?: ProposalsSettings;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
@@ -141,7 +144,6 @@ export interface IAppConfigurationSettings {
   dynamic_idea_form?: AppConfigurationFeature;
   jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
-  user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
@@ -211,11 +213,14 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
   representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
+  native_surveys?: AppConfigurationFeature;
+  analytics?: AppConfigurationFeature;
+  visitors_dashboard?: AppConfigurationFeature;
+  user_confirmation?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -297,8 +302,8 @@ export async function updateAppConfiguration(
   return tenant;
 }
 
-export const coreSettings = (appConfiguration: IAppConfiguration) =>
-  appConfiguration.data.attributes.settings.core;
+export const coreSettings = (appConfiguration: IAppConfigurationData) =>
+  appConfiguration.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

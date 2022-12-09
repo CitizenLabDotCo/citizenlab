@@ -45,7 +45,8 @@ describe UrlValidationService do
       'https://onedrive.live.com/embed?cid=ECDDF98AA79FDEDB&resid=ECDDF98AA79FDEDB%21145&authkey=AIRY6_880wuOdDc&em=2',
       'http://www.slideshare.net/slideshow/embed_code/key/AYBogCfDlXkgMi',
       'https://online1.snapsurveys.com/interview/deff624d-0604-45bb-a072-0c6da45b22e6',
-      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      'https://btt.abalancingact.com/dummy'
     ]
 
     invalid_urls = [
@@ -69,7 +70,8 @@ describe UrlValidationService do
       'https://facebook.com',
       'https://konveio.com/something',
       'https://subdomain.arcgis.com',
-      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pd'
+      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pd',
+      'https://btt.abalancingact/dummy'
     ]
 
     valid_urls.each do |url|
@@ -93,8 +95,6 @@ describe UrlValidationService do
         'https://www.youtube.com/embed/something?showinfo=0',
         'https://youtube.com/embed/something?showinfo=0',
         'https://player.vimeo.com/video/1',
-        'https://vimeo.com/1',
-        'https://www.vimeo.com/1',
         'https://subdomain.wistia.com/medias/something',
         'https://wistia.com/medias/something',
         'https://www.wistia.com/medias/something',
@@ -109,6 +109,8 @@ describe UrlValidationService do
       [
         'https://www.youtube.com/embed',
         'https://player.vimeo.com/1',
+        'https://vimeo.com/1',
+        'https://www.vimeo.com/1',
         'https://www.wistia.com',
         'https://www.dailymotion.com/embed',
         'https://videotool.dk/?vn=1',

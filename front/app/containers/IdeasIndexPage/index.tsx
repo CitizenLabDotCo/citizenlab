@@ -24,7 +24,7 @@ const Container = styled.main`
   position: relative;
   background: ${colors.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -36,13 +36,13 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-top: 60px;
   padding-bottom: 100px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
   `}
 `;
 
 const PageTitle = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 500;
@@ -51,17 +51,17 @@ const PageTitle = styled.h1`
   margin: 0;
   margin-bottom: 35px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     text-align: left;
     margin-bottom: 20px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.xxxl}px;
   `}
 
  ${isRtl`
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     text-align: right;
   `}
  `}

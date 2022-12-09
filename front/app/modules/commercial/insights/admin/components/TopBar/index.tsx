@@ -17,7 +17,7 @@ import ProjectButton from './ProjectButton';
 import ProjectsDropdown from './ProjectsDropdown';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -59,7 +59,7 @@ const TitleContainer = styled.div`
 
 const DropdownWrapper = styled.div`
   display: flex;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   align-items: center;
   position: relative;
   .dropdown {
@@ -71,7 +71,7 @@ const DropdownWrapper = styled.div`
 const TopBar = ({
   params,
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const viewId = params.viewId;
@@ -129,9 +129,9 @@ const TopBar = ({
       <DropdownWrapper>
         {formatMessage(messages.options)}
         <Button
-          icon="more-options"
-          iconColor={colors.label}
-          iconHoverColor={colors.label}
+          icon="dots-horizontal"
+          iconColor={colors.textSecondary}
+          iconHoverColor={colors.textSecondary}
           boxShadow="none"
           boxShadowHover="none"
           bgColor="transparent"

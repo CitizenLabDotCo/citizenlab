@@ -9,7 +9,7 @@ describe('/admin route', () => {
   });
 
   it('Shows the summary tab and all its graphs', () => {
-    cy.get('.e2e-resource-tabs').find('.active').contains('Summary');
+    cy.get('.e2e-resource-tabs').find('.active').contains('Overview');
     cy.get('.e2e-users-by-time-cumulative-chart')
       .find('.recharts-wrapper')
       .find('.recharts-surface');

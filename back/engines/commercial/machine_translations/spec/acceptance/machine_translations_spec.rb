@@ -46,6 +46,17 @@ resource 'MachineTranslations' do
         do_request
         expect(status).to eq 404
       end
+
+      context 'When tranlsatable attribute does not exist' do
+        let(:attribute_name) { 'not_an_attribute' }
+
+        example '[error] Create a translation for a nonexistent attribute' do
+          do_request
+          expect(status).to eq 422
+          json_response = json_parse response_body
+          expect(json_response.dig(:errors, :base)).to eq([{ error: 'unable_to_translate' }])
+        end
+      end
     end
 
     describe do

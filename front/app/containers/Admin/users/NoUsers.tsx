@@ -20,22 +20,22 @@ const NoUsersPage = styled.div`
   svg {
     margin-bottom: 20px;
     height: 70px;
-    fill: ${colors.clIconAccent};
+    fill: ${colors.teal400};
   }
 `;
 
 const SFormattedMessage = styled.div`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.base}px;
 
   a {
-    color: ${colors.adminSecondaryTextColor};
+    color: ${colors.textSecondary};
     font-weight: bold;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.2, colors.adminSecondaryTextColor)};
+      color: ${darken(0.2, colors.textSecondary)};
     }
   }
 `;
@@ -57,7 +57,7 @@ const NoUsers = memo(({ groupType, noSuchSearchResult }: Props) => {
 
   return (
     <NoUsersPage>
-      <Icon name="blankPage" />
+      <Icon name="sidebar-pages-menu" />
       <FormattedMessage {...messages.emptyGroup} />
       {groupType === 'manual' && (
         <SFormattedMessage>

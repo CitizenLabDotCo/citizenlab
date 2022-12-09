@@ -1,9 +1,8 @@
 import { AUTH_PATH } from 'containers/App/constants';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData, TSignUpInError } from 'events/openSignUpInModal';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
-import { isProjectContext } from 'components/Verification/verificationModalEvents';
-
+import { isProjectContext } from 'events/verificationModal';
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
   facebook: 'facebook';
@@ -22,6 +21,7 @@ export interface SSOParams {
   sso_verification_action?: string;
   sso_verification_id?: string;
   sso_verification_type?: string;
+  error_code?: TSignUpInError;
 }
 
 export const handleOnSSOClick = (

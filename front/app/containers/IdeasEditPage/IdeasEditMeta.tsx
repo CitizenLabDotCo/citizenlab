@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -29,7 +29,7 @@ const IdeasNewMeta = memo(
     intl: { formatMessage },
     ideaId,
     projectId,
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const tenantLocales = useAppConfigurationLocales();
     const authUser = useAuthUser();
     const idea = useIdea({ ideaId });

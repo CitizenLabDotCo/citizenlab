@@ -181,3 +181,27 @@ lb:
       message_you_reset_your_password: 'Dir hutt d’Zerécksetzung vun engem Passwuert op der Bedeelegungsplattform vun %{organizationName} ugefuerdert. Klickt op de Knappsenden hei ënnendrënner, fir en neit, séchert Passwuert ze wielen. De Link leeft an 1 Stonn of.'
       subject: '%{organizationName}: Äert Passwuert zerécksetzen'
       title_reset_your_password: 'Wielt en neit Passwuert'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Héicht'
+      longitude: 'Längt'
+      author_fullname: 'Numm vum Auteur'
+      author_email: 'E-Mail vum Auteur'
+      author_id: 'ID vum Auteur'
+      created_at: 'Agereecht bei'
+      published_at: 'Verëffentlecht bei'
+      comments_count: 'Kommentaren'
+      upvotes_count: 'Upvotes'
+      downvotes_count: 'Downvotes'
+      baskets_count: 'Kierf'
+      input_url: 'URL'
+      project: 'Projet'
+      status: 'Status'
+      assignee_fullname: 'Assignee'
+      assignee_email: 'E-Mail vum Beoptragten'
+  form_builder:
+    default_select_field:
+      title: 'Är Fro'
+      option1: 'Méiglechkeet 1'
+      option2: 'Méiglechkeet 2'

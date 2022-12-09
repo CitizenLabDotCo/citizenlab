@@ -66,6 +66,28 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea.publication_status).to eq 'published'
     end
 
+    it 'imports ideas with special date cells' do
+      create :user, email: 'userimport@citizenlab.co'
+      create :project, title_multiloc: { 'en' => 'Project title' }
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          published_at: Time.zone.today
+        }
+      ]
+
+      service.import_ideas idea_rows
+
+      expect(Idea.count).to eq 1
+      idea = Idea.first
+      expect(idea.published_at).to eq Time.zone.today
+      expect(idea.publication_status).to eq 'published'
+    end
+
     it 'imports ideas with location info' do
       create :user, email: 'userimport@citizenlab.co'
       create :project, title_multiloc: { 'en' => 'Project title' }

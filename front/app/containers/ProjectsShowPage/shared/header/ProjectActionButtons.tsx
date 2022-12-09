@@ -39,7 +39,7 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 const Container = styled.div``;
 
@@ -128,9 +128,14 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   };
 
-  const { process_type, participation_method, publication_status } =
-    project.attributes;
+  const { process_type, publication_status } = project.attributes;
+
+  const isProjectArchived =
+    project.attributes.publication_status === 'archived';
   const isProcessTypeContinuous = process_type === 'continuous';
+  const participation_method = isProcessTypeContinuous
+    ? project.attributes.participation_method
+    : currentPhase?.attributes.participation_method;
   const ideas_count = isProcessTypeContinuous
     ? project.attributes.ideas_count
     : currentPhase?.attributes.ideas_count;
@@ -145,24 +150,40 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     project,
     phases
   );
+
   const isParticipationMethodIdeation = participation_method === 'ideation';
+
+  const isParticipationMethodNativeSurvey =
+    participation_method === 'native_survey' ||
+    currentPhase?.attributes.participation_method === 'native_survey';
+
   const showSeeIdeasButton =
     ((isProcessTypeContinuous && isParticipationMethodIdeation) ||
       currentPhase?.attributes.participation_method === 'ideation') &&
     isNumber(ideas_count) &&
     ideas_count > 0;
+
   const showIdeasButton =
-    isProcessTypeContinuous &&
-    isParticipationMethodIdeation &&
-    publication_status !== 'archived';
+    isParticipationMethodIdeation && publication_status !== 'archived';
+
+  const showNativeSurvey =
+    isParticipationMethodNativeSurvey && publication_status !== 'archived';
+
   const showSurvey =
-    ((phases && participation_method === 'survey') ||
-      currentPhase?.attributes.participation_method === 'survey') &&
-    !hasProjectEnded;
+    (!isProjectArchived && phases && participation_method === 'survey') ||
+    (currentPhase?.attributes.participation_method === 'survey' &&
+      !hasProjectEnded);
+
   const showPoll =
     ((isProcessTypeContinuous && participation_method === 'poll') ||
       currentPhase?.attributes.participation_method === 'poll') &&
     !hasProjectEnded;
+
+  const isPhaseIdeation =
+    currentPhase?.attributes.participation_method === 'ideation';
+
+  const isPhaseNativeSurvey =
+    currentPhase?.attributes.participation_method === 'native_survey';
 
   return (
     <Container className={className || ''}>
@@ -185,24 +206,25 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           />
         </SeeIdeasButton>
       )}
-      {showIdeasButton && (
+      {showIdeasButton && !hasProjectEnded && (
         <IdeaButton
           id="project-ideabutton"
           projectId={project.id}
-          participationContextType="project"
+          participationContextType={isPhaseIdeation ? 'phase' : 'project'}
+          phaseId={isPhaseIdeation ? currentPhase.id : ''}
           fontWeight="500"
         />
       )}
-      {currentPhase?.attributes.participation_method === 'ideation' &&
-        !hasProjectEnded && (
-          <IdeaButton
-            id="project-ideabutton"
-            projectId={project.id}
-            phaseId={currentPhase.id}
-            participationContextType="phase"
-            fontWeight="500"
-          />
-        )}
+      {showNativeSurvey && !hasProjectEnded && (
+        <IdeaButton
+          id="project-survey-button"
+          data-testid="e2e-project-survey-button"
+          projectId={project.id}
+          participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
+          phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
+          fontWeight="500"
+        />
+      )}
       {showSurvey && (
         <Button
           buttonStyle="primary"

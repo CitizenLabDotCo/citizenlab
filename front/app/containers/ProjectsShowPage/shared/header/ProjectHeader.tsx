@@ -16,13 +16,15 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   padding-top: 30px;
@@ -31,7 +33,7 @@ const Container = styled.div`
   position: relative;
   z-index: 2;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
     padding-bottom: 35px;
   `}
@@ -64,7 +66,7 @@ const HeaderImage = styled(Image)`
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 160px;
     margin-bottom: 20px;
   `}
@@ -76,7 +78,7 @@ const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
   margin-top: ${(props) => (props.hasHeaderImage ? '-20px' : '0px')};
   margin-bottom: 25px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -86,10 +88,10 @@ interface Props {
   className?: string;
 }
 
-const ProjectHeader = memo<Props & InjectedIntlProps>(
+const ProjectHeader = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const [moduleActive, setModuleActive] = useState(false);
-
+    const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
     const project = useProject({ projectId });
     const authUser = useAuthUser();
     const projectFolderId = project?.attributes.folder_id;
@@ -107,17 +109,11 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
           <ContentContainer maxWidth={maxPageWidth}>
             {(projectFolderId || userCanEditProject) && (
               <TopBar>
-                {/*
-                  Needs to change: Outlet should always render.
-                  Condition needs to be inside the Outlet.
-                */}
-                {projectFolderId && (
-                  <Outlet
-                    id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
+                {projectFolderId && isProjectFoldersEnabled && (
+                  <ProjectFolderGoBackButton
                     projectFolderId={projectFolderId}
                   />
                 )}
-
                 {userCanEditProject && (
                   <EditButton
                     icon="edit"

@@ -44,7 +44,7 @@ const StyledLocaleSwitcher = styled(LocaleSwitcher)`
 `;
 
 const LabelText = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {

@@ -154,7 +154,7 @@ module EmailCampaigns
                 {
                   ordering: nil,
                   versions: {
-                    small: 'https://res.cloudinary.com/citizenlabco/image/upload/v1607443075/small_7d3bb3ca-32eb-4ba1-9de6-3bc738e4bad6_qhh6up.jpg',
+                    small: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/boat_small.jpeg',
                     medium: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/medium_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg',
                     large: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/large_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg',
                     fb: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/fb_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg'
@@ -183,7 +183,7 @@ module EmailCampaigns
                 {
                   ordering: nil,
                   versions: {
-                    small: 'https://res.cloudinary.com/citizenlabco/image/upload/v1607443075/small_7d3bb3ca-32eb-4ba1-9de6-3bc738e4bad6_qhh6up.jpg',
+                    small: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/boat_small.jpeg',
                     medium: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/medium_14330b58-2421-474b-9f67-a9031d5505cf.jpeg',
                     large: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/large_14330b58-2421-474b-9f67-a9031d5505cf.jpeg',
                     fb: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/fb_14330b58-2421-474b-9f67-a9031d5505cf.jpeg'
@@ -215,7 +215,7 @@ module EmailCampaigns
                 {
                   ordering: nil,
                   versions: {
-                    small: 'https://res.cloudinary.com/citizenlabco/image/upload/v1607443075/small_7d3bb3ca-32eb-4ba1-9de6-3bc738e4bad6_qhh6up.jpg',
+                    small: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/boat_small.jpeg',
                     medium: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/medium_14330b58-2421-474b-9f67-a9031d5505cf.jpeg',
                     large: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/large_14330b58-2421-474b-9f67-a9031d5505cf.jpeg',
                     fb: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/fb_14330b58-2421-474b-9f67-a9031d5505cf.jpeg'

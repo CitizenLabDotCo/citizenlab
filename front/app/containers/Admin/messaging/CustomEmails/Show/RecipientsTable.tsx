@@ -16,13 +16,13 @@ import Avatar from 'components/Avatar';
 const statusColorMapping: {
   [k in IDeliveryData['attributes']['delivery_status']]: keyof typeof colors;
 } = {
-  sent: 'lightGreyishBlue',
+  sent: 'grey200',
   bounced: 'red600',
   failed: 'red600',
-  accepted: 'lightGreyishBlue',
-  delivered: 'clBlueLight',
-  opened: 'clGreenSuccess',
-  clicked: 'clGreenSuccess',
+  accepted: 'grey200',
+  delivered: 'teal300',
+  opened: 'success',
+  clicked: 'success',
 };
 
 interface InputProps {

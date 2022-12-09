@@ -74,7 +74,7 @@ export default ({
   const ManageButton = (
     <RowButton
       className={`
-        e2e-admin-edit-publication
+        e2e-admin-edit-publication intercom-admin-project-edit-button
       `}
       linkTo={adminProjectsProjectPath(publication.publicationId)}
       buttonStyle="secondary"
@@ -104,6 +104,7 @@ export default ({
 
   const renderRowButton = (action) => (
     <RowButton
+      data-cy={`e2e-manage-button-${publication.publicationId}`}
       key={action.icon}
       type="button"
       className={[
@@ -140,14 +141,14 @@ export default ({
                     <FormattedMessage {...messages.onlyAdminsCanView} />
                   )
                 }
-                backgroundColor={colors.clBlueDark}
+                backgroundColor={colors.teal}
                 icon="lock"
               />
             )}
           {publication.attributes?.publication_visible_to === 'admins' && (
             <StyledStatusLabel
               text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-              backgroundColor={colors.clBlueDark}
+              backgroundColor={colors.teal}
               icon="lock"
             />
           )}

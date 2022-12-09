@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 
@@ -23,6 +23,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
+import { getMethodConfig } from 'utils/participationMethodUtils';
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -53,24 +54,12 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  openedPhase: string | null;
-}
-
-class Timeline extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      openedPhase: null,
-    };
-  }
-
-  handleCollapseToggle = (phaseId: string) => () => {
-    const { openedPhase } = this.state;
-    this.setState({ openedPhase: openedPhase === phaseId ? null : phaseId });
+const Timeline = ({ projectId, phases }: Props) => {
+  const [openedPhaseId, setOpenedPhaseId] = useState<string | null>(null);
+  const handleCollapseToggle = (phaseId: string) => () => {
+    setOpenedPhaseId(openedPhaseId === phaseId ? null : phaseId);
   };
-
-  handlePermissionChange = (
+  const handlePermissionChange = (
     permission: IPCPermissionData,
     permittedBy: IPCPermissionData['attributes']['permitted_by'],
     groupIds: string[]
@@ -83,10 +72,12 @@ class Timeline extends PureComponent<Props, State> {
     );
   };
 
-  render() {
-    const { phases, projectId } = this.props;
-    const { openedPhase } = this.state;
+  const openedPhase = phases?.filter((phase) => phase.id === openedPhaseId)[0];
+  const config = getMethodConfig(
+    openedPhase ? openedPhase.attributes.participation_method : 'ideation'
+  );
 
+  if (!isNilOrError(config)) {
     return (
       <Container>
         {phases &&
@@ -94,8 +85,8 @@ class Timeline extends PureComponent<Props, State> {
           phases.map((phase) => (
             <div style={{ marginBottom: '20px' }} key={phase.id}>
               <Collapse
-                opened={openedPhase === phase.id}
-                onToggle={this.handleCollapseToggle(phase.id)}
+                opened={openedPhaseId === phase.id}
+                onToggle={handleCollapseToggle(phase.id)}
                 label={<T value={phase.attributes.title_multiloc} />}
               >
                 <Permissions>
@@ -104,8 +95,8 @@ class Timeline extends PureComponent<Props, State> {
                       return isNilOrError(permissions) ? null : (
                         <ActionsForm
                           permissions={permissions}
-                          onChange={this.handlePermissionChange}
-                          postType="idea"
+                          onChange={handlePermissionChange}
+                          postType={config.postType}
                           projectId={projectId}
                         />
                       );
@@ -126,7 +117,8 @@ class Timeline extends PureComponent<Props, State> {
       </Container>
     );
   }
-}
+  return null;
+};
 
 export default (inputProps: InputProps) => (
   <GetPhases projectId={inputProps.projectId}>

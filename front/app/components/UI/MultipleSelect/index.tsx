@@ -3,6 +3,7 @@ import { isBoolean, isString, isArray } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 import selectStyles from 'components/UI/MultipleSelect/styles';
+import { Label } from '@citizenlab/cl2-component-library';
 
 export type Props = {
   id?: string;
@@ -15,6 +16,7 @@ export type Props = {
   onChange: (arg: IOption[]) => void;
   disabled?: boolean;
   className?: string;
+  label?: React.ReactNode;
 };
 
 interface State {}
@@ -59,7 +61,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { id, className, disabled } = this.props;
+    const { id, className, disabled, label } = this.props;
     let { value, placeholder, options, max, autoBlur } = this.props;
     const { inputId } = this.props;
 
@@ -71,24 +73,27 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     autoBlur = isBoolean(autoBlur) ? autoBlur : false;
 
     return (
-      <ReactSelect
-        id={id}
-        inputId={inputId}
-        className={className}
-        isMulti
-        isSearchable
-        blurInputOnSelect={autoBlur}
-        backspaceRemovesValue={false}
-        menuShouldScrollIntoView={false}
-        isClearable={false}
-        value={value}
-        placeholder={placeholder as string}
-        options={options}
-        onChange={this.handleOnChange}
-        isDisabled={disabled}
-        styles={selectStyles}
-        menuPlacement="auto"
-      />
+      <>
+        {label && <Label htmlFor={inputId}>{label}</Label>}
+        <ReactSelect
+          id={id}
+          inputId={inputId}
+          className={className}
+          isMulti
+          isSearchable
+          blurInputOnSelect={autoBlur}
+          backspaceRemovesValue={false}
+          menuShouldScrollIntoView={false}
+          isClearable={false}
+          value={value}
+          placeholder={placeholder as string}
+          options={options}
+          onChange={this.handleOnChange}
+          isDisabled={disabled}
+          styles={selectStyles}
+          menuPlacement="auto"
+        />
+      </>
     );
   }
 }

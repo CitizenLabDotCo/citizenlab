@@ -37,7 +37,7 @@ const EmptyStateImage = styled.img`
 `;
 
 const EmptyStateText = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   text-align: center;

@@ -32,14 +32,12 @@ import useLocale from 'hooks/useLocale';
 const Container = styled.div`
   display: flex;
   padding: 4px;
-  background: ${darken(0.06, colors.lightGreyishBlue)};
+  background: ${darken(0.06, colors.grey200)};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   margin-right: 10px;
 `;
 
@@ -48,7 +46,7 @@ const ViewButton = styled.button<{ active: boolean }>`
   font-size: ${fontSizes.base}px;
   border-radius: 3px;
   background-color: ${(props) => (props.active ? '#fff' : 'transparent')};
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   border-color: transparent;
   box-shadow: ${defaultStyles.boxShadow};
   margin-right: 0;
@@ -58,10 +56,10 @@ const ViewButton = styled.button<{ active: boolean }>`
   &:hover {
     background-color: ${(props) =>
       props.active ? '#fff' : 'rgba(0,0,0,0.12)'};
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, colors.textSecondary)};
 
     ${StyledIcon} {
-      color: ${darken(0.2, colors.label)};
+      color: ${darken(0.2, colors.textSecondary)};
     }
   }
 `;
@@ -127,7 +125,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
           onKeyDown={handleTabListOnKeyDown}
           active={isListViewSelected}
         >
-          <StyledIcon name="list2" />
+          <StyledIcon name="menu" />
           <FormattedMessage {...messages.list} />
         </ListButton>
         <MapButton

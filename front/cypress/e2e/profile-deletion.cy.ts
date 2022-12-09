@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe.skip('profile deletion', () => {
+describe('profile deletion', () => {
   const firstName = randomString();
   const lastName = randomString();
   const peasantEmail = randomEmail();

@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.submitYourIdea',
     defaultMessage: 'Submit your idea',
   },
+  takeTheSurvey: {
+    id: 'app.containers.IdeaButton.takeTheSurvey',
+    defaultMessage: 'Take the survey',
+  },
   addAnOption: {
     id: 'app.containers.IdeaButton.addAnOption',
     defaultMessage: 'Add an option',

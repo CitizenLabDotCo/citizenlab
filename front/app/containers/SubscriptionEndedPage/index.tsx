@@ -13,7 +13,7 @@ const Container = styled.div`
   flex-direction: column;
   background: ${colors.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -30,7 +30,7 @@ const Title = styled.h1`
   margin: 0;
   padding: 0 0 40px 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}

@@ -12,6 +12,8 @@ class SideFxPhaseService
   end
 
   def after_create(phase, user)
+    participation_method = Factory.instance.participation_method_for(phase)
+    participation_method.create_default_form!
     phase.update!(description_multiloc: TextImageService.new.swap_data_images(phase, :description_multiloc))
     LogActivityJob.perform_later(phase, 'created', user, phase.created_at.to_i)
     @sfx_pc.after_create phase, user
@@ -39,5 +41,11 @@ class SideFxPhaseService
       payload: { phase: serialized_phase }
     )
     @sfx_pc.after_destroy frozen_phase, user
+  end
+
+  def before_delete_inputs(phase, user); end
+
+  def after_delete_inputs(phase, user)
+    LogActivityJob.perform_later phase, 'inputs_deleted', user, Time.now.to_i
   end
 end

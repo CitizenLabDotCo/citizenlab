@@ -163,14 +163,6 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it 'allows vimeo iframe to pass through when video feature is enabled' do
-      input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://vimeo.com/76979871" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
-      HTML
-      features = [:video]
-      expect(service.sanitize(input, features)).to eq input
-    end
-
     it 'allows wistia iframe to pass through when video feature is enabled' do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://support.wistia.com/medias/26sk4lmiix" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"

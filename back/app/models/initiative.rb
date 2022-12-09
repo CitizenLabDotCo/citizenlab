@@ -27,7 +27,7 @@
 #
 #  index_initiatives_on_author_id       (author_id)
 #  index_initiatives_on_location_point  (location_point) USING gist
-#  index_initiatives_on_slug            (slug)
+#  index_initiatives_on_slug            (slug) UNIQUE
 #  index_initiatives_search             (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
 #
 # Foreign Keys
@@ -54,6 +54,19 @@ class Initiative < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   belongs_to :assignee, class_name: 'User', optional: true
+
+  with_options unless: :draft? do |post|
+    post.validates :title_multiloc, presence: true, multiloc: { presence: true }
+    post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
+    post.validates :author, presence: true, on: :publication
+    post.validates :author, presence: true, if: :author_id_changed?
+    post.validates :slug, uniqueness: true, presence: true
+
+    post.before_validation :strip_title
+    post.before_validation :generate_slug
+    post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
+    post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
+  end
 
   with_options unless: :draft? do
     # Problem is that this validation happens too soon, as the first idea status change is created after create.
@@ -123,6 +136,13 @@ class Initiative < ApplicationRecord
   end
 
   private
+
+  def generate_slug
+    return if slug
+
+    title = MultilocService.new.t title_multiloc, author
+    self.slug ||= SlugService.new.generate_slug self, title
+  end
 
   def sanitize_body_multiloc
     service = SanitizationService.new

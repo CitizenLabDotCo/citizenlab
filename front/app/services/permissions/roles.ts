@@ -6,6 +6,11 @@ export interface IProjectModeratorRole {
   project_id: string;
 }
 
+interface IProjectFolderModeratorRole {
+  type: 'project_folder_moderator';
+  project_folder_id: string;
+}
+
 interface IAdminRole {
   type: 'admin';
 }
@@ -13,6 +18,7 @@ interface IAdminRole {
 export interface IRoleRegisty {
   IAdminRole: IAdminRole;
   IProjectModeratorRole: IProjectModeratorRole;
+  IProjectFolderModeratorRole: IProjectFolderModeratorRole;
 }
 
 export type TRole = IRoleRegisty[keyof IRoleRegisty];

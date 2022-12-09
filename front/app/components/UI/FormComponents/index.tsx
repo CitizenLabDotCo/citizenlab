@@ -8,12 +8,7 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
-import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-import {
-  Messages,
-  // eslint-disable-next-line no-restricted-imports
-  FormattedMessage as OriginalFormattedMessage,
-} from 'react-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import { isString } from 'utils/helperUtils';
 import {
@@ -40,11 +35,11 @@ export const FormSection = styled.div`
   max-width: 620px;
   min-width: 560px;
   padding: 40px 40px 30px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   margin-bottom: 15px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-width: auto;
   `}
 `;
@@ -60,25 +55,27 @@ const FormSectionTitleStyled = styled.h2`
 `;
 
 const FormSectionDescriptionStyled = styled.p`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
 `;
 
 const StyledSpan = styled.span`
-  margin-right: 3px;
+  margin-right: 8px;
+  font-weight: bold;
 `;
 
-interface FormSectionTitleProps extends IMessageInfo {
-  subtitleMessage?: Messages['key'];
+interface FormSectionTitleProps {
+  message: MessageDescriptor;
+  subtitleMessage?: MessageDescriptor;
 }
 
 export const FormSectionTitle = memo(
-  ({ message, values, subtitleMessage }: FormSectionTitleProps) => (
+  ({ message, subtitleMessage }: FormSectionTitleProps) => (
     <TitleContainer>
       <FormSectionTitleStyled>
-        <FormattedMessage {...message} values={values} />
+        <FormattedMessage {...message} />
       </FormSectionTitleStyled>
       {subtitleMessage && (
         <FormSectionDescriptionStyled>
@@ -92,7 +89,7 @@ export const FormSectionTitle = memo(
 export const FormLabelStyled = styled(Box)`
   width: 100%;
   font-size: ${fontSizes.base}px;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-weight: 500;
   line-height: normal;
 
@@ -108,7 +105,7 @@ export const FormLabelStyled = styled(Box)`
 export const FormSubtextStyled = styled.div`
   width: 100%;
   font-size: ${fontSizes.s}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 300;
   line-height: normal;
   margin-top: 4px;
@@ -119,22 +116,30 @@ export const Spacer = styled.div`
   height: 8px;
 `;
 
-const OptionalText = styled.span`
-  color: ${({ theme }) => theme.colorText};
+const OptionalText = styled.div`
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-weight: 400;
+
+  ${media.phone`
+    margin-top: 4px;
+  `}
 `;
 
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
   ${isRtl`
     flex-direction: row-reverse;
+  `}
+
+  ${media.phone`
+    flex-direction: column;
+    align-items: flex-start;
   `}
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
   margin-left: 10px;
 `;
 declare type iconAriaHiddenTrue = {
@@ -146,6 +151,8 @@ declare type iconAriaHiddenFalse = {
 };
 declare type iconAriaHiddenProps = iconAriaHiddenTrue | iconAriaHiddenFalse;
 
+type FormattedMessageProps = React.ComponentProps<typeof FormattedMessage>;
+
 interface FormLabelGenericProps {
   id?: string;
   htmlFor?: string;
@@ -155,15 +162,15 @@ interface FormLabelGenericProps {
   noSpace?: boolean;
   optional?: boolean;
   iconName?: IconNames;
-  subtextMessage?: Messages['key'];
-  subtextMessageValues?: OriginalFormattedMessage.Props['values'];
+  subtextMessage?: MessageDescriptor;
+  subtextMessageValues?: FormattedMessageProps['values'];
   subtextValue?: JSX.Element | string;
   subtextSupportsHtml?: boolean;
 }
 
 interface FormLabelPropsMessages extends FormLabelGenericProps {
-  labelMessage: Messages['key'];
-  labelMessageValues?: OriginalFormattedMessage.Props['values'];
+  labelMessage: MessageDescriptor;
+  labelMessageValues?: FormattedMessageProps['values'];
 }
 
 interface FormLabelPropsValue extends FormLabelGenericProps {
@@ -237,7 +244,7 @@ export const FormLabel = memo<
         </StyledSpan>
         {optional && (
           <OptionalText>
-            &nbsp;{'('}
+            {'('}
             <FormattedMessage {...messages.optional} />
             {')'}
           </OptionalText>

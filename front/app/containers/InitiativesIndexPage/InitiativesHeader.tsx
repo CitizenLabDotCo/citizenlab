@@ -39,7 +39,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: 300px;
   `}
 `;
@@ -52,7 +52,7 @@ const Content = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   padding-bottom: 50px;
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-bottom: 20px;
   `}
   display: flex;
@@ -63,7 +63,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h2`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
@@ -75,7 +75,7 @@ const Title = styled.h2`
   padding: 0;
   margin-bottom: 18px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
   `}
 `;

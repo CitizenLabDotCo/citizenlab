@@ -1,11 +1,8 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import projectFoldersConfiguration from './commercial/project_folders';
 import smartGroupsConfiguration from './commercial/smart_groups';
-import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
-import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
@@ -27,8 +24,8 @@ import matomoConfiguration from './commercial/matomo';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
-import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
+import impactTrackingConfiguration from './commercial/impact_tracking';
 
 import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -37,15 +34,14 @@ import idBogusConfiguration from './commercial/id_bogus';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
+import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
-import customizableNavbarConfiguration from './commercial/customizable_navbar';
-
-import userConfirmationConfiguration from './free/user_confirmation';
+import analyticsConfiguration from './commercial/analytics';
 
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import representativenessConfiguration from './commercial/representativeness';
@@ -55,16 +51,8 @@ declare var CL_CONFIG: any;
 
 export default loadModules([
   {
-    configuration: projectFoldersConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/project_folders'],
-  },
-  {
     configuration: smartGroupsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/smart_groups'],
-  },
-  {
-    configuration: userCustomFieldsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/user_custom_fields'],
   },
   {
     configuration: ideaCustomFieldsConfiguration,
@@ -101,10 +89,6 @@ export default loadModules([
   {
     configuration: projectVisibilityConfiguration,
     isEnabled: CL_CONFIG['modules']['free/project_visibility'],
-  },
-  {
-    configuration: projectManagementConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/project_management'],
   },
   {
     configuration: moderationConfiguration,
@@ -183,16 +167,16 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/id_gent_rrn'],
   },
   {
+    configuration: IdOostendeRrnConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_oostende_rrn'],
+  },
+  {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
   },
   {
     configuration: machineTranslationsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
-  },
-  {
-    configuration: verificationConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/verification'],
   },
   {
     configuration: widgetsConfiguration,
@@ -207,12 +191,8 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/insights'],
   },
   {
-    configuration: customizableNavbarConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/customizable_navbar'],
-  },
-  {
-    configuration: userConfirmationConfiguration,
-    isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
+    configuration: analyticsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/analytics'],
   },
   {
     configuration: idViennaSamlConfiguration,
@@ -221,5 +201,9 @@ export default loadModules([
   {
     configuration: representativenessConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/representativeness'],
+  },
+  {
+    configuration: impactTrackingConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/impact_tracking'],
   },
 ]);

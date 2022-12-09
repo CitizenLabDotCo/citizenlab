@@ -1,32 +1,26 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 type Props = {
-  title: ReactIntl.FormattedMessage.MessageDescriptor;
-  description: ReactIntl.FormattedMessage.MessageDescriptor;
+  title: MessageDescriptor;
+  description?: MessageDescriptor;
+} & WrappedComponentProps;
+
+const HelmetIntl = ({ title, description, intl: { formatMessage } }: Props) => {
+  return (
+    <>
+      <Helmet
+        title={formatMessage(title)}
+        meta={
+          description
+            ? [{ name: 'description', content: formatMessage(description) }]
+            : undefined
+        }
+      />
+    </>
+  );
 };
 
-interface State {}
-
-export class HelmetIntl extends React.PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  render() {
-    const { formatMessage } = this.props.intl;
-    const { title, description } = this.props;
-
-    return (
-      <>
-        <Helmet
-          title={formatMessage(title)}
-          meta={[{ name: 'description', content: formatMessage(description) }]}
-        />
-      </>
-    );
-  }
-}
-
-export default injectIntl<Props>(HelmetIntl);
+export default injectIntl(HelmetIntl);

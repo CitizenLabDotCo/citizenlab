@@ -44,16 +44,16 @@ const ApplyExampleGroupingButton = styled.button`
   cursor: pointer;
 
   p {
-    color: ${colors.label};
+    color: ${colors.textSecondary};
     &:hover {
-      color: ${colors.text};
+      color: ${colors.textPrimary};
     }
   }
 
   svg {
-    fill: ${colors.label};
+    fill: ${colors.textSecondary};
     &:hover {
-      fill: ${colors.text};
+      fill: ${colors.textPrimary};
     }
   }
 `;
@@ -142,7 +142,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
       close={onClose}
       width="70%"
       header={
-        <Box color={colors.adminTextColor} style={{ fontWeight: 700 }}>
+        <Box color={colors.primary} style={{ fontWeight: 700 }}>
           <FormattedMessage {...messages.ageGroups} />
         </Box>
       }
@@ -164,9 +164,9 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
               <ApplyExampleGroupingButton onClick={applyExampleGrouping}>
                 <Text variant="bodyS" mt="0px" mb="0px">
                   <StyledIcon
-                    name="groups2"
-                    height="10px"
-                    width="14px"
+                    name="group"
+                    height="16px"
+                    width="16px"
                     mr="6px"
                   />
                   <FormattedMessage {...messages.applyExampleGrouping} />

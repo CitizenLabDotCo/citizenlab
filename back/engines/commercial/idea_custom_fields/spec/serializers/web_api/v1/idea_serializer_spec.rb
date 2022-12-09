@@ -6,7 +6,7 @@ describe WebApi::V1::IdeaSerializer do
   context 'with custom_field_values' do
     describe '#serializable_hash' do
       let(:project) { create :project }
-      let(:form) { create :custom_form, project: project }
+      let(:form) { create :custom_form, participation_context: project }
       let(:visible_field_value) { 1 }
       let(:visible_field) { create :custom_field, :for_custom_form, resource: form, enabled: true, input_type: 'number' }
       let(:disabled_field) { create :custom_field, :for_custom_form, resource: form, enabled: false, input_type: 'number' }

@@ -6,11 +6,10 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedNumber } from 'react-intl';
+import { WrappedComponentProps, FormattedNumber } from 'react-intl';
 import messages from './messages';
 
 const StyledIcon = styled(Icon)`
-  width: 19px;
   margin-top: 3px;
   margin-right: 7px;
   display: inline-block;
@@ -24,18 +23,18 @@ interface Props {
 const FormattedBudget = ({
   value,
   intl: { formatMessage, formatNumber },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
-    const currency = appConfiguration.data.attributes.settings.core.currency;
+    const currency = appConfiguration.attributes.settings.core.currency;
 
     // custom implementations for custom currencies
     // see appConfiguration.ts for all currencies
     if (currency === 'TOK') {
       return (
         <>
-          <StyledIcon name="tokens" />
+          <StyledIcon name="token" />
           {formatNumber(value)}
         </>
       );

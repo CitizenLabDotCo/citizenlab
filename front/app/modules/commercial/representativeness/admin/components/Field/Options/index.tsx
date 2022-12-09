@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 // hooks
-import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
-import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
+import useUserCustomField from 'hooks/useUserCustomField';
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
 import useLocalize from 'hooks/useLocalize';
 
 // components
@@ -14,7 +14,7 @@ import Button from 'components/UI/Button';
 import messages from './messages';
 import binMessages from '../BinModal/messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -46,7 +46,7 @@ const Options = injectIntl(
     onUpdatePopulation,
     onEditBins,
     intl: { formatMessage },
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const [seeMore, setSeeMore] = useState(false);
     const userCustomField = useUserCustomField(userCustomFieldId);
     const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
@@ -99,11 +99,7 @@ const Options = injectIntl(
                   />
                 )}
 
-                <Text
-                  ml={bins ? '' : '12px'}
-                  variant="bodyM"
-                  color="adminTextColor"
-                >
+                <Text ml={bins ? '' : '12px'} variant="bodyM" color="primary">
                   {label}
                 </Text>
               </Box>

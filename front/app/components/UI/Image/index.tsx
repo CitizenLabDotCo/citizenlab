@@ -61,7 +61,7 @@ export default class Image extends PureComponent<Props, State> {
   static defaultProps = {
     alt: '',
     fadeIn: true,
-    placeholderBg: colors.placeholderBg,
+    placeholderBg: colors.background,
     isLazy: true,
   };
 

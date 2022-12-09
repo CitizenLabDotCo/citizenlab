@@ -6,7 +6,7 @@ import Fragment from 'components/Fragment';
 import { Image } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -39,19 +39,18 @@ interface Props {}
 
 const CityLogoSection = ({
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
 
   if (!isNilOrError(appConfiguration)) {
-    const currentTenantLogo =
-      appConfiguration.data.attributes.logo?.large || null;
+    const currentTenantLogo = appConfiguration.attributes.logo?.large || null;
     const tenantSite =
-      appConfiguration.data.attributes.settings.core.organization_site;
+      appConfiguration.attributes.settings.core.organization_site;
     const footerLocale = `footer-city-logo-${locale}`;
     const localizedOrgName = localize(
-      appConfiguration.data.attributes.settings.core.organization_name
+      appConfiguration.attributes.settings.core.organization_name
     );
 
     if (currentTenantLogo) {

@@ -45,7 +45,7 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
   <UsersShowPage__Container
     id="e2e-usersshowpage"
   >
-    <WrappedUserHeader
+    <UserHeader
       userSlug="test-citizenlab"
     />
     <WrappedUserNavbar
@@ -118,7 +118,7 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
   <UsersShowPage__Container
     id="e2e-usersshowpage"
   >
-    <WrappedUserHeader
+    <UserHeader
       userSlug="test-citizenlab"
     />
     <WrappedUserNavbar
@@ -163,7 +163,7 @@ exports[`<UsersShowPage /> renders correctly with an erroneous user 1`] = `
     We couldn't find this user's profile. If it was here before, it may have been deleted.
   </p>
   <ButtonWrapper
-    icon="arrow-back"
+    icon="arrow-left"
     linkTo="/"
     text="Go back to the previous page"
   />

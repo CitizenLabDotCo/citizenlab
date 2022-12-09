@@ -8,7 +8,7 @@ import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedDate } from 'react-intl';
+import { WrappedComponentProps, FormattedDate } from 'react-intl';
 import messages from './messages';
 
 // hooks
@@ -21,7 +21,7 @@ import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 const UserWrapper = styled.div`
   display: flex;
   align-items: center;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   margin-top: -4px;
   margin-bottom: -6px;
@@ -48,7 +48,7 @@ export interface Props {
   className?: string;
 }
 
-const PostedBy = memo<Props & InjectedIntlProps>(
+const PostedBy = memo<Props & WrappedComponentProps>(
   ({ authorId, ideaId, compact, className, intl: { formatMessage } }) => {
     const idea = useIdea({ ideaId });
 
@@ -59,7 +59,7 @@ const PostedBy = memo<Props & InjectedIntlProps>(
           userId={authorId}
           isLinkToProfile={true}
           underline={true}
-          color={colors.label}
+          color={colors.textSecondary}
           fontSize={fontSizes.s}
         />
       );

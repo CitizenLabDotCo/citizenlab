@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IdBosaFas
-  class BosaFasOmniauth
+  class BosaFasOmniauth < OmniauthMethods::Base
     include BosaFasVerification
 
     ENVIRONMENTS = {

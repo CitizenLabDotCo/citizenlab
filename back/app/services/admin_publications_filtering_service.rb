@@ -41,9 +41,23 @@ class AdminPublicationsFilteringService
     projects = Project.where(id: scope.where(publication_type: Project.name).select(:publication_id))
     filtered_projects = ProjectsFilteringService.new.filter(projects, options)
 
-    project_publications = scope.where(publication: filtered_projects)
+    if options[:search].present?
+      project_ids = filtered_projects.search_ids_by_all_including_patches(options[:search])
+    end
+
+    project_publications = scope.where(publication: project_ids || filtered_projects)
     other_publications = scope.where.not(publication_type: Project.name)
     project_publications.or(other_publications)
+  end
+
+  add_filter('filter_folders') do |scope, options|
+    next scope if options[:search].blank?
+
+    matching_folders = ProjectFolders::Folder.search_by_all(options[:search])
+    folder_publications_in_scope = scope.where(publication: matching_folders)
+    projects_still_in_scope = scope.where.not(publication_type: ProjectFolders::Folder.name)
+
+    folder_publications_in_scope.or(projects_still_in_scope)
   end
 
   add_filter('compute_visible_children_counts') do |scope, _|
@@ -70,5 +84,23 @@ class AdminPublicationsFilteringService
 
   add_filter('top_level_only') do |scope, options|
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
+  end
+
+  # Keep that as the last filter, this acts as a failsafe.
+  # If any of the filters before return duplicate admin publications, we remove them at the last step
+  add_filter('distinct') do |scope, _options|
+    scope.distinct
+  end
+
+  add_filter('by_folder') do |scope, options|
+    next scope unless options.key? :folder
+
+    folder_id = options[:folder]
+    if folder_id.blank?
+      scope.where(parent_id: nil) # keeps on top-level publications
+    else
+      folder = AdminPublication.where(publication_id: folder_id, publication_type: ProjectFolders::Folder.name)
+      scope.where(parent_id: folder) # .or(folder) Maybe we should add the folder itself
+    end
   end
 end

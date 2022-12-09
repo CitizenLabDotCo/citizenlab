@@ -29,7 +29,6 @@
 #  comments_count               :integer          default(0), not null
 #  default_assignee_id          :uuid
 #  poll_anonymous               :boolean          default(FALSE), not null
-#  custom_form_id               :uuid
 #  downvoting_enabled           :boolean          default(TRUE), not null
 #  ideas_order                  :string
 #  input_term                   :string           default("idea")
@@ -40,8 +39,7 @@
 #
 # Indexes
 #
-#  index_projects_on_custom_form_id  (custom_form_id)
-#  index_projects_on_slug            (slug) UNIQUE
+#  index_projects_on_slug  (slug) UNIQUE
 #
 # Foreign Keys
 #
@@ -80,10 +78,15 @@ class Project < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
-  belongs_to :custom_form, optional: true, dependent: :destroy
-
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
+
+  after_destroy :remove_moderators
+
+  attr_accessor :folder_changed, :folder_was
+
+  after_save :reassign_moderators, if: :folder_changed?
+  after_commit :clear_folder_changes, if: :folder_changed?
 
   PROCESS_TYPES = %w[timeline continuous].freeze
   INTERNAL_ROLES = %w[open_idea_box].freeze
@@ -97,7 +100,7 @@ class Project < ApplicationRecord
   validate :admin_publication_must_exist
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc description_multiloc description_preview_multiloc],
+    against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
     using: { tsearch: { prefix: true } }
 
   scope :with_all_areas, -> { where(include_all_areas: true) }
@@ -108,7 +111,7 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_topics, (proc do |topic_ids|
-    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids }).distinct
+    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids })
   end)
 
   scope :is_participation_context, lambda {
@@ -133,12 +136,23 @@ class Project < ApplicationRecord
     where(id: project_ids)
   }
 
+  class << self
+    def search_ids_by_all_including_patches(term)
+      result = defined?(super) ? super : []
+      result + search_by_all(term).pluck(:id)
+    end
+  end
+
   def continuous?
     process_type == 'continuous'
   end
 
   def timeline?
     process_type == 'timeline'
+  end
+
+  def native_survey?
+    participation_method == 'native_survey'
   end
 
   def project
@@ -158,6 +172,49 @@ class Project < ApplicationRecord
   def set_default_topics!
     self.allowed_input_topics = Topic.defaults.order(:ordering).reverse
     save!
+  end
+
+  def folder
+    admin_publication&.parent&.publication
+  end
+
+  def folder_id
+    admin_publication&.parent&.publication_id
+  end
+
+  def folder?
+    !!folder_id
+  end
+
+  def saved_change_to_folder?
+    admin_publication.saved_change_to_parent_id?
+  end
+
+  def folder_id=(id)
+    parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)&.id
+    raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
+    return unless folder&.admin_publication&.id != parent_id
+
+    build_admin_publication unless admin_publication
+    folder_will_change!
+    admin_publication.assign_attributes(parent_id: parent_id)
+  end
+
+  def folder_changed?
+    folder_changed
+  end
+
+  def folder=(folder)
+    self.folder_id = folder.id
+  end
+
+  def folder_will_change!
+    self.folder_was = folder
+    self.folder_changed = true
+  end
+
+  def clear_folder_changes
+    self.folder_changed = false
   end
 
   private
@@ -204,6 +261,48 @@ class Project < ApplicationRecord
       notification.destroy! unless notification.update(project: nil)
     end
   end
+
+  def remove_moderators
+    UserRoleService.new.moderators_for_project(self).each do |moderator|
+      moderator.delete_role 'project_moderator', project_id: id
+      moderator.save!
+    end
+  end
+
+  def reassign_moderators
+    add_new_folder_moderators
+    remove_old_folder_moderators
+  end
+
+  def add_new_folder_moderators
+    new_folder_moderators.each do |moderator|
+      next if moderator.moderatable_project_ids.include?(id)
+
+      moderator.add_role('project_moderator', project_id: id)
+      moderator.save
+    end
+  end
+
+  def remove_old_folder_moderators
+    old_folder_moderators.each do |moderator|
+      next unless moderator.moderatable_project_ids.include?(id)
+
+      moderator.delete_role('project_moderator', project_id: id)
+      moderator.save
+    end
+  end
+
+  def new_folder_moderators
+    return ::User.none unless folder&.id
+
+    ::User.project_folder_moderator(folder&.id)
+  end
+
+  def old_folder_moderators
+    return ::User.none unless folder_was.is_a?(ProjectFolders::Folder)
+
+    ::User.project_folder_moderator(folder_was.id)
+  end
 end
 
 Project.include(ProjectPermissions::Patches::Project)
@@ -211,7 +310,5 @@ Project.include(ProjectPermissions::Patches::Project)
 Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.include_if_ee('IdeaAssignment::Extensions::Project')
 Project.include_if_ee('Insights::Patches::Project')
-Project.prepend_if_ee('ProjectFolders::Patches::Project')
-Project.include_if_ee('ProjectManagement::Patches::Project')
 Project.include_if_ee('SmartGroups::Patches::Project')
 Project.include_if_ee('ContentBuilder::Patches::Project')

@@ -1,92 +1,96 @@
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
-import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
-// Typings
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object } from 'yup';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Feedback from 'components/HookForm/Feedback';
+
+// typings
 import { Multiloc } from 'typings';
-
-export interface Props {}
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
 }
 
-class AreaForm extends React.Component<
-  InjectedFormikProps<Props & InjectedIntlProps, FormValues>
-> {
-  public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
+type Props = {
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: FormValues;
+} & WrappedComponentProps;
 
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
+const AreaForm = ({
+  intl: { formatMessage },
+  defaultValues,
+  onSubmit,
+}: Props) => {
+  const schema = object({
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldTitleError)
+    ),
+    description_multiloc: object(),
+  });
+
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
     }
-    return errors;
   };
 
-  render() {
-    const {
-      isSubmitting,
-      errors,
-      touched,
-      status,
-      intl: { formatMessage },
-    } = this.props;
-
-    return (
-      <Form>
-        <Section>
+  return (
+    <FormProvider {...methods}>
+      <Section data-testid="areaForm">
+        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionField>
-            <Field
+            <Feedback />
+            <InputMultilocWithLocaleSwitcher
+              label={formatMessage(messages.fieldTitle)}
+              type="text"
               name="title_multiloc"
-              component={FormikInputMultilocWithLocaleSwitcher}
-              label={<FormattedMessage {...messages.fieldTitle} />}
               labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
             />
-            {touched.title_multiloc && (
-              <Error
-                fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc as any}
-              />
-            )}
           </SectionField>
           <SectionField>
-            <Field
-              component={FormikQuillMultiloc}
+            <QuillMultilocWithLocaleSwitcher
               name="description_multiloc"
-              label={<FormattedMessage {...messages.fieldDescription} />}
+              label={formatMessage(messages.fieldDescription)}
               labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
-              withCTAButton
             />
-            {touched.description_multiloc && (
-              <Error
-                fieldName="description_multiloc"
-                apiErrors={errors.description_multiloc as any}
-              />
-            )}
           </SectionField>
-        </Section>
+          <Box display="flex">
+            <Button
+              type="submit"
+              processing={methods.formState.isSubmitting}
+              data-testid="saveArea"
+            >
+              {formatMessage(messages.saveArea)}
+            </Button>
+          </Box>
+        </form>
+      </Section>
+    </FormProvider>
+  );
+};
 
-        <FormikSubmitWrapper
-          isSubmitting={isSubmitting}
-          status={status}
-          touched={touched}
-        />
-      </Form>
-    );
-  }
-}
-
-export default injectIntl<Props>(AreaForm);
+export default injectIntl(AreaForm);

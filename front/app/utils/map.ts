@@ -1,5 +1,5 @@
 import { isNilOrError } from 'utils/helperUtils';
-import { IAppConfiguration } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'services/appConfiguration';
 import {
   DEFAULT_TILE_PROVIDER,
   DEFAULT_TILE_OPTIONS,
@@ -12,14 +12,14 @@ import formatcoords from 'formatcoords';
 
 export const getCenter = (
   centerLatLng?: LatLngTuple | null,
-  appConfig?: IAppConfiguration | null | Error
+  appConfig?: IAppConfigurationData | null | Error
 ) => {
   const tenantCenterLat =
     !isNilOrError(appConfig) &&
-    appConfig?.data?.attributes?.settings?.maps?.map_center?.lat;
+    appConfig?.attributes?.settings?.maps?.map_center?.lat;
   const tenantCenterLong =
     !isNilOrError(appConfig) &&
-    appConfig?.data?.attributes?.settings?.maps?.map_center?.long;
+    appConfig?.attributes?.settings?.maps?.map_center?.long;
 
   if (!isNilOrError(centerLatLng)) {
     return centerLatLng;
@@ -40,20 +40,20 @@ export const getCenter = (
 
 export const getZoomLevel = (
   zoom?: number,
-  appConfig?: IAppConfiguration | null | Error
+  appConfig?: IAppConfigurationData | null | Error
 ) => {
   const tenantZoomLevel =
     !isNilOrError(appConfig) &&
-    (appConfig?.data?.attributes?.settings?.maps?.zoom_level as any);
+    (appConfig?.attributes?.settings?.maps?.zoom_level as any);
   return parseInt(zoom || tenantZoomLevel || DEFAULT_ZOOM, 10);
 };
 
 export const getTileProvider = (
-  appConfig?: IAppConfiguration | null | Error
+  appConfig?: IAppConfigurationData | null | Error
 ) => {
   const tileProvider =
     !isNilOrError(appConfig) &&
-    (appConfig?.data?.attributes?.settings?.maps?.tile_provider as string);
+    (appConfig?.attributes?.settings?.maps?.tile_provider as string);
   return tileProvider || DEFAULT_TILE_PROVIDER;
 };
 

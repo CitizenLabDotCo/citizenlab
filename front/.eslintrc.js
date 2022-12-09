@@ -91,9 +91,9 @@ module.exports = {
           },
           {
             name: 'react-intl',
-            importNames: ['FormattedMessage', 'injectIntl'],
+            importNames: ['FormattedMessage', 'injectIntl', 'useIntl'],
             message:
-              "Import FormattedMessage and injectIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
+              "Import FormattedMessage, injectIntl and useIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
           },
           {
             name: 'history',
@@ -104,6 +104,11 @@ module.exports = {
             name: 'lodash',
             message:
               "Import lodash functions from 'lodash-es' instead of 'lodash'",
+          },
+          {
+            name: '@testing-library/react',
+            message:
+              "Import React testing library exports from 'utils/testUtils/rtl' instead",
           },
         ],
       },

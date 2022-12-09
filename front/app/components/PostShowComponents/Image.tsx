@@ -6,7 +6,7 @@ const Image = styled.img`
   width: 100%;
   margin-bottom: 25px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divider};
 `;
 
 interface Props {

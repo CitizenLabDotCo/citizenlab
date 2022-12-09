@@ -7,7 +7,7 @@ describe PhasePolicy do
 
   let(:scope) { PhasePolicy::Scope.new(user, project.phases) }
 
-  context 'on phase in a public project' do
+  context 'on a phase in a public project' do
     let(:project) { create(:project_with_phases, phases_count: 0) }
     let!(:phase) { create(:phase, project: project) }
 
@@ -18,19 +18,27 @@ describe PhasePolicy do
       it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:survey_results) }
+      it { is_expected.not_to permit(:submission_count) }
+      it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should index the phase' do
         expect(scope.resolve.size).to eq 1
       end
     end
 
-    context 'for a mortal user' do
+    context 'for residents' do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:survey_results) }
+      it { is_expected.not_to permit(:submission_count) }
+      it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should index the phase' do
         expect(scope.resolve.size).to eq 1
@@ -44,8 +52,26 @@ describe PhasePolicy do
       it { is_expected.to    permit(:create)  }
       it { is_expected.to    permit(:update)  }
       it { is_expected.to    permit(:destroy) }
+      it { is_expected.to    permit(:survey_results) }
+      it { is_expected.to    permit(:submission_count) }
+      it { is_expected.to    permit(:index_xlsx) }
+      it { is_expected.to    permit(:delete_inputs) }
 
       it 'should index the phase' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.to     permit(:create)  }
+      it { is_expected.to     permit(:update)  }
+      it { is_expected.to     permit(:destroy) }
+      it { is_expected.to     permit(:delete_inputs) }
+
+      it 'indexes the phase' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -60,6 +86,10 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:survey_results) }
+    it { is_expected.not_to permit(:submission_count) }
+    it { is_expected.not_to permit(:index_xlsx) }
+    it { is_expected.not_to permit(:delete_inputs) }
 
     it 'should not index the phase' do
       expect(scope.resolve.size).to eq 0
@@ -75,6 +105,10 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:survey_results) }
+    it { is_expected.not_to permit(:submission_count) }
+    it { is_expected.not_to permit(:index_xlsx) }
+    it { is_expected.not_to permit(:delete_inputs) }
 
     it 'should not index the phase' do
       expect(scope.resolve.size).to eq 0
@@ -90,6 +124,10 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:survey_results) }
+    it { is_expected.not_to permit(:submission_count) }
+    it { is_expected.not_to permit(:index_xlsx) }
+    it { is_expected.not_to permit(:delete_inputs) }
 
     it 'should index the phase' do
       expect(scope.resolve.size).to eq 1

@@ -25,8 +25,8 @@ FactoryBot.define do
 
     factory :active_phase do
       after(:create) do |phase, _evaluator|
-        phase.start_at = Time.now - rand(1..120).days
-        phase.end_at = Time.now + rand(1..120).days
+        phase.start_at = Time.now - 7.days
+        phase.end_at = Time.now + 7.days
       end
     end
 
@@ -49,11 +49,8 @@ FactoryBot.define do
       participation_method { 'volunteering' }
     end
 
-    trait :with_ideas do
-      after(:create) do |phase|
-        phase.ideas = create_list(:idea, 3, project: phase.project)
-        phase.save
-      end
+    factory :native_survey_phase do
+      participation_method { 'native_survey' }
     end
   end
 end

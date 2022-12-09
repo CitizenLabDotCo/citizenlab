@@ -114,7 +114,7 @@ ro:
         title: Descriere
         description:
       author_id:
-        title: Author
+        title: Autor
         description:
       topic_ids:
         title: Subiecte
@@ -142,7 +142,7 @@ ro:
         question:
           title: What is your question ?
         contribution:
-          title: What is your contribution ?
+          title: Care este contribuția ta?
         project:
           title: What is your project ?
         issue:
@@ -152,7 +152,7 @@ ro:
       details:
         title: Detalii
       attachements:
-        title: Images and Attachements
+        title: Imagini și atașamente
       extra:
         title: Additional information
   custom_field_options:
@@ -181,3 +181,27 @@ ro:
       message_you_reset_your_password: 'Ați solicitat o resetare a parolei pentru platforma de participare a %{organizationName}. Faceți click pe butonul de mai jos pentru a alege o nouă parolă, în condiții de siguranță. Linkul expiră în 1 oră.'
       subject: '%{organizationName}: Resetați-vă parola'
       title_reset_your_password: 'Alegeți o parolă nouă'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Latitude'
+      longitude: 'Longitude'
+      author_fullname: 'Author name'
+      author_email: 'Author email'
+      author_id: 'Author ID'
+      created_at: 'Submitted at'
+      published_at: 'Published at'
+      comments_count: 'Comentarii'
+      upvotes_count: 'Upvotes'
+      downvotes_count: 'Downvotes'
+      baskets_count: 'Baskets'
+      input_url: 'URL'
+      project: 'Proiect'
+      status: 'Status'
+      assignee_fullname: 'Responsabil'
+      assignee_email: 'Assignee email'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'

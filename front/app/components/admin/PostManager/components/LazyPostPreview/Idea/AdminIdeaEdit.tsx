@@ -388,7 +388,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
 
   render() {
     if (this.state && this.state.loaded) {
-      const { remoteIdeaFiles, goBack } = this.props;
+      const { remoteIdeaFiles, goBack, ideaId } = this.props;
       const {
         locale,
         projectId,
@@ -420,9 +420,9 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
           <Container>
             <Top>
               <Button
-                icon="arrow-back"
+                icon="arrow-left"
                 buttonStyle="text"
-                textColor={colors.adminTextColor}
+                textColor={colors.primary}
                 onClick={goBack}
               >
                 <FormattedMessage {...messages.cancelEdit} />
@@ -431,6 +431,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
 
             <Content className="idea-form">
               <IdeaForm
+                ideaId={ideaId}
                 authorId={authorId}
                 projectId={projectId}
                 title={title}
@@ -468,7 +469,6 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
           </Container>
         );
       }
-
       return null;
     }
 

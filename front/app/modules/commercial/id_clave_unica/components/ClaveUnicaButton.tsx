@@ -63,7 +63,7 @@ const ButtonLabel = styled.span`
 `;
 
 const HelperText = styled.div`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
 `;
 
 interface Props {

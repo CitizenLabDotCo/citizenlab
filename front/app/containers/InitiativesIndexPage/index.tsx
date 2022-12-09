@@ -3,12 +3,16 @@ import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import PageNotFound from 'components/PageNotFound';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import InitiativeCards from 'components/InitiativeCards';
 import ContentContainer from 'components/ContentContainer';
 import CityLogoSection from 'components/CityLogoSection';
 import InitiativeButton from 'components/InitiativeButton';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,7 +25,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 const Container = styled.main``;
 
 const FooterBanner = styled.div`
-  background: ${({ theme }) => theme.colorMain};
+  background: ${({ theme }) => theme.colors.tenantPrimary};
   width: 100%;
   min-height: 300px;
   margin: 0;
@@ -46,7 +50,7 @@ const FooterMessage = styled.h2`
   max-width: 500px;
   text-align: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
       font-size: ${fontSizes.xxxl}px;
     `}
 `;
@@ -56,7 +60,7 @@ const StyledContentContainer = styled(ContentContainer)`
   background-color: ${colors.background};
   padding-bottom: 150px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-bottom: 80px;
   `}
 `;
@@ -64,13 +68,18 @@ const StyledContentContainer = styled(ContentContainer)`
 const Padding = styled.div`
   width: 100%;
   height: 100px;
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 40px;
-  `}
+    `}
 `;
 
 const InitiativeIndexPage = () => {
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
+  const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+
+  if (!initiativesEnabled) {
+    return <PageNotFound />;
+  }
 
   if (!isNilOrError(initiativePermissions)) {
     const { enabled } = initiativePermissions;

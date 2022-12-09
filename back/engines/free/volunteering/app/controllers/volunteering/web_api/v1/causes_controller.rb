@@ -51,6 +51,8 @@ module Volunteering
         def update
           @cause.assign_attributes cause_params
           authorize @cause
+          remove_image_if_requested!(@cause, cause_params, :image)
+
           SideFxCauseService.new.before_update(@cause, current_user)
           if @cause.save
             SideFxCauseService.new.after_update(@cause, current_user)

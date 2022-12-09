@@ -23,11 +23,11 @@ export const NoPostPage = styled.div`
   padding: 100px 0;
   width: 100%;
 
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divider};
   svg {
     margin-bottom: 20px;
     height: 50px;
-    fill: ${colors.clIconAccent};
+    fill: ${colors.teal400};
   }
 
   transition: all 200ms ease;
@@ -66,7 +66,7 @@ export const NoPostHeader = styled.h2`
 `;
 
 export const NoPostDescription = styled.p`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   font-weight: 400;
   font-size: ${fontSizes.s}px;
   margin-bottom: 30px;
@@ -80,7 +80,7 @@ interface Props {
 
 export default (props: Props) => (
   <NoPostPage>
-    <Icon name="blankPage" />
+    <Icon name="sidebar-pages-menu" />
     <NoPostHeader>
       {props.type === 'Initiatives' ? (
         <FormattedMessage {...messages.noInitiativesHere} />

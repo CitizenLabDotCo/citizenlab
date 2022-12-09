@@ -33,7 +33,11 @@ const ActionPermissionWrapper = styled.div`
 
 type PostTypeProps =
   | {
-      postType: 'idea';
+      postType: 'defaultInput';
+      projectId: string;
+    }
+  | {
+      postType: 'nativeSurvey';
       projectId: string;
     }
   | {
@@ -68,22 +72,27 @@ const ActionsForm = memo(
     const getPermissionActionMessage = (
       permissionAction: IPCPermissionAction | IGlobalPermissionAction
     ) => {
-      if (postType === 'idea' && !isNilOrError(project)) {
+      if (postType !== 'initiative' && !isNilOrError(project)) {
         const inputTerm = getInputTerm(
           project.attributes.process_type,
           project,
           phases
         );
 
+        // TODO: Either refactor getInputTerm/getInputTermMessage in entire app and add new
+        // "survey" input term + messages, or abstract in some other way.
         return {
-          posting_idea: getInputTermMessage(inputTerm, {
-            idea: messages.permissionAction_submit_idea,
-            project: messages.permissionAction_submit_project,
-            contribution: messages.permissionAction_submit_contribution,
-            issue: messages.permissionAction_submit_issue,
-            question: messages.permissionAction_submit_question,
-            option: messages.permissionAction_submit_option,
-          }),
+          posting_idea:
+            postType === 'nativeSurvey'
+              ? messages.permissionAction_take_survey
+              : getInputTermMessage(inputTerm, {
+                  idea: messages.permissionAction_submit_idea,
+                  project: messages.permissionAction_submit_project,
+                  contribution: messages.permissionAction_submit_contribution,
+                  issue: messages.permissionAction_submit_issue,
+                  question: messages.permissionAction_submit_question,
+                  option: messages.permissionAction_submit_option,
+                }),
           voting_idea: getInputTermMessage(inputTerm, {
             idea: messages.permissionAction_vote_ideas,
             project: messages.permissionAction_vote_projects,
@@ -126,7 +135,6 @@ const ActionsForm = memo(
         <>
           {permissions.map((permission, index) => {
             const permissionAction = permission.attributes.action;
-
             return (
               <ActionPermissionWrapper
                 key={permission.id}
@@ -144,6 +152,7 @@ const ActionsForm = memo(
                   groupIds={permission.relationships.groups.data.map(
                     (p) => p.id
                   )}
+                  projectType={postType}
                   onChange={handlePermissionChange(permission)}
                 />
               </ActionPermissionWrapper>

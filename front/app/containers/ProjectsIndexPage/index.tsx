@@ -24,7 +24,7 @@ const Container = styled.main`
   position: relative;
   background: ${colors.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -36,46 +36,52 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-top: 60px;
   padding-bottom: 100px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
   `}
 `;
 
 const PageTitle = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 500;
   text-align: center;
   padding: 0;
   margin: 0;
-  margin-bottom: 0px;
+  margin-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     text-align: left;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.xxxl}px;
   `}
 `;
 
-export default React.memo(() => (
-  <>
-    <ProjectsIndexMeta />
-    <Container>
-      <StyledContentContainer mode="page">
-        <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
-        </PageTitle>
-        <ProjectAndFolderCards
-          showTitle={false}
-          layout="threecolumns"
-          publicationStatusFilter={['published', 'archived']}
-        />
-      </StyledContentContainer>
-      <CityLogoSection />
-    </Container>
-  </>
-));
+const ProjectsIndex = () => {
+  return (
+    <>
+      <ProjectsIndexMeta />
+      <Container>
+        <StyledContentContainer mode="page">
+          <PageTitle>
+            <FormattedMessage {...messages.pageTitle} />
+          </PageTitle>
+
+          <ProjectAndFolderCards
+            showTitle={false}
+            showSearch={true}
+            layout="threecolumns"
+            publicationStatusFilter={['published', 'archived']}
+          />
+        </StyledContentContainer>
+        <CityLogoSection />
+      </Container>
+    </>
+  );
+};
+
+export default ProjectsIndex;

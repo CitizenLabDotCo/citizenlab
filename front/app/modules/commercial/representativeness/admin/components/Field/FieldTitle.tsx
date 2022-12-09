@@ -19,11 +19,12 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { Multiloc, MessageDescriptor } from 'typings';
+import { Multiloc } from 'typings';
+import { MessageDescriptor } from 'react-intl';
 import { Status } from '../../utils/form';
 
 const DefaultStatusLabel = styled(StatusLabel)`
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
   font-weight: 700;
   margin-left: 8px;
 `;
@@ -48,12 +49,12 @@ const STATUS_MESSAGES: Record<Status, MessageDescriptor> = {
   incomplete: messages.incomplete,
 };
 
-type StatusColor = 'clGreenSuccess' | 'label';
+type StatusColor = 'success' | 'textSecondary';
 
 const STATUS_COLORS: Record<Status, StatusColor> = {
-  saved: 'clGreenSuccess',
-  complete: 'clGreenSuccess',
-  incomplete: 'label',
+  saved: 'success',
+  complete: 'success',
+  incomplete: 'textSecondary',
 };
 
 const FieldTitle = ({
@@ -76,7 +77,7 @@ const FieldTitle = ({
       className={className}
     >
       <Box display="flex" alignItems="center">
-        <Title variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
+        <Title color="primary" variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
           {isBirthyear ? (
             <FormattedMessage {...messages.birthyearCustomTitle} />
           ) : (
@@ -94,7 +95,7 @@ const FieldTitle = ({
           <ComingSoonStatusLabel
             text={<FormattedMessage {...messages.comingSoon} />}
             variant="default"
-            backgroundColor={colors.adminSecondaryTextColor}
+            backgroundColor={colors.textSecondary}
           />
         )}
       </Box>

@@ -36,5 +36,6 @@ RSpec.describe EmailCampaigns::Consent, type: :model do
 
     it { expect(campaign.class).to be_consentable_for build_stubbed(:admin) }
     it { expect(campaign.class).not_to be_consentable_for build_stubbed(:user) }
+    it { expect(campaign.class).to be_consentable_for build_stubbed(:project_moderator) }
   end
 end

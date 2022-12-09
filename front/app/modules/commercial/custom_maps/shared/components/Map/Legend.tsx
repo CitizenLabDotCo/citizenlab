@@ -22,7 +22,7 @@ const Container = styled.div`
   padding-bottom: 8px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 20px;
   `}
 `;
@@ -33,13 +33,13 @@ const LegendItems = styled.ul`
   margin: 0;
   columns: 2;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     columns: 1;
   `}
 `;
 
 const Item = styled.li`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   display: flex;
@@ -72,8 +72,7 @@ const ColorLabel = styled.div`
 
 const StyledIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
-  flex: 0 0 18px;
-  width: 18px;
+  flex: 0 0 24px;
   margin-right: 10px;
 
   &.ie {

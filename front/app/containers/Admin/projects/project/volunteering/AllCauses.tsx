@@ -15,7 +15,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div``;
 
@@ -24,16 +24,19 @@ const Buttons = styled.div`
   align-items: center;
 `;
 
-interface InputProps {
+type Props = {
   participationContextType: 'project' | 'phase';
   participationContextId: string;
   projectId: string;
-}
+} & WrappedComponentProps;
 
-interface Props extends InputProps, InjectedIntlProps {}
-
-const AllCauses = injectIntl<Props>(
-  ({ participationContextType, participationContextId, projectId, intl }) => {
+const AllCauses = injectIntl(
+  ({
+    participationContextType,
+    participationContextId,
+    projectId,
+    intl,
+  }: Props) => {
     const phaseId =
       participationContextType === 'phase' ? participationContextId : null;
     const causes = useCauses({ projectId, phaseId });

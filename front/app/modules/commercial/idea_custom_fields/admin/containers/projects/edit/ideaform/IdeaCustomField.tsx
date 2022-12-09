@@ -36,7 +36,7 @@ const Toggles = styled.div`
 
 const LocaleSwitcherLabelText = styled.span`
   font-weight: 500;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.m}px;
 `;
 
@@ -158,7 +158,7 @@ export default memo<Props>(
                     checked={fieldEnabled}
                     onChange={handleEnabledOnChange}
                     label={<FormattedMessage {...messages.enabled} />}
-                    labelTextColor={colors.adminTextColor}
+                    labelTextColor={colors.primary}
                     className={`
                       e2e-${e2eId}-enabled-toggle-label
                     `}
@@ -176,7 +176,7 @@ export default memo<Props>(
                     checked={fieldRequired}
                     onChange={handleRequiredOnChange}
                     label={<FormattedMessage {...messages.required} />}
-                    labelTextColor={colors.adminTextColor}
+                    labelTextColor={colors.primary}
                     className={`
                         e2e-${e2eId}-required-toggle-label
                     `}

@@ -1,0 +1,76 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://demo.matomo.cloud/index.php?date=yesterday&filter_limit=3&filter_offset=2&filter_sort_order=asc&format=JSON&idSite=1&method=Live.getLastVisitsDetails&module=API&period=day
+    body:
+      encoding: UTF-8
+      string: token_auth=anonymous
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 05 Oct 2022 10:31:45 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Server:
+      - Apache
+      X-Matomo-Request-Id:
+      - 5ce42
+      Cache-Control:
+      - must-revalidate
+      Vary:
+      - X-Forwarded-Port-Override,X-Forwarded-Proto-Override,Accept-Encoding,User-Agent
+    body:
+      encoding: UTF-8
+      string: '[{"idSite":"1","idVisit":"8272432","visitIp":null,"visitorId":false,"fingerprint":false,"actionDetails":[{"type":"action","url":"https:\/\/divezone.net\/diving\/thailand","pageTitle":"Best
+        Diving sites in Thailand \u2013 Scuba dive reviews by Divezone","pageIdAction":"220","idpageview":"mt90is","serverTimePretty":"Oct
+        4, 2022 00:00:26","pageId":"22476126","timeSpent":0,"timeSpentPretty":"0s","pageviewPosition":"1","title":"Best
+        Diving sites in Thailand \u2013 Scuba dive reviews by Divezone","subtitle":"https:\/\/divezone.net\/diving\/thailand","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1664841626,"dimension2":"Julien","dimension4":"Thailand","dimension5":"diving","customVariables":{"1":{"customVariablePageName1":"page-author","customVariablePageValue1":"Julien"},"2":{"customVariablePageName2":"post-age","customVariablePageValue2":"-460
+        days"}}}],"goalConversions":0,"siteCurrency":"USD","siteCurrencySymbol":"$","serverDate":"2022-10-03","visitServerHour":"22","lastActionTimestamp":1664834426,"lastActionDateTime":"2022-10-03
+        22:00:26","siteName":"Demo Site","serverTimestamp":1664834426,"firstActionTimestamp":1664834426,"serverTimePretty":"00:00:26","serverDatePretty":"Tuesday,
+        October 4, 2022","serverDatePrettyFirstAction":"Tuesday, October 4, 2022","serverTimePrettyFirstAction":"00:00:26","userId":null,"visitorType":"returningCustomer","visitorTypeIcon":"plugins\/Live\/images\/returningVisitor.png","visitConverted":"0","visitConvertedIcon":null,"visitCount":"93","visitEcommerceStatus":"none","visitEcommerceStatusIcon":null,"daysSinceFirstVisit":1568,"secondsSinceFirstVisit":"135475200","daysSinceLastEcommerceOrder":672,"secondsSinceLastEcommerceOrder":"58060800","visitDuration":"0","visitDurationPretty":"0s","searches":"0","actions":"1","interactions":"1","referrerType":"search","referrerTypeName":"Search
+        Engines","referrerName":"Google","referrerKeyword":"Keyword not defined","referrerKeywordPosition":null,"referrerUrl":"https:\/\/www.google.com\/","referrerSearchEngineUrl":"http:\/\/google.com","referrerSearchEngineIcon":"plugins\/Morpheus\/icons\/dist\/searchEngines\/google.com.png","referrerSocialNetworkUrl":null,"referrerSocialNetworkIcon":null,"languageCode":"","language":"Unknown","deviceType":"Desktop","deviceTypeIcon":"plugins\/Morpheus\/icons\/dist\/devices\/desktop.png","deviceBrand":"Apple","deviceModel":"Generic
+        Desktop","operatingSystem":"Mac 10.13","operatingSystemName":"Mac","operatingSystemIcon":"plugins\/Morpheus\/icons\/dist\/os\/MAC.png","operatingSystemCode":"MAC","operatingSystemVersion":"10.13","browserFamily":"WebKit","browserFamilyDescription":"WebKit
+        (Safari)","browser":"Safari 11.1","browserName":"Safari","browserIcon":"plugins\/Morpheus\/icons\/dist\/browsers\/SF.png","browserCode":"SF","browserVersion":"11.1","totalEcommerceRevenue":0,"totalEcommerceConversions":0,"totalEcommerceItems":0,"totalAbandonedCartsRevenue":0,"totalAbandonedCarts":0,"totalAbandonedCartsItems":0,"events":"0","continent":"Europe","continentCode":"eur","country":"United
+        Kingdom","countryCode":"gb","countryFlag":"plugins\/Morpheus\/icons\/dist\/flags\/gb.png","region":"West
+        Sussex","regionCode":"WSX","city":"Bognor Regis","location":"Bognor Regis,
+        West Sussex, United Kingdom","latitude":"50.775000","longitude":"-0.711000","visitLocalTime":"04:54:18","visitLocalHour":"4","daysSinceLastVisit":14,"secondsSinceLastVisit":"1209600","resolution":"1280x800","plugins":"cookie,
+        java, pdf","pluginsIcons":[{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/cookie.png","pluginName":"cookie"},{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/java.png","pluginName":"java"},{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/pdf.png","pluginName":"pdf"}],"dimension1":"guest","experiments":[{"idexperiment":"9","name":"AffiliateLinkEffectiveness","variation":{"idvariation":"21","name":"WithoutLastAd"}},{"idexperiment":"10","name":"IDivedThereLinkMove","variation":{"idvariation":0,"name":"Original"}},{"idexperiment":"13","name":"DivingPageTitles","variation":{"idvariation":"28","name":"Remarkable"}}],"adClickId":"","adProviderId":"","adProviderName":"","customVariables":{"1":{"customVariableName1":"type","customVariableValue1":"diving"},"2":{"customVariableName2":"location","customVariableValue2":"Thailand"},"5":{"customVariableName5":"diving-rating","customVariableValue5":"3.9"}},"formConversions":0,"sessionReplayUrl":null,"campaignId":"","campaignContent":"","campaignKeyword":"","campaignMedium":"","campaignName":"","campaignSource":"","campaignGroup":"","campaignPlacement":""},{"idSite":"1","idVisit":"8272435","visitIp":null,"visitorId":false,"fingerprint":false,"actionDetails":[{"type":"action","url":"https:\/\/divezone.net\/diving\/bali","pageTitle":"Best
+        Diving sites in Bali \u2013 Indonesia Scuba dive reviews by Divezone","pageIdAction":"8","idpageview":"a5uJ8V","serverTimePretty":"Oct
+        4, 2022 00:00:32","pageId":"22476130","timeSpent":0,"timeSpentPretty":"0s","pageviewPosition":"1","title":"Best
+        Diving sites in Bali \u2013 Indonesia Scuba dive reviews by Divezone","subtitle":"https:\/\/divezone.net\/diving\/bali","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1664841632,"dimension2":"Julien","dimension4":"Bali","dimension5":"diving","customVariables":{"1":{"customVariablePageName1":"page-author","customVariablePageValue1":"Julien"},"2":{"customVariablePageName2":"post-age","customVariablePageValue2":"-362
+        days"}}}],"goalConversions":0,"siteCurrency":"USD","siteCurrencySymbol":"$","serverDate":"2022-10-03","visitServerHour":"22","lastActionTimestamp":1664834432,"lastActionDateTime":"2022-10-03
+        22:00:32","siteName":"Demo Site","serverTimestamp":1664834432,"firstActionTimestamp":1664834432,"serverTimePretty":"00:00:32","serverDatePretty":"Tuesday,
+        October 4, 2022","serverDatePrettyFirstAction":"Tuesday, October 4, 2022","serverTimePrettyFirstAction":"00:00:32","userId":null,"visitorType":"returningCustomer","visitorTypeIcon":"plugins\/Live\/images\/returningVisitor.png","visitConverted":"0","visitConvertedIcon":null,"visitCount":"93","visitEcommerceStatus":"none","visitEcommerceStatusIcon":null,"daysSinceFirstVisit":1568,"secondsSinceFirstVisit":"135475200","daysSinceLastEcommerceOrder":672,"secondsSinceLastEcommerceOrder":"58060800","visitDuration":"0","visitDurationPretty":"0s","searches":"0","actions":"1","interactions":"1","referrerType":"search","referrerTypeName":"Search
+        Engines","referrerName":"Google","referrerKeyword":"Keyword not defined","referrerKeywordPosition":null,"referrerUrl":"https:\/\/www.google.com\/","referrerSearchEngineUrl":"http:\/\/google.com","referrerSearchEngineIcon":"plugins\/Morpheus\/icons\/dist\/searchEngines\/google.com.png","referrerSocialNetworkUrl":null,"referrerSocialNetworkIcon":null,"languageCode":"","language":"Unknown","deviceType":"Desktop","deviceTypeIcon":"plugins\/Morpheus\/icons\/dist\/devices\/desktop.png","deviceBrand":"Unknown","deviceModel":"Generic
+        Desktop","operatingSystem":"Windows 10","operatingSystemName":"Windows","operatingSystemIcon":"plugins\/Morpheus\/icons\/dist\/os\/WIN.png","operatingSystemCode":"WIN","operatingSystemVersion":"10","browserFamily":"Blink","browserFamilyDescription":"Blink
+        (Chrome, Opera)","browser":"Chrome 66.0","browserName":"Chrome","browserIcon":"plugins\/Morpheus\/icons\/dist\/browsers\/CH.png","browserCode":"CH","browserVersion":"66.0","totalEcommerceRevenue":0,"totalEcommerceConversions":0,"totalEcommerceItems":0,"totalAbandonedCartsRevenue":0,"totalAbandonedCarts":0,"totalAbandonedCartsItems":0,"events":"0","continent":"North
+        America","continentCode":"amn","country":"United States","countryCode":"us","countryFlag":"plugins\/Morpheus\/icons\/dist\/flags\/us.png","region":"California","regionCode":"CA","city":"Los
+        Angeles","location":"Los Angeles, California, United States","latitude":"34.065000","longitude":"-118.441000","visitLocalTime":"20:54:24","visitLocalHour":"20","daysSinceLastVisit":14,"secondsSinceLastVisit":"1209600","resolution":"1280x720","plugins":"cookie,
+        pdf","pluginsIcons":[{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/cookie.png","pluginName":"cookie"},{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/pdf.png","pluginName":"pdf"}],"dimension1":"guest","experiments":[{"idexperiment":"9","name":"AffiliateLinkEffectiveness","variation":{"idvariation":"21","name":"WithoutLastAd"}},{"idexperiment":"10","name":"IDivedThereLinkMove","variation":{"idvariation":"24","name":"LinkToCommentForm"}},{"idexperiment":"13","name":"DivingPageTitles","variation":{"idvariation":"27","name":"Plain"}}],"adClickId":"","adProviderId":"","adProviderName":"","customVariables":{"1":{"customVariableName1":"type","customVariableValue1":"diving"},"2":{"customVariableName2":"location","customVariableValue2":"Bali"},"5":{"customVariableName5":"diving-rating","customVariableValue5":"3.5"}},"formConversions":0,"sessionReplayUrl":null,"campaignId":"","campaignContent":"","campaignKeyword":"","campaignMedium":"","campaignName":"","campaignSource":"","campaignGroup":"","campaignPlacement":""},{"idSite":"1","idVisit":"8272437","visitIp":null,"visitorId":false,"fingerprint":false,"actionDetails":[{"type":"ecommerceOrder","orderId":"2022-10-03-140_3507","revenue":89,"revenueSubTotal":149,"revenueTax":0,"revenueShipping":0,"revenueDiscount":0,"items":"1","serverTimePretty":"Oct
+        4, 2022 00:00:38","idpageview":null,"itemDetails":[{"itemSKU":"3221","itemName":"Diving
+        Tank","itemCategory":"Accessories","price":89,"quantity":"1","categories":["Accessories"]}],"icon":"plugins\/Morpheus\/images\/ecommerceOrder.png","iconSVG":"plugins\/Morpheus\/images\/ecommerceOrder.svg","title":"Ordered
+        (2022-10-03-140_3507)","subtitle":"$89 revenue - 1 items: Diving Tank)","timestamp":1664841638,"dimension2":null,"dimension4":null,"dimension5":null},{"type":"action","url":"https:\/\/dive-shop.net\/checkout\/order-received\/3507\/","pageTitle":"Checkout
+        - Divezone Store","pageIdAction":"4117","idpageview":"B3ukVi","serverTimePretty":"Oct
+        4, 2022 00:00:41","pageId":"22476134","timeSpent":1523,"timeSpentPretty":"25
+        min 23s","pageviewPosition":"1","title":"Checkout - Divezone Store","subtitle":"https:\/\/dive-shop.net\/checkout\/order-received\/3507\/","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1664841641,"dimension2":null,"dimension4":null,"dimension5":null}],"goalConversions":0,"siteCurrency":"USD","siteCurrencySymbol":"$","serverDate":"2022-10-03","visitServerHour":"22","lastActionTimestamp":1664834441,"lastActionDateTime":"2022-10-03
+        22:00:41","siteName":"Demo Site","serverTimestamp":1664834441,"firstActionTimestamp":1664834438,"serverTimePretty":"00:00:41","serverDatePretty":"Tuesday,
+        October 4, 2022","serverDatePrettyFirstAction":"Tuesday, October 4, 2022","serverTimePrettyFirstAction":"00:00:38","userId":null,"visitorType":"returningCustomer","visitorTypeIcon":"plugins\/Live\/images\/returningVisitor.png","visitConverted":"1","visitConvertedIcon":"plugins\/Morpheus\/images\/goal.svg","visitCount":"95","visitEcommerceStatus":"ordered","visitEcommerceStatusIcon":"plugins\/Morpheus\/images\/ecommerceOrder.svg","daysSinceFirstVisit":2007,"secondsSinceFirstVisit":"173405041","daysSinceLastEcommerceOrder":0,"secondsSinceLastEcommerceOrder":"0","visitDuration":"1526","visitDurationPretty":"25
+        min 26s","searches":"0","actions":"1","interactions":"1","referrerType":"social","referrerTypeName":"Social
+        Networks","referrerName":"reddit","referrerKeyword":"","referrerKeywordPosition":null,"referrerUrl":"https:\/\/www.reddit.com\/r\/scuba\/comments\/8kf1sx\/opinions_please_move_my_old_octo_to_my_new\/","referrerSearchEngineUrl":null,"referrerSearchEngineIcon":null,"referrerSocialNetworkUrl":"reddit.com","referrerSocialNetworkIcon":"plugins\/Morpheus\/icons\/dist\/socials\/reddit.com.png","languageCode":"","language":"Unknown","deviceType":"Desktop","deviceTypeIcon":"plugins\/Morpheus\/icons\/dist\/devices\/desktop.png","deviceBrand":"Unknown","deviceModel":"Generic
+        Desktop","operatingSystem":"Windows 7","operatingSystemName":"Windows","operatingSystemIcon":"plugins\/Morpheus\/icons\/dist\/os\/WIN.png","operatingSystemCode":"WIN","operatingSystemVersion":"7","browserFamily":"Gecko","browserFamilyDescription":"Gecko
+        (Firefox)","browser":"Firefox 52.0","browserName":"Firefox","browserIcon":"plugins\/Morpheus\/icons\/dist\/browsers\/FF.png","browserCode":"FF","browserVersion":"52.0","totalEcommerceRevenue":0,"totalEcommerceConversions":0,"totalEcommerceItems":0,"totalAbandonedCartsRevenue":0,"totalAbandonedCarts":0,"totalAbandonedCartsItems":0,"events":"0","continent":"North
+        America","continentCode":"amn","country":"United States","countryCode":"us","countryFlag":"plugins\/Morpheus\/icons\/dist\/flags\/us.png","region":"Georgia","regionCode":"GA","city":"Macon","location":"Macon,
+        Georgia, United States","latitude":"32.894000","longitude":"-83.743000","visitLocalTime":"22:00:38","visitLocalHour":"22","daysSinceLastVisit":14,"secondsSinceLastVisit":"1209600","resolution":"unknown","plugins":"","pluginsIcons":null,"dimension1":null,"experiments":[],"adClickId":"","adProviderId":"","adProviderName":"","customVariables":[],"formConversions":0,"sessionReplayUrl":null,"campaignId":"","campaignContent":"","campaignKeyword":"","campaignMedium":"","campaignName":"","campaignSource":"","campaignGroup":"","campaignPlacement":""}]'
+  recorded_at: Wed, 05 Oct 2022 10:31:45 GMT
+recorded_with: VCR 6.1.0

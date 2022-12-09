@@ -44,9 +44,9 @@ const Container = styled.div`
     pointer-events: auto;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     top: 0px;
-    border-bottom: solid 1px ${lighten(0.4, colors.label)};
+    border-bottom: solid 1px ${lighten(0.4, colors.textSecondary)};
   `}
 `;
 
@@ -65,7 +65,7 @@ const InnerContainer = styled.div`
     }
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
   `}
 `;
@@ -75,7 +75,7 @@ const Left = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -87,7 +87,7 @@ const Right = styled.div`
   align-items: center;
   margin-left: 15px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex: 1 1 auto;
     width: 100%;
     flex-direction: column;
@@ -133,7 +133,7 @@ const StyledIdeaButton = styled(IdeaButton)`
 `;
 
 const ProjectTitle = styled.h1`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props: any) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxl - 2}px;
   line-height: normal;
   font-weight: 500;
@@ -160,7 +160,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+  const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
 
   const portalElement = document?.getElementById('topbar-portal');
 

@@ -9,9 +9,17 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.fieldTitle',
     defaultMessage: 'Status Name',
   },
+  fieldTitleError: {
+    id: 'app.containers.admin.ideaStatuses.form.fieldTitleError',
+    defaultMessage: 'Provide a status name for all lanugages',
+  },
   fieldDescription: {
     id: 'app.containers.admin.ideaStatuses.form.fieldDescription',
     defaultMessage: 'Status Description',
+  },
+  fieldDescriptionError: {
+    id: 'app.containers.admin.ideaStatuses.form.fieldDescriptionError',
+    defaultMessage: 'Provide a status description for all lanugages',
   },
   fieldColor: {
     id: 'app.containers.admin.ideaStatuses.form.fieldColor',
@@ -77,5 +85,9 @@ export default defineMessages({
   rejectedFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription',
     defaultMessage: 'Ineligible or not selected to move forward',
+  },
+  saveStatus: {
+    id: 'app.containers.admin.ideaStatuses.form.saveStatus',
+    defaultMessage: 'Save status',
   },
 });

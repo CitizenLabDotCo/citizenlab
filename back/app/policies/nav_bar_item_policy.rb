@@ -27,17 +27,31 @@ class NavBarItemPolicy < ApplicationPolicy
     user&.active? && user&.admin?
   end
 
-  def toggle_proposals?
+  def create?
     user&.active? && user&.admin?
   end
 
-  def toggle_events?
+  def update?
     user&.active? && user&.admin?
   end
 
-  def toggle_all_input?
-    user&.active? && user&.admin?
+  def reorder?
+    update?
+  end
+
+  def destroy?
+    update?
+  end
+
+  def permitted_attributes_for_create
+    [:code, :static_page_id, { title_multiloc: CL2_SUPPORTED_LOCALES }]
+  end
+
+  def permitted_attributes_for_update
+    [title_multiloc: CL2_SUPPORTED_LOCALES]
+  end
+
+  def permitted_attributes_for_reorder
+    %i[ordering]
   end
 end
-
-NavBarItemPolicy.include_if_ee 'CustomizableNavbar::Extensions::NavBarItemPolicy'

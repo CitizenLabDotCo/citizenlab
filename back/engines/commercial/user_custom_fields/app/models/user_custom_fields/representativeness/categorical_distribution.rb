@@ -57,7 +57,7 @@ module UserCustomFields
       end
 
       def compute_rscore(users)
-        user_counts = FieldValueCounter.counts_by_field_option(users, custom_field, by_option_id: true)
+        user_counts = FieldValueCounter.counts_by_field_option(users, custom_field, by: :option_id)
         score_value = RScore.compute_scores(user_counts, distribution)[:min_max_p_ratio]
         RScore.new(score_value, user_counts, self)
       end

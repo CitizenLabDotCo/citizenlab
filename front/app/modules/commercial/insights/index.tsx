@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import NavItem from './admin/components/NavItem';
+const NavItem = React.lazy(() => import('./admin/components/NavItem'));
 
 const AdminInsightsContainerComponent = React.lazy(
   () => import('./admin/containers')
@@ -23,6 +23,13 @@ const AdminInsightsViewEditComponent = React.lazy(
 const AdminInsightsViewDetectComponent = React.lazy(
   () => import('./admin/containers/Insights/Detect')
 );
+
+declare module 'components/UI/Error' {
+  interface TFieldNameMap {
+    view_name: 'view_name';
+    category_name: 'category_name';
+  }
+}
 
 const configuration: ModuleConfiguration = {
   routes: {

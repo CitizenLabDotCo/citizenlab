@@ -1,12 +1,18 @@
-// This button is temporarily commented out
-// https://citizenlab.atlassian.net/browse/CL-528
-// import { defineMessages } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
-// If you uncomment this, the string needs to be translated again (in German only)
+export default defineMessages({
+  signInWithStandardPortal: {
+    id: 'app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal',
+    defaultMessage: 'Sign in with StandardPortal',
+  },
 
-// export default defineMessages({
-//   continueWithStandardPortal: {
-//     id: 'app.modules.commercial.id_vienna_saml.components.continueWithStandardPortal',
-//     defaultMessage: 'Continue with StandardPortal',
-//   },
-// });
+  signUpWithStandardPortal: {
+    id: 'app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal',
+    defaultMessage: 'Sign up with StandardPortal',
+  },
+  signUpWithStandardPortalSubHeader: {
+    id: 'app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader',
+    defaultMessage:
+      'Create a Stadt Wien Account now and use one login for many digital services of Vienna.',
+  },
+});

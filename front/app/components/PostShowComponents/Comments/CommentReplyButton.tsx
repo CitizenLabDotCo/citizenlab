@@ -8,8 +8,8 @@ import messages from './messages';
 
 // events
 import { commentReplyButtonClicked } from './events';
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -35,7 +35,7 @@ const Container = styled.li`
 `;
 
 const ReplyButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;

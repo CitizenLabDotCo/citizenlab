@@ -46,7 +46,13 @@ class IdeaCustomFieldsService
 
   attr_reader :custom_form
 
+  def native_survey?
+    !!custom_form&.participation_context&.native_survey?
+  end
+
   def default_fields
+    return [] if native_survey?
+
     ml_s = MultilocService.new
     [
       CustomField.new(

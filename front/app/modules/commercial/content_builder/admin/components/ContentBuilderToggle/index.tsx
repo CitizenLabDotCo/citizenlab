@@ -27,7 +27,7 @@ import {
 // Messages
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // Helpers
 import { isNil, isNilOrError } from 'utils/helperUtils';
@@ -39,7 +39,7 @@ type ContentBuilderToggleProps = {
   labelTooltipText: string;
   onMount: () => void;
 } & WithRouterProps &
-  InjectedIntlProps;
+  WrappedComponentProps;
 
 const StyledToggle = styled(Toggle)`
   margin-bottom: 30px;

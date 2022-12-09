@@ -23,7 +23,7 @@ type AppConfigSettingProps = {
 export default function useFeatureFlag({
   name,
   onlyCheckAllowed = false,
-}: Parameters) {
+}: Parameters): boolean {
   const [tenantSettings, setTenantSettings] = useState<
     | IAppConfiguration['data']['attributes']['settings']
     | undefined

@@ -6,13 +6,15 @@ import {
   scopeEndsWith,
 } from '@jsonforms/core';
 import React from 'react';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
 import ErrorDisplay from '../ErrorDisplay';
 import UserSelect from 'components/UI/UserSelect';
 import messages from '../../messages';
+import controlMessages from './messages';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
 const UserPickerControl = ({
   data,
@@ -24,12 +26,30 @@ const UserPickerControl = ({
   id,
   schema,
   required,
-}: ControlProps & InjectedIntlProps) => {
+}: ControlProps & WrappedComponentProps) => {
+  const FieldLabel = () => {
+    return (
+      <Box display="flex">
+        {getLabel(uischema, schema, path)}
+        {uischema?.options?.isAdminField && (
+          <IconTooltip
+            iconColor={colors.grey800}
+            marginLeft="4px"
+            icon="shield-checkered"
+            content={
+              <FormattedMessage {...controlMessages.adminFieldTooltip} />
+            }
+          />
+        )}
+      </Box>
+    );
+  };
+
   return (
     <>
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
-        labelValue={getLabel(uischema, schema, path)}
+        labelValue={<FieldLabel />}
         optional={!required}
         subtextValue={uischema.options?.description}
         subtextSupportsHtml

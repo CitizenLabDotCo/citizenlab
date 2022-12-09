@@ -25,13 +25,13 @@ const SentCampaignRow = ({ campaign }: Props) => (
     </div>
     <StatusLabel
       minWidth="94px"
-      backgroundColor={colors.clGreenSuccess}
+      backgroundColor={colors.success}
       text={<FormattedMessage {...messages.sent} />}
     />
     <Box minWidth="220px" display="flex" justifyContent="flex-end">
       <Button
         linkTo={`/admin/messaging/emails/custom/${campaign.id}`}
-        icon="charts"
+        icon="chart-bar"
         buttonStyle="text"
       >
         <FormattedMessage {...messages.statsButton} />
