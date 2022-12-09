@@ -105,7 +105,7 @@ jobs:
   back-lint:
     resource_class: medium
     executor:
-      name: back-essential
+      name: back-ee
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
