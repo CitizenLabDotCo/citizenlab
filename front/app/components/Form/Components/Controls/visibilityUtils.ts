@@ -105,7 +105,7 @@ const evalVisibility = (
     return true;
   }
 
-  const fulfilledRule = uischema.ruleArray.find((currentRule) => {
+  const fulfilledRule = uischema.ruleArray.every((currentRule) => {
     const fulfilled = isRuleFulfilled(currentRule.condition, data, path, ajv);
 
     if (currentRule.effect === RuleEffect.HIDE) {
@@ -116,7 +116,7 @@ const evalVisibility = (
     return false;
   });
 
-  return !!fulfilledRule;
+  return fulfilledRule;
 };
 
 export const isVisible = (
