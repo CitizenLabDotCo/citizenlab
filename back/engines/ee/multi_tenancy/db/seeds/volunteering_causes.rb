@@ -24,9 +24,11 @@ module MultiTenancy
           participation_method: 'volunteering',
           admin_publication_attributes: {
             publication_status: 'published'
-          },
-          image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
+          }
         )
+
+        ProjectImage.create({ project: volunteering_project,
+          image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open })
 
         Volunteering::Cause.create!([
           {
