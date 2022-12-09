@@ -98,17 +98,23 @@ commands:
     steps:
       - checkout:
           path: ~/citizenlab-ee
-
+      - copy_secrets_from_lastpass
       - add_ssh_keys:
           fingerprints:
             - "94:9a:7c:8d:50:73:cc:28:06:47:d7:98:91:0b:00:ff"
       - run: |
           git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> ~/citizenlab
-
       - run: |
-          cd citizenlab-ee &&                                \
-          cp citizenlab.config.ee.json ../citizenlab/ &&     \
-          cp -r back/engines/ee ../citizenlab/back/engines/
+          cd citizenlab-ee && sh scripts/enable_ee.sh
+
+  copy_secrets_from_lastpass:
+    steps:
+      - checkout:
+          path: ~/citizenlab-ee
+      - run: apt-get install -y lastpass-cli
+      - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
+      - run: lpass show --notes 'citizenlab .env-back-secret' > citizenlab-ee/.env-back-secret
+      - run: lpass show --notes 'citizenlab .env-front-secret' > citizenlab-ee/.env-front-secret
 
   pending_citizenlab_github_status:
     steps:
@@ -559,7 +565,9 @@ workflows:
         - << pipeline.parameters.back >>
     jobs:
       - back-build-ee-docker-image:
-          context: docker-hub-access
+          context:
+            - docker-hub-access
+            - lastpass
       - back-lint:
           context: docker-hub-access
           requires:
@@ -671,7 +679,8 @@ workflows:
         - not: <<pipeline.parameters.run_deploy>>
         - << pipeline.parameters.front >>
     jobs:
-      - front-test
+      - front-test:
+          context: lastpass
       - front-trigger-deploy:
           context: circleci-api-token
           requires:
@@ -688,11 +697,13 @@ workflows:
         - <<pipeline.parameters.front>>
     jobs:
       - front-deploy-staging:
+          context: lastpass
           filters:
             branches:
               only:
                 - master
       - front-deploy-production:
+          context: lastpass
           filters:
             branches:
               only:
@@ -710,6 +721,7 @@ workflows:
       - e2e-tests:
           context:
             - docker-hub-access
+            - lastpass
 
   nightly-e2e-tests:
     triggers:
@@ -724,6 +736,7 @@ workflows:
           context:
             - docker-hub-access
             - slack-dev-notifications-e2e
+            - lastpass
           post-steps:
             - slack/notify:
                 event: pass
