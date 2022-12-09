@@ -82,20 +82,22 @@ const CustomPagesEditContent = () => {
     {
       name: 'projects_enabled',
       titleMessage: formatMessage(sectionToggleMessages.projectsList),
-      tooltipMessage: formatMessage(
-        sectionToggleMessages.projectsListTooltip2,
-        {
-          linkToPageSettings: (
-            <StyledLink to={adminCustomPageSettingsPath(customPageId)}>
-              {formatMessage(sectionToggleMessages.linkToPageSettingsText)}
-            </StyledLink>
-          ),
-          linkToProjectsPreview: (
-            <StyledLink to={adminCustomPageProjectsPath(customPageId)}>
-              {formatMessage(sectionToggleMessages.linkToProjectsPreviewText)}
-            </StyledLink>
-          ),
-        }
+      tooltipMessage: (
+        <FormattedMessage
+          {...sectionToggleMessages.projectsListTooltip2}
+          values={{
+            linkToPageSettings: (
+              <StyledLink to={adminCustomPageSettingsPath(customPageId)}>
+                {formatMessage(sectionToggleMessages.linkToPageSettingsText)}
+              </StyledLink>
+            ),
+            linkToProjectsPreview: (
+              <StyledLink to={adminCustomPageProjectsPath(customPageId)}>
+                {formatMessage(sectionToggleMessages.linkToProjectsPreviewText)}
+              </StyledLink>
+            ),
+          }}
+        />
       ),
       hideSection: hideProjects,
       linkToPath: 'projects',

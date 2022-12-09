@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
 import messages from './messages';
 import { IHomepageSectionToggleData } from 'containers/Admin/pagesAndMenu/containers/EditHomepage';
+import { useIntl } from 'utils/cl-intl';
 
 export interface Props {
   onData: (
@@ -10,13 +11,16 @@ export interface Props {
 }
 
 const SectionToggle = ({ onData }: Props) => {
+  const { formatMessage } = useIntl();
   useEffect(
     () =>
       onData({
         configuration: {
           name: 'events_widget_enabled',
-          titleMessageDescriptor: messages.eventsWidgetSetting,
-          tooltipMessageDescriptor: messages.eventsWidgetSettingDescription,
+          titleMessage: formatMessage(messages.eventsWidgetSetting),
+          tooltipMessage: formatMessage(
+            messages.eventsWidgetSettingDescription
+          ),
         },
         insertBeforeName: 'bottom_info_section_enabled',
       }),

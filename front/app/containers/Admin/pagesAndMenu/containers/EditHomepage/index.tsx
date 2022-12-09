@@ -11,8 +11,7 @@ import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 // i18n
 import messages from './messages';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // services, hooks, resources, and types
 import Outlet from 'components/Outlet';
@@ -33,28 +32,33 @@ export interface IHomepageSectionToggleData extends ISectionToggleData {
   name: THomepageEnabledSetting | 'homepage_banner';
 }
 
-const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const EditHomepage = () => {
+  const { formatMessage } = useIntl();
   const homepageSettings = useHomepageSettings();
   const [sectionTogglesData, setSectionTogglesData] = useState<
     IHomepageSectionToggleData[]
   >([
     {
       name: 'homepage_banner',
-      titleMessageDescriptor: sectionToggleMessages.heroBanner,
-      tooltipMessageDescriptor: sectionToggleMessages.heroBannerTooltip,
+      titleMessage: formatMessage(sectionToggleMessages.heroBanner),
+      tooltipMessage: formatMessage(sectionToggleMessages.heroBannerTooltip),
       linkToPath: 'homepage-banner',
       hideToggle: true,
     },
     {
       name: 'top_info_section_enabled',
-      titleMessageDescriptor: sectionToggleMessages.topInfoSection,
-      tooltipMessageDescriptor: sectionToggleMessages.topInfoSectionTooltip,
+      titleMessage: formatMessage(sectionToggleMessages.topInfoSection),
+      tooltipMessage: formatMessage(
+        sectionToggleMessages.topInfoSectionTooltip
+      ),
       linkToPath: 'top-info-section',
     },
     {
       name: 'bottom_info_section_enabled',
-      titleMessageDescriptor: sectionToggleMessages.bottomInfoSection,
-      tooltipMessageDescriptor: sectionToggleMessages.bottomInfoSectionTooltip,
+      titleMessage: formatMessage(sectionToggleMessages.bottomInfoSection),
+      tooltipMessage: formatMessage(
+        sectionToggleMessages.bottomInfoSectionTooltip
+      ),
       linkToPath: 'bottom-info-section',
     },
   ]);
@@ -144,4 +148,4 @@ const EditHomepage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   );
 };
 
-export default injectIntl(EditHomepage);
+export default EditHomepage;

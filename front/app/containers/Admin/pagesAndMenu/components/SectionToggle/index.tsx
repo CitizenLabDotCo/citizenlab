@@ -15,7 +15,7 @@ import { ICustomPageSectionToggleData } from '../../containers/CustomPages/Edit/
 
 export interface ISectionToggleData {
   titleMessage: string;
-  tooltipMessage: string;
+  tooltipMessage: string | JSX.Element;
   linkToPath?: string;
   hideToggle?: boolean;
 }
