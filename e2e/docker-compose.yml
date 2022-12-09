@@ -42,7 +42,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - "../.env-front"
+      - "../.env-front-safe"
     environment:
       API_HOST: e2e-web
     command: npm start
