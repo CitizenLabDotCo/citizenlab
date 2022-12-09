@@ -180,6 +180,11 @@ AnalyticsChartWidget.craft = {
   related: {
     settings: AnalyticsChartWidgetSettings,
   },
+  custom: {
+    // TODO: Make this title change dynamically based on the chart type
+    title: messages.analyticsChart,
+    noPointerEvents: true,
+  },
 };
 
 export default AnalyticsChartWidget;
