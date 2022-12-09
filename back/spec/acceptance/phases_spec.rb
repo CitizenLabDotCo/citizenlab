@@ -171,10 +171,12 @@ resource 'Phases' do
           phase_in_db = Phase.find(phase_id)
 
           # A new native survey phase has a default form.
-          expect(phase_in_db.custom_form.custom_fields.size).to eq 2
-          field1 = phase_in_db.custom_form.custom_fields[0]
+          fields = phase_in_db.custom_form.custom_fields
+          expect(fields.map(&:ordering)).to eq([0, 1])
+          expect(fields.size).to eq 2
+          field1 = fields[0]
           expect(field1.input_type).to eq 'page'
-          field2 = phase_in_db.custom_form.custom_fields[1]
+          field2 = fields[1]
           expect(field2.input_type).to eq 'select'
           expect(field2.title_multiloc).to match({
             'en' => an_instance_of(String),
