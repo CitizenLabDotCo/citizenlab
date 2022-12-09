@@ -33,6 +33,24 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
 
+  back-ee:
+    parameters:
+      image-tag:
+        type: string
+    docker:
+      - image: citizenlabdotco/back-ee:<< parameters.image-tag >>
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+      - image: 'postgis/postgis:12-3.1'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+
 commands:
   wait-for-postgres:
     steps:
