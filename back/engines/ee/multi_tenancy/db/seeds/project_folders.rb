@@ -18,8 +18,10 @@ module MultiTenancy
             }
           )
 
-          ::ProjectFolders::Image.create!({ project_folder_id: folder.id,
-            image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open })
+          unless rand(25) == 0
+            ::ProjectFolders::Image.create!({ project_folder_id: folder.id,
+              image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open })
+          end
 
           rand(1..3).times do
             folder.files.create!(runner.generate_file_attributes)
