@@ -160,7 +160,17 @@ resource 'Phases' do
       end
 
       context 'native survey' do
-        let(:phase) { build(:native_survey_phase) }
+        let(:phase) do
+          survey_phase = build(:native_survey_phase)
+          # When building a native survey phase,
+          # ParticipationMethod::NativeSurvey#create_default_form! is invoked.
+          # create_default_form! does not reload associations for form/fields/options,
+          # so fetch the phase from the database. The associations will be fetched
+          # when they are needed.
+          # Not doing this makes this test flaky, as create_default_form! creates fields
+          # and CustomField uses acts_as_list for ordering fields. The ordering is ok
+          # in the database, but not necessarily in memory.
+        end
         let(:min_budget) { nil }
         let(:max_budget) { nil }
 
@@ -175,6 +185,7 @@ resource 'Phases' do
           field1 = phase_in_db.custom_form.custom_fields[0]
           expect(field1.input_type).to eq 'page'
           field2 = phase_in_db.custom_form.custom_fields[1]
+          expect(field2.input_type).to eq 'select'
           expect(field2.title_multiloc).to match({
             'en' => an_instance_of(String),
             'fr-FR' => an_instance_of(String),
