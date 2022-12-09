@@ -18,7 +18,7 @@ module MultiTenancy
             'nl-BE' => 'Alle beetjes helpen',
             'fr-BE' => 'Chaque petit geste compte'
           },
-          header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+          header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
           process_type: 'continuous',
           areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
           participation_method: 'volunteering',
