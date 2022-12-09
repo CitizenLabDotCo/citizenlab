@@ -15,7 +15,7 @@ parameters:
     default: false
 
 executors:
-  cl2-back:
+  cl2-back: # TODO rename to  or back-essential or back-os (avoid citizenlab name)
     parameters:
       image-tag:
         type: string
@@ -56,15 +56,6 @@ jobs:
       - run:
           name: Trigger workflows
           command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
-
-  trigger-private-workflows:
-    resource_class: small
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run: |
-          chmod +x .circleci/private-trigger.sh && .circleci/private-trigger.sh << pipeline.parameters.back >> << pipeline.parameters.front >>
 
   danger-check:
     resource_class: small
@@ -345,20 +336,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
 
-  private-ci:
-    when:
-      and:
-        - not: << pipeline.parameters.trigger >>
-        - or: [<< pipeline.parameters.back >>, << pipeline.parameters.front >>]
-    jobs:
-      - trigger-private-workflows:
-          context: circleci-api-token
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-
   global-checks:
     when: << pipeline.parameters.trigger >>
     jobs:
@@ -473,7 +450,6 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
-
 
   # *************** release ***************
 
