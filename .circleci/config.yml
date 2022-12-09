@@ -128,7 +128,7 @@ jobs:
       # See https://github.com/rubysec/bundler-audit
       - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
 
-  back-test:
+  back-essential-test:
     resource_class: small
     executor:
       name: back-essential
@@ -395,7 +395,7 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-test:
+      - back-essential-test:
           context: docker-hub-access
           requires:
             - back-build-essential-docker-image
@@ -416,7 +416,7 @@ workflows:
       - back-web-api-docs:
           context: docker-hub-access
           requires:
-            - back-test
+            - back-essential-test
           filters:
             branches:
               ignore:
@@ -521,7 +521,7 @@ workflows:
             branches:
               only:
                 - production
-      - back-test:
+      - back-essential-test:
           context: docker-hub-access
           requires:
             - back-build-essential-docker-image
@@ -546,7 +546,7 @@ workflows:
             - front-detect-deadcode
             - front-lint
             - back-lint
-            - back-test
+            - back-essential-test
             - back-bundle-audit
             - back-license-check
           filters:
@@ -562,7 +562,7 @@ workflows:
             - front-detect-deadcode
             - front-lint
             - back-lint
-            - back-test
+            - back-essential-test
             - back-bundle-audit
             - back-license-check
           filters:
