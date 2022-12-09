@@ -17,7 +17,7 @@ module MultiTenancy
             created_at: created_at,
             location_point: rand(3) == 0 ? nil : "POINT(#{runner.map_center[1] + (((rand * 2) - 1) * runner.map_offset)} #{runner.map_center[0] + (((rand * 2) - 1) * runner.map_offset)})",
             location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
-            header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+            header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
             topics: Array.new(rand(3)) { rand(Topic.count) }.uniq.map { |offset| Topic.offset(offset).first },
             areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
             assignee: rand(5) == 0 ? User.admin.sample : nil
