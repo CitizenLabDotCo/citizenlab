@@ -15,7 +15,7 @@ parameters:
     default: false
 
 executors:
-  cl2-back: # TODO rename to  or back-essential or back-os (avoid citizenlab name)
+  back-essential:
     parameters:
       image-tag:
         type: string
@@ -87,7 +87,7 @@ jobs:
   back-lint:
     resource_class: medium
     executor:
-      name: cl2-back
+      name: back-essential
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
@@ -98,7 +98,7 @@ jobs:
   back-bundle-audit:
     resource_class: small
     executor:
-      name: cl2-back
+      name: back-essential
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
@@ -113,7 +113,7 @@ jobs:
   back-test:
     resource_class: small
     executor:
-      name: cl2-back
+      name: back-essential
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     parallelism: 4
@@ -135,7 +135,7 @@ jobs:
   back-license-check:
     resource_class: small
     executor:
-      name: cl2-back
+      name: back-essential
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     steps:
@@ -144,7 +144,7 @@ jobs:
   back-web-api-docs:
     resource_class: small
     executor:
-      name: cl2-back
+      name: back-essential
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
