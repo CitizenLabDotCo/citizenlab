@@ -9,14 +9,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import { IHomepageSectionToggleData } from '../../containers/EditHomepage';
 import { ICustomPageSectionToggleData } from '../../containers/CustomPages/Edit/Content';
 
 export interface ISectionToggleData {
-  titleMessageDescriptor: MessageDescriptor;
-  tooltipMessageDescriptor: MessageDescriptor;
+  titleMessage: string;
+  tooltipMessage: string;
   linkToPath?: string;
   hideToggle?: boolean;
 }
@@ -35,8 +34,8 @@ const SectionToggle = ({
   checked,
   isLastItem,
   sectionToggleData: {
-    titleMessageDescriptor,
-    tooltipMessageDescriptor,
+    titleMessage,
+    tooltipMessage,
     name,
     linkToPath,
     hideToggle = false,
@@ -60,14 +59,10 @@ const SectionToggle = ({
           <Toggle checked={checked} onChange={onChangeSectionToggle} />
         </Box>
         <Box>
-          <Title mr="10px">
-            <FormattedMessage {...titleMessageDescriptor} />
-          </Title>
+          <Title mr="10px">{titleMessage}</Title>
         </Box>
         <Box>
-          <IconTooltip
-            content={<FormattedMessage {...tooltipMessageDescriptor} />}
-          />
+          <IconTooltip theme="light" content={<>{tooltipMessage}</>} />
         </Box>
       </Box>
       {linkToPath && onClickEditButton && (

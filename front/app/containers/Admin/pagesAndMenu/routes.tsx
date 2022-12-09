@@ -56,6 +56,10 @@ export const adminCustomPageSettingsPath = (pageId: string) => {
   return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/settings`;
 };
 
+export const adminCustomPageProjectsPath = (pageId: string) => {
+  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/projects`;
+};
+
 export default () => ({
   path: 'pages-menu', // pages-menu
   children: [

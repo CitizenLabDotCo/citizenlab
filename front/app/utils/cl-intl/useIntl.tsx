@@ -16,7 +16,9 @@ const useIntl = () => {
   const formatMessageReplacement = useCallback(
     (
       messageDescriptor: MessageDescriptor,
-      values?: { [key: string]: string | number | boolean | Date } | undefined
+      values?:
+        | { [key: string]: string | number | boolean | Date | JSX.Element }
+        | undefined
     ) => {
       return intl.formatMessage(messageDescriptor, {
         tenantName: !isNilOrError(appConfig)
