@@ -167,21 +167,20 @@ const FormFields = ({
                     ml={field.input_type === 'page' ? '8px' : '32px'}
                   >
                     <Box display="flex" alignItems="center">
-                      <Box flexGrow={0} flexShrink={0}>
-                        <Icon
-                          ml="28px"
-                          width="12px"
-                          fill={
-                            isFieldSelected(selectedFieldId, field.id) &&
-                            field.input_type === 'page'
-                              ? 'white'
-                              : theme.colors.tenantPrimary
-                          }
-                          name="sort"
-                        />
-                      </Box>
                       <Box m="0px" display="block">
                         <Box>
+                          <Icon
+                            ml="28px"
+                            mb="4px"
+                            width="12px"
+                            fill={
+                              isFieldSelected(selectedFieldId, field.id) &&
+                              field.input_type === 'page'
+                                ? 'white'
+                                : theme.colors.tenantPrimary
+                            }
+                            name="sort"
+                          />
                           <Text
                             as="span"
                             color={getIndexTitleColor(selectedFieldId, field)}

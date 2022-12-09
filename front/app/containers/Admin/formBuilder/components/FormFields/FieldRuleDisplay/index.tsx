@@ -13,7 +13,7 @@ export const FieldRuleDisplay = ({
   targetPage,
 }: FieldRuleDisplayProps) => {
   return (
-    <Box display="flex" ml="12px" height="24px">
+    <Box display="flex" ml="52px" height="24px">
       <Icon fill={colors.coolGrey500} width="18px" name="logic" my="auto" />
       <Text my="auto" pl="8px" pr="4px" color="coolGrey600" fontSize="s">
         {answerTitle}
