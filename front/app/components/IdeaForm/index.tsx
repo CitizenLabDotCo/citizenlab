@@ -768,11 +768,16 @@ class IdeaForm extends PureComponent<
         topicsEnabled && allowedTopics && allowedTopics.length > 0;
       const showLocation = locationEnabled;
       const showProposedBudget = proposedBudgetEnabled;
-      const inputTerm = getInputTerm(
-        project.attributes.process_type,
-        project,
-        phases
-      );
+
+      const uiSchemaOptions =
+        ideaCustomFieldsSchemas?.ui_schema_multiloc[locale]?.options;
+
+      const inputTerm = () => {
+        if (!isNilOrError(uiSchemaOptions) && uiSchemaOptions['inputTerm']) {
+          return uiSchemaOptions['inputTerm'];
+        }
+        return getInputTerm(project.attributes.process_type, project, phases);
+      };
 
       const AdminBudgetFieldLabel = () => {
         return (
@@ -794,11 +799,13 @@ class IdeaForm extends PureComponent<
         );
       };
 
+      console.log({ ideaCustomFieldsSchemas });
+
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
             <FormSectionTitle
-              message={getInputTermMessage(inputTerm, {
+              message={getInputTermMessage(inputTerm(), {
                 idea: messages.formGeneralSectionTitle,
                 option: messages.optionFormGeneralSectionTitle,
                 project: messages.projectFormGeneralSectionTitle,
