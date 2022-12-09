@@ -1,6 +1,8 @@
 # Changelog
 
-## Next
+### Fixed
+
+- [CL-1969] Fixed bug where idea form input term not matching back office configuration
 
 ## 2022-12-07
 
