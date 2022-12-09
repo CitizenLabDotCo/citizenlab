@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from 'utils/testUtils/rtl';
 import AdminTag from './AdminTag';
 
 jest.mock('utils/cl-router/Link');
