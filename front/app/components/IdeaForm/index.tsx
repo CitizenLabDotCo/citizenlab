@@ -799,8 +799,6 @@ class IdeaForm extends PureComponent<
         );
       };
 
-      console.log({ ideaCustomFieldsSchemas });
-
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
