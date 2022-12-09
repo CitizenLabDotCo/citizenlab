@@ -825,7 +825,6 @@
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Pravila platforme",
   "app.containers.AdminPage.PagesEdition.privacy-policy": "Politika privatnosti",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Uslovi korišćenja",
-  "app.containers.AdminPage.PagesEdition.titleLabel": "Naslov stranice",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Popis projekata na ovoj platformi",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Nadzorna ploča s projektima",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Kreirajte novi projekt ili upravljajte postojećima.",

@@ -267,8 +267,6 @@
   "app.components.PageNotFound.goBackToHomePage": "Voltar para a página inicial",
   "app.components.PageNotFound.notFoundTitle": "Página não encontrada",
   "app.components.PageNotFound.pageNotFoundDescription": "A página solicitada não pôde ser encontrada.",
-  "app.components.PagesForm.blankSlugError": "Fornecer uma palavra",
-  "app.components.PagesForm.brokenURLWarning": "Se você mudar o URL, os links para esta página usando o antigo URL não funcionarão mais.",
   "app.components.PagesForm.descriptionMissingOneLanguageError": "Por favor, forneça o conteúdo pelo menos em um idioma",
   "app.components.PagesForm.editContent": "Conteúdo",
   "app.components.PagesForm.fileUploadLabel": "Anexos (max. 50MB)",
