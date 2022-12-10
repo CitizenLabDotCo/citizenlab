@@ -27,7 +27,6 @@ const ConsentText = styled.div`
   color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
-  font-weight: ${(props) => props.fontWeight};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

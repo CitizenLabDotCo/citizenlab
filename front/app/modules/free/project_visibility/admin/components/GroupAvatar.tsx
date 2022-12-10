@@ -22,7 +22,7 @@ const AvatarWrapper = styled.div`
   display: flex;
 `;
 
-const GroupAvatarWrapper: any = styled.div`
+const GroupAvatarWrapper = styled.div<{ count: number }>`
   width: 65px;
   height: 3em;
   display: flex;
@@ -132,6 +132,6 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
       );
     }
 
-    return <GroupAvatarWrapper />;
+    return null;
   }
 }

@@ -283,7 +283,7 @@ const ProgressBar = styled.div`
   background: #d6dade;
 `;
 
-const ProgressBarOverlay: any = styled.div`
+const ProgressBarOverlay = styled.div<{ progress: number }>`
   width: 0px;
   height: 100%;
   border-radius: ${(props) => props.theme.borderRadius};
@@ -572,24 +572,25 @@ const ProjectCard = memo<Props>(
             ? round((pastDays / totalDays) * 100, 1)
             : null;
 
-        countdown = (
-          <Countdown className="e2e-project-card-time-remaining">
-            <TimeRemaining className={size}>
-              <FormattedMessage
-                {...messages.remaining}
-                values={{ timeRemaining }}
-              />
-            </TimeRemaining>
-            <Observer onChange={handleIntersection}>
-              <ProgressBar aria-hidden>
-                <ProgressBarOverlay
-                  progress={progress}
-                  className={visible ? 'visible' : ''}
+        countdown =
+          typeof progress === 'number' ? (
+            <Countdown className="e2e-project-card-time-remaining">
+              <TimeRemaining className={size}>
+                <FormattedMessage
+                  {...messages.remaining}
+                  values={{ timeRemaining }}
                 />
-              </ProgressBar>
-            </Observer>
-          </Countdown>
-        );
+              </TimeRemaining>
+              <Observer onChange={handleIntersection}>
+                <ProgressBar aria-hidden>
+                  <ProgressBarOverlay
+                    progress={progress}
+                    className={visible ? 'visible' : ''}
+                  />
+                </ProgressBar>
+              </Observer>
+            </Countdown>
+          ) : null;
       }
 
       if (participationMethod === 'budgeting') {

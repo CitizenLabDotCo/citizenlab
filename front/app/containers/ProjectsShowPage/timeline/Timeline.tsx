@@ -172,7 +172,11 @@ const currentSelectedPhaseBar = css`
   }
 `;
 
-const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
+const PhaseContainer = styled.div<{
+  width: number;
+  breakpoint: number;
+  last: boolean;
+}>`
   width: ${(props) => props.width}%;
   min-width: ${MIN_PHASE_WIDTH_PX}px;
   display: flex;
@@ -326,6 +330,7 @@ const Timeline = ({
                     key={phaseIndex}
                     width={width}
                     breakpoint={phasesBreakpoint}
+                    last={isLast}
                   >
                     <PhaseBar
                       onMouseDown={removeFocusAfterMouseClick}

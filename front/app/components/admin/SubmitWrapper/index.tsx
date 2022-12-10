@@ -23,7 +23,7 @@ export type ISubmitState =
   | 'customError'
   | 'success';
 
-const Wrapper: any = styled.div`
+const Wrapper = styled.div<{ fullWidth: boolean }>`
   display: flex;
   align-items: center;
 

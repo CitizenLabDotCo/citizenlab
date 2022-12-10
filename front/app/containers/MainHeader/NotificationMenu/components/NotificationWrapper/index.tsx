@@ -48,7 +48,7 @@ const IconContainer = styled.div`
   margin-right: 15px;
 `;
 
-const StyledIcon: any = styled(Icon)`
+const StyledIcon = styled(Icon)<{ isRead: boolean }>`
   flex: 0 0 24px;
   fill: ${colors.textSecondary};
   opacity: ${(props) => (props.isRead ? '0.4' : '1')};

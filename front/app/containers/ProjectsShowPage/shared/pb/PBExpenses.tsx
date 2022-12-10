@@ -147,7 +147,7 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   `}
 `;
 
-const ProgressBarOverlay: any = styled.div`
+const ProgressBarOverlay = styled.div<{ progress: number }>`
   width: ${(props) => props.progress}%;
   height: 100%;
   background: ${colors.textSecondary};
