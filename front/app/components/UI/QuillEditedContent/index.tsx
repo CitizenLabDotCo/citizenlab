@@ -3,7 +3,7 @@ import styled, { withTheme } from 'styled-components';
 import { quillEditedContent } from 'utils/styleUtils';
 
 const Container: any = styled.div`
-  ${(props: any) =>
+  ${(props) =>
     quillEditedContent(
       props.theme.colors.tenantPrimary,
       props.linkColor,

@@ -39,7 +39,7 @@ const ToggleContainer: any = styled.div`
   display: flex;
   align-items: center;
 
-  ${(props: any) =>
+  ${(props) =>
     props.disabled &&
     css`
       opacity: 0.25;
@@ -50,7 +50,7 @@ const ToggleContainer: any = styled.div`
       }
     `};
 
-  ${(props: any) =>
+  ${(props) =>
     props.checked &&
     css`
       i {

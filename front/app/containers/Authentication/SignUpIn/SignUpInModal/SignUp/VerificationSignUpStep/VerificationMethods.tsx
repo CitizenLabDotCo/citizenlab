@@ -116,7 +116,7 @@ const ContextLabel = styled.div`
 `;
 
 const ContextItem = styled.span`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: normal;
   border-radius: ${(props) => props.theme.borderRadius};
@@ -146,7 +146,7 @@ const ButtonsContainer = styled.div`
   &.inModal {
     padding: 30px;
     background: ${colors.background};
-    border-radius: ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius};
 
     ${media.phone`
       padding: 15px;

@@ -30,7 +30,7 @@ const GroupAvatarWrapper: any = styled.div`
   justify-content: center;
   position: relative;
 
-  ${(props: any) =>
+  ${(props) =>
     props.count > 1
       ? css`
           ${AvatarWrapper} {

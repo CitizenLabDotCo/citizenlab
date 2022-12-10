@@ -13,7 +13,7 @@ import { IAppConfigurationData } from 'services/appConfiguration';
 const Container = styled.div`
   display: flex;
   padding: 20px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background-color: ${transparentize(0.95, colors.primary)};
   border: 1px solid ${colors.divider};
   margin-bottom: 10px;

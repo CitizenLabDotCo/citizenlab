@@ -33,7 +33,7 @@ const Topic = styled.div`
   margin-bottom: 5px;
   border: 1px solid
     ${({ theme }) => transparentize(0.7, theme.colors.tenantSecondary)};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   ${isRtl`
     margin-right: 0;

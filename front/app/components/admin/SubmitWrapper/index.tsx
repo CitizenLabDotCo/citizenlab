@@ -27,7 +27,7 @@ const Wrapper: any = styled.div`
   display: flex;
   align-items: center;
 
-  ${(props: any) =>
+  ${(props) =>
     props.fullWidth
       ? css`
           width: 100%;
