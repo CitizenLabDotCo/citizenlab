@@ -8,11 +8,11 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 export interface Props {
-  admin?: boolean;
+  admin: boolean;
 }
 
 // Centered spinner taking the navbar height (and admin sidebar) into account
-const FullPageContainer: any = styled.div`
+const FullPageContainer = styled.div<{ admin: boolean }>`
   position: fixed;
   top: ${(props) => props.theme.menuHeight}px;
   // 260px is the width of the admin sidebar

@@ -103,7 +103,7 @@ const UserSelect = ({
     );
   };
 
-  const getOptionLabel = (option: OptionTypeBase): any => {
+  const getOptionLabel = (option: OptionTypeBase) => {
     if (option.value === 'loadMore' && canLoadMore) {
       return (
         <Button
@@ -123,6 +123,8 @@ const UserSelect = ({
         </UserOption>
       );
     }
+
+    return null;
   };
 
   const handleClear = () => {
