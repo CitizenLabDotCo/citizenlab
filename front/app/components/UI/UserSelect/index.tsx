@@ -14,7 +14,7 @@ interface DataProps {
   users: GetUsersChildProps;
 }
 
-interface Props {
+interface InputProps {
   onChange: (id?: string) => void;
   value: string;
   placeholder?: string;
@@ -23,6 +23,8 @@ interface Props {
   id: string;
   inputId: string;
 }
+
+interface Props extends DataProps, InputProps {}
 
 export const AvatarImage = styled.img`
   flex: 0 0 30px;
@@ -88,7 +90,7 @@ const UserSelect = ({
     users.onLoadMore();
   };
 
-  const Avatar = ({ userId }) => {
+  const Avatar = ({ userId }: { userId: string }) => {
     const user = usersList.find((user) => user.id === userId);
     const avatarSrc =
       user?.attributes?.avatar?.medium || user?.attributes?.avatar?.small;
@@ -172,6 +174,8 @@ const Data = adopt<DataProps>({
   users: <GetUsers pageSize={5} sort="last_name" />,
 });
 
-export default (props) => (
-  <Data>{(dataProps) => <UserSelect {...dataProps} {...props} />}</Data>
+export default (props: InputProps) => (
+  <Data>
+    {(dataProps: DataProps) => <UserSelect {...dataProps} {...props} />}
+  </Data>
 );
