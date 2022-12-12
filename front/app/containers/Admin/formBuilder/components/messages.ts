@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.page',
     defaultMessage: 'Page',
   },
+  surveyEnd: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyEnd',
+    defaultMessage: 'Survey end',
+  },
   question: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.question',
     defaultMessage: 'Question',
@@ -64,6 +68,14 @@ export default defineMessages({
   delete: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.delete',
     defaultMessage: 'Delete',
+  },
+  logic: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.logic',
+    defaultMessage: 'Logic',
+  },
+  content: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.content',
+    defaultMessage: 'Content',
   },
   done: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.done',
@@ -179,5 +191,19 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount',
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
+  },
+  // Logic Settings
+  logicWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.logicWarning',
+    defaultMessage:
+      'If no logic is added to an answer, the survey will follow its normal flow.',
+  },
+  goToPageInputLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.goToPageInputLabel',
+    defaultMessage: 'Then next page is:',
+  },
+  ruleForAnswerLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.ruleForAnswerLabel',
+    defaultMessage: 'If answer is:',
   },
 });

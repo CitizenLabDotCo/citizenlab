@@ -7,6 +7,13 @@ import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSw
 import LinearScaleSettings from './LinearScaleSettings';
 import PageSettings from './PageSettings';
 
+// utils
+import { uuid4 } from '@sentry/utils';
+
+export function generateTempId() {
+  return `TEMP-ID-${uuid4()}`;
+}
+
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
   field: IFlatCustomFieldWithIndex,

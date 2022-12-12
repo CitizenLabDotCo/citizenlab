@@ -78,6 +78,7 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+
   const isEditingDisabled = totalSubmissions > 0;
 
   const schema = object().shape({
@@ -95,6 +96,8 @@ export const FormEdit = ({
         minimum_label_multiloc: object(),
         maximum_label_multiloc: object(),
         required: boolean(),
+        temp_id: string(),
+        logic: object(),
       })
     ),
   });
@@ -192,6 +195,13 @@ export const FormEdit = ({
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
+        ...(field.input_type === 'page' && {
+          temp_id: field.temp_id,
+        }),
+        ...((field.input_type === 'linear_scale' ||
+          field.input_type === 'select') && {
+          logic: field.logic,
+        }),
         required: field.required,
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
