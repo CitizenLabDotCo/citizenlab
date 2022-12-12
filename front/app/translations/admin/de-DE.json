@@ -1706,7 +1706,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.archived": "Archiviert",
   "app.modules.commercial.analytics.admin.components.ProjectStatus.draftProjects": "Projektentwürfe",
   "app.modules.commercial.analytics.admin.components.ProjectStatus.finished": "Beendet",
-  "app.modules.commercial.analytics.admin.components.ProjectStatus.finishedToolTip": "Alle archivierten und aktiven Projekte, die abgeschlossen sind, werden hier gezählt",
+  "app.modules.commercial.analytics.admin.components.ProjectStatus.finishedToolTip": "Alle archivierten und aktiven Projekte, die abgeschlossen sind",
   "app.modules.commercial.analytics.admin.components.ProjectStatus.projects": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjects": "Alle Projekte",
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Die Anzahl der Projekte, die auf der Plattform sichtbar sind",
