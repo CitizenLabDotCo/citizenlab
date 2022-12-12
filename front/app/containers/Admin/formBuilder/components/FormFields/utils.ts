@@ -1,10 +1,19 @@
+// services
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
 } from 'services/formCustomFields';
+
+// styling
 import { colors } from '@citizenlab/cl2-component-library';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// types
+import { Locale } from 'typings';
+import { surveyEndOption } from '../FormBuilderSettings/utils';
 
 export const isFieldSelected = (
   selectedFieldId: string | undefined,
@@ -106,4 +115,44 @@ export const getLinearScaleOptions = (maximum: number) => {
     label: option.toString(),
   }));
   return answers;
+};
+
+export const getTitleFromAnswerId = (
+  field: IFlatCustomField,
+  answerId: string | number | undefined,
+  locale: Locale
+) => {
+  if (answerId) {
+    // If number, this is a linear scale option. Return the value as a string.
+    if (typeof answerId === 'number') {
+      return answerId.toString();
+    }
+    // Otherwise this is an option ID, return the related option title
+    const option = field?.options?.find(
+      (option) => option.id === answerId || option.temp_id === answerId
+    );
+    return option?.title_multiloc[locale];
+  }
+  return undefined;
+};
+
+export const getTitleFromPageId = (
+  formCustomFields: IFlatCustomField[],
+  pageId: string | number | undefined,
+  surveyEndMessage: string,
+  pageMessage: string
+) => {
+  if (pageId) {
+    // Return the related page title for the provided ID
+    if (pageId === surveyEndOption) {
+      return surveyEndMessage;
+    }
+    const page = formCustomFields.find(
+      (field) => field.id === pageId || field.temp_id === pageId
+    );
+    if (!isNilOrError(page)) {
+      return `${pageMessage} ${getIndexForTitle(formCustomFields, page)}`;
+    }
+  }
+  return undefined;
 };

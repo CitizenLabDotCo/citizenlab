@@ -16,6 +16,8 @@ import {
   getLinearScaleOptions,
   getLinearScaleRule,
   getOptionRule,
+  getTitleFromAnswerId,
+  getTitleFromPageId,
 } from './utils';
 
 // components
@@ -38,7 +40,6 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
-import { surveyEndOption } from '../FormBuilderSettings/utils';
 import { FieldRuleDisplay } from './FieldRuleDisplay';
 
 const FormFieldsContainer = styled(Box)`
@@ -87,43 +88,6 @@ export const FieldElement = (props: Props) => {
   ) {
     outlineStyle = `1px solid ${colors.teal300}`;
   }
-
-  const getTitleFromAnswerId = (
-    field: IFlatCustomField,
-    answerId: string | number | undefined
-  ) => {
-    if (answerId) {
-      // If number, this is a linear scale option. Return the value as a string.
-      if (typeof answerId === 'number') {
-        return answerId.toString();
-      }
-      // Otherwise this is an option ID, return the related option title
-      const option = field?.options?.find(
-        (option) => option.id === answerId || option.temp_id === answerId
-      );
-      return option?.title_multiloc[locale];
-    }
-    return undefined;
-  };
-
-  const getTitleFromPageId = (pageId: string | number | undefined) => {
-    if (pageId) {
-      // Return the related page title for the provided ID
-      if (pageId === surveyEndOption) {
-        return `${formatMessage(messages.surveyEnd)}`;
-      }
-      const page = formCustomFields.find(
-        (field) => field.id === pageId || field.temp_id === pageId
-      );
-      if (!isNilOrError(page)) {
-        return `${formatMessage(messages.page)} ${getIndexForTitle(
-          formCustomFields,
-          page
-        )}`;
-      }
-    }
-    return undefined;
-  };
 
   return (
     <FormFieldsContainer
@@ -192,10 +156,14 @@ export const FieldElement = (props: Props) => {
                           <FieldRuleDisplay
                             answerTitle={getTitleFromAnswerId(
                               field,
-                              getOptionRule(option, field)?.if
+                              getOptionRule(option, field)?.if,
+                              locale
                             )}
                             targetPage={getTitleFromPageId(
-                              getOptionRule(option, field)?.goto_page_id
+                              formCustomFields,
+                              getOptionRule(option, field)?.goto_page_id,
+                              formatMessage(messages.surveyEnd),
+                              formatMessage(messages.page)
                             )}
                           />
                         </Box>
@@ -209,10 +177,14 @@ export const FieldElement = (props: Props) => {
                           <FieldRuleDisplay
                             answerTitle={getTitleFromAnswerId(
                               field,
-                              getLinearScaleRule(option, field)?.if
+                              getLinearScaleRule(option, field)?.if,
+                              locale
                             )}
                             targetPage={getTitleFromPageId(
-                              getLinearScaleRule(option, field)?.goto_page_id
+                              formCustomFields,
+                              getLinearScaleRule(option, field)?.goto_page_id,
+                              formatMessage(messages.surveyEnd),
+                              formatMessage(messages.page)
                             )}
                           />
                         </Box>
