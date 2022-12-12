@@ -1553,7 +1553,7 @@
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "إجراء تمرين على تخصيص ميزانية",
   "app.utils.AdminPage.ProjectEdit.createNativeSurvey": "إنشاء استبيان داخل المنصة",
   "app.utils.AdminPage.ProjectEdit.createPoll": "إنشاء استطلاع",
-  "app.utils.AdminPage.ProjectEdit.createSurveyText": "تضمين استبيان خارجي",
+  "app.utils.AdminPage.ProjectEdit.createSurveyText": "إنشاء استبيان خارجي",
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "بحث عن متطوعين",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "تجميع المدخلات والملاحظات",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "إتاحة المعلومات للمشاركة",
