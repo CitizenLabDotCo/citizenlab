@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 // intl
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
@@ -13,6 +13,11 @@ import {
   getTitleColor,
   getIndexForTitle,
   getIndexTitleColor,
+  getLinearScaleOptions,
+  getLinearScaleRule,
+  getOptionRule,
+  getTitleFromAnswerId,
+  getTitleFromPageId,
 } from './utils';
 
 // components
@@ -24,6 +29,7 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
+import { FlexibleRow } from '../FlexibleRow';
 
 // styling
 import styled from 'styled-components';
@@ -33,7 +39,8 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
-import { FlexibleRow } from '../FlexibleRow';
+import useLocale from 'hooks/useLocale';
+import { FieldRuleDisplay } from './FieldRuleDisplay';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -61,6 +68,9 @@ export const FieldElement = (props: Props) => {
     watch,
     formState: { errors },
   } = useFormContext();
+  const locale = useLocale();
+  const { formatMessage } = useIntl();
+
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
 
@@ -95,42 +105,90 @@ export const FieldElement = (props: Props) => {
           ml={field.input_type === 'page' ? '8px' : '32px'}
         >
           <Box display="flex" alignItems="center" height="100%">
-            <Box flexGrow={0} flexShrink={0}>
-              <Icon
-                ml="28px"
-                width="12px"
-                fill={getIndexTitleColor(selectedFieldId, field)}
-                name="sort"
-              />
-            </Box>
-
-            <Text
-              as="span"
-              color={getIndexTitleColor(selectedFieldId, field)}
-              fontSize="base"
-              mt="auto"
-              mb="auto"
-              fontWeight="bold"
-              mx="12px"
-            >
-              <>
-                <FormattedMessage
-                  {...(field.input_type === 'page'
-                    ? messages.page
-                    : messages.question)}
+            <Box display="block">
+              <Box>
+                <Icon
+                  ml="28px"
+                  width="12px"
+                  fill={getIndexTitleColor(selectedFieldId, field)}
+                  name="sort"
+                  pb="4px"
                 />
-                {getIndexForTitle(formCustomFields, field)}
-              </>
-            </Text>
-            <Text
-              as="span"
-              fontSize="base"
-              mt="auto"
-              mb="auto"
-              color={getTitleColor(selectedFieldId, field)}
-            >
-              <T value={field.title_multiloc} />
-            </Text>
+                <Text
+                  as="span"
+                  color={getIndexTitleColor(selectedFieldId, field)}
+                  fontSize="base"
+                  mt="auto"
+                  mb="auto"
+                  fontWeight="bold"
+                  mx="12px"
+                >
+                  <>
+                    <FormattedMessage
+                      {...(field.input_type === 'page'
+                        ? messages.page
+                        : messages.question)}
+                    />
+                    {getIndexForTitle(formCustomFields, field)}
+                  </>
+                </Text>
+                <Text
+                  as="span"
+                  fontSize="base"
+                  mt="auto"
+                  mb="auto"
+                  color={getTitleColor(selectedFieldId, field)}
+                >
+                  <T value={field.title_multiloc} />
+                </Text>
+              </Box>
+              {field.input_type !== 'page' && field.logic.rules && (
+                <Box>
+                  {field.input_type === 'select' &&
+                    field.options &&
+                    field.options.map((option) => {
+                      return (
+                        <Box key={option.id}>
+                          <FieldRuleDisplay
+                            answerTitle={getTitleFromAnswerId(
+                              field,
+                              getOptionRule(option, field)?.if,
+                              locale
+                            )}
+                            targetPage={getTitleFromPageId(
+                              formCustomFields,
+                              getOptionRule(option, field)?.goto_page_id,
+                              formatMessage(messages.surveyEnd),
+                              formatMessage(messages.page)
+                            )}
+                          />
+                        </Box>
+                      );
+                    })}
+                  {field.input_type === 'linear_scale' &&
+                    field.maximum &&
+                    getLinearScaleOptions(field.maximum).map((option) => {
+                      return (
+                        <Box key={option.key}>
+                          <FieldRuleDisplay
+                            answerTitle={getTitleFromAnswerId(
+                              field,
+                              getLinearScaleRule(option, field)?.if,
+                              locale
+                            )}
+                            targetPage={getTitleFromPageId(
+                              formCustomFields,
+                              getLinearScaleRule(option, field)?.goto_page_id,
+                              formatMessage(messages.surveyEnd),
+                              formatMessage(messages.page)
+                            )}
+                          />
+                        </Box>
+                      );
+                    })}
+                </Box>
+              )}
+            </Box>
           </Box>
           <Box pr="32px" display="flex" height="100%" alignContent="center">
             {!isNilOrError(field.input_type) && field.input_type !== 'page' && (

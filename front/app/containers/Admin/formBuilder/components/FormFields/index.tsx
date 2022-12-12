@@ -9,6 +9,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
+
+// components
 import { FieldElement } from './FieldElement';
 
 // hooks and services

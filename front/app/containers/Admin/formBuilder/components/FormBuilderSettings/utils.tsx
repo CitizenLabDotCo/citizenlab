@@ -14,6 +14,8 @@ export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
 }
 
+export const surveyEndOption = 'survey_end';
+
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
   field: IFlatCustomFieldWithIndex,

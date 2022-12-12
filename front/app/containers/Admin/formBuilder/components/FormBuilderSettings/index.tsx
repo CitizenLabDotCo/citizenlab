@@ -29,6 +29,7 @@ import { useFormContext } from 'react-hook-form';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { surveyEndOption } from './utils';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
@@ -58,7 +59,6 @@ const FormBuilderSettings = ({
     // all pages should be available in the list.
     const formCustomFields: IFlatCustomField[] = watch('customFields');
     const pageArray: { value: string; label: string }[] = [];
-    const surveyEndOption = 'survey_end';
 
     formCustomFields?.map((field) => {
       if (field.input_type === 'page') {
