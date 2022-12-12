@@ -1,6 +1,6 @@
 import React from 'react';
 import BannerImageFields, { Props } from './BannerImageFields';
-import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
+import { render, screen, waitFor, fireEvent, act } from 'utils/testUtils/rtl';
 
 jest.mock('utils/cl-intl');
 
@@ -79,7 +79,7 @@ describe('BannerImageFields', () => {
     });
   });
 
-  it('does not show react-easy-crop when image is saved for full_width_banner_layout', async () => {
+  it('does not show react-easy-crop when image is saved for fixed_ratio_layout', async () => {
     const { container } = render(
       <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
     );
@@ -88,11 +88,11 @@ describe('BannerImageFields', () => {
       type: 'image/png',
     });
 
-    await waitFor(() =>
+    act(() => {
       fireEvent.change(container.querySelector('#header-dropzone'), {
         target: { files: [file] },
-      })
-    );
+      });
+    });
 
     await waitFor(() => {
       const cropContainer = container.querySelector('.reactEasyCrop_Container');
@@ -108,15 +108,55 @@ describe('BannerImageFields', () => {
       type: 'image/png',
     });
 
-    await waitFor(() =>
+    act(() => {
       fireEvent.change(container.querySelector('#header-dropzone'), {
         target: { files: [file] },
-      })
-    );
+      });
+    });
 
     await waitFor(() => {
       const cropContainer = container.querySelector('.reactEasyCrop_Container');
       expect(cropContainer).toBeInTheDocument();
+    });
+  });
+  it('does not show react-easy-crop container when image is uploaded but not saved for full_width_banner_layout', async () => {
+    const { container } = render(
+      <BannerImageFields {...props} bannerLayout="full_width_banner_layout" />
+    );
+
+    const file = new File(['file'], 'file.png', {
+      type: 'image/png',
+    });
+
+    act(() => {
+      fireEvent.change(container.querySelector('#header-dropzone'), {
+        target: { files: [file] },
+      });
+    });
+
+    await waitFor(() => {
+      const cropContainer = container.querySelector('.reactEasyCrop_Container');
+      expect(cropContainer).not.toBeInTheDocument();
+    });
+  });
+  it('does not show react-easy-crop container when image is uploaded but not saved for two_row_banner_layout', async () => {
+    const { container } = render(
+      <BannerImageFields {...props} bannerLayout="two_row_layout" />
+    );
+
+    const file = new File(['file'], 'file.png', {
+      type: 'image/png',
+    });
+
+    act(() => {
+      fireEvent.change(container.querySelector('#header-dropzone'), {
+        target: { files: [file] },
+      });
+    });
+
+    await waitFor(() => {
+      const cropContainer = container.querySelector('.reactEasyCrop_Container');
+      expect(cropContainer).not.toBeInTheDocument();
     });
   });
 });
