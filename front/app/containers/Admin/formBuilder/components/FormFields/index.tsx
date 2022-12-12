@@ -48,7 +48,10 @@ export const questionDNDType = 'droppable-question';
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
-  handleDragEnd: (result: any, nestedPageData: PageStructure[]) => void;
+  handleDragEnd: (
+    result: DragAndDropResult,
+    nestedPageData: PageStructure[]
+  ) => void;
   isEditingDisabled: boolean;
   selectedFieldId?: string;
 }
