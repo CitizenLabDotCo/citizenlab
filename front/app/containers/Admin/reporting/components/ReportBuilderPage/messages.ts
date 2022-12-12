@@ -27,4 +27,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel',
     defaultMessage: 'Report title',
   },
+  confirmDeleteReport: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.confirmDeleteReport',
+    defaultMessage: 'Are you sure you want to delete "{ reportName }"?',
+  },
 });

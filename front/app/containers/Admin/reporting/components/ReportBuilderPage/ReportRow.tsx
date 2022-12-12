@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // services
 import { deleteReport, Report } from 'services/reports';
@@ -6,6 +6,10 @@ import { deleteReport, Report } from 'services/reports';
 // components
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+
+// i18n
+import messages from './messages';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -15,8 +19,23 @@ interface Props {
 }
 
 const ReportRow = ({ report }: Props) => {
-  const handleDeleteReport = () => {
-    deleteReport(report.id);
+  const { formatMessage } = useIntl();
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDeleteReport = async () => {
+    setDeleting(true);
+
+    if (
+      window.confirm(
+        formatMessage(messages.confirmDeleteReport, {
+          reportName: report.attributes.name,
+        })
+      )
+    ) {
+      await deleteReport(report.id);
+    }
+
+    setDeleting(false);
   };
 
   const handleEditReport = () => {
@@ -45,6 +64,8 @@ const ReportRow = ({ report }: Props) => {
             icon="delete"
             buttonStyle="white"
             onClick={handleDeleteReport}
+            processing={deleting}
+            disabled={deleting}
           >
             Delete
           </Button>
@@ -53,10 +74,16 @@ const ReportRow = ({ report }: Props) => {
             icon="edit"
             buttonStyle="secondary"
             onClick={handleEditReport}
+            disabled={deleting}
           >
             Edit
           </Button>
-          <Button icon="eye" buttonStyle="secondary" onClick={handleViewReport}>
+          <Button
+            icon="eye"
+            buttonStyle="secondary"
+            onClick={handleViewReport}
+            disabled={deleting}
+          >
             View
           </Button>
         </Box>
