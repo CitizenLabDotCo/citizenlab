@@ -18,7 +18,7 @@ export type PageStructure = {
   id: string;
 };
 
-const flattenPageStructure = (
+const getFlatPageStructure = (
   nestedPageStructure: PageStructure[]
 ): IFlatCustomField[] => {
   const flattenedPageStructure: IFlatCustomField[] = [];
@@ -39,11 +39,10 @@ const getPageQuestions = (
   return page.questions;
 };
 
-export const reorderFields = (
+export const getReorderedFields = (
   result,
-  nestedPageData: PageStructure[],
-  replace: (fields: IFlatCustomField[]) => void
-) => {
+  nestedPageData: PageStructure[]
+): IFlatCustomField[] | undefined => {
   const { type, source, destination } = result;
   if (!destination) return;
 
@@ -63,7 +62,7 @@ export const reorderFields = (
           : { ...field, questions: updatedOrder }
       );
 
-      replace(flattenPageStructure(updatedPages));
+      return getFlatPageStructure(updatedPages);
     } else {
       const sourceOrder = getPageQuestions(nestedPageData, sourcePageId);
       const destinationOrder = getPageQuestions(
@@ -82,17 +81,15 @@ export const reorderFields = (
           : page
       );
 
-      replace(flattenPageStructure(updatedPages));
+      return getFlatPageStructure(updatedPages);
     }
   }
 
-  if (type === 'droppable-page') {
-    const updatedPages = reorder<PageStructure>(
-      nestedPageData,
-      source.index,
-      destination.index
-    );
+  const updatedPages = reorder<PageStructure>(
+    nestedPageData,
+    source.index,
+    destination.index
+  );
 
-    replace(flattenPageStructure(updatedPages));
-  }
+  return getFlatPageStructure(updatedPages);
 };

@@ -25,7 +25,7 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { PageStructure, reorderFields } from './utils';
+import { PageStructure, getReorderedFields } from './utils';
 
 // services
 import {
@@ -198,7 +198,17 @@ export const FormEdit = ({
   );
 
   const handleDragEnd = (result, nestedPageData: PageStructure[]) => {
-    reorderFields(result, nestedPageData, replace);
+    const reorderedFields = getReorderedFields(result, nestedPageData);
+    if (reorderedFields) {
+      replace(reorderedFields);
+    }
+
+    if (!isNilOrError(selectedField) && reorderedFields) {
+      const newSelectedFieldIndex = reorderedFields.findIndex(
+        (field) => field.id === selectedField.id
+      );
+      setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
+    }
   };
 
   return (
