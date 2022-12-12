@@ -10,6 +10,10 @@ import {
 } from 'react-dnd-cjs';
 import type { Identifier, XYCoord } from 'dnd-core';
 import { FlexibleRow } from './FlexibleRow';
+import { colors } from 'utils/styleUtils';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 
 export interface SortableRowProps {
   id: string;
@@ -27,11 +31,13 @@ export interface SortableRowProps {
   dropRow?: (
     initialFieldIndex: number,
     finalFieldIndex: number,
+    nextFieldId: string,
     initialPageIndex: number,
     finalPageIndex: number
   ) => void;
-  accept: string | string[];
-  dragType: string;
+  accept?: string | string[];
+  dragType?: string;
+  nextFieldId: string;
 }
 
 interface DragItem {
@@ -39,6 +45,7 @@ interface DragItem {
   pageIndex: number;
   id: string;
   type: string;
+  nextFieldId: string;
 }
 
 export const SortableRow: FC<SortableRowProps> = ({
@@ -50,21 +57,29 @@ export const SortableRow: FC<SortableRowProps> = ({
   pageIndex,
   moveRow,
   dropRow,
+  nextFieldId,
   accept,
   dragType,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [{ handlerId }, drop] = useDrop<
+  const [{ handlerId, isOver }, drop] = useDrop<
     DragItem,
     void,
-    { handlerId: Identifier | null }
+    { handlerId: Identifier | null; isOver: boolean }
   >({
-    accept,
+    accept: 'ROW',
     collect(monitor) {
+      const isOnSamePage = monitor.getItem()?.pageIndex === pageIndex;
+      const isSameField = monitor.getItem()?.index === index && isOnSamePage;
       return {
         handlerId: monitor.getHandlerId(),
+        isOver: !!monitor.isOver() && !isSameField,
       };
     },
+    // canDrop(item, monitor) {
+    //   return item.pageIndex !== 0;
+    //   // return item.pageIndex === pageIndex;
+    // },
     hover(item: DragItem, monitor) {
       if (!ref.current) {
         return;
@@ -112,18 +127,20 @@ export const SortableRow: FC<SortableRowProps> = ({
   });
 
   const [{ isDragging }, drag] = useDrag({
-    item: { type: dragType, id, index, pageIndex } as DragObjectWithType,
+    item: { type: 'ROW', id, index, pageIndex } as DragObjectWithType,
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
     end(item: DragItem) {
+      // console.log('end dropped on', item);
       if (dropRow) {
-        dropRow(index, item.index, pageIndex, item.pageIndex);
+        dropRow(index, item.index, nextFieldId, pageIndex, item.pageIndex);
       }
     },
   });
 
   const opacity = isDragging ? 0.8 : 1;
+  const marginTop = isOver ? '8px' : '0px';
 
   drag(drop(ref));
 
@@ -134,9 +151,14 @@ export const SortableRow: FC<SortableRowProps> = ({
         style={{ cursor: 'move', opacity }}
         data-handler-id={handlerId}
       >
-        <FlexibleRow rowHeight={rowHeight} isLastItem={isLastItem}>
+        <FlexibleRow
+          rowHeight={rowHeight}
+          isLastItem={isLastItem}
+          // isOver={isOver}
+        >
           {children}
         </FlexibleRow>
+        {isOver && <Box height="3px" border={`4px solid ${colors.divider}`} />}
       </div>
     </>
   );

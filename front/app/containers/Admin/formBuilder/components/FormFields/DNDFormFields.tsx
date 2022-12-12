@@ -14,6 +14,7 @@ import { List } from 'components/admin/ResourceList';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { PageRow } from '../SortableRow/PageRow';
 import { FieldElement } from './FieldElement';
+import { DNDFieldElement } from './DNDFieldElement';
 
 // hooks and services
 import useLocale from 'hooks/useLocale';
@@ -21,6 +22,9 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
+
+import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
+import { PageStructure } from '../../containers/projects/forms/edit/utils';
 
 // Assign field badge text
 const getTranslatedFieldType = (field) => {
@@ -41,10 +45,10 @@ const getTranslatedFieldType = (field) => {
   }
 };
 
-type PageStructure = {
-  questions: IFlatCustomField[];
-  page: IFlatCustomField;
-};
+// type PageStructure = {
+//   questions: IFlatCustomField[];
+//   page: IFlatCustomField;
+// };
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
@@ -62,17 +66,19 @@ interface FormFieldsProps {
     initialPageIndex: number,
     finalPageIndex: number
   ) => void;
+  handleDragEnd: (result: any, nestedPageData: any) => void;
   isEditingDisabled: boolean;
   selectedFieldId?: string;
 }
 
-const FormFields = ({
+export const DNDFormFields = ({
   onEditField,
   dropField,
   dropPage,
   selectedFieldId,
   isEditingDisabled,
   handleReorder,
+  handleDragEnd,
 }: FormFieldsProps) => {
   const { watch } = useFormContext();
   const locale = useLocale();
@@ -88,6 +94,7 @@ const FormFields = ({
       nestedPageData.push({
         page: field,
         questions: [],
+        id: field.id,
       });
     } else {
       const lastPage = nestedPageData[nestedPageData.length - 1];
@@ -96,6 +103,64 @@ const FormFields = ({
       });
     }
   });
+
+  const yu = 'yu';
+
+  if (yu) {
+    return (
+      <Box py="32px" height="100%" overflowY="auto" overflowX="hidden">
+        <List key={nestedPageData.length}>
+          <DragAndDrop
+            onDragEnd={(result) => {
+              handleDragEnd(result, nestedPageData);
+            }}
+          >
+            <Drop id="droppable" type="droppable-page">
+              {nestedPageData.map((pageGrouping, pageIndex) => {
+                const pageId = pageGrouping.page.id;
+
+                return (
+                  <Drag key={pageId} id={pageId} index={pageIndex}>
+                    <DNDFieldElement
+                      field={pageGrouping.page}
+                      isEditingDisabled={isEditingDisabled}
+                      getTranslatedFieldType={getTranslatedFieldType}
+                      selectedFieldId={selectedFieldId}
+                      onEditField={onEditField}
+                    />
+
+                    <Drop key={pageId} id={pageId} type="droppable-question">
+                      {pageGrouping.questions.map((question, index) => {
+                        return (
+                          <Drag
+                            key={question.id}
+                            id={question.id}
+                            index={index}
+                          >
+                            <DNDFieldElement
+                              key={question.id}
+                              field={question}
+                              isEditingDisabled={isEditingDisabled}
+                              getTranslatedFieldType={getTranslatedFieldType}
+                              selectedFieldId={selectedFieldId}
+                              onEditField={onEditField}
+                            />
+                          </Drag>
+                        );
+                      })}
+                    </Drop>
+                  </Drag>
+                );
+              })}
+            </Drop>
+          </DragAndDrop>
+        </List>
+        {formCustomFields.length > 0 && (
+          <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
+        )}
+      </Box>
+    );
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -154,5 +219,3 @@ const FormFields = ({
     </DndProvider>
   );
 };
-
-export default FormFields;

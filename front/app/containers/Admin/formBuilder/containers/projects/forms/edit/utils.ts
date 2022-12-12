@@ -5,6 +5,8 @@ export const movePageWithQuestions = (
   fromIndex: number,
   toIndex: number
 ) => {
+  console.log('fromIndex- Page', fromIndex);
+  console.log('toIndex- Page', toIndex);
   let usedFromIndex = fromIndex;
   let usedToIndex = toIndex;
 
@@ -73,6 +75,7 @@ type MoveType = {
   toFieldIndex: number;
   fromPageIndex: number;
   toPageIndex: number;
+  nextFieldId: string;
   move: (indexA: number, indexB: number) => void;
 };
 
@@ -82,7 +85,9 @@ export const moveField = ({
   toFieldIndex,
   toPageIndex,
   move,
+  nextFieldId,
 }: MoveType) => {
+  /*
   const elementBeingDragged = fields[fromFieldIndex];
   const nextPageIndex = fields.findIndex(
     (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
@@ -132,5 +137,119 @@ export const moveField = ({
 
   if (shouldMove) {
     move(fromFieldIndex, toFieldIndex);
+  }
+  */
+  // console.log('fromFieldIndex', fromFieldIndex);
+  // console.log('toFieldIndex', toFieldIndex);
+  // console.log('toPageIndex', toPageIndex);
+  // console.log('nextFieldId', nextFieldId);
+
+  // const elementWithNextFieldId = fields.find((field) => field.id === nextFieldId);
+  const elementWithNextFieldId = fields.find(
+    (field) => field.key === nextFieldId
+  );
+  // console.log('elementWithNextFieldId', elementWithNextFieldId);
+  console.log('fields', fields);
+
+  // if (fromFieldIndex === toFieldIndex) {
+  //   move(fromFieldIndex, elementWithNextFieldId);
+  //   return;
+  // }
+
+  move(fromFieldIndex, toFieldIndex);
+};
+
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+export type PageStructure = {
+  questions: IFlatCustomField[];
+  page: IFlatCustomField;
+  id: string;
+};
+
+const flattenPageStructure = (
+  nestedPageStructure: PageStructure[]
+): IFlatCustomField[] => {
+  const flattenedPageStructure: IFlatCustomField[] = [];
+  nestedPageStructure.forEach((page) => {
+    flattenedPageStructure.push(page.page);
+    page.questions.forEach((question) => {
+      flattenedPageStructure.push(question);
+    });
+  });
+  return flattenedPageStructure;
+};
+
+const getPageQuestions = (pages: PageStructure[], pageId: string) => {
+  return pages.find((page) => page.id === pageId).questions;
+};
+
+export const reorderFields = (
+  result,
+  nestedPageData: PageStructure[],
+  replace
+) => {
+  const { type, source, destination } = result;
+  if (!destination) return;
+
+  const sourcePageId = source.droppableId;
+  const destinationPageId = destination.droppableId;
+
+  // Reordering questions
+  if (type === 'droppable-question') {
+    // If drag and dropping within the same field
+    if (sourcePageId === destinationPageId) {
+      const updatedOrder = reorder(
+        getPageQuestions(nestedPageData, sourcePageId),
+        source.index,
+        destination.index
+      );
+      const updatedPages = nestedPageData.map((field) =>
+        field.id !== sourcePageId
+          ? field
+          : { ...field, questions: updatedOrder }
+      );
+
+      replace(flattenPageStructure(updatedPages));
+    } else {
+      const sourceOrder = getPageQuestions(nestedPageData, sourcePageId);
+      const destinationOrder = getPageQuestions(
+        nestedPageData,
+        destinationPageId
+      );
+
+      const [removed] = sourceOrder.splice(source.index, 1);
+      destinationOrder.splice(destination.index, 0, removed);
+
+      destinationOrder[removed] = sourceOrder[removed];
+      delete sourceOrder[removed];
+
+      const updatedCategories = nestedPageData.map((page) =>
+        page.id === sourcePageId
+          ? { ...page, questions: sourceOrder }
+          : page.id === destinationPageId
+          ? { ...page, questions: destinationOrder }
+          : page
+      );
+
+      replace(flattenPageStructure(updatedCategories));
+    }
+  }
+
+  // Reordering fields
+  if (type === 'droppable-page') {
+    const updatedCategories = reorder(
+      nestedPageData,
+      source.index,
+      destination.index
+    );
+
+    replace(flattenPageStructure(updatedCategories));
   }
 };

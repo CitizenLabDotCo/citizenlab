@@ -24,7 +24,7 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
-import { SortableRow } from '../SortableRow';
+// import { SortableRow } from '../SortableRow';
 
 // styling
 import styled from 'styled-components';
@@ -34,6 +34,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
+import { FlexibleRow } from '../SortableRow/FlexibleRow';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -47,25 +48,15 @@ type Props = {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   getTranslatedFieldType: (fieldType: string) => MessageDescriptor;
   selectedFieldId?: string;
-  dropRow?: (
-    initialFieldIndex: number,
-    finalFieldIndex: number,
-    nextFieldId: string,
-    initialPageIndex?: number,
-    finalPageIndex?: number
-  ) => void;
-  pageIndex: number;
 };
 
-export const FieldElement = (props: Props) => {
+export const DNDFieldElement = (props: Props) => {
   const {
     field,
     isEditingDisabled,
     onEditField,
     getTranslatedFieldType,
     selectedFieldId,
-    dropRow,
-    pageIndex,
   } = props;
   const {
     watch,
@@ -153,9 +144,6 @@ export const FieldElement = (props: Props) => {
     </Box>
   );
 
-  // console.log('formCustomFields[index + 1]?.id', formCustomFields[index + 1]?.id)
-  // console.log('formCustomFields', formCustomFields)
-
   return (
     <FormFieldsContainer
       role={'button'}
@@ -167,24 +155,9 @@ export const FieldElement = (props: Props) => {
       }}
       data-cy="e2e-field-row"
     >
-      {field.input_type === 'page' ? (
-        <Box height="50px" alignContent="center" justifyContent="center">
-          <RowData />
-        </Box>
-      ) : (
-        <SortableRow
-          rowHeight="70px"
-          id={field.id}
-          index={index}
-          pageIndex={pageIndex}
-          dropRow={dropRow}
-          // nextFieldId={field.id}
-          // nextFieldId={formCustomFields[index + 1]?.id}
-          nextFieldId={formCustomFields[index + 1]?.key}
-        >
-          <RowData />
-        </SortableRow>
-      )}
+      <FlexibleRow rowHeight={field.input_type === 'page' ? '50px' : '70px'}>
+        <RowData />
+      </FlexibleRow>
     </FormFieldsContainer>
   );
 };

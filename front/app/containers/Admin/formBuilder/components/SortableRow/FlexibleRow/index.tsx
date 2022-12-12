@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react';
 // Style
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, defaultStyles } from 'utils/styleUtils';
 import { Box } from '@citizenlab/cl2-component-library';
 
 const timeout = 200;
@@ -65,6 +65,7 @@ export const FlexibleRow = ({
   rowHeight,
   flexDirection,
   py,
+  isOver,
   'data-testid': dataTestId,
 }: {
   id?: string;
@@ -73,6 +74,7 @@ export const FlexibleRow = ({
   isLastItem?: boolean;
   rowHeight?: string;
   py?: string;
+  isOver?: boolean;
   flexDirection?: 'row' | 'column';
   'data-testid'?: string;
 }) => (
@@ -90,6 +92,8 @@ export const FlexibleRow = ({
           alignContent="center"
           py={py || '8px'}
           minHeight={rowHeight}
+          // background={backgroundColor}
+          background={isOver ? colors.blue500 : undefined}
         >
           {children}
         </Box>
