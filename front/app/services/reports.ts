@@ -1,8 +1,9 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
-const apiEndpoint = `${API_PATH}/reports`;
+const reportsApiEndpoint = `${API_PATH}/reports`;
 
+// Reports
 export interface Report {
   id: string;
   type: 'report';
@@ -35,19 +36,42 @@ export interface ReportResponse {
 }
 
 export function reportsStream() {
-  return streams.get<ReportsResponse>({ apiEndpoint });
+  return streams.get<ReportsResponse>({ apiEndpoint: reportsApiEndpoint });
 }
 
 export function reportByIdStream(id: string) {
-  return streams.get<ReportResponse>({ apiEndpoint: `${apiEndpoint}/${id}` });
+  return streams.get<ReportResponse>({
+    apiEndpoint: `${reportsApiEndpoint}/${id}`,
+  });
 }
 
 export async function createReport(name: string) {
-  return streams.add(apiEndpoint, {
+  return streams.add(reportsApiEndpoint, {
     report: { name },
   });
 }
 
 export async function deleteReport(id: string) {
-  return streams.delete(`${apiEndpoint}/${id}`, id);
+  return streams.delete(`${reportsApiEndpoint}/${id}`, id);
+}
+
+// Report layouts
+interface ReportLayout {
+  // TODO
+}
+
+interface ReportLayoutReponse {
+  data: ReportLayout;
+}
+
+export function reportLayoutStream(id: string) {
+  return streams.get<ReportLayoutReponse>({
+    apiEndpoint: `${API_PATH}/reports/${id}/layout`, // TODO
+    handleErrorLogging: (error) => {
+      // A 404 error is expected when the content builder layout is not found so we don't want to log it
+      if (error.statusCode !== 404) {
+        reportError(error);
+      }
+    },
+  });
 }
