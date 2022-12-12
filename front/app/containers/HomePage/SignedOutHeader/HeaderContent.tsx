@@ -8,7 +8,6 @@ import {
 } from 'components/LandingPages/citizen/HeaderContent';
 import { WrappedComponentProps } from 'react-intl';
 import { openSignUpInModal } from 'events/openSignUpInModal';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
@@ -18,10 +17,8 @@ import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { media } from 'utils/styleUtils';
 import messages from '../messages';
-import SignUpButton from '../SignUpButton';
 import tracks from '../tracks';
 import CTA from './CTA';
-import FeatureFlag from 'components/FeatureFlag';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
@@ -62,10 +59,6 @@ const HeaderContent = ({
     openSignUpInModal();
   };
   const buttonStyle = getButtonStyle(fontColors);
-
-  const customizableHomepageBannerEnabled = useFeatureFlag({
-    name: 'customizable_homepage_banner',
-  });
 
   if (!isNilOrError(homepageSettings)) {
     const homepageAttributes = homepageSettings.attributes;
@@ -109,12 +102,7 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
-        {!customizableHomepageBannerEnabled && (
-          <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
-        )}
-        <FeatureFlag name="customizable_homepage_banner">
-          <CTA signedIn={false} buttonStyle={buttonStyle} signUpIn={signUpIn} />
-        </FeatureFlag>
+        <CTA signedIn={false} buttonStyle={buttonStyle} signUpIn={signUpIn} />
       </Container>
     );
   }
