@@ -172,8 +172,8 @@ resource 'Phases' do
 
           # A new native survey phase has a default form.
           fields = phase_in_db.custom_form.custom_fields
-          expect(fields.map(&:ordering)).to eq([0, 1])
           expect(fields.size).to eq 2
+          expect(fields.map(&:ordering)).to eq([0, 1])
           field1 = fields[0]
           expect(field1.input_type).to eq 'page'
           field2 = fields[1]
