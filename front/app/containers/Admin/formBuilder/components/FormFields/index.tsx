@@ -42,7 +42,7 @@ const getTranslatedFieldType = (field) => {
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
-  handleDragEnd: (result: any, nestedPageData: any) => void;
+  handleDragEnd: (result: any, nestedPageData: PageStructure[]) => void;
   isEditingDisabled: boolean;
   selectedFieldId?: string;
 }

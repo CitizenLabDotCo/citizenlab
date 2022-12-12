@@ -24,7 +24,6 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
-// import { SortableRow } from '../SortableRow';
 
 // styling
 import styled from 'styled-components';
