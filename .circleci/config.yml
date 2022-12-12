@@ -630,7 +630,8 @@ jobs:
     environment:
       CITIZENLAB_EE: true
     steps:
-      - checkout
+      - checkout:
+          path: ./citizenlab
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
