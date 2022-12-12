@@ -1620,7 +1620,7 @@
   "containers.SiteMap.projectInfo": "Informatie",
   "containers.SiteMap.projectPoll": "Peiling",
   "containers.SiteMap.projectSurvey": "Enquête",
-  "containers.SiteMap.projectsArchived": "Afgeronde projecten",
+  "containers.SiteMap.projectsArchived": "Gearchiveerde projecten",
   "containers.SiteMap.projectsCurrent": "Lopende projecten",
   "containers.SiteMap.projectsDraft": "Conceptprojecten",
   "containers.SiteMap.projectsSection": "Projecten van {orgName}",

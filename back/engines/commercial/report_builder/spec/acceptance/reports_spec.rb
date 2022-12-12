@@ -45,7 +45,11 @@ resource 'Reports' do
         expect(response_data).to match(
           id: report.id,
           type: 'report',
-          attributes: { name: report.name, updated_at: report.updated_at.iso8601(3) },
+          attributes: {
+            name: report.name,
+            created_at: report.created_at.iso8601(3),
+            updated_at: report.updated_at.iso8601(3)
+          },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
             owner: { data: { id: report.owner_id, type: 'user' } }
@@ -96,7 +100,11 @@ resource 'Reports' do
         expect(response_data).to match(
           id: be_a(String),
           type: 'report',
-          attributes: { name: name, updated_at: be_a(String) },
+          attributes: {
+            name: name,
+            created_at: be_a(String),
+            updated_at: be_a(String)
+          },
           relationships: {
             layout: { data: { id: be_a(String), type: 'content_builder_layout' } },
             owner: { data: { id: be_a(String), type: 'user' } }
