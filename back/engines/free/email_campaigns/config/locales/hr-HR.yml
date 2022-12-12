@@ -99,10 +99,10 @@ hr:
       "your_proposed_initiatives_digest": Nedeljni pregled sopstvenih predloga - svi korisnici
     footer:
       "link_privacy_policy": "Politika privatnosti"
-      "link_terms_conditions": "Uslovi korišćenja"
+      "link_terms_conditions": "Uvjeti korištenja"
       "link_unsubscribe": "Odjavi se"
       "powered_by": "Omogućava"
-      "statement": "Ovaj email vam je poslao CitizenLab u ime %{organizationName}, jer ste registrovani korisnik %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
+      "statement": "Ovaj e-mail Vam je poslao CitizenLab u ime %{organizationName}, jer ste registrirani korisnik na platformi %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite primati ove e-poruke."
       "unsubscribe_text": "odjavitе se"
     comment_deleted_by_admin:
       reason: 'Razlog zašto je vaš komentar izbrisan:'
@@ -231,7 +231,7 @@ hr:
       message_get_votes: 'Sakupite neophodan broj glasova:'
       preheader: 'Hvala vam što delite svoj predlog %{initiativeTitle} za %{organizationName}. Prikupite podršku tako što ćete ga podeliti sa drugima.'
       send_email: e-mail
-      subject: 'Vaš predlog je objavljen na platformi %{organizationName}'
+      subject: 'Vaš prijedlog je objavljen na platformi %{organizationName}'
     mention_in_official_feedback:
       by_author: 'od %{authorName}'
       commented: '%{organizationName} piše:'
