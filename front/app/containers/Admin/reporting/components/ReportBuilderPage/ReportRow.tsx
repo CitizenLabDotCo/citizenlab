@@ -7,6 +7,9 @@ import { deleteReport, Report } from 'services/reports';
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
@@ -46,6 +49,10 @@ const ReportRow = ({ report }: Props) => {
     // TODO
   };
 
+  const handleShareReport = () => {
+    // TODO
+  };
+
   return (
     <ListItem>
       <Box
@@ -66,6 +73,7 @@ const ReportRow = ({ report }: Props) => {
             onClick={handleDeleteReport}
             processing={deleting}
             disabled={deleting}
+            iconSize="18px"
           >
             {formatMessage(messages.delete)}
           </Button>
@@ -75,16 +83,28 @@ const ReportRow = ({ report }: Props) => {
             buttonStyle="secondary"
             onClick={handleEditReport}
             disabled={deleting}
+            iconSize="18px"
           >
             {formatMessage(messages.edit)}
           </Button>
           <Button
+            mr="8px"
             icon="eye"
             buttonStyle="secondary"
             onClick={handleViewReport}
             disabled={deleting}
+            iconSize="18px"
           >
             {formatMessage(messages.view)}
+          </Button>
+          <Button
+            icon="share"
+            bgColor={colors.teal500}
+            onClick={handleShareReport}
+            disabled={deleting}
+            iconSize="18px"
+          >
+            {formatMessage(messages.share)}
           </Button>
         </Box>
       </Box>
