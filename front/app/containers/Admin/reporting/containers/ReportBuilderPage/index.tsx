@@ -8,7 +8,6 @@ import useReports from 'hooks/useReports';
 import { colors } from 'utils/styleUtils';
 
 // components
-import { SectionTitle } from 'components/admin/Section';
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
@@ -39,9 +38,9 @@ const ReportBuilder = () => {
 
   return (
     <>
-      <SectionTitle>
+      <Title variant="h1" color="primary" mt="0px" mb="32px">
         <FormattedMessage {...sharedMessages.reportBuilder} />
-      </SectionTitle>
+      </Title>
       {showEmptyState ? (
         <EmptyState onOpenModal={openModal} />
       ) : (
@@ -49,6 +48,7 @@ const ReportBuilder = () => {
           <Box background="white" px="56px" py="40px">
             <Title
               variant="h3"
+              as="h2"
               color="primary"
               mt="0px"
               mb="0px"
@@ -74,6 +74,7 @@ const ReportBuilder = () => {
           <Box background="white" px="56px" py="40px" mt="20px">
             <Title
               variant="h3"
+              as="h2"
               color="primary"
               mt="0px"
               mb="32px"
