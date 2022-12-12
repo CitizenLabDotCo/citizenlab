@@ -1218,10 +1218,16 @@ resource 'Idea Custom Fields' do
 
         example 'Add logic referring to a new option and a new page' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-          field_to_update = create(
+          field1_to_update = create(
             :custom_field_select,
             resource: custom_form,
             title_multiloc: { 'en' => 'Question 1 on page 1' },
+            logic: {}
+          )
+          field2_to_update = create(
+            :custom_field_select,
+            resource: custom_form,
+            title_multiloc: { 'en' => 'Question 2 on page 1' },
             logic: {}
           )
 
@@ -1236,7 +1242,7 @@ resource 'Idea Custom Fields' do
                 enabled: true
               },
               {
-                id: field_to_update.id,
+                id: field1_to_update.id,
                 input_type: 'select',
                 title_multiloc: { 'en' => 'Question 1 on page 1' },
                 required: false,
@@ -1252,10 +1258,34 @@ resource 'Idea Custom Fields' do
                 }
               },
               {
+                id: field2_to_update.id,
+                input_type: 'select',
+                title_multiloc: { 'en' => 'Question 2 on page 1' },
+                required: false,
+                enabled: true,
+                options: [
+                  {
+                    title_multiloc: { 'en' => 'New option' },
+                    temp_id: 'TEMP-ID-4'
+                  }
+                ],
+                logic: {
+                  rules: [{ if: 'TEMP-ID-4', goto_page_id: 'TEMP-ID-3' }]
+                }
+              },
+              {
                 temp_id: 'TEMP-ID-1',
                 input_type: 'page',
                 title_multiloc: { 'en' => 'Page 2' },
                 description_multiloc: { 'en' => 'Page 2 description' },
+                required: false,
+                enabled: true
+              },
+              {
+                temp_id: 'TEMP-ID-3',
+                input_type: 'page',
+                title_multiloc: { 'en' => 'Page 3' },
+                description_multiloc: { 'en' => 'Page 3 description' },
                 required: false,
                 enabled: true
               }
@@ -1264,10 +1294,10 @@ resource 'Idea Custom Fields' do
           do_request request
 
           assert_status 200
-          expect(CustomFieldOption.count).to eq 1
-          added_option = CustomFieldOption.first
+          expect(CustomFieldOption.count).to eq 2
+          added_option1, added_option2 = CustomFieldOption.all
           json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 3
+          expect(json_response[:data].size).to eq 5
           expect(json_response[:data][0]).to match({
             attributes: {
               code: nil,
@@ -1289,24 +1319,24 @@ resource 'Idea Custom Fields' do
             attributes: {
               code: nil,
               created_at: an_instance_of(String),
-              description_multiloc: field_to_update.description_multiloc.symbolize_keys,
+              description_multiloc: field1_to_update.description_multiloc.symbolize_keys,
               enabled: true,
               input_type: 'select',
-              key: field_to_update.key,
+              key: field1_to_update.key,
               ordering: 1,
               required: false,
-              title_multiloc: field_to_update.title_multiloc.symbolize_keys,
+              title_multiloc: field1_to_update.title_multiloc.symbolize_keys,
               updated_at: an_instance_of(String),
               logic: {
-                rules: [{ if: added_option.id, goto_page_id: json_response[:data][2][:id] }]
+                rules: [{ if: added_option1.id, goto_page_id: json_response[:data][3][:id] }]
               }
             },
-            id: field_to_update.id,
+            id: field1_to_update.id,
             type: 'custom_field',
             relationships: {
               options: { data: [
                 {
-                  id: added_option.id,
+                  id: added_option1.id,
                   type: 'custom_field_option'
                 }
               ] }
@@ -1316,13 +1346,57 @@ resource 'Idea Custom Fields' do
             attributes: {
               code: nil,
               created_at: an_instance_of(String),
+              description_multiloc: field2_to_update.description_multiloc.symbolize_keys,
+              enabled: true,
+              input_type: 'select',
+              key: field2_to_update.key,
+              ordering: 2,
+              required: false,
+              title_multiloc: field2_to_update.title_multiloc.symbolize_keys,
+              updated_at: an_instance_of(String),
+              logic: {
+                rules: [{ if: added_option2.id, goto_page_id: json_response[:data][4][:id] }]
+              }
+            },
+            id: field2_to_update.id,
+            type: 'custom_field',
+            relationships: {
+              options: { data: [
+                {
+                  id: added_option2.id,
+                  type: 'custom_field_option'
+                }
+              ] }
+            }
+          })
+          expect(json_response[:data][3]).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
               description_multiloc: { en: 'Page 2 description' },
               enabled: true,
               input_type: 'page',
               key: 'page_2',
-              ordering: 2,
+              ordering: 3,
               required: false,
               title_multiloc: { en: 'Page 2' },
+              updated_at: an_instance_of(String)
+            },
+            id: an_instance_of(String),
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
+          })
+          expect(json_response[:data][4]).to match({
+            attributes: {
+              code: nil,
+              created_at: an_instance_of(String),
+              description_multiloc: { en: 'Page 3 description' },
+              enabled: true,
+              input_type: 'page',
+              key: 'page_3',
+              ordering: 4,
+              required: false,
+              title_multiloc: { en: 'Page 3' },
               updated_at: an_instance_of(String)
             },
             id: an_instance_of(String),

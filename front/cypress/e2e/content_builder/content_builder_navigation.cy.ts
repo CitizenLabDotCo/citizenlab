@@ -65,14 +65,15 @@ describe('Content builder navigation', () => {
     );
   });
 
-  it('navigates to live project when view project button clicked', () => {
-    cy.visit(`/admin/projects/${projectId}/description`);
-    cy.get('#to-project').click();
-    cy.url().should(
-      'eq',
-      `${Cypress.config().baseUrl}/en/projects/${projectSlug}`
-    );
-  });
+  // Commenting this out as it is very flaky. https://github.com/CitizenLabDotCo/citizenlab/pull/3398#issuecomment-1340646247
+  // it('navigates to live project when view project button clicked', () => {
+  //   cy.visit(`/admin/projects/${projectId}/description`);
+  //   cy.get('#to-project').click();
+  //   cy.url().should(
+  //     'eq',
+  //     `${Cypress.config().baseUrl}/en/projects/${projectSlug}`
+  //   );
+  // });
 
   /** Commenting this out as it is very flaky. https://citizenlabco.slack.com/archives/C02PFSWEK6X/p1667892380157819?thread_ts=1667876187.090919&cid=C02PFSWEK6X
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
