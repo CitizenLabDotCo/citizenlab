@@ -53,8 +53,6 @@ const AnalyticsChartWidget = ({
     interactive: false,
   };
 
-  console.log(`dates: ${startAt} | ${endAt}`);
-
   const statChartProps = {
     startAt,
     endAt: endAt ? endAt : null,
@@ -80,6 +78,8 @@ const AnalyticsChartWidget = ({
       chart = <AgeChart {...statChartProps} />;
       break;
   }
+
+  console.log(this);
 
   return (
     <Box id="e2e-text-box" minHeight="26px">
@@ -181,7 +181,7 @@ AnalyticsChartWidget.craft = {
     settings: AnalyticsChartWidgetSettings,
   },
   custom: {
-    // TODO: Make this title change dynamically based on the chart type
+    // TODO: Make this title change dynamically based on the chart type (CL-2254)
     title: messages.analyticsChart,
     noPointerEvents: true,
   },
