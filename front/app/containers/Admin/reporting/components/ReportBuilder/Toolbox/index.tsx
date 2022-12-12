@@ -4,27 +4,28 @@ import React from 'react';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import { Accordion } from '@citizenlab/cl2-component-library';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
 
 // types
-import DraggableElement from '../../../../../../components/admin/ContentBuilder/Toolbox/DraggableElement';
-import InfoWithAccordions from '../../../../../../modules/commercial/content_builder/admin/components/CraftSections/InfoWithAccordions';
-import { FormattedMessage, useIntl } from '../../../../../../utils/cl-intl';
-import TwoColumn from '../../../../../../components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from '../../../../../../components/admin/ContentBuilder/Widgets/ThreeColumn';
-import WhiteSpace from '../../../../../../components/admin/ContentBuilder/Widgets/WhiteSpace';
-import Text from '../../../../../../components/admin/ContentBuilder/Widgets/Text';
-import textMessages from '../../../../../../components/admin/ContentBuilder/Widgets/Text/messages';
-import Image from '../../../../../../components/admin/ContentBuilder/Widgets/Image';
-import { useParams } from 'react-router-dom';
-import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
-import contentBuilderMessages from '../../../../../../modules/commercial/content_builder/admin/messages';
-import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
-import reportingMessages from '../../../messages';
+import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
+
+// Utils
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import moment from 'moment';
+
+// Messages
+import contentBuilderMessages from '../../../../../../modules/commercial/content_builder/admin/messages';
+import reportBuilderMessages from '../../../messages';
+import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
+import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
 
 const ReportBuilderToolbox = () => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DDTHH:mm:ss.sss');
@@ -68,13 +69,6 @@ const ReportBuilderToolbox = () => {
         }
       >
         <DraggableElement
-          id="e2e-draggable-report-header"
-          component={<InfoWithAccordions projectId={projectId} />}
-          icon="section-info-accordion"
-          label={formatMessage(reportingMessages.reportHeader)}
-        />
-
-        <DraggableElement
           id="e2e-draggable-text"
           component={<Text text={formatMessage(textMessages.textValue)} />}
           icon="text"
@@ -93,7 +87,7 @@ const ReportBuilderToolbox = () => {
         isOpenByDefault={true}
         title={
           <SectionTitle>
-            <FormattedMessage {...reportingMessages.chartsSection} />
+            <FormattedMessage {...reportBuilderMessages.chartsSection} />
           </SectionTitle>
         }
       >
