@@ -65,7 +65,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout
+      - git-shallow-clone/checkout
       - run: |
           chmod +x .circleci/private-trigger.sh && .circleci/private-trigger.sh << pipeline.parameters.back >> << pipeline.parameters.front >>
 
@@ -74,7 +74,7 @@ jobs:
     docker:
       - image: ghcr.io/danger/danger-js:10.6.6
     steps:
-      - checkout
+      - git-shallow-clone/checkout
       - run: danger ci
 
   check-translations:
@@ -93,7 +93,7 @@ jobs:
     docker:
       - image: docker:stable-git
     steps:
-      - checkout:
+      - git-shallow-clone/checkout:
           path: /citizenlab
 
       - setup_remote_docker:
@@ -182,7 +182,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - checkout:
+      - git-shallow-clone/checkout:
           path: /citizenlab
       # Download and cache dependencies
       - restore_cache:
@@ -210,7 +210,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - checkout:
+      - git-shallow-clone/checkout:
           path: /citizenlab
       # Download and cache dependencies
       - restore_cache:
@@ -230,7 +230,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - checkout:
+      - git-shallow-clone/checkout:
           path: /citizenlab
       # Download and cache dependencies
       - restore_cache:
@@ -251,7 +251,7 @@ jobs:
     working_directory: /citizenlab/front
     resource_class: small
     steps:
-      - checkout:
+      - git-shallow-clone/checkout:
           path: /citizenlab
       - restore_cache:
           keys:
@@ -267,7 +267,7 @@ jobs:
     resource_class: medium+
     working_directory: /citizenlab/front
     steps:
-      - checkout:
+      - git-shallow-clone/checkout:
           path: /citizenlab
       # Download and cache dependencies
       - restore_cache:
@@ -289,7 +289,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - checkout:
+      - git-shallow-clone/checkout:
           path: /citizenlab
       # Download and cache dependencies
       - restore_cache:
@@ -317,7 +317,7 @@ jobs:
     docker:
       - image: cimg/base:2021.03
     steps:
-      - checkout
+      - git-shallow-clone/checkout
       - setup_remote_docker:
           # https://support.circleci.com/hc/en-us/articles/360050934711
           version: 19.03.13
