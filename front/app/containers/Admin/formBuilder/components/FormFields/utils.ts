@@ -1,4 +1,7 @@
-import { IFlatCustomField } from 'services/formCustomFields';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'services/formCustomFields';
 import { colors } from '@citizenlab/cl2-component-library';
 
 export const isFieldSelected = (
@@ -48,7 +51,7 @@ export const getIndexTitleColor = (
 
 export const getIndexForTitle = (
   formCustomFields: IFlatCustomField[],
-  field: IFlatCustomField
+  field: IFlatCustomField | IFlatCustomFieldWithIndex
 ) => {
   const fieldIndex = formCustomFields
     .filter((customField) => {

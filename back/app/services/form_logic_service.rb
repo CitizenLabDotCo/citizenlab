@@ -4,22 +4,27 @@ class FormLogicService
   def initialize(fields)
     @fields = fields
     @field_index = fields.index_by(&:id)
+    @option_index = fields.flat_map(&:options).index_by(&:id)
   end
 
   def ui_schema_rules_for(target_field)
     target_field_rules[target_field.id]
   end
 
-  def replace_temp_ids!(temp_ids_to_ids_mapping)
+  def replace_temp_ids!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
     fields.each do |field|
       next if field.logic.blank?
 
       logic = field.logic
       rules = logic.fetch('rules', [])
       rules.each do |rule|
+        value = rule['if']
+        if option_temp_ids_to_ids_mapping.include?(value)
+          rule['if'] = option_temp_ids_to_ids_mapping[value]
+        end
         target_id = rule['goto_page_id']
-        if temp_ids_to_ids_mapping.include?(target_id)
-          rule['goto_page_id'] = temp_ids_to_ids_mapping[target_id]
+        if page_temp_ids_to_ids_mapping.include?(target_id)
+          rule['goto_page_id'] = page_temp_ids_to_ids_mapping[target_id]
         end
       end
       field.update! logic: logic
@@ -34,7 +39,7 @@ class FormLogicService
 
   private
 
-  attr_reader :fields, :field_index
+  attr_reader :fields, :field_index, :option_index
 
   def no_logic?(field)
     field.logic == {}
@@ -44,7 +49,7 @@ class FormLogicService
     logic = field.logic
     if logic.keys == ['rules']
       all_rules_are_valid = logic['rules'].all? do |rule|
-        rule.keys == %w[if goto_page_id] || (rule.keys == %w[if goto] && rule['goto'] == 'survey_end')
+        rule.keys == %w[if goto_page_id]
       end
       return true if all_rules_are_valid
     end
@@ -61,9 +66,8 @@ class FormLogicService
 
   def valid_rules?(field)
     field.logic['rules'].all? do |rule|
-      next true if rule.key? 'goto' # Value for `goto` has already been checked in `valid_structure?`
-
       target_id = rule['goto_page_id'] # Present because we passed the `valid_structure?` check.
+      next true if target_id == 'survey_end'
 
       # Order is important here, because `target_after_source?` and `target_is_page?`
       # rely on `valid_target_id?` to return true. In those methods,
@@ -135,6 +139,9 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
+    if field.input_type == 'select'
+      value = option_index[value].key
+    end
     {
       effect: 'HIDE',
       condition: {
@@ -154,10 +161,10 @@ class FormLogicService
 
         rules.each do |rule|
           value = rule['if']
-          pages_to_hide = if rule['goto'] == 'survey_end'
+          target_id = rule['goto_page_id']
+          pages_to_hide = if target_id == 'survey_end'
             pages_after(index)
           else
-            target_id = rule['goto_page_id']
             pages_in_between(index, target_id)
           end
           pages_to_hide.each do |page|
