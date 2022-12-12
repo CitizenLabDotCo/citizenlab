@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 export interface Props {
-  admin: boolean;
+  admin?: boolean;
 }
 
 // Centered spinner taking the navbar height (and admin sidebar) into account
@@ -32,8 +32,7 @@ const FullPageContainer = styled.div<{ admin: boolean }>`
   `}
 `;
 
-const FullPageSpinner = (props: Props) => {
-  const { admin } = props;
+const FullPageSpinner = ({ admin = false }: Props) => {
   return (
     <FullPageContainer admin={admin}>
       <Spinner />
