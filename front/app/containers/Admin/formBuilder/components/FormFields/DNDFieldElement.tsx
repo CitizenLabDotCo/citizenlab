@@ -34,7 +34,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
-import { FlexibleRow } from '../SortableRow/FlexibleRow';
+import { FlexibleRow } from '../FlexibleRow';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {

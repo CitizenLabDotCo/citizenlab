@@ -17,7 +17,6 @@ import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuild
 import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
 import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
 import FormFields from 'containers/Admin/formBuilder/components/FormFields';
-import { DNDFormFields } from 'containers/Admin/formBuilder/components/FormFields/DNDFormFields';
 import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
 import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
@@ -26,12 +25,7 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import {
-  movePageWithQuestions,
-  moveField,
-  PageStructure,
-  reorderFields,
-} from './utils';
+import { PageStructure, reorderFields } from './utils';
 
 // services
 import {
@@ -157,33 +151,6 @@ export const FormEdit = ({
     }
   };
 
-  const dropField = (
-    fromFieldIndex: number,
-    toFieldIndex: number,
-    nextFieldId: string,
-    fromPageIndex: number,
-    toPageIndex: number
-  ) => {
-    moveField({
-      fields,
-      fromFieldIndex,
-      toFieldIndex,
-      fromPageIndex,
-      toPageIndex,
-      move,
-      nextFieldId,
-    });
-
-    if (!isNilOrError(selectedField)) {
-      setSelectedField({ ...selectedField, index: toFieldIndex });
-    }
-  };
-
-  const dropPage = (fromIndex: number, toIndex: number) => {
-    const newFields = movePageWithQuestions(fields, fromIndex, toIndex);
-    replace(newFields);
-  };
-
   const hasErrors = !!Object.keys(errors).length;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
@@ -219,23 +186,6 @@ export const FormEdit = ({
   const isDeleteDisabled = !(
     selectedField?.input_type !== 'page' || isPageDeletable
   );
-
-  const handleReorder = (
-    initialFieldIndex: number,
-    finalFieldIndex: number,
-    initialPageIndex: number,
-    finalPageIndex: number
-  ) => {
-    if (initialPageIndex === finalPageIndex) {
-      return;
-    }
-    const initialField = fields[initialFieldIndex];
-
-    if (initialField.input_type !== 'page') {
-      debugger;
-      move(initialFieldIndex, finalFieldIndex);
-    }
-  };
 
   const handleDragEnd = (result, nestedPageData: PageStructure[]) => {
     reorderFields(result, nestedPageData, replace);
@@ -290,21 +240,10 @@ export const FormEdit = ({
                     bgColor="white"
                     minHeight="300px"
                   >
-                    {/* <FormFields
+                    <FormFields
                       onEditField={setSelectedField}
-                      dropField={dropField}
-                      dropPage={dropPage}
                       selectedFieldId={selectedField?.id}
                       isEditingDisabled={isEditingDisabled}
-                      handleReorder={handleReorder}
-                    /> */}
-                    <DNDFormFields
-                      onEditField={setSelectedField}
-                      dropField={dropField}
-                      dropPage={dropPage}
-                      selectedFieldId={selectedField?.id}
-                      isEditingDisabled={isEditingDisabled}
-                      handleReorder={handleReorder}
                       handleDragEnd={handleDragEnd}
                     />
                   </Box>
