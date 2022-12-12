@@ -23,6 +23,7 @@ module.exports = {
     'jsx-a11y',
     '@typescript-eslint',
     '@typescript-eslint/tslint',
+    'simple-import-sort',
   ],
   rules: {
     '@typescript-eslint/member-delimiter-style': ['warn'],
@@ -172,6 +173,24 @@ module.exports = {
         },
       },
     ],
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          // Side effect imports.
+          ['^\\u0000'],
+          // Packages `react` related packages come first.
+          ['^react', '^@?\\w'],
+          // Internal packages.
+          ['^(@|components)(/.*|$)'],
+          // Parent imports. Put `..` last.
+          ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+          // Other relative imports. Put same-folder imports and `.` last.
+          ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+        ],
+      },
+    ],
+    // 'simple-import-sort/exports': 'error',
   },
   ignorePatterns: [
     '.eslintrc.js',
