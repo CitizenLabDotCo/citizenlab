@@ -142,7 +142,7 @@ const ReportBuilder = () => {
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
         >
-          {selectedLocale && <Toolbox selectedLocale={selectedLocale} />}
+          {selectedLocale && <Toolbox />}
           <FrameWrapper localesWithError={localesWithError}>
             <Frame editorData={getEditorData()} />
           </FrameWrapper>

@@ -6,7 +6,6 @@ import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import { Accordion } from '@citizenlab/cl2-component-library';
 
 // types
-import { Locale } from 'typings';
 import DraggableElement from '../../../../../../components/admin/ContentBuilder/Toolbox/DraggableElement';
 import InfoWithAccordions from '../../../../../../modules/commercial/content_builder/admin/components/CraftSections/InfoWithAccordions';
 import { FormattedMessage, useIntl } from '../../../../../../utils/cl-intl';
@@ -23,16 +22,9 @@ import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
 import reportingMessages from '../../../messages';
 import moment from 'moment';
 
-type ContentBuilderToolboxProps = {
-  selectedLocale: Locale;
-};
-
-const ContentBuilderToolbox = ({
-  selectedLocale,
-}: ContentBuilderToolboxProps) => {
+const ReportBuilderToolbox = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
-  console.log(selectedLocale); // Don't know why this is used?
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DDTHH:mm:ss.sss');
@@ -166,4 +158,4 @@ const ContentBuilderToolbox = ({
   );
 };
 
-export default ContentBuilderToolbox;
+export default ReportBuilderToolbox;
