@@ -67,7 +67,7 @@ const ReportRow = ({ report }: Props) => {
             processing={deleting}
             disabled={deleting}
           >
-            Delete
+            {formatMessage(messages.delete)}
           </Button>
           <Button
             mr="8px"
@@ -76,7 +76,7 @@ const ReportRow = ({ report }: Props) => {
             onClick={handleEditReport}
             disabled={deleting}
           >
-            Edit
+            {formatMessage(messages.edit)}
           </Button>
           <Button
             icon="eye"
@@ -84,7 +84,7 @@ const ReportRow = ({ report }: Props) => {
             onClick={handleViewReport}
             disabled={deleting}
           >
-            View
+            {formatMessage(messages.view)}
           </Button>
         </Box>
       </Box>

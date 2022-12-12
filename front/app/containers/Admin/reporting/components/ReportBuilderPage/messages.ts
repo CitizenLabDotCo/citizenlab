@@ -31,4 +31,20 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.confirmDeleteReport',
     defaultMessage: 'Are you sure you want to delete "{ reportName }"?',
   },
+  delete: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.delete',
+    defaultMessage: 'Delete',
+  },
+  edit: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.edit',
+    defaultMessage: 'Edit',
+  },
+  view: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.view',
+    defaultMessage: 'View',
+  },
+  share: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.share',
+    defaultMessage: 'Share',
+  },
 });
