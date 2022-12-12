@@ -72,10 +72,6 @@ export type ProposalsSettings = {
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
-  customizable_homepage_banner: {
-    allowed: boolean;
-    enabled: boolean;
-  };
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;

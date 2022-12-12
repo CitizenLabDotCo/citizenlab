@@ -12,7 +12,6 @@ import useAuthUser from 'hooks/useAuthUser';
 import { media, isRtl, fontSizes } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import CTA from './CTA';
-import FeatureFlag from 'components/FeatureFlag';
 
 const HeaderContent = styled.div`
   position: absolute;
@@ -80,9 +79,7 @@ const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
             )}
           </Left>
           <Right>
-            <FeatureFlag name="customizable_homepage_banner">
-              <CTA signedIn buttonStyle="primary-inverse" />
-            </FeatureFlag>
+            <CTA signedIn buttonStyle="primary-inverse" />
           </Right>
         </HeaderContent>
       </OnboardingStep>
