@@ -23,6 +23,7 @@ import contentBuilderMessages from '../../../../../../modules/commercial/content
 import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
+import AboutReportWidget from '../Widgets/AboutReportWidget';
 
 const ReportBuilderToolbox = () => {
   const { formatMessage } = useIntl();
@@ -68,6 +69,20 @@ const ReportBuilderToolbox = () => {
           </SectionTitle>
         }
       >
+        <DraggableElement
+          id="e2e-draggable-about-report"
+          component={
+            <AboutReportWidget
+              title="About"
+              project=""
+              period=""
+              projectManager=""
+            />
+          }
+          icon="tablet"
+          label={formatMessage(AboutReportWidget.craft.custom.title)}
+        />
+
         <DraggableElement
           id="e2e-draggable-text"
           component={<Text text={formatMessage(textMessages.textValue)} />}
