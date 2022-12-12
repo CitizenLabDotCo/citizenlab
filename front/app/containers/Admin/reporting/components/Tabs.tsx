@@ -28,6 +28,11 @@ interface Props {
   children?: React.ReactNode;
 }
 
+const removeTrailingSlash = (str: string) => {
+  if (str[str.length - 1] === '/') return str.slice(0, str.length - 1);
+  return str;
+};
+
 const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
@@ -54,7 +59,7 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
   useEffect(() => {
     if (redirected) return;
     if (tabs.length === 0) return;
-    if (pathname.endsWith('/admin/reporting')) {
+    if (removeTrailingSlash(pathname).endsWith('/admin/reporting')) {
       clHistory.push(tabs[0].url);
     }
 
