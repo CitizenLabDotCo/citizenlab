@@ -17,7 +17,6 @@ export const Drag = ({ id, index, ...props }: DragProps) => {
           <div ref={provided.innerRef} {...provided.draggableProps} {...props}>
             <div {...provided.dragHandleProps}>
               <Box
-                background=""
                 border={
                   snapshot.isDragging ? `1px solid ${colors.teal}` : undefined
                 }
