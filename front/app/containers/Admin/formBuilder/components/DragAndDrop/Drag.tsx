@@ -7,9 +7,7 @@ export const Drag = ({ id, index, ...props }) => {
       {(provided) => {
         return (
           <div ref={provided.innerRef} {...provided.draggableProps} {...props}>
-            <div className="drag-handle" {...provided.dragHandleProps}>
-              {props.children}
-            </div>
+            <div {...provided.dragHandleProps}>{props.children}</div>
           </div>
         );
       }}

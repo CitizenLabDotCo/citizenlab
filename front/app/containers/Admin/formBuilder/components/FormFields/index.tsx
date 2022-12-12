@@ -8,9 +8,8 @@ import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { List } from 'components/admin/ResourceList';
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { DNDFieldElement } from './DNDFieldElement';
+import { FieldElement } from './FieldElement';
 
 // hooks and services
 import useLocale from 'hooks/useLocale';
@@ -48,6 +47,14 @@ interface FormFieldsProps {
   selectedFieldId?: string;
 }
 
+export const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
 const FormFields = ({
   onEditField,
   selectedFieldId,
@@ -79,49 +86,63 @@ const FormFields = ({
   });
 
   return (
-    <Box py="32px" height="100%" overflowY="auto" overflowX="hidden">
-      <List key={nestedPageData.length}>
-        <DragAndDrop
-          onDragEnd={(result) => {
-            handleDragEnd(result, nestedPageData);
-          }}
-        >
-          <Drop id="droppable" type="droppable-page">
-            {nestedPageData.map((pageGrouping, pageIndex) => {
-              const pageId = pageGrouping.page.id;
+    <Box py="32px" height="100%">
+      <DragAndDrop
+        onDragEnd={(result) => {
+          handleDragEnd(result, nestedPageData);
+        }}
+      >
+        <Drop id="droppable" type="droppable-page">
+          {nestedPageData.map((pageGrouping, pageIndex) => {
+            return (
+              <Drag
+                key={pageGrouping.id}
+                id={pageGrouping.id}
+                index={pageIndex}
+              >
+                <FieldElement
+                  field={pageGrouping.page}
+                  isEditingDisabled={isEditingDisabled}
+                  getTranslatedFieldType={getTranslatedFieldType}
+                  selectedFieldId={selectedFieldId}
+                  onEditField={onEditField}
+                />
 
-              return (
-                <Drag key={pageId} id={pageId} index={pageIndex}>
-                  <DNDFieldElement
-                    field={pageGrouping.page}
-                    isEditingDisabled={isEditingDisabled}
-                    getTranslatedFieldType={getTranslatedFieldType}
-                    selectedFieldId={selectedFieldId}
-                    onEditField={onEditField}
-                  />
-
-                  <Drop key={pageId} id={pageId} type="droppable-question">
-                    {pageGrouping.questions.map((question, index) => {
-                      return (
-                        <Drag key={question.id} id={question.id} index={index}>
-                          <DNDFieldElement
+                <Drop
+                  key={pageGrouping.id}
+                  id={pageGrouping.id}
+                  type="droppable-question"
+                >
+                  {pageGrouping.questions.length === 0 ? (
+                    <Box height="4px" />
+                  ) : (
+                    <>
+                      {pageGrouping.questions.map((question, index) => {
+                        return (
+                          <Drag
                             key={question.id}
-                            field={question}
-                            isEditingDisabled={isEditingDisabled}
-                            getTranslatedFieldType={getTranslatedFieldType}
-                            selectedFieldId={selectedFieldId}
-                            onEditField={onEditField}
-                          />
-                        </Drag>
-                      );
-                    })}
-                  </Drop>
-                </Drag>
-              );
-            })}
-          </Drop>
-        </DragAndDrop>
-      </List>
+                            id={question.id}
+                            index={index}
+                          >
+                            <FieldElement
+                              key={question.id}
+                              field={question}
+                              isEditingDisabled={isEditingDisabled}
+                              getTranslatedFieldType={getTranslatedFieldType}
+                              selectedFieldId={selectedFieldId}
+                              onEditField={onEditField}
+                            />
+                          </Drag>
+                        );
+                      })}
+                    </>
+                  )}
+                </Drop>
+              </Drag>
+            );
+          })}
+        </Drop>
+      </DragAndDrop>
       {formCustomFields.length > 0 && (
         <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
       )}
