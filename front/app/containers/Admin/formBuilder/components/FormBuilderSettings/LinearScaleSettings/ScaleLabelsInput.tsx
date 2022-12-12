@@ -25,6 +25,7 @@ interface Props {
   maximumName: string;
   onSelectedLocaleChange?: (locale: Locale) => void;
   locales: Locale[];
+  platformLocale: Locale;
 }
 
 const ScaleLabelsInput = ({
@@ -33,16 +34,19 @@ const ScaleLabelsInput = ({
   maximumName,
   onSelectedLocaleChange,
   locales,
+  platformLocale,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { control, setValue, getValues } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
+    platformLocale
+  );
 
   // Handles locale change
   useEffect(() => {
-    setSelectedLocale(locales[0]);
-    onSelectedLocaleChange?.(locales[0]);
-  }, [locales, onSelectedLocaleChange]);
+    setSelectedLocale(platformLocale);
+    onSelectedLocaleChange?.(platformLocale);
+  }, [platformLocale, onSelectedLocaleChange]);
 
   const defaultValues = [{}];
 
@@ -69,21 +73,23 @@ const ScaleLabelsInput = ({
               render={({ field: { ref: _ref, value: maxLabelMultiloc } }) => {
                 return (
                   <>
-                    <Box display="flex" mr="0px" my="16px">
+                    <Box display="flex" flexWrap="wrap" mr="0px" my="16px">
                       <Label>
                         {formatMessage(messages.labels)}
                         <IconTooltip
                           content={formatMessage(messages.labelsTooltipContent)}
                         />
                       </Label>
-                      <LocaleSwitcher
-                        onSelectedLocaleChange={handleOnSelectedLocaleChange}
-                        locales={!isNilOrError(locales) ? locales : []}
-                        selectedLocale={selectedLocale}
-                        values={{
-                          input_field: minLabelMultiloc && maxLabelMultiloc,
-                        }}
-                      />
+                      <Box>
+                        <LocaleSwitcher
+                          onSelectedLocaleChange={handleOnSelectedLocaleChange}
+                          locales={!isNilOrError(locales) ? locales : []}
+                          selectedLocale={selectedLocale}
+                          values={{
+                            input_field: minLabelMultiloc && maxLabelMultiloc,
+                          }}
+                        />
+                      </Box>
                     </Box>
                     <Box display="flex" gap="36px" marginBottom="16px">
                       <Box mt="12px">

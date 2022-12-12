@@ -17,7 +17,8 @@ export function generateTempId() {
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
   field: IFlatCustomFieldWithIndex,
-  locales: Locale[]
+  locales: Locale[],
+  platformLocale: Locale
 ) {
   switch (field.input_type) {
     case 'multiselect':
@@ -27,6 +28,7 @@ export function getAdditionalSettings(
           nameInputType={`customFields.${field.index}.input_type`}
           name={`customFields.${field.index}.options`}
           locales={locales}
+          platformLocale={platformLocale}
         />
       );
     case 'page':
@@ -34,6 +36,7 @@ export function getAdditionalSettings(
     case 'linear_scale':
       return (
         <LinearScaleSettings
+          platformLocale={platformLocale}
           maximumName={`customFields.${field.index}.maximum`}
           minimumLabelName={`customFields.${field.index}.minimum_label_multiloc`}
           maximumLabelName={`customFields.${field.index}.maximum_label_multiloc`}
