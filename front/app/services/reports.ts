@@ -16,11 +16,11 @@ export interface Report {
         id: string;
         type: 'content-builder-layout';
       };
-      owner: {
-        data: {
-          id: string;
-          type: 'user';
-        };
+    };
+    owner: {
+      data: {
+        id: string;
+        type: 'user';
       };
     };
   };

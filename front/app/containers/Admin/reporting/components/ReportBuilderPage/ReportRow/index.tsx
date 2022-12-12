@@ -5,6 +5,7 @@ import { deleteReport, Report } from 'services/reports';
 
 // components
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
+import EditedText from './EditedText';
 import Button from 'components/UI/Button';
 
 // styling
@@ -60,11 +61,17 @@ const ReportRow = ({ report }: Props) => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        py="8px"
+        py="12px"
       >
-        <Title variant="h5" color="primary" mt="0px" mb="0px">
-          {report.attributes.name}
-        </Title>
+        <Box>
+          <Title variant="h5" color="primary" mt="0px" mb="0px">
+            {report.attributes.name}
+          </Title>
+          <EditedText
+            updatedAt={report.attributes.updated_at}
+            userId={report.relationships.owner.data.id}
+          />
+        </Box>
         <Box display="flex">
           <Button
             mr="8px"
