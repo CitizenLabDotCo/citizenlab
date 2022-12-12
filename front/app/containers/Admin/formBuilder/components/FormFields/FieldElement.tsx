@@ -71,10 +71,6 @@ export const FieldElement = (props: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
 
-  if (isNilOrError(locale)) {
-    return null;
-  }
-
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
 

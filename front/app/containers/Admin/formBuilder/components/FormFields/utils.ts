@@ -120,9 +120,9 @@ export const getLinearScaleOptions = (maximum: number) => {
 export const getTitleFromAnswerId = (
   field: IFlatCustomField,
   answerId: string | number | undefined,
-  locale: Locale
+  locale: Locale | undefined | null | Error
 ) => {
-  if (answerId) {
+  if (answerId && !isNilOrError(locale)) {
     // If number, this is a linear scale option. Return the value as a string.
     if (typeof answerId === 'number') {
       return answerId.toString();
