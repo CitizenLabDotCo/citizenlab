@@ -16,6 +16,7 @@ import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
+import ImageTextCards from '../../../../../../modules/commercial/content_builder/admin/components/CraftSections/ImageTextCards';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -40,6 +41,7 @@ const Editor: React.FC<EditorProps> = ({
         WhiteSpace,
         AnalyticsChartWidget,
         AboutReportWidget,
+        ImageTextCards,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
