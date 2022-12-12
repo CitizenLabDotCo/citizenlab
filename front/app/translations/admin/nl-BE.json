@@ -1705,7 +1705,7 @@
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.totalEmailsSent": "Totaal verzonden e-mails",
   "app.modules.commercial.analytics.admin.components.Events.completed": "Voltooid",
   "app.modules.commercial.analytics.admin.components.Events.events": "Activiteiten",
-  "app.modules.commercial.analytics.admin.components.Events.totalEvents": "Totaal aantal toegevoegde activiteiten",
+  "app.modules.commercial.analytics.admin.components.Events.totalEvents": "Totaal aantal toegevoegde evenementen",
   "app.modules.commercial.analytics.admin.components.Events.upcoming": "Binnenkort",
   "app.modules.commercial.analytics.admin.components.Invitations.accepted": "Aanvaard",
   "app.modules.commercial.analytics.admin.components.Invitations.invitations": "Uitnodigingen",
