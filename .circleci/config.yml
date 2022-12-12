@@ -252,7 +252,8 @@ jobs:
       CITIZENLAB_EE: true
     steps:
       - echo_pipeline_parameters
-      - checkout
+      - checkout:
+          path: ./citizenlab
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
