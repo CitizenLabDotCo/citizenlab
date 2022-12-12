@@ -15,6 +15,9 @@ import {
   getTitleColor,
   getIndexForTitle,
   getIndexTitleColor,
+  getLinearScaleRule,
+  getLinearScaleOptions,
+  getOptionRule,
 } from './utils';
 
 // components
@@ -94,32 +97,37 @@ const FormFields = ({
 
   const getTitleFromAnswerId = (
     field: IFlatCustomField,
-    answerId: string | number
+    answerId: string | number | undefined
   ) => {
-    // If number, this is a linear scale option. Return the value as a string.
-    if (typeof answerId === 'number') {
-      return answerId.toString();
+    if (answerId) {
+      // If number, this is a linear scale option. Return the value as a string.
+      if (typeof answerId === 'number') {
+        return answerId.toString();
+      }
+      // Otherwise this is an option ID, return the related option title
+      const option = field?.options?.find(
+        (option) => option.id === answerId || option.temp_id === answerId
+      );
+      return option?.title_multiloc[locale];
     }
-    // Otherwise this is an option ID, return the related option title
-    const option = field?.options?.find(
-      (option) => option.id === answerId || option.temp_id === answerId
-    );
-    return option?.title_multiloc[locale];
+    return undefined;
   };
 
-  const getTitleFromPageId = (pageId: string | number) => {
-    // Return the related page title for the provided ID
-    if (pageId === surveyEndOption) {
-      return `${formatMessage(messages.surveyEnd)}`;
-    }
-    const page = formCustomFields.find(
-      (field) => field.id === pageId || field.temp_id === pageId
-    );
-    if (!isNilOrError(page)) {
-      return `${formatMessage(messages.page)} ${getIndexForTitle(
-        formCustomFields,
-        page
-      )}`;
+  const getTitleFromPageId = (pageId: string | number | undefined) => {
+    if (pageId) {
+      // Return the related page title for the provided ID
+      if (pageId === surveyEndOption) {
+        return `${formatMessage(messages.surveyEnd)}`;
+      }
+      const page = formCustomFields.find(
+        (field) => field.id === pageId || field.temp_id === pageId
+      );
+      if (!isNilOrError(page)) {
+        return `${formatMessage(messages.page)} ${getIndexForTitle(
+          formCustomFields,
+          page
+        )}`;
+      }
     }
     return undefined;
   };
@@ -211,21 +219,44 @@ const FormFields = ({
                         </Box>
                         {field.input_type !== 'page' && field.logic.rules && (
                           <Box>
-                            {field.logic.rules.map((rule) => {
-                              return (
-                                <Box key={rule.if}>
-                                  <FieldRuleDisplay
-                                    answerTitle={getTitleFromAnswerId(
-                                      field,
-                                      rule.if
-                                    )}
-                                    targetPage={getTitleFromPageId(
-                                      rule.goto_page_id
-                                    )}
-                                  />
-                                </Box>
-                              );
-                            })}
+                            {field.input_type === 'select' &&
+                              field.options &&
+                              field.options.map((option) => {
+                                return (
+                                  <Box key={option.id}>
+                                    <FieldRuleDisplay
+                                      answerTitle={getTitleFromAnswerId(
+                                        field,
+                                        getOptionRule(option, field)?.if
+                                      )}
+                                      targetPage={getTitleFromPageId(
+                                        getOptionRule(option, field)
+                                          ?.goto_page_id
+                                      )}
+                                    />
+                                  </Box>
+                                );
+                              })}
+                            {field.input_type === 'linear_scale' &&
+                              field.maximum &&
+                              getLinearScaleOptions(field.maximum).map(
+                                (option) => {
+                                  return (
+                                    <Box key={option.key}>
+                                      <FieldRuleDisplay
+                                        answerTitle={getTitleFromAnswerId(
+                                          field,
+                                          getLinearScaleRule(option, field)?.if
+                                        )}
+                                        targetPage={getTitleFromPageId(
+                                          getLinearScaleRule(option, field)
+                                            ?.goto_page_id
+                                        )}
+                                      />
+                                    </Box>
+                                  );
+                                }
+                              )}
                           </Box>
                         )}
                       </Box>

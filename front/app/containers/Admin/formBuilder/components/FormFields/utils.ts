@@ -1,8 +1,10 @@
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
+  IOptionsType,
 } from 'services/formCustomFields';
 import { colors } from '@citizenlab/cl2-component-library';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const isFieldSelected = (
   selectedFieldId: string | undefined,
@@ -63,4 +65,46 @@ export const getIndexForTitle = (
     (customField) => customField.input_type !== 'page'
   );
   return ` ${filteredQuestion.indexOf(field) + 1}`;
+};
+
+export const getOptionRule = (
+  option: IOptionsType,
+  field: IFlatCustomField
+) => {
+  const rules = field.logic?.rules;
+  if (!isNilOrError(rules) && (option.id || option.temp_id)) {
+    const rule = rules.find(
+      (rule) => rule.if === option.id || rule.if === option.temp_id
+    );
+    if (rule && rule.if && rule.goto_page_id) {
+      return rule;
+    }
+  }
+  return undefined;
+};
+
+export const getLinearScaleRule = (
+  option: { key: number; label: string },
+  field: IFlatCustomField
+) => {
+  const rules = field.logic?.rules;
+  if (!isNilOrError(rules) && option.key) {
+    const rule = rules.find((rule) => rule.if === option.key);
+    if (rule && rule.if && rule.goto_page_id) {
+      return rule;
+    }
+  }
+  return undefined;
+};
+
+export const getLinearScaleOptions = (maximum: number) => {
+  const linearScaleOptionArray = Array.from(
+    { length: maximum },
+    (_, i) => i + 1
+  );
+  const answers = linearScaleOptionArray.map((option) => ({
+    key: option,
+    label: option.toString(),
+  }));
+  return answers;
 };
