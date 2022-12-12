@@ -78,15 +78,6 @@ jobs:
       - git-shallow-clone/checkout
       - run: danger ci
 
-  check-translations:
-    resource_class: small
-    docker:
-      - image: cimg/ruby:3.1.3
-    steps:
-      - git-shallow-clone/checkout
-      - run: gem install crowdin-api
-      - run: ruby .circleci/check_translations.rb $CIRCLE_BRANCH
-
   # *************** back ***************
 
   back-build-essential-docker-image:
@@ -183,8 +174,6 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - git-shallow-clone/checkout:
-          path: /citizenlab
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -366,16 +355,6 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
-      - check-translations:
-          context:
-            - crowdin
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-                - master
-                - production
 
   # *************** back ***************
   back:
@@ -435,6 +414,9 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
+          pre-steps:
+            - git-shallow-clone/checkout:
+                path: /citizenlab
       - front-lint:
           filters:
             branches:
