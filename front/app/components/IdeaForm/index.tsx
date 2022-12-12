@@ -772,12 +772,15 @@ class IdeaForm extends PureComponent<
       const uiSchemaOptions =
         ideaCustomFieldsSchemas?.ui_schema_multiloc[locale]?.options;
 
-      const inputTerm = () => {
-        if (!isNilOrError(uiSchemaOptions) && uiSchemaOptions['inputTerm']) {
-          return uiSchemaOptions['inputTerm'];
-        }
-        return getInputTerm(project.attributes.process_type, project, phases);
-      };
+      let inputTerm = getInputTerm(
+        project.attributes.process_type,
+        project,
+        phases
+      );
+
+      if (!isNilOrError(uiSchemaOptions) && uiSchemaOptions['inputTerm']) {
+        inputTerm = uiSchemaOptions['inputTerm'];
+      }
 
       const AdminBudgetFieldLabel = () => {
         return (
@@ -803,7 +806,7 @@ class IdeaForm extends PureComponent<
         <Form id="idea-form" className={className}>
           <StyledFormSection>
             <FormSectionTitle
-              message={getInputTermMessage(inputTerm(), {
+              message={getInputTermMessage(inputTerm, {
                 idea: messages.formGeneralSectionTitle,
                 option: messages.optionFormGeneralSectionTitle,
                 project: messages.projectFormGeneralSectionTitle,
