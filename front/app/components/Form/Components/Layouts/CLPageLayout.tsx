@@ -154,7 +154,7 @@ const CLPageLayout = memo(
               currentStep === index && (
                 <StyledFormSection key={index}>
                   {page.options.title && (
-                    <Title variant="h2" mt="0" mb="24px" color="tenantText">
+                    <Title variant="h2" mt="0" mb="24px" color="tenantPrimary">
                       {page.options.title}
                     </Title>
                   )}
