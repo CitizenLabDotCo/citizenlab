@@ -1,3 +1,4 @@
+import { questionDNDType } from 'containers/Admin/formBuilder/components/FormFields';
 import { IFlatCustomField } from 'services/formCustomFields';
 
 const reorder = <ListType>(
@@ -63,7 +64,7 @@ export const getReorderedFields = (
   const sourcePageId = source.droppableId;
   const destinationPageId = destination.droppableId;
 
-  if (type === 'droppable-question') {
+  if (type === questionDNDType) {
     if (sourcePageId === destinationPageId) {
       const updatedOrder = reorder<IFlatCustomField>(
         getPageQuestions(nestedPageData, sourcePageId),

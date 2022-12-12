@@ -43,6 +43,9 @@ const getTranslatedFieldType = (field) => {
   }
 };
 
+export const pageDNDType = 'droppable-page';
+export const questionDNDType = 'droppable-question';
+
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   handleDragEnd: (result: any, nestedPageData: PageStructure[]) => void;
@@ -87,7 +90,7 @@ const FormFields = ({
           handleDragEnd(result, nestedPageData);
         }}
       >
-        <Drop id="droppable" type="droppable-page">
+        <Drop id="droppable" type={pageDNDType}>
           {nestedPageData.map((pageGrouping, pageIndex) => {
             return (
               <Drag
@@ -106,32 +109,34 @@ const FormFields = ({
                 <Drop
                   key={pageGrouping.id}
                   id={pageGrouping.id}
-                  type="droppable-question"
+                  type={questionDNDType}
                 >
-                  {pageGrouping.questions.length === 0 ? (
-                    <Box height="4px" />
-                  ) : (
-                    <>
-                      {pageGrouping.questions.map((question, index) => {
-                        return (
-                          <Drag
-                            key={question.id}
-                            id={question.id}
-                            index={index}
-                          >
-                            <FieldElement
+                  <Box height="100%">
+                    {pageGrouping.questions.length === 0 ? (
+                      <Box height="0.5px" />
+                    ) : (
+                      <>
+                        {pageGrouping.questions.map((question, index) => {
+                          return (
+                            <Drag
                               key={question.id}
-                              field={question}
-                              isEditingDisabled={isEditingDisabled}
-                              getTranslatedFieldType={getTranslatedFieldType}
-                              selectedFieldId={selectedFieldId}
-                              onEditField={onEditField}
-                            />
-                          </Drag>
-                        );
-                      })}
-                    </>
-                  )}
+                              id={question.id}
+                              index={index}
+                            >
+                              <FieldElement
+                                key={question.id}
+                                field={question}
+                                isEditingDisabled={isEditingDisabled}
+                                getTranslatedFieldType={getTranslatedFieldType}
+                                selectedFieldId={selectedFieldId}
+                                onEditField={onEditField}
+                              />
+                            </Drag>
+                          );
+                        })}
+                      </>
+                    )}
+                  </Box>
                 </Drop>
               </Drag>
             );
