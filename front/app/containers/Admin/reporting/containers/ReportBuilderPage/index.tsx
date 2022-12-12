@@ -4,11 +4,14 @@ import React, { useState } from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useReports from 'hooks/useReports';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // components
 import { SectionTitle } from 'components/admin/Section';
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';
-import PageWrapper from 'components/admin/PageWrapper';
-import { Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import ReportRow from '../../components/ReportBuilderPage/ReportRow';
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
 
@@ -42,14 +45,47 @@ const ReportBuilder = () => {
       {showEmptyState ? (
         <EmptyState onOpenModal={openModal} />
       ) : (
-        <PageWrapper>
-          <Text fontSize="l" color="primary" mt="0px" mb="32px">
-            <FormattedMessage {...messages.viewReports} />
-          </Text>
-          {reports.map((report) => (
-            <ReportRow key={report.id} report={report} />
-          ))}
-        </PageWrapper>
+        <>
+          <Box background="white" px="56px" py="40px">
+            <Title
+              variant="h3"
+              color="primary"
+              mt="0px"
+              mb="0px"
+              fontWeight="normal"
+            >
+              <FormattedMessage {...messages.createAReport} />
+            </Title>
+            <Text color="textSecondary" mt="4px" mb="0px">
+              <FormattedMessage {...messages.createReportDescription} />
+            </Text>
+            <Box display="flex">
+              <Button
+                onClick={openModal}
+                width="auto"
+                mt="12px"
+                bgColor={colors.primary}
+                p="8px 12px"
+              >
+                <FormattedMessage {...messages.createAReport} />
+              </Button>
+            </Box>
+          </Box>
+          <Box background="white" px="56px" py="40px" mt="20px">
+            <Title
+              variant="h3"
+              color="primary"
+              mt="0px"
+              mb="32px"
+              fontWeight="normal"
+            >
+              <FormattedMessage {...messages.viewReports} />
+            </Title>
+            {reports.map((report) => (
+              <ReportRow key={report.id} report={report} />
+            ))}
+          </Box>
+        </>
       )}
       <CreateReportModal open={modalOpen} onClose={closeModal} />
     </>
