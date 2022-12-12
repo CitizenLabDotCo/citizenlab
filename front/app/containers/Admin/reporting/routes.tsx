@@ -17,11 +17,19 @@ const reportingRoutes = () => {
     children: [
       {
         path: 'report-builder',
-        element: <ReportBuilderPage />,
+        element: (
+          <PageLoading>
+            <ReportBuilderPage />
+          </PageLoading>
+        ),
       },
       {
         path: 'report-builder/:reportId',
-        element: <ReportBuilder />,
+        element: (
+          <PageLoading>
+            <ReportBuilder />
+          </PageLoading>
+        ),
       },
       ...moduleConfiguration.routes['admin.reporting'],
     ],
