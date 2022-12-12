@@ -286,8 +286,6 @@ jobs:
       RAILS_ENV: test
       COVERAGE: ON
       CITIZENLAB_EE: true
-    context:
-      - citizenlab-ee-environment
     steps:
       - wait-for-postgres
       - run: |
@@ -874,21 +872,31 @@ workflows:
         - << pipeline.parameters.back >>
     jobs:
       - back-build-ee-docker-image:
-          context: docker-hub-access
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
       - back-ee-lint:
-          context: docker-hub-access
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
           requires:
             - back-build-ee-docker-image
       - back-ee-test:
-          context: docker-hub-access
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
           requires:
             - back-build-ee-docker-image
       - back-ee-web-api-docs:
-          context: docker-hub-access
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
           requires:
             - back-ee-test
       - back-ee-slow-tests:
-          context: docker-hub-access
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
           requires:
             - back-build-ee-docker-image
       - back-ee-trigger-deploy:
