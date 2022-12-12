@@ -99,8 +99,8 @@ export default defineMessages({
     defaultMessage:
       'For more information on recommended image resolutions, {supportPageLink}.',
   },
-  headerImageSupportPageURL: {
-    id: 'app.containers.AdminPage.SettingsPage.headerImageSupportPageURL',
+  imageSupportPageURL: {
+    id: 'app.containers.AdminPage.SettingsPage.imageSupportPageURL',
     defaultMessage:
       'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
@@ -129,11 +129,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink',
     defaultMessage: 'knowledge base',
   },
-  fullWidthBannerTooltipLinkUrl: {
-    id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLinkUrl',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
-  },
   TwoColumnLayout: {
     id: 'app.containers.AdminPage.SettingsPage.TwoColumnLayout',
     defaultMessage: 'Two columns',
@@ -151,11 +146,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.twoRowBannerTooltipLink',
     defaultMessage: 'knowledge base',
   },
-  twoRowBannerTooltipLinkUrl: {
-    id: 'app.containers.AdminPage.SettingsPage.twoRowBannerTooltipLinkUrl',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
-  },
   fixedRatioLayout: {
     id: 'app.containers.AdminPage.SettingsPage.fixedRatio',
     defaultMessage: 'Fixed-ratio banner',
@@ -163,16 +153,11 @@ export default defineMessages({
   fixedRatioBannerTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip',
     defaultMessage:
-      'This banner type works best with images that shouldn’t be cropped, such as images with text, a logo or specific elements that are crucial to your citizens. This banner cannot be combined with an overlay. More info on the recommended image usage can be found on our { link }.',
+      'This banner type works best with images that shouldn’t be cropped, such as images with text, a logo or specific elements that are crucial to your citizens. This banner is replaced with a solid box in the primary colour when users are signed in. You can set this colour in the general settings. More info on the recommended image usage can be found on our { link }.',
   },
   fixedRatioBannerTooltipLink: {
     id: 'app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink',
     defaultMessage: 'knowledge base',
-  },
-  fixedRatioBannerTooltipLinkUrl: {
-    id: 'app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLinkUrl',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   fixedRatioImageCropperInfo: {
     id: 'app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfo',
@@ -182,11 +167,6 @@ export default defineMessages({
   fixedRatioImageCropperInfoLink: {
     id: 'app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfoLink',
     defaultMessage: 'recommended ratio',
-  },
-  fixedRatioImageCropperInfoLinkUrl: {
-    id: 'app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfoLinkUrl',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   heroBannerTitle: {
     id: 'app.containers.AdminPage.HeroBannerForm.heroBannerTitle',

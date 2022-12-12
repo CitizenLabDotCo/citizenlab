@@ -158,7 +158,7 @@ const BannerImageField = ({
               values={{
                 supportPageLink: (
                   <a
-                    href={formatMessage(messages.headerImageSupportPageURL)}
+                    href={formatMessage(messages.imageSupportPageURL)}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -210,9 +210,7 @@ const BannerImageField = ({
                   values={{
                     link: (
                       <a
-                        href={formatMessage(
-                          messages.fixedRatioImageCropperInfoLinkUrl
-                        )}
+                        href={formatMessage(messages.imageSupportPageURL)}
                         target="_blank"
                         rel="noreferrer"
                       >

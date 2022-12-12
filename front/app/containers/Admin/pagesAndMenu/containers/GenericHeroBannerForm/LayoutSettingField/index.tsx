@@ -84,9 +84,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                         values={{
                           link: (
                             <a
-                              href={formatMessage(
-                                messages.fullWidthBannerTooltipLinkUrl
-                              )}
+                              href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
                             >
@@ -152,9 +150,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                         values={{
                           link: (
                             <a
-                              href={formatMessage(
-                                messages.twoRowBannerTooltipLinkUrl
-                              )}
+                              href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
                             >
@@ -197,9 +193,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                         values={{
                           link: (
                             <a
-                              href={formatMessage(
-                                messages.fixedRatioBannerTooltipLinkUrl
-                              )}
+                              href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
                             >
