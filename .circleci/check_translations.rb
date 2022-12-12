@@ -86,9 +86,9 @@ class TranslationChecker
     project_id = @crwdn.get_project_id(CROWDIN_PROJECT_ID)
     raise "Can't find project '#{CROWDIN_PROJECT_ID}' in crowdin" unless project_id
 
-    branch_id = @crwdn.get_branch_id(project_id, BRANCH)
+    branch_id = @crwdn.get_branch_id(project_id, branch)
     unless branch_id
-      puts "Can\'t find matching branch '#{BRANCH}' in crowdin, aborting without errors"
+      puts "Can\'t find matching branch '#{branch}' in crowdin, aborting without errors"
       return
     end
 
