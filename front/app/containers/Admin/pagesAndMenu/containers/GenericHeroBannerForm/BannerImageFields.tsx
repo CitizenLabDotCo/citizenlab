@@ -7,7 +7,9 @@ import {
   IOption,
   Label,
   Select,
+  Text,
 } from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { debounce } from 'lodash-es';
@@ -196,10 +198,34 @@ const BannerImageField = ({
           </Box>
         )}
         {displayImageCropper ? (
-          <ImageCropper
-            image={headerLocalDisplayImage}
-            onComplete={onAddImage}
-          />
+          <Box display="flex" flexDirection="column" gap="8px">
+            <ImageCropper
+              image={headerLocalDisplayImage}
+              onComplete={onAddImage}
+            />
+            <Warning>
+              <Text>
+                <FormattedMessage
+                  {...messages.fixedRatioImageCropperInfo}
+                  values={{
+                    link: (
+                      <a
+                        href={formatMessage(
+                          messages.fixedRatioImageCropperInfoLinkUrl
+                        )}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <FormattedMessage
+                          {...messages.fixedRatioImageCropperInfoLink}
+                        />
+                      </a>
+                    ),
+                  }}
+                />
+              </Text>
+            </Warning>
+          </Box>
         ) : (
           <HeaderImageDropzone
             onAdd={bannerImageAddHandler}
