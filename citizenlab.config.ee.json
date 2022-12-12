@@ -1,6 +1,5 @@
 {
   "modules": {
-    "ee/multi_tenancy": true,
     "commercial/admin_api": true,
     "commercial/admin_project_templates": true,
     "commercial/analytics": true,
@@ -35,6 +34,7 @@
     "commercial/machine_translations": true,
     "commercial/matomo": true,
     "commercial/moderation": true,
+    "commercial/multi_tenancy": true,
     "commercial/nlp": true,
     "commercial/public_api": true,
     "commercial/remove_vendor_branding": true,
