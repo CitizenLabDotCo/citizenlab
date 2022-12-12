@@ -48,7 +48,7 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
         : []),
       ...additionalTabs,
     ],
-    [reportBuilderEnabled, additionalTabs]
+    [reportBuilderEnabled, additionalTabs, formatMessage]
   );
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
     }
 
     setRedirected(true);
-  }, [redirected, tabs]);
+  }, [redirected, tabs, pathname]);
 
   return (
     <>

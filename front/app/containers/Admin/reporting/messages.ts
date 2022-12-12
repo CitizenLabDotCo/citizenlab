@@ -10,7 +10,7 @@ export default defineMessages({
     defaultMessage: 'Reporting',
   },
   helmetDescription: {
-    id: 'app.containers.Admin.reporting.helmetTitle',
+    id: 'app.containers.Admin.reporting.helmetDescription',
     defaultMessage: 'Admin reporting page',
   },
 });
