@@ -96,6 +96,7 @@
     "react": "^16.14.0",
     "react-adopt": "0.6.0",
     "react-autosize-textarea": "^7.1.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-csv": "2.2.2",
     "react-dates": "21.8.0",
     "react-dnd": "^16.0.1",

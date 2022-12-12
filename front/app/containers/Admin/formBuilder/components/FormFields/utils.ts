@@ -53,14 +53,13 @@ export const getIndexForTitle = (
   formCustomFields: IFlatCustomField[],
   field: IFlatCustomField | IFlatCustomFieldWithIndex
 ) => {
-  if (field.input_type === 'page') {
-    const filteredPages = formCustomFields.filter(
-      (customField) => customField.input_type === 'page'
-    );
-    return ` ${filteredPages.indexOf(field) + 1}`;
-  }
-  const filteredQuestion = formCustomFields.filter(
-    (customField) => customField.input_type !== 'page'
-  );
-  return ` ${filteredQuestion.indexOf(field) + 1}`;
+  const fieldIndex = formCustomFields
+    .filter((customField) => {
+      return field.input_type === 'page'
+        ? customField.input_type === 'page'
+        : customField.input_type !== 'page';
+    })
+    .findIndex((f) => f.id === field.id);
+
+  return ` ${fieldIndex + 1}`;
 };
