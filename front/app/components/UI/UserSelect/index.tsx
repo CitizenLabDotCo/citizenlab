@@ -16,9 +16,8 @@ interface DataProps {
 
 interface InputProps {
   onChange: (id?: string) => void;
-  value: string;
-  placeholder?: string;
-  disabled?: boolean;
+  value: string | null;
+  placeholder: string;
   className?: string;
   id: string;
   inputId: string;
@@ -57,7 +56,6 @@ const UserSelect = ({
   onChange,
   value,
   placeholder,
-  disabled = false,
   className,
   id,
   inputId,
@@ -154,13 +152,12 @@ const UserSelect = ({
         isClearable
         filterOption={filterOption}
         value={selectedUser}
-        placeholder={placeholder as string}
+        placeholder={placeholder}
         options={options}
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
         onChange={handleChange}
         onInputChange={handleInputChange}
-        isDisabled={disabled}
         menuPlacement="auto"
         styles={selectStyles}
         onMenuScrollToBottom={handleMenuScrollToBottom}
