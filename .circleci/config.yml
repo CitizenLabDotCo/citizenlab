@@ -74,7 +74,7 @@ jobs:
     docker:
       - image: ghcr.io/danger/danger-js:10.6.6
     steps:
-      - run: apt-get install -y git
+      - run: apt-get update && apt-get install -y git
       - git-shallow-clone/checkout
       - run: danger ci
 
