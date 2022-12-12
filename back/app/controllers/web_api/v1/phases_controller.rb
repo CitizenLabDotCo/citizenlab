@@ -24,14 +24,6 @@ class WebApi::V1::PhasesController < ApplicationController
     authorize @phase
     if @phase.save
       sidefx.after_create(@phase, current_user)
-      # When creating a native survey phase,
-      # ParticipationMethod::NativeSurvey#create_default_form! is invoked.
-      # create_default_form! does not reload associations for form/fields/options,
-      # so fetch the phase from the database. The associations will be fetched
-      # when they are needed.
-      # create_default_form! creates fields, and CustomField uses acts_as_list
-      # for ordering fields. The ordering is ok in the database, but not necessarily in memory.
-      @phase = Phase.find(@phase.id)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serialized_json, status: :created
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
