@@ -26,12 +26,20 @@ export interface Report {
   };
 }
 
-export interface Reports {
+export interface ReportsResponse {
   data: Report[];
 }
 
+export interface ReportResponse {
+  data: Report;
+}
+
 export function reportsStream() {
-  return streams.get<Reports>({ apiEndpoint });
+  return streams.get<ReportsResponse>({ apiEndpoint });
+}
+
+export function reportByIdStream(id: string) {
+  return streams.get<ReportResponse>({ apiEndpoint: `${apiEndpoint}/${id}` });
 }
 
 export async function createReport(name: string) {

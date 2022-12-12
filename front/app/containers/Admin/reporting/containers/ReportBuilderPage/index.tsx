@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -27,8 +26,6 @@ const ReportBuilder = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const reports = useReports();
   const [modalOpen, setModalOpen] = useState(false);
-  const params = useParams();
-  console.log(params);
 
   if (!reportBuilderEnabled || isNilOrError(reports)) {
     return null;

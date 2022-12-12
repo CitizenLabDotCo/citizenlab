@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 // hooks
 import { useEditor, SerializedNodes } from '@craftjs/core';
+import useReport from 'hooks/useReport';
 
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -20,6 +21,7 @@ import clHistory from 'utils/cl-router/history';
 
 // types
 import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 type ContentBuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -28,6 +30,7 @@ type ContentBuilderTopBarProps = {
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
   draftEditorData?: Record<string, SerializedNodes>;
+  reportId: string;
   onSelectLocale: (args: {
     locale: Locale;
     editorData: SerializedNodes;
@@ -42,9 +45,11 @@ const ContentBuilderTopBar = ({
   // draftEditorData,
   localesWithError,
   hasPendingState,
+  reportId,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
+  const report = useReport(reportId);
 
   const disableSave = localesWithError.length > 0;
 
@@ -82,7 +87,7 @@ const ContentBuilderTopBar = ({
             <FormattedMessage {...messages.reportCreator} />
           </Text>
           <Title variant="h4" as="h1" color="primary">
-            Report title goes here
+            {isNilOrError(report) ? <></> : report.attributes.name}
           </Title>
         </Box>
         <LocaleSwitcher

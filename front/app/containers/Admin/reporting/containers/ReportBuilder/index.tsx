@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -34,7 +34,11 @@ import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 
-const ReportBuilder = () => {
+interface Props {
+  reportId: string;
+}
+
+const ReportBuilder = ({ reportId }: Props) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [contentBuilderErrors, setContentBuilderErrors] =
@@ -137,6 +141,7 @@ const ReportBuilder = () => {
           selectedLocale={selectedLocale}
           onSelectLocale={handleSelectedLocaleChange}
           draftEditorData={draftData}
+          reportId={reportId}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}
@@ -156,13 +161,16 @@ const ReportBuilder = () => {
 const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { pathname } = useLocation();
+  const { reportId } = useParams();
 
   const renderReportBuilder =
-    reportBuilderEnabled && pathname.includes('admin/reporting/report-builder');
+    reportBuilderEnabled &&
+    pathname.includes('admin/reporting/report-builder') &&
+    reportId !== undefined;
 
   if (!renderReportBuilder) return null;
 
-  return <ReportBuilder />;
+  return <ReportBuilder reportId={reportId} />;
 };
 
 export default ReportBuilderWrapper;
