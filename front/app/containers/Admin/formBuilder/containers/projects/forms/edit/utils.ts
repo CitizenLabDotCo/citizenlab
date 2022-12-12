@@ -18,6 +18,20 @@ export type PageStructure = {
   id: string;
 };
 
+type DragOrDroValues = {
+  droppableId: string;
+  index: number;
+};
+
+export type DragAndDropResult = {
+  draggableId: string;
+  type: string;
+  source: DragOrDroValues;
+  reason: string;
+  mode: string;
+  destination: DragOrDroValues | null;
+};
+
 const getFlatPageStructure = (
   nestedPageStructure: PageStructure[]
 ): IFlatCustomField[] => {
@@ -40,7 +54,7 @@ const getPageQuestions = (
 };
 
 export const getReorderedFields = (
-  result,
+  result: DragAndDropResult,
   nestedPageData: PageStructure[]
 ): IFlatCustomField[] | undefined => {
   const { type, source, destination } = result;

@@ -19,7 +19,10 @@ import {
 } from 'services/formCustomFields';
 
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
-import { PageStructure } from '../../containers/projects/forms/edit/utils';
+import {
+  DragAndDropResult,
+  PageStructure,
+} from '../../containers/projects/forms/edit/utils';
 
 // Assign field badge text
 const getTranslatedFieldType = (field) => {
@@ -80,7 +83,7 @@ const FormFields = ({
   return (
     <Box py="32px" height="100%">
       <DragAndDrop
-        onDragEnd={(result) => {
+        onDragEnd={(result: DragAndDropResult) => {
           handleDragEnd(result, nestedPageData);
         }}
       >
