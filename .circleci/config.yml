@@ -286,6 +286,8 @@ jobs:
       RAILS_ENV: test
       COVERAGE: ON
       CITIZENLAB_EE: true
+    context:
+      - citizenlab-ee-environment
     steps:
       - wait-for-postgres
       - run: |
