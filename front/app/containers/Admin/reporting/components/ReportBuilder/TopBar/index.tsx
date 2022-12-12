@@ -49,7 +49,7 @@ const ContentBuilderTopBar = ({
   const disableSave = localesWithError.length > 0;
 
   const goBack = () => {
-    clHistory.push('/admin/reporting/report-creator');
+    clHistory.push('/admin/reporting/report-builder');
   };
 
   const handleSave = async () => {

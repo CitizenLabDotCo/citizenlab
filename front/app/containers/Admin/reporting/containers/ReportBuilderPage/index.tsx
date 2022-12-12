@@ -37,7 +37,7 @@ const ReportBuilder = () => {
   return (
     <>
       <SectionTitle>
-        <FormattedMessage {...sharedMessages.reportCreator} />
+        <FormattedMessage {...sharedMessages.reportBuilder} />
       </SectionTitle>
       {showEmptyState ? (
         <EmptyState onOpenModal={openModal} />

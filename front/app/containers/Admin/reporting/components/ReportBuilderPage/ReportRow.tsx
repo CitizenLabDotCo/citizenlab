@@ -20,7 +20,7 @@ const ReportRow = ({ report }: Props) => {
   };
 
   const handleEditReport = () => {
-    clHistory.push(`/admin/reporting/report-creator/${report.id}`);
+    clHistory.push(`/admin/reporting/report-builder/${report.id}`);
   };
 
   const handleViewReport = () => {

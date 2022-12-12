@@ -158,7 +158,7 @@ const ReportBuilderWrapper = () => {
   const { pathname } = useLocation();
 
   const renderReportBuilder =
-    reportBuilderEnabled && pathname.includes('admin/reporting/report-creator');
+    reportBuilderEnabled && pathname.includes('admin/reporting/report-builder');
 
   if (!renderReportBuilder) return null;
 

@@ -40,9 +40,9 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
       ...(reportBuilderEnabled
         ? [
             {
-              label: formatMessage(messages.reportCreator),
-              url: '/admin/reporting/report-creator',
-              name: 'report_creator',
+              label: formatMessage(messages.reportBuilder),
+              url: '/admin/reporting/report-builder',
+              name: 'report_builder',
             },
           ]
         : []),
