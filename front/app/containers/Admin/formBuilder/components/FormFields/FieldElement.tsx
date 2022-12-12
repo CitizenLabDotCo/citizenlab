@@ -92,10 +92,9 @@ export const FieldElement = (props: Props) => {
           justifyContent="space-between"
           className="expand"
           width="100%"
-          height={field.input_type === 'page' ? '100%' : undefined}
           ml={field.input_type === 'page' ? '8px' : '32px'}
         >
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" height="100%">
             <Box flexGrow={0} flexShrink={0}>
               <Icon
                 ml="28px"
