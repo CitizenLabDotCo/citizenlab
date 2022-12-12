@@ -50,7 +50,7 @@ describe('Admin: update text content and sections', () => {
     // go back home
     cy.get('[data-cy="breadcrumbs-Home"]').click();
 
-    // visit bottom into section edit page
+    // visit bottom info section edit page
     cy.get(
       '[data-cy="e2e-admin-edit-button-bottom_info_section_enabled"]'
     ).click();
@@ -71,7 +71,8 @@ describe('Admin: update text content and sections', () => {
     cy.contains('Bottom info section saved').should('exist');
 
     // go to homepage and check that the content isn't there until sections are enabled
-    cy.visit('/');
+    cy.wait('@getHomePage');
+
     cy.get('[data-testid="e2e-landing-page-top-info-section"]').should(
       'not.exist'
     );

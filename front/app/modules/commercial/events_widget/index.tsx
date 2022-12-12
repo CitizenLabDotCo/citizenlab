@@ -45,8 +45,8 @@ const configuration: ModuleConfiguration = {
     'app.containers.HomePage.EventsWidget': () => {
       return (
         <RenderOnAllowedAndEnabled>
-          <Box mb="72px">
-            <EventsWidget data-testid="e2e-homepage-events-widget-container" />
+          <Box mb="72px" data-testid="e2e-homepage-events-widget-container">
+            <EventsWidget />
           </Box>
         </RenderOnAllowedAndEnabled>
       );
