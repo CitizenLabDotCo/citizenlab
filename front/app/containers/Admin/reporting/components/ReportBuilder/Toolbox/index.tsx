@@ -23,6 +23,8 @@ import contentBuilderMessages from '../../../../../../modules/commercial/content
 import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
+import aboutMessages from '../Widgets/AboutReportWidget/messages';
+import AboutReportWidget from '../Widgets/AboutReportWidget';
 
 import surveyResultMessages from '../Widgets/SurveyResultsWidget/messages';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
@@ -72,12 +74,17 @@ const ReportBuilderToolbox = () => {
         }
       >
         <DraggableElement
+          id="e2e-draggable-about-report"
+          component={<AboutReportWidget />}
+          icon="section-image-text"
+          label={formatMessage(aboutMessages.aboutThisReport)}
+        />
+        <DraggableElement
           id="e2e-draggable-text"
           component={<Text text={formatMessage(textMessages.textValue)} />}
           icon="text"
           label={formatMessage(Text.craft.custom.title)}
         />
-
         <DraggableElement
           id="e2e-draggable-image"
           component={<Image alt="" />}
