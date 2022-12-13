@@ -670,7 +670,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "Visas grupas",
   "app.containers.AdminPage.DashboardPage.allProjects": "Visi projekti",
   "app.containers.AdminPage.DashboardPage.allTime": "Viss laiks",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Tiek veikta automātiska atrašanās vietas noteikšana. Lūdzu, pagaidiet, kamēr apstrāde tiks pabeigta.",
   "app.containers.AdminPage.DashboardPage.comments": "Komentāri",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Komentāri",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Lai novērtētu platformas lietotāju pārstāvību, nepieciešams pamatdatu kopums.",
@@ -750,9 +749,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Ieraksti pēc statusa",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Izvēlēties lietotāju grupu",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Izvēlēties projektu",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Vajadzētu būt gandrīz gatavam, uzgaidiet!",
   "app.containers.AdminPage.DashboardPage.male": "vīrietis",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Šī karte automātiski nosaka atrašanās pēc ieraksta virsraksta un apraksta. Atrašanās vietas dati var nebūt precīzi; ieraksti bez atrašanās vietas datiem netiek rādīti.",
   "app.containers.AdminPage.DashboardPage.month": "mēnesis",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "Klasifikācija tiek veidota, ņemot vērā katra dalībnieka iesniegto ierakstu (5 punkti par ierakstu), komentāru (3 punkti par komentāru) un balsu (1 punkts par balsi) skaitu.",
   "app.containers.AdminPage.DashboardPage.noData": "Nav datu, ko parādīt.",
@@ -793,12 +790,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "pašreizējo projektu filtrs",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "pašreizējo tagu filtrs",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Uzziniet, kas notiek jūsu platformā.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Karte",
   "app.containers.AdminPage.DashboardPage.tabOverview": "Pārskats",
   "app.containers.AdminPage.DashboardPage.tabReports": "Ziņojumi",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Pārstāvība",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Lietotāji",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Interesants fakts: nākamreiz, kad šeit ieradīsies, tas, iespējams, būs daudz ātrāks!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Laika līnija",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Informācijas panelis",
   "app.containers.AdminPage.DashboardPage.total": "Kopā",
@@ -1811,6 +1806,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo lapu? Šo darbību nevar atsaukt. Jūs varat arī izņemt lapu no navigācijas joslas, ja vēl neesat gatavs to izdzēst.",
   "app.modules.navbar.admin.containers.pageHeader": "Lapas un izvēlne",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigācijas joslā papildus sākuma un projektu lapām var tikt parādītas līdz pat piecām lapām. Jūs varat pārdēvēt izvēlnes elementus, mainīt to secību un pievienot jaunas lapas ar savu saturu.",
-  "app.modules.project_management.admin.components.permissionsTab": "Piekļuves tiesības",
-  "components.admin.ServerError.genericServerError": "Šī satura ielādē radās problēmas. Lūdzu, mēģiniet vēlāk vēlreiz."
+  "app.modules.project_management.admin.components.permissionsTab": "Piekļuves tiesības"
 }
