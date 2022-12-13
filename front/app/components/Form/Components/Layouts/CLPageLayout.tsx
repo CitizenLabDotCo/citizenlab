@@ -61,7 +61,7 @@ const CLPageLayout = memo(
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const uiPages = (uischema as PageCategorization).elements;
-    const theme: any = useTheme();
+    const theme = useTheme();
     const isSmallerThanXlPhone = useBreakpoint('phone');
     const submitText = formSubmitText || messages.submit;
     const showSubmit = currentStep === uiPages.length - 1;

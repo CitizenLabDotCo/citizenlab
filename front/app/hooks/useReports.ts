@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // services
-import { reportsStream, Reports, Report } from 'services/reports';
+import { reportsStream, ReportsResponse, Report } from 'services/reports';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -12,7 +12,7 @@ export default function useReports() {
   useEffect(() => {
     const { observable } = reportsStream();
     const subscription = observable.subscribe(
-      (reports: Reports | NilOrError) => {
+      (reports: ReportsResponse | NilOrError) => {
         setReports(isNilOrError(reports) ? reports : reports.data);
       }
     );

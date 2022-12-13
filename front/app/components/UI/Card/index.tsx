@@ -34,8 +34,8 @@ const CardImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
+  border-top-left-radius: ${(props) => props.theme.borderRadius};
+  border-top-right-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const CardImage = styled(Image)`

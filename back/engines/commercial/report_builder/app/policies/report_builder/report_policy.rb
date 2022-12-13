@@ -25,5 +25,6 @@ module ReportBuilder
     alias create? allowed?
     alias update? allowed?
     alias destroy? allowed?
+    alias layout? allowed?
   end
 end

@@ -651,7 +651,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "Tots els grups",
   "app.containers.AdminPage.DashboardPage.allProjects": "Tots els Projectes",
   "app.containers.AdminPage.DashboardPage.allTime": "Tot el temps",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Detecció automàtica d'ubicació en marxa. Si us plau, espereu fins que finalitzi el processament.",
   "app.containers.AdminPage.DashboardPage.comments": "Comentaris",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Comentaris",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Es requereix un conjunt de dades base per mesurar la representació dels usuaris de la plataforma.",
@@ -731,9 +730,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Publicacions per estat",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Seleccioneu el grup d'usuaris",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Seleccioneu el projecte",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Hauria d'estar gairebé a punt, espereu!",
   "app.containers.AdminPage.DashboardPage.male": "home",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Aquest mapa detecta automàticament les ubicacions a partir del títol i la descripció de la publicació. És possible que les dades d'ubicació no siguin precises; les publicacions on no es detecten dades d'ubicació no es mostren.",
   "app.containers.AdminPage.DashboardPage.month": "mes",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "La classificació es basa en el nombre de publicacions (5 punts per publicació), comentaris (3 punts per comentari) i vots (1 punt per vot) enviats per cada participant.",
   "app.containers.AdminPage.DashboardPage.noData": "No hi ha dades per mostrar.",
@@ -774,12 +771,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "filtre actual del projecte",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "filtre d'etiquetes actual",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Descobrir què passa a la vostra plataforma.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Mapa",
   "app.containers.AdminPage.DashboardPage.tabOverview": "Visió general",
   "app.containers.AdminPage.DashboardPage.tabReports": "Informes",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Representació",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Usuaris",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Dada curiosa: probablement serà molt més ràpid la propera vegada que vingueu aquí!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Cronologia",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "panell",
   "app.containers.AdminPage.DashboardPage.total": "Total",
@@ -1791,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Esteu segur que voleu eliminar aquesta pàgina? Això no es pot desfer. També podeu eliminar la pàgina de la barra de navegació si encara no esteu preparat per eliminar-la.",
   "app.modules.navbar.admin.containers.pageHeader": "Pàgines i menú",
   "app.modules.navbar.admin.containers.pageSubtitle": "La barra de navegació pot mostrar fins a cinc pàgines a més de les pàgines d'inici i de projectes. Podeu canviar el nom dels elements del menú, tornar a ordenar i afegir pàgines noves amb el vostre propi contingut.",
-  "app.modules.project_management.admin.components.permissionsTab": "Drets d'accés",
-  "components.admin.ServerError.genericServerError": "S'ha produït un problema en carregar aquest contingut, si us plau, torna-ho a provar més tard."
+  "app.modules.project_management.admin.components.permissionsTab": "Drets d'accés"
 }
