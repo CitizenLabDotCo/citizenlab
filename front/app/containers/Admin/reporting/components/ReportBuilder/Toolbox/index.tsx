@@ -24,6 +24,9 @@ import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
 
+import surveyResultMessages from '../Widgets/SurveyResultsWidget/messages';
+import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+
 const ReportBuilderToolbox = () => {
   const { formatMessage } = useIntl();
 
@@ -146,6 +149,17 @@ const ReportBuilderToolbox = () => {
           }
           icon="chart-bar"
           label={formatMessage(chartMessages.usersByAge)}
+        />
+        <DraggableElement
+          id="e2e-draggable-survey-results-widget"
+          component={
+            <SurveyResultsWidget
+              title={formatMessage(surveyResultMessages.surveyResults)}
+              projectId={undefined}
+            />
+          }
+          icon="chart-bar"
+          label={formatMessage(surveyResultMessages.surveyResults)}
         />
       </Accordion>
     </Container>
