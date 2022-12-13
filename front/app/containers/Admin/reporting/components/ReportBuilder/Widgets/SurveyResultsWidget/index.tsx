@@ -17,30 +17,30 @@ import messages from './messages';
 import { IOption } from '../../../../../../../typings';
 import ProjectFilter from '../../../../../dashboard/components/filters/ProjectFilter';
 
-// Note: Using injectIntl from react as when used from our lib, settings do not work
-import { injectIntl, WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import useLocale from '../../../../../../../hooks/useLocale';
 import useProject from '../../../../../../../hooks/useProject';
 import useFormResults from '../../../../../../../hooks/useFormResults';
 import { isNilOrError } from '../../../../../../../utils/helperUtils';
 
 import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
-import FormResultsQuestion from '../../../../../formBuilder/components/FormResults/FormResultsQuestion';
 import GraphCard from '../../../../../../../components/admin/GraphCard';
 import Container from '../../../../../../../components/admin/ContentBuilder/Widgets/Container';
+import SurveyResultsQuestionWidget from './SurveyResultsQuestionWidget';
 
 type SurveyResultsProps = {
   title: string | undefined;
   projectId: string | undefined;
   phaseId: string | undefined;
-} & WrappedComponentProps;
+};
 
 const SurveyResultsWidget: UserComponent = ({
-  intl: { formatMessage },
   title,
   projectId,
   phaseId,
 }: SurveyResultsProps) => {
+  const { formatMessage } = useIntl();
+
   // TODO: If no project or phase then get the first project with a survey
   const useProjectId =
     projectId === undefined
@@ -101,7 +101,7 @@ const SurveyResultsWidget: UserComponent = ({
                 is={Container}
                 canvas
               >
-                <FormResultsQuestion
+                <SurveyResultsQuestionWidget
                   key={index}
                   locale={locale}
                   question={question}
@@ -119,67 +119,66 @@ const SurveyResultsWidget: UserComponent = ({
   );
 };
 
-const SurveyResultsWidgetSettings = injectIntl(
-  ({ intl: { formatMessage } }) => {
-    const {
-      actions: { setProp },
-      title,
-      projectId,
-    } = useNode((node) => ({
-      title: node.data.props.title,
-      projectId: node.data.props.projectId,
-    }));
+const SurveyResultsWidgetSettings = () => {
+  const { formatMessage } = useIntl();
+  const {
+    actions: { setProp },
+    title,
+    projectId,
+  } = useNode((node) => ({
+    title: node.data.props.title,
+    projectId: node.data.props.projectId,
+  }));
 
-    const setTitle = (value: string) => {
-      setProp((props) => {
-        props.title = value;
-      });
-    };
+  const setTitle = (value: string) => {
+    setProp((props) => {
+      props.title = value;
+    });
+  };
 
-    const handleProjectFilter = ({ value }: IOption) => {
-      setProp((props) => {
-        props.projectId = value;
-      });
-    };
+  const handleProjectFilter = ({ value }: IOption) => {
+    setProp((props) => {
+      props.projectId = value;
+    });
+  };
 
-    return (
-      <Box>
-        <Box display="flex" gap="16px" alignItems="center">
-          <Icon
-            name="info-outline"
-            width="24px"
-            height="24px"
-            fill="textSecondary"
-          />
-          <Text variant="bodyM" color="textSecondary">
-            {formatMessage(formBuilderMessages.informationText)}
-          </Text>
-        </Box>
-        <Box background="#ffffff" marginBottom="20px">
-          <Input
-            id="e2e-analytics-chart-widget-title"
-            label={
-              <Title variant="h4" color="tenantText" mb={'0'}>
-                {formatMessage(messages.surveyResults)}
-              </Title>
-            }
-            type="text"
-            value={title}
-            onChange={setTitle}
-          />
-        </Box>
-        <Box mb="20px">
-          <ProjectFilter
-            currentProjectFilter={projectId}
-            width="100%"
-            padding="11px"
-            onProjectFilter={handleProjectFilter}
-          />
-        </Box>
+  return (
+    <Box>
+      <Box display="flex" gap="16px" alignItems="center">
+        <Icon
+          name="info-outline"
+          width="24px"
+          height="24px"
+          fill="textSecondary"
+        />
+        <Text variant="bodyM" color="textSecondary">
+          {formatMessage(formBuilderMessages.informationText)}
+        </Text>
       </Box>
-    );
-  }
-);
+      <Box background="#ffffff" marginBottom="20px">
+        <Input
+          id="e2e-analytics-chart-widget-title"
+          label={
+            <Title variant="h4" color="tenantText" mb={'0'}>
+              {formatMessage(messages.surveyResults)}
+            </Title>
+          }
+          type="text"
+          value={title}
+          onChange={setTitle}
+        />
+      </Box>
+      <Box mb="20px">
+        <ProjectFilter
+          currentProjectFilter={projectId}
+          width="100%"
+          padding="11px"
+          onProjectFilter={handleProjectFilter}
+        />
+      </Box>
+    </Box>
+  );
+};
 
 SurveyResultsWidget.craft = {
   props: {
@@ -196,4 +195,4 @@ SurveyResultsWidget.craft = {
   },
 };
 
-export default injectIntl(SurveyResultsWidget);
+export default SurveyResultsWidget;

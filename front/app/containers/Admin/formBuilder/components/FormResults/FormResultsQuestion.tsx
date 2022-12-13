@@ -6,8 +6,7 @@ import T from '../../../../../components/T';
 import CompletionBar from './CompletionBar';
 import { Locale, Multiloc } from '../../../../../typings';
 import { Answer } from '../../../../../services/formCustomFields';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from '../../../../../utils/cl-intl';
+import { useIntl } from '../../../../../utils/cl-intl';
 
 type FormResultsQuestionProps = {
   locale: Locale;
@@ -16,10 +15,9 @@ type FormResultsQuestionProps = {
   answers: Answer[];
   totalResponses: number;
   required: boolean;
-} & WrappedComponentProps;
+};
 
 const FormResultsQuestion = ({
-  intl: { formatMessage },
   locale,
   question,
   inputType,
@@ -27,6 +25,8 @@ const FormResultsQuestion = ({
   totalResponses,
   required,
 }: FormResultsQuestionProps) => {
+  const { formatMessage } = useIntl();
+
   const inputTypeText = get(messages, inputType, '');
   const requiredOrOptionalText = required
     ? formatMessage(messages.required)
@@ -64,4 +64,4 @@ const FormResultsQuestion = ({
     </Box>
   );
 };
-export default injectIntl(FormResultsQuestion);
+export default FormResultsQuestion;
