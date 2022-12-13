@@ -127,16 +127,6 @@ export interface IMinimalIdeaData {
   };
 }
 
-export interface IGeotaggedIdeaData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    location_point_geojson: GeoJSON.Point;
-    location_description: string;
-  };
-}
-
 export interface IIdeaMarkerData {
   id: string;
   type: string;
