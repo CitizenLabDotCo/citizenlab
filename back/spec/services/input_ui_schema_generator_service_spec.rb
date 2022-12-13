@@ -36,8 +36,16 @@ RSpec.describe InputUiSchemaGeneratorService do
           resource: custom_form,
           input_type: 'html_multiloc',
           code: 'body_multiloc',
-          title_multiloc: { 'en' => 'Body multiloc field title' },
-          description_multiloc: { 'en' => 'Body multiloc field description' }
+          title_multiloc: {
+            'en' => 'Body multiloc field title',
+            'nl-NL' => 'Body multiloc veldtitel'
+            # No 'fr-FR' to describe that it will default to 'en'.
+          },
+          description_multiloc: {
+            'en' => 'Body multiloc field description',
+            'nl-NL' => 'Body multiloc veldbeschrijving'
+            # No 'fr-FR' to describe that it will default to 'en'.
+          }
         )
       end
 
@@ -206,9 +214,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/en",
-                        label: 'Body multiloc field title',
+                        label: 'Body multiloc veldtitel',
                         options: {
-                          description: 'Body multiloc field description',
+                          description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
                           render: 'WYSIWYG',
                           locale: 'en'
@@ -217,9 +225,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/fr-FR",
-                        label: 'Body multiloc field title',
+                        label: 'Body multiloc veldtitel',
                         options: {
-                          description: 'Body multiloc field description',
+                          description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
@@ -228,9 +236,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/nl-NL",
-                        label: 'Body multiloc field title',
+                        label: 'Body multiloc veldtitel',
                         options: {
-                          description: 'Body multiloc field description',
+                          description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
@@ -581,51 +589,143 @@ RSpec.describe InputUiSchemaGeneratorService do
           input_type: 'html_multiloc',
           code: 'body_multiloc',
           key: field_key,
-          title_multiloc: { 'en' => 'Body multiloc field title' },
-          description_multiloc: { 'en' => 'Body multiloc field description' }
+          title_multiloc: {
+            'en' => 'Body multiloc field title',
+            'nl-NL' => 'Body multiloc veldtitel'
+            # No 'fr-FR' to describe that it will default to 'en'.
+          },
+          description_multiloc: {
+            'en' => 'Body multiloc field description',
+            'nl-NL' => 'Body multiloc veldbeschrijving'
+            # No 'fr-FR' to describe that it will default to 'en'.
+          }
         )
       end
 
-      it 'returns the schema for the given built-in field' do
-        expect(generator.visit_html_multiloc(field)).to eq({
-          type: 'VerticalLayout',
-          options: { render: 'multiloc' },
-          elements: [
-            {
-              type: 'Control',
-              scope: "#/properties/#{field_key}/properties/en",
-              label: 'Body multiloc field title',
-              options: {
-                description: 'Body multiloc field description',
-                isAdminField: false,
-                render: 'WYSIWYG',
-                locale: 'en'
+      it 'returns the schema for the given built-in field with translations in the current locale' do
+        I18n.with_locale('en') do
+          expect(generator.visit_html_multiloc(field)).to eq({
+            type: 'VerticalLayout',
+            options: { render: 'multiloc' },
+            elements: [
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/en",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  render: 'WYSIWYG',
+                  locale: 'en'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/fr-FR",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  render: 'WYSIWYG',
+                  locale: 'fr-FR'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/nl-NL",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  render: 'WYSIWYG',
+                  locale: 'nl-NL'
+                }
               }
-            },
-            {
-              type: 'Control',
-              scope: "#/properties/#{field_key}/properties/fr-FR",
-              label: 'Body multiloc field title',
-              options: {
-                description: 'Body multiloc field description',
-                isAdminField: false,
-                render: 'WYSIWYG',
-                locale: 'fr-FR'
+            ]
+          })
+        end
+        I18n.with_locale('fr-FR') do
+          expect(generator.visit_html_multiloc(field)).to eq({
+            type: 'VerticalLayout',
+            options: { render: 'multiloc' },
+            elements: [
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/en",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  render: 'WYSIWYG',
+                  locale: 'en'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/fr-FR",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  render: 'WYSIWYG',
+                  locale: 'fr-FR'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/nl-NL",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  render: 'WYSIWYG',
+                  locale: 'nl-NL'
+                }
               }
-            },
-            {
-              type: 'Control',
-              scope: "#/properties/#{field_key}/properties/nl-NL",
-              label: 'Body multiloc field title',
-              options: {
-                description: 'Body multiloc field description',
-                isAdminField: false,
-                render: 'WYSIWYG',
-                locale: 'nl-NL'
+            ]
+          })
+        end
+        I18n.with_locale('nl-NL') do
+          expect(generator.visit_html_multiloc(field)).to eq({
+            type: 'VerticalLayout',
+            options: { render: 'multiloc' },
+            elements: [
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/en",
+                label: 'Body multiloc veldtitel',
+                options: {
+                  description: 'Body multiloc veldbeschrijving',
+                  isAdminField: false,
+                  render: 'WYSIWYG',
+                  locale: 'en'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/fr-FR",
+                label: 'Body multiloc veldtitel',
+                options: {
+                  description: 'Body multiloc veldbeschrijving',
+                  isAdminField: false,
+                  render: 'WYSIWYG',
+                  locale: 'fr-FR'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/nl-NL",
+                label: 'Body multiloc veldtitel',
+                options: {
+                  description: 'Body multiloc veldbeschrijving',
+                  isAdminField: false,
+                  render: 'WYSIWYG',
+                  locale: 'nl-NL'
+                }
               }
-            }
-          ]
-        })
+            ]
+          })
+        end
       end
     end
 
