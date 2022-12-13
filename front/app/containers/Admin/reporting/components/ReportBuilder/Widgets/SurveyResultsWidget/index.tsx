@@ -14,10 +14,11 @@ import {
 import messages from './messages';
 
 // hooks
-import { injectIntl } from '../../../../../../../utils/cl-intl';
 import { IOption } from '../../../../../../../typings';
 import ProjectFilter from '../../../../../dashboard/components/filters/ProjectFilter';
-import { WrappedComponentProps } from 'react-intl';
+
+// Note: Using injectIntl from react as when used from our lib, settings do not work
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import useLocale from '../../../../../../../hooks/useLocale';
 import useProject from '../../../../../../../hooks/useProject';
 import useFormResults from '../../../../../../../hooks/useFormResults';
@@ -25,6 +26,7 @@ import { isNilOrError } from '../../../../../../../utils/helperUtils';
 
 import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
 import FormResultsQuestion from '../../../../../formBuilder/components/FormResults/FormResultsQuestion';
+import GraphCard from '../../../../../../../components/admin/GraphCard';
 
 type SurveyResultsProps = {
   title: string | undefined;
@@ -73,17 +75,19 @@ const SurveyResultsWidget: UserComponent = ({
   const resultsTitle = title ? title : formatMessage(messages.surveyResults);
 
   return (
-    <Box width="100%">
-      <Box width="100%" display="flex" alignItems="center">
-        <Box width="100%">
-          <Title variant="h2">{resultsTitle}</Title>
-          <Text variant="bodyM" color="textSecondary">
-            {surveyResponseMessage}
-          </Text>
-        </Box>
+    <GraphCard title={resultsTitle}>
+      <Box px="20px" width="100%" display="flex" flexDirection="row">
+        <Text variant="bodyM" color="textSecondary">
+          {surveyResponseMessage}
+        </Text>
       </Box>
-
-      <Box maxWidth="524px">
+      <Box
+        px="20px"
+        width="100%"
+        maxWidth="524px"
+        display="flex"
+        flexDirection="row"
+      >
         {results.map(
           (
             { question, inputType, answers, totalResponses, required },
@@ -103,7 +107,7 @@ const SurveyResultsWidget: UserComponent = ({
           }
         )}
       </Box>
-    </Box>
+    </GraphCard>
   );
 };
 
