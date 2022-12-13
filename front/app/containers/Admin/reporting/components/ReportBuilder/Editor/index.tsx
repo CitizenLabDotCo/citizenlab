@@ -8,15 +8,18 @@ import { Box } from '@citizenlab/cl2-component-library';
 import BaseEditor from 'components/admin/ContentBuilder/Editor';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
-// widgets
+// default widgets
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+// Report builder widgets
 import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
-import ImageTextCards from '../../../../../../modules/commercial/content_builder/admin/components/CraftSections/ImageTextCards';
+import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+import SurveyResultsQuestionWidget from '../Widgets/SurveyResultsWidget/SurveyResultsQuestionWidget';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -41,7 +44,8 @@ const Editor: React.FC<EditorProps> = ({
         WhiteSpace,
         AnalyticsChartWidget,
         AboutReportWidget,
-        ImageTextCards,
+        SurveyResultsWidget,
+        SurveyResultsQuestionWidget,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
