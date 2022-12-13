@@ -206,5 +206,5 @@ lb:
       option1: 'Méiglechkeet 1'
       option2: 'Méiglechkeet 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Enn vun der Ëmfro'
+      description: "Wgl. reecht Är Äntwert an, andeem Dir 'Ëmfro areechen' hei ënnen auswielt."
