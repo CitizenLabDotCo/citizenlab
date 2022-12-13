@@ -16,21 +16,4 @@ module CitizenLab
   def self.ee
     yield if ee?
   end
-
-  def self.cl_config
-    unless @cl_config
-      @cl_config ||= JSON.load(File.new('../citizenlab.config.json'))
-      if File.exist?('../citizenlab.config.ee.json')
-        cl_config_ee = JSON.load(File.new('../citizenlab.config.ee.json'))
-        @cl_config['modules'] = @cl_config['modules'].merge(cl_config_ee['modules'])
-      end
-    end
-    @cl_config
-  end
-
-  def self.enabled_modules
-    cl_config['modules'].keys.select do |m|
-      cl_config['modules'][m]
-    end
-  end
 end

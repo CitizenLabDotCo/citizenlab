@@ -190,7 +190,15 @@ if File.exist? '../citizenlab.config.ee.json'
   gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
 end
 
+Dir.children('engines/free').each do |engine_name|
+  path = "engines/free/#{engine_name}"
+  gem engine_name, path: path if File.directory?(path)
+end
+
 require './lib/citizen_lab'
-CitizenLab.enabled_modules.each do |m|
-  gem m.split('/').last, path: "engines/#{m}" if File.exist? "engines/#{m}"
+CitizenLab.ee do
+  Dir.children('engines/commercial').each do |engine_name|
+    path = "engines/commercial/#{engine_name}"
+    gem engine_name, path: path if File.directory?(path)
+  end
 end
