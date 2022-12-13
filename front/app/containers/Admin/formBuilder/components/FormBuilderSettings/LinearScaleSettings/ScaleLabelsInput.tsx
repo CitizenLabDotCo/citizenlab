@@ -18,7 +18,12 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
 
+const StyledLabel = styled(Label)`
+  margin-top: auto;
+  margin-bottom: auto;
+`;
 interface Props {
   minimumLabelName: string;
   maximumLabelName: string;
@@ -73,13 +78,19 @@ const ScaleLabelsInput = ({
               render={({ field: { ref: _ref, value: maxLabelMultiloc } }) => {
                 return (
                   <>
-                    <Box display="flex" flexWrap="wrap" mr="0px" my="16px">
-                      <Label>
+                    <Box
+                      justifyContent="space-between"
+                      display="flex"
+                      flexWrap="wrap"
+                      mr="0px"
+                      my="16px"
+                    >
+                      <StyledLabel>
                         {formatMessage(messages.labels)}
                         <IconTooltip
                           content={formatMessage(messages.labelsTooltipContent)}
                         />
-                      </Label>
+                      </StyledLabel>
                       <Box>
                         <LocaleSwitcher
                           onSelectedLocaleChange={handleOnSelectedLocaleChange}
