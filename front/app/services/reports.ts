@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { JsonMultiloc } from 'components/admin/ContentBuilder/typings';
 
-const reportsApiEndpoint = `${API_PATH}/reports`;
+const apiEndpoint = `${API_PATH}/reports`;
 
 // Reports
 export interface Report {
@@ -38,37 +38,45 @@ export interface ReportResponse {
 }
 
 export function reportsStream() {
-  return streams.get<ReportsResponse>({ apiEndpoint: reportsApiEndpoint });
+  return streams.get<ReportsResponse>({ apiEndpoint });
 }
 
-export function reportByIdStream(reportId: string) {
+export function reportByIdStream(id: string) {
   return streams.get<ReportResponse>({
-    apiEndpoint: `${reportsApiEndpoint}/${reportId}`,
+    apiEndpoint: `${apiEndpoint}/${id}`,
   });
 }
 
 export async function createReport(name: string) {
-  return streams.add(reportsApiEndpoint, {
+  return streams.add(apiEndpoint, {
     report: { name },
   });
 }
 
-export async function deleteReport(reportId: string) {
-  return streams.delete(`${reportsApiEndpoint}/${reportId}`, reportId);
+export async function deleteReport(id: string) {
+  return streams.delete(`${apiEndpoint}/${id}`, id);
 }
 
 // Report layouts
-interface ReportLayout {
-  // TODO
+export interface ReportLayout {
+  id: string;
+  type: 'content_builder_layout';
+  attributes: {
+    enabled: boolean;
+    code: 'report';
+    created_at: string;
+    updated_at: string;
+    craftjs_jsonmultiloc: JsonMultiloc;
+  };
 }
 
-interface ReportLayoutReponse {
+export interface ReportLayoutResponse {
   data: ReportLayout;
 }
 
-export function reportLayoutStream(layoutId: string) {
-  return streams.get<ReportLayoutReponse>({
-    apiEndpoint: `${API_PATH}/???/${layoutId}`, // TODO
+export function reportLayoutByIdStream(id: string) {
+  return streams.get<ReportLayoutResponse>({
+    apiEndpoint: `${apiEndpoint}/${id}/layout`,
     handleErrorLogging: (error) => {
       // A 404 error is expected when the content builder layout is not found so we don't want to log it
       if (error.statusCode !== 404) {
@@ -78,11 +86,8 @@ export function reportLayoutStream(layoutId: string) {
   });
 }
 
-export function updateReportLayout(
-  reportId: string,
-  craftMultiloc: JsonMultiloc
-) {
-  return streams.update(`${reportsApiEndpoint}/${reportId}`, reportId, {
+export function updateReportLayout(id: string, craftMultiloc: JsonMultiloc) {
+  return streams.update(`${apiEndpoint}/${id}`, id, {
     report: {
       layout: {
         craftjs_jsonmultiloc: craftMultiloc,

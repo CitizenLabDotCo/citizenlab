@@ -10,6 +10,7 @@ import { useLocation, useParams } from 'react-router-dom';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
+import useReportLayout from 'hooks/useReportLayout';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -47,6 +48,7 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const locale = useLocale();
+  const reportLayout = useReportLayout(reportId);
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -74,20 +76,15 @@ const ReportBuilder = ({ reportId }: Props) => {
     });
   }, []);
 
-  // TODO
-  const contentBuilderLayout: any = undefined;
-
   const getEditorData = useCallback(() => {
-    if (!isNilOrError(contentBuilderLayout) && selectedLocale) {
+    if (!isNilOrError(reportLayout) && selectedLocale) {
       if (draftData && draftData[selectedLocale]) {
         return draftData[selectedLocale];
       } else {
-        return contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-          selectedLocale
-        ];
+        return reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
       }
     } else return undefined;
-  }, [contentBuilderLayout, selectedLocale, draftData]);
+  }, [reportLayout, selectedLocale, draftData]);
 
   const handleEditorChange = useCallback((nodes: SerializedNodes) => {
     iframeRef.current &&
