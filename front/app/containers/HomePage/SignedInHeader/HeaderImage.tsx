@@ -66,8 +66,8 @@ const HeaderImage = () => {
     const tenantHeaderImage = homepageSettings.attributes.header_bg
       ? homepageSettings.attributes.header_bg.large
       : null;
-    const layout = homepageSettings.attributes.banner_layout;
-    const isFixedBannerLayout = layout === 'fixed_ratio_layout';
+    const isFixedBannerLayout =
+      homepageSettings.attributes.banner_layout === 'fixed_ratio_layout';
 
     return (
       <HeaderImageContainer>
