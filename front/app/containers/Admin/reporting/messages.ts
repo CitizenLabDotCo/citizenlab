@@ -1,0 +1,16 @@
+import { defineMessages } from 'react-intl';
+
+export default defineMessages({
+  reportBuilder: {
+    id: 'app.containers.Admin.reporting.reportBuilder',
+    defaultMessage: 'Report builder',
+  },
+  helmetTitle: {
+    id: 'app.containers.Admin.reporting.helmetTitle',
+    defaultMessage: 'Reporting',
+  },
+  helmetDescription: {
+    id: 'app.containers.Admin.reporting.helmetDescription',
+    defaultMessage: 'Admin reporting page',
+  },
+});

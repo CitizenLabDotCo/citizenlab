@@ -149,7 +149,7 @@ export type NavItem = {
   name: string;
   link: string;
   iconName: IconNames;
-  message: string;
+  message: keyof typeof messages;
   featureNames?: TAppConfigurationSetting[];
   count?: number;
   onlyCheckAllowed?: boolean;
@@ -175,6 +175,12 @@ class Sidebar extends PureComponent<
           link: '/admin/projects',
           iconName: 'sidebar-folder',
           message: 'projects',
+        },
+        {
+          name: 'reporting',
+          link: `/admin/reporting`,
+          iconName: 'sidebar-reporting',
+          message: 'reporting',
         },
         {
           name: 'workshops',

@@ -402,7 +402,7 @@ const InputsTable = ({
             className="intercom-insights-edit-done-button"
             buttonStyle="admin-dark"
             bgColor={colors.teal}
-            linkTo={`/admin/insights/${viewId}`}
+            linkTo={`/admin/reporting/insights/${viewId}`}
           >
             {formatMessage(messages.inputsDone)}
           </Button>

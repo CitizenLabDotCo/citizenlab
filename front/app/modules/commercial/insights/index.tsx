@@ -1,10 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const NavItem = React.lazy(() => import('./admin/components/NavItem'));
 
-const AdminInsightsContainerComponent = React.lazy(
-  () => import('./admin/containers')
-);
+const Tabs = React.lazy(() => import('./admin/components/Tabs'));
 const AdminInsightsListComponent = React.lazy(
   () => import('./admin/containers/Insights/List')
 );
@@ -33,23 +30,11 @@ declare module 'components/UI/Error' {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    admin: [
+    'admin.reporting': [
       {
         path: 'insights',
-        element: <AdminInsightsContainerComponent />,
+        element: <AdminInsightsListComponent />,
         children: [
-          {
-            index: true,
-            element: <AdminInsightsListComponent />,
-          },
-          {
-            path: 'reports',
-            element: <AdminInsightsReportsComponent />,
-          },
-          {
-            path: 'reports/:projectId',
-            element: <AdminInsightsProjectReportComponent />,
-          },
           {
             path: ':viewId',
             element: <AdminInsightsViewComponent />,
@@ -64,10 +49,22 @@ const configuration: ModuleConfiguration = {
           },
         ],
       },
+      {
+        path: 'reports',
+        element: <AdminInsightsReportsComponent />,
+        children: [
+          {
+            path: ':projectId',
+            element: <AdminInsightsProjectReportComponent />,
+          },
+        ],
+      },
     ],
   },
   outlets: {
-    'app.containers.Admin.sideBar.navItems': (props) => <NavItem {...props} />,
+    'app.containers.Admin.reporting.components.Tabs': ({ onData }) => (
+      <Tabs onData={onData} />
+    ),
   },
 };
 

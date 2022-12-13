@@ -13,4 +13,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel',
     defaultMessage: 'Close settings panel',
   },
+  localeErrorMessage: {
+    id: 'app.containers.admin.ContentBuilder.errorMessage',
+    defaultMessage:
+      'There is an error on { locale } content, please fix the issue to be able to save your changes',
+  },
 });
