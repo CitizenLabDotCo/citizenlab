@@ -1,5 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { JsonMultiloc } from 'components/admin/ContentBuilder/typings';
 
 const reportsApiEndpoint = `${API_PATH}/reports`;
 
@@ -40,9 +41,9 @@ export function reportsStream() {
   return streams.get<ReportsResponse>({ apiEndpoint: reportsApiEndpoint });
 }
 
-export function reportByIdStream(id: string) {
+export function reportByIdStream(reportId: string) {
   return streams.get<ReportResponse>({
-    apiEndpoint: `${reportsApiEndpoint}/${id}`,
+    apiEndpoint: `${reportsApiEndpoint}/${reportId}`,
   });
 }
 
@@ -52,8 +53,8 @@ export async function createReport(name: string) {
   });
 }
 
-export async function deleteReport(id: string) {
-  return streams.delete(`${reportsApiEndpoint}/${id}`, id);
+export async function deleteReport(reportId: string) {
+  return streams.delete(`${reportsApiEndpoint}/${reportId}`, reportId);
 }
 
 // Report layouts
@@ -65,14 +66,27 @@ interface ReportLayoutReponse {
   data: ReportLayout;
 }
 
-export function reportLayoutStream(id: string) {
+export function reportLayoutStream(layoutId: string) {
   return streams.get<ReportLayoutReponse>({
-    apiEndpoint: `${API_PATH}/reports/${id}/layout`, // TODO
+    apiEndpoint: `${API_PATH}/???/${layoutId}`, // TODO
     handleErrorLogging: (error) => {
       // A 404 error is expected when the content builder layout is not found so we don't want to log it
       if (error.statusCode !== 404) {
         reportError(error);
       }
+    },
+  });
+}
+
+export function updateReportLayout(
+  reportId: string,
+  craftMultiloc: JsonMultiloc
+) {
+  return streams.update(`${reportsApiEndpoint}/${reportId}`, reportId, {
+    report: {
+      layout: {
+        craftjs_jsonmultiloc: craftMultiloc,
+      },
     },
   });
 }

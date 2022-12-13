@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+// services
+import { updateReportLayout } from 'services/reports';
+
 // hooks
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import useReport from 'hooks/useReport';
@@ -42,7 +45,7 @@ const ContentBuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
-  // draftEditorData,
+  draftEditorData,
   localesWithError,
   hasPendingState,
   reportId,
@@ -61,7 +64,10 @@ const ContentBuilderTopBar = ({
     if (selectedLocale) {
       try {
         setLoading(true);
-        // TODO
+        await updateReportLayout(reportId, {
+          ...draftEditorData,
+          [selectedLocale]: query.getSerializedNodes(),
+        });
       } catch {
         // Do nothing
       }
