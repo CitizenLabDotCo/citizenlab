@@ -27,7 +27,7 @@ const NewNotificationsIndicator = styled.div`
       ? theme.colors.tenantText
       : colors.error};
   padding: 4px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px
     ${({ theme }) =>
       theme.invertedNavbarColors && theme.navbarBackgroundColor

@@ -125,7 +125,7 @@ const ProjectsListFooter = styled(Link)`
   padding: 15px 15px;
   cursor: pointer;
   background: ${({ theme }) => theme.colors.tenantSecondary};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;

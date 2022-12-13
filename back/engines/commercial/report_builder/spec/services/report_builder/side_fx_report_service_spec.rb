@@ -10,7 +10,7 @@ RSpec.describe ReportBuilder::SideFxReportService do
   specify { expect(described_class).to be < ::BaseSideFxService }
 
   let_it_be(:user) { create(:user) }
-  let_it_be(:report) { create(:report) }
+  let_it_be(:report, reload: true) { create(:report) }
 
   shared_examples 'runs_layout_side_effects' do |hook_name|
     it "runs #{hook_name} layout side effects" do
@@ -30,10 +30,18 @@ RSpec.describe ReportBuilder::SideFxReportService do
   end
 
   describe 'before_update' do
+    before do
+      report.layout.craftjs_jsonmultiloc = { 'kl-GL': { ROOT: {} } }
+    end
+
     include_examples('runs_layout_side_effects', :before_update)
   end
 
   describe 'after_update' do
+    before do
+      report.layout.update!(craftjs_jsonmultiloc: { 'kl-GL': { ROOT: {} } })
+    end
+
     include_examples('runs_layout_side_effects', :after_update)
   end
 

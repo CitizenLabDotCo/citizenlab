@@ -29,7 +29,7 @@ interface State {
 
 const StylingWrapper = styled.div`
   .DateRangePickerInput {
-    border-radius: ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius};
     border: solid 1px ${colors.borderDark};
 
     &:hover {
