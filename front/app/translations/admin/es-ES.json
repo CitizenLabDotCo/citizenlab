@@ -651,7 +651,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "Todos los grupos",
   "app.containers.AdminPage.DashboardPage.allProjects": "Todos los proyectos",
   "app.containers.AdminPage.DashboardPage.allTime": "Todas las fechas",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Se inicia detección de localización automática. Por favor, espere hasta que el proceso esté completo.",
   "app.containers.AdminPage.DashboardPage.comments": "Comentarios",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Comentarios",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Se requiere un conjunto de datos base para medir la representación de los usuarios de la plataforma.",
@@ -731,9 +730,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Estado de las entradas",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Seleccionar grupo de usuarios",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Seleccionar proyecto",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Debería estar casi listo, ¡espera!",
   "app.containers.AdminPage.DashboardPage.male": "masculino",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Este mapa detecta automáticamente las ubicaciones a partir del título y la descripción general. Es posible que los datos de localización no sean exactos; cuando no se detectan datos de localización no se muestran.",
   "app.containers.AdminPage.DashboardPage.month": "mes",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "La clasificación se basa en el número de contribuciones (5 puntos por cada aporte), comentarios (3 puntos por comentario) y votos (1 punto por voto) presentados por cada participante.",
   "app.containers.AdminPage.DashboardPage.noData": "No hay datos a mostrar",
@@ -774,12 +771,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "filtro de proyecto actual",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "filtro de tema actual",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Descubre lo que está sucediendo en la plataforma.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Mapa",
   "app.containers.AdminPage.DashboardPage.tabOverview": "Descripción general",
   "app.containers.AdminPage.DashboardPage.tabReports": "Proyectos",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Representación",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Usuarios",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Que curioso: ¡probablemente será mucho más rápido la próxima vez!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Línea de tiempo",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Tablero de controles",
   "app.containers.AdminPage.DashboardPage.total": "Total",
@@ -1791,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "¿Está seguro de que quiere eliminar esta página? Este paso no podrá deshacerse. También puede eliminar la página de la barra de navegación si aún no está listo para eliminarla.",
   "app.modules.navbar.admin.containers.pageHeader": "Páginas y menú",
   "app.modules.navbar.admin.containers.pageSubtitle": "Su barra de navegación puede mostrar hasta cinco páginas además de las páginas de Inicio y de proyectos. Puede cambiar el nombre de los elementos del menú, reordenarlos y añadir páginas nuevas con su propio contenido.",
-  "app.modules.project_management.admin.components.permissionsTab": "Derechos de acceso",
-  "components.admin.ServerError.genericServerError": "Algo pasó al cargar este contenido, por favor intentalo más tarde."
+  "app.modules.project_management.admin.components.permissionsTab": "Derechos de acceso"
 }
