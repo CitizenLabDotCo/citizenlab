@@ -431,7 +431,6 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.bottomInfoSectionTooltip": "Voeg je eigen inhoud toe aan het aanpasbare gedeelte onder aan de pagina.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.edit": "Bewerk",
   "app.containers.Admin.PagesAndMenu.SectionToggle.eventsList": "Activiteitenlijst",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.eventsListTooltip": "Pas aan welke gebeurtenissen op de pagina worden weergegeven.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBanner": "Hero-banner",
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBannerTooltip": "Pas de afbeelding en tekst van de paginabanner aan.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Projectlijst",
