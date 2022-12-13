@@ -36,7 +36,7 @@ const FormResultsQuestion = ({
   )} - ${requiredOrOptionalText.toLowerCase()}`;
 
   return (
-    <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px" mr="20px">
+    <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
       <Title variant="h3" mb="0">
         <T value={question} />
       </Title>

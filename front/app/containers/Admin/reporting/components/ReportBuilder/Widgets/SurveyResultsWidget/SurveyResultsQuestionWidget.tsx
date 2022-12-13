@@ -2,6 +2,9 @@ import React from 'react';
 import FormResultsQuestion from '../../../../../formBuilder/components/FormResults/FormResultsQuestion';
 import { Locale, Multiloc } from '../../../../../../../typings';
 import { Answer } from '../../../../../../../services/formCustomFields';
+import messages from './messages';
+import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
+import { Box } from '@citizenlab/cl2-component-library';
 
 type SurveyResultsQuestionProps = {
   locale: Locale;
@@ -21,30 +24,28 @@ const SurveyResultsQuestionWidget = ({
   required,
 }: SurveyResultsQuestionProps) => {
   return (
-    <FormResultsQuestion
-      locale={locale}
-      question={question}
-      inputType={inputType}
-      answers={answers}
-      totalResponses={totalResponses}
-      required={required}
-    />
+    <Box m="10px">
+      <FormResultsQuestion
+        locale={locale}
+        question={question}
+        inputType={inputType}
+        answers={answers}
+        totalResponses={totalResponses}
+        required={required}
+      />
+    </Box>
   );
 };
 
-// SurveyResultsWidget.craft = {
-//   props: {
-//     title: undefined,
-//     projectId: undefined,
-//     phaseId: undefined,
-//   },
-//   related: {
-//     settings: SurveyResultsWidgetSettings,
-//   },
-//   custom: {
-//     title: messages.surveyResults,
-//     noPointerEvents: true,
-//   },
-// };
+SurveyResultsQuestionWidget.craft = {
+  props: {},
+  related: {
+    settings: NoWidgetSettings,
+  },
+  custom: {
+    title: messages.surveyQuestion,
+    noPointerEvents: true,
+  },
+};
 
 export default SurveyResultsQuestionWidget;

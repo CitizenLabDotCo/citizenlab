@@ -157,6 +157,9 @@ const ReportBuilderToolbox = () => {
           icon="chart-bar"
           label={formatMessage(chartMessages.usersByAge)}
         />
+        {
+          // TODO: Only show this if there are surveys in the platform
+        }
         <DraggableElement
           id="e2e-draggable-survey-results-widget"
           component={

@@ -82,13 +82,7 @@ const SurveyResultsWidget: UserComponent = ({
           {surveyResponseMessage}
         </Text>
       </Box>
-      <Box
-        px="20px"
-        width="100%"
-        maxWidth="524px"
-        display="flex"
-        flexDirection="row"
-      >
+      <Box width="100%" display="flex" flexDirection="row">
         {results.map(
           (
             { question, inputType, answers, totalResponses, required },
