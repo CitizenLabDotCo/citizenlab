@@ -512,7 +512,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "All Groups",
   "app.containers.AdminPage.DashboardPage.allProjects": "All Projects",
   "app.containers.AdminPage.DashboardPage.allTime": "All Time",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatic location detection underway. Please wait until the processing is complete.",
   "app.containers.AdminPage.DashboardPage.comments": "Comments",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Comments",
   "app.containers.AdminPage.DashboardPage.continuousType": "Without a timeline",
@@ -529,9 +528,7 @@
   "app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByTopic": "Pick a resource to show by tag",
   "app.containers.AdminPage.DashboardPage.inputs": "Messaggi",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Posts by status",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "It should be almost ready, hang on!",
   "app.containers.AdminPage.DashboardPage.male": "male",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "This map automatically detects locations from the title and description of the post. The location data may not be accurate; posts where no locational data is detected are not displayed.",
   "app.containers.AdminPage.DashboardPage.month": "month",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "The ranking is based on the number of posts (5 points per post), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",
@@ -555,10 +552,8 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "current project filter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "current tag filter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Discover what's happening on your platform.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Map",
   "app.containers.AdminPage.DashboardPage.tabReports": "Reports",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Users",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Fun Fact: it will probably be way faster the next time you come here!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Timeline",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Dashboard",
   "app.containers.AdminPage.DashboardPage.total": "Total",
@@ -1267,6 +1262,5 @@
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pagine mostrate sulla tua barra di navigazione",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sei sicuro di voler cancellare questa pagina? Questo non può essere annullato. Puoi anche rimuovere la pagina dalla barra di navigazione se non sei ancora pronto a cancellarla.",
   "app.modules.navbar.admin.containers.pageSubtitle": "La tua barra di navigazione può visualizzare fino a quattro pagine oltre alle pagine Home e progetti. Puoi rinominare le voci di menu, riordinare e aggiungere nuove pagine con i tuoi contenuti.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
-  "components.admin.ServerError.genericServerError": "There was an issue loading this content, please try again later."
+  "app.modules.project_management.admin.components.permissionsTab": "Access rights"
 }

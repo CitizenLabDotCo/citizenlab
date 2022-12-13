@@ -5,11 +5,12 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
+import useReportLayout from 'hooks/useReportLayout';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -34,7 +35,11 @@ import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 
-const ReportBuilder = () => {
+interface Props {
+  reportId: string;
+}
+
+const ReportBuilder = ({ reportId }: Props) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [contentBuilderErrors, setContentBuilderErrors] =
@@ -43,6 +48,7 @@ const ReportBuilder = () => {
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const locale = useLocale();
+  const reportLayout = useReportLayout(reportId);
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -70,20 +76,15 @@ const ReportBuilder = () => {
     });
   }, []);
 
-  // TODO
-  const contentBuilderLayout: any = undefined;
-
   const getEditorData = useCallback(() => {
-    if (!isNilOrError(contentBuilderLayout) && selectedLocale) {
+    if (!isNilOrError(reportLayout) && selectedLocale) {
       if (draftData && draftData[selectedLocale]) {
         return draftData[selectedLocale];
       } else {
-        return contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-          selectedLocale
-        ];
+        return reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
       }
     } else return undefined;
-  }, [contentBuilderLayout, selectedLocale, draftData]);
+  }, [reportLayout, selectedLocale, draftData]);
 
   const handleEditorChange = useCallback((nodes: SerializedNodes) => {
     iframeRef.current &&
@@ -137,6 +138,7 @@ const ReportBuilder = () => {
           selectedLocale={selectedLocale}
           onSelectLocale={handleSelectedLocaleChange}
           draftEditorData={draftData}
+          reportId={reportId}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}
@@ -156,13 +158,16 @@ const ReportBuilder = () => {
 const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { pathname } = useLocation();
+  const { reportId } = useParams();
 
   const renderReportBuilder =
-    reportBuilderEnabled && pathname.includes('admin/reporting/report-creator');
+    reportBuilderEnabled &&
+    pathname.includes('admin/reporting/report-builder') &&
+    reportId !== undefined;
 
   if (!renderReportBuilder) return null;
 
-  return <ReportBuilder />;
+  return <ReportBuilder reportId={reportId} />;
 };
 
 export default ReportBuilderWrapper;

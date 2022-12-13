@@ -15,14 +15,14 @@ export const Options = styled.div`
 `;
 
 export const Option = styled.div`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
   margin-top: 20px;
 
   & .link {
-    color: ${(props: any) => props.theme.colors.tenantText};
+    color: ${(props) => props.theme.colors.tenantText};
     font-weight: 400;
     line-height: normal;
     text-decoration: underline;
@@ -37,7 +37,7 @@ export const Option = styled.div`
   & .button {
     display: flex;
     align-items: center;
-    color: ${(props: any) => props.theme.colors.tenantText};
+    color: ${(props) => props.theme.colors.tenantText};
     font-size: ${fontSizes.base}px;
     font-weight: 300;
     line-height: normal;
