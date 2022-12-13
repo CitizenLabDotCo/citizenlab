@@ -10,7 +10,7 @@ module CitizenLab
   end
 
   def self.ee?
-    @ee ||= root.join('engines/ee/multi_tenancy').exist? && %w[true 1].include?(ENV['CITIZENLAB_EE'].to_s)
+    @ee ||= %w[true 1].include?(ENV['CITIZENLAB_EE'].to_s)
   end
 
   def self.ee
