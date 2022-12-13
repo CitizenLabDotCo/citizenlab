@@ -26,7 +26,7 @@ const Container = styled.div`
   overflow: hidden;
   padding: 15px;
   padding-top: 30px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid ${colors.borderLight};
   position: relative;
   display: flex;

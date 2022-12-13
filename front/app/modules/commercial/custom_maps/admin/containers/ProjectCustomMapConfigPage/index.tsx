@@ -69,7 +69,7 @@ const GoToDefaultViewportButtonWrapper = styled.div`
   left: 11px;
   z-index: 1000;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const SetAsDefaultViewportButtonWrapper = styled.div`
@@ -78,7 +78,7 @@ const SetAsDefaultViewportButtonWrapper = styled.div`
   left: 11px;
   z-index: 1000;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 
 interface Props {
