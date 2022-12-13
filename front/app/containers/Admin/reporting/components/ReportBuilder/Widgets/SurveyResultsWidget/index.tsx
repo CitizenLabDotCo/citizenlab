@@ -2,6 +2,8 @@ import React from 'react';
 
 // craft
 import { Element, useNode, UserComponent } from '@craftjs/core';
+
+// components
 import {
   Box,
   Icon,
@@ -9,24 +11,28 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
-
-// hooks
-import { IOption } from '../../../../../../../typings';
-import ProjectFilter from '../../../../../dashboard/components/filters/ProjectFilter';
-
-import { useIntl } from 'utils/cl-intl';
-import useLocale from '../../../../../../../hooks/useLocale';
-import useProject from '../../../../../../../hooks/useProject';
-import useFormResults from '../../../../../../../hooks/useFormResults';
-import { isNilOrError } from '../../../../../../../utils/helperUtils';
-
-import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
 import GraphCard from '../../../../../../../components/admin/GraphCard';
 import Container from '../../../../../../../components/admin/ContentBuilder/Widgets/Container';
 import SurveyResultsQuestionWidget from './SurveyResultsQuestionWidget';
+
+// i18n
+import messages from './messages';
+import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
+
+// types
+import { IOption } from '../../../../../../../typings';
+
+// settings
+import ProjectFilter from '../../../../../dashboard/components/filters/ProjectFilter';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { useIntl } from 'utils/cl-intl';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import useProject from 'hooks/useProject';
+import useFormResults from 'hooks/useFormResults';
 
 type SurveyResultsProps = {
   title: string | undefined;
