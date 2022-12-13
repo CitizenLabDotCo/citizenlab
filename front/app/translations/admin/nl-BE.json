@@ -651,7 +651,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "Alle groepen",
   "app.containers.AdminPage.DashboardPage.allProjects": "Alle projecten",
   "app.containers.AdminPage.DashboardPage.allTime": "Altijd",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatische locatiedetectie aan de gang. Gelieve te wachten totdat het proces is voltooid.",
   "app.containers.AdminPage.DashboardPage.comments": "Reacties",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Reacties",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Er is een basisdataset nodig om de representatie van platformgebruikers te meten.",
@@ -731,9 +730,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Bijdragen volgens status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Selecteer gebruikersgroep",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Selecteer project",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Het komt er zo aan, nog even geduld!",
   "app.containers.AdminPage.DashboardPage.male": "man",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Deze kaart detecteert automatisch locaties op basis van de titel en beschrijving van de bijdrage. De locatiegegevens zijn mogelijk niet nauwkeurig; bijdragen waar geen locatiegegevens worden gedetecteerd, worden niet weergegeven.",
   "app.containers.AdminPage.DashboardPage.month": "maand",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "De rangschikking is gebaseerd op het aantal door elke deelnemer ingediende bijdragen (5 punten per bijdrage), opmerkingen (3 punten per opmerking) en stemmen (1 punt per stem).",
   "app.containers.AdminPage.DashboardPage.noData": "Er zijn geen gegevens om te tonen",
@@ -774,12 +771,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "huidige projectfilter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "huidige tag-filter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Ontdek wat er gebeurt op je platform.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Kaart",
   "app.containers.AdminPage.DashboardPage.tabOverview": "Overzicht",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projecten",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Representativiteit",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Gebruikers",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Fun Fact: de volgende keer dat je deze pagina bezoekt, zal het veel sneller gaan!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Tijdslijn",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Dashboard",
   "app.containers.AdminPage.DashboardPage.total": "Totaal",
@@ -1791,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Weet je zeker dat je deze pagina wilt verwijderen? Dit kan niet ongedaan gemaakt worden. Je kunt de pagina ook uit de navigatiebalk verwijderen als je nog niet klaar bent om deze te verwijderen.",
   "app.modules.navbar.admin.containers.pageHeader": "Pagina's en menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Je navigatiebalk kan maximaal vijf pagina's weergeven naast de startpagina en de projectenpagina's. Je kunt menu-items hernoemen, opnieuw ordenen en nieuwe pagina's toevoegen met uw eigen inhoud.",
-  "app.modules.project_management.admin.components.permissionsTab": "Toegangsrechten",
-  "components.admin.ServerError.genericServerError": "Er ging iets fout bij het laden van deze pagina, probeer het later opnieuw."
+  "app.modules.project_management.admin.components.permissionsTab": "Toegangsrechten"
 }
