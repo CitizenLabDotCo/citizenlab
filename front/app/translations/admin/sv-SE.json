@@ -1786,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Är du säker på att du vill ta bort den här sidan? Du kan inte ångra den här åtgärden. Du kan också ta bort sidan från navigeringsfältet om du inte är redo att ta bort den ännu.",
   "app.modules.navbar.admin.containers.pageHeader": "Sidor och meny",
   "app.modules.navbar.admin.containers.pageSubtitle": "Ditt navigeringsfält kan visa upp till fem sidor utöver start- och projektsidorna. Du kan byta namn på menyobjekt, ändra ordning på och lägga till nya sidor med ditt eget innehåll.",
-  "app.modules.project_management.admin.components.permissionsTab": "Åtkomsträttigheter",
-  "components.admin.ServerError.genericServerError": "Det uppstod ett problem med att ladda det här innehållet, försök igen senare."
+  "app.modules.project_management.admin.components.permissionsTab": "Åtkomsträttigheter"
 }

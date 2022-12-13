@@ -1786,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo lapu? Šo darbību nevar atsaukt. Jūs varat arī izņemt lapu no navigācijas joslas, ja vēl neesat gatavs to izdzēst.",
   "app.modules.navbar.admin.containers.pageHeader": "Lapas un izvēlne",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigācijas joslā papildus sākuma un projektu lapām var tikt parādītas līdz pat piecām lapām. Jūs varat pārdēvēt izvēlnes elementus, mainīt to secību un pievienot jaunas lapas ar savu saturu.",
-  "app.modules.project_management.admin.components.permissionsTab": "Piekļuves tiesības",
-  "components.admin.ServerError.genericServerError": "Šī satura ielādē radās problēmas. Lūdzu, mēģiniet vēlāk vēlreiz."
+  "app.modules.project_management.admin.components.permissionsTab": "Piekļuves tiesības"
 }

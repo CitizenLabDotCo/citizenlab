@@ -1786,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Esteu segur que voleu eliminar aquesta pàgina? Això no es pot desfer. També podeu eliminar la pàgina de la barra de navegació si encara no esteu preparat per eliminar-la.",
   "app.modules.navbar.admin.containers.pageHeader": "Pàgines i menú",
   "app.modules.navbar.admin.containers.pageSubtitle": "La barra de navegació pot mostrar fins a cinc pàgines a més de les pàgines d'inici i de projectes. Podeu canviar el nom dels elements del menú, tornar a ordenar i afegir pàgines noves amb el vostre propi contingut.",
-  "app.modules.project_management.admin.components.permissionsTab": "Drets d'accés",
-  "components.admin.ServerError.genericServerError": "S'ha produït un problema en carregar aquest contingut, si us plau, torna-ho a provar més tard."
+  "app.modules.project_management.admin.components.permissionsTab": "Drets d'accés"
 }

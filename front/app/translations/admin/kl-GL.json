@@ -1786,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq. Peernissaanut piareersimanngikkuit qupperneq navigationslinjemiit peersinnaavat.",
   "app.modules.navbar.admin.containers.pageHeader": "Quppernit & toqqagassat",
   "app.modules.navbar.admin.containers.pageSubtitle": "Iserfigisinnaasannik toqqaavissartalik Angerlarit aamma Suliniutit saniatigut tallimat tikillugit saqqummertinneqarsinnaapput. Toqqagassani taaguutit allanngortissinnaavatit nuussinnaallugillu aamma nammineq imaritikkusutannik quppernernik ikkussisinnaavutit.",
-  "app.modules.project_management.admin.components.permissionsTab": "Iserfigisinnaasanut pisinnaatitaaffiit",
-  "components.admin.ServerError.genericServerError": "Imarisanik aallerniarnermi ajortoqarpoq, kingusinnerusukkut misileqqilaariuk."
+  "app.modules.project_management.admin.components.permissionsTab": "Iserfigisinnaasanut pisinnaatitaaffiit"
 }

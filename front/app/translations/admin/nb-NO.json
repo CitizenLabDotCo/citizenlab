@@ -1786,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på at du vil slette denne siden? Dette kan ikke angres. Du kan også fjerne siden fra navigasjonslinjen hvis du ikke er klar til å slette den ennå.",
   "app.modules.navbar.admin.containers.pageHeader": "Sider og meny",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigasjonslinjen kan vise opptil fem sider i tillegg til start- og prosjektsidene. Du kan gi nye navn til menyelementer, sortere og legge til nye sider med ditt eget innhold.",
-  "app.modules.project_management.admin.components.permissionsTab": "Tilgangsrettigheter",
-  "components.admin.ServerError.genericServerError": "Det oppstod et problem ved innlasting av dette innholdet, prøv på nytt senere."
+  "app.modules.project_management.admin.components.permissionsTab": "Tilgangsrettigheter"
 }

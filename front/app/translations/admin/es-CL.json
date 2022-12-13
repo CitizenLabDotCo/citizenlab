@@ -1786,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "¿Está seguro de que quiere eliminar esta página? Este paso no podrá deshacerse. También puede eliminar la página de la barra de navegación si aún no está listo para eliminarla.",
   "app.modules.navbar.admin.containers.pageHeader": "Páginas y menú",
   "app.modules.navbar.admin.containers.pageSubtitle": "Su barra de navegación puede mostrar hasta cinco páginas además de las páginas de Inicio y de proyectos. Puede cambiar el nombre de los elementos del menú, reordenarlos y añadir páginas nuevas con su propio contenido.",
-  "app.modules.project_management.admin.components.permissionsTab": "Derechos de acceso",
-  "components.admin.ServerError.genericServerError": "Algo pasó al cargar este contenido, por favor intentalo más tarde."
+  "app.modules.project_management.admin.components.permissionsTab": "Derechos de acceso"
 }

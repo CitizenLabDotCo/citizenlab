@@ -1786,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée. Vous pouvez également supprimer la page de la barre de navigation si vous n'êtes pas encore prêt à la supprimer.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages et menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Votre barre de navigation peut afficher jusqu'à cinq pages en plus des pages d'accueil et des projets. Vous pouvez renommer les éléments du menu, les réorganiser et ajouter de nouvelles pages avec votre propre contenu.",
-  "app.modules.project_management.admin.components.permissionsTab": "Droits d'accès",
-  "components.admin.ServerError.genericServerError": "Une erreur est survenue lors du chargement de ce contenu, veuillez réessayer plus tard."
+  "app.modules.project_management.admin.components.permissionsTab": "Droits d'accès"
 }
