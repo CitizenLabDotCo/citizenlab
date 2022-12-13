@@ -115,7 +115,9 @@ const CustomPageShow = () => {
         )} | ${localizedOrgName}`}
       />
       {pageAttributes.banner_enabled ? (
-        <CustomPageHeader pageData={page} />
+        <Box background="#fff" width="100%">
+          <CustomPageHeader pageData={page} />
+        </Box>
       ) : (
         <NoBannerContainer>
           {/* show page text title if the banner is disabled */}
