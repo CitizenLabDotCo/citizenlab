@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { useNode, UserComponent } from '@craftjs/core';
+import { Element, useNode, UserComponent } from '@craftjs/core';
 import {
   Box,
   Icon,
@@ -27,6 +27,7 @@ import { isNilOrError } from '../../../../../../../utils/helperUtils';
 import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
 import FormResultsQuestion from '../../../../../formBuilder/components/FormResults/FormResultsQuestion';
 import GraphCard from '../../../../../../../components/admin/GraphCard';
+import Container from '../../../../../../../components/admin/ContentBuilder/Widgets/Container';
 
 type SurveyResultsProps = {
   title: string | undefined;
@@ -94,15 +95,22 @@ const SurveyResultsWidget: UserComponent = ({
             index
           ) => {
             return (
-              <FormResultsQuestion
+              <Element
+                id={`question-title-${index}`}
                 key={index}
-                locale={locale}
-                question={question}
-                inputType={inputType}
-                answers={answers}
-                totalResponses={totalResponses}
-                required={required}
-              />
+                is={Container}
+                canvas
+              >
+                <FormResultsQuestion
+                  key={index}
+                  locale={locale}
+                  question={question}
+                  inputType={inputType}
+                  answers={answers}
+                  totalResponses={totalResponses}
+                  required={required}
+                />
+              </Element>
             );
           }
         )}
