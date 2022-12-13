@@ -109,8 +109,8 @@ const SMSCampaignForm = ({
       clHistory.replace(url);
     } catch (e) {
       setIsLoading(false);
-      // This error is added to the response in back/engines/commercial/texting/app/models/texting/campaign.rb
-      // Conditions are in back/engines/commercial/texting/app/services/texting/phone_number.rb
+      // This error is added to the response in back/engines/texting/app/models/texting/campaign.rb
+      // Conditions are in back/engines/texting/app/services/texting/phone_number.rb
       const invalidPhoneNumberError: InvalidPhoneNumberError | undefined =
         e.json.errors.phone_numbers?.find(
           // at this stage there's only 1 possible phone number error (invalid)
