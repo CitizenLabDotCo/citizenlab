@@ -670,7 +670,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "Alle grupper",
   "app.containers.AdminPage.DashboardPage.allProjects": "Alle prosjekter",
   "app.containers.AdminPage.DashboardPage.allTime": "All tid",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatisk stedsoppdagelse er på vei. Vent til behandlingen er fullført.",
   "app.containers.AdminPage.DashboardPage.comments": "Kommentarer",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Kommentarer",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Et grunnleggende datasett kreves for å måle representasjonen av plattformbrukere.",
@@ -750,9 +749,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Innlegg etter status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Velg brukergruppe",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Velg prosjekt",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Det er nesten klart, et øyeblikk!",
   "app.containers.AdminPage.DashboardPage.male": "mann ",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Dette kartet registrerer automatisk posisjoner fra tittel og beskrivelse i innlegget. Posisjonsdata er kanskje ikke nøyaktige, og innlegg det ikke registreres posisjonsdata for vises ikke.",
   "app.containers.AdminPage.DashboardPage.month": "måned",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "Rangeringen er basert på antall innlegg (5 poeng per innlegg), kommentarer (3 poeng per kommentar) og stemmer (1 poeng per stemme) som sendes inn fra hver deltaker.",
   "app.containers.AdminPage.DashboardPage.noData": "Det er ingen data å vise.",
@@ -793,12 +790,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "gjeldende prosjektfilter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "gjeldende taggfilter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Oppdag hva som skjer på plattformen.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Kart",
   "app.containers.AdminPage.DashboardPage.tabOverview": "Oversikt",
   "app.containers.AdminPage.DashboardPage.tabReports": "Rapporter",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Representasjon",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Brukere",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Interessant fakta: det er sannsynligvis raskere neste gang du kommer tilbake!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Tidslinje",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Instrumentbord",
   "app.containers.AdminPage.DashboardPage.total": "Totalt",
@@ -1811,6 +1806,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på at du vil slette denne siden? Dette kan ikke angres. Du kan også fjerne siden fra navigasjonslinjen hvis du ikke er klar til å slette den ennå.",
   "app.modules.navbar.admin.containers.pageHeader": "Sider og meny",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigasjonslinjen kan vise opptil fem sider i tillegg til start- og prosjektsidene. Du kan gi nye navn til menyelementer, sortere og legge til nye sider med ditt eget innhold.",
-  "app.modules.project_management.admin.components.permissionsTab": "Tilgangsrettigheter",
-  "components.admin.ServerError.genericServerError": "Det oppstod et problem ved innlasting av dette innholdet, prøv på nytt senere."
+  "app.modules.project_management.admin.components.permissionsTab": "Tilgangsrettigheter"
 }
