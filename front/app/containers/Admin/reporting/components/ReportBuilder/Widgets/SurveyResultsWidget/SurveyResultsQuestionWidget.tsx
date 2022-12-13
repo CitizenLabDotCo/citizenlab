@@ -1,10 +1,16 @@
 import React from 'react';
+
+// Components
+import { Box } from '@citizenlab/cl2-component-library';
 import FormResultsQuestion from '../../../../../formBuilder/components/FormResults/FormResultsQuestion';
+import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
+
+// Types
 import { Locale, Multiloc } from '../../../../../../../typings';
 import { Answer } from '../../../../../../../services/formCustomFields';
+
+// i18n
 import messages from './messages';
-import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
-import { Box } from '@citizenlab/cl2-component-library';
 
 type SurveyResultsQuestionProps = {
   locale: Locale;
