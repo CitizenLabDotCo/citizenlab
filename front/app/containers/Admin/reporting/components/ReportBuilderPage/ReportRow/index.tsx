@@ -68,6 +68,7 @@ const ReportRow = ({ report }: Props) => {
             {report.attributes.name}
           </Title>
           <EditedText
+            createdAt={report.attributes.created_at}
             updatedAt={report.attributes.updated_at}
             userId={report.relationships.owner.data.id}
           />
