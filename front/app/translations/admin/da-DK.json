@@ -670,7 +670,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "Alle grupper",
   "app.containers.AdminPage.DashboardPage.allProjects": "Alle projekter",
   "app.containers.AdminPage.DashboardPage.allTime": "Al tid",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatisk lokaliseringsdetektion undervejs. Vent venligst, indtil behandlingen er afsluttet.",
   "app.containers.AdminPage.DashboardPage.comments": "Kommentarer",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Kommentarer",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Der kræves et basisdatasæt for at måle platformbrugernes repræsentation.",
@@ -750,9 +749,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Indlæg efter status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Vælg brugergruppe",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Vælg projekt",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Det skulle være næsten klar, vent lidt!",
   "app.containers.AdminPage.DashboardPage.male": "mandlige",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Dette kort registrerer automatisk steder ud fra titlen og beskrivelsen af indlægget. Lokaliseringsdataene er muligvis ikke nøjagtige; indlæg, hvor der ikke registreres lokaliseringsdata, vises ikke.",
   "app.containers.AdminPage.DashboardPage.month": "måned",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "Ranglisten er baseret på antallet af indlæg (5 point pr. indlæg), kommentarer (3 point pr. kommentar) og stemmer (1 point pr. stemme), som hver deltager har indsendt.",
   "app.containers.AdminPage.DashboardPage.noData": "Der er ingen data, der skal vises.",
@@ -793,12 +790,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "nuværende projektfilter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "aktuelt tag-filter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Find ud af, hvad der sker på din platform.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Kort",
   "app.containers.AdminPage.DashboardPage.tabOverview": "Oversigt",
   "app.containers.AdminPage.DashboardPage.tabReports": "Rapporter",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Repræsentation",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Brugere",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Fun Fact: Det vil sandsynligvis være meget hurtigere næste gang du kommer her!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Tidslinje",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Dashboard",
   "app.containers.AdminPage.DashboardPage.total": "Total",
@@ -1811,6 +1806,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på, at du ønsker at slette denne side? Dette kan ikke fortrydes. Du kan også fjerne siden fra navigationslinjen, hvis du ikke er klar til at slette den endnu.",
   "app.modules.navbar.admin.containers.pageHeader": "Sider og menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Din navigationslinje kan vise op til fem sider ud over siderne Startside og Projekter. Du kan omdøbe menupunkter, omarrangere og tilføje nye sider med dit eget indhold.",
-  "app.modules.project_management.admin.components.permissionsTab": "Adgangsrettigheder",
-  "components.admin.ServerError.genericServerError": "Der var et problem med at indlæse dette indhold, prøv venligst igen senere."
+  "app.modules.project_management.admin.components.permissionsTab": "Adgangsrettigheder"
 }
