@@ -15,17 +15,18 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
+  createdAt: string;
   updatedAt: string;
   userId: string;
 }
 
-const EditedText = ({ updatedAt, userId }: Props) => {
+const EditedText = ({ createdAt, updatedAt, userId }: Props) => {
   const user = useUser({ userId });
   const { formatMessage } = useIntl();
 
   if (isNilOrError(user)) return null;
 
-  const createdOn = moment().format('DD/MM/YYYY'); // TODO
+  const createdOn = moment(createdAt).format('DD/MM/YYYY');
   const lastUpdateDaysAgo = moment().diff(moment(updatedAt), 'days');
 
   return (
