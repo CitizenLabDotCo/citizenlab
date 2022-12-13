@@ -11,7 +11,7 @@ import AgeChart from '../../../../../../../containers/Admin/dashboard/users/Char
 
 // Utils
 import moment, { Moment } from 'moment';
-import { injectIntl } from '../../../../../../../utils/cl-intl';
+import { useIntl } from '../../../../../../../utils/cl-intl';
 
 // Settings
 import TimeControl from '../../../../../../../containers/Admin/dashboard/components/TimeControl';
@@ -88,87 +88,86 @@ const AnalyticsChartWidget = ({
   );
 };
 
-const AnalyticsChartWidgetSettings = injectIntl(
-  ({ intl: { formatMessage } }) => {
-    const {
-      actions: { setProp },
-      title,
-      projectId,
-      startAtMoment,
-      endAtMoment,
-      chartType,
-    } = useNode((node) => ({
-      title: node.data.props.title,
-      projectId: node.data.props.projectId,
-      startAtMoment: node.data.props.startAt
-        ? moment(node.data.props.startAt)
-        : null,
-      endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
-      chartType: node.data.props.chartType,
-    }));
+const AnalyticsChartWidgetSettings = () => {
+  const { formatMessage } = useIntl();
+  const {
+    actions: { setProp },
+    title,
+    projectId,
+    startAtMoment,
+    endAtMoment,
+    chartType,
+  } = useNode((node) => ({
+    title: node.data.props.title,
+    projectId: node.data.props.projectId,
+    startAtMoment: node.data.props.startAt
+      ? moment(node.data.props.startAt)
+      : null,
+    endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
+    chartType: node.data.props.chartType,
+  }));
 
-    const setTitle = (value: string) => {
-      setProp((props) => {
-        props.title = value;
-      });
-    };
+  const setTitle = (value: string) => {
+    setProp((props) => {
+      props.title = value;
+    });
+  };
 
-    const handleChangeTimeRange = (
-      newStartAtMoment: Moment | null,
-      newEndAtMoment: Moment | null
-    ) => {
-      setProp((props) => {
-        props.startAt = newStartAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
-        props.endAt = newEndAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
-      });
-    };
+  const handleChangeTimeRange = (
+    newStartAtMoment: Moment | null,
+    newEndAtMoment: Moment | null
+  ) => {
+    setProp((props) => {
+      props.startAt = newStartAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
+      props.endAt = newEndAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
+    });
+  };
 
-    const handleProjectFilter = ({ value }: IOption) => {
-      setProp((props) => {
-        props.projectId = value;
-      });
-    };
+  const handleProjectFilter = ({ value }: IOption) => {
+    setProp((props) => {
+      props.projectId = value;
+    });
+  };
 
-    return (
-      <Box>
-        <Box background="#ffffff" marginBottom="20px">
-          <Input
-            id="e2e-analytics-chart-widget-title"
-            label={
-              <Title variant="h4" color="tenantText" mb={'0'}>
-                {formatMessage(messages.analyticsChartTitle)}
-              </Title>
-            }
-            type="text"
-            value={title}
-            onChange={setTitle}
-          />
-        </Box>
-        <Box mb="20px">
-          <Title variant="h4" color="tenantText" mb={'0'}>
-            {formatMessage(messages.analyticsChartDateRange)}
-          </Title>
-          <TimeControl
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            onChange={handleChangeTimeRange}
-            hidePresets={true}
-          />
-        </Box>
-        {chartType !== 'AgeChart' && chartType !== 'GenderChart' && (
-          <Box mb="20px">
-            <ProjectFilter
-              currentProjectFilter={projectId}
-              width="100%"
-              padding="11px"
-              onProjectFilter={handleProjectFilter}
-            />
-          </Box>
-        )}
+  return (
+    <Box>
+      <Box background="#ffffff" marginBottom="20px">
+        <Input
+          id="e2e-analytics-chart-widget-title"
+          label={
+            <Title variant="h4" color="tenantText" mb={'0'}>
+              {formatMessage(messages.analyticsChartTitle)}
+            </Title>
+          }
+          type="text"
+          value={title}
+          onChange={setTitle}
+        />
       </Box>
-    );
-  }
-);
+      <Box mb="20px">
+        <Title variant="h4" color="tenantText" mb={'0'}>
+          {formatMessage(messages.analyticsChartDateRange)}
+        </Title>
+        <TimeControl
+          startAtMoment={startAtMoment}
+          endAtMoment={endAtMoment}
+          onChange={handleChangeTimeRange}
+          hidePresets={true}
+        />
+      </Box>
+      {chartType !== 'AgeChart' && chartType !== 'GenderChart' && (
+        <Box mb="20px">
+          <ProjectFilter
+            currentProjectFilter={projectId}
+            width="100%"
+            padding="11px"
+            onProjectFilter={handleProjectFilter}
+          />
+        </Box>
+      )}
+    </Box>
+  );
+};
 
 AnalyticsChartWidget.craft = {
   props: {
