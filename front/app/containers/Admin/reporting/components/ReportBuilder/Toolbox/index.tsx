@@ -10,6 +10,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
+import AboutReportWidget from '../Widgets/AboutReportWidget';
 
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -24,7 +25,6 @@ import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
 import aboutMessages from '../Widgets/AboutReportWidget/messages';
-import AboutReportWidget from '../Widgets/AboutReportWidget';
 
 const ReportBuilderToolbox = () => {
   const { formatMessage } = useIntl();
