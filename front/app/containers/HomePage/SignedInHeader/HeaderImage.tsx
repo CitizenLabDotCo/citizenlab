@@ -45,10 +45,11 @@ const StyledImage = styled(Image)`
   `}
 `;
 
-const HeaderImageOverlay = styled.div`
+const HeaderImageOverlay = styled.div<{ isFixedBannerLayout: boolean }>`
   background: ${({ theme }) =>
     theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary};
-  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity / 100};
+  opacity: ${({ theme, isFixedBannerLayout }) =>
+    isFixedBannerLayout ? 1 : theme.signedInHeaderOverlayOpacity / 100};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -65,11 +66,17 @@ const HeaderImage = () => {
     const tenantHeaderImage = homepageSettings.attributes.header_bg
       ? homepageSettings.attributes.header_bg.large
       : null;
+    const layout = homepageSettings.attributes.banner_layout;
+    const isFixedBannerLayout = layout === 'fixed_ratio_layout';
 
     return (
       <HeaderImageContainer>
         <HeaderImageContainerInner>
-          {tenantHeaderImage && (
+          {/*
+            With this fixed ratio layout, the image would be messed up.
+            Ticket: https://citizenlab.atlassian.net/browse/CL-2215
+          */}
+          {tenantHeaderImage && !isFixedBannerLayout && (
             <StyledImage
               alt="" // Image is decorative, so alt tag is empty
               src={tenantHeaderImage}
@@ -78,7 +85,7 @@ const HeaderImage = () => {
               }
             />
           )}
-          <HeaderImageOverlay />
+          <HeaderImageOverlay isFixedBannerLayout={isFixedBannerLayout} />
         </HeaderImageContainerInner>
       </HeaderImageContainer>
     );
