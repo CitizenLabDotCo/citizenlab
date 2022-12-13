@@ -236,16 +236,6 @@ export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
   });
 }
 
-export function geotaggedIdeasStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{ data: IGeotaggedIdeaData[]; links: IIdeaLinks }>({
-    apiEndpoint: `${API_PATH}/ideas/geotagged`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
 export function similarIdeasStream(
   ideaId: string,
   streamParams: IStreamParams | null = null
