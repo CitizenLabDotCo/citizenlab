@@ -23,7 +23,8 @@ module.exports = {
     'jsx-a11y',
     '@typescript-eslint',
     '@typescript-eslint/tslint',
-    'simple-import-sort',
+    'unused-imports',
+    'import',
   ],
   rules: {
     '@typescript-eslint/member-delimiter-style': ['warn'],
@@ -73,7 +74,7 @@ module.exports = {
     'newline-per-chained-call': 'off',
     'no-array-constructor': 'error',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
-    'no-duplicate-imports': 'error',
+    'no-duplicate-imports': 'off',
     'no-eval': 'error',
     'no-extra-semi': 'off',
     'no-irregular-whitespace': 'error',
@@ -131,10 +132,13 @@ module.exports = {
     'prefer-const': 'error',
     'prefer-template': 'error',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': [
+    '@typescript-eslint/no-unused-vars': 'off',
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
       'warn',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
+    'import/no-duplicates': 'error',
     'quote-props': ['error', 'as-needed'],
     quotes: 'off',
     radix: 'error',
@@ -173,24 +177,6 @@ module.exports = {
         },
       },
     ],
-    'simple-import-sort/imports': [
-      'error',
-      {
-        groups: [
-          // Side effect imports.
-          ['^\\u0000'],
-          // Packages `react` related packages come first.
-          ['^react', '^@?\\w'],
-          // Internal packages.
-          ['^(@|components)(/.*|$)'],
-          // Parent imports. Put `..` last.
-          ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
-          // Other relative imports. Put same-folder imports and `.` last.
-          ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-        ],
-      },
-    ],
-    // 'simple-import-sort/exports': 'error',
   },
   ignorePatterns: [
     '.eslintrc.js',
