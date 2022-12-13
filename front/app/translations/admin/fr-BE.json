@@ -670,7 +670,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "Tous les groupes",
   "app.containers.AdminPage.DashboardPage.allProjects": "{tenantName, select, frw {Toutes les communes} other {Tous les projets}}",
   "app.containers.AdminPage.DashboardPage.allTime": "Jusqu’à maintenant",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Détection automatique de l'emplacement en cours. Veuillez patienter jusqu'à la fin du traitement.",
   "app.containers.AdminPage.DashboardPage.comments": "Commentaires",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Commentaires",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Un ensemble de données de base est nécessaire pour mesurer la représentation des utilisateurs de la plateforme.",
@@ -750,9 +749,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Contributions par statut",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Sélectionner le groupe d'utilisateurs",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Sélectionnez le projet",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Ca devrait être bientôt prêt, patience !",
   "app.containers.AdminPage.DashboardPage.male": "masculin",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Cette carte détecte automatiquement les emplacements à partir du titre et de la description de la contribution. Les données de localisation peuvent ne pas être exactes; les contributions où aucune donnée de localisation n'st détectée ne sont pas affichées.",
   "app.containers.AdminPage.DashboardPage.month": "mois",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "Le classement est basé sur le nombre de contributions (5 points par entrée), de commentaires (3 points par commentaire) et de votes (1 point par vote) soumis par chaque participant.",
   "app.containers.AdminPage.DashboardPage.noData": "Il n'y a pas de données à afficher.",
@@ -793,12 +790,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "filtre actuel du projet",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "filtre d'étiquettes actuel",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Découvrez ce qui se passe sur votre plateforme.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Carte",
   "app.containers.AdminPage.DashboardPage.tabOverview": "Vue d'ensemble",
   "app.containers.AdminPage.DashboardPage.tabReports": "Rapports",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Représentation",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Utilisateurs",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Anecdote: cela sera surement plus rapide la prochaine fois que vous reviendrez !",
   "app.containers.AdminPage.DashboardPage.timelineType": "Ligne du temps",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Tableau de bord",
   "app.containers.AdminPage.DashboardPage.total": "Total",
@@ -1811,6 +1806,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée. Vous pouvez également supprimer la page de la barre de navigation si vous n'êtes pas encore prêt à la supprimer.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages et menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Votre barre de navigation peut afficher jusqu'à cinq pages en plus des pages d'accueil et des projets. Vous pouvez renommer les éléments du menu, les réorganiser et ajouter de nouvelles pages avec votre propre contenu.",
-  "app.modules.project_management.admin.components.permissionsTab": "Droits d'accès",
-  "components.admin.ServerError.genericServerError": "Une erreur est survenue lors du chargement de ce contenu, veuillez réessayer plus tard."
+  "app.modules.project_management.admin.components.permissionsTab": "Droits d'accès"
 }
