@@ -8,6 +8,7 @@ export interface Report {
   type: 'report';
   attributes: {
     name: string;
+    created_at: string;
     updated_at: string;
   };
   relationships: {
