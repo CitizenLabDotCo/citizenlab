@@ -22,7 +22,7 @@ export default function useReportLayout(id: string) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [id]);
 
   return reportLayout;
 }

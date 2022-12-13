@@ -18,7 +18,7 @@ export default function useReport(id: string) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [id]);
 
   return report;
 }
