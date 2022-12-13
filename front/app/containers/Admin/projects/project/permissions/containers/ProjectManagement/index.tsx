@@ -11,8 +11,8 @@ import { WrappedComponentProps } from 'react-intl';
 
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import ModeratorList from '../components/ModeratorList';
-import UserSearch from '../components/UserSearch';
+import ModeratorList from '../../components/ModeratorList';
+import UserSearch from '../../components/UserSearch';
 
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 30px;

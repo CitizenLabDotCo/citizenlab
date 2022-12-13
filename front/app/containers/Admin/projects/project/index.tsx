@@ -154,6 +154,12 @@ export class AdminProjectsProjectIndex extends PureComponent<
           url: 'events',
           name: 'events',
         },
+        {
+          label: formatMessage(messages.permissionsTab),
+          url: `permissions`,
+          feature: 'project_visibility',
+          name: 'permissions',
+        },
       ],
       tabHideConditions: {
         general: function isGeneralTabHidden() {
