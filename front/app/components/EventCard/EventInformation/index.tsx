@@ -55,7 +55,7 @@ const StyledLink = styled(Link)`
 `;
 
 const EventTitle = styled.h3<{ fontSize?: number }>`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${({ fontSize }) => fontSize ?? fontSizes.xl}px;
   font-weight: 700;
   line-height: normal;
@@ -74,7 +74,7 @@ const EventTimeAndLocationContainer = styled.div`
     flex-direction: column;
   `}
 
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xs}px;
 `;
 
@@ -133,7 +133,7 @@ const StyledT = styled(T)<IStyledT>`
     line-height: ${SMALL_LINE_HEIGHT}px;
   }
 
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   position: relative;
   display: block;
 `;

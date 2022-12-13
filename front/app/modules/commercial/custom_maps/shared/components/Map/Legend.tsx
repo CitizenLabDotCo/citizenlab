@@ -62,7 +62,7 @@ const ColorLabel = styled.div`
   height: 18px;
   margin-right: 10px;
   background-color: ${(props) => props.color};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   ${isRtl`
     margin-right: 0;
