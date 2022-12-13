@@ -267,13 +267,13 @@ const PhaseContainer = styled.div`
   position: relative;
 
   &.first ${PhaseBar} {
-    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px
-      ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius} 0px 0px
+      ${(props) => props.theme.borderRadius};
   }
 
   &.last ${PhaseBar} {
-    border-radius: 0px ${(props: any) => props.theme.borderRadius}
-      ${(props: any) => props.theme.borderRadius} 0px;
+    border-radius: 0px ${(props) => props.theme.borderRadius}
+      ${(props) => props.theme.borderRadius} 0px;
   }
 `;
 

@@ -23,7 +23,7 @@ const Container = styled.div`
   justify-content: space-between;
   color: ${colors.textSecondary};
   border: 1px solid ${lighten(0.4, colors.textSecondary)};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   line-height: 24px;
   padding: 10px 20px;

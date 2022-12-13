@@ -35,7 +35,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxxl}px;
   line-height: normal;
   font-weight: 600;

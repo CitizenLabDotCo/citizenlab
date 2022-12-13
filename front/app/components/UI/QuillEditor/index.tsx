@@ -59,7 +59,7 @@ const DropdownListItem = styled.button`
   white-space: nowrap;
   width: auto !important;
   padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
   text-align: left;
@@ -234,7 +234,7 @@ const Container = styled.div<{
     border: 1px solid ${colors.borderDark};
     box-shadow: none;
     overflow-y: auto;
-    ${(props: any) => quillEditedContent(props.theme.colors.tenantPrimary)};
+    ${(props) => quillEditedContent(props.theme.colors.tenantPrimary)};
 
     .ql-editor {
       min-height: ${(props) => (props.minHeight ? props.minHeight : '300px')};

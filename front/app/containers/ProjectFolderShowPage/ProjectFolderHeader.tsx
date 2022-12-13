@@ -16,7 +16,7 @@ import { IProjectFolderData } from 'services/projectFolders';
 
 const Container = styled.div`
   width: 100%;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   overflow: hidden;
   display: flex;
   align-items: stretch;

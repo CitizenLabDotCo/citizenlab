@@ -120,7 +120,7 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   margin-left: 80px;
   margin-top: 4px;
   background: ${colors.background};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   &.oneCardPerRow {
     flex: 0 0 500px;
