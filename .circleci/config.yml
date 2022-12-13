@@ -7,18 +7,17 @@ slack-fail-post-step-templates: &slack-fail-post-step-templates
   post-steps:
     - slack/notify:
         event: fail
-        mentions: ':boom: FAILURE: Tenant templates workflow failed to release new template versions.'
+        mentions: ":boom: FAILURE: Tenant templates workflow failed to release new template versions."
         template: basic_fail_1
 
 slack-fail-post-step-inconsistent-data: &slack-fail-post-step-inconsistent-data
   post-steps:
     - slack/notify:
         event: fail
-        mentions: ':boom: FAILURE: Some data is likely invalid.'
+        mentions: ":boom: FAILURE: Some data is likely invalid."
         template: basic_fail_1
 
 parameters:
-
   back:
     type: boolean
     default: false
@@ -65,7 +64,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: 'postgis/postgis:12-3.1'
+      - image: "postgis/postgis:12-3.1"
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -410,9 +409,9 @@ jobs:
       - clone_citizenlab_and_enable_ee
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: cd citizenlab/front && npm ci
       - save_cache:
           paths:
@@ -458,9 +457,9 @@ jobs:
       - clone_citizenlab_and_enable_ee
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: cd citizenlab/front && npm ci
       - save_cache:
           paths:
@@ -468,7 +467,7 @@ jobs:
           key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
           command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING npm run build
-          no_output_timeout: '30m'
+          no_output_timeout: "30m"
       - run:
           command: cd citizenlab/front && rm build/*.map
       - deploy:
@@ -487,9 +486,9 @@ jobs:
       - clone_citizenlab_and_enable_ee
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: cd citizenlab/front && npm ci
       - save_cache:
           paths:
@@ -497,10 +496,10 @@ jobs:
           key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
           command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_PRODUCTION npm run build
-          no_output_timeout: '30m'
+          no_output_timeout: "30m"
       - run:
           command: cd citizenlab/front && rm build/*.map
-      - deploy :
+      - deploy:
           name: Deploy production version
           command: |
             cd ~/citizenlab/front
@@ -525,7 +524,7 @@ jobs:
           path: /tmp/report.html
           destination: lighthouse
 
-# *************** e2e ******************
+  # *************** e2e ******************
 
   e2e-tests:
     docker:
@@ -559,7 +558,6 @@ jobs:
           when: on_fail
       - store_artifacts:
           path: screenshots
-
 
 workflows:
   version: 2
@@ -749,7 +747,7 @@ workflows:
                 template: basic_success_1
             - slack/notify:
                 event: fail
-                mentions: ':boom: FAILURE: Some tests failed.'
+                mentions: ":boom: FAILURE: Some tests failed."
                 template: basic_fail_1
 
   manual-templates:
@@ -759,47 +757,48 @@ workflows:
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
+            - lastpass
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: 'Benelux'
+          name: "Benelux"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.57.74.84'
-          env_file: '.env-production-benelux'
+          ssh_host: "52.57.74.84"
+          env_file: ".env-production-benelux"
       - back-generate-tenant-templates:
-          name: 'South America'
+          name: "South America"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.67.181.38'
-          env_file: '.env-web'
+          ssh_host: "52.67.181.38"
+          env_file: ".env-web"
       - back-generate-tenant-templates:
-          name: 'Canada'
+          name: "Canada"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '35.183.23.116'
-          env_file: '.env-production-canada'
+          ssh_host: "35.183.23.116"
+          env_file: ".env-production-canada"
       - back-generate-tenant-templates:
-          name: 'US West'
+          name: "US West"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.13.59.174'
-          env_file: '.env-web'
+          ssh_host: "52.13.59.174"
+          env_file: ".env-web"
       - back-generate-tenant-templates:
-          name: 'UK'
+          name: "UK"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '35.179.69.215'
-          env_file: '.env-web'
+          ssh_host: "35.179.69.215"
+          env_file: ".env-web"
       - back-test-tenant-templates:
           context:
             - docker-hub-access
@@ -807,11 +806,11 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-ee-docker-image
-            - 'Benelux'
-            - 'South America'
-            - 'Canada'
-            - 'US West'
-            - 'UK'
+            - "Benelux"
+            - "South America"
+            - "Canada"
+            - "US West"
+            - "UK"
       - back-release-tenant-templates:
           context:
             - docker-hub-access
@@ -824,7 +823,7 @@ workflows:
                 template: basic_success_1
             - slack/notify:
                 event: fail
-                mentions: ':boom: FAILURE: Some templates are invalid and could not be released.'
+                mentions: ":boom: FAILURE: Some templates are invalid and could not be released."
                 template: basic_fail_1
   nightly-templates:
     triggers:
@@ -839,47 +838,48 @@ workflows:
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
+            - lastpass
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: 'Benelux'
+          name: "Benelux"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.57.74.84'
-          env_file: '.env-production-benelux'
+          ssh_host: "52.57.74.84"
+          env_file: ".env-production-benelux"
       - back-generate-tenant-templates:
-          name: 'South America'
+          name: "South America"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.67.181.38'
-          env_file: '.env-web'
+          ssh_host: "52.67.181.38"
+          env_file: ".env-web"
       - back-generate-tenant-templates:
-          name: 'Canada'
+          name: "Canada"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '35.183.23.116'
-          env_file: '.env-production-canada'
+          ssh_host: "35.183.23.116"
+          env_file: ".env-production-canada"
       - back-generate-tenant-templates:
-          name: 'US West'
+          name: "US West"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.13.59.174'
-          env_file: '.env-web'
+          ssh_host: "52.13.59.174"
+          env_file: ".env-web"
       - back-generate-tenant-templates:
-          name: 'UK'
+          name: "UK"
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '35.179.69.215'
-          env_file: '.env-web'
+          ssh_host: "35.179.69.215"
+          env_file: ".env-web"
       - back-test-tenant-templates:
           context:
             - docker-hub-access
@@ -887,11 +887,11 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-ee-docker-image
-            - 'Benelux'
-            - 'South America'
-            - 'Canada'
-            - 'US West'
-            - 'UK'
+            - "Benelux"
+            - "South America"
+            - "Canada"
+            - "US West"
+            - "UK"
       - back-release-tenant-templates:
           context:
             - docker-hub-access
@@ -904,7 +904,7 @@ workflows:
                 template: basic_success_1
             - slack/notify:
                 event: fail
-                mentions: ':boom: FAILURE: Some templates are invalid and could not be released.'
+                mentions: ":boom: FAILURE: Some templates are invalid and could not be released."
                 template: basic_fail_1
   check-for-inconsistent-data:
     triggers:
@@ -917,38 +917,38 @@ workflows:
     jobs:
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
-          name: 'South America'
+          name: "South America"
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: '52.67.181.38'
-          env_file: '.env-web'
+          ssh_host: "52.67.181.38"
+          env_file: ".env-web"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
-          name: 'Canada'
+          name: "Canada"
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: '35.183.23.116'
-          env_file: '.env-production-canada'
+          ssh_host: "35.183.23.116"
+          env_file: ".env-production-canada"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
-          name: 'US West'
+          name: "US West"
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: '52.13.59.174'
-          env_file: '.env-web'
+          ssh_host: "52.13.59.174"
+          env_file: ".env-web"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
-          name: 'UK'
+          name: "UK"
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: '35.179.69.215'
-          env_file: '.env-web'
+          ssh_host: "35.179.69.215"
+          env_file: ".env-web"
       - slack-invalid-data-success:
-          name: ':tada: SUCCESS: No invalid data was detected!' # Mentions are not supported for basic_success_1
+          name: ":tada: SUCCESS: No invalid data was detected!" # Mentions are not supported for basic_success_1
           context:
             - slack-dev-notifications-inconsistent-data
           requires:
-            - 'South America'
-            - 'Canada'
-            - 'US West'
-            - 'UK'
+            - "South America"
+            - "Canada"
+            - "US West"
+            - "UK"
