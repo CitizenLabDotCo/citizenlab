@@ -132,12 +132,11 @@ module.exports = {
     'prefer-const': 'error',
     'prefer-template': 'error',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
-    'unused-imports/no-unused-imports': 'error',
-    'unused-imports/no-unused-vars': [
+    '@typescript-eslint/no-unused-vars': [
       'warn',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
+    'unused-imports/no-unused-imports': 'warn',
     'import/no-duplicates': 'error',
     'quote-props': ['error', 'as-needed'],
     quotes: 'off',
