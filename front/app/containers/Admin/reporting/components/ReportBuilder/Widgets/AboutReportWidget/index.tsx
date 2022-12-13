@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { Element } from '@craftjs/core';
+import { Element, UserComponent } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -12,12 +12,17 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TenantLogo from '../../../../../../MobileNavbar/TenantLogo';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 
-const AboutReportWidget = () => {
+const AboutReportWidget: UserComponent = ({
+  intl: { formatMessage },
+}: WrappedComponentProps) => {
   const projectTitle = 'Report title';
   const project = 'Project name';
   const projectManager = 'bob';
   const projectPeriod = '12/03/2022 - 15/12/2022';
+
+  // ?? Will this data get reinitialised everytime the report is loaded?
 
   // TODO: Initialise title from report settings
   const title = `
@@ -26,11 +31,11 @@ const AboutReportWidget = () => {
 
   // TODO: Initialise text from report settings
   const text = `
-      <ul>
-        <li>Projects: ${project}</li>
-        <li>Period: ${projectPeriod}</li>
-        <li>Project manager: ${projectManager}</li>
-      </ul>
+    <ul>
+      <li>${formatMessage(messages.projectsLabel)}: ${project}</li>
+      <li>${formatMessage(messages.periodLabel)}: ${projectPeriod}</li>
+      <li>${formatMessage(messages.managerLabel)}: ${projectManager}</li>
+    </ul>
     `;
 
   return (
@@ -44,7 +49,7 @@ const AboutReportWidget = () => {
       >
         <TenantLogo />
       </Box>
-      <Element id="title-text" is={Container} canvas>
+      <Element id="about-title" is={Container} canvas>
         <Text text={title} />
       </Element>
       <Element id="about-text" is={Container} canvas>
@@ -64,4 +69,4 @@ AboutReportWidget.craft = {
   },
 };
 
-export default AboutReportWidget;
+export default injectIntl(AboutReportWidget);
