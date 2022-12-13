@@ -79,8 +79,6 @@ const AnalyticsChartWidget = ({
       break;
   }
 
-  console.log(this);
-
   return (
     <Box id="e2e-text-box" minHeight="26px">
       {chart}
