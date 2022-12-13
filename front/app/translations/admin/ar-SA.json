@@ -670,7 +670,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "كل المجموعات",
   "app.containers.AdminPage.DashboardPage.allProjects": "جميع المشاريع",
   "app.containers.AdminPage.DashboardPage.allTime": "كل الأوقات",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "جارٍ اكتشاف الموقع التلقائي. يرجى الانتظار لحين اكتمال العملية.",
   "app.containers.AdminPage.DashboardPage.comments": "التعليقات",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "التعليقات",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "مطلوب مجموعة بيانات أساسية لقياس الطابع التمثيلي لمستخدمي المنصة.",
@@ -750,9 +749,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "منشورات حسب الحالة",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "تحديد مجموعة مستخدمين",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "تحديد مشروع",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "ستكون جاهزة بعد قليل، انتظر قليلًا!",
   "app.containers.AdminPage.DashboardPage.male": "ذكر",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "تكتشف هذه الخريطة المواقع تلقائيًا باستخدام عنوان المنشور ووصفه. قد تكون بيانات الموقع غير دقيقة؛ لذلك، لا يتم عرض المنشورات التي لا يتم اكتشاف أي بيانات بشأن الموقع فيها.",
   "app.containers.AdminPage.DashboardPage.month": "شهر",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "يستند التصنيف إلى عدد المنشورات (5 نقاط لكل منشور), والتعليقات (3 نقاط لكل تعليق) والأصوات (نقطة واحدة لكل صوت) المرسلة من كل مشارك على حدة.",
   "app.containers.AdminPage.DashboardPage.noData": "لا توجد أي بيانات لعرضها.",
@@ -793,12 +790,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "عامل تصفية المشروع الحالي",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "عامل تصفية الموضوع الحالي",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "اكتشف ما يحدث على منصتك.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "الخريطة",
   "app.containers.AdminPage.DashboardPage.tabOverview": "نظرة عامة",
   "app.containers.AdminPage.DashboardPage.tabReports": "تقارير",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "الطابع التمثيلي",
   "app.containers.AdminPage.DashboardPage.tabUsers": "المستخدمون",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "حقيقة ممتعة: من المحتمل أن تكون أسرع في المرة القادمة التي تأتي فيها إلى هنا!",
   "app.containers.AdminPage.DashboardPage.timelineType": "الجدول الزمني",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "اللوحة الرئيسية",
   "app.containers.AdminPage.DashboardPage.total": "الإجمالي",
@@ -1811,6 +1806,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "هل تريد بالتأكيد حذف هذه الصفحة؟ لا يمكن التراجع عن هذا الإجراء. يمكنك أيضًا إزالة الصفحة من شريط التنقل إذا لم تكن قد حذفتها حتى الآن.",
   "app.modules.navbar.admin.containers.pageHeader": "صفحات وقائمة",
   "app.modules.navbar.admin.containers.pageSubtitle": "باستطاعة شريط التنقل عرض ما يصل إلى خمس صفحات إضافة إلى الصفحة الرئيسية وصفحات المشاريع. يمكنك إعادة تسمية عناصر قائمة وإعادة ترتيب صفحات جديدة تتضمن المحتوى التابع لك وإضافتها.",
-  "app.modules.project_management.admin.components.permissionsTab": "حقوق الوصول",
-  "components.admin.ServerError.genericServerError": "حدثت مشكلة أثناء تحميل هذا المحتوى، يُرجى المحاولة مجددًا في وقت لاحق."
+  "app.modules.project_management.admin.components.permissionsTab": "حقوق الوصول"
 }
