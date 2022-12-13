@@ -12,11 +12,11 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TenantLogo from '../../../../../../MobileNavbar/TenantLogo';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
-import { injectIntl, WrappedComponentProps } from 'react-intl';
+import { useIntl } from '../../../../../../../utils/cl-intl';
 
-const AboutReportWidget: UserComponent = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const AboutReportWidget: UserComponent = () => {
+  const { formatMessage } = useIntl();
+
   const projectTitle = 'Report title';
   const project = 'Project name';
   const projectManager = 'bob';
@@ -69,4 +69,4 @@ AboutReportWidget.craft = {
   },
 };
 
-export default injectIntl(AboutReportWidget);
+export default AboutReportWidget;
