@@ -2,7 +2,13 @@ import React from 'react';
 
 // craft
 import { useNode, UserComponent } from '@craftjs/core';
-import { Box, Input, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Input,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
@@ -11,11 +17,92 @@ import messages from './messages';
 import { injectIntl } from '../../../../../../../utils/cl-intl';
 import { IOption } from '../../../../../../../typings';
 import ProjectFilter from '../../../../../dashboard/components/filters/ProjectFilter';
+import { WrappedComponentProps } from 'react-intl';
+import useLocale from '../../../../../../../hooks/useLocale';
+import useProject from '../../../../../../../hooks/useProject';
+import useFormResults from '../../../../../../../hooks/useFormResults';
+import { isNilOrError } from '../../../../../../../utils/helperUtils';
 
-const SurveyResultsWidget: UserComponent = ({ title, projectId }) => {
+import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
+import FormResultsQuestion from '../../../../../formBuilder/components/FormResults/FormResultsQuestion';
+
+type SurveyResultsProps = {
+  title: string | undefined;
+  projectId: string | undefined;
+  phaseId: string | undefined;
+} & WrappedComponentProps;
+
+const SurveyResultsWidget: UserComponent = ({
+  intl: { formatMessage },
+  title,
+  projectId,
+  phaseId,
+}: SurveyResultsProps) => {
+  // TODO: If no project or phase then get the first project with a survey
+  const useProjectId =
+    projectId === undefined
+      ? 'd6827fd0-29bf-4e1d-8861-420386a61c34'
+      : projectId;
+  const usePhaseId =
+    phaseId === undefined ? '350adbb0-6ca5-48aa-aedd-e7d7d2e5fc6b' : phaseId;
+
+  const locale = useLocale();
+  const project = useProject({ projectId: useProjectId });
+  const formResults = useFormResults({
+    projectId: useProjectId,
+    phaseId: usePhaseId,
+  });
+
+  if (
+    isNilOrError(formResults) ||
+    isNilOrError(locale) ||
+    isNilOrError(project)
+  ) {
+    return null;
+  }
+
+  const { totalSubmissions, results } = formResults;
+
+  const surveyResponseMessage =
+    totalSubmissions > 0
+      ? formatMessage(formBuilderMessages.totalSurveyResponses, {
+          count: totalSubmissions,
+        })
+      : formatMessage(formBuilderMessages.noSurveyResponses);
+
+  const resultsTitle = title ? title : formatMessage(messages.surveyResults);
+
   return (
-    <Box id="e2e-survey-result-widget">
-      SURVEY RESULTS - {projectId} {title}
+    <Box width="100%">
+      <Box width="100%" display="flex" alignItems="center">
+        <Box width="100%">
+          <Title variant="h2">{resultsTitle}</Title>
+          <Text variant="bodyM" color="textSecondary">
+            {surveyResponseMessage}
+          </Text>
+        </Box>
+      </Box>
+
+      <Box maxWidth="524px">
+        {results.map(
+          (
+            { question, inputType, answers, totalResponses, required },
+            index
+          ) => {
+            return (
+              <FormResultsQuestion
+                key={index}
+                locale={locale}
+                question={question}
+                inputType={inputType}
+                answers={answers}
+                totalResponses={totalResponses}
+                required={required}
+              />
+            );
+          }
+        )}
+      </Box>
     </Box>
   );
 };
@@ -45,6 +132,17 @@ const SurveyResultsWidgetSettings = injectIntl(
 
     return (
       <Box>
+        <Box display="flex" gap="16px" alignItems="center">
+          <Icon
+            name="info-outline"
+            width="24px"
+            height="24px"
+            fill="textSecondary"
+          />
+          <Text variant="bodyM" color="textSecondary">
+            {formatMessage(formBuilderMessages.informationText)}
+          </Text>
+        </Box>
         <Box background="#ffffff" marginBottom="20px">
           <Input
             id="e2e-analytics-chart-widget-title"
@@ -73,8 +171,9 @@ const SurveyResultsWidgetSettings = injectIntl(
 
 SurveyResultsWidget.craft = {
   props: {
-    title: '',
-    project: '',
+    title: undefined,
+    projectId: undefined,
+    phaseId: undefined,
   },
   related: {
     settings: SurveyResultsWidgetSettings,
@@ -85,4 +184,4 @@ SurveyResultsWidget.craft = {
   },
 };
 
-export default SurveyResultsWidget;
+export default injectIntl(SurveyResultsWidget);

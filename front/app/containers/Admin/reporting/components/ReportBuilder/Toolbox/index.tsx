@@ -156,9 +156,10 @@ const ReportBuilderToolbox = () => {
             <SurveyResultsWidget
               title={formatMessage(surveyResultMessages.surveyResults)}
               projectId={undefined}
+              phaseId={undefined}
             />
           }
-          icon="chart-bar"
+          icon="survey"
           label={formatMessage(surveyResultMessages.surveyResults)}
         />
       </Accordion>
