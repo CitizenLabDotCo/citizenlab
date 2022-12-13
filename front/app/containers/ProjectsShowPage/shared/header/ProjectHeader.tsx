@@ -63,7 +63,7 @@ const HeaderImage = styled(Image)`
   width: 100%;
   height: 240px;
   margin-bottom: 30px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   overflow: hidden;
 
   ${media.phone`
