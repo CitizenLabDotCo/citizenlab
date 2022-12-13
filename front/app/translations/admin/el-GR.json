@@ -649,7 +649,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "Όλες οι ομάδες",
   "app.containers.AdminPage.DashboardPage.allProjects": "Όλα τα έργα",
   "app.containers.AdminPage.DashboardPage.allTime": "Όλοι οι χρόνοι",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Αυτόματος εντοπισμός τοποθεσίας σε εξέλιξη. Παρακαλούμε περιμένετε μέχρι να ολοκληρωθεί η επεξεργασία.",
   "app.containers.AdminPage.DashboardPage.comments": "Σχόλια",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Σχόλια",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Απαιτείται ένα βασικό σύνολο δεδομένων για τη μέτρηση της αντιπροσώπευσης των χρηστών της πλατφόρμας.",
@@ -729,9 +728,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Δημοσιεύσεις ανά κατάσταση",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Επιλογή ομάδας χρηστών",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Επιλογή έργου",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Θα πρέπει να είναι σχεδόν έτοιμο, περιμένετε!",
   "app.containers.AdminPage.DashboardPage.male": "άνδρας",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Αυτός ο χάρτης εντοπίζει αυτόματα τις τοποθεσίες από τον τίτλο και την περιγραφή της δημοσίευσης. Τα δεδομένα τοποθεσίας ενδέχεται να μην είναι ακριβή, οι δημοσιεύσεις στις οποίες δεν ανιχνεύονται δεδομένα τοποθεσίας δεν εμφανίζονται.",
   "app.containers.AdminPage.DashboardPage.month": "μήνας",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "Η κατάταξη βασίζεται στον αριθμό των δημοσιεύσεων (5 βαθμοί ανά δημοσίευση), των σχολίων (3 βαθμοί ανά σχόλιο) και των ψήφων (1 βαθμός ανά ψήφο) που υποβλήθηκαν από κάθε συμμετέχοντα.",
   "app.containers.AdminPage.DashboardPage.noData": "Δεν υπάρχουν στοιχεία προς εμφάνιση.",
@@ -772,12 +769,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "φίλτρο τρέχοντος έργου",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "φίλτρο τρέχουσας ετικέτας",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Ανακαλύψτε τι συμβαίνει στην πλατφόρμα σας.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Χάρτης",
   "app.containers.AdminPage.DashboardPage.tabOverview": "Επισκόπηση",
   "app.containers.AdminPage.DashboardPage.tabReports": "Αναφορές",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Αναπαράσταση",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Χρήστες",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Αστείο γεγονός: την επόμενη φορά που θα έρθετε εδώ θα είναι πιθανώς πολύ πιο γρήγορα!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Χρονοδιάγραμμα",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Πίνακας εργαλείων",
   "app.containers.AdminPage.DashboardPage.total": "Σύνολο",
@@ -1786,6 +1781,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη σελίδα; Αυτό δεν μπορεί να αναιρεθεί. Μπορείτε επίσης να καταργήσετε τη σελίδα από τη γραμμή πλοήγησης αν δεν είστε ακόμα έτοιμοι να τη διαγράψετε.",
   "app.modules.navbar.admin.containers.pageHeader": "Σελίδες & μενού",
   "app.modules.navbar.admin.containers.pageSubtitle": "Η γραμμή πλοήγησης μπορεί να εμφανίζει έως και πέντε σελίδες εκτός από τις σελίδες Αρχική σελίδα και Έργα. Μπορείτε να μετονομάσετε τα στοιχεία μενού, να αναδιατάξετε και να προσθέσετε νέες σελίδες με το δικό σας περιεχόμενο.",
-  "app.modules.project_management.admin.components.permissionsTab": "Δικαιώματα πρόσβασης",
-  "components.admin.ServerError.genericServerError": "Υπήρξε πρόβλημα με τη φόρτωση αυτού του περιεχομένου, παρακαλούμε προσπαθήστε ξανά αργότερα."
+  "app.modules.project_management.admin.components.permissionsTab": "Δικαιώματα πρόσβασης"
 }
