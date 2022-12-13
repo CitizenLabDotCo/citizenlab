@@ -1,26 +1,25 @@
 import React from 'react';
 
-import { useNode } from '@craftjs/core';
-
 // Components
 import { Box, Input, Title } from '@citizenlab/cl2-component-library';
+import GenderChart from 'containers/Admin/dashboard/users/Charts/GenderChart';
+import AgeChart from 'containers/Admin/dashboard/users/Charts/AgeChart';
 import VisitorsCard from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard';
 import VisitorsTrafficSourcesCard from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsTrafficSourcesCard';
-import GenderChart from '../../../../../../../containers/Admin/dashboard/users/Charts/GenderChart';
-import AgeChart from '../../../../../../../containers/Admin/dashboard/users/Charts/AgeChart';
 
 // Utils
 import moment, { Moment } from 'moment';
-import { useIntl } from '../../../../../../../utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
+import { useNode } from '@craftjs/core';
 
 // Settings
-import TimeControl from '../../../../../../../containers/Admin/dashboard/components/TimeControl';
-import ProjectFilter from '../../../../../../../containers/Admin/dashboard/components/filters/ProjectFilter';
+import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
+import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
 import messages from './messages';
 
 // Types
 import { IOption } from 'typings';
-import { IResolution } from '../../../../../../../components/admin/ResolutionControl';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 interface Props {
   title: string;
