@@ -44,6 +44,13 @@ module ReportBuilder
           end
         end
 
+        def layout
+          render json: ContentBuilder::WebApi::V1::LayoutSerializer.new(
+            report.layout,
+            params: fastjson_params
+          ).serialized_json
+        end
+
         private
 
         def report
