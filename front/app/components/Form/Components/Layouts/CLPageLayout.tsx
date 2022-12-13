@@ -217,6 +217,7 @@ const CLPageLayout = memo(
                   setCurrentStep(currentStep - 1);
                   scrollToTop();
                 }}
+                data-cy="e2e-previous-page"
                 mb="20px"
                 icon="chevron-left"
                 buttonStyle="white"

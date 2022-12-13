@@ -14,7 +14,12 @@ export const FieldRuleDisplay = ({
 }: FieldRuleDisplayProps) => {
   if (answerTitle && targetPage) {
     return (
-      <Box display="flex" ml="52px" height="24px">
+      <Box
+        display="flex"
+        ml="52px"
+        height="24px"
+        data-cy="e2e-field-rule-display"
+      >
         <Icon fill={colors.coolGrey500} width="18px" name="logic" my="auto" />
         <Text my="auto" pl="8px" pr="4px" color="coolGrey600" fontSize="s">
           {answerTitle}
