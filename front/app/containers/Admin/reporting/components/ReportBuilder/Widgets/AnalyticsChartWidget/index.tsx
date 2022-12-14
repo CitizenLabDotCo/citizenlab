@@ -4,8 +4,8 @@ import React from 'react';
 import { Box, Input, Title } from '@citizenlab/cl2-component-library';
 import GenderChart from 'containers/Admin/dashboard/users/Charts/GenderChart';
 import AgeChart from 'containers/Admin/dashboard/users/Charts/AgeChart';
-import VisitorsCard from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard';
-import VisitorsTrafficSourcesCard from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsTrafficSourcesCard';
+import VisitorsReportCard from './VisitorsReportCard';
+import VisitorsTrafficSourcesReportCard from './VisitorsTrafficSourcesReportCard';
 
 // Utils
 import moment, { Moment } from 'moment';
@@ -13,8 +13,8 @@ import { useIntl } from 'utils/cl-intl';
 import { useNode } from '@craftjs/core';
 
 // Settings
-import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
 import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
+import DateRangePicker from 'components/admin/DateRangePicker';
 import messages from './messages';
 
 // Types
@@ -49,7 +49,6 @@ const AnalyticsChartWidget = ({
     endAtMoment,
     resolution,
     title,
-    interactive: false,
   };
 
   const statChartProps = {
@@ -59,16 +58,16 @@ const AnalyticsChartWidget = ({
     currentGroupFilter: undefined,
     currentGroupFilterLabel: undefined,
     title,
-    interactive: false,
+    showExportMenu: false,
   };
 
   let chart = <></>;
   switch (chartType) {
     case 'VisitorsCard':
-      chart = <VisitorsCard {...analyticsChartProps} />;
+      chart = <VisitorsReportCard {...analyticsChartProps} />;
       break;
     case 'VisitorsTrafficSourcesCard':
-      chart = <VisitorsTrafficSourcesCard {...analyticsChartProps} />;
+      chart = <VisitorsTrafficSourcesReportCard {...analyticsChartProps} />;
       break;
     case 'GenderChart':
       chart = <GenderChart {...statChartProps} />;
@@ -110,13 +109,16 @@ const AnalyticsChartWidgetSettings = () => {
     });
   };
 
-  const handleChangeTimeRange = (
-    newStartAtMoment: Moment | null,
-    newEndAtMoment: Moment | null
-  ) => {
+  const handleChangeTimeRange = ({
+    startDate,
+    endDate,
+  }: {
+    startDate: Moment | null;
+    endDate: Moment | null;
+  }) => {
     setProp((props) => {
-      props.startAt = newStartAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
-      props.endAt = newEndAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
+      props.startAt = startDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
+      props.endAt = endDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
     });
   };
 
@@ -145,11 +147,12 @@ const AnalyticsChartWidgetSettings = () => {
         <Title variant="h4" color="tenantText" mb={'0'}>
           {formatMessage(messages.analyticsChartDateRange)}
         </Title>
-        <TimeControl
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          onChange={handleChangeTimeRange}
-          hidePresets={true}
+        <DateRangePicker
+          startDateId={'startAt'}
+          endDateId={'endAt'}
+          startDate={startAtMoment}
+          endDate={endAtMoment}
+          onDatesChange={handleChangeTimeRange}
         />
       </Box>
       {chartType !== 'AgeChart' && chartType !== 'GenderChart' && (

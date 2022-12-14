@@ -57,7 +57,6 @@ interface Props {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
   onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
-  hidePresets?: boolean;
 }
 
 type State = {
@@ -147,53 +146,51 @@ class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
 
   render() {
     const { dropdownOpened } = this.state;
-    const { startAtMoment, endAtMoment, hidePresets } = this.props;
+    const { startAtMoment, endAtMoment } = this.props;
     const activePreset = this.findActivePreset();
 
     return (
       <Container className="intercom-admin-dashboard-time-control">
-        {!hidePresets && (
-          <DropdownContainer>
-            <StyledButton
-              buttonStyle="text"
-              onClick={this.toggleDropdown}
-              padding="0px"
-              className="e2e-open-time-presets"
-            >
-              {activePreset ? (
-                activePreset.label
-              ) : (
-                <FormattedMessage {...messages.customDateRange} />
-              )}
-              <DropdownItemIcon name="chevron-down" />
-            </StyledButton>
-            <Dropdown
-              width="200px"
-              top="45px"
-              opened={dropdownOpened}
-              onClickOutside={this.toggleDropdown}
-              className="e2e-preset-items"
-              content={
-                <>
-                  {this.presets.map((preset) => (
-                    <DropdownListItem
-                      key={preset.id}
-                      onClick={this.handlePresetClick(preset)}
-                      role="navigation"
-                      className={
-                        activePreset && activePreset.id === preset.id
-                          ? 'selected'
-                          : ''
-                      }
-                    >
-                      {preset.label}
-                    </DropdownListItem>
-                  ))}
-                </>
-              }
-            />
-          </DropdownContainer>
-        )}
+        <DropdownContainer>
+          <StyledButton
+            buttonStyle="text"
+            onClick={this.toggleDropdown}
+            padding="0px"
+            className="e2e-open-time-presets"
+          >
+            {activePreset ? (
+              activePreset.label
+            ) : (
+              <FormattedMessage {...messages.customDateRange} />
+            )}
+            <DropdownItemIcon name="chevron-down" />
+          </StyledButton>
+          <Dropdown
+            width="200px"
+            top="45px"
+            opened={dropdownOpened}
+            onClickOutside={this.toggleDropdown}
+            className="e2e-preset-items"
+            content={
+              <>
+                {this.presets.map((preset) => (
+                  <DropdownListItem
+                    key={preset.id}
+                    onClick={this.handlePresetClick(preset)}
+                    role="navigation"
+                    className={
+                      activePreset && activePreset.id === preset.id
+                        ? 'selected'
+                        : ''
+                    }
+                  >
+                    {preset.label}
+                  </DropdownListItem>
+                ))}
+              </>
+            }
+          />
+        </DropdownContainer>
 
         <DateRangePicker
           startDateId={'startAt'}
