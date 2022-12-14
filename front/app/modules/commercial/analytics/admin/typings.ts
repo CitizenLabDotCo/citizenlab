@@ -32,5 +32,4 @@ export type Layout = 'wide' | 'narrow';
 // Specifics of displaying chart
 export interface ChartDisplay {
   title?: string;
-  interactive?: boolean;
 }
