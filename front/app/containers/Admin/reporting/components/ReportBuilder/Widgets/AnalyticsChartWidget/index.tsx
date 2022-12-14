@@ -13,8 +13,8 @@ import { useIntl } from 'utils/cl-intl';
 import { useNode } from '@craftjs/core';
 
 // Settings
-import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
 import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
+import DateRangePicker from 'components/admin/DateRangePicker';
 import messages from './messages';
 
 // Types
@@ -110,13 +110,16 @@ const AnalyticsChartWidgetSettings = () => {
     });
   };
 
-  const handleChangeTimeRange = (
-    newStartAtMoment: Moment | null,
-    newEndAtMoment: Moment | null
-  ) => {
+  const handleChangeTimeRange = ({
+    startDate,
+    endDate,
+  }: {
+    startDate: Moment | null;
+    endDate: Moment | null;
+  }) => {
     setProp((props) => {
-      props.startAt = newStartAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
-      props.endAt = newEndAtMoment?.format('YYYY-MM-DDTHH:mm:ss.sss');
+      props.startAt = startDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
+      props.endAt = endDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
     });
   };
 
@@ -145,11 +148,12 @@ const AnalyticsChartWidgetSettings = () => {
         <Title variant="h4" color="tenantText" mb={'0'}>
           {formatMessage(messages.analyticsChartDateRange)}
         </Title>
-        <TimeControl
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          onChange={handleChangeTimeRange}
-          hidePresets={true}
+        <DateRangePicker
+          startDateId={'startAt'}
+          endDateId={'endAt'}
+          startDate={startAtMoment}
+          endDate={endAtMoment}
+          onDatesChange={handleChangeTimeRange}
         />
       </Box>
       {chartType !== 'AgeChart' && chartType !== 'GenderChart' && (
