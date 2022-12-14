@@ -31,7 +31,7 @@ import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import RangeInput from 'components/UI/RangeInput';
 import ImageCropper from 'components/admin/ImageCropper';
 
-export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
+export type PreviewDevice = 'phone' | 'tablet' | 'desktop';
 
 export interface Props {
   onAddImage: (newImageBase64: string) => void;
