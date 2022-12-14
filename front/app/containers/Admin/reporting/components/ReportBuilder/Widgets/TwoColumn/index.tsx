@@ -22,7 +22,6 @@ type TwoColumnProps = {
 const StyledBox = styled(Box)`
   min-height: 40px;
   width: 100%;
-  gap: 24px;
   display: grid;
 
   grid-template-columns: ${(props: TwoColumnProps) =>
