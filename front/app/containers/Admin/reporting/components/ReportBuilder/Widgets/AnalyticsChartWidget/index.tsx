@@ -4,7 +4,7 @@ import React from 'react';
 import { Box, Input, Title } from '@citizenlab/cl2-component-library';
 import GenderChart from 'containers/Admin/dashboard/users/Charts/GenderChart';
 import AgeChart from 'containers/Admin/dashboard/users/Charts/AgeChart';
-import VisitorsCard from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard';
+import VisitorsReportCard from './VisitorsReportCard';
 import VisitorsTrafficSourcesCard from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsTrafficSourcesCard';
 
 // Utils
@@ -65,7 +65,7 @@ const AnalyticsChartWidget = ({
   let chart = <></>;
   switch (chartType) {
     case 'VisitorsCard':
-      chart = <VisitorsCard {...analyticsChartProps} />;
+      chart = <VisitorsReportCard {...analyticsChartProps} />;
       break;
     case 'VisitorsTrafficSourcesCard':
       chart = <VisitorsTrafficSourcesCard {...analyticsChartProps} />;
