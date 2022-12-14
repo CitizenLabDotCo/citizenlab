@@ -651,7 +651,7 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "All Groups",
   "app.containers.AdminPage.DashboardPage.allProjects": "All Projects",
   "app.containers.AdminPage.DashboardPage.allTime": "All Time",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatic location detection underway. Please wait until the processing is complete.",
+  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatesch Sittenerkennung leeft. Wgl. waart bis d’Beaarbechtung ofgeschloss ass.",
   "app.containers.AdminPage.DashboardPage.comments": "Kommentaren",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Kommentaren",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "E Gronddatesaz ass erfuerderlech, fir d’Representatioun vun de Plattformbenotzer ze moossen.",
@@ -731,9 +731,9 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Posts by status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Benotzergrupp auswielen",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Projet auswielen",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "It should be almost ready, hang on!",
+  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Et ass bal fäerdeg, bleift drun!",
   "app.containers.AdminPage.DashboardPage.male": "male",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "This map automatically detects locations from the title and description of the post. The location data may not be accurate; posts where no locational data is detected are not displayed.",
+  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Dës Kaart wielt automatesch Sitten aus dem Posttitel an der Postbeschreiwung. D’Donnéeë vum Site kéinte falsch sinn; Posten, an deene keng Donnéeën zum Site erkannt ginn, ginn net ugewisen.",
   "app.containers.AdminPage.DashboardPage.month": "month",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "The ranking is based on the number of posts (5 points per post), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",
@@ -779,7 +779,7 @@
   "app.containers.AdminPage.DashboardPage.tabReports": "Rapporten",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Representatioun",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Users",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Fun Fact: it will probably be way faster the next time you come here!",
+  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Fun Fact: wann Dir déi nächste Kéier heihi kommt, geet et warscheinlech vill méi schnell!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Zäitlinn",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Dashboard",
   "app.containers.AdminPage.DashboardPage.total": "Total",
@@ -1799,5 +1799,5 @@
   "app.modules.navbar.admin.containers.pageHeader": "Säiten & Menü",
   "app.modules.navbar.admin.containers.pageSubtitle": "Är Navigatiounsleescht kann zousätzlech zu den Homepagen a Projetssäiten bis zu fënnef Säiten uweisen. Dir kënnt Menüpunkten ëmbenennen, nei uerdnen an nei Säite mat Ärem eegenen Inhalt dobäifügen.",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
-  "components.admin.ServerError.genericServerError": "There was an issue loading this content, please try again later."
+  "components.admin.ServerError.genericServerError": "Et gouf e Problem mat dem Luede vun dësem Inhalt, wgl. probéiert et méi spéit nach eng Kéier."
 }
