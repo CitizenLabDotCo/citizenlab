@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.surveyQuestion',
     defaultMessage: 'Question',
   },
+  surveySettingsTitle: {
+    id: 'app.containers.admin.ContentBuilder.surveySettingsTitle',
+    defaultMessage: 'Survey title',
+  },
 });

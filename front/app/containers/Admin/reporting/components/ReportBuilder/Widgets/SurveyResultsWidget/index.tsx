@@ -160,7 +160,7 @@ const SurveyResultsWidgetSettings = () => {
           id="e2e-analytics-chart-widget-title"
           label={
             <Title variant="h4" color="tenantText" mb={'0'}>
-              {formatMessage(messages.surveyResults)}
+              {formatMessage(messages.surveySettingsTitle)}
             </Title>
           }
           type="text"
