@@ -23,7 +23,7 @@ const PageSettings = ({ field, locale }: Props) => {
     <>
       <SectionField>
         <InputMultilocWithLocaleSwitcher
-          initialLocale={locale}
+          initiallySelectedLocale={locale}
           id="e2e-page-title-multiloc"
           name={`customFields.${field.index}.title_multiloc`}
           label={<FormattedMessage {...messages.titleLabel} />}

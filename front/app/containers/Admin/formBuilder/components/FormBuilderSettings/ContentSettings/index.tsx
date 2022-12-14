@@ -54,7 +54,7 @@ export const ContentSettings = ({
             </SectionField>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
-                initialLocale={platformLocale}
+                initiallySelectedLocale={platformLocale}
                 id="e2e-title-multiloc"
                 name={`customFields.${field.index}.title_multiloc`}
                 label={<FormattedMessage {...messages.questionTitle} />}
@@ -63,7 +63,7 @@ export const ContentSettings = ({
             </SectionField>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
-                initialLocale={platformLocale}
+                initiallySelectedLocale={platformLocale}
                 name={`customFields.${field.index}.description_multiloc`}
                 label={
                   <FormattedMessage {...messages.questionDescriptionOptional} />
