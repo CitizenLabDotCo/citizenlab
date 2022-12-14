@@ -292,7 +292,11 @@ const BannerImageField = ({
               <Toggle
                 onChange={handleOverlayEnabling}
                 checked={overlayEnabled}
-                label={formatMessage(messages.overlayToggleLabel)}
+                label={
+                  <Box color={colors.blue500}>
+                    {formatMessage(messages.overlayToggleLabel)}
+                  </Box>
+                }
               />
             </Box>
             {overlayEnabled && (
