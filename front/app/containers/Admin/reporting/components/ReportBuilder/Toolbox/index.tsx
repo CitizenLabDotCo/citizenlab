@@ -5,7 +5,6 @@ import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import { Accordion } from '@citizenlab/cl2-component-library';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
@@ -45,12 +44,6 @@ const ReportBuilderToolbox = () => {
           component={<TwoColumn columnLayout="1-1" />}
           icon="layout-2column-1"
           label={formatMessage(TwoColumn.craft.custom.title)}
-        />
-        <DraggableElement
-          id="e2e-draggable-three-column"
-          component={<ThreeColumn />}
-          icon="layout-3column"
-          label={formatMessage(ThreeColumn.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-white-space"
