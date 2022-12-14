@@ -7,14 +7,14 @@ export default defineMessages({
   },
   projectsLabel: {
     id: 'app.containers.admin.ReportBuilder.projectsLabel',
-    defaultMessage: 'Projects',
+    defaultMessage: 'Projects: {projectsList}',
   },
   periodLabel: {
     id: 'app.containers.admin.ReportBuilder.periodLabel',
-    defaultMessage: 'Period',
+    defaultMessage: 'Period: {startEndDates}',
   },
   managerLabel: {
     id: 'app.containers.admin.ReportBuilder.managerLabel',
-    defaultMessage: 'Project manager',
+    defaultMessage: 'Project manager: {managerName}',
   },
 });

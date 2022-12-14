@@ -32,14 +32,14 @@ const AboutReportWidget: UserComponent = ({
 
   // TODO: Is there a way to not call these hooks when the component is already there?
   const report = useReport(reportId);
-  const reportTitle = isNilOrError(report) ? '' : report.attributes.name;
+  const reportTitle = isNilOrError(report) ? null : report.attributes.name;
 
   const userId = isNilOrError(report)
     ? null
     : report.relationships.owner.data.id;
   const user = useUser({ userId });
   const projectManager = isNilOrError(user)
-    ? ''
+    ? null
     : `${user.attributes.first_name} ${user.attributes.last_name}`;
 
   // TODO: initialise these from the report projects when available
@@ -58,7 +58,7 @@ const AboutReportWidget: UserComponent = ({
         <TenantLogo />
       </Box>
 
-      {isNilOrError(report) ? (
+      {reportTitle === null ? (
         <></>
       ) : (
         <Element id="about-title" is={Container} canvas>
@@ -69,18 +69,22 @@ const AboutReportWidget: UserComponent = ({
           />
         </Element>
       )}
-      {isNilOrError(user) ? (
+      {projectManager === null ? (
         <></>
       ) : (
         <Element id="about-text" is={Container} canvas>
           <Text
             text={`
             <ul>
-              <li>${formatMessage(messages.projectsLabel)}: ${project}</li>
-              <li>${formatMessage(messages.periodLabel)}: ${projectPeriod}</li>
-              <li>${formatMessage(
-                messages.managerLabel
-              )}: ${projectManager}</li>
+              <li>${formatMessage(messages.projectsLabel, {
+                projectsList: project,
+              })}</li>
+              <li>${formatMessage(messages.periodLabel, {
+                startEndDates: projectPeriod,
+              })}</li>
+              <li>${formatMessage(messages.managerLabel, {
+                managerName: projectManager,
+              })}</li>
             </ul>
           `}
           />
