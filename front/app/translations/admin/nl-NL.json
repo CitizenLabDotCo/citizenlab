@@ -660,7 +660,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.modalDescription": "Stel leeftijdsgroepen in zodat deze overeenkomen met je basisdataset.",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.range": "Bereik",
   "app.containers.AdminPage.DashboardPage.components.Field.BinModal.save": "Opslaan",
-  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.to": "Aan",
+  "app.containers.AdminPage.DashboardPage.components.Field.BinModal.to": "Tot en met",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.editAgeGroups": "Leeftijdsgroepen wijzigen",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "Dit artikel zal niet worden berekend.",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Zie minder",
