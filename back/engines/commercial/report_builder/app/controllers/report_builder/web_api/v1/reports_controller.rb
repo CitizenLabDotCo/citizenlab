@@ -27,8 +27,9 @@ module ReportBuilder
         end
 
         def update
+          report.attributes = update_params
           side_fx_service.before_update(report, current_user)
-          return send_unprocessable_entity(report) unless report.update(update_params)
+          return send_unprocessable_entity(report) unless report.save
 
           side_fx_service.after_update(report, current_user)
           render json: serialize_report(report), status: :ok
@@ -42,6 +43,13 @@ module ReportBuilder
           else
             head :internal_server_error
           end
+        end
+
+        def layout
+          render json: ContentBuilder::WebApi::V1::LayoutSerializer.new(
+            report.layout,
+            params: fastjson_params
+          ).serialized_json
         end
 
         private

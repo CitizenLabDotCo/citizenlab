@@ -22,8 +22,6 @@ const StickyContainer = styled.div`
     margin-left: -2rem;
     padding-left: 2rem;
   `}
-
-  z-index: 1000;
 `;
 
 export default StickyContainer;

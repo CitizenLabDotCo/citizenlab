@@ -39,6 +39,7 @@ resource 'AdminPublication' do
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
+      parameter :only_projects, 'Include projects only (no folders)', required: false
 
       example_request 'List all admin publications' do
         expect(status).to eq(200)
@@ -70,6 +71,17 @@ resource 'AdminPublication' do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [empty_draft_folder.id, projects[2].id, projects[3].id, projects[5].id, projects[6].id]
         expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 0
+      end
+
+      example_request 'List projects only' do
+        do_request(only_projects: 'true')
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 8
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
+        if CitizenLab.ee?
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
+        end
       end
 
       ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|

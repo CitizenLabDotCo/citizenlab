@@ -18,7 +18,7 @@ const Container = styled.button`
   display: flex;
   text-align: left;
   cursor: pointer;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   padding-left: 15px;
   padding-right: 10px;
   padding-top: 10px;
@@ -48,10 +48,10 @@ const IconContainer = styled.div`
   margin-right: 15px;
 `;
 
-const StyledIcon: any = styled(Icon)`
+const StyledIcon = styled(Icon)<{ isRead: boolean }>`
   flex: 0 0 24px;
   fill: ${colors.textSecondary};
-  opacity: ${(props: any) => (props.isRead ? '0.4' : '1')};
+  opacity: ${(props) => (props.isRead ? '0.4' : '1')};
 `;
 
 const Body = styled.div`

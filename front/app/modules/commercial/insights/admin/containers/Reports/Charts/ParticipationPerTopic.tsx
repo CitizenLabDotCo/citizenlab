@@ -64,7 +64,7 @@ const Row = styled.div`
 
 const TopicName = styled.div`
   padding: 1px;
-  font-size: ${fontSizes.s};
+  font-size: ${fontSizes.s}px;
   word-break: break-all;
   width: auto;
   height: 20px;
@@ -74,7 +74,7 @@ const TopicName = styled.div`
 
 const ParticipationType = styled.div`
   padding: 1px;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   width: ${cellWidth};
   height: 20px;
   text-align: center;
@@ -98,7 +98,7 @@ const Cell = styled.div<{ cellColor: string }>`
 
 const Value = styled.p`
   margin: auto;
-  font-size: ${fontSizes.xs};
+  font-size: ${fontSizes.xs}px;
   text-align: center;
   opacity: 0;
   :hover {
