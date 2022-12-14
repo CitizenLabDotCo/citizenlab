@@ -4,7 +4,7 @@ import React from 'react';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import { Accordion } from '@citizenlab/cl2-component-library';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
