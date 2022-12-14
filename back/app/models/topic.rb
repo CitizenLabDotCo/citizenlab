@@ -30,6 +30,9 @@ class Topic < ApplicationRecord
   has_many :initiatives_topics, dependent: :destroy
   has_many :initiatives, through: :initiatives_topics
 
+  has_many :static_pages_topics, dependent: :restrict_with_error
+  has_many :static_pages, through: :static_pages_topics
+
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validates :code, inclusion: { in: ->(_record) { codes } }

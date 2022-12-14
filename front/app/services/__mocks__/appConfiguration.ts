@@ -37,6 +37,10 @@ export const getAppConfigurationData = (
         reply_to_email: 'not-support@citizenlab.co',
         authentication_token_lifetime_in_days: 30,
       },
+      advanced_custom_pages: {
+        allowed: true,
+        enabled: true,
+      },
       participatory_budgeting: {
         allowed: true,
         enabled: true,

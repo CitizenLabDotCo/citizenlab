@@ -16,6 +16,7 @@ import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
 import { Top, Content, Container } from '../PostPreview';
 import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // services
 import { deleteInitiative } from 'services/initiatives';
@@ -221,7 +222,9 @@ export class InitiativeContent extends PureComponent<
                 )}
 
                 {initiativeFiles && !isNilOrError(initiativeFiles) && (
-                  <FileAttachments files={initiativeFiles} />
+                  <Box mb="25px">
+                    <FileAttachments files={initiativeFiles} />
+                  </Box>
                 )}
 
                 <StyledOfficialFeedback

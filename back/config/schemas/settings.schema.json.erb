@@ -208,6 +208,18 @@
         }
       },
 
+      "advanced_custom_pages": {
+        "type": "object",
+        "title": "Advanced Custom Pages",
+        "description":	"Advanced Custom Pages features.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "project_management": {
         "type": "object",
         "title": "Project Managers",

@@ -9,7 +9,7 @@ const Container = styled.span`
   color: ${colors.red600};
   font-size: ${fontSizes.xs}px;
   line-height: 16px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   text-transform: uppercase;
   text-align: center;
   font-weight: 600;

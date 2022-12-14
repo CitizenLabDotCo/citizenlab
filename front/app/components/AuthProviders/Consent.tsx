@@ -24,16 +24,15 @@ const Container = styled.div`
 `;
 
 const ConsentText = styled.div`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;
-  font-weight: ${(props: any) => props.fontWeight};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
 
   a {
-    color: ${(props: any) => props.theme.colors.tenantText};
+    color: ${(props) => props.theme.colors.tenantText};
     font-weight: 400;
     text-decoration: underline;
     overflow-wrap: break-word;

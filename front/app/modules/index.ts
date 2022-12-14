@@ -6,7 +6,6 @@ import granularPermissionsConfiguration from './commercial/granular_permissions'
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
-import geographicDashboardConfiguration from './commercial/geographic_dashboard';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
@@ -116,10 +115,6 @@ export default loadModules([
   {
     configuration: customTopicsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
-  },
-  {
-    configuration: geographicDashboardConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/geographic_dashboard'],
   },
   {
     configuration: adminProjectTemplatesConfiguration,
