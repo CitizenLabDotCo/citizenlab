@@ -32,7 +32,7 @@ const AboutReportWidget: UserComponent = ({
 
   // TODO: Is there a way to not call these hooks when the component is already there?
   const report = useReport(reportId);
-  const reportTitle = isNilOrError(report) ? '' : report.attributes.name;
+  const reportTitle = isNilOrError(report) ? null : report.attributes.name;
 
   const userId = isNilOrError(report)
     ? null
