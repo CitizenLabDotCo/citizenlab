@@ -7,7 +7,7 @@ import SectionToggle, {
 } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
-import { StyledLink } from 'components/admin/Section';
+
 // i18n
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -25,10 +25,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // routing
 import { useParams } from 'react-router-dom';
-import {
-  adminCustomPageSettingsPath,
-  adminCustomPageProjectsPath,
-} from '../../../../routes';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -83,21 +79,7 @@ const CustomPagesEditContent = () => {
       name: 'projects_enabled',
       titleMessage: formatMessage(sectionToggleMessages.projectsList),
       tooltipMessage: (
-        <FormattedMessage
-          {...sectionToggleMessages.projectsListTooltip2}
-          values={{
-            linkToPageSettings: (
-              <StyledLink to={adminCustomPageSettingsPath(customPageId)}>
-                {formatMessage(sectionToggleMessages.linkToPageSettingsText)}
-              </StyledLink>
-            ),
-            linkToProjectsPreview: (
-              <StyledLink to={adminCustomPageProjectsPath(customPageId)}>
-                {formatMessage(sectionToggleMessages.linkToProjectsPreviewText)}
-              </StyledLink>
-            ),
-          }}
-        />
+        <FormattedMessage {...sectionToggleMessages.projectsListTooltip} />
       ),
       hideSection: hideProjects,
       linkToPath: 'projects',
