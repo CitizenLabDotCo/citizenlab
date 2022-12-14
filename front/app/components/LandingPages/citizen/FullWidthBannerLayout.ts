@@ -55,7 +55,9 @@ export const HeaderImageOverlay = styled.div<{
   background: ${({ overlayColor, theme }) =>
     overlayColor ?? theme.colors.tenantPrimary};
   opacity: ${({ overlayOpacity, theme }) =>
-    (overlayOpacity ?? theme.signedOutHeaderOverlayOpacity) / 100};
+    typeof overlayOpacity === 'number'
+      ? overlayOpacity / 100
+      : theme.signedOutHeaderOverlayOpacity / 100};
   position: absolute;
   top: 0;
   bottom: 0;

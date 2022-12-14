@@ -92,13 +92,12 @@ const HeaderImageDropzone = ({
   const theme = useTheme();
   const displayOverlayColor = overlayColor ?? theme.colors.tenantPrimary;
   const displayOverlayOpacity =
-    overlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
+    typeof overlayOpacity === 'number'
+      ? overlayOpacity
+      : theme.signedOutHeaderOverlayOpacity;
 
   const previewOverlayElement =
-    (layout === 'full_width_banner_layout' ||
-      layout === 'fixed_ratio_layout') &&
-    displayOverlayColor &&
-    displayOverlayOpacity ? (
+    layout === 'full_width_banner_layout' || layout === 'fixed_ratio_layout' ? (
       <HeaderImageOverlay
         overlayColor={displayOverlayColor}
         overlayOpacity={displayOverlayOpacity}
