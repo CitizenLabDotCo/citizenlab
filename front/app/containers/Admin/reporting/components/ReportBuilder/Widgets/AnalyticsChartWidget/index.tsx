@@ -59,7 +59,7 @@ const AnalyticsChartWidget = ({
     currentGroupFilter: undefined,
     currentGroupFilterLabel: undefined,
     title,
-    interactive: false,
+    showExportMenu: false,
   };
 
   let chart = <></>;
