@@ -8,12 +8,20 @@ jest.mock('hooks/useAppConfiguration', () => () => ({
   attributes: { name: 'orgName', host: 'localhost' },
 }));
 
+jest.mock('hooks/useAreas', () => jest.fn(() => []));
+jest.mock('hooks/useTopics', () => jest.fn(() => []));
+
 jest.mock('hooks/useCustomPage', () =>
   jest.fn(() => ({
-    relationships: { nav_bar_item: { data: { id: '123' } } },
+    relationships: {
+      nav_bar_item: { data: { id: '123' } },
+      topics: { data: [] },
+      areas: { data: [] },
+    },
     attributes: {
       title_multiloc: { en: 'title' },
       nav_bar_item_title_multiloc: { en: 'user generated content' },
+      slug: 'my-custom-page',
     },
   }))
 );
@@ -40,7 +48,7 @@ describe('EditCustomPageSettings', () => {
   describe('Edit custom page', () => {
     it('renders error in case of invalid slug', async () => {
       const { container } = render(<EditCustomPageSettings />);
-      fireEvent.change(screen.getByRole('textbox', { name: 'Page URL' }), {
+      fireEvent.change(screen.getByRole('textbox', { name: 'Slug' }), {
         target: {
           value: 'existing-slug',
         },
