@@ -9,14 +9,14 @@ const Badge = styled.div`
   color: #fff;
   font-size: 10px;
   line-height: normal;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   padding: 1px 6px;
   display: inline-block;
   text-transform: uppercase;
   text-align: center;
   font-weight: 600;
   margin-top: 2px;
-  background-color: ${(props: any) => props.color};
+  background-color: ${(props) => props.color};
 `;
 
 interface Props {

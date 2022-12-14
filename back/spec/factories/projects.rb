@@ -75,6 +75,12 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_active_budgeting_phase do
+      after(:create) do |project, _evaluator|
+        project.phases << create(:active_phase, project: project, participation_method: 'budgeting')
+      end
+    end
+
     factory :project_with_active_native_survey_phase do
       after(:create) do |project, _evaluator|
         project.phases << create(:active_phase, project: project, participation_method: 'native_survey')
@@ -109,11 +115,101 @@ FactoryBot.define do
           :phase,
           project: project,
           participation_method: 'native_survey',
-          start_at: past_phase.end_at + 30.days,
-          end_at: past_phase.end_at + 60.days
+          start_at: 30.days.from_now,
+          end_at: 60.days.from_now
         )
         project.phases << past_phase
         project.phases << future_phase
+      end
+    end
+
+    factory :project_with_past_ideation_and_current_information_phase do
+      after(:create) do |project, _evaluator|
+        past_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: 60.days.ago,
+          end_at: 30.days.ago
+        )
+        current_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'information',
+          start_at: 10.days.ago,
+          end_at: 60.days.from_now
+        )
+        project.phases << past_phase
+        project.phases << current_phase
+      end
+    end
+
+    factory :project_with_past_ideation_and_future_ideation_phase do
+      after(:create) do |project, _evaluator|
+        past_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          input_term: 'question',
+          start_at: 60.days.ago,
+          end_at: 30.days.ago
+        )
+        future_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          input_term: 'contribution',
+          start_at: 30.days.from_now,
+          end_at: 60.days.from_now
+        )
+        project.phases << past_phase
+        project.phases << future_phase
+      end
+    end
+
+    factory :project_with_two_past_ideation_phases do
+      after(:create) do |project, _evaluator|
+        past_phase1 = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          input_term: 'question',
+          start_at: 120.days.ago,
+          end_at: 60.days.ago
+        )
+        past_phase2 = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          input_term: 'contribution',
+          start_at: 40.days.ago,
+          end_at: 20.days.ago
+        )
+        project.phases << past_phase1
+        project.phases << past_phase2
+      end
+    end
+
+    factory :project_with_two_future_ideation_phases do
+      after(:create) do |project, _evaluator|
+        future_phase1 = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          input_term: 'question',
+          start_at: 30.days.from_now,
+          end_at: 60.days.from_now
+        )
+        future_phase2 = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          input_term: 'contribution',
+          start_at: 80.days.from_now,
+          end_at: 100.days.from_now
+        )
+        project.phases << future_phase1
+        project.phases << future_phase2
       end
     end
 

@@ -72,7 +72,7 @@ const Anchor = styled.div`
 const Form = styled.form`
   flex: 1;
   border: 1px solid ${colors.borderDark};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   overflow: hidden;
 
   &:not(.focused):hover {

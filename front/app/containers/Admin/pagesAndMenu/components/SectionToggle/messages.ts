@@ -26,17 +26,26 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.SectionToggle.projectsList',
     defaultMessage: 'Projects list',
   },
-  projectsListTooltip: {
-    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip',
-    defaultMessage: 'Customize how projects are displayed on the page.',
+  projectsListTooltip2: {
+    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip2',
+    defaultMessage:
+      'Show the projects based on your {linkToPageSettings}. You can {linkToProjectsPreview} the projects that will be shown.',
+  },
+  linkToPageSettingsText: {
+    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.linkToPageSettingsText',
+    defaultMessage: 'page settings',
+  },
+  linkToProjectsPreviewText: {
+    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.linkToProjectsPreviewText',
+    defaultMessage: 'preview',
   },
   eventsList: {
     id: 'app.containers.Admin.PagesAndMenu.SectionToggle.eventsList',
     defaultMessage: 'Events list',
   },
-  eventsListTooltip: {
-    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.eventsListTooltip',
-    defaultMessage: 'Customize which events are displayed on the page.',
+  eventsListTooltip2: {
+    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.eventsListTooltip2',
+    defaultMessage: 'Show events related to the projects.',
   },
   bottomInfoSection: {
     id: 'app.containers.Admin.PagesAndMenu.SectionToggle.bottomInfoSection',
