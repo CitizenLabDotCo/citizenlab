@@ -39,7 +39,7 @@ const AboutReportWidget: UserComponent = ({
     : report.relationships.owner.data.id;
   const user = useUser({ userId });
   const projectManager = isNilOrError(user)
-    ? ''
+    ? null
     : `${user.attributes.first_name} ${user.attributes.last_name}`;
 
   // TODO: initialise these from the report projects when available
