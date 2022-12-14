@@ -119,6 +119,7 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
                       buttonStyle="text"
                       margin="0px"
                       padding="0px"
+                      data-cy="e2e-add-rule-button"
                     >
                       <Icon
                         width="24px"
@@ -131,7 +132,12 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
               </Box>
               {showRuleInput && (
                 <Box mb="24px" display="flex">
-                  <Box flexGrow={0} flexShrink={0} width="320px">
+                  <Box
+                    flexGrow={0}
+                    flexShrink={0}
+                    width="320px"
+                    data-cy="e2e-rule-input-select"
+                  >
                     {pages && (
                       <Select
                         value={selectedPage}

@@ -157,6 +157,7 @@ const FormBuilderSettings = ({
                 setCurrentTab('logic');
               }}
               style={{ cursor: 'pointer' }}
+              data-cy="e2e-form-builder-logic-tab"
             >
               <Text mb="12px" textAlign="center" color="coolGrey600">
                 <FormattedMessage {...messages.logic} />
