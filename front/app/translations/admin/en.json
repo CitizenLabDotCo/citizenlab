@@ -1163,6 +1163,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.logic": "Logic",
   "app.containers.AdminPage.ProjectEdit.survey.logicWarning": "If no logic is added to an answer, the survey will follow its normal flow.",
+  "app.containers.AdminPage.ProjectEdit.survey.longAnswer": "Long answer",
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Multiple choice",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText": "Multiple choice - choose many",
   "app.containers.AdminPage.ProjectEdit.survey.newField": "New field",
