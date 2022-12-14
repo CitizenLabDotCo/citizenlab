@@ -348,7 +348,7 @@ describe JsonFormsService do
           'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
         }
         field = create :custom_field, :for_custom_form, input_type: 'text', description_multiloc: description_multiloc
-        expect_any_instance_of(TextImageService).to(
+        allow_any_instance_of(TextImageService).to(
           receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
         )
 
@@ -361,7 +361,7 @@ describe JsonFormsService do
           'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
         }
         field = create :custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc
-        expect_any_instance_of(TextImageService).to(
+        allow_any_instance_of(TextImageService).to(
           receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
         )
 

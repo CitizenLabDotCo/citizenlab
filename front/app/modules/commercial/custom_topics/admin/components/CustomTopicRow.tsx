@@ -1,68 +1,117 @@
 import React, { memo } from 'react';
-import { ITopicData } from 'services/topics';
-import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
+import { Row } from 'components/admin/ResourceList';
 
 // components
-import { Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';
+import { IconTooltip, colors } from '@citizenlab/cl2-component-library';
+import Link from 'utils/cl-router/Link';
+
+// resources
+import useCustomPages from 'hooks/useCustomPages';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// types
+import { ITopicData } from 'services/topics';
 
 const Buttons = styled.div`
   display: flex;
   align-items: center;
 `;
 
+export const StyledLink = styled(Link)`
+  color: ${colors.white} !important;
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 interface Props {
-  topic: ITopicData | Error;
+  topic: ITopicData;
   isLastItem: boolean;
   handleDeleteClick: (topicId: string) => (event: React.FormEvent<any>) => void;
 }
 
 const CustomTopicRow = memo((props: Props) => {
   const { isLastItem, topic, handleDeleteClick } = props;
+  const localize = useLocalize();
 
-  if (!isNilOrError(topic)) {
-    return (
-      <Row
-        key={topic.id}
-        id={topic.id}
-        className="e2e-topic-field-row"
-        isLastItem={isLastItem}
-      >
-        <RowContent>
-          <RowContentInner>
-            <RowTitle value={topic.attributes.title_multiloc} />
-          </RowContentInner>
-        </RowContent>
-        <Buttons>
-          <Button
-            linkTo={`/admin/settings/topics/${topic.id}/edit`}
-            buttonStyle="secondary"
-            icon="edit"
-            id="e2e-custom-topic-edit-button"
-          >
-            <FormattedMessage {...messages.editButtonLabel} />
-          </Button>
+  const staticPageIds = topic.relationships.static_pages.data.map(
+    (page) => page.id
+  );
+  const staticPages = useCustomPages({ ids: staticPageIds });
 
-          <Button
-            onClick={handleDeleteClick(topic.id)}
-            buttonStyle="text"
-            icon="delete"
-            id="e2e-custom-topic-delete-button"
-          >
-            <FormattedMessage {...messages.deleteButtonLabel} />
-          </Button>
-        </Buttons>
-      </Row>
-    );
-  }
+  return (
+    <Row
+      key={topic.id}
+      id={topic.id}
+      className="e2e-topic-field-row"
+      isLastItem={isLastItem}
+    >
+      <RowContent>
+        <RowContentInner>
+          <RowTitle value={topic.attributes.title_multiloc} />
+        </RowContentInner>
+      </RowContent>
+      <Buttons>
+        {staticPageIds.length > 0 && !isNilOrError(staticPages) && (
+          <IconTooltip
+            mr="20px"
+            iconColor={colors.error}
+            icon="info-outline"
+            content={
+              <>
+                <FormattedMessage {...messages.tagIsLinkedToStaticPage} />
+                <ul>
+                  {staticPages.map((staticPage) => {
+                    return (
+                      <li key={staticPage.id}>
+                        <StyledLink
+                          to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
+                        >
+                          {localize(staticPage.attributes.title_multiloc)}
+                        </StyledLink>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            }
+          />
+        )}
 
-  return null;
+        <Button
+          linkTo={`/admin/settings/topics/${topic.id}/edit`}
+          buttonStyle="secondary"
+          icon="edit"
+          id="e2e-custom-topic-edit-button"
+        >
+          <FormattedMessage {...messages.editButtonLabel} />
+        </Button>
+        <Button
+          disabled={staticPageIds.length > 0}
+          onClick={handleDeleteClick(topic.id)}
+          buttonStyle="text"
+          icon="delete"
+          id="e2e-custom-topic-delete-button"
+        >
+          <FormattedMessage {...messages.deleteButtonLabel} />
+        </Button>
+      </Buttons>
+    </Row>
+  );
 });
 
 export default CustomTopicRow;
