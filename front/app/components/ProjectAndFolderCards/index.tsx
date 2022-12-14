@@ -57,15 +57,18 @@ const ProjectAndFolderCards = ({
       removeNotAllowedParents: true,
     });
 
-  const handleSearchChange = (search: string | null) => {
-    // set search term locally to calculate depth
-    setSearch(search);
-    // pass search term to useAdminPublicationsStatusCount hook
-    onChangeSearch(search);
+  const handleSearchChange = React.useCallback(
+    (search: string | null) => {
+      // set search term locally to calculate depth
+      setSearch(search);
+      // pass search term to useAdminPublicationsStatusCount hook
+      onChangeSearch(search);
 
-    // analytics event for the updated search term
-    trackEventByName(tracks.searchTermChanged, { searchTerm: search });
-  };
+      // analytics event for the updated search term
+      trackEventByName(tracks.searchTermChanged, { searchTerm: search });
+    },
+    [onChangeSearch]
+  );
 
   return (
     <ProjectAndFolderCardsInner

@@ -89,7 +89,6 @@ export const invitationsConfig: StatCardConfig = {
     endAtMoment,
     resolution,
   }: StatCardProps): Query => {
-    // console.log(projectId);
     const todayMoment = moment();
     const lastPeriodMoment = getTimePeriodMoment(resolution);
 
