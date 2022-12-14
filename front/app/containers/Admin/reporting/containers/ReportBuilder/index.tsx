@@ -30,6 +30,9 @@ import { stylingConsts } from 'utils/styleUtils';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+// constants
+import { A4_WIDTH } from '../../constants';
+
 // typings
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { SerializedNodes } from '@craftjs/core';
@@ -145,7 +148,7 @@ const ReportBuilder = ({ reportId }: Props) => {
           display={previewEnabled ? 'none' : 'flex'}
         >
           {selectedLocale && <Toolbox />}
-          <FrameWrapper localesWithError={localesWithError}>
+          <FrameWrapper width={A4_WIDTH} localesWithError={localesWithError}>
             <Frame editorData={getEditorData()} />
           </FrameWrapper>
           <Settings />

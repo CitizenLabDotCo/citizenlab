@@ -27,13 +27,18 @@ const StyledRightColumn = styled(RightColumn)`
 `;
 
 interface Props {
+  width?: string;
   localesWithError: Locale[];
   children: React.ReactNode;
 }
 
-const FrameWrapper = ({ localesWithError, children }: Props) => (
+const FrameWrapper = ({
+  width = '1000px',
+  localesWithError,
+  children,
+}: Props) => (
   <StyledRightColumn>
-    <Box width="1000px">
+    <Box width={width}>
       {localesWithError.length > 0 && (
         <Error
           text={

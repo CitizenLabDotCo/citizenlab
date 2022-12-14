@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 // hooks
 import useReportLayout from 'hooks/useReportLayout';
@@ -13,8 +14,21 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
+// constants
+import { A4_WIDTH } from '../../constants';
+
 // types
 import { SerializedNodes } from '@craftjs/core';
+
+const Centerer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media print {
+    display: block;
+  }
+`;
 
 interface Props {
   reportId: string;
@@ -46,11 +60,13 @@ const FullScreenReport = ({ reportId }: Props) => {
     >
       {isLoadingLayout && <Spinner />}
       {!isLoadingLayout && editorData && (
-        <Box>
-          <Editor isPreview={true}>
-            <ContentBuilderFrame editorData={editorData} />
-          </Editor>
-        </Box>
+        <Centerer>
+          <Box width={A4_WIDTH}>
+            <Editor isPreview={true}>
+              <ContentBuilderFrame editorData={editorData} />
+            </Editor>
+          </Box>
+        </Centerer>
       )}
     </FullScreenWrapper>
   );
