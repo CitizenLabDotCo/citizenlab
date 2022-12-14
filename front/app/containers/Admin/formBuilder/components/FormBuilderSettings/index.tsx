@@ -7,11 +7,13 @@ import {
   Text,
   stylingConsts,
   colors,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import { getIndexForTitle } from '../../components/FormFields/utils';
 import { LogicSettings } from './LogicSettings';
 import { ContentSettings } from './ContentSettings';
+import Modal from 'components/UI/Modal';
 
 // intl
 import messages from '../messages';
@@ -46,18 +48,73 @@ const FormBuilderSettings = ({
 }: Props) => {
   const locales = useAppConfigurationLocales();
   const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [fieldIndexToDelete, setFieldIndexToDelete] = useState<number>();
   const { formatMessage } = useIntl();
-  const { watch } = useFormContext();
+  const { watch, setValue } = useFormContext();
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
+
+  const closeModal = () => {
+    setShowDeleteModal(false);
+  };
+  const openModal = () => {
+    setShowDeleteModal(true);
+  };
 
   if (isNilOrError(locales)) {
     return null;
   }
 
+  const preDeletion = (fieldIndex: number) => {
+    let pageIsLinked = false;
+    setFieldIndexToDelete(fieldIndex);
+
+    // Check if deleted field has linked logic
+    formCustomFields.map((surveyField) => {
+      if (surveyField.logic && surveyField.logic.rules) {
+        const hasLinkedRule = surveyField.logic.rules.find(
+          (rule) =>
+            rule.goto_page_id === field.id ||
+            rule.goto_page_id === field.temp_id
+        );
+        if (hasLinkedRule) {
+          pageIsLinked = true;
+        }
+      }
+    });
+
+    // Open confirmation modal if linked logic present
+    if (pageIsLinked) {
+      openModal();
+    }
+
+    // Otherwise, delete the field without confirmation
+    if (!pageIsLinked) {
+      onDelete(fieldIndex);
+    }
+  };
+
+  const removeLogicAndDelete = () => {
+    if (fieldIndexToDelete) {
+      formCustomFields.map((surveyField, i) => {
+        if (surveyField.logic && surveyField.logic.rules) {
+          const updatedRules = surveyField.logic.rules.filter(
+            (rule) =>
+              rule.goto_page_id !== field.id &&
+              rule.goto_page_id !== field.temp_id
+          );
+          setValue(`customFields.${i}.logic.rules`, updatedRules);
+        }
+      });
+      onDelete(fieldIndexToDelete);
+    }
+    setFieldIndexToDelete(undefined);
+  };
+
   const getPageList = () => {
     // TODO: Only select pages which come after the question. For this iteration though, we are not
     // validating against cyclical form flows, so to not have an error state here,
     // all pages should be available in the list.
-    const formCustomFields: IFlatCustomField[] = watch('customFields');
     const pageArray: { value: string; label: string }[] = [];
 
     formCustomFields?.map((field) => {
@@ -172,12 +229,46 @@ const FormBuilderSettings = ({
             locales={locales}
             onClose={onClose}
             isDeleteDisabled={isDeleteDisabled}
-            onDelete={onDelete}
+            onDelete={preDeletion}
           />
         )}
         {showTabbedSettings && currentTab === 'logic' && (
           <LogicSettings pageOptions={getPageList()} field={field} />
         )}
+        <Modal opened={showDeleteModal} close={closeModal}>
+          <Box display="flex" flexDirection="column" width="100%" p="20px">
+            <Box mb="40px">
+              <Title variant="h3" color="primary">
+                {formatMessage(
+                  messages.deleteFieldWithLogicConfirmationQuestion
+                )}
+              </Title>
+              <Text color="primary" fontSize="l">
+                {formatMessage(messages.deleteResultsInfo)}
+              </Text>
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              width="100%"
+              alignItems="center"
+            >
+              <Button
+                icon="delete"
+                data-cy="e2e-confirm-delete-page-and-logic"
+                buttonStyle="delete"
+                width="auto"
+                mr="20px"
+                onClick={() => removeLogicAndDelete()}
+              >
+                {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
+              </Button>
+              <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+                {formatMessage(messages.cancelDeleteButtonText)}
+              </Button>
+            </Box>
+          </Box>
+        </Modal>
       </Box>
     </>
   );
