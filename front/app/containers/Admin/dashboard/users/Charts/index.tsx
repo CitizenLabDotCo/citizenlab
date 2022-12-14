@@ -22,6 +22,7 @@ import PieChartByCategory from './PieChartByCategory';
 import AreaChart from './AreaChart';
 import GenderChart from './GenderChart';
 import AgeChart from './AgeChart';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -125,13 +126,15 @@ export class RegistrationFieldsToGraphs extends PureComponent<
         }
         if (field.attributes.code === 'gender') {
           return (
-            <GenderChart
-              key={index}
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-            />
+            <Box width="50%">
+              <GenderChart
+                key={index}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+              />
+            </Box>
           );
         }
 
