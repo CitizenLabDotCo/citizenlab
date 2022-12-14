@@ -5,7 +5,7 @@ import { Box, Input, Title } from '@citizenlab/cl2-component-library';
 import GenderChart from 'containers/Admin/dashboard/users/Charts/GenderChart';
 import AgeChart from 'containers/Admin/dashboard/users/Charts/AgeChart';
 import VisitorsReportCard from './VisitorsReportCard';
-import VisitorsTrafficSourcesCard from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsTrafficSourcesCard';
+import VisitorsTrafficSourcesReportCard from './VisitorsTrafficSourcesReportCard';
 
 // Utils
 import moment, { Moment } from 'moment';
@@ -49,7 +49,6 @@ const AnalyticsChartWidget = ({
     endAtMoment,
     resolution,
     title,
-    interactive: false,
   };
 
   const statChartProps = {
@@ -68,7 +67,7 @@ const AnalyticsChartWidget = ({
       chart = <VisitorsReportCard {...analyticsChartProps} />;
       break;
     case 'VisitorsTrafficSourcesCard':
-      chart = <VisitorsTrafficSourcesCard {...analyticsChartProps} />;
+      chart = <VisitorsTrafficSourcesReportCard {...analyticsChartProps} />;
       break;
     case 'GenderChart':
       chart = <GenderChart {...statChartProps} />;

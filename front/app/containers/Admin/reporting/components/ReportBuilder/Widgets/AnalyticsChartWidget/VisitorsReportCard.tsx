@@ -27,6 +27,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 type Props = ProjectId & Dates & Resolution & ChartDisplay;
 
+// Report specific version of <VisitorsCard/>
 const VisitorsReportCard = ({
   projectId,
   startAtMoment,
