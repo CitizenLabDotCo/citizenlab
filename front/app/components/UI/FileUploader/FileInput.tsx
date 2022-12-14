@@ -49,7 +49,7 @@ const Label = styled.label`
   align-items: center;
   cursor: pointer;
   border: 1px dashed ${colors.borderDark};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   padding: 10px 20px;
   color: ${colors.textSecondary};

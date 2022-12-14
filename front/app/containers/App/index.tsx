@@ -90,7 +90,7 @@ const Container = styled.div<{
 
   // for instances with e.g. a fullscreen modal, we want to
   // be able to disable scrolling on the page behind the modal
-  ${(props: any) =>
+  ${(props) =>
     props.disableScroll &&
     `
       height: 100%;
