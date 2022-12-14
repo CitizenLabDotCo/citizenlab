@@ -52,7 +52,7 @@ const Topic = styled.button`
   cursor: pointer;
   user-select: none;
   border: solid 1px ${colors.divider};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   transition: all 80ms ease-out;
 
   &:not(.selected) {

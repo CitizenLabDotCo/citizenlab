@@ -42,7 +42,7 @@ const ListItem = styled.li`
   padding: 10px;
   list-style: none;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
 
@@ -70,7 +70,7 @@ const CheckboxListItem = styled.li`
   padding: 10px;
   list-style: none;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
   padding: 0 10px;

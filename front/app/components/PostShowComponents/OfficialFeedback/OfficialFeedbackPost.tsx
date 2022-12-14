@@ -39,7 +39,7 @@ import GetAppConfigurationLocales, {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;

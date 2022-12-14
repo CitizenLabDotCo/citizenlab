@@ -22,7 +22,7 @@ const Container = styled.div<{ error: boolean }>`
   padding: 10px 20px;
   margin-bottom: 10px;
   margin-top: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid
     ${({ error }) =>
       error ? lighten(0.4, colors.error) : lighten(0.4, colors.textSecondary)};

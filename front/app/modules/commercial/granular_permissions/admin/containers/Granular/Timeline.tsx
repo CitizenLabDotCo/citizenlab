@@ -39,7 +39,7 @@ const Permissions = styled.div`
   display: flex;
   flex-direction: column;
   padding: 25px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
 `;
