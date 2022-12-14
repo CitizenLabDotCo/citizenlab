@@ -1116,7 +1116,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Cancel",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
   "app.containers.AdminPage.ProjectEdit.survey.chooseMany": "Choose many",
-  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Choose multiple",
   "app.containers.AdminPage.ProjectEdit.survey.chooseOne": "Choose one",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Close",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Closed",
