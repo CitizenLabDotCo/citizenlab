@@ -1184,6 +1184,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.save": "Save",
   "app.containers.AdminPage.ProjectEdit.survey.selectText": "Multiple choice - choose one",
   "app.containers.AdminPage.ProjectEdit.survey.shortAnswer": "Short answer",
+  "app.containers.AdminPage.ProjectEdit.survey.singleChoice": "Single choice",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage": "Survey successfully saved",
   "app.containers.AdminPage.ProjectEdit.survey.surveyDescription": "Create and edit the questions in this projects's survey, and view the results.",
   "app.containers.AdminPage.ProjectEdit.survey.surveyEnd": "Survey end",
