@@ -1,5 +1,8 @@
 FROM ruby:2.7.6-slim
 
+ARG CITIZENLAB_EE=false
+ENV CITIZENLAB_EE=$CITIZENLAB_EE
+
 RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       build-essential libpq-dev file imagemagick curl git optipng jpegoptim pngquant libgeos-dev libgmp3-dev netcat shared-mime-info \
       less
