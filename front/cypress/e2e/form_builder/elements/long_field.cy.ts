@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Form builder number field', () => {
+describe('Form builder long text field', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const questionTitle = randomString();
