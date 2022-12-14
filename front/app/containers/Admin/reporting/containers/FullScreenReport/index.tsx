@@ -28,6 +28,11 @@ const Centerer = styled.div`
   @media print {
     display: block;
   }
+
+  @page {
+    size: auto;
+    margin: 0mm;
+  }
 `;
 
 interface Props {
