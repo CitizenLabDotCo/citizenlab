@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useVisitors from '../../../../../../../modules/commercial/analytics/admin/hooks/useVisitors/';
+import useVisitors from '../../../../../../../modules/commercial/analytics/admin/hooks/useVisitors';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
