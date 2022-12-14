@@ -63,7 +63,6 @@ const FormSectionDescriptionStyled = styled.p`
 
 const StyledSpan = styled.span`
   margin-right: 8px;
-  font-weight: bold;
 `;
 
 interface FormSectionTitleProps {
@@ -128,7 +127,8 @@ const OptionalText = styled.div`
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
+
   ${isRtl`
     flex-direction: row-reverse;
   `}
