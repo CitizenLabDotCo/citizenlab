@@ -13,14 +13,14 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 interface Props {
   pieData: PieRow[];
   innerRef: React.RefObject<any>;
-  onOpenModal: () => void;
+  onOpenModal?: () => void;
   showReferrers?: boolean;
 }
 
 const Chart = ({
   pieData,
   innerRef,
-  onOpenModal,
+  onOpenModal = () => {},
   showReferrers = true,
 }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();

@@ -651,7 +651,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "Alla grupper",
   "app.containers.AdminPage.DashboardPage.allProjects": "Alla projekt",
   "app.containers.AdminPage.DashboardPage.allTime": "Alla tider",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatisk platsidentifiering pågår. Vänta tills den är klar.",
   "app.containers.AdminPage.DashboardPage.comments": "Kommentarer",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Kommentarer",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "En basdatauppsättning krävs för att mäta representationen av plattformsanvändare.",
@@ -731,9 +730,7 @@
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Inlägg efter status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Välj användargrupp",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Välj projekt",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Den borde nästan vara klar, håll ut!",
   "app.containers.AdminPage.DashboardPage.male": "man",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "Den här kartan identifierar automatiskt platser från inläggets titel och beskrivning. Platsdata kanske inte är korrekta och inlägg där inga platsdata identifieras visas inte.",
   "app.containers.AdminPage.DashboardPage.month": "månad",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "Rankningen baseras på antalet inlägg (5 poäng per inlägg), kommentarer (3 poäng per kommentar) och röster (1 poäng per röst) som lämnats av respektive deltagare.",
   "app.containers.AdminPage.DashboardPage.noData": "Det finns inga data att visa.",
@@ -774,12 +771,10 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "aktuellt projektfilter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "aktuellt ämnesfilter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Upptäck vad som händer på din plattform.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Karta",
   "app.containers.AdminPage.DashboardPage.tabOverview": "Översikt",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projekt",
   "app.containers.AdminPage.DashboardPage.tabRepresentativeness2": "Representation",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Användare",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Kul fakta: det kommer nog gå mycket snabbare nästa gång du kommer hit!",
   "app.containers.AdminPage.DashboardPage.timelineType": "Tidslinje",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Dashboard",
   "app.containers.AdminPage.DashboardPage.total": "Totalt",
@@ -1791,6 +1786,5 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Är du säker på att du vill ta bort den här sidan? Du kan inte ångra den här åtgärden. Du kan också ta bort sidan från navigeringsfältet om du inte är redo att ta bort den ännu.",
   "app.modules.navbar.admin.containers.pageHeader": "Sidor och meny",
   "app.modules.navbar.admin.containers.pageSubtitle": "Ditt navigeringsfält kan visa upp till fem sidor utöver start- och projektsidorna. Du kan byta namn på menyobjekt, ändra ordning på och lägga till nya sidor med ditt eget innehåll.",
-  "app.modules.project_management.admin.components.permissionsTab": "Åtkomsträttigheter",
-  "components.admin.ServerError.genericServerError": "Det uppstod ett problem med att ladda det här innehållet, försök igen senare."
+  "app.modules.project_management.admin.components.permissionsTab": "Åtkomsträttigheter"
 }

@@ -46,7 +46,7 @@ const MenuItemLink = styled(Link)`
   padding-left: 5px;
   padding-right: 15px;
   cursor: pointer;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   transition: background-color 80ms ease-out;
 
   &:hover,

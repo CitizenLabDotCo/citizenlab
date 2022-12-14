@@ -7,11 +7,9 @@ import clHistory from 'utils/cl-router/history';
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import useInputSchema from 'hooks/useInputSchema';
 import useIdeaImages from 'hooks/useIdeaImages';
 import useResourceFiles from 'hooks/useResourceFiles';
-import { getInputTerm } from 'services/participationContexts';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -44,7 +42,6 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     resourceType: 'idea',
   });
 
-  const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project?.id,
     inputId: ideaId,
@@ -185,7 +182,11 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[getInputTerm(project?.attributes.process_type, project, phases)]}
+        }[
+          uiSchema && uiSchema?.options?.inputTerm
+            ? uiSchema.options.inputTerm
+            : 'idea'
+        ]}
       />
     </Box>
   ) : undefined;

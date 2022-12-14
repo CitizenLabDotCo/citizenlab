@@ -535,7 +535,6 @@
   "app.containers.AdminPage.DashboardPage.allGroups": "كل المجموعات",
   "app.containers.AdminPage.DashboardPage.allProjects": "جميع المشاريع",
   "app.containers.AdminPage.DashboardPage.allTime": "كل الأوقات",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatic location detection underway. Please wait until the processing is complete.",
   "app.containers.AdminPage.DashboardPage.comments": "التعليقات",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "التعليقات",
   "app.containers.AdminPage.DashboardPage.continuousType": "دون جدول زمني",
@@ -552,9 +551,7 @@
   "app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByTopic": "اختر موردًا لعرضه بحسب الموضوع",
   "app.containers.AdminPage.DashboardPage.inputs": "الأفكار",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Posts by status",
-  "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "ستكون جاهزة بعد قليل، انتظر قليلًا!",
   "app.containers.AdminPage.DashboardPage.male": "ذكر",
-  "app.containers.AdminPage.DashboardPage.mapExplanationText": "This map automatically detects locations from the title and description of the post. The location data may not be accurate; posts where no locational data is detected are not displayed.",
   "app.containers.AdminPage.DashboardPage.month": "شهر",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription": "The ranking is based on the number of posts (5 points per post), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.",
   "app.containers.AdminPage.DashboardPage.noData": "لا توجد بيانات لعرضها",
@@ -578,10 +575,8 @@
   "app.containers.AdminPage.DashboardPage.selectedProject": "عامل تصفية المشروع الحالي",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "عامل تصفية الموضوع الحالي",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "اكتشف ما يحدث على منصتك.",
-  "app.containers.AdminPage.DashboardPage.tabMap": "خريطة",
   "app.containers.AdminPage.DashboardPage.tabReports": "المشاريع",
   "app.containers.AdminPage.DashboardPage.tabUsers": "المستخدمون",
-  "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "حقيقة ممتعة: من المحتمل أن تكون أسرع في المرة القادمة التي تأتي فيها إلى هنا!",
   "app.containers.AdminPage.DashboardPage.timelineType": "الجدول الزمني",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "اللوحة الرئيسية",
   "app.containers.AdminPage.DashboardPage.total": "الإجمالي",
@@ -1324,6 +1319,5 @@
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pages shown on your navigation bar",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Are you sure you want to delete this page? This cannot be undone. You can also remove the page from the navigation bar if you aren’t ready to delete it yet.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
-  "app.modules.project_management.admin.components.permissionsTab": "حقوق الوصول",
-  "components.admin.ServerError.genericServerError": "حدثت مشكلة أثناء تحميل هذا المحتوى، يُرجى المحاولة مجددًا في وقت لاحق."
+  "app.modules.project_management.admin.components.permissionsTab": "حقوق الوصول"
 }

@@ -46,7 +46,7 @@ export default ({ onData }: Props) => {
 
     onData(tabs);
     setDone(true);
-  }, [done, insightsEnabled, reportsEnabled, onData]);
+  }, [done, insightsEnabled, reportsEnabled, onData, formatMessage]);
 
   return <></>;
 };

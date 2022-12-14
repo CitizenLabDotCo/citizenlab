@@ -5,7 +5,7 @@ import Frame from 'react-frame-component';
 import request from 'utils/request';
 
 const StyledFrame = styled(Frame)`
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid ${(props) => props.theme.colors.divider};
   width: 100%;
   height: 450px;

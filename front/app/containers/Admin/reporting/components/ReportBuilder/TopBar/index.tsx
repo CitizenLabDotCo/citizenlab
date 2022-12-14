@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 
+// services
+import { updateReportLayout } from 'services/reports';
+
 // hooks
 import { useEditor, SerializedNodes } from '@craftjs/core';
+import useReport from 'hooks/useReport';
 
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -20,6 +24,7 @@ import clHistory from 'utils/cl-router/history';
 
 // types
 import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 type ContentBuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -28,6 +33,7 @@ type ContentBuilderTopBarProps = {
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
   draftEditorData?: Record<string, SerializedNodes>;
+  reportId: string;
   onSelectLocale: (args: {
     locale: Locale;
     editorData: SerializedNodes;
@@ -39,24 +45,29 @@ const ContentBuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
-  // draftEditorData,
+  draftEditorData,
   localesWithError,
   hasPendingState,
+  reportId,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
+  const report = useReport(reportId);
 
   const disableSave = localesWithError.length > 0;
 
   const goBack = () => {
-    clHistory.push('/admin/reporting/report-creator');
+    clHistory.push('/admin/reporting/report-builder');
   };
 
   const handleSave = async () => {
     if (selectedLocale) {
       try {
         setLoading(true);
-        // TODO
+        await updateReportLayout(reportId, {
+          ...draftEditorData,
+          [selectedLocale]: query.getSerializedNodes(),
+        });
       } catch {
         // Do nothing
       }
@@ -82,7 +93,7 @@ const ContentBuilderTopBar = ({
             <FormattedMessage {...messages.reportCreator} />
           </Text>
           <Title variant="h4" as="h1" color="primary">
-            Report title goes here
+            {isNilOrError(report) ? <></> : report.attributes.name}
           </Title>
         </Box>
         <LocaleSwitcher
