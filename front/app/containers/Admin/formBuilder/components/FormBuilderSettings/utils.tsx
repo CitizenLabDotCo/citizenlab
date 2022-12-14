@@ -3,7 +3,7 @@ import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import { Locale } from 'typings';
 
 // Components
-import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSwitcher';
+import ConfigSelectWithLocaleSwitcher from './ConfigSelectWithLocaleSwitcher';
 import LinearScaleSettings from './LinearScaleSettings';
 import PageSettings from './PageSettings';
 
@@ -25,8 +25,7 @@ export function getAdditionalSettings(
     case 'multiselect':
     case 'select':
       return (
-        <ConfigMultiselectWithLocaleSwitcher
-          nameInputType={`customFields.${field.index}.input_type`}
+        <ConfigSelectWithLocaleSwitcher
           name={`customFields.${field.index}.options`}
           locales={locales}
         />
