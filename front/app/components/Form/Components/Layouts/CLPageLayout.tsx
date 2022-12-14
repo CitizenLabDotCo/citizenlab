@@ -159,7 +159,7 @@ const CLPageLayout = memo(
                     </Title>
                   )}
                   {page.options.description && (
-                    <Box mb="48px">
+                    <Box mb={page.elements.length >= 1 ? '48px' : '28px'}>
                       <QuillEditedContent
                         fontWeight={400}
                         textColor={theme.colors.tenantText}
@@ -173,7 +173,7 @@ const CLPageLayout = memo(
                     </Box>
                   )}
                   {page.elements.map((elementUiSchema, index) => (
-                    <Box width="100%" mb="40px" key={index}>
+                    <Box width="100%" mb="28px" key={index}>
                       <JsonFormsDispatch
                         renderers={renderers}
                         cells={cells}
