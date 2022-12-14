@@ -55,8 +55,9 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    // Try saving without entering data for required field
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    // Try going to the next page without filling in the survey
+    cy.get('[data-cy="e2e-next-page"]').click();
+
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
     cy.location('pathname').should(
@@ -66,7 +67,11 @@ describe('Survey builder', () => {
 
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
+    // Go to the next page
+    cy.get('[data-cy="e2e-next-page"]').click();
+
     // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Check that we show a success message
@@ -190,6 +195,8 @@ describe('Survey builder', () => {
       force: true,
     });
     cy.get(`#${linearScaleTitle}-radio-1`).click({ force: true });
+    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
@@ -199,6 +206,8 @@ describe('Survey builder', () => {
       force: true,
     });
     cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
+    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
@@ -208,6 +217,8 @@ describe('Survey builder', () => {
       force: true,
     });
     cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
+    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
@@ -261,7 +272,10 @@ describe('Survey builder', () => {
 
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
+    cy.get('[data-cy="e2e-next-page"]').click();
+
     // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
@@ -297,7 +311,9 @@ describe('Survey builder', () => {
 
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
+    cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
@@ -339,7 +355,9 @@ describe('Survey builder', () => {
 
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
+    cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
@@ -369,5 +387,103 @@ describe('Survey builder', () => {
 
     // Delete the downloads folder and its contents
     cy.task('deleteFolder', downloadsFolder);
+  });
+
+  it('creates survey with logic, saves survey and user can respond to survey and responses determine which page he sees based on set logic', () => {
+    const chooseOneOption1 = randomString();
+    const chooseOneOption2 = randomString();
+    const question2Title = randomString();
+    const question3Title = randomString();
+    const page2Title = randomString();
+    const page3Title = randomString();
+    const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
+
+    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.get('[data-cy="e2e-short-answer"]').click();
+
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+
+    cy.get('[data-cy="e2e-multiple-choice"]').click();
+    cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
+      force: true,
+    });
+    cy.get('#e2e-option-input-0').type(chooseOneOption1, { force: true });
+    cy.get('[data-cy="e2e-add-answer"]').click();
+    cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
+
+    // Add second page
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-page-title-multiloc').type(page2Title, { force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
+
+    // Add third page
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-page-title-multiloc').type(page3Title, { force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
+
+    // Add logic to the multiple choice question
+    cy.contains(multipleChoiceChooseOneTitle).should('exist');
+    cy.contains(multipleChoiceChooseOneTitle).click();
+    cy.get('[data-cy="e2e-form-builder-logic-tab"]').click();
+    cy.get('[data-cy="e2e-add-rule-button"]').first().click();
+    cy.get('[data-cy="e2e-rule-input-select"]').should('exist');
+    // Add rule to go to survey end
+    cy.get('[data-cy="e2e-rule-input-select"]').get('select').select(4);
+    // Add rule to go to page 3
+    cy.get('[data-cy="e2e-add-rule-button"]').first().click();
+    cy.get('[data-cy="e2e-rule-input-select"]').get('select').eq(1).select(3);
+
+    // Check to see that the rules are added to the field row
+    cy.get('[data-cy="e2e-field-rule-display"]')
+      .contains(chooseOneOption1)
+      .should('exist');
+    cy.get('[data-cy="e2e-field-rule-display"]')
+      .contains('Survey end')
+      .should('exist');
+    cy.get('[data-cy="e2e-field-rule-display"]')
+      .contains(chooseOneOption2)
+      .should('exist');
+    cy.get('[data-cy="e2e-field-rule-display"]')
+      .contains('Survey end')
+      .should('exist');
+
+    // Save the survey
+    cy.get('form').submit();
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Try filling in the survey
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
+    cy.contains(questionTitle).should('exist');
+
+    // Select the first option and click next
+    cy.get(`#${multipleChoiceChooseOneTitle}-radio-0`).click({ force: true });
+    cy.get('[data-cy="e2e-next-page"]').click();
+
+    // Check to see that the user is on the submit page
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+
+    // Go back to the previous page
+    cy.get('[data-cy="e2e-previous-page"]').click();
+
+    // Select the second option and click next
+    cy.get(`#${multipleChoiceChooseOneTitle}-radio-1`).click({ force: true });
+    cy.get('[data-cy="e2e-next-page"]').click();
+
+    // Check to see that the user is on the third page
+    cy.contains(page3Title).should('exist');
+
+    // Click next
+    cy.get('[data-cy="e2e-next-page"]').click();
+
+    // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
+    cy.get('.e2e-modal-close-button').click();
+    cy.get('#e2e-modal-container').should('have.length', 0);
   });
 });

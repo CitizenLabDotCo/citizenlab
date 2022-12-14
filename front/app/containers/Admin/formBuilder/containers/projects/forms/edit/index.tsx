@@ -25,6 +25,7 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { PageStructure, getReorderedFields, DragAndDropResult } from './utils';
 
 // services
 import {
@@ -115,7 +116,7 @@ export const FormEdit = ({
     formState: { isSubmitting, errors },
   } = methods;
 
-  const { fields, append, remove, move } = useFieldArray({
+  const { fields, append, remove, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -150,41 +151,6 @@ export const FormEdit = ({
     if (isNewCustomFieldObject(newField)) {
       append(newField);
       setSelectedField(newField);
-    }
-  };
-
-  const dropRow = (fromIndex: number, toIndex: number) => {
-    const elementBeingDragged = fields[fromIndex];
-    const nextPageIndex = fields.findIndex(
-      (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
-    );
-
-    if (
-      fromIndex === 0 &&
-      elementBeingDragged.input_type === 'page' &&
-      nextPageIndex > toIndex
-    ) {
-      return;
-    } else if (
-      fromIndex === 0 &&
-      elementBeingDragged.input_type === 'page' &&
-      nextPageIndex <= toIndex
-    ) {
-      move(fromIndex, toIndex);
-      move(nextPageIndex - 1, 0);
-      return;
-    }
-
-    // Only pages should be draggable to index 0
-    const shouldMove =
-      elementBeingDragged.input_type === 'page' || toIndex !== 0;
-
-    if (shouldMove) {
-      move(fromIndex, toIndex);
-    }
-
-    if (!isNilOrError(selectedField)) {
-      setSelectedField({ ...selectedField, index: toIndex });
     }
   };
 
@@ -230,6 +196,23 @@ export const FormEdit = ({
   const isDeleteDisabled = !(
     selectedField?.input_type !== 'page' || isPageDeletable
   );
+
+  const reorderFields = (
+    result: DragAndDropResult,
+    nestedPageData: PageStructure[]
+  ) => {
+    const reorderedFields = getReorderedFields(result, nestedPageData);
+    if (reorderedFields) {
+      replace(reorderedFields);
+    }
+
+    if (!isNilOrError(selectedField) && reorderedFields) {
+      const newSelectedFieldIndex = reorderedFields.findIndex(
+        (field) => field.id === selectedField.id
+      );
+      setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
+    }
+  };
 
   return (
     <Box
@@ -282,9 +265,9 @@ export const FormEdit = ({
                   >
                     <FormFields
                       onEditField={setSelectedField}
-                      dropRow={dropRow}
                       selectedFieldId={selectedField?.id}
                       isEditingDisabled={isEditingDisabled}
+                      handleDragEnd={reorderFields}
                     />
                   </Box>
                 </Box>
