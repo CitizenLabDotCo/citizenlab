@@ -109,7 +109,7 @@ describe XlsxExport::ValueVisitor do
         let(:value) { "line 1\nline 2" }
 
         it 'returns nil, because the field is not supported yet' do
-          expect(visitor.visit_multiline_text(field)).to be_nil
+          expect(visitor.visit_multiline_text(field)).to eq value
         end
       end
     end
