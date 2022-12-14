@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.helmetDescription',
     defaultMessage: 'Admin reporting page',
   },
+  chartsSection: {
+    id: 'app.containers.Admin.reporting.chartsSection',
+    defaultMessage: 'CHARTS',
+  },
+  reportHeader: {
+    id: 'app.containers.Admin.reporting.reportHeader',
+    defaultMessage: 'Report header',
+  },
 });
