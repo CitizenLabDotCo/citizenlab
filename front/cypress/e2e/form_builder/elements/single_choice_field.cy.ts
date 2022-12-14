@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Form builder multiple choice choose multiple component', () => {
+describe('Form builder single choice field', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -27,15 +27,19 @@ describe('Form builder multiple choice choose multiple component', () => {
     cy.wait(1000);
   });
 
-  it('adds multiselect multiple choice field and is displayed when filling survey', () => {
-    cy.get('[data-cy="e2e-multiple-choice"]').click();
-    cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
-    cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
+  it('adds single select multiple choice field, tests validations and checks renderer', () => {
+    cy.get('[data-cy="e2e-single-choice"]').click();
     cy.get('form').submit();
+    cy.contains('Provide a question title').should('exist');
+    cy.contains('Provide at least 1 answer').should('exist');
+    cy.get('#e2e-title-multiloc').type('Question title', { force: true });
+    cy.get('#e2e-option-input-0').type('Option 1', { force: true });
+    cy.contains('Save').click();
     cy.visit(`/projects/${projectSlug}/ideas/new`);
-    cy.contains('Question title 2').should('exist');
-    cy.contains('Option 1 question 2').should('exist');
-    cy.get('#e2e-multiselect-control').should('exist');
+    cy.contains('Question title').should('exist');
+    cy.contains('Option 1').should('exist');
+    cy.contains('Survey').should('exist');
+    cy.get('#e2e-single-select-control').should('exist');
   });
 
   after(() => {
