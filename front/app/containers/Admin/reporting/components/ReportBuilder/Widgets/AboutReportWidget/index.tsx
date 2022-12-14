@@ -58,7 +58,7 @@ const AboutReportWidget: UserComponent = ({
         <TenantLogo />
       </Box>
 
-      {isNilOrError(report) ? (
+      {reportTitle === null ? (
         <></>
       ) : (
         <Element id="about-title" is={Container} canvas>
@@ -69,18 +69,22 @@ const AboutReportWidget: UserComponent = ({
           />
         </Element>
       )}
-      {isNilOrError(user) ? (
+      {projectManager === null ? (
         <></>
       ) : (
         <Element id="about-text" is={Container} canvas>
           <Text
             text={`
             <ul>
-              <li>${formatMessage(messages.projectsLabel)}: ${project}</li>
-              <li>${formatMessage(messages.periodLabel)}: ${projectPeriod}</li>
-              <li>${formatMessage(
-                messages.managerLabel
-              )}: ${projectManager}</li>
+              <li>${formatMessage(messages.projectsLabel, {
+                projectsList: project,
+              })}</li>
+              <li>${formatMessage(messages.periodLabel, {
+                startEndDates: projectPeriod,
+              })}</li>
+              <li>${formatMessage(messages.managerLabel, {
+                managerName: projectManager,
+              })}</li>
             </ul>
           `}
           />
