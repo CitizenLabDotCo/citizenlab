@@ -27,7 +27,7 @@ describe('Form builder single choice field', () => {
     cy.wait(1000);
   });
 
-  it('adds single select multiple choice field, tests validations and checks renderer', () => {
+  it('adds single select multiple choice field and is displayed when filling survey', () => {
     cy.get('[data-cy="e2e-single-choice"]').click();
     cy.get('form').submit();
     cy.contains('Provide a question title').should('exist');
