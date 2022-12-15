@@ -49,27 +49,15 @@ describe('BannerImageFields', () => {
     });
 
     describe('Image cropper', () => {
-      it('does not show when image is uploaded but not saved', async () => {
+      it('does not show', () => {
         const { container } = render(
           <BannerImageFields {...props} bannerLayout={bannerLayout} />
         );
 
-        const file = new File(['file'], 'file.png', {
-          type: 'image/png',
-        });
-
-        act(() => {
-          fireEvent.change(container.querySelector('#header-dropzone'), {
-            target: { files: [file] },
-          });
-        });
-
-        await waitFor(() => {
-          const cropContainer = container.querySelector(
-            '.reactEasyCrop_Container'
-          );
-          expect(cropContainer).not.toBeInTheDocument();
-        });
+        const cropContainer = container.querySelector(
+          '.reactEasyCrop_Container'
+        );
+        expect(cropContainer).toBeNull();
       });
     });
   });
@@ -102,12 +90,16 @@ describe('BannerImageFields', () => {
     });
 
     describe('Image cropper', () => {
-      const { container } = render(
-        <BannerImageFields {...props} bannerLayout={bannerLayout} />
-      );
+      it('does not show', () => {
+        const { container } = render(
+          <BannerImageFields {...props} bannerLayout={bannerLayout} />
+        );
 
-      const cropContainer = container.querySelector('.reactEasyCrop_Container');
-      expect(cropContainer).toBeNull();
+        const cropContainer = container.querySelector(
+          '.reactEasyCrop_Container'
+        );
+        expect(cropContainer).toBeNull();
+      });
     });
   });
 
@@ -139,27 +131,15 @@ describe('BannerImageFields', () => {
     });
 
     describe('Image cropper', () => {
-      it('does not show when image is uploaded but not saved', async () => {
+      it('does not show', () => {
         const { container } = render(
           <BannerImageFields {...props} bannerLayout={bannerLayout} />
         );
 
-        const file = new File(['file'], 'file.png', {
-          type: 'image/png',
-        });
-
-        act(() => {
-          fireEvent.change(container.querySelector('#header-dropzone'), {
-            target: { files: [file] },
-          });
-        });
-
-        await waitFor(() => {
-          const cropContainer = container.querySelector(
-            '.reactEasyCrop_Container'
-          );
-          expect(cropContainer).not.toBeInTheDocument();
-        });
+        const cropContainer = container.querySelector(
+          '.reactEasyCrop_Container'
+        );
+        expect(cropContainer).toBeNull();
       });
     });
   });
