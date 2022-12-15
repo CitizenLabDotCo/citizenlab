@@ -47,31 +47,6 @@ describe('BannerImageFields', () => {
         });
       });
     });
-
-    describe('Image cropper', () => {
-      it('does not show when image is uploaded but not saved', async () => {
-        const { container } = render(
-          <BannerImageFields {...props} bannerLayout={bannerLayout} />
-        );
-
-        const file = new File(['file'], 'file.png', {
-          type: 'image/png',
-        });
-
-        act(() => {
-          fireEvent.change(container.querySelector('#header-dropzone'), {
-            target: { files: [file] },
-          });
-        });
-
-        await waitFor(() => {
-          const cropContainer = container.querySelector(
-            '.reactEasyCrop_Container'
-          );
-          expect(cropContainer).not.toBeInTheDocument();
-        });
-      });
-    });
   });
 
   describe('Two-column layout', () => {
@@ -100,15 +75,6 @@ describe('BannerImageFields', () => {
         });
       });
     });
-
-    describe('Image cropper', () => {
-      const { container } = render(
-        <BannerImageFields {...props} bannerLayout={bannerLayout} />
-      );
-
-      const cropContainer = container.querySelector('.reactEasyCrop_Container');
-      expect(cropContainer).toBeNull();
-    });
   });
 
   describe('Two-row layout', () => {
@@ -134,31 +100,6 @@ describe('BannerImageFields', () => {
         await waitFor(() => {
           const overlayInput = screen.queryByLabelText('Image overlay color');
           expect(overlayInput).not.toBeInTheDocument();
-        });
-      });
-    });
-
-    describe('Image cropper', () => {
-      it('does not show when image is uploaded but not saved', async () => {
-        const { container } = render(
-          <BannerImageFields {...props} bannerLayout={bannerLayout} />
-        );
-
-        const file = new File(['file'], 'file.png', {
-          type: 'image/png',
-        });
-
-        act(() => {
-          fireEvent.change(container.querySelector('#header-dropzone'), {
-            target: { files: [file] },
-          });
-        });
-
-        await waitFor(() => {
-          const cropContainer = container.querySelector(
-            '.reactEasyCrop_Container'
-          );
-          expect(cropContainer).not.toBeInTheDocument();
         });
       });
     });
@@ -195,20 +136,28 @@ describe('BannerImageFields', () => {
     });
 
     describe('Image cropper', () => {
+      it('does not show when there is no image', async () => {
+        const { container } = render(
+          <BannerImageFields
+            {...props}
+            bannerLayout={bannerLayout}
+            headerBg={null}
+          />
+        );
+
+        await waitFor(() => {
+          const cropContainer = container.querySelector(
+            '.reactEasyCrop_Container'
+          );
+
+          expect(cropContainer).not.toBeInTheDocument();
+        });
+      });
+
       it('does not show when image is saved', async () => {
         const { container } = render(
           <BannerImageFields {...props} bannerLayout={bannerLayout} />
         );
-
-        const file = new File(['file'], 'file.png', {
-          type: 'image/png',
-        });
-
-        act(() => {
-          fireEvent.change(container.querySelector('#header-dropzone'), {
-            target: { files: [file] },
-          });
-        });
 
         await waitFor(() => {
           const cropContainer = container.querySelector(
@@ -220,7 +169,11 @@ describe('BannerImageFields', () => {
 
       it('shows when image is uploaded but not saved', async () => {
         const { container } = render(
-          <BannerImageFields {...props} bannerLayout={bannerLayout} />
+          <BannerImageFields
+            {...props}
+            bannerLayout={bannerLayout}
+            headerBg={null}
+          />
         );
 
         const file = new File(['file'], 'file.png', {
