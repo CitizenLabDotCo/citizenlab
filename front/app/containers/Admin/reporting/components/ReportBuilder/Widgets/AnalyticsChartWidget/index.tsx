@@ -2,7 +2,7 @@ import React from 'react';
 
 // Components
 import { Box, Input, Title } from '@citizenlab/cl2-component-library';
-import GenderChart from 'containers/Admin/dashboard/users/Charts/GenderChart2';
+import GenderChart from 'containers/Admin/dashboard/users/Charts/GenderChart';
 import AgeChart from 'containers/Admin/dashboard/users/Charts/AgeChart';
 import VisitorsReportCard from '../VisitorsCard';
 import VisitorsTrafficSourcesReportCard from '../VisitorTrafficSourcesCard';

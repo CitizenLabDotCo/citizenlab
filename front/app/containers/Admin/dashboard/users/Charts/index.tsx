@@ -112,13 +112,15 @@ export class RegistrationFieldsToGraphs extends PureComponent<
       if (field.attributes.enabled) {
         if (field.attributes.code === 'birthyear') {
           return (
-            <AgeChart
-              key={index}
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-            />
+            <Box width="50%">
+              <AgeChart
+                key={index}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+              />
+            </Box>
           );
         }
         if (field.attributes.input_type === 'number') {
