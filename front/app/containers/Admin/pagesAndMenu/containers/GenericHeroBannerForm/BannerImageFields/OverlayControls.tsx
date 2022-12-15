@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   Box,
   ColorPickerInput,
@@ -7,7 +7,6 @@ import {
   Toggle,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
-import { useTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
@@ -61,18 +60,16 @@ const OverlayControls = ({
   const theme = useTheme();
   const { formatMessage } = useIntl();
 
-  useEffect(() => {
+  const handleOverlayEnabling = () => {
     if (overlayEnabled) {
+      handleOverlayOpacityOnChange(0);
+    } else {
       handleOverlayOpacityOnChange(
         bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
       );
-    } else {
-      handleOverlayOpacityOnChange(0);
     }
-  }, [overlayEnabled]);
 
-  const handleOverlayEnabling = () => {
-    setOverlayEnabled((overlayEnabled) => !overlayEnabled);
+    setOverlayEnabled(!overlayEnabled);
   };
 
   const handleOverlayOpacityOnChange = (opacity: number) => {

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import ImageCropper from 'components/admin/ImageCropper';
-import { TLocalHeaderImage } from '.';
 import HeaderImageDropzone from '../HeaderImageDropzone';
 import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import {
+  TLocalHeaderImage,
   Props as BannerImageFieldsProps,
   TPreviewDevice,
   TBannerError,
