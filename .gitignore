@@ -1,3 +1,8 @@
+back-secret.env
+front-secret.env
+.envrc
+
+# Legacy .env filenames
 .env-back
 .env-front
 

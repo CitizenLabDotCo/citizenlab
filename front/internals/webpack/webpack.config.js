@@ -18,9 +18,9 @@ const SentryCliPlugin = require('@sentry/webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-var dotenv = require('dotenv').config({
-  path: path.join(process.cwd(), '../.env-front'),
-});
+const dotenv = require('dotenv')
+dotenv.config({path: path.join(process.cwd(), '../env_files/front-safe.env')});
+dotenv.config({path: path.join(process.cwd(), '../env_files/front-secret.env')});
 
 const argv = require('yargs').argv;
 const appLocalesMomentPairs = require(path.join(
