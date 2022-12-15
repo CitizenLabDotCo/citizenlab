@@ -130,7 +130,7 @@
     "react-select": "4.3.1",
     "react-share": "^4.4.0",
     "react-transition-group": "4.4.2",
-    "recharts": "^2.1.14",
+    "recharts": "^2.2.0",
     "regenerator-runtime": "0.13.9",
     "rxjs": "7.x",
     "semantic-ui-react": "2.1.3",
