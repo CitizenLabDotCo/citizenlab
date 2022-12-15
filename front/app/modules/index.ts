@@ -49,150 +49,150 @@ declare var CL_CONFIG: any;
 export default loadModules([
   {
     configuration: smartGroupsConfiguration,
-    isEnabled: CL_CONFIG['modules']['smart_groups'],
+    isEnabled: CL_CONFIG['modules']['commercial/smart_groups'],
   },
   {
     configuration: ideaCustomFieldsConfiguration,
-    isEnabled: CL_CONFIG['modules']['idea_custom_fields'],
+    isEnabled: CL_CONFIG['modules']['commercial/idea_custom_fields'],
   },
   {
     configuration: googleTagManagerConfiguration,
-    isEnabled: CL_CONFIG['modules']['google_tag_manager'],
+    isEnabled: CL_CONFIG['modules']['commercial/google_tag_manager'],
   },
   {
     configuration: matomoConfiguration,
-    isEnabled: CL_CONFIG['modules']['matomo'],
+    isEnabled: CL_CONFIG['modules']['commercial/matomo'],
   },
   {
     configuration: googleAnalyticsConfiguration,
-    isEnabled: CL_CONFIG['modules']['google_analytics'],
+    isEnabled: CL_CONFIG['modules']['commercial/google_analytics'],
   },
   {
     configuration: intercomConfiguration,
-    isEnabled: CL_CONFIG['modules']['intercom'],
+    isEnabled: CL_CONFIG['modules']['commercial/intercom'],
   },
   {
     configuration: satismeterConfiguration,
-    isEnabled: CL_CONFIG['modules']['satismeter'],
+    isEnabled: CL_CONFIG['modules']['commercial/satismeter'],
   },
   {
     configuration: segmentConfiguration,
-    isEnabled: CL_CONFIG['modules']['segment'],
+    isEnabled: CL_CONFIG['modules']['commercial/segment'],
   },
   {
     configuration: granularPermissionsConfiguration,
-    isEnabled: CL_CONFIG['modules']['granular_permissions'],
+    isEnabled: CL_CONFIG['modules']['commercial/granular_permissions'],
   },
   {
     configuration: moderationConfiguration,
-    isEnabled: CL_CONFIG['modules']['moderation'],
+    isEnabled: CL_CONFIG['modules']['commercial/moderation'],
   },
   {
     configuration: flagInappropriateContentConfiguration,
-    isEnabled: CL_CONFIG['modules']['flag_inappropriate_content'],
+    isEnabled: CL_CONFIG['modules']['commercial/flag_inappropriate_content'],
   },
   {
     configuration: ideaAssignmentConfiguration,
-    isEnabled: CL_CONFIG['modules']['idea_assignment'],
+    isEnabled: CL_CONFIG['modules']['commercial/idea_assignment'],
   },
   {
     configuration: contentBuilderConfiguration,
-    isEnabled: CL_CONFIG['modules']['content_builder'],
+    isEnabled: CL_CONFIG['modules']['commercial/content_builder'],
   },
   {
     configuration: customIdeaStatusesConfiguration,
-    isEnabled: CL_CONFIG['modules']['custom_idea_statuses'],
+    isEnabled: CL_CONFIG['modules']['commercial/custom_idea_statuses'],
   },
   {
     configuration: bulkIdeaImportConfiguration,
-    isEnabled: CL_CONFIG['modules']['bulk_import_ideas'],
+    isEnabled: CL_CONFIG['modules']['commercial/bulk_import_ideas'],
   },
   {
     configuration: customTopicsConfiguration,
-    isEnabled: CL_CONFIG['modules']['custom_topics'],
+    isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
   },
   {
     configuration: customizableHomepageBannerConfiguration,
-    isEnabled: CL_CONFIG['modules']['customizable_homepage_banner'],
+    isEnabled: CL_CONFIG['modules']['commercial/customizable_homepage_banner'],
   },
   {
     configuration: adminProjectTemplatesConfiguration,
-    isEnabled: CL_CONFIG['modules']['admin_project_templates'],
+    isEnabled: CL_CONFIG['modules']['commercial/admin_project_templates'],
   },
   {
     configuration: similarIdeaConfiguration,
-    isEnabled: CL_CONFIG['modules']['similar_ideas'],
+    isEnabled: CL_CONFIG['modules']['commercial/similar_ideas'],
   },
   {
     configuration: customMapsConfiguration,
-    isEnabled: CL_CONFIG['modules']['custom_maps'],
+    isEnabled: CL_CONFIG['modules']['commercial/custom_maps'],
   },
   {
     configuration: idAuth0Configuration,
-    isEnabled: CL_CONFIG['modules']['id_auth0'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_auth0'],
   },
   {
     configuration: idBosaFasConfiguration,
-    isEnabled: CL_CONFIG['modules']['id_bosa_fas'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_bosa_fas'],
   },
   {
     configuration: idCowConfiguration,
-    isEnabled: CL_CONFIG['modules']['id_cow'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_cow'],
   },
   {
     configuration: idBogusConfiguration,
-    isEnabled: CL_CONFIG['modules']['id_bogus'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_bogus'],
   },
   {
     configuration: idIdCardLookupConfiguration,
-    isEnabled: CL_CONFIG['modules']['id_id_card_lookup'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_id_card_lookup'],
   },
   {
     configuration: IdFranceConnectConfiguration,
-    isEnabled: CL_CONFIG['modules']['id_franceconnect'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_franceconnect'],
   },
   {
     configuration: IdGentRrnConfiguration,
-    isEnabled: CL_CONFIG['modules']['id_gent_rrn'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_gent_rrn'],
   },
   {
     configuration: IdOostendeRrnConfiguration,
-    isEnabled: CL_CONFIG['modules']['id_oostende_rrn'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_oostende_rrn'],
   },
   {
     configuration: IdClaveUnicaConfiguration,
-    isEnabled: CL_CONFIG['modules']['id_clave_unica'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
   },
   {
     configuration: machineTranslationsConfiguration,
-    isEnabled: CL_CONFIG['modules']['machine_translations'],
+    isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
   },
   {
     configuration: widgetsConfiguration,
-    isEnabled: CL_CONFIG['modules']['widgets'],
+    isEnabled: CL_CONFIG['modules']['commercial/widgets'],
   },
   {
     configuration: eventsWidgetConfiguration,
-    isEnabled: CL_CONFIG['modules']['events_widget'],
+    isEnabled: CL_CONFIG['modules']['commercial/events_widget'],
   },
   {
     configuration: insightsConfiguration,
-    isEnabled: CL_CONFIG['modules']['insights'],
+    isEnabled: CL_CONFIG['modules']['commercial/insights'],
   },
   {
     configuration: analyticsConfiguration,
-    isEnabled: CL_CONFIG['modules']['analytics'],
+    isEnabled: CL_CONFIG['modules']['commercial/analytics'],
   },
   {
     configuration: idViennaSamlConfiguration,
-    isEnabled: CL_CONFIG['modules']['id_vienna_saml'],
+    isEnabled: CL_CONFIG['modules']['commercial/id_vienna_saml'],
   },
   {
     configuration: representativenessConfiguration,
-    isEnabled: CL_CONFIG['modules']['representativeness'],
+    isEnabled: CL_CONFIG['modules']['commercial/representativeness'],
   },
   {
     configuration: impactTrackingConfiguration,
-    isEnabled: CL_CONFIG['modules']['impact_tracking'],
+    isEnabled: CL_CONFIG['modules']['commercial/impact_tracking'],
   },
 ]);
