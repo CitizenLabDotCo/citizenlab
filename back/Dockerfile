@@ -17,8 +17,6 @@ ENV INSTALL_PATH /cl2_back
 RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
-
-COPY citizenlab.config.json citizenlab.config.*.json /
 COPY back/Gemfile back/Gemfile.* ./
 COPY back/engines ./engines
 COPY back/lib/citizen_lab.rb ./lib/
