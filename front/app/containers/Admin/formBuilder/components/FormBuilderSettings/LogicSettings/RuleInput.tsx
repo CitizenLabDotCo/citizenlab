@@ -40,7 +40,7 @@ export const RuleInput = ({
   answer,
   validationError,
 }: RuleInputProps) => {
-  const { setValue, watch, control } = useFormContext();
+  const { setValue, watch, trigger, control } = useFormContext();
   const rules: RuleType[] = (watch(name) as LogicType).rules;
   const logic: LogicType = watch(name);
   const fields: IFlatCustomField[] = watch('customFields');
@@ -81,6 +81,7 @@ export const RuleInput = ({
       }
       // Update rule variable
       setValue(name, logic);
+      trigger();
     }
   };
 
@@ -99,7 +100,7 @@ export const RuleInput = ({
         name={name}
         control={control}
         defaultValue={[]}
-        render={({ field: { ref: _ref } }) => {
+        render={({ field: { ref: _ref, onBlur } }) => {
           return (
             <>
               <Box
@@ -107,6 +108,10 @@ export const RuleInput = ({
                 display="flex"
                 borderTop={`1px solid ${colors.divider}`}
                 py="8px"
+                onBlur={() => {
+                  onBlur();
+                  trigger();
+                }}
               >
                 <Box width="90px" flexGrow={0} flexShrink={0} flexWrap="wrap">
                   <Text color={'coolGrey600'} fontSize="s">

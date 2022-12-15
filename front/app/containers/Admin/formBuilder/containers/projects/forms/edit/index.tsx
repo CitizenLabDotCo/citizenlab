@@ -99,7 +99,7 @@ export const FormEdit = ({
         maximum_label_multiloc: object(),
         required: boolean(),
         temp_id: string(),
-        logic: validateLogic(formatMessage(messages.logicError)),
+        logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
     ),
   });

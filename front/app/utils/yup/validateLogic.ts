@@ -4,11 +4,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { object } from 'yup';
 
 export const isRuleValid = (
-  rule: RuleType,
+  rule: RuleType | undefined,
   fieldBeingValidatedId: string,
   fields: IFlatCustomField[]
 ) => {
-  if (rule.goto_page_id === 'survey_end') {
+  if ((rule && rule.goto_page_id === 'survey_end') || rule === undefined) {
     return true;
   }
   const indexOfTargetPage = fields.findIndex(function (item) {
