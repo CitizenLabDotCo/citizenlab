@@ -1,13 +1,11 @@
-// libraries
 import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
-import moment from 'moment';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -53,12 +51,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { legacyColors, sizes } from 'components/admin/Graphs/styling';
 
+// utils
+import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
+
 const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 20px;
-  height: 22px;
   margin-left: 10px;
 `;
 
@@ -107,7 +106,7 @@ interface Props {
   xlsxEndpoint: string;
 }
 class LineBarChart extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   combined$: Subscription;
@@ -218,17 +217,11 @@ class LineBarChart extends React.PureComponent<
   }
 
   formatTick = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
+    return toThreeLetterMonth(date, this.props.resolution);
   };
 
   formatLabel = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
+    return toFullMonth(date, this.props.resolution);
   };
 
   formatSerieChange = (serieChange: number) => {
@@ -292,7 +285,7 @@ class LineBarChart extends React.PureComponent<
                   basic
                   trigger={
                     <div>
-                      <InfoIcon name="info" />
+                      <InfoIcon name="info-outline" />
                     </div>
                   }
                   content={infoMessage}
@@ -408,4 +401,4 @@ class LineBarChart extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChart);
+export default injectIntl<Props & WrappedComponentProps>(LineBarChart);

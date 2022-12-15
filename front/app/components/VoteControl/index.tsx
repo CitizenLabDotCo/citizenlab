@@ -33,8 +33,8 @@ import {
 } from 'services/phases';
 
 // utils
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
 
 // style
 import styled from 'styled-components';
@@ -543,7 +543,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
               ariaHidden={ariaHidden}
               styleType={styleType}
               size={size}
-              iconName="upvote"
+              iconName="vote-up"
               votesCount={upvotesCount}
               ideaId={idea.data.id}
             />
@@ -558,7 +558,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
                 ariaHidden={ariaHidden}
                 styleType={styleType}
                 size={size}
-                iconName="downvote"
+                iconName="vote-down"
                 votesCount={downvotesCount}
                 ideaId={idea.data.id}
               />

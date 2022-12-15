@@ -15,15 +15,19 @@ const StyledLink = styled(Link)`
   }
 `;
 
+type TBreadcrumb = {
+  label: string;
+  linkTo?: string;
+};
+
+export type TBreadcrumbs = TBreadcrumb[];
+
 interface Props {
-  breadcrumbs: {
-    label: string;
-    linkTo?: string;
-  }[];
+  breadcrumbs: TBreadcrumbs;
 }
 
 const Breadcrumbs = ({ breadcrumbs }: Props) => {
-  if (!breadcrumbs || breadcrumbs.length === 0) {
+  if (breadcrumbs.length === 0) {
     return null;
   }
 

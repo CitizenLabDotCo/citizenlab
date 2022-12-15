@@ -14,7 +14,7 @@ import Error from 'components/UI/Error';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`
@@ -55,9 +55,9 @@ const PasswordInputComponent = ({
   setRef,
   errors = {},
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const locale = useLocale();
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
   const { minimumLengthError, emptyError } = errors;
@@ -94,7 +94,7 @@ const PasswordInputComponent = ({
     setPasswordScore(score);
   };
 
-  if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+  if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
     return (
       <>
         <Container>
@@ -114,15 +114,13 @@ const PasswordInputComponent = ({
           />
           <ShowPasswordIconButton
             showPassword={showPassword}
-            iconName={showPassword ? 'eye' : 'eyeClosed'}
+            iconName={showPassword ? 'eye' : 'eye-off'}
             onClick={handleOnClick}
             a11y_buttonActionMessage={formatMessage(
               showPassword ? messages.hidePassword : messages.showPassword
             )}
             iconColor={colors.textSecondary}
             iconColorOnHover={darken(0.1, colors.textSecondary)}
-            iconWidth={'22px'}
-            iconHeight={showPassword ? '15px' : '19px'}
             // prevent form submission
             buttonType="button"
           />

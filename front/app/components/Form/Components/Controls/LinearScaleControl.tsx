@@ -6,7 +6,13 @@ import { ControlProps } from '@jsonforms/core';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 // Components
-import { Box, Text, Radio, Label } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Radio,
+  Label,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
@@ -21,6 +27,7 @@ const LinearScaleControl = ({
   handleChange,
   id,
 }: ControlProps) => {
+  const isSmallerThanXlPhone = useBreakpoint('phone');
   const maximum = schema?.maximum;
 
   return (
@@ -34,26 +41,48 @@ const LinearScaleControl = ({
       />
       <Box
         data-testid="linearScaleControl"
-        display="flex"
+        display={isSmallerThanXlPhone ? 'block' : 'flex'}
         flexDirection="row"
-        gap="8px"
+        gap="16px"
         overflow="visible"
+        flexWrap="nowrap"
+        alignItems="flex-end"
+        mb="4px"
       >
-        <Box alignSelf="flex-end">
-          <Text mr="8px" fontWeight="bold">
-            {uischema.options?.minimum_label}
-          </Text>
-        </Box>
+        {uischema.options?.minimum_label && (
+          <Box mb={isSmallerThanXlPhone ? '12px' : '0'}>
+            <Text
+              mr="8px"
+              mt="0"
+              mb="0"
+              color="textSecondary"
+              textAlign={isSmallerThanXlPhone ? 'left' : 'right'}
+            >
+              {uischema.options?.minimum_label}
+            </Text>
+          </Box>
+        )}
         <>
           {[...Array(maximum).keys()].map((i) => {
             const rowId = `${path}-radio-${i}`;
             const visualIndex = i + 1;
             return (
-              <Box key={i} style={{ lineHeight: '0px' }}>
-                <Box mt="16px" mx="4px">
+              <Box
+                mb={isSmallerThanXlPhone ? '4px' : '0px'}
+                display={isSmallerThanXlPhone ? 'flex' : 'block'}
+                gap={isSmallerThanXlPhone ? '4px' : 'auto'}
+                key={i}
+                style={{ lineHeight: '0px' }}
+              >
+                <Box
+                  mt="0"
+                  mr="4px"
+                  ml={isSmallerThanXlPhone ? '0px' : '5px'}
+                  minHeight="24px"
+                >
                   <Label htmlFor={rowId}>{visualIndex}</Label>
                 </Box>
-                <br />
+                {!isSmallerThanXlPhone && <br />}
                 <Radio
                   name="linear_scale"
                   currentValue={data}
@@ -66,8 +95,8 @@ const LinearScaleControl = ({
             );
           })}
         </>
-        <Box mt="28px" alignSelf="flex-end">
-          <Text mr="8px" fontWeight="bold">
+        <Box>
+          <Text mr="8px" mt="0" mb="0" color="textSecondary">
             {uischema.options?.maximum_label}
           </Text>
         </Box>

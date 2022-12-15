@@ -60,6 +60,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'test-prof', '~> 1.0'
+  gem 'vcr', '~> 6.1'
 end
 
 group :development do
@@ -91,6 +92,7 @@ gem 'active_model_serializers', '~> 0.10.12'
 # Installs v2.2 which is not available on rubygems.org
 gem 'knock', git: 'https://github.com/nsarno/knock', branch: 'master', ref: '9214cd027422df8dc31eb67c60032fbbf8fc100b'
 gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92952b821898c393239ce0e4047b17d7dae'
+gem 'sinatra', '~> 2.2.3' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
 gem 'que-web'
 
 gem 'activerecord-import', '~> 1.0'
@@ -121,6 +123,7 @@ gem 'premailer-rails', '~> 1.10.3'
 gem 'rest-client'
 gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
+gem 'nokogiri', '>= 1.13.10'
 
 gem 'okcomputer'
 gem 'omniauth', '~> 1.9.1'
@@ -154,7 +157,7 @@ gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 # exception.
 gem 'aws-sdk-s3', '~> 1'
 gem 'bootsnap', '~> 1', require: false
-gem 'dalli', '~> 2.7'
+gem 'dalli', '~> 3.2.3'
 gem 'mailgun-ruby', '~>1.2.0'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
@@ -174,6 +177,9 @@ gem 'mjml-rails', '~> 4.4'
 # The gem is a dependency of Rails, but we use Rails 6.1.6 and no Rails upgrade is available yet.
 # Specifying this gem explicitly can probably be removed when the Rails upgrade is available.
 gem 'rails-html-sanitizer', '>= 1.4.3'
+
+# Used to define CRON tasks. See back/config/schedule.rb.
+gem 'whenever', '~> 1.0'
 
 require 'json'
 if File.exist? '../citizenlab.config.ee.json'

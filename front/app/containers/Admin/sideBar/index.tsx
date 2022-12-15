@@ -11,7 +11,7 @@ import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -27,9 +27,6 @@ import GetIdeasCount, {
 import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
@@ -104,7 +101,7 @@ const MenuLink = styled.a`
   padding-left: 5px;
   padding-right: 15px;
   cursor: pointer;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   transition: all 100ms ease-out;
 
   &:hover,
@@ -141,7 +138,6 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   ideasCount: GetIdeasCountChildProps;
   initiativesCount: GetInitiativesCountChildProps;
-  customizableNavbarFeatureFlag: GetFeatureFlagChildProps;
 }
 interface Props extends InputProps, DataProps {}
 
@@ -160,10 +156,10 @@ export type NavItem = {
 };
 
 class Sidebar extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & WrappedComponentProps & WithRouterProps,
   State
 > {
-  constructor(props: Props & InjectedIntlProps & WithRouterProps) {
+  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
     super(props);
 
     this.state = {
@@ -171,32 +167,32 @@ class Sidebar extends PureComponent<
         {
           name: 'dashboard',
           link: '/admin/dashboard',
-          iconName: 'stats',
+          iconName: 'sidebar-dashboards',
           message: 'dashboard',
         },
         {
           name: 'projects',
           link: '/admin/projects',
-          iconName: 'folder',
+          iconName: 'sidebar-folder',
           message: 'projects',
         },
         {
           name: 'workshops',
           link: '/admin/workshops',
-          iconName: 'workshops',
+          iconName: 'sidebar-workshops',
           message: 'workshops',
           featureNames: ['workshops'],
         },
         {
           name: 'ideas',
           link: '/admin/ideas',
-          iconName: 'idea2',
+          iconName: 'sidebar-input-manager',
           message: 'inputManager',
         },
         {
           name: 'initiatives',
           link: '/admin/initiatives',
-          iconName: 'initiativesAdminMenuIcon',
+          iconName: 'sidebar-proposals',
           message: 'initiatives',
           featureNames: ['initiatives'],
           onlyCheckAllowed: true,
@@ -204,19 +200,19 @@ class Sidebar extends PureComponent<
         {
           name: 'userinserts',
           link: '/admin/users',
-          iconName: 'users',
+          iconName: 'sidebar-users',
           message: 'users',
         },
         {
           name: 'invitations',
           link: '/admin/invitations',
-          iconName: 'invitations',
+          iconName: 'sidebar-invitations',
           message: 'invitations',
         },
         {
           name: 'messaging',
           link: '/admin/messaging',
-          iconName: 'emails',
+          iconName: 'sidebar-messaging',
           message: 'messaging',
           featureNames: [
             'manual_emailing',
@@ -227,15 +223,13 @@ class Sidebar extends PureComponent<
         {
           name: 'menu',
           link: '/admin/pages-menu',
-          iconName: 'blankPage',
-          // It's better to avoid using this feature flag in the core
-          // https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916512426
-          message: props.customizableNavbarFeatureFlag ? 'menu' : 'pages',
+          iconName: 'sidebar-pages-menu',
+          message: 'menu',
         },
         {
           name: 'settings',
           link: '/admin/settings/general',
-          iconName: 'setting',
+          iconName: 'sidebar-settings',
           message: 'settings',
         },
       ],
@@ -305,7 +299,7 @@ class Sidebar extends PureComponent<
             target="_blank"
           >
             <IconWrapper>
-              <Icon name="academy" />
+              <Icon name="sidebar-academy" />
             </IconWrapper>
             <Text>{formatMessage({ ...messages.academy })}</Text>
           </MenuLink>
@@ -315,7 +309,7 @@ class Sidebar extends PureComponent<
             target="_blank"
           >
             <IconWrapper>
-              <Icon name="circleInfo" />
+              <Icon name="sidebar-guide" />
             </IconWrapper>
             <Text>{formatMessage({ ...messages.guide })}</Text>
           </GetStartedLink>
@@ -326,7 +320,6 @@ class Sidebar extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  customizableNavbarFeatureFlag: <GetFeatureFlag name="customizable_navbar" />,
   authUser: <GetAuthUser />,
   ideasCount: ({ authUser, render }) => (
     <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>

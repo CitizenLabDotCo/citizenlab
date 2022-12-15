@@ -11,7 +11,7 @@ import CopyLink from '../buttons/CopyLink';
 
 // i18n
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // utils
@@ -40,7 +40,7 @@ const SharingButtons = memo(
     id,
     url,
     utmParams,
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const maxTabletOrSmaller = useBreakpoint('tablet');
 
     const getUrl = (medium: Medium) => {

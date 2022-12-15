@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   BaseProps,
-  Margin,
   AxisProps,
   KeyOfType,
   Cell,
@@ -15,7 +14,6 @@ export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
   mapping: Mapping<Row>;
   bars?: Bars;
   layout?: Layout;
-  margin?: Margin;
   xaxis?: AxisProps;
   yaxis?: AxisProps;
   labels?: boolean | Labels | ((props: LabelConfig) => React.ReactNode);

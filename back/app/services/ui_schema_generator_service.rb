@@ -76,16 +76,22 @@ class UiSchemaGeneratorService < FieldVisitorService
       type: 'Control',
       scope: "#/properties/#{field.key}",
       label: multiloc_service.t(field.title_multiloc),
-      options: {
-        description: multiloc_service.t(field.description_multiloc)
-      }
+      options: default_options(field)
     }
+  end
+
+  def visit_page(_field)
+    nil
   end
 
   protected
 
   def generate_for_current_locale(fields)
     raise NotImplementedError
+  end
+
+  def default_options(field)
+    { description: multiloc_service.t(field.description_multiloc) }
   end
 
   private

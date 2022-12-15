@@ -142,6 +142,19 @@ resource 'Idea Custom Fields' do
             expect(json_response).to include_response_error(:base, '"idea_custom_fields" feature is not activated')
           end
         end
+
+        context 'when images are included in the description' do
+          let(:description_multiloc) do
+            {
+              'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+            }
+          end
+
+          example 'Update a field', document: false do
+            expect { do_request }.to change(TextImage, :count).by 1
+            assert_status 200
+          end
+        end
       end
 
       patch 'web_api/v1/admin/projects/:project_id/custom_fields/update/:id' do
@@ -169,6 +182,19 @@ resource 'Idea Custom Fields' do
           expect(json_response.dig(:data, :attributes, :enabled)).to eq enabled
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(CustomField.count).to eq 1
+        end
+
+        context 'when images are included in the description' do
+          let(:description_multiloc) do
+            {
+              'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+            }
+          end
+
+          example 'Update a field', document: false do
+            expect { do_request }.to change(TextImage, :count).by 1
+            assert_status 200
+          end
         end
       end
 
@@ -312,6 +338,16 @@ resource 'Idea Custom Fields' do
           })
         end
 
+        example 'Destroy all fields' do
+          create(:custom_field, resource: custom_form) # field to destroy
+          request = { custom_fields: [] }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 0
+        end
+
         example 'Add, edit, delete and reorder options of an existing custom field' do
           change_field = create :custom_field_select, :with_options, resource: custom_form
           change_option = change_field.options.first
@@ -407,6 +443,54 @@ resource 'Idea Custom Fields' do
               updated_at: an_instance_of(String)
             }
           })
+        end
+
+        example '[error] Updating custom fields in a continuous native survey project when there are responses' do
+          IdeaStatus.create_defaults
+          create :idea, project: context
+
+          do_request(custom_fields: [])
+
+          assert_status 401
+          expect(json_response_body).to eq({ error: 'updating_form_with_input' })
+        end
+
+        context 'in a continuous ideation project' do
+          let(:context) { create :continuous_project, participation_method: 'ideation' }
+
+          example 'Updating custom fields when there are responses' do
+            IdeaStatus.create_defaults
+            create :idea, project: context
+
+            do_request(custom_fields: [])
+
+            assert_status 200
+          end
+        end
+
+        example 'Adding and updating a field with text images' do
+          field_to_update = create :custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' }
+          request = {
+            custom_fields: [
+              {
+                title_multiloc: { 'en' => 'Inserted field' },
+                description_multiloc: { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' },
+                input_type: 'number',
+                required: false,
+                enabled: false
+              },
+              {
+                id: field_to_update.id,
+                title_multiloc: { 'en' => 'Updated field' },
+                description_multiloc: { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' },
+                required: true,
+                enabled: true
+              }
+            ]
+          }
+          expect { do_request request }.to change(TextImage, :count).by 2
+
+          assert_status 200
         end
       end
     end
@@ -512,6 +596,16 @@ resource 'Idea Custom Fields' do
             type: 'custom_field',
             relationships: { options: { data: [] } }
           })
+        end
+
+        example 'Destroy all fields' do
+          create(:custom_field, resource: custom_form) # field to destroy
+          request = { custom_fields: [] }
+          do_request request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 0
         end
 
         example 'Add a custom field with options and delete a field with options' do
@@ -657,6 +751,39 @@ resource 'Idea Custom Fields' do
             type: 'custom_field',
             relationships: { options: { data: [] } }
           })
+        end
+
+        example '[error] Updating custom fields in a native survey phase when there are responses' do
+          IdeaStatus.create_defaults
+          create :idea, project: context.project, creation_phase: context, phases: [context]
+
+          do_request(custom_fields: [])
+
+          assert_status 401
+          expect(json_response_body).to eq({ error: 'updating_form_with_input' })
+        end
+
+        example 'Updating custom fields in a native survey phase when there are no responses' do
+          ideation_phase = create :phase, participation_method: 'ideation', project: context.project, start_at: (context.start_at - 7.days), end_at: (context.start_at - 1.day)
+          create :idea, project: ideation_phase.project, phases: [ideation_phase]
+          create :idea, project: ideation_phase.project
+
+          do_request(custom_fields: [])
+
+          assert_status 200
+        end
+
+        context 'in an ideation phase' do
+          let(:context) { create :phase, participation_method: 'ideation' }
+
+          example 'Updating custom fields when there are ideas' do
+            create :idea, project: context.project, phases: [context]
+            create :idea, project: context.project
+
+            do_request(custom_fields: [])
+
+            assert_status 200
+          end
         end
       end
     end

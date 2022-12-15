@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Table } from 'semantic-ui-react';
+import { Tr, Td } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -24,21 +24,21 @@ interface Props {
 
 const Row = ({ row }: Props) => {
   return (
-    <Table.Row>
-      <Table.Cell>{row.name}</Table.Cell>
-      <Table.Cell>
+    <Tr>
+      <Td background={colors.grey50}>{row.name}</Td>
+      <Td>
         {formatPercentage(row.actualPercentage)}
         <AbsoluteValue>
           ({row.actualNumber.toLocaleString('en-US')})
         </AbsoluteValue>
-      </Table.Cell>
-      <Table.Cell>
+      </Td>
+      <Td>
         {formatPercentage(row.referencePercentage)}
         <AbsoluteValue>
           ({row.referenceNumber.toLocaleString('en-US')})
         </AbsoluteValue>
-      </Table.Cell>
-    </Table.Row>
+      </Td>
+    </Tr>
   );
 };
 

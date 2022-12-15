@@ -29,7 +29,7 @@ import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // tracking
@@ -40,7 +40,7 @@ type InputDetailsProps = {
   previewedInputId: string;
 } & NavigationProps &
   WithRouterProps &
-  InjectedIntlProps;
+  WrappedComponentProps;
 
 const Container = styled.div`
   padding: 48px;
@@ -91,10 +91,7 @@ const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
   }
 `;
 
-const PlusIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
-`;
+const PlusIcon = styled(Icon)``;
 
 const StyledOptionLabel = styled(Box)`
   ${PlusIcon} {

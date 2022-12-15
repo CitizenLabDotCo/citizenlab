@@ -3,7 +3,7 @@ import React from 'react';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 import { Section, SectionField } from 'components/admin/Section';
 
@@ -19,7 +19,7 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import Feedback from 'components/HookForm/Feedback';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
@@ -29,7 +29,7 @@ export interface FormValues {
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const TopicForm = ({
   intl: { formatMessage },
@@ -37,7 +37,7 @@ const TopicForm = ({
   defaultValues,
 }: Props) => {
   const schema = object({
-    title_multiloc: validateMultiloc(
+    title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTopicTitleError)
     ),
   });
@@ -87,4 +87,4 @@ const TopicForm = ({
   );
 };
 
-export default injectIntl<Props>(TopicForm);
+export default injectIntl(TopicForm);

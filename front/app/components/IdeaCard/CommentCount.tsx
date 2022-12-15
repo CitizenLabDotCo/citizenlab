@@ -16,8 +16,6 @@ const Container = styled.div`
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${colors.textSecondary};
   margin-right: 8px;
 `;
@@ -29,7 +27,7 @@ interface Props {
 const CommentCount = ({ commentCount }: Props) => {
   return (
     <Container className="e2e-ideacard-comment-count">
-      <CommentIcon name="comments" />
+      <CommentIcon name="comments" width="16px" height="16px" />
       <span aria-hidden>{commentCount}</span>
       <ScreenReaderOnly>
         <FormattedMessage

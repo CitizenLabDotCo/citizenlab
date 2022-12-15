@@ -15,7 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
-import { MessageDescriptor } from 'typings';
+import { MessageDescriptor } from 'react-intl';
 
 const TabsContainer = styled.div`
   display: flex;
@@ -113,7 +113,7 @@ const Tabs = ({
 
   return (
     <TabsContainer role="tablist">
-      {/* 
+      {/*
         These tabs need the role, aria-selected etc to work well with
         screen readers.
         See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role

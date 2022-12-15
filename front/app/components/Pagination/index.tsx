@@ -16,7 +16,6 @@ const ContainerInner = styled.div`
 `;
 
 const ChevronIcon = styled(Icon)`
-  height: 12px;
   fill: ${colors.primary};
 `;
 
@@ -31,7 +30,7 @@ const NavigateButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   &.disabled {
     color: #bbb;
@@ -86,7 +85,7 @@ const Item = styled.button<{ useColorsTheme?: boolean }>`
   }
 
   &:not(.disabled) {
-    border-radius: ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius};
     background: ${colors.grey200};
     cursor: pointer;
 

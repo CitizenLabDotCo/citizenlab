@@ -175,3 +175,38 @@ describe('Archived continuous project with survey', () => {
     cy.apiRemoveProject(projectId);
   });
 });
+
+describe('Modal shown after survey submission', () => {
+  const projectTitle = randomString();
+  const projectDescription = randomString();
+  const projectDescriptionPreview = randomString(30);
+  let projectId: string;
+  let projectSlug: string;
+
+  before(() => {
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'archived',
+      participationMethod: 'native_survey',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+    });
+  });
+
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+    cy.visit(`/projects/${projectSlug}/?show_modal=true`);
+  });
+
+  it('shows the modal', () => {
+    cy.contains('Thank you. Your response has been received.').should('exist');
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+});

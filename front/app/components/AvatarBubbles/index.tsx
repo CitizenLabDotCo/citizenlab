@@ -11,7 +11,7 @@ import GetAvatars from 'resources/GetAvatars';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -89,7 +89,7 @@ const UserCountBubble = styled.div<{
   padding-bottom: 0;
   border-radius: 50%;
   border: solid 2px #fff;
-  background: ${(props: any) => props.bgColor};
+  background: ${(props) => props.bgColor};
   position: absolute;
   z-index: ${(props) => props.index + 1};
   left: ${(props) => props.index * (props.size - props.overlap)}px;
@@ -140,7 +140,7 @@ export const AvatarBubbles = ({
   intl: { formatMessage },
   avatars,
   userCount,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
     const bubbleSize = size + 4;
     const bubbleOverlap = overlap || 10;

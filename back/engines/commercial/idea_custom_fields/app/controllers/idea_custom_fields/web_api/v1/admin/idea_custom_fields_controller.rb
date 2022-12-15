@@ -9,6 +9,8 @@ module IdeaCustomFields
     attr_reader :errors
   end
 
+  class UpdatingFormWithInputError < StandardError; end
+
   class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
     CONSTANTIZER = {
       'Project' => {
@@ -25,6 +27,7 @@ module IdeaCustomFields
     before_action :set_custom_field, only: %i[show update]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
+    rescue_from UpdatingFormWithInputError, with: :render_updating_form_with_input_error
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
@@ -55,8 +58,11 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
+      participation_method = Factory.instance.participation_method_for @custom_form.participation_context
+      verify_no_responses participation_method
+
       update_fields
-      @custom_form.reload
+      @custom_form.reload if @custom_form.persisted?
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).configurable_fields,
         params: fastjson_params,
@@ -80,16 +86,17 @@ module IdeaCustomFields
       errors = {}
       fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
       fields_by_id = fields.index_by(&:id)
-      given_ids = update_all_params.pluck(:id)
+      given_fields = update_all_params.fetch :custom_fields, []
+      given_field_ids = given_fields.pluck(:id)
 
       ActiveRecord::Base.transaction do
-        deleted_fields = fields.reject { |field| given_ids.include? field.id }
+        deleted_fields = fields.reject { |field| given_field_ids.include? field.id }
         deleted_fields.each do |field|
           SideFxCustomFieldService.new.before_destroy(field, current_user)
           field.destroy!
           SideFxCustomFieldService.new.after_destroy(field, current_user)
         end
-        update_all_params.each_with_index do |field_params, index|
+        given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete :options
           if field_params[:id]
             field = fields_by_id[field_params[:id]]
@@ -135,6 +142,7 @@ module IdeaCustomFields
       authorize custom_field, policy_class: IdeaCustomFieldPolicy
       already_existed = custom_field.persisted?
 
+      SideFxCustomFieldService.new.before_update custom_field, current_user
       if custom_field.save
         if already_existed
           SideFxCustomFieldService.new.after_update(custom_field, current_user)
@@ -198,24 +206,20 @@ module IdeaCustomFields
     end
 
     def update_all_params
-      custom_fields_params = params.fetch :custom_fields, []
-      return [] if custom_fields_params.empty?
-
-      custom_fields_params
-        .map do |field|
-          field.permit(
-            :id,
-            :input_type,
-            :required,
-            :enabled,
-            :maximum,
-            { title_multiloc: CL2_SUPPORTED_LOCALES,
-              description_multiloc: CL2_SUPPORTED_LOCALES,
-              minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
-              maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
-              options: [:id, { title_multiloc: CL2_SUPPORTED_LOCALES }] }
-          )
-        end
+      params.permit(
+        custom_fields: [
+          :id,
+          :input_type,
+          :required,
+          :enabled,
+          :maximum,
+          { title_multiloc: CL2_SUPPORTED_LOCALES,
+            description_multiloc: CL2_SUPPORTED_LOCALES,
+            minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
+            maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
+            options: [:id, { title_multiloc: CL2_SUPPORTED_LOCALES }] }
+        ]
+      )
     end
 
     def set_custom_form
@@ -237,6 +241,16 @@ module IdeaCustomFields
 
     def secure_constantize(key)
       CONSTANTIZER.fetch(params[:container_type])[key]
+    end
+
+    def verify_no_responses(participation_method)
+      return if participation_method.edit_custom_form_allowed?
+
+      raise UpdatingFormWithInputError
+    end
+
+    def render_updating_form_with_input_error
+      render json: { error: :updating_form_with_input }, status: :unauthorized
     end
   end
 end

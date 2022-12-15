@@ -1,0 +1,155 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://demo.matomo.cloud/index.php?filter_limit=3&filter_offset=0&filter_sort_order=asc&format=JSON&idSite=1&method=Live.getLastVisitsDetails&minTimestamp=1661990400&module=API
+    body:
+      encoding: UTF-8
+      string: token_auth=anonymous
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 03 Oct 2022 13:49:06 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Server:
+      - Apache
+      X-Matomo-Request-Id:
+      - 9690c
+      Cache-Control:
+      - must-revalidate
+      Vary:
+      - X-Forwarded-Port-Override,X-Forwarded-Proto-Override,Accept-Encoding,User-Agent
+    body:
+      encoding: UTF-8
+      string: '[{"idSite":"1","idVisit":"8173537","visitIp":null,"visitorId":"37100c326e9baf4e","fingerprint":false,"actionDetails":[{"type":"action","url":"https:\/\/divezone.net\/diving\/bali","pageTitle":"Best
+        Diving sites in Bali \u2013 Indonesia Scuba dive reviews by Divezone","pageIdAction":"8","idpageview":"Rb8QuI","serverTimePretty":"Sep
+        1, 2022 02:00:03","pageId":"22311533","timeSpent":0,"timeSpentPretty":"0s","pageviewPosition":"1","title":"Best
+        Diving sites in Bali \u2013 Indonesia Scuba dive reviews by Divezone","subtitle":"https:\/\/divezone.net\/diving\/bali","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1661997603,"dimension2":"Julien","dimension4":"Bali","dimension5":"diving","customVariables":{"1":{"customVariablePageName1":"page-author","customVariablePageValue1":"Julien"},"2":{"customVariablePageName2":"post-age","customVariablePageValue2":"-351
+        days"}}},{"type":"action","url":"https:\/\/divezone.net\/divesite\/crystal-bay","pageTitle":"Crystal
+        Bay Dive Site \u2013 Map & Review of Crystal Bay in Nusa Penida \/ Nusa Lembongan,
+        Bali","pageIdAction":"4","idpageview":"X3FySM","serverTimePretty":"Sep 1,
+        2022 02:00:03","pageId":"22311534","timeSpent":0,"timeSpentPretty":"0s","pageviewPosition":"2","title":"Crystal
+        Bay Dive Site \u2013 Map & Review of Crystal Bay in Nusa Penida \/ Nusa Lembongan,
+        Bali","subtitle":"https:\/\/divezone.net\/divesite\/crystal-bay","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1661997603,"dimension2":"Julien","dimension4":"Nusa
+        Penida \/ Nusa Lembongan","dimension5":"divesite","customVariables":{"1":{"customVariablePageName1":"page-author","customVariablePageValue1":"Julien"},"2":{"customVariablePageName2":"post-age","customVariablePageValue2":"-1819
+        days"}}},{"type":"action","url":"https:\/\/divezone.net\/divesite\/secret-bay","pageTitle":"Secret
+        Bay Dive Site \u2013 Map & Review of Secret Bay in Pemutaran, Lovina, Bali","pageIdAction":"1091","idpageview":"O0OWH4","serverTimePretty":"Sep
+        1, 2022 02:00:03","pageId":"22311535","timeSpent":0,"timeSpentPretty":"0s","pageviewPosition":"3","title":"Secret
+        Bay Dive Site \u2013 Map & Review of Secret Bay in Pemutaran, Lovina, Bali","subtitle":"https:\/\/divezone.net\/divesite\/secret-bay","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1661997603,"dimension2":"Julien","dimension4":"Pemutaran,
+        Lovina","dimension5":"divesite","customVariables":{"1":{"customVariablePageName1":"page-author","customVariablePageValue1":"Julien"},"2":{"customVariablePageName2":"post-age","customVariablePageValue2":"-2223
+        days"}}}],"goalConversions":0,"siteCurrency":"USD","siteCurrencySymbol":"$","serverDate":"2022-09-01","visitServerHour":"0","lastActionTimestamp":1661990403,"lastActionDateTime":"2022-09-01
+        00:00:03","siteName":"Demo Site","serverTimestamp":1661990403,"firstActionTimestamp":1661990403,"serverTimePretty":"02:00:03","serverDatePretty":"Thursday,
+        September 1, 2022","serverDatePrettyFirstAction":"Thursday, September 1, 2022","serverTimePrettyFirstAction":"02:00:03","userId":null,"visitorType":"returningCustomer","visitorTypeIcon":"plugins\/Live\/images\/returningVisitor.png","visitConverted":"0","visitConvertedIcon":null,"visitCount":"152","visitEcommerceStatus":"none","visitEcommerceStatusIcon":null,"daysSinceFirstVisit":1545,"secondsSinceFirstVisit":"133553034","daysSinceLastEcommerceOrder":633,"secondsSinceLastEcommerceOrder":"54756234","visitDuration":"1","visitDurationPretty":"1s","searches":"0","actions":"3","interactions":"3","referrerType":"search","referrerTypeName":"Search
+        Engines","referrerName":"Google","referrerKeyword":"Keyword not defined","referrerKeywordPosition":null,"referrerUrl":"https:\/\/www.google.com\/","referrerSearchEngineUrl":"http:\/\/google.com","referrerSearchEngineIcon":"plugins\/Morpheus\/icons\/dist\/searchEngines\/google.com.png","referrerSocialNetworkUrl":null,"referrerSocialNetworkIcon":null,"languageCode":"","language":"Unknown","deviceType":"Desktop","deviceTypeIcon":"plugins\/Morpheus\/icons\/dist\/devices\/desktop.png","deviceBrand":"Apple","deviceModel":"Generic
+        Desktop","operatingSystem":"Mac 10.13","operatingSystemName":"Mac","operatingSystemIcon":"plugins\/Morpheus\/icons\/dist\/os\/MAC.png","operatingSystemCode":"MAC","operatingSystemVersion":"10.13","browserFamily":"WebKit","browserFamilyDescription":"WebKit
+        (Safari)","browser":"Safari 11.1","browserName":"Safari","browserIcon":"plugins\/Morpheus\/icons\/dist\/browsers\/SF.png","browserCode":"SF","browserVersion":"11.1","totalEcommerceRevenue":0,"totalEcommerceConversions":0,"totalEcommerceItems":0,"totalAbandonedCartsRevenue":0,"totalAbandonedCarts":0,"totalAbandonedCartsItems":0,"events":"0","continent":"Asia","continentCode":"asi","country":"Indonesia","countryCode":"id","countryFlag":"plugins\/Morpheus\/icons\/dist\/flags\/id.png","region":"Jawa
+        Timur","regionCode":"JI","city":"Mojokerto","location":"Mojokerto, Jawa Timur,
+        Indonesia","latitude":"-7.460000","longitude":"112.433000","visitLocalTime":"13:53:39","visitLocalHour":"13","daysSinceLastVisit":3,"secondsSinceLastVisit":"322759","resolution":"1440x900","plugins":"cookie,
+        flash, java, pdf","pluginsIcons":[{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/cookie.png","pluginName":"cookie"},{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/flash.png","pluginName":"flash"},{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/java.png","pluginName":"java"},{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/pdf.png","pluginName":"pdf"}],"dimension1":"guest","experiments":[],"adClickId":"","adProviderId":"","adProviderName":"","customVariables":{"1":{"customVariableName1":"type","customVariableValue1":"divesite"},"2":{"customVariableName2":"location","customVariableValue2":"Pemutaran,
+        Lovina"},"4":{"customVariableName4":"fishes","customVariableValue4":"Colourful
+        Flatworm, Cuttlefish, Eellike Hairtail Blennie, Fire Urchin, Firefish, Frogfish,
+        Nudibranch, Octopus, Pipefish, Pleurobranch, Puffer, Sea Cucumber, Sea Slug,
+        Yellow Seahorse"},"5":{"customVariableName5":"divesite-rating","customVariableValue5":"5"}},"formConversions":0,"sessionReplayUrl":null,"campaignId":"","campaignContent":"","campaignKeyword":"","campaignMedium":"","campaignName":"","campaignSource":"","campaignGroup":"","campaignPlacement":""},{"idSite":"1","idVisit":"8173539","visitIp":null,"visitorId":"32c3c9680e3d2ff2","fingerprint":false,"actionDetails":[{"type":"action","url":"https:\/\/divezone.net\/divesite\/blue-lagoon","pageTitle":"Blue
+        Lagoon Dive Site \u2013 Map & Review of Blue Lagoon in Padang Bai, Bali","pageIdAction":"1644","idpageview":"QQ4OrI","serverTimePretty":"Sep
+        1, 2022 02:00:07","pageId":"22311538","timeSpent":0,"timeSpentPretty":"0s","pageviewPosition":"1","title":"Blue
+        Lagoon Dive Site \u2013 Map & Review of Blue Lagoon in Padang Bai, Bali","subtitle":"https:\/\/divezone.net\/divesite\/blue-lagoon","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1661997607,"dimension2":null,"dimension4":null,"dimension5":null}],"goalConversions":0,"siteCurrency":"USD","siteCurrencySymbol":"$","serverDate":"2022-09-01","visitServerHour":"0","lastActionTimestamp":1661990407,"lastActionDateTime":"2022-09-01
+        00:00:07","siteName":"Demo Site","serverTimestamp":1661990407,"firstActionTimestamp":1661990407,"serverTimePretty":"02:00:07","serverDatePretty":"Thursday,
+        September 1, 2022","serverDatePrettyFirstAction":"Thursday, September 1, 2022","serverTimePrettyFirstAction":"02:00:07","userId":null,"visitorType":"returningCustomer","visitorTypeIcon":"plugins\/Live\/images\/returningVisitor.png","visitConverted":"0","visitConvertedIcon":null,"visitCount":"163","visitEcommerceStatus":"none","visitEcommerceStatusIcon":null,"daysSinceFirstVisit":1655,"secondsSinceFirstVisit":"142992000","daysSinceLastEcommerceOrder":636,"secondsSinceLastEcommerceOrder":"54950400","visitDuration":"0","visitDurationPretty":"0s","searches":"0","actions":"1","interactions":"1","referrerType":"search","referrerTypeName":"Search
+        Engines","referrerName":"Google","referrerKeyword":"Keyword not defined","referrerKeywordPosition":null,"referrerUrl":"https:\/\/www.google.co.nz\/","referrerSearchEngineUrl":"http:\/\/google.com","referrerSearchEngineIcon":"plugins\/Morpheus\/icons\/dist\/searchEngines\/google.com.png","referrerSocialNetworkUrl":null,"referrerSocialNetworkIcon":null,"languageCode":"","language":"Unknown","deviceType":"Smartphone","deviceTypeIcon":"plugins\/Morpheus\/icons\/dist\/devices\/smartphone.png","deviceBrand":"Apple","deviceModel":"iPhone","operatingSystem":"iOS
+        11.2","operatingSystemName":"iOS","operatingSystemIcon":"plugins\/Morpheus\/icons\/dist\/os\/IOS.png","operatingSystemCode":"IOS","operatingSystemVersion":"11.2","browserFamily":"WebKit","browserFamilyDescription":"WebKit
+        (Safari)","browser":"Mobile Safari 11.0","browserName":"Mobile Safari","browserIcon":"plugins\/Morpheus\/icons\/dist\/browsers\/MF.png","browserCode":"MF","browserVersion":"11.0","totalEcommerceRevenue":0,"totalEcommerceConversions":0,"totalEcommerceItems":0,"totalAbandonedCartsRevenue":0,"totalAbandonedCarts":0,"totalAbandonedCartsItems":0,"events":"0","continent":"Oceania","continentCode":"oce","country":"Cook
+        Islands","countryCode":"ck","countryFlag":"plugins\/Morpheus\/icons\/dist\/flags\/ck.png","region":null,"regionCode":null,"city":null,"location":"Cook
+        Islands","latitude":"-21.248000","longitude":"-159.785000","visitLocalTime":"13:00:06","visitLocalHour":"13","daysSinceLastVisit":7,"secondsSinceLastVisit":"604800","resolution":"414x736","plugins":"cookie","pluginsIcons":[{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/cookie.png","pluginName":"cookie"}],"dimension1":null,"experiments":[],"adClickId":"","adProviderId":"","adProviderName":"","customVariables":{"1":{"customVariableName1":"type","customVariableValue1":"diving-center"},"2":{"customVariableName2":"location","customVariableValue2":"Bali,
+        Padang Bai"}},"formConversions":0,"sessionReplayUrl":null,"campaignId":"","campaignContent":"","campaignKeyword":"","campaignMedium":"","campaignName":"","campaignSource":"","campaignGroup":"","campaignPlacement":""},{"idSite":"1","idVisit":"8173541","visitIp":null,"visitorId":"567cdcd5ff49c9b3","fingerprint":false,"actionDetails":[{"type":"action","url":"https:\/\/dive-shop.net\/products\/basic-wetsuit\/","pageTitle":null,"pageIdAction":"6","idpageview":"T6fLJs","serverTimePretty":"Sep
+        1, 2022 02:00:15","pageId":"22311540","timeSpent":1514,"timeSpentPretty":"25
+        min 14s","pageviewPosition":"1","title":null,"subtitle":"https:\/\/dive-shop.net\/products\/basic-wetsuit\/","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1661997615,"dimension2":null,"dimension4":null,"dimension5":null}],"goalConversions":0,"siteCurrency":"USD","siteCurrencySymbol":"$","serverDate":"2022-09-01","visitServerHour":"0","lastActionTimestamp":1661990415,"lastActionDateTime":"2022-09-01
+        00:00:15","siteName":"Demo Site","serverTimestamp":1661990415,"firstActionTimestamp":1661990415,"serverTimePretty":"02:00:15","serverDatePretty":"Thursday,
+        September 1, 2022","serverDatePrettyFirstAction":"Thursday, September 1, 2022","serverTimePrettyFirstAction":"02:00:15","userId":null,"visitorType":"returningCustomer","visitorTypeIcon":"plugins\/Live\/images\/returningVisitor.png","visitConverted":"0","visitConvertedIcon":null,"visitCount":"151","visitEcommerceStatus":"none","visitEcommerceStatusIcon":null,"daysSinceFirstVisit":1927,"secondsSinceFirstVisit":"166522490","daysSinceLastEcommerceOrder":636,"secondsSinceLastEcommerceOrder":"54980090","visitDuration":"1514","visitDurationPretty":"25
+        min 14s","searches":"0","actions":"1","interactions":"1","referrerType":"direct","referrerTypeName":"Direct
+        Entry","referrerName":"","referrerKeyword":"","referrerKeywordPosition":null,"referrerUrl":null,"referrerSearchEngineUrl":null,"referrerSearchEngineIcon":null,"referrerSocialNetworkUrl":null,"referrerSocialNetworkIcon":null,"languageCode":"","language":"Unknown","deviceType":"Desktop","deviceTypeIcon":"plugins\/Morpheus\/icons\/dist\/devices\/desktop.png","deviceBrand":"Unknown","deviceModel":"Generic
+        Desktop","operatingSystem":"Windows 7","operatingSystemName":"Windows","operatingSystemIcon":"plugins\/Morpheus\/icons\/dist\/os\/WIN.png","operatingSystemCode":"WIN","operatingSystemVersion":"7","browserFamily":"Blink","browserFamilyDescription":"Blink
+        (Chrome, Opera)","browser":"Chrome 54.0","browserName":"Chrome","browserIcon":"plugins\/Morpheus\/icons\/dist\/browsers\/CH.png","browserCode":"CH","browserVersion":"54.0","totalEcommerceRevenue":0,"totalEcommerceConversions":0,"totalEcommerceItems":0,"totalAbandonedCartsRevenue":0,"totalAbandonedCarts":0,"totalAbandonedCartsItems":0,"events":"0","continent":"Asia","continentCode":"asi","country":"Israel","countryCode":"il","countryFlag":"plugins\/Morpheus\/icons\/dist\/flags\/il.png","region":"HaZafon","regionCode":"Z","city":"Afula","location":"Afula,
+        HaZafon, Israel","latitude":"32.611000","longitude":"35.289000","visitLocalTime":"01:00:11","visitLocalHour":"1","daysSinceLastVisit":6,"secondsSinceLastVisit":"548090","resolution":"1920x960","plugins":"cookie,
+        pdf","pluginsIcons":[{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/cookie.png","pluginName":"cookie"},{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/pdf.png","pluginName":"pdf"}],"dimension1":null,"experiments":[],"adClickId":"","adProviderId":"","adProviderName":"","customVariables":[],"formConversions":0,"sessionReplayUrl":null,"campaignId":"","campaignContent":"","campaignKeyword":"","campaignMedium":"","campaignName":"","campaignSource":"","campaignGroup":"","campaignPlacement":""}]'
+  recorded_at: Mon, 03 Oct 2022 13:49:06 GMT
+- request:
+    method: post
+    uri: https://demo.matomo.cloud/index.php?filter_limit=3&filter_offset=3&filter_sort_order=asc&format=JSON&idSite=1&method=Live.getLastVisitsDetails&minTimestamp=1661990400&module=API
+    body:
+      encoding: UTF-8
+      string: token_auth=anonymous
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 03 Oct 2022 13:49:07 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Server:
+      - Apache
+      X-Matomo-Request-Id:
+      - c0aab
+      Cache-Control:
+      - must-revalidate
+      Vary:
+      - X-Forwarded-Port-Override,X-Forwarded-Proto-Override,Accept-Encoding,User-Agent
+    body:
+      encoding: UTF-8
+      string: '[{"idSite":"1","idVisit":"8173542","visitIp":null,"visitorId":"567gjdd5ff49c9b3","fingerprint":false,"actionDetails":[{"type":"action","url":"https:\/\/divezone.net\/diving\/mabul-island","pageTitle":"Best
+        Diving sites in Mabul Island \u2013 Malaysia Scuba dive reviews by Divezone","pageIdAction":"644","idpageview":"gT8pWG","serverTimePretty":"Sep
+        1, 2022 02:00:16","pageId":"22311541","timeSpent":0,"timeSpentPretty":"0s","pageviewPosition":"1","title":"Best
+        Diving sites in Mabul Island \u2013 Malaysia Scuba dive reviews by Divezone","subtitle":"https:\/\/divezone.net\/diving\/mabul-island","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1661997616,"dimension2":"Julien","dimension4":"Mabul
+        Island","dimension5":"diving","customVariables":{"1":{"customVariablePageName1":"page-author","customVariablePageValue1":"Julien"},"2":{"customVariablePageName2":"post-age","customVariablePageValue2":"-328
+        days"}}}],"goalConversions":0,"siteCurrency":"USD","siteCurrencySymbol":"$","serverDate":"2022-09-01","visitServerHour":"0","lastActionTimestamp":1661990416,"lastActionDateTime":"2022-09-01
+        00:00:16","siteName":"Demo Site","serverTimestamp":1661990416,"firstActionTimestamp":1661990416,"serverTimePretty":"02:00:16","serverDatePretty":"Thursday,
+        September 1, 2022","serverDatePrettyFirstAction":"Thursday, September 1, 2022","serverTimePrettyFirstAction":"02:00:16","userId":null,"visitorType":"returningCustomer","visitorTypeIcon":"plugins\/Live\/images\/returningVisitor.png","visitConverted":"0","visitConvertedIcon":null,"visitCount":"161","visitEcommerceStatus":"none","visitEcommerceStatusIcon":null,"daysSinceFirstVisit":1655,"secondsSinceFirstVisit":"142992000","daysSinceLastEcommerceOrder":637,"secondsSinceLastEcommerceOrder":"55036800","visitDuration":"0","visitDurationPretty":"0s","searches":"0","actions":"1","interactions":"1","referrerType":"direct","referrerTypeName":"Direct
+        Entry","referrerName":"","referrerKeyword":"","referrerKeywordPosition":null,"referrerUrl":null,"referrerSearchEngineUrl":null,"referrerSearchEngineIcon":null,"referrerSocialNetworkUrl":null,"referrerSocialNetworkIcon":null,"languageCode":"","language":"Unknown","deviceType":"Smartphone","deviceTypeIcon":"plugins\/Morpheus\/icons\/dist\/devices\/smartphone.png","deviceBrand":"Xiaomi","deviceModel":"Mi
+        A1","operatingSystem":"Android 8.0","operatingSystemName":"Android","operatingSystemIcon":"plugins\/Morpheus\/icons\/dist\/os\/AND.png","operatingSystemCode":"AND","operatingSystemVersion":"8.0","browserFamily":"Blink","browserFamilyDescription":"Blink
+        (Chrome, Opera)","browser":"Chrome Mobile 66.0","browserName":"Chrome Mobile","browserIcon":"plugins\/Morpheus\/icons\/dist\/browsers\/CM.png","browserCode":"CM","browserVersion":"66.0","totalEcommerceRevenue":0,"totalEcommerceConversions":0,"totalEcommerceItems":0,"totalAbandonedCartsRevenue":0,"totalAbandonedCarts":0,"totalAbandonedCartsItems":0,"events":"0","continent":"Europe","continentCode":"eur","country":"Spain","countryCode":"es","countryFlag":"plugins\/Morpheus\/icons\/dist\/flags\/es.png","region":"Madrid,
+        Comunidad de","regionCode":"MD","city":"Madrid","location":"Madrid, Madrid,
+        Comunidad de, Spain","latitude":"40.416000","longitude":"-3.693000","visitLocalTime":"00:00:16","visitLocalHour":"0","daysSinceLastVisit":7,"secondsSinceLastVisit":"657604","resolution":"360x640","plugins":"cookie","pluginsIcons":[{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/cookie.png","pluginName":"cookie"}],"dimension1":"guest","experiments":[],"adClickId":"","adProviderId":"","adProviderName":"","customVariables":{"1":{"customVariableName1":"type","customVariableValue1":"diving"},"2":{"customVariableName2":"location","customVariableValue2":"Mabul
+        Island"},"5":{"customVariableName5":"diving-rating","customVariableValue5":"4.0"}},"formConversions":0,"sessionReplayUrl":null,"campaignId":"","campaignContent":"","campaignKeyword":"","campaignMedium":"","campaignName":"","campaignSource":"","campaignGroup":"","campaignPlacement":""},{"idSite":"1","idVisit":"8173543","visitIp":null,"visitorId":"567cdcd5f98ac9b3","fingerprint":false,"actionDetails":[{"type":"action","url":"https:\/\/divezone.net\/diving\/yucatan-mexico","pageTitle":"Best
+        Diving sites in Yucat\u00e1n, Mexico \u2013 Scuba dive reviews by Divezone","pageIdAction":"232","idpageview":"cOIdIb","serverTimePretty":"Sep
+        1, 2022 02:00:17","pageId":"22311542","timeSpent":0,"timeSpentPretty":"0s","pageviewPosition":"1","title":"Best
+        Diving sites in Yucat\u00e1n, Mexico \u2013 Scuba dive reviews by Divezone","subtitle":"https:\/\/divezone.net\/diving\/yucatan-mexico","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1661997617,"dimension2":"Charles","dimension4":"Mexico","dimension5":"diving","customVariables":{"1":{"customVariablePageName1":"page-author","customVariablePageValue1":"Charles"},"2":{"customVariablePageName2":"post-age","customVariablePageValue2":"-199
+        days"}}}],"goalConversions":0,"siteCurrency":"USD","siteCurrencySymbol":"$","serverDate":"2022-09-01","visitServerHour":"0","lastActionTimestamp":1661990417,"lastActionDateTime":"2022-09-01
+        00:00:17","siteName":"Demo Site","serverTimestamp":1661990417,"firstActionTimestamp":1661990417,"serverTimePretty":"02:00:17","serverDatePretty":"Thursday,
+        September 1, 2022","serverDatePrettyFirstAction":"Thursday, September 1, 2022","serverTimePrettyFirstAction":"02:00:17","userId":null,"visitorType":"returningCustomer","visitorTypeIcon":"plugins\/Live\/images\/returningVisitor.png","visitConverted":"0","visitConvertedIcon":null,"visitCount":"74","visitEcommerceStatus":"none","visitEcommerceStatusIcon":null,"daysSinceFirstVisit":1609,"secondsSinceFirstVisit":"139017600","daysSinceLastEcommerceOrder":637,"secondsSinceLastEcommerceOrder":"55036800","visitDuration":"0","visitDurationPretty":"0s","searches":"0","actions":"1","interactions":"1","referrerType":"search","referrerTypeName":"Search
+        Engines","referrerName":"Google","referrerKeyword":"Keyword not defined","referrerKeywordPosition":null,"referrerUrl":"https:\/\/www.google.com\/","referrerSearchEngineUrl":"http:\/\/google.com","referrerSearchEngineIcon":"plugins\/Morpheus\/icons\/dist\/searchEngines\/google.com.png","referrerSocialNetworkUrl":null,"referrerSocialNetworkIcon":null,"languageCode":"","language":"Unknown","deviceType":"Desktop","deviceTypeIcon":"plugins\/Morpheus\/icons\/dist\/devices\/desktop.png","deviceBrand":"Unknown","deviceModel":"Generic
+        Desktop","operatingSystem":"Windows 10","operatingSystemName":"Windows","operatingSystemIcon":"plugins\/Morpheus\/icons\/dist\/os\/WIN.png","operatingSystemCode":"WIN","operatingSystemVersion":"10","browserFamily":"Blink","browserFamilyDescription":"Blink
+        (Chrome, Opera)","browser":"Chrome 65.0","browserName":"Chrome","browserIcon":"plugins\/Morpheus\/icons\/dist\/browsers\/CH.png","browserCode":"CH","browserVersion":"65.0","totalEcommerceRevenue":0,"totalEcommerceConversions":0,"totalEcommerceItems":0,"totalAbandonedCartsRevenue":0,"totalAbandonedCarts":0,"totalAbandonedCartsItems":0,"events":"0","continent":"North
+        America","continentCode":"amn","country":"United States","countryCode":"us","countryFlag":"plugins\/Morpheus\/icons\/dist\/flags\/us.png","region":"Texas","regionCode":"TX","city":"Spring","location":"Spring,
+        Texas, United States","latitude":"30.041000","longitude":"-95.530000","visitLocalTime":"15:00:16","visitLocalHour":"15","daysSinceLastVisit":28,"secondsSinceLastVisit":"2419200","resolution":"1280x720","plugins":"cookie,
+        pdf","pluginsIcons":[{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/cookie.png","pluginName":"cookie"},{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/pdf.png","pluginName":"pdf"}],"dimension1":"guest","experiments":[],"adClickId":"","adProviderId":"","adProviderName":"","customVariables":{"1":{"customVariableName1":"type","customVariableValue1":"diving"},"2":{"customVariableName2":"location","customVariableValue2":"Mexico"},"5":{"customVariableName5":"diving-rating","customVariableValue5":"4"}},"formConversions":0,"sessionReplayUrl":null,"campaignId":"","campaignContent":"","campaignKeyword":"","campaignMedium":"","campaignName":"","campaignSource":"","campaignGroup":"","campaignPlacement":""},{"idSite":"1","idVisit":"8173544","visitIp":null,"visitorId":"978cdfc5ff49c9b3","fingerprint":false,"actionDetails":[{"type":"action","url":"https:\/\/divezone.net\/diving\/indonesia","pageTitle":"Best
+        Diving sites in Indonesia \u2013 Scuba dive reviews by Divezone","pageIdAction":"96","idpageview":"SJ3MOG","serverTimePretty":"Sep
+        1, 2022 02:00:17","pageId":"22311543","timeSpent":0,"timeSpentPretty":"0s","pageviewPosition":"1","title":"Best
+        Diving sites in Indonesia \u2013 Scuba dive reviews by Divezone","subtitle":"https:\/\/divezone.net\/diving\/indonesia","icon":"","iconSVG":"plugins\/Morpheus\/images\/action.svg","timestamp":1661997617,"dimension2":null,"dimension4":null,"dimension5":null}],"goalConversions":0,"siteCurrency":"USD","siteCurrencySymbol":"$","serverDate":"2022-09-01","visitServerHour":"0","lastActionTimestamp":1661990417,"lastActionDateTime":"2022-09-01
+        00:00:17","siteName":"Demo Site","serverTimestamp":1661990417,"firstActionTimestamp":1661990417,"serverTimePretty":"02:00:17","serverDatePretty":"Thursday,
+        September 1, 2022","serverDatePrettyFirstAction":"Thursday, September 1, 2022","serverTimePrettyFirstAction":"02:00:17","userId":null,"visitorType":"returningCustomer","visitorTypeIcon":"plugins\/Live\/images\/returningVisitor.png","visitConverted":"0","visitConvertedIcon":null,"visitCount":"145","visitEcommerceStatus":"none","visitEcommerceStatusIcon":null,"daysSinceFirstVisit":1655,"secondsSinceFirstVisit":"142992000","daysSinceLastEcommerceOrder":636,"secondsSinceLastEcommerceOrder":"54950400","visitDuration":"0","visitDurationPretty":"0s","searches":"0","actions":"1","interactions":"1","referrerType":"search","referrerTypeName":"Search
+        Engines","referrerName":"Google","referrerKeyword":"Keyword not defined","referrerKeywordPosition":null,"referrerUrl":"https:\/\/www.google.pt\/","referrerSearchEngineUrl":"http:\/\/google.com","referrerSearchEngineIcon":"plugins\/Morpheus\/icons\/dist\/searchEngines\/google.com.png","referrerSocialNetworkUrl":null,"referrerSocialNetworkIcon":null,"languageCode":"","language":"Unknown","deviceType":"Desktop","deviceTypeIcon":"plugins\/Morpheus\/icons\/dist\/devices\/desktop.png","deviceBrand":"Unknown","deviceModel":"Generic
+        Desktop","operatingSystem":"Windows 10","operatingSystemName":"Windows","operatingSystemIcon":"plugins\/Morpheus\/icons\/dist\/os\/WIN.png","operatingSystemCode":"WIN","operatingSystemVersion":"10","browserFamily":"Gecko","browserFamilyDescription":"Gecko
+        (Firefox)","browser":"Firefox 58.0","browserName":"Firefox","browserIcon":"plugins\/Morpheus\/icons\/dist\/browsers\/FF.png","browserCode":"FF","browserVersion":"58.0","totalEcommerceRevenue":0,"totalEcommerceConversions":0,"totalEcommerceItems":0,"totalAbandonedCartsRevenue":0,"totalAbandonedCarts":0,"totalAbandonedCartsItems":0,"events":"0","continent":"Europe","continentCode":"eur","country":"Portugal","countryCode":"pt","countryFlag":"plugins\/Morpheus\/icons\/dist\/flags\/pt.png","region":"Lisboa","regionCode":"11","city":"Lisbon","location":"Lisbon,
+        Lisboa, Portugal","latitude":"38.731000","longitude":"-9.137000","visitLocalTime":"23:00:15","visitLocalHour":"23","daysSinceLastVisit":28,"secondsSinceLastVisit":"2419200","resolution":"1366x768","plugins":"cookie,
+        flash","pluginsIcons":[{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/cookie.png","pluginName":"cookie"},{"pluginIcon":"plugins\/Morpheus\/icons\/dist\/plugins\/flash.png","pluginName":"flash"}],"dimension1":null,"experiments":[],"adClickId":"","adProviderId":"","adProviderName":"","customVariables":{"1":{"customVariableName1":"type","customVariableValue1":"diving"},"2":{"customVariableName2":"location","customVariableValue2":"Indonesia"},"5":{"customVariableName5":"diving-rating","customVariableValue5":"4.3"}},"formConversions":0,"sessionReplayUrl":null,"campaignId":"","campaignContent":"","campaignKeyword":"","campaignMedium":"","campaignName":"","campaignSource":"","campaignGroup":"","campaignPlacement":""}]'
+  recorded_at: Mon, 03 Oct 2022 13:49:07 GMT
+recorded_with: VCR 6.1.0

@@ -24,12 +24,13 @@ class UrlValidationService
     %r{\A(https?)://(www\.)?google\.com/maps(/[a-z])?/embed\?([^&]*)=([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
     %r{\A(https?)://([-A-Z0-9.]+)\.slideshare(\.(net|com))/slideshow/embed_code/key/([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
     %r{\A(https?)://(www\.)?onedrive\.live\.([-A-Z0-9+&@#/%=~_|!:,.;?]+)}i,
-    %r{\A(https?)://.*pdf$}
+    %r{\A(https?)://.*pdf$},
+    %r{\A(https?)://(.+\.)abalancingact\.com}
   ].freeze
 
   VIDEO_WHITELIST = [
     %r{\A(?:http(?:s?):)?//(?:www\.)?youtu(?:be\.com/(?:watch\?v=|embed/)|\.be/)([\w\-_]*)},
-    %r{\A(?:http(?:s?):)?//(?:www\.)?(?:player\.vimeo\.com/video|vimeo\.com)/(\d+)(?:|/\?)},
+    %r{\A(?:http(?:s?):)?//(?:www\.)?player\.vimeo\.(com/video|vimeo\.com)/(\d+)(?:|/\?)},
     %r{\A(?:http(?:s?):)?//(.+)?(wistia.com|wi.st).*/},
     %r{\A(?:http(?:s?):)?//(?:www\.)?dailymotion\.com/embed/video/?(.+)},
     %r{\A(https?://)?media\.videotool\.dk/?\?vn=[\w-]+},

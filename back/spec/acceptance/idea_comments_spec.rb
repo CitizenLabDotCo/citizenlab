@@ -169,7 +169,7 @@ resource 'Comments' do
       end
     end
 
-    context 'when the user moderates the project', skip: !CitizenLab.ee? do
+    context 'when the user moderates the project' do
       before do
         @project = create(:project)
         @user = create(:project_moderator, projects: [@project])
@@ -181,7 +181,7 @@ resource 'Comments' do
       example_request('XLSX export', document: false) { expect(status).to eq 200 }
     end
 
-    context 'when the user moderates another project', skip: !CitizenLab.ee? do
+    context 'when the user moderates another project' do
       before do
         @project = create(:project)
         @user = create(:project_moderator, projects: [create(:project)])

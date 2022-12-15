@@ -52,7 +52,7 @@ const ReportTab = memo(({ projects }: DataProps) => {
                   <RowTitle value={project.attributes.title_multiloc} />
                   <RowButton
                     className={`
-                        e2e-admin-edit-publication
+                        e2e-admin-edit-publication intercom-admin-project-edit-button
                       `}
                     linkTo={`/admin/insights/reports/${project.id}`}
                     buttonStyle="secondary"

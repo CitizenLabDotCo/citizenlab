@@ -84,8 +84,8 @@ class ParticipationContextService
   def posting_idea_disabled_reason_for_context(context, user)
     if !context
       POSTING_DISABLED_REASONS[:project_inactive]
-    elsif !context.ideation?
-      POSTING_DISABLED_REASONS[:not_ideation]
+    elsif !context.ideation? && !context.native_survey?
+      POSTING_DISABLED_REASONS[:not_ideation] # TODO: (native surveys) change reason code?
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
     else

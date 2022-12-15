@@ -26,7 +26,7 @@ import {
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -55,8 +55,6 @@ const StyledIconTooltip = styled(IconTooltip)`
 `;
 
 const CopyIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
   fill: #fff;
   margin-left: 2px;
   margin-right: 2px;
@@ -93,7 +91,7 @@ interface IFormValues {
   defaultZoom: number | null;
 }
 
-const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
+const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });

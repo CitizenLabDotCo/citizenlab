@@ -16,16 +16,10 @@ const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
 
 const CheckMarkIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
-  flex: 0 0 ${({ size }) => Math.round((parseInt(size, 10) / 100) * 70)}px;
-  width: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 70)}px;
-  height: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 70)}px;
 `;
 
 const IndeterminateIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
-  flex: 0 0 ${({ size }) => Math.round((parseInt(size, 10) / 100) * 60)}px;
-  width: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 60)}px;
-  height: ${({ size }) => Math.round((parseInt(size, 10) / 100) * 60)}px;
 `;
 
 const Label = styled.label<{ disabled: boolean }>`
@@ -53,7 +47,7 @@ const StyledCheckbox = styled.div<{
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px
     ${({ checkedOrIndeterminate }) =>
-      checkedOrIndeterminate ? colors.success : colors.divider};
+      checkedOrIndeterminate ? colors.success : colors.grey600};
   background: ${({ checkedOrIndeterminate }) =>
     checkedOrIndeterminate ? colors.success : '#fff'};
   transition: all 120ms ease-out;
@@ -126,15 +120,9 @@ export default class Checkbox extends PureComponent<Props> {
                 disabled ? 'disabled' : 'enabled'
               } e2e-checkbox`}
             >
-              {checked && (
-                <CheckMarkIcon ariaHidden name="checkmark" size={size} />
-              )}
+              {checked && <CheckMarkIcon ariaHidden name="check" size={size} />}
               {indeterminate && (
-                <IndeterminateIcon
-                  ariaHidden
-                  name="indeterminate"
-                  size={size}
-                />
+                <IndeterminateIcon ariaHidden name="minus" size={size} />
               )}
             </StyledCheckbox>
           </CheckboxContainer>

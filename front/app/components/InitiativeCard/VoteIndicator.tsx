@@ -31,7 +31,7 @@ const Container = styled.div``;
 const StatusBadge = styled.div<{ color: string }>`
   font-size: ${fontSizes.s}px;
   line-height: 18px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   padding: 8px 12px;
   font-weight: 400;
   background-color: ${(props) => props.color};
@@ -46,8 +46,6 @@ const BadgeLabel = styled.div`
 `;
 
 const AnsweredBadgeIcon = styled(Icon)`
-  width: 1.6em;
-  height: 1.6em;
   fill: ${colors.success};
   padding-right: 7px;
 `;
@@ -58,8 +56,6 @@ const AnsweredStatusBadge = styled(StatusBadge)`
 `;
 
 const IneligibleBadgeIcon = styled(Icon)`
-  width: 1.6em;
-  height: 1.6em;
   fill: ${colors.coolGrey600};
   padding-right: 7px;
 `;
@@ -100,8 +96,6 @@ const VoteText = styled.div`
 
 const VoteIcon = styled(Icon)`
   fill: ${colors.textSecondary};
-  width: 16px;
-  height: 16px;
   margin-top: -4px;
   margin-right: 10px;
 `;
@@ -119,8 +113,6 @@ const ExpiredIcon = styled(Icon)`
   path {
     fill: ${colors.coolGrey600};
   }
-  width: 14px;
-  height: 14px;
   margin: 0 4px 2px 0;
 `;
 
@@ -154,7 +146,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
         {statusCode === 'proposed' && (
           <div>
             <VoteCounter>
-              <VoteIcon name="upvote" ariaHidden />
+              <VoteIcon name="vote-up" ariaHidden />
               <VoteText aria-hidden>
                 <b className="e2e-initiative-card-vote-count">{voteCount}</b>
                 <span className="division-bar">/</span>
@@ -194,7 +186,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
         {statusCode === 'threshold_reached' && (
           <div>
             <VoteCounter>
-              <VoteIcon name="upvote" ariaHidden />
+              <VoteIcon name="vote-up" ariaHidden />
               <VoteText aria-hidden>
                 <b>{voteCount}</b>
                 <span className="division-bar">/</span>
@@ -212,7 +204,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
 
         {statusCode === 'answered' && (
           <AnsweredStatusBadge color={initiativeStatus.attributes.color}>
-            <AnsweredBadgeIcon name="round-checkmark" ariaHidden />
+            <AnsweredBadgeIcon name="check-circle" ariaHidden />
             <BadgeLabel>
               <T value={initiativeStatus.attributes.title_multiloc} />
             </BadgeLabel>

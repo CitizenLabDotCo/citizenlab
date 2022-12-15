@@ -20,4 +20,8 @@ export interface LegendDimensions {
   itemCoordinates: ItemCoordinates[];
 }
 
-export type Position = 'bottom-left' | 'bottom-center' | 'bottom-right';
+export type Position =
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right'
+  | 'right-center';

@@ -1,18 +1,24 @@
 import React from 'react';
-import { FormattedRelative } from 'react-intl';
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+
+// utils
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
+import clHistory from 'utils/cl-router/history';
+import { timeAgo } from 'utils/dateUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
-import clHistory from 'utils/cl-router/history';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.button`
   display: flex;
   text-align: left;
   cursor: pointer;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   padding-left: 15px;
   padding-right: 10px;
   padding-top: 10px;
@@ -42,11 +48,10 @@ const IconContainer = styled.div`
   margin-right: 15px;
 `;
 
-const StyledIcon: any = styled(Icon)`
-  flex: 0 0 22px;
-  height: 22px;
+const StyledIcon = styled(Icon)<{ isRead: boolean }>`
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
-  opacity: ${(props: any) => (props.isRead ? '0.4' : '1')};
+  opacity: ${(props) => (props.isRead ? '0.4' : '1')};
 `;
 
 const Body = styled.div`
@@ -85,7 +90,7 @@ const Timing = styled.span`
 `;
 
 type Props = {
-  icon?: string;
+  icon?: IconNames;
   timing?: string;
   children: any;
   linkTo: string;
@@ -99,6 +104,7 @@ const NotificationWrapper = ({
   isRead,
   linkTo,
 }: Props) => {
+  const locale = useLocale();
   const navigate = () => {
     if (linkTo) {
       trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
@@ -106,21 +112,20 @@ const NotificationWrapper = ({
     }
   };
 
-  return (
-    <Container role="link" onClick={navigate}>
-      <IconContainer>
-        {icon && <StyledIcon name={icon} isRead={isRead} />}
-      </IconContainer>
-      <Body>
-        <Message isRead={isRead}>{children}</Message>
-        {timing && (
-          <Timing>
-            <FormattedRelative value={timing} />
-          </Timing>
-        )}
-      </Body>
-    </Container>
-  );
+  if (!isNilOrError(locale)) {
+    return (
+      <Container role="link" onClick={navigate}>
+        <IconContainer>
+          {icon && <StyledIcon name={icon} isRead={isRead} />}
+        </IconContainer>
+        <Body>
+          <Message isRead={isRead}>{children}</Message>
+          {timing && <Timing>{timeAgo(Date.parse(timing), locale)}</Timing>}
+        </Body>
+      </Container>
+    );
+  }
+  return null;
 };
 
 export default NotificationWrapper;

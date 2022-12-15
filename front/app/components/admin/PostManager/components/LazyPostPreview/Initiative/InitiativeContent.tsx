@@ -16,6 +16,7 @@ import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
 import { Top, Content, Container } from '../PostPreview';
 import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // services
 import { deleteInitiative } from 'services/initiatives';
@@ -35,7 +36,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // style
@@ -121,7 +122,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 export class InitiativeContent extends PureComponent<
-  Props & InjectedLocalized & InjectedIntlProps,
+  Props & InjectedLocalized & WrappedComponentProps,
   State
 > {
   handleClickDelete = () => {
@@ -221,7 +222,9 @@ export class InitiativeContent extends PureComponent<
                 )}
 
                 {initiativeFiles && !isNilOrError(initiativeFiles) && (
-                  <FileAttachments files={initiativeFiles} />
+                  <Box mb="25px">
+                    <FileAttachments files={initiativeFiles} />
+                  </Box>
                 )}
 
                 <StyledOfficialFeedback

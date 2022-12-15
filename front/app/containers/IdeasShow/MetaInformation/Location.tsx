@@ -16,7 +16,7 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -35,8 +35,7 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex: 0 0 16px;
-  width: 16px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 8px;
 
@@ -85,7 +84,7 @@ export interface Props {
   className?: string;
 }
 
-const Location = memo<Props & InjectedIntlProps>(
+const Location = memo<Props & WrappedComponentProps>(
   ({ intl: { formatMessage }, projectId, ideaId, compact, className }) => {
     const [isOpened, setIsOpened] = useState(false);
     const idea = useIdea({ ideaId });

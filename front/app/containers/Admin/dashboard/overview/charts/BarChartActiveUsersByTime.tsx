@@ -1,43 +1,31 @@
-// libraries
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { isEmpty } from 'lodash-es';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import moment from 'moment';
+import { WrappedComponentProps } from 'react-intl';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
 import { IResourceByTime, IUsersByTime } from 'services/stats';
 
 // components
+import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
   GraphCard,
-  GraphCardInner,
+  GraphCardInnerClean,
   GraphCardHeader,
   GraphCardTitle,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
 
-// styling
-import styled from 'styled-components';
+// utils
+import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-const InfoIcon = styled(Icon)`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  width: 20px;
-  height: 22px;
-  margin-left: 10px;
-`;
 
 type Row = { name: string; code: string; value: number };
 
@@ -65,7 +53,7 @@ type Props = {
 };
 
 class BarChartActiveUsersByTime extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscription: Subscription;
@@ -176,18 +164,13 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   }
 
   formatTick = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
+    return toThreeLetterMonth(date, this.props.resolution);
   };
 
   formatLabel = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
+    return toFullMonth(date, this.props.resolution);
   };
+
   render() {
     const { className, graphTitle, infoMessage } = this.props;
     const { serie } = this.state;
@@ -199,20 +182,20 @@ class BarChartActiveUsersByTime extends React.PureComponent<
 
     return (
       <GraphCard className={className}>
-        <GraphCardInner>
+        <GraphCardInnerClean>
           <GraphCardHeader>
             <GraphCardTitle>
               {graphTitle}
               {infoMessage && (
-                <Popup
-                  basic
-                  trigger={
-                    <div>
-                      <InfoIcon name="info" />
-                    </div>
+                <IconTooltip
+                  content={
+                    <Text m="0px" mb="0px" fontSize="s">
+                      {infoMessage}
+                    </Text>
                   }
-                  content={infoMessage}
-                  position="top left"
+                  ml="8px"
+                  transform="translate(0,-1)"
+                  theme="light"
                 />
               )}
             </GraphCardTitle>
@@ -234,10 +217,12 @@ class BarChartActiveUsersByTime extends React.PureComponent<
             xaxis={{ tickFormatter: this.formatTick }}
             tooltip={{ labelFormatter: this.formatLabel }}
           />
-        </GraphCardInner>
+        </GraphCardInnerClean>
       </GraphCard>
     );
   }
 }
 
-export default injectIntl<Props>(BarChartActiveUsersByTime);
+export default injectIntl<Props & WrappedComponentProps>(
+  BarChartActiveUsersByTime
+);

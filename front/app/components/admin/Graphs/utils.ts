@@ -33,16 +33,44 @@ export const parseMargin = (
 ): Margin | undefined => {
   const noLegend = !legend || !legendDimensions;
 
-  const legendOffset = noLegend
-    ? 0
-    : legendDimensions.height + (legend.marginTop ?? defaultMargin);
-
-  if (margin) {
-    const bottom = (margin.bottom ?? 0) + legendOffset;
-    return { ...margin, bottom };
+  if (noLegend) {
+    return margin;
   }
 
-  if (noLegend) return;
+  const legendPosition = getLegendPosition(legend);
+  const legendOffset = getLegendOffset(legend, legendDimensions, defaultMargin);
 
-  return { bottom: legendOffset };
+  if (margin) {
+    const mb = margin.bottom ?? 0;
+    const mr = margin.right ?? 0;
+
+    const bottom = legendPosition === 'bottom' ? mb + legendOffset : mb;
+    const right = legendPosition === 'right' ? mr + legendOffset : mr;
+
+    return { ...margin, bottom, right };
+  }
+
+  return legendPosition === 'right'
+    ? { right: legendOffset }
+    : { bottom: legendOffset };
 };
+
+function getLegendOffset(
+  legend: Legend,
+  legendDimensions: LegendDimensions,
+  defaultMargin: number
+) {
+  const legendPosition = getLegendPosition(legend);
+
+  if (legendPosition === 'right') {
+    return legendDimensions.width + (legend.marginLeft ?? defaultMargin);
+  }
+
+  return legendDimensions.height + (legend.marginTop ?? defaultMargin);
+}
+
+function getLegendPosition(legend: Legend) {
+  return legend.position === undefined || legend.position.includes('bottom')
+    ? 'bottom'
+    : 'right';
+}

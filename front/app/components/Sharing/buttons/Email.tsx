@@ -3,7 +3,7 @@ import { clickSocialSharingLink, Medium } from '../utils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { Button } from '@citizenlab/cl2-component-library';
 
@@ -20,7 +20,7 @@ const Email = ({
   emailSubject,
   emailBody,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
 
   const handleClick = (href: string) => () => {

@@ -22,6 +22,12 @@ export const getLegendTranslate = (
     return `translate(${left},${top})`;
   }
 
+  if (position === 'right-center') {
+    const left = graphWidth - legendWidth - (margin?.left ?? 0);
+    const top = (graphHeight - legendHeight) / 2 + 8;
+    return `translate(${left},${top})`;
+  }
+
   const left = graphWidth - legendWidth + 8;
   return `translate(${left},${top})`;
 };
@@ -36,6 +42,7 @@ export const itemsMatch = (
 export const getJustifyContent = (position: Position) => {
   if (position === 'bottom-center') return 'center';
   if (position === 'bottom-left') return 'flex-start';
+  if (position?.includes('right')) return 'flex-start';
   return 'flex-end';
 };
 

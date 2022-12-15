@@ -9,7 +9,7 @@ const validateOneOptionForMultiSelect = (message: string) => {
       })
     )
     .when('input_type', (input_type: string, schema) => {
-      if (input_type === 'multiselect') {
+      if (input_type === 'multiselect' || input_type === 'select') {
         return schema.test('one-option', message, (options: IOptionsType[]) => {
           return options
             ? options.some((option: IOptionsType) => {

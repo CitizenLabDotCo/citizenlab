@@ -2,6 +2,9 @@
 import CLCategoryLayout, {
   clCategoryTester,
 } from 'components/Form/Components/Layouts/CLCategoryLayout';
+import CLPageLayout, {
+  clPageTester,
+} from 'components/Form/Components/Layouts/CLPageLayout';
 import OrderedLayout, {
   orderedLayoutTester,
 } from 'components/Form/Components/Layouts/OrderedLayout';
@@ -50,10 +53,21 @@ import DateControl, {
 import MultilocInputLayout, {
   multilocInputTester,
 } from 'components/Form/Components/Controls/MultilocInputLayout';
+import MultiSelectCheckboxControl, {
+  multiSelectCheckboxControlTester,
+} from './MultiSelectCheckboxControl';
+import SingleSelectRadioControl, {
+  singleSelectRadioControlTester,
+} from './SingleSelectRadioControl';
+import LinearScaleControl, {
+  linearScaleControlTester,
+} from './LinearScaleControl';
 
 export {
   CLCategoryLayout,
   clCategoryTester,
+  CLPageLayout,
+  clPageTester,
   OrderedLayout,
   orderedLayoutTester,
   InputControl,
@@ -76,6 +90,10 @@ export {
   singleSelectControlTester,
   MultiSelectControl,
   multiSelectControlTester,
+  MultiSelectCheckboxControl,
+  multiSelectCheckboxControlTester,
+  SingleSelectRadioControl,
+  singleSelectRadioControlTester,
   UserPickerControl,
   userPickerControlTester,
   CheckboxControl,
@@ -86,4 +104,6 @@ export {
   dateControlTester,
   MultilocInputLayout,
   multilocInputTester,
+  LinearScaleControl,
+  linearScaleControlTester,
 };

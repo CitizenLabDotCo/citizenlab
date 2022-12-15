@@ -82,7 +82,7 @@ nl:
       "password_reset": Wachtwoord resetten - alle gebruikers
       "project_moderation_rights_received": Projectmoderatorrechten ontvangen - projectbeheerders
       "project_folder_moderation_rights_received": Mapbeheerdersrechten ontvangen
-      "project_phase_started": Nieuwe projectfase - alle gebruikers
+      "project_phase_started": Nieuwe projectfase - deelnemers aan project
       "project_phase_upcoming": Opkomende nieuwe projectfase - admins en projectbeheerders
       "status_change_of_commented_idea": Statuswijziging van een idee waar je op reageerde - alle gebruikers
       "status_change_of_commented_initiative": Statuswijziging van een initiatief waar je op reageerde - alle gebruikers
@@ -393,7 +393,7 @@ nl:
       subject: 'Je bent nu projectbeheerder op het platform van %{organizationName}'
       text_design_participatory_process: 'Als projectbeheerder kan je mee het project instellen en vormgeven en bepalen hoe andere gebruikers binnen je project werken. Je kan de tijdslijn aanpassen en de verschillende fases instellen. Kies bij elke fase de ''inspraakmethode'': bijdrages posten, reacties verzamelen en/of stemmen of gebruik een fase om enkel informatie te geven.'
       text_moderate_analyse_input: 'Wanneer het project eenmaal is gelanceerd zullen de eerste bijdrages binnenkomen. Je ontvangt wekelijks een rapport met alle kernactiviteiten (nieuwe ideeën, stemmen, reacties) zodat je altijd op de hoogte blijft. In het ideeën-overzicht binnen je project kan je zien welke ideeën de meeste voor- en tegenstemmen kregen, en je kan de projectstatus aanpassen of thema''s toevoegen.'
-      text_share_project_information: 'Om de kwaliteit van de bijdrages die binnenkomen te verhogen is het belangrijk om voldoende informatie aan je doelpubliek te geven: vul de beschrijving van het project in, voeg afbeeldingen toe (bv. ook schetsen en plannen) en communiceer ook over verwante evenementen. Onthoud: kwaliteitsvolle informatie gaat vooraf aan goede participatie!'
+      text_share_project_information: 'Om de kwaliteit van de bijdrages die binnenkomen te verhogen is het belangrijk om voldoende informatie aan je doelpubliek te geven: vul de beschrijving van het project in, voeg afbeeldingen toe (bv. ook schetsen en plannen) en communiceer ook over verwante activiteiten. Onthoud: kwaliteitsvolle informatie gaat vooraf aan goede participatie!'
       title_design_participatory_process: 'Geef vorm aan het participatieproces'
       title_moderate_analyse_input: 'Beheer en analyseer de input'
       title_share_project_information: 'Geef informatie bij het project.'
@@ -419,6 +419,7 @@ nl:
       cta_view_phase: 'Ontdek deze nieuwe fase'
       event_description: 'Dit project is een nieuwe fase ingegaan op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!'
       main_header: 'Een nieuwe fase is begonnen voor het project ''%{projectName}'''
+      subtitle: 'Over ''%{projectName}'''
       new_phase: 'Het project is de fase ''%{phaseTitle}'' ingegaan'
       subject: '%{projectName} ging een nieuwe fase in'
       preheader: 'Een nieuwe fase is gestart voor %{projectName}'
@@ -426,6 +427,7 @@ nl:
       cta_view_phase: 'Zet deze fase klaar'
       event_description: 'Het project ''%{projectName}'' gaat binnenkort een nieuwe fase in. Zorg ervoor dat alles klaar staat: Is er een goede beschrijving? Werden geselecteerde bijdrages al naar deze fase overgeplaatst? Wil je je burgers nog informeren over bepaalde zaken via een e-mailcampagne?'
       main_header: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
+      subtitle: 'Over ''%{projectName}'''
       new_phase: 'Het project gaat de fase ''%{phaseTitle}'' in'
       subject: 'Zet alles klaar voor de nieuwe fase van %{projectName}'
       preheader: 'Een nieuwe fase gaat binnenkort van start voor %{projectName}'

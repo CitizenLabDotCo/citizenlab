@@ -9,7 +9,7 @@ FactoryBot.define do
         'nl-BE' => Faker::Lorem.sentence
       }
     end
-    body_multiloc do
+    top_info_section_multiloc do
       {
         'en' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join,
         'nl-BE' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join

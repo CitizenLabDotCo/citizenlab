@@ -8,7 +8,8 @@ import { defaultCardStyle, media, fontSizes } from 'utils/styleUtils';
 import { Image } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
 
 // svg
 import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';

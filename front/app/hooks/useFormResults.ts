@@ -7,7 +7,7 @@ import {
 
 interface Props {
   projectId: string;
-  phaseId?: string;
+  phaseId?: string | null;
 }
 
 export default function useFormResults({ projectId, phaseId }: Props) {

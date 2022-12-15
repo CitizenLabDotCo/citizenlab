@@ -20,7 +20,7 @@ import useSimilarIdeas from '../hooks/useSimilarIdeas';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 const IdeaList = styled.ul`
@@ -61,7 +61,7 @@ interface Props {
   className?: string;
 }
 
-const SimilarIdeas = memo<Props & InjectedIntlProps>(
+const SimilarIdeas = memo<Props & WrappedComponentProps>(
   ({ ideaId, compact, className, intl: { formatMessage } }) => {
     const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
     const onClickIdeaLink = (index: number) => () => {

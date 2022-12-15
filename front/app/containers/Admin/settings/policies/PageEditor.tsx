@@ -9,12 +9,12 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import PageForm, { FormValues } from 'components/PageForm';
 
 // services
-import { updatePage } from 'services/pages';
+import { updateCustomPage } from 'services/customPages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
-import usePage from 'hooks/usePage';
+import useCustomPage from 'hooks/useCustomPage';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -37,8 +37,6 @@ const EditorWrapper = styled.div`
 `;
 
 const DeployIcon = styled(Icon)`
-  height: 12px;
-  width: 8px;
   fill: ${colors.textSecondary};
   margin-right: 12px;
   transition: transform 200ms ease-out;
@@ -99,7 +97,7 @@ interface Props {
 }
 
 const PageEditor = ({ className, pageSlug }: Props) => {
-  const page = usePage({ pageSlug });
+  const page = useCustomPage({ customPageSlug: pageSlug });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
@@ -113,13 +111,12 @@ const PageEditor = ({ className, pageSlug }: Props) => {
   const handleSubmit =
     (pageId: string, remotePageFiles: RemoteFiles) =>
     async ({
-      slug,
       title_multiloc,
-      body_multiloc,
+      top_info_section_multiloc,
       local_page_files,
     }: FormValues) => {
-      const fieldValues = { slug, title_multiloc, body_multiloc };
-      await updatePage(pageId, fieldValues);
+      const fieldValues = { title_multiloc, top_info_section_multiloc };
+      await updateCustomPage(pageId, fieldValues);
 
       if (!isNilOrError(local_page_files)) {
         handleAddPageFiles(pageId, local_page_files, remotePageFiles);
@@ -158,11 +155,10 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                 nav_bar_item_title_multiloc:
                   page.attributes.nav_bar_item_title_multiloc,
                 title_multiloc: page.attributes.title_multiloc,
-                body_multiloc: page.attributes.body_multiloc,
-                slug: page.attributes.slug,
+                top_info_section_multiloc:
+                  page.attributes.top_info_section_multiloc,
                 local_page_files: remotePageFiles,
               }}
-              hideSlugInput
               onSubmit={handleSubmit(pageId, remotePageFiles)}
             />
           </EditionForm>

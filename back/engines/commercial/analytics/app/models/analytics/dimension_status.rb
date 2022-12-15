@@ -6,11 +6,11 @@
 #
 #  id             :uuid             primary key
 #  title_multiloc :jsonb
+#  code           :string
 #  color          :string
 #
 module Analytics
   class DimensionStatus < Analytics::ApplicationRecord
     self.primary_key = :id
-    has_many :posts, class_name: 'PostActivity'
   end
 end

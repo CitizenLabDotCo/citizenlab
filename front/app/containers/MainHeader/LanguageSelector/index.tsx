@@ -30,11 +30,7 @@ const DropdownButtonText = styled.div`
 `;
 
 const DropdownButtonIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
-  margin-top: 1px;
-  margin-left: 4px;
   transition: all 100ms ease-out;
   ${isRtl`
     margin-left: 0;
@@ -86,7 +82,7 @@ const ListItem = styled.button`
   margin-bottom: 4px;
   padding: 10px;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
 
   &.last {
@@ -147,7 +143,7 @@ const LanguageSelector = ({ className }: Props) => {
           aria-expanded={dropdownOpened}
         >
           <DropdownButtonText>{selectedLocale}</DropdownButtonText>
-          <DropdownButtonIcon name="dropdown" />
+          <DropdownButtonIcon name="chevron-down" />
         </DropdownButton>
 
         <Dropdown

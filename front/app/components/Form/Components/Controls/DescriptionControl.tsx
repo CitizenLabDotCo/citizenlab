@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import QuillEditor from 'components/UI/QuillEditor';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import ErrorDisplay from '../ErrorDisplay';
 import { injectIntl } from 'utils/cl-intl';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -22,7 +22,7 @@ const DescriptionControl = ({
   uischema,
   schema,
   required,
-}: ControlProps & InjectedIntlProps) => {
+}: ControlProps & WrappedComponentProps) => {
   const [didBlur, setDidBlur] = useState(false);
   return (
     <Box id="e2e-idea-description-input">

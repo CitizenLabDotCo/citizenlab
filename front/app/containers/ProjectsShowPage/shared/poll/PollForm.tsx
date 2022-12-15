@@ -47,7 +47,7 @@ export const QuestionNumber = styled.span`
   align-items: center;
   justify-content: center;
   background-color: #f2f2f2;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   margin-right: 13px;
 `;
 
@@ -162,7 +162,7 @@ export class PollForm extends PureComponent<Props, State> {
           </PollContainer>
           <Button
             onClick={this.sendAnswer}
-            size="2"
+            size="m"
             fullWidth={true}
             disabled={!isValid}
             className="e2e-send-poll"

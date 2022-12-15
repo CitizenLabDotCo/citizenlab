@@ -11,7 +11,6 @@ const LockedDragHandle = styled.div`
 `;
 
 const LockIcon = styled(Icon)`
-  height: 18px;
   transform: translate(2px, -3px);
 `;
 

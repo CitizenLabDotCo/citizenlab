@@ -60,7 +60,7 @@ const InfoboxContainer = styled.div`
   align-items: center;
   padding: 27px;
   margin-bottom: 25px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.teal100};
 `;
 

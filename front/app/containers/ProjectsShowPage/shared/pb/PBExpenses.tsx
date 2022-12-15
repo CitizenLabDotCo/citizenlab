@@ -22,7 +22,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
@@ -59,7 +59,7 @@ const Header = styled.div`
 
 const Title = styled.h2`
   min-height: 20px;
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 500;
@@ -81,8 +81,7 @@ const Title = styled.h2`
 `;
 
 const TitleIcon = styled(Icon)<{ viewMode?: 'row' | 'column' }>`
-  flex: 0 0 18px;
-  height: 18px;
+  flex: 0 0 24px;
   margin-right: 10px;
 
   ${({ viewMode }) =>
@@ -97,7 +96,7 @@ const Spacer = styled.div`
 `;
 
 const Budget = styled.div`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   display: flex;
@@ -128,7 +127,7 @@ const BudgetAmount = styled.span`
 const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   width: 100%;
   height: 30px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   margin-top: 30px;
   margin-bottom: 30px;
   border: solid 1px #e0e0e0;
@@ -148,11 +147,11 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   `}
 `;
 
-const ProgressBarOverlay: any = styled.div`
-  width: ${(props: any) => props.progress}%;
+const ProgressBarOverlay = styled.div<{ progress: number }>`
+  width: ${(props) => props.progress}%;
   height: 100%;
   background: ${colors.textSecondary};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -221,7 +220,6 @@ const ManageBudgetButton = styled(Button)``;
 
 const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)`
   min-width: 200px;
-  z-index: 900;
 `;
 
 const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
@@ -242,9 +240,9 @@ const TooltipContent = styled.div`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
+  flex: 0 0 20px;
   width: 20px;
-  height: 25px;
+  height: 20px;
   margin-right: 1rem;
 `;
 
@@ -260,7 +258,7 @@ const TooltipContentText = styled.div`
 `;
 
 interface Props {
-  participationContextId: string | null;
+  participationContextId: string;
   participationContextType: IParticipationContextType;
   viewMode: 'row' | 'column';
   className?: string;
@@ -272,7 +270,7 @@ const PBExpenses = ({
   className,
   viewMode,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [processing, setProcessing] = useState(false);
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
@@ -407,7 +405,12 @@ const PBExpenses = ({
               )}
               {validationStatus === 'validationError' && (
                 <>
-                  <TitleIcon name="error" ariaHidden viewMode={viewMode} />
+                  <TitleIcon
+                    name="alert-circle"
+                    fill={colors.error}
+                    ariaHidden
+                    viewMode={viewMode}
+                  />
                   {showFixedRequiredBudget ? (
                     <FormattedMessage {...messages.requiredSelectionExceeded} />
                   ) : (
@@ -417,7 +420,7 @@ const PBExpenses = ({
               )}
               {validationStatus === 'validationSuccess' && (
                 <>
-                  <TitleIcon name="checkmark" ariaHidden viewMode={viewMode} />
+                  <TitleIcon name="check" ariaHidden viewMode={viewMode} />
                   <FormattedMessage {...messages.basketSubmitted} />
                 </>
               )}
@@ -531,7 +534,7 @@ const PBExpenses = ({
                 placement="bottom"
                 content={
                   <TooltipContent>
-                    <TooltipContentIcon name="lock-outlined" ariaHidden />
+                    <TooltipContentIcon name="lock" ariaHidden />
                     <TooltipContentText>
                       <FormattedMessage
                         // This will only show when there's a min budget that is not reached,

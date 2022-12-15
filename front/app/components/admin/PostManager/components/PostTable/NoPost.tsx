@@ -80,7 +80,7 @@ interface Props {
 
 export default (props: Props) => (
   <NoPostPage>
-    <Icon name="blankPage" />
+    <Icon name="sidebar-pages-menu" />
     <NoPostHeader>
       {props.type === 'Initiatives' ? (
         <FormattedMessage {...messages.noInitiativesHere} />

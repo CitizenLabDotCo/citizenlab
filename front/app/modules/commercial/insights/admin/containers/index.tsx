@@ -16,13 +16,13 @@ import { matchPathToUrl } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
+const Insights: React.FC<WrappedComponentProps & WithRouterProps> = ({
   location: { pathname },
   intl: { formatMessage },
 }) => {

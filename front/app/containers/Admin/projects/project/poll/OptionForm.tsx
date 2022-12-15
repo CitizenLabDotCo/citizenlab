@@ -153,7 +153,8 @@ export class OptionForm extends PureComponent<Props, State> {
               <StyledButton
                 className="e2e-add-option"
                 buttonStyle="secondary"
-                icon="create"
+                icon="plus-circle"
+                iconColor={colors.primary}
                 onClick={this.addOption}
                 autoFocus
               >

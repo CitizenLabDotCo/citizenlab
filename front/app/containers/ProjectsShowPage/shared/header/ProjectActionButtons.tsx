@@ -39,7 +39,7 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 const Container = styled.div``;
 
@@ -95,10 +95,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   if (isNilOrError(project)) {
     return null;
   }
-
-  const postingIsEnabled =
-    project.attributes.posting_enabled ||
-    currentPhase?.attributes.posting_enabled;
 
   const { enabled, disabledReason } = getSurveyTakingRules({
     project,
@@ -219,9 +215,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           fontWeight="500"
         />
       )}
-      {showNativeSurvey && !hasProjectEnded && postingIsEnabled && (
+      {showNativeSurvey && !hasProjectEnded && (
         <IdeaButton
           id="project-survey-button"
+          data-testid="e2e-project-survey-button"
           projectId={project.id}
           participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
           phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}

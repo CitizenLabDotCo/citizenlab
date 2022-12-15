@@ -9,25 +9,35 @@ import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import {
+  isFieldSelected,
+  getFieldBackgroundColor,
+  getTitleColor,
+  getIndexForTitle,
+  getIndexTitleColor,
+} from './utils';
 
 // components
-import Button from 'components/UI/Button';
-import { List, SortableRow } from 'components/admin/ResourceList';
-import { Box, Badge, Text } from '@citizenlab/cl2-component-library';
+import { List } from 'components/admin/ResourceList';
+import {
+  Box,
+  Badge,
+  Text,
+  colors,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import T from 'components/T';
+import { SortableRow } from '../SortableRow';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
+// hooks and services
+import useLocale from 'hooks/useLocale';
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
-
-const StyledBadge = styled(Badge)`
-  margin-left: 12px;
-`;
 
 // Assign field badge text
 const getTranslatedFieldType = (field) => {
@@ -35,7 +45,10 @@ const getTranslatedFieldType = (field) => {
     case 'text':
       return messages.shortAnswer;
     case 'multiselect':
+    case 'select':
       return messages.multipleChoice;
+    case 'page':
+      return messages.page;
     case 'number':
       return messages.number;
     case 'linear_scale':
@@ -47,74 +60,152 @@ const getTranslatedFieldType = (field) => {
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
-  handleDragRow: (fromIndex: number, toIndex: number) => void;
+  dropRow?: (initialIndex: number, finalIndex: number) => void;
+  isEditingDisabled: boolean;
   selectedFieldId?: string;
 }
 
 const FormFields = ({
   onEditField,
-  handleDragRow,
+  dropRow,
   selectedFieldId,
+  isEditingDisabled,
 }: FormFieldsProps) => {
   const {
     watch,
     formState: { errors },
   } = useFormContext();
+  const locale = useLocale();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
+
+  if (isNilOrError(locale)) {
+    return null;
+  }
+
+  const FormFieldsContainer = styled(Box)`
+    &:hover {
+      cursor: pointer;
+    }
+  `;
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <Box p="32px" height="100%" overflowY="auto">
-        <Box borderBottom={`1px solid ${colors.divider}`}>
-          <List key={formCustomFields.length}>
-            {formCustomFields.map((field, index) => {
-              const hasErrors = !!errors.customFields?.[index];
-              let outlineStyle = 'none';
-              if (hasErrors) {
-                outlineStyle = `1px solid ${colors.red400}`;
-              } else if (selectedFieldId === field.id) {
-                outlineStyle = `1px solid ${colors.primary}`;
-              }
+      <Box py="32px" height="100%" overflowY="auto">
+        <List key={formCustomFields.length}>
+          {formCustomFields.map((field, index) => {
+            const hasErrors = !!errors.customFields?.[index];
+            let outlineStyle = 'none';
+            if (hasErrors) {
+              outlineStyle = `1px solid ${colors.error}`;
+            } else if (
+              isFieldSelected(selectedFieldId, field.id) &&
+              field.input_type !== 'page'
+            ) {
+              outlineStyle = `1px solid ${colors.teal300}`;
+            }
 
-              return (
-                <Box key={field.id} style={{ outline: outlineStyle }}>
-                  <SortableRow
-                    id={field.id}
-                    index={index}
-                    moveRow={handleDragRow}
-                    dropRow={() => {
-                      // Do nothing, no need to handle dropping a row for now
-                    }}
+            return (
+              <FormFieldsContainer
+                role={'button'}
+                key={field.id}
+                style={{ outline: outlineStyle, outlineOffset: '-1px' }}
+                background={getFieldBackgroundColor(selectedFieldId, field)}
+                onClick={() => {
+                  isEditingDisabled
+                    ? undefined
+                    : onEditField({ ...field, index });
+                }}
+                data-cy="e2e-field-row"
+              >
+                <SortableRow
+                  rowHeight={field.input_type === 'page' ? '50px' : '70px'}
+                  id={field.id}
+                  index={index}
+                  dropRow={dropRow}
+                >
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    className="expand"
+                    width="100%"
+                    ml={field.input_type === 'page' ? '8px' : '32px'}
                   >
-                    <Box display="flex" className="expand">
-                      <Box as="span" display="flex" alignItems="center">
-                        <Text fontSize="base" my="0px" color="primary">
-                          <T value={field.title_multiloc} />
-                        </Text>
+                    <Box display="flex" alignItems="center">
+                      <Box flexGrow={0} flexShrink={0}>
+                        <Icon
+                          ml="28px"
+                          width="12px"
+                          fill={getIndexTitleColor(selectedFieldId, field)}
+                          name="sort"
+                        />
                       </Box>
-                      {!isNilOrError(field.input_type) && (
-                        <StyledBadge className="inverse" color={colors.grey700}>
+
+                      <Text
+                        as="span"
+                        color={getIndexTitleColor(selectedFieldId, field)}
+                        fontSize="base"
+                        mt="auto"
+                        mb="auto"
+                        fontWeight="bold"
+                        mx="12px"
+                      >
+                        <>
                           <FormattedMessage
-                            {...getTranslatedFieldType(field.input_type)}
+                            {...(field.input_type === 'page'
+                              ? messages.page
+                              : messages.question)}
                           />
-                        </StyledBadge>
+                          {getIndexForTitle(formCustomFields, field)}
+                        </>
+                      </Text>
+                      <Text
+                        as="span"
+                        fontSize="base"
+                        mt="auto"
+                        mb="auto"
+                        color={getTitleColor(selectedFieldId, field)}
+                      >
+                        <T value={field.title_multiloc} />
+                      </Text>
+                    </Box>
+                    <Box
+                      pr="32px"
+                      display="flex"
+                      height="100%"
+                      alignContent="center"
+                    >
+                      {!isNilOrError(field.input_type) &&
+                        field.input_type !== 'page' && (
+                          <Box my="auto" ml="12px">
+                            {' '}
+                            <Badge
+                              className="inverse"
+                              color={colors.coolGrey600}
+                            >
+                              <FormattedMessage
+                                {...getTranslatedFieldType(field.input_type)}
+                              />
+                            </Badge>
+                          </Box>
+                        )}
+                      {field.required && (
+                        <Box mt="auto" mb="auto" ml="12px">
+                          {' '}
+                          <Badge className="inverse" color={colors.error}>
+                            <FormattedMessage {...messages.required} />
+                          </Badge>
+                        </Box>
                       )}
                     </Box>
-                    <Button
-                      buttonStyle="secondary"
-                      icon="edit"
-                      onClick={() => {
-                        onEditField({ ...field, index });
-                      }}
-                    >
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </Button>
-                  </SortableRow>
-                </Box>
-              );
-            })}
-          </List>
-        </Box>
+                  </Box>
+                </SortableRow>
+              </FormFieldsContainer>
+            );
+          })}
+        </List>
+        {formCustomFields.length > 0 && (
+          <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
+        )}
       </Box>
     </DndProvider>
   );

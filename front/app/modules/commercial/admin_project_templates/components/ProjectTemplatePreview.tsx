@@ -28,6 +28,14 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
+const Arrow = (props: React.SVGProps<SVGSVGElement>) => {
+  return (
+    <svg viewBox="134.282 57.93 18.666 24" aria-hidden={true} {...props}>
+      <path d="M144.617 80.289l8.1-9.719c.309-.371.309-.91 0-1.281l-8.1-9.719a1 1 0 0 1 .769-1.641h-11.104c.297 0 .578.132.769.359l9.166 11c.309.371.309.91 0 1.281l-9.166 11a1 1 0 0 1-.769.359h11.104a.999.999 0 0 1-.769-1.639z" />
+    </svg>
+  );
+};
+
 const Container = styled.div`
   width: 100%;
   max-width: 1050px;
@@ -118,8 +126,6 @@ const LinkCopied = styled.div`
 
 const LinkCopiedIcon = styled(Icon)`
   fill: ${colors.success};
-  height: 13px;
-  margin-right: 3px;
 `;
 
 const CopyLinkButton = styled(Button)`
@@ -181,8 +187,6 @@ const MetaInfoRightBox = styled.div`
 const MetaInfoRightBoxIcon = styled(Icon)`
   flex: 0 0 24px;
   fill: ${colors.textSecondary};
-  width: 24px;
-  height: 24px;
   margin-right: 7px;
 `;
 
@@ -221,7 +225,7 @@ const PhaseBar = styled.button`
   -moz-appearance: none;
 `;
 
-const PhaseArrow = styled(Icon)`
+const PhaseArrow = styled(Arrow)`
   width: 20px;
   height: 25px;
   fill: #fff;
@@ -263,13 +267,13 @@ const PhaseContainer = styled.div`
   position: relative;
 
   &.first ${PhaseBar} {
-    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px
-      ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius} 0px 0px
+      ${(props) => props.theme.borderRadius};
   }
 
   &.last ${PhaseBar} {
-    border-radius: 0px ${(props: any) => props.theme.borderRadius}
-      ${(props: any) => props.theme.borderRadius} 0px;
+    border-radius: 0px ${(props) => props.theme.borderRadius}
+      ${(props) => props.theme.borderRadius} 0px;
   }
 `;
 
@@ -410,7 +414,7 @@ const ProjectTemplatePreview = memo<Props>(
 
               <HeaderRight>
                 <LinkCopied className={linkCopied ? 'visible' : 'hidden'}>
-                  <LinkCopiedIcon name="checkmark" />
+                  <LinkCopiedIcon name="check" />
                   <FormattedMessage {...messages.copied} />
                 </LinkCopied>
                 <CopyLinkButton
@@ -436,7 +440,7 @@ const ProjectTemplatePreview = memo<Props>(
                 {data.projectTemplate.purposes &&
                   data.projectTemplate.purposes.length > 0 && (
                     <MetaInfoRightBox>
-                      <MetaInfoRightBoxIcon name="purpose" />
+                      <MetaInfoRightBoxIcon name="bullseye" />
                       <MetaInfoRightBoxText>
                         {data.projectTemplate.purposes
                           .map((purpose) => localize(purpose.titleMultiloc))
@@ -447,7 +451,7 @@ const ProjectTemplatePreview = memo<Props>(
                 {data.projectTemplate.participationLevels &&
                   data.projectTemplate.participationLevels.length > 0 && (
                     <MetaInfoRightBox className="last">
-                      <MetaInfoRightBoxIcon name="participationLevel" />
+                      <MetaInfoRightBoxIcon name="participation-level" />
                       <MetaInfoRightBoxText>
                         {data.projectTemplate.participationLevels
                           .map((participationLevel) =>
@@ -488,7 +492,7 @@ const ProjectTemplatePreview = memo<Props>(
                     >
                       <PhaseBar>
                         {index + 1}
-                        <PhaseArrow name="phase_arrow" />
+                        <PhaseArrow />
                       </PhaseBar>
                       <PhaseText>
                         <T value={phase} />

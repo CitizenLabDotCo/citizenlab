@@ -12,18 +12,6 @@ describe XlsxService do
     worksheet.map { |row| row.cells.map(&:value) }
   end
 
-  describe 'escape_formula' do
-    it 'retains normal text' do
-      text = '1 + 2 = 3'
-      expect(service.escape_formula(text)).to eq text
-    end
-
-    it 'escapes formula injections' do
-      text = "=cmd|' /C notepad'!'A1'"
-      expect(service.escape_formula(text)).not_to eq text
-    end
-  end
-
   describe 'generate_users_xlsx' do
     let(:users) { create_list(:user, 5) }
     let(:xlsx) { service.generate_users_xlsx(users, view_private_attributes: true) }
@@ -292,43 +280,6 @@ describe XlsxService do
       xlsx = service.xlsx_from_columns(columns)
       parsed_rows = xlsx_to_array(xlsx)
       expect(expected_rows).to eq(parsed_rows)
-    end
-  end
-
-  describe '#sanitize_sheetname' do
-    describe 'when the sheetname can be sanitized' do
-      using RSpec::Parameterized::TableSyntax
-
-      where(:sheetname, :expected_sanitized_sheetname) do
-        # rubocop:disable Lint/BinaryOperatorWithIdenticalOperands
-        'sheet name'                          | 'sheet name'
-        'sheet_name'                          | 'sheet_name'
-        'sheet-name'                          | 'sheet-name'
-        # rubocop:enable Lint/BinaryOperatorWithIdenticalOperands
-        'sheet:name'                          | 'sheetname'
-        "''leading-quotes"                    | 'leading-quotes'
-        "trailing-quotes''"                   | 'trailing-quotes'
-        'too_long......................|....' | 'too_long......................|'
-        'With illegal characters \/*?:[]'     | 'With illegal characters '
-      end
-
-      with_them do
-        specify do
-          sanitized_sheetname = service.send(:sanitize_sheetname, sheetname)
-          expect(sanitized_sheetname).to eq(expected_sanitized_sheetname)
-        end
-      end
-    end
-
-    describe 'when the sheetname cannot be sanitized' do
-      where(sheetname: ['History', "'History'", '[History]', '', '\/*?:[]'])
-
-      with_them do
-        specify do
-          expect { service.send(:sanitize_sheetname, sheetname) }
-            .to raise_error(XlsxService::InvalidSheetnameError)
-        end
-      end
     end
   end
 end

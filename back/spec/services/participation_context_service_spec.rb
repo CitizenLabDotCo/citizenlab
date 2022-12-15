@@ -100,7 +100,17 @@ describe ParticipationContextService do
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'posting_disabled'
     end
 
-    it "returns `not_ideation` when we're not in an ideation context" do
+    it "returns `nil` when we're in an ideation context" do
+      project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to be_nil
+    end
+
+    it "returns `nil` when we're in an native_survey context" do
+      project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'native_survey' })
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to be_nil
+    end
+
+    it "returns `not_ideation` when we're not in an ideation or native_survey context" do
       project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'information' })
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_ideation'
     end

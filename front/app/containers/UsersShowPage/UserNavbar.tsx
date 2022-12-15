@@ -96,7 +96,6 @@ const UserNavbarButton = styled.button`
 
 const TabIcon = styled(Icon)`
   color: ${({ theme }) => theme.colors.tenantText};
-  height: 22px;
   margin-right: 10px;
 `;
 

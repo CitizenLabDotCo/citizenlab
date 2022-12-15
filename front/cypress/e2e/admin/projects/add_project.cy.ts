@@ -34,6 +34,7 @@ describe('Admin: add project', () => {
         cy.wait(2000);
 
         // Project should appear on top of the projects list
+        cy.visit('/admin/projects/');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
           .first()
@@ -68,6 +69,7 @@ describe('Admin: add project', () => {
         cy.wait(2000);
 
         // Project should appear on top of the projects list
+        cy.visit('/admin/projects/');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
           .first()
@@ -102,6 +104,7 @@ describe('Admin: add project', () => {
         cy.wait(2000);
 
         // Project should appear on top of the projects list
+        cy.visit('/admin/projects/');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
           .first()
@@ -131,6 +134,7 @@ describe('Admin: add project', () => {
         cy.wait(2000);
 
         // Project should appear on top of the projects list
+        cy.visit('/admin/projects/');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
           .first()

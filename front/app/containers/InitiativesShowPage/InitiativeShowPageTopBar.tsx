@@ -55,7 +55,6 @@ const Left = styled.div`
 const Right = styled.div``;
 
 const GoBackIcon = styled(Icon)`
-  height: 22px;
   fill: ${colors.textSecondary};
   display: flex;
   align-items: center;
@@ -123,7 +122,7 @@ const InitiativeShowPageTopBar = memo<Props>(
         <TopBarInner>
           <Left>
             <GoBackButton onClick={onGoBack}>
-              <GoBackIcon name="arrow-back" />
+              <GoBackIcon name="arrow-left" />
             </GoBackButton>
             <GoBackLabel>
               <FormattedMessage {...messages.goBack} />

@@ -49,11 +49,11 @@ const About = styled.div`
   padding-top: 0px;
   padding-bottom: 5px;
   border: solid 1px #ccc;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const Title = styled.h2`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   line-height: normal;
   font-weight: 500;
@@ -84,9 +84,7 @@ const ListItem = styled.li`
 `;
 
 const ListItemIcon = styled(Icon)`
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 14px;
 
@@ -94,13 +92,6 @@ const ListItemIcon = styled(Icon)`
     margin-right: 0;
     margin-left: 14px;
   `}
-
-  &.timeline {
-    flex: 0 0 22px;
-    width: 22px;
-    height: 22px;
-    margin-right: 10px;
-  }
 `;
 
 const ListItemButton = styled.button`
@@ -218,7 +209,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 currentPhase.attributes.end_at,
               ]) === 'past' && (
                 <ListItem id="e2e-project-sidebar-enddate">
-                  <ListItemIcon ariaHidden name="finish_flag" />
+                  <ListItemIcon ariaHidden name="flag" />
                   <FormattedMessage
                     {...messages.endedOn}
                     values={{
@@ -230,7 +221,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             {isNumber(projectParticipantsCount) &&
               projectParticipantsCount > 0 && (
                 <ListItem id="e2e-project-sidebar-participants-count">
-                  <ListItemIcon ariaHidden name="person" />
+                  <ListItemIcon ariaHidden name="user" />
                   <FormattedMessage
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
@@ -267,7 +258,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               isNumber(ideasCount) &&
               ideasCount > 0 && (
                 <ListItem>
-                  <ListItemIcon ariaHidden name="idea-filled" />
+                  <ListItemIcon ariaHidden name="idea" />
                   {project.attributes.ideas_count > 0 ? (
                     <ListItemButton
                       id="e2e-project-sidebar-ideas-count"
@@ -429,7 +420,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             )}
             {!isNilOrError(events) && events.length > 0 && (
               <ListItem>
-                <ListItemIcon ariaHidden name="event" />
+                <ListItemIcon ariaHidden name="calendar" />
                 <ListItemButton
                   id="e2e-project-sidebar-eventcount"
                   onClick={scrollTo('project-events', false)}

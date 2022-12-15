@@ -15,7 +15,7 @@ import {
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -34,7 +34,7 @@ const ScaleLabelsInput = ({
   onSelectedLocaleChange,
   locales,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const { control, setValue, getValues } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 

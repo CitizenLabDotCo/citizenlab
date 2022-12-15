@@ -1,10 +1,15 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-import { TableHeaderCellText } from 'components/admin/PostManager/components/PostTable';
+// components
+import { Th } from '@citizenlab/cl2-component-library';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { CellConfiguration, InsertConfigurationOptions } from 'typings';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import messages from 'components/admin/PostManager/messages';
+
+// typings
+import { CellConfiguration, InsertConfigurationOptions } from 'typings';
+import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 
 type Props = {
   onData: (
@@ -14,18 +19,18 @@ type Props = {
   ) => void;
 };
 
-const IdeaHeaderCell: FC<Props> = ({ onData }) => {
+const IdeaHeaderCell = ({ onData }: Props) => {
   useEffect(
     () =>
       onData({
         configuration: {
           name: 'assignee',
           cellProps: { width: 2 },
-          Component: () => {
+          Component: ({ width }) => {
             return (
-              <TableHeaderCellText>
+              <Th width={width}>
                 <FormattedMessage {...messages.assignee} />
-              </TableHeaderCellText>
+              </Th>
             );
           },
         },

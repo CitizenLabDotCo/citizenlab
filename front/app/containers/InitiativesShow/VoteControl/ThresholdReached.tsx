@@ -72,7 +72,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
-        <StatusIcon ariaHidden name="envelope-check" />
+        <StatusIcon ariaHidden name="email-check" />
         <StatusExplanation>
           <FormattedMessage
             {...messages.thresholdReachedStatusExplanation}
@@ -88,7 +88,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
           />
           {threshold_reached_message ? (
             <IconTooltip
-              icon="info"
+              icon="info-outline"
               iconColor={this.props.theme.colors.tenantText}
               theme="light"
               placement="bottom"
@@ -115,7 +115,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
           />
         </VoteText>
         {!userVoted && (
-          <StyledButton icon="upvote" onClick={this.handleOnVote}>
+          <StyledButton icon="vote-up" onClick={this.handleOnVote}>
             <FormattedMessage {...messages.vote} />
           </StyledButton>
         )}

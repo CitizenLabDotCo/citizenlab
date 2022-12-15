@@ -15,7 +15,7 @@ import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ProposalProgressBar from './ProposalProgressBar';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
@@ -96,9 +96,7 @@ const TooltipContent = styled.div<{ inMap?: boolean }>`
 `;
 
 const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
-  width: 20px;
-  height: 25px;
+  flex: 0 0 24px;
   margin-right: 1rem;
 `;
 
@@ -151,7 +149,7 @@ interface InputProps {
 interface Props extends InputProps {}
 
 const disabledMessages: {
-  [key in IInitiativeDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in IInitiativeDisabledReason]: MessageDescriptor;
 } = {
   notPermitted: messages.votingNotPermitted,
 };
@@ -162,14 +160,14 @@ const ProposedNotVoted = ({
   initiativeSettings: { voting_threshold, threshold_reached_message },
   disabledReason,
 }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const voteCount = initiative.attributes.upvotes_count;
   const voteLimit = voting_threshold;
   const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
 
   const thresholdReachedTooltip = threshold_reached_message ? (
     <IconTooltip
-      icon="info"
+      icon="info-outline"
       iconColor={theme.colors.tenantText}
       theme="light"
       placement="bottom"
@@ -181,7 +179,7 @@ const ProposedNotVoted = ({
 
   const tippyContent = disabledReason ? (
     <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
-      <TooltipContentIcon name="lock-outlined" ariaHidden />
+      <TooltipContentIcon name="lock" ariaHidden />
       <TooltipContentText>
         <FormattedMessage {...disabledMessages[disabledReason]} />
       </TooltipContentText>
@@ -255,7 +253,7 @@ const ProposedNotVoted = ({
           }`}
         >
           <StyledButton
-            icon="upvote"
+            icon="vote-up"
             aria-describedby="tooltip-content"
             disabled={!!tippyContent}
             buttonStyle="primary"

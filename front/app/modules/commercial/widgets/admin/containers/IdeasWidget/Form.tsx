@@ -16,7 +16,7 @@ import Feedback from 'components/HookForm/Feedback';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from '../../messages';
 
@@ -42,7 +42,7 @@ const StyledSection = styled(Section)`
   width: 100%;
   max-width: 500px;
   padding: 20px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
 `;
@@ -72,7 +72,7 @@ export interface FormValues {
 const WidgetForm = ({
   intl: { formatMessage },
   localize,
-}: InjectedIntlProps & InjectedLocalized) => {
+}: WrappedComponentProps & InjectedLocalized) => {
   const methods = useFormContext();
   const [openedCollapse, setOpenedCollapse] = useState<
     'dimensions' | 'ideas' | 'style' | 'headerAndFooter' | null

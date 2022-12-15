@@ -1,48 +1,16 @@
 // styling
 import { colors } from 'components/admin/Graphs/styling';
 
-// i18n
-import messages from './messages';
-
 // utils
 import { sum, roundPercentage, roundPercentages } from 'utils/math';
 import { capitalize } from 'lodash-es';
+import { get } from 'utils/helperUtils';
 
 // typings
-import { FeedbackRow, StatusRow, StackedBarsRow } from '.';
-import { InjectedIntlProps } from 'react-intl';
+import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';
+import { Translations } from './translations';
 import { Localize } from 'hooks/useLocalize';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-
-interface Translations {
-  statusChanged: string;
-  officialUpdate: string;
-  feedbackGiven: string;
-  total: string;
-  averageTimeColumnName: string;
-  inputStatus: string;
-  responseTime: string;
-  inputsByStatus: string;
-  status: string;
-  numberOfInputs: string;
-  percentageOfInputs: string;
-}
-
-export const getTranslations = (
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
-): Translations => ({
-  statusChanged: formatMessage(messages.statusChanged),
-  officialUpdate: formatMessage(messages.officialUpdate),
-  feedbackGiven: formatMessage(messages.feedbackGiven),
-  total: formatMessage(messages.total),
-  averageTimeColumnName: formatMessage(messages.averageTimeColumnName),
-  inputStatus: formatMessage(messages.inputStatus),
-  responseTime: formatMessage(messages.responseTime),
-  inputsByStatus: formatMessage(messages.inputsByStatus),
-  status: formatMessage(messages.status),
-  numberOfInputs: formatMessage(messages.numberOfInputs),
-  percentageOfInputs: formatMessage(messages.percentageOfInputs),
-});
 
 export const parsePieData = (feedbackRow: FeedbackRow) => {
   const {
@@ -120,7 +88,7 @@ export const parseStackedBarsData = (
     statusRows.reduce(
       (acc, row) => ({
         ...acc,
-        [row['status.id']]: row.count,
+        [get(row, 'dimension_status.id')]: row.count,
       }),
       {}
     ),
@@ -136,7 +104,7 @@ export const getStatusColorById = (statusRows: StatusRow[]) => {
   return statusRows.reduce(
     (acc, row) => ({
       ...acc,
-      [row['status.id']]: row.first_status_color,
+      [get(row, 'dimension_status.id')]: row.first_dimension_status_color,
     }),
     {}
   );
@@ -148,8 +116,10 @@ export const parseStackedBarsLegendItems = (
 ): LegendItem[] => {
   return statusRows.map((statusRow) => ({
     icon: 'circle',
-    color: statusRow.first_status_color,
-    label: capitalize(localize(statusRow.first_status_title_multiloc)),
+    color: statusRow.first_dimension_status_color,
+    label: capitalize(
+      localize(statusRow.first_dimension_status_title_multiloc)
+    ),
   }));
 };
 
@@ -222,7 +192,7 @@ export const parseExcelData = (
   };
 
   const xlsxDataSheet3 = statusRows.map((statusRow, i) => ({
-    [status]: localize(statusRow.first_status_title_multiloc),
+    [status]: localize(statusRow.first_dimension_status_title_multiloc),
     [numberOfInputs]: statusRow.count,
     [percentageOfInputs]: percentages[i],
   }));

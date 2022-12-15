@@ -164,9 +164,9 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
               <ApplyExampleGroupingButton onClick={applyExampleGrouping}>
                 <Text variant="bodyS" mt="0px" mb="0px">
                   <StyledIcon
-                    name="groups2"
-                    height="10px"
-                    width="14px"
+                    name="group"
+                    height="16px"
+                    width="16px"
                     mr="6px"
                   />
                   <FormattedMessage {...messages.applyExampleGrouping} />

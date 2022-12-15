@@ -138,7 +138,7 @@ export const UserComments = memo<Props>(
                 <LoadMoreButton
                   onClick={comments.loadMore}
                   processing={comments.loadingMore}
-                  icon="showMore"
+                  icon="refresh"
                   textColor={theme.colors.tenantText}
                   textHoverColor={darken(0.1, theme.colors.tenantText)}
                   bgColor={rgba(theme.colors.tenantText, 0.08)}

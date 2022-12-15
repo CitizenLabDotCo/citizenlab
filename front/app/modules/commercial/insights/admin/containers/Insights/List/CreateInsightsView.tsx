@@ -29,7 +29,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useProjectFolders from 'modules/commercial/project_folders/hooks/useProjectFolders';
+import useProjectFolders from 'hooks/useProjectFolders';
 
 // services
 import { addInsightsView } from 'modules/commercial/insights/services/insightsViews';
@@ -63,9 +63,7 @@ interface InputProps {
 const timeout = 400;
 
 const ArrowIcon = styled(Icon)`
-  flex: 0 0 12px;
-  width: 12px;
-  height: 12px;
+  flex: 0 0 24px;
   transform: rotate(90deg);
   transition: all 0.2s linear;
   margin-left: 5px;
@@ -336,7 +334,7 @@ export const CreateInsightsView = ({
                         <FormattedMessage {...messages.createModalExpand} />
                       )}
                       <ArrowIcon
-                        name="dropdown"
+                        name="chevron-down"
                         className={isFolderExpanded ? 'open' : ''}
                         ariaHidden
                       />

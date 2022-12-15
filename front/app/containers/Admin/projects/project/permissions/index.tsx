@@ -8,9 +8,11 @@ import messages from './messages';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
+import ProjectManagement from './containers/ProjectManagement';
 
 // hooks
 import useProject from 'hooks/useProject';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -24,11 +26,10 @@ export const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 30px;
 `;
 
-interface Props {}
-
 const ProjectPermissions = memo(
-  ({ params: { projectId } }: Props & WithRouterProps) => {
+  ({ params: { projectId } }: WithRouterProps) => {
     const project = useProject({ projectId });
+    const isEnabled = useFeatureFlag({ name: 'project_management' });
 
     if (!isNilOrError(project)) {
       return (
@@ -66,6 +67,7 @@ const ProjectPermissions = memo(
               ) : null
             }
           </Outlet>
+          {isEnabled && <ProjectManagement projectId={projectId} />}
         </>
       );
     }

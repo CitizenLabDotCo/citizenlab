@@ -1,4 +1,3 @@
-// libraries
 import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
@@ -47,8 +46,10 @@ import { IResolution } from 'components/admin/ResolutionControl';
 // i18n
 import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import moment from 'moment';
+import { WrappedComponentProps } from 'react-intl';
+
+// utils
+import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
 
 type ISerie = {
   cumulatedTotal: number;
@@ -77,7 +78,7 @@ type Props = {
 };
 
 class LineBarChartVotesByTime extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   combined$: Subscription;
@@ -204,17 +205,11 @@ class LineBarChartVotesByTime extends React.PureComponent<
   }
 
   formatTick = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
+    return toThreeLetterMonth(date, this.props.resolution);
   };
 
   formatLabel = (date: string) => {
-    const { resolution } = this.props;
-    return moment
-      .utc(date, 'YYYY-MM-DD')
-      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
+    return toFullMonth(date, this.props.resolution);
   };
 
   formatSerieChange = (serieChange: number) => {
@@ -278,7 +273,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
             {serie && (
               <ReportExportMenu
                 svgNode={this.currentChart}
-                xlsxEndpoint={votesByTimeXlsxEndpoint}
+                xlsx={{ endpoint: votesByTimeXlsxEndpoint }}
                 name={formatMessage(messages.votes)}
                 {...this.props}
               />
@@ -382,4 +377,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChartVotesByTime);
+export default injectIntl<Props & WrappedComponentProps>(
+  LineBarChartVotesByTime
+);

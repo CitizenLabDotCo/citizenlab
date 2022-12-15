@@ -25,12 +25,12 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // events
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -52,10 +52,9 @@ const Container = styled.li`
 
 const UpvoteIcon = styled(Icon)`
   fill: ${colors.textSecondary};
-  flex: 0 0 17px;
-  width: 17px;
-  height: 17px;
-  margin-top: -2px;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
 `;
 
 const UpvoteButton = styled.button`
@@ -139,7 +138,7 @@ interface State {
   upvoteCount: number;
 }
 
-class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
+class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -350,7 +349,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
             >
               <>
                 <UpvoteIcon
-                  name="upvote"
+                  name="vote-up"
                   className={`
                   ${voted ? 'voted' : 'notVoted'}
                   ${disabled ? 'disabled' : 'enabled'}

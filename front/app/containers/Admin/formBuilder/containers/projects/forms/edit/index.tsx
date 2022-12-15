@@ -12,34 +12,38 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 
 // components
 import { RightColumn } from 'containers/Admin';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
 import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
 import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
 import FormFields from 'containers/Admin/formBuilder/components/FormFields';
 import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
+import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
+// services
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   updateFormCustomFields,
+  isNewCustomFieldObject,
 } from 'services/formCustomFields';
 
 // hooks
 import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import validateElementTitle from 'utils/yup/validateElementTitle';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -61,22 +65,25 @@ type FormEditProps = {
   };
   projectId: string;
   phaseId?: string;
-} & InjectedIntlProps;
+  totalSubmissions: number;
+} & WrappedComponentProps;
 
 export const FormEdit = ({
   intl: { formatMessage },
   defaultValues,
   phaseId,
   projectId,
+  totalSubmissions,
 }: FormEditProps) => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+  const isEditingDisabled = totalSubmissions > 0;
 
   const schema = object().shape({
     customFields: array().of(
       object().shape({
-        title_multiloc: validateAtLeastOneLocale(
+        title_multiloc: validateElementTitle(
           formatMessage(messages.emptyTitleError)
         ),
         description_multiloc: object(),
@@ -115,22 +122,67 @@ export const FormEdit = ({
   };
 
   const handleDelete = (fieldIndex: number) => {
-    remove(fieldIndex);
+    const field = fields[fieldIndex];
+
+    // When the first page is deleted, it's questions go to the next page
+    if (fieldIndex === 0 && field.input_type === 'page') {
+      const nextPageIndex = fields.findIndex(
+        (feild, fieldIndex) => feild.input_type === 'page' && fieldIndex !== 0
+      );
+      move(nextPageIndex, 0);
+      remove(1);
+    } else {
+      remove(fieldIndex);
+    }
+
     closeSettings();
   };
 
-  // TODO: Improve this to remove usage of type casting
   const onAddField = (field: IFlatCreateCustomField) => {
     const newField = {
       ...field,
       index: !isNilOrError(fields) ? fields.length : 0,
     };
-    append(newField);
-    setSelectedField(newField as IFlatCustomFieldWithIndex);
+
+    if (isNewCustomFieldObject(newField)) {
+      append(newField);
+      setSelectedField(newField);
+    }
   };
 
-  const handleDragRow = (fromIndex: number, toIndex: number) => {
-    move(fromIndex, toIndex);
+  const dropRow = (fromIndex: number, toIndex: number) => {
+    const elementBeingDragged = fields[fromIndex];
+    const nextPageIndex = fields.findIndex(
+      (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
+    );
+
+    if (
+      fromIndex === 0 &&
+      elementBeingDragged.input_type === 'page' &&
+      nextPageIndex > toIndex
+    ) {
+      return;
+    } else if (
+      fromIndex === 0 &&
+      elementBeingDragged.input_type === 'page' &&
+      nextPageIndex <= toIndex
+    ) {
+      move(fromIndex, toIndex);
+      move(nextPageIndex - 1, 0);
+      return;
+    }
+
+    // Only pages should be draggable to index 0
+    const shouldMove =
+      elementBeingDragged.input_type === 'page' || toIndex !== 0;
+
+    if (shouldMove) {
+      move(fromIndex, toIndex);
+    }
+
+    if (!isNilOrError(selectedField)) {
+      setSelectedField({ ...selectedField, index: toIndex });
+    }
   };
 
   const hasErrors = !!Object.keys(errors).length;
@@ -144,7 +196,8 @@ export const FormEdit = ({
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
         description_multiloc: field.description_multiloc || {},
-        ...(field.input_type === 'multiselect' && {
+        ...((field.input_type === 'multiselect' ||
+          field.input_type === 'select') && {
           // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
         }),
@@ -161,6 +214,13 @@ export const FormEdit = ({
     }
   };
 
+  // Page is only deletable when we have more than one page
+  const isPageDeletable =
+    fields.filter((field) => field.input_type === 'page').length > 1;
+  const isDeleteDisabled = !(
+    selectedField?.input_type !== 'page' || isPageDeletable
+  );
+
   return (
     <Box
       display="flex"
@@ -174,9 +234,15 @@ export const FormEdit = ({
       <FocusOn>
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onFormSubmit)}>
-            <FormBuilderTopBar isSubmitting={isSubmitting} />
+            <FormBuilderTopBar
+              isSubmitting={isSubmitting}
+              isEditingDisabled={isEditingDisabled}
+            />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-              <FormBuilderToolbox onAddField={onAddField} />
+              <FormBuilderToolbox
+                onAddField={onAddField}
+                isEditingDisabled={isEditingDisabled}
+              />
               <StyledRightColumn>
                 <Box width="1000px">
                   {hasErrors && (
@@ -192,11 +258,23 @@ export const FormEdit = ({
                   <Feedback
                     successMessage={formatMessage(messages.successMessage)}
                   />
-                  <Box bgColor="white" minHeight="300px">
+                  {isEditingDisabled && (
+                    <DeleteFormResultsNotice
+                      projectId={projectId}
+                      redirectToSurveyPage
+                    />
+                  )}
+                  <Box
+                    borderRadius="3px"
+                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
+                    bgColor="white"
+                    minHeight="300px"
+                  >
                     <FormFields
                       onEditField={setSelectedField}
-                      handleDragRow={handleDragRow}
+                      dropRow={dropRow}
                       selectedFieldId={selectedField?.id}
+                      isEditingDisabled={isEditingDisabled}
                     />
                   </Box>
                 </Box>
@@ -207,6 +285,7 @@ export const FormEdit = ({
                   field={selectedField}
                   onDelete={handleDelete}
                   onClose={closeSettings}
+                  isDeleteDisabled={isDeleteDisabled}
                 />
               )}
             </Box>
@@ -227,8 +306,14 @@ const FormBuilderPage = ({ intl }) => {
     projectId,
     phaseId,
   });
+  const submissionCount = useFormSubmissionCount({
+    projectId,
+    phaseId,
+  });
 
-  if (isNilOrError(formCustomFields)) return null;
+  if (isNilOrError(formCustomFields) || isNilOrError(submissionCount)) {
+    return <Spinner />;
+  }
 
   return modalPortalElement
     ? createPortal(
@@ -237,6 +322,7 @@ const FormBuilderPage = ({ intl }) => {
           defaultValues={{ customFields: formCustomFields }}
           phaseId={phaseId}
           projectId={projectId}
+          totalSubmissions={submissionCount.totalSubmissions}
         />,
         modalPortalElement
       )

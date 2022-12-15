@@ -8,12 +8,12 @@ export default function useGraphqlTenantLocales() {
   const [graphqlTenantLocales, setGraphqlTenantLocales] = useState<
     GraphqlLocale[]
   >(['en']);
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
   useEffect(() => {
-    if (isNilOrError(tenant)) return;
+    if (isNilOrError(appConfig)) return;
 
-    const graphqlLocales = tenant.attributes.settings.core.locales.map(
+    const graphqlLocales = appConfig.attributes.settings.core.locales.map(
       (locale) => convertToGraphqlLocale(locale)
     );
 
@@ -24,7 +24,7 @@ export default function useGraphqlTenantLocales() {
     setGraphqlTenantLocales(graphqlLocales);
 
     return () => setGraphqlTenantLocales(['en']);
-  }, [tenant]);
+  }, [appConfig]);
 
   return graphqlTenantLocales;
 }

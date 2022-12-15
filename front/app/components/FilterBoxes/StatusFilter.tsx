@@ -49,8 +49,6 @@ const Count = styled.span`
 `;
 
 const CloseIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
   fill: #fff;
   margin-left: auto;
 

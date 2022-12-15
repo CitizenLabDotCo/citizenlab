@@ -67,7 +67,7 @@ const SelectAllCheckbox = styled(Checkbox)`
   position: relative;
   padding-left: 4px;
   padding-right: 4px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
 
   &:hover,
@@ -93,8 +93,7 @@ const ActionButtons = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex: 0 0 22px;
-  height: 22px;
+  flex: 0 0 24px;
   margin-right: 10px;
 `;
 
@@ -130,7 +129,7 @@ const DropdownListItem = styled.button`
   margin-bottom: 4px;
   padding: 10px;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
@@ -160,7 +159,7 @@ const DropdownFooterButton = styled(Button)`
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 interface InputProps {
   groupType?: MembershipType;
@@ -184,7 +183,10 @@ interface State {
   processing: boolean;
 }
 
-class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
+class UserTableActions extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -396,7 +398,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
                 onClick={this.toggleDropdown}
                 buttonStyle="admin-dark-text"
               >
-                <StyledIcon name="moveFolder" />
+                <StyledIcon name="folder-move" />
                 <FormattedMessage {...messages.moveUsersTableAction} />
               </Button>
 
@@ -451,7 +453,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
               className="hasLeftMargin"
               buttonStyle="admin-dark-text"
             >
-              <StyledIcon name="trash" />
+              <StyledIcon name="delete" />
               <FormattedMessage {...messages.membershipDelete} />
             </Button>
           )}
@@ -461,7 +463,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
             className={`export e2e-${exportType} hasLeftMargin`}
             buttonStyle="admin-dark-text"
           >
-            <StyledIcon name="userExport" />
+            <StyledIcon name="user-data" />
             <FormattedMessage {...messages[exportType]} />
           </Button>
         </ActionButtons>

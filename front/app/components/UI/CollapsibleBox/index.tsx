@@ -16,7 +16,7 @@ const timeout = 300;
 const Container = styled.div`
   background: #fff;
   border: 1px solid ${colors.divider};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const Title = styled.div`
@@ -26,8 +26,6 @@ const Title = styled.div`
 
 const TitleIcon = styled(Icon)`
   flex: 0 0 16px;
-  width: 16px;
-  height: 23px;
   fill: ${colors.textSecondary};
   margin-right: 13px;
 
@@ -63,7 +61,7 @@ const ContentToggleButton = styled.button`
   font-size: ${fontSizes.base}px;
   line-height: 24px;
   font-weight: 600;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   &:hover {
     ${ContentLabel} {
@@ -73,9 +71,7 @@ const ContentToggleButton = styled.button`
 `;
 
 const ArrowIcon = styled(Icon)`
-  flex: 0 0 13px;
-  width: 13px;
-  height: 13px;
+  flex: 0 0 24px;
   fill: ${colors.textSecondary};
   transform: rotate(90deg);
   transition: all 0.2s linear;
@@ -157,7 +153,7 @@ const CollapsibleBox = memo<Props>((props) => {
           {titleIconName && <TitleIcon name={titleIconName} />}
           <ContentLabel>{title}</ContentLabel>
         </Title>
-        <ArrowIcon name="dropdown" className={showContent ? 'open' : ''} />
+        <ArrowIcon name="chevron-down" className={showContent ? 'open' : ''} />
       </ContentToggleButton>
       <CSSTransition
         classNames="content"

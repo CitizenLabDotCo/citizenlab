@@ -4,7 +4,7 @@ import { Medium } from '../utils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // components
@@ -43,7 +43,7 @@ const Twitter = ({
   url,
   twitterMessage,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const trackClick = (medium: Medium) => () => {
     const properties = { network: medium };
     trackEventByName(tracks.shareButtonClicked.name, properties);

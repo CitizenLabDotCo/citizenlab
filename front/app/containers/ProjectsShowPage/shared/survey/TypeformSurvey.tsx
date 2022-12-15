@@ -17,7 +17,7 @@ const Container = styled.div`
 
   iframe {
     border: solid 1px #ccc;
-    border-radius: ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius};
   }
 `;
 

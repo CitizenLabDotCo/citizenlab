@@ -16,7 +16,7 @@ import Warning from 'components/UI/Warning';
 
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
@@ -85,7 +85,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   font-weight: 500;
   line-height: normal;
@@ -95,7 +95,7 @@ const Title = styled.h3`
 `;
 
 const Description = styled.div`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
 `;
@@ -106,7 +106,7 @@ const ImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   overflow: hidden;
 
   &.fillBackground {
@@ -136,7 +136,7 @@ const VolunteersCount = styled.div`
   padding-bottom: 6px;
   padding-left: 5px;
   padding-right: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: rgba(0, 0, 0, 0.75);
 
   ${isRtl`
@@ -146,9 +146,7 @@ const VolunteersCount = styled.div`
 `;
 
 const VolunteersCountIcon = styled(Icon)`
-  flex: 0 0 16px;
-  width: 16px;
-  height: 16px;
+  flex: 0 0 24px;
   fill: #fff;
   margin-right: 8px;
 `;
@@ -173,7 +171,7 @@ interface Props {
 }
 
 const CauseCard = memo<Props>(({ cause, className }) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
@@ -221,7 +219,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           <ImageWrapper>
             <StyledImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>
-              <VolunteersCountIcon name="volunteer-hand" />
+              <VolunteersCountIcon name="volunteer" />
               <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
@@ -232,9 +230,9 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           </ImageWrapper>
         ) : (
           <ImageWrapper className="fillBackground">
-            <PlaceholderIcon name="volunteer-hand" />
+            <PlaceholderIcon name="volunteer" />
             <VolunteersCount>
-              <VolunteersCountIcon name="volunteer-hand" />
+              <VolunteersCountIcon name="volunteer" />
               <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
@@ -277,7 +275,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           ) : (
             <Button
               onClick={handleOnVolunteerButtonClick}
-              icon={!isVolunteer ? 'volunteer-hand' : 'unvolunteer-hand'}
+              icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
               disabled={!authUser}
               buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
               fullWidth={smallerThanSmallTablet}

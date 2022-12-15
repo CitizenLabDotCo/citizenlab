@@ -34,23 +34,12 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const ToggleContainer: any = styled.div`
+const ToggleContainer = styled.div<{ checked: boolean }>`
   height: 100%;
   display: flex;
   align-items: center;
 
-  ${(props: any) =>
-    props.disabled &&
-    css`
-      opacity: 0.25;
-
-      i,
-      i:before {
-        cursor: not-allowed;
-      }
-    `};
-
-  ${(props: any) =>
+  ${(props) =>
     props.checked &&
     css`
       i {
@@ -117,7 +106,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 export class FeedbackToggle extends React.PureComponent<Props, State> {
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.searchTerm !== this.props.searchTerm) {
       if (isFunction(this.props.feedbackNeededCount.onChangeSearchTerm)) {
         this.props.feedbackNeededCount.onChangeSearchTerm(
@@ -192,6 +181,8 @@ const Data = adopt({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <FeedbackToggle {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => (
+      <FeedbackToggle {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

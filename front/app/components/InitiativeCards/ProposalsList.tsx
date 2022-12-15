@@ -96,7 +96,7 @@ const ProposalsList = ({
   onLoadMore,
   querying,
 }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const loadMore = () => {
     trackEventByName(tracks.loadMoreProposals);
     onLoadMore();
@@ -132,7 +132,7 @@ const ProposalsList = ({
                 text={<FormattedMessage {...messages.showMore} />}
                 processing={loadingMore}
                 height="50px"
-                icon="showMore"
+                icon="refresh"
                 iconPos="left"
                 textColor={theme.colors.tenantText}
                 bgColor={rgba(theme.colors.tenantText, 0.08)}
@@ -143,7 +143,6 @@ const ProposalsList = ({
           )}
         </>
       )}
-      ;
     </div>
   );
 };

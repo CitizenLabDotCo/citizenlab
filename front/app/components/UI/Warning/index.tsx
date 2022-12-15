@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   padding: 14px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.teal100};
 
   ${isRtl`
@@ -22,9 +22,7 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  flex: 0 0 24px;
   fill: ${colors.teal700};
   padding: 0px;
   margin: 0px;
@@ -86,7 +84,7 @@ export default class Warning extends PureComponent<Props> {
       <Container
         className={`${className || ''} ${adminPage ? 'adminPage' : ''}`}
       >
-        <StyledIcon name={icon || 'info'} />
+        <StyledIcon name={icon || 'info-outline'} />
         <Text>{text || children}</Text>
       </Container>
     );

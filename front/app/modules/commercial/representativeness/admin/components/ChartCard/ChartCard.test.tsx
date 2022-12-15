@@ -328,7 +328,7 @@ describe('<ChartCard /> (chart view)', () => {
       expect(switchToTableViewLink).toBeInTheDocument();
 
       fireEvent.click(switchToTableViewLink);
-      expect(container.querySelector('table.ui.table')).toBeInTheDocument();
+      expect(container.querySelector('table')).toBeInTheDocument();
     });
   });
 });
@@ -361,12 +361,12 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard userCustomField={userCustomField} />
       );
 
-      expect(container.querySelector('table.ui.table')).not.toBeInTheDocument();
+      expect(container.querySelector('table')).not.toBeInTheDocument();
 
       const tableTabButton = container.querySelector('button#table');
       fireEvent.click(tableTabButton);
 
-      expect(container.querySelector('table.ui.table')).toBeInTheDocument();
+      expect(container.querySelector('table')).toBeInTheDocument();
     });
 
     it('renders correct number of rows', () => {
@@ -421,7 +421,7 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard userCustomField={userCustomField} />
       );
 
-      expect(container.querySelector('table.ui.table')).toBeInTheDocument();
+      expect(container.querySelector('table')).toBeInTheDocument();
     });
 
     it('renders correct number of rows', () => {

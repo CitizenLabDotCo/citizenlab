@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { find, map } from 'lodash-es';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
@@ -20,11 +20,11 @@ import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { getGroups, IGroups, IGroupData } from 'services/groups';
 import {
-  addGroupProject,
-  deleteGroupProject,
-  groupsProjectsByProjectIdStream,
-  IGroupsProjects,
-} from 'services/groupsProjects';
+  addProjectGroup,
+  deleteProjectGroup,
+  projectGroupsByProjectIdStream,
+  IProjectGroups,
+} from 'services/projectGroups';
 
 // Style
 import styled from 'styled-components';
@@ -83,7 +83,7 @@ interface State {
 }
 
 class ProjectGroupsList extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscriptions: Subscription[];
@@ -107,7 +107,7 @@ class ProjectGroupsList extends PureComponent<
     const currentTenant$ = currentAppConfigurationStream().observable;
     const groups$ = getGroups().observable;
     const groupsProjects$ =
-      groupsProjectsByProjectIdStream(projectId).observable;
+      projectGroupsByProjectIdStream(projectId).observable;
 
     this.subscriptions = [
       combineLatest([
@@ -168,7 +168,7 @@ class ProjectGroupsList extends PureComponent<
 
     if (selectedGroups && selectedGroups.length > 0) {
       const promises = selectedGroups.map((selectedGroup) =>
-        addGroupProject(projectId, selectedGroup.value)
+        addProjectGroup(projectId, selectedGroup.value)
       );
 
       try {
@@ -184,7 +184,7 @@ class ProjectGroupsList extends PureComponent<
 
   getOptions = (
     groups: IGroups | null,
-    groupsProjects: IGroupsProjects,
+    groupsProjects: IProjectGroups,
     locale: Locale,
     currentTenantLocales: Locale[]
   ) => {
@@ -218,7 +218,7 @@ class ProjectGroupsList extends PureComponent<
       event.preventDefault();
 
       if (window.confirm(deletionMessage)) {
-        deleteGroupProject(groupProjectId);
+        deleteProjectGroup(groupProjectId);
       }
     };
   };
@@ -289,4 +289,4 @@ class ProjectGroupsList extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(ProjectGroupsList);
+export default injectIntl(ProjectGroupsList);

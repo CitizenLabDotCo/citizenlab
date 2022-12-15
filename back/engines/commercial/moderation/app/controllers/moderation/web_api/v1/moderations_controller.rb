@@ -70,7 +70,8 @@ module Moderation
     end
 
     def published_moderations
-      Moderation.where(id: Idea.published)
+      ideas = IdeasFinder.new({}, scope: Idea.published, current_user: current_user).find_records
+      Moderation.where(id: ideas)
         .or(Moderation.where(id: Initiative.published))
         .or(Moderation.where(id: Comment.published))
     end

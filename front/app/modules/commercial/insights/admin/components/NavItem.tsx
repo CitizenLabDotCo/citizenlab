@@ -15,7 +15,7 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
       configuration: {
         name: 'insights',
         link: `/admin/insights${insightsManualFlow ? '' : '/reports'}`,
-        iconName: 'processing',
+        iconName: 'sidebar-reporting',
         message: 'insights',
         featureNames: insightsManualFlow
           ? ['insights_manual_flow']

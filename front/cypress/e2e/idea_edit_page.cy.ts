@@ -25,20 +25,27 @@ describe('Idea edit page', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea(
-          projectId,
-          ideaTitle,
-          ideaContent,
-          undefined,
-          undefined,
-          jwt
-        );
-      })
-      .then((idea) => {
-        ideaId = idea.body.data.id;
-        ideaSlug = idea.body.data.attributes.slug;
-        cy.wait(2000);
       });
+  });
+
+  beforeEach(() => {
+    cy.apiCreateIdea(
+      projectId,
+      ideaTitle,
+      ideaContent,
+      undefined,
+      undefined,
+      jwt
+    ).then((idea) => {
+      ideaId = idea.body.data.id;
+      ideaSlug = idea.body.data.attributes.slug;
+    });
+  });
+
+  afterEach(() => {
+    if (ideaId) {
+      cy.apiRemoveIdea(ideaId);
+    }
   });
 
   it('has a working idea edit form', () => {
@@ -100,23 +107,47 @@ describe('Idea edit page', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
+    cy.intercept(`**/ideas/${ideaId}`).as('ideaRequest');
+    cy.wait('@ideaRequest');
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);
-    cy.get('#e2e-idea-show')
-      .find('#e2e-idea-topics')
-      .find('.e2e-idea-topic')
-      .should('have.length', 1);
+    cy.get('#e2e-idea-show').should('exist');
+    cy.get('#e2e-idea-topics').should('exist');
+    cy.get('.e2e-idea-topic').should('exist');
+    cy.get('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show #e2e-map-popup').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(
       `${firstName} ${lastName}`
     );
   });
 
-  after(() => {
-    cy.apiRemoveIdea(ideaId);
+  it('has a working idea edit form for author field', () => {
+    cy.setAdminLoginCookie();
+    // Visit idea edit page as Admin
+    cy.visit(`/ideas/edit/${ideaId}`);
+    // Search and select an author
+    cy.get('#e2e-user-select').click().type(`${lastName}, ${firstName}{enter}`);
+    // Save
+    cy.get('form').submit();
+    // Reload idea edit page
+    cy.visit(`/ideas/edit/${ideaId}`);
+    // Check that author field has correct value
+    cy.contains(`${lastName}, ${firstName}`).should('exist');
+  });
+
+  it('has a go back link that redirects the user to the edit page when clicked', () => {
+    cy.setAdminLoginCookie();
+    // Go to idea edit page
+    cy.visit(`/ideas/edit/${ideaId}`);
+
+    // Click the back button
+    cy.get('[data-cy="e2e-back-to-idea-page-button"]').click();
+
+    // Check to see that the user is redirected to the idea page
+    cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
   });
 });

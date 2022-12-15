@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 
 // services
 import {
@@ -8,14 +7,13 @@ import {
   QuerySchema,
 } from '../../services/analyticsFacts';
 
-// hooks
+// i18n
 import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import { getTranslations } from './translations';
 
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { isEmptyResponse } from './utils';
+// parsing
 import {
-  getTranslations,
   parsePieData,
   parseProgressBarsData,
   parseStackedBarsData,
@@ -27,81 +25,24 @@ import {
   parseExcelData,
 } from './parse';
 
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isEmptyResponse } from './utils';
+import { getProjectFilter, getDateFilter } from '../../utils/query';
+
 // typings
-import { Multiloc } from 'typings';
-import { InjectedIntlProps } from 'react-intl';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import {
+  QueryParameters,
+  PostFeedback,
+  Response,
+  EmptyResponse,
+} from './typings';
 
-interface QueryProps {
-  projectId: string | undefined;
-  startAt: string | null | undefined;
-  endAt: string | null | undefined;
-}
-
-// Response
-export type Response = {
-  data: [[FeedbackRow], StatusRow[]];
-};
-
-export type EmptyResponse = {
-  data: [
-    {
-      sum_feedback_none: null;
-      sum_feedback_official: null;
-      sum_feedback_status_change: null;
-      avg_feedback_time_taken: null;
-    },
-    []
-  ];
-};
-
-export interface FeedbackRow {
-  sum_feedback_none: number;
-  sum_feedback_official: number;
-  sum_feedback_status_change: number;
-  avg_feedback_time_taken: number;
-}
-
-export interface StatusRow {
-  count: number;
-  'status.id': string;
-  first_status_title_multiloc: Multiloc;
-  first_status_color: string;
-}
-
-// Hook return value
-interface PostFeedback {
-  pieData: PieRow[];
-  progressBarsData: ProgressBarsRow[];
-  stackedBarsData: [StackedBarsRow];
-  pieCenterValue: string;
-  pieCenterLabel: string;
-  days: number;
-  stackedBarColumns: string[];
-  statusColorById: Record<string, string>;
-  stackedBarPercentages: number[];
-  stackedBarsLegendItems: LegendItem[];
-  xlsxData: object;
-}
-
-interface PieRow {
-  name: string;
-  value: number;
-  color: string;
-}
-
-interface ProgressBarsRow {
-  name: string;
-  label: string;
-  value: number;
-  total: number;
-}
-
-export type StackedBarsRow = Record<string, number>;
-
-const toDate = (dateString: string) => moment(dateString).format('yyyy-MM-DD');
-
-const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
+const query = ({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters): Query => {
   const queryFeedback: QuerySchema = {
     fact: 'post',
     aggregations: {
@@ -111,53 +52,37 @@ const query = ({ projectId, startAt, endAt }: QueryProps): Query => {
       feedback_time_taken: 'avg',
     },
     filters: {
-      type: { name: 'idea' },
-      ...(projectId ? { project: { id: projectId } } : {}),
-      ...(startAt && endAt
-        ? {
-            created_date: {
-              date: {
-                from: toDate(startAt),
-                to: toDate(endAt),
-              },
-            },
-          }
-        : {}),
+      'dimension_type.name': 'idea',
+      ...getProjectFilter('dimension_project', projectId),
+      ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
   };
 
   const queryStatus: QuerySchema = {
     fact: 'post',
-    groups: 'status.id',
+    groups: 'dimension_status.id',
     aggregations: {
       all: 'count',
-      'status.title_multiloc': 'first',
-      'status.color': 'first',
+      'dimension_status.title_multiloc': 'first',
+      'dimension_status.color': 'first',
     },
     filters: {
-      type: { name: 'idea' },
-      ...(projectId ? { project: { id: projectId } } : {}),
-      ...(startAt && endAt
-        ? {
-            created_date: {
-              date: {
-                from: toDate(startAt),
-                to: toDate(endAt),
-              },
-            },
-          }
-        : {}),
+      'dimension_type.name': 'idea',
+      ...getProjectFilter('dimension_project', projectId),
+      ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
   };
 
   return { query: [queryFeedback, queryStatus] };
 };
 
-export default function usePostsWithFeedback(
-  formatMessage: InjectedIntlProps['intl']['formatMessage'],
-  { projectId, startAt, endAt }: QueryProps
-) {
+export default function usePostsFeedback({
+  projectId,
+  startAtMoment,
+  endAtMoment,
+}: QueryParameters) {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const [postsWithFeedback, setPostsWithFeedback] = useState<
     PostFeedback | NilOrError
@@ -165,7 +90,7 @@ export default function usePostsWithFeedback(
 
   useEffect(() => {
     const { observable } = analyticsStream<Response | EmptyResponse>(
-      query({ projectId, startAt, endAt })
+      query({ projectId, startAtMoment, endAtMoment })
     );
     const subscription = observable.subscribe(
       (response: Response | EmptyResponse | NilOrError) => {
@@ -193,12 +118,13 @@ export default function usePostsWithFeedback(
         const stackedBarsData = parseStackedBarsData(statusRows);
 
         const pieCenterValue = getPieCenterValue(feedbackRow);
-        const pieCenterLabel = translations.feedbackGiven;
 
         const days = getDays(feedbackRow);
 
         const statusColorById = getStatusColorById(statusRows);
-        const stackedBarColumns = statusRows.map((row) => row['status.id']);
+        const stackedBarColumns = statusRows.map(
+          (row) => row['dimension_status.id']
+        );
         const stackedBarPercentages = parseStackedBarsPercentages(statusRows);
 
         const stackedBarsLegendItems = parseStackedBarsLegendItems(
@@ -219,7 +145,6 @@ export default function usePostsWithFeedback(
           progressBarsData,
           stackedBarsData,
           pieCenterValue,
-          pieCenterLabel,
           days,
           stackedBarColumns,
           statusColorById,
@@ -231,7 +156,7 @@ export default function usePostsWithFeedback(
     );
 
     return () => subscription.unsubscribe();
-  }, [projectId, startAt, endAt, formatMessage, localize]);
+  }, [projectId, startAtMoment, endAtMoment, formatMessage, localize]);
 
   return postsWithFeedback;
 }

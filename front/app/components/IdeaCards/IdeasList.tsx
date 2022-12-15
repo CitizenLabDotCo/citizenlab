@@ -85,7 +85,7 @@ const IdeasList = ({
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
 }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const loadMoreIdeas = () => {
     onLoadMore();
@@ -134,7 +134,7 @@ const IdeasList = ({
                 text={<FormattedMessage {...messages.showMore} />}
                 processing={loadingMore}
                 height="50px"
-                icon="showMore"
+                icon="refresh"
                 iconPos="left"
                 textColor={theme.colors.tenantText}
                 bgColor={rgba(theme.colors.tenantText, 0.08)}

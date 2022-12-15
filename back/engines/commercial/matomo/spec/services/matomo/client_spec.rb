@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'vcr'
 
 RSpec.describe Matomo::Client do
   subject(:service) { described_class.new(base_uri, auth_token) }
 
-  let(:base_uri) { 'matomo-host.citizenlab.co' }
-  let(:auth_token) { 'auth-token' }
+  let(:base_uri) { 'https://demo.matomo.cloud' }
+  let(:auth_token) { 'anonymous' }
 
   describe '.new' do
     context 'when getting config from the environment' do
@@ -67,6 +68,34 @@ RSpec.describe Matomo::Client do
     end
   end
 
+  def with_vcr_cassette(&block)
+    library_dir = Matomo::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
+
+    VcrHelper.use_cassette_library_dir(library_dir) do
+      VCR.use_cassette('matomo_client', &block)
+    end
+  end
+
+  describe '#get_last_visits_details' do
+    it 'retrieves visits details' do
+      site_id = 1
+      period = 'day'
+      date = 'yesterday'
+      filter_limit = 3
+      filter_offset = 2
+
+      with_vcr_cassette do
+        response = service.get_last_visits_details(
+          site_id, period: period, date: date, filter_limit: filter_limit, filter_offset: filter_offset
+        )
+
+        expect(response.code).to eq(200)
+        expect(response.pluck('idSite')).to all eq('1')
+        expect(response.count).to eq(filter_limit)
+      end
+    end
+  end
+
   describe '#find_data_subjects' do
     let(:user_id) { 'user-id' }
 
@@ -93,34 +122,57 @@ RSpec.describe Matomo::Client do
   describe '#error?' do
     using RSpec::Parameterized::TableSyntax
 
-    where(:payload, :expected_result) do
-      { 'result' => 'error', 'message' => 'Some description...' } | true
-      { 'result' => 'not-error', 'message' => 'Some description...' } | false
-      { 'property' => 'value' } | false
-      %w[value value2] | false
+    where(:is_success, :payload, :expected_result) do
+      true  | { 'result' => 'error', 'message' => 'Some description...' } | true
+      true  | { 'result' => 'not-error', 'message' => 'Some description...' } | false
+      true  | { 'property' => 'value' } | false
+      true  | %w[value value2] | false
+      false | 'whatever' | true
     end
 
     with_them do
       specify do
-        response = instance_double(HTTParty::Response, parsed_response: payload)
+        response = instance_double(
+          HTTParty::Response, parsed_response: payload, success?: is_success
+        )
+
         expect(service.send(:error?, response)).to eq(expected_result)
       end
     end
   end
 
   describe '#raise_if_error' do
-    context 'when error' do
-      let(:response) do
-        instance_double(
-          HTTParty::Response,
-          parsed_response: { 'result' => 'error', 'message' => error_message }
-        )
-      end
+    context 'when the request failed' do
       let(:error_message) { 'Some error message...' }
 
-      specify do
-        expect { service.send(:raise_if_error, response) }
-          .to raise_error(Matomo::Client::MatomoApiError, error_message)
+      context 'and the payload is a json object' do
+        let(:response) do
+          instance_double(
+            HTTParty::Response,
+            success?: true, # Matomo API returns 200 even for failed requests
+            parsed_response: { 'result' => 'error', 'message' => error_message }
+          )
+        end
+
+        specify do
+          expect { service.raise_if_error(response) }
+            .to raise_error(Matomo::Client::MatomoApiError, error_message)
+        end
+      end
+
+      context 'and the payload is a string' do
+        let(:response) do
+          instance_double(
+            HTTParty::Response,
+            success?: false,
+            parsed_response: error_message
+          )
+        end
+
+        specify do
+          expect { service.raise_if_error(response) }
+            .to raise_error(Matomo::Client::MatomoApiError, error_message)
+        end
       end
     end
   end

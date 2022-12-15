@@ -10,7 +10,17 @@
         "type": "object",
         "title": "Core system",
         "description": "The container for general settings. The core system should always be enabled.",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
+        "required-settings": [
+          "organization_type",
+          "timezone",
+          "currency",
+          "locales",
+          "color_main",
+          "color_secondary",
+          "color_text",
+          "lifecycle_stage",
+          "authentication_token_lifetime_in_days"
+        ],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
@@ -163,19 +173,27 @@
             "type": "string",
             "format": "email",
             "default": "support@citizenlab.co"
+          },
+          "authentication_token_lifetime_in_days": {
+            "title": "Authentication token lifetime in days",
+            "description": "How many days before an authentication token (a user session) is expired.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "default": 30
           }
         }
       },
 
       "dynamic_idea_form": {
         "type": "object",
-        "title": "Dynamic idea form (experimental)",
-        "description":  "Changes the idea form from the hard-coded version, to the experimental generated version. Don't turn this on unless you know what you're doing.",
+        "title": "Dynamic idea form",
+        "description": "Changes the idea form from the hard-coded version to the generated version.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       },
       "jsonforms_custom_fields": {
@@ -202,16 +220,57 @@
         }
       },
 
+      "advanced_custom_pages": {
+        "type": "object",
+        "title": "Advanced Custom Pages",
+        "description":	"Advanced Custom Pages features.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_management": {
+        "type": "object",
+        "title": "Project Managers",
+        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+      "project_folders": {
+        "type": "object",
+        "title": "Project Folders",
+        "description": "Allow project folders.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "password_login": {
         "type": "object",
         "title": "Password Login",
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "phone"],
+        "required-settings": ["minimum_length", "phone", "enable_signup"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "enable_signup": {
+            "type": "boolean",
+            "title": "Enable sign-up",
+            "description": "If unchecked, only login via password is allowed for existing users; sign-up via password is disabled for new users.",
+            "default": true
+          },
           "minimum_length": {
             "type": "number",
             "title": "Minimum password length",
@@ -476,7 +535,7 @@
       "initiatives": {
         "type": "object",
         "title": "Proposals",
-        "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
+        "description":  "Allow proposals. Disabling this feature removes the corresponding item from the navbar",
         "additionalProperties": false,
         "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
         "required": ["allowed", "enabled"],
@@ -954,8 +1013,8 @@
 
       "representativeness": {
         "type": "object",
-        "title": "Representativeness (experimental)",
-        "description":  "Enables the representativeness dashboard. Don't turn this on unless you know what you're doing.",
+        "title": "Representativeness",
+        "description": "Enables the representativeness dashboard.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -967,7 +1026,19 @@
       "native_surveys": {
         "type": "object",
         "title": "Allow in-platform surveys",
-        "description":  "DO NOT ENABLE THIS FEATURE BECAUSE IT IS STILL UNDER DEVELOPMENT !!!",
+        "description":  "",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "visitors_dashboard": {
+        "type": "object",
+        "title": "Visitors dashboard",
+        "description": "Enabled the visitors dashboard. Don't turn this on unless you know what you're doing.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -994,6 +1065,7 @@
     "id_cow": ["verification"],
     "id_franceconnect": ["verification"],
     "id_gent_rrn": ["verification"],
+    "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"]
   },
   "definitions": {
@@ -1002,24 +1074,6 @@
       "additionalProperties": false,
       "properties": {
         <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
-      }
-    },
-    "customized_button": {
-      "type": "object",
-      "title": "Customized button",
-      "description": "Configure the customized button.",
-      "additionalProperties": false,
-      "properties": {
-        "text": {
-          "title": "Button text",
-          "description": "The text of the button.",
-          "allOf": [{"$ref": "#/definitions/multiloc_string"}]
-        },
-        "url": {
-          "type": "string",
-          "title": "Button URL",
-          "description": "The URL of the button."
-        }
       }
     }
   }

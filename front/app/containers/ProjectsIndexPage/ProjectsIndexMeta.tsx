@@ -6,7 +6,7 @@ import { adopt } from 'react-adopt';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -27,7 +27,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const ProjectsMeta = React.memo<Props & InjectedIntlProps>(
+const ProjectsMeta = React.memo<Props & WrappedComponentProps>(
   ({ intl, authUser, tenantLocales }) => {
     const { formatMessage } = intl;
     const { location } = window;
@@ -57,7 +57,7 @@ const ProjectsMeta = React.memo<Props & InjectedIntlProps>(
   }
 );
 
-const ProjectsMetaWithHoc = injectIntl<Props>(ProjectsMeta);
+const ProjectsMetaWithHoc = injectIntl(ProjectsMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,

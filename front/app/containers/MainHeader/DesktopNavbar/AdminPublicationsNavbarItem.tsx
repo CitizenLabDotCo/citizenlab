@@ -4,7 +4,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // components
 import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
-import Outlet from 'components/Outlet';
 import ProjectsListItem from '../ProjectsListItem';
 import T from 'components/T';
 
@@ -13,6 +12,7 @@ import useAdminPublications, {
   IAdminPublicationContent,
 } from 'hooks/useAdminPublications';
 import useLocalize from 'hooks/useLocalize';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
@@ -100,14 +100,9 @@ const NavigationDropdownItem = styled.button`
 `;
 
 const NavigationDropdownItemIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
   fill: inherit;
-  margin-left: 4px;
-  margin-top: 3px;
   ${isRtl`
     margin-left: 0;
-    margin-right: 4px;
   `}
 `;
 
@@ -130,7 +125,7 @@ const ProjectsListFooter = styled(Link)`
   padding: 15px 15px;
   cursor: pointer;
   background: ${({ theme }) => theme.colors.tenantSecondary};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
@@ -155,6 +150,7 @@ const AdminPublicationsNavbarItem = ({
 }: Props & WithRouterProps) => {
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
   const localize = useLocalize();
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const { list: adminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
     rootLevelOnly: true,
@@ -196,13 +192,14 @@ const AdminPublicationsNavbarItem = ({
         >
           <NavigationItemBorder />
           <T value={navigationItemTitle} />
-          <NavigationDropdownItemIcon name="dropdown" />
+          <NavigationDropdownItemIcon name="chevron-down" />
         </NavigationDropdownItem>
         <Dropdown
           top="68px"
           left="10px"
           opened={projectsDropdownOpened}
           onClickOutside={toggleProjectsDropdown}
+          zIndex="500"
           content={
             <ProjectsList id="e2e-projects-dropdown-content">
               {adminPublications.map((item: IAdminPublicationContent) => (
@@ -214,11 +211,14 @@ const AdminPublicationsNavbarItem = ({
                       {localize(item.attributes.publication_title_multiloc)}
                     </ProjectsListItem>
                   )}
-                  <Outlet
-                    id="app.containers.Navbar.projectlist.item"
-                    publication={item}
-                    localize={localize}
-                  />
+                  {isProjectFoldersEnabled &&
+                    item.publicationType === 'folder' && (
+                      <ProjectsListItem
+                        to={`/folders/${item.attributes.publication_slug}`}
+                      >
+                        {localize(item.attributes.publication_title_multiloc)}
+                      </ProjectsListItem>
+                    )}
                 </React.Fragment>
               ))}
             </ProjectsList>

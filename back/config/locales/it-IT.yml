@@ -142,7 +142,7 @@ it:
         question:
           title: What is your question ?
         contribution:
-          title: What is your contribution ?
+          title: Qual è il suo contributo?
         project:
           title: What is your project ?
         issue:
@@ -152,7 +152,7 @@ it:
       details:
         title: Dettagli
       attachements:
-        title: Images and Attachements
+        title: Immagini e allegati
       extra:
         title: Additional information
   custom_field_options:
@@ -181,3 +181,27 @@ it:
       message_you_reset_your_password: 'Hai richiesto un reset della password per la piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.'
       subject: '%{organizationName}: Resetta la tua password'
       title_reset_your_password: 'Scegliere una nuova password'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Latitude'
+      longitude: 'Longitude'
+      author_fullname: 'Author name'
+      author_email: 'Author email'
+      author_id: 'Author ID'
+      created_at: 'Submitted at'
+      published_at: 'Published at'
+      comments_count: 'Commenti'
+      upvotes_count: 'Voto positivo'
+      downvotes_count: 'Voto negativo'
+      baskets_count: 'Baskets'
+      input_url: 'URL'
+      project: 'Progetto'
+      status: 'Stato'
+      assignee_fullname: 'Assegnatario'
+      assignee_email: 'Assignee email'
+  form_builder:
+    default_select_field:
+      title: 'Your question'
+      option1: 'Option 1'
+      option2: 'Option 2'

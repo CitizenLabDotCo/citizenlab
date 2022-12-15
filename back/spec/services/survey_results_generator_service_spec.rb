@@ -14,6 +14,8 @@ require 'rails_helper'
 RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
   subject(:generator) { described_class.new participation_context }
 
+  # Create a page to describe that it is not included in the survey results.
+  let!(:page_field) { create(:custom_field_page, resource: form) }
   let(:text_field) do
     create(
       :custom_field,
@@ -42,7 +44,8 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
         'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
         'nl-NL' => 'Wat zijn je favoriete huisdieren?'
       },
-      description_multiloc: {}
+      description_multiloc: {},
+      required: false
     )
   end
   let!(:cat_option) do
@@ -97,12 +100,42 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
       resource: form,
       title_multiloc: {
         'en' => 'Do you agree with the vision?',
-        'fr-FR' => "Êtes-vous d'accord avec la vision? ?",
+        'fr-FR' => "Êtes-vous d'accord avec la vision ?",
         'nl-NL' => 'Ben je het eens met de visie?'
       },
       maximum: 5,
       minimum_label_multiloc: minimum_label_multiloc,
-      maximum_label_multiloc: maximum_label_multiloc
+      maximum_label_multiloc: maximum_label_multiloc,
+      required: true
+    )
+  end
+  let(:select_field) do
+    create(
+      :custom_field_select,
+      resource: form,
+      title_multiloc: {
+        'en' => 'What city do you like best?',
+        'fr-FR' => 'Quelle ville préférez-vous ?',
+        'nl-NL' => 'Welke stad vind jij het leukst?'
+      },
+      description_multiloc: {},
+      required: true
+    )
+  end
+  let!(:la_option) do
+    create(
+      :custom_field_option,
+      custom_field: select_field,
+      key: 'la',
+      title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }
+    )
+  end
+  let!(:ny_option) do
+    create(
+      :custom_field_option,
+      custom_field: select_field,
+      key: 'ny',
+      title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }
     )
   end
 
@@ -117,6 +150,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
               'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
               'nl-NL' => 'Wat zijn je favoriete huisdieren?'
             },
+            required: false,
             totalResponses: 10,
             answers: [
               { answer: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, responses: 4 },
@@ -129,22 +163,12 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
             inputType: 'linear_scale',
             question: {
               'en' => 'Do you agree with the vision?',
-              'fr-FR' => "Êtes-vous d'accord avec la vision? ?",
+              'fr-FR' => "Êtes-vous d'accord avec la vision ?",
               'nl-NL' => 'Ben je het eens met de visie?'
             },
-            totalResponses: 18,
+            required: true,
+            totalResponses: 15,
             answers: [
-              { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
-              { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
-              { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 3 },
-              {
-                answer: {
-                  'en' => '1 - Strongly disagree',
-                  'fr-FR' => "1 - Pas du tout d'accord",
-                  'nl-NL' => '1 - Helemaal niet mee eens'
-                },
-                responses: 2
-              },
               {
                 answer: {
                   'en' => '5 - Strongly agree',
@@ -152,58 +176,100 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
                   'nl-NL' => '5 - Strerk mee eens'
                 },
                 responses: 1
+              },
+              { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 0 },
+              { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
+              { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
+              {
+                answer: {
+                  'en' => '1 - Strongly disagree',
+                  'fr-FR' => "1 - Pas du tout d'accord",
+                  'nl-NL' => '1 - Helemaal niet mee eens'
+                },
+                responses: 2
               }
+            ]
+          },
+          {
+            inputType: 'select',
+            question: {
+              'en' => 'What city do you like best?',
+              'fr-FR' => 'Quelle ville préférez-vous ?',
+              'nl-NL' => 'Welke stad vind jij het leukst?'
+            },
+            required: true,
+            totalResponses: 4,
+            answers: [
+              { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
+              { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
             ]
           }
         ],
-        totalSubmissions: 23
+        totalSubmissions: 20
       }
     }
   end
 
   let(:expected_result_without_minimum_and_maximum_labels) do
     expected_result.tap do |result|
-      result[:data][:results][1][:answers][3][:answer] = {
-        'en' => '1',
-        'fr-FR' => "1 - Pas du tout d'accord",
-        'nl-NL' => '1'
-      }
-      result[:data][:results][1][:answers][4][:answer] = {
+      result[:data][:results][1][:answers][0][:answer] = {
         'en' => '5 - Strongly agree',
         'fr-FR' => '5',
         'nl-NL' => '5'
+      }
+      result[:data][:results][1][:answers][4][:answer] = {
+        'en' => '1',
+        'fr-FR' => "1 - Pas du tout d'accord",
+        'nl-NL' => '1'
       }
     end
   end
 
   before do
+    create(:idea_status_proposed)
     create(
       :idea,
       project: project,
       phases: phases_of_inputs,
-      custom_field_values: { text_field.key => 'Red', multiselect_field.key => %w[cat dog] }
+      custom_field_values: {
+        text_field.key => 'Red',
+        multiselect_field.key => %w[cat dog],
+        select_field.key => 'ny'
+      }
     )
     create(
       :idea,
       project: project,
       phases: phases_of_inputs,
-      custom_field_values: { text_field.key => 'Blue', multiselect_field.key => %w[cow pig cat] }
+      custom_field_values: {
+        text_field.key => 'Blue',
+        multiselect_field.key => %w[cow pig cat],
+        select_field.key => 'la'
+      }
     )
     create(
       :idea,
       project: project,
       phases: phases_of_inputs,
-      custom_field_values: { text_field.key => 'Green', multiselect_field.key => %w[cat dog] }
+      custom_field_values: {
+        text_field.key => 'Green',
+        multiselect_field.key => %w[cat dog],
+        select_field.key => 'la'
+      }
     )
     create(
       :idea,
       project: project,
       phases: phases_of_inputs,
-      custom_field_values: { text_field.key => 'Pink', multiselect_field.key => %w[dog cat cow] }
+      custom_field_values: {
+        text_field.key => 'Pink',
+        multiselect_field.key => %w[dog cat cow],
+        select_field.key => 'la'
+      }
     )
     create(:idea, project: project, phases: phases_of_inputs, custom_field_values: {})
 
-    { 1 => 2, 2 => 5, 3 => 7, 4 => 3, 5 => 1 }.each do |value, count|
+    { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1 }.each do |value, count|
       count.times do
         create(
           :idea,
@@ -223,7 +289,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
 
     describe '#generate_submission_count' do
       it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 23 } })
+        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 20 } })
       end
     end
 
@@ -258,7 +324,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
 
     describe '#generate_submission_count' do
       it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 23 } })
+        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 20 } })
       end
     end
 

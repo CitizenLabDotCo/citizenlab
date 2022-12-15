@@ -6,8 +6,8 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -70,7 +70,7 @@ type ScanCategoryProps = {
   triggerScan: () => void;
   onClose: () => void;
   cancelScan: () => void;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const ScanCategory = ({
   intl: { formatMessage },
@@ -158,6 +158,7 @@ const ScanCategory = ({
       </Box>
       {scanCategoryMessagesMap[status].button && (
         <Button
+          className="intercom-insights-edit-scan-button"
           buttonStyle={
             status === 'isScanning' ? 'admin-dark-outlined' : 'admin-dark'
           }

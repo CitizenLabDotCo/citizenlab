@@ -104,30 +104,22 @@ const FooterItem = styled.div`
 `;
 
 const MoneybagIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const DownvoteIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
 `;
 
 const UpvoteIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-top: 5px;
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
   fill: ${colors.textSecondary};
   margin-right: 6px;
   margin-left: 2px;
@@ -150,7 +142,7 @@ interface Props {
 
 const IdeaMapCard = memo<Props>(
   ({ ideaMarker, onClose, className, projectId, phaseId }) => {
-    const tenant = useAppConfiguration();
+    const appConfig = useAppConfiguration();
     const phase = usePhase(phaseId || null);
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
@@ -218,11 +210,11 @@ const IdeaMapCard = memo<Props>(
     };
 
     if (
-      !isNilOrError(tenant) &&
+      !isNilOrError(appConfig) &&
       !isNilOrError(ideaMarker) &&
       !isNilOrError(project)
     ) {
-      const tenantCurrency = tenant.attributes.settings.core.currency;
+      const tenantCurrency = appConfig.attributes.settings.core.currency;
       const ideaBudget = ideaMarker.attributes?.budget;
       const votingActionDescriptor =
         project.attributes.action_descriptor.voting_idea;
@@ -271,14 +263,14 @@ const IdeaMapCard = memo<Props>(
             {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
-                  <DownvoteIcon name="upvote" />
+                  <DownvoteIcon name="vote-up" />
                   <FooterValue>
                     {ideaMarker.attributes.upvotes_count}
                   </FooterValue>
                 </FooterItem>
                 {showDownvote && (
                   <FooterItem>
-                    <UpvoteIcon name="downvote" />
+                    <UpvoteIcon name="vote-down" />
                     <FooterValue>
                       {ideaMarker.attributes.downvotes_count}
                     </FooterValue>

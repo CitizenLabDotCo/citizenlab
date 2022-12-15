@@ -93,6 +93,7 @@ class Rule extends PureComponent<Props, State> {
           <StyledRemoveButton
             onClick={onRemove}
             icon="minus-circle"
+            iconColor={colors.red500}
             buttonStyle="text"
             padding="0"
           />
