@@ -22,7 +22,7 @@ import {
   Dates,
   Resolution,
   Layout,
-} from '../../../../../../components/admin/GraphCards/typings';
+} from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from './useRegistrations/typings';
 import { Margin } from 'components/admin/Graphs/typings';

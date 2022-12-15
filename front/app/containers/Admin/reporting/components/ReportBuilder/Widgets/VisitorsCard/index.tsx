@@ -7,7 +7,7 @@ import useVisitors from 'components/admin/GraphCards/VisitorsCard/useVisitors';
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
-import Statistic from '../../../../../../../components/admin/Graphs/Statistic';
+import Statistic from 'components/admin/Graphs/Statistic';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

@@ -1,8 +1,8 @@
 // i18n
 import messages from './messages';
-import moduleMessages from '../../../../../../../components/admin/GraphCards/messages';
+import moduleMessages from 'components/admin/GraphCards/messages';
 import cardMessages from '../messages';
-import { getTimePeriodTranslations } from '../../../../../../../components/admin/GraphCards/_utils/resolution';
+import { getTimePeriodTranslations } from 'components/admin/GraphCards/_utils/resolution';
 
 // typings
 import { FormatMessage } from 'typings';

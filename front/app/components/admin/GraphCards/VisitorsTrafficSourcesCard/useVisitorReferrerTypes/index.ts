@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // services
-import {
-  analyticsStream,
-  Query,
-  QuerySchema,
-} from '../../../../../services/analyticsFacts';
+import { analyticsStream, Query, QuerySchema } from 'services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

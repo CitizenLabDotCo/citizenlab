@@ -2,9 +2,9 @@ import moment, { Moment } from 'moment';
 
 // utils
 import { getConversionRate } from '../../RegistrationsCard/useRegistrations/parse';
-import { timeSeriesParser } from '../../../../../../../components/admin/GraphCards/_utils/timeSeries';
+import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { keys, get } from 'utils/helperUtils';
-import { RESOLUTION_TO_MESSAGE_KEY } from '../../../../../../../components/admin/GraphCards/_utils/resolution';
+import { RESOLUTION_TO_MESSAGE_KEY } from 'components/admin/GraphCards/_utils/resolution';
 
 // typings
 import {

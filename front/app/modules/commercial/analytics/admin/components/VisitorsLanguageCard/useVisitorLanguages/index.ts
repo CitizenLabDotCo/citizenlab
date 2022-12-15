@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // services
-import {
-  analyticsStream,
-  Query,
-  QuerySchema,
-} from '../../../../../../../services/analyticsFacts';
+import { analyticsStream, Query, QuerySchema } from 'services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -23,7 +19,7 @@ import { Response, PieRow, QueryParameters } from './typings';
 import {
   getProjectFilter,
   getDateFilter,
-} from '../../../../../../../components/admin/GraphCards/_utils/query';
+} from 'components/admin/GraphCards/_utils/query';
 
 const query = ({
   projectId,

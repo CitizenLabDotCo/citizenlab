@@ -1,10 +1,7 @@
 import { Multiloc } from 'typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import {
-  ProjectId,
-  Dates,
-} from '../../../../../../../components/admin/GraphCards/typings';
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 
 export type QueryParameters = ProjectId & Dates;
 

@@ -1,7 +1,4 @@
-import {
-  ProjectId,
-  Dates,
-} from '../../../../../../../components/admin/GraphCards/typings';
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 
 export type QueryParameters = ProjectId & Dates;
 

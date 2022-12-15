@@ -1,11 +1,7 @@
 import request from 'utils/request';
 
 // services
-import {
-  apiEndpoint,
-  QuerySchema,
-  Query,
-} from '../../../../services/analyticsFacts';
+import { apiEndpoint, QuerySchema, Query } from 'services/analyticsFacts';
 
 // i18n
 import messages from './messages';

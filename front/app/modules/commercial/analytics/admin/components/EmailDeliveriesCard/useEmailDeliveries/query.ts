@@ -2,14 +2,11 @@
 import {
   getDateFilter,
   getInterval,
-} from '../../../../../../../components/admin/GraphCards/_utils/query';
+} from 'components/admin/GraphCards/_utils/query';
 
 // typings
 import { QueryParameters } from './typings';
-import {
-  Query,
-  QuerySchema,
-} from '../../../../../../../services/analyticsFacts';
+import { Query, QuerySchema } from 'services/analyticsFacts';
 
 export const query = ({
   startAtMoment,

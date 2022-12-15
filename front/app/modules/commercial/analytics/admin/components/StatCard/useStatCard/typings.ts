@@ -3,9 +3,9 @@ import {
   Dates,
   ProjectId,
   Resolution,
-} from '../../../../../../../components/admin/GraphCards/typings';
+} from 'components/admin/GraphCards/typings';
 import { MessageDescriptor } from 'react-intl';
-import { Query } from '../../../../../../../services/analyticsFacts';
+import { Query } from 'services/analyticsFacts';
 
 export interface StatCardStat {
   value: string;

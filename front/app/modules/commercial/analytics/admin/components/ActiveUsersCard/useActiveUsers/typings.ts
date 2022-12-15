@@ -3,7 +3,7 @@ import {
   Dates,
   Resolution,
   Stat,
-} from '../../../../../../../components/admin/GraphCards/typings';
+} from 'components/admin/GraphCards/typings';
 
 export type QueryParameters = ProjectId & Dates & Resolution;
 

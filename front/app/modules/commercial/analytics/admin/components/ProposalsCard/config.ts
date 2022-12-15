@@ -1,12 +1,12 @@
 import messages from './messages';
 
 // Utils
-import { getTimePeriodMoment } from '../../../../../../components/admin/GraphCards/_utils/resolution';
-import { formatCountValue } from '../../../../../../components/admin/GraphCards/_utils/parse';
+import { getTimePeriodMoment } from 'components/admin/GraphCards/_utils/resolution';
+import { formatCountValue } from 'components/admin/GraphCards/_utils/parse';
 import {
   getDateFilter,
   getProjectFilter,
-} from '../../../../../../components/admin/GraphCards/_utils/query';
+} from 'components/admin/GraphCards/_utils/query';
 import { underscoreCase } from '../StatCard/useStatCard/parse';
 
 // Typings
@@ -15,7 +15,7 @@ import {
   StatCardProps,
   StatCardConfig,
 } from '../StatCard/useStatCard/typings';
-import { Query, QuerySchema } from '../../../../../../services/analyticsFacts';
+import { Query, QuerySchema } from 'services/analyticsFacts';
 import moment, { Moment } from 'moment';
 
 // Type helps to keep this file and tests type safe although useStatCard returns a more generic object

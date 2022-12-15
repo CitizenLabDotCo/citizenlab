@@ -7,7 +7,7 @@ import useVisitorTypes from './useVisitorTypes';
 import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import { Box } from '@citizenlab/cl2-component-library';
-import EmptyPieChart from '../../../../../../components/admin/GraphCards/EmptyPieChart';
+import EmptyPieChart from 'components/admin/GraphCards/EmptyPieChart';
 import renderTooltip from './renderTooltip';
 
 // i18n
@@ -22,7 +22,7 @@ import {
   ProjectId,
   Dates,
   Resolution,
-} from '../../../../../../components/admin/GraphCards/typings';
+} from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 type Props = ProjectId & Dates & Resolution;

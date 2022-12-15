@@ -26,7 +26,7 @@ import {
   ProjectId,
   Dates,
   Resolution,
-} from '../../../../../../components/admin/GraphCards/typings';
+} from 'components/admin/GraphCards/typings';
 
 type Props = ProjectId & Dates & Resolution;
 

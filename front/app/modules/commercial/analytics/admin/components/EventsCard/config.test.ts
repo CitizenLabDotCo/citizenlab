@@ -1,4 +1,4 @@
-import { Query } from '../../../../../../services/analyticsFacts';
+import { Query } from 'services/analyticsFacts';
 import moment from 'moment';
 import { EventsCardLabels, eventsConfig } from './config';
 import { StatCardData } from '../StatCard/useStatCard/typings';

@@ -3,13 +3,10 @@ import {
   getDateFilter,
   getDateFilterLastPeriod,
   getInterval,
-} from '../../../../../../../components/admin/GraphCards/_utils/query';
+} from 'components/admin/GraphCards/_utils/query';
 
 // typings
-import {
-  Query,
-  QuerySchema,
-} from '../../../../../../../services/analyticsFacts';
+import { Query, QuerySchema } from 'services/analyticsFacts';
 import { QueryParameters } from './typings';
 
 export const query = ({

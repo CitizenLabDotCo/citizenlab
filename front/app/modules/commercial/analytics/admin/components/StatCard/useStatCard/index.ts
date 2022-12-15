@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // services
-import { analyticsStream } from '../../../../../../../services/analyticsFacts';
+import { analyticsStream } from 'services/analyticsFacts';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';

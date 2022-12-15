@@ -1,11 +1,11 @@
 import messages from './messages';
 
 // Utils
-import { formatCountValue } from '../../../../../../components/admin/GraphCards/_utils/parse';
+import { formatCountValue } from 'components/admin/GraphCards/_utils/parse';
 import {
   getDateFilter,
   getProjectFilter,
-} from '../../../../../../components/admin/GraphCards/_utils/query';
+} from 'components/admin/GraphCards/_utils/query';
 import { underscoreCase } from '../StatCard/useStatCard/parse';
 
 // Typings
@@ -14,7 +14,7 @@ import {
   StatCardProps,
   StatCardConfig,
 } from '../StatCard/useStatCard/typings';
-import { Query, QuerySchema } from '../../../../../../services/analyticsFacts';
+import { Query, QuerySchema } from 'services/analyticsFacts';
 
 // Type helps to keep this file and tests type safe although useStatCard returns a more generic object
 export interface ProjectStatusCardLabels {

@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useVisitorReferrerTypes from '../../../../../../../components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes';
+import useVisitorReferrerTypes from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
-import EmptyPieChart from '../../../../../../../components/admin/GraphCards/EmptyPieChart';
+import EmptyPieChart from 'components/admin/GraphCards/EmptyPieChart';
 import Chart from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/Chart';
 
 // i18n
@@ -20,7 +20,7 @@ import {
   ProjectId,
   Dates,
   ChartDisplay,
-} from '../../../../../../../components/admin/GraphCards/typings';
+} from 'components/admin/GraphCards/typings';
 
 type Props = ProjectId & Dates & ChartDisplay;
 

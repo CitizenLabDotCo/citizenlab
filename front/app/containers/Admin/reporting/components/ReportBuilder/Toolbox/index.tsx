@@ -18,7 +18,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import moment from 'moment';
 
 // Messages
-import contentBuilderMessages from '../../../../../../modules/commercial/content_builder/admin/messages';
+import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import chartMessages from '../Widgets/AnalyticsChartWidget/messages';

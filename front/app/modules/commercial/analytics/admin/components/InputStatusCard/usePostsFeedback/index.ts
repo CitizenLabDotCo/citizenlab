@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // services
-import {
-  analyticsStream,
-  Query,
-  QuerySchema,
-} from '../../../../../../../services/analyticsFacts';
+import { analyticsStream, Query, QuerySchema } from 'services/analyticsFacts';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -31,7 +27,7 @@ import { isEmptyResponse } from './utils';
 import {
   getProjectFilter,
   getDateFilter,
-} from '../../../../../../../components/admin/GraphCards/_utils/query';
+} from 'components/admin/GraphCards/_utils/query';
 
 // typings
 import {

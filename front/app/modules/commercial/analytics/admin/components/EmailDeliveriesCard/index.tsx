@@ -18,7 +18,7 @@ import {
   ProjectId,
   Dates,
   Resolution,
-} from '../../../../../../components/admin/GraphCards/typings';
+} from 'components/admin/GraphCards/typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = ProjectId & Dates & Resolution;

@@ -1,7 +1,4 @@
-import {
-  Dates,
-  Resolution,
-} from '../../../../../../../components/admin/GraphCards/typings';
+import { Dates, Resolution } from 'components/admin/GraphCards/typings';
 
 export type QueryParameters = Dates & Resolution;
 

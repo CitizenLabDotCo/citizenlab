@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // services
-import { analyticsStream } from '../../../../../services/analyticsFacts';
+import { analyticsStream } from 'services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
