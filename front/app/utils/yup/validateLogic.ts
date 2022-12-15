@@ -23,7 +23,7 @@ export const isRuleValid = (
   return indexOfTargetPage > indexOfSourceField;
 };
 
-const validateLogic = (fields: IFlatCustomField[], message: string) => {
+const validateLogic = (message: string) => {
   return object()
     .shape({
       logic: object(),
@@ -34,6 +34,7 @@ const validateLogic = (fields: IFlatCustomField[], message: string) => {
           'rules referencing prior pages',
           message,
           (value, obj) => {
+            const fields = obj.from[2].value.customFields;
             if (!isNilOrError(obj) && value && obj.originalValue.rules) {
               const rules = obj.originalValue.rules;
               let hasError = false;
