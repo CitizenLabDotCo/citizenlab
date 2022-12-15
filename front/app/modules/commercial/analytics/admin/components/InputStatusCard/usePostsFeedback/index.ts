@@ -5,7 +5,7 @@ import {
   analyticsStream,
   Query,
   QuerySchema,
-} from '../../../services/analyticsFacts';
+} from '../../../../../../../services/analyticsFacts';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';

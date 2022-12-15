@@ -11,7 +11,7 @@ import {
   StatCardProps,
   StatCardConfig,
 } from '../StatCard/useStatCard/typings';
-import { Query, QuerySchema } from '../../services/analyticsFacts';
+import { Query, QuerySchema } from '../../../../../../services/analyticsFacts';
 import moment, { Moment } from 'moment';
 
 // Type helps to keep this file and tests type safe although useStatCard returns a more generic object

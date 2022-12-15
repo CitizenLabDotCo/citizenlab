@@ -4,7 +4,10 @@ import { getProjectFilter, getDateFilter } from '../../../utils/query';
 // typings
 // import { QueryParameters, QueryParametersWithoutPagination } from './typings';
 import { ProjectId, Dates, Pagination } from '../../../typings';
-import { Query, QuerySchema } from '../../../services/analyticsFacts';
+import {
+  Query,
+  QuerySchema,
+} from '../../../../../../../services/analyticsFacts';
 
 export const referrersListQuery = ({
   projectId,

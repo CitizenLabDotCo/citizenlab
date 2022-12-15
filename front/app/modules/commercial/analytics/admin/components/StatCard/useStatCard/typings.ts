@@ -1,7 +1,7 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Dates, ProjectId, Resolution } from '../../../typings';
 import { MessageDescriptor } from 'react-intl';
-import { Query } from '../../../services/analyticsFacts';
+import { Query } from '../../../../../../../services/analyticsFacts';
 
 export interface StatCardStat {
   value: string;

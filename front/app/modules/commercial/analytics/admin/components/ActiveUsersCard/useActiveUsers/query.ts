@@ -7,7 +7,10 @@ import {
 } from '../../../utils/query';
 
 // typings
-import { Query, QuerySchema } from '../../../services/analyticsFacts';
+import {
+  Query,
+  QuerySchema,
+} from '../../../../../../../services/analyticsFacts';
 import { QueryParameters } from './typings';
 
 export const query = ({

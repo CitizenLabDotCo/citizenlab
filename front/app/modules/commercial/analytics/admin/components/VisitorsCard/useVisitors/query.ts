@@ -12,7 +12,7 @@ import {
   Query,
   QuerySchema,
   AggregationsConfig,
-} from '../../../services/analyticsFacts';
+} from '../../../../../../../services/analyticsFacts';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',
