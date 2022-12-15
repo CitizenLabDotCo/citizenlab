@@ -108,42 +108,21 @@ const BannerImageField = ({
     setHeaderLocalDisplayImage(null);
   };
 
-  const handleOverlayColorOnChange = (color: string) => {
-    onOverlayColorChange(color);
-  };
-
-  const handleOverlayOpacityOnChange = (opacity: number) => {
-    onOverlayOpacityChange(opacity);
-  };
-
-  const debounceHandleOverlayOpacityOnChange = debounce(
-    handleOverlayOpacityOnChange,
-    1
-  );
-
-  const debouncedHandleOverlayOpacityOnChange = useMemo(
-    () => debounceHandleOverlayOpacityOnChange,
-    [debounceHandleOverlayOpacityOnChange]
-  );
-
-  const handleOverlayEnabling = () => {
-    setOverlayEnabled((overlayEnabled) => !overlayEnabled);
-  };
-
-  const imageIsNotSaved =
-    (headerLocalDisplayImage && !headerLocalDisplayImage[0].remote) || false;
+  const imageIsSaved = headerLocalDisplayImage?.[0].remote || false;
+  const hasLocalHeaderImage = !isNilOrError(headerLocalDisplayImage);
 
   const displayImageCropper =
-    imageIsNotSaved && bannerLayout === 'fixed_ratio_layout';
+    hasLocalHeaderImage &&
+    !imageIsSaved &&
+    bannerLayout === 'fixed_ratio_layout';
 
   const displayPreviewDevice =
-    !isNilOrError(headerLocalDisplayImage) &&
-    bannerLayout !== 'fixed_ratio_layout';
+    hasLocalHeaderImage && bannerLayout !== 'fixed_ratio_layout';
 
   const displayOverlayControls =
+    hasLocalHeaderImage &&
     (bannerLayout === 'full_width_banner_layout' ||
-      (bannerLayout === 'fixed_ratio_layout' && !displayImageCropper)) &&
-    headerLocalDisplayImage;
+      (bannerLayout === 'fixed_ratio_layout' && imageIsSaved));
 
   return (
     <>
