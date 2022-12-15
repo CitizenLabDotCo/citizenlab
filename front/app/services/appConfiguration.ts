@@ -76,6 +76,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  advanced_custom_pages: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
@@ -167,7 +171,6 @@ export interface IAppConfigurationSettings {
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
-  geographic_dashboard?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   ideaflow_social_sharing?: AppConfigurationFeature;

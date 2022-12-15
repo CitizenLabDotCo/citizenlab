@@ -1,5 +1,62 @@
 # Changelog
 
+## 2022-12-14
+
+### Added
+
+- [CL-1552] Displaying projects based on area or topic on custom pages. Also events related to the projects can be shown.
+
+## 2022-12-13
+
+### Fixed
+
+- [CL-1969] Fixed bug where idea form input term not matching back office configuration
+
+## 2022-12-07
+
+### Fixed
+
+- [CL-2184] Fixed project status dashboard widget to show correct stats
+
+## 2022-12-06
+
+### Changed
+
+- [CL-2168] Removed support for many old image formats, and added support for webp images. The supported formats are now jpg, jpeg, gif, png, webp, svg.
+
+## 2022-12-06
+
+### Added
+
+- [CL-1892] Added Pages to in-platform survey tool
+
+## 2022-12-05
+
+### Changed
+
+- [CL-2156] Notifications of Project Phase Started now sent only to Users who have participated in the relevant Project.
+
+## 2022-12-02 (2)
+
+### Fixed
+
+- [CL-2188] Fix chart filters in dashboards looking weird
+
+## 2022-12-02
+
+### Fixed
+
+- [CL-2171] Fix excel export of visitor data for Dutch clients
+- [CL-2172] Fix visitor data not updating when switching projects
+- [CL-2178] Hide various cards on overview dashboard if user is project moderator
+
+## 2022-12-01
+
+### Changed
+
+- [CL-2109] Events display on Project page now matches the Events page. I.e. Events on Project page now displayed under "Current" and "Past" headers, and nearest event is displayed at the top of the list.
+- [CL-1933] Update overview dashboard layout and new charts
+
 ## 2022-11-30
 
 ### Fixed

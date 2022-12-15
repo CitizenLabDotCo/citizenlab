@@ -91,7 +91,8 @@ export const projectStatusConfig: StatCardConfig = {
     endAtMoment,
   }: StatCardProps): Query => {
     const queryBase = (
-      status?: 'active' | 'archived' | 'finished' | 'draft'
+      status?: 'published' | 'archived' | 'draft',
+      finished?: boolean
     ): QuerySchema => {
       const querySchema: QuerySchema = {
         fact: 'project_status',
@@ -101,9 +102,11 @@ export const projectStatusConfig: StatCardConfig = {
       };
 
       const statusFilter = status === undefined ? {} : { status };
+      const finishedFilter = finished === undefined ? {} : { finished };
 
       const filters = {
         ...statusFilter,
+        ...finishedFilter,
         ...getDateFilter(`dimension_date`, startAtMoment, endAtMoment),
         ...getProjectFilter('dimension_project', projectId),
       };
@@ -115,10 +118,10 @@ export const projectStatusConfig: StatCardConfig = {
     };
 
     const queryTotal: QuerySchema = queryBase();
-    const queryActive: QuerySchema = queryBase('active');
+    const queryActive: QuerySchema = queryBase('published');
     const queryArchived: QuerySchema = queryBase('archived');
-    const queryFinished: QuerySchema = queryBase('finished');
-    const queryDraft: QuerySchema = queryBase('draft');
+    const queryFinished: QuerySchema = queryBase(undefined, true);
+    const queryDraft: QuerySchema = queryBase('draft', false);
 
     // Remove the total and active queries if there are start and end date filters
     let returnQuery = [

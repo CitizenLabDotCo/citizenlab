@@ -81,7 +81,7 @@ const FormBuilderToolbox = ({
       alignItems="center"
       bgColor="white"
       overflowY="auto"
-      borderRight={`1px solid ${colors.grey500}`}
+      borderRight={`1px solid ${colors.borderLight}`}
     >
       <Box w="100%" display="inline">
         <Title
@@ -98,6 +98,12 @@ const FormBuilderToolbox = ({
         </Title>
 
         <DraggableElement>
+          <ToolboxItem
+            icon="page"
+            label={formatMessage(messages.page)}
+            onClick={() => addField('page')}
+            data-cy="e2e-page"
+          />
           <ToolboxItem
             icon="survey-short-answer"
             label={formatMessage(messages.shortAnswer)}

@@ -167,4 +167,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectName',
     defaultMessage: 'Project name',
   },
+  url: {
+    id: 'app.containers.AdminPage.ProjectEdit.url',
+    defaultMessage: 'URL',
+  },
 });

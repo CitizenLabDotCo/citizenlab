@@ -18,6 +18,11 @@ module ParticipationMethod
 
     def create_default_form!
       form = CustomForm.create(participation_context: participation_context)
+      CustomField.create(
+        resource: form,
+        input_type: 'page',
+        key: 'page_1'
+      )
       field = CustomField.create(
         resource: form,
         input_type: 'select',

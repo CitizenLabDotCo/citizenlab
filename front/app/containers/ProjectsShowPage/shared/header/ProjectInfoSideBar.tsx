@@ -49,11 +49,11 @@ const About = styled.div`
   padding-top: 0px;
   padding-bottom: 5px;
   border: solid 1px #ccc;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const Title = styled.h2`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   line-height: normal;
   font-weight: 500;

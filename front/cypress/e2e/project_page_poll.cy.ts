@@ -139,15 +139,8 @@ describe('Timeline project with poll phase', () => {
               title: 'What is your favourite ice cream flavour?',
               type: 'multiple_options',
             },
-            {
-              title: 'Are you in favour of car-free sundays ?',
-              type: 'single_option',
-            },
           ],
-          [
-            ['Vanilla', 'Chocolate', 'Pistachio'],
-            ['Yes', 'No', 'I decline to answer'],
-          ]
+          [['Vanilla', 'Chocolate', 'Pistachio']]
         );
       });
   });

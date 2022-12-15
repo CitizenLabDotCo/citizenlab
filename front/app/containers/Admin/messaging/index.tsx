@@ -31,19 +31,26 @@ class MessagingDashboard extends React.PureComponent<
       intl: { formatMessage },
       location: { pathname },
     } = this.props;
-    const tabs: any = [];
+    const tabs: {
+      name: string;
+      label: string;
+      url: string;
+      statusLabel?: string;
+    }[] = [];
 
     if (
       this.props.canManageManualCampaigns &&
       this.props.manualEmailingEnabled
     ) {
       tabs.push({
+        name: 'manual-emails',
         label: formatMessage(messages.tabCustomEmail),
         url: '/admin/messaging/emails/custom',
       });
     }
     if (this.props.textingEnabled) {
       tabs.push({
+        name: 'texting',
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
         statusLabel: 'Beta',
@@ -54,6 +61,7 @@ class MessagingDashboard extends React.PureComponent<
       this.props.automatedEmailingEnabled
     ) {
       tabs.push({
+        name: 'automated-emails',
         label: formatMessage(messages.tabAutomatedEmails),
         url: '/admin/messaging/emails/automated',
       });

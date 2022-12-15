@@ -15,7 +15,8 @@ export type ICustomFieldInputType =
   | 'multiselect'
   | 'number'
   | 'select'
-  | 'linear_scale';
+  | 'linear_scale'
+  | 'page';
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;
