@@ -42,7 +42,7 @@ describe('BannerImageFields', () => {
     });
 
     describe('Image overlay controls', () => {
-      it('shows overlay controls correctly when full_width_banner_layout', async () => {
+      it('shows overlay controls correctly', async () => {
         render(<BannerImageFields {...props} />);
 
         await waitFor(() => {
@@ -53,7 +53,7 @@ describe('BannerImageFields', () => {
     });
 
     describe('Image cropper', () => {
-      it('does not show react-easy-crop container when image is uploaded but not saved for full_width_banner_layout', async () => {
+      it('does not show when image is uploaded but not saved', async () => {
         const { container } = render(
           <BannerImageFields
             {...props}
@@ -85,7 +85,7 @@ describe('BannerImageFields', () => {
     // TO DO: tests to ensure it shows the layout preview selector?
 
     describe('Image overlay controls', () => {
-      it('does not show overlay controls correctly when two_column_layout', async () => {
+      it('does not show overlay controls correctly', async () => {
         render(
           <BannerImageFields {...props} bannerLayout="two_column_layout" />
         );
@@ -104,7 +104,7 @@ describe('BannerImageFields', () => {
     // TO DO: tests to ensure it shows the layout preview selector?
 
     describe('Image overlay controls', () => {
-      it('does not show overlay controls correctly when two_row_layout', async () => {
+      it('does not show overlay controls correctly', async () => {
         render(<BannerImageFields {...props} bannerLayout="two_row_layout" />);
 
         await waitFor(() => {
@@ -115,7 +115,7 @@ describe('BannerImageFields', () => {
     });
 
     describe('Image cropper', () => {
-      it('does not show react-easy-crop container when image is uploaded but not saved for two_row_banner_layout', async () => {
+      it('does not show when image is uploaded but not saved', async () => {
         const { container } = render(
           <BannerImageFields {...props} bannerLayout="two_row_layout" />
         );
@@ -143,7 +143,7 @@ describe('BannerImageFields', () => {
 
 describe('Fixed-ratio layout', () => {
   describe('Layout preview selector', () => {
-    it('does not show display preview select when the layout type is fixed_ratio_layout', async () => {
+    it('does not show display preview select', async () => {
       render(
         <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
       );
@@ -161,7 +161,7 @@ describe('Fixed-ratio layout', () => {
   // saved picture. Initially, it shouldn't be there, because the image cropper
   // can't preview it.
   describe('Image overlay controls', () => {
-    it('shows overlay controls correctly when fixed_ratio_layout', async () => {
+    it('shows overlay controls correctly', async () => {
       render(
         <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
       );
@@ -174,7 +174,7 @@ describe('Fixed-ratio layout', () => {
   });
 
   describe('Image cropper', () => {
-    it('does not show react-easy-crop when image is saved for fixed_ratio_layout', async () => {
+    it('does not show when image is saved', async () => {
       const { container } = render(
         <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
       );
@@ -196,7 +196,7 @@ describe('Fixed-ratio layout', () => {
         expect(cropContainer).not.toBeInTheDocument();
       });
     });
-    it('shows react-easy-crop container when image is uploaded but not saved for fixed_ratio_layout', async () => {
+    it('shows when image is uploaded but not saved', async () => {
       const { container } = render(
         <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
       );
