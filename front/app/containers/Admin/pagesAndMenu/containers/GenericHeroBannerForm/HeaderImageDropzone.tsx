@@ -3,7 +3,7 @@ import React from 'react';
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import styled, { useTheme } from 'styled-components';
-import { PreviewDevice } from './BannerImageFields';
+import { TPreviewDevice } from './BannerImageFields';
 
 // types
 import { ICustomPageAttributes } from 'services/customPages';
@@ -37,7 +37,7 @@ interface Props {
   onRemove: () => void;
   headerError: string | null;
   header_bg: UploadFile[] | null;
-  previewDevice: PreviewDevice;
+  previewDevice: TPreviewDevice;
   layout: THomepageBannerLayout;
 }
 

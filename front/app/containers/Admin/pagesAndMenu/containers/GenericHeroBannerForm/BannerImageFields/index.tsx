@@ -4,14 +4,13 @@ import {
   IconTooltip,
   IOption,
   Select,
-  Text,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { ISubmitState } from 'components/admin/SubmitWrapper';
+import OverlayControls from './OverlayControls';
+import ImageUploader from './ImageUploader';
 
+import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { UploadFile } from 'typings';
-import HeaderImageDropzone from '../HeaderImageDropzone';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -22,11 +21,6 @@ import { isNil, isNilOrError } from 'utils/helperUtils';
 
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
-
-import ImageCropper from 'components/admin/ImageCropper';
-import OverlayControls from './OverlayControls';
-
-export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
 export interface Props {
   onAddImage: (newImageBase64: string) => void;
@@ -48,6 +42,10 @@ export interface Props {
   setFormStatus: (submitState: ISubmitState) => void;
 }
 
+export type TPreviewDevice = 'mobile' | 'tablet' | 'desktop';
+export type TLocalHeaderImage = UploadFile[] | null;
+export type TBannerError = string | null;
+
 const BannerImageField = ({
   bannerOverlayColor,
   bannerOverlayOpacity,
@@ -60,11 +58,10 @@ const BannerImageField = ({
   onOverlayOpacityChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
-  const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
-    UploadFile[] | null
-  >(null);
-  const [bannerError, setBannerError] = useState<string | null>(null);
+  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('desktop');
+  const [headerLocalDisplayImage, setHeaderLocalDisplayImage] =
+    useState<TLocalHeaderImage>(null);
+  const [bannerError, setBannerError] = useState<TBannerError>(null);
   useEffect(() => {
     // the image file sent from the API needs to be converted
     // to a format that can be displayed. this is done locally
@@ -96,14 +93,14 @@ const BannerImageField = ({
     setBannerError(null);
   }, [headerBg, formatMessage, setFormStatus]);
 
-  const bannerImageAddHandler = (newImage: UploadFile[]) => {
+  const handleOnAddImageToUploader = (newImage: UploadFile[]) => {
     // this base64 value is sent to the API
     onAddImage(newImage[0].base64);
     // this value is used for local display
     setHeaderLocalDisplayImage([newImage[0]]);
   };
 
-  const bannerImageRemoveHandler = () => {
+  const handleOnRemoveImageFromUploader = () => {
     onRemoveImage();
     setHeaderLocalDisplayImage(null);
   };
@@ -174,52 +171,19 @@ const BannerImageField = ({
             />
           </Box>
         )}
-        {displayImageCropper ? (
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap="20px"
-            mb={displayOverlayControls ? '32px' : '0'}
-          >
-            <ImageCropper
-              image={headerLocalDisplayImage}
-              onComplete={onAddImage}
-            />
-            <Warning>
-              <Text>
-                <FormattedMessage
-                  {...messages.fixedRatioImageCropperInfo}
-                  values={{
-                    link: (
-                      <a
-                        href={formatMessage(messages.imageSupportPageURL)}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FormattedMessage
-                          {...messages.fixedRatioImageCropperInfoLink}
-                        />
-                      </a>
-                    ),
-                  }}
-                />
-              </Text>
-            </Warning>
-          </Box>
-        ) : (
-          <Box mb="20px">
-            <HeaderImageDropzone
-              onAdd={bannerImageAddHandler}
-              onRemove={bannerImageRemoveHandler}
-              overlayColor={bannerOverlayColor}
-              overlayOpacity={bannerOverlayOpacity}
-              headerError={bannerError}
-              header_bg={headerLocalDisplayImage}
-              previewDevice={previewDevice}
-              layout={bannerLayout || 'full_width_banner_layout'}
-            />
-          </Box>
-        )}
+        <ImageUploader
+          bannerLayout={bannerLayout}
+          bannerOverlayColor={bannerOverlayColor}
+          bannerOverlayOpacity={bannerOverlayOpacity}
+          displayImageCropper={displayImageCropper}
+          displayOverlayControls={displayOverlayControls}
+          onAddImage={onAddImage}
+          onAddImageToUploader={handleOnAddImageToUploader}
+          onRemoveImageFromUploader={handleOnRemoveImageFromUploader}
+          previewDevice={previewDevice}
+          bannerError={bannerError}
+          headerLocalDisplayImage={headerLocalDisplayImage}
+        />
         {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
         {displayOverlayControls && (
           <OverlayControls
