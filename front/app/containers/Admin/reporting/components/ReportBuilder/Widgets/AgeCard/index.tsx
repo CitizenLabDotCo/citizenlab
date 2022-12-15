@@ -16,13 +16,13 @@ interface Props {
 }
 
 const AgeCard = ({ startAt, endAt, projectId, title }: Props) => {
-  const ageSeries = useAgeSerie({
+  const ageSerie = useAgeSerie({
     startAt,
     endAt,
     projectId,
   });
 
-  if (isNilOrError(ageSeries)) return null;
+  if (isNilOrError(ageSerie)) return null;
 
   return (
     <Box width="100%" height="260px" pb="20px">
@@ -31,7 +31,7 @@ const AgeCard = ({ startAt, endAt, projectId, title }: Props) => {
       </Title>
       <Box height="200px">
         <BarChart
-          data={ageSeries}
+          data={ageSerie}
           margin={{
             left: -20,
             right: 20,

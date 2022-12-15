@@ -13,6 +13,7 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
   innerRef?: React.RefObject<any>;
+  legendMargin?: number;
   data: GenderSerie;
 }
 
@@ -22,7 +23,7 @@ const makeLegendItem = (row: GenderSerie[number], i: number): LegendItem => ({
   label: `${row.name} (${row.percentage}%)`,
 });
 
-const Chart = ({ innerRef, data }: Props) => {
+const Chart = ({ innerRef, legendMargin = 50, data }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => setHoverIndex(rowIndex);
@@ -51,7 +52,7 @@ const Chart = ({ innerRef, data }: Props) => {
       legend={{
         items: data.map(makeLegendItem),
         maintainGraphSize: true,
-        marginLeft: 50,
+        marginLeft: legendMargin,
         position: 'right-center',
       }}
       onMouseOver={onMouseOver}

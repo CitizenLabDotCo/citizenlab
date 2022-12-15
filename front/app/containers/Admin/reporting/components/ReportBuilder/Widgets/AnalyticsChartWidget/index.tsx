@@ -2,7 +2,7 @@ import React from 'react';
 
 // Components
 import { Box, Input, Title } from '@citizenlab/cl2-component-library';
-import GenderChart from 'containers/Admin/dashboard/users/Charts/GenderChart';
+import GenderCard from '../GenderCard';
 import AgeCard from '../AgeCard';
 import VisitorsReportCard from '../VisitorsCard';
 import VisitorsTrafficSourcesReportCard from '../VisitorTrafficSourcesCard';
@@ -70,7 +70,7 @@ const AnalyticsChartWidget = ({
       chart = <VisitorsTrafficSourcesReportCard {...analyticsChartProps} />;
       break;
     case 'GenderChart':
-      chart = <GenderChart {...statChartProps} />;
+      chart = <GenderCard {...statChartProps} />;
       break;
     case 'AgeChart':
       chart = <AgeCard {...statChartProps} />;
