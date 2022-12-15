@@ -191,7 +191,7 @@ const BannerImageField = ({
 
   const displayOverlayControls =
     (bannerLayout === 'full_width_banner_layout' ||
-      bannerLayout === 'fixed_ratio_layout') &&
+      (bannerLayout === 'fixed_ratio_layout' && !displayImageCropper)) &&
     headerLocalDisplayImage;
 
   return (
@@ -245,7 +245,7 @@ const BannerImageField = ({
           </Box>
         )}
         {displayImageCropper ? (
-          <Box display="flex" flexDirection="column" gap="8px">
+          <Box display="flex" flexDirection="column" gap="20px" mb="32px">
             <ImageCropper
               image={headerLocalDisplayImage}
               onComplete={onAddImage}
