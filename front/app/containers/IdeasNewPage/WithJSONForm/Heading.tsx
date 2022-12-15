@@ -131,6 +131,7 @@ export const Heading = ({
             color={headingTextColor}
             variant="bodyL"
             fontWeight="normal"
+            pb={isSurveyOnMobile ? '0px' : '8px'}
             fontSize={isSurveyOnMobile ? 'xl' : 'xxxxl'}
             my={isSurveyOnMobile ? undefined : '0px'}
           >

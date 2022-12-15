@@ -43,7 +43,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
   html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea, .ql-container, .ql-toolbar.ql-snow {
-    font-family: ${(props: any) =>
+    font-family: ${(props) =>
       props.theme
         .fontFamily}, 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   }

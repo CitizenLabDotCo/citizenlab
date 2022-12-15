@@ -4,7 +4,7 @@ module ReportBuilder
   module WebApi
     module V1
       class ReportSerializer < ::WebApi::V1::BaseSerializer
-        attributes :name, :updated_at
+        attributes :name, :created_at, :updated_at
 
         has_one(
           :layout,
