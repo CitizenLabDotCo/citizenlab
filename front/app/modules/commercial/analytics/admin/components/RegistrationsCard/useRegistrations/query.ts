@@ -3,7 +3,7 @@ import {
   getDateFilter,
   getDateFilterLastPeriod,
   getInterval,
-} from '../../../utils/query';
+} from '../../../../../../../components/admin/GraphCards/_utils/query';
 
 // typings
 import {

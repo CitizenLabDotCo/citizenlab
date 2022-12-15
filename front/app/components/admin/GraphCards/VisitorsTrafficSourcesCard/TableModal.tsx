@@ -10,7 +10,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { ProjectId, Dates } from '../../typings';
+import { ProjectId, Dates } from '../typings';
 
 type Props = ProjectId &
   Dates & {

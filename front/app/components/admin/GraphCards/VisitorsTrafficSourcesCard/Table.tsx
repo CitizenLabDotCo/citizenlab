@@ -28,7 +28,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { ProjectId, Dates } from '../../typings';
+import { ProjectId, Dates } from '../typings';
 
 const Percentage = ({ children }) => (
   <Text

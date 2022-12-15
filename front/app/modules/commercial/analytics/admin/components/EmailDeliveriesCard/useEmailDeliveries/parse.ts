@@ -2,7 +2,7 @@ import moment, { Moment } from 'moment';
 
 // utils
 import { groupBy } from 'lodash-es';
-import { timeSeriesParser } from '../../../utils/timeSeries';
+import { timeSeriesParser } from '../../../../../../../components/admin/GraphCards/_utils/timeSeries';
 import { keys, get } from 'utils/helperUtils';
 
 // typings

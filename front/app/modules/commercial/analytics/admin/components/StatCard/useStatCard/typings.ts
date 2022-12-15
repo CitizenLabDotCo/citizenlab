@@ -1,5 +1,9 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
-import { Dates, ProjectId, Resolution } from '../../../typings';
+import {
+  Dates,
+  ProjectId,
+  Resolution,
+} from '../../../../../../../components/admin/GraphCards/typings';
 import { MessageDescriptor } from 'react-intl';
 import { Query } from '../../../../../../../services/analyticsFacts';
 

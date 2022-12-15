@@ -12,13 +12,18 @@ import Chart from './Chart';
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
+import { getTimePeriodTranslationByResolution } from '../../../../../../components/admin/GraphCards/_utils/resolution';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { ProjectId, Dates, Resolution, Layout } from '../../typings';
+import {
+  ProjectId,
+  Dates,
+  Resolution,
+  Layout,
+} from '../../../../../../components/admin/GraphCards/typings';
 
 type Props = ProjectId &
   Dates &

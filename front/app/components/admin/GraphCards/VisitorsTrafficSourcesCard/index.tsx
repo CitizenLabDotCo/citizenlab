@@ -19,7 +19,7 @@ import getXlsxData from './getXlsxData';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { ProjectId, Dates } from '../../typings';
+import { ProjectId, Dates } from '../typings';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 
 type Props = ProjectId & Dates;

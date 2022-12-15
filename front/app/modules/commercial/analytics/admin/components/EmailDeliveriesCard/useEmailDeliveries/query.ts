@@ -1,5 +1,8 @@
 // utils
-import { getDateFilter, getInterval } from '../../../utils/query';
+import {
+  getDateFilter,
+  getInterval,
+} from '../../../../../../../components/admin/GraphCards/_utils/query';
 
 // typings
 import { QueryParameters } from './typings';

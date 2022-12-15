@@ -20,7 +20,10 @@ import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Response, PieRow, QueryParameters } from './typings';
 
 // utils
-import { getProjectFilter, getDateFilter } from '../../../utils/query';
+import {
+  getProjectFilter,
+  getDateFilter,
+} from '../../../../../../../components/admin/GraphCards/_utils/query';
 
 const query = ({
   projectId,

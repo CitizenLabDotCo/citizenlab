@@ -1,15 +1,15 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useVisitorReferrerTypes from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsTrafficSourcesCard/useVisitorReferrerTypes';
+import useVisitorReferrerTypes from '../../../../../../../components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
-import EmptyPieChart from '../../../../../../../modules/commercial/analytics/admin/components/EmptyPieChart';
-import Chart from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsTrafficSourcesCard/Chart';
+import EmptyPieChart from '../../../../../../../components/admin/GraphCards/EmptyPieChart';
+import Chart from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/Chart';
 
 // i18n
-import messages from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsTrafficSourcesCard/messages';
+import messages from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
@@ -20,7 +20,7 @@ import {
   ProjectId,
   Dates,
   ChartDisplay,
-} from '../../../../../../../modules/commercial/analytics/admin/typings';
+} from '../../../../../../../components/admin/GraphCards/typings';
 
 type Props = ProjectId & Dates & ChartDisplay;
 

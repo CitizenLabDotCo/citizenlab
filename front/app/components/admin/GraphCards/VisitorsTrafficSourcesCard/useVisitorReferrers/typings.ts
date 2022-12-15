@@ -1,4 +1,4 @@
-import { ProjectId, Dates, Pagination } from '../../../typings';
+import { ProjectId, Dates, Pagination } from '../../typings';
 import { ReferrerTypeName } from '../useVisitorReferrerTypes/typings';
 import { ILinks } from 'typings';
 

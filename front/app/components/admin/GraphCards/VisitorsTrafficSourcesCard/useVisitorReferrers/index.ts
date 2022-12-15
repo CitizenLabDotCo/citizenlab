@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // services
-import { analyticsStream } from '../../../../../../../services/analyticsFacts';
+import { analyticsStream } from '../../../../../services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -13,7 +13,7 @@ import { parseTableData } from './parse';
 // utils
 import { referrersListQuery, referrersTotalQuery } from './query';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { getPageNumberFromUrl } from '../../../utils/pagination';
+import { getPageNumberFromUrl } from '../../_utils/pagination';
 
 // typings
 import {

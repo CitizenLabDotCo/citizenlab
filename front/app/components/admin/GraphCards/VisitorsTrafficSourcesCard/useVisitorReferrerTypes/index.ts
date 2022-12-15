@@ -5,7 +5,7 @@ import {
   analyticsStream,
   Query,
   QuerySchema,
-} from '../../../../../../../services/analyticsFacts';
+} from '../../../../../services/analyticsFacts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -15,7 +15,7 @@ import { getTranslations } from './translations';
 import { parsePieData, parseExcelData } from './parse';
 
 // utils
-import { getProjectFilter, getDateFilter } from '../../../utils/query';
+import { getProjectFilter, getDateFilter } from '../../_utils/query';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings

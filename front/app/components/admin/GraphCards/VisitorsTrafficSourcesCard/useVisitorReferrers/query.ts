@@ -1,13 +1,10 @@
 // utils
-import { getProjectFilter, getDateFilter } from '../../../utils/query';
+import { getProjectFilter, getDateFilter } from '../../_utils/query';
 
 // typings
 // import { QueryParameters, QueryParametersWithoutPagination } from './typings';
-import { ProjectId, Dates, Pagination } from '../../../typings';
-import {
-  Query,
-  QuerySchema,
-} from '../../../../../../../services/analyticsFacts';
+import { ProjectId, Dates, Pagination } from '../../typings';
+import { Query, QuerySchema } from '../../../../../services/analyticsFacts';
 
 export const referrersListQuery = ({
   projectId,

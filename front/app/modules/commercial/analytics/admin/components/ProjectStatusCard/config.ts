@@ -1,8 +1,11 @@
 import messages from './messages';
 
 // Utils
-import { formatCountValue } from '../../utils/parse';
-import { getDateFilter, getProjectFilter } from '../../utils/query';
+import { formatCountValue } from '../../../../../../components/admin/GraphCards/_utils/parse';
+import {
+  getDateFilter,
+  getProjectFilter,
+} from '../../../../../../components/admin/GraphCards/_utils/query';
 import { underscoreCase } from '../StatCard/useStatCard/parse';
 
 // Typings

@@ -22,7 +22,11 @@ import usePostsFeedback from './usePostsFeedback';
 
 // typings
 import { isNilOrError } from 'utils/helperUtils';
-import { ProjectId, Dates, Resolution } from '../../typings';
+import {
+  ProjectId,
+  Dates,
+  Resolution,
+} from '../../../../../../components/admin/GraphCards/typings';
 
 type Props = ProjectId & Dates & Resolution;
 

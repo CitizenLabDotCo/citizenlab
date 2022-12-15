@@ -19,7 +19,7 @@ import {
   Dates,
   Resolution,
   ChartDisplay,
-} from '../../../../../../../modules/commercial/analytics/admin/typings';
+} from '../../../../../../../components/admin/GraphCards/typings';
 import { Stats } from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard/useVisitors/typings';
 
 // utils

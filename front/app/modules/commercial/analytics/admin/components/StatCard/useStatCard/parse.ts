@@ -1,6 +1,6 @@
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { StatCardData, StatCardLabels } from './typings';
-import { getTimePeriodTranslationByResolution } from '../../../utils/resolution';
+import { getTimePeriodTranslationByResolution } from '../../../../../../../components/admin/GraphCards/_utils/resolution';
 import { FormatMessage } from '../../../../../../../typings';
 import { IResolution } from '../../../../../../../components/admin/ResolutionControl';
 import { MessageDescriptor } from 'react-intl';

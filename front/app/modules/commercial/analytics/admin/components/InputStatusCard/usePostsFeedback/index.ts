@@ -28,7 +28,10 @@ import {
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { isEmptyResponse } from './utils';
-import { getProjectFilter, getDateFilter } from '../../../utils/query';
+import {
+  getProjectFilter,
+  getDateFilter,
+} from '../../../../../../../components/admin/GraphCards/_utils/query';
 
 // typings
 import {
