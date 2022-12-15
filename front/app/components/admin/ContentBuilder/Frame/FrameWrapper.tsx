@@ -16,7 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import { Locale } from 'typings';
 
-const StyledRightColumn = styled(RightColumn)`
+export const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
   z-index: 2;
   margin: 0;
@@ -26,31 +26,35 @@ const StyledRightColumn = styled(RightColumn)`
   overflow-y: auto;
 `;
 
+export const ErrorMessage = ({
+  localesWithError,
+}: {
+  localesWithError: Locale[];
+}) => {
+  if (localesWithError.length === 0) return null;
+  return (
+    <Error
+      text={
+        <FormattedMessage
+          {...messages.localeErrorMessage}
+          values={{
+            locale: localesWithError[0].toUpperCase(),
+          }}
+        />
+      }
+    />
+  );
+};
+
 interface Props {
-  width?: string;
   localesWithError: Locale[];
   children: React.ReactNode;
 }
 
-const FrameWrapper = ({
-  width = '1000px',
-  localesWithError,
-  children,
-}: Props) => (
+const FrameWrapper = ({ localesWithError, children }: Props) => (
   <StyledRightColumn>
-    <Box width={width}>
-      {localesWithError.length > 0 && (
-        <Error
-          text={
-            <FormattedMessage
-              {...messages.localeErrorMessage}
-              values={{
-                locale: localesWithError[0].toUpperCase(),
-              }}
-            />
-          }
-        />
-      )}
+    <Box>
+      <ErrorMessage localesWithError={localesWithError} />
       {children}
     </Box>
   </StyledRightColumn>

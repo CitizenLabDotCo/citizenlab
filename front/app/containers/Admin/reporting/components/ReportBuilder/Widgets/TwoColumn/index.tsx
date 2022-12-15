@@ -23,6 +23,7 @@ const StyledBox = styled(Box)`
   min-height: 40px;
   width: 100%;
   display: grid;
+  grid-gap: 8px;
 
   grid-template-columns: ${(props: TwoColumnProps) =>
     props.columnLayout === '1-1'

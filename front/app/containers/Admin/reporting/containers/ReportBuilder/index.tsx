@@ -20,7 +20,10 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import Editor from '../../components/ReportBuilder/Editor';
 import TopBar from '../../components/ReportBuilder/TopBar';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
-import FrameWrapper from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import {
+  StyledRightColumn,
+  ErrorMessage,
+} from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
 
@@ -31,7 +34,7 @@ import { stylingConsts } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // constants
-import { A4_WIDTH } from '../../constants';
+import { A4_WIDTH, A4_MARGIN_X, A4_MARGIN_Y } from '../../constants';
 
 // typings
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
@@ -148,9 +151,20 @@ const ReportBuilder = ({ reportId }: Props) => {
           display={previewEnabled ? 'none' : 'flex'}
         >
           {selectedLocale && <Toolbox />}
-          <FrameWrapper width={A4_WIDTH} localesWithError={localesWithError}>
-            <Frame editorData={getEditorData()} />
-          </FrameWrapper>
+          <StyledRightColumn>
+            <Box width={A4_WIDTH}>
+              <ErrorMessage localesWithError={localesWithError} />
+              <Box
+                background="white"
+                px={A4_MARGIN_X}
+                py={A4_MARGIN_Y}
+                width="100%"
+                height="100%"
+              >
+                <Frame editorData={getEditorData()} />
+              </Box>
+            </Box>
+          </StyledRightColumn>
           <Settings />
         </Box>
       </Editor>

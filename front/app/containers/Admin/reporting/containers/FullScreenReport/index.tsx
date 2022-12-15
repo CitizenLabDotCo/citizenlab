@@ -15,7 +15,7 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // constants
-import { A4_WIDTH } from '../../constants';
+import { A4_WIDTH, A4_MARGIN_Y } from '../../constants';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
@@ -66,10 +66,15 @@ const FullScreenReport = ({ reportId }: Props) => {
       {isLoadingLayout && <Spinner />}
       {!isLoadingLayout && editorData && (
         <Centerer>
-          <Box width={A4_WIDTH}>
-            <Editor isPreview={true}>
-              <ContentBuilderFrame editorData={editorData} />
-            </Editor>
+          {/* Printing adds some arbitrary left margin- picked
+          these padding values through trial and error to make it
+          look nice and centered */}
+          <Box width={A4_WIDTH} pl="5mm" pr="15mm" py={A4_MARGIN_Y}>
+            <Box>
+              <Editor isPreview={true}>
+                <ContentBuilderFrame editorData={editorData} />
+              </Editor>
+            </Box>
           </Box>
         </Centerer>
       )}

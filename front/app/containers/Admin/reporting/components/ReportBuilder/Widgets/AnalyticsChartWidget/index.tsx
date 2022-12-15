@@ -7,6 +7,9 @@ import AgeCard from '../AgeCard';
 import VisitorsReportCard from '../VisitorsCard';
 import VisitorsTrafficSourcesReportCard from '../VisitorTrafficSourcesCard';
 
+// styling
+import { colors, stylingConsts } from 'utils/styleUtils';
+
 // Utils
 import moment, { Moment } from 'moment';
 import { useIntl } from 'utils/cl-intl';
@@ -75,7 +78,12 @@ const AnalyticsChartWidget = ({
   }
 
   return (
-    <Box id="e2e-text-box" minHeight="26px">
+    <Box
+      minHeight="26px"
+      border={`${colors.grey400} 1px solid`}
+      borderRadius={stylingConsts.borderRadius}
+      my="4px"
+    >
       {chart}
     </Box>
   );

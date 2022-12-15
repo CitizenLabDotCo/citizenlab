@@ -34,6 +34,7 @@ const AgeCard = ({ startAt, endAt, projectId, title }: Props) => {
           data={ageSeries}
           margin={{
             left: -20,
+            right: 20,
           }}
           mapping={{
             category: 'name',
