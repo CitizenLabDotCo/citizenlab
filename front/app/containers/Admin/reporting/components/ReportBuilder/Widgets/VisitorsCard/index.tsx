@@ -4,8 +4,7 @@ import React, { useRef } from 'react';
 import useVisitors from 'components/admin/GraphCards/VisitorsCard/useVisitors';
 
 // components
-import GraphCard from 'components/admin/GraphCard';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
 
@@ -45,8 +44,6 @@ const VisitorsReportCard = ({
     resolution,
   });
 
-  const cardTitle = title ? title : formatMessage(messages.visitors);
-
   const EMPTY_STAT = { value: '-', lastPeriod: '-' };
   const EMPTY_DATA: Stats = {
     visitors: EMPTY_STAT,
@@ -57,8 +54,11 @@ const VisitorsReportCard = ({
   const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
 
   return (
-    <GraphCard title={cardTitle}>
-      <Box px="20px" width="100%" display="flex" flexDirection="row">
+    <Box width="100%" height="260px" pb="20px" px="16px">
+      <Title variant="h3" color="primary">
+        {title}
+      </Title>
+      <Box height="100%" display="flex" flexDirection="row" ml="4px">
         <Box display="flex" flexDirection="row">
           <Box>
             <Statistic
@@ -74,8 +74,8 @@ const VisitorsReportCard = ({
           </Box>
         </Box>
 
-        <Box flexGrow={1} display="flex" justifyContent="flex-end">
-          <Box pt="8px" width="95%" maxWidth="800px" height="250px">
+        <Box flexGrow={1} display="flex" justifyContent="flex-end" pb="32px">
+          <Box pt="8px" width="95%" maxWidth="800px">
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAtMoment}
@@ -86,7 +86,7 @@ const VisitorsReportCard = ({
           </Box>
         </Box>
       </Box>
-    </GraphCard>
+    </Box>
   );
 };
 
