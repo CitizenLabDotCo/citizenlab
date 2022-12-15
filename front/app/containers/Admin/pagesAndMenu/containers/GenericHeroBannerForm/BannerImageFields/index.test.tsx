@@ -81,83 +81,6 @@ describe('BannerImageFields', () => {
     });
   });
 
-  describe('Fixed-ratio layout', () => {
-    describe('Layout preview selector', () => {
-      it('does not show display preview select when the layout type is fixed_ratio_layout', async () => {
-        render(
-          <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
-        );
-
-        await waitFor(() => {
-          const select = screen.queryByRole('combobox', {
-            name: /Show preview for/,
-          });
-          expect(select).toBeNull();
-        });
-      });
-    });
-
-    describe('Image overlay controls', () => {
-      it('shows overlay controls correctly when fixed_ratio_layout', async () => {
-        render(
-          <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
-        );
-
-        await waitFor(() => {
-          const overlayInput = screen.getByLabelText('Image overlay color');
-          expect(overlayInput).toBeInTheDocument();
-        });
-      });
-    });
-
-    describe('Image cropper', () => {
-      it('does not show react-easy-crop when image is saved for fixed_ratio_layout', async () => {
-        const { container } = render(
-          <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
-        );
-
-        const file = new File(['file'], 'file.png', {
-          type: 'image/png',
-        });
-
-        act(() => {
-          fireEvent.change(container.querySelector('#header-dropzone'), {
-            target: { files: [file] },
-          });
-        });
-
-        await waitFor(() => {
-          const cropContainer = container.querySelector(
-            '.reactEasyCrop_Container'
-          );
-          expect(cropContainer).not.toBeInTheDocument();
-        });
-      });
-      it('shows react-easy-crop container when image is uploaded but not saved for fixed_ratio_layout', async () => {
-        const { container } = render(
-          <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
-        );
-
-        const file = new File(['file'], 'file.png', {
-          type: 'image/png',
-        });
-
-        act(() => {
-          fireEvent.change(container.querySelector('#header-dropzone'), {
-            target: { files: [file] },
-          });
-        });
-
-        await waitFor(() => {
-          const cropContainer = container.querySelector(
-            '.reactEasyCrop_Container'
-          );
-          expect(cropContainer).toBeInTheDocument();
-        });
-      });
-    });
-  });
-
   describe('Two-column layout', () => {
     describe('Image overlay controls', () => {
       it('does not show overlay controls correctly when two_column_layout', async () => {
@@ -207,6 +130,83 @@ describe('BannerImageFields', () => {
           );
           expect(cropContainer).not.toBeInTheDocument();
         });
+      });
+    });
+  });
+});
+
+describe('Fixed-ratio layout', () => {
+  describe('Layout preview selector', () => {
+    it('does not show display preview select when the layout type is fixed_ratio_layout', async () => {
+      render(
+        <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
+      );
+
+      await waitFor(() => {
+        const select = screen.queryByRole('combobox', {
+          name: /Show preview for/,
+        });
+        expect(select).toBeNull();
+      });
+    });
+  });
+
+  describe('Image overlay controls', () => {
+    it('shows overlay controls correctly when fixed_ratio_layout', async () => {
+      render(
+        <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
+      );
+
+      await waitFor(() => {
+        const overlayInput = screen.getByLabelText('Image overlay color');
+        expect(overlayInput).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Image cropper', () => {
+    it('does not show react-easy-crop when image is saved for fixed_ratio_layout', async () => {
+      const { container } = render(
+        <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
+      );
+
+      const file = new File(['file'], 'file.png', {
+        type: 'image/png',
+      });
+
+      act(() => {
+        fireEvent.change(container.querySelector('#header-dropzone'), {
+          target: { files: [file] },
+        });
+      });
+
+      await waitFor(() => {
+        const cropContainer = container.querySelector(
+          '.reactEasyCrop_Container'
+        );
+        expect(cropContainer).not.toBeInTheDocument();
+      });
+    });
+    it('shows react-easy-crop container when image is uploaded but not saved for fixed_ratio_layout', async () => {
+      const { container } = render(
+        <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
+      );
+
+      const file = new File(['file'], 'file.png', {
+        type: 'image/png',
+      });
+
+      act(() => {
+        fireEvent.change(container.querySelector('#header-dropzone'), {
+          target: { files: [file] },
+        });
+      });
+
+      await waitFor(() => {
+        const cropContainer = container.querySelector(
+          '.reactEasyCrop_Container'
+        );
+        expect(cropContainer).toBeInTheDocument();
       });
     });
   });
