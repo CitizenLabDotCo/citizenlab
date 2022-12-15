@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useActiveUsers from '../../hooks/useActiveUsers';
+import useActiveUsers from './useActiveUsers';
 
 // components
 import GraphCard from 'components/admin/GraphCard';

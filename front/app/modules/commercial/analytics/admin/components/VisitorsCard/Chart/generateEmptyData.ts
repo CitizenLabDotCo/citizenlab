@@ -1,5 +1,5 @@
 // utils
-import { getEmptyRow } from '../../../hooks/useVisitors/parse';
+import { getEmptyRow } from '../useVisitors/parse';
 import { emptyDateRange } from '../../../utils/timeSeries';
 
 // typings

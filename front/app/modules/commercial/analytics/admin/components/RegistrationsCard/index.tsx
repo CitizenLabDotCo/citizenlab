@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useRegistrations from '../../hooks/useRegistrations';
+import useRegistrations from './useRegistrations';
 
 // components
 import GraphCard from 'components/admin/GraphCard';

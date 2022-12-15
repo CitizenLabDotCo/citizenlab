@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useVisitorReferrers from '../../hooks/useVisitorReferrers';
+import useVisitorReferrers from './useVisitorReferrers';
 
 // components
 import {

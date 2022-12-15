@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useEmailDeliveries from '../../hooks/useEmailDeliveries';
+import useEmailDeliveries from './useEmailDeliveries';
 
 // components
 import GraphCard from 'components/admin/GraphCard';

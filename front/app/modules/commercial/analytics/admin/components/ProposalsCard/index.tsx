@@ -8,7 +8,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import StatCard from '../StatCard';
 
 // typings
-import { StatCardProps } from '../../hooks/useStatCard/typings';
+import { StatCardProps } from '../StatCard/useStatCard/typings';
 
 const ProposalsCard = ({
   projectId,

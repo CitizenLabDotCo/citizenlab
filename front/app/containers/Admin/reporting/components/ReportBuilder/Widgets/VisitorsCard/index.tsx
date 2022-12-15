@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useVisitors from '../../../../../../../modules/commercial/analytics/admin/hooks/useVisitors';
+import useVisitors from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard/useVisitors';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -20,7 +20,7 @@ import {
   Resolution,
   ChartDisplay,
 } from '../../../../../../../modules/commercial/analytics/admin/typings';
-import { Stats } from '../../../../../../../modules/commercial/analytics/admin/hooks/useVisitors/typings';
+import { Stats } from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard/useVisitors/typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

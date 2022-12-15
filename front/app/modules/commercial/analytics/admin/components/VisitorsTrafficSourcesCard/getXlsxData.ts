@@ -5,8 +5,8 @@ import { apiEndpoint, QuerySchema, Query } from '../../services/analyticsFacts';
 
 // i18n
 import messages from './messages';
-import referrerTypeMessages from '../../hooks/useVisitorReferrerTypes/messages';
-import { getTranslations as getReferrerTranslations } from '../../hooks/useVisitorReferrers/translations';
+import referrerTypeMessages from './useVisitorReferrerTypes/messages';
+import { getTranslations as getReferrerTranslations } from './useVisitorReferrers/translations';
 
 // utils
 import { getProjectFilter, getDateFilter } from '../../utils/query';
@@ -16,7 +16,7 @@ import { roundPercentages } from 'utils/math';
 
 // typings
 import { ProjectId, Dates } from '../../typings';
-import { ReferrerListResponse } from '../../hooks/useVisitorReferrers/typings';
+import { ReferrerListResponse } from './useVisitorReferrers/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { FormatMessage } from 'typings';
 

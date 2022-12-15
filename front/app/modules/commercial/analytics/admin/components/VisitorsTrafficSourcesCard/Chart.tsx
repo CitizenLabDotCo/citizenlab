@@ -7,7 +7,7 @@ import renderTooltip from './renderTooltip';
 import ReferrerListLink from './RefferListLink';
 
 // typings
-import { PieRow } from '../../hooks/useVisitorReferrerTypes/typings';
+import { PieRow } from './useVisitorReferrerTypes/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {

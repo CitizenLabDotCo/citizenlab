@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 // hooks
-import useVisitorReferrerTypes from '../../hooks/useVisitorReferrerTypes';
+import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
 // components
 import GraphCard from 'components/admin/GraphCard';

@@ -1,5 +1,5 @@
 // utils
-import { getEmptyRow } from '../../../hooks/useEmailDeliveries/parse';
+import { getEmptyRow } from '../useEmailDeliveries/parse';
 import { emptyDateRange } from '../../../utils/timeSeries';
 
 // typings

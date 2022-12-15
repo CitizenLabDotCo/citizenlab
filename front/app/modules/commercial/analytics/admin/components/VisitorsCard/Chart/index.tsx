@@ -19,7 +19,7 @@ import { generateEmptyData } from './generateEmptyData';
 // typings
 import { Dates, Resolution } from '../../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { TimeSeries } from '../../../hooks/useVisitors/typings';
+import { TimeSeries } from '../useVisitors/typings';
 
 type Props = Dates &
   Resolution & {

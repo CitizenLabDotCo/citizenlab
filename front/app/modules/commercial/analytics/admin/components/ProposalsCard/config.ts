@@ -4,14 +4,14 @@ import messages from './messages';
 import { getTimePeriodMoment } from '../../utils/resolution';
 import { formatCountValue } from '../../utils/parse';
 import { getDateFilter, getProjectFilter } from '../../utils/query';
-import { underscoreCase } from '../../hooks/useStatCard/parse';
+import { underscoreCase } from '../StatCard/useStatCard/parse';
 
 // Typings
 import {
   StatCardData,
   StatCardProps,
   StatCardConfig,
-} from '../../hooks/useStatCard/typings';
+} from '../StatCard/useStatCard/typings';
 import { Query, QuerySchema } from '../../services/analyticsFacts';
 import moment, { Moment } from 'moment';
 
