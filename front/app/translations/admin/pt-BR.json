@@ -1183,7 +1183,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.shortAnswer": "Resposta curta",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage": "Pesquisa salva com sucesso",
   "app.containers.AdminPage.ProjectEdit.survey.surveyDescription": "Crie e edite as perguntas da pesquisa deste projeto.",
-  "app.containers.AdminPage.ProjectEdit.survey.surveyEnd": "Survey end",
+  "app.containers.AdminPage.ProjectEdit.survey.surveyEnd": "Fim da pesquisa",
   "app.containers.AdminPage.ProjectEdit.survey.surveyResults": "Resultados da pesquisa",
   "app.containers.AdminPage.ProjectEdit.survey.surveyText": "Pesquisa",
   "app.containers.AdminPage.ProjectEdit.survey.surveyTitle": "Pesquisa",
