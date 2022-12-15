@@ -928,7 +928,7 @@ workflows:
             branches:
               only:
                 - master
-          ssh_host: "52.29.30.188"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STAGING
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
           env_file: ".env-staging"
@@ -939,7 +939,7 @@ workflows:
             branches:
               only:
                 - production
-          ssh_host: "52.57.74.84"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
           compose_file: docker-compose-production-benelux.yml
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-production-benelux"
@@ -950,7 +950,7 @@ workflows:
             branches:
               only:
                 - production
-          ssh_host: "35.183.23.116"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
           compose_file: docker-compose-production-canada.yml
           env_file: ".env-production-canada"
       - back-ee-deploy-to-swarm:
@@ -960,7 +960,7 @@ workflows:
             branches:
               only:
                 - production
-          ssh_host: "52.67.181.38"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
@@ -971,7 +971,7 @@ workflows:
             branches:
               only:
                 - production
-          ssh_host: "52.13.59.174"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
@@ -982,7 +982,7 @@ workflows:
             branches:
               only:
                 - production
-          ssh_host: "35.179.69.215"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
@@ -1219,7 +1219,7 @@ workflows:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.57.74.84'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
           env_file: '.env-production-benelux'
       - back-ee-generate-tenant-templates:
           name: 'South America'
@@ -1227,7 +1227,7 @@ workflows:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.67.181.38'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
           env_file: '.env-web'
       - back-ee-generate-tenant-templates:
           name: 'Canada'
@@ -1235,7 +1235,7 @@ workflows:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '35.183.23.116'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
           env_file: '.env-production-canada'
       - back-ee-generate-tenant-templates:
           name: 'US West'
@@ -1243,7 +1243,7 @@ workflows:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.13.59.174'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
           env_file: '.env-web'
       - back-ee-generate-tenant-templates:
           name: 'UK'
@@ -1251,7 +1251,7 @@ workflows:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '35.179.69.215'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           env_file: '.env-web'
       - back-ee-test-tenant-templates:
           context:
@@ -1295,12 +1295,12 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-ee-generate-tenant-templates:
-          name: 'Benelux'
+          name: 'Europe (mainland)'
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.57.74.84'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
           env_file: '.env-production-benelux'
       - back-ee-generate-tenant-templates:
           name: 'South America'
@@ -1308,7 +1308,7 @@ workflows:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.67.181.38'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
           env_file: '.env-web'
       - back-ee-generate-tenant-templates:
           name: 'Canada'
@@ -1316,7 +1316,7 @@ workflows:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '35.183.23.116'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
           env_file: '.env-production-canada'
       - back-ee-generate-tenant-templates:
           name: 'US West'
@@ -1324,7 +1324,7 @@ workflows:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '52.13.59.174'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
           env_file: '.env-web'
       - back-ee-generate-tenant-templates:
           name: 'UK'
@@ -1332,7 +1332,7 @@ workflows:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: '35.179.69.215'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           env_file: '.env-web'
       - back-ee-test-tenant-templates:
           context:
@@ -1375,28 +1375,28 @@ workflows:
           name: 'South America'
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: '52.67.181.38'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
           env_file: '.env-web'
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'Canada'
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: '35.183.23.116'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
           env_file: '.env-production-canada'
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'US West'
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: '52.13.59.174'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
           env_file: '.env-web'
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'UK'
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: '35.179.69.215'
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           env_file: '.env-web'
       - slack-invalid-data-success:
           name: ':tada: SUCCESS: No invalid data was detected!' # Mentions are not supported for basic_success_1
