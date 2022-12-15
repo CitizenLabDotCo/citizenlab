@@ -103,7 +103,7 @@ const CategoryButtonWithIcon = styled(CategoryButton)`
 
 const CategoryInfoBox = styled.div`
   background-color: ${colors.teal100};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   color: ${colors.primary};
   border-radius: 3px;
   padding: 8px 20px;

@@ -12,12 +12,12 @@ module ReportBuilder
     end
 
     def before_update(report, user)
-      layout_side_fx_service.before_update(report.layout, user)
+      layout_side_fx_service.before_update(report.layout, user) if report.layout.changed?
     end
 
     def after_update(report, user)
       super(report, user)
-      layout_side_fx_service.after_update(report.layout, user)
+      layout_side_fx_service.after_update(report.layout, user) if report.layout.previous_changes.present?
     end
 
     def before_destroy(report, user)

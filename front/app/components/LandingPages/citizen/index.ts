@@ -1,3 +1,4 @@
+import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -10,7 +11,7 @@ export const Container = styled.main`
   flex-direction: column;
   align-items: center;
   position: relative;
-  background: #fff;
+  background: ${colors.background};
 
   ${media.tablet`
     min-height: auto;

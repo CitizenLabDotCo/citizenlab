@@ -47,7 +47,9 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
 
   def description_option(field)
     @descriptions ||= {}
-    @descriptions[field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
+    locale = I18n.locale.to_s
+    @descriptions[locale] ||= {}
+    @descriptions[locale][field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
   end
 
   def generate_with_pages(fields)

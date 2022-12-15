@@ -6,6 +6,10 @@ class EventsFinder < ApplicationFinder
 
   private
 
+  def static_page_id_condition(static_page_id)
+    where(project_id: StaticPage.find(static_page_id).filter_projects(Project.all))
+  end
+
   def project_ids_condition(project_ids)
     where(project_id: project_ids)
   end
