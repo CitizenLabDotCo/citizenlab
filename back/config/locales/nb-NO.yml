@@ -1,4 +1,4 @@
-"no":
+"nb-NO":
   symbols:
     outside: annet sted
   idea_statuses:
@@ -195,7 +195,7 @@
       upvotes_count: 'Positive stemmer'
       downvotes_count: 'Negative stemmer'
       baskets_count: 'Kurver'
-      input_url: 'URL-adresse'
+      input_url: 'URL'
       project: 'Prosjekt'
       status: 'Status'
       assignee_fullname: 'Anvist til'

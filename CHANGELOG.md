@@ -1,6 +1,16 @@
 # Changelog
 
-## Next
+## 2022-12-14
+
+### Added
+
+- [CL-1552] Displaying projects based on area or topic on custom pages. Also events related to the projects can be shown.
+
+## 2022-12-13
+
+### Fixed
+
+- [CL-1969] Fixed bug where idea form input term not matching back office configuration
 
 ### Changed
 
