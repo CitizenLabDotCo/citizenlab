@@ -10,13 +10,19 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 
 // intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Controller, useFormContext } from 'react-hook-form';
+import { LogicType, RuleType } from '../utils';
+import { IFlatCustomField } from 'services/formCustomFields';
+import { isRuleValid } from 'utils/yup/validateLogic';
 
 type RuleInputProps = {
+  fieldId: string;
+  validationError: string | undefined;
   answer: { key: string | number | undefined; label: string | undefined };
   name: string;
   pages:
@@ -27,16 +33,21 @@ type RuleInputProps = {
     | undefined;
 };
 
-type LogicType = { rules: { if: string | number; goto_page_id: string }[] };
-
-export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
+export const RuleInput = ({
+  fieldId,
+  pages,
+  name,
+  answer,
+  validationError,
+}: RuleInputProps) => {
   const { setValue, watch, control } = useFormContext();
-  const rules = (watch(name) as LogicType).rules;
-  const logic = watch(name) as LogicType;
-  const initialValue = rules
+  const rules: RuleType[] = (watch(name) as LogicType).rules;
+  const logic: LogicType = watch(name);
+  const fields: IFlatCustomField[] = watch('customFields');
+  const initialValue: RuleType | undefined = rules
     ? rules.find((rule) => rule.if === answer.key)
     : undefined;
-
+  const [hasError, setHasError] = useState(false);
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
     initialValue ? initialValue.goto_page_id : undefined
   );
@@ -58,6 +69,7 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
         if: answer.key,
         goto_page_id: page.value.toString(),
       };
+      setHasError(!isRuleValid(newRule, fieldId, fields));
       if (logic.rules) {
         const newRulesArray = logic.rules;
         newRulesArray.push(newRule);
@@ -131,7 +143,10 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
                 )}
               </Box>
               {showRuleInput && (
-                <Box mb="24px" display="flex">
+                <Box
+                  mb={validationError && hasError ? '8px' : '24px'}
+                  display="flex"
+                >
                   <Box
                     flexGrow={0}
                     flexShrink={0}
@@ -177,6 +192,16 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
                       />
                     </Button>
                   </Box>
+                </Box>
+              )}
+              {validationError && hasError && (
+                <Box mb="12px">
+                  <Error
+                    marginTop="8px"
+                    marginBottom="8px"
+                    text={validationError}
+                    scrollIntoView={false}
+                  />
                 </Box>
               )}
             </>

@@ -15,6 +15,8 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { useFormContext } from 'react-hook-form';
 
+import { get } from 'lodash-es';
+
 type LogicSettingsProps = {
   pageOptions: { value: string; label: string }[];
   field: IFlatCustomFieldWithIndex;
@@ -29,7 +31,10 @@ export type AnswersType =
 
 export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
-  const { watch } = useFormContext();
+  const {
+    watch,
+    formState: { errors: formContextErrors },
+  } = useFormContext();
   const locale = useLocale();
   const selectOptions = watch(`customFields.${field.index}.options`);
   const linearScaleMaximum = watch(`customFields.${field.index}.maximum`);
@@ -37,6 +42,10 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
   if (isNilOrError(locale)) {
     return null;
   }
+
+  const error = get(formContextErrors, `customFields.${field.index}.logic`);
+  const validationError = error?.message as string | undefined;
+
   // For Select Field
   let answers: AnswersType = selectOptions
     ? selectOptions.map((option) => ({
@@ -65,6 +74,8 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
         answers.map((answer) => (
           <Box key={answer.key}>
             <RuleInput
+              fieldId={field.temp_id || field.id}
+              validationError={validationError}
               name={`customFields.${field.index}.logic`}
               answer={answer}
               pages={pageOptions}
