@@ -1214,7 +1214,7 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-ee-generate-tenant-templates:
-          name: 'Benelux'
+          name: 'Europe (mainland)'
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
@@ -1260,7 +1260,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-ee-docker-image
-            - 'Benelux'
+            - 'Europe (mainland)'
             - 'South America'
             - 'Canada'
             - 'US West'
@@ -1341,7 +1341,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-ee-docker-image
-            - 'Benelux'
+            - 'Europe (mainland)'
             - 'South America'
             - 'Canada'
             - 'US West'
