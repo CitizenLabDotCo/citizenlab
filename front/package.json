@@ -34,7 +34,7 @@
     "majestic": "majestic --port 4231",
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
     "prettier": "prettier --write .",
-    "lint:eslint": "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0",
+    "lint:eslint": "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0 --fix",
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')"
   },
   "majestic": {
@@ -194,10 +194,12 @@
     "enzyme-adapter-react-16": "1.15.6",
     "enzyme-to-json": "3.6.2",
     "eslint": "^8.24.0",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "express": "4.17.3",
     "fork-ts-checker-webpack-plugin": "6.4.0",
     "glob": "7.2.0",
