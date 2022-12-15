@@ -9,16 +9,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
-import Editor from '../../components/ReportBuilder/Editor';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
-
-// constants
-import { A4_WIDTH, A4_MARGIN_Y } from '../../constants';
+import Content from './Content';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
+import { Locale } from 'typings';
 
 const Centerer = styled.div`
   display: flex;
@@ -41,7 +38,7 @@ interface Props {
 
 const FullScreenReport = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const [selectedLocale, setSelectedLocale] = useState<string | undefined>();
+  const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const platformLocale = useLocale();
   const reportLayout = useReportLayout(reportId);
 
@@ -64,18 +61,9 @@ const FullScreenReport = ({ reportId }: Props) => {
       onUpdateLocale={setSelectedLocale}
     >
       {isLoadingLayout && <Spinner />}
-      {!isLoadingLayout && editorData && (
+      {!isLoadingLayout && (
         <Centerer>
-          {/* Printing adds some arbitrary left margin- picked
-          these padding values through trial and error to make it
-          look nice and centered */}
-          <Box width={A4_WIDTH} pl="5mm" pr="15mm" py={A4_MARGIN_Y}>
-            <Box>
-              <Editor isPreview={true}>
-                <ContentBuilderFrame editorData={editorData} />
-              </Editor>
-            </Box>
-          </Box>
+          <Content editorData={editorData} />
         </Centerer>
       )}
     </FullScreenWrapper>

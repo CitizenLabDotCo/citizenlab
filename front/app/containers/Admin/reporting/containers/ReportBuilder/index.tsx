@@ -26,6 +26,7 @@ import {
 } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -168,6 +169,27 @@ const ReportBuilder = ({ reportId }: Props) => {
           <Settings />
         </Box>
       </Editor>
+      <Box
+        width="100%"
+        height="100%"
+        display={previewEnabled ? 'flex' : 'none'}
+        justifyContent="center"
+        mt={`${stylingConsts.menuHeight}px`}
+        pb="100px"
+      >
+        <StyledRightColumn>
+          <Box
+            width={A4_WIDTH}
+            background="white"
+            px={A4_MARGIN_X}
+            py={A4_MARGIN_Y}
+          >
+            <Editor isPreview={true}>
+              <ContentBuilderFrame editorData={getEditorData()} />
+            </Editor>
+          </Box>
+        </StyledRightColumn>
+      </Box>
     </FullscreenContentBuilder>
   );
 };
