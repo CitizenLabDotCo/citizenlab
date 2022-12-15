@@ -17,11 +17,11 @@ import { debounce } from 'lodash-es';
 
 import { useTheme } from 'styled-components';
 import { UploadFile } from 'typings';
-import HeaderImageDropzone from './HeaderImageDropzone';
+import HeaderImageDropzone from '../HeaderImageDropzone';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNil, isNilOrError } from 'utils/helperUtils';
