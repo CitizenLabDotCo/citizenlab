@@ -1,21 +1,15 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
-  ColorPickerInput,
   IconTooltip,
   IOption,
-  Label,
   Select,
   Text,
-  Toggle,
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { debounce } from 'lodash-es';
 
-import { useTheme } from 'styled-components';
 import { UploadFile } from 'typings';
 import HeaderImageDropzone from '../HeaderImageDropzone';
 
@@ -25,41 +19,12 @@ import messages from '../messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNil, isNilOrError } from 'utils/helperUtils';
-import { colors } from 'utils/styleUtils';
 
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
-import RangeInput from 'components/UI/RangeInput';
 import ImageCropper from 'components/admin/ImageCropper';
-
-const StyledBox = styled(Box)`
-  position: relative;
-
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
-  ::after {
-    top: -20px;
-    left: 25px;
-    border-color: transparent transparent #fff transparent;
-    border-width: 10px;
-  }
-
-  ::before {
-    top: -22px;
-    left: 24px;
-    border-color: transparent transparent ${colors.grey300} transparent;
-    border-width: 11px;
-  }
-`;
+import OverlayControls from './OverlayControls';
 
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
@@ -95,10 +60,6 @@ const BannerImageField = ({
   onOverlayOpacityChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const theme = useTheme();
-  const [overlayEnabled, setOverlayEnabled] = useState(
-    typeof bannerOverlayOpacity === 'number' && bannerOverlayOpacity > 0
-  );
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
@@ -134,16 +95,6 @@ const BannerImageField = ({
 
     setBannerError(null);
   }, [headerBg, formatMessage, setFormStatus]);
-
-  useEffect(() => {
-    if (overlayEnabled) {
-      handleOverlayOpacityOnChange(
-        bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
-      );
-    } else {
-      handleOverlayOpacityOnChange(0);
-    }
-  }, [overlayEnabled]);
 
   const bannerImageAddHandler = (newImage: UploadFile[]) => {
     // this base64 value is sent to the API
@@ -245,7 +196,12 @@ const BannerImageField = ({
           </Box>
         )}
         {displayImageCropper ? (
-          <Box display="flex" flexDirection="column" gap="20px" mb="32px">
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="20px"
+            mb={displayOverlayControls ? '32px' : '0'}
+          >
             <ImageCropper
               image={headerLocalDisplayImage}
               onComplete={onAddImage}
@@ -287,53 +243,12 @@ const BannerImageField = ({
         )}
         {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
         {displayOverlayControls && (
-          <>
-            <Box mb={overlayEnabled ? '20px' : '0'}>
-              <Toggle
-                onChange={handleOverlayEnabling}
-                checked={overlayEnabled}
-                label={
-                  <Box color={colors.blue500}>
-                    {formatMessage(messages.overlayToggleLabel)}
-                  </Box>
-                }
-              />
-            </Box>
-            {overlayEnabled && (
-              <StyledBox
-                p="40px"
-                border={`1px solid ${colors.grey300}`}
-                borderRadius={theme.borderRadius}
-              >
-                <Box mb="36px">
-                  <ColorPickerInput
-                    id="image-overlay-color"
-                    label={formatMessage(messages.imageOverlayColor)}
-                    type="text"
-                    value={
-                      // default values come from the theme
-                      bannerOverlayColor ?? theme.colors.tenantPrimary
-                    }
-                    onChange={handleOverlayColorOnChange}
-                  />
-                </Box>
-                <Label>
-                  <FormattedMessage {...messages.imageOverlayOpacity} />
-                </Label>
-                <RangeInput
-                  step={1}
-                  min={0}
-                  max={100}
-                  value={
-                    typeof bannerOverlayOpacity === 'number'
-                      ? bannerOverlayOpacity
-                      : theme.signedOutHeaderOverlayOpacity
-                  }
-                  onChange={debouncedHandleOverlayOpacityOnChange}
-                />
-              </StyledBox>
-            )}
-          </>
+          <OverlayControls
+            bannerOverlayColor={bannerOverlayColor}
+            onOverlayColorChange={onOverlayColorChange}
+            bannerOverlayOpacity={bannerOverlayOpacity}
+            onOverlayOpacityChange={onOverlayOpacityChange}
+          />
         )}
       </SectionField>
     </>
