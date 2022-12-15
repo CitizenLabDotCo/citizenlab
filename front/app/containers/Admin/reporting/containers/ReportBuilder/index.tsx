@@ -178,12 +178,7 @@ const ReportBuilder = ({ reportId }: Props) => {
         pb="100px"
       >
         <StyledRightColumn>
-          <Box
-            width={A4_WIDTH}
-            background="white"
-            px={A4_MARGIN_X}
-            py={A4_MARGIN_Y}
-          >
+          <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
             <Editor isPreview={true}>
               <ContentBuilderFrame editorData={getEditorData()} />
             </Editor>
