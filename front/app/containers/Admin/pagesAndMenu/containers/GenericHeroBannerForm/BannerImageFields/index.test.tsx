@@ -82,6 +82,8 @@ describe('BannerImageFields', () => {
   });
 
   describe('Two-column layout', () => {
+    // TO DO: tests to ensure it shows the layout preview selector?
+
     describe('Image overlay controls', () => {
       it('does not show overlay controls correctly when two_column_layout', async () => {
         render(
@@ -94,9 +96,13 @@ describe('BannerImageFields', () => {
         });
       });
     });
+
+    // TO DO: tests to ensure image cropper is not shown?
   });
 
   describe('Two-row layout', () => {
+    // TO DO: tests to ensure it shows the layout preview selector?
+
     describe('Image overlay controls', () => {
       it('does not show overlay controls correctly when two_row_layout', async () => {
         render(<BannerImageFields {...props} bannerLayout="two_row_layout" />);
@@ -151,6 +157,9 @@ describe('Fixed-ratio layout', () => {
     });
   });
 
+  // TO DO: should only show the overlay toggle/controls when we have a
+  // saved picture. Initially, it shouldn't be there, because the image cropper
+  // can't preview it.
   describe('Image overlay controls', () => {
     it('shows overlay controls correctly when fixed_ratio_layout', async () => {
       render(
