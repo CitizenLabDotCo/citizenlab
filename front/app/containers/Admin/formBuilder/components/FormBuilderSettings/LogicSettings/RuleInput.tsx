@@ -47,7 +47,9 @@ export const RuleInput = ({
   const initialValue: RuleType | undefined = rules
     ? rules.find((rule) => rule.if === answer.key)
     : undefined;
-  const [hasError, setHasError] = useState(false);
+  const [hasError, setHasError] = useState(
+    initialValue ? !isRuleValid(initialValue, fieldId, fields) : false
+  );
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
     initialValue ? initialValue.goto_page_id : undefined
   );
