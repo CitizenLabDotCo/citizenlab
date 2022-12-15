@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Image } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
+import { Image, Box } from '@citizenlab/cl2-component-library';
 import { media, isRtl } from 'utils/styleUtils';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
@@ -45,20 +45,9 @@ const StyledImage = styled(Image)`
   `}
 `;
 
-const HeaderImageOverlay = styled.div<{ isFixedBannerLayout: boolean }>`
-  background: ${({ theme }) =>
-    theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary};
-  opacity: ${({ theme, isFixedBannerLayout }) =>
-    isFixedBannerLayout ? 1 : theme.signedInHeaderOverlayOpacity / 100};
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
 const HeaderImage = () => {
   const homepageSettings = useHomepageSettings();
+  const theme = useTheme();
   const objectFitCoverSupported =
     window['CSS'] && CSS.supports('object-fit: cover');
 
@@ -85,7 +74,20 @@ const HeaderImage = () => {
               }
             />
           )}
-          <HeaderImageOverlay isFixedBannerLayout={isFixedBannerLayout} />
+          {/* Image overlay */}
+          <Box
+            background={
+              theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary
+            }
+            opacity={
+              isFixedBannerLayout ? 1 : theme.signedInHeaderOverlayOpacity / 100
+            }
+            position="absolute"
+            top="0"
+            bottom="0"
+            left="0"
+            right="0"
+          />
         </HeaderImageContainerInner>
       </HeaderImageContainer>
     );
