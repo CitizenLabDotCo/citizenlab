@@ -31,7 +31,9 @@ describe('BannerImageFields', () => {
       render(<BannerImageFields {...props} />);
 
       await waitFor(() => {
-        const select = screen.getByRole('combobox');
+        const select = screen.getByRole('combobox', {
+          name: /Show preview for/,
+        });
         expect(select).toBeInTheDocument();
       });
     });
@@ -42,8 +44,10 @@ describe('BannerImageFields', () => {
       );
 
       await waitFor(() => {
-        const select = screen.queryByLabelText('Show preview for');
-        expect(select).not.toBeInTheDocument();
+        const select = screen.queryByRole('combobox', {
+          name: /Show preview for/,
+        });
+        expect(select).toBeNull();
       });
     });
   });
