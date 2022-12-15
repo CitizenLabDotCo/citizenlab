@@ -1,5 +1,5 @@
 // i18n
-import messages from '../../../../modules/commercial/analytics/admin/messages';
+import messages from '../messages';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';

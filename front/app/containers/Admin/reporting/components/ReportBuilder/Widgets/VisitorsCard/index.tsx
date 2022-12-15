@@ -1,17 +1,17 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useVisitors from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard/useVisitors';
+import useVisitors from 'components/admin/GraphCards/VisitorsCard/useVisitors';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
-import Chart from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard/Chart';
+import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import Statistic from '../../../../../../../components/admin/Graphs/Statistic';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard/messages';
+import messages from 'components/admin/GraphCards/VisitorsCard/messages';
 
 // typings
 import {
@@ -19,8 +19,8 @@ import {
   Dates,
   Resolution,
   ChartDisplay,
-} from '../../../../../../../components/admin/GraphCards/typings';
-import { Stats } from '../../../../../../../modules/commercial/analytics/admin/components/VisitorsCard/useVisitors/typings';
+} from 'components/admin/GraphCards/typings';
+import { Stats } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

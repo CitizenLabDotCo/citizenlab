@@ -4,7 +4,7 @@ import {
   getDateFilter,
   getDateFilterLastPeriod,
   getInterval,
-} from '../../../utils/query';
+} from '../../_utils/query';
 
 // typings
 import { QueryParameters } from './typings';
@@ -12,7 +12,7 @@ import {
   Query,
   QuerySchema,
   AggregationsConfig,
-} from '../../../../../../../services/analyticsFacts';
+} from 'services/analyticsFacts';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',

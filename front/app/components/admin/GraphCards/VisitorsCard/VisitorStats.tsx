@@ -7,7 +7,7 @@ import Statistic from 'components/admin/Graphs/Statistic';
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-import { getTimePeriodTranslationByResolution } from '../../utils/resolution';
+import { getTimePeriodTranslationByResolution } from '../_utils/resolution';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';

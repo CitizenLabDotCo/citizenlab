@@ -1,6 +1,6 @@
 // utils
 import { getEmptyRow } from '../useVisitors/parse';
-import { emptyDateRange } from '../../../utils/timeSeries';
+import { emptyDateRange } from '../../_utils/timeSeries';
 
 // typings
 import { Moment } from 'moment';

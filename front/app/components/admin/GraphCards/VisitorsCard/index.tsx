@@ -14,7 +14,7 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { ProjectId, Dates, Resolution } from '../../typings';
+import { ProjectId, Dates, Resolution } from '../typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = ProjectId & Dates & Resolution;
