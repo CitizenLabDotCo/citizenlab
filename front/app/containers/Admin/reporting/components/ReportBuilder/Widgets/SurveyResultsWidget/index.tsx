@@ -1,19 +1,19 @@
 import React from 'react';
 
 // craft
-import { Element, useNode, UserComponent } from '@craftjs/core';
+import { useNode, UserComponent } from '@craftjs/core';
 
 // components
 import {
   Box,
+  colors,
   Icon,
   Input,
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
 import GraphCard from '../../../../../../../components/admin/GraphCard';
-import Container from '../../../../../../../components/admin/ContentBuilder/Widgets/Container';
-import SurveyResultsQuestionWidget from './SurveyResultsQuestionWidget';
+import SurveyResultsReport from './SurveyResultsReport';
 
 // i18n
 import messages from './messages';
@@ -23,98 +23,32 @@ import formBuilderMessages from 'containers/Admin/formBuilder/components/message
 import { IOption } from '../../../../../../../typings';
 
 // settings
-import ProjectFilter from '../../../../../dashboard/components/filters/ProjectFilter';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
-
-// hooks
-import useLocale from 'hooks/useLocale';
-import useProject from 'hooks/useProject';
-import useFormResults from 'hooks/useFormResults';
+import SurveyQuestionFilter from './SurveyQuestionFilter';
+import SurveyReportFilter from './SurveyReportFilter';
 
 type SurveyResultsProps = {
   title: string | undefined;
-  projectId: string | undefined;
+  projectId: string;
   phaseId: string | undefined;
+  showQuestions: number[] | undefined;
 };
 
 const SurveyResultsWidget: UserComponent = ({
   title,
   projectId,
   phaseId,
+  showQuestions,
 }: SurveyResultsProps) => {
-  const { formatMessage } = useIntl();
-
-  // TODO: If no project or phase then get the first project with a survey
-  const useProjectId =
-    projectId === undefined
-      ? 'd6827fd0-29bf-4e1d-8861-420386a61c34'
-      : projectId;
-  const usePhaseId =
-    phaseId === undefined ? '350adbb0-6ca5-48aa-aedd-e7d7d2e5fc6b' : phaseId;
-
-  const locale = useLocale();
-  const project = useProject({ projectId: useProjectId });
-  const formResults = useFormResults({
-    projectId: useProjectId,
-    phaseId: usePhaseId,
-  });
-
-  if (
-    isNilOrError(formResults) ||
-    isNilOrError(locale) ||
-    isNilOrError(project)
-  ) {
-    return null;
-  }
-
-  const { totalSubmissions, results } = formResults;
-
-  const surveyResponseMessage =
-    totalSubmissions > 0
-      ? formatMessage(formBuilderMessages.totalSurveyResponses, {
-          count: totalSubmissions,
-        })
-      : formatMessage(formBuilderMessages.noSurveyResponses);
-
-  const resultsTitle = title ? title : formatMessage(messages.surveyResults);
-
   return (
-    <GraphCard title={resultsTitle}>
-      <Box px="20px" width="100%" display="flex" flexDirection="row">
-        <Text variant="bodyM" color="textSecondary">
-          {surveyResponseMessage}
-        </Text>
-      </Box>
-      <Box width="100%" display="flex" flexDirection="row">
-        {results.map(
-          (
-            { question, inputType, answers, totalResponses, required },
-            index
-          ) => {
-            return (
-              <Element
-                id={`question-title-${index}`}
-                key={index}
-                is={Container}
-                canvas
-              >
-                <SurveyResultsQuestionWidget
-                  key={index}
-                  locale={locale}
-                  question={question}
-                  inputType={inputType}
-                  answers={answers}
-                  totalResponses={totalResponses}
-                  required={required}
-                />
-              </Element>
-            );
-          }
-        )}
-      </Box>
+    <GraphCard title={title}>
+      <SurveyResultsReport
+        projectId={projectId}
+        phaseId={phaseId}
+        showQuestions={showQuestions}
+      />
     </GraphCard>
   );
 };
@@ -125,9 +59,13 @@ const SurveyResultsWidgetSettings = () => {
     actions: { setProp },
     title,
     projectId,
+    phaseId,
+    showQuestions,
   } = useNode((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
+    phaseId: node.data.props.phaseId,
+    showQuestions: node.data.props.showQuestions,
   }));
 
   const setTitle = (value: string) => {
@@ -139,12 +77,37 @@ const SurveyResultsWidgetSettings = () => {
   const handleProjectFilter = ({ value }: IOption) => {
     setProp((props) => {
       props.projectId = value;
+      props.phaseId = null;
+    });
+  };
+
+  const handlePhaseFilter = ({ value }: IOption) => {
+    setProp((props) => {
+      props.phaseId = value;
+    });
+  };
+
+  const handleQuestionToggle = (newQuestions: number[]) => {
+    console.log(newQuestions);
+    setProp((props) => {
+      props.showQuestions = newQuestions;
     });
   };
 
   return (
     <Box>
-      <Box display="flex" gap="16px" alignItems="center">
+      <Box
+        bgColor={colors.teal100}
+        borderRadius="3px"
+        px="12px"
+        py="4px"
+        mt="0px"
+        mb="10px"
+        role="alert"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Icon
           name="info-outline"
           width="24px"
@@ -155,7 +118,8 @@ const SurveyResultsWidgetSettings = () => {
           {formatMessage(formBuilderMessages.informationText)}
         </Text>
       </Box>
-      <Box background="#ffffff" marginBottom="20px">
+
+      <Box mb="20px">
         <Input
           id="e2e-analytics-chart-widget-title"
           label={
@@ -168,16 +132,26 @@ const SurveyResultsWidgetSettings = () => {
           onChange={setTitle}
         />
       </Box>
-      <Box mb="20px">
-        <ProjectFilter
-          currentProjectFilter={projectId}
-          width="100%"
-          padding="11px"
-          onProjectFilter={handleProjectFilter}
-        />
-      </Box>
+
+      <SurveyReportFilter
+        projectId={projectId}
+        currentPhaseFilter={phaseId}
+        onPhaseFilter={handlePhaseFilter}
+        onProjectFilter={handleProjectFilter}
+      />
+
+      <SurveyQuestionFilter
+        projectId={projectId}
+        phaseId={phaseId}
+        showQuestions={showQuestions}
+        onToggleQuestion={handleQuestionToggle}
+      />
     </Box>
   );
+
+  // Should not need to show an error if a) no surveys in site or b) no surveys in project
+  // as a) will be limited to use the widget and b) won't show projects without surveys
+  // TODO: Is there an all surveys endpoint or can it be derived?
 };
 
 SurveyResultsWidget.craft = {

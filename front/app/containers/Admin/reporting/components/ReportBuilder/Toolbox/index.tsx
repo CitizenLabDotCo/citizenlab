@@ -162,14 +162,16 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
         />
         {
           // TODO: Only show this if there are surveys in the platform
+          // TODO: If no project or phase defined then get the first project with a survey
         }
         <DraggableElement
           id="e2e-draggable-survey-results-widget"
           component={
             <SurveyResultsWidget
               title={formatMessage(surveyResultMessages.surveyResults)}
-              projectId={undefined}
-              phaseId={undefined}
+              projectId="d6827fd0-29bf-4e1d-8861-420386a61c34"
+              phaseId="350adbb0-6ca5-48aa-aedd-e7d7d2e5fc6b"
+              showQuestions={[1, 2]}
             />
           }
           icon="survey"

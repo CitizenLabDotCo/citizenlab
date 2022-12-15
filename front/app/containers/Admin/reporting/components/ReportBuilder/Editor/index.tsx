@@ -19,7 +19,6 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
-import SurveyResultsQuestionWidget from '../Widgets/SurveyResultsWidget/SurveyResultsQuestionWidget';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -45,7 +44,6 @@ const Editor: React.FC<EditorProps> = ({
         AnalyticsChartWidget,
         AboutReportWidget,
         SurveyResultsWidget,
-        SurveyResultsQuestionWidget,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
