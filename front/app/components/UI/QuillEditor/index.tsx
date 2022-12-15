@@ -279,7 +279,7 @@ export interface Props {
   withCTAButton?: boolean;
 }
 
-Quill.register('modules/blotFormatter', BlotFormatter);
+Quill.register('modules/commercial/blotFormatter', BlotFormatter);
 
 // BEGIN allow video resizing styles
 const BaseVideoFormat = Quill.import('formats/video');
@@ -371,7 +371,7 @@ Quill.register(CustomButton);
 Quill.register(
   {
     'formats/image': ImageBlot,
-    'modules/altTextToImages': AltTextToImagesModule,
+    'modules/commercial/altTextToImages': AltTextToImagesModule,
   },
   true
 );
