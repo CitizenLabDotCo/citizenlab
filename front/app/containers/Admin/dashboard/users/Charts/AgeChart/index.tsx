@@ -20,7 +20,7 @@ import { QueryParameters } from './typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props extends QueryParameters {
-  currentGroupFilterLabel: string | undefined;
+  currentGroupFilterLabel?: string | undefined;
 }
 
 const AgeChart = ({

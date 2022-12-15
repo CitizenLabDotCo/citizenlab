@@ -22,7 +22,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { QueryParameters } from './typings';
 
 interface Props extends QueryParameters {
-  currentGroupFilterLabel: string | undefined;
+  currentGroupFilterLabel?: string;
 }
 
 const GenderChart = ({

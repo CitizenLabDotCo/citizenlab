@@ -12,7 +12,7 @@ import { GenderSerie } from './typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
-  innerRef: React.RefObject<any>;
+  innerRef?: React.RefObject<any>;
   data: GenderSerie;
 }
 

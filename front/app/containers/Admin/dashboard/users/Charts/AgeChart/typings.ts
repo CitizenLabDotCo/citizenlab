@@ -1,7 +1,8 @@
 export interface QueryParameters {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentGroupFilter: string | undefined;
+  currentGroupFilter?: string;
+  projectId?: string;
 }
 
 export type AgeSerie = {

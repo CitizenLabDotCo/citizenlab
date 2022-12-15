@@ -3,7 +3,7 @@ import React from 'react';
 // Components
 import { Box, Input, Title } from '@citizenlab/cl2-component-library';
 import GenderChart from 'containers/Admin/dashboard/users/Charts/GenderChart';
-import AgeChart from 'containers/Admin/dashboard/users/Charts/AgeChart';
+import AgeCard from '../AgeCard';
 import VisitorsReportCard from '../VisitorsCard';
 import VisitorsTrafficSourcesReportCard from '../VisitorTrafficSourcesCard';
 
@@ -29,8 +29,8 @@ interface Props {
     | 'GenderChart'
     | 'AgeChart';
   projectId: string | undefined;
-  startAt: string | undefined;
-  endAt: string | undefined;
+  startAt: string | null | undefined;
+  endAt: string | null;
 }
 
 const AnalyticsChartWidget = ({
@@ -53,12 +53,9 @@ const AnalyticsChartWidget = ({
 
   const statChartProps = {
     startAt,
-    endAt: endAt ? endAt : null,
-    className: 'fullWidth',
-    currentGroupFilter: undefined,
-    currentGroupFilterLabel: undefined,
+    endAt,
     title,
-    showExportMenu: false,
+    projectId,
   };
 
   let chart = <></>;
@@ -73,7 +70,7 @@ const AnalyticsChartWidget = ({
       chart = <GenderChart {...statChartProps} />;
       break;
     case 'AgeChart':
-      chart = <AgeChart {...statChartProps} />;
+      chart = <AgeCard {...statChartProps} />;
       break;
   }
 

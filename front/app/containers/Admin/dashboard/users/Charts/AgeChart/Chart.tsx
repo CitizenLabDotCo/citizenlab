@@ -13,7 +13,7 @@ import { AgeSerie } from './typings';
 
 interface Props {
   data: AgeSerie;
-  innerRef: React.RefObject<any>;
+  innerRef?: React.RefObject<any>;
 }
 
 const Chart = ({ data, innerRef }: Props) => {

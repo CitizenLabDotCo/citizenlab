@@ -22,6 +22,7 @@ export default function useAgeSerie({
   startAt,
   endAt,
   currentGroupFilter,
+  projectId,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
   const [serie, setSerie] = useState<AgeSerie | NilOrError>();
@@ -32,6 +33,7 @@ export default function useAgeSerie({
         start_at: startAt,
         end_at: endAt,
         group: currentGroupFilter,
+        project: projectId,
       },
     });
 
@@ -44,7 +46,7 @@ export default function useAgeSerie({
     );
 
     return () => subscription.unsubscribe();
-  }, [startAt, endAt, currentGroupFilter, formatMessage]);
+  }, [startAt, endAt, currentGroupFilter, projectId, formatMessage]);
 
   return serie;
 }
