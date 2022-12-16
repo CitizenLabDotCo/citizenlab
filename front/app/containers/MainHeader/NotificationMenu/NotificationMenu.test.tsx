@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 // component to test
-import { NotificationMenu } from './';
+import NotificationMenu from './';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // mock utilities
