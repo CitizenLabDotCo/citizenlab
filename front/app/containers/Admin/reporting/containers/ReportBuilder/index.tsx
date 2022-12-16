@@ -107,13 +107,18 @@ const ReportBuilder = ({ reportId }: Props) => {
     [selectedLocale]
   );
 
+  const previewData = useMemo(() => {
+    if (!selectedLocale) return;
+
+    const previewData = draftData ? draftData[selectedLocale] : undefined;
+    return previewData;
+  }, [draftData, selectedLocale]);
+
   if (!selectedLocale) return null;
 
   const initialData = isNilOrError(reportLayout)
     ? undefined
     : reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
-
-  const previewData = draftData ? draftData[selectedLocale] : undefined;
 
   return (
     <FullscreenContentBuilder
@@ -158,22 +163,24 @@ const ReportBuilder = ({ reportId }: Props) => {
           <Settings />
         </Box>
       </Editor>
-      <Box
-        width="100%"
-        height="100%"
-        display={previewEnabled ? 'flex' : 'none'}
-        justifyContent="center"
-        mt={`${stylingConsts.menuHeight}px`}
-        pb="100px"
-      >
-        <StyledRightColumn>
-          <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
-            <Editor isPreview={true}>
-              <Frame editorData={previewData} />
-            </Editor>
-          </Box>
-        </StyledRightColumn>
-      </Box>
+      {previewEnabled && (
+        <Box
+          width="100%"
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          mt={`${stylingConsts.menuHeight}px`}
+          pb="100px"
+        >
+          <StyledRightColumn>
+            <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
+              <Editor isPreview={true}>
+                <Frame editorData={previewData} />
+              </Editor>
+            </Box>
+          </StyledRightColumn>
+        </Box>
+      )}
     </FullscreenContentBuilder>
   );
 };
