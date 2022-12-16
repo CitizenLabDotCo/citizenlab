@@ -19,10 +19,18 @@ export interface Parameters {
   excludeCode?: Code;
   sort?: 'new' | 'custom';
   forHomepageFilter?: boolean;
+  includeStaticPages?: boolean;
 }
 
 export default function useTopics(parameters: Parameters = {}) {
-  const { topicIds, code, excludeCode, sort, forHomepageFilter } = parameters;
+  const {
+    topicIds,
+    code,
+    excludeCode,
+    sort,
+    forHomepageFilter,
+    includeStaticPages,
+  } = parameters;
   const [topics, setTopics] = useState<ITopicData[] | NilOrError>(undefined);
 
   const topicIdsStringified = JSON.stringify(topicIds);
@@ -32,6 +40,9 @@ export default function useTopics(parameters: Parameters = {}) {
     exclude_code: excludeCode,
     sort,
     for_homepage_filter: forHomepageFilter,
+    ...(includeStaticPages && {
+      include: 'static_pages',
+    }),
   };
 
   const queryParametersStringified = JSON.stringify(queryParameters);

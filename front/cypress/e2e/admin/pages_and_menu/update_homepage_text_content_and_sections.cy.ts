@@ -50,7 +50,7 @@ describe('Admin: update text content and sections', () => {
     // go back home
     cy.get('[data-cy="breadcrumbs-Home"]').click();
 
-    // visit bottom into section edit page
+    // visit bottom info section edit page
     cy.get(
       '[data-cy="e2e-admin-edit-button-bottom_info_section_enabled"]'
     ).click();
@@ -71,14 +71,17 @@ describe('Admin: update text content and sections', () => {
     cy.contains('Bottom info section saved').should('exist');
 
     // go to homepage and check that the content isn't there until sections are enabled
-    cy.visit('/');
+    cy.wait('@getHomePage');
+
     cy.get('[data-testid="e2e-landing-page-top-info-section"]').should(
       'not.exist'
     );
     cy.get('[data-testid="e2e-landing-page-bottom-info-section"]').should(
       'not.exist'
     );
-    cy.get('[data-testid="e2e-events-widget-container"]').should('not.exist');
+    cy.get('[data-testid="e2e-homepage-events-widget-container"]').should(
+      'not.exist'
+    );
 
     // go back to admin page
     cy.visit('/admin/pages-menu/');
@@ -129,6 +132,8 @@ describe('Admin: update text content and sections', () => {
     cy.visit('/');
     cy.contains(topInfoContent);
     cy.contains(bottomInfoContent);
-    cy.get('[data-testid="e2e-events-widget-container"]').should('exist');
+    cy.get('[data-testid="e2e-homepage-events-widget-container"]').should(
+      'exist'
+    );
   });
 });

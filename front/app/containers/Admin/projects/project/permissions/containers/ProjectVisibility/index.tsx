@@ -10,7 +10,7 @@ import {
   SectionField,
 } from 'components/admin/Section';
 import { Radio } from '@citizenlab/cl2-component-library';
-import ProjectGroupsList from '../components/ProjectGroupsList';
+import ProjectGroupsList from './ProjectGroupsList';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';

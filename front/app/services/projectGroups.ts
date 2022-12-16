@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
-export interface IGroupsProjectsData {
+export interface IProjectGroupData {
   id: string;
   type: 'groups_project';
   relationships: {
@@ -15,30 +15,30 @@ export interface IGroupsProjectsData {
   };
 }
 
-export interface IGroupsProjects {
-  data: IGroupsProjectsData[];
+export interface IProjectGroups {
+  data: IProjectGroupData[];
 }
 
-export function groupsProjectsByProjectIdStream(projectId: string) {
-  return streams.get<IGroupsProjects>({
+export function projectGroupsByProjectIdStream(projectId: string) {
+  return streams.get<IProjectGroups>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/groups_projects`,
   });
 }
 
-export async function addGroupProject(projectId: string, groupId: string) {
+export async function addProjectGroup(projectId: string, groupId: string) {
   const bodyData = {
     groups_project: {
       group_id: groupId,
     },
   };
 
-  return streams.add<IGroupsProjects>(
+  return streams.add<IProjectGroups>(
     `${API_PATH}/projects/${projectId}/groups_projects`,
     bodyData
   );
 }
 
-export async function deleteGroupProject(groupProjectId: string) {
+export async function deleteProjectGroup(groupProjectId: string) {
   return streams.delete(
     `${API_PATH}/groups_projects/${groupProjectId}`,
     groupProjectId
