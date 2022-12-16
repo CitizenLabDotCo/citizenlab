@@ -48,8 +48,8 @@ services:
       - "./back:/cl2_back"
       - bundle_path:/bundle
     env_file:
-      - "back-safe.env"
-      - "back-secret.env"
+      - "env_files/back-safe.env"
+      - "env_files/back-secret.env"
     environment:
       BUNDLE_PATH: /bundle
     tty: true
