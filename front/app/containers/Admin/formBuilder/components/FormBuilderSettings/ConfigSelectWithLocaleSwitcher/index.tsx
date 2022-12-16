@@ -14,7 +14,6 @@ import {
   LocaleSwitcher,
   Icon,
   Input,
-  Toggle,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
@@ -34,17 +33,15 @@ import { generateTempId } from '../utils';
 
 interface Props {
   name: string;
-  nameInputType: string;
   onSelectedLocaleChange?: (locale: Locale) => void;
   locales: Locale[];
   allowDeletingAllOptions?: boolean;
   platformLocale: Locale;
 }
 
-const ConfigMultiselectWithLocaleSwitcher = ({
+const ConfigSelectWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
-  nameInputType,
   locales,
   intl: { formatMessage },
   allowDeletingAllOptions = false,
@@ -54,7 +51,6 @@ const ConfigMultiselectWithLocaleSwitcher = ({
     control,
     formState: { errors: formContextErrors },
     setValue,
-    watch,
     trigger,
   } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
@@ -97,8 +93,6 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   };
 
   const defaultOptionValues = [{}];
-  const defaultToggleValue = false;
-  const currentToggleValue = watch(nameInputType);
   const errors = get(formContextErrors, name);
   const apiError =
     (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
@@ -233,29 +227,6 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                       scrollIntoView={false}
                     />
                   )}
-                  <Box mt="24px">
-                    <Controller
-                      name={nameInputType}
-                      control={control}
-                      defaultValue={defaultToggleValue}
-                      render={({ field: { ref: _ref, value } }) => {
-                        return (
-                          <Toggle
-                            checked={value === 'multiselect'}
-                            id="e2e-multiselect-toggle"
-                            onChange={() => {
-                              if (currentToggleValue === 'select') {
-                                setValue(nameInputType, 'multiselect');
-                              } else {
-                                setValue(nameInputType, 'select');
-                              }
-                            }}
-                            label={formatMessage(messages.chooseMultipleToggle)}
-                          />
-                        );
-                      }}
-                    />
-                  </Box>
                 </SectionField>
               </Box>
             );
@@ -267,4 +238,4 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   return null;
 };
 
-export default injectIntl(ConfigMultiselectWithLocaleSwitcher);
+export default injectIntl(ConfigSelectWithLocaleSwitcher);
