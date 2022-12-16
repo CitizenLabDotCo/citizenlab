@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 // hooks
@@ -46,7 +40,6 @@ interface Props {
 }
 
 const ReportBuilder = ({ reportId }: Props) => {
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -92,11 +85,16 @@ const ReportBuilder = ({ reportId }: Props) => {
     } else return undefined;
   }, [reportLayout, selectedLocale, draftData]);
 
-  const handleEditorChange = useCallback((nodes: SerializedNodes) => {
-    iframeRef.current &&
-      iframeRef.current.contentWindow &&
-      iframeRef.current.contentWindow.postMessage(nodes, window.location.href);
-  }, []);
+  const handleEditorChange = useCallback(
+    (nodes: SerializedNodes) => {
+      if (!selectedLocale) return;
+      setDraftData((draftData) => ({
+        ...draftData,
+        [selectedLocale]: nodes,
+      }));
+    },
+    [selectedLocale]
+  );
 
   const handleSelectedLocaleChange = useCallback(
     ({
@@ -112,13 +110,6 @@ const ReportBuilder = ({ reportId }: Props) => {
           [selectedLocale]: editorData,
         }));
       }
-
-      iframeRef.current &&
-        iframeRef.current.contentWindow &&
-        iframeRef.current.contentWindow.postMessage(
-          { selectedLocale: locale },
-          window.location.href
-        );
 
       setSelectedLocale(locale);
     },
