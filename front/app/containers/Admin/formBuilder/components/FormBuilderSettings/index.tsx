@@ -86,10 +86,8 @@ const FormBuilderSettings = ({
     // Open confirmation modal if linked logic present
     if (pageIsLinked) {
       openModal();
-    }
-
-    // Otherwise, delete the field without confirmation
-    if (!pageIsLinked) {
+    } else {
+      // delete the field without confirmation
       onDelete(fieldIndex);
     }
   };
