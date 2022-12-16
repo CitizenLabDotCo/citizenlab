@@ -820,15 +820,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-lint:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
       - back-bundle-audit:
           context: docker-hub-access
           requires:
@@ -906,6 +897,7 @@ workflows:
           requires:
             - back-ee-test
             - back-ee-slow-tests
+            - back-lint
           filters:
             branches:
               only:
@@ -1117,14 +1109,6 @@ workflows:
             branches:
               only:
                 - production
-      - back-lint:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              only:
-                - production
       - back-bundle-audit:
           context: docker-hub-access
           requires:
@@ -1157,7 +1141,6 @@ workflows:
             - front-build
             - front-detect-deadcode
             - front-lint
-            - back-lint
             - back-test
             - back-bundle-audit
             - back-license-check
@@ -1173,7 +1156,6 @@ workflows:
             - front-build
             - front-detect-deadcode
             - front-lint
-            - back-lint
             - back-test
             - back-bundle-audit
             - back-license-check
