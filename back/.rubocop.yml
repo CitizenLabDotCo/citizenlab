@@ -119,6 +119,9 @@ Layout/MultilineMethodCallIndentation:
 RSpec/DescribeClass:
   IgnoredMetadata:
     type: ['request']
+  Exclude:
+    - 'engines/commercial/multi_tenancy/spec/db/seedfile_spec.rb'
+    - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
 
 RSpec/EmptyExampleGroup:
   # `context` and `describe` are found as empty example groups when
@@ -130,4 +133,22 @@ Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']
   AllowedMethods: ['included', 'prepended', 'extended']
   Exclude:
-  - 'db/migrate/**/*'
+  - '**/db/migrate/**/*'
+
+Lint/Void:
+  Exclude:
+    - 'engines/commercial/multi_tenancy/config/initializers/sentry.rb'
+
+RSpec/BeforeAfterAll:
+  Exclude:
+    - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
+
+Rails/UnknownEnv:
+  # config/initializers/apartment.rb refers to staging, which is not part of the default settings.
+  Environments: [development, test, production, staging]
+
+Rails/UniqueValidationWithoutIndex:
+  # This Cop does not fail when running in citizenlab-ee/engines/ee/multi_tenancy locally,
+  # because db/schema.rb does not exist, but it fails on CI.
+  Exclude:
+    - 'engines/commercial/multi_tenancy/app/models/tenant.rb'
