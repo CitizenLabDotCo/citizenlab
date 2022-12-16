@@ -33,7 +33,7 @@ const MultiSelectCheckboxControl = ({
 
   const options = getOptions(schema, 'multi');
 
-  const dataArray = Array.isArray(data) && data !== [] ? data : [];
+  const dataArray = Array.isArray(data) ? data : [];
 
   return (
     <>

@@ -63,7 +63,7 @@ export const RightColumn = styled.div`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   padding-top: 45px;
   padding-right: 51px;
-  padding-bottom: 0px;
+  padding-bottom: 45px;
   padding-left: 51px;
 
   &.fullWidth {

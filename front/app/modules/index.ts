@@ -11,8 +11,6 @@ import machineTranslationsConfiguration from './commercial/machine_translations'
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
-import projectVisibilityConfiguration from './free/project_visibility';
-
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
@@ -85,10 +83,7 @@ export default loadModules([
     configuration: granularPermissionsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/granular_permissions'],
   },
-  {
-    configuration: projectVisibilityConfiguration,
-    isEnabled: CL_CONFIG['modules']['free/project_visibility'],
-  },
+
   {
     configuration: moderationConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/moderation'],
