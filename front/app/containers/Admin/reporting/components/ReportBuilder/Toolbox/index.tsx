@@ -53,11 +53,9 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
       <Accordion
         isOpenByDefault={true}
         title={
-          // <Box display="flex" alignItems="center">
           <SectionTitle>
             <FormattedMessage {...contentBuilderMessages.layout} />
           </SectionTitle>
-          // </Box>
         }
       >
         <DraggableElement
