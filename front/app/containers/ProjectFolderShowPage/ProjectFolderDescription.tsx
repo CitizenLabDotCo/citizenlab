@@ -9,7 +9,7 @@ import Button from 'components/UI/Button';
 
 // services
 import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -35,7 +35,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxxl}px;
   line-height: normal;
   font-weight: 600;
@@ -217,7 +217,9 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
           {!isNilOrError(projectFolderFiles) &&
             projectFolderFiles &&
             projectFolderFiles.data.length > 0 && (
-              <FileAttachments files={projectFolderFiles.data} />
+              <Box mb="25px">
+                <FileAttachments files={projectFolderFiles.data} />
+              </Box>
             )}
         </Container>
       );

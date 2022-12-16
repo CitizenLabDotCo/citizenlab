@@ -6,8 +6,7 @@ import {
   scopeEndsWith,
 } from '@jsonforms/core';
 import React from 'react';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import ErrorDisplay from '../ErrorDisplay';
 import UserSelect from 'components/UI/UserSelect';
 import messages from '../../messages';
@@ -22,12 +21,12 @@ const UserPickerControl = ({
   path,
   errors,
   uischema,
-  intl: { formatMessage },
   id,
   schema,
   required,
   visible,
-}: ControlProps & WrappedComponentProps) => {
+}: ControlProps) => {
+  const { formatMessage } = useIntl();
   const FieldLabel = () => {
     return (
       <Box display="flex">
@@ -60,6 +59,7 @@ const UserPickerControl = ({
         subtextSupportsHtml
       />
       <UserSelect
+        id={id}
         inputId={sanitizeForClassname(id)}
         value={data}
         onChange={(val) => handleChange(path, val)}
@@ -70,7 +70,7 @@ const UserPickerControl = ({
   );
 };
 
-export default withJsonFormsControlProps(injectIntl(UserPickerControl));
+export default withJsonFormsControlProps(UserPickerControl);
 
 export const userPickerControlTester: RankedTester = rankWith(
   1000,

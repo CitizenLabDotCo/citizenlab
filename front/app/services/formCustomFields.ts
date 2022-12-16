@@ -12,6 +12,7 @@ import { snakeCase } from 'lodash-es';
 // We can add more input types here when we support them
 export type ICustomFieldInputType =
   | 'text'
+  | 'multiline_text'
   | 'multiselect'
   | 'number'
   | 'select'

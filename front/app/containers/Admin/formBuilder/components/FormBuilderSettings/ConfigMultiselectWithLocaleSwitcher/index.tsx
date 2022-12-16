@@ -198,7 +198,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                 >
                                   <Icon
                                     name="delete"
-                                    fill="grey"
+                                    fill="coolGrey600"
                                     padding="0px"
                                   />
                                 </Button>

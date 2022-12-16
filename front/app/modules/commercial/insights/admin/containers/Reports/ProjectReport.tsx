@@ -61,7 +61,7 @@ const Phase = styled.div<{ isCurrentPhase: boolean }>`
     props.isCurrentPhase
       ? `solid 3px ${colors.borderDark}`
       : `solid 1px ${colors.borderLight}`};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const RowSection = styled.div`

@@ -768,11 +768,19 @@ class IdeaForm extends PureComponent<
         topicsEnabled && allowedTopics && allowedTopics.length > 0;
       const showLocation = locationEnabled;
       const showProposedBudget = proposedBudgetEnabled;
-      const inputTerm = getInputTerm(
+
+      const uiSchemaOptions =
+        ideaCustomFieldsSchemas?.ui_schema_multiloc[locale]?.options;
+
+      let inputTerm = getInputTerm(
         project.attributes.process_type,
         project,
         phases
       );
+
+      if (!isNilOrError(uiSchemaOptions) && uiSchemaOptions['inputTerm']) {
+        inputTerm = uiSchemaOptions['inputTerm'];
+      }
 
       const AdminBudgetFieldLabel = () => {
         return (

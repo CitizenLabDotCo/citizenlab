@@ -61,7 +61,7 @@ import { Locale, IOption } from 'typings';
 const InvitationOptions = styled.div`
   width: 497px;
   padding: 20px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
 `;

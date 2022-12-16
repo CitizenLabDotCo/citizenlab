@@ -89,7 +89,7 @@ const UserCountBubble = styled.div<{
   padding-bottom: 0;
   border-radius: 50%;
   border: solid 2px #fff;
-  background: ${(props: any) => props.bgColor};
+  background: ${(props) => props.bgColor};
   position: absolute;
   z-index: ${(props) => props.index + 1};
   left: ${(props) => props.index * (props.size - props.overlap)}px;
