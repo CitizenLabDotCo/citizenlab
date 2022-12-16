@@ -112,6 +112,8 @@ const ReportBuilder = ({ reportId }: Props) => {
   const initialData = isNilOrError(reportLayout)
     ? undefined
     : reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
+
+  console.log(initialData);
   const previewData = draftData ? draftData[selectedLocale] : undefined;
 
   return (

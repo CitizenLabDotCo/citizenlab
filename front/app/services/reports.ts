@@ -98,7 +98,7 @@ export async function updateReportLayout(
     },
   });
 
-  await streams.fetchAllWith({ apiEndpoint: [`${apiEndpoint}/id/layout`] });
+  await streams.fetchAllWith({ apiEndpoint: [`${apiEndpoint}/${id}/layout`] });
 
   return response;
 }
