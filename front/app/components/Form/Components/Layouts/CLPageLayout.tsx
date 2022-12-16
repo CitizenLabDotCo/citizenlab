@@ -155,12 +155,12 @@ const CLPageLayout = memo(
               currentStep === index && (
                 <StyledFormSection key={index}>
                   {page.options.title && (
-                    <Title variant="h2" mt="0" mb="24px" color="tenantText">
+                    <Title variant="h2" mt="0" mb="24px" color="tenantPrimary">
                       {page.options.title}
                     </Title>
                   )}
                   {page.options.description && (
-                    <Box mb="48px">
+                    <Box mb={page.elements.length >= 1 ? '48px' : '28px'}>
                       <QuillEditedContent
                         fontWeight={400}
                         textColor={theme.colors.tenantText}
@@ -174,7 +174,7 @@ const CLPageLayout = memo(
                     </Box>
                   )}
                   {page.elements.map((elementUiSchema, index) => (
-                    <Box width="100%" mb="40px" key={index}>
+                    <Box width="100%" mb="28px" key={index}>
                       <JsonFormsDispatch
                         renderers={renderers}
                         cells={cells}
@@ -199,7 +199,7 @@ const CLPageLayout = memo(
               onClick={handleNextAndSubmit}
               data-cy={dataCyValue}
               mb="20px"
-              icon="chevron-right"
+              icon={showSubmit ? undefined : 'chevron-right'}
               iconPos="right"
               key={currentStep.toString()}
               bgColor={

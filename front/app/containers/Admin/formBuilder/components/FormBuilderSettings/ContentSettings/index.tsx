@@ -17,6 +17,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import { getAdditionalSettings } from '../utils';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -33,68 +35,75 @@ export const ContentSettings = ({
   isDeleteDisabled,
   onDelete,
 }: ContentSettingsProps) => {
-  return (
-    <Box mt="16px">
-      {field.input_type !== 'page' && (
-        <>
-          <SectionField id="e2e-required-toggle">
-            <Toggle
-              name={`customFields.${field.index}.required`}
-              label={
-                <Text as="span" color="primary" variant="bodyM" my="0px">
-                  <FormattedMessage {...messages.requiredToggleLabel} />
-                </Text>
-              }
-            />
-          </SectionField>
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              id="e2e-title-multiloc"
-              name={`customFields.${field.index}.title_multiloc`}
-              label={<FormattedMessage {...messages.questionTitle} />}
-              type="text"
-            />
-          </SectionField>
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              name={`customFields.${field.index}.description_multiloc`}
-              label={
-                <FormattedMessage {...messages.questionDescriptionOptional} />
-              }
-              type="text"
-            />
-          </SectionField>
-        </>
-      )}
-      {getAdditionalSettings(field, locales)}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        borderTop={`1px solid ${colors.divider}`}
-        pt="36px"
-      >
-        <Button
-          id="e2e-settings-done-button"
-          buttonStyle="secondary"
-          onClick={onClose}
-          minWidth="160px"
+  const platformLocale = useLocale();
+
+  if (!isNilOrError(platformLocale)) {
+    return (
+      <Box mt="16px">
+        {field.input_type !== 'page' && (
+          <>
+            <SectionField id="e2e-required-toggle">
+              <Toggle
+                name={`customFields.${field.index}.required`}
+                label={
+                  <Text as="span" color="primary" variant="bodyM" my="0px">
+                    <FormattedMessage {...messages.requiredToggleLabel} />
+                  </Text>
+                }
+              />
+            </SectionField>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                initiallySelectedLocale={platformLocale}
+                id="e2e-title-multiloc"
+                name={`customFields.${field.index}.title_multiloc`}
+                label={<FormattedMessage {...messages.questionTitle} />}
+                type="text"
+              />
+            </SectionField>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                initiallySelectedLocale={platformLocale}
+                name={`customFields.${field.index}.description_multiloc`}
+                label={
+                  <FormattedMessage {...messages.questionDescriptionOptional} />
+                }
+                type="text"
+              />
+            </SectionField>
+          </>
+        )}
+        {getAdditionalSettings(field, locales, platformLocale)}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          borderTop={`1px solid ${colors.divider}`}
+          pt="36px"
         >
-          <FormattedMessage {...messages.done} />
-        </Button>
-        <Button
-          icon="delete"
-          buttonStyle="primary-outlined"
-          borderColor={colors.error}
-          textColor={colors.error}
-          iconColor={colors.error}
-          onClick={() => onDelete(field.index)}
-          minWidth="160px"
-          data-cy="e2e-delete-field"
-          disabled={isDeleteDisabled}
-        >
-          <FormattedMessage {...messages.delete} />
-        </Button>
+          <Button
+            id="e2e-settings-done-button"
+            buttonStyle="secondary"
+            onClick={onClose}
+            minWidth="160px"
+          >
+            <FormattedMessage {...messages.done} />
+          </Button>
+          <Button
+            icon="delete"
+            buttonStyle="primary-outlined"
+            borderColor={colors.error}
+            textColor={colors.error}
+            iconColor={colors.error}
+            onClick={() => onDelete(field.index)}
+            minWidth="160px"
+            data-cy="e2e-delete-field"
+            disabled={isDeleteDisabled}
+          >
+            <FormattedMessage {...messages.delete} />
+          </Button>
+        </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
+  return null;
 };
