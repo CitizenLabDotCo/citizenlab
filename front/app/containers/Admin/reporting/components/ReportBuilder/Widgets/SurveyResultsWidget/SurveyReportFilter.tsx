@@ -1,6 +1,6 @@
 import React from 'react';
 import usePhases from 'hooks/usePhases';
-import { Box, Select } from '@citizenlab/cl2-component-library';
+import { Box, Select, Text } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import useLocalize from 'hooks/useLocalize';
@@ -68,10 +68,10 @@ const SurveyReportFilter = ({
     onPhaseFilter(phaseOptions[0]);
     phaseFilter = (
       <Box>
-        <p>
-          One survey Phase:{' '}
+        <Text variant="bodyM" color="textSecondary">
+          Showing questions for:{' '}
           <T value={surveyPhases[0].attributes.title_multiloc} />
-        </p>
+        </Text>
       </Box>
     );
   } else if (phaseOptions.length > 1) {
