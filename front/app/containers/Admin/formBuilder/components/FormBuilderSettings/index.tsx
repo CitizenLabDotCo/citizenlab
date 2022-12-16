@@ -65,7 +65,7 @@ const FormBuilderSettings = ({
     return null;
   }
 
-  const preDeletion = (fieldIndex: number) => {
+  const deleteField = (fieldIndex: number) => {
     let pageIsLinked = false;
     setFieldIndexToDelete(fieldIndex);
 
@@ -227,7 +227,7 @@ const FormBuilderSettings = ({
             locales={locales}
             onClose={onClose}
             isDeleteDisabled={isDeleteDisabled}
-            onDelete={preDeletion}
+            onDelete={deleteField}
           />
         )}
         {showTabbedSettings && currentTab === 'logic' && (
