@@ -144,7 +144,7 @@ const ReportBuilder = ({ reportId }: Props) => {
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
         >
-          {selectedLocale && <Toolbox />}
+          {selectedLocale && <Toolbox reportId={reportId} />}
           <FrameWrapper localesWithError={localesWithError}>
             <Frame editorData={getEditorData()} />
           </FrameWrapper>
