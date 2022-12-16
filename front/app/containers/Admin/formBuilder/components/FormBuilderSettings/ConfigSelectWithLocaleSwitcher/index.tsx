@@ -36,6 +36,7 @@ interface Props {
   onSelectedLocaleChange?: (locale: Locale) => void;
   locales: Locale[];
   allowDeletingAllOptions?: boolean;
+  platformLocale: Locale;
 }
 
 const ConfigSelectWithLocaleSwitcher = ({
@@ -44,6 +45,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   locales,
   intl: { formatMessage },
   allowDeletingAllOptions = false,
+  platformLocale,
 }: Props & WrappedComponentProps) => {
   const {
     control,
@@ -51,13 +53,15 @@ const ConfigSelectWithLocaleSwitcher = ({
     setValue,
     trigger,
   } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
+    platformLocale
+  );
 
   // Handles locale change
   useEffect(() => {
-    setSelectedLocale(locales[0]);
-    onSelectedLocaleChange?.(locales[0]);
-  }, [locales, onSelectedLocaleChange]);
+    setSelectedLocale(platformLocale);
+    onSelectedLocaleChange?.(platformLocale);
+  }, [platformLocale, onSelectedLocaleChange]);
   const handleOnSelectedLocaleChange = useCallback(
     (newSelectedLocale: Locale) => {
       setSelectedLocale(newSelectedLocale);
