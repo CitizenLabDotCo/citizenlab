@@ -91,7 +91,8 @@ const CLPageLayout = memo(
           element,
           formState.core?.data,
           '',
-          customAjv
+          customAjv,
+          allPageTypeElements
         );
         return isPageVisible;
       });

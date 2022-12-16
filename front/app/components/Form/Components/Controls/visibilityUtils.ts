@@ -20,6 +20,14 @@ import {
 import { has } from 'lodash-es';
 import { PageType } from '../Layouts/utils';
 
+interface ConditionWithPageId extends Condition {
+  pageId?: string;
+}
+
+interface HidePageCondition extends ConditionWithPageId {
+  type: 'HIDEPAGE';
+}
+
 export type ExtendedRule = {
   /**
    * The effect of the rule
@@ -29,7 +37,7 @@ export type ExtendedRule = {
    * The condition of the rule that must evaluate to true in order
    * to trigger the effect.
    */
-  condition: Condition;
+  condition: ConditionWithPageId;
 } & Rule;
 
 export type ExtendedUISchema = {
@@ -37,6 +45,10 @@ export type ExtendedUISchema = {
   label?: string;
 } & UISchemaElement &
   Scopable;
+
+const isHidePageCondition = (
+  condition: Condition
+): condition is HidePageCondition => condition.type === 'HIDEPAGE';
 
 const isOrCondition = (condition: Condition): condition is OrCondition =>
   condition.type === 'OR';
@@ -96,7 +108,8 @@ const evalVisibility = (
   uischema: ExtendedUISchema | PageType,
   data: any,
   path: string,
-  ajv: Ajv
+  ajv: Ajv,
+  pages?: PageType[]
 ): boolean => {
   if (
     !uischema.ruleArray ||
@@ -106,6 +119,16 @@ const evalVisibility = (
   }
 
   const fulfilledRule = uischema.ruleArray.every((currentRule) => {
+    if (isHidePageCondition(currentRule.condition) && pages) {
+      const pageWithId = pages.find(
+        (page) => page.options.id === currentRule.condition?.pageId
+      );
+
+      return pageWithId
+        ? !isVisible(pageWithId, data, path, ajv, pages)
+        : false;
+    }
+
     const fulfilled = isRuleFulfilled(currentRule.condition, data, path, ajv);
 
     if (currentRule.effect === RuleEffect.HIDE) {
@@ -123,10 +146,11 @@ export const isVisible = (
   uischema: ExtendedUISchema | PageType,
   data: any,
   path: string,
-  ajv: Ajv
+  ajv: Ajv,
+  pages?: PageType[]
 ): boolean => {
   if (uischema.ruleArray) {
-    return evalVisibility(uischema, data, path, ajv);
+    return evalVisibility(uischema, data, path, ajv, pages);
   }
 
   return true;
