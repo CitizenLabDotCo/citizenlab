@@ -30,7 +30,6 @@ const AboutReportWidget: UserComponent = ({
 }: AboutReportWidgetProps) => {
   const { formatMessage } = useIntl();
 
-  // TODO: Is there a way to not call these hooks when the component is already there?
   const report = useReport(reportId);
   const reportTitle = isNilOrError(report) ? null : report.attributes.name;
 
