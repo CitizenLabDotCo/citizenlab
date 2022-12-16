@@ -25,7 +25,7 @@ import { isNilOrError, isError } from 'utils/helperUtils';
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
-import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
+import { Box, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { Content, Top, Container } from '../PostPreview';
 
 // i18n
@@ -107,19 +107,25 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
     return (
       <Container>
         <Top>
-          <Button
-            icon="arrow-left"
-            buttonStyle="text"
-            textColor={colors.primary}
-            onClick={goBack}
-          >
-            <FormattedMessage {...messages.cancelEdit} />
-          </Button>
-          <LocaleSwitcher
-            onSelectedLocaleChange={this.onLocaleChange}
-            locales={tenantLocales}
-            selectedLocale={selectedLocale}
-          />
+          <Box width="100%" justifyContent="space-between" display="flex">
+            <Box>
+              <Button
+                icon="arrow-left"
+                buttonStyle="text"
+                textColor={colors.primary}
+                onClick={goBack}
+              >
+                <FormattedMessage {...messages.cancelEdit} />
+              </Button>
+            </Box>
+            <Box my="auto" mr="8px">
+              <LocaleSwitcher
+                onSelectedLocaleChange={this.onLocaleChange}
+                locales={tenantLocales}
+                selectedLocale={selectedLocale}
+              />
+            </Box>
+          </Box>
         </Top>
         <Content>
           <InitiativesEditFormWrapper

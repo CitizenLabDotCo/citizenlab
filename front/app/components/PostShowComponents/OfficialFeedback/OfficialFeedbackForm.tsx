@@ -339,14 +339,14 @@ class OfficialFeedbackForm extends PureComponent<
                 flexWrap="wrap"
                 justifyContent="space-between"
               >
-                <Box>
+                <Box my="auto">
                   {formType === 'new' && (
                     <AddOfficialUpdateTitle>
                       <FormattedMessage {...messages.addOfficalUpdate} />
                     </AddOfficialUpdateTitle>
                   )}
                 </Box>
-                <Box>
+                <Box my="auto">
                   <StyledLocaleSwitcher
                     locales={tenantLocales}
                     selectedLocale={selectedLocale}
