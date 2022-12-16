@@ -11,6 +11,7 @@ export const isRuleValid = (
   if ((rule && rule.goto_page_id === 'survey_end') || rule === undefined) {
     return true;
   }
+
   const indexOfTargetPage = fields.findIndex(function (field) {
     return (
       field.id === rule.goto_page_id || field.temp_id === rule.goto_page_id
@@ -41,7 +42,7 @@ const validateLogic = (message: string) => {
 
             if (!isNilOrError(obj) && value && fields) {
               let hasError = false;
-              value.rules.map((rule) => {
+              value.rules.forEach((rule) => {
                 if (!isRuleValid(rule, obj.parent.id, fields)) {
                   hasError = true;
                 }
