@@ -92,6 +92,7 @@ export const RuleInput = ({
     }
     // Update rule variable
     setValue(name, logic);
+    trigger();
   };
 
   return (

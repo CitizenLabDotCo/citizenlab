@@ -11,13 +11,15 @@ export const isRuleValid = (
   if ((rule && rule.goto_page_id === 'survey_end') || rule === undefined) {
     return true;
   }
-  const indexOfTargetPage = fields.findIndex(function (item) {
-    return item.id === rule.goto_page_id || item.temp_id === rule.goto_page_id;
-  });
-  const indexOfSourceField = fields.findIndex(function (item) {
+  const indexOfTargetPage = fields.findIndex(function (field) {
     return (
-      item.id === fieldBeingValidatedId ||
-      item.temp_id === fieldBeingValidatedId
+      field.id === rule.goto_page_id || field.temp_id === rule.goto_page_id
+    );
+  });
+  const indexOfSourceField = fields.findIndex(function (field) {
+    return (
+      field.id === fieldBeingValidatedId ||
+      field.temp_id === fieldBeingValidatedId
     );
   });
   return indexOfTargetPage > indexOfSourceField;
@@ -31,14 +33,15 @@ const validateLogic = (message: string) => {
     .when('input_type', (input_type: string, schema) => {
       if (input_type === 'select' || input_type === 'linear_scale') {
         return schema.test(
-          'rules referencing prior pages',
+          'rules reference prior pages',
           message,
-          (value, obj) => {
+          (value: { rules: RuleType[] }, obj) => {
+            // Extract current state of customFields
             const fields = obj.from[2].value.customFields;
-            if (!isNilOrError(obj) && value && obj.originalValue.rules) {
-              const rules = obj.originalValue.rules;
+
+            if (!isNilOrError(obj) && value && fields) {
               let hasError = false;
-              rules.map((rule) => {
+              value.rules.map((rule) => {
                 if (!isRuleValid(rule, obj.parent.id, fields)) {
                   hasError = true;
                 }

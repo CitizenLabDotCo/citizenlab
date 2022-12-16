@@ -51,7 +51,7 @@ export const FieldRuleDisplay = ({
         {!isRuleValid && (
           <Box my="auto" ml="8px">
             <Badge
-              style={{ padding: '2px 4px 2px 4px' }}
+              style={{ padding: '2px 6px 2px 6px' }}
               className="inverse"
               color={colors.error}
             >
