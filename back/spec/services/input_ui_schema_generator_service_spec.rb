@@ -429,7 +429,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
-                id: 'page_1',
+                id: page1.id,
                 title: 'About you',
                 description: 'Please fill in some <strong>personal details</strong>.'
               },
@@ -447,7 +447,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
-                id: 'page_2',
+                id: page2.id,
                 title: 'About your cycling habits',
                 description: 'Please indicate how you use <strong>a bike</strong>.'
               },
@@ -465,7 +465,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
-                id: 'page_3',
+                id: page3.id,
                 title: 'This is the end of the survey',
                 description: 'Thank you for participating 🚀'
               },
@@ -583,7 +583,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
-                id: 'page_1',
+                id: page1.id,
                 title: '',
                 description: ''
               },
@@ -602,7 +602,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
-                id: 'page_2',
+                id: page2.id,
                 title: '',
                 description: ''
               },
@@ -630,7 +630,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
-                id: 'page_3',
+                id: page3.id,
                 title: '',
                 description: ''
               },
@@ -983,10 +983,11 @@ RSpec.describe InputUiSchemaGeneratorService do
       )
     end
 
-    it 'returns the schema for the given field, without id, and without elements' do
+    it 'returns the schema for the given field, with id, and without elements' do
       expect(generator.visit_page(field)).to eq({
         type: 'Page',
         options: {
+          id: field.id,
           title: 'Page field title',
           description: 'Page field description'
         },

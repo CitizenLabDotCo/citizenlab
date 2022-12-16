@@ -27,7 +27,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     {
       type: 'Page',
       options: {
-        # No id yet. It will be set after invoking this method.
+        id: field.id,
         title: multiloc_service.t(field.title_multiloc),
         description: description_option(field)
       },
@@ -69,7 +69,6 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       field_schema = visit field
       if field.page?
         current_page_index += 1
-        field_schema[:options][:id] = "page_#{current_page_index}"
         rules = form_logic.ui_schema_rules_for(field)
         field_schema[:ruleArray] = rules if rules.present?
         field_schemas << field_schema
