@@ -221,7 +221,7 @@ export const FieldElement = (props: Props) => {
             {field.required && (
               <Box mt="auto" mb="auto" ml="12px">
                 {' '}
-                <Badge className="inverse" color={colors.error}>
+                <Badge className="inverse" color={colors.primary}>
                   <FormattedMessage {...messages.required} />
                 </Badge>
               </Box>

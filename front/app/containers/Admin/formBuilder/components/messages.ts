@@ -201,6 +201,10 @@ export default defineMessages({
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
+  invalidLogicBadgeMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.invalidLogicBadgeMessage',
+    defaultMessage: 'Invalid logic',
+  },
   // Logic Settings
   logicWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.logicWarning',
