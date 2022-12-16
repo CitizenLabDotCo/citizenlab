@@ -170,17 +170,6 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-essential:$CIRCLE_SHA1
 
-  back-lint:
-    resource_class: medium
-    executor:
-      name: cl2-back-essential-executor
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    environment:
-      RAILS_ENV: development
-    steps:
-      - run: bundle exec rubocop -P --format simple
-
   back-bundle-audit:
     resource_class: small
     executor:
@@ -273,18 +262,16 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
 
-  back-ee-lint:
+  back-lint:
     resource_class: small
     executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back/engines/commercial/multi_tenancy
+    working_directory: /cl2_back
     environment:
       RAILS_ENV: development
-      CITIZENLAB_EE: true
     steps:
-      - run: bundle
-      - run: bundle exec rubocop -c .rubocop.yml --format simple
+      - run: bundle exec rubocop -P --format simple
 
   back-ee-test:
     resource_class: small
@@ -890,7 +877,7 @@ workflows:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
-      - back-ee-lint:
+      - back-lint:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
