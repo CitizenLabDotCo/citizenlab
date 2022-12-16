@@ -1159,6 +1159,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.toLabel": "to",
   "app.containers.AdminPage.ProjectEdit.survey.goToPageInputLabel": "Then next page is:",
   "app.containers.AdminPage.ProjectEdit.survey.informationText": "Responses to short and long answer questions are currently only available in the survey download",
+  "app.containers.AdminPage.ProjectEdit.survey.invalidLogicBadgeMessage": "Invalid logic",
   "app.containers.AdminPage.ProjectEdit.survey.linearScale": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.logic": "Logic",
