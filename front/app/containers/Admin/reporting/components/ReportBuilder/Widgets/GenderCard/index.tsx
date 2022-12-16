@@ -45,10 +45,7 @@ const GenderCard = ({ startAt, endAt, projectId, title }: Props) => {
         {title}
       </Title>
       <Box height="200px">
-        <Chart
-          data={genderSerie}
-          legendMargin={isChildOfComplexComponent ? 10 : 50}
-        />
+        <Chart data={genderSerie} narrow={isChildOfComplexComponent} />
       </Box>
     </Box>
   );
