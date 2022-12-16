@@ -121,8 +121,8 @@ commands:
             apt-get update && apt-get install -y lastpass-cli
           fi
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
-      - run: lpass show --notes 'citizenlab .env-back-secret' > citizenlab/.env-back-secret
-      - run: lpass show --notes 'citizenlab .env-front-secret' > citizenlab/.env-front-secret
+      - run: lpass show --notes 'citizenlab .env-back-secret' > citizenlab/env_files/back-secret.env
+      - run: lpass show --notes 'citizenlab .env-front-secret' > citizenlab/env_files/front-secret.env
 
 
 jobs:
