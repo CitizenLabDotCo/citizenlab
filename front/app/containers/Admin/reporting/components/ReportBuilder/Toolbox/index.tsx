@@ -2,8 +2,7 @@ import React from 'react';
 
 // components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
-import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
-import { Accordion } from '@citizenlab/cl2-component-library';
+import { Title, Accordion } from '@citizenlab/cl2-component-library';
 import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
@@ -29,6 +28,20 @@ type ReportBuilderToolboxProps = {
   reportId: string;
 };
 
+const SectionTitle = ({ children }) => (
+  <Title
+    fontWeight="normal"
+    ml="10px"
+    variant="h6"
+    as="h3"
+    mb="8px"
+    mt="8px"
+    color="textSecondary"
+  >
+    {children}
+  </Title>
+);
+
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
 
@@ -40,9 +53,11 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
       <Accordion
         isOpenByDefault={true}
         title={
+          // <Box display="flex" alignItems="center">
           <SectionTitle>
             <FormattedMessage {...contentBuilderMessages.layout} />
           </SectionTitle>
+          // </Box>
         }
       >
         <DraggableElement
