@@ -821,7 +821,10 @@ workflows:
 
   # BACK-END ESSENTIAL
   back-essential:
-    when: << pipeline.parameters.back >>
+    when:
+      and:
+        - not: <<pipeline.parameters.run_deploy>>
+        - << pipeline.parameters.back >>
     jobs:
       - back-build-essential-docker-image:
           context: docker-hub-access
@@ -1003,7 +1006,10 @@ workflows:
 
   # FRONT-END ESSENTIAL
   front-essential:
-    when: << pipeline.parameters.front >>
+    when:
+      and:
+        - not: <<pipeline.parameters.run_deploy>>
+        - << pipeline.parameters.front >>
     jobs:
       - front-test:
           filters:
