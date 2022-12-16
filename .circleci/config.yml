@@ -389,7 +389,7 @@ jobs:
                   --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab/pipeline \
                   --header 'content-type: application/json' \
                   --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
-                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "'"$CIRCLE_SHA1"'", "run_deploy": true, "back": true}}'
+                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "'"$CIRCLE_SHA1"'", "run_deploy": true, "back": true, "trigger": false}}'
 
   back-ee-push-deployment-docker-image:
     resource_class: small
@@ -663,7 +663,7 @@ jobs:
                   --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab/pipeline \
                   --header 'content-type: application/json' \
                   --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
-                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"run_deploy": true, "front": true}}'
+                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"run_deploy": true, "front": true, "trigger": false}}'
 
   front-ee-deploy-staging:
     docker:
