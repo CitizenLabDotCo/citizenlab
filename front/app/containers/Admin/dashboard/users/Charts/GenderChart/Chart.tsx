@@ -13,7 +13,6 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
   innerRef?: React.RefObject<any>;
-  // legendMargin?: number;
   narrow?: boolean;
   data: GenderSerie;
 }

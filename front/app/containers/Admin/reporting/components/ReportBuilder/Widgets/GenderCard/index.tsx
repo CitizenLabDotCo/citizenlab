@@ -2,9 +2,7 @@ import React from 'react';
 
 // hooks
 import useGenderSerie from 'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie';
-
-// craft
-import { useNode, useEditor } from '@craftjs/core';
+import useNarrow from 'containers/Admin/reporting/hooks/useNarrow';
 
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
@@ -26,16 +24,8 @@ const GenderCard = ({ startAt, endAt, projectId, title }: Props) => {
     endAt,
     projectId,
   });
-  const { id } = useNode();
-  const {
-    parentId,
-    query: { node },
-  } = useEditor((_, query) => ({
-    parentId: query.node(id).ancestors()[0],
-  }));
 
-  const parentNode = node(parentId).get();
-  const isChildOfComplexComponent = !!(parentNode?.data.name === 'Container');
+  const narrow = useNarrow();
 
   if (isNilOrError(genderSerie)) return null;
 
@@ -45,7 +35,7 @@ const GenderCard = ({ startAt, endAt, projectId, title }: Props) => {
         {title}
       </Title>
       <Box height="200px">
-        <Chart data={genderSerie} narrow={isChildOfComplexComponent} />
+        <Chart data={genderSerie} narrow={narrow} />
       </Box>
     </Box>
   );

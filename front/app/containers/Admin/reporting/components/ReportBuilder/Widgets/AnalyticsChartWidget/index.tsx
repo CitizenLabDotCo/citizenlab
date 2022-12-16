@@ -4,8 +4,8 @@ import React from 'react';
 import { Box, Input, Title } from '@citizenlab/cl2-component-library';
 import GenderCard from '../GenderCard';
 import AgeCard from '../AgeCard';
-import VisitorsReportCard from '../VisitorsCard';
-import VisitorsTrafficSourcesReportCard from '../VisitorTrafficSourcesCard';
+import VisitorsCard from '../VisitorsCard';
+import VisitorsTrafficSourcesCard from '../VisitorsTrafficSourcesCard';
 
 // styling
 import { colors, stylingConsts } from 'utils/styleUtils';
@@ -64,10 +64,10 @@ const AnalyticsChartWidget = ({
   let chart = <></>;
   switch (chartType) {
     case 'VisitorsCard':
-      chart = <VisitorsReportCard {...analyticsChartProps} />;
+      chart = <VisitorsCard {...analyticsChartProps} />;
       break;
     case 'VisitorsTrafficSourcesCard':
-      chart = <VisitorsTrafficSourcesReportCard {...analyticsChartProps} />;
+      chart = <VisitorsTrafficSourcesCard {...analyticsChartProps} />;
       break;
     case 'GenderChart':
       chart = <GenderCard {...statChartProps} />;
