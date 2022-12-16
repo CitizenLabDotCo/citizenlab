@@ -118,8 +118,8 @@ commands:
             apt-get update && apt-get install -y lastpass-cli
           fi
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
-      - run: lpass show --notes 'citizenlab .env-back-secret' > citizenlab/env_files/back-secret.env
-      - run: lpass show --notes 'citizenlab .env-front-secret' > citizenlab/env_files/front-secret.env
+      - run: lpass show --notes 'citizenlab .env-back-secret' > env_files/back-secret.env
+      - run: lpass show --notes 'citizenlab .env-front-secret' > env_files/front-secret.env
 
 jobs:
   trigger-workflows:
@@ -746,26 +746,28 @@ jobs:
     docker:
       - image: cimg/base:2021.03
     resource_class: medium+
+    working_directory: /citizenlab
     steps:
-      - checkout
+      - checkout:
+          path: "/citizenlab"
       - copy_secrets_from_lastpass
       - setup_remote_docker:
           version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
-          cd citizenlab/e2e
+          cd e2e
           docker-compose build
           docker-compose run web bin/rails db:drop db:create db:schema:load
           docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run:
           command: |
-            cd citizenlab/e2e
+            cd e2e
             docker-compose up
           background: true
       # Wait until build is finished. TODO: Use prebuilt images.
       - run: sleep 280
       - run: |
-          cd citizenlab/e2e
+          cd e2e
           docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
