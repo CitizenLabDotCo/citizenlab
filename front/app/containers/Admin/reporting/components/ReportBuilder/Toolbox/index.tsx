@@ -9,6 +9,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
+import AboutReportWidget from '../Widgets/AboutReportWidget';
 
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -22,8 +23,13 @@ import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
+import aboutMessages from '../Widgets/AboutReportWidget/messages';
 
-const ReportBuilderToolbox = () => {
+type ReportBuilderToolboxProps = {
+  reportId: string;
+};
+
+const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
 
   // Default end date for charts (today)
@@ -62,12 +68,17 @@ const ReportBuilderToolbox = () => {
         }
       >
         <DraggableElement
+          id="e2e-draggable-about-report"
+          component={<AboutReportWidget reportId={reportId} />}
+          icon="section-image-text"
+          label={formatMessage(aboutMessages.aboutThisReport)}
+        />
+        <DraggableElement
           id="e2e-draggable-text"
           component={<Text text={formatMessage(textMessages.textValue)} />}
           icon="text"
           label={formatMessage(Text.craft.custom.title)}
         />
-
         <DraggableElement
           id="e2e-draggable-image"
           component={<Image alt="" />}

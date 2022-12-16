@@ -151,7 +151,7 @@ const ReportBuilder = ({ reportId }: Props) => {
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
         >
-          {selectedLocale && <Toolbox />}
+          {selectedLocale && <Toolbox reportId={reportId} />}
           <StyledRightColumn>
             <Box width={A4_WIDTH}>
               <ErrorMessage localesWithError={localesWithError} />
