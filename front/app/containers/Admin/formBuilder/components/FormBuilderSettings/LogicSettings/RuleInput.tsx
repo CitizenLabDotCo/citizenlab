@@ -47,7 +47,7 @@ export const RuleInput = ({
   const initialValue: RuleType | undefined = rules
     ? rules.find((rule) => rule.if === answer.key)
     : undefined;
-  const [hasError, setHasError] = useState(
+  const [ruleIsInvalid, setRuleIsInvalid] = useState(
     initialValue ? !isRuleValid(initialValue, fieldId, fields) : false
   );
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
@@ -71,7 +71,7 @@ export const RuleInput = ({
         if: answer.key,
         goto_page_id: page.value.toString(),
       };
-      setHasError(!isRuleValid(newRule, fieldId, fields));
+      setRuleIsInvalid(!isRuleValid(newRule, fieldId, fields));
       if (logic.rules) {
         const newRulesArray = logic.rules;
         newRulesArray.push(newRule);
@@ -152,7 +152,7 @@ export const RuleInput = ({
               </Box>
               {showRuleInput && (
                 <Box
-                  mb={validationError && hasError ? '8px' : '24px'}
+                  mb={validationError && ruleIsInvalid ? '8px' : '24px'}
                   display="flex"
                 >
                   <Box
@@ -202,7 +202,7 @@ export const RuleInput = ({
                   </Box>
                 </Box>
               )}
-              {validationError && hasError && (
+              {validationError && ruleIsInvalid && (
                 <Box mb="12px">
                   <Error
                     marginTop="8px"
