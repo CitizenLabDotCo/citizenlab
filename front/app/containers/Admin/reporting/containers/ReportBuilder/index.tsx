@@ -26,7 +26,6 @@ import {
 } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -180,7 +179,7 @@ const ReportBuilder = ({ reportId }: Props) => {
         <StyledRightColumn>
           <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
             <Editor isPreview={true}>
-              <ContentBuilderFrame editorData={getEditorData()} />
+              <Frame editorData={getEditorData()} />
             </Editor>
           </Box>
         </StyledRightColumn>

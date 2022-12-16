@@ -6,14 +6,14 @@ export default function useNarrow() {
     parentId,
     query: { node },
   } = useEditor((_, query) => ({
-    parentId: query.node(id).ancestors()[0],
+    parentId: id ? query.node(id)?.ancestors()[0] : undefined,
   }));
 
   if (!parentId) return false;
-  const grandParentId = node(parentId).ancestors()[0];
+  const grandParentId = node(parentId)?.ancestors()[0];
   if (!grandParentId) return false;
 
-  const grandParentNode = node(grandParentId).get();
+  const grandParentNode = node(grandParentId)?.get();
   const isInNarrowLayout = !!(grandParentNode?.data.name === 'TwoColumn');
 
   return isInNarrowLayout;
