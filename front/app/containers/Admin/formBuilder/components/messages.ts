@@ -41,6 +41,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.multipleChoice',
     defaultMessage: 'Multiple choice',
   },
+  singleChoice: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.singleChoice',
+    defaultMessage: 'Single choice',
+  },
   chooseOne: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.chooseOne',
     defaultMessage: 'Choose one',

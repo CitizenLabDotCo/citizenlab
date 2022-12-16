@@ -123,8 +123,14 @@ const FormBuilderToolbox = ({
           />
           <ToolboxItem
             icon="survey-multiple-choice"
-            label={formatMessage(messages.multipleChoice)}
+            label={formatMessage(messages.singleChoice)}
             onClick={() => addField('select')}
+            data-cy="e2e-single-choice"
+          />
+          <ToolboxItem
+            icon="survey-multiple-choice"
+            label={formatMessage(messages.multipleChoice)}
+            onClick={() => addField('multiselect')}
             data-cy="e2e-multiple-choice"
           />
           <ToolboxItem
