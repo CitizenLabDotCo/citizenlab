@@ -58,6 +58,11 @@ const VisitorsTrafficSourcesCard = ({
             angle: 'value',
             name: 'name',
           }}
+          pie={{
+            startAngle: 0,
+            endAngle: 360,
+            outerRadius: 60,
+          }}
           legend={{
             items: legend,
             marginLeft: narrow ? 10 : 50,
