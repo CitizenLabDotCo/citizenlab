@@ -9,7 +9,11 @@ export default function useNarrow() {
     parentId: query.node(id).ancestors()[0],
   }));
 
-  const grandParentNode = node(node(parentId).ancestors()[0]).get();
+  if (!parentId) return false;
+  const grandParentId = node(parentId).ancestors()[0];
+  if (!grandParentId) return false;
+
+  const grandParentNode = node(grandParentId).get();
   const isInNarrowLayout = !!(grandParentNode?.data.name === 'TwoColumn');
 
   return isInNarrowLayout;
