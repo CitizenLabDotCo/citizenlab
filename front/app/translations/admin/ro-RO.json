@@ -435,7 +435,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBanner": "Hero banner",
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBannerTooltip": "Customise the page banner image and text.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Lista de proiecte",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Show the projects based on your page settings. You can preview the projects that will be shown.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Afișați proiectele în funcție de setările paginii dvs. Puteți previzualiza proiectele care vor fi afișate.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Top info section",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Add your own content to the customizable section at the top of the page.",
   "app.containers.Admin.PagesAndMenu.addButton": "Adăugați la bara de navigare",
