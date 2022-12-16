@@ -21,8 +21,8 @@ services:
     # volumes:
     #   - "../back:/cl2_back"
     env_file:
-      - "../.env-back-safe"
-      - "../.env-back-secret"
+      - "../env_files/back-safe.env"
+      - "../env_files/back-secret.env"
     environment:
       POSTGRES_HOST: e2e-postgres
       OVERRIDE_HOST: 'e2e.front'
@@ -43,8 +43,8 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - "../.env-front-safe"
-      - "../.env-front-secret"
+      - "../env_files/front-safe.env"
+      - "../env_files/front-secret.env"
     environment:
       API_HOST: e2e-web
     command: npm start
