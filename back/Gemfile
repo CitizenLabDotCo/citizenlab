@@ -181,16 +181,6 @@ gem 'rails-html-sanitizer', '>= 1.4.3'
 # Used to define CRON tasks. See back/config/schedule.rb.
 gem 'whenever', '~> 1.0'
 
-require 'json'
-if File.exist? '../citizenlab.config.ee.json'
-  gem 'ros-apartment', require: 'apartment'
-
-  # Upstream actionpack-cloudfront depends on ActionController::Helpers, which
-  # is not enabled for a rails api project, so we run on a fork.
-  # PR to merge to upstream: https://github.com/customink/actionpack-cloudfront/pull/18
-  gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
-end
-
 Dir.children('engines/free').each do |engine_name|
   path = "engines/free/#{engine_name}"
   gem engine_name, path: path if File.directory?(path)
@@ -198,6 +188,13 @@ end
 
 require './lib/citizen_lab'
 CitizenLab.ee do
+  gem 'ros-apartment', require: 'apartment'
+
+  # Upstream actionpack-cloudfront depends on ActionController::Helpers, which
+  # is not enabled for a rails api project, so we run on a fork.
+  # PR to merge to upstream: https://github.com/customink/actionpack-cloudfront/pull/18
+  gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
+
   Dir.children('engines/commercial').each do |engine_name|
     path = "engines/commercial/#{engine_name}"
     gem engine_name, path: path if File.directory?(path)
