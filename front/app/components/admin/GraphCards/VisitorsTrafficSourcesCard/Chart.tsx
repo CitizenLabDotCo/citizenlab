@@ -12,7 +12,7 @@ import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
   pieData: PieRow[];
-  innerRef: React.RefObject<any>;
+  innerRef?: React.RefObject<any>;
   onOpenModal?: () => void;
   showReferrers?: boolean;
 }
