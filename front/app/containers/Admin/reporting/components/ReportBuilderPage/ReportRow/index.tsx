@@ -47,7 +47,7 @@ const ReportRow = ({ report }: Props) => {
   };
 
   const handleViewReport = () => {
-    // TODO
+    clHistory.push(`/admin/reporting/report-builder/${report.id}/viewer`);
   };
 
   const handleShareReport = () => {
