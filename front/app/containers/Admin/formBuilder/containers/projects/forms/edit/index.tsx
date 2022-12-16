@@ -115,6 +115,7 @@ export const FormEdit = ({
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
+    trigger,
   } = methods;
 
   const { fields, append, remove, move, replace } = useFieldArray({
@@ -141,6 +142,7 @@ export const FormEdit = ({
     }
 
     closeSettings();
+    trigger();
   };
 
   const onAddField = (field: IFlatCreateCustomField) => {

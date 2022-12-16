@@ -95,7 +95,7 @@ const FormBuilderSettings = ({
   };
 
   const removeLogicAndDelete = () => {
-    if (fieldIndexToDelete) {
+    if (fieldIndexToDelete !== undefined) {
       formCustomFields.map((surveyField, i) => {
         if (surveyField.logic && surveyField.logic.rules) {
           const updatedRules = surveyField.logic.rules.filter(
