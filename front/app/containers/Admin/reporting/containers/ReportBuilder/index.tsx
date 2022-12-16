@@ -75,16 +75,6 @@ const ReportBuilder = ({ reportId }: Props) => {
     });
   }, []);
 
-  const getEditorData = useCallback(() => {
-    if (!isNilOrError(reportLayout) && selectedLocale) {
-      if (draftData && draftData[selectedLocale]) {
-        return draftData[selectedLocale];
-      } else {
-        return reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
-      }
-    } else return undefined;
-  }, [reportLayout, selectedLocale, draftData]);
-
   const handleEditorChange = useCallback(
     (nodes: SerializedNodes) => {
       if (Object.keys(nodes).length === 1 && nodes.ROOT) return;
@@ -116,6 +106,13 @@ const ReportBuilder = ({ reportId }: Props) => {
     },
     [selectedLocale]
   );
+
+  if (!selectedLocale) return null;
+
+  const initialData = isNilOrError(reportLayout)
+    ? undefined
+    : reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
+  const previewData = draftData ? draftData[selectedLocale] : undefined;
 
   return (
     <FullscreenContentBuilder
@@ -153,7 +150,7 @@ const ReportBuilder = ({ reportId }: Props) => {
                 width="100%"
                 height="100%"
               >
-                <Frame editorData={getEditorData()} />
+                <Frame editorData={initialData} />
               </Box>
             </Box>
           </StyledRightColumn>
@@ -171,7 +168,7 @@ const ReportBuilder = ({ reportId }: Props) => {
         <StyledRightColumn>
           <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
             <Editor isPreview={true}>
-              <Frame editorData={getEditorData()} />
+              <Frame editorData={previewData} />
             </Editor>
           </Box>
         </StyledRightColumn>

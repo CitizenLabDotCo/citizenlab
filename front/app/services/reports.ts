@@ -86,12 +86,19 @@ export function reportLayoutByIdStream(id: string) {
   });
 }
 
-export function updateReportLayout(id: string, craftMultiloc: JsonMultiloc) {
-  return streams.update(`${apiEndpoint}/${id}`, id, {
+export async function updateReportLayout(
+  id: string,
+  craftMultiloc: JsonMultiloc
+) {
+  const response = await streams.update(`${apiEndpoint}/${id}`, id, {
     report: {
       layout: {
         craftjs_jsonmultiloc: craftMultiloc,
       },
     },
   });
+
+  await streams.fetchAllWith({ apiEndpoint: [`${apiEndpoint}/id/layout`] });
+
+  return response;
 }
