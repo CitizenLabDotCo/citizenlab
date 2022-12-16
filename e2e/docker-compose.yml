@@ -15,7 +15,7 @@ services:
       - rabbitmq
     # We can easily control the app branch with `build` (not with `image`)
     build:
-      context: ../.
+      context: ..
       dockerfile: back/Dockerfile
     # To easily test locally. For unknow reason it doesn't work on CI
     # volumes:
@@ -35,7 +35,7 @@ services:
     ipc: 'host' #See https://github.com/cypress-io/cypress/issues/350
     container_name: 'e2e.front'
     build:
-      context: ../.
+      context: ..
       dockerfile: front/Dockerfile
     # To easily test locally. For unknow reason it doesn't work on CI
     # volumes:
