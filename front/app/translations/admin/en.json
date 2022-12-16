@@ -1169,6 +1169,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.required": "Required",
   "app.containers.AdminPage.ProjectEdit.survey.requiredToggleLabel": "Make answering this question required",
   "app.containers.AdminPage.ProjectEdit.survey.ruleForAnswerLabel": "If answer is:",
+  "app.containers.AdminPage.ProjectEdit.survey.ruleForPageLabel": "Next page always is:",
   "app.containers.AdminPage.ProjectEdit.survey.save": "Save",
   "app.containers.AdminPage.ProjectEdit.survey.selectText": "Multiple choice - choose one",
   "app.containers.AdminPage.ProjectEdit.survey.shortAnswer": "Short answer",
