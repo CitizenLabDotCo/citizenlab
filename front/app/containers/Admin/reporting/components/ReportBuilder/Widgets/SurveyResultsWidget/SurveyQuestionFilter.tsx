@@ -1,9 +1,11 @@
 import React, { ChangeEvent } from 'react';
-import useProject from '../../../../../../../hooks/useProject';
-import useFormResults from '../../../../../../../hooks/useFormResults';
-import { isNilOrError } from '../../../../../../../utils/helperUtils';
-import { Box } from '@citizenlab/cl2-component-library';
-import useLocalize from '../../../../../../../hooks/useLocalize';
+import useProject from 'hooks/useProject';
+import useFormResults from 'hooks/useFormResults';
+import { isNilOrError } from 'utils/helperUtils';
+import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';
+import useLocalize from 'hooks/useLocalize';
+import messages from './messages';
+import { useIntl } from '../../../../../../../utils/cl-intl';
 
 type SurveyQuestionFilterProps = {
   projectId: string;
@@ -19,6 +21,7 @@ const SurveyQuestionFilter = ({
   onToggleQuestion,
 }: SurveyQuestionFilterProps) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const project = useProject({ projectId });
   const formResults = useFormResults({
     projectId,
@@ -26,7 +29,12 @@ const SurveyQuestionFilter = ({
   });
 
   if (isNilOrError(formResults) || isNilOrError(project)) {
-    return <Box>There are no questions available for this project/phase.</Box>;
+    // This never seems to get shown
+    return (
+      <Text variant="bodyM" color="textSecondary">
+        {formatMessage(messages.surveyNoQuestions)}
+      </Text>
+    );
   }
 
   const { results } = formResults;
@@ -51,29 +59,28 @@ const SurveyQuestionFilter = ({
       event.stopPropagation();
       const findIndex = selectedQuestions.indexOf(questionIndex);
       if (findIndex > -1) {
-        console.log('removing index', questionIndex);
-        // selectedQuestions.splice(findIndex, 1); // Not working
+        const questionCopy = [...selectedQuestions];
+        questionCopy.splice(findIndex, 1);
+        selectedQuestions = questionCopy;
       } else {
-        console.log('adding index', questionIndex);
-        // selectedQuestions.push(questionIndex); // Not working
+        selectedQuestions = [...selectedQuestions, questionIndex];
       }
       onToggleQuestion(selectedQuestions);
     };
 
   return (
     <Box mb="20px">
-      <h3>Choose which questions to display:</h3>
+      <Text variant="bodyM" color="textSecondary">
+        {formatMessage(messages.surveyChooseQuestions)}
+      </Text>
       {results.map(({ question }, index) => {
-        // TODO: Didn't use <Checkbox/> as there seemed no way of giving it an ID
         return (
           <Box key={index} mb="10px">
-            <input
-              type="checkbox"
-              onChange={toggleQuestion(index)}
-              value={index}
+            <Checkbox
               checked={selectedQuestions.includes(index)}
+              onChange={toggleQuestion(index)}
+              label={localize(question)}
             />
-            <label>{localize(question)}</label>
           </Box>
         );
       })}

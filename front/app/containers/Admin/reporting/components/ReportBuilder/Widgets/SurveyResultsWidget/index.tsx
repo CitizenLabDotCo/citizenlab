@@ -10,7 +10,6 @@ import {
   Icon,
   Input,
   Text,
-  Title,
 } from '@citizenlab/cl2-component-library';
 import GraphCard from '../../../../../../../components/admin/GraphCard';
 import SurveyResultsReport from './SurveyResultsReport';
@@ -88,7 +87,6 @@ const SurveyResultsWidgetSettings = () => {
   };
 
   const handleQuestionToggle = (newQuestions: number[]) => {
-    console.log(newQuestions);
     setProp((props) => {
       props.showQuestions = newQuestions;
     });
@@ -122,11 +120,7 @@ const SurveyResultsWidgetSettings = () => {
       <Box mb="20px">
         <Input
           id="e2e-analytics-chart-widget-title"
-          label={
-            <Title variant="h4" color="tenantText" mb={'0'}>
-              {formatMessage(messages.surveySettingsTitle)}
-            </Title>
-          }
+          label={formatMessage(messages.surveySettingsTitle)}
           type="text"
           value={title}
           onChange={setTitle}
