@@ -104,8 +104,9 @@ const FormBuilderSettings = ({
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
-  const showTabbedSettings =
-    fieldType === 'linear_scale' || fieldType === 'select';
+  const showTabbedSettings = ['linear_scale', 'select', 'page'].includes(
+    fieldType
+  );
 
   return (
     <>

@@ -164,8 +164,7 @@ export const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...((field.input_type === 'linear_scale' ||
-          field.input_type === 'select') && {
+        ...(['linear_scale', 'select', 'page'].includes(field.input_type) && {
           logic: field.logic,
         }),
         required: field.required,

@@ -4,6 +4,7 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import { RuleInput } from './RuleInput';
+import { PageRuleInput } from './PageRuleInput';
 
 // intl
 import messages from '../../messages';
@@ -61,16 +62,25 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
       <Box mb="24px">
         <Warning text={formatMessage(messages.logicWarning)} />
       </Box>
-      {answers &&
-        answers.map((answer) => (
-          <Box key={answer.key}>
-            <RuleInput
-              name={`customFields.${field.index}.logic`}
-              answer={answer}
-              pages={pageOptions}
-            />
-          </Box>
-        ))}
+      {field.input_type === 'page' ? (
+        <PageRuleInput
+          name={`customFields.${field.index}.logic`}
+          pages={pageOptions}
+        />
+      ) : (
+        <>
+          {answers &&
+            answers.map((answer) => (
+              <Box key={answer.key}>
+                <RuleInput
+                  name={`customFields.${field.index}.logic`}
+                  answer={answer}
+                  pages={pageOptions}
+                />
+              </Box>
+            ))}
+        </>
+      )}
       <Box borderTop={`1px solid ${colors.divider}`} py="24px" />
     </>
   );
