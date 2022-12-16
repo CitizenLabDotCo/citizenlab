@@ -10,6 +10,7 @@ import {
   Header,
 } from 'components/LandingPages/citizen/FixedRatioBannerLayout';
 import HeaderContent from './HeaderContent';
+
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -24,8 +25,8 @@ const FixedRatioLayout = () => {
       homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
     return (
       <Container>
-        <Header id="hook-header">
-          <HeaderImage id="hook-header-image">
+        <Header>
+          <HeaderImage>
             <HeaderImageBackground src={headerImage || null} />
             <HeaderImageOverlay
               overlayColor={homepageSettingColor}
