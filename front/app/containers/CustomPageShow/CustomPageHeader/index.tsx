@@ -3,6 +3,7 @@ import { ICustomPageData } from 'services/customPages';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
+import FixedRatioLayout from './FixedRatioLayout';
 
 interface Props {
   pageData: ICustomPageData;
@@ -20,6 +21,9 @@ const CustomPageHeader = ({ pageData }: Props) => {
       )}
       {pageAttributes.banner_layout === 'two_row_layout' && (
         <TwoRowLayout pageData={pageData} />
+      )}
+      {pageAttributes.banner_layout === 'fixed_ratio_layout' && (
+        <FixedRatioLayout pageData={pageData} />
       )}
     </>
   );
