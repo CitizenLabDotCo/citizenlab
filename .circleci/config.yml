@@ -111,6 +111,19 @@ commands:
           echo "run_deploy: << pipeline.parameters.run_deploy >>"
           echo "image_tag: << pipeline.parameters.image_tag >>"
 
+  copy_secrets_from_lastpass:
+    steps:
+      - run: |
+          if command -v sudo &> /dev/null
+          then
+            sudo apt-get update && sudo apt-get install -y lastpass-cli
+          else
+            apt-get update && apt-get install -y lastpass-cli
+          fi
+      - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
+      - run: lpass show --notes 'citizenlab .env-back-secret' > citizenlab/.env-back-secret
+      - run: lpass show --notes 'citizenlab .env-front-secret' > citizenlab/.env-front-secret
+
 
 jobs:
   trigger-workflows:
@@ -754,6 +767,7 @@ jobs:
     working_directory: ~/
     steps:
       - checkout
+      - copy_secrets_from_lastpass
       - setup_remote_docker:
           version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
@@ -1182,6 +1196,7 @@ workflows:
       - e2e-tests:
           context:
             - docker-hub-access
+            - lastpass
 
   nightly-e2e-tests:
     triggers:
@@ -1196,6 +1211,7 @@ workflows:
           context:
             - docker-hub-access
             - slack-dev-notifications-e2e
+            - lastpass
           post-steps:
             - slack/notify:
                 event: pass
