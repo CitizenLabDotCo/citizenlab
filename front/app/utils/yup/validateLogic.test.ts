@@ -108,5 +108,8 @@ describe('validateLogic', () => {
   it('should be invalid if logic references a past page', async () => {
     const result = await schema.isValid(invalidSchema);
     expect(result).toBe(false);
+
+    const error = await schema.validate(invalidSchema).catch((err) => err);
+    expect(error.message).toBe('Logic is invalid');
   });
 });
