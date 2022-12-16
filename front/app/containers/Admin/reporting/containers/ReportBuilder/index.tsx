@@ -87,6 +87,7 @@ const ReportBuilder = ({ reportId }: Props) => {
 
   const handleEditorChange = useCallback(
     (nodes: SerializedNodes) => {
+      if (Object.keys(nodes).length === 1 && nodes.ROOT) return;
       if (!selectedLocale) return;
       setDraftData((draftData) => ({
         ...draftData,
