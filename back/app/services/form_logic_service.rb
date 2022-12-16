@@ -226,7 +226,7 @@ class FormLogicService
   end
 
   def pages_after(index)
-    fields.drop(index).select(&:page?)
+    fields.drop(index + 1).select(&:page?)
   end
 
   def pages_in_between(index, page_id)

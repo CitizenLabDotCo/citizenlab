@@ -77,6 +77,40 @@ describe FormLogicService do
       end
     end
 
+    context 'when a page has an explicit next page, which is the end page' do
+      before do
+        page2.update!(logic: { 'next_page_id' => 'survey_end' })
+      end
+
+      it 'returns a UI schema with rules for the given next page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            type: 'HIDEPAGE',
+            pageId: page2.id
+          }
+        }])
+        expect(form_logic.ui_schema_rules_for(page4)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            type: 'HIDEPAGE',
+            pageId: page2.id
+          }
+        }])
+        expect(form_logic.ui_schema_rules_for(page5)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            type: 'HIDEPAGE',
+            pageId: page2.id
+          }
+        }])
+      end
+    end
+
     context 'when a page has an explicit next page, and an answer to a question in the page triggers going to another page' do
       before do
         page2.update!(logic: { 'next_page_id' => page5.id })
