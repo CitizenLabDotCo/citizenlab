@@ -30,5 +30,5 @@ new Set([...branchKeys, ...prKeys]).forEach((jiraKey) => {
 
 // Link to trigger e2e tests
 message(
-  `<a href="https://epic.citizenlab.co/ci-e2e?citizenlab_branch=${danger.github.pr.head.ref}&citizenlab_ee_branch=${danger.github.pr.head.ref}">Run the e2e tests</a>`
+  `<a href="https://epic.citizenlab.co/ci-e2e?citizenlab_branch=${danger.github.pr.head.ref}">Run the e2e tests</a>`
 );
