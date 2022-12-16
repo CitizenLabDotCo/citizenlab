@@ -11,7 +11,7 @@ import React from 'react';
 import { ICustomPageData } from 'services/customPages';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
-import { colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 import styled from 'styled-components';
 export interface Props {
   className?: string;
@@ -25,7 +25,7 @@ const LayoutContainer = styled(Container)`
 `;
 
 const LayoutHeader = styled(Header)`
-  max-width: 952px;
+  max-width: ${stylingConsts.maxPageWidth}px; ;
 `;
 
 const FixedRatioLayout = ({

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { media } from 'utils/styleUtils';
-import { colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 export const Container = styled.div`
   width: 100%;
@@ -15,7 +15,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   width: 100%;
-  max-width: 1150px;
+  max-width: ${stylingConsts.pageWidth}px;
   min-height: 225px;
   margin: 0 auto;
   padding: 0;
