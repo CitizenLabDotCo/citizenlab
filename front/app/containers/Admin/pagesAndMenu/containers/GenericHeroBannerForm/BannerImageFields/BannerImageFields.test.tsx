@@ -29,7 +29,7 @@ describe('BannerImageFields', () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await waitFor(() => {
-          const select = screen.getByRole('combobox', {
+          const select = screen.queryByRole('combobox', {
             name: /Show preview for/,
           });
           expect(select).toBeInTheDocument();
@@ -42,8 +42,23 @@ describe('BannerImageFields', () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await waitFor(() => {
-          const overlayInput = screen.getByLabelText('Image overlay color');
+          const overlayInput = screen.queryByLabelText('Image overlay color');
           expect(overlayInput).toBeInTheDocument();
+        });
+      });
+
+      it('does not show if we have not selected an image yet', async () => {
+        render(
+          <BannerImageFields
+            {...props}
+            bannerLayout={bannerLayout}
+            headerBg={null}
+          />
+        );
+
+        await waitFor(() => {
+          const overlayInput = screen.queryByLabelText('Image overlay color');
+          expect(overlayInput).toBeNull();
         });
       });
     });
@@ -57,7 +72,7 @@ describe('BannerImageFields', () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await waitFor(() => {
-          const select = screen.getByRole('combobox', {
+          const select = screen.queryByRole('combobox', {
             name: /Show preview for/,
           });
           expect(select).toBeInTheDocument();
@@ -66,7 +81,7 @@ describe('BannerImageFields', () => {
     });
 
     describe('Image overlay controls', () => {
-      it('does not show overlay controls correctly', async () => {
+      it('does not show', async () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await waitFor(() => {
@@ -85,7 +100,7 @@ describe('BannerImageFields', () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await waitFor(() => {
-          const select = screen.getByRole('combobox', {
+          const select = screen.queryByRole('combobox', {
             name: /Show preview for/,
           });
           expect(select).toBeInTheDocument();
@@ -94,7 +109,7 @@ describe('BannerImageFields', () => {
     });
 
     describe('Image overlay controls', () => {
-      it('does not show overlay controls correctly', async () => {
+      it('does not show', async () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await waitFor(() => {
@@ -121,16 +136,52 @@ describe('BannerImageFields', () => {
       });
     });
 
-    // TO DO: should only show the overlay toggle/controls when we have a
-    // saved picture. Initially, it shouldn't be there, because the image cropper
-    // can't preview it.
     describe('Image overlay controls', () => {
-      it('shows overlay controls correctly', async () => {
+      it('shows overlay controls when we have a saved picture', async () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await waitFor(() => {
-          const overlayInput = screen.getByLabelText('Image overlay color');
+          const overlayInput = screen.queryByLabelText('Image overlay color');
           expect(overlayInput).toBeInTheDocument();
+        });
+      });
+
+      it('does not show when there is no saved image yet', async () => {
+        render(
+          <BannerImageFields
+            {...props}
+            headerBg={null}
+            bannerLayout={bannerLayout}
+          />
+        );
+        await waitFor(() => {
+          const overlayInput = screen.queryByLabelText('Image overlay color');
+          expect(overlayInput).toBeNull();
+        });
+      });
+
+      it('does not show when we have selected a picture that is not saved yet', async () => {
+        const { container } = render(
+          <BannerImageFields
+            {...props}
+            headerBg={null}
+            bannerLayout={bannerLayout}
+          />
+        );
+
+        const file = new File(['file'], 'file.png', {
+          type: 'image/png',
+        });
+
+        act(() => {
+          fireEvent.change(container.querySelector('#header-dropzone'), {
+            target: { files: [file] },
+          });
+        });
+
+        await waitFor(() => {
+          const overlayInput = container.querySelector('Image overlay color');
+          expect(overlayInput).toBeNull();
         });
       });
     });
