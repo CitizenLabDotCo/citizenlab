@@ -66,10 +66,6 @@ Layout/EndAlignment:
 Layout/TrailingWhitespace:
   AllowInHeredoc: true
 
-Metrics/ClassLength:
-  Max: 300
-  CountAsOne: ['array', 'hash', 'heredoc']
-
 Lint/UnusedMethodArgument:
   AllowUnusedKeywordArguments: true
 
@@ -139,16 +135,7 @@ Lint/Void:
   Exclude:
     - 'engines/commercial/multi_tenancy/config/initializers/sentry.rb'
 
-RSpec/BeforeAfterAll:
-  Exclude:
-    - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
 
 Rails/UnknownEnv:
   # config/initializers/apartment.rb refers to staging, which is not part of the default settings.
   Environments: [development, test, production, staging]
-
-Rails/UniqueValidationWithoutIndex:
-  # This Cop does not fail when running in citizenlab-ee/engines/ee/multi_tenancy locally,
-  # because db/schema.rb does not exist, but it fails on CI.
-  Exclude:
-    - 'engines/commercial/multi_tenancy/app/models/tenant.rb'
