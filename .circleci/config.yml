@@ -384,8 +384,8 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [$CIRCLE_BRANCH, master]
-              - equal: [$CIRCLE_BRANCH, production]
+              - equal: [<< pipeline.git.branch >>, master]
+              - equal: [<< pipeline.git.branch >>, production]
           steps:
             - run: |
                 curl --request POST \
@@ -659,8 +659,8 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [$CIRCLE_BRANCH, master]
-              - equal: [$CIRCLE_BRANCH, production]
+              - equal: [<< pipeline.git.branch >>, master]
+              - equal: [<< pipeline.git.branch >>, production]
           steps:
             - run: |
                 curl --request POST \
