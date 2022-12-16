@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<NotificationMenu /> renders correctly when a user is logged in 1`] = `""`;
-
-exports[`<NotificationMenu /> renders correctly when there no user is logged in 1`] = `""`;
