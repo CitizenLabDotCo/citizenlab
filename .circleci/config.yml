@@ -746,10 +746,8 @@ jobs:
     docker:
       - image: cimg/base:2021.03
     resource_class: medium+
-    working_directory: /citizenlab
     steps:
-      - checkout:
-          path: "/citizenlab"
+      - checkout
       - copy_secrets_from_lastpass
       - setup_remote_docker:
           version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
