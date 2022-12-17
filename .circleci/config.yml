@@ -1056,11 +1056,15 @@ workflows:
             branches:
               only:
                 - master
+          context:
+            - citizenlab-ee-environment
       - front-ee-deploy-production:
           filters:
             branches:
               only:
                 - production
+          context:
+            - citizenlab-ee-environment
       - front-ee-test-lighthouse:
           requires:
             - front-ee-deploy-staging
