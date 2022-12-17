@@ -675,14 +675,14 @@ jobs:
           path: /citizenlab
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+            - v1-npm-cache-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING npm run build
           no_output_timeout: "30m"
@@ -704,14 +704,14 @@ jobs:
           path: /citizenlab
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+            - v1-npm-cache-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_PRODUCTION npm run build
           no_output_timeout: "30m"
@@ -1056,11 +1056,15 @@ workflows:
             branches:
               only:
                 - master
+          context:
+            - citizenlab-ee-environment
       - front-ee-deploy-production:
           filters:
             branches:
               only:
                 - production
+          context:
+            - citizenlab-ee-environment
       - front-ee-test-lighthouse:
           requires:
             - front-ee-deploy-staging
