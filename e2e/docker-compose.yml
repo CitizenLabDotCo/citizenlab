@@ -17,6 +17,8 @@ services:
     build:
       context: ..
       dockerfile: back/Dockerfile
+      args:
+        CITIZENLAB_EE: "true"
     # To easily test locally. For unknow reason it doesn't work on CI
     # volumes:
     #   - "../back:/cl2_back"
@@ -25,15 +27,15 @@ services:
       - "../env_files/back-secret.env"
     environment:
       POSTGRES_HOST: e2e-postgres
-      OVERRIDE_HOST: 'e2e.front'
+      OVERRIDE_HOST: "e2e.front"
 
   rabbitmq:
     container_name: e2e-rabbit
     image: "rabbitmq:3.7-management"
 
   front:
-    ipc: 'host' #See https://github.com/cypress-io/cypress/issues/350
-    container_name: 'e2e.front'
+    ipc: "host" #See https://github.com/cypress-io/cypress/issues/350
+    container_name: "e2e.front"
     build:
       context: ..
       dockerfile: front/Dockerfile
