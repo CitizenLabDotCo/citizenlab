@@ -36,13 +36,11 @@ interface DataProps {
   phases: GetPhasesChildProps;
 }
 
-interface Props
-  extends InputProps,
-    DataProps,
-    WrappedComponentProps,
-    InjectedLocalized {}
+interface Props extends InputProps, DataProps {}
 
-const IdeasNewMeta = React.memo<Props>(
+const IdeasNewMeta = React.memo<
+  Props & InjectedLocalized & WrappedComponentProps
+>(
   ({
     authUser,
     locales,
