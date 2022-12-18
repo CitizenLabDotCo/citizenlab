@@ -14,8 +14,6 @@ import Outlet from 'components/Outlet';
 import { Box } from '@citizenlab/cl2-component-library';
 import NewIdeaButton from './ideas/NewIdeaButton';
 import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
-import FeatureFlag from 'components/FeatureFlag';
-import Tab from './permissions/components/Tab';
 
 // resources
 import GetFeatureFlag, {
@@ -153,6 +151,12 @@ export class AdminProjectsProjectIndex extends PureComponent<
           label: formatMessage(messages.eventsTab),
           url: 'events',
           name: 'events',
+        },
+        {
+          label: formatMessage(messages.permissionsTab),
+          url: `permissions`,
+          feature: 'private_projects',
+          name: 'permissions',
         },
       ],
       tabHideConditions: {
@@ -374,9 +378,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
             project={project}
             phases={phases}
           />
-          <FeatureFlag name="project_management">
-            <Tab onData={this.handleData} />
-          </FeatureFlag>
+
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>
