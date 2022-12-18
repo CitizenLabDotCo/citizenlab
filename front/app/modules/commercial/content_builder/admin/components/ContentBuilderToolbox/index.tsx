@@ -131,7 +131,6 @@ const ContentBuilderToolbox = ({
           <Accordion
             title={formatMessage(accordionMessages.accordionTitleValue)}
             text={formatMessage(accordionMessages.accordionTextValue)}
-            openByDefault={false}
           />
         }
         icon="accordion"
