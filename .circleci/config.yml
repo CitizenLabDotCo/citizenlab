@@ -118,8 +118,8 @@ commands:
             apt-get update && apt-get install -y lastpass-cli
           fi
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
-      - run: lpass show --notes 'citizenlab .env-back-secret' > env_files/back-secret.env
-      - run: lpass show --notes 'citizenlab .env-front-secret' > env_files/front-secret.env
+      - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
+      - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
 
 jobs:
   trigger-workflows:
@@ -1270,6 +1270,8 @@ workflows:
                 template: basic_fail_1
 
   nightly-templates:
+    # Todo: scheduled workflows are deprecated, should be converted into a scheduled pipeline
+    # https://circleci.com/docs/migrate-scheduled-workflows-to-scheduled-pipelines/
     triggers:
       - schedule:
           cron: "0 0 * * *"
