@@ -1,13 +1,24 @@
-import { Box, Text } from '@citizenlab/cl2-component-library';
 import React from 'react';
-import formBuilderMessages from '../../../../../formBuilder/components/messages';
+
+// components
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
+
+// messages
+import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
 import messages from './messages';
-import useLocale from '../../../../../../../hooks/useLocale';
-import useProject from '../../../../../../../hooks/useProject';
-import useFormResults from '../../../../../../../hooks/useFormResults';
-import { isNilOrError } from '../../../../../../../utils/helperUtils';
-import { useIntl } from '../../../../../../../utils/cl-intl';
-import FormResultsQuestion from '../../../../../formBuilder/components/FormResults/FormResultsQuestion';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import useProject from 'hooks/useProject';
+import useFormResults from 'hooks/useFormResults';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { useIntl } from 'utils/cl-intl';
+
+// typings
+import { Result } from 'services/formCustomFields';
 
 type SurveyResultsReportProps = {
   projectId: string;
@@ -51,6 +62,27 @@ const SurveyResultsReport = ({
         })
       : formatMessage(formBuilderMessages.noSurveyResponses);
 
+  // Map into rows of two
+  const mapResultRows = (results: Result[]) => {
+    const displayResults: Array<Result>[] = [];
+    let eachRow: Result[] = [];
+    let displayIndex = 1;
+    results.map((surveyResultData, index) => {
+      if (showQuestions.includes(index)) {
+        eachRow.push(surveyResultData);
+        if (displayIndex % 2 === 0) {
+          displayResults.push(eachRow);
+          eachRow = [];
+        }
+        displayIndex++;
+      }
+    });
+    if (eachRow.length !== 0) {
+      displayResults.push(eachRow);
+    }
+    return displayResults;
+  };
+
   return (
     <>
       <Box px="20px" width="100%" display="flex" flexDirection="row">
@@ -58,30 +90,42 @@ const SurveyResultsReport = ({
           {surveyResponseMessage}
         </Text>
       </Box>
-      <Box width="100%" display="flex">
-        {results.map(
-          (
-            { question, inputType, answers, totalResponses, required },
-            index
-          ) => {
-            if (!showQuestions.includes(index)) {
-              return null;
-            }
-            return (
-              <Box p="10px" width="50%" key={index} border="1px solid #ccc">
-                <FormResultsQuestion
-                  locale={locale}
-                  question={question}
-                  inputType={inputType}
-                  answers={answers}
-                  totalResponses={totalResponses}
-                  required={required}
-                />
-              </Box>
-            );
-          }
-        )}
-      </Box>
+      {mapResultRows(results).map((row, index) => {
+        return (
+          <Box
+            px="20px"
+            width="100%"
+            display="flex"
+            flexDirection="row"
+            key={index}
+          >
+            {row.map(
+              (
+                { question, inputType, answers, totalResponses, required },
+                index
+              ) => {
+                return (
+                  <Box
+                    px="20px"
+                    width="50%"
+                    key={index}
+                    border="1px solid #ccc"
+                  >
+                    <FormResultsQuestion
+                      locale={locale}
+                      question={question}
+                      inputType={inputType}
+                      answers={answers}
+                      totalResponses={totalResponses}
+                      required={required}
+                    />
+                  </Box>
+                );
+              }
+            )}
+          </Box>
+        );
+      })}
     </>
   );
 };

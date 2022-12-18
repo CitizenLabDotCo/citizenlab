@@ -11,22 +11,20 @@ import {
   Input,
   Text,
 } from '@citizenlab/cl2-component-library';
-import GraphCard from '../../../../../../../components/admin/GraphCard';
+import GraphCard from 'components/admin/GraphCard';
 import SurveyResultsReport from './SurveyResultsReport';
+import SurveyQuestionFilter from './SurveyQuestionFilter';
+import SurveyReportFilter from './SurveyReportFilter';
 
-// i18n
+// messages
 import messages from './messages';
 import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
 
 // types
-import { IOption } from '../../../../../../../typings';
-
-// settings
+import { IOption } from 'typings';
 
 // utils
 import { useIntl } from 'utils/cl-intl';
-import SurveyQuestionFilter from './SurveyQuestionFilter';
-import SurveyReportFilter from './SurveyReportFilter';
 
 type SurveyResultsProps = {
   title: string | undefined;

@@ -1,11 +1,17 @@
 import React, { ChangeEvent } from 'react';
+
+// hooks
 import useProject from 'hooks/useProject';
 import useFormResults from 'hooks/useFormResults';
+import useLocalize from 'hooks/useLocalize';
+
+// utils
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
+
+// messages
 import messages from './messages';
-import { useIntl } from '../../../../../../../utils/cl-intl';
 
 type SurveyQuestionFilterProps = {
   projectId: string;

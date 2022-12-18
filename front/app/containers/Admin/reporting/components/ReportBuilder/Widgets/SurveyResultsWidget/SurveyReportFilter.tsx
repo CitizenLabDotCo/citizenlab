@@ -1,12 +1,20 @@
 import React from 'react';
-import usePhases from 'hooks/usePhases';
+
+// components
 import { Box, Select, Text } from '@citizenlab/cl2-component-library';
-import { isNilOrError } from 'utils/helperUtils';
-import T from 'components/T';
-import useLocalize from 'hooks/useLocalize';
 import styled from 'styled-components';
+import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
+import T from 'components/T';
+
+// hooks
+import usePhases from 'hooks/usePhases';
+import useLocalize from 'hooks/useLocalize';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
 import { IOption } from 'typings';
-import ProjectFilter from '../../../../../dashboard/components/filters/ProjectFilter';
 
 const StyledSelect = styled(Select)<{ padding?: string }>`
   ${({ padding }) =>

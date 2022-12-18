@@ -162,14 +162,15 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
         />
         {
           // TODO: CL-2307 Only show this if there are surveys in the platform
+          // TODO: Add in the default project / phase
         }
         <DraggableElement
           id="e2e-draggable-survey-results-widget"
           component={
             <SurveyResultsWidget
               title={formatMessage(surveyResultMessages.surveyResults)}
-              projectId="d6827fd0-29bf-4e1d-8861-420386a61c34"
-              phaseId="350adbb0-6ca5-48aa-aedd-e7d7d2e5fc6b"
+              projectId=""
+              phaseId={undefined}
             />
           }
           icon="survey"
