@@ -42,21 +42,25 @@ interface Props {
 }
 
 // move this to homepage settings resource?
-export const homepageBannerLayoutHeights = {
+export const homepageBannerLayoutHeights: {
+  [key in THomepageBannerLayout]: {
+    [key in PreviewDevice]: number;
+  };
+} = {
   full_width_banner_layout: {
     desktop: 450,
     tablet: 350,
-    phone: 300,
+    mobile: 300,
   },
   two_column_layout: {
     desktop: 532,
     tablet: 532,
-    phone: 240,
+    mobile: 240,
   },
   two_row_layout: {
     desktop: 280,
     tablet: 200,
-    phone: 200,
+    mobile: 200,
   },
 };
 
@@ -73,7 +77,7 @@ const HeaderImageDropzone = ({
   const getImagePreviewRatio = () => {
     const layoutHeightOnDevice =
       homepageBannerLayoutHeights[layout][previewDevice];
-    const standardDeviceWidth = { desktop: 1530, tablet: 768, phone: 375 }[
+    const standardDeviceWidth = { desktop: 1530, tablet: 768, mobile: 375 }[
       previewDevice
     ];
     const deviceWidthPerLayout =
