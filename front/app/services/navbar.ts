@@ -145,7 +145,7 @@ export async function reorderNavbarItem(
   return response;
 }
 
-export async function removeNavbarItem(navbarItemId) {
+export async function removeNavbarItem(navbarItemId: string) {
   const response = await streams.delete(
     `${apiEndpoint}/${navbarItemId}`,
     navbarItemId
