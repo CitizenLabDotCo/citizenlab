@@ -9,7 +9,6 @@ import flagInappropriateContentConfiguration from './commercial/flag_inappropria
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
-import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -109,10 +108,6 @@ export default loadModules([
   },
   {
     configuration: customTopicsConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: customizableHomepageBannerConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
   {
