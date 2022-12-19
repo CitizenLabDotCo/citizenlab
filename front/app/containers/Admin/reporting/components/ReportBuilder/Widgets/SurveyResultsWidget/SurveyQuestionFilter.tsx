@@ -13,19 +13,19 @@ import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';
 // messages
 import messages from './messages';
 
-type SurveyQuestionFilterProps = {
+interface Props {
   projectId: string;
-  phaseId: string;
-  showQuestions: number[] | undefined;
-  onToggleQuestion: (showQuestions: number[]) => void;
-};
+  phaseId?: string;
+  shownQuestions?: boolean[];
+  onToggleQuestion: (questionIndex: number, numberOfQuestions: number) => void;
+}
 
 const SurveyQuestionFilter = ({
   projectId,
   phaseId,
-  showQuestions,
+  shownQuestions,
   onToggleQuestion,
-}: SurveyQuestionFilterProps) => {
+}: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const project = useProject({ projectId });
@@ -44,34 +44,18 @@ const SurveyQuestionFilter = ({
   }
 
   const { results } = formResults;
+
   if (results.length === 0) {
     return null;
-  }
-
-  // Initialise which questions are checked
-  let selectedQuestions: number[] = [];
-  if (showQuestions !== undefined) {
-    selectedQuestions = showQuestions;
-  } else {
-    for (let i = 0; i <= results.length - 1; i++) {
-      selectedQuestions.push(i);
-    }
-    onToggleQuestion(selectedQuestions);
   }
 
   // Add/remove from selected questions
   const toggleQuestion =
     (questionIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
       event.stopPropagation();
-      const findIndex = selectedQuestions.indexOf(questionIndex);
-      if (findIndex > -1) {
-        const questionCopy = [...selectedQuestions];
-        questionCopy.splice(findIndex, 1);
-        selectedQuestions = questionCopy;
-      } else {
-        selectedQuestions = [...selectedQuestions, questionIndex];
-      }
-      onToggleQuestion(selectedQuestions);
+
+      const numberOfQuestions = results.length;
+      onToggleQuestion(questionIndex, numberOfQuestions);
     };
 
   return (
@@ -79,17 +63,17 @@ const SurveyQuestionFilter = ({
       <Text variant="bodyM" color="textSecondary">
         {formatMessage(messages.surveyChooseQuestions)}
       </Text>
-      {results.map(({ question }, index) => {
-        return (
-          <Box key={index} mb="10px">
-            <Checkbox
-              checked={selectedQuestions.includes(index)}
-              onChange={toggleQuestion(index)}
-              label={localize(question)}
-            />
-          </Box>
-        );
-      })}
+      {results.map(({ question }, index) => (
+        <Box key={index} mb="10px">
+          <Checkbox
+            checked={
+              shownQuestions === undefined ? true : shownQuestions[index]
+            }
+            onChange={toggleQuestion(index)}
+            label={localize(question)}
+          />
+        </Box>
+      ))}
     </Box>
   );
 };

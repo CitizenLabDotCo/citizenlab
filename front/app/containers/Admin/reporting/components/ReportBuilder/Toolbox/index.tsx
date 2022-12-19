@@ -174,8 +174,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <SurveyResultsWidget
                 title={formatMessage(SurveyResultsWidget.craft.custom.title)}
-                projectId=""
-                phaseId={undefined}
               />
             }
             icon="survey"

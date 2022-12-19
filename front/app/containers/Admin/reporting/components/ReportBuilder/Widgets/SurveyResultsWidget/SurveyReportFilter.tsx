@@ -28,7 +28,7 @@ const StyledSelect = styled(Select)<{ padding?: string }>`
 `;
 
 type SurveyReportFilterProps = {
-  projectId: string;
+  projectId?: string;
   phaseId?: string | null;
   onPhaseFilter: (filter: IOption) => void;
   onProjectFilter: (filter: IOption) => void;

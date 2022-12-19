@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -16,21 +16,15 @@ import useFormResults from 'hooks/useFormResults';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
+import { createResultRows } from './utils';
 
-// typings
-import { Result } from 'services/formCustomFields';
-
-type SurveyResultsReportProps = {
+type Props = {
   projectId: string;
-  phaseId: string | undefined;
-  showQuestions?: number[];
+  phaseId?: string;
+  shownQuestions?: boolean[];
 };
 
-const SurveyResultsReport = ({
-  projectId,
-  phaseId,
-  showQuestions = [],
-}: SurveyResultsReportProps) => {
+const SurveyResultsReport = ({ projectId, phaseId, shownQuestions }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const project = useProject({ projectId });
@@ -38,6 +32,13 @@ const SurveyResultsReport = ({
     projectId,
     phaseId,
   });
+
+  const resultRows = useMemo(() => {
+    if (isNilOrError(formResults)) return null;
+
+    const { results } = formResults;
+    return createResultRows(results, shownQuestions);
+  }, [formResults, shownQuestions]);
 
   if (
     isNilOrError(formResults) ||
@@ -54,7 +55,9 @@ const SurveyResultsReport = ({
     );
   }
 
-  const { totalSubmissions, results } = formResults;
+  if (resultRows === null) return null;
+
+  const { totalSubmissions } = formResults;
 
   const surveyResponseMessage =
     totalSubmissions > 0
@@ -63,27 +66,6 @@ const SurveyResultsReport = ({
         })
       : formatMessage(formBuilderMessages.noSurveyResponses);
 
-  // Map into rows of two
-  const mapResultRows = (results: Result[]) => {
-    const displayResults: Array<Result>[] = [];
-    let eachRow: Result[] = [];
-    let displayIndex = 1;
-    results.map((surveyResultData, index) => {
-      if (showQuestions.includes(index)) {
-        eachRow.push(surveyResultData);
-        if (displayIndex % 2 === 0) {
-          displayResults.push(eachRow);
-          eachRow = [];
-        }
-        displayIndex++;
-      }
-    });
-    if (eachRow.length !== 0) {
-      displayResults.push(eachRow);
-    }
-    return displayResults;
-  };
-
   return (
     <>
       <Box px="20px" width="100%" display="flex" flexDirection="row">
@@ -91,7 +73,7 @@ const SurveyResultsReport = ({
           {surveyResponseMessage}
         </Text>
       </Box>
-      {mapResultRows(results).map((row, index) => {
+      {resultRows.map((row, index) => {
         return (
           <Box
             px="20px"
@@ -131,4 +113,18 @@ const SurveyResultsReport = ({
   );
 };
 
-export default SurveyResultsReport;
+type OuterProps = {
+  projectId?: string;
+  phaseId?: string;
+  shownQuestions?: boolean[];
+};
+
+const SurveyResultsReportWrapper = ({
+  projectId,
+  ...otherProps
+}: OuterProps) => {
+  if (projectId === undefined) return null;
+  return <SurveyResultsReport projectId={projectId} {...otherProps} />;
+};
+
+export default SurveyResultsReportWrapper;

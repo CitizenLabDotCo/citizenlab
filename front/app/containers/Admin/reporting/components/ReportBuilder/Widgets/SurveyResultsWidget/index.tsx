@@ -26,25 +26,25 @@ import { IOption } from 'typings';
 // utils
 import { useIntl } from 'utils/cl-intl';
 
-type SurveyResultsProps = {
+type Props = {
   title: string | undefined;
-  projectId: string;
-  phaseId: string | undefined;
-  showQuestions?: number[];
+  projectId?: string;
+  phaseId?: string;
+  shownQuestions?: boolean[];
 };
 
 const SurveyResultsWidget = ({
   title,
   projectId,
   phaseId,
-  showQuestions,
-}: SurveyResultsProps) => {
+  shownQuestions,
+}: Props) => {
   return (
     <GraphCard title={title}>
       <SurveyResultsReport
         projectId={projectId}
         phaseId={phaseId}
-        showQuestions={showQuestions}
+        shownQuestions={shownQuestions}
       />
     </GraphCard>
   );
@@ -57,12 +57,12 @@ const SurveyResultsWidgetSettings = () => {
     title,
     projectId,
     phaseId,
-    showQuestions,
-  } = useNode((node) => ({
+    shownQuestions,
+  } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
     phaseId: node.data.props.phaseId,
-    showQuestions: node.data.props.showQuestions,
+    shownQuestions: node.data.props.shownQuestions,
   }));
 
   const setTitle = (value: string) => {
@@ -74,7 +74,8 @@ const SurveyResultsWidgetSettings = () => {
   const handleProjectFilter = ({ value }: IOption) => {
     setProp((props) => {
       props.projectId = value;
-      props.phaseId = null;
+      props.phaseId = undefined;
+      props.shownQuestions = undefined;
     });
   };
 
@@ -84,9 +85,18 @@ const SurveyResultsWidgetSettings = () => {
     });
   };
 
-  const handleQuestionToggle = (newQuestions: number[]) => {
+  const handleQuestionToggle = (
+    questionIndex: number,
+    numberOfQuestions: number
+  ) => {
     setProp((props) => {
-      props.showQuestions = newQuestions;
+      const newShownQuestions = props.shownQuestions
+        ? [...props.shownQuestions]
+        : Array(numberOfQuestions).fill(true);
+
+      newShownQuestions[questionIndex] = !newShownQuestions[questionIndex];
+
+      props.shownQuestions = newShownQuestions;
     });
   };
 
@@ -132,12 +142,14 @@ const SurveyResultsWidgetSettings = () => {
         onProjectFilter={handleProjectFilter}
       />
 
-      <SurveyQuestionFilter
-        projectId={projectId}
-        phaseId={phaseId}
-        showQuestions={showQuestions}
-        onToggleQuestion={handleQuestionToggle}
-      />
+      {projectId !== undefined && (
+        <SurveyQuestionFilter
+          projectId={projectId}
+          phaseId={phaseId}
+          shownQuestions={shownQuestions}
+          onToggleQuestion={handleQuestionToggle}
+        />
+      )}
     </Box>
   );
 };
