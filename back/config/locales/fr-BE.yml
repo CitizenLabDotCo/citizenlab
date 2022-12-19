@@ -142,7 +142,7 @@ fr-BE:
         question:
           title: Quelle est votre question ?
         contribution:
-          title: Quelle est votre suggestion ?
+          title: Quelle est votre suggestion?
         project:
           title: Quel est votre projet ?
         issue:
