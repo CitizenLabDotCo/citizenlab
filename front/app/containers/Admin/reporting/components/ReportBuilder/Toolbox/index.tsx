@@ -14,17 +14,15 @@ import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 
-// Utils
+// utils
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import moment from 'moment';
 
-// Messages
+// messages
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
-import aboutMessages from '../Widgets/AboutReportWidget/messages';
-import surveyResultMessages from '../Widgets/SurveyResultsWidget/messages';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -87,7 +85,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-about-report"
             component={<AboutReportWidget reportId={reportId} />}
             icon="section-image-text"
-            label={formatMessage(aboutMessages.aboutThisReport)}
+            label={formatMessage(AboutReportWidget.craft.custom.title)}
           />
           <DraggableElement
             id="e2e-draggable-text"
@@ -175,13 +173,13 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-survey-results-widget"
             component={
               <SurveyResultsWidget
-                title={formatMessage(surveyResultMessages.surveyResults)}
+                title={formatMessage(SurveyResultsWidget.craft.custom.title)}
                 projectId=""
                 phaseId={undefined}
               />
             }
             icon="survey"
-            label={formatMessage(surveyResultMessages.surveyResults)}
+            label={formatMessage(SurveyResultsWidget.craft.custom.title)}
           />
         </Accordion>
       </Box>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { useNode, UserComponent } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
 
 // components
 import {
@@ -30,10 +30,10 @@ type SurveyResultsProps = {
   title: string | undefined;
   projectId: string;
   phaseId: string | undefined;
-  showQuestions: number[] | undefined;
+  showQuestions?: number[];
 };
 
-const SurveyResultsWidget: UserComponent = ({
+const SurveyResultsWidget = ({
   title,
   projectId,
   phaseId,
