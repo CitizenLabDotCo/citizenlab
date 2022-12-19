@@ -102,7 +102,7 @@ const HeaderImageDropzone = ({
         // Should be replaced, value should only be
         // overlayColor. Default needs to be set by the
         // toggle handler, but it requires significant refactoring
-        overlayColor={overlayColor || theme.colors.primary}
+        overlayColor={overlayColor || theme.colors.tenantPrimary}
         overlayOpacity={overlayOpacity}
       />
     ) : null;

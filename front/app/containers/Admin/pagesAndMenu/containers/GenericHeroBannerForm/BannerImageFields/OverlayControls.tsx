@@ -121,7 +121,7 @@ const OverlayControls = ({
               // Should be replaced, value should only be
               // bannerOverlayColor. Default needs to be set by the
               // toggle handler, but it requires significant refactoring
-              value={bannerOverlayColor || theme.colors.primary}
+              value={bannerOverlayColor || theme.colors.tenantPrimary}
               onChange={onOverlayColorChange}
             />
           </Box>
