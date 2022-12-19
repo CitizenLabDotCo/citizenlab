@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Container,
   Header,
@@ -5,28 +6,22 @@ import {
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
 import HeaderContent from './HeaderContent';
+import { IHomepageSettingsData } from 'services/homepageSettings';
 
-// hooks
-import useHomepageSettings from 'hooks/useHomepageSettings';
-
-export interface Props {
+interface Props {
   className?: string;
+  homepageSettings: IHomepageSettingsData;
 }
 
-const FullWidthBannerLayout = ({ className }: Props) => {
-  const homepageSettings = useHomepageSettings();
+const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {
+  const headerImage = homepageSettings.attributes.header_bg?.large;
+  const homepageSettingColor =
+    homepageSettings.attributes.banner_signed_out_header_overlay_color;
+  const homepageSettingOpacity =
+    homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
 
-  if (!isNilOrError(homepageSettings)) {
-    const headerImage = homepageSettings.attributes.header_bg?.large;
-    const homepageSettingColor =
-      homepageSettings.attributes.banner_signed_out_header_overlay_color;
-    const homepageSettingOpacity =
-      homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
+  if (homepageSettingColor && typeof homepageSettingOpacity === 'number') {
     return (
       <Container className={`e2e-signed-out-header ${className}`}>
         <Header id="hook-header">
