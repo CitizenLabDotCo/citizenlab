@@ -20,7 +20,7 @@ interface Props {
   onToggleQuestion: (questionIndex: number, numberOfQuestions: number) => void;
 }
 
-const SurveyQuestionFilter = ({
+const QuestionFilter = ({
   projectId,
   phaseId,
   shownQuestions,
@@ -77,4 +77,4 @@ const SurveyQuestionFilter = ({
     </Box>
   );
 };
-export default SurveyQuestionFilter;
+export default QuestionFilter;

@@ -12,9 +12,10 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import GraphCard from 'components/admin/GraphCard';
-import SurveyResultsReport from './SurveyResultsReport';
-import SurveyQuestionFilter from './SurveyQuestionFilter';
-import SurveyReportFilter from './SurveyReportFilter';
+import SurveyResults from './SurveyResults';
+import ProjectFilter from './ProjectFilter';
+import PhaseFilter from './PhaseFilter';
+import QuestionFilter from './QuestionFilter';
 
 // messages
 import messages from './messages';
@@ -41,7 +42,7 @@ const SurveyResultsWidget = ({
 }: Props) => {
   return (
     <GraphCard title={title}>
-      <SurveyResultsReport
+      <SurveyResults
         projectId={projectId}
         phaseId={phaseId}
         shownQuestions={shownQuestions}
@@ -135,7 +136,7 @@ const SurveyResultsWidgetSettings = () => {
         />
       </Box>
 
-      <SurveyReportFilter
+      <ProjectFilter
         projectId={projectId}
         phaseId={phaseId}
         onPhaseFilter={handlePhaseFilter}
@@ -143,12 +144,19 @@ const SurveyResultsWidgetSettings = () => {
       />
 
       {projectId !== undefined && (
-        <SurveyQuestionFilter
-          projectId={projectId}
-          phaseId={phaseId}
-          shownQuestions={shownQuestions}
-          onToggleQuestion={handleQuestionToggle}
-        />
+        <>
+          <PhaseFilter
+            projectId={projectId}
+            phaseId={phaseId}
+            onPhaseFilter={handlePhaseFilter}
+          />
+          <QuestionFilter
+            projectId={projectId}
+            phaseId={phaseId}
+            shownQuestions={shownQuestions}
+            onToggleQuestion={handleQuestionToggle}
+          />
+        </>
       )}
     </Box>
   );

@@ -82,30 +82,13 @@ const SurveyResultsReport = ({ projectId, phaseId, shownQuestions }: Props) => {
             flexDirection="row"
             key={index}
           >
-            {row.map(
-              (
-                { question, inputType, answers, totalResponses, required },
-                index
-              ) => {
-                return (
-                  <Box
-                    px="20px"
-                    width="50%"
-                    key={index}
-                    border="1px solid #ccc"
-                  >
-                    <FormResultsQuestion
-                      locale={locale}
-                      question={question}
-                      inputType={inputType}
-                      answers={answers}
-                      totalResponses={totalResponses}
-                      required={required}
-                    />
-                  </Box>
-                );
-              }
-            )}
+            {row.map((result, index) => {
+              return (
+                <Box px="20px" width="50%" key={index} border="1px solid #ccc">
+                  <FormResultsQuestion locale={locale} {...result} />
+                </Box>
+              );
+            })}
           </Box>
         );
       })}
