@@ -1,8 +1,12 @@
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const RenderOnNotificationType = React.lazy(
-  () => import('modules/utilComponents/RenderOnNotificationType')
-);
+import {
+  TNotificationData,
+  TNotificationType,
+  INLPFlagNotificationData,
+} from 'services/notifications';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 const Setting = React.lazy(() => import('./admin/containers/Setting'));
 const RemoveFlagButton = React.lazy(
   () => import('./admin/components/RemoveFlagButton')
@@ -19,8 +23,6 @@ const EmptyMessageModerationsWithFlag = React.lazy(
 const NLPFlagNotification = React.lazy(
   () => import('./citizen/components/NLPFlagNotification')
 );
-import { INLPFlagNotificationData } from 'services/notifications';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type RenderOnSelectedTabValueProps = {
   isTabSelected: boolean;
@@ -50,6 +52,24 @@ const RenderOnAllowed = ({ children }) => {
   });
 
   return allowed ? <>{children}</> : null;
+};
+
+export type RenderOnNotificationTypeProps = {
+  children: ReactNode;
+  notification: TNotificationData;
+  notificationType: TNotificationType;
+};
+
+const RenderOnNotificationType = ({
+  children,
+  notification,
+  notificationType,
+}: RenderOnNotificationTypeProps) => {
+  if (notification.attributes.type === notificationType) {
+    return <>{children}</>;
+  }
+
+  return null;
 };
 
 const configuration: ModuleConfiguration = {
