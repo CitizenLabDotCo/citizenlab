@@ -52,7 +52,7 @@
       "$ref": "#/definitions/color"
     },
     "signedInHeaderOverlayOpacity": {
-      "description": "The opacity of the overlay of the signed-in header (0 (no color) to 100 (full color))",
+      "description": "The opacity of the overlay of the signed-in header (0 (no color) to 100 (full color)). Does not affect fixed-ratio layout header.",
       "$ref": "#/definitions/opacity"
     },
     "customFontName": {
