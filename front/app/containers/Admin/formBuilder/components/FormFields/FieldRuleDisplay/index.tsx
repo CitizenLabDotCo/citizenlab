@@ -6,11 +6,13 @@ import { Box, Text, colors, Icon } from '@citizenlab/cl2-component-library';
 type FieldRuleDisplayProps = {
   answerTitle: string | undefined;
   targetPage: string | undefined;
+  textColor?: keyof typeof colors;
 };
 
 export const FieldRuleDisplay = ({
   answerTitle,
   targetPage,
+  textColor = 'coolGrey600',
 }: FieldRuleDisplayProps) => {
   if (answerTitle && targetPage) {
     return (
@@ -21,11 +23,11 @@ export const FieldRuleDisplay = ({
         data-cy="e2e-field-rule-display"
       >
         <Icon fill={colors.coolGrey500} width="18px" name="logic" my="auto" />
-        <Text my="auto" pl="8px" pr="4px" color="coolGrey600" fontSize="s">
+        <Text my="auto" pl="8px" pr="4px" color={textColor} fontSize="s">
           {answerTitle}
         </Text>
         <Icon fill={colors.teal300} width="16px" name="arrow-right" my="auto" />
-        <Text my="auto" px="4px" color="coolGrey600" fontSize="s">
+        <Text my="auto" px="4px" color={textColor} fontSize="s">
           {targetPage}
         </Text>
       </Box>

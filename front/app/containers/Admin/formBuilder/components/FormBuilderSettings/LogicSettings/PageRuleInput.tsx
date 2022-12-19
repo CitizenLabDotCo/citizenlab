@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 // components
 import { Box, IOption, Select, Text } from '@citizenlab/cl2-component-library';
@@ -6,7 +7,9 @@ import { Box, IOption, Select, Text } from '@citizenlab/cl2-component-library';
 // intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Controller, useFormContext } from 'react-hook-form';
+
+// types
+import { LogicType } from 'services/formCustomFields';
 
 type RuleInputProps = {
   name: string;
@@ -18,11 +21,9 @@ type RuleInputProps = {
     | undefined;
 };
 
-type PageLogicType = { next_page_id: string };
-
 export const PageRuleInput = ({ pages, name }: RuleInputProps) => {
   const { setValue, watch, control } = useFormContext();
-  const logic = watch(name) as PageLogicType;
+  const logic = watch(name) as LogicType;
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
     logic && logic?.next_page_id ? logic.next_page_id : undefined
   );

@@ -75,6 +75,8 @@ export const FieldElement = (props: Props) => {
   const index = formCustomFields.findIndex((f) => f.id === field.id);
 
   const hasErrors = !!errors.customFields?.[index];
+  const showLogicOnRow =
+    field.input_type !== 'page' ? field.logic.rules : field.logic;
   let outlineStyle = 'none';
   if (hasErrors) {
     outlineStyle = `1px solid ${colors.error}`;
@@ -142,7 +144,7 @@ export const FieldElement = (props: Props) => {
                   <T value={field.title_multiloc} />
                 </Text>
               </Box>
-              {field.input_type !== 'page' && field.logic.rules && (
+              {showLogicOnRow && (
                 <Box>
                   {field.input_type === 'select' &&
                     field.options &&
@@ -186,6 +188,18 @@ export const FieldElement = (props: Props) => {
                         </Box>
                       );
                     })}
+                  {field.input_type === 'page' && (
+                    <FieldRuleDisplay
+                      answerTitle={getIndexForTitle(formCustomFields, field)}
+                      targetPage={getTitleFromPageId(
+                        formCustomFields,
+                        field.logic.next_page_id,
+                        formatMessage(messages.surveyEnd),
+                        formatMessage(messages.page)
+                      )}
+                      textColor={getIndexTitleColor(selectedFieldId, field)}
+                    />
+                  )}
                 </Box>
               )}
             </Box>
