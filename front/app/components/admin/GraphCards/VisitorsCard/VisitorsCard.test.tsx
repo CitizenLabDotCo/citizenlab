@@ -27,7 +27,7 @@ const mockTimeSeries = [
   { date: '2022-10-01', visitors: 100, visits: 100 },
 ];
 
-jest.mock('../../hooks/useVisitors', () => () => ({
+jest.mock('./useVisitors', () => () => ({
   currentResolution: 'month',
   stats: mockStats,
   timeSeries: mockTimeSeries,
