@@ -21,26 +21,25 @@ const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {
   const homepageSettingOpacity =
     homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
 
-  if (homepageSettingColor && typeof homepageSettingOpacity === 'number') {
-    return (
-      <Container className={`e2e-signed-out-header ${className}`}>
-        <Header id="hook-header">
-          <HeaderImage id="hook-header-image">
-            <HeaderImageBackground src={headerImage || null} />
-            <HeaderImageOverlay
-              data-cy="e2e-full-width-layout-header-image-overlay"
-              overlayColor={homepageSettingColor}
-              overlayOpacity={homepageSettingOpacity}
-            />
-          </HeaderImage>
+  return (
+    <Container className={`e2e-signed-out-header ${className}`}>
+      <Header id="hook-header">
+        <HeaderImage id="hook-header-image">
+          <HeaderImageBackground src={headerImage || null} />
+          {homepageSettingColor &&
+            typeof homepageSettingOpacity === 'number' && (
+              <HeaderImageOverlay
+                data-cy="e2e-full-width-layout-header-image-overlay"
+                overlayColor={homepageSettingColor}
+                overlayOpacity={homepageSettingOpacity}
+              />
+            )}
+        </HeaderImage>
 
-          <HeaderContent fontColors="light" />
-        </Header>
-      </Container>
-    );
-  }
-
-  return null;
+        <HeaderContent fontColors="light" />
+      </Header>
+    </Container>
+  );
 };
 
 export default FullWidthBannerLayout;
