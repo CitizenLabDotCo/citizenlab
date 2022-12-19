@@ -62,7 +62,7 @@ const OverlayControls = ({
 
   const handleOverlayEnabling = () => {
     if (overlayEnabled) {
-      handleOverlayOpacityOnChange(0);
+      handleOverlayOpacityOnChange(null);
     } else {
       handleOverlayOpacityOnChange(
         bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
