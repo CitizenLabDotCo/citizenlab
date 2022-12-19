@@ -5,6 +5,7 @@ import PageLoading from 'components/UI/PageLoading';
 const ReportingWrapper = lazy(() => import('.'));
 const ReportBuilderPage = lazy(() => import('./containers/ReportBuilderPage'));
 const ReportBuilder = lazy(() => import('./containers/ReportBuilder'));
+const FullScreenReport = lazy(() => import('./containers/FullScreenReport'));
 
 const reportingRoutes = () => {
   return {
@@ -24,10 +25,18 @@ const reportingRoutes = () => {
         ),
       },
       {
-        path: 'report-builder/:reportId',
+        path: 'report-builder/:reportId/editor',
         element: (
           <PageLoading>
             <ReportBuilder />
+          </PageLoading>
+        ),
+      },
+      {
+        path: 'report-builder/:reportId/viewer',
+        element: (
+          <PageLoading>
+            <FullScreenReport />
           </PageLoading>
         ),
       },

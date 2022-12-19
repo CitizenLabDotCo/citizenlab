@@ -2,10 +2,8 @@ import React from 'react';
 
 // components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
-import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
-import { Accordion } from '@citizenlab/cl2-component-library';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import { Title, Accordion } from '@citizenlab/cl2-component-library';
+import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
@@ -20,7 +18,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import moment from 'moment';
 
 // Messages
-import contentBuilderMessages from '../../../../../../modules/commercial/content_builder/admin/messages';
+import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
@@ -29,6 +27,20 @@ import aboutMessages from '../Widgets/AboutReportWidget/messages';
 type ReportBuilderToolboxProps = {
   reportId: string;
 };
+
+const SectionTitle = ({ children }) => (
+  <Title
+    fontWeight="normal"
+    ml="10px"
+    variant="h6"
+    as="h3"
+    mb="8px"
+    mt="8px"
+    color="textSecondary"
+  >
+    {children}
+  </Title>
+);
 
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
@@ -51,12 +63,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           component={<TwoColumn columnLayout="1-1" />}
           icon="layout-2column-1"
           label={formatMessage(TwoColumn.craft.custom.title)}
-        />
-        <DraggableElement
-          id="e2e-draggable-three-column"
-          component={<ThreeColumn />}
-          icon="layout-3column"
-          label={formatMessage(ThreeColumn.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-white-space"
