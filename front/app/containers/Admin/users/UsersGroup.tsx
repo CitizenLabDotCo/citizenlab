@@ -56,7 +56,11 @@ export interface State {
 }
 
 interface Tracks {
-  trackEditGroup: ({ extra: { groupType: MembershipType } }) => void;
+  trackEditGroup: ({
+    extra: { groupType },
+  }: {
+    extra: { groupType: MembershipType };
+  }) => void;
 }
 
 export class UsersGroup extends React.PureComponent<

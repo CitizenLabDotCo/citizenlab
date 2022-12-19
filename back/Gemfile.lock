@@ -302,6 +302,15 @@ PATH
       rails (~> 6.1)
 
 PATH
+  remote: engines/commercial/multi_tenancy
+  specs:
+    multi_tenancy (0.1.0)
+      actionpack-cloudfront (~> 1.2.0)
+      nlp
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
+
+PATH
   remote: engines/commercial/nlp
   specs:
     nlp (0.1.0)
@@ -364,15 +373,6 @@ PATH
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
       savon (~> 2.12.0)
-
-PATH
-  remote: engines/ee/multi_tenancy
-  specs:
-    multi_tenancy (0.1.0)
-      actionpack-cloudfront (~> 1.2.0)
-      nlp
-      rails (~> 6.1)
-      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/free/email_campaigns
@@ -600,7 +600,7 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    crawler_detect (1.2.1)
+    crawler_detect (1.2.2)
       qonfig (~> 0.24)
     css_parser (1.11.0)
       addressable
@@ -767,7 +767,7 @@ GEM
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.18.0)
+    loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -916,8 +916,8 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.3)
-      loofah (~> 2.3)
+    rails-html-sanitizer (1.4.4)
+      loofah (~> 2.19, >= 2.19.1)
     rails-i18n (6.0.0)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 7)
