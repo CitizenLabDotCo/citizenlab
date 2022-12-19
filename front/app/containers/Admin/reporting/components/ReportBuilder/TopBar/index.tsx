@@ -90,7 +90,7 @@ const ContentBuilderTopBar = ({
       <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           <Text mb="0px" color="textSecondary">
-            <FormattedMessage {...messages.reportCreator} />
+            <FormattedMessage {...messages.reportBuilder} />
           </Text>
           <Title variant="h4" as="h1" color="primary">
             {isNilOrError(report) ? <></> : report.attributes.name}
