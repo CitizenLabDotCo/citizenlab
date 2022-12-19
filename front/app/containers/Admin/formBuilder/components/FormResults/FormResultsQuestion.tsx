@@ -1,12 +1,22 @@
 import React from 'react';
-import { get, snakeCase } from 'lodash-es';
-import messages from '../messages';
+
+// hooks
+import { useIntl } from 'utils/cl-intl';
+
+// components
 import { Box, colors, Text, Title } from '@citizenlab/cl2-component-library';
-import T from '../../../../../components/T';
 import CompletionBar from './CompletionBar';
-import { Locale, Multiloc } from '../../../../../typings';
-import { Answer } from '../../../../../services/formCustomFields';
-import { useIntl } from '../../../../../utils/cl-intl';
+
+// i18n
+import T from 'components/T';
+import messages from '../messages';
+
+// utils
+import { get, snakeCase } from 'lodash-es';
+
+// typings
+import { Locale, Multiloc } from 'typings';
+import { Answer } from 'services/formCustomFields';
 
 type FormResultsQuestionProps = {
   locale: Locale;
