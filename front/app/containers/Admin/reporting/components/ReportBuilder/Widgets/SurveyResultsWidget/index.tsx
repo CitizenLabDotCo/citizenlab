@@ -140,10 +140,6 @@ const SurveyResultsWidgetSettings = () => {
       />
     </Box>
   );
-
-  // Should not need to show an error if a) no surveys in site or b) no surveys in project
-  // as a) will be limited to use the widget and b) won't show projects without surveys
-  // TODO: Is there an all surveys endpoint or can it be derived?
 };
 
 SurveyResultsWidget.craft = {
