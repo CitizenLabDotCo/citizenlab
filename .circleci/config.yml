@@ -169,7 +169,7 @@ jobs:
   back-bundle-audit:
     resource_class: small
     executor:
-      name: cl2-back-essential-executor
+      name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
@@ -814,15 +814,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-bundle-audit:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
       - back-test:
           context: docker-hub-access
           requires:
@@ -868,6 +859,17 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-ee-docker-image
+      - back-bundle-audit:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          requires:
+            - back-build-ee-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
       - back-ee-test:
           context:
             - docker-hub-access
@@ -892,6 +894,7 @@ workflows:
             - back-ee-test
             - back-ee-slow-tests
             - back-lint
+            - back-bundle-audit
           filters:
             branches:
               only:
@@ -1107,14 +1110,6 @@ workflows:
             branches:
               only:
                 - production
-      - back-bundle-audit:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              only:
-                - production
       - back-test:
           context: docker-hub-access
           requires:
@@ -1140,7 +1135,6 @@ workflows:
             - front-detect-deadcode
             - front-lint
             - back-test
-            - back-bundle-audit
             - back-license-check
           filters:
             branches:
@@ -1155,7 +1149,6 @@ workflows:
             - front-detect-deadcode
             - front-lint
             - back-test
-            - back-bundle-audit
             - back-license-check
           filters:
             branches:
