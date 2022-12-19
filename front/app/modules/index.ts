@@ -11,8 +11,6 @@ import machineTranslationsConfiguration from './commercial/machine_translations'
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
-import projectVisibilityConfiguration from './free/project_visibility';
-
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
@@ -46,159 +44,155 @@ import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
-declare var CL_CONFIG: any;
+declare var CITIZENLAB_EE: boolean;
 
 export default loadModules([
   {
     configuration: smartGroupsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/smart_groups'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: ideaCustomFieldsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/idea_custom_fields'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: googleTagManagerConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/google_tag_manager'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: matomoConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/matomo'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: googleAnalyticsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/google_analytics'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: intercomConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/intercom'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: satismeterConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/satismeter'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: segmentConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/segment'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: granularPermissionsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/granular_permissions'],
-  },
-  {
-    configuration: projectVisibilityConfiguration,
-    isEnabled: CL_CONFIG['modules']['free/project_visibility'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: moderationConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/moderation'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: flagInappropriateContentConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/flag_inappropriate_content'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: ideaAssignmentConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/idea_assignment'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: contentBuilderConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/content_builder'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: customIdeaStatusesConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/custom_idea_statuses'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: bulkIdeaImportConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/bulk_import_ideas'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: customTopicsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: customizableHomepageBannerConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/customizable_homepage_banner'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: adminProjectTemplatesConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/admin_project_templates'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: similarIdeaConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/similar_ideas'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: customMapsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/custom_maps'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: idAuth0Configuration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_auth0'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: idBosaFasConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_bosa_fas'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: idCowConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_cow'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: idBogusConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_bogus'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: idIdCardLookupConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_id_card_lookup'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: IdFranceConnectConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_franceconnect'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: IdGentRrnConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_gent_rrn'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: IdOostendeRrnConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_oostende_rrn'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: IdClaveUnicaConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: machineTranslationsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: widgetsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/widgets'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: eventsWidgetConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/events_widget'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: insightsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/insights'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: analyticsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/analytics'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: idViennaSamlConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/id_vienna_saml'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: representativenessConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/representativeness'],
+    isEnabled: CITIZENLAB_EE,
   },
   {
     configuration: impactTrackingConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/impact_tracking'],
+    isEnabled: CITIZENLAB_EE,
   },
 ]);

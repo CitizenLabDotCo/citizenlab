@@ -48,19 +48,22 @@ This is a fail-safe step process you can apply to handle any update:
 
 ```bash
 docker-compose down
-docker-compose build web que
+docker-compose build web
 docker-compose run --rm web bundle exec rake db:reset
 docker-compose up
 ```
 
 On Linux, you need to add `--user "$(id -u):$(id -g)"` to all `docker-compose run` commands. This is not required on Mac or Windows.
 
-To save some time, often it is not necessary to run the 2nd time consuming command `docker-compose build web`. This is only required when libraries have been updated, indicated by a change in the `Gemfile.lock` file.
-
-The 3rd step is also not always required. It is needed when
+The 3rd step is not always required. It is needed when
 
 - The database structure has changed, indicated by an update to `db/schema.rb`
 - The test data, aka seed data, has changed, indicated by an update to `db/seeds.rb`
+
+Alternatively, there is a convenience script to reset the whole environment for you.
+```
+./script/reset_dev_env.sh
+```
 
 ## Testing
 

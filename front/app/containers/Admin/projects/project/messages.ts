@@ -26,6 +26,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
     defaultMessage: 'Timeline',
   },
+  permissionsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',
+    defaultMessage: 'Access rights',
+  },
   eventsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
