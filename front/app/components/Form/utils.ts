@@ -1,7 +1,8 @@
-import { JsonSchema, UISchemaElement } from '@jsonforms/core';
+import { JsonSchema, Layout } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { isEmpty } from 'lodash-es';
 import { isVisible } from './Components/Controls/visibilityUtils';
+import { PageCategorization, PageType } from './Components/Layouts/utils';
 
 const iterateSchema = (
   uischema,
@@ -22,7 +23,7 @@ const iterateSchema = (
 
 export const getFormSchemaAndData = (
   schema: JsonSchema,
-  uiSchema: UISchemaElement,
+  uiSchema: Layout | PageCategorization,
   data: any,
   ajv: Ajv
 ) => {
@@ -31,7 +32,13 @@ export const getFormSchemaAndData = (
 
   iterateSchema(uiSchema, uiSchema, (element, parentSchema) => {
     const key: string = element.scope.split('/').pop();
-    const isPageVisible = isVisible(parentSchema, data, '', ajv);
+    const isPageVisible = isVisible(
+      parentSchema,
+      data,
+      '',
+      ajv,
+      uiSchema?.elements as PageType[]
+    );
     const isElementVisible = isVisible(element, data, '', ajv);
     const showInData =
       parentSchema.type === 'Page'
