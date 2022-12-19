@@ -146,7 +146,7 @@
   "app.components.IdeaForm.adminFieldTooltip": "Champ visible uniquement pour les administrateurs",
   "app.components.IdeaForm.author": "Auteur",
   "app.components.IdeaForm.authorPlaceholder": "Tapez ici pour rechercher par e-mail ou nom d’utilisateur...",
-  "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Quelle est votre suggestion ?",
+  "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Quelle est votre suggestion?",
   "app.components.IdeaForm.descriptionEmptyError": "Veuillez fournir une description",
   "app.components.IdeaForm.descriptionLengthError": "La description de l’idée doit comporter au moins 30 caractères",
   "app.components.IdeaForm.descriptionTitle": "Description",
