@@ -119,14 +119,22 @@ const evalVisibility = (
   }
 
   const fulfilledRule = uischema.ruleArray.every((currentRule) => {
-    if (isHidePageCondition(currentRule.condition) && pages) {
-      const pageWithId = pages.find(
-        (page) => page.options.id === currentRule.condition?.pageId
-      );
+    const pageWithId = (pages || []).find(
+      (page) => page.options.id === currentRule.condition?.pageId
+    );
+    const hasQuestionRule = pageWithId?.elements.find(
+      (element) => element.options?.hasRule
+    );
 
+    // Question rule takes precedence over page rule
+    if (isHidePageCondition(currentRule.condition) && !hasQuestionRule) {
       return pageWithId
         ? !isVisible(pageWithId, data, path, ajv, pages)
         : false;
+    }
+
+    if (isHidePageCondition(currentRule.condition)) {
+      return true;
     }
 
     const fulfilled = isRuleFulfilled(currentRule.condition, data, path, ajv);
