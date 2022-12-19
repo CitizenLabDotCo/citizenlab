@@ -18,8 +18,8 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const ProjectSection = styled.div`
   width: 100%;
-  padding-top: 40px;
-  padding-bottom: 90px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 
   ${media.phone`
     padding-bottom: 60px;
@@ -28,12 +28,10 @@ const ProjectSection = styled.div`
 
 const SectionContainer = styled.section`
   width: 100%;
-  margin-top: 10px;
 `;
 
 const StyledInitiativesCTABox = styled(InitiativesCTABox)`
-  padding-top: 10px;
-  padding-bottom: 40px;
+  margin-bottom: 40px;
 `;
 
 const MainContent = () => {

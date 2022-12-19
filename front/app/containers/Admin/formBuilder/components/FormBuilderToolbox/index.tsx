@@ -116,9 +116,21 @@ const FormBuilderToolbox = ({
             data-cy="e2e-short-answer"
           />
           <ToolboxItem
+            icon="survey-long-answer"
+            label={formatMessage(messages.longAnswer)}
+            onClick={() => addField('multiline_text')}
+            data-cy="e2e-long-answer"
+          />
+          <ToolboxItem
+            icon="survey-multiple-choice"
+            label={formatMessage(messages.singleChoice)}
+            onClick={() => addField('select')}
+            data-cy="e2e-single-choice"
+          />
+          <ToolboxItem
             icon="survey-multiple-choice"
             label={formatMessage(messages.multipleChoice)}
-            onClick={() => addField('select')}
+            onClick={() => addField('multiselect')}
             data-cy="e2e-multiple-choice"
           />
           <ToolboxItem

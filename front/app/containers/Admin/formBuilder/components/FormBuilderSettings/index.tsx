@@ -138,8 +138,13 @@ const FormBuilderSettings = ({
     case 'text':
       translatedStringKey = messages.shortAnswer;
       break;
-    case 'multiselect':
+    case 'multiline_text':
+      translatedStringKey = messages.longAnswer;
+      break;
     case 'select':
+      translatedStringKey = messages.singleChoice;
+      break;
+    case 'multiselect':
       translatedStringKey = messages.multipleChoice;
       break;
     case 'page':

@@ -53,6 +53,7 @@ export interface IIdeaFormSchemas {
       idea_images_attributes: UISchemaObject;
       idea_files_attributes: UISchemaObject;
       'ui:order': string[];
+      options?: UISchemaObject;
     };
   };
 }

@@ -32,8 +32,9 @@ const getTranslatedFieldType = (field) => {
     case 'text':
       return messages.shortAnswer;
     case 'multiselect':
+      return messages.chooseMany;
     case 'select':
-      return messages.multipleChoice;
+      return messages.chooseOne;
     case 'page':
       return messages.page;
     case 'number':

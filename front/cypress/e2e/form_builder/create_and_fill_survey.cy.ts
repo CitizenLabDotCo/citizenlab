@@ -155,7 +155,7 @@ describe('Survey builder', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
 
     // Multiple choice choose one
-    cy.get('[data-cy="e2e-multiple-choice"]').click();
+    cy.get('[data-cy="e2e-single-choice"]').click();
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
     });
@@ -168,7 +168,6 @@ describe('Survey builder', () => {
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseManyTitle, {
       force: true,
     });
-    cy.get('#e2e-multiselect-toggle').click();
     cy.get('#e2e-option-input-0').type(chooseManyOption1, { force: true });
     cy.get('[data-cy="e2e-add-answer"]').click();
     cy.get('#e2e-option-input-1').type(chooseManyOption2, { force: true });
@@ -404,7 +403,7 @@ describe('Survey builder', () => {
 
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
-    cy.get('[data-cy="e2e-multiple-choice"]').click();
+    cy.get('[data-cy="e2e-single-choice"]').click();
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
     });

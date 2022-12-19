@@ -141,6 +141,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
         )
       );
     const idea$ = ideaByIdStream(ideaId).observable;
+
     const ideaWithRelationships$ = combineLatest([
       locale$,
       currentTenantLocales$,

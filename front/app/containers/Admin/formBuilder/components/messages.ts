@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.shortAnswer',
     defaultMessage: 'Short answer',
   },
+  longAnswer: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.longAnswer',
+    defaultMessage: 'Long answer',
+  },
   page: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.page',
     defaultMessage: 'Page',
@@ -36,6 +40,18 @@ export default defineMessages({
   multipleChoice: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multipleChoice',
     defaultMessage: 'Multiple choice',
+  },
+  singleChoice: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.singleChoice',
+    defaultMessage: 'Single choice',
+  },
+  chooseOne: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.chooseOne',
+    defaultMessage: 'Choose one',
+  },
+  chooseMany: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.chooseMany',
+    defaultMessage: 'Choose many',
   },
   number: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.number',

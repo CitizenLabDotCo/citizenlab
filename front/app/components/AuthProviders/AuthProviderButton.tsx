@@ -33,7 +33,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ccc;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
   background: #fff;

@@ -83,6 +83,8 @@ resource 'StaticPages' do
         parameter :bottom_info_section_multiloc, 'The bottom content of the static page, as a multiloc HTML string'
         parameter :header_bg, 'image for the header background'
         parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
+        parameter :topic_ids, 'the IDs of topics that are used to filter the page projects list', type: :array
+        parameter :area_ids, 'the ID of an area that is used to filter the page projects list', type: :array
       end
       ValidationErrorHelper.new.error_fields self, StaticPage
 
@@ -99,6 +101,72 @@ resource 'StaticPages' do
         expect(json_response.dig(:data, :attributes, :top_info_section_multiloc, :en)).to match 'New top info section text'
         expect(json_response.dig(:data, :attributes, :bottom_info_section_multiloc, :en)).to match 'New bottom info section text'
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
+      end
+
+      describe 'updating topics' do
+        let(:projects_filter_type) { 'topics' }
+        let(:topic1) { create(:topic) }
+        let(:topic2) { create(:topic) }
+        let(:topic_ids) { [topic1.id, topic2.id] }
+
+        example_request 'set topics for projects list' do
+          json_response = json_parse(response_body)
+          expect(response_status).to eq 200
+          expect(json_response.dig(:data, :relationships, :topics, :data).length).to eq(2)
+        end
+
+        context 'when wrong project filter type is set' do
+          let(:projects_filter_type) { 'areas' }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
+
+        context 'when no topic ids in request' do
+          let(:topic_ids) { [] }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
+      end
+
+      describe 'updating areas' do
+        let(:projects_filter_type) { 'areas' }
+        let(:area1) { create(:area) }
+        let(:area2) { create(:area) }
+        let(:area_ids) { [area1.id] }
+
+        example_request 'set an area for projects list' do
+          json_response = json_parse(response_body)
+          expect(response_status).to eq 200
+          expect(json_response.dig(:data, :relationships, :areas, :data).length).to eq(1)
+        end
+
+        context 'when wrong project filter type is set' do
+          let(:projects_filter_type) { 'topics' }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
+
+        context 'when no area ids in request' do
+          let(:area_ids) { [] }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
+
+        context 'when when more than one area ids in request' do
+          let(:area_ids) { [area1.id, area2.id] }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
       end
 
       describe 'updating pins' do

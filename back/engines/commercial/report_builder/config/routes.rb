@@ -3,7 +3,9 @@
 ReportBuilder::Engine.routes.draw do
   namespace :web_api do
     namespace :v1 do
-      resources :reports, only: %i[index show create destroy update] # :only is probably not necessary
+      resources :reports, only: %i[index show create destroy update] do
+        get :layout, on: :member
+      end
     end
   end
 end
