@@ -279,7 +279,6 @@ jobs:
     environment:
       RAILS_ENV: test
       COVERAGE: ON
-      CITIZENLAB_EE: true
     steps:
       - wait-for-postgres
       - run: |
@@ -300,7 +299,6 @@ jobs:
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
-      CITIZENLAB_EE: true
     steps:
       - wait-for-postgres
       - run: |
@@ -319,7 +317,6 @@ jobs:
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
-      CITIZENLAB_EE: true
     steps:
       - run: mkdir -p workspace
       - wait-for-postgres
@@ -342,8 +339,6 @@ jobs:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
-    environment:
-      CITIZENLAB_EE: true
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -357,7 +352,6 @@ jobs:
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
-      CITIZENLAB_EE: true
     steps:
       - wait-for-postgres
       - run: |
