@@ -50,7 +50,7 @@ export interface Props {
   setFormStatus: (submitState: ISubmitState) => void;
 }
 
-export type TPreviewDevice = 'mobile' | 'tablet' | 'desktop';
+export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
 export type TLocalHeaderImage = UploadFile[] | null;
 export type TBannerError = string | null;
 
