@@ -20,7 +20,10 @@ import {
 import { has } from 'lodash-es';
 import { PageType } from '../Layouts/utils';
 
-interface ConditionWithPageId extends Condition {
+interface ConditionWithPageId
+  extends Condition,
+    Scopable,
+    SchemaBasedCondition {
   pageId?: string;
 }
 
