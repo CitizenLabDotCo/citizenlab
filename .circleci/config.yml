@@ -1200,12 +1200,14 @@ workflows:
       - back-build-ee-docker-image:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-ee-generate-tenant-templates:
           name: "Europe (mainland)"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
@@ -1214,6 +1216,7 @@ workflows:
           name: "South America"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
@@ -1222,6 +1225,7 @@ workflows:
           name: "Canada"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
@@ -1230,6 +1234,7 @@ workflows:
           name: "US West"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
@@ -1238,6 +1243,7 @@ workflows:
           name: "UK"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
@@ -1245,6 +1251,7 @@ workflows:
       - back-ee-test-tenant-templates:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           requires:
@@ -1257,6 +1264,7 @@ workflows:
       - back-ee-release-tenant-templates:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           requires:
             - back-ee-test-tenant-templates
@@ -1283,12 +1291,14 @@ workflows:
       - back-build-ee-docker-image:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-ee-generate-tenant-templates:
           name: "Europe (mainland)"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
@@ -1297,6 +1307,7 @@ workflows:
           name: "South America"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
@@ -1305,6 +1316,7 @@ workflows:
           name: "Canada"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
@@ -1313,6 +1325,7 @@ workflows:
           name: "US West"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
@@ -1321,6 +1334,7 @@ workflows:
           name: "UK"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
@@ -1328,6 +1342,7 @@ workflows:
       - back-ee-test-tenant-templates:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           requires:
@@ -1340,6 +1355,7 @@ workflows:
       - back-ee-release-tenant-templates:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           requires:
             - back-ee-test-tenant-templates
