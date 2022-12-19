@@ -43,11 +43,11 @@ const ReportRow = ({ report }: Props) => {
   };
 
   const handleEditReport = () => {
-    clHistory.push(`/admin/reporting/report-builder/${report.id}`);
+    clHistory.push(`/admin/reporting/report-builder/${report.id}/editor`);
   };
 
   const handleViewReport = () => {
-    // TODO
+    clHistory.push(`/admin/reporting/report-builder/${report.id}/viewer`);
   };
 
   const handleShareReport = () => {

@@ -10,8 +10,7 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // widgets
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
@@ -35,7 +34,6 @@ const Editor: React.FC<EditorProps> = ({
         Box,
         Container,
         TwoColumn,
-        ThreeColumn,
         Text,
         Image,
         WhiteSpace,

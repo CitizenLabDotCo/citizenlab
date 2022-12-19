@@ -53,7 +53,7 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   );
 };
 
-const TwoColumnSettings = () => {
+export const TwoColumnSettings = () => {
   const {
     actions: { setProp },
     columnLayout,

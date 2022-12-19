@@ -1,6 +1,6 @@
 // utils
-import { getEmptyRow } from '../../hooks/useActiveUsers/parse';
-import { emptyDateRange } from '../../utils/timeSeries';
+import { getEmptyRow } from './useActiveUsers/parse';
+import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
 
 // typings
 import { Moment } from 'moment';

@@ -13,7 +13,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { StackedBarsRow } from '../../../hooks/usePostsFeedback/typings';
+import { StackedBarsRow } from '../usePostsFeedback/typings';
 
 export const stackedBarTooltip =
   (

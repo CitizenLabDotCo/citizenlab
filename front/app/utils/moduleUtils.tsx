@@ -47,7 +47,7 @@ import {
   Multiloc,
 } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
+import { StatCardProps } from '../modules/commercial/analytics/admin/components/StatCard/useStatCard/typings';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];

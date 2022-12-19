@@ -13,7 +13,7 @@ import { getCornerRadius } from './utils';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { PostFeedback } from '../../../hooks/usePostsFeedback/typings';
+import { PostFeedback } from '../usePostsFeedback/typings';
 
 interface Props {
   data: PostFeedback | NilOrError;
