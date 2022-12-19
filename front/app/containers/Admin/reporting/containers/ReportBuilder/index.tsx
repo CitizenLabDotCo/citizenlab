@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 // hooks
@@ -20,7 +14,10 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import Editor from '../../components/ReportBuilder/Editor';
 import TopBar from '../../components/ReportBuilder/TopBar';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
-import FrameWrapper from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import {
+  StyledRightColumn,
+  ErrorMessage,
+} from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
 
@@ -29,6 +26,9 @@ import { stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// constants
+import { A4_WIDTH, A4_MARGIN_X, A4_MARGIN_Y } from '../../constants';
 
 // typings
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
@@ -40,7 +40,6 @@ interface Props {
 }
 
 const ReportBuilder = ({ reportId }: Props) => {
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -76,21 +75,17 @@ const ReportBuilder = ({ reportId }: Props) => {
     });
   }, []);
 
-  const getEditorData = useCallback(() => {
-    if (!isNilOrError(reportLayout) && selectedLocale) {
-      if (draftData && draftData[selectedLocale]) {
-        return draftData[selectedLocale];
-      } else {
-        return reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
-      }
-    } else return undefined;
-  }, [reportLayout, selectedLocale, draftData]);
-
-  const handleEditorChange = useCallback((nodes: SerializedNodes) => {
-    iframeRef.current &&
-      iframeRef.current.contentWindow &&
-      iframeRef.current.contentWindow.postMessage(nodes, window.location.href);
-  }, []);
+  const handleEditorChange = useCallback(
+    (nodes: SerializedNodes) => {
+      if (Object.keys(nodes).length === 1 && nodes.ROOT) return;
+      if (!selectedLocale) return;
+      setDraftData((draftData) => ({
+        ...draftData,
+        [selectedLocale]: nodes,
+      }));
+    },
+    [selectedLocale]
+  );
 
   const handleSelectedLocaleChange = useCallback(
     ({
@@ -107,17 +102,23 @@ const ReportBuilder = ({ reportId }: Props) => {
         }));
       }
 
-      iframeRef.current &&
-        iframeRef.current.contentWindow &&
-        iframeRef.current.contentWindow.postMessage(
-          { selectedLocale: locale },
-          window.location.href
-        );
-
       setSelectedLocale(locale);
     },
     [selectedLocale]
   );
+
+  const previewData = useMemo(() => {
+    if (!selectedLocale) return;
+
+    const previewData = draftData ? draftData[selectedLocale] : undefined;
+    return previewData;
+  }, [draftData, selectedLocale]);
+
+  if (!selectedLocale) return null;
+
+  const initialData = isNilOrError(reportLayout)
+    ? undefined
+    : reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
 
   return (
     <FullscreenContentBuilder
@@ -145,12 +146,41 @@ const ReportBuilder = ({ reportId }: Props) => {
           display={previewEnabled ? 'none' : 'flex'}
         >
           {selectedLocale && <Toolbox reportId={reportId} />}
-          <FrameWrapper localesWithError={localesWithError}>
-            <Frame editorData={getEditorData()} />
-          </FrameWrapper>
+          <StyledRightColumn>
+            <Box width={A4_WIDTH}>
+              <ErrorMessage localesWithError={localesWithError} />
+              <Box
+                background="white"
+                px={A4_MARGIN_X}
+                py={A4_MARGIN_Y}
+                width="100%"
+                height="100%"
+              >
+                <Frame editorData={initialData} />
+              </Box>
+            </Box>
+          </StyledRightColumn>
           <Settings />
         </Box>
       </Editor>
+      {previewEnabled && (
+        <Box
+          width="100%"
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          mt={`${stylingConsts.menuHeight}px`}
+          pb="100px"
+        >
+          <StyledRightColumn>
+            <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
+              <Editor isPreview={true}>
+                <Frame editorData={previewData} />
+              </Editor>
+            </Box>
+          </StyledRightColumn>
+        </Box>
+      )}
     </FullscreenContentBuilder>
   );
 };

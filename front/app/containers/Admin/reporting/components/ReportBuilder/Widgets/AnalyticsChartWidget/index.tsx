@@ -2,10 +2,13 @@ import React from 'react';
 
 // Components
 import { Box, Input, Title } from '@citizenlab/cl2-component-library';
-import GenderChart from 'containers/Admin/dashboard/users/Charts/GenderChart';
-import AgeChart from 'containers/Admin/dashboard/users/Charts/AgeChart';
-import VisitorsReportCard from './VisitorsReportCard';
-import VisitorsTrafficSourcesReportCard from './VisitorsTrafficSourcesReportCard';
+import GenderCard from '../GenderCard';
+import AgeCard from '../AgeCard';
+import VisitorsCard from '../VisitorsCard';
+import VisitorsTrafficSourcesCard from '../VisitorsTrafficSourcesCard';
+
+// styling
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // Utils
 import moment, { Moment } from 'moment';
@@ -29,8 +32,8 @@ interface Props {
     | 'GenderChart'
     | 'AgeChart';
   projectId: string | undefined;
-  startAt: string | undefined;
-  endAt: string | undefined;
+  startAt: string | null | undefined;
+  endAt: string | null;
 }
 
 const AnalyticsChartWidget = ({
@@ -53,32 +56,34 @@ const AnalyticsChartWidget = ({
 
   const statChartProps = {
     startAt,
-    endAt: endAt ? endAt : null,
-    className: 'fullWidth',
-    currentGroupFilter: undefined,
-    currentGroupFilterLabel: undefined,
+    endAt,
     title,
-    showExportMenu: false,
+    projectId,
   };
 
   let chart = <></>;
   switch (chartType) {
     case 'VisitorsCard':
-      chart = <VisitorsReportCard {...analyticsChartProps} />;
+      chart = <VisitorsCard {...analyticsChartProps} />;
       break;
     case 'VisitorsTrafficSourcesCard':
-      chart = <VisitorsTrafficSourcesReportCard {...analyticsChartProps} />;
+      chart = <VisitorsTrafficSourcesCard {...analyticsChartProps} />;
       break;
     case 'GenderChart':
-      chart = <GenderChart {...statChartProps} />;
+      chart = <GenderCard {...statChartProps} />;
       break;
     case 'AgeChart':
-      chart = <AgeChart {...statChartProps} />;
+      chart = <AgeCard {...statChartProps} />;
       break;
   }
 
   return (
-    <Box id="e2e-text-box" minHeight="26px">
+    <Box
+      minHeight="26px"
+      border={`${colors.grey400} 1px solid`}
+      borderRadius={stylingConsts.borderRadius}
+      my="4px"
+    >
       {chart}
     </Box>
   );
