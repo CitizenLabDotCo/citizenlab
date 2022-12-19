@@ -97,6 +97,12 @@ const HeaderImageDropzone = ({
     layout === 'full_width_banner_layout' || layout === 'fixed_ratio_layout';
 
   const previewOverlayElement =
+    /*
+      We check for typeof of opacity because 0 would coerce to false.
+      We don't do a similar thing for the color because we don't set
+      it in the toggle hander, so we handle the type check with the
+      theme default as fallback
+    */
     isBannerWithOverlay && typeof overlayOpacity === 'number' ? (
       <HeaderImageOverlay
         // Should be replaced, value should only be
