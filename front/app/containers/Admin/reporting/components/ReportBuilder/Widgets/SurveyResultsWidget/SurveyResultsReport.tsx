@@ -42,7 +42,8 @@ const SurveyResultsReport = ({
   if (
     isNilOrError(formResults) ||
     isNilOrError(locale) ||
-    isNilOrError(project)
+    isNilOrError(project) ||
+    formResults.results.length === 0
   ) {
     return (
       <Box px="20px" width="100%" display="flex" flexDirection="row">

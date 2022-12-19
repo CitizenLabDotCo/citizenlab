@@ -127,7 +127,7 @@ const SurveyResultsWidgetSettings = () => {
 
       <SurveyReportFilter
         projectId={projectId}
-        currentPhaseFilter={phaseId}
+        phaseId={phaseId}
         onPhaseFilter={handlePhaseFilter}
         onProjectFilter={handleProjectFilter}
       />

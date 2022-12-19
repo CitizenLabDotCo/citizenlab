@@ -29,14 +29,14 @@ const StyledSelect = styled(Select)<{ padding?: string }>`
 
 type SurveyReportFilterProps = {
   projectId: string;
-  currentPhaseFilter?: string | null;
+  phaseId?: string | null;
   onPhaseFilter: (filter: IOption) => void;
   onProjectFilter: (filter: IOption) => void;
 };
 
 const SurveyReportFilter = ({
   projectId,
-  currentPhaseFilter,
+  phaseId,
   onPhaseFilter,
   onProjectFilter,
 }: SurveyReportFilterProps) => {
@@ -90,7 +90,7 @@ const SurveyReportFilter = ({
           id="phaseFilter"
           label="Survey Phases"
           onChange={onPhaseFilter}
-          value={currentPhaseFilter || ''}
+          value={phaseId || ''}
           options={phaseOptions}
           padding="10px"
         />
