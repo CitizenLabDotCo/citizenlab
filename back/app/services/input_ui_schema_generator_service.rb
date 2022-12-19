@@ -9,8 +9,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def visit_html_multiloc(field)
     super.tap do |ui_field|
       if field.code == 'body_multiloc'
-        ui_field[:elements].each do |elt|
-          elt[:options].delete :trim_on_blur
+        ui_field[:elements].each do |element|
+          element[:options].delete :trim_on_blur
         end
       end
     end
@@ -40,7 +40,11 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   protected
 
   def default_options(field)
-    super.merge(isAdminField: admin_field?(field)).tap do |options|
+    defaults = {
+      isAdminField: admin_field?(field),
+      hasRule: field.logic.present?
+    }
+    super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end
   end

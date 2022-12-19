@@ -129,7 +129,7 @@ RSpec/ContextWording:
 # Offense count: 576
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:
-  Max: 218
+  Max: 230
 
 # Offense count: 101
 # This cop supports safe auto-correction (--auto-correct).

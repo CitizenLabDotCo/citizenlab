@@ -74,6 +74,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'en'
                         }
@@ -85,6 +86,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
                         }
@@ -96,6 +98,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
                         }
@@ -116,6 +119,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     options: {
                       description: 'Text description',
                       isAdminField: false,
+                      hasRule: false,
                       transform: 'trim_on_blur'
                     }
                   }
@@ -146,6 +150,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'en'
                         }
@@ -157,6 +162,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
                         }
@@ -168,6 +174,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
                         }
@@ -188,6 +195,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     options: {
                       description: 'Text description',
                       isAdminField: false,
+                      hasRule: false,
                       transform: 'trim_on_blur'
                     }
                   }
@@ -218,6 +226,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'en'
                         }
@@ -229,6 +238,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
                         }
@@ -240,6 +250,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
                         }
@@ -260,6 +271,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     options: {
                       description: 'Text description',
                       isAdminField: false,
+                      hasRule: false,
                       transform: 'trim_on_blur'
                     }
                   }
@@ -360,6 +372,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'Which councils are you attending in our city?',
                 isAdminField: false,
+                hasRule: false,
                 transform: 'trim_on_blur'
               }
             }]
@@ -440,6 +453,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Enter a number.',
                   isAdminField: false,
+                  hasRule: false,
                   transform: 'trim_on_blur'
                 }
               }]
@@ -458,6 +472,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Enter Yes or No.',
                   isAdminField: false,
+                  hasRule: false,
                   transform: 'trim_on_blur'
                 }
               }]
@@ -594,6 +609,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: '',
                   isAdminField: false,
+                  hasRule: true,
                   maximum_label: '',
                   minimum_label: ''
                 }
@@ -612,7 +628,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 label: 'When considering travel near your home, how often do you choose to CYCLE?',
                 options: {
                   description: '',
-                  isAdminField: false
+                  isAdminField: false,
+                  hasRule: true
                 }
               }],
               ruleArray: [
@@ -700,7 +717,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           options: {
             description: 'Text field description',
             transform: 'trim_on_blur',
-            isAdminField: true
+            isAdminField: true,
+            hasRule: false
           }
         })
       end
@@ -715,7 +733,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           options: {
             description: 'Text field description',
             transform: 'trim_on_blur',
-            isAdminField: false
+            isAdminField: false,
+            hasRule: false
           }
         })
       end
@@ -745,7 +764,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           label: 'Number field title',
           options: {
             description: 'Number field description',
-            isAdminField: true
+            isAdminField: true,
+            hasRule: false
           }
         })
       end
@@ -759,7 +779,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           label: 'Number field title',
           options: {
             description: 'Number field description',
-            isAdminField: false
+            isAdminField: false,
+            hasRule: false
           }
         })
       end
@@ -800,6 +821,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'en'
                 }
@@ -811,6 +833,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'fr-FR'
                 }
@@ -822,6 +845,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'nl-NL'
                 }
@@ -841,6 +865,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'en'
                 }
@@ -852,6 +877,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'fr-FR'
                 }
@@ -863,6 +889,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'nl-NL'
                 }
@@ -882,6 +909,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc veldbeschrijving',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'en'
                 }
@@ -893,6 +921,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc veldbeschrijving',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'fr-FR'
                 }
@@ -904,6 +933,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc veldbeschrijving',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'nl-NL'
                 }
@@ -937,6 +967,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'HTML multiloc field description',
                 isAdminField: false,
+                hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
                 locale: 'en'
@@ -949,6 +980,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'HTML multiloc field description',
                 isAdminField: false,
+                hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
                 locale: 'fr-FR'
@@ -961,6 +993,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'HTML multiloc field description',
                 isAdminField: false,
+                hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
                 locale: 'nl-NL'
