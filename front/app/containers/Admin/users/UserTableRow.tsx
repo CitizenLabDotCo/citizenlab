@@ -208,7 +208,11 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
           {user.attributes.first_name} {user.attributes.last_name}
         </Td>
         <Td>{user.attributes.email}</Td>
-        <CreatedAt>{this.state.createdAt}</CreatedAt>
+        <CreatedAt>
+          {user.attributes.invite_status == 'pending'
+            ? 'Invite pending'
+            : this.state.createdAt}
+        </CreatedAt>
         <Td>
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
         </Td>
