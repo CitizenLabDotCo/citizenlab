@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.aboutThisReport',
     defaultMessage: 'About this report',
   },
-  projectsLabel: {
-    id: 'app.containers.admin.ReportBuilder.projectsLabel',
-    defaultMessage: 'Projects: {projectsList}',
+  projectLabel: {
+    id: 'app.containers.admin.ReportBuilder.projectLabel',
+    defaultMessage: 'Project: {projectsList}',
   },
   periodLabel: {
     id: 'app.containers.admin.ReportBuilder.periodLabel',
@@ -16,5 +16,9 @@ export default defineMessages({
   managerLabel: {
     id: 'app.containers.admin.ReportBuilder.managerLabel',
     defaultMessage: 'Project manager: {managerName}',
+  },
+  continuousProject: {
+    id: 'app.containers.admin.ReportBuilder.continuousProject',
+    defaultMessage: 'Continuous project',
   },
 });
