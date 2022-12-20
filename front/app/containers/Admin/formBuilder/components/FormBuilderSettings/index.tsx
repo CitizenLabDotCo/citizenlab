@@ -236,7 +236,11 @@ const FormBuilderSettings = ({
           />
         )}
         {showTabbedSettings && currentTab === 'logic' && (
-          <LogicSettings pageOptions={getPageList()} field={field} />
+          <LogicSettings
+            pageOptions={getPageList()}
+            field={field}
+            key={field.index}
+          />
         )}
         <Modal opened={showDeleteModal} close={closeModal}>
           <Box display="flex" flexDirection="column" width="100%" p="20px">

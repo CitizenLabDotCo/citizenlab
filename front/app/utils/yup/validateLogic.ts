@@ -32,7 +32,7 @@ const validateLogic = (message: string) => {
       logic: object(),
     })
     .when('input_type', (input_type: string, schema) => {
-      if (input_type === 'select' || input_type === 'linear_scale') {
+      if (['select', 'linear_scale'].includes(input_type)) {
         return schema.test(
           'rules reference prior pages',
           message,
@@ -41,22 +41,15 @@ const validateLogic = (message: string) => {
             const fields = obj.from[2].value.customFields;
 
             if (!isNilOrError(obj) && value && fields) {
-              let hasError = false;
-              value.rules.forEach((rule) => {
-                if (!isRuleValid(rule, obj.parent.id, fields)) {
-                  hasError = true;
-                }
-              });
-              return !hasError;
+              return (value.rules || []).every((rule) =>
+                isRuleValid(rule, obj.parent.id, fields)
+              );
             }
-            // Otherwise return true, because no rules are set
             return true;
           }
         );
       }
-      return schema.test('not a select or lienar scale field', message, () => {
-        return true;
-      });
+      return schema;
     });
 };
 
