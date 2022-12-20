@@ -1652,6 +1652,7 @@
   "app.containers.admin.ContentBuilder.usersByGender": "Users by gender",
   "app.containers.admin.ContentBuilder.visitorTimeline": "Visitor timeline",
   "app.containers.admin.ReportBuilder.aboutThisReport": "About this report",
+  "app.containers.admin.ReportBuilder.continuousProject": "Continuous project",
   "app.containers.admin.ReportBuilder.managerLabel": "Project manager: {managerName}",
   "app.containers.admin.ReportBuilder.periodLabel": "Period: {startEndDates}",
   "app.containers.admin.ReportBuilder.projectsLabel": "Projects: {projectsList}",
