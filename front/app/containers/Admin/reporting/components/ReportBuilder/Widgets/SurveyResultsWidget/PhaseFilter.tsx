@@ -2,10 +2,14 @@ import React, { useMemo, useEffect } from 'react';
 
 // hooks
 import usePhases from 'hooks/usePhases';
-import useLocalize from 'hooks/useLocalize';
 
 // components
 import { Box, Text, Select } from '@citizenlab/cl2-component-library';
+
+// i18n
+import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -27,6 +31,7 @@ const isNativeSurveyPhase = (phase: IPhaseData) => {
 const PhaseFilter = ({ projectId, phaseId, onPhaseFilter }: Props) => {
   const phases = usePhases(projectId);
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const surveyPhases = useMemo(() => {
     return isNilOrError(phases) ? null : phases.filter(isNativeSurveyPhase);
@@ -63,7 +68,7 @@ const PhaseFilter = ({ projectId, phaseId, onPhaseFilter }: Props) => {
   return (
     <Box width="100%" mb="20px">
       <Select
-        label="Survey Phases"
+        label={formatMessage(messages.surveyPhases)}
         onChange={onPhaseFilter}
         value={phaseId}
         options={phaseOptions}

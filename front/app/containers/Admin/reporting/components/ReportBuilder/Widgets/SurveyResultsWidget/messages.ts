@@ -27,4 +27,8 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.surveyNoQuestions',
     defaultMessage: 'Choose which questions to display:',
   },
+  surveyPhases: {
+    id: 'app.containers.admin.ReportBuilder.surveyPhases',
+    defaultMessage: 'Survey phases',
+  },
 });
