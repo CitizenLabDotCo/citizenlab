@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { Element, UserComponent } from '@craftjs/core';
+import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -53,10 +53,7 @@ const toPeriodString = ({
   endDate: string;
 }) => `${startDate} - ${endDate}`;
 
-const AboutReportWidget: UserComponent = ({
-  reportId,
-  projectId,
-}: AboutReportWidgetProps) => {
+const AboutReportWidget = ({ reportId, projectId }: AboutReportWidgetProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
