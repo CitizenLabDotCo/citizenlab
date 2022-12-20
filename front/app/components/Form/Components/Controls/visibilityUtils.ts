@@ -20,6 +20,8 @@ import {
 import { has } from 'lodash-es';
 import { PageType } from '../Layouts/utils';
 
+interface CustomCondition extends Condition, Scopable, SchemaBasedCondition {}
+
 export type ExtendedRule = {
   /**
    * The effect of the rule
@@ -29,7 +31,7 @@ export type ExtendedRule = {
    * The condition of the rule that must evaluate to true in order
    * to trigger the effect.
    */
-  condition: Condition;
+  condition: CustomCondition;
 } & Rule;
 
 export type ExtendedUISchema = {
