@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 // craft
 import { useNode } from '@craftjs/core';
 
 // styling
-import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import { colors, stylingConsts } from 'utils/styleUtils';
 import { BORDER } from '../constants';
 
 // components
@@ -79,40 +79,49 @@ const SurveyResultsWidgetSettings = () => {
     shownQuestions: node.data.props.shownQuestions,
   }));
 
-  const setTitle = (value: string) => {
-    setProp((props) => {
-      props.title = value;
-    });
-  };
+  const setTitle = useCallback(
+    (value: string) => {
+      setProp((props) => {
+        props.title = value;
+      });
+    },
+    [setProp]
+  );
 
-  const handleProjectFilter = ({ value }: IOption) => {
-    setProp((props) => {
-      props.projectId = value;
-      props.phaseId = undefined;
-      props.shownQuestions = undefined;
-    });
-  };
+  const handleProjectFilter = useCallback(
+    ({ value }: IOption) => {
+      setProp((props) => {
+        props.projectId = value;
+        props.phaseId = undefined;
+        props.shownQuestions = undefined;
+      });
+    },
+    [setProp]
+  );
 
-  const handlePhaseFilter = ({ value }: IOption) => {
-    setProp((props) => {
-      props.phaseId = value;
-    });
-  };
+  const handlePhaseFilter = useCallback(
+    ({ value }: IOption) => {
+      setProp((props) => {
+        props.phaseId = value;
+      });
+    },
+    [setProp]
+  );
 
-  const handleQuestionToggle = (
-    questionIndex: number,
-    numberOfQuestions: number
-  ) => {
-    setProp((props) => {
-      const newShownQuestions = props.shownQuestions
-        ? [...props.shownQuestions]
-        : Array(numberOfQuestions).fill(true);
+  const handleQuestionToggle = useCallback(
+    (questionIndex: number, numberOfQuestions: number) => {
+      setProp((props) => {
+        const newShownQuestions = props.shownQuestions
+          ? [...props.shownQuestions]
+          : Array(numberOfQuestions).fill(true);
 
-      newShownQuestions[questionIndex] = !newShownQuestions[questionIndex];
+        newShownQuestions[questionIndex] = !newShownQuestions[questionIndex];
 
-      props.shownQuestions = newShownQuestions;
-    });
-  };
+        props.shownQuestions = newShownQuestions;
+      });
+    },
+    [setProp]
+  );
 
   return (
     <Box>

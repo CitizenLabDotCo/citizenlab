@@ -44,12 +44,12 @@ const PhaseFilter = ({ projectId, phaseId, onPhaseFilter }: Props) => {
           label: localize(attributes.title_multiloc),
         }))
       : null;
-  }, [surveyPhases]);
+  }, [surveyPhases, localize]);
 
   useEffect(() => {
     if (!phaseOptions || phaseOptions.length === 0) return;
     onPhaseFilter(phaseOptions[0]);
-  }, [phaseOptions]);
+  }, [phaseOptions, onPhaseFilter]);
 
   if (!surveyPhases || !phaseOptions) return null;
   if (phaseOptions.length === 0) return null;
