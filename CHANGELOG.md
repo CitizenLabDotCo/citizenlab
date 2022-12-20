@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-12-20
+
+### Fixed
+
+- [CL-2318] The hero banner layout preview for phones didn't get the right dimensions.
+
 ## 2022-12-14
 
 ### Added
