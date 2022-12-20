@@ -11,8 +11,25 @@ jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 let mockReports;
 jest.mock('hooks/useReports', () => jest.fn(() => mockReports));
-
 jest.mock('services/reports', () => ({ createReport: jest.fn() }));
+
+// mock data
+const reports = [
+  {
+    attributes: {
+      name: 'report 1',
+      created_at: '20-12-2022',
+      updated_at: '20-12-2022',
+    },
+  },
+  {
+    attributes: {
+      name: 'report 2',
+      created_at: '20-12-2022',
+      updated_at: '20-12-2022',
+    },
+  },
+];
 
 describe('<ReportBuilderPage />', () => {
   describe('empty state', () => {
@@ -48,5 +65,29 @@ describe('<ReportBuilderPage />', () => {
       expect(createReport).toHaveBeenCalledTimes(1);
       expect(createReport).toHaveBeenCalledWith('Test project');
     });
+  });
+
+  describe('with reports', () => {
+    it('does not render empty state', () => {
+      mockReports = reports;
+      render(<ReportBuilderPage />);
+
+      expect(
+        screen.queryByText('Create your first project report')
+      ).not.toBeInTheDocument();
+    });
+
+    // it('renders reports', () => {
+    //   mockReports = reports;
+
+    // });
+
+    // it('calls clHistory.push with correct arg when clicking "edit"', () => {
+
+    // })
+
+    // it('calls clHistory.push with correct arg when clicking "view"', () => {
+
+    // });
   });
 });
