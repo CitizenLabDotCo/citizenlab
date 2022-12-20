@@ -487,6 +487,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "Morate unijeti „puž“",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Naslov",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Unesite naslov na svakom jeziku",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Enter a title",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "Prikaz prilagođene stranice",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Gumb",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Uredi prilagođenu stranicu | {orgName}",
