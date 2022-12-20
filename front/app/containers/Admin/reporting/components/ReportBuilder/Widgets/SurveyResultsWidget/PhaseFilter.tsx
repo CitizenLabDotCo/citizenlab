@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 
 // hooks
 import usePhases from 'hooks/usePhases';
@@ -28,16 +28,25 @@ const PhaseFilter = ({ projectId, phaseId, onPhaseFilter }: Props) => {
   const phases = usePhases(projectId);
   const localize = useLocalize();
 
-  if (isNilOrError(phases)) {
-    return null;
-  }
+  const surveyPhases = useMemo(() => {
+    return isNilOrError(phases) ? null : phases.filter(isNativeSurveyPhase);
+  }, [phases]);
 
-  const surveyPhases = phases.filter(isNativeSurveyPhase);
-  const phaseOptions = surveyPhases.map(({ id, attributes }) => ({
-    value: id,
-    label: localize(attributes.title_multiloc),
-  }));
+  const phaseOptions = useMemo(() => {
+    return surveyPhases
+      ? surveyPhases.map(({ id, attributes }) => ({
+          value: id,
+          label: localize(attributes.title_multiloc),
+        }))
+      : null;
+  }, [surveyPhases]);
 
+  useEffect(() => {
+    if (!phaseOptions || phaseOptions.length === 0) return;
+    onPhaseFilter(phaseOptions[0]);
+  }, [phaseOptions]);
+
+  if (!surveyPhases || !phaseOptions) return null;
   if (phaseOptions.length === 0) return null;
 
   if (phaseOptions.length === 1) {
