@@ -129,7 +129,7 @@ describe('Project status card data parsing', () => {
             all: 'count',
           },
           filters: {
-            status: 'active',
+            status: 'published',
           },
         },
         {
@@ -147,7 +147,7 @@ describe('Project status card data parsing', () => {
             all: 'count',
           },
           filters: {
-            status: 'finished',
+            finished: true,
           },
         },
         {
@@ -156,6 +156,7 @@ describe('Project status card data parsing', () => {
             all: 'count',
           },
           filters: {
+            finished: false,
             status: 'draft',
           },
         },
@@ -188,7 +189,7 @@ describe('Project status card data parsing', () => {
           fact: 'project_status',
           aggregations: { all: 'count' },
           filters: {
-            status: 'finished',
+            finished: true,
             'dimension_date.date': { from: '2020-10-31', to: '2021-10-31' },
             'dimension_project.id': 'PROJECT_ID',
           },

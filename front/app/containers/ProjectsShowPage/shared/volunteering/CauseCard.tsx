@@ -16,7 +16,7 @@ import Warning from 'components/UI/Warning';
 
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
@@ -85,7 +85,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   font-weight: 500;
   line-height: normal;
@@ -95,7 +95,7 @@ const Title = styled.h3`
 `;
 
 const Description = styled.div`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
 `;
@@ -106,7 +106,7 @@ const ImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   overflow: hidden;
 
   &.fillBackground {
@@ -136,7 +136,7 @@ const VolunteersCount = styled.div`
   padding-bottom: 6px;
   padding-left: 5px;
   padding-right: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: rgba(0, 0, 0, 0.75);
 
   ${isRtl`
@@ -171,7 +171,7 @@ interface Props {
 }
 
 const CauseCard = memo<Props>(({ cause, className }) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 

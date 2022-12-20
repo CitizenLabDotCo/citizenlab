@@ -7,6 +7,12 @@ const PAGES: ICustomPageData[] = [
       nav_bar_item: {
         data: null,
       },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
+      },
     },
     attributes: {
       title_multiloc: {
@@ -41,7 +47,8 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_enabled: true,
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -85,7 +92,8 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_enabled: true,
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -96,6 +104,12 @@ const PAGES: ICustomPageData[] = [
     relationships: {
       nav_bar_item: {
         data: null,
+      },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
       },
     },
   },
@@ -134,7 +148,8 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_enabled: true,
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -148,6 +163,12 @@ const PAGES: ICustomPageData[] = [
           id: '2dcbaf58-4aaf-4644-a86a-fc822f1747d1',
           type: 'nav_bar_item',
         },
+      },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
       },
     },
   },
@@ -186,7 +207,8 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_enabled: true,
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -197,6 +219,12 @@ const PAGES: ICustomPageData[] = [
     relationships: {
       nav_bar_item: {
         data: null,
+      },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
       },
     },
   },
@@ -235,7 +263,8 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_enabled: true,
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -249,6 +278,12 @@ const PAGES: ICustomPageData[] = [
           id: '794befb8-ba94-45bd-bedf-833d6dd8a38a',
           type: 'nav_bar_item',
         },
+      },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
       },
     },
   },
@@ -288,7 +323,8 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_enabled: true,
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -299,6 +335,12 @@ const PAGES: ICustomPageData[] = [
     relationships: {
       nav_bar_item: {
         data: null,
+      },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
       },
     },
   },
@@ -337,7 +379,8 @@ const PAGES: ICustomPageData[] = [
       top_info_section_enabled: true,
       events_widget_enabled: true,
       files_section_enabled: true,
-      projects_filter_type: 'area',
+      projects_enabled: true,
+      projects_filter_type: 'areas',
       bottom_info_section_multiloc: { en: 'bottom info' },
       header_bg: {
         small: 'https://www.google.com/img.png',
@@ -348,6 +391,12 @@ const PAGES: ICustomPageData[] = [
     relationships: {
       nav_bar_item: {
         data: null,
+      },
+      topics: {
+        data: [],
+      },
+      areas: {
+        data: [],
       },
     },
   },

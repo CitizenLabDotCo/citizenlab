@@ -1,11 +1,15 @@
 import PageLoading from 'components/UI/PageLoading';
-import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import Outlet from 'components/Outlet';
 
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
 const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
+const NavigationSettings = lazy(
+  () => import('./containers/NavigationSettings')
+);
+const EditNavbarItemForm = lazy(
+  () => import('./containers/EditNavbarItemForm')
+);
 
 // homepage
 const EditHomepage = lazy(() => import('./containers/EditHomepage'));
@@ -33,6 +37,7 @@ const EditCustomPageContent = lazy(
   () => import('./containers/CustomPages/Edit/Content')
 );
 const AttachmentsForm = lazy(() => import('./containers/Attachments'));
+const ProjectsList = lazy(() => import('./containers/ProjectsList'));
 const CustomPageHeroBannerForm = lazy(
   () => import('./containers/CustomPages/Edit/HeroBanner')
 );
@@ -45,6 +50,10 @@ const ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH = `${ADMIN_PAGES_MENU_PATH}/${CUSTOM_PAG
 
 export const adminCustomPageContentPath = (pageId: string) => {
   return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/content`;
+};
+
+export const adminCustomPageSettingsPath = (pageId: string) => {
+  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/settings`;
 };
 
 export default () => ({
@@ -62,7 +71,7 @@ export default () => ({
           index: true,
           element: (
             <PageLoading>
-              <Outlet id="app.containers.Admin.pages-menu.NavigationSettings" />
+              <NavigationSettings />
             </PageLoading>
           ),
         },
@@ -147,10 +156,6 @@ export default () => ({
             </PageLoading>
           ),
         },
-        // {
-        //   path: ':customPageId/projects',
-        //   element: <></>,
-        // },
         {
           path: ':customPageId/bottom-info-section',
           element: (
@@ -167,8 +172,19 @@ export default () => ({
             </PageLoading>
           ),
         },
+        {
+          path: ':customPageId/projects',
+          element: (
+            <PageLoading>
+              <ProjectsList />
+            </PageLoading>
+          ),
+        },
       ],
     },
-    ...moduleConfiguration.routes['admin.pages-menu'],
+    {
+      path: 'navbar-items/edit/:navbarItemId',
+      element: <EditNavbarItemForm />,
+    },
   ],
 });

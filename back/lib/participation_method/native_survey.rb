@@ -18,6 +18,11 @@ module ParticipationMethod
 
     def create_default_form!
       form = CustomForm.create(participation_context: participation_context)
+      CustomField.create(
+        resource: form,
+        input_type: 'page',
+        key: 'page_1'
+      )
       field = CustomField.create(
         resource: form,
         input_type: 'select',
@@ -54,6 +59,14 @@ module ParticipationMethod
 
     def delete_inputs_on_pc_deletion?
       true
+    end
+
+    def supports_toxicity_detection?
+      false
+    end
+
+    def include_data_in_email?
+      false
     end
 
     # The "Additional information" category in the UI should be suppressed.

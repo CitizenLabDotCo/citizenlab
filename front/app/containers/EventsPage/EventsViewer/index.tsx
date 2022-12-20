@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 
 // components
 import TopBar from './TopBar';
@@ -38,10 +38,23 @@ interface Props {
   fallbackMessage: MessageDescriptor;
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
+  projectIds?: string[];
+  onClickTitleGoToProjectAndScrollToEvent?: boolean;
+  hideSectionIfNoEvents?: boolean;
+  showProjectFilter: boolean;
 }
 
 const EventsViewer = memo<Props>(
-  ({ title, fallbackMessage, eventsTime, className }) => {
+  ({
+    title,
+    fallbackMessage,
+    eventsTime,
+    className,
+    projectIds,
+    onClickTitleGoToProjectAndScrollToEvent,
+    hideSectionIfNoEvents,
+    showProjectFilter,
+  }) => {
     const {
       events,
       currentPage,
@@ -49,22 +62,44 @@ const EventsViewer = memo<Props>(
       onProjectIdsChange,
       onCurrentPageChange,
     } = useEvents({
+      projectIds,
       projectPublicationStatuses: ['published'],
       currentAndFutureOnly: eventsTime === 'currentAndFuture',
       pastOnly: eventsTime === 'past',
       sort: eventsTime === 'past' ? 'newest' : 'oldest',
     });
 
+    useEffect(() => {
+      if (!isNilOrError(projectIds)) {
+        onProjectIdsChange(projectIds);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [projectIds]);
+
     const eventsLoading = isNil(events);
     const eventsError = isError(events);
 
+    const shouldHideSection =
+      (!isNilOrError(events) && events.length === 0 && hideSectionIfNoEvents) ||
+      (eventsLoading && hideSectionIfNoEvents) ||
+      (isNilOrError(events) && hideSectionIfNoEvents);
+
+    if (shouldHideSection) {
+      return null;
+    }
+
     return (
       <div className={className}>
-        <TopBar title={title} setProjectIds={onProjectIdsChange} />
+        <TopBar
+          showProjectFilter={showProjectFilter}
+          title={title}
+          setProjectIds={onProjectIdsChange}
+        />
 
         {eventsError && (
           <EventsMessage message={messages.errorWhenFetchingEvents} />
         )}
+
         {eventsLoading && <EventsSpinner />}
 
         {!isNilOrError(events) && (
@@ -72,9 +107,12 @@ const EventsViewer = memo<Props>(
             {events.length > 0 &&
               events.map((event, i) => (
                 <StyledEventCard
+                  id={event.id}
                   event={event}
                   showProjectTitle
-                  onClickTitleGoToProjectAndScrollToEvent
+                  onClickTitleGoToProjectAndScrollToEvent={
+                    onClickTitleGoToProjectAndScrollToEvent
+                  }
                   showLocation
                   showDescription
                   showAttachments

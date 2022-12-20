@@ -152,6 +152,12 @@ export class AdminProjectsProjectIndex extends PureComponent<
           url: 'events',
           name: 'events',
         },
+        {
+          label: formatMessage(messages.permissionsTab),
+          url: `permissions`,
+          feature: 'private_projects',
+          name: 'permissions',
+        },
       ],
       tabHideConditions: {
         general: function isGeneralTabHidden() {
@@ -372,6 +378,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
             project={project}
             phases={phases}
           />
+
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>

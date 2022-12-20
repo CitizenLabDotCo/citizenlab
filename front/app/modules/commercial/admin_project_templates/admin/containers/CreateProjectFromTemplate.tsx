@@ -17,13 +17,13 @@ interface Props {
 
 const CreateProjectFromTemplate = memo(
   ({ graphqlTenantLocales, className }: Props): ReactElement => {
-    const tenant = useAppConfiguration();
+    const appConfig = useAppConfiguration();
 
-    const locales = !isNilOrError(tenant)
-      ? tenant.attributes.settings.core.locales
+    const locales = !isNilOrError(appConfig)
+      ? appConfig.attributes.settings.core.locales
       : null;
-    const organizationTypes = !isNilOrError(tenant)
-      ? tenant.attributes.settings.core.organization_type
+    const organizationTypes = !isNilOrError(appConfig)
+      ? appConfig.attributes.settings.core.organization_type
       : null;
 
     const [departments, setDepartments] = useState<string[] | null>(null);

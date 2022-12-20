@@ -12,16 +12,21 @@ RSpec.describe EmailCampaigns::Campaigns::AssigneeDigest, type: :model do
 
     it 'filters out invitees' do
       admin = create(:admin)
-      _invitee = create(:invited_user, roles: [{ type: 'admin' }])
+      create(:invited_user, roles: [{ type: 'admin' }])
 
-      expect(campaign.apply_recipient_filters).to match([admin])
+      expect(campaign.apply_recipient_filters).to eq([admin])
     end
 
     it 'filters out normal users' do
       admin = create(:admin)
-      _user = create(:user)
+      create(:user)
 
-      expect(campaign.apply_recipient_filters.map(&:id)).to match_array([admin.id])
+      expect(campaign.apply_recipient_filters.map(&:id)).to eq([admin.id])
+    end
+
+    it 'keeps moderators' do
+      moderator = create(:project_moderator)
+      expect(campaign.apply_recipient_filters.map(&:id)).to eq([moderator.id])
     end
   end
 end

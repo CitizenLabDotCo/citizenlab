@@ -47,7 +47,7 @@ export const QuestionNumber = styled.span`
   align-items: center;
   justify-content: center;
   background-color: #f2f2f2;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   margin-right: 13px;
 `;
 

@@ -10,22 +10,11 @@ resource 'Analytics - ProjectStatus' do
   before { admin_header_token }
 
   post 'web_api/v1/analytics' do
-    def log_status_change(project, status)
-      # Similar to what is used in SideFxProjectService
-      LogActivityJob.perform_now(project, status, nil, Time.zone.now)
-    end
-
     before_all do
-      continuous_p1, continuous_p2 = create_list(:continuous_project, 2)
-      timeline_project = create(:phase, start_at: '2022-01-01', end_at: '2022-01-31').project
-
-      log_status_change(continuous_p1, 'published')
-      log_status_change(continuous_p1, 'deleted')
-
-      log_status_change(continuous_p2, 'published')
-      log_status_change(continuous_p2, 'archived') # continuous and archived = finished
-
-      log_status_change(timeline_project, 'published')
+      create(:continuous_project, admin_publication_attributes: { publication_status: 'draft' }) # continuous draft
+      create(:continuous_project, admin_publication_attributes: { publication_status: 'published' }) # continuous published
+      create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' }) # continuous archived
+      create(:phase, start_at: '2022-01-01', end_at: '2022-01-31') # timeline published + finished
     end
 
     example 'gets counts by project status' do
@@ -40,11 +29,49 @@ resource 'Analytics - ProjectStatus' do
       })
 
       assert_status 200
-      expect(response_data).to eq([
-        { status: 'published', count: 1 },
-        { status: 'finished', count: 2 },
-        { status: 'deleted', count: 1 },
+      expect(response_data).to match_array([
+        { status: 'draft', count: 1 },
+        { status: 'published', count: 2 },
         { status: 'archived', count: 1 }
+      ])
+    end
+
+    example 'gets projects that are finished' do
+      do_request({
+        query: {
+          fact: 'project_status',
+          filters: {
+            finished: true
+          },
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+
+      assert_status 200
+      expect(response_data).to eq([
+        { count: 2 }
+      ])
+    end
+
+    example 'gets published projects that NOT finished' do
+      do_request({
+        query: {
+          fact: 'project_status',
+          filters: {
+            status: 'published',
+            finished: false
+          },
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+
+      assert_status 200
+      expect(response_data).to eq([
+        { count: 1 }
       ])
     end
   end

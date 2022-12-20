@@ -24,6 +24,7 @@ class SideFxProjectService
   end
 
   def before_update(project, user)
+    @folder_id_was = project.admin_publication.parent_id_was
     project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
     @sfx_pc.before_update project, user if project.participation_context?
   end
@@ -32,6 +33,7 @@ class SideFxProjectService
     LogActivityJob.perform_later project, 'changed', user, project.updated_at.to_i
     log_publication_status_change(project, user)
 
+    after_folder_changed project, user if @folder_id_was != project.folder_id
     @sfx_pc.after_update project, user if project.participation_context?
   end
 
@@ -76,4 +78,3 @@ class SideFxProjectService
 end
 
 SideFxProjectService.prepend_if_ee 'IdeaAssignment::Patches::SideFxProjectService'
-SideFxProjectService.prepend_if_ee 'ProjectFolders::Patches::SideFxProjectService'

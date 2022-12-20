@@ -101,7 +101,7 @@ const MenuLink = styled.a`
   padding-left: 5px;
   padding-right: 15px;
   cursor: pointer;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   transition: all 100ms ease-out;
 
   &:hover,
@@ -195,6 +195,7 @@ class Sidebar extends PureComponent<
           iconName: 'sidebar-proposals',
           message: 'initiatives',
           featureNames: ['initiatives'],
+          onlyCheckAllowed: true,
         },
         {
           name: 'userinserts',

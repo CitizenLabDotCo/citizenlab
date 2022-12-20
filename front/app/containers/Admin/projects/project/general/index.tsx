@@ -24,13 +24,13 @@ import {
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import Outlet from 'components/Outlet';
 import {
   StyledForm,
   ProjectType,
   StyledSectionField,
   ParticipationContextWrapper,
 } from './components/styling';
+import ProjectFolderSelect from './components/ProjectFolderSelect';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -38,6 +38,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
 import { useParams } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import {
@@ -51,9 +52,8 @@ import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { validateSlug } from 'utils/textUtils';
@@ -69,11 +69,11 @@ export type TOnProjectAttributesDiffChangeFunction = (
   submitState?: ISubmitState
 ) => void;
 
-const AdminProjectsProjectGeneral = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const AdminProjectsProjectGeneral = () => {
+  const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const project = useProject({ projectId });
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(projectId);
   const remoteProjectImages = useProjectImages({
@@ -502,15 +502,20 @@ const AdminProjectsProjectGeneral = ({
         />
 
         {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-        {slug && (
-          <SlugInput
-            inputFieldId="project-slug"
-            slug={slug}
-            pathnameWithoutSlug={'projects'}
-            apiErrors={apiErrors}
-            showSlugErrorMessage={showSlugErrorMessage}
-            onSlugChange={handleSlugOnChange}
-          />
+        {!isNilOrError(project) && slug && (
+          <StyledSectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.url} />
+            </SubSectionTitle>
+            <SlugInput
+              slug={slug}
+              pathnameWithoutSlug={'projects'}
+              apiErrors={apiErrors}
+              showSlugErrorMessage={showSlugErrorMessage}
+              onSlugChange={handleSlugOnChange}
+              showSlugChangedWarning={slug !== project.attributes.slug}
+            />
+          </StyledSectionField>
         )}
 
         <StyledSectionField>
@@ -572,11 +577,12 @@ const AdminProjectsProjectGeneral = ({
           onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
         />
 
-        <Outlet
-          id="app.components.AdminPage.projects.form.additionalInputs.inputs"
-          projectAttrs={projectAttrs}
-          onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-        />
+        {isProjectFoldersEnabled && (
+          <ProjectFolderSelect
+            projectAttrs={projectAttrs}
+            onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+          />
+        )}
 
         <HeaderImageDropzone
           projectHeaderImage={projectHeaderImage}
@@ -612,7 +618,7 @@ const AdminProjectsProjectGeneral = ({
   );
 };
 
-export default injectIntl(AdminProjectsProjectGeneral);
+export default AdminProjectsProjectGeneral;
 
 function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,

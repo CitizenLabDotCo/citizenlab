@@ -58,7 +58,7 @@ const GenericTopInfoSection = ({
   intl: { formatMessage },
   linkToViewPage,
 }: WrappedComponentProps & Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {

@@ -25,7 +25,7 @@ describe IdeaFilePolicy do
       end
     end
 
-    context 'for a user who is not the idea author' do
+    context 'for a resident who is not the idea author' do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
@@ -38,7 +38,7 @@ describe IdeaFilePolicy do
       end
     end
 
-    context 'for a user who is the idea author' do
+    context 'for a resident who is the idea author' do
       let(:user) { idea.author }
 
       it { is_expected.to     permit(:show)    }
@@ -63,6 +63,19 @@ describe IdeaFilePolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:show)    }
+      it { is_expected.to permit(:create)  }
+      it { is_expected.to permit(:update)  }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the file' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
   end
 
   context 'on a file of an idea in a private admins project' do
@@ -70,7 +83,7 @@ describe IdeaFilePolicy do
     let(:idea) { create(:idea, project: project) }
     let!(:file) { create(:idea_file, idea: idea) }
 
-    context 'for a user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show)    }

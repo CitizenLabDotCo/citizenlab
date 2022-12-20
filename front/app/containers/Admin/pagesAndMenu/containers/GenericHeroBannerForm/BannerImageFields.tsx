@@ -26,7 +26,7 @@ import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
 import RangeInput from 'components/UI/RangeInput';
-export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
+export type PreviewDevice = 'phone' | 'tablet' | 'desktop';
 
 interface Props {
   onAddImage: (newImageBase64: string) => void;
@@ -60,7 +60,7 @@ const BannerImageField = ({
   onOverlayColorChange,
   onOverlayOpacityChange,
 }: Props & WrappedComponentProps) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
