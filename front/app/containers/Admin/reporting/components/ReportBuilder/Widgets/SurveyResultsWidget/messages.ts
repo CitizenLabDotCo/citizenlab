@@ -31,4 +31,8 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.surveyPhases',
     defaultMessage: 'Survey phases',
   },
+  totalParticipants: {
+    id: 'app.containers.admin.ReportBuilder.totalParticipants',
+    defaultMessage: 'Total participants: {numberOfParticipants}',
+  },
 });

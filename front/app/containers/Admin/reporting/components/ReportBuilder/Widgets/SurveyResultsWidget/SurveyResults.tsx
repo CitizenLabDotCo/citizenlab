@@ -5,7 +5,6 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
 
 // messages
-import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
 import messages from './messages';
 
 // hooks
@@ -57,14 +56,9 @@ const SurveyResultsReport = ({ projectId, phaseId, shownQuestions }: Props) => {
 
   if (resultRows === null) return null;
 
-  const { totalSubmissions } = formResults;
-
-  const surveyResponseMessage =
-    totalSubmissions > 0
-      ? formatMessage(formBuilderMessages.totalSurveyResponses, {
-          count: totalSubmissions,
-        })
-      : formatMessage(formBuilderMessages.noSurveyResponses);
+  const surveyResponseMessage = formatMessage(messages.totalParticipants, {
+    numberOfParticipants: formResults.totalSubmissions,
+  });
 
   return (
     <>
