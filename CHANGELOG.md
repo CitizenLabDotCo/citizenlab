@@ -1,5 +1,10 @@
 # Changelog
 
+### Added
+
+- [CL-2255] New columns in User Excel export: registration_completed_at and invite_status.
+
+
 ## 2022-12-20
 
 ### Fixed
