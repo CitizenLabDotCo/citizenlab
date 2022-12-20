@@ -61,7 +61,7 @@ const MoreOptionsButton = styled.button`
   }
 `;
 
-const CreatedAt = styled(Td)`
+const RegisteredAt = styled(Td)`
   white-space: nowrap;
 `;
 
@@ -124,7 +124,7 @@ interface Props {
 
 interface State {
   isAdmin: boolean;
-  createdAt: string;
+  registeredAt: string;
 }
 
 class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
@@ -132,14 +132,18 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
     super(props);
     this.state = {
       isAdmin: isAdmin({ data: this.props.user }),
-      createdAt: moment(this.props.user.attributes.created_at).format('LL'),
+      registeredAt: moment(
+        this.props.user.attributes.registration_completed_at
+      ).format('LL'),
     };
   }
 
   static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
     return {
       isAdmin: isAdmin({ data: nextProps.user }),
-      createdAt: moment(nextProps.user.attributes.created_at).format('LL'),
+      registeredAt: moment(
+        nextProps.user.attributes.registration_completed_at
+      ).format('LL'),
     };
   }
 
@@ -208,11 +212,11 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
           {user.attributes.first_name} {user.attributes.last_name}
         </Td>
         <Td>{user.attributes.email}</Td>
-        <CreatedAt>
-          {user.attributes.invite_status == 'pending'
+        <RegisteredAt>
+          {user.attributes.invite_status === 'pending'
             ? 'Invite pending'
-            : this.state.createdAt}
-        </CreatedAt>
+            : this.state.registeredAt}
+        </RegisteredAt>
         <Td>
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
         </Td>
