@@ -53,7 +53,7 @@ const FormBuilderToolbox = ({
       id: `${Math.floor(Date.now() * Math.random())}`,
       temp_id: generateTempId(),
       logic: {
-        rules: [],
+        ...(inputType !== 'page' ? { rules: [] } : undefined),
       },
       isLocalOnly: true,
       description_multiloc: {},
