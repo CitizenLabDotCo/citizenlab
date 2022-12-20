@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { Element, UserComponent } from '@craftjs/core';
+import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -45,10 +45,15 @@ const getPhaseDates = (phases: IPhaseData[]) => {
   return { startDate, endDate };
 };
 
-const AboutReportWidget: UserComponent = ({
-  reportId,
-  projectId,
-}: AboutReportWidgetProps) => {
+const toPeriodString = ({
+  startDate,
+  endDate,
+}: {
+  startDate: string;
+  endDate: string;
+}) => `${startDate} - ${endDate}`;
+
+const AboutReportWidget = ({ reportId, projectId }: AboutReportWidgetProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -71,11 +76,10 @@ const AboutReportWidget: UserComponent = ({
   const projectName = isNilOrError(project)
     ? ''
     : localize(project.attributes.title_multiloc);
-  let projectPeriod = formatMessage(messages.continuousProject);
-  if (!isNilOrError(phases) && phases.length !== 0) {
-    const { startDate, endDate } = getPhaseDates(phases);
-    projectPeriod = `${startDate} - ${endDate}`;
-  }
+  const hasPhases = !isNilOrError(phases) && phases.length !== 0;
+  const projectPeriod = hasPhases
+    ? toPeriodString(getPhaseDates(phases))
+    : formatMessage(messages.continuousProject);
 
   return (
     <Box>
@@ -107,7 +111,7 @@ const AboutReportWidget: UserComponent = ({
           <Text
             text={`
             <ul>
-              <li>${formatMessage(messages.projectsLabel, {
+              <li>${formatMessage(messages.projectLabel, {
                 projectsList: projectName,
               })}</li>
               <li>${formatMessage(messages.periodLabel, {

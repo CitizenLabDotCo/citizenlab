@@ -8,7 +8,8 @@ import VisitorsCard from '../VisitorsCard';
 import VisitorsTrafficSourcesCard from '../VisitorsTrafficSourcesCard';
 
 // styling
-import { colors, stylingConsts } from 'utils/styleUtils';
+import { stylingConsts } from 'utils/styleUtils';
+import { BORDER } from '../constants';
 
 // Utils
 import moment, { Moment } from 'moment';
@@ -80,9 +81,10 @@ const AnalyticsChartWidget = ({
   return (
     <Box
       minHeight="26px"
-      border={`${colors.grey400} 1px solid`}
+      border={BORDER}
       borderRadius={stylingConsts.borderRadius}
-      my="4px"
+      mt="4px"
+      mb="4px"
     >
       {chart}
     </Box>
