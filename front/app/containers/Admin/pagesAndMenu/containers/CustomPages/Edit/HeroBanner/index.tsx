@@ -142,15 +142,19 @@ const EditCustomPageHeroBannerForm = ({
     handleOnChange('header_bg', null);
   };
 
-  const handleOverlayColorOnChange = (
-    color: ICustomPageAttributes['banner_overlay_color']
+  const handleOnOverlayChange = (
+    opacity: number | null,
+    color: string | null
   ) => {
-    handleOnChange('banner_overlay_color', color);
-  };
-  const handleOverlayOpacityOnChange = (
-    opacity: ICustomPageAttributes['banner_overlay_opacity']
-  ) => {
-    handleOnChange('banner_overlay_opacity', opacity);
+    if (!isNilOrError(localSettings)) {
+      setFormStatus('enabled');
+
+      setLocalSettings({
+        ...localSettings,
+        banner_overlay_color: color,
+        banner_overlay_opacity: opacity,
+      });
+    }
   };
 
   const handleLayoutOnChange = (
@@ -233,8 +237,7 @@ const EditCustomPageHeroBannerForm = ({
               setFormStatus={setFormStatus}
               onAddImage={handleOnBannerImageAdd}
               onRemoveImage={handleOnBannerImageRemove}
-              onOverlayColorChange={handleOverlayColorOnChange}
-              onOverlayOpacityChange={handleOverlayOpacityOnChange}
+              onOverlayChange={handleOnOverlayChange}
             />
           }
           bannerHeaderFieldsComponent={

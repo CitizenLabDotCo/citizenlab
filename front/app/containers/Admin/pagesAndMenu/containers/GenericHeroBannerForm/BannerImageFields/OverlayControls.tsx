@@ -44,15 +44,16 @@ const StyledBox = styled(Box)`
 interface Props {
   bannerOverlayOpacity: BannerImageFieldsProps['bannerOverlayOpacity'];
   bannerOverlayColor: BannerImageFieldsProps['bannerOverlayColor'];
-  onOverlayOpacityChange: BannerImageFieldsProps['onOverlayOpacityChange'];
-  onOverlayColorChange: BannerImageFieldsProps['onOverlayColorChange'];
+  onOverlayChange: (
+    opacity: BannerImageFieldsProps['bannerOverlayOpacity'],
+    color: BannerImageFieldsProps['bannerOverlayColor']
+  ) => void;
 }
 
 const OverlayControls = ({
   bannerOverlayOpacity,
   bannerOverlayColor,
-  onOverlayOpacityChange,
-  onOverlayColorChange,
+  onOverlayChange,
 }: Props) => {
   const [overlayEnabled, setOverlayEnabled] = useState(
     typeof bannerOverlayOpacity === 'number'
@@ -69,10 +70,11 @@ const OverlayControls = ({
     // refactoring of components used in the GenericHeroBannerForm
     // to home/custom page specific versions to make the types fit.
     if (overlayEnabled) {
-      handleOverlayOpacityOnChange(null);
+      onOverlayChange(null, null);
     } else {
-      handleOverlayOpacityOnChange(
-        bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
+      onOverlayChange(
+        bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity,
+        bannerOverlayColor || theme.colors.tenantPrimary
       );
     }
 
@@ -82,7 +84,14 @@ const OverlayControls = ({
   const handleOverlayOpacityOnChange = (
     opacity: Props['bannerOverlayOpacity']
   ) => {
-    onOverlayOpacityChange(opacity);
+    onOverlayChange(opacity, bannerOverlayColor || theme.colors.tenantPrimary);
+  };
+
+  const handleOverlayColorOnChange = (color: Props['bannerOverlayColor']) => {
+    onOverlayChange(
+      bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity,
+      color
+    );
   };
 
   const debounceHandleOverlayOpacityOnChange = debounce(
@@ -129,7 +138,7 @@ const OverlayControls = ({
               // bannerOverlayColor. Default needs to be set by the
               // toggle handler, but it requires significant refactoring
               value={bannerOverlayColor || theme.colors.tenantPrimary}
-              onChange={onOverlayColorChange}
+              onChange={handleOverlayColorOnChange}
             />
           </Box>
           <Label>

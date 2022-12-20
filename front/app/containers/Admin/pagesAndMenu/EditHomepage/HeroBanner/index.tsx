@@ -117,15 +117,20 @@ const EditHomepageHeroBannerForm = () => {
       signedOutSubheaderMultiloc
     );
   };
-  const handleOverlayColorOnChange = (
+
+  const handleOnOverlayChange = (
+    opacity: IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity'],
     color: IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
   ) => {
-    handleOnChange('banner_signed_out_header_overlay_color', color);
-  };
-  const handleOverlayOpacityOnChange = (
-    opacity: IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
-  ) => {
-    handleOnChange('banner_signed_out_header_overlay_opacity', opacity);
+    if (!isNilOrError(localSettings)) {
+      setFormStatus('enabled');
+
+      setLocalSettings({
+        ...localSettings,
+        banner_signed_out_header_overlay_color: color,
+        banner_signed_out_header_overlay_opacity: opacity,
+      });
+    }
   };
 
   const handleOnChangeBannerAvatarsEnabled = (
@@ -190,8 +195,7 @@ const EditHomepageHeroBannerForm = () => {
               setFormStatus={setFormStatus}
               onAddImage={handleOnBannerImageAdd}
               onRemoveImage={handleOnBannerImageRemove}
-              onOverlayColorChange={handleOverlayColorOnChange}
-              onOverlayOpacityChange={handleOverlayOpacityOnChange}
+              onOverlayChange={handleOnOverlayChange}
             />
           }
           bannerHeaderFieldsComponent={

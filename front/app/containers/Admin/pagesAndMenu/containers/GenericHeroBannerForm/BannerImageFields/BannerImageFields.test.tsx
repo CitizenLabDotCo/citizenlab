@@ -16,8 +16,7 @@ const props = {
   onAddImage: jest.fn(),
   onRemoveImage: jest.fn(),
   setFormStatus: jest.fn(),
-  onOverlayColorChange: jest.fn(),
-  onOverlayOpacityChange: jest.fn(),
+  onOverlayChange: jest.fn(),
 } as Props;
 
 describe('BannerImageFields', () => {

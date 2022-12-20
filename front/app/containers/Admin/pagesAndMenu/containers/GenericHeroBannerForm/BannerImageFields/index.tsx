@@ -25,15 +25,13 @@ import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 export interface Props {
   onAddImage: (newImageBase64: string) => void;
   onRemoveImage: () => void;
-  onOverlayColorChange: (
+  onOverlayChange: (
+    opacity:
+      | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
+      | ICustomPageAttributes['banner_overlay_opacity'],
     color:
       | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
       | ICustomPageAttributes['banner_overlay_color']
-  ) => void;
-  onOverlayOpacityChange: (
-    opacity:
-      | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
-      | ICustomPageAttributes['banner_overlay_opacity']
   ) => void;
   bannerOverlayColor:
     | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
@@ -62,8 +60,7 @@ const BannerImageField = ({
   onAddImage,
   onRemoveImage,
   setFormStatus,
-  onOverlayColorChange,
-  onOverlayOpacityChange,
+  onOverlayChange,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('desktop');
@@ -196,9 +193,8 @@ const BannerImageField = ({
         {displayOverlayControls && (
           <OverlayControls
             bannerOverlayColor={bannerOverlayColor}
-            onOverlayColorChange={onOverlayColorChange}
             bannerOverlayOpacity={bannerOverlayOpacity}
-            onOverlayOpacityChange={onOverlayOpacityChange}
+            onOverlayChange={onOverlayChange}
           />
         )}
       </SectionField>
