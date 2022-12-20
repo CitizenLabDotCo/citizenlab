@@ -24,7 +24,7 @@ export default defineMessages({
       'There are no questions available for this project or phase.',
   },
   surveyChooseQuestions: {
-    id: 'app.containers.admin.ReportBuilder.surveyNoQuestions',
+    id: 'app.containers.admin.ReportBuilder.surveyChooseQuestions',
     defaultMessage: 'Choose which questions to display:',
   },
   surveyPhases: {
