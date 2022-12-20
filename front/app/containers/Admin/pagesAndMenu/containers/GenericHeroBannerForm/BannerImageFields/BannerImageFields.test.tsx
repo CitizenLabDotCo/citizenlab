@@ -21,28 +21,79 @@ const props = {
 } as Props;
 
 describe('BannerImageFields', () => {
-  describe('Full-width banner layout', () => {
-    const bannerLayout = 'full_width_banner_layout';
+  describe('Layout preview selector', () => {
+    it('shows when there is a saved image', async () => {
+      render(<BannerImageFields {...props} />);
 
-    describe('Layout preview selector', () => {
-      it('shows display preview select', async () => {
-        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-        await waitFor(() => {
-          const select = screen.queryByRole('combobox', {
-            name: /Show preview for/,
-          });
-          expect(select).toBeInTheDocument();
+      await waitFor(() => {
+        const select = screen.getByRole('combobox', {
+          name: /Show preview for/,
         });
+        expect(select).toBeInTheDocument();
       });
     });
+
+    it('does not show when there is no uploaded (but unsaved) nor saved image', async () => {
+      render(<BannerImageFields {...props} headerBg={null} />);
+
+      await waitFor(() => {
+        const select = screen.queryByRole('combobox', {
+          name: /Show preview for/,
+        });
+        expect(select).not.toBeInTheDocument();
+      });
+    });
+
+    it('shows when there is an uploaded image that is not saved yet', async () => {
+      const { container } = render(
+        <BannerImageFields {...props} headerBg={null} />
+      );
+
+      const file = new File(['file'], 'file.png', {
+        type: 'image/png',
+      });
+
+      act(() => {
+        fireEvent.change(container.querySelector('#header-dropzone'), {
+          target: { files: [file] },
+        });
+      });
+
+      await waitFor(() => {
+        const select = screen.getByRole('combobox', {
+          name: /Show preview for/,
+        });
+        expect(select).toBeInTheDocument();
+      });
+    });
+
+    // describe('Fixed-ratio banner layout', () => {
+    //   it('does not show when there is a saved image', async () => {
+    //     render(
+    //       <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
+    //     );
+
+    //     await waitFor(() => {
+    //       const select = screen.queryByRole('combobox', {
+    //         name: /Show preview for/,
+    //       });
+    //       console.log(select);
+
+    //       expect(select).toBeNull();
+    //     });
+    //   });
+    // });
+  });
+
+  describe('Full-width banner layout', () => {
+    const bannerLayout = 'full_width_banner_layout';
 
     describe('Image overlay controls', () => {
       it('shows overlay controls correctly', async () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await waitFor(() => {
-          const overlayInput = screen.queryByLabelText('Image overlay color');
+          const overlayInput = screen.getByLabelText('Image overlay color');
           expect(overlayInput).toBeInTheDocument();
         });
       });
@@ -67,19 +118,6 @@ describe('BannerImageFields', () => {
   describe('Two-column layout', () => {
     const bannerLayout = 'two_column_layout';
 
-    describe('Layout preview selector', () => {
-      it('shows display preview select', async () => {
-        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-        await waitFor(() => {
-          const select = screen.queryByRole('combobox', {
-            name: /Show preview for/,
-          });
-          expect(select).toBeInTheDocument();
-        });
-      });
-    });
-
     describe('Image overlay controls', () => {
       it('does not show', async () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
@@ -95,19 +133,6 @@ describe('BannerImageFields', () => {
   describe('Two-row layout', () => {
     const bannerLayout = 'two_row_layout';
 
-    describe('Layout preview selector', () => {
-      it('shows display preview select', async () => {
-        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-        await waitFor(() => {
-          const select = screen.queryByRole('combobox', {
-            name: /Show preview for/,
-          });
-          expect(select).toBeInTheDocument();
-        });
-      });
-    });
-
     describe('Image overlay controls', () => {
       it('does not show', async () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
@@ -122,19 +147,6 @@ describe('BannerImageFields', () => {
 
   describe('Fixed-ratio layout', () => {
     const bannerLayout = 'fixed_ratio_layout';
-
-    describe('Layout preview selector', () => {
-      it('does not show display preview select', async () => {
-        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-        await waitFor(() => {
-          const select = screen.queryByRole('combobox', {
-            name: /Show preview for/,
-          });
-          expect(select).toBeNull();
-        });
-      });
-    });
 
     describe('Image overlay controls', () => {
       it('shows overlay controls when we have a saved picture', async () => {
