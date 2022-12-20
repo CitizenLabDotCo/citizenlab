@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from 'react';
 
 // hooks
-import useProject from 'hooks/useProject';
 import useFormResults from 'hooks/useFormResults';
 import useLocalize from 'hooks/useLocalize';
 
@@ -28,13 +27,12 @@ const QuestionFilter = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const project = useProject({ projectId });
   const formResults = useFormResults({
     projectId,
     phaseId,
   });
 
-  if (isNilOrError(formResults) || isNilOrError(project)) {
+  if (isNilOrError(formResults) || formResults.results.length === 0) {
     // This never seems to get shown
     return (
       <Text variant="bodyM" color="textSecondary">
@@ -44,10 +42,6 @@ const QuestionFilter = ({
   }
 
   const { results } = formResults;
-
-  if (results.length === 0) {
-    return null;
-  }
 
   // Add/remove from selected questions
   const toggleQuestion =
