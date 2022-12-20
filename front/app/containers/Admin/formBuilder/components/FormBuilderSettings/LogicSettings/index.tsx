@@ -77,6 +77,8 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
       </Box>
       {field.input_type === 'page' ? (
         <PageRuleInput
+          fieldId={field.temp_id || field.id}
+          validationError={validationError}
           name={`customFields.${field.index}.logic`}
           pages={pageOptions}
         />

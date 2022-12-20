@@ -3,16 +3,20 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 // components
 import { Box, IOption, Select, Text } from '@citizenlab/cl2-component-library';
+import Error from 'components/UI/Error';
 
 // intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // types
-import { LogicType } from 'services/formCustomFields';
+import { IFlatCustomField, LogicType } from 'services/formCustomFields';
+import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 type RuleInputProps = {
   name: string;
+  fieldId: string;
+  validationError?: string;
   pages:
     | {
         value: string | undefined;
@@ -21,11 +25,22 @@ type RuleInputProps = {
     | undefined;
 };
 
-export const PageRuleInput = ({ pages, name }: RuleInputProps) => {
+export const PageRuleInput = ({
+  pages,
+  name,
+  fieldId,
+  validationError,
+}: RuleInputProps) => {
   const { setValue, watch, control } = useFormContext();
   const logic = watch(name) as LogicType;
+  const fields: IFlatCustomField[] = watch('customFields');
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
     logic && logic?.next_page_id ? logic.next_page_id : undefined
+  );
+  const [isRuleInvalid, setIsRuleInvalid] = useState(
+    selectedPage
+      ? !isPageRuleValid(fields, fieldId, logic?.next_page_id)
+      : false
   );
   const pagesWithEmptyOption = [
     { value: '', label: '' },
@@ -41,6 +56,7 @@ export const PageRuleInput = ({ pages, name }: RuleInputProps) => {
           next_page_id: page.value.toString(),
         };
     setValue(name, value);
+    setIsRuleInvalid(!isPageRuleValid(fields, fieldId, page.value));
   };
 
   return (
@@ -75,6 +91,16 @@ export const PageRuleInput = ({ pages, name }: RuleInputProps) => {
                       }
                       onChange={onSelectionChange}
                     />
+                  )}
+                  {validationError && isRuleInvalid && (
+                    <Box mb="12px">
+                      <Error
+                        marginTop="8px"
+                        marginBottom="8px"
+                        text={validationError}
+                        scrollIntoView={false}
+                      />
+                    </Box>
                   )}
                 </Box>
               </Box>
