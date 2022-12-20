@@ -10,13 +10,19 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 
 // intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Controller, useFormContext } from 'react-hook-form';
+import { LogicType, RuleType } from '../utils';
+import { IFlatCustomField } from 'services/formCustomFields';
+import { isRuleValid } from 'utils/yup/validateLogic';
 
 type RuleInputProps = {
+  fieldId: string;
+  validationError: string | undefined;
   answer: { key: string | number | undefined; label: string | undefined };
   name: string;
   pages:
@@ -27,16 +33,23 @@ type RuleInputProps = {
     | undefined;
 };
 
-type LogicType = { rules: { if: string | number; goto_page_id: string }[] };
-
-export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
-  const { setValue, watch, control } = useFormContext();
-  const rules = (watch(name) as LogicType).rules;
-  const logic = watch(name) as LogicType;
-  const initialValue = rules
+export const RuleInput = ({
+  fieldId,
+  pages,
+  name,
+  answer,
+  validationError,
+}: RuleInputProps) => {
+  const { setValue, watch, trigger, control } = useFormContext();
+  const rules: RuleType[] = (watch(name) as LogicType).rules;
+  const logic: LogicType = watch(name);
+  const fields: IFlatCustomField[] = watch('customFields');
+  const initialValue: RuleType | undefined = rules
     ? rules.find((rule) => rule.if === answer.key)
     : undefined;
-
+  const [ruleIsInvalid, setRuleIsInvalid] = useState(
+    initialValue ? !isRuleValid(initialValue, fieldId, fields) : false
+  );
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
     initialValue ? initialValue.goto_page_id : undefined
   );
@@ -58,6 +71,7 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
         if: answer.key,
         goto_page_id: page.value.toString(),
       };
+      setRuleIsInvalid(!isRuleValid(newRule, fieldId, fields));
       if (logic.rules) {
         const newRulesArray = logic.rules;
         newRulesArray.push(newRule);
@@ -67,6 +81,7 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
       }
       // Update rule variable
       setValue(name, logic);
+      trigger();
     }
   };
 
@@ -77,6 +92,7 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
     }
     // Update rule variable
     setValue(name, logic);
+    trigger();
   };
 
   return (
@@ -85,7 +101,7 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
         name={name}
         control={control}
         defaultValue={[]}
-        render={({ field: { ref: _ref } }) => {
+        render={({ field: { ref: _ref, onBlur } }) => {
           return (
             <>
               <Box
@@ -93,6 +109,10 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
                 display="flex"
                 borderTop={`1px solid ${colors.divider}`}
                 py="8px"
+                onBlur={() => {
+                  onBlur();
+                  trigger();
+                }}
               >
                 <Box width="90px" flexGrow={0} flexShrink={0} flexWrap="wrap">
                   <Text color={'coolGrey600'} fontSize="s">
@@ -131,7 +151,10 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
                 )}
               </Box>
               {showRuleInput && (
-                <Box mb="24px" display="flex">
+                <Box
+                  mb={validationError && ruleIsInvalid ? '8px' : '24px'}
+                  display="flex"
+                >
                   <Box
                     flexGrow={0}
                     flexShrink={0}
@@ -177,6 +200,16 @@ export const RuleInput = ({ pages, name, answer }: RuleInputProps) => {
                       />
                     </Button>
                   </Box>
+                </Box>
+              )}
+              {validationError && ruleIsInvalid && (
+                <Box mb="12px">
+                  <Error
+                    marginTop="8px"
+                    marginBottom="8px"
+                    text={validationError}
+                    scrollIntoView={false}
+                  />
                 </Box>
               )}
             </>

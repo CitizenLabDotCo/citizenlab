@@ -65,7 +65,7 @@ const FormFields = ({
   isEditingDisabled,
   handleDragEnd,
 }: FormFieldsProps) => {
-  const { watch } = useFormContext();
+  const { watch, trigger } = useFormContext();
   const locale = useLocale();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
 
@@ -94,6 +94,7 @@ const FormFields = ({
       <DragAndDrop
         onDragEnd={(result: DragAndDropResult) => {
           handleDragEnd(result, nestedPageData);
+          trigger();
         }}
       >
         <Drop id="droppable" type={pageDNDType}>

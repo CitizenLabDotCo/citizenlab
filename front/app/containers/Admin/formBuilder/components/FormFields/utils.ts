@@ -13,7 +13,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { Locale } from 'typings';
-import { surveyEndOption } from '../FormBuilderSettings/utils';
+import { RuleType, surveyEndOption } from '../FormBuilderSettings/utils';
 
 export const isFieldSelected = (
   selectedFieldId: string | undefined,
@@ -85,7 +85,7 @@ export const getOptionRule = (
       (rule) => rule.if === option.id || rule.if === option.temp_id
     );
     if (rule && rule.if && rule.goto_page_id) {
-      return rule;
+      return rule as RuleType;
     }
   }
   return undefined;

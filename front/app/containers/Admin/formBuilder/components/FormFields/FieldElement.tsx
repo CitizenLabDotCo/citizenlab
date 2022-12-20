@@ -41,6 +41,7 @@ import {
 } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { FieldRuleDisplay } from './FieldRuleDisplay';
+import { isRuleValid } from 'utils/yup/validateLogic';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -67,6 +68,7 @@ export const FieldElement = (props: Props) => {
   const {
     watch,
     formState: { errors },
+    trigger,
   } = useFormContext();
   const locale = useLocale();
   const { formatMessage } = useIntl();
@@ -87,6 +89,11 @@ export const FieldElement = (props: Props) => {
     outlineStyle = `1px solid ${colors.teal300}`;
   }
 
+  const editFieldAndValidate = () => {
+    onEditField({ ...field, index });
+    trigger();
+  };
+
   return (
     <FormFieldsContainer
       role={'button'}
@@ -94,7 +101,7 @@ export const FieldElement = (props: Props) => {
       style={{ outline: outlineStyle, outlineOffset: '-1px' }}
       background={getFieldBackgroundColor(selectedFieldId, field)}
       onClick={() => {
-        isEditingDisabled ? undefined : onEditField({ ...field, index });
+        isEditingDisabled ? undefined : editFieldAndValidate();
       }}
       data-cy="e2e-field-row"
     >
@@ -152,6 +159,11 @@ export const FieldElement = (props: Props) => {
                       return (
                         <Box key={option.id}>
                           <FieldRuleDisplay
+                            isRuleValid={isRuleValid(
+                              getOptionRule(option, field),
+                              field.temp_id || field.id,
+                              formCustomFields
+                            )}
                             answerTitle={getTitleFromAnswerId(
                               field,
                               getOptionRule(option, field)?.if,
@@ -173,6 +185,11 @@ export const FieldElement = (props: Props) => {
                       return (
                         <Box key={option.key}>
                           <FieldRuleDisplay
+                            isRuleValid={isRuleValid(
+                              getLinearScaleRule(option, field),
+                              field.temp_id || field.id,
+                              formCustomFields
+                            )}
                             answerTitle={getTitleFromAnswerId(
                               field,
                               getLinearScaleRule(option, field)?.if,
@@ -218,7 +235,7 @@ export const FieldElement = (props: Props) => {
             {field.required && (
               <Box mt="auto" mb="auto" ml="12px">
                 {' '}
-                <Badge className="inverse" color={colors.error}>
+                <Badge className="inverse" color={colors.primary}>
                   <FormattedMessage {...messages.required} />
                 </Badge>
               </Box>

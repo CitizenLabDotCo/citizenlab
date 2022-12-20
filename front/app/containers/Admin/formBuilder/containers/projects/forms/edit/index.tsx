@@ -24,6 +24,8 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+import validateElementTitle from 'utils/yup/validateElementTitle';
+import validateLogic from 'utils/yup/validateLogic';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { PageStructure, getReorderedFields, DragAndDropResult } from './utils';
 
@@ -44,7 +46,6 @@ import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import validateElementTitle from 'utils/yup/validateElementTitle';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -98,7 +99,7 @@ export const FormEdit = ({
         maximum_label_multiloc: object(),
         required: boolean(),
         temp_id: string(),
-        logic: object(),
+        logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
     ),
   });
@@ -114,6 +115,7 @@ export const FormEdit = ({
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
+    trigger,
   } = methods;
 
   const { fields, append, remove, move, replace } = useFieldArray({
@@ -140,6 +142,7 @@ export const FormEdit = ({
     }
 
     closeSettings();
+    trigger();
   };
 
   const onAddField = (field: IFlatCreateCustomField) => {

@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.emptyOptionError',
     defaultMessage: 'Provide at least 1 answer',
   },
+  logicValidationError: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.logicValidationError',
+    defaultMessage: 'Logic may not link to prior pages',
+  },
   successMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.successMessage',
     defaultMessage: 'Survey successfully saved',
