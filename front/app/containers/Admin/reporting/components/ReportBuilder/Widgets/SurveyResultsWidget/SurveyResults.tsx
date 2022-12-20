@@ -1,12 +1,10 @@
 import React, { useMemo } from 'react';
 
 // components
-import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
 import NoResults from './NoResults';
-
-// styling
-import { colors } from 'utils/styleUtils';
+import Dot from './Dot';
 
 // messages
 import messages from './messages';
@@ -81,16 +79,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
           )}
         </Text>
         <Text variant="bodyS" color="textSecondary" mt="8px" mb="0px">
-          <Icon
-            name="dot"
-            width="6px"
-            height="6px"
-            display="inline"
-            fill={colors.textSecondary}
-            ml="8px"
-            mr="8px"
-            transform="translate(0,-1)"
-          />
+          <Dot />
           {surveyResponseMessage}
         </Text>
       </Box>
