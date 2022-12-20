@@ -487,6 +487,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "Du må angi en kortbeskrivelse",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Tittel",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Angi en tittel på hvert språk",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Skriv en tittel",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "Vis egendefinert side",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Knapp",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Rediger egendefinert side | {orgName}",
