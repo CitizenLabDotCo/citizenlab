@@ -18,10 +18,14 @@ const SignedOutHeaderIndex = () => {
     return (
       <>
         {homepageBannerLayout === 'full_width_banner_layout' && (
-          <FullWidthBannerLayout />
+          <FullWidthBannerLayout homepageSettings={homepageSettings} />
         )}
-        {homepageBannerLayout === 'two_column_layout' && <TwoColumnLayout />}
-        {homepageBannerLayout === 'two_row_layout' && <TwoRowLayout />}
+        {homepageBannerLayout === 'two_column_layout' && (
+          <TwoColumnLayout homepageSettings={homepageSettings} />
+        )}
+        {homepageBannerLayout === 'two_row_layout' && (
+          <TwoRowLayout homepageSettings={homepageSettings} />
+        )}
       </>
     );
   }

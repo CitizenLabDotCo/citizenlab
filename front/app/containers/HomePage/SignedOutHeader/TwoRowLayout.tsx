@@ -4,38 +4,35 @@ import {
   HeaderImage,
 } from 'components/LandingPages/citizen/TwoRowLayout';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
-import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { IHomepageSettingsData } from 'services/homepageSettings';
 
-const TwoRowLayout = () => {
-  const homepageSettings = useHomepageSettings();
+interface Props {
+  homepageSettings: IHomepageSettingsData;
+}
 
-  if (!isNilOrError(homepageSettings)) {
-    const headerImage = homepageSettings.attributes.header_bg?.large;
+const TwoRowLayout = ({ homepageSettings }: Props) => {
+  const headerImage = homepageSettings.attributes.header_bg?.large;
 
-    return (
-      <>
-        {headerImage && (
-          <HeaderImage
-            src={headerImage}
-            cover={true}
-            fadeIn={false}
-            isLazy={false}
-            placeholderBg="transparent"
-            alt=""
-          />
-        )}
-        <ContentContainer mode="page">
-          <Container>
-            <HeaderContent fontColors="dark" />
-          </Container>
-        </ContentContainer>
-      </>
-    );
-  }
-
-  return null;
+  return (
+    <>
+      {headerImage && (
+        <HeaderImage
+          src={headerImage}
+          cover={true}
+          fadeIn={false}
+          isLazy={false}
+          placeholderBg="transparent"
+          alt=""
+        />
+      )}
+      <ContentContainer mode="page">
+        <Container>
+          <HeaderContent fontColors="dark" />
+        </Container>
+      </ContentContainer>
+    </>
+  );
 };
 
 export default TwoRowLayout;

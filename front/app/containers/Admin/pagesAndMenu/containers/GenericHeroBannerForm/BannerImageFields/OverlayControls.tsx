@@ -55,24 +55,33 @@ const OverlayControls = ({
   onOverlayColorChange,
 }: Props) => {
   const [overlayEnabled, setOverlayEnabled] = useState(
-    typeof bannerOverlayOpacity === 'number' && bannerOverlayOpacity > 0
+    typeof bannerOverlayOpacity === 'number'
   );
   const theme = useTheme();
   const { formatMessage } = useIntl();
 
   const handleOverlayEnabling = () => {
+    // Ideally we should also change the color here
+    // but if we call with two individual setting handlers,
+    // they will overwrite each other setting one of the two
+    // values to null. We need a new handler that updates
+    // multiple settings at the same time but this requires
+    // refactoring of components uses in the GenericHeroBannerForm
+    // to home/custom page specific versions to make the types fit.
     if (overlayEnabled) {
-      handleOverlayOpacityOnChange(0);
+      handleOverlayOpacityOnChange(null);
     } else {
       handleOverlayOpacityOnChange(
         bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
       );
     }
 
-    setOverlayEnabled(!overlayEnabled);
+    setOverlayEnabled((overlayEnabled) => !overlayEnabled);
   };
 
-  const handleOverlayOpacityOnChange = (opacity: number) => {
+  const handleOverlayOpacityOnChange = (
+    opacity: Props['bannerOverlayOpacity']
+  ) => {
     onOverlayOpacityChange(opacity);
   };
 
@@ -99,7 +108,13 @@ const OverlayControls = ({
           }
         />
       </Box>
-      {overlayEnabled && (
+      {/*
+        We check for typeof of opacity because 0 would coerce to false.
+        We don't do a similar thing for the color because we don't set
+        it in the toggle hander, so we handle the type check with the
+        theme default as fallback
+      */}
+      {overlayEnabled && typeof bannerOverlayOpacity === 'number' && (
         <StyledBox
           p="40px"
           border={`1px solid ${colors.grey300}`}
@@ -110,10 +125,10 @@ const OverlayControls = ({
               id="image-overlay-color"
               label={formatMessage(messages.imageOverlayColor)}
               type="text"
-              value={
-                // default values come from the theme
-                bannerOverlayColor ?? theme.colors.tenantPrimary
-              }
+              // Should be replaced, value should only be
+              // bannerOverlayColor. Default needs to be set by the
+              // toggle handler, but it requires significant refactoring
+              value={bannerOverlayColor || theme.colors.tenantPrimary}
               onChange={onOverlayColorChange}
             />
           </Box>
@@ -124,11 +139,7 @@ const OverlayControls = ({
             step={1}
             min={0}
             max={100}
-            value={
-              typeof bannerOverlayOpacity === 'number'
-                ? bannerOverlayOpacity
-                : theme.signedOutHeaderOverlayOpacity
-            }
+            value={bannerOverlayOpacity}
             onChange={debouncedHandleOverlayOpacityOnChange}
           />
         </StyledBox>

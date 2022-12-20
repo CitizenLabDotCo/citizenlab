@@ -79,6 +79,10 @@ const HeaderImage = () => {
             background={
               theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary
             }
+            // With this fixed ratio layout, we don't have an image (see above),
+            // so we set opacity to 1.
+            // Ticket: https://citizenlab.atlassian.net/browse/CL-2215
+
             opacity={
               isFixedBannerLayout ? 1 : theme.signedInHeaderOverlayOpacity / 100
             }

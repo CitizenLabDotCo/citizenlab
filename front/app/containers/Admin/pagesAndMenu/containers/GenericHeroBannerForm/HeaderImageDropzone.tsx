@@ -75,6 +75,7 @@ const HeaderImageDropzone = ({
   layout,
   header_bg,
 }: Props) => {
+  const theme = useTheme();
   const getImagePreviewRatio = () => {
     const layoutHeightOnDevice =
       homepageBannerLayoutHeights[layout][previewDevice];
@@ -89,18 +90,26 @@ const HeaderImageDropzone = ({
     return ratio;
   };
 
-  const theme = useTheme();
-  const displayOverlayColor = overlayColor ?? theme.colors.tenantPrimary;
-  const displayOverlayOpacity =
-    typeof overlayOpacity === 'number'
-      ? overlayOpacity
-      : theme.signedOutHeaderOverlayOpacity;
+  // Ideally, this condition is not here. On changing the layout,
+  // We should set the color/opacity to null. This should be refactored
+  // at the next convenience.
+  const isBannerWithOverlay =
+    layout === 'full_width_banner_layout' || layout === 'fixed_ratio_layout';
 
   const previewOverlayElement =
-    layout === 'full_width_banner_layout' || layout === 'fixed_ratio_layout' ? (
+    /*
+      We check for typeof of opacity because 0 would coerce to false.
+      We don't do a similar thing for the color because we don't set
+      it in the toggle hander, so we handle the type check with the
+      theme default as fallback
+    */
+    isBannerWithOverlay && typeof overlayOpacity === 'number' ? (
       <HeaderImageOverlay
-        overlayColor={displayOverlayColor}
-        overlayOpacity={displayOverlayOpacity}
+        // Should be replaced, value should only be
+        // overlayColor. Default needs to be set by the
+        // toggle handler, but it requires significant refactoring
+        overlayColor={overlayColor || theme.colors.tenantPrimary}
+        overlayOpacity={overlayOpacity}
       />
     ) : null;
 
