@@ -62,13 +62,6 @@ const OverlayControls = ({
   const { formatMessage } = useIntl();
 
   const handleOverlayEnabling = () => {
-    // Ideally we should also change the color here
-    // but if we call with two individual setting handlers,
-    // they will overwrite each other setting one of the two
-    // values to null. We need a new handler that updates
-    // multiple settings at the same time but this requires
-    // refactoring of components used in the GenericHeroBannerForm
-    // to home/custom page specific versions to make the types fit.
     if (overlayEnabled) {
       onOverlayChange(null, null);
     } else {
@@ -117,42 +110,36 @@ const OverlayControls = ({
           }
         />
       </Box>
-      {/*
-        We check for typeof of opacity because 0 would coerce to false.
-        We don't do a similar thing for the color because we don't set
-        it in the toggle hander, so we handle the type check with the
-        theme default as fallback
-      */}
-      {overlayEnabled && typeof bannerOverlayOpacity === 'number' && (
-        <StyledBox
-          p="40px"
-          border={`1px solid ${colors.grey300}`}
-          borderRadius={theme.borderRadius}
-        >
-          <Box mb="36px">
-            <ColorPickerInput
-              id="image-overlay-color"
-              label={formatMessage(messages.imageOverlayColor)}
-              type="text"
-              // Should be replaced, value should only be
-              // bannerOverlayColor. Default needs to be set by the
-              // toggle handler, but it requires significant refactoring
-              value={bannerOverlayColor || theme.colors.tenantPrimary}
-              onChange={handleOverlayColorOnChange}
+      {/* We check for typeof of opacity because 0 would coerce to false. */}
+      {overlayEnabled &&
+        typeof bannerOverlayOpacity === 'number' &&
+        bannerOverlayColor && (
+          <StyledBox
+            p="40px"
+            border={`1px solid ${colors.grey300}`}
+            borderRadius={theme.borderRadius}
+          >
+            <Box mb="36px">
+              <ColorPickerInput
+                id="image-overlay-color"
+                label={formatMessage(messages.imageOverlayColor)}
+                type="text"
+                value={bannerOverlayColor}
+                onChange={handleOverlayColorOnChange}
+              />
+            </Box>
+            <Label>
+              <FormattedMessage {...messages.imageOverlayOpacity} />
+            </Label>
+            <RangeInput
+              step={1}
+              min={0}
+              max={100}
+              value={bannerOverlayOpacity}
+              onChange={debouncedHandleOverlayOpacityOnChange}
             />
-          </Box>
-          <Label>
-            <FormattedMessage {...messages.imageOverlayOpacity} />
-          </Label>
-          <RangeInput
-            step={1}
-            min={0}
-            max={100}
-            value={bannerOverlayOpacity}
-            onChange={debouncedHandleOverlayOpacityOnChange}
-          />
-        </StyledBox>
-      )}
+          </StyledBox>
+        )}
     </>
   );
 };
