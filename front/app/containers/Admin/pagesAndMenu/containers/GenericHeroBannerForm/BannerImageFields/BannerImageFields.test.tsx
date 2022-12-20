@@ -77,8 +77,6 @@ describe('BannerImageFields', () => {
     //       const select = screen.queryByRole('combobox', {
     //         name: /Show preview for/,
     //       });
-    //       console.log(select);
-
     //       expect(select).toBeNull();
     //     });
     //   });
