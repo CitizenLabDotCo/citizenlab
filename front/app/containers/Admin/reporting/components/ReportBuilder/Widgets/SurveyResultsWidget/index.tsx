@@ -5,6 +5,7 @@ import { useNode } from '@craftjs/core';
 
 // styling
 import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import { BORDER } from '../constants';
 
 // components
 import {
@@ -44,7 +45,7 @@ const SurveyResultsWidget = ({
   shownQuestions,
 }: Props) => {
   return (
-    <Box border={`1px ${colors.grey400} solid`}>
+    <Box border={BORDER}>
       <Box>
         <Title variant="h3" color="primary" m="16px" mb="8px">
           {title}

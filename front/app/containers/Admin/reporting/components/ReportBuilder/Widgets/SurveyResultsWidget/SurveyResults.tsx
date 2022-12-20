@@ -20,7 +20,7 @@ import useFormResults from 'hooks/useFormResults';
 import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
 import { createResultRows } from './utils';
-import { BORDER } from './constants';
+import { BORDER } from '../constants';
 
 type Props = {
   projectId: string;
