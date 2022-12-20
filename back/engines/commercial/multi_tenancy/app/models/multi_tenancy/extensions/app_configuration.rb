@@ -25,9 +25,11 @@ module MultiTenancy
         @tenant_sync_enabled = true
       end
 
-      def disable_tenant_sync
+      def without_tenant_sync
         self.tenant_sync_enabled = false
-        self
+        yield self
+      ensure
+        self.tenant_sync_enabled = true
       end
 
       def update_tenant
@@ -38,9 +40,7 @@ module MultiTenancy
         return if attrs_delta.blank?
 
         tenant.attributes = attrs_delta
-        tenant.remove_logo! if logo_previously_changed? && logo.blank?
-        tenant.remove_favicon! if favicon_previously_changed? && favicon.blank?
-        tenant.disable_config_sync.save
+        tenant.without_config_sync(&:save)
       end
 
       def validate_lifecycle_stage_change

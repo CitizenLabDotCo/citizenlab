@@ -102,7 +102,7 @@ module MultiTenancy
               app_config_host: AppConfiguration.instance.host, # temporary for debugging
               app_config_settings: AppConfiguration.instance.settings, # temporary for debugging
               tenant_host: Tenant.current.host, # temporary for debugging
-              tenant_settings: Tenant.current.settings, # temporary for debugging
+              tenant_settings: AppConfiguration.instance.settings, # temporary for debugging
               table_names: table_names, # temporary for debugging
               model_class: model_class.name,
               attributes: attributes
@@ -217,7 +217,7 @@ module MultiTenancy
 
     def translate_and_fix_locales(template)
       translator = MachineTranslations::MachineTranslationService.new
-      locales_to = Tenant.current.settings.dig('core', 'locales')
+      locales_to = AppConfiguration.instance.settings('core', 'locales')
       return template if Set.new(template_locales(template)).subset? Set.new(locales_to)
 
       locales_from = required_locales template

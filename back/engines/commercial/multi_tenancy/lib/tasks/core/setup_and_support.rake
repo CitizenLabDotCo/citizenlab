@@ -217,7 +217,7 @@ namespace :setup_and_support do
       project = Project.find_by slug: args[:project_slug]
       config = project.map_config || CustomMaps::MapConfig.create!(project: project)
       config.legend_items.create!(
-        title_multiloc: { Tenant.current.settings.dig('core', 'locales').first => args[:legend_title] },
+        title_multiloc: { AppConfiguration.instance.settings('core', 'locales').first => args[:legend_title] },
         color: args[:color]
       )
     end
@@ -380,7 +380,7 @@ namespace :setup_and_support do
   end
 
   def add_anonymous_vote(votable, mode)
-    attrs = AnonymizeUserService.new.anonymized_attributes Tenant.current.settings.dig('core', 'locales')
+    attrs = AnonymizeUserService.new.anonymized_attributes AppConfiguration.instance.settings('core', 'locales')
     attrs.delete 'custom_field_values'
     user = User.create! attrs
     Vote.create!(votable: votable, mode: mode, user: user)

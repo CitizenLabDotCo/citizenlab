@@ -46,18 +46,18 @@ module MultiTenancy
       private
 
       def run_for_empty_localhost
-        random_user = anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
+        random_user = anonymizer.anonymized_attributes(AppConfiguration.instance.settings('core', 'locales'))
         User.create!(random_user.merge({ **admin_attrs, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' }))
       end
 
       def run_for_localhost
-        User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin_attrs)
-        User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator_attrs)
-        User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user_attrs)
+        locales = AppConfiguration.instance.settings('core', 'locales')
+        User.create! anonymizer.anonymized_attributes(locales).merge(admin_attrs)
+        User.create! anonymizer.anonymized_attributes(locales).merge(moderator_attrs)
+        User.create! anonymizer.anonymized_attributes(locales).merge(user_attrs)
 
         runner.num_users.times do
-          User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core',
-            'locales')).merge({ password: 'democracy2.0' })
+          User.create! anonymizer.anonymized_attributes(locales).merge({ password: 'democracy2.0' })
         end
       end
 
