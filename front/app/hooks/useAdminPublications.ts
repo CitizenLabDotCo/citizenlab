@@ -17,7 +17,7 @@ export interface BaseProps {
   // to be clarified
   rootLevelOnly?: boolean;
   /*
-    The function of the filter is to filter out AdminPublications that represent
+    The function of the removeNotAllowedParents filter is to filter out AdminPublications that represent
     folders which contain *only* projects which should not be visible to the current user.
     Here we are concerned with 'visibility' in terms of the visible_to attribute,
     which can have one of 3 values: public, groups or admins.
