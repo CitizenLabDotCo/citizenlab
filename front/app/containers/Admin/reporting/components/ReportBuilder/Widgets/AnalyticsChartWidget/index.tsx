@@ -97,7 +97,6 @@ const AnalyticsChartWidgetSettings = () => {
     projectId,
     startAtMoment,
     endAtMoment,
-    chartType,
   } = useNode((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
@@ -105,7 +104,6 @@ const AnalyticsChartWidgetSettings = () => {
       ? moment(node.data.props.startAt)
       : null,
     endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
-    chartType: node.data.props.chartType,
   }));
 
   const setTitle = (value: string) => {
@@ -160,16 +158,14 @@ const AnalyticsChartWidgetSettings = () => {
           onDatesChange={handleChangeTimeRange}
         />
       </Box>
-      {chartType !== 'AgeChart' && chartType !== 'GenderChart' && (
-        <Box mb="20px">
-          <ProjectFilter
-            currentProjectFilter={projectId}
-            width="100%"
-            padding="11px"
-            onProjectFilter={handleProjectFilter}
-          />
-        </Box>
-      )}
+      <Box mb="20px">
+        <ProjectFilter
+          currentProjectFilter={projectId}
+          width="100%"
+          padding="11px"
+          onProjectFilter={handleProjectFilter}
+        />
+      </Box>
     </Box>
   );
 };
