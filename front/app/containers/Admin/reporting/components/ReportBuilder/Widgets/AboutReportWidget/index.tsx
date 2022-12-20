@@ -45,6 +45,14 @@ const getPhaseDates = (phases: IPhaseData[]) => {
   return { startDate, endDate };
 };
 
+const toPeriodString = ({
+  startDate,
+  endDate,
+}: {
+  startDate: string;
+  endDate: string;
+}) => `${startDate} - ${endDate}`;
+
 const AboutReportWidget: UserComponent = ({
   reportId,
   projectId,
@@ -71,11 +79,10 @@ const AboutReportWidget: UserComponent = ({
   const projectName = isNilOrError(project)
     ? ''
     : localize(project.attributes.title_multiloc);
-  let projectPeriod = formatMessage(messages.continuousProject);
-  if (!isNilOrError(phases) && phases.length !== 0) {
-    const { startDate, endDate } = getPhaseDates(phases);
-    projectPeriod = `${startDate} - ${endDate}`;
-  }
+  const hasPhases = !isNilOrError(phases) && phases.length !== 0;
+  const projectPeriod = hasPhases
+    ? toPeriodString(getPhaseDates(phases))
+    : formatMessage(messages.continuousProject);
 
   return (
     <Box>
@@ -107,7 +114,7 @@ const AboutReportWidget: UserComponent = ({
           <Text
             text={`
             <ul>
-              <li>${formatMessage(messages.projectsLabel, {
+              <li>${formatMessage(messages.projectLabel, {
                 projectsList: projectName,
               })}</li>
               <li>${formatMessage(messages.periodLabel, {
