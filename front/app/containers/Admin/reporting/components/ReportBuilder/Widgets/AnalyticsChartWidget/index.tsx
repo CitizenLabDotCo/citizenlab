@@ -83,7 +83,8 @@ const AnalyticsChartWidget = ({
       minHeight="26px"
       border={BORDER}
       borderRadius={stylingConsts.borderRadius}
-      my="4px"
+      mt="4px"
+      mb="4px"
     >
       {chart}
     </Box>
