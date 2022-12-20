@@ -28,6 +28,10 @@ export const Container = styled.div<{
   ${media.tablet`
     padding: 50px 30px;
   `}
+
+  ${media.phone`
+    padding: 20px 10px;
+  `}
 `;
 
 export const HeadingFontStyle = css`

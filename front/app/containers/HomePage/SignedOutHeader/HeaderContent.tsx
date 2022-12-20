@@ -102,7 +102,9 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
-        <CTA signedIn={false} buttonStyle={buttonStyle} signUpIn={signUpIn} />
+        <div style={{ marginBottom: '20px' }}>
+          <CTA signedIn={false} buttonStyle={buttonStyle} signUpIn={signUpIn} />
+        </div>
       </Container>
     );
   }

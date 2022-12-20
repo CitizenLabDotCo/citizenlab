@@ -185,6 +185,7 @@ export const AvatarBubbles = ({
           width={containerWidth}
           height={containerHeight}
           data-testid="avatarBubblesContainer"
+          style={{ marginBottom: '12px' }}
         >
           {avatarsWithImage.map((avatar, index) => (
             <AvatarImageBubble
