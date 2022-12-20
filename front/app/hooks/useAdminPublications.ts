@@ -11,9 +11,10 @@ import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
 export interface BaseProps {
-  topicFilter?: string[];
-  areaFilter?: string[];
+  topicIds?: string[] | null;
+  areaIds?: string[] | null;
   publicationStatusFilter: PublicationStatus[];
+  // to be clarified
   rootLevelOnly?: boolean;
   /*
     The function of the filter is to filter out AdminPublications that represent
@@ -34,7 +35,7 @@ export interface BaseProps {
     In this case, folder 1, 2 and 4 will be returned.
   */
   removeNotAllowedParents?: boolean;
-  search?: string;
+  onlyProjects?: boolean;
 }
 
 export interface InputProps extends BaseProps {
@@ -52,6 +53,7 @@ export interface InputProps extends BaseProps {
 export type IAdminPublicationContent = {
   id: string;
   publicationType: AdminPublicationType;
+  // The id of the corresponding project or folder
   publicationId: string;
   attributes: IAdminPublicationData['attributes'];
   relationships: {
@@ -81,11 +83,12 @@ export interface IUseAdminPublicationsOutput {
 
 export default function useAdminPublications({
   pageSize = 1000,
-  topicFilter,
-  areaFilter,
+  topicIds,
+  areaIds,
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
+  onlyProjects = false,
   childrenOfId,
 }: InputProps): IUseAdminPublicationsOutput {
   const [list, setList] = useState<
@@ -96,11 +99,30 @@ export default function useAdminPublications({
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [search, setSearch] = useState<string | null>(null);
-  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
-  const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [topics, setTopics] = useState<string[] | null>(null);
+  const [areas, setAreas] = useState<string[] | null>(null);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
+
+  // topicIds and areaIds are usually based off other
+  // requests, and will initially be null/undefined.
+  // Without the useEffect, they don't get updated
+  const stringifiedtopicIds = JSON.stringify(topicIds);
+  useEffect(() => {
+    if (topicIds !== undefined) {
+      setTopics(topicIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stringifiedtopicIds]);
+
+  const stringifiedareaIds = JSON.stringify(areaIds);
+  useEffect(() => {
+    if (areaIds !== undefined) {
+      setAreas(areaIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stringifiedareaIds]);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -140,10 +162,11 @@ export default function useAdminPublications({
       'page[size]': pageSize,
       search,
       depth: rootLevelOnly ? 0 : undefined,
-      topics,
-      areas,
+      ...(topics && { topics }),
+      ...(areas && { areas }),
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
+      only_projects: onlyProjects,
       folder: childrenOfId,
     };
 
@@ -205,6 +228,7 @@ export default function useAdminPublications({
     publicationStatuses,
     rootLevelOnly,
     removeNotAllowedParents,
+    onlyProjects,
     childrenOfId,
   ]);
 

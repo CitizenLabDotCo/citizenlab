@@ -1,5 +1,18 @@
 # Changelog
 
+## 2022-12-20
+
+### Fixed
+
+- [CL-2319] The error that is shown when a custom page's title was not filled out now adjusts to the number of languages configured on the platform.
+- [CL-2318] The hero banner layout preview for phones didn't get the right dimensions.
+
+## 2022-12-14
+
+### Added
+
+- [CL-1552] Displaying projects based on area or topic on custom pages. Also events related to the projects can be shown.
+
 ## 2022-12-13
 
 ### Fixed

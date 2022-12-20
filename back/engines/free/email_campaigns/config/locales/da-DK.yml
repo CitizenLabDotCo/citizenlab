@@ -474,7 +474,7 @@ da:
       subject: 'Status for dit borgerforslag er ændret'
       preheader: 'Status for dit borgerforslag er ændret'
     user_digest:
-      subject: "Ugenlig opdatering af deltagelsesplatformen for %{organizationName}"
+      subject: "Ugentlig opdatering af deltagelsesplatformen for %{organizationName}"
       commented: "%{authorFirstName} kommenterede:"
       preheader: "Ugentlig oversigt for %{organizationName}"
       title_your_weekly_report: "Find ud af hvad der skete i sidste uge"
