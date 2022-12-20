@@ -13,8 +13,8 @@ import Tab from './Tab';
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
-  border-radius: ${(props: any) => props.theme.borderRadius}
-    ${(props: any) => props.theme.borderRadius} 0 0;
+  border-radius: ${(props) => props.theme.borderRadius}
+    ${(props) => props.theme.borderRadius} 0 0;
   padding-left: 44px;
   display: flex;
   border: 1px solid ${colors.divider};

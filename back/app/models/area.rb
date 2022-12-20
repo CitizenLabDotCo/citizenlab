@@ -29,6 +29,9 @@ class Area < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :initiatives, through: :areas_initiatives
 
+  has_many :areas_static_pages, dependent: :restrict_with_error
+  has_many :static_pages, through: :areas_static_pages
+
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
 

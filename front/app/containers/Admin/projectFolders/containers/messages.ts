@@ -149,4 +149,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.archivedStatus',
     defaultMessage: 'Archived',
   },
+  folderName: {
+    id: 'app.containers.AdminPage.FoldersEdit.folderName',
+    defaultMessage: 'Folder name',
+  },
+  folderDescriptions: {
+    id: 'app.containers.AdminPage.FoldersEdit.folderDescriptions',
+    defaultMessage: 'Descriptions',
+  },
+  url: {
+    id: 'app.containers.AdminPage.FoldersEdit.url',
+    defaultMessage: 'URL',
+  },
 });
