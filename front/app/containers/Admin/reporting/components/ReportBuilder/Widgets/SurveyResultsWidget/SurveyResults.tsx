@@ -1,9 +1,12 @@
 import React, { useMemo } from 'react';
 
 // components
-import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
 import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
 import NoResults from './NoResults';
+
+// styling
+import { colors } from 'utils/styleUtils';
 
 // messages
 import messages from './messages';
@@ -18,6 +21,7 @@ import useFormResults from 'hooks/useFormResults';
 import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
 import { createResultRows } from './utils';
+import { BORDER } from './constants';
 
 type Props = {
   projectId: string;
@@ -78,19 +82,21 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
           {surveyResponseMessage}
         </Text>
       </Box>
-      {resultRows.map((row, index) => {
-        return (
-          <Box width="100%" display="flex" flexDirection="row" key={index}>
-            {row.map((result, index) => {
-              return (
-                <Box px="20px" width="50%" key={index} border="1px solid #ccc">
-                  <FormResultsQuestion locale={locale} {...result} />
-                </Box>
-              );
-            })}
-          </Box>
-        );
-      })}
+      {resultRows.map((row, rowIndex) => (
+        <Box width="100%" display="flex" flexDirection="row" key={rowIndex}>
+          {row.map((result, index) => (
+            <Box
+              px="20px"
+              width="50%"
+              key={`${rowIndex}-${index}`}
+              borderTop={BORDER}
+              borderRight={index === 0 ? BORDER : undefined}
+            >
+              <FormResultsQuestion locale={locale} {...result} />
+            </Box>
+          ))}
+        </Box>
+      ))}
     </>
   );
 };
