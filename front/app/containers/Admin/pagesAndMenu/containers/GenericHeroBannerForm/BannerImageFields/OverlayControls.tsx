@@ -66,7 +66,7 @@ const OverlayControls = ({
     // they will overwrite each other setting one of the two
     // values to null. We need a new handler that updates
     // multiple settings at the same time but this requires
-    // refactoring of components uses in the GenericHeroBannerForm
+    // refactoring of components used in the GenericHeroBannerForm
     // to home/custom page specific versions to make the types fit.
     if (overlayEnabled) {
       handleOverlayOpacityOnChange(null);
