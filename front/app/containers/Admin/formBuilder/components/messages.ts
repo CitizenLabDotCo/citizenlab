@@ -165,6 +165,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText',
     defaultMessage: 'Yes, delete survey results',
   },
+  deleteFieldWithLogicConfirmationQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteFieldWithLogicConfirmationQuestion',
+    defaultMessage:
+      'Deleting this page will also delete the logic associated with it. Are you sure you want to delete it?',
+  },
+  confirmDeleteFieldWithLogicButtonText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteFieldWithLogicButtonText',
+    defaultMessage: 'Yes, delete page',
+  },
   totalSurveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses',
     defaultMessage: 'Total {count} responses',
@@ -207,6 +216,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount',
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
+  },
+  invalidLogicBadgeMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.invalidLogicBadgeMessage',
+    defaultMessage: 'Invalid logic',
   },
   // Logic Settings
   logicWarning: {
