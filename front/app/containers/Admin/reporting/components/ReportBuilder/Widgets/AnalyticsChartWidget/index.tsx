@@ -8,7 +8,7 @@ import VisitorsCard from '../VisitorsCard';
 import VisitorsTrafficSourcesCard from '../VisitorsTrafficSourcesCard';
 
 // styling
-import { colors, stylingConsts } from 'utils/styleUtils';
+import { stylingConsts } from 'utils/styleUtils';
 import { BORDER } from '../constants';
 
 // Utils
