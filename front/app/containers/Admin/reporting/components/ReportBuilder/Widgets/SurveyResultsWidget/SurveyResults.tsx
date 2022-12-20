@@ -1,14 +1,16 @@
 import React, { useMemo } from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
 import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
+import NoResults from './NoResults';
 
 // messages
 import messages from './messages';
 
 // hooks
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
 import useFormResults from 'hooks/useFormResults';
 
@@ -23,9 +25,10 @@ type Props = {
   shownQuestions?: boolean[];
 };
 
-const SurveyResultsReport = ({ projectId, phaseId, shownQuestions }: Props) => {
+const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
+  const localize = useLocalize();
   const project = useProject({ projectId });
   const formResults = useFormResults({
     projectId,
@@ -45,13 +48,7 @@ const SurveyResultsReport = ({ projectId, phaseId, shownQuestions }: Props) => {
     isNilOrError(project) ||
     formResults.results.length === 0
   ) {
-    return (
-      <Box px="20px" width="100%" display="flex" flexDirection="row">
-        <Text variant="bodyM" color="textSecondary">
-          {formatMessage(messages.surveyNoResults)}
-        </Text>
-      </Box>
-    );
+    return <NoResults />;
   }
 
   if (resultRows === null) return null;
@@ -62,20 +59,28 @@ const SurveyResultsReport = ({ projectId, phaseId, shownQuestions }: Props) => {
 
   return (
     <>
-      <Box px="20px" width="100%" display="flex" flexDirection="row">
-        <Text variant="bodyM" color="textSecondary">
+      <Box px="20px" width="100%" mb="24px">
+        <Text variant="bodyM" color="primary" mt="0px" mb="0px">
+          {'| '}
+          {localize(project.attributes.title_multiloc)}
+        </Text>
+        <Text variant="bodyS" color="textSecondary" mt="8px" mb="0px">
+          <Icon
+            name="dot"
+            width="6px"
+            height="6px"
+            display="inline"
+            fill={colors.textSecondary}
+            ml="8px"
+            mr="8px"
+            transform="translate(0,-1)"
+          />
           {surveyResponseMessage}
         </Text>
       </Box>
       {resultRows.map((row, index) => {
         return (
-          <Box
-            px="20px"
-            width="100%"
-            display="flex"
-            flexDirection="row"
-            key={index}
-          >
+          <Box width="100%" display="flex" flexDirection="row" key={index}>
             {row.map((result, index) => {
               return (
                 <Box px="20px" width="50%" key={index} border="1px solid #ccc">
@@ -90,18 +95,4 @@ const SurveyResultsReport = ({ projectId, phaseId, shownQuestions }: Props) => {
   );
 };
 
-type OuterProps = {
-  projectId?: string;
-  phaseId?: string;
-  shownQuestions?: boolean[];
-};
-
-const SurveyResultsReportWrapper = ({
-  projectId,
-  ...otherProps
-}: OuterProps) => {
-  if (projectId === undefined) return null;
-  return <SurveyResultsReport projectId={projectId} {...otherProps} />;
-};
-
-export default SurveyResultsReportWrapper;
+export default SurveyResults;

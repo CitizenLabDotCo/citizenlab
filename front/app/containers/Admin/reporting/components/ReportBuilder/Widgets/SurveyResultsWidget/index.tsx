@@ -4,17 +4,17 @@ import React from 'react';
 import { useNode } from '@craftjs/core';
 
 // styling
-import { stylingConsts } from '@citizenlab/cl2-component-library';
+import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 // components
 import {
   Box,
-  colors,
+  Title,
   Icon,
   Input,
   Text,
 } from '@citizenlab/cl2-component-library';
-import GraphCard from 'components/admin/GraphCard';
+import NoResults from './NoResults';
 import SurveyResults from './SurveyResults';
 import ProjectFilter from './ProjectFilter';
 import PhaseFilter from './PhaseFilter';
@@ -44,13 +44,22 @@ const SurveyResultsWidget = ({
   shownQuestions,
 }: Props) => {
   return (
-    <GraphCard title={title}>
-      <SurveyResults
-        projectId={projectId}
-        phaseId={phaseId}
-        shownQuestions={shownQuestions}
-      />
-    </GraphCard>
+    <Box border={`1px ${colors.grey400} solid`}>
+      <Box>
+        <Title variant="h3" color="primary" m="16px" mb="8px">
+          {title}
+        </Title>
+      </Box>
+      {projectId ? (
+        <SurveyResults
+          projectId={projectId}
+          phaseId={phaseId}
+          shownQuestions={shownQuestions}
+        />
+      ) : (
+        <NoResults />
+      )}
+    </Box>
   );
 };
 
