@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { Element, UserComponent } from '@craftjs/core';
+import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -25,9 +25,7 @@ type AboutReportWidgetProps = {
   reportId: string;
 };
 
-const AboutReportWidget: UserComponent = ({
-  reportId,
-}: AboutReportWidgetProps) => {
+const AboutReportWidget = ({ reportId }: AboutReportWidgetProps) => {
   const { formatMessage } = useIntl();
 
   const report = useReport(reportId);

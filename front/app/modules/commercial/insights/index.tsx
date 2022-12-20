@@ -30,34 +30,32 @@ declare module 'components/UI/Error' {
 
 const configuration: ModuleConfiguration = {
   routes: {
+    admin: [
+      {
+        path: 'reporting/insights/:viewId',
+        element: <AdminInsightsViewComponent />,
+      },
+      {
+        path: 'reporting/insights/:viewId/edit',
+        element: <AdminInsightsViewEditComponent />,
+      },
+      {
+        path: 'reporting/insights/:viewId/detect',
+        element: <AdminInsightsViewDetectComponent />,
+      },
+    ],
     'admin.reporting': [
       {
         path: 'insights',
         element: <AdminInsightsListComponent />,
-        children: [
-          {
-            path: ':viewId',
-            element: <AdminInsightsViewComponent />,
-          },
-          {
-            path: ':viewId/edit',
-            element: <AdminInsightsViewEditComponent />,
-          },
-          {
-            path: ':viewId/detect',
-            element: <AdminInsightsViewDetectComponent />,
-          },
-        ],
       },
       {
         path: 'reports',
         element: <AdminInsightsReportsComponent />,
-        children: [
-          {
-            path: ':projectId',
-            element: <AdminInsightsProjectReportComponent />,
-          },
-        ],
+      },
+      {
+        path: 'reports/:projectId',
+        element: <AdminInsightsProjectReportComponent />,
       },
     ],
   },

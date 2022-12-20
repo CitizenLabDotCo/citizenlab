@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-12-14
+
+### Added
+
+- [CL-1552] Displaying projects based on area or topic on custom pages. Also events related to the projects can be shown.
+
 ## 2022-12-13
 
 ### Fixed
