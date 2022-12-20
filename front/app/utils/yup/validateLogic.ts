@@ -1,5 +1,5 @@
 import { RuleType } from 'containers/Admin/formBuilder/components/FormBuilderSettings/utils';
-import { IFlatCustomField } from 'services/formCustomFields';
+import { IFlatCustomField, LogicType } from 'services/formCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 import { object } from 'yup';
 
@@ -26,6 +26,20 @@ export const isRuleValid = (
   return indexOfTargetPage > indexOfSourceField;
 };
 
+export const isPageRuleValid = (
+  fields: IFlatCustomField[],
+  sourcePageId: string,
+  nextPageId?: string
+) => {
+  const indexOfTargetPage = fields.findIndex(function (field) {
+    return field.id === nextPageId || field.temp_id === nextPageId;
+  });
+  const indexOfSourceField = fields.findIndex(function (field) {
+    return field.id === sourcePageId || field.temp_id === sourcePageId;
+  });
+  return indexOfTargetPage > indexOfSourceField;
+};
+
 const validateLogic = (message: string) => {
   return object()
     .shape({
@@ -44,6 +58,19 @@ const validateLogic = (message: string) => {
               return (value.rules || []).every((rule) =>
                 isRuleValid(rule, obj.parent.id, fields)
               );
+            }
+            return true;
+          }
+        );
+      } else if (input_type === 'page') {
+        return schema.test(
+          'rules reference prior pages',
+          message,
+          (value: LogicType, obj) => {
+            const fields = obj.from[2].value.customFields;
+
+            if (!isNilOrError(obj) && value?.next_page_id && fields) {
+              return isPageRuleValid(fields, obj.parent.id, value.next_page_id);
             }
             return true;
           }

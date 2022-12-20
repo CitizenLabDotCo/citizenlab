@@ -15,7 +15,7 @@ type FieldRuleDisplayProps = {
   answerTitle: string | undefined;
   targetPage: string | undefined;
   textColor?: keyof typeof colors;
-  isRuleValid?: boolean;
+  isRuleValid: boolean;
 };
 
 export const FieldRuleDisplay = ({

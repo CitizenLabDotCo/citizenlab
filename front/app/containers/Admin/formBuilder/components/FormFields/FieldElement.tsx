@@ -41,7 +41,7 @@ import {
 } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { FieldRuleDisplay } from './FieldRuleDisplay';
-import { isRuleValid } from 'utils/yup/validateLogic';
+import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -207,6 +207,11 @@ export const FieldElement = (props: Props) => {
                     })}
                   {field.input_type === 'page' && (
                     <FieldRuleDisplay
+                      isRuleValid={isPageRuleValid(
+                        formCustomFields,
+                        field.temp_id || field.id,
+                        field.logic.next_page_id
+                      )}
                       answerTitle={getIndexForTitle(formCustomFields, field)}
                       targetPage={getTitleFromPageId(
                         formCustomFields,
