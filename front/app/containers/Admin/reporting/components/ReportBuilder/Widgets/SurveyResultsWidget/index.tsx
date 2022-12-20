@@ -3,6 +3,9 @@ import React from 'react';
 // craft
 import { useNode } from '@craftjs/core';
 
+// styling
+import { stylingConsts } from '@citizenlab/cl2-component-library';
+
 // components
 import {
   Box,
@@ -105,23 +108,25 @@ const SurveyResultsWidgetSettings = () => {
     <Box>
       <Box
         bgColor={colors.teal100}
-        borderRadius="3px"
+        borderRadius={stylingConsts.borderRadius}
         px="12px"
         py="4px"
         mt="0px"
-        mb="10px"
+        mb="16px"
         role="alert"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
       >
-        <Icon
-          name="info-outline"
-          width="24px"
-          height="24px"
-          fill="textSecondary"
-        />
-        <Text variant="bodyM" color="textSecondary">
+        <Text variant="bodyS" color="textSecondary">
+          <Icon
+            name="info-outline"
+            width="16px"
+            height="16px"
+            mr="4px"
+            fill="textSecondary"
+            display="inline"
+          />
           {formatMessage(formBuilderMessages.informationText)}
         </Text>
       </Box>
