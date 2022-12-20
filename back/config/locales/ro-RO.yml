@@ -146,7 +146,7 @@ ro:
         project:
           title: What is your project ?
         issue:
-          title: What is your issue ?
+          title: Care este problema ta?
         option:
           title: What is your option ?
       details:
