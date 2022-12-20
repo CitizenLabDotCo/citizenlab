@@ -1614,7 +1614,7 @@
   "app.containers.admin.ContentBuilder.accordionTextValue": "Dit is uitbreidbare accordeoninhoud. Je kunt het bewerken en opmaken met behulp van de editor in het paneel aan de rechterkant.",
   "app.containers.admin.ContentBuilder.accordionTitleLabel": "Titel",
   "app.containers.admin.ContentBuilder.accordionTitleValue": "Accordeon titel",
-  "app.containers.admin.ContentBuilder.analyticsChart": "Chart",
+  "app.containers.admin.ContentBuilder.analyticsChart": "Grafiek",
   "app.containers.admin.ContentBuilder.analyticsChartDateRange": "Datumbereik",
   "app.containers.admin.ContentBuilder.analyticsChartTitle": "Titel",
   "app.containers.admin.ContentBuilder.button": "Knop",
