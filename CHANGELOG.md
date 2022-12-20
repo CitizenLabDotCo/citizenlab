@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-12-20
+
+### Fixed
+
+- [CL-2319] The error that is shown when a custom page's title was not filled out now adjusts to the number of languages configured on the platform.
+
 ## 2022-12-14
 
 ### Added
