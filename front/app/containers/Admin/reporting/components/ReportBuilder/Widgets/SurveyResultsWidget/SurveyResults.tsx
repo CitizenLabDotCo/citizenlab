@@ -15,6 +15,7 @@ import messages from './messages';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
 import useFormResults from 'hooks/useFormResults';
 
 // utils
@@ -34,6 +35,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   const locale = useLocale();
   const localize = useLocalize();
   const project = useProject({ projectId });
+  const phase = usePhase(phaseId ?? null);
   const formResults = useFormResults({
     projectId,
     phaseId,
@@ -67,6 +69,16 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
         <Text variant="bodyM" color="primary" mt="0px" mb="0px">
           {'| '}
           {localize(project.attributes.title_multiloc)}
+          {!isNilOrError(phase) && (
+            <>
+              {' '}
+              (
+              {formatMessage(messages.phase, {
+                phaseName: localize(phase.attributes.title_multiloc),
+              })}
+              )
+            </>
+          )}
         </Text>
         <Text variant="bodyS" color="textSecondary" mt="8px" mb="0px">
           <Icon
