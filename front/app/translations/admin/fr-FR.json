@@ -486,7 +486,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRegexError": "Le slug ne peut contenir que des lettres minuscules (a-z), des chiffres (0-9) et des traits d'union (-). Le premier et le dernier caractère ne peuvent pas être des traits d'union. Les traits d'union consécutifs (--) ne sont pas autorisés.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "Vous devez entrer un slug",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Titre",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Saisissez un titre dans chaque langue",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Entrer un titre dans chaque langue",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Entrer un titre",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "Afficher la page personnalisée",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Bouton",
