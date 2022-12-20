@@ -146,7 +146,7 @@ it:
         project:
           title: What is your project ?
         issue:
-          title: What is your issue ?
+          title: Qual è la sua idea?
         option:
           title: What is your option ?
       details:
