@@ -14,9 +14,25 @@ export interface BaseProps {
   topicIds?: string[] | null;
   areaIds?: string[] | null;
   publicationStatusFilter: PublicationStatus[];
-  // to be clarified
   rootLevelOnly?: boolean;
-  // to be clarified
+  /*
+    The function of the removeNotAllowedParents filter is to filter out AdminPublications that represent
+    folders which contain *only* projects which should not be visible to the current user.
+    Here we are concerned with 'visibility' in terms of the visible_to attribute,
+    which can have one of 3 values: public, groups or admins.
+    We are not concerned with other attributes, for example publication_status.
+
+    An example:
+
+    - User is in group A
+    - Create folders:
+      - 1: Contains only publicly visible project
+      - 2: Contains only project visible to Group A
+      - 3: Contains only project visible to Group B
+      - 4: Contains publicly visible project & project only visible to Group B
+
+    In this case, folder 1, 2 and 4 will be returned.
+  */
   removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
 }
