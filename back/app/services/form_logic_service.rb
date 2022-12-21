@@ -40,7 +40,7 @@ class FormLogicService
   attr_reader :fields, :field_index, :option_index
 
   def no_logic?(field)
-    field.logic == {}
+    field.logic.blank? || field.logic == { 'rules' => [] }
   end
 
   def valid_field_logic_structure?(field)
