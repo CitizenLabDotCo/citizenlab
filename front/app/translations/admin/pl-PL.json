@@ -487,6 +487,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "Musisz wpisać url",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Tytuł",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Enter a title in every language",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Enter a title",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "View custom page",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Przycisk",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Edit custom page | {orgName}",
