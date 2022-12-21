@@ -203,7 +203,7 @@ export const RuleInput = ({
                 </Box>
               )}
               {validationError && ruleIsInvalid && (
-                <Box mb="12px">
+                <Box mb="12px" data-cy="e2e-rule-input-error">
                   <Error
                     marginTop="8px"
                     marginBottom="8px"
