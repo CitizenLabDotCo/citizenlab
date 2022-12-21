@@ -10,7 +10,7 @@ describe FormLogicService do
     # Guarantee correct values for `ordering` attribute.
     [
       create(:custom_field_page, :for_custom_form, resource: form),
-      create(:custom_field_linear_scale, :for_custom_form),
+      create(:custom_field_linear_scale, :for_custom_form, maximum: 3),
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_select, :for_custom_form, :with_options, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form),
@@ -111,7 +111,7 @@ describe FormLogicService do
       end
     end
 
-    context 'when a page has an explicit next page, and an answer to a question in the page triggers going to another page' do
+    context 'when a page has an explicit next page, and an answer to a single choice question in the page triggers going to another page' do
       before do
         page2.update!(logic: { 'next_page_id' => page5.id })
         question2.update!(logic: {
@@ -162,6 +162,112 @@ describe FormLogicService do
             }
           }
         }])
+        expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
+
+    context 'when a page has an explicit next page, and an answer to a linear scale question in the page triggers going to another page' do
+      before do
+        page1.update!(logic: { 'next_page_id' => page5.id })
+        question1.update!(logic: {
+          'rules' => [{ 'if' => 3, 'goto_page_id' => page3.id }]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to match_array([
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [1]
+              }
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [2]
+              }
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [3]
+              }
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              type: 'HIDEPAGE',
+              pageId: page1.id
+            }
+          }
+        ])
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to match_array([
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [1]
+              }
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [2]
+              }
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              type: 'HIDEPAGE',
+              pageId: page1.id
+            }
+          }
+        ])
+        expect(form_logic.ui_schema_rules_for(page4)).to match_array([
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [1]
+              }
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [2]
+              }
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              type: 'HIDEPAGE',
+              pageId: page1.id
+            }
+          }
+        ])
         expect(form_logic.ui_schema_rules_for(page5)).to be_nil
       end
     end

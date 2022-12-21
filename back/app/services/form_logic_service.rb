@@ -222,11 +222,22 @@ class FormLogicService
       accu[value] = target_id
     end
     # Then apply page-level logic if no question-level logic is present.
-    field.options.each do |option|
-      value = option.id
-      next if !next_page_id || logic.key?(value)
+    if next_page_id
+      case field.input_type
+      when 'select'
+        field.options.each do |option|
+          value = option.id
+          next if logic.key?(value)
 
-      logic[value] = next_page_id
+          logic[value] = next_page_id
+        end
+      when 'linear_scale'
+        (1..field.maximum).each do |value|
+          next if logic.key?(value)
+
+          logic[value] = next_page_id
+        end
+      end
     end
     # Finally add the rules for the collected logic.
     logic.each do |value, target_page_id|
