@@ -73,7 +73,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   return (
     <Modal opened={open} close={onClose} width="640px">
       <Box display="flex" flexDirection="column" alignItems="center" px="100px">
-        <Title variant="h2" color="primary" mt="52px">
+        <Title variant="h2" color="primary" mt="40px">
           <FormattedMessage {...messages.createReportModalTitle} />
         </Title>
         <Text
