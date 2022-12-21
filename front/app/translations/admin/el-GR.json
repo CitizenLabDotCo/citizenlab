@@ -487,6 +487,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "Πρέπει να εισαγάγετε ένα slug",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Τίτλος",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Εισάγετε έναν τίτλο σε κάθε γλώσσα",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Enter a title",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "Προβολή προσαρμοσμένης σελίδας",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Κουμπί",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Επεξεργασία προσαρμοσμένης σελίδας | {orgName}",
