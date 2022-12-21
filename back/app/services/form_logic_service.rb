@@ -181,17 +181,21 @@ class FormLogicService
 
   def target_field_rules
     @target_field_rules ||= {}.tap do |accu|
+      current_page = nil
       fields.each_with_index do |field, index|
         if field.page?
+          current_page = field
           add_rules_for_page(field, index, accu)
         else
-          add_rules_for_field(field, index, accu)
+          # current_page is nil when the form starts with a question
+          next_page_id = current_page ? current_page.logic['next_page_id'] : nil
+          add_rules_for_field(field, index, next_page_id, accu)
         end
       end
     end
   end
 
-  def add_rules_for_page(field, index, accu)
+  def add_rules_for_page(field, index, rules_accu)
     target_id = field.logic['next_page_id']
     return if target_id.blank?
 
@@ -201,26 +205,39 @@ class FormLogicService
       pages_in_between(index, target_id)
     end
     pages_to_hide.each do |page|
-      accu[page.id] ||= []
-      accu[page.id] << ui_schema_next_page_rule_for(field)
+      rules_accu[page.id] ||= []
+      rules_accu[page.id] << ui_schema_next_page_rule_for(field)
     end
   end
 
-  def add_rules_for_field(field, index, accu)
+  def add_rules_for_field(field, index, next_page_id, rules_accu)
     rules = field.logic['rules']
     return if rules.blank?
 
-    rules.each do |rule|
+    # Question-level logic trumps page-level logic.
+    # So start collecting question-level logic.
+    logic = rules.each_with_object({}) do |rule, accu|
       value = rule['if']
       target_id = rule['goto_page_id']
-      pages_to_hide = if target_id == 'survey_end'
+      accu[value] = target_id
+    end
+    # Then apply page-level logic if no question-level logic is present.
+    field.options.each do |option|
+      value = option.id
+      next if !next_page_id || logic.key?(value)
+
+      logic[value] = next_page_id
+    end
+    # Finally add the rules for the collected logic.
+    logic.each do |value, target_page_id|
+      pages_to_hide = if target_page_id == 'survey_end'
         pages_after(index)
       else
-        pages_in_between(index, target_id)
+        pages_in_between(index, target_page_id)
       end
       pages_to_hide.each do |page|
-        accu[page.id] ||= []
-        accu[page.id] << ui_schema_hide_rule_for(field, value)
+        rules_accu[page.id] ||= []
+        rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
       end
     end
   end

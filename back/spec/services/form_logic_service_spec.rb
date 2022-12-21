@@ -138,12 +138,28 @@ describe FormLogicService do
               enum: [question2_answer.key]
             }
           }
+        }, {
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [option1.key]
+            }
+          }
         }])
         expect(form_logic.ui_schema_rules_for(page4)).to eq([{
           effect: 'HIDE',
           condition: {
             type: 'HIDEPAGE',
             pageId: page2.id
+          }
+        }, {
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [option1.key]
+            }
           }
         }])
         expect(form_logic.ui_schema_rules_for(page5)).to be_nil
