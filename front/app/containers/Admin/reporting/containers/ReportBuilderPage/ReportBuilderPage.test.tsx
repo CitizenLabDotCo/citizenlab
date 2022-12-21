@@ -1,8 +1,10 @@
 import React from 'react';
 import ReportBuilderPage from '.';
-import { render, screen, fireEvent, userEvent } from 'utils/testUtils/rtl';
-import { createReport } from 'services/reports';
+import { render, screen, fireEvent, userEvent, act } from 'utils/testUtils/rtl';
+import { createReport, deleteReport } from 'services/reports';
+import clHistory from 'utils/cl-router/history';
 
+// service mocks
 jest.mock('services/appConfiguration');
 jest.mock('services/locale');
 
@@ -11,25 +13,53 @@ jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 let mockReports;
 jest.mock('hooks/useReports', () => jest.fn(() => mockReports));
-jest.mock('services/reports', () => ({ createReport: jest.fn() }));
+jest.mock('services/reports', () => ({
+  createReport: jest.fn(),
+  deleteReport: jest.fn(),
+}));
 
-// mock data
+let mockUser1 = { attributes: { first_name: 'User 1' } };
+let mockUser2 = { attributes: { first_name: 'User 2' } };
+jest.mock('hooks/useUser', () =>
+  jest.fn(({ userId }) => (userId === '_1' ? mockUser1 : mockUser2))
+);
+
 const reports = [
   {
+    id: 'r1',
     attributes: {
-      name: 'report 1',
-      created_at: '20-12-2022',
-      updated_at: '20-12-2022',
+      name: 'Report 1',
+      created_at: '2022-12-18',
+      updated_at: '2022-12-19',
+    },
+    relationships: {
+      owner: {
+        data: {
+          id: '_1',
+        },
+      },
     },
   },
   {
+    id: 'r2',
     attributes: {
-      name: 'report 2',
-      created_at: '20-12-2022',
-      updated_at: '20-12-2022',
+      name: 'Report 2',
+      created_at: '2022-12-20',
+      updated_at: '2022-12-21',
+    },
+    relationships: {
+      owner: {
+        data: {
+          id: '_2',
+        },
+      },
     },
   },
 ];
+
+// other mocks
+global.window.confirm = jest.fn(() => true);
+jest.mock('utils/cl-router/history');
 
 describe('<ReportBuilderPage />', () => {
   describe('empty state', () => {
@@ -58,7 +88,7 @@ describe('<ReportBuilderPage />', () => {
       fireEvent.click(screen.getByText('Create a report'));
 
       const input = container.querySelector('input[type=text]');
-      await user.type(input, 'Test project');
+      await act(() => user.type(input, 'Test project'));
       expect(input).toHaveValue('Test project');
 
       fireEvent.click(screen.getByTestId('create-report-button'));
@@ -77,17 +107,44 @@ describe('<ReportBuilderPage />', () => {
       ).not.toBeInTheDocument();
     });
 
-    // it('renders reports', () => {
-    //   mockReports = reports;
+    it('renders reports', () => {
+      mockReports = reports;
+      render(<ReportBuilderPage />);
 
-    // });
+      expect(screen.getByText('Report 1')).toBeInTheDocument();
+      expect(screen.getByText('Report 2')).toBeInTheDocument();
+    });
 
-    // it('calls clHistory.push with correct arg when clicking "edit"', () => {
+    it('deletes report', async () => {
+      mockReports = reports;
+      render(<ReportBuilderPage />);
+      const deleteButtonSecondReport = screen.getAllByText('Delete')[1];
+      fireEvent.click(deleteButtonSecondReport);
 
-    // })
+      expect(global.window.confirm).toHaveBeenCalledTimes(1);
+      expect(deleteReport).toHaveBeenCalledWith('r2');
+    });
 
-    // it('calls clHistory.push with correct arg when clicking "view"', () => {
+    it('calls clHistory.push with correct arg when clicking "edit"', () => {
+      mockReports = reports;
+      render(<ReportBuilderPage />);
+      const editButtonSecondReport = screen.getAllByText('Edit')[1];
+      fireEvent.click(editButtonSecondReport);
 
-    // });
+      expect(clHistory.push).toHaveBeenCalledWith(
+        '/admin/reporting/report-builder/r2/editor'
+      );
+    });
+
+    it('calls clHistory.push with correct arg when clicking "view"', () => {
+      mockReports = reports;
+      render(<ReportBuilderPage />);
+      const viewButtonSecondReport = screen.getAllByText('View')[1];
+      fireEvent.click(viewButtonSecondReport);
+
+      expect(clHistory.push).toHaveBeenCalledWith(
+        '/admin/reporting/report-builder/r2/viewer'
+      );
+    });
   });
 });
