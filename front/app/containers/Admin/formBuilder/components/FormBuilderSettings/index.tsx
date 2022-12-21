@@ -117,7 +117,7 @@ const FormBuilderSettings = ({
     // all pages should be available in the list.
     const pageArray: { value: string; label: string }[] = [];
 
-    formCustomFields?.map((field) => {
+    formCustomFields?.forEach((field) => {
       if (field.input_type === 'page') {
         pageArray.push({
           value: field.temp_id || field.id,
