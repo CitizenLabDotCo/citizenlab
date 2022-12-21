@@ -17,7 +17,49 @@ jest.mock('hooks/useReport', () =>
   }))
 );
 
-// const reportLayout = {} // TODO check what this looks like
+const surveyResultsNodes = {
+  ROOT: {
+    type: 'div',
+    isCanvas: true,
+    props: {
+      id: 'e2e-content-builder-frame',
+    },
+    displayName: 'div',
+    custom: {},
+    hidden: false,
+    nodes: ['pEOdj46oZz'],
+    linkedNodes: {},
+  },
+  pEOdj46oZz: {
+    type: {
+      resolvedName: 'SurveyResultsWidget',
+    },
+    isCanvas: false,
+    props: {
+      title: 'Survey results',
+    },
+    displayName: 'SurveyResultsWidget',
+    custom: {
+      title: {
+        id: 'app.containers.admin.ReportBuilder.surveyResults',
+        defaultMessage: 'Survey results',
+      },
+      noPointerEvents: true,
+    },
+    parent: 'ROOT',
+    hidden: false,
+    nodes: [],
+    linkedNodes: {},
+  },
+};
+
+const surveyResultsLayout = {
+  attributes: {
+    craftjs_jsonmultiloc: {
+      en: surveyResultsNodes,
+    },
+  },
+};
 
 // other mocks
 jest.mock('react-router-dom', () => ({
@@ -36,22 +78,17 @@ describe('<ReportBuilder />', () => {
     expect(screen.getByText('Report 1')).toBeInTheDocument();
   });
 
-  // it('renders layout to canvas if it exists', () => {
-  //   mockReportLayout = undefined;
-  //   render(<ReportBuilder />);
+  it('renders if report layout', () => {
+    mockReportLayout = surveyResultsLayout;
+    render(<ReportBuilder />);
 
-  //   // TODO
-  // });
+    expect(screen.getByText('Report 1')).toBeInTheDocument();
+  });
 
-  // it('is possible to drag about component onto canvas', () => {
+  it('renders layout to canvas if it exists', () => {
+    mockReportLayout = surveyResultsLayout;
+    render(<ReportBuilder />);
 
-  // })
-
-  // it('is posssible to add two column layout and put something inside of it', () => {
-
-  // });
-
-  // it('saves', () => {
-
-  // })
+    expect(screen.getByTestId('survey-results-widget')).toBeInTheDocument();
+  });
 });
