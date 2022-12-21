@@ -1559,7 +1559,7 @@
   "app.utils.FormattedCurrency.tokens": "tokener",
   "app.utils.IdeasNewPage.contributionFormTitle": "Tilføy nytt bidrag",
   "app.utils.IdeasNewPage.ideaFormTitle": "Tilføy ny ide",
-  "app.utils.IdeasNewPage.issueFormTitle": "Legg til en ny utgave",
+  "app.utils.IdeasNewPage.issueFormTitle": "Tilføy nytt emne",
   "app.utils.IdeasNewPage.optionFormTitle": "Tilføy nytt alternativ",
   "app.utils.IdeasNewPage.projectFormTitle": "Tilføy nytt prosjekt",
   "app.utils.IdeasNewPage.questionFormTitle": "Tilføy nytt spørsmål",
