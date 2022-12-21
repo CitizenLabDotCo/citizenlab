@@ -48,6 +48,10 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
   const reportTitleTooShort = reportTitle.length <= 2;
 
+  const blockSubmit =
+    reportTitleTooShort ||
+    (template === 'project' ? selectedProject === undefined : false);
+
   const toggleTemplate = () => {
     setTemplate((template) => (template === 'blank' ? 'project' : 'blank'));
   };
@@ -129,7 +133,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           width="auto"
           mt="40px"
           mb="40px"
-          disabled={reportTitleTooShort || loading}
+          disabled={blockSubmit || loading}
           processing={loading}
           data-testid="create-report-button"
           onClick={onCreateReport}
