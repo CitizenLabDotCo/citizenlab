@@ -66,28 +66,28 @@ const FormBuilderSettings = ({
   }
 
   const deleteField = (fieldIndex: number) => {
-    let pageIsLinked = false;
     setFieldIndexToDelete(fieldIndex);
 
     // Check if deleted field has linked logic
-    formCustomFields.map((surveyField) => {
+    const doesPageHaveLinkedLogic = formCustomFields.some((surveyField) => {
       if (surveyField.logic && surveyField.logic.rules) {
-        const hasLinkedRule = surveyField.logic.rules.find(
+        return surveyField.logic.rules.some(
           (rule) =>
             rule.goto_page_id === field.id ||
             rule.goto_page_id === field.temp_id
         );
-        if (hasLinkedRule) {
-          pageIsLinked = true;
-        }
+      } else if (surveyField.logic && surveyField.logic?.next_page_id) {
+        return (
+          surveyField.logic?.next_page_id === field.id ||
+          surveyField.logic?.next_page_id === field.temp_id
+        );
       }
+      return false;
     });
 
-    // Open confirmation modal if linked logic present
-    if (pageIsLinked) {
+    if (doesPageHaveLinkedLogic) {
       openModal();
     } else {
-      // delete the field without confirmation
       onDelete(fieldIndex);
     }
   };
@@ -102,6 +102,8 @@ const FormBuilderSettings = ({
               rule.goto_page_id !== field.temp_id
           );
           setValue(`customFields.${i}.logic.rules`, updatedRules);
+        } else if (surveyField.logic) {
+          setValue(`customFields.${i}.logic`, {});
         }
       });
       onDelete(fieldIndexToDelete);
@@ -267,7 +269,7 @@ const FormBuilderSettings = ({
                 buttonStyle="delete"
                 width="auto"
                 mr="20px"
-                onClick={() => removeLogicAndDelete()}
+                onClick={removeLogicAndDelete}
               >
                 {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
               </Button>
