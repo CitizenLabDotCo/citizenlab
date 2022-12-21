@@ -21,7 +21,7 @@ import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { IOption } from 'typings';
 
 interface Props {
@@ -30,6 +30,16 @@ interface Props {
 }
 
 type Template = 'blank' | 'project';
+
+interface RadioLabelProps {
+  message: MessageDescriptor;
+}
+
+const RadioLabel = ({ message }: RadioLabelProps) => (
+  <Text mt="0px" mb="0px" variant="bodyS" color="primary">
+    <FormattedMessage {...message} />
+  </Text>
+);
 
 const CreateReportModal = ({ open, onClose }: Props) => {
   const [reportTitle, setReportTitle] = useState('');
@@ -83,14 +93,16 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           disabled={loading}
         />
         <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
-          <Label>Report template</Label>
+          <Label>
+            <FormattedMessage {...messages.reportTemplate} />
+          </Label>
           <Radio
             id="blank-template-radio"
             name="blank-template-radio"
             isRequired
             value="blank"
             currentValue={template}
-            label={'Blank'}
+            label={<RadioLabel message={messages.blankTemplate} />}
             onChange={toggleTemplate}
           />
           <Radio
@@ -99,12 +111,12 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             isRequired
             value="project"
             currentValue={template}
-            label={'Project'}
+            label={<RadioLabel message={messages.projectTemplate} />}
             onChange={toggleTemplate}
           />
         </Box>
         {template === 'project' && (
-          <Box width="100%" mt="28px">
+          <Box width="100%" mt="12px">
             <ProjectFilter
               currentProjectFilter={selectedProject}
               onProjectFilter={handleProjectFilter}
