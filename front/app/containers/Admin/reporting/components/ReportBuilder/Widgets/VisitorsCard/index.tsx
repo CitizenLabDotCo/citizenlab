@@ -7,6 +7,7 @@ import useVisitors from 'components/admin/GraphCards/VisitorsCard/useVisitors';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
+import NoChartData from '../AnalyticsChartWidget/NoChartData';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -19,7 +20,6 @@ import {
   Resolution,
   ChartDisplay,
 } from 'components/admin/GraphCards/typings';
-import { Stats } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -44,14 +44,8 @@ const VisitorsReportCard = ({
     resolution,
   });
 
-  const EMPTY_STAT = { value: '-', lastPeriod: '-' };
-  const EMPTY_DATA: Stats = {
-    visitors: EMPTY_STAT,
-    visits: EMPTY_STAT,
-    visitDuration: EMPTY_STAT,
-    pageViews: EMPTY_STAT,
-  };
-  const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
+  if (isNilOrError(stats) || stats.visits.value === '0')
+    return <NoChartData title={title} />;
 
   return (
     <Box width="100%" height="260px" pb="20px" px="16px">
@@ -63,12 +57,12 @@ const VisitorsReportCard = ({
           <Box>
             <Statistic
               name={formatMessage(messages.visitors)}
-              value={shownStats.visitors.value}
+              value={stats.visitors.value}
             />
             <Box mt="32px">
               <Statistic
                 name={formatMessage(messages.visits)}
-                value={shownStats.visits.value}
+                value={stats.visits.value}
               />
             </Box>
           </Box>

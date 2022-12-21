@@ -2,31 +2,36 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   analyticsChart: {
-    id: 'app.containers.admin.ContentBuilder.analyticsChart',
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChart',
     defaultMessage: 'Chart',
   },
   analyticsChartTitle: {
-    id: 'app.containers.admin.ContentBuilder.analyticsChartTitle',
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartTitle',
     defaultMessage: 'Title',
   },
   analyticsChartDateRange: {
-    id: 'app.containers.admin.ContentBuilder.analyticsChartDateRange',
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartDateRange',
     defaultMessage: 'Date range',
   },
   visitorTimeline: {
-    id: 'app.containers.admin.ContentBuilder.visitorTimeline',
+    id: 'app.containers.admin.ReportBuilder.charts.visitorTimeline',
     defaultMessage: 'Visitor timeline',
   },
   trafficSources: {
-    id: 'app.containers.admin.ContentBuilder.trafficSources',
+    id: 'app.containers.admin.ReportBuilder.charts.trafficSources',
     defaultMessage: 'Traffic sources',
   },
   usersByGender: {
-    id: 'app.containers.admin.ContentBuilder.usersByGender',
+    id: 'app.containers.admin.ReportBuilder.charts.usersByGender',
     defaultMessage: 'Users by gender',
   },
   usersByAge: {
-    id: 'app.containers.admin.ContentBuilder.usersByAge',
+    id: 'app.containers.admin.ReportBuilder.charts.usersByAge',
     defaultMessage: 'Users by age',
+  },
+  noData: {
+    id: 'app.containers.admin.ReportBuilder.charts.noData',
+    defaultMessage:
+      'There is no data available for the filters you have selected.',
   },
 });
