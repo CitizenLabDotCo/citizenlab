@@ -15,9 +15,12 @@ import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // Report builder widgets
-import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
+import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
+import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
+import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -39,9 +42,12 @@ const Editor: React.FC<EditorProps> = ({
         Text,
         Image,
         WhiteSpace,
-        AnalyticsChartWidget,
         AboutReportWidget,
         SurveyResultsWidget,
+        VisitorsWidget,
+        VisitorsTrafficSourcesWidget,
+        AgeWidget,
+        GenderWidget,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

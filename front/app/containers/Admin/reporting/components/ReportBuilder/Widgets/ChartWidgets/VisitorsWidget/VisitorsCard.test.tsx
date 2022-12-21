@@ -1,5 +1,5 @@
 import React from 'react';
-import VisitorsCard from '.';
+import VisitorsCard from './VisitorsCard';
 import { render, screen } from 'utils/testUtils/rtl';
 
 const mockStats = {

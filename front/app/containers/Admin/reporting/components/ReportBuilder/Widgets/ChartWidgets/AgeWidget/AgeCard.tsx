@@ -6,11 +6,11 @@ import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAge
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import BarChart from 'components/admin/Graphs/BarChart';
-import NoChartData from '../AnalyticsChartWidget/NoChartData';
+import NoChartData from '../NoChartData';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { serieHasValues } from '../AnalyticsChartWidget/utils';
+import { serieHasValues } from '../utils';
 
 interface Props {
   startAt: string | null | undefined;
@@ -26,8 +26,9 @@ const AgeCard = ({ startAt, endAt, projectId, title }: Props) => {
     projectId,
   });
 
-  if (isNilOrError(ageSerie) || !serieHasValues(ageSerie))
+  if (isNilOrError(ageSerie) || !serieHasValues(ageSerie)) {
     return <NoChartData title={title} />;
+  }
 
   return (
     <Box width="100%" height="260px" pb="20px">

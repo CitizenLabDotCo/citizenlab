@@ -7,7 +7,7 @@ import useVisitors from 'components/admin/GraphCards/VisitorsCard/useVisitors';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
-import NoChartData from '../AnalyticsChartWidget/NoChartData';
+import NoChartData from '../NoChartData';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -27,7 +27,7 @@ import { isNilOrError } from 'utils/helperUtils';
 type Props = ProjectId & Dates & Resolution & ChartDisplay;
 
 // Report specific version of <VisitorsCard/>
-const VisitorsReportCard = ({
+const VisitorsCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
@@ -44,8 +44,9 @@ const VisitorsReportCard = ({
     resolution,
   });
 
-  if (isNilOrError(stats) || stats.visits.value === '0')
+  if (isNilOrError(stats) || stats.visits.value === '0') {
     return <NoChartData title={title} />;
+  }
 
   return (
     <Box width="100%" height="260px" pb="20px" px="16px">
@@ -84,4 +85,4 @@ const VisitorsReportCard = ({
   );
 };
 
-export default VisitorsReportCard;
+export default VisitorsCard;

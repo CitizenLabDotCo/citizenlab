@@ -7,11 +7,11 @@ import useNarrow from 'containers/Admin/reporting/hooks/useNarrow';
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Chart from 'containers/Admin/dashboard/users/Charts/GenderChart/Chart';
-import NoChartData from '../AnalyticsChartWidget/NoChartData';
+import NoChartData from '../NoChartData';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { serieHasValues } from '../AnalyticsChartWidget/utils';
+import { serieHasValues } from '../utils';
 
 interface Props {
   startAt: string | null | undefined;
@@ -29,8 +29,9 @@ const GenderCard = ({ startAt, endAt, projectId, title }: Props) => {
 
   const narrow = useNarrow();
 
-  if (isNilOrError(genderSerie) || !serieHasValues(genderSerie))
+  if (isNilOrError(genderSerie) || !serieHasValues(genderSerie)) {
     return <NoChartData title={title} />;
+  }
 
   return (
     <Box width="100%" height="260px" pb="20px">

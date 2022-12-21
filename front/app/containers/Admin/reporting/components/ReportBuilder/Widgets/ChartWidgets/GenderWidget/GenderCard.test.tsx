@@ -1,15 +1,17 @@
 import React from 'react';
-import AgeCard from '.';
+import GenderCard from './GenderCard';
 import { render } from 'utils/testUtils/rtl';
 
 jest.mock(
-  'containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie',
+  'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie',
   () => () =>
     [
       { name: '10 - 19', value: 0 },
       { name: '20 - 29', value: 0 },
     ]
 );
+
+jest.mock('containers/Admin/reporting/hooks/useNarrow', () => () => true);
 
 class FakeResizeObserver {
   observe() {}
@@ -19,15 +21,15 @@ class FakeResizeObserver {
 // @ts-ignore
 window.ResizeObserver = FakeResizeObserver;
 
-describe('<AgeCard />', () => {
-  it('renders a title and bar graph', () => {
+describe('<GenderCard />', () => {
+  it('renders a title and pie chart', () => {
     const startAt = null;
     const endAt = null;
     const projectId = undefined;
-    const title = 'AGE TITLE';
+    const title = 'GENDER TITLE';
 
     const { container } = render(
-      <AgeCard
+      <GenderCard
         startAt={startAt}
         endAt={endAt}
         title={title}
@@ -38,7 +40,7 @@ describe('<AgeCard />', () => {
     // Title
     expect(container.querySelector('h3').innerHTML).toBe(title);
 
-    // Bar graph
+    // Pie chart
     expect(
       container.querySelector('.recharts-responsive-container')
     ).toBeInTheDocument();
