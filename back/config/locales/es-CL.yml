@@ -146,7 +146,7 @@ es-CL:
         project:
           title: '¿Cuál es su proyecto?'
         issue:
-          title: '¿Cuál es su respuesta?'
+          title: '¿Cuál es tu respuesta?'
         option:
           title: '¿Cuál es su opción?'
       details:
