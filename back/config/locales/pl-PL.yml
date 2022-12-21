@@ -146,7 +146,7 @@ pl:
         project:
           title: Jaki jest Twój projekt ?
         issue:
-          title: Jaka jest Twoja sprawa ?
+          title: Jaka jest Twoja sprawa?
         option:
           title: Jaka jest Twója opcja?
       details:
