@@ -5,8 +5,16 @@ import { createReport } from 'services/reports';
 
 // components
 import Modal from 'components/UI/Modal';
-import { Box, Title, Text, Input } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Text,
+  Input,
+  Label,
+  Radio,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -14,16 +22,29 @@ import { colors } from 'utils/styleUtils';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { IOption } from 'typings';
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
+type Template = 'blank' | 'project';
+
 const CreateReportModal = ({ open, onClose }: Props) => {
   const [reportTitle, setReportTitle] = useState('');
+  const [template, setTemplate] = useState<Template>('blank');
+  const [selectedProject, setSelectedProject] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
   const reportTitleTooShort = reportTitle.length <= 2;
+
+  const toggleTemplate = () => {
+    setTemplate((template) => (template === 'blank' ? 'project' : 'blank'));
+  };
+
+  const handleProjectFilter = (option: IOption) => {
+    setSelectedProject(option.value === '' ? undefined : option.value);
+  };
 
   const onCreateReport = async () => {
     if (reportTitleTooShort) return;
@@ -61,6 +82,36 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           onChange={setReportTitle}
           disabled={loading}
         />
+        <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
+          <Label>Report template</Label>
+          <Radio
+            id="blank-template-radio"
+            name="blank-template-radio"
+            isRequired
+            value="blank"
+            currentValue={template}
+            label={'Blank'}
+            onChange={toggleTemplate}
+          />
+          <Radio
+            id="project-template-radio"
+            name="project-template-radio"
+            isRequired
+            value="project"
+            currentValue={template}
+            label={'Project'}
+            onChange={toggleTemplate}
+          />
+        </Box>
+        {template === 'project' && (
+          <Box width="100%" mt="28px">
+            <ProjectFilter
+              currentProjectFilter={selectedProject}
+              onProjectFilter={handleProjectFilter}
+              width="100%"
+            />
+          </Box>
+        )}
         <Button
           bgColor={colors.primary}
           width="auto"
