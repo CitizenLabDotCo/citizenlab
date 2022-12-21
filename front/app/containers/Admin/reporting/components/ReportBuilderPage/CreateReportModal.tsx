@@ -19,6 +19,9 @@ import ProjectFilter from 'containers/Admin/dashboard/components/filters/Project
 // styling
 import { colors } from 'utils/styleUtils';
 
+// utils
+import clHistory from 'utils/cl-router/history';
+
 // i18n
 import messages from './messages';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -65,9 +68,11 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     setLoading(true);
 
     try {
-      await createReport(reportTitle);
+      const report = await createReport(reportTitle);
       setLoading(false);
-      onClose();
+      clHistory.push(
+        `/admin/reporting/report-builder/${report.data.id}/editor`
+      );
     } catch {
       // TODO handle error
       setLoading(false);
