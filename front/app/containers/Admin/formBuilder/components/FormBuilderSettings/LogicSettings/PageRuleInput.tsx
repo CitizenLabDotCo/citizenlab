@@ -31,7 +31,7 @@ export const PageRuleInput = ({
   fieldId,
   validationError,
 }: RuleInputProps) => {
-  const { setValue, watch, control } = useFormContext();
+  const { setValue, watch, trigger, control } = useFormContext();
   const logic = watch(name) as LogicType;
   const fields: IFlatCustomField[] = watch('customFields');
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
@@ -57,6 +57,7 @@ export const PageRuleInput = ({
         };
     setValue(name, value);
     setIsRuleInvalid(!isPageRuleValid(fields, fieldId, page.value));
+    trigger();
   };
 
   return (

@@ -31,12 +31,15 @@ export const isPageRuleValid = (
   sourcePageId: string,
   nextPageId?: string
 ) => {
-  const indexOfTargetPage = fields.findIndex(function (field) {
-    return field.id === nextPageId || field.temp_id === nextPageId;
-  });
-  const indexOfSourceField = fields.findIndex(function (field) {
-    return field.id === sourcePageId || field.temp_id === sourcePageId;
-  });
+  if (nextPageId === 'survey_end' || !nextPageId) {
+    return true;
+  }
+  const indexOfTargetPage = fields.findIndex(
+    (field) => field.id === nextPageId || field.temp_id === nextPageId
+  );
+  const indexOfSourceField = fields.findIndex(
+    (field) => field.id === sourcePageId || field.temp_id === sourcePageId
+  );
   return indexOfTargetPage > indexOfSourceField;
 };
 
