@@ -1,46 +1,43 @@
 import React from 'react';
 import VisitorsCard from './VisitorsCard';
 import { render, screen } from 'utils/testUtils/rtl';
+import useVisitors from 'components/admin/GraphCards/VisitorsCard/useVisitors';
 
-const mockStats = {
-  visitors: {
-    value: '100',
-    lastPeriod: '10',
-  },
-  visits: {
-    value: '150',
-    lastPeriod: '15',
-  },
-};
-
-const mockTimeSeries = [
-  { date: '2022-08-01', visitors: 100, visits: 100 },
-  { date: '2022-09-01', visitors: 100, visits: 100 },
-  { date: '2022-10-01', visitors: 100, visits: 100 },
-];
-
-jest.mock('components/admin/GraphCards/VisitorsCard/useVisitors', () => () => ({
-  currentResolution: 'month',
-  stats: mockStats,
-  timeSeries: mockTimeSeries,
-  xlsxData: {},
-}));
-
-class FakeResizeObserver {
-  observe() {}
-  disconnect() {}
-}
-
-// @ts-ignore
-window.ResizeObserver = FakeResizeObserver;
+jest.mock('components/admin/GraphCards/VisitorsCard/useVisitors', () =>
+  jest.fn()
+);
 
 describe('<VisitorsCard />', () => {
-  it('renders a title, line graph and stats box', () => {
-    const startAtMoment = null;
-    const endAtMoment = null;
-    const projectId = undefined;
-    const resolution = 'month';
-    const title = 'VISITORS TITLE';
+  const startAtMoment = null;
+  const endAtMoment = null;
+  const projectId = undefined;
+  const resolution = 'month';
+  const title = 'VISITORS TITLE';
+
+  it('renders a title, line graph and stats box when there is data', () => {
+    const validStats = {
+      visitors: {
+        value: '100',
+        lastPeriod: '10',
+      },
+      visits: {
+        value: '150',
+        lastPeriod: '15',
+      },
+    };
+
+    const validTimeSeries = [
+      { date: '2022-08-01', visitors: 100, visits: 100 },
+      { date: '2022-09-01', visitors: 100, visits: 100 },
+      { date: '2022-10-01', visitors: 100, visits: 100 },
+    ];
+
+    // @ts-ignore
+    useVisitors.mockReturnValue({
+      currentResolution: 'month',
+      stats: validStats,
+      timeSeries: validTimeSeries,
+    });
 
     const { container } = render(
       <VisitorsCard
@@ -63,9 +60,47 @@ describe('<VisitorsCard />', () => {
     // Stats box
     expect(screen.getByText('100')).toBeInTheDocument();
     expect(screen.getByText('150')).toBeInTheDocument();
+  });
 
-    // Be nice to check the SVG, but can't yet get the querySelector to work
-    // const graphContainer = container.querySelector('.recharts-responsive-container');
-    // expect(graphContainer.querySelector('.recharts-line')).toBeInTheDocument();
+  it('renders a title and no data message if all values are zero', () => {
+    const emptyStats = {
+      visitors: {
+        value: '0',
+        lastPeriod: '0',
+      },
+      visits: {
+        value: '0',
+        lastPeriod: '0',
+      },
+    };
+
+    const emptyTimeSeries = [
+      { date: '2022-08-01', visitors: 0, visits: 0 },
+      { date: '2022-09-01', visitors: 0, visits: 0 },
+      { date: '2022-10-01', visitors: 0, visits: 0 },
+    ];
+
+    // @ts-ignore
+    useVisitors.mockReturnValue({
+      currentResolution: 'month',
+      stats: emptyStats,
+      timeSeries: emptyTimeSeries,
+    });
+
+    const { container } = render(
+      <VisitorsCard
+        startAtMoment={startAtMoment}
+        endAtMoment={endAtMoment}
+        projectId={projectId}
+        resolution={resolution}
+        title={title}
+      />
+    );
+
+    // Title
+    expect(container.querySelector('h3').innerHTML).toBe(title);
+
+    // Empty data
+    expect(container.querySelector('.no-chart-data')).toBeInTheDocument();
   });
 });

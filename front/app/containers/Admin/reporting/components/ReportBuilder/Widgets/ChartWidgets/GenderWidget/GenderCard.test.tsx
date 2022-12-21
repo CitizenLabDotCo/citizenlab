@@ -1,32 +1,29 @@
 import React from 'react';
 import GenderCard from './GenderCard';
 import { render } from 'utils/testUtils/rtl';
-
-jest.mock(
-  'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie',
-  () => () =>
-    [
-      { name: '10 - 19', value: 0 },
-      { name: '20 - 29', value: 0 },
-    ]
-);
+import useGenderSerie from 'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie';
 
 jest.mock('containers/Admin/reporting/hooks/useNarrow', () => () => true);
 
-class FakeResizeObserver {
-  observe() {}
-  disconnect() {}
-}
-
-// @ts-ignore
-window.ResizeObserver = FakeResizeObserver;
+jest.mock(
+  'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie',
+  () => jest.fn()
+);
 
 describe('<GenderCard />', () => {
-  it('renders a title and pie chart', () => {
-    const startAt = null;
-    const endAt = null;
-    const projectId = undefined;
-    const title = 'GENDER TITLE';
+  const startAt = null;
+  const endAt = null;
+  const projectId = undefined;
+  const title = 'GENDER TITLE';
+
+  it('renders a title and pie chart when there is data', () => {
+    const validData = [
+      { value: 4, name: 'male', code: 'male', percentage: 40 },
+      { value: 6, name: 'female', code: 'female', percentage: 60 },
+    ];
+
+    // @ts-ignore
+    useGenderSerie.mockReturnValue(validData);
 
     const { container } = render(
       <GenderCard
@@ -44,5 +41,30 @@ describe('<GenderCard />', () => {
     expect(
       container.querySelector('.recharts-responsive-container')
     ).toBeInTheDocument();
+  });
+
+  it('renders a title and no data message if all values are zero', () => {
+    const emptyData = [
+      { value: 0, name: 'male', code: 'male', percentage: 0 },
+      { value: 0, name: 'female', code: 'female', percentage: 0 },
+    ];
+
+    // @ts-ignore
+    useGenderSerie.mockReturnValue(emptyData);
+
+    const { container } = render(
+      <GenderCard
+        startAt={startAt}
+        endAt={endAt}
+        title={title}
+        projectId={projectId}
+      />
+    );
+
+    // Title
+    expect(container.querySelector('h3').innerHTML).toBe(title);
+
+    // Empty data
+    expect(container.querySelector('.no-chart-data')).toBeInTheDocument();
   });
 });

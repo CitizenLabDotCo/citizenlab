@@ -21,7 +21,13 @@ const NoChartData = ({ title }: NoChartProps) => {
       <Title variant="h3" color="primary" m="16px">
         {title}
       </Title>
-      <Box px="20px" width="100%" display="flex" flexDirection="row">
+      <Box
+        px="20px"
+        width="100%"
+        display="flex"
+        flexDirection="row"
+        className="no-chart-data"
+      >
         <Text variant="bodyM" color="textSecondary">
           {formatMessage(messages.noData)}
         </Text>

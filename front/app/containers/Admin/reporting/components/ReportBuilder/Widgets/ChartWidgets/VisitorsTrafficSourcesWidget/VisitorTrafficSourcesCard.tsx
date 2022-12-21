@@ -35,6 +35,7 @@ const VisitorsTrafficSourcesCard = ({
   });
   const narrow = useNarrow();
 
+  console.log(pieData);
   if (isNilOrError(pieData)) return <NoChartData title={title} />;
 
   const legend = pieData.map(

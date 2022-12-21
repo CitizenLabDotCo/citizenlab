@@ -2,7 +2,7 @@ import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart
 import { serieHasValues } from './utils';
 
 describe('serieHasValues', () => {
-  it('returns true when at least one value is greater than zero', () => {
+  it('true when at least one value is greater than zero', () => {
     const nonZeroValues: GenderSerie = [
       { value: 1, name: 'male', code: 'male', percentage: 50 },
       { value: 2, name: 'female', code: 'female', percentage: 50 },
@@ -10,7 +10,7 @@ describe('serieHasValues', () => {
     expect(serieHasValues(nonZeroValues)).toBeTruthy();
   });
 
-  it('returns false when all values are zero', () => {
+  it('false when all values are zero', () => {
     const zeroValues: GenderSerie = [
       { value: 0, name: 'male', code: 'male', percentage: 0 },
       { value: 0, name: 'female', code: 'female', percentage: 0 },
