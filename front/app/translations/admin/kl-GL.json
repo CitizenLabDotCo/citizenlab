@@ -487,6 +487,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "Slug-imik ikkussisariaqarputit",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Taaguut",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Oqaatsini tamani qulequtsiigit",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Enter a title",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "View custom page",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Toortagaq",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Qupperneq nammineq aaqqissuunneqarsinnaasoq allanngortiguk | {orgName}",
