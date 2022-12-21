@@ -40,10 +40,6 @@ describe('<VisitorsTrafficSourcesCard />', () => {
     expect(
       container.querySelector('.recharts-responsive-container')
     ).toBeInTheDocument();
-
-    // expect(
-    //   container.querySelector('.no-chart-data')
-    // ).toBeInTheDocument();
   });
 
   it('renders a title and no data message if there is no data', () => {
