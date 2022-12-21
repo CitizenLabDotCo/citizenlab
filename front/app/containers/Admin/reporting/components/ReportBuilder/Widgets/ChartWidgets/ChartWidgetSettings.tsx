@@ -1,12 +1,22 @@
-import { useIntl } from '../../../../../../../utils/cl-intl';
-import { useNode } from '@craftjs/core';
-import moment, { Moment } from 'moment';
-import { IOption } from '../../../../../../../typings';
-import { Box, Input, Text } from '@citizenlab/cl2-component-library';
-import messages from './messages';
-import DateRangePicker from '../../../../../../../components/admin/DateRangePicker';
-import ProjectFilter from '../../../../../dashboard/components/filters/ProjectFilter';
 import React from 'react';
+
+// components
+import { Box, Input, Text } from '@citizenlab/cl2-component-library';
+import DateRangePicker from 'components/admin/DateRangePicker';
+import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
+
+// hooks
+import { useIntl } from 'utils/cl-intl';
+import { useNode } from '@craftjs/core';
+
+// utils
+import moment, { Moment } from 'moment';
+
+// messages
+import messages from './messages';
+
+// typings
+import { IOption } from 'typings';
 
 export const ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
@@ -52,10 +62,7 @@ export const ChartWidgetSettings = () => {
 
   return (
     <Box>
-      <Box
-        background="containers/Admin/reporting/components/ReportBuilder/Widgets/Charts/ChartWidgetSettings#ffffff"
-        marginBottom="20px"
-      >
+      <Box background="#ffffff" marginBottom="20px">
         <Input
           id="e2e-analytics-chart-widget-title"
           label={

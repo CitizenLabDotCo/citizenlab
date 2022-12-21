@@ -1,13 +1,19 @@
 import React from 'react';
+
+// components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+
+// hooks
 import { useIntl } from 'utils/cl-intl';
+
+// messages
 import messages from './messages';
 
-type noChartProps = {
+type NoChartProps = {
   title: string | undefined;
 };
 
-const NoChartData = ({ title }: noChartProps) => {
+const NoChartData = ({ title }: NoChartProps) => {
   const { formatMessage } = useIntl();
 
   return (
