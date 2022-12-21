@@ -487,6 +487,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "Debe introducir un slug",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Título",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Introduzca un título en cada idioma",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Ingresar un título",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "Ver página personalizada",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Botón",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Editar página personalizada | {orgName}",
