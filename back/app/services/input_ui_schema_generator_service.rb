@@ -67,12 +67,10 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def schema_elements_for(fields)
     form_logic = FormLogicService.new(fields)
     current_page_schema = nil
-    current_page_index = 0
     field_schemas = []
     fields.each do |field|
       field_schema = visit field
       if field.page?
-        current_page_index += 1
         rules = form_logic.ui_schema_rules_for(field)
         field_schema[:ruleArray] = rules if rules.present?
         field_schemas << field_schema
