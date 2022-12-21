@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Components
-import { Box, Input, Title } from '@citizenlab/cl2-component-library';
+import { Box, Input, Text } from '@citizenlab/cl2-component-library';
 import GenderCard from '../GenderCard';
 import AgeCard from '../AgeCard';
 import VisitorsCard from '../VisitorsCard';
@@ -139,9 +139,9 @@ const AnalyticsChartWidgetSettings = () => {
         <Input
           id="e2e-analytics-chart-widget-title"
           label={
-            <Title variant="h4" color="tenantText" mb={'0'}>
+            <Text variant="bodyM" color="textSecondary" mb="0">
               {formatMessage(messages.analyticsChartTitle)}
-            </Title>
+            </Text>
           }
           type="text"
           value={title}
@@ -149,9 +149,9 @@ const AnalyticsChartWidgetSettings = () => {
         />
       </Box>
       <Box mb="20px">
-        <Title variant="h4" color="tenantText" mb={'0'}>
+        <Text variant="bodyM" color="textSecondary" mb="5px">
           {formatMessage(messages.analyticsChartDateRange)}
-        </Title>
+        </Text>
         <DateRangePicker
           startDateId={'startAt'}
           endDateId={'endAt'}
