@@ -17,7 +17,7 @@ jest.mock('hooks/useReport', () =>
   }))
 );
 
-// const reportLayout = {} // TODO
+// const reportLayout = {} // TODO check what this looks like
 
 // other mocks
 jest.mock('react-router-dom', () => ({
