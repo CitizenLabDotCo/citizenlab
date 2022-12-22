@@ -27,6 +27,7 @@ import {
   Text,
   colors,
   Icon,
+  IconNames,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import { FlexibleRow } from '../FlexibleRow';
@@ -36,6 +37,7 @@ import styled from 'styled-components';
 
 // hooks and services
 import {
+  ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
@@ -55,6 +57,25 @@ type Props = {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   getTranslatedFieldType: (fieldType: string) => MessageDescriptor;
   selectedFieldId?: string;
+};
+
+const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
+  switch (inputType) {
+    case 'text':
+      return 'survey-short-answer-2';
+    case 'multiline_text':
+      return 'survey-long-answer-2';
+    case 'multiselect':
+      return 'survey-multiple-choice-2';
+    case 'select':
+      return 'survey-single-choice';
+    case 'number':
+      return 'survey-number-field';
+    case 'linear_scale':
+      return 'survey-linear-scale';
+    default:
+      return 'survey';
+  }
 };
 
 export const FieldElement = (props: Props) => {
@@ -246,10 +267,27 @@ export const FieldElement = (props: Props) => {
             {!isNilOrError(field.input_type) && field.input_type !== 'page' && (
               <Box my="auto" ml="12px">
                 {' '}
-                <Badge className="inverse" color={colors.coolGrey600}>
-                  <FormattedMessage
-                    {...getTranslatedFieldType(field.input_type)}
-                  />
+                <Badge className="inverse" color={colors.grey200}>
+                  <Box display="flex" flexDirection="row" alignItems="center">
+                    <Icon
+                      fill={colors.coolGrey600}
+                      width="16px"
+                      height="16px"
+                      name={getFieldIcon(field.input_type)}
+                    />
+                    <Text
+                      color="coolGrey600"
+                      py="0px"
+                      my="0px"
+                      fontSize="xs"
+                      fontWeight="bold"
+                      ml="4px"
+                    >
+                      <FormattedMessage
+                        {...getTranslatedFieldType(field.input_type)}
+                      />
+                    </Text>
+                  </Box>
                 </Badge>
               </Box>
             )}
