@@ -5,7 +5,6 @@ import { useLocation, useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useReportLayout from 'hooks/useReportLayout';
-import { useIntl } from 'utils/cl-intl';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -44,7 +43,6 @@ interface Props {
 }
 
 const ReportBuilder = ({ reportId }: Props) => {
-  const { formatMessage } = useIntl();
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
