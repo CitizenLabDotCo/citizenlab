@@ -26,15 +26,17 @@ export const isFieldSelected = (
 
 export const getFieldBackgroundColor = (
   selectedFieldId: string | undefined,
-  field: IFlatCustomField
+  field: IFlatCustomField,
+  hasErrors: boolean
 ) => {
   if (isFieldSelected(selectedFieldId, field.id)) {
     return rgba(colors.tealLight, 0.15);
+  } else if (hasErrors) {
+    return colors.errorLight;
+  } else if (field.input_type === 'page') {
+    return rgba(colors.coolGrey300, 0.15);
   }
-
-  return field.input_type === 'page'
-    ? rgba(colors.coolGrey300, 0.15)
-    : undefined;
+  return undefined;
 };
 
 export const getIndexTitleColor = (inputType: ICustomFieldInputType) => {

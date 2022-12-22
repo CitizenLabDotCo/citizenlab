@@ -8,7 +8,6 @@ import messages from '../messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import {
-  isFieldSelected,
   getFieldBackgroundColor,
   getIndexForTitle,
   getIndexTitleColor,
@@ -101,15 +100,6 @@ export const FieldElement = (props: Props) => {
   const hasErrors = !!errors.customFields?.[index];
   const showLogicOnRow =
     field.input_type !== 'page' ? field.logic.rules : field.logic;
-  let outlineStyle = 'none';
-  if (hasErrors) {
-    outlineStyle = `1px solid ${colors.error}`;
-  } else if (
-    isFieldSelected(selectedFieldId, field.id) &&
-    field.input_type !== 'page'
-  ) {
-    outlineStyle = `1px solid ${colors.teal300}`;
-  }
 
   const editFieldAndValidate = () => {
     onEditField({ ...field, index });
@@ -120,8 +110,7 @@ export const FieldElement = (props: Props) => {
     <FormFieldsContainer
       role={'button'}
       key={field.id}
-      style={{ outline: outlineStyle, outlineOffset: '-1px' }}
-      background={getFieldBackgroundColor(selectedFieldId, field)}
+      background={getFieldBackgroundColor(selectedFieldId, field, hasErrors)}
       onClick={() => {
         isEditingDisabled ? undefined : editFieldAndValidate();
       }}
@@ -138,8 +127,16 @@ export const FieldElement = (props: Props) => {
           <Box display="flex" alignItems="center" height="100%">
             <Box display="block">
               <Box>
+                {hasErrors && (
+                  <Icon
+                    ml="28px"
+                    width="20px"
+                    fill={colors.error}
+                    name="alert-circle"
+                  />
+                )}
                 <Icon
-                  ml="28px"
+                  ml={hasErrors ? '8px' : '28px'}
                   width="12px"
                   fill={getIndexTitleColor(field.input_type)}
                   name="sort"
