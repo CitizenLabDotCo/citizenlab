@@ -7,6 +7,7 @@ import useNarrow from 'containers/Admin/reporting/hooks/useNarrow';
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import PieChart from 'components/admin/Graphs/PieChart';
+import NoChartData from '../NoChartData';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -34,7 +35,7 @@ const VisitorsTrafficSourcesCard = ({
   });
   const narrow = useNarrow();
 
-  if (isNilOrError(pieData)) return null;
+  if (isNilOrError(pieData)) return <NoChartData title={title} />;
 
   const legend = pieData.map(
     (row): LegendItem => ({
