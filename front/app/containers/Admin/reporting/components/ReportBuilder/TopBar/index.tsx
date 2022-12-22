@@ -25,6 +25,7 @@ import clHistory from 'utils/cl-router/history';
 // types
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
 
 type ContentBuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -106,6 +107,9 @@ const ContentBuilderTopBar = ({
             checked={previewEnabled}
             onChange={handleTogglePreview}
           />
+        </Box>
+        <Box mr="20px">
+          <ShareReportButton reportId={reportId} />
         </Box>
         <SaveButton
           disabled={!!(disableSave || hasPendingState)}
