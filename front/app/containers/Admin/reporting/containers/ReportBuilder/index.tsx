@@ -145,6 +145,7 @@ const ReportBuilder = ({ reportId }: Props) => {
           onSelectLocale={handleSelectedLocaleChange}
           draftEditorData={draftData}
           reportId={reportId}
+          projectId={projectId ?? undefined}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}

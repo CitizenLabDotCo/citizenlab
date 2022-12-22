@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // services
 import { updateReportLayout } from 'services/reports';
@@ -35,6 +35,7 @@ type ContentBuilderTopBarProps = {
   selectedLocale: Locale | undefined;
   draftEditorData?: Record<string, SerializedNodes>;
   reportId: string;
+  projectId?: string;
   onSelectLocale: (args: {
     locale: Locale;
     editorData: SerializedNodes;
@@ -50,7 +51,9 @@ const ContentBuilderTopBar = ({
   localesWithError,
   hasPendingState,
   reportId,
+  projectId,
 }: ContentBuilderTopBarProps) => {
+  const [initialized, setInitialized] = useState(false);
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const report = useReport(reportId);
@@ -75,6 +78,30 @@ const ContentBuilderTopBar = ({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (initialized) return;
+
+    if (!projectId) {
+      setInitialized(true);
+      return;
+    }
+
+    const nodes = query.getSerializedNodes();
+    const firstNode = nodes.ROOT?.nodes[0];
+
+    if (!firstNode) return;
+    if (!selectedLocale) return;
+
+    if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
+      updateReportLayout(reportId, {
+        ...draftEditorData,
+        [selectedLocale]: nodes,
+      });
+    }
+
+    setInitialized(true);
+  }, [projectId, query]);
 
   const handleSelectLocale = (locale: Locale) => {
     const editorData = query.getSerializedNodes();
