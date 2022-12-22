@@ -235,8 +235,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.ruleForAnswerLabel',
     defaultMessage: 'If answer is:',
   },
-  ruleForPageLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.ruleForPageLabel',
-    defaultMessage: 'Next page always is:',
+  pageRuleLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pageRuleLabel',
+    defaultMessage: 'Next page is:',
   },
 });

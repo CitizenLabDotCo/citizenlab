@@ -87,7 +87,7 @@ export const PageRuleInput = ({
                           color="coolGrey600"
                           fontSize="s"
                         >
-                          <FormattedMessage {...messages.ruleForPageLabel} />
+                          <FormattedMessage {...messages.pageRuleLabel} />
                         </Text>
                       }
                       onChange={onSelectionChange}
