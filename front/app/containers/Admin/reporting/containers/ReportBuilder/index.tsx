@@ -22,7 +22,7 @@ import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
 
 // templates
-import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
+import getProjectTemplate from '../../components/ReportBuilder/Templates/projectTemplate';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -117,6 +117,10 @@ const ReportBuilder = ({ reportId }: Props) => {
     return previewData;
   }, [draftData, selectedLocale]);
 
+  const template = useMemo(() => {
+    return getProjectTemplate({ reportId });
+  }, [reportId]);
+
   if (!selectedLocale) return null;
 
   const initialData = isNilOrError(reportLayout)
@@ -159,9 +163,7 @@ const ReportBuilder = ({ reportId }: Props) => {
                 width="100%"
                 height="100%"
               >
-                <Frame editorData={initialData}>
-                  <ProjectTemplate reportId={reportId} />
-                </Frame>
+                <Frame editorData={initialData}>{template}</Frame>
               </Box>
             </Box>
           </StyledRightColumn>

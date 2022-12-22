@@ -11,8 +11,8 @@ interface Props {
   // projectId: string;
 }
 
-const ProjectTemplate = ({ reportId }: Props) => {
+const getProjectTemplate = ({ reportId }: Props) => {
   return <AboutReportWidget reportId={reportId} />;
 };
 
-export default ProjectTemplate;
+export default getProjectTemplate;

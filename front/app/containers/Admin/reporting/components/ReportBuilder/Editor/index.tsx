@@ -23,9 +23,6 @@ import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTraffi
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 
-// templates
-import ProjectTemplate from '../Templates/ProjectTemplate';
-
 type EditorProps = {
   children?: React.ReactNode;
   isPreview: boolean;
@@ -53,7 +50,6 @@ const Editor: React.FC<EditorProps> = ({
         VisitorsTrafficSourcesWidget,
         AgeWidget,
         GenderWidget,
-        ProjectTemplate,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
