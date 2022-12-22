@@ -7,6 +7,7 @@ import { deleteReport, Report } from 'services/reports';
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
 import EditedText from './EditedText';
 import Button from 'components/UI/Button';
+import ShareReportModal from '../ShareReportModal';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -26,6 +27,11 @@ const ReportRow = ({ report }: Props) => {
   const { formatMessage } = useIntl();
   const [deleting, setDeleting] = useState(false);
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openShareModal = () => setModalOpen(true);
+  const closeShareModal = () => setModalOpen(false);
+
   const handleDeleteReport = async () => {
     setDeleting(true);
 
@@ -42,16 +48,18 @@ const ReportRow = ({ report }: Props) => {
     setDeleting(false);
   };
 
+  const reportPath = `/admin/reporting/report-builder/${report.id}`;
+
   const handleEditReport = () => {
-    clHistory.push(`/admin/reporting/report-builder/${report.id}/editor`);
+    clHistory.push(`${reportPath}/editor`);
   };
 
   const handleViewReport = () => {
-    clHistory.push(`/admin/reporting/report-builder/${report.id}/viewer`);
+    clHistory.push(`${reportPath}/viewer`);
   };
 
   const handleShareReport = () => {
-    // TODO
+    openShareModal();
   };
 
   return (
@@ -115,6 +123,11 @@ const ReportRow = ({ report }: Props) => {
             {formatMessage(messages.share)}
           </Button>
         </Box>
+        <ShareReportModal
+          open={modalOpen}
+          onClose={closeShareModal}
+          reportPath={`${reportPath}/viewer`}
+        />
       </Box>
     </ListItem>
   );
