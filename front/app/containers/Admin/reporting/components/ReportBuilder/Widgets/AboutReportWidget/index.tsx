@@ -99,8 +99,8 @@ const AboutReportWidget = ({ reportId, projectId }: AboutReportWidgetProps) => {
         <Element id="about-title" is={Container} canvas>
           <Text
             text={`
-            <h2>${reportTitle}</h2>
-          `}
+              <h2>${reportTitle}</h2>
+            `}
           />
         </Element>
       )}
