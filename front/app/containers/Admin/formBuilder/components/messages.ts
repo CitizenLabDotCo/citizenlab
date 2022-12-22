@@ -222,10 +222,10 @@ export default defineMessages({
     defaultMessage: 'Invalid logic',
   },
   // Logic Settings
-  logicWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.logicWarning',
+  logicHelperText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.logicHelperText',
     defaultMessage:
-      'If no logic is added to an answer, the survey will follow its normal flow.',
+      'If no logic is added to an answer, the survey will follow its normal flow. For more information, visit {supportPageLink}',
   },
   goToPageInputLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.goToPageInputLabel',
@@ -242,5 +242,14 @@ export default defineMessages({
   nextPageLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.nextPageLabel',
     defaultMessage: 'Next:',
+  },
+  surveySupportArticle: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveySupportArticle',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey',
+  },
+  surveySupportArticleLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveySupportArticleLinkText',
+    defaultMessage: 'this page',
   },
 });

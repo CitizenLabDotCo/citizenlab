@@ -8,7 +8,7 @@ import { PageRuleInput } from './PageRuleInput';
 
 // intl
 import messages from '../../messages';
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 // services & hooks
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
@@ -73,7 +73,24 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
   return (
     <>
       <Box mb="24px">
-        <Warning text={formatMessage(messages.logicWarning)} />
+        <Warning>
+          <FormattedMessage
+            {...messages.logicHelperText}
+            values={{
+              supportPageLink: (
+                <a
+                  href={formatMessage(messages.surveySupportArticle)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FormattedMessage
+                    {...messages.surveySupportArticleLinkText}
+                  />
+                </a>
+              ),
+            }}
+          />
+        </Warning>
       </Box>
       {field.input_type === 'page' ? (
         <PageRuleInput
