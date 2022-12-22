@@ -9,6 +9,7 @@ import BaseEditor from 'components/admin/ContentBuilder/Editor';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // default widgets
+import Title from 'components/admin/ContentBuilder/Widgets/Title';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
@@ -42,6 +43,7 @@ const Editor: React.FC<EditorProps> = ({
         Box,
         Container,
         TwoColumn,
+        Title,
         Text,
         Image,
         WhiteSpace,
