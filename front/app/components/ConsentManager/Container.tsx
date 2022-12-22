@@ -43,7 +43,7 @@ interface State {
 export default class Container extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       isDialogOpen: false,

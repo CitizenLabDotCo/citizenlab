@@ -31,7 +31,7 @@ export default class GetIdeasFilterCounts extends React.Component<
   private queryParameters$: BehaviorSubject<Partial<IQueryParameters> | null>;
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       ideasFilterCounts: undefined,

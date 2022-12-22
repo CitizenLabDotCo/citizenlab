@@ -103,7 +103,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
     background: '#fff',
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       style: null,

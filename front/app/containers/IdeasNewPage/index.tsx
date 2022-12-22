@@ -110,7 +110,7 @@ interface State {}
 class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
 
-  constructor(props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     const initialGlobalState: IIdeasPageGlobalState = {
       title: null,

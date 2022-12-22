@@ -66,7 +66,7 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
   private queryProps$: BehaviorSubject<QueryProps>;
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       unconvertedSerie: undefined,

@@ -130,7 +130,7 @@ class ChildCommentForm extends PureComponent<
   textareaElement: HTMLTextAreaElement;
   subscriptions: Subscription[] = [];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       inputValue: '',

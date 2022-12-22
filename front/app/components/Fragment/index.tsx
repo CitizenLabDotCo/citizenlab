@@ -46,7 +46,7 @@ interface State {
 class Fragment extends PureComponent<Props, State> {
   iframeNode: HTMLIFrameElement;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       iframeHeight: undefined,

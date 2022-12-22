@@ -36,7 +36,7 @@ class ProfileDeletion extends PureComponent<
   Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       dialogOpened: false,

@@ -109,7 +109,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
     mobileRight: undefined,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       opened: false,

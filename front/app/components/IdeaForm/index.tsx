@@ -194,7 +194,7 @@ class IdeaForm extends PureComponent<
   titleInputElement: HTMLInputElement | null;
   descriptionElement: HTMLDivElement | null;
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
     super(props);
     this.state = {
       locale: null,

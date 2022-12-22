@@ -160,7 +160,7 @@ class Invitations extends React.PureComponent<
 > {
   fileInputElement: HTMLInputElement | null;
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       selectedEmails: null,

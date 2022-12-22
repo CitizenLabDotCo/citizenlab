@@ -110,7 +110,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       title: null,

@@ -30,7 +30,7 @@ interface State {
 }
 
 export class NotificationMenu extends React.PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       dropdownOpened: false,

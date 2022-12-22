@@ -27,7 +27,7 @@ class ExportCommentsButton extends React.PureComponent<
   Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       exporting: false,

@@ -187,7 +187,7 @@ class UserTableActions extends PureComponent<
   Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       dropdownOpened: false,

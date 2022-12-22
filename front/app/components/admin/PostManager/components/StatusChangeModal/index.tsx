@@ -23,7 +23,7 @@ interface State {
 class StatusChangeModal extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       initiativeId: null,

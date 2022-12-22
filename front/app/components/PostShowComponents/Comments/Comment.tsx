@@ -88,7 +88,7 @@ class Comment extends PureComponent<Props & WrappedComponentProps, State> {
     last: false,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       editing: false,

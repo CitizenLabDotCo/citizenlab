@@ -39,7 +39,7 @@ export interface State {
 }
 
 export class FormQuestionRow extends PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selectedLocale: null,

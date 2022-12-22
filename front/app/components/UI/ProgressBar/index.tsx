@@ -41,7 +41,7 @@ interface State {
 }
 
 class ProgressBar extends PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       visible: false,

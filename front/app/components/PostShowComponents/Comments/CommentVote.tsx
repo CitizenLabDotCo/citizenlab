@@ -139,7 +139,7 @@ interface State {
 }
 
 class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       voted: false,

@@ -31,7 +31,7 @@ class ProjectFilterDropdown extends PureComponent<
   Props & InjectedLocalized,
   State
 > {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selectedValues: [],

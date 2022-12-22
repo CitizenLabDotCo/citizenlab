@@ -88,7 +88,7 @@ class ProjectGroupsList extends PureComponent<
 > {
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       locale: null,

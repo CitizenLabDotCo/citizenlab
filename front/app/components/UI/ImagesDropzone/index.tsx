@@ -234,7 +234,7 @@ class ImagesDropzone extends PureComponent<
     addImageOverlay: false,
   };
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       urlObjects: {},

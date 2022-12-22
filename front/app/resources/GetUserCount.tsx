@@ -21,7 +21,7 @@ export type GetUserCountChildProps = number | undefined | null | Error;
 export default class GetUserCount extends React.PureComponent<Props, State> {
   private subscription: Subscription;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       count: null,

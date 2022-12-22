@@ -48,7 +48,7 @@ interface State {
 class CountDown extends PureComponent<Props, State> {
   interval: NodeJS.Timeout;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       refresh: Date.now(),

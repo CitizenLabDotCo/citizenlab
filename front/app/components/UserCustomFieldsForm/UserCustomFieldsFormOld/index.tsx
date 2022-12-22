@@ -112,7 +112,7 @@ class UserCustomFieldsForm extends PureComponent<
   submitbuttonElement: HTMLButtonElement | null;
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.subscriptions = [];
     this.state = {
