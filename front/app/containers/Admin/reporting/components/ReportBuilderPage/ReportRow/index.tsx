@@ -7,10 +7,8 @@ import { deleteReport, Report } from 'services/reports';
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
 import EditedText from './EditedText';
 import Button from 'components/UI/Button';
-import ShareReportModal from '../ShareReportModal';
 
 // styling
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -18,6 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import ShareReportButton from './ShareReportButton';
 
 interface Props {
   report: Report;
@@ -26,11 +25,6 @@ interface Props {
 const ReportRow = ({ report }: Props) => {
   const { formatMessage } = useIntl();
   const [deleting, setDeleting] = useState(false);
-
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const openShareModal = () => setModalOpen(true);
-  const closeShareModal = () => setModalOpen(false);
 
   const handleDeleteReport = async () => {
     setDeleting(true);
@@ -56,10 +50,6 @@ const ReportRow = ({ report }: Props) => {
 
   const handleViewReport = () => {
     clHistory.push(`${reportPath}/viewer`);
-  };
-
-  const handleShareReport = () => {
-    openShareModal();
   };
 
   return (
@@ -113,21 +103,8 @@ const ReportRow = ({ report }: Props) => {
           >
             {formatMessage(messages.view)}
           </Button>
-          <Button
-            icon="share"
-            bgColor={colors.teal500}
-            onClick={handleShareReport}
-            disabled={deleting}
-            iconSize="18px"
-          >
-            {formatMessage(messages.share)}
-          </Button>
+          <ShareReportButton reportId={report.id} buttonStyle="primary" />
         </Box>
-        <ShareReportModal
-          open={modalOpen}
-          onClose={closeShareModal}
-          reportPath={`${reportPath}/viewer`}
-        />
       </Box>
     </ListItem>
   );

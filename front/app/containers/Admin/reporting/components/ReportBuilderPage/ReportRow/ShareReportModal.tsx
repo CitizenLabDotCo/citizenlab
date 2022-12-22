@@ -14,7 +14,7 @@ import {
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
@@ -24,11 +24,11 @@ interface Props {
 }
 
 const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
-  const reportUrl = `${window.location.origin}${reportPath}`;
+  const reportViewUrl = `${window.location.origin}${reportPath}/viewer`;
 
   const [linkCopied, setLinkCopied] = useState(false);
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(reportUrl).then(function () {
+    navigator.clipboard.writeText(reportViewUrl).then(function () {
       setLinkCopied(true);
       setTimeout(() => {
         setLinkCopied(false);
@@ -37,7 +37,7 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
   };
 
   const printToPdf = () => {
-    clHistory.push(reportPath);
+    clHistory.push(`${reportPath}/print`);
   };
 
   return (
@@ -51,7 +51,14 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
         </Title>
       }
     >
-      <Box display="flex" flexDirection="column" px="30px" pt="10px" pb="30px">
+      <Box
+        display="flex"
+        flexDirection="column"
+        px="30px"
+        pt="10px"
+        pb="30px"
+        alignItems="flex-start"
+      >
         <Title variant="h3" color="primary" mb="10px">
           <FormattedMessage {...messages.shareAsWebLink} />
         </Title>
@@ -59,10 +66,10 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
         <Text color="textSecondary" fontSize="s" mt="0">
           <FormattedMessage {...messages.shareAsWebLinkDesc} />
         </Text>
-        <Box marginBottom="20px" pr="10px">
+        <Box marginBottom="20px" width="100%">
           <Input
             type={'text'}
-            value={reportUrl}
+            value={reportViewUrl}
             className="secondaryText"
             disabled={true}
           />
@@ -74,6 +81,7 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
           buttonStyle="secondary"
           iconSize="18px"
           onClick={copyToClipboard}
+          width="auto"
         >
           <FormattedMessage {...messages.copyLink} />
         </Button>
@@ -86,7 +94,12 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
           <FormattedMessage {...messages.shareAsWebLinkDesc} />
         </Text>
 
-        <Button mr="8px" buttonStyle="secondary" onClick={printToPdf}>
+        <Button
+          mr="8px"
+          buttonStyle="secondary"
+          onClick={printToPdf}
+          width="auto"
+        >
           <FormattedMessage {...messages.printToPdf} />
         </Button>
       </Box>
