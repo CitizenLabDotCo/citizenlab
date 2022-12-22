@@ -16,8 +16,8 @@ import Error from 'components/UI/Error';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Controller, useFormContext } from 'react-hook-form';
-import { LogicType, RuleType } from '../utils';
-import { IFlatCustomField } from 'services/formCustomFields';
+import { RuleType } from '../utils';
+import { IFlatCustomField, LogicType } from 'services/formCustomFields';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
 type RuleInputProps = {
@@ -41,8 +41,9 @@ export const RuleInput = ({
   validationError,
 }: RuleInputProps) => {
   const { setValue, watch, trigger, control } = useFormContext();
-  const rules: RuleType[] = (watch(name) as LogicType).rules;
-  const logic: LogicType = watch(name);
+  const field: IFlatCustomField = watch(name);
+  const logic: LogicType = field.logic;
+  const rules = logic.rules;
   const fields: IFlatCustomField[] = watch('customFields');
   const initialValue: RuleType | undefined = rules
     ? rules.find((rule) => rule.if === answer.key)
@@ -80,7 +81,9 @@ export const RuleInput = ({
         logic.rules = [newRule];
       }
       // Update rule variable
-      setValue(name, logic);
+      const required =
+        logic.rules && logic.rules.length > 0 ? true : field.required;
+      setValue(name, { ...field, logic, required });
       trigger();
     }
   };
@@ -91,7 +94,9 @@ export const RuleInput = ({
       logic.rules = logic.rules.filter((rule) => rule.if !== answer.key);
     }
     // Update rule variable
-    setValue(name, logic);
+    const required =
+      logic.rules && logic.rules.length > 0 ? true : field.required;
+    setValue(name, { ...field, logic, required });
     trigger();
   };
 

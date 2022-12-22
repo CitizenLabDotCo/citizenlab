@@ -222,8 +222,13 @@ export default defineMessages({
     defaultMessage: 'Invalid logic',
   },
   // Logic Settings
-  logicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.logicHelperText',
+  questionLogicHelperText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText',
+    defaultMessage:
+      'If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
+  },
+  pageLogicHelperText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pageLogicHelperText',
     defaultMessage:
       'If no logic is added to an answer, the survey will follow its normal flow. For more information, visit {supportPageLink}',
   },

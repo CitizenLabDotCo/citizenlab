@@ -72,42 +72,64 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
 
   return (
     <>
-      <Box mb="24px">
-        <Warning>
-          <FormattedMessage
-            {...messages.logicHelperText}
-            values={{
-              supportPageLink: (
-                <a
-                  href={formatMessage(messages.surveySupportArticle)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FormattedMessage
-                    {...messages.surveySupportArticleLinkText}
-                  />
-                </a>
-              ),
-            }}
-          />
-        </Warning>
-      </Box>
       {field.input_type === 'page' ? (
-        <PageRuleInput
-          fieldId={field.temp_id || field.id}
-          validationError={validationError}
-          name={`customFields.${field.index}.logic`}
-          pages={pageOptions}
-        />
+        <>
+          <Box mb="24px">
+            <Warning>
+              <FormattedMessage
+                {...messages.pageLogicHelperText}
+                values={{
+                  supportPageLink: (
+                    <a
+                      href={formatMessage(messages.surveySupportArticle)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FormattedMessage
+                        {...messages.surveySupportArticleLinkText}
+                      />
+                    </a>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+          <PageRuleInput
+            fieldId={field.temp_id || field.id}
+            validationError={validationError}
+            name={`customFields.${field.index}.logic`}
+            pages={pageOptions}
+          />
+        </>
       ) : (
         <>
+          <Box mb="24px">
+            <Warning>
+              <FormattedMessage
+                {...messages.questionLogicHelperText}
+                values={{
+                  supportPageLink: (
+                    <a
+                      href={formatMessage(messages.surveySupportArticle)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FormattedMessage
+                        {...messages.surveySupportArticleLinkText}
+                      />
+                    </a>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
           {answers &&
             answers.map((answer) => (
               <Box key={answer.key}>
                 <RuleInput
                   fieldId={field.temp_id || field.id}
                   validationError={validationError}
-                  name={`customFields.${field.index}.logic`}
+                  name={`customFields.${field.index}`}
                   answer={answer}
                   pages={pageOptions}
                 />
