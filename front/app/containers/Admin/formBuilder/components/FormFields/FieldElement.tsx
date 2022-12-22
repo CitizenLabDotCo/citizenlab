@@ -240,8 +240,16 @@ export const FieldElement = (props: Props) => {
             {field.required && (
               <Box mt="auto" mb="auto" ml="12px">
                 {' '}
-                <Badge className="inverse" color={colors.primary}>
-                  <FormattedMessage {...messages.required} />
+                <Badge className="inverse" color={colors.green100}>
+                  <Text
+                    color="green500"
+                    py="0px"
+                    my="0px"
+                    fontSize="xs"
+                    fontWeight="bold"
+                  >
+                    <FormattedMessage {...messages.required} />
+                  </Text>
                 </Badge>
               </Box>
             )}
