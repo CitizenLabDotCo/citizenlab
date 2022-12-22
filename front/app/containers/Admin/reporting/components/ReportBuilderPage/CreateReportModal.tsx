@@ -68,6 +68,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           mb="40px"
           disabled={reportTitleTooShort || loading}
           processing={loading}
+          data-testid="create-report-button"
           onClick={onCreateReport}
         >
           <FormattedMessage {...messages.emptyStateButtonText} />

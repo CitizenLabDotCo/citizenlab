@@ -22,7 +22,7 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-const ReportBuilder = () => {
+const ReportBuilderPage = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const reports = useReports();
   const [modalOpen, setModalOpen] = useState(false);
@@ -93,4 +93,4 @@ const ReportBuilder = () => {
   );
 };
 
-export default ReportBuilder;
+export default ReportBuilderPage;
