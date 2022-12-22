@@ -5,6 +5,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useReportLayout from 'hooks/useReportLayout';
+import { useIntl } from 'utils/cl-intl';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -22,7 +23,7 @@ import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
 
 // templates
-import getProjectTemplate from '../../components/ReportBuilder/Templates/projectTemplate';
+import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -43,6 +44,7 @@ interface Props {
 }
 
 const ReportBuilder = ({ reportId }: Props) => {
+  const { formatMessage } = useIntl();
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -117,10 +119,6 @@ const ReportBuilder = ({ reportId }: Props) => {
     return previewData;
   }, [draftData, selectedLocale]);
 
-  const template = useMemo(() => {
-    return getProjectTemplate({ reportId });
-  }, [reportId]);
-
   if (!selectedLocale) return null;
 
   const initialData = isNilOrError(reportLayout)
@@ -163,7 +161,9 @@ const ReportBuilder = ({ reportId }: Props) => {
                 width="100%"
                 height="100%"
               >
-                <Frame editorData={initialData}>{template}</Frame>
+                <Frame editorData={initialData}>
+                  <ProjectTemplate reportId={reportId} />
+                </Frame>
               </Box>
             </Box>
           </StyledRightColumn>
