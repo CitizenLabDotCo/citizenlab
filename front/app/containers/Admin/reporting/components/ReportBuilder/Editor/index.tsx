@@ -14,13 +14,16 @@ import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-// Report builder widgets
+// report builder widgets
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
+
+// templates
+import ProjectTemplate from '../Templates/ProjectTemplate';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -48,6 +51,7 @@ const Editor: React.FC<EditorProps> = ({
         VisitorsTrafficSourcesWidget,
         AgeWidget,
         GenderWidget,
+        ProjectTemplate,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

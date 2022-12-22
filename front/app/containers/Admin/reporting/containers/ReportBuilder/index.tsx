@@ -21,6 +21,9 @@ import {
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
 
+// templates
+import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
+
 // styling
 import { stylingConsts } from 'utils/styleUtils';
 
@@ -156,7 +159,9 @@ const ReportBuilder = ({ reportId }: Props) => {
                 width="100%"
                 height="100%"
               >
-                <Frame editorData={initialData} />
+                <Frame editorData={initialData}>
+                  <ProjectTemplate reportId={reportId} />
+                </Frame>
               </Box>
             </Box>
           </StyledRightColumn>

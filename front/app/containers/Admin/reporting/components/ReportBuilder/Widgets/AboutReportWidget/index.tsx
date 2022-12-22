@@ -30,7 +30,7 @@ import { IPhaseData } from 'services/phases';
 
 type AboutReportWidgetProps = {
   reportId: string;
-  projectId: string | undefined;
+  projectId?: string;
 };
 
 // Return localised start & dates for project from phases
