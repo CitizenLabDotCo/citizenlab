@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -51,6 +51,8 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const locale = useLocale();
   const reportLayout = useReportLayout(reportId);
+  const [search] = useSearchParams();
+  const projectId = search.get('projectId');
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -160,7 +162,12 @@ const ReportBuilder = ({ reportId }: Props) => {
                 height="100%"
               >
                 <Frame editorData={initialData}>
-                  <ProjectTemplate reportId={reportId} />
+                  {projectId && (
+                    <ProjectTemplate
+                      reportId={reportId}
+                      projectId={projectId}
+                    />
+                  )}
                 </Frame>
               </Box>
             </Box>
