@@ -1,5 +1,6 @@
 // services
 import {
+  ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
@@ -27,38 +28,17 @@ export const getFieldBackgroundColor = (
   selectedFieldId: string | undefined,
   field: IFlatCustomField
 ) => {
-  if (field.input_type === 'page') {
-    return isFieldSelected(selectedFieldId, field.id)
-      ? colors.primary
-      : rgba(colors.coolGrey300, 0.15);
+  if (isFieldSelected(selectedFieldId, field.id)) {
+    return rgba(colors.tealLight, 0.15);
   }
-  return undefined;
+
+  return field.input_type === 'page'
+    ? rgba(colors.coolGrey300, 0.15)
+    : undefined;
 };
 
-export const getTitleColor = (
-  selectedFieldId: string | undefined,
-  field: IFlatCustomField
-) => {
-  if (
-    field.input_type === 'page' &&
-    isFieldSelected(selectedFieldId, field.id)
-  ) {
-    return 'white';
-  }
-  return 'grey800';
-};
-
-export const getIndexTitleColor = (
-  selectedFieldId: string | undefined,
-  field: IFlatCustomField
-) => {
-  if (
-    field.input_type === 'page' &&
-    isFieldSelected(selectedFieldId, field.id)
-  ) {
-    return 'white';
-  }
-  return field.input_type === 'page' ? 'blue500' : 'teal400';
+export const getIndexTitleColor = (inputType: ICustomFieldInputType) => {
+  return inputType === 'page' ? 'blue500' : 'teal400';
 };
 
 export const getIndexForTitle = (

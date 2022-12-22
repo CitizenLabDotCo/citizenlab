@@ -10,7 +10,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   isFieldSelected,
   getFieldBackgroundColor,
-  getTitleColor,
   getIndexForTitle,
   getIndexTitleColor,
   getLinearScaleOptions,
@@ -142,13 +141,13 @@ export const FieldElement = (props: Props) => {
                 <Icon
                   ml="28px"
                   width="12px"
-                  fill={getIndexTitleColor(selectedFieldId, field)}
+                  fill={getIndexTitleColor(field.input_type)}
                   name="sort"
                   pb="4px"
                 />
                 <Text
                   as="span"
-                  color={getIndexTitleColor(selectedFieldId, field)}
+                  color={getIndexTitleColor(field.input_type)}
                   fontSize="base"
                   mt="auto"
                   mb="auto"
@@ -169,7 +168,7 @@ export const FieldElement = (props: Props) => {
                   fontSize="base"
                   mt="auto"
                   mb="auto"
-                  color={getTitleColor(selectedFieldId, field)}
+                  color="grey800"
                 >
                   <T value={field.title_multiloc} />
                 </Text>
@@ -243,7 +242,7 @@ export const FieldElement = (props: Props) => {
                         formatMessage(messages.surveyEnd),
                         formatMessage(messages.page)
                       )}
-                      textColor={getIndexTitleColor(selectedFieldId, field)}
+                      textColor={getIndexTitleColor(field.input_type)}
                     />
                   )}
                 </Box>
