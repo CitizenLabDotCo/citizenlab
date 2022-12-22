@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -16,7 +16,7 @@ global.URL.createObjectURL = jest.fn();
 Element.prototype.scrollTo = jest.fn();
 Element.prototype.scrollIntoView = jest.fn();
 
-const AllTheProviders = ({ children }) => {
+const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (
     <HistoryRouter history={history}>
       <ThemeProvider theme={getTheme(null)}>
