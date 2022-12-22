@@ -57,7 +57,7 @@ export const getIndexTitleColor = (
   ) {
     return 'white';
   }
-  return 'teal300';
+  return field.input_type === 'page' ? 'blue500' : 'teal400';
 };
 
 export const getIndexForTitle = (

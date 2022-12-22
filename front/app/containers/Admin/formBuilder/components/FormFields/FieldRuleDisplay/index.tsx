@@ -8,6 +8,8 @@ import {
   Icon,
   Badge,
 } from '@citizenlab/cl2-component-library';
+
+// Intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -16,12 +18,14 @@ type FieldRuleDisplayProps = {
   targetPage: string | undefined;
   textColor?: keyof typeof colors;
   isRuleValid: boolean;
+  isPageRule?: boolean;
 };
 
 export const FieldRuleDisplay = ({
   answerTitle,
   targetPage,
   isRuleValid,
+  isPageRule,
   textColor = 'coolGrey600',
 }: FieldRuleDisplayProps) => {
   if (answerTitle && targetPage) {
@@ -39,15 +43,27 @@ export const FieldRuleDisplay = ({
           my="auto"
         />
         <Text my="auto" pl="8px" pr="4px" color={textColor} fontSize="s">
-          {answerTitle}
+          {isPageRule ? (
+            <FormattedMessage {...messages.nextPageLabel} />
+          ) : (
+            answerTitle
+          )}
         </Text>
-        <Icon
-          fill={isRuleValid ? colors.teal300 : colors.error}
-          width="16px"
-          name="arrow-right"
+        {!isPageRule && (
+          <Icon
+            fill={isRuleValid ? colors.teal300 : colors.error}
+            width="16px"
+            name="arrow-right"
+            my="auto"
+          />
+        )}
+        <Text
           my="auto"
-        />
-        <Text my="auto" px="4px" color={textColor} fontSize="s">
+          px="4px"
+          color={textColor}
+          fontSize="s"
+          fontWeight={isPageRule ? 'bold' : undefined}
+        >
           {targetPage}
         </Text>
         {!isRuleValid && (

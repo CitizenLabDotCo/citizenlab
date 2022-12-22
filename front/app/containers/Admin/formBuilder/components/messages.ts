@@ -239,4 +239,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.pageRuleLabel',
     defaultMessage: 'Next page is:',
   },
+  nextPageLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.nextPageLabel',
+    defaultMessage: 'Next:',
+  },
 });

@@ -228,6 +228,7 @@ export const FieldElement = (props: Props) => {
                     })}
                   {field.input_type === 'page' && (
                     <FieldRuleDisplay
+                      isPageRule
                       isRuleValid={isPageRuleValid(
                         formCustomFields,
                         field.temp_id || field.id,
