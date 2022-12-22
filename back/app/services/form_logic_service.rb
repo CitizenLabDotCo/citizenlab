@@ -25,7 +25,7 @@ class FormLogicService
 
   def valid?
     fields.all? do |field|
-      next true if no_logic?(field)
+      next true unless field.logic?
 
       if field.page?
         valid_page_logic_structure?(field) && valid_next_page?(field)
@@ -38,10 +38,6 @@ class FormLogicService
   private
 
   attr_reader :fields, :field_index, :option_index
-
-  def no_logic?(field)
-    field.logic.blank? || field.logic == { 'rules' => [] }
-  end
 
   def valid_field_logic_structure?(field)
     logic = field.logic
