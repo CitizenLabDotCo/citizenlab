@@ -9,7 +9,6 @@ import EditedText from './EditedText';
 import Button from 'components/UI/Button';
 
 // styling
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -17,6 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import ShareReportButton from './ShareReportButton';
 
 interface Props {
   report: Report;
@@ -42,16 +42,14 @@ const ReportRow = ({ report }: Props) => {
     setDeleting(false);
   };
 
+  const reportPath = `/admin/reporting/report-builder/${report.id}`;
+
   const handleEditReport = () => {
-    clHistory.push(`/admin/reporting/report-builder/${report.id}/editor`);
+    clHistory.push(`${reportPath}/editor`);
   };
 
   const handleViewReport = () => {
-    clHistory.push(`/admin/reporting/report-builder/${report.id}/viewer`);
-  };
-
-  const handleShareReport = () => {
-    // TODO
+    clHistory.push(`${reportPath}/viewer`);
   };
 
   return (
@@ -105,15 +103,7 @@ const ReportRow = ({ report }: Props) => {
           >
             {formatMessage(messages.view)}
           </Button>
-          <Button
-            icon="share"
-            bgColor={colors.teal500}
-            onClick={handleShareReport}
-            disabled={deleting}
-            iconSize="18px"
-          >
-            {formatMessage(messages.share)}
-          </Button>
+          <ShareReportButton reportId={report.id} buttonStyle="primary" />
         </Box>
       </Box>
     </ListItem>

@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
+import PrintReport from './containers/PrintReport';
 
 const ReportingWrapper = lazy(() => import('.'));
 const ReportBuilderPage = lazy(() => import('./containers/ReportBuilderPage'));
@@ -37,6 +38,14 @@ const reportingRoutes = () => {
         element: (
           <PageLoading>
             <FullScreenReport />
+          </PageLoading>
+        ),
+      },
+      {
+        path: 'report-builder/:reportId/print',
+        element: (
+          <PageLoading>
+            <PrintReport />
           </PageLoading>
         ),
       },
