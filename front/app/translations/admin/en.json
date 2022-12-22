@@ -1156,6 +1156,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.multipleChoice": "Multiple choice",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText": "Multiple choice - choose many",
   "app.containers.AdminPage.ProjectEdit.survey.newField": "New field",
+  "app.containers.AdminPage.ProjectEdit.survey.nextPageLabel": "Next:",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses": "No survey responses yet",
   "app.containers.AdminPage.ProjectEdit.survey.number": "Number",
   "app.containers.AdminPage.ProjectEdit.survey.open": "Open",
