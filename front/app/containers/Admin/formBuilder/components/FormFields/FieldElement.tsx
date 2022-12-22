@@ -227,16 +227,6 @@ export const FieldElement = (props: Props) => {
             </Box>
           </Box>
           <Box pr="32px" display="flex" height="100%" alignContent="center">
-            {!isNilOrError(field.input_type) && field.input_type !== 'page' && (
-              <Box my="auto" ml="12px">
-                {' '}
-                <Badge className="inverse" color={colors.coolGrey600}>
-                  <FormattedMessage
-                    {...getTranslatedFieldType(field.input_type)}
-                  />
-                </Badge>
-              </Box>
-            )}
             {field.required && (
               <Box mt="auto" mb="auto" ml="12px">
                 {' '}
@@ -250,6 +240,16 @@ export const FieldElement = (props: Props) => {
                   >
                     <FormattedMessage {...messages.required} />
                   </Text>
+                </Badge>
+              </Box>
+            )}
+            {!isNilOrError(field.input_type) && field.input_type !== 'page' && (
+              <Box my="auto" ml="12px">
+                {' '}
+                <Badge className="inverse" color={colors.coolGrey600}>
+                  <FormattedMessage
+                    {...getTranslatedFieldType(field.input_type)}
+                  />
                 </Badge>
               </Box>
             )}
