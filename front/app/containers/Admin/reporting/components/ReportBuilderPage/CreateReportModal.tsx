@@ -64,15 +64,21 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   };
 
   const onCreateReport = async () => {
-    if (reportTitleTooShort) return;
+    if (blockSubmit) return;
     setLoading(true);
 
     try {
       const report = await createReport(reportTitle);
       setLoading(false);
-      clHistory.push(
-        `/admin/reporting/report-builder/${report.data.id}/editor`
-      );
+
+      const route = '/admin/reporting/report-builder';
+      const path = `${route}/${report.data.id}/editor`;
+      const params =
+        template === 'project' && selectedProject
+          ? `?projectId=${selectedProject}`
+          : '';
+
+      clHistory.push(path + params);
     } catch {
       // TODO handle error
       setLoading(false);
