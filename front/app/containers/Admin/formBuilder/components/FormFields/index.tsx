@@ -92,7 +92,7 @@ const FormFields = ({
   });
 
   return (
-    <Box py="32px" height="100%">
+    <Box height="100%">
       <DragAndDrop
         onDragEnd={(result: DragAndDropResult) => {
           handleDragEnd(result, nestedPageData);
