@@ -7,6 +7,7 @@ import {
 
 // styling
 import { colors } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -29,7 +30,7 @@ export const getFieldBackgroundColor = (
   if (field.input_type === 'page') {
     return isFieldSelected(selectedFieldId, field.id)
       ? colors.primary
-      : colors.background;
+      : rgba(colors.coolGrey300, 0.15);
   }
   return undefined;
 };

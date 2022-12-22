@@ -34,6 +34,7 @@ import { FlexibleRow } from '../FlexibleRow';
 
 // styling
 import styled from 'styled-components';
+import { rgba } from 'polished';
 
 // hooks and services
 import {
@@ -48,6 +49,7 @@ import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 const FormFieldsContainer = styled(Box)`
   &:hover {
     cursor: pointer;
+    background: ${rgba(colors.tealLight, 0.25)};
   }
 `;
 
