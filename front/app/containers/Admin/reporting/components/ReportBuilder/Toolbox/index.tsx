@@ -7,9 +7,12 @@ import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
-import AnalyticsChartWidget from '../Widgets/AnalyticsChartWidget';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
+import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
+import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
+import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -22,7 +25,6 @@ import moment from 'moment';
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
-import chartMessages from '../Widgets/AnalyticsChartWidget/messages';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -117,58 +119,58 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           <DraggableElement
             id="e2e-draggable-visitors-timeline-widget"
             component={
-              <AnalyticsChartWidget
-                chartType="VisitorsCard"
-                title={formatMessage(chartMessages.visitorTimeline)}
+              <VisitorsWidget
+                title={formatMessage(VisitorsWidget.craft.custom.title)}
                 projectId={undefined}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(chartMessages.visitorTimeline)}
+            label={formatMessage(VisitorsWidget.craft.custom.title)}
           />
           <DraggableElement
             id="e2e-draggable-visitors-traffic-sources-widget"
             component={
-              <AnalyticsChartWidget
-                chartType="VisitorsTrafficSourcesCard"
-                title={formatMessage(chartMessages.trafficSources)}
+              <VisitorsTrafficSourcesWidget
+                title={formatMessage(
+                  VisitorsTrafficSourcesWidget.craft.custom.title
+                )}
                 projectId={undefined}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(chartMessages.trafficSources)}
+            label={formatMessage(
+              VisitorsTrafficSourcesWidget.craft.custom.title
+            )}
           />
           <DraggableElement
             id="e2e-draggable-users-by-gender-widget"
             component={
-              <AnalyticsChartWidget
-                chartType="GenderChart"
-                title={formatMessage(chartMessages.usersByGender)}
+              <GenderWidget
+                title={formatMessage(GenderWidget.craft.custom.title)}
                 projectId={undefined}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(chartMessages.usersByGender)}
+            label={formatMessage(GenderWidget.craft.custom.title)}
           />
           <DraggableElement
             id="e2e-draggable-users-by-age-widget"
             component={
-              <AnalyticsChartWidget
-                chartType="AgeChart"
-                title={formatMessage(chartMessages.usersByAge)}
+              <AgeWidget
+                title={formatMessage(AgeWidget.craft.custom.title)}
                 projectId={undefined}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(chartMessages.usersByAge)}
+            label={formatMessage(AgeWidget.craft.custom.title)}
           />
           {
             // TODO: CL-2307 Only show this if there are surveys in the platform
