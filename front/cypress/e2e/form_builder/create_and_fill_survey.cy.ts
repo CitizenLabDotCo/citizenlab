@@ -486,7 +486,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-modal-container').should('have.length', 0);
   });
 
-  it('shows validation errors when previous pages are referenced', () => {
+  it('shows validation errors when current page or previous pages are referenced', () => {
     const chooseOneOption1 = randomString();
     const chooseOneOption2 = randomString();
     const question2Title = randomString();
@@ -501,6 +501,13 @@ describe('Survey builder', () => {
 
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
+    // Add second page
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-page-title-multiloc').type(page2Title, { force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
+
+    // Add multiple choice question to the second page
     cy.get('[data-cy="e2e-single-choice"]').click();
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
@@ -508,12 +515,6 @@ describe('Survey builder', () => {
     cy.get('#e2e-option-input-0').type(chooseOneOption1, { force: true });
     cy.get('[data-cy="e2e-add-answer"]').click();
     cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
-
-    // Add second page
-    cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page2Title, { force: true });
-    cy.get('[data-cy="e2e-short-answer"]').click();
-    cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
 
     // Add third page
     cy.get('[data-cy="e2e-page"]').click();
@@ -529,7 +530,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-rule-input-select"]').should('exist');
     // Add rule to go to survey end
     cy.get('[data-cy="e2e-rule-input-select"]').get('select').select(4);
-    // Add rule to go to page 1 which should show an error
+    // Add rule to go to page 1 which should show an error since it is the previous page
     cy.get('[data-cy="e2e-add-rule-button"]').first().click();
     cy.get('[data-cy="e2e-rule-input-select"]').get('select').eq(1).select(1);
 
@@ -547,6 +548,12 @@ describe('Survey builder', () => {
       .contains('Survey end')
       .should('exist');
 
+    // Check that an error message is shown
+    cy.get('[data-testid="error-message"]').should('exist');
+    cy.get('[data-cy="e2e-rule-input-error"]').should('exist');
+
+    // Add a rule to go to page 2 which should not show an error since it is the same page
+    cy.get('[data-cy="e2e-rule-input-select"]').get('select').eq(1).select(2);
     // Check that an error message is shown
     cy.get('[data-testid="error-message"]').should('exist');
     cy.get('[data-cy="e2e-rule-input-error"]').should('exist');
