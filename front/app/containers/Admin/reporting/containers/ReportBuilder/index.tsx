@@ -49,6 +49,8 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
+  const [initialized, setInitialized] = useState(false);
+  const [initialData, setInitialData] = useState<SerializedNodes | undefined>();
   const locale = useLocale();
   const reportLayout = useReportLayout(reportId);
   const [search] = useSearchParams();
@@ -119,11 +121,21 @@ const ReportBuilder = ({ reportId }: Props) => {
     return previewData;
   }, [draftData, selectedLocale]);
 
-  if (!selectedLocale) return null;
+  useEffect(() => {
+    if (initialized) return;
+    if (!selectedLocale) return;
+    if (reportLayout === undefined) return;
 
-  const initialData = isNilOrError(reportLayout)
-    ? undefined
-    : reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
+    if (!isNilOrError(reportLayout)) {
+      setInitialData(
+        reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale]
+      );
+    }
+
+    setInitialized(true);
+  });
+
+  if (!selectedLocale) return null;
 
   return (
     <FullscreenContentBuilder
