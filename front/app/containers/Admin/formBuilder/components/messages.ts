@@ -230,7 +230,7 @@ export default defineMessages({
   pageLogicHelperText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.pageLogicHelperText',
     defaultMessage:
-      'If no logic is added to an answer, the survey will follow its normal flow. For more information, visit {supportPageLink}',
+      'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
   },
   goToPageInputLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.goToPageInputLabel',
