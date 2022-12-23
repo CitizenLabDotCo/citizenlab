@@ -266,7 +266,12 @@ export const FieldElement = (props: Props) => {
               <Box my="auto" ml="12px">
                 {' '}
                 <Badge className="inverse" color={colors.grey200}>
-                  <Box display="flex" flexDirection="row" alignItems="center">
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    flexWrap="nowrap"
+                  >
                     <Icon
                       fill={colors.coolGrey600}
                       width="16px"
@@ -280,6 +285,7 @@ export const FieldElement = (props: Props) => {
                       fontSize="xs"
                       fontWeight="bold"
                       ml="4px"
+                      whiteSpace="nowrap"
                     >
                       <FormattedMessage
                         {...getTranslatedFieldType(field.input_type)}
