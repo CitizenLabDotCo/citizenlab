@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 import { TFieldName } from 'components/UI/Error';
 import {
   appGraphqlLocalePairs,
@@ -71,7 +72,7 @@ export interface ITab {
 export type CellConfiguration<ComponentProps> = {
   name: string;
   onChange?: (event: unknown) => void;
-  onClick?: (event: unknown) => void;
+  onClick?: (event: MouseEvent) => void;
   featureFlag?: TAppConfigurationSetting;
   cellProps?: TableCellProps;
   Component: FC<ComponentProps>;

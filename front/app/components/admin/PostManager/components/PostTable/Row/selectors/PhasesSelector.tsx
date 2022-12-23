@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { xor } from 'lodash-es';
 import { IPhaseData, canContainIdeas } from 'services/phases';
 import { Label, Popup } from 'semantic-ui-react';
@@ -11,11 +11,11 @@ type Props = {
 };
 
 class PhasesSelector extends React.PureComponent<Props> {
-  isActive = (phaseId) => {
+  isActive = (phaseId: string) => {
     return this.props.selectedPhases.indexOf(phaseId) >= 0;
   };
 
-  handlePhaseClick = (phase: IPhaseData) => (event) => {
+  handlePhaseClick = (phase: IPhaseData) => (event: MouseEvent) => {
     event.stopPropagation();
     if (this.isEnabled(phase)) {
       const newSelectedPhases = xor(this.props.selectedPhases, [phase.id]);
