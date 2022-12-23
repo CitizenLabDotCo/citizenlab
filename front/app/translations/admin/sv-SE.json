@@ -435,7 +435,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBanner": "Hero-banderoll",
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBannerTooltip": "Anpassa sidans banderollbild och -text.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Projektlista",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Show the projects based on your page settings. You can preview the projects that will be shown.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Visa projekten baserat på dina sidinställningar. Du kan förhandsgranska projekten som visas.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Övre informationsavsnitt",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Lägg till ditt eget innehåll i det anpassningsbara avsnittet högst upp på sidan.",
   "app.containers.Admin.PagesAndMenu.addButton": "Lägg till i navigeringsfältet",
