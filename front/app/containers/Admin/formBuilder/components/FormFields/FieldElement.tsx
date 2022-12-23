@@ -46,7 +46,7 @@ import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 const FormFieldsContainer = styled(Box)`
   &:hover {
     cursor: pointer;
-    background: ${rgba(colors.tealLight, 0.25)};
+    background: ${rgba(colors.tealLight, 0.2)};
   }
 `;
 

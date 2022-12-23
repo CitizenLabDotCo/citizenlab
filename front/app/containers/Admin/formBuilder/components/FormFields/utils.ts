@@ -31,7 +31,7 @@ export const getFieldBackgroundColor = (
   hasErrors: boolean
 ) => {
   if (isFieldSelected(selectedFieldId, field.id)) {
-    return rgba(colors.tealLight, 0.15);
+    return rgba(colors.tealLight, 0.7);
   } else if (hasErrors) {
     return colors.errorLight;
   } else if (field.input_type === 'page') {
