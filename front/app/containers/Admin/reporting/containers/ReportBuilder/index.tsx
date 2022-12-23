@@ -133,7 +133,7 @@ const ReportBuilder = ({ reportId }: Props) => {
     }
 
     setInitialized(true);
-  });
+  }, [initialized, selectedLocale, reportLayout]);
 
   if (!selectedLocale) return null;
 
