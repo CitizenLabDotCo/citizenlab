@@ -4,6 +4,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
+  QuestionRuleType,
 } from 'services/formCustomFields';
 
 // styling
@@ -15,7 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { Locale } from 'typings';
-import { RuleType, surveyEndOption } from '../FormBuilderSettings/utils';
+import { surveyEndOption } from '../FormBuilderSettings/utils';
 
 export const isFieldSelected = (
   selectedFieldId: string | undefined,
@@ -68,7 +69,7 @@ export const getOptionRule = (
       (rule) => rule.if === option.id || rule.if === option.temp_id
     );
     if (rule && rule.if && rule.goto_page_id) {
-      return rule as RuleType;
+      return rule as QuestionRuleType;
     }
   }
   return undefined;

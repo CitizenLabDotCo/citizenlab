@@ -24,11 +24,10 @@ export type IOptionsType = {
   temp_id?: string;
 };
 
+export type QuestionRuleType = { if: string | number; goto_page_id: string };
+
 export type LogicType = {
-  rules?: {
-    if: string | number;
-    goto_page_id: string;
-  }[];
+  rules?: QuestionRuleType[];
   next_page_id?: string;
 };
 

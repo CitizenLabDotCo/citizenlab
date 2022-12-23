@@ -16,8 +16,11 @@ import Error from 'components/UI/Error';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Controller, useFormContext } from 'react-hook-form';
-import { RuleType } from '../utils';
-import { IFlatCustomField, LogicType } from 'services/formCustomFields';
+import {
+  IFlatCustomField,
+  LogicType,
+  QuestionRuleType,
+} from 'services/formCustomFields';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
 type QuestionRuleInputProps = {
@@ -45,7 +48,7 @@ export const QuestionRuleInput = ({
   const logic: LogicType = field.logic;
   const rules = logic.rules;
   const fields: IFlatCustomField[] = watch('customFields');
-  const initialValue: RuleType | undefined = rules
+  const initialValue: QuestionRuleType | undefined = rules
     ? rules.find((rule) => rule.if === answer.key)
     : undefined;
   const [ruleIsInvalid, setRuleIsInvalid] = useState(

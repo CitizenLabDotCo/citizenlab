@@ -1,10 +1,13 @@
-import { RuleType } from 'containers/Admin/formBuilder/components/FormBuilderSettings/utils';
-import { IFlatCustomField, LogicType } from 'services/formCustomFields';
+import {
+  IFlatCustomField,
+  LogicType,
+  QuestionRuleType,
+} from 'services/formCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 import { object } from 'yup';
 
 export const isRuleValid = (
-  rule: RuleType | undefined,
+  rule: QuestionRuleType | undefined,
   fieldBeingValidatedId: string,
   fields: IFlatCustomField[]
 ) => {
@@ -53,7 +56,7 @@ const validateLogic = (message: string) => {
         return schema.test(
           'rules reference prior pages',
           message,
-          (value: { rules: RuleType[] }, obj) => {
+          (value: { rules: QuestionRuleType[] }, obj) => {
             // Extract current state of customFields
             const fields = obj.from[2].value.customFields;
 

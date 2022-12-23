@@ -14,7 +14,7 @@ export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
 }
 
-export type RuleType = { if: string | number; goto_page_id: string };
+// export type RuleType = { if: string | number; goto_page_id: string };
 
 export const surveyEndOption = 'survey_end';
 
