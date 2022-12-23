@@ -29,6 +29,8 @@ export const FieldRuleDisplay = ({
   textColor = 'coolGrey600',
 }: FieldRuleDisplayProps) => {
   if (answerTitle && targetPage) {
+    const answer =
+      answerTitle.length > 60 ? `${answerTitle.slice(0, 60)}...` : answerTitle;
     return (
       <Box
         display="flex"
@@ -46,7 +48,7 @@ export const FieldRuleDisplay = ({
           {isPageRule ? (
             <FormattedMessage {...messages.nextPageLabel} />
           ) : (
-            answerTitle
+            answer
           )}
         </Text>
         {!isPageRule && (
