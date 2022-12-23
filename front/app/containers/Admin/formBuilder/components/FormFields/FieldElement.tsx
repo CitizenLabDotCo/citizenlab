@@ -6,7 +6,6 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import {
   getFieldBackgroundColor,
   getIndexForTitle,
@@ -263,7 +262,7 @@ export const FieldElement = (props: Props) => {
                 </Badge>
               </Box>
             )}
-            {!isNilOrError(field.input_type) && field.input_type !== 'page' && (
+            {field.input_type !== 'page' && (
               <Box my="auto" ml="12px">
                 {' '}
                 <Badge className="inverse" color={colors.grey200}>
