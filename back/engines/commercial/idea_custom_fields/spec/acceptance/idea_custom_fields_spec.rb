@@ -325,6 +325,56 @@ resource 'Idea Custom Fields' do
           })
         end
 
+        example '[error] logic on non-required field' do
+          page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
+          field_to_update = create(
+            :custom_field_linear_scale,
+            resource: custom_form,
+            title_multiloc: { 'en' => 'Question 1 on page 1' }
+          )
+          page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
+          request = {
+            custom_fields: [
+              {
+                id: page1.id,
+                input_type: 'page',
+                title_multiloc: page1.title_multiloc,
+                description_multiloc: page1.description_multiloc,
+                required: false,
+                enabled: true
+              },
+              {
+                id: field_to_update.id,
+                title_multiloc: { 'en' => 'New title' },
+                required: false,
+                enabled: true,
+                logic: { rules: [{ if: 1, goto_page_id: page2.id }] }
+              },
+              {
+                id: page2.id,
+                input_type: 'page',
+                title_multiloc: page2.title_multiloc,
+                description_multiloc: page2.description_multiloc,
+                required: false,
+                enabled: true
+              }
+            ]
+          }
+          do_request request
+
+          assert_status 422
+          json_response = json_parse(response_body)
+          expect(json_response[:errors]).to eq({
+            '0': {},
+            '1': {
+              logic: [
+                { error: 'only_allowed_on_required_fields' }
+              ]
+            },
+            '2': {}
+          })
+        end
+
         example 'Replace logic of a field' do
           page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
           field_to_update = create(
@@ -334,11 +384,7 @@ resource 'Idea Custom Fields' do
           )
           page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
           page3 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 3' }, description_multiloc: { 'en' => 'Page 3 description' })
-          field_to_update.update!(
-            logic: {
-              rules: [{ if: 1, goto_page_id: page2.id }]
-            }
-          )
+          field_to_update.update!(logic: { rules: [{ if: 1, goto_page_id: page2.id }] })
           request = {
             custom_fields: [
               {
@@ -353,7 +399,7 @@ resource 'Idea Custom Fields' do
                 id: field_to_update.id,
                 input_type: 'linear_scale',
                 title_multiloc: { 'en' => 'Question 1 on page 1' },
-                required: false,
+                required: true,
                 enabled: true,
                 maximum: 5,
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
@@ -412,7 +458,7 @@ resource 'Idea Custom Fields' do
               input_type: 'linear_scale',
               key: field_to_update.key,
               ordering: 1,
-              required: false,
+              required: true,
               title_multiloc: field_to_update.title_multiloc.symbolize_keys,
               updated_at: an_instance_of(String),
               maximum: 5,
@@ -990,7 +1036,7 @@ resource 'Idea Custom Fields' do
                 id: field_to_update.id,
                 input_type: 'linear_scale',
                 title_multiloc: { 'en' => 'Question 1 on page 1' },
-                required: false,
+                required: true,
                 enabled: true,
                 maximum: 5,
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
@@ -1049,7 +1095,7 @@ resource 'Idea Custom Fields' do
               input_type: 'linear_scale',
               key: field_to_update.key,
               ordering: 1,
-              required: false,
+              required: true,
               title_multiloc: field_to_update.title_multiloc.symbolize_keys,
               updated_at: an_instance_of(String),
               maximum: 5,
@@ -1130,7 +1176,7 @@ resource 'Idea Custom Fields' do
                 id: field_to_update.id,
                 input_type: 'linear_scale',
                 title_multiloc: { 'en' => 'Question 1 on page 1' },
-                required: false,
+                required: true,
                 enabled: true,
                 maximum: 5,
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
@@ -1188,7 +1234,7 @@ resource 'Idea Custom Fields' do
               input_type: 'linear_scale',
               key: field_to_update.key,
               ordering: 1,
-              required: false,
+              required: true,
               title_multiloc: field_to_update.title_multiloc.symbolize_keys,
               updated_at: an_instance_of(String),
               maximum: 5,
@@ -1497,7 +1543,8 @@ resource 'Idea Custom Fields' do
                 [{ if: 1, goto_page_id: page2.id }],
                 [{ if: 2, goto_page_id: page3.id }]
               ]
-            }
+            },
+            required: true
           )
 
           request = {
@@ -1514,7 +1561,7 @@ resource 'Idea Custom Fields' do
                 id: field_to_update.id,
                 input_type: 'linear_scale',
                 title_multiloc: { 'en' => 'Question 1 on page 1' },
-                required: false,
+                required: true,
                 enabled: true,
                 maximum: 5,
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
@@ -1573,7 +1620,7 @@ resource 'Idea Custom Fields' do
               input_type: 'linear_scale',
               key: field_to_update.key,
               ordering: 1,
-              required: false,
+              required: true,
               title_multiloc: field_to_update.title_multiloc.symbolize_keys,
               updated_at: an_instance_of(String),
               maximum: 5,
@@ -1648,7 +1695,7 @@ resource 'Idea Custom Fields' do
                 id: field_to_update.id,
                 input_type: 'linear_scale',
                 title_multiloc: { 'en' => 'Question 1 on page 1' },
-                required: false,
+                required: true,
                 enabled: true,
                 maximum: 5,
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
@@ -1699,7 +1746,7 @@ resource 'Idea Custom Fields' do
               input_type: 'linear_scale',
               key: field_to_update.key,
               ordering: 1,
-              required: false,
+              required: true,
               title_multiloc: field_to_update.title_multiloc.symbolize_keys,
               updated_at: an_instance_of(String),
               maximum: 5,
@@ -1762,7 +1809,7 @@ resource 'Idea Custom Fields' do
                 id: field1_to_update.id,
                 input_type: 'select',
                 title_multiloc: { 'en' => 'Question 1 on page 1' },
-                required: false,
+                required: true,
                 enabled: true,
                 options: [
                   {
@@ -1778,7 +1825,7 @@ resource 'Idea Custom Fields' do
                 id: field2_to_update.id,
                 input_type: 'select',
                 title_multiloc: { 'en' => 'Question 2 on page 1' },
-                required: false,
+                required: true,
                 enabled: true,
                 options: [
                   {
@@ -1842,7 +1889,7 @@ resource 'Idea Custom Fields' do
               input_type: 'select',
               key: field1_to_update.key,
               ordering: 1,
-              required: false,
+              required: true,
               title_multiloc: field1_to_update.title_multiloc.symbolize_keys,
               updated_at: an_instance_of(String),
               logic: {
@@ -1869,7 +1916,7 @@ resource 'Idea Custom Fields' do
               input_type: 'select',
               key: field2_to_update.key,
               ordering: 2,
-              required: false,
+              required: true,
               title_multiloc: field2_to_update.title_multiloc.symbolize_keys,
               updated_at: an_instance_of(String),
               logic: {
@@ -1942,7 +1989,7 @@ resource 'Idea Custom Fields' do
                 input_type: 'linear_scale',
                 title_multiloc: { 'en' => 'Question 1 on page 1' },
                 description_multiloc: { 'en' => 'Description of question 1 on page 1' },
-                required: false,
+                required: true,
                 enabled: true,
                 maximum: 5,
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
@@ -1994,7 +2041,7 @@ resource 'Idea Custom Fields' do
               input_type: 'linear_scale',
               key: an_instance_of(String),
               ordering: 1,
-              required: false,
+              required: true,
               title_multiloc: { en: 'Question 1 on page 1' },
               updated_at: an_instance_of(String),
               maximum: 5,
@@ -2040,7 +2087,8 @@ resource 'Idea Custom Fields' do
           field_to_update.update!(
             logic: {
               rules: [{ if: 1, goto_page_id: page2.id }]
-            }
+            },
+            required: true
           )
 
           request = {
@@ -2057,7 +2105,7 @@ resource 'Idea Custom Fields' do
                 id: field_to_update.id,
                 input_type: 'linear_scale',
                 title_multiloc: { 'en' => 'Question 1 on page 1' },
-                required: false,
+                required: true,
                 enabled: true,
                 maximum: 5,
                 minimum_label_multiloc: { 'en' => 'Strongly disagree' },
@@ -2119,7 +2167,7 @@ resource 'Idea Custom Fields' do
               input_type: 'linear_scale',
               key: field_to_update.key,
               ordering: 1,
-              required: false,
+              required: true,
               title_multiloc: field_to_update.title_multiloc.symbolize_keys,
               updated_at: an_instance_of(String),
               maximum: 5,

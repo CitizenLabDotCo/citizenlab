@@ -387,9 +387,12 @@ describe FormLogicService do
 
     context 'when an answer triggers going to the survey end' do
       before do
-        question1.update!(logic: {
-          'rules' => [{ 'if' => question1_value, 'goto_page_id' => 'survey_end' }]
-        })
+        question1.update!(
+          logic: {
+            'rules' => [{ 'if' => question1_value, 'goto_page_id' => 'survey_end' }]
+          },
+          required: true
+        )
       end
 
       it 'returns a UI schema with rules for the given page' do
@@ -459,7 +462,7 @@ describe FormLogicService do
               { 'if' => 2, 'goto_page_id' => page4.id }
             ] }
           ].each do |good_logic|
-            question1.update! logic: good_logic
+            question1.update! logic: good_logic, required: true
 
             expect(form_logic.valid?).to be true
             expect(question1.errors).to be_empty
@@ -480,8 +483,8 @@ describe FormLogicService do
         end
 
         it 'returns true' do
-          question1.update! logic: logic_for_question1
-          question2.update! logic: logic_for_question2
+          question1.update! logic: logic_for_question1, required: true
+          question2.update! logic: logic_for_question2, required: true
 
           expect(form_logic.valid?).to be true
           expect(question1.errors).to be_empty
@@ -499,7 +502,7 @@ describe FormLogicService do
             { 'rules' => [{ 'if' => 1 }] },
             { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id, 'bad' => {} }] }
           ].each do |bad_logic|
-            question1.update! logic: bad_logic
+            question1.update! logic: bad_logic, required: true
             expect(form_logic.valid?).to be false
             expect(question1.errors.messages.to_h).to eq({
               logic: ['has invalid structure']
@@ -508,6 +511,34 @@ describe FormLogicService do
               logic: [{ error: :invalid_structure }]
             })
           end
+        end
+      end
+
+      context 'when a field has logic, but it is not required' do
+        let(:logic_for_question1) do
+          { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] }
+        end
+        let(:logic_for_question2) do
+          { 'rules' => [{ 'if' => 1, 'goto_page_id' => 'survey_end' }] }
+        end
+
+        it 'returns false' do
+          question1.update! logic: logic_for_question1, required: false
+          question2.update! logic: logic_for_question2, required: false
+
+          expect(form_logic.valid?).to be false
+          expect(question1.errors.messages.to_h).to eq({
+            logic: ['allowed only on required fields']
+          })
+          expect(question1.errors.details).to eq({
+            logic: [{ error: :only_allowed_on_required_fields }]
+          })
+          expect(question2.errors.messages.to_h).to eq({
+            logic: ['allowed only on required fields']
+          })
+          expect(question2.errors.details).to eq({
+            logic: [{ error: :only_allowed_on_required_fields }]
+          })
         end
       end
 
@@ -523,8 +554,8 @@ describe FormLogicService do
         end
 
         it 'returns true' do
-          question1.update! logic: logic_for_question1
-          question2.update! logic: logic_for_question2
+          question1.update! logic: logic_for_question1, required: true
+          question2.update! logic: logic_for_question2, required: true
 
           expect(form_logic.valid?).to be false
           expect(question1.errors).to be_empty
@@ -547,7 +578,7 @@ describe FormLogicService do
               { 'if' => 2, 'goto_page_id' => page4.id }
             ] }
           ].each do |bad_logic|
-            question1.update! logic: bad_logic
+            question1.update! logic: bad_logic, required: true
 
             expect(form_logic.valid?).to be false
             expect(question1.errors.messages.to_h).to eq({
@@ -567,7 +598,7 @@ describe FormLogicService do
             { 'rules' => [{ 'if' => 1, 'goto_page_id' => invalid_goto_page_id }] },
             { 'rules' => [{ 'if' => 1, 'goto_page_id' => invalid_goto_page_id }] }
           ].each do |bad_logic|
-            question1.update! logic: bad_logic
+            question1.update! logic: bad_logic, required: true
 
             expect(form_logic.valid?).to be false
             expect(question1.errors.messages.to_h).to eq({
@@ -590,7 +621,7 @@ describe FormLogicService do
               { 'if' => 2, 'goto_page_id' => invalid_goto_page_id }
             ] }
           ].each do |bad_logic|
-            question1.update! logic: bad_logic
+            question1.update! logic: bad_logic, required: true
 
             expect(form_logic.valid?).to be false
             expect(question1.errors.messages.to_h).to eq({
@@ -613,7 +644,7 @@ describe FormLogicService do
             { 'next_page_id' => page4.id },
             { 'next_page_id' => page5.id }
           ].each do |good_logic|
-            page2.update! logic: good_logic
+            page2.update! logic: good_logic, required: true
 
             expect(form_logic.valid?).to be true
             expect(page1.errors).to be_empty
@@ -632,8 +663,8 @@ describe FormLogicService do
         let(:logic_for_page2) { { 'next_page_id' => page5.id } }
 
         it 'returns true' do
-          page1.update! logic: logic_for_page1
-          page2.update! logic: logic_for_page2
+          page1.update! logic: logic_for_page1, required: true
+          page2.update! logic: logic_for_page2, required: true
 
           expect(form_logic.valid?).to be true
           expect(page1.errors).to be_empty
@@ -649,7 +680,7 @@ describe FormLogicService do
       context 'when logic has a bad structure' do
         it 'returns false' do
           bad_logic = { 'bad' => page5.id }
-          page2.update! logic: bad_logic
+          page2.update! logic: bad_logic, required: true
           expect(form_logic.valid?).to be false
           expect(page1.errors).to be_empty
           expect(question1.errors).to be_empty
@@ -670,7 +701,7 @@ describe FormLogicService do
         it 'returns false' do
           invalid_next_page_id = create(:custom_field_page).id
           bad_logic = { 'next_page_id' => invalid_next_page_id }
-          page2.update! logic: bad_logic
+          page2.update! logic: bad_logic, required: true
 
           expect(form_logic.valid?).to be false
           expect(page1.errors).to be_empty
@@ -695,7 +726,7 @@ describe FormLogicService do
             page2.id,
             page3.id
           ].each do |bad_page_id|
-            page3.update! logic: { 'next_page_id' => bad_page_id }
+            page3.update! logic: { 'next_page_id' => bad_page_id }, required: true
 
             expect(form_logic.valid?).to be false
             expect(page1.errors).to be_empty
@@ -718,7 +749,7 @@ describe FormLogicService do
         it 'returns false' do
           invalid_next_page_id = question2.id
           bad_logic = { 'next_page_id' => invalid_next_page_id }
-          page1.update! logic: bad_logic
+          page1.update! logic: bad_logic, required: true
 
           expect(form_logic.valid?).to be false
           expect(page1.errors.messages.to_h).to eq({

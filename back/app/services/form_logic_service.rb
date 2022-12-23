@@ -24,20 +24,28 @@ class FormLogicService
   end
 
   def valid?
-    fields.all? do |field|
-      next true unless field.logic?
+    fields.inject(true) do |all_valid, field|
+      next all_valid unless field.logic?
 
-      if field.page?
+      field_valid = if field.page?
         valid_page_logic_structure?(field) && valid_next_page?(field)
       else
-        valid_field_logic_structure?(field) && valid_rules?(field)
+        valid_field_logic_structure?(field) && valid_rules?(field) && required?(field)
       end
+      all_valid && field_valid
     end
   end
 
   private
 
   attr_reader :fields, :field_index, :option_index
+
+  def required?(field)
+    return true if field.required?
+
+    add_not_required_error(field)
+    false
+  end
 
   def valid_field_logic_structure?(field)
     logic = field.logic
@@ -108,6 +116,10 @@ class FormLogicService
 
     add_only_page_allowed_as_target_error(field, target_id)
     false
+  end
+
+  def add_not_required_error(field)
+    field.errors.add(:logic, :only_allowed_on_required_fields, message: 'allowed only on required fields')
   end
 
   def add_invalid_structure_error(field)
