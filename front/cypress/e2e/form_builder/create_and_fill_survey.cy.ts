@@ -565,4 +565,75 @@ describe('Survey builder', () => {
     cy.get('[data-testid="error-message"]').should('not.exist');
     cy.get('[data-cy="e2e-rule-input-error"]').should('not.exist');
   });
+
+  it('creates survey with page logic and user fills in the survey based on that logic', () => {
+    const chooseOneOption1 = randomString();
+    const chooseOneOption2 = randomString();
+    const question2Title = randomString();
+    const question3Title = randomString();
+    const page2Title = randomString();
+    const page3Title = randomString();
+    const page4Title = randomString();
+    const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
+
+    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.get('[data-cy="e2e-short-answer"]').click();
+
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+
+    cy.get('[data-cy="e2e-single-choice"]').click();
+    cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
+      force: true,
+    });
+    cy.get('#e2e-option-input-0').type(chooseOneOption1, { force: true });
+    cy.get('[data-cy="e2e-add-answer"]').click();
+    cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
+
+    // Add second page
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-page-title-multiloc').type(page2Title, { force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
+
+    // Add third page
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-page-title-multiloc').type(page3Title, { force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
+
+    // Add fourth page
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-page-title-multiloc').type(page3Title, { force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
+
+    cy.contains(page2Title).should('exist');
+    cy.contains(page2Title).click();
+    cy.get('[data-cy="e2e-form-builder-logic-tab"]').click();
+    cy.get('[data-cy="e2e-add-rule-button"]').click();
+    cy.get('[data-cy="e2e-rule-input-select"]').should('exist');
+    cy.get('[data-cy="e2e-rule-input-select"]').get('select').select(5);
+
+    // Save the survey
+    cy.get('form').submit();
+
+    // Try filling in the survey
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
+    // First page
+    cy.contains(questionTitle).should('exist');
+
+    // Check to see that we are on the second page
+    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.contains(page2Title).should('exist');
+
+    // Click next and check to see that the user is redirected to the last page
+    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
+    cy.get('.e2e-modal-close-button').click();
+    cy.get('#e2e-modal-container').should('have.length', 0);
+  });
 });
