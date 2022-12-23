@@ -20,7 +20,7 @@ import { RuleType } from '../utils';
 import { IFlatCustomField, LogicType } from 'services/formCustomFields';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
-type RuleInputProps = {
+type QuestionRuleInputProps = {
   fieldId: string;
   validationError: string | undefined;
   answer: { key: string | number | undefined; label: string | undefined };
@@ -33,13 +33,13 @@ type RuleInputProps = {
     | undefined;
 };
 
-export const RuleInput = ({
+export const QuestionRuleInput = ({
   fieldId,
   pages,
   name,
   answer,
   validationError,
-}: RuleInputProps) => {
+}: QuestionRuleInputProps) => {
   const { setValue, watch, trigger, control } = useFormContext();
   const field: IFlatCustomField = watch(name);
   const logic: LogicType = field.logic;

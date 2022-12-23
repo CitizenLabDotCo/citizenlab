@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
-import { RuleInput } from './RuleInput';
+import { QuestionRuleInput } from './QuestionRuleInput';
 import { PageRuleInput } from './PageRuleInput';
 
 // intl
@@ -126,7 +126,7 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
           {answers &&
             answers.map((answer) => (
               <Box key={answer.key}>
-                <RuleInput
+                <QuestionRuleInput
                   fieldId={field.temp_id || field.id}
                   validationError={validationError}
                   name={`customFields.${field.index}`}
