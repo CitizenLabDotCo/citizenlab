@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 // components
 import {
@@ -15,13 +16,14 @@ import Error from 'components/UI/Error';
 // intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Controller, useFormContext } from 'react-hook-form';
+import { isRuleValid } from 'utils/yup/validateLogic';
+
+// Services
 import {
   IFlatCustomField,
   LogicType,
   QuestionRuleType,
 } from 'services/formCustomFields';
-import { isRuleValid } from 'utils/yup/validateLogic';
 
 type QuestionRuleInputProps = {
   fieldId: string;
