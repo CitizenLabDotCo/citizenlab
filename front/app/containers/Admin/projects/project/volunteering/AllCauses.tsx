@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, MouseEvent } from 'react';
 import styled from 'styled-components';
 import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd-cjs';
@@ -79,7 +79,7 @@ const AllCauses = injectIntl(
       [isProcessing, items]
     );
 
-    const handleOnClickDelete = (cause) => (event) => {
+    const handleOnClickDelete = (causeId: string) => (event: MouseEvent) => {
       if (!isProcessing) {
         const deleteMessage = intl.formatMessage(
           messages.causeDeletionConfirmation
@@ -89,7 +89,7 @@ const AllCauses = injectIntl(
         if (window.confirm(deleteMessage)) {
           setItemsWhileDragging(null);
           setIsProcessing(true);
-          deleteCause(cause.id).finally(() => {
+          deleteCause(causeId).finally(() => {
             setIsProcessing(false);
           });
         }
@@ -135,7 +135,7 @@ const AllCauses = injectIntl(
                 </div>
                 <Buttons>
                   <Button
-                    onClick={handleOnClickDelete(cause)}
+                    onClick={handleOnClickDelete(cause.id)}
                     icon="delete"
                     buttonStyle="text"
                   >
@@ -158,7 +158,7 @@ const AllCauses = injectIntl(
   }
 );
 
-export default (props) => (
+export default (props: Props) => (
   <DndProvider backend={HTML5Backend}>
     <AllCauses {...props} />
   </DndProvider>

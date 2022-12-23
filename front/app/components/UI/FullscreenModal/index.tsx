@@ -167,7 +167,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
   };
 
-  handleKeypress = (event) => {
+  handleKeypress = (event: KeyboardEvent) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.props.close();
@@ -290,6 +290,8 @@ const Data = adopt<DataProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <FullscreenModal {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => (
+      <FullscreenModal {...inputProps} {...dataProps} />
+    )}
   </Data>
 );
