@@ -1,11 +1,11 @@
 import React from 'react';
-import { SerializedNodes } from '@craftjs/core';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import BaseEditor from 'components/admin/ContentBuilder/Editor';
+import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
+import RenderNode from './RenderNode';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // default widgets
@@ -32,34 +32,44 @@ type EditorProps = {
   onNodesChange?: (nodes: SerializedNodes) => void;
 };
 
+const resolver = {
+  Box,
+  Container,
+  TwoColumn,
+  Title,
+  Text,
+  Image,
+  WhiteSpace,
+  AboutReportWidget,
+  SurveyResultsWidget,
+  VisitorsWidget,
+  VisitorsTrafficSourcesWidget,
+  AgeWidget,
+  GenderWidget,
+  ProjectTemplate,
+};
+
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,
   isPreview,
   children,
 }) => {
   return (
-    <BaseEditor
-      resolver={{
-        Box,
-        Container,
-        TwoColumn,
-        Title,
-        Text,
-        Image,
-        WhiteSpace,
-        AboutReportWidget,
-        SurveyResultsWidget,
-        VisitorsWidget,
-        VisitorsTrafficSourcesWidget,
-        AgeWidget,
-        GenderWidget,
-        ProjectTemplate,
+    <CraftEditor
+      resolver={resolver}
+      indicator={{
+        success: 'rgb(98, 196, 98)',
+        error: 'red',
+        transition: 'none',
       }}
-      isPreview={isPreview}
-      onNodesChange={onNodesChange}
+      onRender={isPreview ? undefined : RenderNode}
+      enabled={isPreview ? false : true}
+      onNodesChange={(data) =>
+        onNodesChange && onNodesChange(data.getSerializedNodes())
+      }
     >
       {children}
-    </BaseEditor>
+    </CraftEditor>
   );
 };
 
