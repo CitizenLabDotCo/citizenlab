@@ -89,15 +89,17 @@ const ContentBuilderTopBar = ({
 
     const nodes = query.getSerializedNodes();
     const firstNode = nodes.ROOT?.nodes[0];
+    const numberOfNodes = Object.keys(nodes).length;
 
-    if (!firstNode) return;
-    if (!selectedLocale) return;
+    if (!firstNode || !selectedLocale || numberOfNodes < 5) return;
 
     if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
-      updateReportLayout(reportId, {
-        ...draftEditorData,
-        [selectedLocale]: nodes,
-      });
+      setTimeout(() => {
+        updateReportLayout(reportId, {
+          ...draftEditorData,
+          [selectedLocale]: query.getSerializedNodes(),
+        });
+      }, 5000);
     }
 
     setInitialized(true);
