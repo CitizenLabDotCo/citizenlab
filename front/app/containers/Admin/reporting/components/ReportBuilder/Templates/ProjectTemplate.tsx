@@ -57,7 +57,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
           />
         </Element>
       </TwoColumn>
-      <Title text={formatMessage(messages.participants)} />
+      <Title text={formatMessage(messages.visitors)} />
       <Text text={formatMessage(messages.descriptionPlaceHolder)} />
       <WhiteSpace />
       <VisitorsWidget
