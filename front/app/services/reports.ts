@@ -48,7 +48,7 @@ export function reportByIdStream(id: string) {
 }
 
 export async function createReport(name: string) {
-  return streams.add(apiEndpoint, {
+  return streams.add<ReportResponse>(apiEndpoint, {
     report: { name },
   });
 }

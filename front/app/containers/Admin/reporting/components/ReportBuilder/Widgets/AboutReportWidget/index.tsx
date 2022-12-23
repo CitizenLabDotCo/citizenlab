@@ -30,7 +30,7 @@ import { IPhaseData } from 'services/phases';
 
 type AboutReportWidgetProps = {
   reportId: string;
-  projectId: string | undefined;
+  projectId?: string;
 };
 
 // Return localised start & dates for project from phases
@@ -99,8 +99,8 @@ const AboutReportWidget = ({ reportId, projectId }: AboutReportWidgetProps) => {
         <Element id="about-title" is={Container} canvas>
           <Text
             text={`
-            <h2>${reportTitle}</h2>
-          `}
+              <h2>${reportTitle}</h2>
+            `}
           />
         </Element>
       )}
