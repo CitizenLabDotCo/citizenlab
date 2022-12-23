@@ -23,16 +23,16 @@ const StyledImagesDropzone = styled(ImagesDropzone)`
 `;
 
 interface Props {
-  projectHeaderImage: UploadFile[] | null;
-  handleHeaderOnAdd: (newHeader: UploadFile[]) => void;
-  handleHeaderOnRemove: () => void;
+  image: UploadFile[] | null;
+  onImageAdd: (newHeader: UploadFile[]) => void;
+  onImageRemove: () => void;
 }
 
 export default injectIntl(
   ({
-    projectHeaderImage,
-    handleHeaderOnAdd,
-    handleHeaderOnRemove,
+    image,
+    onImageAdd,
+    onImageRemove,
     intl: { formatMessage },
   }: Props & WrappedComponentProps) => (
     <StyledSectionField>
@@ -60,14 +60,14 @@ export default injectIntl(
         />
       </SubSectionTitle>
       <StyledImagesDropzone
-        images={projectHeaderImage}
+        images={image}
         imagePreviewRatio={240 / 952}
         acceptedFileTypes={{
           'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
         }}
         maxImagePreviewWidth="500px"
-        onAdd={handleHeaderOnAdd}
-        onRemove={handleHeaderOnRemove}
+        onAdd={onImageAdd}
+        onRemove={onImageRemove}
       />
     </StyledSectionField>
   )
