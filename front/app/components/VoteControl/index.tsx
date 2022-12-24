@@ -97,7 +97,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
     ariaHidden: false,
   };
 
-  constructor(props: Props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
       showVoteControl: false,

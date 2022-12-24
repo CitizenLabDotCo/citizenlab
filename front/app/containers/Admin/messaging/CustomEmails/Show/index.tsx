@@ -38,6 +38,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
+import injectLocalize from 'utils/localize';
 
 const Container = styled.div``;
 
@@ -385,7 +386,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   tenant: ({ render }) => <GetAppConfiguration>{render}</GetAppConfiguration>,
 });
 
-const ShowWithHOCs = injectIntl(localize(Show));
+const ShowWithHOCs = injectIntl(injectLocalize(Show));
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
