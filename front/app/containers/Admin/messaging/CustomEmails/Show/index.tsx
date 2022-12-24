@@ -140,20 +140,20 @@ interface DataProps {
   tenant: GetAppConfigurationChildProps;
 }
 
-interface Props
-  extends InputProps,
-    DataProps,
-    WithRouterProps,
-    WrappedComponentProps,
-    InjectedLocalized {}
+interface Props extends InputProps, DataProps {}
 
 interface State {
   showSendConfirmationModal: boolean;
   isCampaignSending: boolean;
 }
 
-class Show extends React.Component<Props, State> {
-  constructor(props: Props) {
+class Show extends React.Component<
+  Props & WithRouterProps & WrappedComponentProps & InjectedLocalized,
+  State
+> {
+  constructor(
+    props: Props & WithRouterProps & WrappedComponentProps & InjectedLocalized
+  ) {
     super(props);
     this.state = {
       showSendConfirmationModal: false,

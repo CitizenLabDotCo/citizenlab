@@ -38,7 +38,7 @@ export interface SortableListState {
 }
 
 export class SortableList extends Component<InputProps, SortableListState> {
-  constructor(props: Props) {
+  constructor(props: InputProps) {
     super(props);
     this.state = {
       itemsWhileDragging: null,

@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-import injectLocalize from 'utils/localize';
 import { getInputTermMessage } from 'utils/i18n';
 
 // resources
