@@ -22,7 +22,7 @@ import GetAppConfiguration, {
 import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import localize, { InjectedLocalized } from 'utils/localize';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
@@ -38,7 +38,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
-import injectLocalize from 'utils/localize';
 
 const Container = styled.div``;
 
