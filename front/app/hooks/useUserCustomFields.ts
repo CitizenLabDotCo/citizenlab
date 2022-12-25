@@ -13,7 +13,7 @@ export default function useUserCustomFields({
   inputTypes,
 }: Props | undefined = {}) {
   const [userCustomFields, setUserCustomFields] = useState<
-    IUserCustomFieldData[] | undefined | null | Error
+    IUserCustomFieldData[] | undefined | null
   >(undefined);
 
   useEffect(() => {
