@@ -105,7 +105,6 @@
   "app.components.admin.PostManager.inputsExportFileName": "oppføring",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Vis bare innlegg som trenger tilbakemelding",
   "app.components.admin.PostManager.latestFeedbackMode": "Bruk den nyeste tilgjengelige offisielle oppdateringen som forklaring",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Hvis du flytter «{ideaTitle}» ut av det gjeldende prosjektet går informasjonen om tildelte faser tapt. Vil du fortsette?",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} forslag",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} innlegg",
   "app.components.admin.PostManager.newFeedbackMode": "Skriv en ny oppdatering for å forklare denne endringen",

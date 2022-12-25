@@ -105,7 +105,6 @@
   "app.components.admin.PostManager.inputsExportFileName": "Beiträge",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Nur Beiträge anzeigen, die eine Rückmeldung erfordern",
   "app.components.admin.PostManager.latestFeedbackMode": "Verwenden Sie das letzte vorhandene offizielle Update als Erklärung",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Wenn Sie '{ideaTitle}' von seinem aktuellen Projekt wegbewegen, gehen die Informationen über die ihm zugeordneten Phasen verloren. Möchten Sie fortfahren?",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} Vorschläge",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} Beiträge",
   "app.components.admin.PostManager.newFeedbackMode": "Schreiben Sie ein neues Update, um diese Änderung zu erklären",
