@@ -95,8 +95,8 @@ const Row = ({
         <IdeaRow
           type={type}
           idea={post as IIdeaData}
+          statuses={statuses as IIdeaStatusData[]}
           phases={phases}
-          statuses={statuses}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
           className={className}
