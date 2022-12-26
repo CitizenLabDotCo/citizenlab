@@ -146,7 +146,7 @@ el:
         project:
           title: What is your project ?
         issue:
-          title: What is your issue ?
+          title: Ποιο είναι το σχόλιό σας;
         option:
           title: What is your option ?
       details:
