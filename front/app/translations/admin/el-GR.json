@@ -1637,7 +1637,7 @@
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Εγκεκριμένο",
   "app.containers.admin.ideaStatuses.form.category": "Κατηγορία",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Παρακαλούμε επιλέξτε την κατηγορία που αντιπροσωπεύει καλύτερα την κατάστασή σας. Αυτή η επιλογή θα βοηθήσει το εργαλείο ανάλυσης να επεξεργάζεται και να αναλύει με μεγαλύτερη ακρίβεια τις δημοσιεύσεις.",
-  "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "Other",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "Άλλο",
   "app.containers.admin.ideaStatuses.form.fieldColor": "Χρώμα",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "Περιγραφή κατάστασης",
   "app.containers.admin.ideaStatuses.form.fieldDescriptionError": "Δώστε μια περιγραφή κατάστασης για όλες τις γλώσσες",
