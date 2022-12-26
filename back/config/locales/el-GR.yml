@@ -195,7 +195,7 @@ el:
       upvotes_count: 'Επιδοκιμασίες'
       downvotes_count: 'Αποδοκιμασίες'
       baskets_count: 'Baskets'
-      input_url: 'URL'
+      input_url: 'ΔΙΕΎΘΥΝΣΗ URL'
       project: 'Έργο'
       status: 'Κατάσταση'
       assignee_fullname: 'Αποδέκτης'

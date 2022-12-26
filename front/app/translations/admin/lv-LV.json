@@ -487,6 +487,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "Ir jāievada aprakstošā daļa",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Nosaukums",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Ievadīt virsrakstu visās valodās",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Enter a title",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "Skatīt pielāgotu lapu",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Poga",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Rediģēt pielāgotu lapu | {orgName}",
