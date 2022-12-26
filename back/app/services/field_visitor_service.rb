@@ -69,10 +69,6 @@ class FieldVisitorService
     default(field)
   end
 
-  def visit_file_upload(field)
-    default(field)
-  end
-
   def default(field)
     # Do nothing
   end
