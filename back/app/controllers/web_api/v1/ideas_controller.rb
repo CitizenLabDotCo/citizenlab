@@ -178,6 +178,8 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def extract_params_for_file_upload_fields(custom_form, params_for_create)
+    return {} if params_for_create['custom_field_values'].blank?
+
     file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
     params_for_create['custom_field_values'].extract!(*file_upload_field_keys)
   end
