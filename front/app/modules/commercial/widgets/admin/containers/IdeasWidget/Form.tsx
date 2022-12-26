@@ -68,11 +68,7 @@ export interface FormValues {
   limit: number;
 }
 
-interface Props {
-  defaultValues: FormValues;
-}
-
-const WidgetForm = ({}: Props) => {
+const WidgetForm = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const methods = useFormContext();
