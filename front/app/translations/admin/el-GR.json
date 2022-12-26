@@ -105,7 +105,6 @@
   "app.components.admin.PostManager.inputsExportFileName": "εισήγηση",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Εμφάνιση μόνο των δημοσιεύσεων που χρειάζονται ανατροφοδότηση",
   "app.components.admin.PostManager.latestFeedbackMode": "Χρησιμοποιήστε την τελευταία υπάρχουσα επίσημη ενημέρωση ως επεξήγηση",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Η μετακίνηση του '{ideaTitle}' μακριά από το τρέχον έργο του θα χάσει τις πληροφορίες σχετικά με τις φάσεις που του έχουν ανατεθεί. Θέλετε να προχωρήσετε;",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} προτάσεις",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} δημοσιεύσεις",
   "app.components.admin.PostManager.newFeedbackMode": "Γράψτε μια νέα ενημέρωση για να εξηγήσετε αυτή την αλλαγή",

@@ -105,7 +105,6 @@
   "app.components.admin.PostManager.inputsExportFileName": "input",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Yalnızca geri bildirim gerektiren yayınları göster",
   "app.components.admin.PostManager.latestFeedbackMode": "Açıklama olarak mevcut en son resmi bilgilendirmeyi kullan",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "'{ideaTitle}' içinde bulunduğu projeden taşınırsa, atanan aşamaları hakkındaki bilgiler kaybolur. Devam etmek istiyor musunuz?",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} öneri",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} yayın",
   "app.components.admin.PostManager.newFeedbackMode": "Bu değişikliği açıklamak için yeni bir bilgilendirme yazın",
