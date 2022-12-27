@@ -102,8 +102,13 @@ const FormBuilderSettings = ({
               rule.goto_page_id !== field.temp_id
           );
           setValue(`customFields.${i}.logic.rules`, updatedRules);
-        } else if (surveyField.logic) {
-          setValue(`customFields.${i}.logic`, {});
+        } else if (surveyField.logic && surveyField.logic.next_page_id) {
+          if (
+            surveyField.logic.next_page_id === field.id ||
+            surveyField.logic.next_page_id === field.temp_id
+          ) {
+            setValue(`customFields.${i}.logic`, {});
+          }
         }
       });
       onDelete(fieldIndexToDelete);
@@ -112,9 +117,6 @@ const FormBuilderSettings = ({
   };
 
   const getPageList = () => {
-    // TODO: Only select pages which come after the question. For this iteration though, we are not
-    // validating against cyclical form flows, so to not have an error state here,
-    // all pages should be available in the list.
     const pageArray: { value: string; label: string }[] = [];
 
     formCustomFields?.forEach((field) => {
