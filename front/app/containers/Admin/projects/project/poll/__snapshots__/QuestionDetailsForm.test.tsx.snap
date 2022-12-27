@@ -6,12 +6,12 @@ exports[`<QuestionDetailsForm/> display displays correctly for a single choice q
     <Select
       onChange={[Function]}
       options={
-        Array [
-          Object {
+        [
+          {
             "label": "Single choice",
             "value": "single_option",
           },
-          Object {
+          {
             "label": "Multiple choice",
             "value": "multiple_options",
           },

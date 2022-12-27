@@ -8,15 +8,15 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
     category="analytics"
     checked={true}
     destinations={
-      Array [
-        Object {
+      [
+        {
           "category": "Analytics",
           "description": "Google Analytics is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.",
           "id": "Google Analytics",
           "name": "Google Analytics",
           "website": "http://google.com/analytics",
         },
-        Object {
+        {
           "category": "Tag Managers",
           "description": "MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.",
           "id": "MarketingTool",
@@ -32,8 +32,8 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
     category="advertising"
     checked={false}
     destinations={
-      Array [
-        Object {
+      [
+        {
           "category": "Advertising",
           "description": "Advertising BS",
           "id": "AdvertisingTool",
@@ -49,8 +49,8 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
     category="functional"
     checked={true}
     destinations={
-      Array [
-        Object {
+      [
+        {
           "category": "Security & Fraud",
           "description": "Actually might be handy",
           "id": "FunctionalTool",
@@ -65,7 +65,7 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
   <CategoryCard
     category="required"
     checked={true}
-    destinations={Array []}
+    destinations={[]}
     disableUncheck={true}
     handleChange={[Function]}
     key="required"
@@ -80,7 +80,7 @@ exports[`<ConsentManager /> renders correctly when there are no destinations 1`]
   <CategoryCard
     category="required"
     checked={true}
-    destinations={Array []}
+    destinations={[]}
     disableUncheck={true}
     handleChange={[Function]}
     key="required"

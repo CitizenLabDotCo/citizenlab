@@ -16,7 +16,7 @@ exports[`<CommentDeletedByAdminNotification /> renders correctly with a non empt
     "
     id="app.containers.NotificationMenu.commentDeletedByAdminFor"
     values={
-      Object {
+      {
         "otherReason": undefined,
         "postTitle": <T />,
         "reasonCode": "irrelevant",
@@ -42,7 +42,7 @@ exports[`<CommentDeletedByAdminNotification /> renders correctly with an empty i
     "
     id="app.containers.NotificationMenu.commentDeletedByAdminFor"
     values={
-      Object {
+      {
         "otherReason": undefined,
         "postTitle": <T />,
         "reasonCode": "irrelevant",

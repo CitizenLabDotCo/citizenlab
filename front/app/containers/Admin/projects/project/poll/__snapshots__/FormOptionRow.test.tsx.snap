@@ -7,7 +7,7 @@ exports[`<FormOptionRow /> matches the snapshot 1`] = `
   <TextCell>
     <LocaleSwitcher
       locales={
-        Array [
+        [
           "en",
           "fr-BE",
         ]
@@ -15,8 +15,8 @@ exports[`<FormOptionRow /> matches the snapshot 1`] = `
       onSelectedLocaleChange={[Function]}
       selectedLocale="en"
       values={
-        Object {
-          "titleMultiloc": Object {
+        {
+          "titleMultiloc": {
             "en": "Vanilla",
           },
         }

@@ -24,19 +24,19 @@ exports[`<Container /> renders correclty when no destinations are allowed by the
   >
     <PreferencesDialog
       categoryDestinations={
-        Object {
-          "advertising": Array [],
-          "analytics": Array [
+        {
+          "advertising": [],
+          "analytics": [
             "google_analytics",
           ],
-          "functional": Array [
+          "functional": [
             "intercom",
           ],
         }
       }
       onChange={[Function]}
       preferences={
-        Object {
+        {
           "advertising": undefined,
           "analytics": undefined,
           "functional": undefined,
