@@ -1,9 +1,14 @@
 # Changelog
 
+## 2022-12-27
+
 ### Added
 
 - [CL-2255] New columns in User Excel export: registration_completed_at and invite_status.
 
+### Changed
+
+- [CL-2159] Do not allow registered users to take a native survey twice
 
 ## 2022-12-20
 
@@ -23,10 +28,6 @@
 ### Fixed
 
 - [CL-1969] Fixed bug where idea form input term not matching back office configuration
-
-### Changed
-
-- [CL-2159] Do not allow registered users to take a native survey twice
 
 ## 2022-12-07
 
