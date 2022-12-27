@@ -188,9 +188,14 @@ describe('Survey builder', () => {
     cy.contains(multipleChoiceChooseManyTitle).should('exist');
     cy.contains(linearScaleTitle).should('exist');
 
+    cy.contains(chooseOneOption1).should('exist');
+    cy.contains(chooseOneOption2).should('exist');
+    cy.contains(chooseManyOption1).should('exist');
+    cy.contains(chooseManyOption2).should('exist');
+
     // Enter some data and save
-    cy.get(`#${multipleChoiceChooseOneTitle}-radio-0`).click({ force: true });
-    cy.get(`#${multipleChoiceChooseManyTitle}-checkbox-0`).click({
+    cy.contains(chooseOneOption1).click({ force: true });
+    cy.contains(chooseManyOption1).click({
       force: true,
     });
     cy.get(`#${linearScaleTitle}-radio-1`).click({ force: true });
@@ -200,8 +205,8 @@ describe('Survey builder', () => {
     cy.wait(1000);
 
     cy.visit(`/projects/${projectSlug}/ideas/new`);
-    cy.get(`#${multipleChoiceChooseOneTitle}-radio-1`).click({ force: true });
-    cy.get(`#${multipleChoiceChooseManyTitle}-checkbox-1`).click({
+    cy.contains(chooseOneOption2).click({ force: true });
+    cy.contains(chooseManyOption2).click({
       force: true,
     });
     cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
@@ -211,8 +216,8 @@ describe('Survey builder', () => {
     cy.wait(1000);
 
     cy.visit(`/projects/${projectSlug}/ideas/new`);
-    cy.get(`#${multipleChoiceChooseOneTitle}-radio-1`).click({ force: true });
-    cy.get(`#${multipleChoiceChooseManyTitle}-checkbox-1`).click({
+    cy.contains(chooseOneOption2).click({ force: true });
+    cy.contains(chooseManyOption2).click({
       force: true,
     });
     cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
@@ -394,6 +399,27 @@ describe('Survey builder', () => {
       cy.get('[type="radio"]').eq(1).check({ force: true });
     });
 
+    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.get('[data-cy="e2e-short-answer"]').click();
+
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+
+    // Save the survey
+    cy.get('form').submit();
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Take the survey
+    cy.visit(`/projects/${projectSlug}`);
+    cy.acceptCookies();
+    cy.get('#e2e-cta-button')
+      .find('button')
+      .should('not.have.attr', 'disabled');
+    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.contains(questionTitle).should('exist');
+    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
+
     // Take the survey again
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-cta-button')
@@ -401,9 +427,7 @@ describe('Survey builder', () => {
       .should('not.have.attr', 'disabled');
     cy.get('#e2e-cta-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
-
-    // Save survey response
+    cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Check that we show a success message
@@ -485,7 +509,7 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('exist');
 
     // Select the first option and click next
-    cy.get(`#${multipleChoiceChooseOneTitle}-radio-0`).click({ force: true });
+    cy.contains(chooseOneOption1).click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that the user is on the submit page
@@ -495,7 +519,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-previous-page"]').click();
 
     // Select the second option and click next
-    cy.get(`#${multipleChoiceChooseOneTitle}-radio-1`).click({ force: true });
+    cy.contains(chooseOneOption2).click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that the user is on the third page
@@ -509,38 +533,6 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
     cy.get('.e2e-modal-close-button').click();
-    cy.get('#e2e-modal-container').should('have.length', 0);
-    // Save the survey
-    cy.get('form').submit();
-    // Should show error if no title is entered
-    cy.get('[data-testid="error-message"]').should('exist');
-
-    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
-    // Set the field to required
-    cy.get('#e2e-required-toggle').find('input').click({ force: true });
-
-    cy.get('form').submit();
-    // Should show success message on saving
-    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
-
-    // Take the survey
-    cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
-    cy.get('#e2e-cta-button')
-      .find('button')
-      .should('not.have.attr', 'disabled');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
-    cy.contains(questionTitle).should('exist');
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
-
-    // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').click();
-
-    // Check that we show a success message
-    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
-    // close modal
-    cy.get('.e2e-modal-close-button').click();
-    // check that the modal is no longer on the page
     cy.get('#e2e-modal-container').should('have.length', 0);
   });
 
@@ -588,6 +580,7 @@ describe('Survey builder', () => {
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
     // Save survey response
+    cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Check that we show a success message
@@ -830,7 +823,7 @@ describe('Survey builder', () => {
     cy.contains(page2Title).should('exist');
 
     // Select the first option and click next
-    cy.get(`#${multipleChoiceChooseOneTitle}-radio-0`).click({ force: true });
+    cy.contains(chooseOneOption1).click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that we are on the fourth page and on the last page as indicated by the page logic
