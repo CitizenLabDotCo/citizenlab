@@ -104,6 +104,14 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
+  def multiloc?
+    %w[
+      text_multiloc
+      multiline_text_multiloc
+      html_multiloc
+  ].include?(input_type)
+  end
+
   def accept(visitor)
     case input_type
     when 'text'
