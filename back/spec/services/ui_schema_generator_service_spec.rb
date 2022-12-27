@@ -531,4 +531,25 @@ RSpec.describe UiSchemaGeneratorService do
       expect(generator.visit_page(field)).to be_nil
     end
   end
+
+  describe '#visit_file_upload' do
+    let(:field) do
+      create(
+        :custom_field,
+        input_type: 'file_upload',
+        key: field_key,
+        title_multiloc: { 'en' => 'File upload field title' },
+        description_multiloc: { 'en' => 'File upload field description' }
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_file_upload(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'File upload field title',
+        options: { description: 'File upload field description' }
+      })
+    end
+  end
 end
