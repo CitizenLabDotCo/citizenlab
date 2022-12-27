@@ -154,7 +154,7 @@
   "app.components.IdeaForm.formGeneralSectionTitle": "Qual è la sua idea?",
   "app.components.IdeaForm.guidelinesLinkText": "le linee guida della nostra comunità",
   "app.components.IdeaForm.imageUploadTitle": "Immagini",
-  "app.components.IdeaForm.issueFormGeneralSectionTitle": "Qual è la sua idea?",
+  "app.components.IdeaForm.issueFormGeneralSectionTitle": "Qual è il suo commento?",
   "app.components.IdeaForm.locationPlaceholder": "Digitare per trovare una posizione",
   "app.components.IdeaForm.locationTitle": "Posizione",
   "app.components.IdeaForm.noAttachmentsError": "Si prega di aggiungere un allegato",
