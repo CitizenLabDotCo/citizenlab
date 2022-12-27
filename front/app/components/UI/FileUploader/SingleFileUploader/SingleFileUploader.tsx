@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import FileInput from '../FileInput';
+import SingleFileInput from './FileInput';
 import FileDisplay from './FileDisplay';
 import Error from 'components/UI/Error';
 
@@ -50,7 +50,7 @@ const SingleFileUploader = ({
   return (
     <Container className={className} key={id}>
       <Box>
-        <FileInput onAdd={handleFileOnAdd} id={id} />
+        <SingleFileInput onAdd={handleFileOnAdd} id={id} />
       </Box>
       <Error fieldName="file" apiErrors={apiErrors?.file} />
       {file && (
