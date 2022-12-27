@@ -120,7 +120,7 @@
         title: Emner
         description:
       location:
-        title: Lokalitet
+        title: Sted
         description:
       proposed_budget:
         title: Proposed Budget
@@ -146,7 +146,7 @@
         project:
           title: Hva er prosjektet ditt?
         issue:
-          title: Hva er problemet ditt?
+          title: Hva er emnet ditt?
         option:
           title: Hva er alternativet ditt?
       details:
@@ -159,7 +159,7 @@
     gender:
       male: Mann
       female: Kvinne
-      unspecified: Uspesifisert
+      unspecified: Annet
     domicile:
       outside: Et annet sted
     education:
@@ -205,3 +205,6 @@
       title: 'Ditt spørsmål'
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
