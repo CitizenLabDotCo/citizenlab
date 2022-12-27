@@ -36,6 +36,8 @@
 #  downvoting_method            :string           default("unlimited"), not null
 #  downvoting_limited_max       :integer          default(10)
 #  include_all_areas            :boolean          default(FALSE), not null
+#  posting_method               :string           default("unlimited"), not null
+#  posting_limited_max          :integer          default(1)
 #
 # Indexes
 #

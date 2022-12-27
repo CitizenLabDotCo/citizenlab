@@ -1,5 +1,5 @@
 import { snakeCase } from 'lodash-es';
-import { randomString } from '../../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
 describe('Survey builder', () => {
@@ -369,5 +369,126 @@ describe('Survey builder', () => {
 
     // Delete the downloads folder and its contents
     cy.task('deleteFolder', downloadsFolder);
+  });
+
+  it('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
+    cy.visit(`admin/projects/${projectId}/permissions`);
+    cy.get('#e2e-granular-permissions').within(() => {
+      cy.get('[type="radio"]').eq(1).check({ force: true });
+    });
+
+    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.get('[data-cy="e2e-short-answer"]').click();
+
+    // Save the survey
+    cy.get('form').submit();
+    // Should show error if no title is entered
+    cy.get('[data-testid="error-message"]').should('exist');
+
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+    // Set the field to required
+    cy.get('#e2e-required-toggle').find('input').click({ force: true });
+
+    cy.get('form').submit();
+    // Should show success message on saving
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Take the survey
+    cy.visit(`/projects/${projectSlug}`);
+    cy.acceptCookies();
+    cy.get('#e2e-cta-button')
+      .find('button')
+      .should('not.have.attr', 'disabled');
+    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.contains(questionTitle).should('exist');
+    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+
+    // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').click();
+
+    // Check that we show a success message
+    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
+    // close modal
+    cy.get('.e2e-modal-close-button').click();
+    // check that the modal is no longer on the page
+    cy.get('#e2e-modal-container').should('have.length', 0);
+
+    // Take the survey again
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('#e2e-cta-button')
+      .find('button')
+      .should('not.have.attr', 'disabled');
+    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.contains(questionTitle).should('exist');
+    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+
+    // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').click();
+
+    // Check that we show a success message
+    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
+    // close modal
+    cy.get('.e2e-modal-close-button').click();
+    // check that the modal is no longer on the page
+    cy.get('#e2e-modal-container').should('have.length', 0);
+  });
+
+  it('does not allow non admin users to fill in a survey more than once when permissions are set to registered users', () => {
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
+
+    cy.visit(`admin/projects/${projectId}/permissions`);
+    cy.get('#e2e-granular-permissions').within(() => {
+      cy.get('[type="radio"]').eq(1).check({ force: true });
+    });
+
+    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.get('[data-cy="e2e-short-answer"]').click();
+
+    // Save the survey
+    cy.get('form').submit();
+    // Should show error if no title is entered
+    cy.get('[data-testid="error-message"]').should('exist');
+
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+    // Set the field to required
+    cy.get('#e2e-required-toggle').find('input').click({ force: true });
+
+    cy.get('form').submit();
+    // Should show success message on saving
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    cy.visit(`admin/projects/${projectId}`);
+    cy.logout();
+    cy.apiSignup(firstName, lastName, email, password);
+    cy.setLoginCookie(email, password);
+
+    // Take the survey
+    cy.visit(`/projects/${projectSlug}`);
+    cy.acceptCookies();
+    cy.get('#e2e-cta-button')
+      .find('button')
+      .should('not.have.attr', 'disabled');
+    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.contains(questionTitle).should('exist');
+    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+
+    // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').click();
+
+    // Check that we show a success message
+    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
+    // close modal
+    cy.get('.e2e-modal-close-button').click();
+    // check that the modal is no longer on the page
+    cy.get('#e2e-modal-container').should('have.length', 0);
+
+    // Try filling in the survey again
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('#e2e-cta-button').find('button').should('have.attr', 'disabled');
   });
 });
