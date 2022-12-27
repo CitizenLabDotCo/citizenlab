@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.linearScale',
     defaultMessage: 'Linear scale',
   },
+  fileUpload: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.fileUpload',
+    defaultMessage: 'File upload',
+  },
   default: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.default',
     defaultMessage: 'Default',
