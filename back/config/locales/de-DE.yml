@@ -206,5 +206,5 @@ de:
       option1: 'Option 1'
       option2: 'Option 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Ende der Umfrage'
+      description: "Bitte übermitteln Sie Ihre Antworten, indem Sie unten auf \"Umfrage abschicken\" klicken."
