@@ -295,7 +295,7 @@ resource 'Ideas' do
           example_request '[error] Trying to update an input' do
             assert_status 401
             json_response = json_parse(response_body)
-            expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
+            expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
           end
         end
 
@@ -305,7 +305,7 @@ resource 'Ideas' do
           example_request '[error] Trying to update an input' do
             assert_status 401
             json_response = json_parse(response_body)
-            expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
+            expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
           end
         end
       end
