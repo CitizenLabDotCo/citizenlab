@@ -9,7 +9,6 @@ import {
   Select,
   Text,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { debounce } from 'lodash-es';
@@ -21,6 +20,7 @@ import HeaderImageDropzone from './HeaderImageDropzone';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import cropperMessages from 'components/admin/ImageCropper/messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNil, isNilOrError } from 'utils/helperUtils';
@@ -158,7 +158,7 @@ const BannerImageField = ({
               values={{
                 supportPageLink: (
                   <a
-                    href={formatMessage(messages.imageSupportPageURL)}
+                    href={formatMessage(cropperMessages.imageSupportPageURL)}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -204,26 +204,6 @@ const BannerImageField = ({
               onComplete={onAddImage}
               aspect={3 / 1}
             />
-            <Warning>
-              <Text>
-                <FormattedMessage
-                  {...messages.fixedRatioImageCropperInfo}
-                  values={{
-                    link: (
-                      <a
-                        href={formatMessage(messages.imageSupportPageURL)}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FormattedMessage
-                          {...messages.fixedRatioImageCropperInfoLink}
-                        />
-                      </a>
-                    ),
-                  }}
-                />
-              </Text>
-            </Warning>
           </Box>
         ) : (
           <HeaderImageDropzone

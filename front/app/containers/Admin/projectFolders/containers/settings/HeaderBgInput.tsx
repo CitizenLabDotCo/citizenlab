@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import ImageCropper from 'components/admin/ImageCropper';
-import Warning from 'components/UI/Warning';
-import cropperMessages from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/messages';
-
+import { Box } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 import HeaderBgDropzone from './HeaderBgDropzone';
-import { FormattedMessage } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
 interface Props {
   imageUrl: string | null | undefined;
@@ -43,32 +39,11 @@ export default ({ imageUrl, onImageChange }: Props) => {
 
   return imageIsNotSaved ? (
     <Box display="flex" flexDirection="column" gap="8px">
-      <ImageCropper
+      <ImageCropperContainer
         image={headerBg}
         onComplete={onImageChange}
         aspect={HEADER_BG_ASPECT_RATIO}
       />
-      <Warning>
-        <Text>
-          <FormattedMessage
-            {...cropperMessages.fixedRatioImageCropperInfo}
-            values={{
-              link: (
-                <a
-                  // TODO: fix
-                  href={'sdf'}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FormattedMessage
-                    {...cropperMessages.fixedRatioImageCropperInfoLink}
-                  />
-                </a>
-              ),
-            }}
-          />
-        </Text>
-      </Warning>
     </Box>
   ) : (
     <HeaderBgDropzone

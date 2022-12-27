@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import cropperMessages from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/messages';
-import ImageCropper from 'components/admin/ImageCropper';
-import Warning from 'components/UI/Warning';
+import { Box } from '@citizenlab/cl2-component-library';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { UploadFile } from 'typings';
 import HeaderBgDropzone from './HeaderBgDropzone';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { HEADER_BG_ASPECT_RATIO, IProjectFormState } from 'services/projects';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
@@ -16,72 +12,46 @@ interface Props {
   onImageChange: (newImageBase64: string | null) => void;
 }
 
-export default injectIntl(
-  ({
-    imageUrl,
-    onImageChange,
-    intl: { formatMessage },
-  }: Props & WrappedComponentProps) => {
-    const [projectHeaderImage, setProjectHeaderImage] =
-      useState<IProjectFormState['projectHeaderImage']>(null);
+export default ({ imageUrl, onImageChange }: Props) => {
+  const [projectHeaderImage, setProjectHeaderImage] =
+    useState<IProjectFormState['projectHeaderImage']>(null);
 
-    useEffect(() => {
-      (async () => {
-        const projectHeaderImage = imageUrl
-          ? await convertUrlToUploadFile(imageUrl, null, null)
-          : null;
-        setProjectHeaderImage(projectHeaderImage ? [projectHeaderImage] : null);
-      })();
-    }, [imageUrl]);
+  useEffect(() => {
+    (async () => {
+      const projectHeaderImage = imageUrl
+        ? await convertUrlToUploadFile(imageUrl, null, null)
+        : null;
+      setProjectHeaderImage(projectHeaderImage ? [projectHeaderImage] : null);
+    })();
+  }, [imageUrl]);
 
-    const handleImageAdd = (newHeader: UploadFile[]) => {
-      const newHeaderFile = newHeader[0];
+  const handleImageAdd = (newHeader: UploadFile[]) => {
+    const newHeaderFile = newHeader[0];
 
-      onImageChange(newHeaderFile.base64);
-      setProjectHeaderImage([newHeaderFile]);
-    };
+    onImageChange(newHeaderFile.base64);
+    setProjectHeaderImage([newHeaderFile]);
+  };
 
-    const handleImageRemove = async () => {
-      onImageChange(null);
-      setProjectHeaderImage(null);
-    };
+  const handleImageRemove = async () => {
+    onImageChange(null);
+    setProjectHeaderImage(null);
+  };
 
-    const imageIsNotSaved = projectHeaderImage && !projectHeaderImage[0].remote;
+  const imageIsNotSaved = projectHeaderImage && !projectHeaderImage[0].remote;
 
-    return imageIsNotSaved ? (
-      <Box display="flex" flexDirection="column" gap="8px">
-        <ImageCropper
-          image={projectHeaderImage}
-          onComplete={onImageChange} // projectHeaderImage is not updated, but we don't need it
-          aspect={HEADER_BG_ASPECT_RATIO}
-        />
-        <Warning>
-          <Text>
-            <FormattedMessage
-              {...cropperMessages.fixedRatioImageCropperInfo}
-              values={{
-                link: (
-                  <a
-                    href={formatMessage(cropperMessages.imageSupportPageURL)}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <FormattedMessage
-                      {...cropperMessages.fixedRatioImageCropperInfoLink}
-                    />
-                  </a>
-                ),
-              }}
-            />
-          </Text>
-        </Warning>
-      </Box>
-    ) : (
-      <HeaderBgDropzone
+  return imageIsNotSaved ? (
+    <Box display="flex" flexDirection="column" gap="8px">
+      <ImageCropperContainer
         image={projectHeaderImage}
-        onImageAdd={handleImageAdd}
-        onImageRemove={handleImageRemove}
+        onComplete={onImageChange} // projectHeaderImage is not updated, but we don't need it
+        aspect={HEADER_BG_ASPECT_RATIO}
       />
-    );
-  }
-);
+    </Box>
+  ) : (
+    <HeaderBgDropzone
+      image={projectHeaderImage}
+      onImageAdd={handleImageAdd}
+      onImageRemove={handleImageRemove}
+    />
+  );
+};
