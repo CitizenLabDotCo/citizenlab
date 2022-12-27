@@ -97,7 +97,7 @@ RSpec.describe CustomField, type: :model do
   end
 
   describe '#file_upload?' do
-    it 'returns true when the input_type is "files"' do
+    it 'returns true when the input_type is "file_upload"' do
       files_field = described_class.new input_type: 'file_upload'
       expect(files_field.file_upload?).to be true
     end
