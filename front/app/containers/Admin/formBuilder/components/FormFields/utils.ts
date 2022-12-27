@@ -1,19 +1,22 @@
 // services
 import {
+  ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
+  QuestionRuleType,
 } from 'services/formCustomFields';
 
 // styling
 import { colors } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { Locale } from 'typings';
-import { RuleType, surveyEndOption } from '../FormBuilderSettings/utils';
+import { surveyEndOption } from '../FormBuilderSettings/utils';
 
 export const isFieldSelected = (
   selectedFieldId: string | undefined,
@@ -24,40 +27,21 @@ export const isFieldSelected = (
 
 export const getFieldBackgroundColor = (
   selectedFieldId: string | undefined,
-  field: IFlatCustomField
+  field: IFlatCustomField,
+  hasErrors: boolean
 ) => {
-  if (field.input_type === 'page') {
-    return isFieldSelected(selectedFieldId, field.id)
-      ? colors.primary
-      : colors.background;
+  if (isFieldSelected(selectedFieldId, field.id)) {
+    return rgba(colors.tealLight, 0.7);
+  } else if (hasErrors) {
+    return colors.errorLight;
+  } else if (field.input_type === 'page') {
+    return rgba(colors.coolGrey300, 0.15);
   }
   return undefined;
 };
 
-export const getTitleColor = (
-  selectedFieldId: string | undefined,
-  field: IFlatCustomField
-) => {
-  if (
-    field.input_type === 'page' &&
-    isFieldSelected(selectedFieldId, field.id)
-  ) {
-    return 'white';
-  }
-  return 'grey800';
-};
-
-export const getIndexTitleColor = (
-  selectedFieldId: string | undefined,
-  field: IFlatCustomField
-) => {
-  if (
-    field.input_type === 'page' &&
-    isFieldSelected(selectedFieldId, field.id)
-  ) {
-    return 'white';
-  }
-  return 'teal300';
+export const getIndexTitleColor = (inputType: ICustomFieldInputType) => {
+  return inputType === 'page' ? 'blue500' : 'teal400';
 };
 
 export const getIndexForTitle = (
@@ -85,7 +69,7 @@ export const getOptionRule = (
       (rule) => rule.if === option.id || rule.if === option.temp_id
     );
     if (rule && rule.if && rule.goto_page_id) {
-      return rule as RuleType;
+      return rule as QuestionRuleType;
     }
   }
   return undefined;

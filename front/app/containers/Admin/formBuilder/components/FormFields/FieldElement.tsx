@@ -6,11 +6,8 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import {
-  isFieldSelected,
   getFieldBackgroundColor,
-  getTitleColor,
   getIndexForTitle,
   getIndexTitleColor,
   getLinearScaleOptions,
@@ -27,25 +24,29 @@ import {
   Text,
   colors,
   Icon,
+  IconNames,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import { FlexibleRow } from '../FlexibleRow';
 
 // styling
 import styled from 'styled-components';
+import { rgba } from 'polished';
 
 // hooks and services
 import {
+  ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { FieldRuleDisplay } from './FieldRuleDisplay';
-import { isRuleValid } from 'utils/yup/validateLogic';
+import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
     cursor: pointer;
+    background: ${rgba(colors.tealLight, 0.2)};
   }
 `;
 
@@ -55,6 +56,25 @@ type Props = {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   getTranslatedFieldType: (fieldType: string) => MessageDescriptor;
   selectedFieldId?: string;
+};
+
+const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
+  switch (inputType) {
+    case 'text':
+      return 'survey-short-answer-2';
+    case 'multiline_text':
+      return 'survey-long-answer-2';
+    case 'multiselect':
+      return 'survey-multiple-choice-2';
+    case 'select':
+      return 'survey-single-choice';
+    case 'number':
+      return 'survey-number-field';
+    case 'linear_scale':
+      return 'survey-linear-scale';
+    default:
+      return 'survey';
+  }
 };
 
 export const FieldElement = (props: Props) => {
@@ -77,15 +97,8 @@ export const FieldElement = (props: Props) => {
   const index = formCustomFields.findIndex((f) => f.id === field.id);
 
   const hasErrors = !!errors.customFields?.[index];
-  let outlineStyle = 'none';
-  if (hasErrors) {
-    outlineStyle = `1px solid ${colors.error}`;
-  } else if (
-    isFieldSelected(selectedFieldId, field.id) &&
-    field.input_type !== 'page'
-  ) {
-    outlineStyle = `1px solid ${colors.teal300}`;
-  }
+  const showLogicOnRow =
+    field.input_type !== 'page' ? field.logic.rules : field.logic;
 
   const editFieldAndValidate = () => {
     onEditField({ ...field, index });
@@ -96,8 +109,7 @@ export const FieldElement = (props: Props) => {
     <FormFieldsContainer
       role={'button'}
       key={field.id}
-      style={{ outline: outlineStyle, outlineOffset: '-1px' }}
-      background={getFieldBackgroundColor(selectedFieldId, field)}
+      background={getFieldBackgroundColor(selectedFieldId, field, hasErrors)}
       onClick={() => {
         isEditingDisabled ? undefined : editFieldAndValidate();
       }}
@@ -114,16 +126,24 @@ export const FieldElement = (props: Props) => {
           <Box display="flex" alignItems="center" height="100%">
             <Box display="block">
               <Box>
+                {hasErrors && (
+                  <Icon
+                    ml="28px"
+                    width="20px"
+                    fill={colors.error}
+                    name="alert-circle"
+                  />
+                )}
                 <Icon
-                  ml="28px"
+                  ml={hasErrors ? '8px' : '28px'}
                   width="12px"
-                  fill={getIndexTitleColor(selectedFieldId, field)}
+                  fill={getIndexTitleColor(field.input_type)}
                   name="sort"
                   pb="4px"
                 />
                 <Text
                   as="span"
-                  color={getIndexTitleColor(selectedFieldId, field)}
+                  color={getIndexTitleColor(field.input_type)}
                   fontSize="base"
                   mt="auto"
                   mb="auto"
@@ -144,12 +164,12 @@ export const FieldElement = (props: Props) => {
                   fontSize="base"
                   mt="auto"
                   mb="auto"
-                  color={getTitleColor(selectedFieldId, field)}
+                  color="grey800"
                 >
                   <T value={field.title_multiloc} />
                 </Text>
               </Box>
-              {field.input_type !== 'page' && field.logic.rules && (
+              {showLogicOnRow && (
                 <Box>
                   {field.input_type === 'select' &&
                     field.options &&
@@ -203,26 +223,75 @@ export const FieldElement = (props: Props) => {
                         </Box>
                       );
                     })}
+                  {field.input_type === 'page' && (
+                    <FieldRuleDisplay
+                      isPageRule
+                      isRuleValid={isPageRuleValid(
+                        formCustomFields,
+                        field.temp_id || field.id,
+                        field.logic.next_page_id
+                      )}
+                      answerTitle={getIndexForTitle(formCustomFields, field)}
+                      targetPage={getTitleFromPageId(
+                        formCustomFields,
+                        field.logic.next_page_id,
+                        formatMessage(messages.surveyEnd),
+                        formatMessage(messages.page)
+                      )}
+                      textColor={getIndexTitleColor(field.input_type)}
+                    />
+                  )}
                 </Box>
               )}
             </Box>
           </Box>
           <Box pr="32px" display="flex" height="100%" alignContent="center">
-            {!isNilOrError(field.input_type) && field.input_type !== 'page' && (
-              <Box my="auto" ml="12px">
-                {' '}
-                <Badge className="inverse" color={colors.coolGrey600}>
-                  <FormattedMessage
-                    {...getTranslatedFieldType(field.input_type)}
-                  />
-                </Badge>
-              </Box>
-            )}
             {field.required && (
               <Box mt="auto" mb="auto" ml="12px">
                 {' '}
-                <Badge className="inverse" color={colors.primary}>
-                  <FormattedMessage {...messages.required} />
+                <Badge className="inverse" color={colors.green100}>
+                  <Text
+                    color="green500"
+                    py="0px"
+                    my="0px"
+                    fontSize="xs"
+                    fontWeight="bold"
+                  >
+                    <FormattedMessage {...messages.required} />
+                  </Text>
+                </Badge>
+              </Box>
+            )}
+            {field.input_type !== 'page' && (
+              <Box my="auto" ml="12px">
+                {' '}
+                <Badge className="inverse" color={colors.grey200}>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    flexWrap="nowrap"
+                  >
+                    <Icon
+                      fill={colors.coolGrey600}
+                      width="16px"
+                      height="16px"
+                      name={getFieldIcon(field.input_type)}
+                    />
+                    <Text
+                      color="coolGrey600"
+                      py="0px"
+                      my="0px"
+                      fontSize="xs"
+                      fontWeight="bold"
+                      ml="4px"
+                      whiteSpace="nowrap"
+                    >
+                      <FormattedMessage
+                        {...getTranslatedFieldType(field.input_type)}
+                      />
+                    </Text>
+                  </Box>
                 </Badge>
               </Box>
             )}

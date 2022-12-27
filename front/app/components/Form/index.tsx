@@ -13,6 +13,7 @@ import {
   UISchemaElement,
   isCategorization,
   Translator,
+  Layout,
 } from '@jsonforms/core';
 import styled from 'styled-components';
 
@@ -76,7 +77,7 @@ export type ApiErrorGetter = (
 
 interface Props {
   schema: JsonSchema7;
-  uiSchema: UISchemaElement;
+  uiSchema: Layout;
   onSubmit: (formData: FormData) => Promise<any>;
   initialFormData?: any;
   title?: ReactElement;

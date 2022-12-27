@@ -3,11 +3,12 @@ import React from 'react';
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
-import { RuleInput } from './RuleInput';
+import { QuestionRuleInput } from './QuestionRuleInput';
+import { PageRuleInput } from './PageRuleInput';
 
 // intl
 import messages from '../../messages';
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 // services & hooks
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
@@ -71,21 +72,71 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
 
   return (
     <>
-      <Box mb="24px">
-        <Warning text={formatMessage(messages.logicWarning)} />
-      </Box>
-      {answers &&
-        answers.map((answer) => (
-          <Box key={answer.key}>
-            <RuleInput
-              fieldId={field.temp_id || field.id}
-              validationError={validationError}
-              name={`customFields.${field.index}.logic`}
-              answer={answer}
-              pages={pageOptions}
-            />
+      {field.input_type === 'page' ? (
+        <>
+          <Box mb="24px">
+            <Warning>
+              <FormattedMessage
+                {...messages.pagesLogicHelperText}
+                values={{
+                  supportPageLink: (
+                    <a
+                      href={formatMessage(messages.surveySupportArticle)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FormattedMessage
+                        {...messages.surveySupportArticleLinkText}
+                      />
+                    </a>
+                  ),
+                }}
+              />
+            </Warning>
           </Box>
-        ))}
+          <PageRuleInput
+            fieldId={field.temp_id || field.id}
+            validationError={validationError}
+            name={`customFields.${field.index}.logic`}
+            pages={pageOptions}
+          />
+        </>
+      ) : (
+        <>
+          <Box mb="24px">
+            <Warning>
+              <FormattedMessage
+                {...messages.questionLogicHelperText}
+                values={{
+                  supportPageLink: (
+                    <a
+                      href={formatMessage(messages.surveySupportArticle)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FormattedMessage
+                        {...messages.surveySupportArticleLinkText}
+                      />
+                    </a>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+          {answers &&
+            answers.map((answer) => (
+              <Box key={answer.key}>
+                <QuestionRuleInput
+                  fieldId={field.temp_id || field.id}
+                  validationError={validationError}
+                  name={`customFields.${field.index}`}
+                  answer={answer}
+                  pages={pageOptions}
+                />
+              </Box>
+            ))}
+        </>
+      )}
       <Box borderTop={`1px solid ${colors.divider}`} py="24px" />
     </>
   );

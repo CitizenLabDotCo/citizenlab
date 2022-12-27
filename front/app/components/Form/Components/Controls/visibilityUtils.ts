@@ -20,7 +20,16 @@ import {
 import { has } from 'lodash-es';
 import { PageType } from '../Layouts/utils';
 
-interface CustomCondition extends Condition, Scopable, SchemaBasedCondition {}
+interface ConditionWithPageId
+  extends Condition,
+    Scopable,
+    SchemaBasedCondition {
+  pageId?: string;
+}
+
+interface HidePageCondition extends ConditionWithPageId {
+  type: 'HIDEPAGE';
+}
 
 export type ExtendedRule = {
   /**
@@ -31,7 +40,7 @@ export type ExtendedRule = {
    * The condition of the rule that must evaluate to true in order
    * to trigger the effect.
    */
-  condition: CustomCondition;
+  condition: ConditionWithPageId;
 } & Rule;
 
 export type ExtendedUISchema = {
@@ -39,6 +48,10 @@ export type ExtendedUISchema = {
   label?: string;
 } & UISchemaElement &
   Scopable;
+
+const isHidePageCondition = (
+  condition: Condition
+): condition is HidePageCondition => condition.type === 'HIDEPAGE';
 
 const isOrCondition = (condition: Condition): condition is OrCondition =>
   condition.type === 'OR';
@@ -98,7 +111,8 @@ const evalVisibility = (
   uischema: ExtendedUISchema | PageType,
   data: any,
   path: string,
-  ajv: Ajv
+  ajv: Ajv,
+  pages?: PageType[]
 ): boolean => {
   if (
     !uischema.ruleArray ||
@@ -108,6 +122,24 @@ const evalVisibility = (
   }
 
   const fulfilledRule = uischema.ruleArray.every((currentRule) => {
+    const pageWithId = (pages || []).find(
+      (page) => page.options?.id === currentRule.condition?.pageId
+    );
+    const hasQuestionRule = pageWithId?.elements.find(
+      (element) => element.options?.hasRule
+    );
+
+    // Question rule takes precedence over page rule
+    if (isHidePageCondition(currentRule.condition) && !hasQuestionRule) {
+      return pageWithId
+        ? !isVisible(pageWithId, data, path, ajv, pages)
+        : false;
+    }
+
+    if (isHidePageCondition(currentRule.condition)) {
+      return true;
+    }
+
     const fulfilled = isRuleFulfilled(currentRule.condition, data, path, ajv);
 
     if (currentRule.effect === RuleEffect.HIDE) {
@@ -125,10 +157,11 @@ export const isVisible = (
   uischema: ExtendedUISchema | PageType,
   data: any,
   path: string,
-  ajv: Ajv
+  ajv: Ajv,
+  pages?: PageType[]
 ): boolean => {
   if (uischema.ruleArray) {
-    return evalVisibility(uischema, data, path, ajv);
+    return evalVisibility(uischema, data, path, ajv, pages);
   }
 
   return true;

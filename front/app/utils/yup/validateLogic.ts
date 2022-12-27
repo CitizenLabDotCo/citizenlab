@@ -1,10 +1,13 @@
-import { RuleType } from 'containers/Admin/formBuilder/components/FormBuilderSettings/utils';
-import { IFlatCustomField } from 'services/formCustomFields';
+import {
+  IFlatCustomField,
+  LogicType,
+  QuestionRuleType,
+} from 'services/formCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 import { object } from 'yup';
 
 export const isRuleValid = (
-  rule: RuleType | undefined,
+  rule: QuestionRuleType | undefined,
   fieldBeingValidatedId: string,
   fields: IFlatCustomField[]
 ) => {
@@ -26,6 +29,23 @@ export const isRuleValid = (
   return indexOfTargetPage > indexOfSourceField;
 };
 
+export const isPageRuleValid = (
+  fields: IFlatCustomField[],
+  sourcePageId: string,
+  nextPageId?: string
+) => {
+  if (nextPageId === 'survey_end' || !nextPageId) {
+    return true;
+  }
+  const indexOfTargetPage = fields.findIndex(
+    (field) => field.id === nextPageId || field.temp_id === nextPageId
+  );
+  const indexOfSourceField = fields.findIndex(
+    (field) => field.id === sourcePageId || field.temp_id === sourcePageId
+  );
+  return indexOfTargetPage > indexOfSourceField;
+};
+
 const validateLogic = (message: string) => {
   return object()
     .shape({
@@ -36,7 +56,7 @@ const validateLogic = (message: string) => {
         return schema.test(
           'rules reference prior pages',
           message,
-          (value: { rules: RuleType[] }, obj) => {
+          (value: { rules: QuestionRuleType[] }, obj) => {
             // Extract current state of customFields
             const fields = obj.from[2].value.customFields;
 
@@ -44,6 +64,19 @@ const validateLogic = (message: string) => {
               return (value.rules || []).every((rule) =>
                 isRuleValid(rule, obj.parent.id, fields)
               );
+            }
+            return true;
+          }
+        );
+      } else if (input_type === 'page') {
+        return schema.test(
+          'rules reference prior pages',
+          message,
+          (value: LogicType, obj) => {
+            const fields = obj.from[2].value.customFields;
+
+            if (!isNilOrError(obj) && value?.next_page_id && fields) {
+              return isPageRuleValid(fields, obj.parent.id, value.next_page_id);
             }
             return true;
           }
