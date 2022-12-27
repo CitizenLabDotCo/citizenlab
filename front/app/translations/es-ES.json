@@ -1558,7 +1558,7 @@
   "app.utils.FormattedCurrency.tokens": "fichas",
   "app.utils.IdeasNewPage.contributionFormTitle": "Agregar nueva contribución",
   "app.utils.IdeasNewPage.ideaFormTitle": "Agregar nueva idea",
-  "app.utils.IdeasNewPage.issueFormTitle": "Agregar nueva respuesta",
+  "app.utils.IdeasNewPage.issueFormTitle": "Agregar nuevo asunto",
   "app.utils.IdeasNewPage.optionFormTitle": "Agregar nueva opción",
   "app.utils.IdeasNewPage.projectFormTitle": "Agregar nuevo proyecto",
   "app.utils.IdeasNewPage.questionFormTitle": "Agregar nueva pregunta",
