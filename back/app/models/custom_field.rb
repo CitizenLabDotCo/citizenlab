@@ -109,7 +109,7 @@ class CustomField < ApplicationRecord
       text_multiloc
       multiline_text_multiloc
       html_multiloc
-  ].include?(input_type)
+    ].include?(input_type)
   end
 
   def accept(visitor)

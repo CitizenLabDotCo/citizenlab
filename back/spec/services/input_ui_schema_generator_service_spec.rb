@@ -117,7 +117,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text title',
                     options: {
-                      input_type: field1.input_type, 
+                      input_type: field1.input_type,
                       description: 'Text description',
                       isAdminField: false,
                       hasRule: false,
@@ -194,7 +194,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text titre',
                     options: {
-                      input_type: field1.input_type, 
+                      input_type: field1.input_type,
                       description: 'Text description',
                       isAdminField: false,
                       hasRule: false,
@@ -271,7 +271,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text titel',
                     options: {
-                      input_type: field1.input_type, 
+                      input_type: field1.input_type,
                       description: 'Text description',
                       isAdminField: false,
                       hasRule: false,

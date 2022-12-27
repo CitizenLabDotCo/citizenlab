@@ -108,6 +108,28 @@ RSpec.describe CustomField, type: :model do
     end
   end
 
+  describe '#multiloc?' do
+    it 'returns true when the input_type is "text_multiloc"' do
+      files_field = described_class.new input_type: 'text_multiloc'
+      expect(files_field.multiloc?).to be true
+    end
+
+    it 'returns true when the input_type is "multiline_text_multiloc"' do
+      files_field = described_class.new input_type: 'multiline_text_multiloc'
+      expect(files_field.multiloc?).to be true
+    end
+
+    it 'returns true when the input_type is "html_multiloc"' do
+      files_field = described_class.new input_type: 'html_multiloc'
+      expect(files_field.multiloc?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.multiloc?).to be false
+    end
+  end
+
   describe '#page?' do
     it 'returns true when the input_type is "page"' do
       page_field = described_class.new input_type: 'page'
