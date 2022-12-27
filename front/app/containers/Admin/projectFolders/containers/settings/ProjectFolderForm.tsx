@@ -154,7 +154,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     }
   }, []);
 
-  const handleHeaderBgOnChange = useCallback((newImageBase64: string) => {
+  const handleHeaderBgChange = useCallback((newImageBase64: string) => {
     setStatus('enabled');
 
     setChangedHeaderBg(true);
@@ -491,10 +491,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           </Box>
         </SectionField>
 
-        <HeaderBgInput
-          imageUrl={projectFolder?.attributes.header_bg?.large}
-          onImageChange={handleHeaderBgOnChange}
-        />
+        <SectionField>
+          <HeaderBgInput
+            imageUrl={projectFolder?.attributes.header_bg?.large}
+            onImageChange={handleHeaderBgChange}
+          />
+        </SectionField>
 
         <SectionField>
           <SubSectionTitle>
