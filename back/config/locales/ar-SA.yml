@@ -142,24 +142,24 @@ ar:
         question:
           title: ما سؤالك؟
         contribution:
-          title: ما مساهمتك؟
+          title: ما هي مساهمتك؟
         project:
           title: ما مشروعك؟
         issue:
-          title: ما مشكلتك؟
+          title: ما هي مشكلتك؟
         option:
           title: ما خيارك؟
       details:
         title: التفاصيل
       attachements:
-        title: الصور والمرفقات
+        title: الصور والمُرفقات
       extra:
         title: معلومات إضافية
   custom_field_options:
     gender:
       male: ذكر
       female: أنثى
-      unspecified: غير محدد
+      unspecified: آخر
     domicile:
       outside: في مكان آخر
     education:
@@ -205,3 +205,6 @@ ar:
       title: 'سؤالك'
       option1: 'الخيار 1'
       option2: 'الخيار 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
