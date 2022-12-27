@@ -132,6 +132,22 @@ describe ParticipationContextService do
       project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
+
+    it 'returns `posting_limited_max_reached` if the posting limit was reached' do
+      user = create :user
+      project = create :continuous_project, posting_enabled: true, posting_method: 'limited', posting_limited_max: 1
+      create :idea, project: project, author: user
+
+      expect(service.posting_idea_disabled_reason_for_project(project, user)).to eq 'posting_limited_max_reached'
+    end
+
+    it 'returns nil if the posting limit was not reached' do
+      user = create :user
+      project = create :continuous_project, posting_enabled: true, posting_method: 'limited', posting_limited_max: 1
+      create :idea, project: project
+
+      expect(service.posting_idea_disabled_reason_for_project(project, user)).to be_nil
+    end
   end
 
   describe 'commenting_idea_disabled_reason_for_project' do

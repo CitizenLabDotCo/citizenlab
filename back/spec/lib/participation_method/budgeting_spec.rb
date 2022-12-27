@@ -7,6 +7,15 @@ RSpec.describe ParticipationMethod::Budgeting do
 
   let(:project) { create :continuous_budgeting_project }
 
+  describe '#assign_defaults_for_participation_context' do
+    let(:project) { build :continuous_budgeting_project }
+
+    it 'sets the posting method to unlimited' do
+      participation_method.assign_defaults_for_participation_context
+      expect(project.posting_method).to eq 'unlimited'
+    end
+  end
+
   describe '#assign_slug' do
     let(:input) { create :idea }
 

@@ -24,6 +24,10 @@
 
 - [CL-1969] Fixed bug where idea form input term not matching back office configuration
 
+### Changed
+
+- [CL-2159] Do not allow registered users to take a native survey twice
+
 ## 2022-12-07
 
 ### Fixed

@@ -146,6 +146,8 @@ module AdminApi
         'presentation_mode' => pc.presentation_mode,
         'participation_method' => pc.participation_method,
         'posting_enabled' => pc.posting_enabled,
+        'posting_method' => pc.posting_method,
+        'posting_limited_max' => pc.posting_limited_max,
         'commenting_enabled' => pc.commenting_enabled,
         'voting_enabled' => pc.voting_enabled,
         'upvoting_method' => pc.upvoting_method,

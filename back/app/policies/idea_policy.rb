@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class IdeaPolicy < ApplicationPolicy
+  EXCLUDED_REASONS_FOR_UPDATE = %w[posting_disabled posting_limited_max_reached].freeze
   class Scope
     attr_reader :user, :scope
 
@@ -58,16 +59,13 @@ class IdeaPolicy < ApplicationPolicy
 
   def update?
     return false if record.participation_method_on_creation.never_update?
+    return true if record.draft? || (user && UserRoleService.new.can_moderate_project?(record.project, user))
+    return false unless active? && owner? && ProjectPolicy.new(user, record.project).show?
 
-    bypassable_reasons = %w[posting_disabled]
     pcs = ParticipationContextService.new
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
-    record.draft? || (user && UserRoleService.new.can_moderate_project?(record.project, user)) ||
-      (
-        active? && owner? &&
-          (pcs_posting_reason.nil? || bypassable_reasons.include?(pcs_posting_reason)) &&
-          ProjectPolicy.new(user, record.project).show?
-      )
+    raise_not_authorized(pcs_posting_reason) if pcs_posting_reason && EXCLUDED_REASONS_FOR_UPDATE.exclude?(pcs_posting_reason)
+    true
   end
 
   def destroy?
