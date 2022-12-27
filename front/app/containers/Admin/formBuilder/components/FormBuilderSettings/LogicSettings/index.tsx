@@ -77,7 +77,7 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
           <Box mb="24px">
             <Warning>
               <FormattedMessage
-                {...messages.pageLogicHelperText}
+                {...messages.pagesLogicHelperText}
                 values={{
                   supportPageLink: (
                     <a
