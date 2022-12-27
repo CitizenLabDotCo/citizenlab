@@ -142,17 +142,17 @@ tr:
         question:
           title: Sorunuz nedir ?
         contribution:
-          title: Katkınız nedir ?
+          title: Katkınız nedir?
         project:
           title: Projeniz nedir ?
         issue:
-          title: Sorununuz nedir?
+          title: Yorumunuz nedir?
         option:
           title: Seçeneğiniz nedir ?
       details:
         title: Ayrıntılar
       attachements:
-        title: Görseller ve Ekler
+        title: Görseller ve ekler
       extra:
         title: Diğer bilgiler
   custom_field_options:
@@ -205,3 +205,6 @@ tr:
       title: 'Your question'
       option1: 'Option 1'
       option2: 'Option 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
