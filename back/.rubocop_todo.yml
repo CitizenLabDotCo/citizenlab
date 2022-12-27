@@ -101,7 +101,7 @@ Metrics/MethodLength:
 # Offense count: 1
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ModuleLength:
-  Max: 105
+  Max: 117
 
 # Offense count: 7
 # Configuration parameters: CountKeywordArgs, MaxOptionalParameters.
@@ -189,11 +189,6 @@ RSpec/MessageSpies:
 # Offense count: 226
 RSpec/MissingExampleGroupArgument:
   Enabled: false
-
-# Offense count: 595
-# Configuration parameters: AllowSubject.
-RSpec/MultipleMemoizedHelpers:
-  Max: 37
 
 # Offense count: 29
 # Configuration parameters: IgnoreSharedExamples.

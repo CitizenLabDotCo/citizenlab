@@ -30,6 +30,8 @@
 #  min_budget             :integer          default(0)
 #  downvoting_method      :string           default("unlimited"), not null
 #  downvoting_limited_max :integer          default(10)
+#  posting_method         :string           default("unlimited"), not null
+#  posting_limited_max    :integer          default(1)
 #
 # Indexes
 #
