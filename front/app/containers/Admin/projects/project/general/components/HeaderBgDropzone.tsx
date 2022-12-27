@@ -14,6 +14,7 @@ import messages from '../messages';
 
 // typings
 import { UploadFile } from 'typings';
+import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
 
 // Would have loved to put this in styling.ts, but
 // that results in some arcane typescript error
@@ -61,7 +62,7 @@ export default injectIntl(
       </SubSectionTitle>
       <StyledImagesDropzone
         images={image}
-        imagePreviewRatio={240 / 952}
+        imagePreviewRatio={1 / HEADER_BG_ASPECT_RATIO}
         acceptedFileTypes={{
           'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
         }}

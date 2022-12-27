@@ -9,6 +9,7 @@ import { UploadFile } from 'typings';
 import HeaderBgDropzone from './HeaderBgDropzone';
 import { FormattedMessage } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
 
 interface Props {
   imageUrl: string | null | undefined;
@@ -42,7 +43,11 @@ export default ({ imageUrl, onImageChange }: Props) => {
 
   return imageIsNotSaved ? (
     <Box display="flex" flexDirection="column" gap="8px">
-      <ImageCropper image={headerBg} onComplete={onImageChange} />
+      <ImageCropper
+        image={headerBg}
+        onComplete={onImageChange}
+        aspect={HEADER_BG_ASPECT_RATIO}
+      />
       <Warning>
         <Text>
           <FormattedMessage

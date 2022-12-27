@@ -8,7 +8,7 @@ import { UploadFile } from 'typings';
 import HeaderBgDropzone from './HeaderBgDropzone';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { IProjectFormState } from 'services/projects';
+import { HEADER_BG_ASPECT_RATIO, IProjectFormState } from 'services/projects';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 interface Props {
@@ -50,7 +50,11 @@ export default injectIntl(
 
     return imageIsNotSaved ? (
       <Box display="flex" flexDirection="column" gap="8px">
-        <ImageCropper image={projectHeaderImage} onComplete={onImageChange} />
+        <ImageCropper
+          image={projectHeaderImage}
+          onComplete={onImageChange} // projectHeaderImage is not updated, but we don't need it
+          aspect={HEADER_BG_ASPECT_RATIO}
+        />
         <Warning>
           <Text>
             <FormattedMessage

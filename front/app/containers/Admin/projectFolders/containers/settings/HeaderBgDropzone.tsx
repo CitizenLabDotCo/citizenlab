@@ -6,6 +6,7 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
 
 interface Props {
   image: UploadFile[] | null;
@@ -30,7 +31,7 @@ export default ({ image, onImageAdd, onImageRemove }: Props) => (
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
       }}
       images={image}
-      imagePreviewRatio={250 / 1380}
+      imagePreviewRatio={1 / HEADER_BG_ASPECT_RATIO}
       onAdd={onImageAdd}
       onRemove={onImageRemove}
     />
