@@ -7,7 +7,7 @@ import { WrappedComponentProps } from 'react-intl';
 import { IPollQuestion } from 'services/pollQuestions';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import ResponseGraph from './charts/ResponseGraph';
+import ResponseGraph from './Charts/ResponseGraph';
 
 interface Props {
   question: IPollQuestion;

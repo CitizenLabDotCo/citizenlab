@@ -82,7 +82,7 @@ it:
       "password_reset": Reset della password - tutti gli utenti
       "project_moderation_rights_received": Diritti di moderazione del progetto ricevuti - responsabili del progetto
       "project_folder_moderation_rights_received": Diritti di gestione delle cartelle ricevuti
-      "project_phase_started": Nuova fase del progetto - tutti gli utenti
+      "project_phase_started": Nuova fase del progetto - partecipanti al progetto
       "project_phase_upcoming": Prossima nuova fase del progetto - amministratori e responsabili di progetto
       "status_change_of_commented_idea": Cambio di stato di un'idea che hai commentato - tutti gli utenti
       "status_change_of_commented_initiative": Cambio di stato di una proposta che hai commentato - tutti gli utenti

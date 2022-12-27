@@ -117,7 +117,7 @@ const NavbarItemRow = ({
           <Link to={viewButtonLink} target="_blank">
             <Button
               buttonStyle="secondary"
-              icon="search"
+              icon="eye"
               ml="10px"
               className="intercom-admin-pages-menu-view-button"
             >

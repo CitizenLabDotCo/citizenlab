@@ -82,7 +82,7 @@ tr:
       "password_reset": Parola sıfırlama - tüm kullanıcılar
       "project_moderation_rights_received": Proje moderasyon hakları alındı - proje yöneticileri
       "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
-      "project_phase_started": Yeni proje aşaması - tüm kullanıcılar
+      "project_phase_started": Yeni proje aşaması - proje katılımcıları
       "project_phase_upcoming": Yaklaşan yeni proje aşaması - yöneticiler ve proje yöneticileri
       "status_change_of_commented_idea": Yorum yaptığınız bir fikrin durum değişikliği - tüm kullanıcılar
       "status_change_of_commented_initiative": Yorum yaptığınız bir önerinin durum değişikliği - tüm kullanıcılar

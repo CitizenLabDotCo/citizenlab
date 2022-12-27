@@ -182,4 +182,21 @@ export default defineMessages({
     id: 'app.utils.AdminPage.ProjectEdit.shareInformation',
     defaultMessage: 'Share information',
   },
+  // Project page utils
+  upcomingAndOngoingEvents: {
+    id: 'app.containers.Projects.upcomingAndOngoingEvents',
+    defaultMessage: 'Upcoming and ongoing events',
+  },
+  pastEvents: {
+    id: 'app.containers.Projects.pastEvents',
+    defaultMessage: 'Past events',
+  },
+  noUpcomingOrOngoingEvents: {
+    id: 'app.containers.Projects.noUpcomingOrOngoingEvents',
+    defaultMessage: 'No upcoming or ongoing events are currently scheduled.',
+  },
+  noPastEvents: {
+    id: 'app.containers.Projects.noPastEvents',
+    defaultMessage: 'No past events to display',
+  },
 });

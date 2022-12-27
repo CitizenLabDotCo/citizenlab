@@ -26,6 +26,7 @@ export const query = ({
     groups: `dimension_date_created.${getInterval(resolution)}`,
     aggregations: {
       dimension_user_id: 'count',
+      'dimension_date_created.date': 'first',
     },
   };
 

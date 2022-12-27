@@ -82,7 +82,7 @@ lv:
       "password_reset": Paroles atiestatīšana - visi lietotāji
       "project_moderation_rights_received": Saņemtās projekta moderēšanas tiesības - projektu vadītāji
       "project_folder_moderation_rights_received": Saņemtās mapju pārvaldnieka tiesības
-      "project_phase_started": Jauns projekta posms - visi lietotāji
+      "project_phase_started": Jauns projekta posms - projekta dalībnieki
       "project_phase_upcoming": Gaidāmais jaunais projekta posms- administratori un projektu vadītāji
       "status_change_of_commented_idea": Idejas, kuru esat komentējis, statusa maiņa - visi lietotāji
       "status_change_of_commented_initiative": Priekšlikuma, kuru esat komentējis, statusa maiņa - visi lietotāji

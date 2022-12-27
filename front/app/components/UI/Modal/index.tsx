@@ -196,7 +196,10 @@ const ModalContainer = styled(clickOutside)<{
     `}
 `;
 
-const Overlay = styled.div<{ fullScreen?: boolean }>`
+const Overlay = styled.div<{
+  fullScreen?: boolean;
+  zIndex?: number;
+}>`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -212,7 +215,14 @@ const Overlay = styled.div<{ fullScreen?: boolean }>`
   padding-right: 30px;
   overflow: hidden;
   will-change: opacity, transform;
-  z-index: ${({ fullScreen }) => (fullScreen ? '400' : '1000001')};
+
+  z-index: ${({ fullScreen, zIndex }) => {
+    if (zIndex !== undefined) {
+      return zIndex.toString();
+    }
+
+    return fullScreen ? '400' : '1000001';
+  }};
 
   ${({ fullScreen }) =>
     fullScreen &&
@@ -293,7 +303,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderTitle = styled.h1`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   line-height: normal;
@@ -318,7 +328,7 @@ export const HeaderTitle = styled.h1`
 
 export const HeaderSubtitle = styled.h2`
   width: 100%;
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
@@ -425,6 +435,7 @@ export interface InputProps {
   closeOnClickOutside?: boolean;
   children: React.ReactNode;
   fullScreen?: boolean;
+  zIndex?: number;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -531,6 +542,7 @@ class Modal extends PureComponent<Props, State> {
       hasSkipButton,
       skipText,
       fullScreen,
+      zIndex,
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
@@ -564,6 +576,7 @@ class Modal extends PureComponent<Props, State> {
             id="e2e-modal-container"
             className={this.props.className}
             fullScreen={fullScreen}
+            zIndex={zIndex}
           >
             <ModalContentContainerSwitch width={width} fullScreen={fullScreen}>
               <ModalContainer

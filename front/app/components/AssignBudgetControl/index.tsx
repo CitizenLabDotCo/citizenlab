@@ -3,7 +3,7 @@ import {
   isNilOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 
 // components
 import Button from 'components/UI/Button';
@@ -26,7 +26,7 @@ import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
 // utils
 import streams from 'utils/streams';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -68,7 +68,7 @@ const BudgetWithButtonWrapper = styled.div`
 const Budget = styled.div`
   width: 100%;
   height: 90px;
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.m}px;
   font-weight: 600;
   text-align: center;

@@ -76,6 +76,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  advanced_custom_pages: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
@@ -144,7 +148,6 @@ export interface IAppConfigurationSettings {
   dynamic_idea_form?: AppConfigurationFeature;
   jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
-  user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
@@ -168,7 +171,6 @@ export interface IAppConfigurationSettings {
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
-  geographic_dashboard?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   ideaflow_social_sharing?: AppConfigurationFeature;
@@ -221,6 +223,7 @@ export interface IAppConfigurationSettings {
   native_surveys?: AppConfigurationFeature;
   analytics?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
+  user_confirmation?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

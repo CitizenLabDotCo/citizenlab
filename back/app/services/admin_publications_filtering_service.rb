@@ -14,6 +14,14 @@ class AdminPublicationsFilteringService
 
   # NOTE: This service is very fragile and the ORDER of filters matters for the Front-End, do not change it.
 
+  add_filter('only_projects') do |scope, options|
+    next scope unless ['true', true, '1'].include? options[:only_projects]
+
+    scope.where(publication_type: Project.name)
+  end
+
+  # This filter removes AdminPublications that represent folders which contain *only* projects which should not be visible to the current user.
+  # Here we are concerned with 'visibility' in terms of the Project.visible_to attribute, which can have one of 3 values: public, groups or admins.
   add_filter('remove_not_allowed_parents') do |visible_publications, options|
     next visible_publications unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
@@ -90,5 +98,17 @@ class AdminPublicationsFilteringService
   # If any of the filters before return duplicate admin publications, we remove them at the last step
   add_filter('distinct') do |scope, _options|
     scope.distinct
+  end
+
+  add_filter('by_folder') do |scope, options|
+    next scope unless options.key? :folder
+
+    folder_id = options[:folder]
+    if folder_id.blank?
+      scope.where(parent_id: nil) # keeps on top-level publications
+    else
+      folder = AdminPublication.where(publication_id: folder_id, publication_type: ProjectFolders::Folder.name)
+      scope.where(parent_id: folder) # .or(folder) Maybe we should add the folder itself
+    end
   end
 end

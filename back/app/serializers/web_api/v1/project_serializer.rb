@@ -6,6 +6,10 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :description_preview_multiloc, :slug, :process_type, :ideas_count, :comments_count,
     :internal_role, :created_at, :updated_at, :include_all_areas
 
+  attribute :folder_id do |project|
+    project.folder&.id
+  end
+
   attribute :publication_status do |object|
     object.admin_publication.publication_status
   end
@@ -135,5 +139,4 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::ProjectSerializer.include(ProjectPermissions::Patches::WebApi::V1::ProjectSerializer)
-WebApi::V1::ProjectSerializer.prepend_if_ee('ProjectFolders::WebApi::V1::Patches::ProjectSerializer')
 WebApi::V1::ProjectSerializer.include_if_ee('IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer')

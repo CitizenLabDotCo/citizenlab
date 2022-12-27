@@ -45,7 +45,9 @@ module XlsxExport
     attr_reader :inputs, :fields_in_form, :participation_method, :include_private_attributes
 
     def supported?(field)
-      field.code != 'idea_images_attributes' # Not supported by XlsxService
+      # idea_images_attributes is not supported by XlsxService.
+      # Page fields do not capture data, so they are excluded.
+      field.code != 'idea_images_attributes' && field.input_type != 'page'
     end
 
     def input_id_report_field

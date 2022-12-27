@@ -6,12 +6,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { TOnContinueFunction } from 'components/SignUpIn/AuthProviderButton';
-import { StyledAuthProviderButton } from 'components/SignUpIn/AuthProviders';
+import { TOnContinueFunction } from 'components/AuthProviders/AuthProviderButton';
+import { StyledAuthProviderButton } from 'components/AuthProviders';
 import ViennaIcon from './ViennaIcon';
 
 // typings
-import { TSignUpInFlow } from 'components/SignUpIn';
+import { TSignUpInFlow } from 'events/openSignUpInModal';
 
 // styling
 import styled from 'styled-components';

@@ -46,6 +46,19 @@ describe WebApi::V1::CustomFieldSerializer do
     end
   end
 
+  it 'swaps data images' do
+    field = create :custom_field
+    expect_any_instance_of(TextImageService).to(
+      receive(:render_data_images)
+        .with(field, :description_multiloc)
+        .and_return({ 'en' => 'Description with swapped images' })
+    )
+
+    serialized_field = described_class.new(field).serializable_hash
+    description_multiloc = serialized_field.dig(:data, :attributes, :description_multiloc)
+    expect(description_multiloc).to eq({ 'en' => 'Description with swapped images' })
+  end
+
   context 'linear_scale field' do
     let(:field) { create :custom_field_linear_scale, resource_type: 'CustomForm', key: 'scale' }
 

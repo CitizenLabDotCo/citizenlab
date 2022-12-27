@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_10_105544) do
+ActiveRecord::Schema.define(version: 2022_12_05_112729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -154,6 +154,15 @@ ActiveRecord::Schema.define(version: 2022_11_10_105544) do
     t.uuid "project_id"
     t.index ["area_id"], name: "index_areas_projects_on_area_id"
     t.index ["project_id"], name: "index_areas_projects_on_project_id"
+  end
+
+  create_table "areas_static_pages", force: :cascade do |t|
+    t.uuid "area_id", null: false
+    t.uuid "static_page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["area_id"], name: "index_areas_static_pages_on_area_id"
+    t.index ["static_page_id"], name: "index_areas_static_pages_on_static_page_id"
   end
 
   create_table "baskets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1108,6 +1117,15 @@ ActiveRecord::Schema.define(version: 2022_11_10_105544) do
     t.jsonb "value", default: {}, null: false
   end
 
+  create_table "report_builder_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "owner_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_report_builder_reports_on_name", unique: true
+    t.index ["owner_id"], name: "index_report_builder_reports_on_owner_id"
+  end
+
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "spam_reportable_id", null: false
     t.string "spam_reportable_type", null: false
@@ -1151,13 +1169,22 @@ ActiveRecord::Schema.define(version: 2022_11_10_105544) do
     t.boolean "top_info_section_enabled", default: false, null: false
     t.boolean "files_section_enabled", default: false, null: false
     t.boolean "projects_enabled", default: false, null: false
-    t.string "projects_filter_type"
+    t.string "projects_filter_type", default: "no_filter", null: false
     t.boolean "events_widget_enabled", default: false, null: false
     t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.string "header_bg"
     t.index ["code"], name: "index_static_pages_on_code"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
+  end
+
+  create_table "static_pages_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "topic_id", null: false
+    t.uuid "static_page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["static_page_id"], name: "index_static_pages_topics_on_static_page_id"
+    t.index ["topic_id"], name: "index_static_pages_topics_on_topic_id"
   end
 
   create_table "surveys_responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1320,6 +1347,8 @@ ActiveRecord::Schema.define(version: 2022_11_10_105544) do
   add_foreign_key "areas_initiatives", "initiatives"
   add_foreign_key "areas_projects", "areas"
   add_foreign_key "areas_projects", "projects"
+  add_foreign_key "areas_static_pages", "areas"
+  add_foreign_key "areas_static_pages", "static_pages"
   add_foreign_key "baskets", "users"
   add_foreign_key "baskets_ideas", "baskets"
   add_foreign_key "baskets_ideas", "ideas"
@@ -1395,8 +1424,11 @@ ActiveRecord::Schema.define(version: 2022_11_10_105544) do
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
+  add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
+  add_foreign_key "static_pages_topics", "static_pages"
+  add_foreign_key "static_pages_topics", "topics"
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
@@ -1733,53 +1765,6 @@ ActiveRecord::Schema.define(version: 2022_11_10_105544) do
       users.invite_status
      FROM users;
   SQL
-  create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
-      WITH last_project_statuses AS (
-           SELECT DISTINCT ON (activities.item_id) activities.item_id AS project_id,
-              activities.action AS status,
-              activities.acted_at AS "timestamp"
-             FROM activities
-            WHERE (((activities.item_type)::text = 'Project'::text) AND ((activities.action)::text = ANY ((ARRAY['draft'::character varying, 'published'::character varying, 'archived'::character varying, 'deleted'::character varying])::text[])))
-            ORDER BY activities.item_id, activities.acted_at DESC
-          ), finished_statuses_for_continuous_projects AS (
-           SELECT lps.project_id,
-              'finished'::text AS status,
-              lps."timestamp"
-             FROM (last_project_statuses lps
-               JOIN projects p ON ((lps.project_id = p.id)))
-            WHERE (((p.process_type)::text = 'continuous'::text) AND ((lps.status)::text = 'archived'::text))
-          ), finished_statuses_for_timeline_projects AS (
-           SELECT phases.project_id,
-              'finished'::text AS status,
-              ((max(phases.end_at) + 1))::timestamp without time zone AS "timestamp"
-             FROM (phases
-               JOIN projects ON ((phases.project_id = projects.id)))
-            WHERE ((projects.process_type)::text <> 'draft'::text)
-            GROUP BY phases.project_id
-           HAVING (max(phases.end_at) < now())
-          ), project_statuses AS (
-           SELECT last_project_statuses.project_id,
-              last_project_statuses.status,
-              last_project_statuses."timestamp"
-             FROM last_project_statuses
-          UNION
-           SELECT finished_statuses_for_timeline_projects.project_id,
-              finished_statuses_for_timeline_projects.status,
-              finished_statuses_for_timeline_projects."timestamp"
-             FROM finished_statuses_for_timeline_projects
-          UNION
-           SELECT finished_statuses_for_continuous_projects.project_id,
-              finished_statuses_for_continuous_projects.status,
-              finished_statuses_for_continuous_projects."timestamp"
-             FROM finished_statuses_for_continuous_projects
-          )
-   SELECT project_statuses.project_id AS dimension_project_id,
-      project_statuses.status,
-      project_statuses."timestamp",
-      (project_statuses."timestamp")::date AS dimension_date_id
-     FROM project_statuses
-    ORDER BY project_statuses."timestamp" DESC;
-  SQL
   create_view "analytics_fact_events", sql_definition: <<-SQL
       SELECT events.id,
       events.project_id AS dimension_project_id,
@@ -1787,5 +1772,23 @@ ActiveRecord::Schema.define(version: 2022_11_10_105544) do
       (events.start_at)::date AS dimension_date_start_id,
       (events.end_at)::date AS dimension_date_end_id
      FROM events;
+  SQL
+  create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
+      WITH finished_statuses_for_timeline_projects AS (
+           SELECT phases.project_id,
+              ((max(phases.end_at) + 1))::timestamp without time zone AS "timestamp"
+             FROM phases
+            GROUP BY phases.project_id
+           HAVING (max(phases.end_at) < now())
+          )
+   SELECT ap.publication_id AS dimension_project_id,
+      ap.publication_status AS status,
+      ((((p.process_type)::text = 'continuous'::text) AND ((ap.publication_status)::text = 'archived'::text)) OR ((fsftp.project_id IS NOT NULL) AND ((ap.publication_status)::text <> 'draft'::text))) AS finished,
+      COALESCE(fsftp."timestamp", ap.updated_at) AS "timestamp",
+      COALESCE((fsftp."timestamp")::date, (ap.updated_at)::date) AS dimension_date_id
+     FROM ((admin_publications ap
+       LEFT JOIN projects p ON ((ap.publication_id = p.id)))
+       LEFT JOIN finished_statuses_for_timeline_projects fsftp ON ((fsftp.project_id = ap.publication_id)))
+    WHERE ((ap.publication_type)::text = 'Project'::text);
   SQL
 end

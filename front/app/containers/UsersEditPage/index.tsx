@@ -24,7 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // Hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
-import Outlet from 'components/Outlet';
+import VerificationStatus from './VerificationStatus';
 
 const Container = styled.main`
   width: 100%;
@@ -48,7 +48,7 @@ export default () => {
   const loaded = appConfig !== undefined && authUser !== undefined;
 
   if (loaded && !authUser) {
-    clHistory.push('/sign-in');
+    clHistory.push('/');
   }
 
   if (loaded && !isNilOrError(appConfig) && !isNilOrError(authUser)) {
@@ -62,7 +62,7 @@ export default () => {
           />
         </ScreenReaderOnly>
         <Wrapper>
-          <Outlet id="app.containers.UserEditPage.content" />
+          <VerificationStatus />
           <ProfileForm />
           <FragmentForm />
           <ProfileDeletion />
