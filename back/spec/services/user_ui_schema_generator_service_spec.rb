@@ -40,13 +40,13 @@ RSpec.describe UserUiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field1.key}",
               label: 'Birthyear title',
-              options: { description: 'Birthyear description' }
+              options: { input_type: field1.input_type, description: 'Birthyear description' }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field2.key}",
               label: 'Text title',
-              options: { description: 'Text description', transform: 'trim_on_blur' }
+              options: { input_type: field2.input_type, description: 'Text description', transform: 'trim_on_blur' }
             }
           ]
         },
@@ -60,13 +60,13 @@ RSpec.describe UserUiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field1.key}",
               label: 'Birthyear title',
-              options: { description: 'Birthyear description' }
+              options: { input_type: field1.input_type, description: 'Birthyear description' }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field2.key}",
               label: 'Text title',
-              options: { description: 'Text description', transform: 'trim_on_blur' }
+              options: { input_type: field2.input_type, description: 'Text description', transform: 'trim_on_blur' }
             }
           ]
         },
@@ -80,13 +80,13 @@ RSpec.describe UserUiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field1.key}",
               label: 'Birthyear title',
-              options: { description: 'Birthyear description' }
+              options: { input_type: field1.input_type, description: 'Birthyear description' }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field2.key}",
               label: 'Text title',
-              options: { description: 'Text description', transform: 'trim_on_blur' }
+              options: { input_type: field2.input_type, description: 'Text description', transform: 'trim_on_blur' }
             }
           ]
         }
