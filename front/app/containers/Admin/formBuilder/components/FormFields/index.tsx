@@ -31,10 +31,12 @@ const getTranslatedFieldType = (field) => {
   switch (field) {
     case 'text':
       return messages.shortAnswer;
+    case 'multiline_text':
+      return messages.longAnswer;
     case 'multiselect':
-      return messages.chooseMany;
+      return messages.multipleChoice;
     case 'select':
-      return messages.chooseOne;
+      return messages.singleChoice;
     case 'page':
       return messages.page;
     case 'number':
@@ -90,7 +92,7 @@ const FormFields = ({
   });
 
   return (
-    <Box py="32px" height="100%">
+    <Box height="100%">
       <DragAndDrop
         onDragEnd={(result: DragAndDropResult) => {
           handleDragEnd(result, nestedPageData);

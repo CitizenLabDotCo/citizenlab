@@ -14,11 +14,6 @@ export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
 }
 
-export type LogicType = {
-  rules: { if: string | number; goto_page_id: string }[];
-};
-export type RuleType = { if: string | number; goto_page_id: string };
-
 export const surveyEndOption = 'survey_end';
 
 // Function to return additional settings based on input type

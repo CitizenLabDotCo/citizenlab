@@ -9,8 +9,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def visit_html_multiloc(field)
     super.tap do |ui_field|
       if field.code == 'body_multiloc'
-        ui_field[:elements].each do |elt|
-          elt[:options].delete :trim_on_blur
+        ui_field[:elements].each do |element|
+          element[:options].delete :trim_on_blur
         end
       end
     end
@@ -27,7 +27,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     {
       type: 'Page',
       options: {
-        # No id yet. It will be set after invoking this method.
+        id: field.id,
         title: multiloc_service.t(field.title_multiloc),
         description: description_option(field)
       },
@@ -40,7 +40,11 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   protected
 
   def default_options(field)
-    super.merge(isAdminField: admin_field?(field)).tap do |options|
+    defaults = {
+      isAdminField: admin_field?(field),
+      hasRule: field.logic?
+    }
+    super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end
   end
@@ -63,13 +67,10 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def schema_elements_for(fields)
     form_logic = FormLogicService.new(fields)
     current_page_schema = nil
-    current_page_index = 0
     field_schemas = []
     fields.each do |field|
       field_schema = visit field
       if field.page?
-        current_page_index += 1
-        field_schema[:options][:id] = "page_#{current_page_index}"
         rules = form_logic.ui_schema_rules_for(field)
         field_schema[:ruleArray] = rules if rules.present?
         field_schemas << field_schema

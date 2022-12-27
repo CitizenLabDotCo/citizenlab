@@ -66,28 +66,28 @@ const FormBuilderSettings = ({
   }
 
   const deleteField = (fieldIndex: number) => {
-    let pageIsLinked = false;
     setFieldIndexToDelete(fieldIndex);
 
     // Check if deleted field has linked logic
-    formCustomFields.map((surveyField) => {
+    const doesPageHaveLinkedLogic = formCustomFields.some((surveyField) => {
       if (surveyField.logic && surveyField.logic.rules) {
-        const hasLinkedRule = surveyField.logic.rules.find(
+        return surveyField.logic.rules.some(
           (rule) =>
             rule.goto_page_id === field.id ||
             rule.goto_page_id === field.temp_id
         );
-        if (hasLinkedRule) {
-          pageIsLinked = true;
-        }
+      } else if (surveyField.logic && surveyField.logic?.next_page_id) {
+        return (
+          surveyField.logic?.next_page_id === field.id ||
+          surveyField.logic?.next_page_id === field.temp_id
+        );
       }
+      return false;
     });
 
-    // Open confirmation modal if linked logic present
-    if (pageIsLinked) {
+    if (doesPageHaveLinkedLogic) {
       openModal();
     } else {
-      // delete the field without confirmation
       onDelete(fieldIndex);
     }
   };
@@ -102,6 +102,13 @@ const FormBuilderSettings = ({
               rule.goto_page_id !== field.temp_id
           );
           setValue(`customFields.${i}.logic.rules`, updatedRules);
+        } else if (surveyField.logic && surveyField.logic.next_page_id) {
+          if (
+            surveyField.logic.next_page_id === field.id ||
+            surveyField.logic.next_page_id === field.temp_id
+          ) {
+            setValue(`customFields.${i}.logic`, {});
+          }
         }
       });
       onDelete(fieldIndexToDelete);
@@ -110,12 +117,9 @@ const FormBuilderSettings = ({
   };
 
   const getPageList = () => {
-    // TODO: Only select pages which come after the question. For this iteration though, we are not
-    // validating against cyclical form flows, so to not have an error state here,
-    // all pages should be available in the list.
     const pageArray: { value: string; label: string }[] = [];
 
-    formCustomFields?.map((field) => {
+    formCustomFields?.forEach((field) => {
       if (field.input_type === 'page') {
         pageArray.push({
           value: field.temp_id || field.id,
@@ -161,8 +165,9 @@ const FormBuilderSettings = ({
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
-  const showTabbedSettings =
-    fieldType === 'linear_scale' || fieldType === 'select';
+  const showTabbedSettings = ['linear_scale', 'select', 'page'].includes(
+    fieldType
+  );
 
   return (
     <>
@@ -266,7 +271,7 @@ const FormBuilderSettings = ({
                 buttonStyle="delete"
                 width="auto"
                 mr="20px"
-                onClick={() => removeLogicAndDelete()}
+                onClick={removeLogicAndDelete}
               >
                 {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
               </Button>

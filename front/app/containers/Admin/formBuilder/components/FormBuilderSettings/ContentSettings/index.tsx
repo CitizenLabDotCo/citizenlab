@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 // components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
@@ -35,7 +36,10 @@ export const ContentSettings = ({
   isDeleteDisabled,
   onDelete,
 }: ContentSettingsProps) => {
+  const { watch } = useFormContext();
+  const logic = watch(`customFields.${field.index}.logic`);
   const platformLocale = useLocale();
+  const hasRules = logic && logic.rules && logic.rules.length > 0;
 
   if (!isNilOrError(platformLocale)) {
     return (
@@ -45,6 +49,7 @@ export const ContentSettings = ({
             <SectionField id="e2e-required-toggle">
               <Toggle
                 name={`customFields.${field.index}.required`}
+                disabled={hasRules}
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
                     <FormattedMessage {...messages.requiredToggleLabel} />

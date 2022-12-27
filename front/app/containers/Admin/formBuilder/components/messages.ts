@@ -222,10 +222,15 @@ export default defineMessages({
     defaultMessage: 'Invalid logic',
   },
   // Logic Settings
-  logicWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.logicWarning',
+  questionLogicHelperText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText',
     defaultMessage:
-      'If no logic is added to an answer, the survey will follow its normal flow.',
+      'If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
+  },
+  pagesLogicHelperText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText',
+    defaultMessage:
+      'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
   },
   goToPageInputLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.goToPageInputLabel',
@@ -234,5 +239,22 @@ export default defineMessages({
   ruleForAnswerLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.ruleForAnswerLabel',
     defaultMessage: 'If answer is:',
+  },
+  pageRuleLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pageRuleLabel',
+    defaultMessage: 'Next page is:',
+  },
+  nextPageLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.nextPageLabel',
+    defaultMessage: 'Next:',
+  },
+  surveySupportArticle: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveySupportArticle',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey',
+  },
+  surveySupportArticleLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveySupportArticleLinkText',
+    defaultMessage: 'this page',
   },
 });

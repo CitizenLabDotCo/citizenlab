@@ -53,7 +53,7 @@ const FormBuilderToolbox = ({
       id: `${Math.floor(Date.now() * Math.random())}`,
       temp_id: generateTempId(),
       logic: {
-        rules: [],
+        ...(inputType !== 'page' ? { rules: [] } : undefined),
       },
       isLocalOnly: true,
       description_multiloc: {},
@@ -110,25 +110,25 @@ const FormBuilderToolbox = ({
             data-cy="e2e-page"
           />
           <ToolboxItem
-            icon="survey-short-answer"
+            icon="survey-short-answer-2"
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addField('text')}
             data-cy="e2e-short-answer"
           />
           <ToolboxItem
-            icon="survey-long-answer"
+            icon="survey-long-answer-2"
             label={formatMessage(messages.longAnswer)}
             onClick={() => addField('multiline_text')}
             data-cy="e2e-long-answer"
           />
           <ToolboxItem
-            icon="survey-multiple-choice"
+            icon="survey-single-choice"
             label={formatMessage(messages.singleChoice)}
             onClick={() => addField('select')}
             data-cy="e2e-single-choice"
           />
           <ToolboxItem
-            icon="survey-multiple-choice"
+            icon="survey-multiple-choice-2"
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addField('multiselect')}
             data-cy="e2e-multiple-choice"

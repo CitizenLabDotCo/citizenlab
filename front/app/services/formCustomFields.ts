@@ -24,9 +24,16 @@ export type IOptionsType = {
   temp_id?: string;
 };
 
+export type QuestionRuleType = { if: string | number; goto_page_id: string };
+
+export type LogicType = {
+  rules?: QuestionRuleType[];
+  next_page_id?: string;
+};
+
 export interface IAttributes {
   temp_id: string;
-  logic: { rules: { if: string | number; goto_page_id: string }[] };
+  logic: LogicType;
   key: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;

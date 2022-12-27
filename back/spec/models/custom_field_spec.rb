@@ -69,6 +69,29 @@ class TestVisitor < FieldVisitorService
 end
 
 RSpec.describe CustomField, type: :model do
+  let(:field) { described_class.new input_type: 'not_important_for_this_test' }
+
+  describe '#logic?' do
+    it 'returns true when there is logic' do
+      field.logic = { 'rules' => [{ if: 2, goto_page_id: 'some_page_id' }] }
+      expect(field.logic?).to be true
+
+      field.logic = { 'next_page_id' => 'some_page_id' }
+      expect(field.logic?).to be true
+    end
+
+    it 'returns false when there is no logic' do
+      field.logic = nil
+      expect(field.logic?).to be false
+
+      field.logic = {}
+      expect(field.logic?).to be false
+
+      field.logic = { 'rules' => [] }
+      expect(field.logic?).to be false
+    end
+  end
+
   describe '#page?' do
     it 'returns true when the input_type is "page"' do
       page_field = described_class.new input_type: 'page'

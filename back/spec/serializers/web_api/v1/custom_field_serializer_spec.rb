@@ -86,7 +86,14 @@ describe WebApi::V1::CustomFieldSerializer do
   end
 
   context 'page field' do
-    let(:field) { create :custom_field_page, resource_type: 'CustomForm', key: 'page_1' }
+    let(:field) do
+      create(
+        :custom_field_page,
+        resource_type: 'CustomForm',
+        key: 'page_1',
+        logic: { next_page_id: 'TEMP-ID-1' }
+      )
+    end
 
     it 'does not include the logic' do
       serialized_field = described_class.new(field).serializable_hash
@@ -101,7 +108,8 @@ describe WebApi::V1::CustomFieldSerializer do
         ordering: 0,
         required: false,
         title_multiloc: { 'en' => 'Cycling survey' },
-        updated_at: an_instance_of(ActiveSupport::TimeWithZone)
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: { 'next_page_id' => 'TEMP-ID-1' }
       })
     end
   end
