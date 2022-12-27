@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
     defaultMessage: 'Create custom page',
   },
+  titleSinglelocError: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError',
+    defaultMessage: 'Enter a title',
+  },
   titleMultilocError: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError',
     defaultMessage: 'Enter a title in every language',
