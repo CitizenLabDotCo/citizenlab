@@ -3,11 +3,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   ColorPickerInput,
-  IconTooltip,
   IOption,
   Label,
   Select,
-  Text,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -20,7 +18,6 @@ import HeaderImageDropzone from './HeaderImageDropzone';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import cropperMessages from 'components/admin/ImageCropper/messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNil, isNilOrError } from 'utils/helperUtils';
@@ -30,6 +27,7 @@ import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
 import RangeInput from 'components/UI/RangeInput';
 import ImageCropper from 'components/admin/ImageCropper';
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 
@@ -151,26 +149,7 @@ const BannerImageField = ({
     <>
       <SubSectionTitle>
         <FormattedMessage {...messages.header_bg} />
-        <IconTooltip
-          content={
-            <FormattedMessage
-              {...messages.headerBgTooltip}
-              values={{
-                supportPageLink: (
-                  <a
-                    href={formatMessage(cropperMessages.imageSupportPageURL)}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <FormattedMessage
-                      {...messages.headerImageSupportPageText}
-                    />
-                  </a>
-                ),
-              }}
-            />
-          }
-        />
+        <ImageInfoTooltip />
       </SubSectionTitle>
       <SectionField>
         {displayPreviewDevice && (

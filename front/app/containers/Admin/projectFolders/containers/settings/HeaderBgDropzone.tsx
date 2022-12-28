@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
 interface Props {
   image: UploadFile[] | null;
@@ -18,13 +18,7 @@ export default ({ image, onImageAdd, onImageRemove }: Props) => (
   <SectionField>
     <SubSectionTitle>
       <FormattedMessage {...messages.headerImageInputLabel} />
-      <IconTooltip
-        content={
-          <FormattedMessage
-            {...messages.projectFolderHeaderImageLabelTooltip}
-          />
-        }
-      />
+      <ImageInfoTooltip />
     </SubSectionTitle>
     <ImagesDropzone
       acceptedFileTypes={{
