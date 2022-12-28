@@ -8,8 +8,7 @@ import { StyledSectionField } from './styling';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // typings
@@ -29,13 +28,10 @@ interface Props {
   onImageRemove: () => void;
 }
 
-export default injectIntl(
-  ({
-    image,
-    onImageAdd,
-    onImageRemove,
-    intl: { formatMessage },
-  }: Props & WrappedComponentProps) => (
+export default ({ image, onImageAdd, onImageRemove }: Props) => {
+  const { formatMessage } = useIntl();
+
+  return (
     <StyledSectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.headerImageLabelText} />
@@ -71,5 +67,5 @@ export default injectIntl(
         onRemove={onImageRemove}
       />
     </StyledSectionField>
-  )
-);
+  );
+};
