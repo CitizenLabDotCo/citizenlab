@@ -2,17 +2,22 @@ import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
-import HeaderBgDropzone from './HeaderBgDropzone';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 interface Props {
   imageUrl: string | null | undefined;
   onImageChange: (newImageBase64: string | null) => void;
 }
 
-export default ({ imageUrl, onImageChange }: Props) => {
+const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
   const [headerBg, setHeaderBg] = useState<UploadFile[] | null>(null);
   useEffect(() => {
     (async () => {
@@ -37,19 +42,34 @@ export default ({ imageUrl, onImageChange }: Props) => {
 
   const imageIsNotSaved = headerBg && !headerBg[0].remote;
 
-  return imageIsNotSaved ? (
-    <Box display="flex" flexDirection="column" gap="8px">
-      <ImageCropperContainer
-        image={headerBg}
-        onComplete={onImageChange}
-        aspect={HEADER_BG_ASPECT_RATIO}
-      />
-    </Box>
-  ) : (
-    <HeaderBgDropzone
-      image={headerBg}
-      onImageAdd={handleImageAdd}
-      onImageRemove={handleImageRemove}
-    />
+  return (
+    <SectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.headerImageInputLabel} />
+        <ImageInfoTooltip />
+      </SubSectionTitle>
+
+      {imageIsNotSaved ? (
+        <Box display="flex" flexDirection="column" gap="8px">
+          <ImageCropperContainer
+            image={headerBg}
+            onComplete={onImageChange}
+            aspect={HEADER_BG_ASPECT_RATIO}
+          />
+        </Box>
+      ) : (
+        <ImagesDropzone
+          acceptedFileTypes={{
+            'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+          }}
+          images={headerBg}
+          imagePreviewRatio={1 / HEADER_BG_ASPECT_RATIO}
+          onAdd={handleImageAdd}
+          onRemove={handleImageRemove}
+        />
+      )}
+    </SectionField>
   );
 };
+
+export default HeaderBgInput;

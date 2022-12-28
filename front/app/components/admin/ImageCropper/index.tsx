@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 import getCroppedImage from './getCroppedImage';
 
-export type ImageCropperProps = {
+type ImageCropperProps = {
   image: UploadFile[] | null;
   onComplete: (image: string) => void;
   aspect: number;
@@ -48,4 +48,4 @@ const ImageCropper = ({ image, onComplete, aspect }: ImageCropperProps) => {
   );
 };
 
-export default ImageCropper;
+export { ImageCropper as default, ImageCropperProps };
