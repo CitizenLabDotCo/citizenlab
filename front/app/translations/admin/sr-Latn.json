@@ -487,7 +487,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "Morate da unesete opis",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel": "Naziv",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError": "Unesite naziv na svim jezicima",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Enter a title",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Unesi naslov",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "Pregledaj prilagođenu stranicu",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Dugme",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Uredi prilagođenu stranicu | {orgName}",
