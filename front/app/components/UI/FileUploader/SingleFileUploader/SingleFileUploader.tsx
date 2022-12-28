@@ -49,9 +49,7 @@ const SingleFileUploader = ({
 
   return (
     <Container className={className} key={id}>
-      <Box>
-        <SingleFileInput onAdd={handleFileOnAdd} id={id} />
-      </Box>
+      {!file?.name && <SingleFileInput onAdd={handleFileOnAdd} id={id} />}
       <Error fieldName="file" apiErrors={apiErrors?.file} />
       {file && (
         <FileDisplay
