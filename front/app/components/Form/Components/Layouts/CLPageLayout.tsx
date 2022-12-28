@@ -34,7 +34,7 @@ import {
   PageCategorization,
   isPageCategorization,
   PageType,
-  getUserPathFilteredData,
+  getFilteredDataForUserPath,
 } from 'components/Form/Components/Layouts/utils';
 import { isVisible } from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -112,7 +112,7 @@ const CLPageLayout = memo(
 
     const handleNextAndSubmit = () => {
       if (showSubmit) {
-        onSubmit(getUserPathFilteredData(userPagePath, data));
+        onSubmit(getFilteredDataForUserPath(userPagePath, data));
         return;
       }
 

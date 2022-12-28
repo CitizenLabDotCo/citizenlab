@@ -58,7 +58,10 @@ export const keyPresentInPageRoute = (
   return isFound;
 };
 
-export const getUserPathFilteredData = (userRoute: PageType[], data: any) => {
+export const getFilteredDataForUserPath = (
+  userRoute: PageType[],
+  data: any
+) => {
   const filteredData = data;
   forOwn(data, (value, key) => {
     filteredData[key] = keyPresentInPageRoute(key, userRoute)
