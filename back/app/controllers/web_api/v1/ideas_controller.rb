@@ -160,8 +160,10 @@ class WebApi::V1::IdeasController < ApplicationController
         params_for_file_upload_fields.each do |key, params_for_files_field|
           idea_file = FileUpload.create!(
             idea: input,
-            name: params_for_files_field['name'],
-            file: params_for_files_field['content']
+            file_by_content: {
+              name: params_for_files_field['name'],
+              content: params_for_files_field['content']
+            }
           )
           input.custom_field_values[key] = idea_file.id
         end

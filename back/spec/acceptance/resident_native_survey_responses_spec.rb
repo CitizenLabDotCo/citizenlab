@@ -118,10 +118,15 @@ resource 'Ideas' do
           assert_status 201
           json_response = json_parse response_body
           expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+
+          # Verify that the input is saved correctly
           inputs = project.reload.ideas
           expect(inputs.size).to eq 1
           input = inputs.first
           expect(input.phase_ids).to eq []
+          expect(input.creation_phase).to be_nil
+
+          # Verify that the files are saved correctly
           file1_id = input.custom_field_values['custom_field_name1']
           file2_id = input.custom_field_values['custom_field_name2']
           file1 = IdeaFile.find(file1_id)
@@ -129,9 +134,15 @@ resource 'Ideas' do
           expect(input.idea_files.size).to eq 2
           expect(input.idea_files.ids).to match_array([file1.id, file2.id])
           expect(file1.name).to eq filename1
+          expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
           expect(file2.name).to eq filename2
-          expect(input.custom_field_values).to eq({ 'custom_field_name1' => file1.id, 'custom_field_name2' => file2.id })
-          expect(input.creation_phase).to be_nil
+          expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
+
+          # Verify that the cutom field value is saved correctly.
+          expect(input.custom_field_values).to eq({
+            'custom_field_name1' => file1.id,
+            'custom_field_name2' => file2.id
+          })
         end
       end
 
