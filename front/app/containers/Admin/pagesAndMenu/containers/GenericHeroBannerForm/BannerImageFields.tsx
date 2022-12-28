@@ -26,7 +26,7 @@ import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
 import RangeInput from 'components/UI/RangeInput';
-import ImageCropper from 'components/admin/ImageCropper';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
@@ -178,7 +178,7 @@ const BannerImageField = ({
         )}
         {displayImageCropper ? (
           <Box display="flex" flexDirection="column" gap="8px">
-            <ImageCropper
+            <ImageCropperContainer
               image={headerLocalDisplayImage}
               onComplete={onAddImage}
               aspect={3 / 1}

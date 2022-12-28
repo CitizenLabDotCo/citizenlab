@@ -2,14 +2,10 @@ import React from 'react';
 import { Text, Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import ImageCropper, { ImageCropperProps } from './';
+import ImageCropper, { ImageCropperProps } from '.';
 import messages from './messages';
 
-const ImageCropperContainer = ({
-  image,
-  onComplete,
-  aspect,
-}: ImageCropperProps) => {
+const Container = ({ image, onComplete, aspect }: ImageCropperProps) => {
   const { formatMessage } = useIntl();
   return (
     <Box>
@@ -37,4 +33,4 @@ const ImageCropperContainer = ({
   );
 };
 
-export default ImageCropperContainer;
+export default Container;
