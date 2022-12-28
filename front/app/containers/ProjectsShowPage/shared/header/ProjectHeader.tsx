@@ -62,7 +62,7 @@ const EditButton = styled(Button)`
   `}
 `;
 
-const HeaderImageContainer = styled.div`
+export const HeaderImageContainer = styled.div`
   width: 100%;
   aspect-ratio: ${HEADER_BG_ASPECT_RATIO} / 1; // not necessary, just for the reference
   margin-bottom: 30px;
@@ -75,7 +75,7 @@ const HeaderImageContainer = styled.div`
   `}
 `;
 
-const HeaderImage = styled(Image)`
+export const HeaderImage = styled(Image)`
   width: 100%;
 
   ${media.phone`

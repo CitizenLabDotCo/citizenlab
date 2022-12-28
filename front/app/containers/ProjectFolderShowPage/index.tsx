@@ -82,16 +82,6 @@ const EditButton = styled(Button)`
   margin-left: 30px;
 `;
 
-const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
-  flex: 1;
-  height: 240px;
-  margin-bottom: 30px;
-
-  ${media.phone`
-    height: 140px;
-  `};
-`;
-
 const Content = styled.div`
   display: flex;
   align-items: flex-start;
@@ -213,7 +203,7 @@ const ProjectFolderShowPage = memo<{
                     </EditButton>
                   </ButtonBar>
                 )}
-                <StyledProjectFolderHeader projectFolder={projectFolder} />
+                <ProjectFolderHeader projectFolder={projectFolder} />
                 <Content>
                   <StyledProjectFolderDescription
                     projectFolder={projectFolder}
@@ -226,7 +216,7 @@ const ProjectFolderShowPage = memo<{
             ) : (
               <>
                 <StyledContentContainer maxWidth={maxPageWidth}>
-                  <StyledProjectFolderHeader projectFolder={projectFolder} />
+                  <ProjectFolderHeader projectFolder={projectFolder} />
                   <StyledProjectFolderDescription
                     projectFolder={projectFolder}
                   />
