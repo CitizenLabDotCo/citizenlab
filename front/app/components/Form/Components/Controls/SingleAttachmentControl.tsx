@@ -7,7 +7,7 @@ import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { Box } from '@citizenlab/cl2-component-library';
 import SingleFileUploader, {
   AttachmentFile,
-} from 'components/UI/FileUploader/SingleFileUploader/SingleFileUploader';
+} from 'components/Form/Components/SingleFileUploader/SingleFileUploader';
 
 const SingleAttachementControl = ({
   uischema,

@@ -10,7 +10,7 @@ import { Icon, IconButton } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../../UI/FileUploader/messages';
 import { WrappedComponentProps } from 'react-intl';
 import { AttachmentFile } from './SingleFileUploader';
 
