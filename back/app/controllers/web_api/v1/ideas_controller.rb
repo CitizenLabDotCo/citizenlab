@@ -158,7 +158,8 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if input.save save_options
         params_for_file_upload_fields.each do |key, params_for_files_field|
-          idea_file = input.idea_files.create!(
+          idea_file = FileUpload.create!(
+            idea: input,
             name: params_for_files_field['name'],
             file: params_for_files_field['content']
           )

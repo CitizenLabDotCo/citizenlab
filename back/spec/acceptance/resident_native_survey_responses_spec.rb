@@ -69,12 +69,16 @@ resource 'Ideas' do
     context 'when phase_ids are not given', skip: !CitizenLab.ee? do
       let(:phase_ids) { [] }
       let(:project_id) { project.id }
-      let(:filename1) { 'afvalkalender2022.pdf' }
-      let(:filename2) { 'afvalkalender2023.pdf' }
 
-      context 'with two files field' do
-        let(:file_contents1) { file_as_base64('afvalkalender.pdf', 'application/pdf') }
-        let(:file_contents2) { file_as_base64('afvalkalender.pdf', 'application/pdf') }
+      context 'with two file upload fields' do
+        # Note the "notwhitelisted" file extension. It is here to validate
+        # that no file extension validation is done.
+        let(:filename1) { 'afvalkalender2022.notwhitelisted' }
+        let(:filename2) { 'afvalkalender2023.pdf' }
+        let(:fixture_filename) { 'afvalkalender.pdf' }
+        let(:fixture_mime_type) { 'application/pdf' }
+        let(:file_contents1) { file_as_base64(fixture_filename, fixture_mime_type) }
+        let(:file_contents2) { file_as_base64(fixture_filename, fixture_mime_type) }
         let!(:files_field1) do
           create(
             :custom_field,
