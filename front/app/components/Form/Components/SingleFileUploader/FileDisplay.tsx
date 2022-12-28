@@ -17,7 +17,7 @@ import { AttachmentFile } from './SingleFileUploader';
 const Container = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 12px;
   margin-bottom: 10px;
   border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid;
