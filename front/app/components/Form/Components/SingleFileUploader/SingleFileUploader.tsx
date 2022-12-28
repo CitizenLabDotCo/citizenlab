@@ -15,6 +15,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // i18n
 import messages from '../../../UI/FileUploader/messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   width: 100%;
@@ -48,7 +49,11 @@ const SingleFileUploader = ({
 
   return (
     <Container className={className} key={id}>
-      {!file?.name && <SingleFileInput onAdd={handleFileOnAdd} id={id} />}
+      {!file?.name && (
+        <Box mt="0px">
+          <SingleFileInput onAdd={handleFileOnAdd} id={id} />
+        </Box>
+      )}
       <Error fieldName="file" apiErrors={apiErrors?.file} />
       {file && (
         <FileDisplay

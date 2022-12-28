@@ -6,7 +6,7 @@ import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // components
-import { Icon, IconButton } from '@citizenlab/cl2-component-library';
+import { Icon, IconButton, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -19,7 +19,6 @@ const Container = styled.div`
   align-items: center;
   padding: 10px 20px;
   margin-bottom: 10px;
-  margin-top: 10px;
   border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid;
 `;
@@ -30,10 +29,10 @@ const Paperclip = styled(Icon)`
   margin-right: 15px;
 `;
 
-const FileInfo = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
+const FileInfo = styled(Box)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const DeleteIconButton = styled(IconButton)``;
@@ -53,7 +52,7 @@ const FileDisplay = ({
     return (
       <Container>
         <Paperclip name="paperclip" ariaHidden />
-        <FileInfo>
+        <FileInfo flex={'1'}>
           <>
             <ScreenReaderOnly>
               <FormattedMessage {...messages.a11y_file} />
