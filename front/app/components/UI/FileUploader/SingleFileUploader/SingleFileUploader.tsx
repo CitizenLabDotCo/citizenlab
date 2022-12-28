@@ -15,7 +15,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   width: 100%;
