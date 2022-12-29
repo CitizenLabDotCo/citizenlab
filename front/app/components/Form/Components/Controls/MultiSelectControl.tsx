@@ -28,9 +28,14 @@ const MultiSelectControl = ({
   uischema,
   required,
   id,
+  visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const options = getOptions(schema, 'multi');
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <>

@@ -1113,7 +1113,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Dodaj sadržaj upitnika",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Odustani",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# opcije} one {# opcija} other {# opcija}})",
-  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Odaberite više izbora",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Zatvori",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Zatvoreno",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Da, izbriši rezultate upitnika",

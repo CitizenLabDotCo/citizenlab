@@ -1113,7 +1113,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Legg til innhold i spørreundersøkelsen",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Avbryt",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage} % ({choiceCount, plural, no {# valg} one {# valg} other {# valg}})",
-  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Velg flere",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Lukk",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Lukket",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Ja, slett spørreundersøkelsesresultater",

@@ -1113,7 +1113,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "إضافة محتوى الاستبيان",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "إلغاء",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# اختيار/اختيارات} one {# اختيار} other {# اختيار/اختيارات}})",
-  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "اختيار متعدد",
   "app.containers.AdminPage.ProjectEdit.survey.close": "إغلاق",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "مغلق",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "نعم، حذف نتائج الاستبيان",
