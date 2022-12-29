@@ -49,10 +49,8 @@ export const keyPresentInPageRoute = (
     const currentPageElementNames = page.elements.map((uiSchemaElement) =>
       uiSchemaElement.scope.split('/').pop()
     );
-    if (currentPageElementNames) {
-      if (currentPageElementNames.find((elementName) => elementName === key)) {
-        isFound = true;
-      }
+    if (currentPageElementNames.find((elementName) => elementName === key)) {
+      isFound = true;
     }
   });
   return isFound;
