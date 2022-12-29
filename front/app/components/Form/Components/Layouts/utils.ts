@@ -45,13 +45,11 @@ export const keyPresentInPageRoute = (
   userPageRoute: PageType[]
 ) => {
   let isFound = false;
-  userPageRoute.map((page) => {
+  userPageRoute.forEach((page) => {
     const currentPageElementNames = page.elements.map((uiSchemaElement) =>
       uiSchemaElement.scope.split('/').pop()
     );
-    if (currentPageElementNames.find((elementName) => elementName === key)) {
-      isFound = true;
-    }
+    isFound ||= currentPageElementNames.includes(key);
   });
   return isFound;
 };
