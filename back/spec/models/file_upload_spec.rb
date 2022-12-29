@@ -3,15 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe FileUpload, type: :model do
-  describe 'extension_whitelist validation' do
-    let(:idea) { create(:idea) }
+  let(:idea) { create(:idea) }
+  let(:file_upload) do
+    create(:file_upload, name: 'some_file_name.notwhitelisted')
+  end
 
+  describe 'extension_whitelist validation' do
     it 'is valid for any non-whitelisted file extension' do
-      idea_file = described_class.new(
-        idea: idea,
-        name: 'some_file_name.notwhitelisted'
-      )
-      expect(idea_file).to be_valid
+      expect(file_upload).to be_valid
+    end
+  end
+
+  describe 'path' do
+    let(:file_upload) { create(:file_upload) }
+
+    it 'is the location on disk in the "idea_file" directory' do
+      expected_path = Regexp.new('/cl2_back/public/uploads/.+/idea_file/file/.+/afvalkalender.pdf')
+      expect(file_upload.file.path).to match expected_path
     end
   end
 end

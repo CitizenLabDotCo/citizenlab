@@ -114,7 +114,7 @@ resource 'Ideas' do
         let(:project) { create :continuous_native_survey_project }
         let(:custom_form) { create(:custom_form, participation_context: project) }
 
-        example_request 'Create an input with a files field' do
+        example_request 'Create an input with a file upload field' do
           assert_status 201
           json_response = json_parse response_body
           expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
