@@ -169,9 +169,11 @@ const Form = memo(
       }
     }, [locale, processingInitialMultiloc, schema]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (formData?: any) => {
+      // Any specified formData has priority over data attribute
+      const submissionData = formData.data ? formData.data : data;
       const sanitizedFormData = {};
-      forOwn(data, (value, key) => {
+      forOwn(submissionData, (value, key) => {
         sanitizedFormData[key] =
           value === null || value === '' || value === false ? undefined : value;
       });
@@ -181,13 +183,13 @@ const Form = memo(
       const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
         schema,
         uiSchema,
-        data,
+        submissionData,
         customAjv
       );
       if (customAjv.validate(schemaToUse, dataWithoutHiddenFields)) {
         setLoading(true);
         try {
-          await onSubmit(data as FormData);
+          await onSubmit(submissionData as FormData);
         } catch (e) {
           setApiErrors(e.json.errors);
         }

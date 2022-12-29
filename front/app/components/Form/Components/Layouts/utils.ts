@@ -40,6 +40,33 @@ export interface PageCategorization extends ExtendedUISchema {
   elements: (PageType | PageCategorization)[];
 }
 
+export const keyPresentInPageRoute = (
+  key: string,
+  userPageRoute: PageType[]
+) => {
+  let isFound = false;
+  userPageRoute.forEach((page) => {
+    const currentPageElementNames = page.elements.map((uiSchemaElement) =>
+      uiSchemaElement.scope.split('/').pop()
+    );
+    isFound ||= currentPageElementNames.includes(key);
+  });
+  return isFound;
+};
+
+export const getFilteredDataForUserPath = (
+  userRoute: PageType[],
+  data: any
+) => {
+  const filteredData = { data };
+  forOwn(data, (value, key) => {
+    filteredData.data[key] = keyPresentInPageRoute(key, userRoute)
+      ? value
+      : undefined;
+  });
+  return filteredData;
+};
+
 export const getSanitizedFormData = (data) => {
   const sanitizedFormData = {};
   forOwn(data, (value, key) => {
