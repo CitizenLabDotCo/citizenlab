@@ -1382,7 +1382,7 @@
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Oqaatsinik arlalinnik assigiinngitsunik, atuisunnut neqeroorutigerusutannik toqqaasinnaavutit. Oqaatsit toqqakkavit tamarmik imassaannik immikkut sanassaatit.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Sammisaq",
   "app.containers.AdminPage.SettingsPage.logo": "Ilisarnaat",
-  "app.containers.AdminPage.SettingsPage.noHeader": "Bannerip assitassaanik ikkussilaarit (1440 x 480 px)",
+  "app.containers.AdminPage.SettingsPage.noHeader": "Bannerip assitassaanik ikkussilaarit",
   "app.containers.AdminPage.SettingsPage.noLogo": "Ilisarnaammik ikkussilaarit",
   "app.containers.AdminPage.SettingsPage.no_button": "Attataasaqanngilaq",
   "app.containers.AdminPage.SettingsPage.organizationName": "Illoqarfiup ingerlatseqatigiiffiulluunniit aqqa",
