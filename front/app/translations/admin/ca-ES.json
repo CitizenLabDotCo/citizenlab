@@ -1382,7 +1382,7 @@
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Podeu seleccionar diversos idiomes en què voleu oferir la vostra plataforma als usuaris. Haureu de crear contingut per a cada idioma seleccionat.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Activitat",
   "app.containers.AdminPage.SettingsPage.logo": "Logotip",
-  "app.containers.AdminPage.SettingsPage.noHeader": "Pengeu una imatge de capçalera (1440 x 480 px)",
+  "app.containers.AdminPage.SettingsPage.noHeader": "Pengeu una imatge de capçalera",
   "app.containers.AdminPage.SettingsPage.noLogo": "Si us plau, carregueu un logotip",
   "app.containers.AdminPage.SettingsPage.no_button": "Cap botó",
   "app.containers.AdminPage.SettingsPage.organizationName": "Nom de la ciutat o organització",
