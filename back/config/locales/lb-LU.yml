@@ -146,7 +146,7 @@ lb:
         project:
           title: Wat ass Äre Projet?
         issue:
-          title: Wat ass Är Ugeleeënheet ?
+          title: Wat ass Äert Uleies?
         option:
           title: Wat ass Är Optioun?
       details:
@@ -205,3 +205,6 @@ lb:
       title: 'Är Fro'
       option1: 'Méiglechkeet 1'
       option2: 'Méiglechkeet 2'
+    survey_end_page:
+      title: 'Enn vun der Ëmfro'
+      description: "Wgl. wielt ‘Ëmfro areechen’ hei ënnendrënner aus, fir Är Äntwert anzereechen."
