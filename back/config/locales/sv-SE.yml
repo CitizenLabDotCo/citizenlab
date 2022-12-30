@@ -146,7 +146,7 @@ sv:
         project:
           title: Vad är ditt projekt?
         issue:
-          title: Vad är ditt problem?
+          title: Vad är din kommentar?
         option:
           title: Vad är ditt alternativ?
       details:
@@ -205,3 +205,6 @@ sv:
       title: 'Din fråga'
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
+    survey_end_page:
+      title: 'Undersökningens slut'
+      description: "Skicka in dina svar genom att klicka på Skicka undersökning nedan."
