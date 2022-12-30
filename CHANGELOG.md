@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- [CL-1893] Added survey logic and new long text field.
+
 ## 2022-12-27
 
 ### Added

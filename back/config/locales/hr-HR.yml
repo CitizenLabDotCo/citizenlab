@@ -205,3 +205,6 @@ hr:
       title: 'Vaše pitanje'
       option1: '1. opcija'
       option2: '2. opcija'
+    survey_end_page:
+      title: 'Završetak upitnika'
+      description: "Pošaljite svoje odgovore tako da odaberete „Pošalji anketu“ u nastavku."

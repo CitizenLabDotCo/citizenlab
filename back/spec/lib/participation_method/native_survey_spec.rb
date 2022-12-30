@@ -35,14 +35,21 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect(participation_context.custom_form).to be_nil
 
       participation_method.create_default_form!
+      # create_default_form! does not reload associations for form/fields/options,
+      # so fetch the project from the database. The associations will be fetched
+      # when they are needed.
+      # Not doing this makes this test flaky, as create_default_form! creates fields
+      # and CustomField uses acts_as_list for ordering fields. The ordering is ok
+      # in the database, but not necessarily in memory.
+      participation_context_in_db = Project.find(participation_context.id)
 
-      expect(participation_context.custom_form.custom_fields.size).to eq 2
+      expect(participation_context_in_db.custom_form.custom_fields.size).to eq 2
 
-      question_page = participation_context.custom_form.custom_fields[0]
+      question_page = participation_context_in_db.custom_form.custom_fields[0]
       expect(question_page.title_multiloc).to eq({})
       expect(question_page.description_multiloc).to eq({})
 
-      field = participation_context.custom_form.custom_fields[1]
+      field = participation_context_in_db.custom_form.custom_fields[1]
       expect(field.title_multiloc).to match({
         'en' => 'Default question',
         'fr-FR' => 'Question par défaut',
