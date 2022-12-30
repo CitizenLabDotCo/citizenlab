@@ -93,8 +93,8 @@ describe('Admin: update Hero Banner content', () => {
     // click hero banner edit button
     cy.get('[data-cy="e2e-admin-edit-button-homepage_banner"]').first().click();
 
-    // click two-column banner layout
-    cy.get('[data-cy="e2e-two-column-layout-option"]').click();
+    // click two-row banner layout
+    cy.get('[data-cy="e2e-two-row-layout-option"]').click();
 
     // fill in header and subheader
     cy.get('[data-cy="e2e-signed-out-header-section"]')
@@ -154,7 +154,7 @@ describe('Admin: update Hero Banner content', () => {
 
     // check that the data we entered earlier is persisted in the form
     // layout chooser
-    cy.get('#banner-two-column-layout').should('have.attr', 'checked');
+    cy.get('#banner-two-row-layout').should('have.attr', 'checked');
 
     // signed-out header and subheader
     cy.get('[data-cy="e2e-signed-out-header-section"]')
