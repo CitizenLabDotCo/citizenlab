@@ -146,7 +146,7 @@ en:
         project:
           title: What is your project ?
         issue:
-          title: What is your issue ?
+          title: What is your comment?
         option:
           title: What is your option ?
       details:
