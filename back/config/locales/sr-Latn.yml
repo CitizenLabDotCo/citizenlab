@@ -146,7 +146,7 @@ sr-Latn:
         project:
           title: Šta je vaš projekat ?
         issue:
-          title: Šta je vaša tema ?
+          title: Šta je vaš komentar?
         option:
           title: Šta je vaša opcija ?
       details:
@@ -205,3 +205,6 @@ sr-Latn:
       title: 'Vaše pitanje'
       option1: 'Opcija 1'
       option2: 'Opcija 2'
+    survey_end_page:
+      title: 'Kraj ankete'
+      description: "Prosledite svoje odgovore tako što ćete ispod izabrati „Prosledi anketu”."
