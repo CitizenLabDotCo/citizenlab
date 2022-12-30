@@ -146,7 +146,7 @@ hr:
         project:
           title: Što je vaš projekt?
         issue:
-          title: Šta je vaša tema ?
+          title: Koji komentar imate?
         option:
           title: Što je vaša opcija?
       details:
@@ -205,3 +205,6 @@ hr:
       title: 'Vaše pitanje'
       option1: '1. opcija'
       option2: '2. opcija'
+    survey_end_page:
+      title: 'Završetak upitnika'
+      description: "Pošaljite svoje odgovore tako da odaberete „Pošalji anketu“ u nastavku."
