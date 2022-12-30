@@ -699,6 +699,7 @@
   "app.containers.IdeaButton.postingDisabled": "{tenantName, select, DeloitteDK {Det er i øjeblikket ikke muligt at opslå et indlæg her.} other {Det er i øjeblikket ikke muligt at opslå en idé her.}}",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nye bidrag kan kun tilføjes i aktive faser.",
   "app.containers.IdeaButton.postingInactive": "Nye bidrag accepteres ikke i øjeblikket.",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "Du har allerede gennemført denne undersøgelse. Tak for dit svar!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "{tenantName, select, DeloitteDK {Kun visse mennesker kan opslå indlæg her. Log venligst ind først.} other {Venligst {signInLink} til platformen for at se, hvilke handlinger du kan foretage dig.}}",
   "app.containers.IdeaButton.postingNoPermission": "{tenantName, select, DeloitteDK {Det er i øjeblikket ikke muligt at opslå et indlæg her.} other {Det er i øjeblikket ikke muligt at opslå en idé her.}}",
   "app.containers.IdeaButton.postingNotYetPossible": "Nye bidrag accepteres endnu ikke her.",
