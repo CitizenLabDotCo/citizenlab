@@ -205,3 +205,6 @@ fr:
       title: 'Votre question'
       option1: 'Option 1'
       option2: 'Option 2'
+    survey_end_page:
+      title: 'Fin de l''enquête'
+      description: "Veuillez soumettre vos réponses en sélectionnant « Envoyer l'enquête » ci-dessous."
