@@ -77,6 +77,30 @@ describe('Admin: update Hero Banner content', () => {
     );
   });
 
+  it('uploads and crops banner image', () => {
+    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+    cy.setAdminLoginCookie();
+    cy.visit('admin/pages-menu/homepage/homepage-banner/');
+    cy.acceptCookies();
+
+    cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
+    cy.get('[data-cy="e2e-remove-image-button"]').click();
+    cy.get('[data-cy="e2e-homepage-banner-image-dropzone"] input').attachFile(
+      'testimage.png'
+    );
+
+    // I see the change looking at the Cypress Studio, but I'm not sure how to test it.
+    cy.get('[data-cy="e2e-image-cropper"]')
+      // copied from https://github.com/ValentinH/react-easy-crop/blob/ff9300a/cypress/support/commands.js#L1
+      .trigger('mousedown', { clientX: 10, clientY: 10 })
+      .trigger('mousemove', { clientX: 300, clientY: 300 })
+      .trigger('mouseup');
+
+    cy.get('.e2e-submit-wrapper-button').click();
+    cy.wait('@saveHomePage');
+    cy.get('.e2e-submit-wrapper-button').contains('Success');
+  });
+
   it('updates and persists hero banner settings correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');

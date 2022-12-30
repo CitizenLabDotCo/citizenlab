@@ -176,7 +176,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
           />
         </LayoutOption>
         <LayoutOption>
-          <LayoutOptionTop>
+          <LayoutOptionTop data-cy="e2e-fixed-ratio-layout-option">
             <Radio
               onChange={onChange}
               currentValue={bannerLayout}

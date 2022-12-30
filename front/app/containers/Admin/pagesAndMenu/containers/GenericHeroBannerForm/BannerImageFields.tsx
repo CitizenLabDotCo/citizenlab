@@ -225,16 +225,18 @@ const BannerImageField = ({
             </Warning>
           </Box>
         ) : (
-          <HeaderImageDropzone
-            onAdd={bannerImageAddHandler}
-            onRemove={bannerImageRemoveHandler}
-            overlayColor={bannerOverlayColor}
-            overlayOpacity={bannerOverlayOpacity}
-            headerError={bannerError}
-            header_bg={headerLocalDisplayImage}
-            previewDevice={previewDevice}
-            layout={bannerLayout || 'full_width_banner_layout'}
-          />
+          <Box data-cy="e2e-homepage-banner-image-dropzone">
+            <HeaderImageDropzone
+              onAdd={bannerImageAddHandler}
+              onRemove={bannerImageRemoveHandler}
+              overlayColor={bannerOverlayColor}
+              overlayOpacity={bannerOverlayOpacity}
+              headerError={bannerError}
+              header_bg={headerLocalDisplayImage}
+              previewDevice={previewDevice}
+              layout={bannerLayout || 'full_width_banner_layout'}
+            />
+          </Box>
         )}
       </SectionField>
       {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
