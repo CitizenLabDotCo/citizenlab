@@ -146,7 +146,7 @@ ro:
         project:
           title: Care este proiectul tău?
         issue:
-          title: What is your issue ?
+          title: Care este problema ta?
         option:
           title: Care este opțiunea ta?
       details:
@@ -205,3 +205,6 @@ ro:
       title: 'Your question'
       option1: 'Option 1'
       option2: 'Option 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
