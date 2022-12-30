@@ -18,7 +18,11 @@ RSpec.describe FileUpload, type: :model do
     let(:file_upload) { create(:file_upload) }
 
     it 'is the location on disk in the "idea_file" directory' do
-      expected_path = Regexp.new('/cl2_back/public/uploads/.+/idea_file/file/.+/afvalkalender.pdf')
+      expected_path = if CitizenLab.ee?
+        Regexp.new('/cl2_back/public/uploads/.+/idea_file/file/.+/afvalkalender.pdf')
+      else
+        Regexp.new('/cl2_back/public/uploads/idea_file/file/.+/afvalkalender.pdf')
+      end
       expect(file_upload.file.path).to match expected_path
     end
   end
