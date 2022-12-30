@@ -146,7 +146,7 @@ da:
         project:
           title: Hvad er dit projekt?
         issue:
-          title: Hvad er dit problem?
+          title: Hvad er din høringssvar?
         option:
           title: Hvad er din mulighed?
       details:
@@ -205,3 +205,6 @@ da:
       title: 'Dit spørgsmål'
       option1: 'Mulighed 1'
       option2: 'Mulighed 2'
+    survey_end_page:
+      title: 'Undersøgelse slut'
+      description: "Indsend dine svar ved at vælge \"Indsend undersøgelse\" nedenfor."
