@@ -146,7 +146,7 @@ ar:
         project:
           title: ما مشروعك؟
         issue:
-          title: ما مشكلتك؟
+          title: ما هي مشكلتك؟
         option:
           title: ما خيارك؟
       details:
@@ -205,3 +205,6 @@ ar:
       title: 'سؤالك'
       option1: 'الخيار 1'
       option2: 'الخيار 2'
+    survey_end_page:
+      title: 'انتهى الاستبيان'
+      description: "يرجى إرسال إجاباتك من خلال تحديد \"إرسال الاستبيان\" أدناه."
