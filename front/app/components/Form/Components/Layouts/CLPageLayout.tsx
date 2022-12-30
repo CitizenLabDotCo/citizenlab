@@ -34,6 +34,7 @@ import {
   PageCategorization,
   isPageCategorization,
   PageType,
+  getFilteredDataForUserPath,
 } from 'components/Form/Components/Layouts/utils';
 import { isVisible } from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -70,6 +71,7 @@ const CLPageLayout = memo(
     const pageTypeElements = (uischema as PageCategorization)
       .elements as PageType[];
     const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
+    const [userPagePath] = useState<PageType[]>([]);
     const theme = useTheme();
     const formState = useJsonForms();
     const isSmallerThanXlPhone = useBreakpoint('phone');
@@ -110,10 +112,12 @@ const CLPageLayout = memo(
 
     const handleNextAndSubmit = () => {
       if (showSubmit) {
-        onSubmit();
+        onSubmit(getFilteredDataForUserPath(userPagePath, data));
         return;
       }
+
       const currentPageCategorization = uiPages[currentStep];
+      userPagePath.push(uiPages[currentStep]);
       if (
         customAjv.validate(
           getPageSchema(
@@ -216,6 +220,7 @@ const CLPageLayout = memo(
               <Button
                 onClick={() => {
                   setCurrentStep(currentStep - 1);
+                  userPagePath.pop();
                   scrollToTop();
                 }}
                 data-cy="e2e-previous-page"
