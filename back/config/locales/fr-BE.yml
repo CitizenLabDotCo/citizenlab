@@ -146,7 +146,7 @@ fr-BE:
         project:
           title: Quel est votre projet ?
         issue:
-          title: Quel est votre problème ?
+          title: Quel est votre problème?
         option:
           title: Quelle est votre option ?
       details:
@@ -205,3 +205,6 @@ fr-BE:
       title: 'Votre question'
       option1: 'Option 1'
       option2: 'Option 2'
+    survey_end_page:
+      title: 'Fin de l''enquête'
+      description: "Veuillez soumettre vos réponses en sélectionnant « Envoyer l'enquête » ci-dessous."
