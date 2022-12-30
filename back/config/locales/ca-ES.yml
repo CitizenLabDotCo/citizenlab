@@ -146,7 +146,7 @@ ca:
         project:
           title: Quin és el vostre projecte ?
         issue:
-          title: What is your issue ?
+          title: Quin és el vostre comentari?
         option:
           title: Quina és la vostra opció ?
       details:
@@ -205,3 +205,6 @@ ca:
       title: 'Your question'
       option1: 'Option 1'
       option2: 'Option 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
