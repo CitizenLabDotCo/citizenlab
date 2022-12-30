@@ -146,7 +146,7 @@ nl:
         project:
           title: Wat is je project?
         issue:
-          title: Wat is je probleem?
+          title: Wat is je stelling?
         option:
           title: Wat is je optie?
       details:
@@ -205,3 +205,6 @@ nl:
       title: 'Jouw vraag'
       option1: 'Optie 1'
       option2: 'Optie 2'
+    survey_end_page:
+      title: 'Einde enquête'
+      description: "Dien uw antwoorden in door hieronder 'Enquête indienen' te selecteren."
