@@ -1382,7 +1382,7 @@
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Du kan udvalgt flere sprog, som du ønsker at tilbyde din platform til brugerne på. Du skal oprette indhold til hvert enkelt udvalgte sprog.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktivitet",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
-  "app.containers.AdminPage.SettingsPage.noHeader": "Upload venligst et header-billede (1440 x 480 px)",
+  "app.containers.AdminPage.SettingsPage.noHeader": "Upload venligst et header-billede",
   "app.containers.AdminPage.SettingsPage.noLogo": "Upload venligst et logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Ingen knap",
   "app.containers.AdminPage.SettingsPage.organizationName": "Navn på by eller organisation",
