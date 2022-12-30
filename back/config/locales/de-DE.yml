@@ -146,7 +146,7 @@ de:
         project:
           title: Was ist Ihr Projekt?
         issue:
-          title: Was ist Ihr Problem?
+          title: Was ist Ihr Anliegen?
         option:
           title: Was ist Ihre Option?
       details:
@@ -205,3 +205,6 @@ de:
       title: 'Ihre Frage'
       option1: 'Option 1'
       option2: 'Option 2'
+    survey_end_page:
+      title: 'Ende der Umfrage'
+      description: "Bitte übermitteln Sie Ihre Antworten, indem Sie unten auf \"Umfrage abschicken\" klicken."
