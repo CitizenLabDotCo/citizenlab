@@ -1382,7 +1382,7 @@
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Możesz wybrać wiele języków dla swojej platformy. Oznacza to dodanie treści dla każdego wybranego języka.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktywności",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
-  "app.containers.AdminPage.SettingsPage.noHeader": "Proszę prześlij obraz nagłówka (1440 x 480)",
+  "app.containers.AdminPage.SettingsPage.noHeader": "Proszę prześlij obraz nagłówka",
   "app.containers.AdminPage.SettingsPage.noLogo": "Prześlij logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Brak przycisku",
   "app.containers.AdminPage.SettingsPage.organizationName": "Nazwa {type, select, generic {Organizacji} other {miasta lub gminy}}",
