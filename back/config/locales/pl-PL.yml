@@ -146,7 +146,7 @@ pl:
         project:
           title: Jaki jest Twój projekt ?
         issue:
-          title: Jaka jest Twoja sprawa ?
+          title: Jaka jest Twoja potrzeba?
         option:
           title: Jaka jest Twója opcja?
       details:
@@ -205,3 +205,6 @@ pl:
       title: 'Twoje pytanie'
       option1: 'Opcja 1'
       option2: 'Opcja 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
