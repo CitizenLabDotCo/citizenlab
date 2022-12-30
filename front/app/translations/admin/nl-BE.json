@@ -1382,7 +1382,7 @@
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Bepaal de talen waarin je platform beschikbaar wordt gemaakt aan de gebruikers. Gebruikers kunnen zelf eenvoudig hun gewenste taal uit deze lijst selecteren via een knop in de navbar.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Activiteit",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
-  "app.containers.AdminPage.SettingsPage.noHeader": "Plaats hier de achtergrondfoto (1440 x 480)",
+  "app.containers.AdminPage.SettingsPage.noHeader": "Plaats hier de achtergrondfoto",
   "app.containers.AdminPage.SettingsPage.noLogo": "Plaats hier je logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Geen knop",
   "app.containers.AdminPage.SettingsPage.organizationName": "Naam gemeente of organisatie",
