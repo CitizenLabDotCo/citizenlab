@@ -495,15 +495,7 @@ describe XlsxExport::ValueVisitor do
       end
 
       context 'when there is a value' do
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:proposed) { create(:idea_status_proposed) }
-        let(:model) do
-          Idea.create(
-            publication_status: 'published',
-            idea_status: proposed,
-            project: project
-          )
-        end
+        let(:model) { create :native_survey_response }
         let!(:file1) { create(:idea_file, name: 'File1.pdf', idea: model) }
         let!(:file2) { create(:idea_file, name: 'File2.pdf', idea: model) }
         let(:value) { file1.id }
