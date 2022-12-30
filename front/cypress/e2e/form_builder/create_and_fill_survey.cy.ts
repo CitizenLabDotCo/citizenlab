@@ -840,7 +840,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.contains(page3Title).should('exist');
     cy.contains(question3Title).should('exist');
-    cy.get('[data-cy="e2e-input-control"]').click().type('question3');
+    cy.get(`[data-testid="inputControl"]`).click().type('question3');
 
     // Go back to page 2
     cy.get('[data-cy="e2e-previous-page"]').click();
