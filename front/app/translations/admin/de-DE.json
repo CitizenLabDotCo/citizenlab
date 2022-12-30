@@ -1382,7 +1382,7 @@
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Sie können mehrere Sprachen auswählen, in denen Sie Ihre Plattform den Benutzern anbieten möchten. Sie müssen für jede ausgewählte Sprache Inhalte erstellen.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktivität",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
-  "app.containers.AdminPage.SettingsPage.noHeader": "Bitte lade ein Kopfzeilenbild hoch (1440 x 480)",
+  "app.containers.AdminPage.SettingsPage.noHeader": "Bitte lade ein Kopfzeilenbild hoch",
   "app.containers.AdminPage.SettingsPage.noLogo": "Bitte laden Sie ein Logo hoch",
   "app.containers.AdminPage.SettingsPage.no_button": "Kein Button",
   "app.containers.AdminPage.SettingsPage.organizationName": "Name der Stadt oder Organisation",
