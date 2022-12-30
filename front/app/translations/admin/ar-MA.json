@@ -1382,7 +1382,7 @@
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "يمكنك تحديد عدة لغات للمنصة الخاصة بك. وسيتعين عليك إنشاء محتوى لكل لغة محددة.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "النشاط",
   "app.containers.AdminPage.SettingsPage.logo": "الشعار",
-  "app.containers.AdminPage.SettingsPage.noHeader": "يُرجى تحميل صورة للترويسة (1440x480)",
+  "app.containers.AdminPage.SettingsPage.noHeader": "يُرجى تحميل صورة للترويسة",
   "app.containers.AdminPage.SettingsPage.noLogo": "يُرجى تحميل شعار",
   "app.containers.AdminPage.SettingsPage.no_button": "لا يوجد زر",
   "app.containers.AdminPage.SettingsPage.organizationName": "اسم المدينة أو المؤسسة",
