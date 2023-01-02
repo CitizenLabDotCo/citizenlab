@@ -154,7 +154,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     }
   }, []);
 
-  const handleHeaderBgChange = useCallback((newImageBase64: string) => {
+  const handleHeaderBgChange = useCallback((newImageBase64: string | null) => {
     setStatus('enabled');
 
     setChangedHeaderBg(true);

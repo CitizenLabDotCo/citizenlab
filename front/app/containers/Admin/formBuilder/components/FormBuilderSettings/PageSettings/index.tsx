@@ -11,16 +11,19 @@ import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { Locale } from 'typings';
 
 type Props = {
   field: IFlatCustomFieldWithIndex;
+  locale: Locale;
 };
 
-const PageSettings = ({ field }: Props) => {
+const PageSettings = ({ field, locale }: Props) => {
   return (
     <>
       <SectionField>
         <InputMultilocWithLocaleSwitcher
+          initiallySelectedLocale={locale}
           id="e2e-page-title-multiloc"
           name={`customFields.${field.index}.title_multiloc`}
           label={<FormattedMessage {...messages.titleLabel} />}

@@ -103,6 +103,8 @@ class WebApi::V1::PhasesController < ApplicationController
       :end_at,
       :participation_method,
       :posting_enabled,
+      :posting_method,
+      :posting_limited_max,
       :commenting_enabled,
       :voting_enabled,
       :upvoting_method,
