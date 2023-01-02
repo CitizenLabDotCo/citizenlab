@@ -83,11 +83,6 @@ class Tenant < ApplicationRecord
     @config_sync_enabled = true
   end
 
-  def disable_config_sync
-    self.config_sync_enabled = false
-    self
-  end
-
   def without_config_sync
     self.config_sync_enabled = false
     yield self
