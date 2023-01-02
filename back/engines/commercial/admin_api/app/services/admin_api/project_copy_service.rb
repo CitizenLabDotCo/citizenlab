@@ -450,7 +450,7 @@ module AdminApi
     end
 
     def yml_ideas(shift_timestamps: 0)
-      custom_fields = @project.custom_form&.custom_fields
+      custom_fields = CustomField.where(resource: CustomForm.where(participation_context: (@project.phases + [@project])))
       @project.ideas.published.map do |idea|
         yml_idea = {
           'title_multiloc' => idea.title_multiloc,

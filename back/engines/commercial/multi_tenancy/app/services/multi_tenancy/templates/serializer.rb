@@ -698,7 +698,9 @@ module MultiTenancy
             end,
             'creation_phase_ref' => lookup_ref(idea.creation_phase_id, :phase)
           }
-          custom_fields = idea.project.custom_form&.custom_fields
+          custom_fields = CustomField.where(
+            resource: CustomForm.where(participation_context_id: [idea.project_id, idea.creation_phase_id].compact)
+          )
           yml_idea['custom_field_values'] = filter_custom_field_values(idea.custom_field_values, custom_fields) if custom_fields
           store_ref yml_idea, idea.id, :idea
           yml_idea
