@@ -102,6 +102,8 @@ resource 'Phases' do
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.', required: false
         parameter :participation_method, "The participation method of the project, either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Can citizens post ideas in this phase? Defaults to true', required: false
+        parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
+        parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
         parameter :voting_enabled, 'Can citizens vote in this phase? Defaults to true', required: false
         parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
@@ -321,6 +323,8 @@ resource 'Phases' do
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
         parameter :participation_method, "The participation method of the project, either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Can citizens post ideas in this phase?', required: false
+        parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
+        parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
         parameter :voting_enabled, 'Can citizens vote in this phase?', required: false
         parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
@@ -345,6 +349,8 @@ resource 'Phases' do
       let(:description_multiloc) { phase.description_multiloc }
       let(:participation_method) { phase.participation_method }
       let(:posting_enabled) { false }
+      let(:posting_method) { 'limited' }
+      let(:posting_limited_max) { 5 }
       let(:commenting_enabled) { false }
       let(:voting_enabled) { true }
       let(:upvoting_method) { 'limited' }
@@ -356,6 +362,8 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
         expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
+        expect(json_response.dig(:data, :attributes, :posting_method)).to eq posting_method
+        expect(json_response.dig(:data, :attributes, :posting_limited_max)).to eq posting_limited_max
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
         expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq voting_enabled
         expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
@@ -365,7 +373,7 @@ resource 'Phases' do
 
       describe do
         before do
-          @project.phases.first.update(
+          @project.phases.first.update!(
             participation_method: 'budgeting',
             max_budget: 30_000
           )
