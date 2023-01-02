@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Added
+
+- [CL-2340] Added file upload fields to survey forms.
+
 ### 2022-12-30
 
 - [CL-1893] Added survey logic and new long text field.
