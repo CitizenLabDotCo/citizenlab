@@ -1406,6 +1406,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Παρακαλούμε ανεβάστε ένα λογότυπο",
   "app.containers.AdminPage.SettingsPage.no_button": "Δεν υπάρχει κουμπί",
   "app.containers.AdminPage.SettingsPage.organizationName": "Όνομα πόλης ή οργανισμού",
+  "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Ρυθμίσεις",
   "app.containers.AdminPage.SettingsPage.phone": "Τηλέφωνο",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Διαμόρφωση πλατφόρμας",
