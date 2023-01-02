@@ -1406,6 +1406,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Upload venligst et logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Ingen knap",
   "app.containers.AdminPage.SettingsPage.organizationName": "Navn på by eller organisation",
+  "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Indstillinger",
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Konfiguration af platformen",
