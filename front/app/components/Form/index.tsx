@@ -171,33 +171,30 @@ const Form = memo(
 
     const handleSubmit = async (formData?: any) => {
       // Any specified formData has priority over data attribute
-      if (data) {
-        const submissionData = formData && formData.data ? formData.data : data;
-        const sanitizedFormData = {};
-        forOwn(submissionData, (value, key) => {
-          sanitizedFormData[key] =
-            value === null || value === '' || value === false
-              ? undefined
-              : value;
-        });
-        setData(sanitizedFormData);
-        onChange?.(sanitizedFormData);
-        setShowAllErrors(true);
-        const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
-          schema,
-          uiSchema,
-          submissionData,
-          customAjv
-        );
-        if (customAjv.validate(schemaToUse, dataWithoutHiddenFields)) {
-          setLoading(true);
-          try {
-            await onSubmit(submissionData as FormData);
-          } catch (e) {
-            setApiErrors(e.json.errors);
-          }
-          setLoading(false);
+      const submissionData = formData && formData.data ? formData.data : data;
+      const sanitizedFormData = {};
+      forOwn(submissionData, (value, key) => {
+        sanitizedFormData[key] =
+          value === null || value === '' || value === false ? undefined : value;
+      });
+      setData(sanitizedFormData);
+      onChange?.(sanitizedFormData);
+      setShowAllErrors(true);
+      const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
+        schema,
+        uiSchema,
+        submissionData,
+        customAjv
+      );
+      if (customAjv.validate(schemaToUse, dataWithoutHiddenFields)) {
+        setLoading(true);
+        try {
+          await onSubmit(submissionData as FormData);
+        } catch (e) {
+          console.log(e);
+          setApiErrors(e.json.errors);
         }
+        setLoading(false);
       }
     };
 
