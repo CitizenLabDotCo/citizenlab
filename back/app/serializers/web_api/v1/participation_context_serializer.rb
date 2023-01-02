@@ -11,6 +11,8 @@ module WebApi::V1::ParticipationContextSerializer
     } do
       attribute :participation_method
       attribute :posting_enabled
+      attribute :posting_method
+      attribute :posting_limited_max
       attribute :commenting_enabled
       attribute :voting_enabled
       attribute :upvoting_method

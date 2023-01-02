@@ -14,7 +14,6 @@ import {
   LocaleSwitcher,
   Icon,
   Input,
-  Toggle,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
@@ -30,37 +29,39 @@ import { Locale, CLError } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { generateTempId } from '../utils';
 
 interface Props {
   name: string;
-  nameInputType: string;
   onSelectedLocaleChange?: (locale: Locale) => void;
   locales: Locale[];
   allowDeletingAllOptions?: boolean;
+  platformLocale: Locale;
 }
 
-const ConfigMultiselectWithLocaleSwitcher = ({
+const ConfigSelectWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
-  nameInputType,
   locales,
   intl: { formatMessage },
   allowDeletingAllOptions = false,
+  platformLocale,
 }: Props & WrappedComponentProps) => {
   const {
     control,
     formState: { errors: formContextErrors },
     setValue,
-    watch,
     trigger,
   } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
+    platformLocale
+  );
 
   // Handles locale change
   useEffect(() => {
-    setSelectedLocale(locales[0]);
-    onSelectedLocaleChange?.(locales[0]);
-  }, [locales, onSelectedLocaleChange]);
+    setSelectedLocale(platformLocale);
+    onSelectedLocaleChange?.(platformLocale);
+  }, [platformLocale, onSelectedLocaleChange]);
   const handleOnSelectedLocaleChange = useCallback(
     (newSelectedLocale: Locale) => {
       setSelectedLocale(newSelectedLocale);
@@ -92,8 +93,6 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   };
 
   const defaultOptionValues = [{}];
-  const defaultToggleValue = false;
-  const currentToggleValue = watch(nameInputType);
   const errors = get(formContextErrors, name);
   const apiError =
     (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
@@ -167,6 +166,13 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                     updatedChoices[index].title_multiloc[
                                       selectedLocale
                                     ] = value;
+                                    if (
+                                      !updatedChoices[index].id &&
+                                      !updatedChoices[index].temp_id
+                                    ) {
+                                      updatedChoices[index].temp_id =
+                                        generateTempId();
+                                    }
                                     setValue(name, updatedChoices);
                                   }}
                                 />
@@ -186,7 +192,7 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                                 >
                                   <Icon
                                     name="delete"
-                                    fill="grey"
+                                    fill="coolGrey600"
                                     padding="0px"
                                   />
                                 </Button>
@@ -221,29 +227,6 @@ const ConfigMultiselectWithLocaleSwitcher = ({
                       scrollIntoView={false}
                     />
                   )}
-                  <Box mt="24px">
-                    <Controller
-                      name={nameInputType}
-                      control={control}
-                      defaultValue={defaultToggleValue}
-                      render={({ field: { ref: _ref, value } }) => {
-                        return (
-                          <Toggle
-                            checked={value === 'multiselect'}
-                            id="e2e-multiselect-toggle"
-                            onChange={() => {
-                              if (currentToggleValue === 'select') {
-                                setValue(nameInputType, 'multiselect');
-                              } else {
-                                setValue(nameInputType, 'select');
-                              }
-                            }}
-                            label={formatMessage(messages.chooseMultipleToggle)}
-                          />
-                        );
-                      }}
-                    />
-                  </Box>
                 </SectionField>
               </Box>
             );
@@ -255,4 +238,4 @@ const ConfigMultiselectWithLocaleSwitcher = ({
   return null;
 };
 
-export default injectIntl(ConfigMultiselectWithLocaleSwitcher);
+export default injectIntl(ConfigSelectWithLocaleSwitcher);

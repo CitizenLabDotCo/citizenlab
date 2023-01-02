@@ -244,7 +244,7 @@ NOTE: Watch out that you don't accidently commit these changes!
 
 ## Creating Engines
 
-In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Citizenlab employees can find the instructions for commercial engines in Notion).
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `citizenlab/back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Citizenlab employees can find the instructions for commercial engines in Notion).
 
 1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
 
@@ -254,7 +254,7 @@ In this section, we explain what you need to do (and what you shouldn't forget) 
 
 4. For feature engines (represented by an app configuration setting that can be enabled and disabled), copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
 
-5. Add the new engine to `citizenlab.config.json` and
+5. Add the new engine to the `Gemfile`
 
 6. Update the licenses by executing `license_finder approvals add blorgh`.
 

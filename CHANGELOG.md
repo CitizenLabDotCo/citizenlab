@@ -1,5 +1,19 @@
 # Changelog
 
+### 2022-12-30
+
+- [CL-1893] Added survey logic and new long text field.
+
+## 2022-12-27
+
+### Added
+
+- [CL-2255] New columns in User Excel export: registration_completed_at and invite_status.
+
+### Changed
+
+- [CL-2159] Do not allow registered users to take a native survey twice
+
 ## 2022-12-20
 
 ### Fixed
