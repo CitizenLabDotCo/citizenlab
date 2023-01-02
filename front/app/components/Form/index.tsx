@@ -191,7 +191,6 @@ const Form = memo(
         try {
           await onSubmit(submissionData as FormData);
         } catch (e) {
-          console.log(e);
           setApiErrors(e.json.errors);
         }
         setLoading(false);
