@@ -205,3 +205,6 @@ el:
       title: 'Ερώτηση δημοσκόπησης'
       option1: 'Επιλογή'
       option2: 'Επιλογή'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."

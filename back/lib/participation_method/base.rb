@@ -6,6 +6,10 @@ module ParticipationMethod
       @participation_context = participation_context
     end
 
+    def assign_defaults_for_participation_context
+      # Default is to do nothing.
+    end
+
     def assign_slug(input)
       # Input is not created in this participation method,
       # so the default is to do nothing.

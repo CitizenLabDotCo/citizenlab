@@ -74,6 +74,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'en'
                         }
@@ -85,6 +86,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
                         }
@@ -96,6 +98,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
                         }
@@ -116,6 +119,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     options: {
                       description: 'Text description',
                       isAdminField: false,
+                      hasRule: false,
                       transform: 'trim_on_blur'
                     }
                   }
@@ -146,6 +150,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'en'
                         }
@@ -157,6 +162,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
                         }
@@ -168,6 +174,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
                         }
@@ -188,6 +195,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     options: {
                       description: 'Text description',
                       isAdminField: false,
+                      hasRule: false,
                       transform: 'trim_on_blur'
                     }
                   }
@@ -218,6 +226,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'en'
                         }
@@ -229,6 +238,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
                         }
@@ -240,6 +250,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
                         }
@@ -260,6 +271,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     options: {
                       description: 'Text description',
                       isAdminField: false,
+                      hasRule: false,
                       transform: 'trim_on_blur'
                     }
                   }
@@ -360,6 +372,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'Which councils are you attending in our city?',
                 isAdminField: false,
+                hasRule: false,
                 transform: 'trim_on_blur'
               }
             }]
@@ -417,7 +430,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         )
       end
 
-      it 'has a category for each page' do
+      it 'has a category for each page, including the fixed survey end page' do
         en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
         expect(en_ui_schema).to eq({
           type: 'Categorization',
@@ -429,7 +442,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
-                id: 'page_1',
+                id: page1.id,
                 title: 'About you',
                 description: 'Please fill in some <strong>personal details</strong>.'
               },
@@ -440,6 +453,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Enter a number.',
                   isAdminField: false,
+                  hasRule: false,
                   transform: 'trim_on_blur'
                 }
               }]
@@ -447,7 +461,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
-                id: 'page_2',
+                id: page2.id,
                 title: 'About your cycling habits',
                 description: 'Please indicate how you use <strong>a bike</strong>.'
               },
@@ -458,6 +472,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Enter Yes or No.',
                   isAdminField: false,
+                  hasRule: false,
                   transform: 'trim_on_blur'
                 }
               }]
@@ -465,9 +480,196 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
-                id: 'page_3',
+                id: page3.id,
                 title: 'This is the end of the survey',
                 description: 'Thank you for participating 🚀'
+              },
+              elements: []
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'survey_end',
+                title: 'Survey end',
+                description: "Please submit your answers by selecting 'Submit survey' below."
+              },
+              elements: []
+            }
+          ]
+        })
+      end
+    end
+
+    context 'for a continuous native survey project with pages and logic' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create :custom_form, participation_context: project }
+      let!(:page1) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page1',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:field_in_page1) do
+        create(
+          :custom_field,
+          resource: form,
+          input_type: 'linear_scale',
+          key: 'how_old_are_you',
+          title_multiloc: { 'en' => 'Hold old are you?' },
+          description_multiloc: { 'en' => '' },
+          maximum: 7,
+          logic: {
+            rules: [
+              {
+                if: 1,
+                goto_page_id: page3.id
+              }
+            ]
+          }
+        )
+      end
+      let!(:page2) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page2',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:field_in_page2) do
+        create(
+          :custom_field,
+          resource: form,
+          input_type: 'select',
+          key: 'how_often_do_you_choose_to_cycle',
+          title_multiloc: { 'en' => 'When considering travel near your home, how often do you choose to CYCLE?' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:every_day_option) do
+        create(:custom_field_option, custom_field: field_in_page2, key: 'every_day', title_multiloc: { 'en' => 'Every day' })
+      end
+      let!(:never_option) do
+        create(:custom_field_option, custom_field: field_in_page2, key: 'never', title_multiloc: { 'en' => 'Never' })
+      end
+      let!(:page3) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page3',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:page4) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page4',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+
+      before do
+        field_in_page2.update!(logic: {
+          rules: [
+            {
+              if: never_option.id,
+              goto_page_id: page4.id
+            }
+          ]
+        })
+      end
+
+      it 'includes rules for logic' do
+        en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
+        expect(en_ui_schema).to eq({
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: 'idea'
+          },
+          elements: [
+            {
+              type: 'Page',
+              options: {
+                id: page1.id,
+                title: '',
+                description: ''
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page1.key}",
+                label: 'Hold old are you?',
+                options: {
+                  description: '',
+                  isAdminField: false,
+                  hasRule: true,
+                  maximum_label: '',
+                  minimum_label: ''
+                }
+              }]
+            },
+            {
+              type: 'Page',
+              options: {
+                id: page2.id,
+                title: '',
+                description: ''
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page2.key}",
+                label: 'When considering travel near your home, how often do you choose to CYCLE?',
+                options: {
+                  description: '',
+                  isAdminField: false,
+                  hasRule: true
+                }
+              }],
+              ruleArray: [
+                {
+                  effect: 'HIDE',
+                  condition: {
+                    scope: "#/properties/#{field_in_page1.key}",
+                    schema: {
+                      enum: [1]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              type: 'Page',
+              options: {
+                id: page3.id,
+                title: '',
+                description: ''
+              },
+              elements: [],
+              ruleArray: [
+                {
+                  effect: 'HIDE',
+                  condition: {
+                    scope: "#/properties/#{field_in_page2.key}",
+                    schema: {
+                      enum: [never_option.key]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'survey_end',
+                title: 'Survey end',
+                description: "Please submit your answers by selecting 'Submit survey' below."
               },
               elements: []
             }
@@ -515,7 +717,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           options: {
             description: 'Text field description',
             transform: 'trim_on_blur',
-            isAdminField: true
+            isAdminField: true,
+            hasRule: false
           }
         })
       end
@@ -530,7 +733,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           options: {
             description: 'Text field description',
             transform: 'trim_on_blur',
-            isAdminField: false
+            isAdminField: false,
+            hasRule: false
           }
         })
       end
@@ -560,7 +764,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           label: 'Number field title',
           options: {
             description: 'Number field description',
-            isAdminField: true
+            isAdminField: true,
+            hasRule: false
           }
         })
       end
@@ -574,7 +779,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           label: 'Number field title',
           options: {
             description: 'Number field description',
-            isAdminField: false
+            isAdminField: false,
+            hasRule: false
           }
         })
       end
@@ -615,6 +821,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'en'
                 }
@@ -626,6 +833,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'fr-FR'
                 }
@@ -637,6 +845,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'nl-NL'
                 }
@@ -656,6 +865,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'en'
                 }
@@ -667,6 +877,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'fr-FR'
                 }
@@ -678,6 +889,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc field description',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'nl-NL'
                 }
@@ -697,6 +909,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc veldbeschrijving',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'en'
                 }
@@ -708,6 +921,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc veldbeschrijving',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'fr-FR'
                 }
@@ -719,6 +933,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   description: 'Body multiloc veldbeschrijving',
                   isAdminField: false,
+                  hasRule: false,
                   render: 'WYSIWYG',
                   locale: 'nl-NL'
                 }
@@ -752,6 +967,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'HTML multiloc field description',
                 isAdminField: false,
+                hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
                 locale: 'en'
@@ -764,6 +980,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'HTML multiloc field description',
                 isAdminField: false,
+                hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
                 locale: 'fr-FR'
@@ -776,6 +993,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'HTML multiloc field description',
                 isAdminField: false,
+                hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
                 locale: 'nl-NL'
@@ -798,10 +1016,11 @@ RSpec.describe InputUiSchemaGeneratorService do
       )
     end
 
-    it 'returns the schema for the given field, without id, and without elements' do
+    it 'returns the schema for the given field, with id, and without elements' do
       expect(generator.visit_page(field)).to eq({
         type: 'Page',
         options: {
+          id: field.id,
           title: 'Page field title',
           description: 'Page field description'
         },

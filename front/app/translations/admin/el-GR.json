@@ -1112,7 +1112,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Προσθήκη περιεχομένου έρευνας",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Ακύρωση",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# επιλογές} one {# επιλογή} other {# επιλογές}})",
-  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Επιλογή πολλαπλών",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Κλείσιμο",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Κλειστό",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Ναι, διαγραφή των αποτελεσμάτων της έρευνας",
