@@ -163,7 +163,7 @@ class AppConfiguration < ApplicationRecord
   end
 
   def lifecycle_stage
-    settings.dig('core','lifecycle_stage')
+    settings.dig('core', 'lifecycle_stage')
   end
 
   def active?

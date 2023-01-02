@@ -67,7 +67,7 @@ resource 'Tenants', admin_api: true do
 
     example 'Rename tenant' do
       new_name = "new-#{tenant.name}"
-      do_request(tenant: { name: new_name})
+      do_request(tenant: { name: new_name })
 
       assert_status 200
       expect(tenant.reload.name).to eq(new_name)
