@@ -89,15 +89,16 @@ describe('Admin: update Hero Banner content', () => {
       'testimage.png'
     );
 
-    // I see the change looking at the Cypress Studio, but I'm not sure how to test it.
-    cy.get('[data-cy="e2e-image-cropper"]')
-      // copied from https://github.com/ValentinH/react-easy-crop/blob/ff9300a/cypress/support/commands.js#L1
-      .trigger('mousedown', { clientX: 10, clientY: 10 })
-      .trigger('mousemove', { clientX: 300, clientY: 300 })
-      .trigger('mouseup');
-
     cy.get('.e2e-submit-wrapper-button').click();
-    cy.wait('@saveHomePage');
+
+    cy.wait('@saveHomePage').then((interception) => {
+      const img = new Image();
+      img.src = interception.request.body.home_page.header_bg;
+      img.decode().then(() => {
+        expect(img.width / img.height).to.eq(3);
+      });
+    });
+
     cy.get('.e2e-submit-wrapper-button').contains('Success');
   });
 
