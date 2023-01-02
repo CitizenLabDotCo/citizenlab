@@ -1111,7 +1111,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Afegir contingut de l'enquesta",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Cancel·lar",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# opcions} one {# elecció} other {# opcions}})",
-  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Trieu múltiples",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Tancar",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Tancat",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Sí, suprimiu els resultats de l'enquesta",

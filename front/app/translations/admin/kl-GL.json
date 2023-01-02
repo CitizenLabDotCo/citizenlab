@@ -1111,7 +1111,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Misissuinerup imassaanik ilanngussigit",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText": "Atorunnaarsiguk",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
-  "app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle": "Arlalinnik toqqaasinnaavutit",
   "app.containers.AdminPage.ProjectEdit.survey.close": "Matujuk",
   "app.containers.AdminPage.ProjectEdit.survey.closed": "Matoqqavoq",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText": "Yes, delete survey results",
