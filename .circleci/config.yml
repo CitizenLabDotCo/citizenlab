@@ -169,7 +169,7 @@ jobs:
   back-bundle-audit:
     resource_class: small
     executor:
-      name: cl2-back-essential-executor
+      name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
@@ -279,7 +279,6 @@ jobs:
     environment:
       RAILS_ENV: test
       COVERAGE: ON
-      CITIZENLAB_EE: true
     steps:
       - wait-for-postgres
       - run: |
@@ -300,7 +299,6 @@ jobs:
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
-      CITIZENLAB_EE: true
     steps:
       - wait-for-postgres
       - run: |
@@ -319,7 +317,6 @@ jobs:
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
-      CITIZENLAB_EE: true
     steps:
       - run: mkdir -p workspace
       - wait-for-postgres
@@ -342,8 +339,6 @@ jobs:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
-    environment:
-      CITIZENLAB_EE: true
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -357,7 +352,6 @@ jobs:
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
-      CITIZENLAB_EE: true
     steps:
       - wait-for-postgres
       - run: |
@@ -814,15 +808,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-bundle-audit:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
       - back-test:
           context: docker-hub-access
           requires:
@@ -868,6 +853,17 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-ee-docker-image
+      - back-bundle-audit:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          requires:
+            - back-build-ee-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
       - back-ee-test:
           context:
             - docker-hub-access
@@ -892,6 +888,7 @@ workflows:
             - back-ee-test
             - back-ee-slow-tests
             - back-lint
+            - back-bundle-audit
           filters:
             branches:
               only:
@@ -1107,14 +1104,6 @@ workflows:
             branches:
               only:
                 - production
-      - back-bundle-audit:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              only:
-                - production
       - back-test:
           context: docker-hub-access
           requires:
@@ -1140,7 +1129,6 @@ workflows:
             - front-detect-deadcode
             - front-lint
             - back-test
-            - back-bundle-audit
             - back-license-check
           filters:
             branches:
@@ -1155,7 +1143,6 @@ workflows:
             - front-detect-deadcode
             - front-lint
             - back-test
-            - back-bundle-audit
             - back-license-check
           filters:
             branches:
@@ -1200,12 +1187,14 @@ workflows:
       - back-build-ee-docker-image:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-ee-generate-tenant-templates:
           name: "Europe (mainland)"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
@@ -1214,6 +1203,7 @@ workflows:
           name: "South America"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
@@ -1222,6 +1212,7 @@ workflows:
           name: "Canada"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
@@ -1230,6 +1221,7 @@ workflows:
           name: "US West"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
@@ -1238,6 +1230,7 @@ workflows:
           name: "UK"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
@@ -1245,6 +1238,7 @@ workflows:
       - back-ee-test-tenant-templates:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           requires:
@@ -1257,6 +1251,7 @@ workflows:
       - back-ee-release-tenant-templates:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           requires:
             - back-ee-test-tenant-templates
@@ -1283,12 +1278,14 @@ workflows:
       - back-build-ee-docker-image:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-ee-generate-tenant-templates:
           name: "Europe (mainland)"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
@@ -1297,6 +1294,7 @@ workflows:
           name: "South America"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
@@ -1305,6 +1303,7 @@ workflows:
           name: "Canada"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
@@ -1313,6 +1312,7 @@ workflows:
           name: "US West"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
@@ -1321,6 +1321,7 @@ workflows:
           name: "UK"
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
@@ -1328,6 +1329,7 @@ workflows:
       - back-ee-test-tenant-templates:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           requires:
@@ -1340,6 +1342,7 @@ workflows:
       - back-ee-release-tenant-templates:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           requires:
             - back-ee-test-tenant-templates

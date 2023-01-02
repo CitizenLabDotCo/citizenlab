@@ -108,8 +108,8 @@ describe XlsxExport::ValueVisitor do
       context 'when there is a value' do
         let(:value) { "line 1\nline 2" }
 
-        it 'returns nil, because the field is not supported yet' do
-          expect(visitor.visit_multiline_text(field)).to be_nil
+        it 'returns the value for the report' do
+          expect(visitor.visit_multiline_text(field)).to eq value
         end
       end
     end
