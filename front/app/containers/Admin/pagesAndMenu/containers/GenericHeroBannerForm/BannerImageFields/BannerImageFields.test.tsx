@@ -1,5 +1,5 @@
 import React from 'react';
-import BannerImageFields, { Props } from './BannerImageFields';
+import BannerImageFields, { Props } from '.';
 import { render, screen, waitFor, fireEvent, act } from 'utils/testUtils/rtl';
 
 jest.mock('utils/cl-intl');
@@ -16,8 +16,7 @@ const props = {
   onAddImage: jest.fn(),
   onRemoveImage: jest.fn(),
   setFormStatus: jest.fn(),
-  onOverlayColorChange: jest.fn(),
-  onOverlayOpacityChange: jest.fn(),
+  onOverlayChange: jest.fn(),
 } as Props;
 
 describe('BannerImageFields', () => {

@@ -49,13 +49,11 @@ export const HeaderImageBackground = styled.div<{ src: string | null }>`
 `;
 
 export const HeaderImageOverlay = styled.div<{
-  overlayColor: string | null | undefined;
-  overlayOpacity: number | null | undefined;
+  overlayColor: string;
+  overlayOpacity: number;
 }>`
-  background: ${({ overlayColor, theme }) =>
-    overlayColor ?? theme.colors.tenantPrimary};
-  opacity: ${({ overlayOpacity, theme }) =>
-    (overlayOpacity ?? theme.signedOutHeaderOverlayOpacity) / 100};
+  background: ${({ overlayColor }) => overlayColor};
+  opacity: ${({ overlayOpacity }) => overlayOpacity / 100};
   position: absolute;
   top: 0;
   bottom: 0;

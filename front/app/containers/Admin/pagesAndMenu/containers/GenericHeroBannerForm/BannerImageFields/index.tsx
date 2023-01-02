@@ -1,26 +1,20 @@
-import React, { useEffect, useMemo, useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import {
   Box,
-  ColorPickerInput,
   IconTooltip,
   IOption,
-  Label,
   Select,
-  Text,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { debounce } from 'lodash-es';
+import OverlayControls from './OverlayControls';
+import ImageUploader from './ImageUploader';
 
-import { useTheme } from 'styled-components';
+import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { UploadFile } from 'typings';
-import HeaderImageDropzone from './HeaderImageDropzone';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNil, isNilOrError } from 'utils/helperUtils';
@@ -28,16 +22,17 @@ import { isNil, isNilOrError } from 'utils/helperUtils';
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 
-import RangeInput from 'components/UI/RangeInput';
-import ImageCropper from 'components/admin/ImageCropper';
-
-export type PreviewDevice = 'phone' | 'tablet' | 'desktop';
-
 export interface Props {
   onAddImage: (newImageBase64: string) => void;
   onRemoveImage: () => void;
-  onOverlayColorChange: (color: string) => void;
-  onOverlayOpacityChange: (color: number) => void;
+  onOverlayChange: (
+    opacity:
+      | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
+      | ICustomPageAttributes['banner_overlay_opacity'],
+    color:
+      | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
+      | ICustomPageAttributes['banner_overlay_color']
+  ) => void;
   bannerOverlayColor:
     | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
     | ICustomPageAttributes['banner_overlay_color'];
@@ -53,6 +48,10 @@ export interface Props {
   setFormStatus: (submitState: ISubmitState) => void;
 }
 
+export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
+export type TLocalHeaderImage = UploadFile[] | null;
+export type TBannerError = string | null;
+
 const BannerImageField = ({
   bannerOverlayColor,
   bannerOverlayOpacity,
@@ -61,16 +60,13 @@ const BannerImageField = ({
   onAddImage,
   onRemoveImage,
   setFormStatus,
-  onOverlayColorChange,
-  onOverlayOpacityChange,
+  onOverlayChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const theme = useTheme();
-  const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
-  const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
-    UploadFile[] | null
-  >(null);
-  const [bannerError, setBannerError] = useState<string | null>(null);
+  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('desktop');
+  const [headerLocalDisplayImage, setHeaderLocalDisplayImage] =
+    useState<TLocalHeaderImage>(null);
+  const [bannerError, setBannerError] = useState<TBannerError>(null);
   useEffect(() => {
     // the image file sent from the API needs to be converted
     // to a format that can be displayed. this is done locally
@@ -102,50 +98,33 @@ const BannerImageField = ({
     setBannerError(null);
   }, [headerBg, formatMessage, setFormStatus]);
 
-  const bannerImageAddHandler = (newImage: UploadFile[]) => {
+  const handleOnAddImageToUploader = (newImage: UploadFile[]) => {
     // this base64 value is sent to the API
     onAddImage(newImage[0].base64);
     // this value is used for local display
     setHeaderLocalDisplayImage([newImage[0]]);
   };
 
-  const bannerImageRemoveHandler = () => {
+  const handleOnRemoveImageFromUploader = () => {
     onRemoveImage();
     setHeaderLocalDisplayImage(null);
   };
 
-  const handleOverlayColorOnChange = (color: string) => {
-    onOverlayColorChange(color);
-  };
-
-  const handleOverlayOpacityOnChange = (opacity: number) => {
-    onOverlayOpacityChange(opacity);
-  };
-
-  const debounceHandleOverlayOpacityOnChange = debounce(
-    handleOverlayOpacityOnChange,
-    10
-  );
-
-  const debouncedHandleOverlayOpacityOnChange = useMemo(
-    () => debounceHandleOverlayOpacityOnChange,
-    [debounceHandleOverlayOpacityOnChange]
-  );
-
-  const imageIsNotSaved =
-    headerLocalDisplayImage && !headerLocalDisplayImage[0].remote;
+  const imageIsSaved = headerLocalDisplayImage?.[0].remote || false;
+  const hasLocalHeaderImage = !isNilOrError(headerLocalDisplayImage);
 
   const displayImageCropper =
-    imageIsNotSaved && bannerLayout === 'fixed_ratio_layout';
+    hasLocalHeaderImage &&
+    !imageIsSaved &&
+    bannerLayout === 'fixed_ratio_layout';
 
   const displayPreviewDevice =
-    !isNilOrError(headerLocalDisplayImage) &&
-    bannerLayout !== 'fixed_ratio_layout';
+    hasLocalHeaderImage && bannerLayout !== 'fixed_ratio_layout';
 
   const displayOverlayControls =
+    hasLocalHeaderImage &&
     (bannerLayout === 'full_width_banner_layout' ||
-      bannerLayout === 'fixed_ratio_layout') &&
-    headerLocalDisplayImage;
+      (bannerLayout === 'fixed_ratio_layout' && imageIsSaved));
 
   return (
     <>
@@ -197,77 +176,28 @@ const BannerImageField = ({
             />
           </Box>
         )}
-        {displayImageCropper ? (
-          <Box display="flex" flexDirection="column" gap="8px">
-            <ImageCropper
-              image={headerLocalDisplayImage}
-              onComplete={onAddImage}
-            />
-            <Warning>
-              <Text>
-                <FormattedMessage
-                  {...messages.fixedRatioImageCropperInfo}
-                  values={{
-                    link: (
-                      <a
-                        href={formatMessage(messages.imageSupportPageURL)}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FormattedMessage
-                          {...messages.fixedRatioImageCropperInfoLink}
-                        />
-                      </a>
-                    ),
-                  }}
-                />
-              </Text>
-            </Warning>
-          </Box>
-        ) : (
-          <HeaderImageDropzone
-            onAdd={bannerImageAddHandler}
-            onRemove={bannerImageRemoveHandler}
-            overlayColor={bannerOverlayColor}
-            overlayOpacity={bannerOverlayOpacity}
-            headerError={bannerError}
-            header_bg={headerLocalDisplayImage}
-            previewDevice={previewDevice}
-            layout={bannerLayout || 'full_width_banner_layout'}
+        <ImageUploader
+          bannerLayout={bannerLayout}
+          bannerOverlayColor={bannerOverlayColor}
+          bannerOverlayOpacity={bannerOverlayOpacity}
+          displayImageCropper={displayImageCropper}
+          displayOverlayControls={displayOverlayControls}
+          onAddImage={onAddImage}
+          onAddImageToUploader={handleOnAddImageToUploader}
+          onRemoveImageFromUploader={handleOnRemoveImageFromUploader}
+          previewDevice={previewDevice}
+          bannerError={bannerError}
+          headerLocalDisplayImage={headerLocalDisplayImage}
+        />
+        {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
+        {displayOverlayControls && (
+          <OverlayControls
+            bannerOverlayColor={bannerOverlayColor}
+            bannerOverlayOpacity={bannerOverlayOpacity}
+            onOverlayChange={onOverlayChange}
           />
         )}
       </SectionField>
-      {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
-      {displayOverlayControls && (
-        <>
-          <SectionField>
-            <ColorPickerInput
-              id="image-overlay-color"
-              label={formatMessage(messages.imageOverlayColor)}
-              type="text"
-              value={
-                // default values come from the theme
-                bannerOverlayColor ?? theme.colors.tenantPrimary
-              }
-              onChange={handleOverlayColorOnChange}
-            />
-          </SectionField>
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.imageOverlayOpacity} />
-            </Label>
-            <RangeInput
-              step={1}
-              min={0}
-              max={100}
-              value={
-                bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity
-              }
-              onChange={debouncedHandleOverlayOpacityOnChange}
-            />
-          </SectionField>
-        </>
-      )}
     </>
   );
 };
