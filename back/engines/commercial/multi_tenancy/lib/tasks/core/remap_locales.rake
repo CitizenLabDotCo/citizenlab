@@ -67,7 +67,7 @@ namespace :fix_existing_tenants do
   desc "Show which tenants don't have a custom location"
   task detect_locationless_tenants: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
-      if tenant.configuration.settings.dig('maps', 'map_center', 'lat') == '50.8503'
+      if tenant.configuration.settings('maps', 'map_center', 'lat') == '50.8503'
         puts "*** Needs custom map center:  #{tenant.name}"
       else
         puts "--- Has custom map center: #{tenant.name}"
