@@ -64,10 +64,11 @@ const EditButton = styled(Button)`
 
 export const HeaderImageContainer = styled.div`
   width: 100%;
-  aspect-ratio: ${HEADER_BG_ASPECT_RATIO} / 1; // not necessary, just for the reference
+  aspect-ratio: ${HEADER_BG_ASPECT_RATIO} / 1; // This line is not required because image is cropped to this ratio anyway; just for the reference.
   margin-bottom: 30px;
   border-radius: ${(props) => props.theme.borderRadius};
   overflow: hidden;
+  position: relative; // It's used to display elements inside (e.g. share button for folders).
 
   ${media.phone`
     aspect-ratio: ${HEADER_BG_ASPECT_RATIO - 1} / 1;
