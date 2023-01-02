@@ -29,7 +29,7 @@ import RangeInput from 'components/UI/RangeInput';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
-export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
+export type PreviewDevice = 'phone' | 'tablet' | 'desktop';
 
 export interface Props {
   onAddImage: (newImageBase64: string) => void;

@@ -122,6 +122,8 @@ class ProjectPolicy < ApplicationPolicy
       :visible_to,
       :participation_method,
       :posting_enabled,
+      :posting_method,
+      :posting_limited_max,
       :commenting_enabled,
       :voting_enabled,
       :upvoting_method,

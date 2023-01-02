@@ -45,6 +45,7 @@ import { Multiloc } from 'typings';
 import { IAreaData } from 'services/areas';
 import { ITopicData } from 'services/topics';
 import { ProjectsFilterTypes } from 'services/customPages';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -84,16 +85,29 @@ const CustomPageSettingsForm = ({
   const areas = useAreas();
   const appConfig = useAppConfiguration();
   const locale = useLocale();
+  const configuredLocales = useAppConfigurationLocales();
   const topics = useTopics();
   const { formatMessage } = useIntl();
 
+  const hasMultipleConfiguredLocales = !isNilOrError(configuredLocales)
+    ? configuredLocales.length > 1
+    : false;
+
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
-      formatMessage(messages.titleMultilocError)
+      formatMessage(
+        hasMultipleConfiguredLocales
+          ? messages.titleMultilocError
+          : messages.titleSinglelocError
+      )
     ),
     ...(showNavBarItemTitle && {
       nav_bar_item_title_multiloc: validateMultilocForEveryLocale(
-        formatMessage(messages.titleMultilocError)
+        formatMessage(
+          hasMultipleConfiguredLocales
+            ? messages.titleMultilocError
+            : messages.titleSinglelocError
+        )
       ),
     }),
     ...(mode === 'edit' && {
