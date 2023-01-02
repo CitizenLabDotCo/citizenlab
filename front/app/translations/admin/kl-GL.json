@@ -1406,6 +1406,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Ilisarnaammik ikkussilaarit",
   "app.containers.AdminPage.SettingsPage.no_button": "Attataasaqanngilaq",
   "app.containers.AdminPage.SettingsPage.organizationName": "Illoqarfiup ingerlatseqatigiiffiulluunniit aqqa",
+  "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Settings",
   "app.containers.AdminPage.SettingsPage.phone": "Oqarasuaat",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Quppernermik naleqqussaaneq",
