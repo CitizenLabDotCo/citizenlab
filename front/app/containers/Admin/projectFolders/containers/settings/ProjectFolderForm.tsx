@@ -493,7 +493,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
         <SectionField>
           <HeaderBgInput
-            imageUrl={projectFolder.attributes.header_bg.large}
+            imageUrl={projectFolder?.attributes.header_bg?.large}
             onImageChange={handleHeaderBgChange}
           />
         </SectionField>
