@@ -1406,6 +1406,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Please upload a logo",
   "app.containers.AdminPage.SettingsPage.no_button": "No button",
   "app.containers.AdminPage.SettingsPage.organizationName": "Name of city or organization",
+  "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Impostazioni",
   "app.containers.AdminPage.SettingsPage.phone": "Telefono",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Configurazione della piattaforma",
