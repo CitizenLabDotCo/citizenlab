@@ -1406,6 +1406,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Molimo vas postavite logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Nema dugmeta",
   "app.containers.AdminPage.SettingsPage.organizationName": "Ime grada ili organizacije",
+  "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Podešavanja",
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Konfiguracija platforme",
