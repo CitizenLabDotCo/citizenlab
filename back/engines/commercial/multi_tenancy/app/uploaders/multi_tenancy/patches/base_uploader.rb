@@ -12,7 +12,7 @@ module MultiTenancy
         def asset_host
           AppConfiguration.instance.base_backend_uri
         rescue ActiveRecord::RecordNotFound
-          # If there is not AppConfiguration, fall back on the default carrierwave
+          # If there is no AppConfiguration, fall back on the default carrierwave
           # behavior (S3 in production).
           #
           # We cannot use super here because it would call the :asset_host of the
