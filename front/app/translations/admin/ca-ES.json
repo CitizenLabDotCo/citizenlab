@@ -1406,6 +1406,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Si us plau, carregueu un logotip",
   "app.containers.AdminPage.SettingsPage.no_button": "Cap botó",
   "app.containers.AdminPage.SettingsPage.organizationName": "Nom de la ciutat o organització",
+  "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Configuració",
   "app.containers.AdminPage.SettingsPage.phone": "Telèfon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Configuració de la plataforma",
