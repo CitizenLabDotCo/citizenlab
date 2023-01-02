@@ -1406,6 +1406,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Plaats hier je logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Geen knop",
   "app.containers.AdminPage.SettingsPage.organizationName": "Naam gemeente of organisatie",
+  "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Instellingen",
   "app.containers.AdminPage.SettingsPage.phone": "Telefoon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Platform configuratie",
