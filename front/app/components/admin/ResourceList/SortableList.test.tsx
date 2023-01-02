@@ -79,7 +79,7 @@ describe('<SortableList />', () => {
       </SortableList>
     );
 
-    typeof _handleDragRow === 'function' && _handleDragRow(1, 0);
+    _handleDragRow(1, 0);
     _handleDropRow('_2', 0);
 
     expect(onReorder).toHaveBeenCalledWith('_2', 0);
