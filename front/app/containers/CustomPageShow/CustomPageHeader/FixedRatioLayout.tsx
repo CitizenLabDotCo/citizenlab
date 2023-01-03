@@ -17,9 +17,6 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 export interface Props {
-  className?: string;
-  imageColor?: string;
-  imageOpacity?: number;
   pageData: ICustomPageData;
 }
 
@@ -31,18 +28,22 @@ const CustomPageLayoutHeader = styled(Header)`
   max-width: ${stylingConsts.maxPageWidth}px; ;
 `;
 
-const FixedRatioLayout = ({ imageColor, imageOpacity, pageData }: Props) => {
+const FixedRatioLayout = ({ pageData }: Props) => {
   const imageUrl = pageData.attributes.header_bg?.large;
+  const overlayColor = pageData.attributes.banner_overlay_color;
+  const overlayOpacity = pageData.attributes.banner_overlay_opacity;
 
   return (
     <CustomPageLayoutContainer>
       <CustomPageLayoutHeader>
         <HeaderImage>
           <HeaderImageBackground src={imageUrl || null} />
-          <HeaderImageOverlay
-            overlayColor={imageColor}
-            overlayOpacity={imageOpacity}
-          />
+          {overlayColor && typeof overlayOpacity === 'number' && (
+            <HeaderImageOverlay
+              overlayColor={overlayColor}
+              overlayOpacity={overlayOpacity}
+            />
+          )}
         </HeaderImage>
         <HeaderContent
           fontColors="light"
