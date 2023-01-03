@@ -11,36 +11,37 @@ import {
 } from 'components/LandingPages/citizen/FixedRatioBannerLayout';
 import HeaderContent from './HeaderContent';
 
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import { isNilOrError } from 'utils/helperUtils';
+import { IHomepageSettingsData } from 'services/homepageSettings';
 
-const FixedRatioLayout = () => {
-  const homepageSettings = useHomepageSettings();
+interface Props {
+  homepageSettings: IHomepageSettingsData;
+}
 
-  if (!isNilOrError(homepageSettings)) {
-    const headerImage = homepageSettings.attributes.header_bg?.large;
-    const homepageSettingColor =
-      homepageSettings.attributes.banner_signed_out_header_overlay_color;
-    const homepageSettingOpacity =
-      homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
-    return (
-      <Container>
-        <Header>
-          <HeaderImage>
-            <HeaderImageBackground src={headerImage || null} />
-            <HeaderImageOverlay
-              overlayColor={homepageSettingColor}
-              overlayOpacity={homepageSettingOpacity}
-            />
-          </HeaderImage>
+const FixedRatioLayout = ({ homepageSettings }: Props) => {
+  const headerImage = homepageSettings.attributes.header_bg?.large;
+  const homepageSettingColor =
+    homepageSettings.attributes.banner_signed_out_header_overlay_color;
+  const homepageSettingOpacity =
+    homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
 
-          <HeaderContent fontColors="light" />
-        </Header>
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <Header>
+        <HeaderImage>
+          <HeaderImageBackground src={headerImage || null} />
+          {homepageSettingColor &&
+            typeof homepageSettingOpacity === 'number' && (
+              <HeaderImageOverlay
+                overlayColor={homepageSettingColor}
+                overlayOpacity={homepageSettingOpacity}
+              />
+            )}
+        </HeaderImage>
 
-  return null;
+        <HeaderContent fontColors="light" />
+      </Header>
+    </Container>
+  );
 };
 
 export default FixedRatioLayout;
