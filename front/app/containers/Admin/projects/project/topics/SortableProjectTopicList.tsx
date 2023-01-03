@@ -12,11 +12,6 @@ import messages from './messages';
 // components
 import Button from 'components/UI/Button';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import {
-  RowContent,
-  RowContentInner,
-  RowTitle,
-} from '../../components/RowStyles';
 import Warning from 'components/UI/Warning';
 import Modal, {
   ModalContentContainer,
@@ -39,14 +34,39 @@ import {
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
 import useTopics from 'hooks/useTopics';
 
+// styles
+import { fontSizes } from 'utils/styleUtils';
+
+// components
+import T from 'components/T';
+
+export const RowContent = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const RowContentInner = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-right: 20px;
+`;
+
+export const RowTitle = styled(T)`
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: 24px;
+  margin-right: 10px;
+`;
+
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
 `;
 
-interface Props {}
-
 const SortableProjectTopicList = memo(
-  ({ params: { projectId } }: Props & WithRouterProps) => {
+  ({ params: { projectId } }: WithRouterProps) => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [processingDeletion, setProcessingDeletion] = useState(false);
     const [

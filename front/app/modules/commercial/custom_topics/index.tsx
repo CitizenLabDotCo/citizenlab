@@ -1,9 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-const AdminAllowedTopicsComponent = React.lazy(
-  () => import('./admin/containers/ProjectAllowedInputTopics')
-);
 const AdminTopicsIndexComponent = React.lazy(
   () => import('./admin/containers/TopicsSettings/all')
 );
@@ -16,12 +13,6 @@ const AdminTopicsEditComponent = React.lazy(
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.projects.project': [
-      {
-        path: 'allowed-input-topics',
-        element: <AdminAllowedTopicsComponent />,
-      },
-    ],
     'admin.settings': [
       {
         path: 'topics',
