@@ -38,13 +38,6 @@ import useTopics from 'hooks/useTopics';
 // styles
 import { fontSizes } from 'utils/styleUtils';
 
-export const RowContentInner = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-right: 20px;
-`;
-
 export const RowTitle = styled(T)`
   font-size: ${fontSizes.base}px;
   font-weight: 400;

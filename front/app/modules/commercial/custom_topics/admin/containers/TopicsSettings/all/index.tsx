@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // resources
-import { deleteTopic } from '../../../../services/topics';
+import { deleteTopic } from 'services/topics';
 
 // hooks
 import useTopics from 'hooks/useTopics';

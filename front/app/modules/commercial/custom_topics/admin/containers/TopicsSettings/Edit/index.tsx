@@ -13,7 +13,7 @@ import messages from '../messages';
 import useTopic from 'hooks/useTopic';
 
 // services
-import { updateTopic, ITopicUpdate } from '../../../../services/topics';
+import { updateTopic, ITopicUpdate } from 'services/topics';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
