@@ -20,7 +20,8 @@ import Modal, {
 } from 'components/UI/Modal';
 import { StyledLink } from 'components/admin/Section';
 import VerticalCenterer from 'components/VerticalCenterer';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, Box } from '@citizenlab/cl2-component-library';
+import T from 'components/T';
 
 // services
 import {
@@ -36,16 +37,6 @@ import useTopics from 'hooks/useTopics';
 
 // styles
 import { fontSizes } from 'utils/styleUtils';
-
-// components
-import T from 'components/T';
-
-export const RowContent = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
 
 export const RowContentInner = styled.div`
   display: flex;
@@ -174,13 +165,24 @@ const SortableProjectTopicList = memo(
                       dropRow={handleDropRow}
                       isLastItem={index === allowedInputTopics.length - 1}
                     >
-                      <RowContent>
-                        <RowContentInner className="expand primary">
+                      <Box
+                        display="flex"
+                        flex="1"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Box
+                          className="expand primary"
+                          display="flex"
+                          flexWrap="wrap"
+                          alignItems="center"
+                          marginRight="20px"
+                        >
                           <RowTitle
                             value={getTitle(projectAllowedInputTopic)}
                           />
-                        </RowContentInner>
-                      </RowContent>
+                        </Box>
+                      </Box>
                       <Button
                         onClick={handleProjectTopicDelete(
                           projectAllowedInputTopic.id
