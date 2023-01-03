@@ -137,6 +137,12 @@ export class AdminProjectsProjectIndex extends PureComponent<
           name: 'survey-results',
         },
         {
+          label: formatMessage(messages.allowedInputTopicsTab),
+          name: 'topics',
+          url: 'allowed-input-topics',
+          feature: 'custom_topics',
+        },
+        {
           label: formatMessage(messages.phasesTab),
           url: 'timeline',
           name: 'phases',
@@ -237,6 +243,28 @@ export class AdminProjectsProjectIndex extends PureComponent<
             return true;
           }
 
+          return false;
+        },
+        topics: function topicsTabHidden() {
+          const { project, phases } = props;
+          const processType = project?.attributes.process_type;
+          const participationMethod = project?.attributes.participation_method;
+          const hideTab =
+            (processType === 'continuous' &&
+              participationMethod !== 'ideation' &&
+              participationMethod !== 'budgeting') ||
+            (processType === 'timeline' &&
+              !isNilOrError(phases) &&
+              phases.filter((phase) => {
+                return (
+                  phase.attributes.participation_method === 'ideation' ||
+                  phase.attributes.participation_method === 'budgeting'
+                );
+              }).length === 0);
+
+          if (hideTab) {
+            return true;
+          }
           return false;
         },
         phases: function isPhasesTabHidden(project) {

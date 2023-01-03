@@ -1,12 +1,5 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const ProjectEditTab = React.lazy(
-  () => import('./admin/components/ProjectEditTab')
-);
-
-import { isNilOrError } from 'utils/helperUtils';
-import { IProjectData } from 'services/projects';
-import { IPhaseData } from 'services/phases';
 
 const AdminAllowedTopicsComponent = React.lazy(
   () => import('./admin/containers/ProjectAllowedInputTopics')
@@ -20,36 +13,6 @@ const AdminTopicsNewComponent = React.lazy(
 const AdminTopicsEditComponent = React.lazy(
   () => import('./admin/containers/TopicsSettings/Edit')
 );
-
-type RenderOnHideTabConditionProps = {
-  project: IProjectData;
-  phases: IPhaseData[] | null;
-  children: ReactNode;
-};
-
-const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
-  const { project, phases, children } = props;
-  const processType = project.attributes.process_type;
-  const participationMethod = project.attributes.participation_method;
-  const hideTab =
-    (processType === 'continuous' &&
-      participationMethod !== 'ideation' &&
-      participationMethod !== 'budgeting') ||
-    (processType === 'timeline' &&
-      !isNilOrError(phases) &&
-      phases.filter((phase) => {
-        return (
-          phase.attributes.participation_method === 'ideation' ||
-          phase.attributes.participation_method === 'budgeting'
-        );
-      }).length === 0);
-
-  if (hideTab) {
-    return null;
-  }
-
-  return <>{children}</>;
-};
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -73,13 +36,6 @@ const configuration: ModuleConfiguration = {
         element: <AdminTopicsEditComponent />,
       },
     ],
-  },
-  outlets: {
-    'app.containers.Admin.projects.edit': (props) => (
-      <RenderOnHideTabCondition project={props.project} phases={props.phases}>
-        <ProjectEditTab {...props} />
-      </RenderOnHideTabCondition>
-    ),
   },
 };
 
