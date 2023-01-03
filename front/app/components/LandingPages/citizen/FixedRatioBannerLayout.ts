@@ -19,7 +19,6 @@ export const Header = styled.div`
   margin: 0 auto;
   padding: 0;
   position: relative;
-  aspect-ratio: 3 / 1;
   display: flex;
   flex-direction: column;
   align-items: center;
