@@ -19,8 +19,8 @@ import {
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import TopicTermConfig from '../../../components/TopicTermConfig';
-import TopicsList from '../../../components/TopicsList';
+import TopicTermConfig from './TopicTermConfig';
+import TopicsList from './TopicsList';
 import Modal, {
   ModalContentContainer,
   ButtonsWrapper,
