@@ -21,13 +21,12 @@ export default ({ topics, handleDeleteClick }: Props) => (
       const isDefaultTopic = topic.attributes.code !== 'custom';
 
       return isDefaultTopic ? (
-        <DefaultTopicRow topic={topic} isLastItem={isLastItem} key={topic.id} />
+        <DefaultTopicRow topic={topic} isLastItem={isLastItem} />
       ) : (
         <CustomTopicRow
           topic={topic}
           isLastItem={isLastItem}
           handleDeleteClick={handleDeleteClick}
-          key={topic.id}
         />
       );
     })}

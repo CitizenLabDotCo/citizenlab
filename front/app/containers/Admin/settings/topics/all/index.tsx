@@ -32,7 +32,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 const AllTopics = () => {
   const topics = useTopics({ includeStaticPages: true });
-
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
   const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
