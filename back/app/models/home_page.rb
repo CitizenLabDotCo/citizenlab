@@ -29,7 +29,6 @@
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
 #  header_bg                                :string
-#  banner_signed_in_image_enabled           :boolean          default(TRUE), not null
 #
 class HomePage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
