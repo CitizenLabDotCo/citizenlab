@@ -3,7 +3,6 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 const ProjectEditTab = React.lazy(
   () => import('./admin/components/ProjectEditTab')
 );
-const SettingsTab = React.lazy(() => import('./admin/components/SettingsTab'));
 
 import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
@@ -81,7 +80,6 @@ const configuration: ModuleConfiguration = {
         <ProjectEditTab {...props} />
       </RenderOnHideTabCondition>
     ),
-    'app.containers.Admin.settings.tabs': (props) => <SettingsTab {...props} />,
   },
 };
 
