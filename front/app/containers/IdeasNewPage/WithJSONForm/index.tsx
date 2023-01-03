@@ -111,11 +111,17 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       },
     }) as { [key: string]: string | number };
 
-    if (lat && lng) {
+    if (
+      lat &&
+      lng &&
+      data.location_description === initialFormData['location_description']
+    ) {
       location_point_geojson = {
         type: 'Point',
         coordinates: [lng, lat],
       };
+    } else if (data.location_description) {
+      location_point_geojson = await geocode(data.location_description);
     }
 
     const idea = await addIdea({
