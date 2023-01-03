@@ -22,7 +22,8 @@ module MultiTenancy
         # - the app configuration creation and its side effects must run within the tenant context,
         # - we want to reuse the same id for app configuration.
         tenant.switch do
-          config = AppConfiguration.send(:new, config_attrs.merge(id: tenant.id, created_at: tenant.created_at))
+          config_attrs = config_attrs.reverse_merge(tenant_attrs).merge(id: tenant.id, created_at: tenant.created_at)
+          config = AppConfiguration.send(:new, config_attrs)
           config_side_fx.before_create(config)
 
           config.save! # The config-tenant sync implicitly initializes (shared) tenant attributes.
