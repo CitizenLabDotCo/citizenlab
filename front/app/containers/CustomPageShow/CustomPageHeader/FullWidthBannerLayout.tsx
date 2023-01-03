@@ -21,7 +21,10 @@ const FullWidthBannerLayout = ({ className, pageData }: Props) => {
   const overlayOpacity = pageData.attributes.banner_overlay_opacity;
 
   return (
-    <Container className={`e2e-signed-out-header ${className}`}>
+    <Container
+      data-testid="full-width-banner-layout"
+      className={`e2e-signed-out-header ${className}`}
+    >
       <Header id="hook-header">
         <HeaderImage id="hook-header-image">
           <HeaderImageBackground

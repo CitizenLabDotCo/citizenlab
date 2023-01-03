@@ -25,10 +25,13 @@ const FixedRatioLayout = ({ homepageSettings }: Props) => {
     homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
 
   return (
-    <Container>
+    <Container data-testid="fixed-ratio-layout">
       <Header>
         <HeaderImage>
-          <HeaderImageBackground src={headerImage || null} />
+          <HeaderImageBackground
+            data-testid="header-image-background"
+            src={headerImage || null}
+          />
           {homepageSettingColor &&
             typeof homepageSettingOpacity === 'number' && (
               <HeaderImageOverlay

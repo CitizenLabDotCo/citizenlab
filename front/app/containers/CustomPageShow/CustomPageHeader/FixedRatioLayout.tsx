@@ -34,10 +34,13 @@ const FixedRatioLayout = ({ pageData }: Props) => {
   const overlayOpacity = pageData.attributes.banner_overlay_opacity;
 
   return (
-    <CustomPageLayoutContainer>
+    <CustomPageLayoutContainer data-testid="fixed-ratio-layout">
       <CustomPageLayoutHeader>
         <HeaderImage>
-          <HeaderImageBackground src={imageUrl || null} />
+          <HeaderImageBackground
+            data-testid="header-image-background"
+            src={imageUrl || null}
+          />
           {overlayColor && typeof overlayOpacity === 'number' && (
             <HeaderImageOverlay
               overlayColor={overlayColor}
