@@ -79,9 +79,8 @@ describe('Admin: update Hero Banner content', () => {
 
   it('uploads and crops banner image', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
-    cy.setAdminLoginCookie();
+    cy.setConsentAndAdminLoginCookies();
     cy.visit('admin/pages-menu/homepage/homepage-banner/');
-    cy.acceptCookies();
 
     cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
     cy.get('[data-cy="e2e-remove-image-button"]').click();
