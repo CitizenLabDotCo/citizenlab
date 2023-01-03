@@ -4,9 +4,7 @@ const ProjectEditTab = React.lazy(
   () => import('./admin/components/ProjectEditTab')
 );
 const SettingsTab = React.lazy(() => import('./admin/components/SettingsTab'));
-const TopicInputsTooltipExtraCopy = React.lazy(
-  () => import('./admin/components/TopicInputsTooltipExtraCopy')
-);
+
 import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
@@ -84,8 +82,6 @@ const configuration: ModuleConfiguration = {
       </RenderOnHideTabCondition>
     ),
     'app.containers.Admin.settings.tabs': (props) => <SettingsTab {...props} />,
-    'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy':
-      () => <TopicInputsTooltipExtraCopy />,
   },
 };
 
