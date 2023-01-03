@@ -103,6 +103,21 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
     }
+
+    const { lat, lng } = parse(search, {
+      ignoreQueryPrefix: true,
+      decoder: (str, _defaultEncoder, _charset, type) => {
+        return type === 'value' ? parseFloat(str) : str;
+      },
+    }) as { [key: string]: string | number };
+
+    if (lat && lng) {
+      location_point_geojson = {
+        type: 'Point',
+        coordinates: [lng, lat],
+      };
+    }
+
     const idea = await addIdea({
       ...data,
       location_point_geojson,
