@@ -44,7 +44,6 @@ resource 'Home Page' do
         parameter :banner_cta_signed_out_text_multiloc, 'multiloc content for the CTA for signed out users'
         parameter :banner_cta_signed_out_type, 'type of the CTA for signed out users, one of: sign_up_button customized_button no_button'
         parameter :banner_cta_signed_out_url, 'url for the CTA for signed out users'
-        parameter :banner_signed_in_image_enabled, 'if banner image is enabled when signed_in'
         parameter :header_bg, 'image for the header background'
         parameter :top_info_section_enabled, 'if the top info section is enabled'
         parameter :top_info_section_multiloc, 'multiloc content for the top info section'

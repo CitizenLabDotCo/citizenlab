@@ -81,11 +81,6 @@ class HomePage < ApplicationRecord
     validates :banner_cta_signed_out_url, presence: true, url: true
   end
 
-  validates :banner_signed_in_image_enabled, inclusion: [true, false]
-  with_options unless: :banner_signed_in_image_enabled do
-    validates :banner_layout, presence: true, inclusion: %w[fixed_ratio_layout]
-  end
-
   mount_base64_uploader :header_bg, HeaderBgUploader
 
   private

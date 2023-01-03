@@ -83,11 +83,6 @@ class StaticPage < ApplicationRecord
     validates :banner_cta_button_url, presence: true, url: true
   end
 
-  validates :banner_signed_in_image_enabled, inclusion: [true, false]
-  with_options unless: :banner_signed_in_image_enabled do
-    validates :banner_layout, presence: true, inclusion: %w[fixed_ratio_layout]
-  end
-
   validates :top_info_section_enabled, inclusion: [true, false]
   validates :top_info_section_multiloc, multiloc: { presence: false, html: true }
 
