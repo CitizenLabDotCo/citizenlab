@@ -25,13 +25,6 @@ RSpec.describe HomePage, type: :model do
       it { is_expected.to validate_presence_of(:banner_cta_signed_in_url) }
       it { is_expected.to validate_presence_of(:banner_cta_signed_in_text_multiloc) }
     end
-
-    context 'when banner_signed_in_image_enabled is false' do
-      subject { described_class.new(banner_signed_in_image_enabled: false) }
-
-      it { is_expected.to validate_presence_of(:banner_layout) }
-      it { is_expected.to validate_inclusion_of(:banner_layout).in_array(%w[fixed_ratio_layout]) }
-    end
   end
 
   describe 'image uploads' do

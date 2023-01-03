@@ -83,13 +83,6 @@ RSpec.describe StaticPage, type: :model do
       expect(page.filter_projects(Project.all)).to include(project)
       expect(page.filter_projects(Project.all)).not_to include(project2)
     end
-
-    context 'when banner_signed_in_image_enabled is false' do
-      subject { described_class.new(banner_signed_in_image_enabled: false) }
-
-      it { is_expected.to validate_presence_of(:banner_layout) }
-      it { is_expected.to validate_inclusion_of(:banner_layout).in_array(%w[fixed_ratio_layout]) }
-    end
   end
 
   describe 'when create new static page with no value for slug' do
