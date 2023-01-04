@@ -14,7 +14,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :slug,
     :visible_to,
     :created_at,
-    :updated_at,
+    :updated_at
   )
 
   attribute :folder_id do |project|
