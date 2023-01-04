@@ -30,7 +30,7 @@ const SingleAttachementControl = ({
     setDidBlur(true);
   };
   const handleFileOnRemove = () => {
-    handleChange(path, {});
+    handleChange(path, undefined);
     setDidBlur(true);
   };
 
