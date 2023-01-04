@@ -9,7 +9,7 @@ resource 'Topics' do
 
   before do
     header 'Content-Type', 'application/json'
-    @code1, @code2 = Topic.codes.take(2)
+    @code1, @code2 = Topic::CODES.take(2)
     @topics = create_list(:topic, 2, code: @code1) + create_list(:topic, 3, code: @code2)
   end
 
