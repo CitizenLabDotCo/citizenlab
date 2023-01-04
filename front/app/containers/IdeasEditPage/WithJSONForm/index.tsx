@@ -21,13 +21,13 @@ import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Box } from '@citizenlab/cl2-component-library';
 import { updateIdea } from 'services/ideas';
-import { geocode } from 'utils/locationTools';
 import useIdea from 'hooks/useIdea';
 import IdeasEditMeta from '../IdeasEditMeta';
 import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { deleteIdeaImage } from 'services/ideaImages';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
+import { getLocationGeojson } from '../utils';
 
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -102,23 +102,13 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   }
 
   const onSubmit = async (data) => {
-    let location_point_geojson;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { idea_files_attributes, ...ideaWithOUtFiles } = data;
 
-    // If initialData has location point, add it tot data if location is unchanged
-    if (
-      !isNilOrError(initialFormData) &&
-      (data && data.location_description) ===
-        initialFormData.location_description
-    ) {
-      location_point_geojson = initialFormData.location_point_geojson;
-    } else {
-      // TODO Remove this in CL-1788 when it is used
-      if (data.location_description && !data.location_point_geojson) {
-        location_point_geojson = await geocode(data.location_description);
-      }
-    }
+    const location_point_geojson = await getLocationGeojson(
+      initialFormData,
+      data
+    );
 
     // Delete a remote image only on submission
     if (
