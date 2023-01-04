@@ -25,7 +25,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 30px;
 
   ${media.phone`
-    margin-bottom: 25px;
+    margin-bottom: 30px;
   `}
 `;
 
