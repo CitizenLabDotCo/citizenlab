@@ -1477,7 +1477,6 @@
   "app.errors.unknown_locale": "{row} satırında bulunan {value} dili yapılandırılmış bir dil değil",
   "app.errors.unparseable_excel": "Seçilen Excel dosyası işlenemedi.",
   "app.errors.view_name_taken": "Bu ada sahip bir görünüm zaten var",
-  "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Bir yayın veya yorumda uygunsuz içerik otomatik olarak tespit edildi",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Sign in with StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Sign up with StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Create a Stadt Wien Account now and use one login for many digital services of Vienna.",
