@@ -1,7 +1,6 @@
 import React from 'react';
 import { screen, render } from 'utils/testUtils/rtl';
 import Error from './';
-import translationMessages from 'i18n/en';
 
 jest.mock('utils/cl-intl');
 jest.mock('react-transition-group/CSSTransition', () => ({ children }) => (
@@ -29,20 +28,13 @@ describe('Error', () => {
   it('should render api error', () => {
     render(
       <Error
-        apiErrors={[
-          { error: 'taken', value: '' },
-          { error: 'email_taken', value: 'value' },
-        ]}
+        apiErrors={[{ error: 'email_taken', value: 'value' }]}
         fieldName="email"
       />
     );
     expect(screen.getByTestId('error-message-text')).toBeInTheDocument();
     expect(
-      screen.getByText(
-        (translationMessages as Record<string, string>)[
-          'app.errors.email_taken'
-        ]
-      )
+      screen.getByText('This email is already taken. Please try another one.')
     ).toBeInTheDocument();
   });
   it('should render multiple api errors', () => {
@@ -58,11 +50,7 @@ describe('Error', () => {
     expect(screen.getByTestId('error-message-text')).toBeInTheDocument();
     expect(screen.getByText('Please enter a password')).toBeInTheDocument();
     expect(
-      screen.getByText(
-        (translationMessages as Record<string, string>)[
-          'app.errors.password_too_short'
-        ]
-      )
+      screen.getByText('The password must be at least 8 characters long')
     ).toBeInTheDocument();
   });
 });
