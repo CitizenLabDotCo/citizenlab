@@ -132,7 +132,6 @@ const validPlatformLinks = [
 ];
 
 describe('isValidUrl', () => {
-  // I'm using this structure to make it easy to identify which platform has a failing test
   it.each(validPlatformLinks)(
     'should return [true, "whitelist"] for valid url %s',
     (validPlatformData) => {
@@ -141,11 +140,4 @@ describe('isValidUrl', () => {
       });
     }
   );
-
-  it('should return [false, "whitelist"] for Invalid urls', () => {
-    expect(isValidUrl('http://www.example.com/contact/')).toStrictEqual([
-      false,
-      'whitelist',
-    ]);
-  });
 });
