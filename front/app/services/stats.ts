@@ -67,14 +67,6 @@ export interface ICount {
   count: number;
 }
 
-export function ideasByStatusStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByStatus>({
-    apiEndpoint: `${apiEndpoint}/ideas_by_status`,
-    ...streamParams,
-  });
-}
-export const ideasByStatusXlsxEndpoint = `${apiEndpoint}/ideas_by_status_as_xlsx`;
-
 export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTime>({
     apiEndpoint: `${apiEndpoint}/ideas_by_time`,
@@ -184,8 +176,6 @@ export function activeUsersByTimeStream(
     ...streamParams,
   });
 }
-
-export const activeUsersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_cumulative_as_xlsx`;
 
 // Comments
 export interface ICommentsByTime {

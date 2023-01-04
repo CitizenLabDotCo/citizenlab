@@ -428,7 +428,6 @@ export interface INotificationDataMap {
 
 export type TNotificationData =
   INotificationDataMap[keyof INotificationDataMap];
-export type TNotificationType = TNotificationData['attributes']['type'];
 
 export interface INotificationLinks {
   self: string;
@@ -441,10 +440,6 @@ export interface INotificationLinks {
 export interface INotifications {
   data: TNotificationData[];
   links: INotificationLinks;
-}
-
-export interface INotification {
-  data: TNotificationData;
 }
 
 export function notificationsStream(streamParams: IStreamParams | null = null) {
