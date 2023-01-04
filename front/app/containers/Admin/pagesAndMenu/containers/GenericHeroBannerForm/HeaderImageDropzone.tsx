@@ -96,17 +96,9 @@ const HeaderImageDropzone = ({
     return ratio;
   };
 
-  // Ideally, this condition is not here. On changing the layout,
-  // We should set the color/opacity to null. This should be refactored
-  // at the next convenience.
-  const isBannerWithOverlay =
-    layout === 'full_width_banner_layout' || layout === 'fixed_ratio_layout';
-
   const previewOverlayElement =
     //  We check for typeof of opacity because 0 would coerce to false.
-    isBannerWithOverlay &&
-    typeof overlayOpacity === 'number' &&
-    overlayColor ? (
+    typeof overlayOpacity === 'number' && overlayColor ? (
       <HeaderImageOverlay
         overlayColor={overlayColor}
         overlayOpacity={overlayOpacity}
