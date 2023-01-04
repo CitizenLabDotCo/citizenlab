@@ -27,13 +27,8 @@ const Insights: React.FC<WrappedComponentProps & WithRouterProps> = ({
   intl: { formatMessage },
 }) => {
   const projectReportsFeatureFlag = useFeatureFlag({ name: 'project_reports' });
-  const manualInsightsFeatureFlag = useFeatureFlag({
-    name: 'insights_manual_flow',
-  });
+
   const tabs = [
-    ...(manualInsightsFeatureFlag
-      ? [{ label: messages.tabInsights, url: '/admin/insights' }]
-      : []),
     ...(projectReportsFeatureFlag
       ? [{ label: messages.tabReports, url: '/admin/insights/reports' }]
       : []),
