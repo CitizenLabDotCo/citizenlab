@@ -245,10 +245,9 @@ export class AdminProjectsProjectIndex extends PureComponent<
 
           return false;
         },
-        topics: function topicsTabHidden() {
-          const { project, phases } = props;
-          const processType = project?.attributes.process_type;
-          const participationMethod = project?.attributes.participation_method;
+        topics: function topicsTabHidden(project, phases) {
+          const processType = project.attributes.process_type;
+          const participationMethod = project.attributes.participation_method;
           const hideTab =
             (processType === 'continuous' &&
               participationMethod !== 'ideation' &&

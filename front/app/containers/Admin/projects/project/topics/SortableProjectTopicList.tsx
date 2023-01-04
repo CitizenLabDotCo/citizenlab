@@ -159,22 +159,13 @@ const SortableProjectTopicList = memo(
                       isLastItem={index === allowedInputTopics.length - 1}
                     >
                       <Box
+                        className="expand primary"
                         display="flex"
-                        flex="1"
+                        flexWrap="wrap"
                         alignItems="center"
-                        justifyContent="center"
+                        marginRight="20px"
                       >
-                        <Box
-                          className="expand primary"
-                          display="flex"
-                          flexWrap="wrap"
-                          alignItems="center"
-                          marginRight="20px"
-                        >
-                          <RowTitle
-                            value={getTitle(projectAllowedInputTopic)}
-                          />
-                        </Box>
+                        <RowTitle value={getTitle(projectAllowedInputTopic)} />
                       </Box>
                       <Button
                         onClick={handleProjectTopicDelete(
