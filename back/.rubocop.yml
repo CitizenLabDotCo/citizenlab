@@ -118,9 +118,6 @@ Layout/MultilineMethodCallIndentation:
 RSpec/DescribeClass:
   IgnoredMetadata:
     type: ['request']
-  Exclude:
-    - 'engines/commercial/multi_tenancy/spec/db/seedfile_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
 
 RSpec/EmptyExampleGroup:
   # `context` and `describe` are found as empty example groups when
@@ -133,11 +130,6 @@ Metrics/MethodLength:
   AllowedMethods: ['included', 'prepended', 'extended']
   Exclude:
   - '**/db/migrate/**/*'
-
-Lint/Void:
-  Exclude:
-    - 'engines/commercial/multi_tenancy/config/initializers/sentry.rb'
-
 
 Rails/UnknownEnv:
   # config/initializers/apartment.rb refers to staging, which is not part of the default settings.
