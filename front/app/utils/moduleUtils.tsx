@@ -35,7 +35,6 @@ import { CustomizedButtonConfig } from 'services/appConfiguration';
 import { ICommentData } from 'services/comments';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { THomepageBannerLayout } from 'services/homepageSettings';
-import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
 import { TSignUpInFlow } from 'events/openSignUpInModal';
@@ -117,10 +116,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
   'app.containers.Admin.dashboard.summary.events': StatCardProps;
-  'app.containers.IdeasShow.MetaInformation': {
-    ideaId: string;
-    compact?: boolean;
-  };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
     projectId: string;

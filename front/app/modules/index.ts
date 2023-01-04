@@ -7,7 +7,6 @@ import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
-import similarIdeaConfiguration from './commercial/similar_ideas';
 import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
 import customMapsConfiguration from './commercial/custom_maps';
@@ -106,10 +105,6 @@ export default loadModules([
   },
   {
     configuration: adminProjectTemplatesConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: similarIdeaConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
   {
