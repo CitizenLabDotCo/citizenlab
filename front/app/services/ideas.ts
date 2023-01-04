@@ -226,17 +226,6 @@ export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
   });
 }
 
-export function similarIdeasStream(
-  ideaId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{ data: IMinimalIdeaData[] }>({
-    apiEndpoint: `${API_PATH}/ideas/${ideaId}/similar`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
 export async function addIdea(object: IIdeaAdd) {
   const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, {
     idea: object,
