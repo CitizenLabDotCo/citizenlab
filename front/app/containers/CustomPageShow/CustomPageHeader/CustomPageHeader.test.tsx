@@ -22,7 +22,7 @@ function mockPageData(bannerLayout: THomepageBannerLayout) {
 }
 
 describe('<CustomPageHeader />', () => {
-  it('renders full width banner layout', () => {
+  it('renders full_width_banner_layout', () => {
     render(
       <CustomPageHeader pageData={mockPageData('full_width_banner_layout')} />
     );
@@ -31,21 +31,21 @@ describe('<CustomPageHeader />', () => {
     expect(screen.getByTestId('full-width-banner-layout')).toBeInTheDocument();
   });
 
-  it('renders two column layout', () => {
+  it('renders two_column_layout', () => {
     render(<CustomPageHeader pageData={mockPageData('two_column_layout')} />);
     expect(screen.getByText('Header')).toBeInTheDocument();
     expect(screen.getByText('Subheader')).toBeInTheDocument();
     expect(screen.getByTestId('two-column-layout')).toBeInTheDocument();
   });
 
-  it('renders two row layout fixed ratio layout', () => {
+  it('renders two_row_layout fixed ratio layout', () => {
     render(<CustomPageHeader pageData={mockPageData('two_row_layout')} />);
     expect(screen.getByText('Header')).toBeInTheDocument();
     expect(screen.getByText('Subheader')).toBeInTheDocument();
     expect(screen.getByTestId('two-row-layout')).toBeInTheDocument();
   });
 
-  it('renders fixed ratio layout', () => {
+  it('renders fixed_ratio_layout', () => {
     render(<CustomPageHeader pageData={mockPageData('fixed_ratio_layout')} />);
     expect(screen.getByText('Header')).toBeInTheDocument();
     expect(screen.getByText('Subheader')).toBeInTheDocument();
