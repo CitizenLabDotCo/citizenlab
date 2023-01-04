@@ -1,5 +1,5 @@
 import React from 'react';
-import BannerImageFields, { Props } from '.';
+import BannerImageFields from '.';
 import { render, screen, waitFor, fireEvent, act } from 'utils/testUtils/rtl';
 
 jest.mock('utils/cl-intl');
@@ -7,7 +7,7 @@ jest.mock('utils/cl-intl');
 const props = {
   bannerOverlayColor: '#fff',
   bannerOverlayOpacity: 90,
-  bannerLayout: 'full_width_banner_layout',
+  bannerLayout: 'full_width_banner_layout' as const,
   headerBg: {
     small: 'url',
     medium: 'medium',
@@ -17,7 +17,7 @@ const props = {
   onRemoveImage: jest.fn(),
   setFormStatus: jest.fn(),
   onOverlayChange: jest.fn(),
-} as Props;
+};
 
 describe('BannerImageFields', () => {
   describe('Layout preview selector', () => {
