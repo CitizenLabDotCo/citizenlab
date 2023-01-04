@@ -32,26 +32,15 @@ describe('BannerImageFields', () => {
       });
     });
 
-    it('does not show when there is no uploaded (but unsaved) nor saved image', async () => {
-      render(<BannerImageFields {...props} headerBg={null} />);
-
-      await waitFor(() => {
-        const select = screen.queryByRole('combobox', {
-          name: /Show preview for/,
-        });
-        expect(select).not.toBeInTheDocument();
-      });
-    });
-
-    it('shows when there is an uploaded image that is not saved yet', async () => {
+    it('shows when there is an unsaved image', async () => {
       const { container } = render(
         <BannerImageFields {...props} headerBg={null} />
       );
 
+      // select local image
       const file = new File(['file'], 'file.png', {
         type: 'image/png',
       });
-
       act(() => {
         fireEvent.change(container.querySelector('#header-dropzone'), {
           target: { files: [file] },
@@ -66,48 +55,62 @@ describe('BannerImageFields', () => {
       });
     });
 
-    // describe('Fixed-ratio banner layout', () => {
-    //   it('does not show when there is a saved image', async () => {
-    //     render(
-    //       <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
-    //     );
+    it('does not show when there is no unsaved nor saved image', async () => {
+      render(<BannerImageFields {...props} headerBg={null} />);
 
-    //     await waitFor(() => {
-    //       const select = screen.queryByRole('combobox', {
-    //         name: /Show preview for/,
-    //       });
-    //       expect(select).toBeNull();
-    //     });
-    //   });
-    // });
-  });
-
-  describe('Full-width banner layout', () => {
-    const bannerLayout = 'full_width_banner_layout';
-
-    describe('Image overlay controls', () => {
-      it('shows overlay controls correctly', async () => {
-        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-        await waitFor(() => {
-          const overlayInput = screen.getByLabelText('Image overlay color');
-          expect(overlayInput).toBeInTheDocument();
+      await waitFor(() => {
+        const select = screen.queryByRole('combobox', {
+          name: /Show preview for/,
         });
+        expect(select).not.toBeInTheDocument();
       });
+    });
 
-      it('does not show if we have not selected an image yet', async () => {
+    describe('Fixed-ratio banner layout', () => {
+      it('does not show when there is a saved image', async () => {
         render(
-          <BannerImageFields
-            {...props}
-            bannerLayout={bannerLayout}
-            headerBg={null}
-          />
+          <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
         );
 
         await waitFor(() => {
-          const overlayInput = screen.queryByLabelText('Image overlay color');
-          expect(overlayInput).toBeNull();
+          const select = screen.queryByRole('combobox', {
+            name: /Show preview for/,
+          });
+          expect(select).toBeNull();
         });
+      });
+
+      it('does not show when there is an unsaved image', async () => {
+        render(
+          <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
+        );
+
+        await waitFor(() => {
+          const select = screen.queryByRole('combobox', {
+            name: /Show preview for/,
+          });
+          expect(select).toBeNull();
+        });
+      });
+    });
+  });
+
+  describe('Image overlay controls', () => {
+    it('shows overlay controls correctly', async () => {
+      render(<BannerImageFields {...props} />);
+
+      await waitFor(() => {
+        const overlayInput = screen.getByLabelText('Image overlay color');
+        expect(overlayInput).toBeInTheDocument();
+      });
+    });
+
+    it('does not show if we have no saved image yet', async () => {
+      render(<BannerImageFields {...props} headerBg={null} />);
+
+      await waitFor(() => {
+        const overlayInput = screen.queryByLabelText('Image overlay color');
+        expect(overlayInput).toBeNull();
       });
     });
   });
