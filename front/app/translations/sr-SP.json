@@ -832,7 +832,6 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Тренутни статус",
   "app.containers.IdeasShow.MetaInformation.location": "Локација",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Аутор објаве",
-  "app.containers.IdeasShow.MetaInformation.similarInputs": "Слични уноси",
   "app.containers.IdeasShow.MetaInformation.topics": "Теме",
   "app.containers.IdeasShow.commentCTA": "Додајте коментар",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Подржите '{postTitle}' на {postUrl}!",
