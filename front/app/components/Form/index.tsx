@@ -171,7 +171,7 @@ const Form = memo(
 
     const handleSubmit = async (formData?: any) => {
       // Any specified formData has priority over data attribute
-      const submissionData = formData.data ? formData.data : data;
+      const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = {};
       forOwn(submissionData, (value, key) => {
         sanitizedFormData[key] =
