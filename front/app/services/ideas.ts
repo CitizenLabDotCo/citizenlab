@@ -118,15 +118,6 @@ export interface IIdeaData {
   };
 }
 
-export interface IMinimalIdeaData {
-  id: string;
-  type: string;
-  attributes: {
-    slug: string;
-    title_multiloc: Multiloc;
-  };
-}
-
 export interface IIdeaMarkerData {
   id: string;
   type: string;
