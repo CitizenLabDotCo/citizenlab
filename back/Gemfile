@@ -196,8 +196,6 @@ CitizenLab.ee do
   gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
 
   commercial_engines = [
-    'multi_tenancy',
-
     'admin_api',
     'analytics',
     'bulk_import_ideas',
