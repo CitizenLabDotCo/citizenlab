@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_08_093814) do
+ActiveRecord::Schema.define(version: 2022_12_05_112729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(version: 2022_12_08_093814) do
     t.integer "maximum"
     t.jsonb "minimum_label_multiloc", default: {}, null: false
     t.jsonb "maximum_label_multiloc", default: {}, null: false
+    t.jsonb "logic", default: {}, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
@@ -433,7 +434,6 @@ ActiveRecord::Schema.define(version: 2022_12_08_093814) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "header_bg"
-    t.boolean "banner_signed_in_image_enabled", default: true, null: false
   end
 
   create_table "id_id_card_lookup_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -922,6 +922,8 @@ ActiveRecord::Schema.define(version: 2022_12_08_093814) do
     t.integer "min_budget", default: 0
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
+    t.string "posting_method", default: "unlimited", null: false
+    t.integer "posting_limited_max", default: 1
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1057,6 +1059,8 @@ ActiveRecord::Schema.define(version: 2022_12_08_093814) do
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
+    t.string "posting_method", default: "unlimited", null: false
+    t.integer "posting_limited_max", default: 1
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1175,7 +1179,6 @@ ActiveRecord::Schema.define(version: 2022_12_08_093814) do
     t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.string "header_bg"
-    t.boolean "banner_signed_in_image_enabled", default: true, null: false
     t.index ["code"], name: "index_static_pages_on_code"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
   end

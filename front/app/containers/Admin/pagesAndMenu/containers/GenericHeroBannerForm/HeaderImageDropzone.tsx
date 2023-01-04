@@ -2,7 +2,7 @@ import React from 'react';
 
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { TPreviewDevice } from './BannerImageFields';
 
 // types
@@ -42,7 +42,11 @@ interface Props {
 }
 
 // move this to homepage settings resource?
-export const homepageBannerLayoutHeights = {
+export const homepageBannerLayoutHeights: {
+  [key in THomepageBannerLayout]: {
+    [key in TPreviewDevice]: number;
+  };
+} = {
   full_width_banner_layout: {
     desktop: 450,
     tablet: 350,
@@ -75,13 +79,15 @@ const HeaderImageDropzone = ({
   layout,
   header_bg,
 }: Props) => {
-  const theme = useTheme();
   const getImagePreviewRatio = () => {
     const layoutHeightOnDevice =
       homepageBannerLayoutHeights[layout][previewDevice];
-    const standardDeviceWidth = { desktop: 1530, tablet: 768, phone: 375 }[
-      previewDevice
-    ];
+    const standardWidthPerDeviceType: { [key in TPreviewDevice]: number } = {
+      desktop: 1530,
+      tablet: 768,
+      phone: 375,
+    };
+    const standardDeviceWidth = standardWidthPerDeviceType[previewDevice];
     const deviceWidthPerLayout =
       previewDevice === 'desktop' && layout === 'two_column_layout' ? 0.5 : 1;
     const ratio =
@@ -97,18 +103,12 @@ const HeaderImageDropzone = ({
     layout === 'full_width_banner_layout' || layout === 'fixed_ratio_layout';
 
   const previewOverlayElement =
-    /*
-      We check for typeof of opacity because 0 would coerce to false.
-      We don't do a similar thing for the color because we don't set
-      it in the toggle hander, so we handle the type check with the
-      theme default as fallback
-    */
-    isBannerWithOverlay && typeof overlayOpacity === 'number' ? (
+    //  We check for typeof of opacity because 0 would coerce to false.
+    isBannerWithOverlay &&
+    typeof overlayOpacity === 'number' &&
+    overlayColor ? (
       <HeaderImageOverlay
-        // Should be replaced, value should only be
-        // overlayColor. Default needs to be set by the
-        // toggle handler, but it requires significant refactoring
-        overlayColor={overlayColor || theme.colors.tenantPrimary}
+        overlayColor={overlayColor}
         overlayOpacity={overlayOpacity}
       />
     ) : null;

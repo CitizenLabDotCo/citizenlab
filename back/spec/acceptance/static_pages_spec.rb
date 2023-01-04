@@ -71,7 +71,6 @@ resource 'StaticPages' do
         parameter :banner_cta_button_multiloc, 'multiloc content for the CTA button'
         parameter :banner_cta_button_type, 'type of the CTA, one of: customized_button no_button'
         parameter :banner_cta_button_url, 'url for the CTA'
-        parameter :banner_signed_in_image_enabled, 'if banner image is enabled when signed_in'
         parameter :banner_header_multiloc, 'multiloc content for the banner header'
         parameter :banner_subheader_multiloc, 'multiloc content for the banner subheader'
         parameter :top_info_section_enabled, 'if the top info section is enabled'

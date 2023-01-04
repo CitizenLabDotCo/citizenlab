@@ -1,5 +1,26 @@
 # Changelog
 
+### 2022-12-30
+
+- [CL-1893] Added survey logic and new long text field.
+
+## 2022-12-27
+
+### Added
+
+- [CL-2255] New columns in User Excel export: registration_completed_at and invite_status.
+
+### Changed
+
+- [CL-2159] Do not allow registered users to take a native survey twice
+
+## 2022-12-20
+
+### Fixed
+
+- [CL-2319] The error that is shown when a custom page's title was not filled out now adjusts to the number of languages configured on the platform.
+- [CL-2318] The hero banner layout preview for phones didn't get the right dimensions.
+
 ## 2022-12-14
 
 ### Added

@@ -13,8 +13,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.fieldLabel',
     defaultMessage: 'Answer choices',
   },
-  chooseMultipleToggle: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.chooseMultipleToggle',
-    defaultMessage: 'Choose multiple',
-  },
 });
