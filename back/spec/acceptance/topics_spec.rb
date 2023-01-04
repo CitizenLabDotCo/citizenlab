@@ -21,32 +21,29 @@ resource 'Topics' do
     end
 
     example_request 'List all topics' do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 5
+      assert_status(200)
+      expect(response_data.size).to eq 5
     end
 
     example 'List all topics by code' do
       do_request code: @code1
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
+      assert_status(200)
+      expect(response_data.size).to eq 2
     end
 
     example_request 'List all topics by code exclusion' do
       do_request exclude_code: @code1
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 3
+      assert_status(200)
+      expect(response_data.size).to eq 3
     end
 
     example 'List all topics sorted by newest first' do
       t1 = create(:topic, created_at: 1.hour.from_now)
 
       do_request sort: 'new'
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 6
-      expect(json_response[:data][0][:id]).to eq t1.id
+
+      expect(response_data.size).to eq 6
+      expect(response_data.dig(0, :id)).to eq t1.id
     end
 
     example 'List all topics sorted by custom ordering' do
@@ -56,10 +53,10 @@ resource 'Topics' do
       t2.insert_at!(6)
 
       do_request sort: 'custom'
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 7
-      expect(json_response[:data][0][:id]).to eq t1.id
-      expect(json_response[:data][6][:id]).to eq t2.id
+
+      expect(response_data.size).to eq 7
+      expect(response_data.dig(0, :id)).to eq t1.id
+      expect(response_data.dig(6, :id)).to eq t2.id
     end
 
     context 'when citizen' do
@@ -96,8 +93,7 @@ resource 'Topics' do
 
       example_request 'Create a topic' do
         expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 
@@ -114,10 +110,9 @@ resource 'Topics' do
       let(:description_multiloc) { { 'en' => 'Stuff that tends to make you laugh' } }
 
       example_request 'Update a topic' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        assert_status(200)
+        expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
       end
 
       context do
@@ -125,9 +120,8 @@ resource 'Topics' do
         let(:id) { topic.id }
 
         example_request 'Rename a default topic does not work', example: false do
-          expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match({ 'en' => 'Drama' })
+          assert_status(200)
+          expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match({ 'en' => 'Drama' })
         end
       end
     end
@@ -141,9 +135,8 @@ resource 'Topics' do
       let(:ordering) { 1 }
 
       example_request 'Reorder a topic globally' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :ordering)).to eq ordering
+        assert_status(200)
+        expect(response_data.dig(:attributes, :ordering)).to eq ordering
       end
 
       context do
@@ -151,7 +144,7 @@ resource 'Topics' do
         let(:id) { topic.id }
 
         example_request 'Reorder a default topic' do
-          expect(response_status).to eq 200
+          assert_status(200)
         end
       end
     end
@@ -163,7 +156,7 @@ resource 'Topics' do
       example 'Delete a topic' do
         old_count = Topic.count
         do_request
-        expect(response_status).to eq 200
+        assert_status(200)
         expect { Topic.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Topic.count).to eq(old_count - 1)
       end
@@ -173,7 +166,7 @@ resource 'Topics' do
         let(:id) { topic.id }
 
         example_request '[error] Delete a default topic' do
-          expect(response_status).to eq 401
+          assert_status(401)
         end
       end
     end
