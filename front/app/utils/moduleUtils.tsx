@@ -233,28 +233,6 @@ export interface OutletsPropertyMap {
     color?: string;
     align: 'left' | 'center';
   };
-  'app.containers.Admin.settings.general.form': {
-    onSettingChange: (settingName: string, settingValue: any) => void;
-  };
-  'app.modules.commercial.moderation.admin.containers.ModerationRow.content': {
-    inappropriateContentFlagId: string | undefined;
-  };
-  'app.modules.commercial.moderation.admin.components.EmptyMessage': {
-    isWarningsTabSelected: boolean;
-  };
-  'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
-    selectedActiveFlagsCount: number;
-    processing: boolean;
-    onRemoveFlags: () => void;
-    isWarningsTabSelected: boolean;
-  };
-  'app.modules.commercial.moderation.admin.containers.tabs': {
-    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-    activeFlagsCount: number;
-  };
-  'app.components.NotificationMenu.Notification': {
-    notification: TNotificationData;
-  };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
   'app.containers.HomePage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;

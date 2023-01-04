@@ -32,7 +32,6 @@ import {
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
-import Outlet from 'components/Outlet';
 
 // services
 import {
@@ -445,10 +444,6 @@ class SettingsGeneralTab extends PureComponent<
                 </ToggleLabel>
               </Setting>
             )}
-            <Outlet
-              id="app.containers.Admin.settings.general.form"
-              onSettingChange={this.handleSettingChange}
-            />
             {settingsUpdatedSuccessFully && (
               <Success
                 showBackground

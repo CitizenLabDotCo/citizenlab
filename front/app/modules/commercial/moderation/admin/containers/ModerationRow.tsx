@@ -268,10 +268,6 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
             contentTitle={contentTitle}
             contentBody={contentBody}
           />
-          <Outlet
-            id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
-            inappropriateContentFlagId={inappropriateContentFlagId}
-          />
         </Cell>
         {viewLink && (
           <Cell>

@@ -1,7 +1,6 @@
-import React, { memo, useState, useEffect, useCallback } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
-import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
 import {
@@ -24,11 +23,9 @@ import { PageTitle } from 'components/admin/Section';
 import SelectType from './SelectType';
 import SelectProject from './SelectProject';
 import SearchInput from 'components/UI/SearchInput';
-import Outlet from 'components/Outlet';
 
 // hooks
 import useModerations from '../../hooks/useModerations';
-import useModerationsCount from '../../hooks/useModerationsCount';
 
 // services
 import {
@@ -36,7 +33,6 @@ import {
   IModerationData,
   TModeratableType,
 } from '../../services/moderations';
-import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -52,7 +48,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { IOption, InsertConfigurationOptions } from 'typings';
+import { IOption } from 'typings';
 
 const Container = styled.div`
   display: flex;
@@ -220,7 +216,7 @@ const Moderation = memo<Props & WrappedComponentProps>(
     const [actionBarErrorMessage, setActionBarErrorMessage] = useState<
       string | null
     >(null);
-    const [tabs, setTabs] = useState<ITabItem[]>([
+    const [tabs] = useState<ITabItem[]>([
       {
         name: 'unread',
         label: intl.formatMessage(messages.unread),
@@ -248,9 +244,6 @@ const Moderation = memo<Props & WrappedComponentProps>(
       pageSize: selectedPageSize,
       moderationStatus: 'unread',
     });
-    const moderationsWithActiveFlagCount = useModerationsCount({
-      isFlagged: true,
-    });
 
     const handleOnSelectAll = (_event: React.ChangeEvent) => {
       if (!processing && !isNilOrError(moderations)) {
@@ -271,12 +264,6 @@ const Moderation = memo<Props & WrappedComponentProps>(
       if (selectedTab === 'read' || selectedTab === 'unread') {
         onIsFlaggedChange(false);
         onModerationStatusChange(selectedTab);
-      }
-
-      // OS: how to?
-      if (selectedTab === 'warnings') {
-        onIsFlaggedChange(true);
-        onModerationStatusChange(null);
       }
     }, [selectedTab, onIsFlaggedChange, onModerationStatusChange]);
 
@@ -354,40 +341,6 @@ const Moderation = memo<Props & WrappedComponentProps>(
       }
     };
 
-    // OS: how to?
-    const removeFlags = async () => {
-      if (!processing) {
-        const selectedActiveInappropriateContentFlagIds =
-          selectedModerations.map(
-            // we can be sure the flag is here. With the is_flagged param in the request
-            // only moderations with active flags will be returned
-            (mod) =>
-              mod.relationships.inappropriate_content_flag?.data.id as string
-          );
-
-        const promises = selectedActiveInappropriateContentFlagIds.map(
-          (flagId) => {
-            return removeInappropriateContentFlag(flagId);
-          }
-        );
-
-        try {
-          setActionBarErrorMessage(null);
-          setProcessing(true);
-
-          await Promise.all(promises);
-
-          setProcessing(false);
-          setSelectedModerations([]);
-        } catch {
-          setActionBarErrorMessage(
-            intl.formatMessage(messages.removeFlagsError)
-          );
-          setProcessing(false);
-        }
-      }
-    };
-
     const markAs = async (event: React.FormEvent) => {
       if (selectedModerations.length > 0 && moderationStatus && !processing) {
         event.preventDefault();
@@ -423,12 +376,6 @@ const Moderation = memo<Props & WrappedComponentProps>(
       }
     };
 
-    const handleData = useCallback(
-      (data: InsertConfigurationOptions<ITabItem>) =>
-        setTabs((tabs) => insertConfiguration(data)(tabs)),
-      []
-    );
-
     useEffect(() => {
       if (!processing) {
         setSelectedModerations([]);
@@ -453,15 +400,6 @@ const Moderation = memo<Props & WrappedComponentProps>(
             <ActionBarTop>
               {selectedModerations.length === 0 ? (
                 <>
-                  <Outlet
-                    id="app.modules.commercial.moderation.admin.containers.tabs"
-                    onData={handleData}
-                    activeFlagsCount={
-                      !isNilOrError(moderationsWithActiveFlagCount)
-                        ? moderationsWithActiveFlagCount.count
-                        : 0
-                    }
-                  />
                   <StyledTabs
                     items={tabs}
                     selectedValue={selectedTab}
@@ -497,14 +435,6 @@ const Moderation = memo<Props & WrappedComponentProps>(
                         )}
                       </MarkAsButton>
                     )}
-
-                  <Outlet
-                    id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
-                    selectedActiveFlagsCount={selectedModerations.length}
-                    processing={processing}
-                    onRemoveFlags={removeFlags}
-                    isWarningsTabSelected={selectedTab === 'warnings'}
-                  />
                 </Buttons>
               )}
               <StyledSearchInput
@@ -611,10 +541,6 @@ const Moderation = memo<Props & WrappedComponentProps>(
                     unread: <FormattedMessage {...messages.noUnviewedItems} />,
                   }[selectedTab]
                 }
-                <Outlet
-                  id="app.modules.commercial.moderation.admin.components.EmptyMessage"
-                  isWarningsTabSelected={selectedTab === 'warnings'}
-                />
               </EmptyMessage>
             </Empty>
           )}

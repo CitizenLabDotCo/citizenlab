@@ -5,7 +5,6 @@ import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
-import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
@@ -83,10 +82,6 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: flagInappropriateContentConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
   {
