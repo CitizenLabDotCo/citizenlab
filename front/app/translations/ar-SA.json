@@ -1477,7 +1477,6 @@
   "app.errors.unknown_locale": "اللغة {value} التي تم العثور عليها في الصف {row} هي لغة لم تتم تهيئتها",
   "app.errors.unparseable_excel": "تعذرت معالجة ملف إكسل المحدد.",
   "app.errors.view_name_taken": "توجد طريقة عرض بهذا الاسم فعلاً",
-  "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "يوجد محتوى غير لائق تم اكتشافه تلقائيًا في منشور أو تعليق",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "تسجيل الدخول باستخدام StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "تسجيل الاشتراك باستخدام StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "أنشئ حساب Stadt Wien الآن واستخدم حسابًا واحدًا لتسجيل دخول الكثير من خدمات Vienna الرقمية.",

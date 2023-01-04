@@ -1477,7 +1477,6 @@
   "app.errors.unknown_locale": "Język {value} znajdujący się w wierszu {row} nie jest skonfigurowany",
   "app.errors.unparseable_excel": "Wybrany plik Excela nie mógł zostać przetworzony.",
   "app.errors.view_name_taken": "Widok o tej nazwie już istnieje",
-  "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Nieodpowiednie treści zostały automatycznie wykryte w poście lub komentarzu",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Zaloguj się za pomocą StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Zarejestruj się w StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Załóż teraz konto Stadt Wien i używaj jednego loginu do wielu usług cyfrowych Wiednia.",
