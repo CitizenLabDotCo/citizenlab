@@ -212,7 +212,6 @@ CitizenLab.ee do
     'idea_assignment',
     'idea_custom_fields',
     'impact_tracking',
-    'insights',
     'machine_translations',
     'matomo',
     'moderation',
