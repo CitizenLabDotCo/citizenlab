@@ -19,13 +19,14 @@ import { media } from 'utils/styleUtils';
 import messages from '../messages';
 import tracks from '../tracks';
 import CTA from './CTA';
+import bowser from 'bowser';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
   margin-bottom: 30px;
 
   ${media.phone`
-    margin-bottom: 25px;
+    margin-bottom: 30px;
   `}
 `;
 
@@ -73,7 +74,11 @@ const HeaderContent = ({
     const headerImage = homepageAttributes.header_bg
       ? homepageAttributes.header_bg.large
       : null;
-    const displayHeaderAvatars = homepageAttributes.banner_avatars_enabled;
+    const hideAvatarsForThisLayout =
+      bowser.mobile &&
+      homepageAttributes.banner_layout === 'fixed_ratio_layout';
+    const displayHeaderAvatars =
+      homepageAttributes.banner_avatars_enabled && !hideAvatarsForThisLayout;
 
     return (
       <Container

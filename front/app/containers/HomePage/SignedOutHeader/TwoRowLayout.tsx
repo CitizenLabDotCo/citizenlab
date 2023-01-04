@@ -15,7 +15,7 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
   const headerImage = homepageSettings.attributes.header_bg?.large;
 
   return (
-    <>
+    <div data-testid="two-row-layout">
       {headerImage && (
         <HeaderImage
           src={headerImage}
@@ -31,7 +31,7 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
           <HeaderContent fontColors="dark" />
         </Container>
       </ContentContainer>
-    </>
+    </div>
   );
 };
 

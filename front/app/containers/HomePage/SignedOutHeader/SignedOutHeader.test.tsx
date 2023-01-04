@@ -21,7 +21,36 @@ jest.mock('hooks/useHomepageSettings', () => {
 });
 
 describe('<SignedOutHeader />', () => {
-  it('renders with HomepageSettings for logged out users', () => {
+  it('renders full_width_banner_layout', () => {
+    mockHomepageSettings.attributes.banner_layout = 'full_width_banner_layout';
+
+    render(<SignedOutHeader />);
+    expect(screen.getByText('Signed out header')).toBeInTheDocument();
+    expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
+    expect(screen.getByTestId('full-width-banner-layout')).toBeInTheDocument();
+  });
+
+  it('renders two_column_layout', () => {
+    mockHomepageSettings.attributes.banner_layout = 'two_column_layout';
+
+    render(<SignedOutHeader />);
+    expect(screen.getByText('Signed out header')).toBeInTheDocument();
+    expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
+    expect(screen.getByTestId('two-column-layout')).toBeInTheDocument();
+  });
+
+  it('renders two_row_layout', () => {
+    mockHomepageSettings.attributes.banner_layout = 'two_row_layout';
+
+    render(<SignedOutHeader />);
+    expect(screen.getByText('Signed out header')).toBeInTheDocument();
+    expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
+    expect(screen.getByTestId('two-row-layout')).toBeInTheDocument();
+  });
+
+  it('renders fixed_ratio_layout', () => {
+    mockHomepageSettings.attributes.banner_layout = 'fixed_ratio_layout';
+
     render(<SignedOutHeader />);
     expect(screen.getByText('Signed out header')).toBeInTheDocument();
     expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
@@ -29,14 +58,5 @@ describe('<SignedOutHeader />', () => {
       `background-image: url(${mockHomepageSettings.attributes.header_bg?.large})`
     );
     expect(screen.getByTestId('fixed-ratio-layout')).toBeInTheDocument();
-  });
-
-  it('renders with HomepageSettings for full_width_banner_layout', () => {
-    mockHomepageSettings.attributes.banner_layout = 'full_width_banner_layout';
-
-    render(<SignedOutHeader />);
-    expect(screen.getByText('Signed out header')).toBeInTheDocument();
-    expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
-    expect(screen.getByTestId('full-width-banner-layout')).toBeInTheDocument();
   });
 });
