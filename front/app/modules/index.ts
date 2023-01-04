@@ -36,7 +36,6 @@ import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
-import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
 
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
@@ -168,10 +167,6 @@ export default loadModules([
   },
   {
     configuration: eventsWidgetConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: insightsConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
   {

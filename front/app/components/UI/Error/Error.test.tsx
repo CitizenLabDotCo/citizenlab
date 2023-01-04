@@ -31,16 +31,16 @@ describe('Error', () => {
       <Error
         apiErrors={[
           { error: 'taken', value: '' },
-          { error: 'view_name', value: 'value' },
+          { error: 'email_taken', value: 'value' },
         ]}
-        fieldName="view_name"
+        fieldName="email"
       />
     );
     expect(screen.getByTestId('error-message-text')).toBeInTheDocument();
     expect(
       screen.getByText(
         (translationMessages as Record<string, string>)[
-          'app.errors.view_name_taken'
+          'app.errors.email_taken'
         ]
       )
     ).toBeInTheDocument();
