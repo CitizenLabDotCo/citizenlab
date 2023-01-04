@@ -87,6 +87,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-homepage-banner-image-dropzone"] input').attachFile(
       'testimage.png'
     );
+    cy.get('[data-cy="e2e-image-cropper"]'); // wait until image cropper is loaded and visible. The test is flaky without this line.
 
     cy.get('.e2e-submit-wrapper-button').click();
 
@@ -94,11 +95,22 @@ describe('Admin: update Hero Banner content', () => {
       const img = new Image();
       img.src = interception.request.body.home_page.header_bg;
       img.decode().then(() => {
+        // test that cropping is really performed on the FE
         expect(img.width / img.height).to.eq(3);
       });
     });
 
     cy.get('.e2e-submit-wrapper-button').contains('Success');
+
+    cy.clearCookies();
+    cy.visit('/');
+
+    cy.get('[data-cy="e2e-fixed-ratio-header-image"]').then((element) => {
+      const ratio =
+        Math.round((element[0].clientWidth / element[0].clientHeight) * 100) /
+        100;
+      expect(ratio).to.eq(3);
+    });
   });
 
   it('updates and persists hero banner settings correctly', () => {
