@@ -136,7 +136,7 @@ describe('isValidUrl', () => {
     'should return [true, "whitelist"] for valid url %s',
     (validPlatformData) => {
       validPlatformData.urls.forEach((url) => {
-        expect(isValidUrl(url)).toStrictEqual([true, 'whitelist']);
+        expect(isValidUrl(url)).toStrictEqual([true, 'validUrl']);
       });
     }
   );
