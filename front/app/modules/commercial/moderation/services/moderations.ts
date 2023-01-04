@@ -78,7 +78,3 @@ export async function updateModerationStatus(
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/moderations`] });
   return response;
 }
-
-export interface IModerationsCount {
-  count: number;
-}
