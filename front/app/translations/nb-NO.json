@@ -1477,7 +1477,6 @@
   "app.errors.unknown_locale": "Språket {value} funnet I råd {row} er ikke et konfigurert språk",
   "app.errors.unparseable_excel": "Den valgte Excel-filen kunne ikke behandles.",
   "app.errors.view_name_taken": "En visning med dette navnet eksisterer allerede",
-  "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Uakseptablet innhold ble oppdaget ved automatisk gjennomgang av en post eller kommentar",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Logg på med StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Registrer deg med StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Opprett en Stadt Wien-konto nå og bruk én pålogging for mange digitale tjenester i Wien.",

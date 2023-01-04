@@ -1477,7 +1477,6 @@
   "app.errors.unknown_locale": "Jezik {value} pronađen u redu {row} nije konfiguriran",
   "app.errors.unparseable_excel": "Odabrana Excel datoteka nije mogla biti obrađena.",
   "app.errors.view_name_taken": "Prikaz s ovim nazivom već postoji",
-  "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Neprimjeren sadržaj automatski je otkriven u objavi ili komentaru",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Prijava putem usluge StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Registracije putem StandardPortal",
   "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Izradite Wien račun i upotrijebite jednu prijavu za mnogo digitalnih usluga grada Beča.",

@@ -12,7 +12,6 @@ import PostedBy from './PostedBy';
 // hooks & services
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-import Outlet from 'components/Outlet';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
@@ -78,11 +77,6 @@ const MetaInformation = ({
         {attachmentsEnabled && (
           <Attachments ideaId={ideaId} compact={compact} />
         )}
-        <Outlet
-          id="app.containers.IdeasShow.MetaInformation"
-          ideaId={ideaId}
-          compact={compact}
-        />
       </Container>
     );
   }

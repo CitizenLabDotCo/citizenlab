@@ -5,7 +5,6 @@ import moment from 'moment';
 import { Tr, Td, Icon } from '@citizenlab/cl2-component-library';
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
-import Outlet from 'components/Outlet';
 import Tippy from '@tippyjs/react';
 import Link from 'utils/cl-router/Link';
 
@@ -30,10 +29,6 @@ import {
   TBelongsTo,
   TModeratableType,
 } from '../../services/moderations';
-
-// hooks
-import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
-import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled(Tr)<{ bgColor: string; flagged: boolean }>`
   background: ${({ bgColor, flagged }) =>
@@ -114,24 +109,9 @@ const initiativesPath = '/initiatives';
 const projectsPath = '/projects';
 
 const ModerationRow = memo<Props & WrappedComponentProps>(
-  ({
-    moderation,
-    selected,
-    onSelect,
-    className,
-    intl: { formatMessage },
-    inappropriateContentFlagId,
-  }) => {
+  ({ moderation, selected, onSelect, className, intl: { formatMessage } }) => {
     const localize = useLocalize();
-    const inappropriateContentFlag = inappropriateContentFlagId
-      ? // eslint-disable-next-line react-hooks/rules-of-hooks
-        useInappropriateContentFlag(inappropriateContentFlagId)
-      : null;
-    const hasActiveInappropriateContentFlag = !isNilOrError(
-      inappropriateContentFlag
-    )
-      ? inappropriateContentFlag.attributes.reason_code !== null
-      : false;
+    const hasActiveInappropriateContentFlag = false;
     const contentTitle = moderation.attributes.content_title_multiloc;
     const contentBody = moderation.attributes.content_body_multiloc;
     const moderatableType = moderation.attributes.moderatable_type;
