@@ -32,6 +32,7 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -39,6 +40,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const project = useProject({ projectSlug: params.slug });
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id');
+
+  const queryParams = useURLQuery();
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -123,7 +126,6 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       !isNilOrError(phases)
     ) {
       // Check if URL contains specific phase_id
-      const queryParams = new URLSearchParams(window.location.search);
       const phaseIdFromUrl = queryParams.get('phase_id');
       const phaseUsed =
         phases.find((phase) => phase.id === phaseIdFromUrl) ||
