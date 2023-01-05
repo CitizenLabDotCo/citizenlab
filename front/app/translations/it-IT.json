@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "per partecipare a questo progetto",
   "app.components.VerificationModal.userVerifiedSubtitle": "La tua identità è stata verificata. Ora sei un membro a pieno titolo della comunità su questa piattaforma.",
   "app.components.VerificationModal.userVerifiedTitle": "Ora sei verificato!",
-  "app.components.VerificationModal.verifyBOSA": "Verifica con itsme o eID",
   "app.components.VerificationModal.verifyClaveUnica": "Verifica con Clave Unica",
   "app.components.VerificationModal.verifyYourIdentity": "Verifica la tua identità",
   "app.components.VoteControl.budgetingFutureEnabled": "Puoi allocare il tuo budget a partire da {enabledFromDate}.",

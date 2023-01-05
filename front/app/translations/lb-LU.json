@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "un dësem Projet deelhuelen",
   "app.components.VerificationModal.userVerifiedSubtitle": "Är Identitéit gouf iwwerpréift. Dir sidd elo e vollwäertege Member vun der Gemeinschaft op dëser Plattform.",
   "app.components.VerificationModal.userVerifiedTitle": "Dir sidd elo verifizéiert!",
-  "app.components.VerificationModal.verifyBOSA": "Mat itsme oder eID verifizéieren",
   "app.components.VerificationModal.verifyClaveUnica": "Mat Clave Unica verifizéieren",
   "app.components.VerificationModal.verifyYourIdentity": "Iwwerpréift Är Identitéit",
   "app.components.VoteControl.budgetingFutureEnabled": "Dir kënnt Äre Budget ab dem {enabledFromDate} verdeelen.",

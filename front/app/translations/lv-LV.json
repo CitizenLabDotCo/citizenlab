@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "piedalīties šajā projektā",
   "app.components.VerificationModal.userVerifiedSubtitle": "Jūsu identitāte ir pārbaudīta. Tagad jūs esat pilntiesīgs šīs platformas kopienas dalībnieks.",
   "app.components.VerificationModal.userVerifiedTitle": "Tagad esat verificēts!",
-  "app.components.VerificationModal.verifyBOSA": "Pārbaudīt, izmantojot itsme vai eID",
   "app.components.VerificationModal.verifyClaveUnica": "Pārbaudīt ar Clave Unica",
   "app.components.VerificationModal.verifyYourIdentity": "Pārbaudiet savu identitāti",
   "app.components.VoteControl.budgetingFutureEnabled": "Jūs varat piešķirt savu budžetu, sākot no {enabledFromDate}.",
