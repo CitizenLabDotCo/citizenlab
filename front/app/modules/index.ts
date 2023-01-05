@@ -23,7 +23,6 @@ import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 
-import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idCowConfiguration from './commercial/id_cow';
 import idBogusConfiguration from './commercial/id_bogus';
@@ -120,10 +119,6 @@ export default loadModules([
   },
   {
     configuration: customMapsConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: idAuth0Configuration,
     isEnabled: CITIZENLAB_EE,
   },
   {
