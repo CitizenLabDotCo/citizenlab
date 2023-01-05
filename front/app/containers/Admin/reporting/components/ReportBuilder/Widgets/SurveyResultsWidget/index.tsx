@@ -20,6 +20,7 @@ import SurveyResults from './SurveyResults';
 import ProjectFilter from './ProjectFilter';
 import PhaseFilter from './PhaseFilter';
 import QuestionFilter from './QuestionFilter';
+import PageBreakBox from '../PageBreakBox';
 
 // messages
 import messages from './messages';
@@ -45,7 +46,7 @@ const SurveyResultsWidget = ({
   shownQuestions,
 }: Props) => {
   return (
-    <Box border={BORDER} mt="4px" mb="4px">
+    <PageBreakBox border={BORDER} mt="4px" mb="4px">
       <Box>
         <Title variant="h3" color="primary" m="16px" mb="8px">
           {title}
@@ -60,7 +61,7 @@ const SurveyResultsWidget = ({
       ) : (
         <NoResults />
       )}
-    </Box>
+    </PageBreakBox>
   );
 };
 

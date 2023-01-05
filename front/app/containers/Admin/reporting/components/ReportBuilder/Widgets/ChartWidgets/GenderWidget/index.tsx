@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import GenderCard from './GenderCard';
+import PageBreakBox from '../../PageBreakBox';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -24,7 +24,7 @@ const GenderWidget = ({
   endAt,
 }: ChartWidgetProps) => {
   return (
-    <Box
+    <PageBreakBox
       minHeight="26px"
       border={BORDER}
       borderRadius={stylingConsts.borderRadius}
@@ -37,7 +37,7 @@ const GenderWidget = ({
         startAt={startAt}
         endAt={endAt}
       />
-    </Box>
+    </PageBreakBox>
   );
 };
 

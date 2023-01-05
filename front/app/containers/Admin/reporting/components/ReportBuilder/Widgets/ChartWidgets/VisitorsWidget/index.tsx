@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import VisitorsCard from './VisitorsCard';
+import PageBreakBox from '../../PageBreakBox';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -35,7 +35,7 @@ const VisitorsWidget = ({
   };
 
   return (
-    <Box
+    <PageBreakBox
       minHeight="26px"
       border={BORDER}
       borderRadius={stylingConsts.borderRadius}
@@ -43,7 +43,7 @@ const VisitorsWidget = ({
       mb="4px"
     >
       <VisitorsCard {...analyticsChartProps} />
-    </Box>
+    </PageBreakBox>
   );
 };
 
