@@ -87,9 +87,11 @@ const GenericHeroBannerForm = ({
             Padding equal to the height of the sticky bar with the submit button.
           */}
           <Box pb="78px">
-            <Warning>
-              <FormattedMessage {...messages.heroBannerInfoBar} />
-            </Warning>
+            <Box mb="28px">
+              <Warning>
+                <FormattedMessage {...messages.heroBannerInfoBar} />
+              </Warning>
+            </Box>
             {layoutSettingFieldComponent}
             {bannerImageFieldsComponent}
             {bannerHeaderFieldsComponent}

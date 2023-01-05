@@ -411,12 +411,6 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: engines/free/project_permissions
-  specs:
-    project_permissions (0.1.0)
-      rails (~> 6.1)
-
-PATH
   remote: engines/free/seo
   specs:
     seo (0.1.0)
@@ -1246,7 +1240,6 @@ DEPENDENCIES
   pg_search (~> 2.3.5)
   polls!
   premailer-rails (~> 1.10.3)
-  project_permissions!
   pry
   pry-byebug
   pry-rails

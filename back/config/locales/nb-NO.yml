@@ -195,7 +195,7 @@
       upvotes_count: 'Positive stemmer'
       downvotes_count: 'Negative stemmer'
       baskets_count: 'Kurver'
-      input_url: 'URL'
+      input_url: 'URL-adresse'
       project: 'Prosjekt'
       status: 'Status'
       assignee_fullname: 'Anvist til'
@@ -205,3 +205,6 @@
       title: 'Ditt spørsmål'
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
+    survey_end_page:
+      title: 'Slutt på spørreundersøkelse'
+      description: "Send inn svarene dine ved å velge «Send inn spørreundersøkelse» nedenfor."

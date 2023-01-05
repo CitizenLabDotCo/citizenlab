@@ -20,7 +20,7 @@ const TwoRowLayout = ({ pageData }: Props) => {
   const isTablet = useBreakpoint('tablet');
 
   return (
-    <>
+    <div data-testid="two-row-layout">
       <Box
         width="100%"
         position="relative"
@@ -53,7 +53,7 @@ const TwoRowLayout = ({ pageData }: Props) => {
           />
         </Container>
       </ContentContainer>
-    </>
+    </div>
   );
 };
 

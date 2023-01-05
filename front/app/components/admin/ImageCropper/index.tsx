@@ -32,7 +32,7 @@ const ImageCropper = ({ image, onComplete, aspect }: ImageCropperProps) => {
   );
 
   return (
-    <Box position="relative" height="300px">
+    <Box position="relative" height="300px" data-cy="e2e-image-cropper">
       {image && (
         <Cropper
           image={image[0].base64}

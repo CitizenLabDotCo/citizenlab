@@ -12,6 +12,16 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
     before { create :idea_status_proposed }
 
+    describe '#assign_defaults_for_participation_context' do
+      let(:participation_context) { build :continuous_native_survey_project }
+
+      it 'sets the limits posting to max one' do
+        participation_method.assign_defaults_for_participation_context
+        expect(participation_context.posting_method).to eq 'limited'
+        expect(participation_context.posting_limited_max).to eq 1
+      end
+    end
+
     it 'sets and persists the id as the slug of the input' do
       input.update_column :slug, nil
       participation_method.assign_slug(input)
@@ -25,14 +35,21 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect(participation_context.custom_form).to be_nil
 
       participation_method.create_default_form!
+      # create_default_form! does not reload associations for form/fields/options,
+      # so fetch the project from the database. The associations will be fetched
+      # when they are needed.
+      # Not doing this makes this test flaky, as create_default_form! creates fields
+      # and CustomField uses acts_as_list for ordering fields. The ordering is ok
+      # in the database, but not necessarily in memory.
+      participation_context_in_db = Project.find(participation_context.id)
 
-      expect(participation_context.custom_form.custom_fields.size).to eq 2
+      expect(participation_context_in_db.custom_form.custom_fields.size).to eq 2
 
-      question_page = participation_context.custom_form.custom_fields[0]
+      question_page = participation_context_in_db.custom_form.custom_fields[0]
       expect(question_page.title_multiloc).to eq({})
       expect(question_page.description_multiloc).to eq({})
 
-      field = participation_context.custom_form.custom_fields[1]
+      field = participation_context_in_db.custom_form.custom_fields[1]
       expect(field.title_multiloc).to match({
         'en' => 'Default question',
         'fr-FR' => 'Question par défaut',
