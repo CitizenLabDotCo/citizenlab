@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "bu projeye katılmak için",
   "app.components.VerificationModal.userVerifiedSubtitle": "Kimliğiniz doğrulandı. Artık bu platformdaki topluluğun tam üyesisiniz.",
   "app.components.VerificationModal.userVerifiedTitle": "Kimliğiniz doğrulandı!",
-  "app.components.VerificationModal.verifyBOSA": "Kimliğinizi itsme veya eID ile doğrulayın",
   "app.components.VerificationModal.verifyClaveUnica": "Kimliğinizi Clave Unica ile doğrulayın",
   "app.components.VerificationModal.verifyYourIdentity": "Kimliğinizi doğrulayın",
   "app.components.VoteControl.budgetingFutureEnabled": "Bütçenizi {enabledFromDate} tarihinden itibaren ayırabilirsiniz.",

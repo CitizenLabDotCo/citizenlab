@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "per participar en aquest projecte",
   "app.components.VerificationModal.userVerifiedSubtitle": "La vostra identitat s'ha verificat. Ara sou membre de ple dret de la comunitat d'aquesta plataforma.",
   "app.components.VerificationModal.userVerifiedTitle": "Ara esteu verificat!",
-  "app.components.VerificationModal.verifyBOSA": "Verifiqueu amb itsme o eID",
   "app.components.VerificationModal.verifyClaveUnica": "Verifiqueu amb Clave Unica",
   "app.components.VerificationModal.verifyYourIdentity": "Verificar la vostra identitat",
   "app.components.VoteControl.budgetingFutureEnabled": "Podeu assignar el vostre pressupost a partir de {enabledFromDate}.",
