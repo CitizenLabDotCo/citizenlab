@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "för att delta i det här projektet",
   "app.components.VerificationModal.userVerifiedSubtitle": "Din identitet har verifierats. Du är nu en fullvärdig medlem av communityn på den här plattformen.",
   "app.components.VerificationModal.userVerifiedTitle": "Du är nu verifierad!",
-  "app.components.VerificationModal.verifyClaveUnica": "Verifiera med Clave Unica",
   "app.components.VerificationModal.verifyYourIdentity": "Verifiera din identitet",
   "app.components.VoteControl.budgetingFutureEnabled": "Du kan fördela din budget från och med {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Deltagandebudgetering är för närvarande inte aktiverad.",
