@@ -28,7 +28,6 @@ import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
 import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
-import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
@@ -137,10 +136,6 @@ export default loadModules([
   },
   {
     configuration: IdOostendeRrnConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: IdClaveUnicaConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
   {
