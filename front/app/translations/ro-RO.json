@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "pentru a participa la acest proiect",
   "app.components.VerificationModal.userVerifiedSubtitle": "Identitatea ta a fost verificată. Acum ești membru cu drepturi depline al comunității de pe această platformă.",
   "app.components.VerificationModal.userVerifiedTitle": "Acum sunteți verificat!",
-  "app.components.VerificationModal.verifyClaveUnica": "Verificați cu Clave Unica",
   "app.components.VerificationModal.verifyYourIdentity": "Verificați-vă identitatea",
   "app.components.VoteControl.budgetingFutureEnabled": "Vă puteți aloca bugetul începând cu {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Bugetarea participativă nu este activată momentan.",

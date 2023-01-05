@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "do udziału w tym projekcie",
   "app.components.VerificationModal.userVerifiedSubtitle": "Twoja tożsamość została zweryfikowana. Jesteś teraz pełnoprawnym członkiem społeczności na tej platformie.",
   "app.components.VerificationModal.userVerifiedTitle": "Zostałeś zweryfikowany!",
-  "app.components.VerificationModal.verifyClaveUnica": "Weryfikacja z Clave Unica",
   "app.components.VerificationModal.verifyYourIdentity": "Zweryfikuj swoją tożsamość",
   "app.components.VoteControl.budgetingFutureEnabled": "Możesz przydzielić swój budżet zaczynając od {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Budżet obywatelski jest włączone tylko dla niektórych grup.",

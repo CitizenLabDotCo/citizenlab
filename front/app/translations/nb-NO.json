@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "for å delta i dette prosjektet",
   "app.components.VerificationModal.userVerifiedSubtitle": "Identiteten din har blitt bekreftet . Du er nå medlem av fellesskapet på denne platformen.",
   "app.components.VerificationModal.userVerifiedTitle": "Du er nå verifisert!",
-  "app.components.VerificationModal.verifyClaveUnica": "Verifiser med Clave Unica",
   "app.components.VerificationModal.verifyYourIdentity": "Bekreft identiteten din",
   "app.components.VoteControl.budgetingFutureEnabled": "Du kan fordele ditt budsjett fra den {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Deltakende budsjettering er kun tilgjengelig for utvalgte grupper.",

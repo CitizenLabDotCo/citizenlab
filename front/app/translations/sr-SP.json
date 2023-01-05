@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "да бисте учествовали у овом пројекту",
   "app.components.VerificationModal.userVerifiedSubtitle": "Ваш идентитет је верификован. Сада сте пуноправни члан заједнице на овој платформи.",
   "app.components.VerificationModal.userVerifiedTitle": "Сада сте верификовани!",
-  "app.components.VerificationModal.verifyClaveUnica": "Верификујте помоћу Clave Unica",
   "app.components.VerificationModal.verifyYourIdentity": "Верификујте ваш идентитет",
   "app.components.VoteControl.budgetingFutureEnabled": "Бићете у могућности да распоредите буџетска средства од дана {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Партиципативно буџетирање тренутно није омогућено.",

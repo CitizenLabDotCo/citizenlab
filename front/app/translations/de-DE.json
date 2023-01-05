@@ -457,7 +457,6 @@
   "app.components.VerificationModal.toParticipateInThisProject": "um an diesem Projekt teilzunehmen.",
   "app.components.VerificationModal.userVerifiedSubtitle": "Ihre Identität wurde überprüft. Sie sind jetzt ein vollwertiges Mitglied der Gemeinschaft auf dieser Plattform.",
   "app.components.VerificationModal.userVerifiedTitle": "Sie sind jetzt verifiziert!",
-  "app.components.VerificationModal.verifyClaveUnica": "Mit Clave Unica verifizieren",
   "app.components.VerificationModal.verifyYourIdentity": "Werden Sie verifizierte:r Bürger:in",
   "app.components.VoteControl.budgetingFutureEnabled": "Sie können Ihr Budget ab {enabledFromDate} zuweisen.\n",
   "app.components.VoteControl.budgetingNotPermitted": "Ein Bürgerhaushalt ist derzeit nicht möglich.",
