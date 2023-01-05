@@ -189,4 +189,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.signed_in',
     defaultMessage: 'Button for registered visitors',
   },
+  overlayToggleLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.overlayToggleLabel',
+    defaultMessage: 'Enable overlay',
+  },
 });
