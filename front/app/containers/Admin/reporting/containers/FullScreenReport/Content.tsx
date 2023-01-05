@@ -25,6 +25,7 @@ const Content = ({ editorData }: Props) => {
       pl="5mm"
       pr="15mm"
       py={A4_MARGIN_Y}
+      position="absolute"
       background="white"
     >
       <Box>
