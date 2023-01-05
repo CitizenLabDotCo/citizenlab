@@ -23,19 +23,12 @@ import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 
-import idCowConfiguration from './commercial/id_cow';
-import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
-import IdFranceConnectConfiguration from './commercial/id_franceconnect';
-import IdGentRrnConfiguration from './commercial/id_gent_rrn';
-import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
-
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
 
-import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
@@ -118,26 +111,7 @@ export default loadModules([
     configuration: customMapsConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
-  {
-    configuration: idCowConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: idIdCardLookupConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: IdFranceConnectConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: IdGentRrnConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: IdOostendeRrnConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
+
   {
     configuration: machineTranslationsConfiguration,
     isEnabled: CITIZENLAB_EE,
@@ -156,10 +130,6 @@ export default loadModules([
   },
   {
     configuration: analyticsConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: idViennaSamlConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
   {

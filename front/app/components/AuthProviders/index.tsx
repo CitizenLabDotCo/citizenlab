@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
-import Outlet from 'components/Outlet';
 import Error from 'components/UI/Error';
 
 // resources
@@ -168,12 +167,6 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
           franceconnectLoginEnabled &&
           !metaData.error && <Or />}
 
-        <Outlet
-          id="app.components.SignUpIn.AuthProviders.ContainerStart"
-          flow={flow}
-          onContinue={onAuthProviderSelected}
-        />
-
         {isPasswordSigninOrSignupAllowed && (
           <StyledAuthProviderButton
             flow={flow}
@@ -266,7 +259,6 @@ const Data = adopt<DataProps>({
   franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
-  viennaCitizenLoginEnabled: <GetFeatureFlag name="vienna_citizen_login" />,
 });
 
 export default (inputProps: InputProps) => (
