@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 import { ITopicData } from 'services/topics';
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,7 +23,7 @@ interface Props {
   isLastItem: boolean;
 }
 
-const DefaultTopicRow = memo((props: Props) => {
+const DefaultTopicRow = (props: Props) => {
   const { isLastItem, topic } = props;
 
   if (!isNilOrError(topic)) {
@@ -47,6 +47,6 @@ const DefaultTopicRow = memo((props: Props) => {
   }
 
   return null;
-});
+};
 
 export default DefaultTopicRow;

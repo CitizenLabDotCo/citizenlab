@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  allowedInputTopicsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab',
-    defaultMessage: 'Allowed input tags',
-  },
-  tabTopics: {
-    id: 'app.containers.AdminPage.SettingsPage.tabTopics',
-    defaultMessage: 'Tag manager',
-  },
   deleteButtonLabel: {
     id: 'app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel',
     defaultMessage: 'Delete',
@@ -46,14 +38,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder',
     defaultMessage: 'tags',
   },
-  topicInputsTooltipExtraCopy: {
-    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy',
-    defaultMessage: 'Tags can be configured {topicManagerLink}.',
-  },
-  topicInputsTooltipLink: {
-    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink',
-    defaultMessage: 'here',
-  },
+
   tagIsLinkedToStaticPage: {
     id: 'app.containers.AdminPage.ProjectEdit.tagIsLinkedToStaticPage',
     defaultMessage:
