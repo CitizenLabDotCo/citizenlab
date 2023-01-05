@@ -4,6 +4,10 @@
 
 - [CL-2344] Removes content builder iframe URL whitelist.
 
+### Fixed
+
+- [CL-1956] Fixed issue with ideation location pin moving to closest geocoded building.
+
 ### 2022-12-30
 
 - [CL-1893] Added survey logic and new long text field.
