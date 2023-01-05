@@ -154,7 +154,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ) {
       window.history.replaceState(null, '', window.location.pathname);
     }
-  }, [project, showModal, phaseIdUrl]);
+  }, [project, showModal, phaseIdUrl, queryParams]);
 
   const user = useAuthUser();
 
