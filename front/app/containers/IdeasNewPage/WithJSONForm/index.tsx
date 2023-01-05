@@ -13,6 +13,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
+import useUrlQuery from 'utils/cl-router/useUrlQuery';
 
 import messages from '../messages';
 
@@ -31,16 +32,13 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
-import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
-  const [searchParams] = useUrlQuery();
-  const phaseId = searchParams.get('phase_id');
-
-  const queryParams = useURLQuery();
+  const queryParams = useUrlQuery();
+  const phaseId = queryParams.get('phase_id');
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
