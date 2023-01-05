@@ -13,7 +13,8 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
-import useUrlQuery from 'utils/cl-router/useUrlQuery';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
+s;
 
 import messages from '../messages';
 
@@ -37,7 +38,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
-  const queryParams = useUrlQuery();
+  const queryParams = useURLQuery();
   const phaseId = queryParams.get('phase_id');
 
   const phases = usePhases(project?.id);

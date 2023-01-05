@@ -27,7 +27,7 @@ import {
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 import ErrorBoundary from 'components/ErrorBoundary';
-import useUrlQuery from 'utils/cl-router/useUrlQuery';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 // typings
 const Container = styled.div`
@@ -43,7 +43,7 @@ const Container = styled.div`
 const VerificationModal = () => {
   const { windowWidth } = useWindowSize();
   const authUser = useAuthUser();
-  const query = useUrlQuery();
+  const query = useURLQuery();
   const isMounted = useIsMounted();
   const mounted = isMounted();
   const [activeStep, setActiveStep] = useState<TVerificationStep>(null);

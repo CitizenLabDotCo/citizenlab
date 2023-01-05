@@ -1,4 +1,4 @@
-import useUrlQuery from './useUrlQuery';
+import useURLQuery from './useUrlQuery';
 import { renderHook } from '@testing-library/react-hooks';
 
 jest.mock('react-router-dom', () => {
@@ -11,7 +11,7 @@ jest.mock('react-router-dom', () => {
 
 describe('useUrlQuery', () => {
   it('returns correct url query params', () => {
-    const { result } = renderHook(() => useUrlQuery());
+    const { result } = renderHook(() => useURLQuery());
 
     expect(result.current.get('param1')).toBe('param1');
     expect(result.current.get('param2')).toBe('param2');

@@ -48,7 +48,7 @@ import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
-import useUrlQuery from 'utils/cl-router/useUrlQuery';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -105,7 +105,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
 
-  const queryParams = useUrlQuery();
+  const queryParams = useURLQuery();
 
   const { events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
