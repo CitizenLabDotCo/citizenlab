@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
-import { useSearchParams } from 'react-router-dom';
 
 import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
@@ -38,7 +37,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useUrlQuery();
   const phaseId = searchParams.get('phase_id');
 
   const queryParams = useURLQuery();
