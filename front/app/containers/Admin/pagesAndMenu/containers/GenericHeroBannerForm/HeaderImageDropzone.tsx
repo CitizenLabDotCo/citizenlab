@@ -65,7 +65,7 @@ export const homepageBannerLayoutHeights: {
   fixed_ratio_layout: {
     desktop: 450,
     tablet: 450,
-    phone: 450,
+    phone: 225,
   },
 };
 

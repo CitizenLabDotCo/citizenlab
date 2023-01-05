@@ -14,7 +14,10 @@ const TwoColumnLayout = ({ homepageSettings }: Props) => {
   const headerImage = homepageSettings.attributes.header_bg?.large;
 
   return (
-    <Container data-cy="e2e-two-column-layout-container">
+    <Container
+      data-testid="two-column-layout"
+      data-cy="e2e-two-column-layout-container"
+    >
       {headerImage && (
         <HeaderImage
           src={headerImage}
