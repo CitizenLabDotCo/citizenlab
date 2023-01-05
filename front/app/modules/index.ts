@@ -25,7 +25,6 @@ import impactTrackingConfiguration from './commercial/impact_tracking';
 
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idCowConfiguration from './commercial/id_cow';
-import idBogusConfiguration from './commercial/id_bogus';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
@@ -127,10 +126,6 @@ export default loadModules([
   },
   {
     configuration: idCowConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: idBogusConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
   {
