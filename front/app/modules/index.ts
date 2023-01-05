@@ -23,7 +23,6 @@ import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 
-import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idCowConfiguration from './commercial/id_cow';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
@@ -118,10 +117,6 @@ export default loadModules([
   },
   {
     configuration: customMapsConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: idBosaFasConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
   {
