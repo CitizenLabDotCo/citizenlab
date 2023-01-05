@@ -1,7 +1,9 @@
 import React, { useState, memo } from 'react';
+
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
@@ -9,10 +11,12 @@ import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
 import Outlet from 'components/Outlet';
+import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 
 // hooks
 import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -23,8 +27,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
 
 const Container = styled.div`
   padding-top: 30px;
@@ -59,16 +62,25 @@ const EditButton = styled(Button)`
   `}
 `;
 
-const HeaderImage = styled(Image)`
+export const HeaderImageContainer = styled.div`
   width: 100%;
-  height: 240px;
+  aspect-ratio: ${HEADER_BG_ASPECT_RATIO} / 1; // This line is not required because image is cropped to this ratio anyway; just for the reference.
   margin-bottom: 30px;
   border-radius: ${(props) => props.theme.borderRadius};
   overflow: hidden;
+  position: relative; // It's used to display elements inside (e.g. share button for folders).
 
   ${media.phone`
-    height: 160px;
+    aspect-ratio: ${HEADER_BG_ASPECT_RATIO - 1} / 1;
     margin-bottom: 20px;
+  `}
+`;
+
+export const HeaderImage = styled(Image)`
+  width: 100%;
+
+  ${media.phone`
+    height: 100%;
   `}
 `;
 
@@ -127,15 +139,17 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
               </TopBar>
             )}
             {projectHeaderImageLargeUrl && (
-              <HeaderImage
-                id="e2e-project-header-image"
-                src={projectHeaderImageLargeUrl}
-                cover={true}
-                fadeIn={false}
-                isLazy={false}
-                placeholderBg="transparent"
-                alt=""
-              />
+              <HeaderImageContainer>
+                <HeaderImage
+                  id="e2e-project-header-image"
+                  src={projectHeaderImageLargeUrl}
+                  cover={true}
+                  fadeIn={false}
+                  isLazy={false}
+                  placeholderBg="transparent"
+                  alt=""
+                />
+              </HeaderImageContainer>
             )}
             <StyledProjectArchivedIndicator
               projectId={projectId}

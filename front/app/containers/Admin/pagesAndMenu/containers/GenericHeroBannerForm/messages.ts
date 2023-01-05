@@ -94,20 +94,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.phone',
     defaultMessage: 'Phone',
   },
-  headerBgTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.headerBgTooltip',
-    defaultMessage:
-      'For more information on recommended image resolutions, {supportPageLink}.',
-  },
-  imageSupportPageURL: {
-    id: 'app.containers.AdminPage.SettingsPage.imageSupportPageURL',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
-  },
-  headerImageSupportPageText: {
-    id: 'app.containers.AdminPage.SettingsPage.headerImageSupportPageText',
-    defaultMessage: 'visit our support center',
-  },
   noHeader: {
     id: 'app.containers.AdminPage.SettingsPage.noHeader',
     defaultMessage: 'Please upload a header image',
@@ -158,15 +144,6 @@ export default defineMessages({
   fixedRatioBannerTooltipLink: {
     id: 'app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink',
     defaultMessage: 'knowledge base',
-  },
-  fixedRatioImageCropperInfo: {
-    id: 'app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfo',
-    defaultMessage:
-      'The banner is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The { link } for this banner type is 3:1.',
-  },
-  fixedRatioImageCropperInfoLink: {
-    id: 'app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfoLink',
-    defaultMessage: 'recommended ratio',
   },
   heroBannerTitle: {
     id: 'app.containers.AdminPage.HeroBannerForm.heroBannerTitle',

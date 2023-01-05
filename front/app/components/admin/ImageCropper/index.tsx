@@ -7,9 +7,10 @@ import getCroppedImage from './getCroppedImage';
 type ImageCropperProps = {
   image: UploadFile[] | null;
   onComplete: (image: string) => void;
+  aspect: number;
 };
 
-const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
+const ImageCropper = ({ image, onComplete, aspect }: ImageCropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
 
   const onCropComplete = useCallback(
@@ -37,7 +38,7 @@ const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
           image={image[0].base64}
           crop={crop}
           zoom={1}
-          aspect={3}
+          aspect={aspect}
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
           objectFit="contain"
@@ -47,4 +48,4 @@ const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
   );
 };
 
-export default ImageCropper;
+export { ImageCropper as default, ImageCropperProps };
