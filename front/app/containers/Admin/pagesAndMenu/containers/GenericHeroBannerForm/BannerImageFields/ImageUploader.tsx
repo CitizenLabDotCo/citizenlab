@@ -77,7 +77,7 @@ const ImageUploader = ({
           </Warning>
         </Box>
       ) : (
-        <Box mb="20px">
+        <Box mb="20px" data-cy="e2e-homepage-banner-image-dropzone">
           <HeaderImageDropzone
             onAdd={onAddImageToUploader}
             onRemove={onRemoveImageFromUploader}

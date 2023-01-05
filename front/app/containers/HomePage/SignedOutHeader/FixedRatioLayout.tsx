@@ -27,7 +27,7 @@ const FixedRatioLayout = ({ homepageSettings }: Props) => {
   return (
     <Container data-testid="fixed-ratio-layout">
       <Header>
-        <HeaderImage>
+        <HeaderImage data-cy="e2e-fixed-ratio-header-image">
           <HeaderImageBackground
             data-testid="header-image-background"
             src={headerImage || null}

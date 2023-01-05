@@ -483,6 +483,7 @@ class ImagesDropzone extends PureComponent<
                   objectFit={objectFit}
                 >
                   <RemoveButton
+                    data-cy="e2e-remove-image-button"
                     type="button"
                     onMouseDown={removeFocusAfterMouseClick}
                     onClick={this.removeImage(image)}
