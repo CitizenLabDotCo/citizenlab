@@ -170,8 +170,10 @@ const AdminProjectsProjectGeneral = () => {
     })();
   }, [remoteProjectImages]);
 
-  function isUploadFile(file: UploadFile | null): file is UploadFile {
-    return file !== null;
+  function isUploadFile(
+    file: UploadFile | null | undefined
+  ): file is UploadFile {
+    return file !== null && file !== undefined;
   }
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
@@ -204,7 +206,7 @@ const AdminProjectsProjectGeneral = () => {
     setProjectType(projectType);
   };
 
-  const handleHeaderBgChange = (newImageBase64: string) => {
+  const handleHeaderBgChange = (newImageBase64: string | null) => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
       header_bg: newImageBase64,
