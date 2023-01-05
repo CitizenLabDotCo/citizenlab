@@ -14,7 +14,6 @@ import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import useURLQuery from 'utils/cl-router/useUrlQuery';
-s;
 
 import messages from '../messages';
 
