@@ -68,29 +68,12 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   const handleChange = (value: string) => {
     const validation = isValidUrl(value);
     setProp((props) => (props.url = value));
-    setProp((props) => (props.errorType = validation[1]));
-    setProp((props) => (props.hasError = !validation[0]));
+    setProp((props) => (props.errorType = 'invalidUrl'));
+    setProp((props) => (props.hasError = !validation));
     eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-      [id]: { hasError: !validation[0], selectedLocale },
+      [id]: { hasError: !validation, selectedLocale },
     });
   };
-
-  const invalidWhiteListError = (
-    <FormattedMessage
-      {...messages.iframeInvalidWhitelistUrlErrorMessage}
-      values={{
-        visitLinkMessage: (
-          <a
-            href={formatMessage(messages.iframeSupportLink)}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {formatMessage(messages.iframeEmbedVisitLinkMessage)}
-          </a>
-        ),
-      }}
-    />
-  );
 
   return (
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
@@ -107,14 +90,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             handleChange(value);
           }}
         />
-        {hasError && (
+        {hasError && errorType === 'invalidUrl' && (
           <Error
             marginTop="4px"
-            text={
-              errorType === 'invalidUrl'
-                ? formatMessage(messages.iframeInvalidUrlErrorMessage)
-                : invalidWhiteListError
-            }
+            text={formatMessage(messages.iframeInvalidUrlErrorMessage)}
           />
         )}
       </Box>
