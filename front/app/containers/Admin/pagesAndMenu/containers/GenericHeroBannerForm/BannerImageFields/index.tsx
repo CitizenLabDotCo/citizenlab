@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Box,
   IconTooltip,
@@ -67,22 +67,23 @@ const BannerImageField = ({
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] =
     useState<TLocalHeaderImage>(null);
   const [bannerError, setBannerError] = useState<TBannerError>(null);
+
   useEffect(() => {
     // the image file sent from the API needs to be converted
     // to a format that can be displayed. this is done locally
     // when the image is changed but needs to be done manually
     // to process the initial API response
-    const convertHeaderToUploadFile = async (fileInfo) => {
+    const convertHeaderToUploadFile = async (
+      fileInfo: string | null | undefined
+    ) => {
       if (fileInfo) {
         const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
-        const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
-          ? [tenantHeaderBg]
-          : [];
-        setHeaderLocalDisplayImage(headerBgUploadFile);
+        setHeaderLocalDisplayImage(
+          !isNilOrError(tenantHeaderBg) ? [tenantHeaderBg] : []
+        );
         setBannerError(null);
       }
     };
-
     const headerFileInfo = headerBg?.large;
     convertHeaderToUploadFile(headerFileInfo);
   }, [headerBg]);

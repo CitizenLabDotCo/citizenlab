@@ -1,6 +1,12 @@
 import React from 'react';
 import BannerImageFields from '.';
-import { render, screen, waitFor, fireEvent, act } from 'utils/testUtils/rtl';
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+  userEvent,
+} from 'utils/testUtils/rtl';
 
 jest.mock('utils/cl-intl');
 
@@ -51,10 +57,8 @@ describe('Layout preview selector', () => {
     const file = new File(['file'], 'file.png', {
       type: 'image/png',
     });
-    act(() => {
-      fireEvent.change(container.querySelector('#header-dropzone'), {
-        target: { files: [file] },
-      });
+    fireEvent.change(container.querySelector('#header-dropzone'), {
+      target: { files: [file] },
     });
 
     await waitFor(() => {
@@ -75,7 +79,7 @@ describe('Layout preview selector', () => {
         const select = screen.queryByRole('combobox', {
           name: /Show preview for/,
         });
-        expect(select).toBeNull();
+        expect(select).not.toBeInTheDocument();
       });
     });
 
@@ -88,22 +92,22 @@ describe('Layout preview selector', () => {
         const select = screen.queryByRole('combobox', {
           name: /Show preview for/,
         });
-        expect(select).toBeNull();
+        expect(select).not.toBeInTheDocument();
       });
     });
   });
 });
 
 describe('Image overlay controls', () => {
-  it('does not show if there is no image', async () => {
-    render(<BannerImageFields {...props} headerBg={null} />);
-
-    await waitFor(() => {
-      const overlayInput = screen.queryByLabelText('Image overlay color');
-      expect(overlayInput).toBeNull();
-    });
-  });
   describe('when layout is full-width banner layout', () => {
+    it('does not show if there is no image', async () => {
+      render(<BannerImageFields {...props} headerBg={null} />);
+
+      await waitFor(() => {
+        const overlayInput = screen.queryByLabelText('Image overlay color');
+        expect(overlayInput).not.toBeInTheDocument();
+      });
+    });
     it('shows when there is an unsaved image', async () => {
       const { container } = render(
         <BannerImageFields {...props} headerBg={null} />
@@ -113,10 +117,8 @@ describe('Image overlay controls', () => {
       const file = new File(['file'], 'file.png', {
         type: 'image/png',
       });
-      act(() => {
-        fireEvent.change(container.querySelector('#header-dropzone'), {
-          target: { files: [file] },
-        });
+      fireEvent.change(container.querySelector('#header-dropzone'), {
+        target: { files: [file] },
       });
 
       await waitFor(() => {
@@ -151,10 +153,8 @@ describe('Image overlay controls', () => {
       const file = new File(['file'], 'file.png', {
         type: 'image/png',
       });
-      act(() => {
-        fireEvent.change(container.querySelector('#header-dropzone'), {
-          target: { files: [file] },
-        });
+      fireEvent.change(container.querySelector('#header-dropzone'), {
+        target: { files: [file] },
       });
 
       await waitFor(() => {
@@ -189,10 +189,8 @@ describe('Image overlay controls', () => {
       const file = new File(['file'], 'file.png', {
         type: 'image/png',
       });
-      act(() => {
-        fireEvent.change(container.querySelector('#header-dropzone'), {
-          target: { files: [file] },
-        });
+      fireEvent.change(container.querySelector('#header-dropzone'), {
+        target: { files: [file] },
       });
 
       await waitFor(() => {
@@ -227,10 +225,8 @@ describe('Image overlay controls', () => {
         type: 'image/png',
       });
 
-      act(() => {
-        fireEvent.change(container.querySelector('#header-dropzone'), {
-          target: { files: [file] },
-        });
+      fireEvent.change(container.querySelector('#header-dropzone'), {
+        target: { files: [file] },
       });
 
       await waitFor(() => {
@@ -252,26 +248,28 @@ describe('Image overlay controls', () => {
 
 describe('Image cropper', () => {
   it('does not show if there is no image', async () => {
-    const { container } = render(
-      <BannerImageFields {...props} headerBg={null} />
-    );
+    render(<BannerImageFields {...props} headerBg={null} />);
 
     await waitFor(() => {
-      const cropContainer = container.querySelector('.reactEasyCrop_Container');
+      const cropperWarningMessage = screen.getByRole('paragraph', {
+        name: 'The banner is always cropped to a certain ratio',
+      });
+      // const cropContainer = container.querySelector('.reactEasyCrop_Container');
 
-      expect(cropContainer).not.toBeInTheDocument();
+      expect(cropperWarningMessage).not.toBeInTheDocument();
     });
   });
 
   it('does not show with a saved image', async () => {
-    const { container } = render(
-      <BannerImageFields {...props} headerBg={null} />
-    );
+    render(<BannerImageFields {...props} />);
 
     await waitFor(() => {
-      const cropContainer = container.querySelector('.reactEasyCrop_Container');
+      const cropperWarningMessage = screen.queryByRole('paragraph', {
+        name: 'The banner is always cropped to a certain ratio',
+      });
+      // const cropContainer = container.querySelector('.reactEasyCrop_Container');
 
-      expect(cropContainer).not.toBeInTheDocument();
+      expect(cropperWarningMessage).not.toBeInTheDocument();
     });
   });
 
@@ -284,16 +282,17 @@ describe('Image cropper', () => {
     const file = new File(['file'], 'file.png', {
       type: 'image/png',
     });
-    act(() => {
-      fireEvent.change(container.querySelector('#header-dropzone'), {
-        target: { files: [file] },
-      });
+    fireEvent.change(container.querySelector('#header-dropzone'), {
+      target: { files: [file] },
     });
 
     await waitFor(() => {
-      const cropContainer = container.querySelector('.reactEasyCrop_Container');
+      const cropperWarningMessage = screen.queryByRole('paragraph', {
+        name: 'The banner is always cropped to a certain ratio',
+      });
+      // const cropContainer = container.querySelector('.reactEasyCrop_Container');
 
-      expect(cropContainer).not.toBeInTheDocument();
+      expect(cropperWarningMessage).not.toBeInTheDocument();
     });
   });
 
@@ -301,20 +300,21 @@ describe('Image cropper', () => {
     const bannerLayout = 'fixed_ratio_layout';
 
     it('does not show when there is a saved image', async () => {
-      const { container } = render(
-        <BannerImageFields {...props} bannerLayout={bannerLayout} />
-      );
+      render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
       await waitFor(() => {
-        const cropContainer = container.querySelector(
-          '.reactEasyCrop_Container'
-        );
-        expect(cropContainer).not.toBeInTheDocument();
+        const cropperWarningMessage = screen.queryByRole('paragraph', {
+          name: 'The banner is always cropped to a certain ratio',
+        });
+
+        // const cropContainer = container.querySelector('.reactEasyCrop_Container');
+
+        expect(cropperWarningMessage).not.toBeInTheDocument();
       });
     });
 
     it('shows when there is an unsaved image', async () => {
-      const { container } = render(
+      render(
         <BannerImageFields
           {...props}
           bannerLayout={bannerLayout}
@@ -322,22 +322,15 @@ describe('Image cropper', () => {
         />
       );
 
+      const inputNode = screen.getByLabelText('Select an image (max. 10MB)');
+
       const file = new File(['file'], 'file.png', {
         type: 'image/png',
       });
 
-      act(() => {
-        fireEvent.change(container.querySelector('#header-dropzone'), {
-          target: { files: [file] },
-        });
-      });
+      await userEvent.upload(inputNode, file);
 
-      await waitFor(() => {
-        const cropContainer = container.querySelector(
-          '.reactEasyCrop_Container'
-        );
-        expect(cropContainer).toBeInTheDocument();
-      });
+      expect(screen.getByTestId('cropper')).toBeInTheDocument();
     });
   });
 });

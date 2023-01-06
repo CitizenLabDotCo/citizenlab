@@ -40,7 +40,7 @@ const ErrorWrapper = styled.div`
   display: flex;
 `;
 
-const DropzoneLabelText = styled.span`
+const DropzoneLabel = styled.label`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -91,7 +91,7 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
     &:focus-within {
       border-color: #000;
 
-      ${DropzoneLabelText},
+      ${DropzoneLabel},
       ${DropzoneImagesRemaining} {
         color: #000;
       }
@@ -106,7 +106,7 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
     cursor: no-drop;
     border-color: #ccc;
 
-    ${DropzoneLabelText},
+    ${DropzoneLabel},
     ${DropzoneImagesRemaining} {
       color: #ccc;
     }
@@ -349,10 +349,7 @@ class ImagesDropzone extends PureComponent<
       }
 
       this.props.onAdd(
-        uniqBy(
-          [...(this.props.images || []), ...images],
-          'base64'
-        ) as UploadFile[]
+        uniqBy([...(this.props.images || []), ...images], 'base64')
       );
     }
   };
@@ -450,7 +447,9 @@ class ImagesDropzone extends PureComponent<
                       <DropzoneInput {...getInputProps()} id={id} />
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload-image" ariaHidden />
-                        <DropzoneLabelText>{label}</DropzoneLabelText>
+                        <DropzoneLabel htmlFor="header-dropzone">
+                          {label}
+                        </DropzoneLabel>
                         {remainingImages && (
                           <DropzoneImagesRemaining>
                             {remainingImages}
