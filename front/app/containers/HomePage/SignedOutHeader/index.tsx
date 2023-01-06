@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
+import FixedRatioLayout from './FixedRatioLayout';
 
 const SignedOutHeaderIndex = () => {
   const homepageSettings = useHomepageSettings();
@@ -25,6 +26,9 @@ const SignedOutHeaderIndex = () => {
         )}
         {homepageBannerLayout === 'two_row_layout' && (
           <TwoRowLayout homepageSettings={homepageSettings} />
+        )}
+        {homepageBannerLayout === 'fixed_ratio_layout' && (
+          <FixedRatioLayout homepageSettings={homepageSettings} />
         )}
       </>
     );

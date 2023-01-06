@@ -60,13 +60,14 @@ const HeaderImage = () => {
 
     return (
       <HeaderImageContainer>
-        <HeaderImageContainerInner>
+        <HeaderImageContainerInner data-cy="e2e-fixed-ratio-header-image-parent">
           {/*
             With this fixed ratio layout, the image would be messed up.
             Ticket: https://citizenlab.atlassian.net/browse/CL-2215
           */}
           {tenantHeaderImage && !isFixedBannerLayout && (
             <StyledImage
+              data-cy="e2e-fixed-ratio-header-image"
               alt="" // Image is decorative, so alt tag is empty
               src={tenantHeaderImage}
               className={

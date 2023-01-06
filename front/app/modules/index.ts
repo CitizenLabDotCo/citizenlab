@@ -20,7 +20,6 @@ import matomoConfiguration from './commercial/matomo';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
-import customTopicsConfiguration from './commercial/custom_topics';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 
 import idAuth0Configuration from './commercial/id_auth0';
@@ -104,10 +103,6 @@ export default loadModules([
   },
   {
     configuration: bulkIdeaImportConfiguration,
-    isEnabled: CITIZENLAB_EE,
-  },
-  {
-    configuration: customTopicsConfiguration,
     isEnabled: CITIZENLAB_EE,
   },
   {
