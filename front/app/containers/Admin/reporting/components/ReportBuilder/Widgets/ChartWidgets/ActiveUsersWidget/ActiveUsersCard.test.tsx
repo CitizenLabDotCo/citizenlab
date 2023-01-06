@@ -1,7 +1,7 @@
 import React from 'react';
 import ActiveUsersCard from './ActiveUsersCard';
 import { render, screen } from 'utils/testUtils/rtl';
-import useActiveUsers from 'modules/commercial/analytics/admin/components/ActiveUsersCard/useActiveUsers';
+import useActiveUsers from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers';
 
 jest.mock(
   'modules/commercial/analytics/admin/components/ActiveUsersCard/useActiveUsers',

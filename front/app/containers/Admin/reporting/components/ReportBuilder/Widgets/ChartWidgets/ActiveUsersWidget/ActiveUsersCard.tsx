@@ -1,17 +1,17 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useActiveUsers from 'modules/commercial/analytics/admin/components/ActiveUsersCard/useActiveUsers';
+import useActiveUsers from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers';
 
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import Chart from 'modules/commercial/analytics/admin/components/ActiveUsersCard/Chart';
+import Chart from 'components/admin/GraphCards/ActiveUsersCard/Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
 import NoChartData from '../NoChartData';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from 'modules/commercial/analytics/admin/components/ActiveUsersCard/messages';
+import messages from '../messages';
 
 // typings
 import {
