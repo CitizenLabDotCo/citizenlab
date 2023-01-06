@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalActiveUsers',
     defaultMessage: 'Total active users',
   },
+  totalParticipants: {
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants',
+    defaultMessage: 'Total participants',
+  },
   cardTitleTooltipMessage: {
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage',
     defaultMessage:

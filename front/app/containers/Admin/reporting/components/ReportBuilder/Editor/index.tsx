@@ -21,6 +21,7 @@ import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
+import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -48,6 +49,7 @@ const Editor: React.FC<EditorProps> = ({
         VisitorsTrafficSourcesWidget,
         AgeWidget,
         GenderWidget,
+        ActiveUsersWidget,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.charts.visitorTimeline',
     defaultMessage: 'Visitor timeline',
   },
+  activeUsersTimeline: {
+    id: 'app.containers.admin.ReportBuilder.charts.activeUsersTimeline',
+    defaultMessage: 'Participants timeline',
+  },
   trafficSources: {
     id: 'app.containers.admin.ReportBuilder.charts.trafficSources',
     defaultMessage: 'Traffic sources',
