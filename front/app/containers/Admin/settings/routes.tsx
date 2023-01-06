@@ -19,6 +19,11 @@ const AdminAreasAll = lazy(() => import('./areas/all'));
 const AdminAreasNew = lazy(() => import('./areas/New'));
 const AdminAreasEdit = lazy(() => import('./areas/Edit'));
 
+// topics
+const AdminTopicsIndexComponent = lazy(() => import('./topics/all'));
+const AdminTopicsNewComponent = lazy(() => import('./topics/New'));
+const AdminTopicsEditComponent = lazy(() => import('./topics/Edit'));
+
 export default () => ({
   path: 'settings',
   element: (
@@ -80,6 +85,35 @@ export default () => ({
           element: (
             <PageLoading>
               <AdminAreasEdit />
+            </PageLoading>
+          ),
+        },
+      ],
+    },
+    {
+      path: 'topics',
+      children: [
+        {
+          index: true,
+          element: (
+            <PageLoading>
+              <AdminTopicsIndexComponent />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'new',
+          element: (
+            <PageLoading>
+              <AdminTopicsNewComponent />
+            </PageLoading>
+          ),
+        },
+        {
+          path: ':topicId/edit',
+          element: (
+            <PageLoading>
+              <AdminTopicsEditComponent />
             </PageLoading>
           ),
         },

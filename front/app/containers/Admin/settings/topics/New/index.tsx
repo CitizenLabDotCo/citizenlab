@@ -11,7 +11,7 @@ import { Section, SectionTitle } from 'components/admin/Section';
 import TopicForm from '../TopicForm';
 
 // services
-import { addTopic, ITopicUpdate } from '../../../../services/topics';
+import { addTopic, ITopicUpdate } from 'services/topics';
 
 const New = () => {
   const handleSubmit = async (values: ITopicUpdate) => {
