@@ -124,7 +124,6 @@ const IdeasWidget = () => {
         </WidgetTitle>
         <FormProvider {...methods}>
           <form>
-            {/* Check if we need defaultValues */}
             <Form />
           </form>
         </FormProvider>
