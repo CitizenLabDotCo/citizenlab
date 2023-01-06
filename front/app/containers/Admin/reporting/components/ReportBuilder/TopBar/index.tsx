@@ -10,7 +10,6 @@ import useReport from 'hooks/useReport';
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
@@ -76,11 +75,6 @@ const ContentBuilderTopBar = ({
     }
   };
 
-  const handleSelectLocale = (locale: Locale) => {
-    const editorData = query.getSerializedNodes();
-    onSelectLocale({ locale, editorData });
-  };
-
   const handleTogglePreview = () => {
     setPreviewEnabled((previewEnabled) => !previewEnabled);
   };
@@ -97,11 +91,7 @@ const ContentBuilderTopBar = ({
             {isNilOrError(report) ? <></> : report.attributes.name}
           </Title>
         </Box>
-        <LocaleSwitcher
-          selectedLocale={selectedLocale}
-          localesWithError={localesWithError}
-          onSelectLocale={handleSelectLocale}
-        />
+
         <Box mx="24px">
           <PreviewToggle
             checked={previewEnabled}

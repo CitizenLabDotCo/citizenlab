@@ -5,6 +5,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useReportLayout from 'hooks/useReportLayout';
+import useReportLocale from '../../hooks/useReportLocale';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -54,6 +55,8 @@ const ReportBuilder = ({ reportId }: Props) => {
       setSelectedLocale(locale);
     }
   }, [locale]);
+
+  useReportLocale(reportLayout);
 
   const localesWithError = useMemo(() => {
     return Object.values(contentBuilderErrors)

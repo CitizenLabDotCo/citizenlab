@@ -16,6 +16,7 @@ import Content from './Content';
 // types
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
+import useReportLocale from '../../hooks/useReportLocale';
 
 const Centerer = styled.div`
   display: flex;
@@ -36,11 +37,14 @@ interface Props {
   reportId: string;
 }
 
+export const LocaleContext = React.createContext('en');
+
 const FullScreenReport = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const platformLocale = useLocale();
   const reportLayout = useReportLayout(reportId);
+  useReportLocale(reportLayout);
 
   if (isNilOrError(platformLocale)) {
     return null;
@@ -56,17 +60,19 @@ const FullScreenReport = ({ reportId }: Props) => {
   const editorData = draftData || savedEditorData;
 
   return (
-    <FullScreenWrapper
-      onUpdateDraftData={setDraftData}
-      onUpdateLocale={setSelectedLocale}
-    >
-      {isLoadingLayout && <Spinner />}
-      {!isLoadingLayout && (
-        <Centerer>
-          <Content editorData={editorData} />
-        </Centerer>
-      )}
-    </FullScreenWrapper>
+    <LocaleContext.Provider value="en">
+      <FullScreenWrapper
+        onUpdateDraftData={setDraftData}
+        onUpdateLocale={setSelectedLocale}
+      >
+        {isLoadingLayout && <Spinner />}
+        {!isLoadingLayout && (
+          <Centerer>
+            <Content editorData={editorData} />
+          </Centerer>
+        )}
+      </FullScreenWrapper>
+    </LocaleContext.Provider>
   );
 };
 
