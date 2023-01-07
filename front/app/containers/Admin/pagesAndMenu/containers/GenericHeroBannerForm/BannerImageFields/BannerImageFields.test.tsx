@@ -247,65 +247,10 @@ describe('Image overlay controls', () => {
 });
 
 describe('Image cropper', () => {
-  it('does not show if there is no image', async () => {
-    render(<BannerImageFields {...props} headerBg={null} />);
-
-    await waitFor(() => {
-      const cropperWarningMessage = screen.getByRole('paragraph', {
-        name: 'The banner is always cropped to a certain ratio',
-      });
-      // const cropContainer = container.querySelector('.reactEasyCrop_Container');
-
-      expect(cropperWarningMessage).not.toBeInTheDocument();
-    });
-  });
-
-  it('does not show with a saved image', async () => {
-    render(<BannerImageFields {...props} />);
-
-    await waitFor(() => {
-      const cropperWarningMessage = screen.queryByRole('paragraph', {
-        name: 'The banner is always cropped to a certain ratio',
-      });
-      // const cropContainer = container.querySelector('.reactEasyCrop_Container');
-
-      expect(cropperWarningMessage).not.toBeInTheDocument();
-    });
-  });
-
-  it('does not show with an unsaved image', async () => {
-    const { container } = render(
-      <BannerImageFields {...props} headerBg={null} />
-    );
-
-    // select local image
-    const file = new File(['file'], 'file.png', {
-      type: 'image/png',
-    });
-    fireEvent.change(container.querySelector('#header-dropzone'), {
-      target: { files: [file] },
-    });
-
-    await waitFor(() => {
-      const cropperWarningMessage = screen.queryByRole('paragraph', {
-        name: 'The banner is always cropped to a certain ratio',
-      });
-      // const cropContainer = container.querySelector('.reactEasyCrop_Container');
-
-      expect(cropperWarningMessage).not.toBeInTheDocument();
-    });
-  });
-
-  describe('when layout is fixed-ratio layout', () => {
+  describe('when layout is fixed-ratio', () => {
     const bannerLayout = 'fixed_ratio_layout';
 
-    it('does not show when there is a saved image', async () => {
-      render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-      expect(screen.queryByTestId('image-cropper')).not.toBeInTheDocument();
-    });
-
-    it('shows when there is an unsaved image', async () => {
+    it('shows when there is an unsaved image', () => {
       render(
         <BannerImageFields
           {...props}
@@ -314,15 +259,39 @@ describe('Image cropper', () => {
         />
       );
 
-      const inputNode = screen.getByLabelText('Select an image (max. 10MB)');
-
-      const file = new File(['file'], 'file.png', {
-        type: 'image/png',
+      uploadLocalImageForHeroBanner().then(() => {
+        expect(screen.getByTestId('image-cropper')).toBeInTheDocument();
       });
+    });
 
-      await userEvent.upload(inputNode, file);
+    it('does not show when there is a saved image', () => {
+      render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-      expect(screen.getByTestId('image-cropper')).toBeInTheDocument();
+      expect(screen.queryByTestId('image-cropper')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('when layout is not fixed-ratio', () => {
+    it('does not show with an unsaved image', () => {
+      render(<BannerImageFields {...props} headerBg={null} />);
+
+      uploadLocalImageForHeroBanner().then(() => {
+        expect(screen.queryByTestId('image-cropper')).not.toBeInTheDocument();
+      });
+    });
+
+    it('does not show when there is a saved image', () => {
+      render(<BannerImageFields {...props} />);
+
+      expect(screen.queryByTestId('image-cropper')).not.toBeInTheDocument();
     });
   });
 });
+
+async function uploadLocalImageForHeroBanner() {
+  const inputNode = screen.getByLabelText('Select an image (max. 10MB)');
+  const file = new File(['file'], 'file.png', {
+    type: 'image/png',
+  });
+  await userEvent.upload(inputNode, file);
+}
