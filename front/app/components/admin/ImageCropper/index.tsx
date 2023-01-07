@@ -31,7 +31,12 @@ const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
   );
 
   return (
-    <Box position="relative" height="300px" data-cy="e2e-image-cropper">
+    <Box
+      position="relative"
+      height="300px"
+      data-cy="e2e-image-cropper"
+      data-testid="image-cropper"
+    >
       {image && (
         <Cropper
           image={image[0].base64}

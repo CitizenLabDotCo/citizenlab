@@ -302,15 +302,7 @@ describe('Image cropper', () => {
     it('does not show when there is a saved image', async () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-      await waitFor(() => {
-        const cropperWarningMessage = screen.queryByRole('paragraph', {
-          name: 'The banner is always cropped to a certain ratio',
-        });
-
-        // const cropContainer = container.querySelector('.reactEasyCrop_Container');
-
-        expect(cropperWarningMessage).not.toBeInTheDocument();
-      });
+      expect(screen.queryByTestId('image-cropper')).not.toBeInTheDocument();
     });
 
     it('shows when there is an unsaved image', async () => {
@@ -330,7 +322,7 @@ describe('Image cropper', () => {
 
       await userEvent.upload(inputNode, file);
 
-      expect(screen.getByTestId('cropper')).toBeInTheDocument();
+      expect(screen.getByTestId('image-cropper')).toBeInTheDocument();
     });
   });
 });
