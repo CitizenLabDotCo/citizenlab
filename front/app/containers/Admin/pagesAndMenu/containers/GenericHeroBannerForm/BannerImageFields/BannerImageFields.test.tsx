@@ -103,10 +103,8 @@ describe('Image overlay controls', () => {
     it('does not show if there is no image', async () => {
       render(<BannerImageFields {...props} headerBg={null} />);
 
-      await waitFor(() => {
-        const overlayInput = screen.queryByLabelText('Image overlay color');
-        expect(overlayInput).not.toBeInTheDocument();
-      });
+      const overlayInput = screen.queryByLabelText('Enable overlay');
+      expect(overlayInput).not.toBeInTheDocument();
     });
     it('shows when there is an unsaved image', async () => {
       const { container } = render(
