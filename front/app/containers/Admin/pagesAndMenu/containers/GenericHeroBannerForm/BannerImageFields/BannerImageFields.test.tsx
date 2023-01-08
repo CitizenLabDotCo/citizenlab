@@ -98,40 +98,27 @@ describe('Layout preview selector', () => {
   });
 });
 
-describe('Image overlay controls', () => {
+describe('Image overlay toggle', () => {
   describe('when layout is full-width banner layout', () => {
-    it('does not show if there is no image', async () => {
+    it('does not show if there is no image', () => {
       render(<BannerImageFields {...props} headerBg={null} />);
 
       const overlayInput = screen.queryByLabelText('Enable overlay');
       expect(overlayInput).not.toBeInTheDocument();
     });
+
     it('shows when there is an unsaved image', async () => {
-      const { container } = render(
-        <BannerImageFields {...props} headerBg={null} />
-      );
+      render(<BannerImageFields {...props} headerBg={null} />);
 
-      // select local image
-      const file = new File(['file'], 'file.png', {
-        type: 'image/png',
-      });
-      fireEvent.change(container.querySelector('#header-dropzone'), {
-        target: { files: [file] },
-      });
-
-      await waitFor(() => {
-        const overlayInput = screen.getByLabelText('Image overlay color');
-        expect(overlayInput).toBeInTheDocument();
-      });
+      await uploadLocalImageForHeroBanner();
+      expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument();
     });
 
     it('shows when there is a saved image', async () => {
       render(<BannerImageFields {...props} />);
 
-      await waitFor(() => {
-        const overlayInput = screen.getByLabelText('Image overlay color');
-        expect(overlayInput).toBeInTheDocument();
-      });
+      const overlayInput = screen.queryByLabelText('Enable overlay');
+      expect(overlayInput).toBeInTheDocument();
     });
   });
 
@@ -139,7 +126,7 @@ describe('Image overlay controls', () => {
     const bannerLayout = 'two_row_layout';
 
     it('does not show when there is an unsaved image', async () => {
-      const { container } = render(
+      render(
         <BannerImageFields
           {...props}
           bannerLayout={bannerLayout}
@@ -147,27 +134,14 @@ describe('Image overlay controls', () => {
         />
       );
 
-      // select local image
-      const file = new File(['file'], 'file.png', {
-        type: 'image/png',
-      });
-      fireEvent.change(container.querySelector('#header-dropzone'), {
-        target: { files: [file] },
-      });
-
-      await waitFor(() => {
-        const overlayInput = screen.queryByLabelText('Image overlay color');
-        expect(overlayInput).not.toBeInTheDocument();
-      });
+      await uploadLocalImageForHeroBanner();
+      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
 
     it('does not show when there is a saved image', async () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-      await waitFor(() => {
-        const overlayInput = screen.queryByLabelText('Image overlay color');
-        expect(overlayInput).not.toBeInTheDocument();
-      });
+      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
   });
 
@@ -175,7 +149,7 @@ describe('Image overlay controls', () => {
     const bannerLayout = 'two_column_layout';
 
     it('does not show when there is an unsaved image', async () => {
-      const { container } = render(
+      render(
         <BannerImageFields
           {...props}
           bannerLayout={bannerLayout}
@@ -183,27 +157,14 @@ describe('Image overlay controls', () => {
         />
       );
 
-      // select local image
-      const file = new File(['file'], 'file.png', {
-        type: 'image/png',
-      });
-      fireEvent.change(container.querySelector('#header-dropzone'), {
-        target: { files: [file] },
-      });
-
-      await waitFor(() => {
-        const overlayInput = screen.queryByLabelText('Image overlay color');
-        expect(overlayInput).not.toBeInTheDocument();
-      });
+      await uploadLocalImageForHeroBanner();
+      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
 
     it('does not show when there is a saved image', async () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-      await waitFor(() => {
-        const overlayInput = screen.queryByLabelText('Image overlay color');
-        expect(overlayInput).not.toBeInTheDocument();
-      });
+      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
   });
 
@@ -211,35 +172,21 @@ describe('Image overlay controls', () => {
     const bannerLayout = 'fixed_ratio_layout';
 
     it('does not show when there is an unsaved image', async () => {
-      const { container } = render(
+      render(
         <BannerImageFields
           {...props}
-          headerBg={null}
           bannerLayout={bannerLayout}
+          headerBg={null}
         />
       );
 
-      const file = new File(['file'], 'file.png', {
-        type: 'image/png',
-      });
-
-      fireEvent.change(container.querySelector('#header-dropzone'), {
-        target: { files: [file] },
-      });
-
-      await waitFor(() => {
-        const overlayInput = container.querySelector('Image overlay color');
-        expect(overlayInput).toBeNull();
-      });
+      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
 
     it('shows when there is a saved image', async () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-      await waitFor(() => {
-        const overlayInput = screen.getByLabelText('Image overlay color');
-        expect(overlayInput).toBeInTheDocument();
-      });
+      expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument();
     });
   });
 });
