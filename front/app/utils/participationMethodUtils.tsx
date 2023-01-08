@@ -15,6 +15,7 @@ import { IProjectData } from 'services/projects';
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import { IdeationCTAButton } from 'components/ParticipationCTAButtons/IdeationCTAButton';
+import { NativeSurveyCTAButton } from 'components/ParticipationCTAButtons/NativeSurveyCTAButton';
 
 // utils
 import { isNilOrError } from './helperUtils';
@@ -151,8 +152,10 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   },
   showInputManager: false,
   isMethodLocked: true,
-  renderCTAButton: () => {
-    return null;
+  renderCTAButton: (props: CTAProps) => {
+    return (
+      <NativeSurveyCTAButton project={props.project} phases={props.phases} />
+    );
   },
 };
 
