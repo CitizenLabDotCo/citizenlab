@@ -12,11 +12,6 @@ import messages from './messages';
 // components
 import Button from 'components/UI/Button';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import {
-  RowContent,
-  RowContentInner,
-  RowTitle,
-} from '../../components/RowStyles';
 import Warning from 'components/UI/Warning';
 import Modal, {
   ModalContentContainer,
@@ -25,7 +20,8 @@ import Modal, {
 } from 'components/UI/Modal';
 import { StyledLink } from 'components/admin/Section';
 import VerticalCenterer from 'components/VerticalCenterer';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, Box } from '@citizenlab/cl2-component-library';
+import T from 'components/T';
 
 // services
 import {
@@ -39,14 +35,22 @@ import {
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
 import useTopics from 'hooks/useTopics';
 
+// styles
+import { fontSizes } from 'utils/styleUtils';
+
+export const RowTitle = styled(T)`
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: 24px;
+  margin-right: 10px;
+`;
+
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
 `;
 
-interface Props {}
-
 const SortableProjectTopicList = memo(
-  ({ params: { projectId } }: Props & WithRouterProps) => {
+  ({ params: { projectId } }: WithRouterProps) => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [processingDeletion, setProcessingDeletion] = useState(false);
     const [
@@ -154,13 +158,15 @@ const SortableProjectTopicList = memo(
                       dropRow={handleDropRow}
                       isLastItem={index === allowedInputTopics.length - 1}
                     >
-                      <RowContent>
-                        <RowContentInner className="expand primary">
-                          <RowTitle
-                            value={getTitle(projectAllowedInputTopic)}
-                          />
-                        </RowContentInner>
-                      </RowContent>
+                      <Box
+                        className="expand primary"
+                        display="flex"
+                        flexWrap="wrap"
+                        alignItems="center"
+                        marginRight="20px"
+                      >
+                        <RowTitle value={getTitle(projectAllowedInputTopic)} />
+                      </Box>
                       <Button
                         onClick={handleProjectTopicDelete(
                           projectAllowedInputTopic.id

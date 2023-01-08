@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Row } from 'components/admin/ResourceList';
 
 // components
@@ -44,7 +44,7 @@ interface Props {
   handleDeleteClick: (topicId: string) => (event: React.FormEvent<any>) => void;
 }
 
-const CustomTopicRow = memo((props: Props) => {
+const CustomTopicRow = (props: Props) => {
   const { isLastItem, topic, handleDeleteClick } = props;
   const localize = useLocalize();
 
@@ -55,8 +55,8 @@ const CustomTopicRow = memo((props: Props) => {
 
   return (
     <Row
-      key={topic.id}
       id={topic.id}
+      key={topic.id}
       className="e2e-topic-field-row"
       isLastItem={isLastItem}
     >
@@ -112,6 +112,6 @@ const CustomTopicRow = memo((props: Props) => {
       </Buttons>
     </Row>
   );
-});
+};
 
 export default CustomTopicRow;
