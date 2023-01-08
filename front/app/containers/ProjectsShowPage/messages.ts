@@ -413,4 +413,12 @@ export default defineMessages({
     defaultMessage:
       'What do you think of this project? Join the discussion at {projectUrl} to make your voice heard!',
   },
+  projectOpenForSubmission: {
+    id: 'app.containers.Projects.projectOpenForSubmission',
+    defaultMessage: 'This project is currently open for participation.',
+  },
+  participationTimeLeft: {
+    id: 'app.containers.Projects.participationTimeLeft',
+    defaultMessage: '{timeLeft} left',
+  },
 });

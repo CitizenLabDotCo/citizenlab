@@ -177,14 +177,14 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
         const actionButtonYOffset = actionButtonElement
           ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
           : undefined;
-        setIsVisible(
-          !!(
-            actionButtonElement &&
-            actionButtonYOffset &&
-            window.pageYOffset >
-              actionButtonYOffset - (smallerThanLargeTablet ? 14 : 30)
-          )
-        );
+        // setIsVisible(
+        //   !!(
+        //     actionButtonElement &&
+        //     actionButtonYOffset &&
+        //     window.pageYOffset >
+        //       actionButtonYOffset - (smallerThanLargeTablet ? 14 : 30)
+        //   )
+        // );
       },
       { passive: true }
     );

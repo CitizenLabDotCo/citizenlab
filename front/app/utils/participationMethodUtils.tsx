@@ -14,6 +14,7 @@ import { IProjectData } from 'services/projects';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
+import { IdeationCTAButton } from 'components/ParticipationCTAButtons/IdeationCTAButton';
 
 // utils
 import { isNilOrError } from './helperUtils';
@@ -39,6 +40,11 @@ type FormTitleMethodProps = {
   phaseFromUrl?: IPhaseData;
 };
 
+type CTAProps = {
+  project: IProjectData;
+  phases: Error | IPhaseData[] | null | undefined;
+};
+
 export type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
@@ -52,6 +58,7 @@ export type ParticipationMethodConfig = {
   showInputManager: boolean;
   isMethodLocked: boolean;
   postType: 'defaultInput' | 'nativeSurvey';
+  renderCTAButton: (props: CTAProps) => ReactNode | JSX.Element | null;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -109,6 +116,9 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   isMethodLocked: false,
+  renderCTAButton: (props: CTAProps) => {
+    return <IdeationCTAButton project={props.project} phases={props.phases} />;
+  },
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -141,6 +151,9 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   },
   showInputManager: false,
   isMethodLocked: true,
+  renderCTAButton: () => {
+    return null;
+  },
 };
 
 const informationConfig: ParticipationMethodConfig = {
@@ -157,6 +170,9 @@ const informationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
+  renderCTAButton: () => {
+    return null;
+  },
 };
 
 const surveyConfig: ParticipationMethodConfig = {
@@ -173,6 +189,9 @@ const surveyConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
+  renderCTAButton: (props: CTAProps) => {
+    return null;
+  },
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
@@ -220,6 +239,9 @@ const budgetingConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   isMethodLocked: false,
+  renderCTAButton: (props: CTAProps) => {
+    return null;
+  },
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -236,6 +258,9 @@ const pollConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
+  renderCTAButton: (props: CTAProps) => {
+    return null;
+  },
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
@@ -252,6 +277,9 @@ const volunteeringConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
+  renderCTAButton: (props: CTAProps) => {
+    return null;
+  },
 };
 
 const methodToConfig: {

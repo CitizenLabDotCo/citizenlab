@@ -22,6 +22,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import Modal from 'components/UI/Modal';
+import { ProjectCTABar } from './ProjectCTABar';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -201,6 +202,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
+        <ProjectCTABar projectId={projectId} />
         {processType === 'continuous' ? (
           <>
             <ContinuousIdeas projectId={projectId} />
