@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
+import FixedRatioLayout from './FixedRatioLayout';
 
 const SignedOutHeaderIndex = () => {
   const homepageSettings = useHomepageSettings();
@@ -18,10 +19,17 @@ const SignedOutHeaderIndex = () => {
     return (
       <>
         {homepageBannerLayout === 'full_width_banner_layout' && (
-          <FullWidthBannerLayout />
+          <FullWidthBannerLayout homepageSettings={homepageSettings} />
         )}
-        {homepageBannerLayout === 'two_column_layout' && <TwoColumnLayout />}
-        {homepageBannerLayout === 'two_row_layout' && <TwoRowLayout />}
+        {homepageBannerLayout === 'two_column_layout' && (
+          <TwoColumnLayout homepageSettings={homepageSettings} />
+        )}
+        {homepageBannerLayout === 'two_row_layout' && (
+          <TwoRowLayout homepageSettings={homepageSettings} />
+        )}
+        {homepageBannerLayout === 'fixed_ratio_layout' && (
+          <FixedRatioLayout homepageSettings={homepageSettings} />
+        )}
       </>
     );
   }

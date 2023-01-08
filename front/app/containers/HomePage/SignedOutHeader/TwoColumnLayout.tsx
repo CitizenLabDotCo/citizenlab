@@ -3,34 +3,34 @@ import {
   HeaderImage,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
-import useHomepageSettings from 'hooks/useHomepageSettings';
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { IHomepageSettingsData } from 'services/homepageSettings';
 
-const TwoColumnLayout = () => {
-  const homepageSettings = useHomepageSettings();
+interface Props {
+  homepageSettings: IHomepageSettingsData;
+}
 
-  if (!isNilOrError(homepageSettings)) {
-    const headerImage = homepageSettings.attributes.header_bg?.large;
+const TwoColumnLayout = ({ homepageSettings }: Props) => {
+  const headerImage = homepageSettings.attributes.header_bg?.large;
 
-    return (
-      <Container data-cy="e2e-two-column-layout-container">
-        {headerImage && (
-          <HeaderImage
-            src={headerImage}
-            cover={true}
-            fadeIn={false}
-            isLazy={false}
-            placeholderBg="transparent"
-            alt=""
-          />
-        )}
-        <HeaderContent fontColors="dark" align="left" />
-      </Container>
-    );
-  }
-
-  return null;
+  return (
+    <Container
+      data-testid="two-column-layout"
+      data-cy="e2e-two-column-layout-container"
+    >
+      {headerImage && (
+        <HeaderImage
+          src={headerImage}
+          cover={true}
+          fadeIn={false}
+          isLazy={false}
+          placeholderBg="transparent"
+          alt=""
+        />
+      )}
+      <HeaderContent fontColors="dark" align="left" />
+    </Container>
+  );
 };
 
 export default TwoColumnLayout;
