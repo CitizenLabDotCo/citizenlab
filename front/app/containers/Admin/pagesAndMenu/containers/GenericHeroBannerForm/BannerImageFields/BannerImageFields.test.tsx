@@ -1,12 +1,6 @@
 import React from 'react';
 import BannerImageFields from '.';
-import {
-  render,
-  screen,
-  waitFor,
-  fireEvent,
-  userEvent,
-} from 'utils/testUtils/rtl';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 jest.mock('utils/cl-intl');
 
@@ -26,74 +20,63 @@ const props = {
 };
 
 describe('Layout preview selector', () => {
-  it('does not show when there is no image', async () => {
+  it('does not show when there is no image', () => {
     render(<BannerImageFields {...props} headerBg={null} />);
 
-    await waitFor(() => {
+    const select = screen.queryByRole('combobox', {
+      name: /Show preview for/,
+    });
+    expect(select).not.toBeInTheDocument();
+  });
+
+  it('shows when there is a saved image', () => {
+    render(<BannerImageFields {...props} />);
+
+    const select = screen.getByRole('combobox', {
+      name: /Show preview for/,
+    });
+    expect(select).toBeInTheDocument();
+  });
+
+  it('shows when there is an unsaved image', async () => {
+    render(<BannerImageFields {...props} headerBg={null} />);
+
+    await uploadLocalImageForHeroBanner();
+    const select = screen.getByRole('combobox', {
+      name: /Show preview for/,
+    });
+    expect(select).toBeInTheDocument();
+  });
+
+  describe('when layout is fixed-ratio layout', () => {
+    const bannerLayout = 'fixed_ratio_layout';
+
+    it('does not show when there is no image', () => {
+      render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
+
       const select = screen.queryByRole('combobox', {
         name: /Show preview for/,
       });
       expect(select).not.toBeInTheDocument();
     });
-  });
 
-  it('shows when there is a saved image', async () => {
-    render(<BannerImageFields {...props} />);
+    it('does not show when there is a saved image', () => {
+      render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-    await waitFor(() => {
-      const select = screen.getByRole('combobox', {
+      const select = screen.queryByRole('combobox', {
         name: /Show preview for/,
       });
-      expect(select).toBeInTheDocument();
-    });
-  });
-
-  it('shows when there is an unsaved image', async () => {
-    const { container } = render(
-      <BannerImageFields {...props} headerBg={null} />
-    );
-
-    // select local image
-    const file = new File(['file'], 'file.png', {
-      type: 'image/png',
-    });
-    fireEvent.change(container.querySelector('#header-dropzone'), {
-      target: { files: [file] },
-    });
-
-    await waitFor(() => {
-      const select = screen.getByRole('combobox', {
-        name: /Show preview for/,
-      });
-      expect(select).toBeInTheDocument();
-    });
-  });
-
-  describe('when layout is fixed-ratio layout', () => {
-    it('does not show when there is a saved image', async () => {
-      render(
-        <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
-      );
-
-      await waitFor(() => {
-        const select = screen.queryByRole('combobox', {
-          name: /Show preview for/,
-        });
-        expect(select).not.toBeInTheDocument();
-      });
+      expect(select).not.toBeInTheDocument();
     });
 
     it('does not show when there is an unsaved image', async () => {
-      render(
-        <BannerImageFields {...props} bannerLayout="fixed_ratio_layout" />
-      );
+      render(<BannerImageFields {...props} headerBg={null} />);
 
-      await waitFor(() => {
-        const select = screen.queryByRole('combobox', {
-          name: /Show preview for/,
-        });
-        expect(select).not.toBeInTheDocument();
+      await uploadLocalImageForHeroBanner();
+      const select = screen.getByRole('combobox', {
+        name: /Show preview for/,
       });
+      expect(select).not.toBeInTheDocument();
     });
   });
 });
@@ -114,7 +97,7 @@ describe('Image overlay toggle', () => {
       expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument();
     });
 
-    it('shows when there is a saved image', async () => {
+    it('shows when there is a saved image', () => {
       render(<BannerImageFields {...props} />);
 
       const overlayInput = screen.queryByLabelText('Enable overlay');
@@ -138,7 +121,7 @@ describe('Image overlay toggle', () => {
       expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
 
-    it('does not show when there is a saved image', async () => {
+    it('does not show when there is a saved image', () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
       expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
@@ -161,7 +144,7 @@ describe('Image overlay toggle', () => {
       expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
 
-    it('does not show when there is a saved image', async () => {
+    it('does not show when there is a saved image', () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
       expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
@@ -171,7 +154,7 @@ describe('Image overlay toggle', () => {
   describe('when layout is fixed-ratio layout', () => {
     const bannerLayout = 'fixed_ratio_layout';
 
-    it('does not show when there is an unsaved image', async () => {
+    it('does not show when there is an unsaved image', () => {
       render(
         <BannerImageFields
           {...props}
@@ -183,7 +166,7 @@ describe('Image overlay toggle', () => {
       expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
 
-    it('shows when there is a saved image', async () => {
+    it('shows when there is a saved image', () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
       expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument();
