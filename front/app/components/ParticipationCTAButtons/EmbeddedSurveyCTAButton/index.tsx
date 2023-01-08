@@ -1,0 +1,136 @@
+import React, { useEffect, useState, useCallback, FormEvent } from 'react';
+
+// Components
+import { Box, Button } from '@citizenlab/cl2-component-library';
+
+// hooks
+import { useTheme } from 'styled-components';
+import useAuthUser from 'hooks/useAuthUser';
+
+// services
+import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { IProjectData } from 'services/projects';
+import { getSurveyTakingRules } from 'services/actionTakingRules';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { scrollToElement } from 'utils/scroll';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
+// router
+import clHistory from 'utils/cl-router/history';
+import { useLocation } from 'react-router-dom';
+
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
+
+type CTAProps = {
+  project: IProjectData;
+  phases: Error | IPhaseData[] | null | undefined;
+};
+
+export const EmbeddedSurveyCTAButton = ({ phases, project }: CTAProps) => {
+  const theme = useTheme();
+  const authUser = useAuthUser();
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const { pathname, hash: divId } = useLocation();
+  const hasProjectEnded = currentPhase
+    ? pastPresentOrFuture([
+        currentPhase.attributes.start_at,
+        currentPhase.attributes.end_at,
+      ]) === 'past'
+    : false;
+
+  useEffect(() => {
+    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+  }, [phases]);
+
+  if (isNilOrError(project)) {
+    return null;
+  }
+
+  useEffect(() => {
+    const element = document.getElementById(divId);
+    if (element) {
+      element.scrollIntoView();
+    }
+  }, [divId]);
+
+  const scrollTo = useCallback(
+    (id: string, shouldSelectCurrentPhase = true) =>
+      (event: FormEvent) => {
+        event.preventDefault();
+
+        if (!isNilOrError(project)) {
+          const isOnProjectPage = pathname.endsWith(
+            `/projects/${project.attributes.slug}`
+          );
+
+          currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
+
+          if (isOnProjectPage) {
+            scrollToElement({ id, shouldFocus: true });
+          } else {
+            clHistory.push(`/projects/${project.attributes.slug}#${id}`);
+          }
+        }
+      },
+    [currentPhase, project, pathname]
+  );
+
+  const { publication_status } = project.attributes;
+
+  const { enabled, disabledReason } = getSurveyTakingRules({
+    project,
+    phaseContext: currentPhase,
+    signedIn: !isNilOrError(authUser),
+  });
+  const registrationNotCompleted =
+    !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
+  const shouldVerify = !!(
+    disabledReason === 'maybeNotVerified' || disabledReason === 'notVerified'
+  );
+
+  const showSignIn =
+    shouldVerify ||
+    disabledReason === 'maybeNotPermitted' ||
+    registrationNotCompleted;
+
+  const handleTakeSurveyClick = (event: FormEvent) => {
+    if (showSignIn) {
+      openSignUpInModal({
+        flow: 'signup',
+        verification: shouldVerify,
+        verificationContext: undefined,
+        action: () => scrollTo('project-survey')(event),
+      });
+    }
+
+    if (enabled === true) {
+      scrollTo('project-survey')(event);
+    }
+  };
+
+  if (hasProjectEnded || publication_status === 'archived') {
+    return null;
+  }
+
+  return (
+    <Box>
+      <Button
+        buttonStyle="primary"
+        onClick={handleTakeSurveyClick}
+        fontWeight="500"
+        bgColor={theme.colors.white}
+        textColor={theme.colors.tenantText}
+        iconColor={theme.colors.tenantText}
+      >
+        <FormattedMessage {...messages.takeTheSurvey} />
+      </Button>
+    </Box>
+  );
+};

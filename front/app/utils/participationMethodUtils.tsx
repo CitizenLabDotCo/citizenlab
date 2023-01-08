@@ -16,6 +16,7 @@ import { IProjectData } from 'services/projects';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import { IdeationCTAButton } from 'components/ParticipationCTAButtons/IdeationCTAButton';
 import { NativeSurveyCTAButton } from 'components/ParticipationCTAButtons/NativeSurveyCTAButton';
+import { EmbeddedSurveyCTAButton } from 'components/ParticipationCTAButtons/EmbeddedSurveyCTAButton';
 
 // utils
 import { isNilOrError } from './helperUtils';
@@ -193,7 +194,9 @@ const surveyConfig: ParticipationMethodConfig = {
   showInputManager: false,
   isMethodLocked: false,
   renderCTAButton: (props: CTAProps) => {
-    return null;
+    return (
+      <EmbeddedSurveyCTAButton project={props.project} phases={props.phases} />
+    );
   },
 };
 
