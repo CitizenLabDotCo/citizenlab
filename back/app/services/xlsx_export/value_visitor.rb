@@ -12,10 +12,6 @@ module XlsxExport
       value_for(field)
     end
 
-    def visit_multiline_text(field)
-      # Not supported yet. Field type not used in native surveys, nor in idea forms.
-    end
-
     def visit_html(field)
       # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end

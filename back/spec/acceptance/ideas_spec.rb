@@ -764,7 +764,7 @@ resource 'Ideas' do
           end
 
           example_request '[error] Creating an idea in a project with an active information phase' do
-            expect(response_status).to eq 401
+            assert_status 401
             json_response = json_parse(response_body)
             expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
           end
@@ -778,6 +778,16 @@ resource 'Ideas' do
           end
         end
 
+        example '[error] Create an idea when there is a posting disabled reason' do
+          expect_any_instance_of(ParticipationContextService)
+            .to receive(:posting_idea_disabled_reason_for_context).with(project, @user).and_return('i_dont_like_you')
+
+          do_request
+
+          assert_status 401
+          expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
+        end
+
         example_group 'with granular permissions', skip: !CitizenLab.ee? do
           let(:group) { create(:group) }
 
@@ -787,7 +797,7 @@ resource 'Ideas' do
           end
 
           example_request '[error] Create an idea in a project with groups posting permission', document: false do
-            expect(response_status).to eq 401
+            assert_status 401
           end
 
           example 'Create an idea in a project with groups posting permission' do
@@ -944,6 +954,16 @@ resource 'Ideas' do
             expect(new_idea.votes[0].mode).to eq 'up'
             expect(new_idea.votes[0].user.id).to eq @user.id
             expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+          end
+
+          example '[error] Update an idea when there is a posting disabled reason' do
+            expect_any_instance_of(ParticipationContextService)
+              .to receive(:posting_idea_disabled_reason_for_context).with(@project, @user).and_return('i_dont_like_you')
+
+            do_request
+
+            assert_status 401
+            expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
           end
         end
 

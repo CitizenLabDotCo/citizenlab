@@ -106,6 +106,7 @@ const ProjectRow = ({
                   <ManageButton
                     isDisabled={isBeingDeleted || !userCanModerateProject}
                     publicationId={publication.publicationId}
+                    key="manage"
                   />
                 );
               } else {

@@ -140,6 +140,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
     } = {
       notPermitted: messages.postingNoPermission,
       postingDisabled: messages.postingDisabled,
+      postingLimitedMaxReached: messages.postingLimitedMaxReached,
       projectInactive: messages.postingInactive,
       futureEnabled: messages.postingNotYetPossible,
       notActivePhase: messages.postingInNonActivePhases,
