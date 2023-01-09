@@ -697,6 +697,7 @@
   "app.containers.IdeaButton.postingDisabled": "Det er for øyeblikket ikke mulig å poste en idé her",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nye innlegg kan bare tilføyes i aktive faser.",
   "app.containers.IdeaButton.postingInactive": "Nye innlegg blir ikke akseptert for tiden.",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "Du har allerede besvart denne undersøkelsen. Takk for din respons!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "For å finne ut om du kan publisere ideer her, vennligst {signInLink}.",
   "app.containers.IdeaButton.postingNoPermission": "Det er for øyeblikket ikke mulig å poste en idé her",
   "app.containers.IdeaButton.postingNotYetPossible": "Nye innlegg er ennå ikke akseptert her.",
