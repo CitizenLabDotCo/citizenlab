@@ -196,10 +196,6 @@ export interface IAppConfigurationSettings {
   segment?: AppConfigurationFeature & {
     destinations: string;
   };
-  matomo?: AppConfigurationFeature & {
-    tenant_site_id: string;
-    product_site_id: string;
-  };
   redirects?: AppConfigurationFeature & {
     rules: {
       path: string;
