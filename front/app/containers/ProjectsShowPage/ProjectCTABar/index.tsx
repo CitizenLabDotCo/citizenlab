@@ -9,6 +9,7 @@ import { CTAButton } from 'containers/ProjectsShowPage/ProjectCTABar/CTAButton';
 // hooks
 import { useTheme } from 'styled-components';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import usePhases from 'hooks/usePhases';
 
 // style
 import styled from 'styled-components';
@@ -18,6 +19,12 @@ import { media, viewportWidths } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+
+// services
+import { getCurrentPhase } from 'services/phases';
+
+// utils
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 const Container = styled.div`
   width: 100vw;
@@ -49,6 +56,11 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
   const [isVisible, setIsVisible] = useState(false);
   const portalElement = document?.getElementById('topbar-portal');
+  const phases = usePhases(projectId);
+  const currentPhase = getCurrentPhase(phases);
+  const timeLeft = currentPhase
+    ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
+    : '';
 
   useEffect(() => {
     window.addEventListener(
@@ -95,15 +107,17 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         </Text>
       </Box>
       <Box display="flex" alignItems="center">
-        <Text color="white" style={{ textTransform: 'uppercase' }} mr="12px">
-          <FormattedMessage
-            {...messages.participationTimeLeft}
-            values={{
-              timeLeft: '3 weeks',
-            }}
-          />
-        </Text>
-        <CTAButton projectId={projectId} />
+        {timeLeft && (
+          <Text color="white" style={{ textTransform: 'uppercase' }} mr="12px">
+            <FormattedMessage
+              {...messages.participationTimeLeft}
+              values={{
+                timeLeft: timeLeft,
+              }}
+            />
+          </Text>
+        )}
+        <CTAButton projectId={projectId} phases={phases} />
       </Box>
     </Box>
   );

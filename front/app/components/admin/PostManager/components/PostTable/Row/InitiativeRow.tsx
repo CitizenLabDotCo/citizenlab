@@ -49,7 +49,7 @@ import GetAppConfiguration, {
 import GetInitiativeAllowedTransitions, {
   GetInitiativeAllowedTransitionsChildProps,
 } from 'resources/GetInitiativeAllowedTransitions';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -152,7 +152,7 @@ class InitiativeRow extends React.PureComponent<
       tenant.attributes.settings.initiatives
     ) {
       if (selectedStatusObject.attributes.code === 'proposed') {
-        return getDaysRemainingUntil(initiative.attributes.expires_at);
+        return getPeriodRemainingUntil(initiative.attributes.expires_at);
       } else {
         return (
           <StatusLabel

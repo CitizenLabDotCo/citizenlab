@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { unitOfTime } from 'moment';
 import { isString } from 'lodash-es';
 import { Locale } from 'typings';
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -107,8 +107,11 @@ export function getIsoDateUtc(date: string) {
   return moment.utc(new Date(date)).format('YYYY-MM-DD');
 }
 
-export function getDaysRemainingUntil(date: string): number {
-  return moment(new Date(date)).diff(moment({ hours: 0 }), 'days');
+export function getPeriodRemainingUntil(
+  date: string,
+  timeUnit: unitOfTime.Diff = 'days'
+): number {
+  return moment(new Date(date)).diff(moment({ hours: 0 }), timeUnit);
 }
 
 export function convertSecondsToDDHHMM(seconds: number) {

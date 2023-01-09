@@ -419,6 +419,6 @@ export default defineMessages({
   },
   participationTimeLeft: {
     id: 'app.containers.Projects.participationTimeLeft',
-    defaultMessage: '{timeLeft} left',
+    defaultMessage: '{timeLeft}  weeks left',
   },
 });

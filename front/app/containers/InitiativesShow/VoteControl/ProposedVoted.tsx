@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -122,7 +122,7 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
     } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
-    const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
+    const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
     return (
       <Container>

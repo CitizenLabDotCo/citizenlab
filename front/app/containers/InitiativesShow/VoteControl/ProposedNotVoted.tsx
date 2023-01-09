@@ -3,7 +3,7 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -163,7 +163,7 @@ const ProposedNotVoted = ({
   const theme = useTheme();
   const voteCount = initiative.attributes.upvotes_count;
   const voteLimit = voting_threshold;
-  const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
+  const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
   const thresholdReachedTooltip = threshold_reached_message ? (
     <IconTooltip
