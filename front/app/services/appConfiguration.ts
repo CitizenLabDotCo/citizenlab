@@ -189,7 +189,6 @@ export interface IAppConfigurationSettings {
   custom_idea_statuses?: AppConfigurationFeature;
   idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
-  intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;
   };

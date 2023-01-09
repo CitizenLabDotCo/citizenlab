@@ -12,7 +12,6 @@ import similarIdeaConfiguration from './commercial/similar_ideas';
 import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
 import customMapsConfiguration from './commercial/custom_maps';
-import intercomConfiguration from './commercial/intercom';
 import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import contentBuilderConfiguration from './commercial/content_builder';
@@ -51,10 +50,6 @@ export default loadModules([
   },
   {
     configuration: ideaCustomFieldsConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: intercomConfiguration,
     isEnabled,
   },
   {
