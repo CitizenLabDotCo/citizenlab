@@ -12,7 +12,6 @@ import similarIdeaConfiguration from './commercial/similar_ideas';
 import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
 import customMapsConfiguration from './commercial/custom_maps';
-import googleAnalyticsConfiguration from './commercial/google_analytics';
 import intercomConfiguration from './commercial/intercom';
 import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
@@ -57,10 +56,6 @@ export default loadModules([
   },
   {
     configuration: matomoConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: googleAnalyticsConfiguration,
     isEnabled,
   },
   {
