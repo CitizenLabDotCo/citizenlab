@@ -697,6 +697,7 @@
   "app.containers.IdeaButton.postingDisabled": "Hier eine Idee zu veröffentlichen ist derzeit nicht möglich.",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nur in aktiven Phasen können neue Beiträge hinzugefügt werden",
   "app.containers.IdeaButton.postingInactive": "Derzeit werden keine neuen Beiträge angenommen.\n",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "Sie haben diese Umfrage bereits abgeschlossen. Vielen Dank für Ihre Antwort!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Bitte {signInLink}, um zu sehen, welche Aktionen Sie vornehmen können.",
   "app.containers.IdeaButton.postingNoPermission": "Hier eine Idee zu veröffentlichen ist derzeit nicht möglich.",
   "app.containers.IdeaButton.postingNotYetPossible": "Hier werden noch keine neuen Beiträge entgegengenommen.\n",
