@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
 
 // typings
-import { Locale } from 'typings';
 
 // styling
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div<{ align: 'left' | 'center' }>`
   width: ${({ align }) => (align === 'left' ? '100%' : 'auto')};
@@ -37,46 +35,19 @@ interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   title: string;
-  locale?: Locale;
-  translateButtonClicked?: boolean;
+
   className?: string;
   color?: string;
   align?: 'left' | 'center';
 }
 
 const PostTitle = memo<Props>(
-  ({
-    postId,
-    postType,
-    title,
-    locale,
-    translateButtonClicked,
-    className,
-    color,
-    align = 'center',
-  }) => {
+  ({ title, postType, className, color, align = 'center' }) => {
     return (
       <Container className={className} align={align}>
-        <Outlet
-          id="app.components.PostShowComponents.Title.translation"
-          title={title}
-          postId={postId}
-          postType={postType}
-          color={color}
-          align={align}
-          translateButtonClicked={translateButtonClicked}
-          locale={locale}
-        >
-          {(outletComponents) =>
-            outletComponents.length > 0 ? (
-              <>{outletComponents}</>
-            ) : (
-              <Title id={`e2e-${postType}-title`} color={color} align={align}>
-                {title}
-              </Title>
-            )
-          }
-        </Outlet>
+        <Title id={`e2e-${postType}-title`} color={color} align={align}>
+          {title}
+        </Title>
       </Container>
     );
   }

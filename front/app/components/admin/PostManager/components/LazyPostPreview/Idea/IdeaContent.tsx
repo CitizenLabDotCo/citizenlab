@@ -292,10 +292,8 @@ export class IdeaContent extends PureComponent<
                 )}
 
                 <StyledBody
-                  postId={ideaId}
                   postType="idea"
                   body={localize(idea.attributes.body_multiloc)}
-                  locale={locale}
                 />
 
                 {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (

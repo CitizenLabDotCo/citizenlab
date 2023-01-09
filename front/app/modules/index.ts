@@ -7,7 +7,6 @@ import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
-import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
@@ -160,10 +159,7 @@ export default loadModules([
     configuration: IdClaveUnicaConfiguration,
     isEnabled,
   },
-  {
-    configuration: machineTranslationsConfiguration,
-    isEnabled,
-  },
+
   {
     configuration: widgetsConfiguration,
     isEnabled,

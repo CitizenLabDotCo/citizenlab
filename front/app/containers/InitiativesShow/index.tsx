@@ -4,8 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // analytics
-import { trackEvent } from 'utils/analytics';
-import tracks from './tracks';
 
 // router
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -82,8 +80,6 @@ import {
   rightColumnWidthTablet,
   pageContentMaxWidth,
 } from './styleConstants';
-
-import Outlet from 'components/Outlet';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -395,21 +391,6 @@ export class InitiativesShow extends PureComponent<
     this.setState({ initiativeIdForSocialSharing: null });
   };
 
-  onTranslateInitiative = () => {
-    this.setState((prevState) => {
-      // analytics
-      if (prevState.translateButtonClicked === true) {
-        trackEvent(tracks.clickGoBackToOriginalInitiativeCopyButton);
-      } else if (prevState.translateButtonClicked === false) {
-        trackEvent(tracks.clickTranslateInitiativeButton);
-      }
-
-      return {
-        translateButtonClicked: !prevState.translateButtonClicked,
-      };
-    });
-  };
-
   onScrollToOfficialFeedback = () => {
     if (this.officialFeedbackElement.current) {
       this.officialFeedbackElement.current.scrollIntoView({
@@ -442,7 +423,7 @@ export class InitiativesShow extends PureComponent<
     const {
       loaded,
       initiativeIdForSocialSharing,
-      translateButtonClicked,
+
       a11y_pronounceLatestOfficialFeedbackPost,
     } = this.state;
     const { formatMessage } = this.props.intl;
@@ -525,8 +506,6 @@ export class InitiativesShow extends PureComponent<
                   postId={initiativeId}
                   postType="initiative"
                   title={initiativeTitle}
-                  locale={locale}
-                  translateButtonClicked={translateButtonClicked}
                   color="white"
                   align="left"
                 />
@@ -535,13 +514,7 @@ export class InitiativesShow extends PureComponent<
             </InitiativeBannerContainer>
           )}
 
-          {isDesktop && (
-            <ActionBar
-              initiativeId={initiativeId}
-              translateButtonClicked={translateButtonClicked}
-              onTranslateInitiative={this.onTranslateInitiative}
-            />
-          )}
+          {isDesktop && <ActionBar />}
 
           {isNotDesktop && (
             <StyledVoteControl
@@ -561,8 +534,6 @@ export class InitiativesShow extends PureComponent<
                       postType="initiative"
                       postId={initiativeId}
                       title={initiativeTitle}
-                      locale={locale}
-                      translateButtonClicked={translateButtonClicked}
                     />
                   </InitiativeHeader>
                 )}
@@ -579,15 +550,6 @@ export class InitiativesShow extends PureComponent<
                   />
                 )}
 
-                <Outlet
-                  id="app.containers.InitiativesShow.left"
-                  windowSize={windowSize}
-                  translateButtonClicked={translateButtonClicked}
-                  onClick={this.onTranslateInitiative}
-                  initiative={initiative}
-                  locale={locale}
-                />
-
                 {initiativeGeoPosition && initiativeAddress && (
                   <StyledDropdownMap
                     address={initiativeAddress}
@@ -602,13 +564,7 @@ export class InitiativesShow extends PureComponent<
                   />
                 </ScreenReaderOnly>
 
-                <Body
-                  postId={initiativeId}
-                  postType="initiative"
-                  locale={locale}
-                  body={initiativeBody}
-                  translateButtonClicked={translateButtonClicked}
-                />
+                <Body postType="initiative" body={initiativeBody} />
 
                 {!isNilOrError(initiativeFiles) && initiativeFiles.length > 0 && (
                   <Box mb="25px">
