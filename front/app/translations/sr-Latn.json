@@ -697,6 +697,7 @@
   "app.containers.IdeaButton.postingDisabled": "Postavka ideja na ovom mestu, trenutno nije moguća.",
   "app.containers.IdeaButton.postingInNonActivePhases": "Novi unosi mogu biti dodati samo u sklopu aktivnih faza.",
   "app.containers.IdeaButton.postingInactive": "Novi unosi se trenutno ne prihvataju.",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "Već ste popunili ovu anketu. Hvala vam na odgovoru!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Da biste saznali da li ovde možete uneti vaše ideje, molimo vas {signInLink} na platformu.",
   "app.containers.IdeaButton.postingNoPermission": "Postavka ideja na ovom mestu, trenutno nije moguća.",
   "app.containers.IdeaButton.postingNotYetPossible": "Novi unosi se još uvek ne prihvataju",
