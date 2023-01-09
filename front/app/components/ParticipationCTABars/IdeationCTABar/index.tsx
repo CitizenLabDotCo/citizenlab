@@ -50,42 +50,50 @@ export const IdeationCTABar = ({ phases, project }: CTAProps) => {
     return null;
   }
 
-  const { enabled } = getIdeaPostingRules({
+  const { enabled, disabledReason } = getIdeaPostingRules({
     project,
     phase: !isNilOrError(currentPhase) ? currentPhase : null,
     authUser,
   });
+  const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
-  const CTAButton = enabled ? (
-    <Box display="flex" justifyContent="flex-end">
-      <IdeaButton
-        projectId={project.id}
-        participationContextType={isPhaseIdeation ? 'phase' : 'project'}
-        phaseId={isPhaseIdeation ? currentPhase.id : ''}
+  let CTAButton: React.ReactNode = null;
+
+  if (!hasUserParticipated) {
+    CTAButton = enabled ? (
+      <Box display="flex" justifyContent="flex-end">
+        <IdeaButton
+          projectId={project.id}
+          participationContextType={isPhaseIdeation ? 'phase' : 'project'}
+          phaseId={isPhaseIdeation ? currentPhase.id : ''}
+          fontWeight="500"
+          bgColor={theme.colors.white}
+          textColor={theme.colors.tenantText}
+        />
+      </Box>
+    ) : (
+      <Button
+        buttonStyle="secondary"
+        onClick={() => {
+          // Scroll to ideas
+        }}
         fontWeight="500"
         bgColor={theme.colors.white}
         textColor={theme.colors.tenantText}
-      />
-    </Box>
-  ) : (
-    <Button
-      buttonStyle="secondary"
-      onClick={() => {
-        // Scroll to ideas
-      }}
-      fontWeight="500"
-      bgColor={theme.colors.white}
-      textColor={theme.colors.tenantText}
-      iconColor={theme.colors.tenantText}
-    >
-      <FormattedMessage {...messages.seeIdeas} />
-    </Button>
-  );
+        iconColor={theme.colors.tenantText}
+      >
+        <FormattedMessage {...messages.seeIdeas} />
+      </Button>
+    );
+  } else {
+    CTAButton = null;
+  }
 
   return (
     <ParticipationCTAContent
       currentPhase={currentPhase}
       CTAButton={CTAButton}
+      hasUserParticipated={hasUserParticipated}
     />
   );
 };
