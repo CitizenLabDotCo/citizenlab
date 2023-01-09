@@ -51,6 +51,7 @@ export type ActionPermission<DisabledReasons> =
 export type IIdeaPostingDisabledReason =
   | 'notPermitted'
   | 'postingDisabled'
+  | 'postingLimitedMaxReached'
   | 'projectInactive'
   | 'notActivePhase'
   | 'maybeNotPermitted'
@@ -94,6 +95,11 @@ const ideaPostingDisabledReason = (
     case 'posting_disabled':
       return {
         disabledReason: 'postingDisabled',
+        action: null,
+      };
+    case 'posting_limited_max_reached':
+      return {
+        disabledReason: 'postingLimitedMaxReached',
         action: null,
       };
     case 'not_permitted':

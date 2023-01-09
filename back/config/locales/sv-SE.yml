@@ -195,7 +195,7 @@ sv:
       upvotes_count: 'Uppröster'
       downvotes_count: 'Nerröster'
       baskets_count: 'Korgar'
-      input_url: 'URL'
+      input_url: 'Webbadress'
       project: 'Projekt'
       status: 'Status'
       assignee_fullname: 'Tilldelad person'
@@ -205,3 +205,6 @@ sv:
       title: 'Din fråga'
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
+    survey_end_page:
+      title: 'Undersökningens slut'
+      description: "Skicka in dina svar genom att klicka på Skicka undersökning nedan."

@@ -4,24 +4,30 @@ import {
   JsonSchema,
   Layout,
   Tester,
-  UISchemaElement,
   uiTypeIs,
 } from '@jsonforms/core';
+import Ajv from 'ajv';
 import { forOwn, isEmpty } from 'lodash-es';
+import {
+  ExtendedRule,
+  ExtendedUISchema,
+  isVisible,
+} from '../Controls/visibilityUtils';
 
 export interface PageType extends Layout {
   type: 'Page';
-  /**
-   * The label associated with this category layout.
-   */
-
   options: {
-    title: string;
-    description: string;
+    id?: string;
+    title?: string;
+    description?: string;
   };
+  label?: string;
+  scope?: string;
+  ruleArray?: ExtendedRule[];
+  elements: ExtendedUISchema[];
 }
 
-export interface PageCategorization extends UISchemaElement {
+export interface PageCategorization extends ExtendedUISchema {
   type: 'Categorization';
   /**
    * The label of this categorization.
@@ -31,8 +37,35 @@ export interface PageCategorization extends UISchemaElement {
    * The child elements of this categorization which are either of type
    * {@link PageType}.
    */
-  elements: PageType[];
+  elements: (PageType | PageCategorization)[];
 }
+
+export const keyPresentInPageRoute = (
+  key: string,
+  userPageRoute: PageType[]
+) => {
+  let isFound = false;
+  userPageRoute.forEach((page) => {
+    const currentPageElementNames = page.elements.map((uiSchemaElement) =>
+      uiSchemaElement.scope.split('/').pop()
+    );
+    isFound ||= currentPageElementNames.includes(key);
+  });
+  return isFound;
+};
+
+export const getFilteredDataForUserPath = (
+  userRoute: PageType[],
+  data: any
+) => {
+  const filteredData = { data };
+  forOwn(data, (value, key) => {
+    filteredData.data[key] = keyPresentInPageRoute(key, userRoute)
+      ? value
+      : undefined;
+  });
+  return filteredData;
+};
 
 export const getSanitizedFormData = (data) => {
   const sanitizedFormData = {};
@@ -46,10 +79,12 @@ export const getSanitizedFormData = (data) => {
 
 export const getPageSchema = (
   schema: JsonSchema,
-  pageCategorization: PageCategorization | PageType
+  pageCategorization: PageType,
+  data: any,
+  ajv: Ajv
 ) => {
-  const currentPageElementNames: string[] = pageCategorization.elements.map(
-    (e) => e.scope.split('/').pop()
+  const currentPageElementNames = pageCategorization.elements.map(
+    (uiSchemaElement) => uiSchemaElement.scope.split('/').pop()
   );
 
   const pageSchemaProperties = {};
@@ -59,10 +94,19 @@ export const getPageSchema = (
     }
   });
 
+  const hiddenElements = pageCategorization.elements
+    .filter((pageElement) => pageElement.ruleArray)
+    .filter((pageElementWithRule) => {
+      return !isVisible(pageElementWithRule, data, '', ajv);
+    })
+    .map((element) => element['scope'].split('/').pop());
+
   const pageSchema = Object.assign({}, schema, {
-    required: (schema.required || []).filter((requiredElementName) =>
-      currentPageElementNames.includes(requiredElementName)
-    ),
+    required: (schema.required || [])
+      .filter((requiredElementName) =>
+        currentPageElementNames.includes(requiredElementName)
+      )
+      .filter((requiredElement) => !hiddenElements.includes(requiredElement)),
     properties: pageSchemaProperties,
   });
 

@@ -130,9 +130,9 @@ export const Heading = ({
             width="100%"
             color={headingTextColor}
             variant="bodyL"
-            fontWeight="normal"
-            pb={isSurveyOnMobile ? '0px' : '8px'}
-            fontSize={isSurveyOnMobile ? 'xl' : 'xxxxl'}
+            fontWeight={isSurveyOnMobile ? 'bold' : 'normal'}
+            fontSize={isSurveyOnMobile ? 'l' : 'xxxxl'}
+            ml={isSurveyOnMobile ? '16px' : '0px'}
             my={isSurveyOnMobile ? undefined : '0px'}
           >
             {titleText}
