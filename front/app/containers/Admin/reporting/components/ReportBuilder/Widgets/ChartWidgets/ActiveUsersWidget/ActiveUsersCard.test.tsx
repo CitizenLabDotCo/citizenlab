@@ -3,9 +3,8 @@ import ActiveUsersCard from './ActiveUsersCard';
 import { render, screen } from 'utils/testUtils/rtl';
 import useActiveUsers from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers';
 
-jest.mock(
-  'modules/commercial/analytics/admin/components/ActiveUsersCard/useActiveUsers',
-  () => jest.fn()
+jest.mock('components/admin/GraphCards/ActiveUsersCard/useActiveUsers', () =>
+  jest.fn()
 );
 
 describe('<ActiveUsersCard />', () => {
