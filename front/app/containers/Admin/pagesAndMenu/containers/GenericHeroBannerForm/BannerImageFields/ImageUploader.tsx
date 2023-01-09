@@ -54,6 +54,7 @@ const ImageUploader = ({
           <ImageCropper
             image={headerLocalDisplayImage}
             onComplete={onAddImage}
+            onRemove={onRemoveImageFromUploader}
           />
           <Warning>
             <Text>

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import Dropzone, { Accept } from 'react-dropzone';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -22,7 +21,7 @@ import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
-import { ScreenReaderOnly } from 'utils/a11y';
+import RemoveImageButton from '../RemoveImageButton';
 
 const Container = styled.div`
   width: 100%;
@@ -162,39 +161,6 @@ const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
     height: ${({ maxWidth, ratio }) => (ratio !== 1 ? 'auto' : maxWidth)};
     padding-bottom: ${({ ratio }) =>
       ratio !== 1 ? `${Math.round(ratio * 100)}%` : '0'};
-  }
-`;
-
-const RemoveIcon = styled(Icon)`
-  fill: #fff;
-  transition: all 100ms ease-out;
-`;
-
-const RemoveButton = styled.button`
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 1;
-  cursor: pointer;
-  border-radius: 50%;
-  border: solid 1px transparent;
-  background: rgba(0, 0, 0, 0.6);
-  transition: all 100ms ease-out;
-
-  &:hover {
-    background: #000;
-    border-color: #fff;
-
-    ${RemoveIcon} {
-      fill: #fff;
-    }
   }
 `;
 
@@ -482,19 +448,10 @@ class ImagesDropzone extends PureComponent<
                   src={this.state.urlObjects[image.base64]}
                   objectFit={objectFit}
                 >
-                  <RemoveButton
-                    data-cy="e2e-remove-image-button"
-                    type="button"
-                    onMouseDown={removeFocusAfterMouseClick}
+                  <RemoveImageButton
                     onClick={this.removeImage(image)}
-                    className="remove-button"
-                  >
-                    <RemoveIcon name="close" />
-                    <ScreenReaderOnly>
-                      {this.props.removeIconAriaTitle ||
-                        formatMessage(messages.a11y_removeImage)}
-                    </ScreenReaderOnly>
-                  </RemoveButton>
+                    removeIconAriaTitle={this.props.removeIconAriaTitle}
+                  />
                 </Image>
                 {previewOverlayElement}
               </Box>
