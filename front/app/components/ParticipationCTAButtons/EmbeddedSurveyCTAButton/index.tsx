@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, FormEvent } from 'react';
 
 // Components
 import { Box, Button } from '@citizenlab/cl2-component-library';
+import { ParticipationCTAContent } from 'components/ParticipationCTAButtons/ParticipationCTAContent';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -119,7 +120,7 @@ export const EmbeddedSurveyCTAButton = ({ phases, project }: CTAProps) => {
     return null;
   }
 
-  return (
+  const CTAButton = (
     <Box>
       <Button
         buttonStyle="primary"
@@ -132,5 +133,13 @@ export const EmbeddedSurveyCTAButton = ({ phases, project }: CTAProps) => {
         <FormattedMessage {...messages.takeTheSurvey} />
       </Button>
     </Box>
+  );
+
+  return (
+    <ParticipationCTAContent
+      project={project}
+      phases={phases}
+      CTAButton={CTAButton}
+    />
   );
 };

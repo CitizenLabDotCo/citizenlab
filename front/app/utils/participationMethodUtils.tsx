@@ -60,7 +60,7 @@ export type ParticipationMethodConfig = {
   showInputManager: boolean;
   isMethodLocked: boolean;
   postType: 'defaultInput' | 'nativeSurvey';
-  renderCTAButton: (props: CTAProps) => ReactNode | JSX.Element | null;
+  renderCTABar: (props: CTAProps) => ReactNode | JSX.Element | null;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -118,7 +118,7 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   isMethodLocked: false,
-  renderCTAButton: (props: CTAProps) => {
+  renderCTABar: (props: CTAProps) => {
     return <IdeationCTAButton project={props.project} phases={props.phases} />;
   },
 };
@@ -153,7 +153,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   },
   showInputManager: false,
   isMethodLocked: true,
-  renderCTAButton: (props: CTAProps) => {
+  renderCTABar: (props: CTAProps) => {
     return (
       <NativeSurveyCTAButton project={props.project} phases={props.phases} />
     );
@@ -174,7 +174,7 @@ const informationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTAButton: () => {
+  renderCTABar: () => {
     return null;
   },
 };
@@ -193,7 +193,7 @@ const surveyConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTAButton: (props: CTAProps) => {
+  renderCTABar: (props: CTAProps) => {
     return (
       <EmbeddedSurveyCTAButton project={props.project} phases={props.phases} />
     );
@@ -245,7 +245,7 @@ const budgetingConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   isMethodLocked: false,
-  renderCTAButton: (props: CTAProps) => {
+  renderCTABar: (props: CTAProps) => {
     return null;
   },
 };
@@ -264,7 +264,7 @@ const pollConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTAButton: (props: CTAProps) => {
+  renderCTABar: (props: CTAProps) => {
     return null;
   },
 };
@@ -283,7 +283,7 @@ const volunteeringConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTAButton: (props: CTAProps) => {
+  renderCTABar: (props: CTAProps) => {
     return null;
   },
 };

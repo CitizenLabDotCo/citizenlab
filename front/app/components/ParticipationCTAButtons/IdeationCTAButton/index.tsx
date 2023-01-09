@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 // Components
 import { Box } from '@citizenlab/cl2-component-library';
 import IdeaButton from 'components/IdeaButton';
+import { ParticipationCTAContent } from 'components/ParticipationCTAButtons/ParticipationCTAContent';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -46,7 +47,7 @@ export const IdeationCTAButton = ({ phases, project }: CTAProps) => {
     return null;
   }
 
-  return (
+  const CTAButton = (
     <Box display="flex" justifyContent="flex-end">
       <IdeaButton
         id="project-ideabutton-p"
@@ -58,5 +59,13 @@ export const IdeationCTAButton = ({ phases, project }: CTAProps) => {
         textColor={theme.colors.tenantText}
       />
     </Box>
+  );
+
+  return (
+    <ParticipationCTAContent
+      project={project}
+      phases={phases}
+      CTAButton={CTAButton}
+    />
   );
 };

@@ -2,29 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // Components
-import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import MainHeader from 'containers/MainHeader';
-import { CTAButton } from 'containers/ProjectsShowPage/ProjectCTABar/CTAButton';
 
 // hooks
-import { useTheme } from 'styled-components';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
 
 // style
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import { media, viewportWidths } from 'utils/styleUtils';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-
-// services
-import { getCurrentPhase } from 'services/phases';
-
 // utils
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
+import { getMethodConfig } from 'utils/participationMethodUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getParticipationMethod } from 'utils/participationMethodUtils';
 
 const Container = styled.div`
   width: 100vw;
@@ -51,16 +45,11 @@ type ProjectCTABarProps = {
 };
 
 export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
-  const theme = useTheme();
   const { windowWidth } = useWindowSize();
   const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
   const [isVisible, setIsVisible] = useState(false);
   const portalElement = document?.getElementById('topbar-portal');
   const phases = usePhases(projectId);
-  const currentPhase = getCurrentPhase(phases);
-  const timeLeft = currentPhase
-    ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
-    : '';
 
   useEffect(() => {
     window.addEventListener(
@@ -84,43 +73,19 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     );
   }, [projectId, smallerThanLargeTablet]);
 
-  const BarContents = (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-around"
-      flexDirection="row"
-      width="100%"
-      bgColor={theme.colors.tenantPrimary}
-      height="62px"
-    >
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <Icon
-          name="dot"
-          width="12px"
-          height="12px"
-          fill={colors.white}
-          mr="6px"
-        />
-        <Text color="white">
-          <FormattedMessage {...messages.projectOpenForSubmission} />
-        </Text>
-      </Box>
-      <Box display="flex" alignItems="center">
-        {timeLeft && (
-          <Text color="white" style={{ textTransform: 'uppercase' }} mr="12px">
-            <FormattedMessage
-              {...messages.participationTimeLeft}
-              values={{
-                timeLeft: timeLeft,
-              }}
-            />
-          </Text>
-        )}
-        <CTAButton projectId={projectId} phases={phases} />
-      </Box>
-    </Box>
-  );
+  const project = useProject({ projectId });
+  const participationMethod = project
+    ? getParticipationMethod(project, phases)
+    : undefined;
+
+  if (isNilOrError(project) || !participationMethod) {
+    return null;
+  }
+
+  const BarContents = getMethodConfig(participationMethod).renderCTABar({
+    project,
+    phases,
+  });
 
   if (portalElement && isVisible) {
     return createPortal(
