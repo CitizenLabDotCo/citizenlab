@@ -84,7 +84,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.disallow": "Забрани",
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Функционални",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Ово је неопходно дозволити како би се надгледале основне функционалности wеб странице. Поједини алати који су набројани овде се не морају односити на вас. Молимо вас да прочитате нашу декларацију о колачићима за више информација.",
-  "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Обавезно",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Да би платформа била функционална, уколико се региструјете чувамо аутентификациони колачић, као и одабрани језик на коме користите платформу.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Сачувајте",
