@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.Projects.volunteer',
     defaultMessage: 'Volunteer',
   },
+  seeIdeas: {
+    id: 'app.containers.Projects.seeIdeas',
+    defaultMessage: 'See ideas',
+  },
 });

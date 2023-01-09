@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react';
 
 // Components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import IdeaButton from 'components/IdeaButton';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
 import { useTheme } from 'styled-components';
+import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { IProjectData } from 'services/projects';
+import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 type CTAProps = {
   project: IProjectData;
@@ -22,6 +29,7 @@ type CTAProps = {
 
 export const IdeationCTABar = ({ phases, project }: CTAProps) => {
   const theme = useTheme();
+  const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const hasProjectEnded = currentPhase
     ? pastPresentOrFuture([
@@ -42,7 +50,13 @@ export const IdeationCTABar = ({ phases, project }: CTAProps) => {
     return null;
   }
 
-  const CTAButton = (
+  const { enabled } = getIdeaPostingRules({
+    project,
+    phase: !isNilOrError(currentPhase) ? currentPhase : null,
+    authUser,
+  });
+
+  const CTAButton = enabled ? (
     <Box display="flex" justifyContent="flex-end">
       <IdeaButton
         projectId={project.id}
@@ -53,6 +67,19 @@ export const IdeationCTABar = ({ phases, project }: CTAProps) => {
         textColor={theme.colors.tenantText}
       />
     </Box>
+  ) : (
+    <Button
+      buttonStyle="secondary"
+      onClick={() => {
+        // Scroll to ideas
+      }}
+      fontWeight="500"
+      bgColor={theme.colors.white}
+      textColor={theme.colors.tenantText}
+      iconColor={theme.colors.tenantText}
+    >
+      <FormattedMessage {...messages.seeIdeas} />
+    </Button>
   );
 
   return (
