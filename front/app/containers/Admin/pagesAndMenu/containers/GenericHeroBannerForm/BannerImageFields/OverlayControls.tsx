@@ -102,6 +102,7 @@ const OverlayControls = ({
     <>
       <Box mb={overlayEnabled ? '20px' : '0'}>
         <Toggle
+          id="overlay-toggle"
           onChange={handleOverlayEnabling}
           checked={overlayEnabled}
           label={

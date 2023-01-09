@@ -1,6 +1,6 @@
 import React from 'react';
 import BannerImageFields from '.';
-import { render, screen, userEvent } from 'utils/testUtils/rtl';
+import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 
 jest.mock('utils/cl-intl');
 
@@ -23,18 +23,14 @@ describe('Layout preview selector', () => {
   it('does not show when there is no image', () => {
     render(<BannerImageFields {...props} headerBg={null} />);
 
-    const select = screen.queryByRole('combobox', {
-      name: /Show preview for/,
-    });
+    const select = screen.queryByLabelText('Show preview for');
     expect(select).not.toBeInTheDocument();
   });
 
   it('shows when there is a saved image', () => {
     render(<BannerImageFields {...props} />);
 
-    const select = screen.getByRole('combobox', {
-      name: /Show preview for/,
-    });
+    const select = screen.getByLabelText('Show preview for');
     expect(select).toBeInTheDocument();
   });
 
@@ -42,9 +38,7 @@ describe('Layout preview selector', () => {
     render(<BannerImageFields {...props} headerBg={null} />);
 
     await uploadLocalImageForHeroBanner();
-    const select = screen.getByRole('combobox', {
-      name: /Show preview for/,
-    });
+    const select = screen.getByLabelText('Show preview for');
     expect(select).toBeInTheDocument();
   });
 
@@ -53,19 +47,14 @@ describe('Layout preview selector', () => {
 
     it('does not show when there is no image', () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-      const select = screen.queryByRole('combobox', {
-        name: /Show preview for/,
-      });
+      const select = screen.queryByLabelText('Show preview for');
       expect(select).not.toBeInTheDocument();
     });
 
     it('does not show when there is a saved image', () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-      const select = screen.queryByRole('combobox', {
-        name: /Show preview for/,
-      });
+      const select = screen.queryByLabelText('Show preview for');
       expect(select).not.toBeInTheDocument();
     });
 
@@ -73,7 +62,7 @@ describe('Layout preview selector', () => {
       render(<BannerImageFields {...props} headerBg={null} />);
 
       await uploadLocalImageForHeroBanner();
-      const select = screen.getByRole('combobox', {
+      const select = screen.queryByRole('select', {
         name: /Show preview for/,
       });
       expect(select).not.toBeInTheDocument();
@@ -100,7 +89,7 @@ describe('Image overlay toggle', () => {
     it('shows when there is a saved image', () => {
       render(<BannerImageFields {...props} />);
 
-      const overlayInput = screen.queryByLabelText('Enable overlay');
+      const overlayInput = screen.getByLabelText('Enable overlay');
       expect(overlayInput).toBeInTheDocument();
     });
   });
@@ -118,13 +107,13 @@ describe('Image overlay toggle', () => {
       );
 
       await uploadLocalImageForHeroBanner();
-      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
 
     it('does not show when there is a saved image', () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
   });
 
@@ -141,13 +130,13 @@ describe('Image overlay toggle', () => {
       );
 
       await uploadLocalImageForHeroBanner();
-      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
 
     it('does not show when there is a saved image', () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
   });
 
@@ -163,13 +152,15 @@ describe('Image overlay toggle', () => {
         />
       );
 
-      expect(screen.getByLabelText('Enable overlay')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Enable overlay')).not.toBeInTheDocument();
     });
 
     it('shows when there is a saved image', () => {
       render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-      expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument();
+      waitFor(() =>
+        expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument()
+      );
     });
   });
 });
