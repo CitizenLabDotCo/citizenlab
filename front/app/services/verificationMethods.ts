@@ -1,6 +1,3 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-
 export interface IVerificationMethodNamesMap {}
 
 export type TVerificationMethodName =
@@ -23,10 +20,4 @@ export type TVerificationMethod =
 
 export interface IVerificationMethods {
   data: TVerificationMethod[];
-}
-
-export function verificationMethodsStream() {
-  return streams.get<IVerificationMethods>({
-    apiEndpoint: `${API_PATH}/verification_methods`,
-  });
 }
