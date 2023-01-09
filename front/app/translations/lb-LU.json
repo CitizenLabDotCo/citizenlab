@@ -697,6 +697,7 @@
   "app.containers.IdeaButton.postingDisabled": "Et ass momentan net méiglech e neie Bäitrag ze posten.",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nei Bäiträg kënnen nëmmen an aktive Phasen bäigefüügt ginn.",
   "app.containers.IdeaButton.postingInactive": "Momentan gi keng nei Bäiträg ugeholl.",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "Dir hutt dës Ëmfro schonn ofgeschloss. Merci fir Är Äntwert!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Wgl. {signInLink} op d’Plattform fir ze gesinn wat fir Aktiounen ausgeféiert kënne ginn.",
   "app.containers.IdeaButton.postingNoPermission": "Et ass momentan net méiglech e neie Bäitrag ze posten.",
   "app.containers.IdeaButton.postingNotYetPossible": "Nei Bäiträg ginn nach net ugeholl.",
