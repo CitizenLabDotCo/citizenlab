@@ -17,6 +17,7 @@ import SharingModalContent from 'components/PostShowComponents/SharingModalConte
 import { IdeationCTABar } from 'components/ParticipationCTABars/IdeationCTABar';
 import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurveyCTABar';
 import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
+import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
 
 // utils
 import { isNilOrError } from './helperUtils';
@@ -244,7 +245,7 @@ const budgetingConfig: ParticipationMethodConfig = {
   showInputManager: true,
   isMethodLocked: false,
   renderCTABar: (props: CTAProps) => {
-    return null;
+    return <BudgetingCTABar project={props.project} phases={props.phases} />;
   },
 };
 

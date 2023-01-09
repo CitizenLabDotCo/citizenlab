@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.Projects.participationTimeLeft',
     defaultMessage: '{timeLeft}  weeks left',
   },
+  allocateYourBudget: {
+    id: 'app.containers.Projects.allocateYourBudget',
+    defaultMessage: 'Allocate your budget.',
+  },
 });

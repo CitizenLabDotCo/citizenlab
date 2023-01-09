@@ -121,18 +121,16 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTAProps) => {
   }
 
   const CTAButton = (
-    <Box>
-      <Button
-        buttonStyle="primary"
-        onClick={handleTakeSurveyClick}
-        fontWeight="500"
-        bgColor={theme.colors.white}
-        textColor={theme.colors.tenantText}
-        iconColor={theme.colors.tenantText}
-      >
-        <FormattedMessage {...messages.takeTheSurvey} />
-      </Button>
-    </Box>
+    <Button
+      buttonStyle="primary"
+      onClick={handleTakeSurveyClick}
+      fontWeight="500"
+      bgColor={theme.colors.white}
+      textColor={theme.colors.tenantText}
+      iconColor={theme.colors.tenantText}
+    >
+      <FormattedMessage {...messages.takeTheSurvey} />
+    </Button>
   );
 
   return (
