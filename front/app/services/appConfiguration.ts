@@ -192,9 +192,6 @@ export interface IAppConfigurationSettings {
   satismeter?: AppConfigurationFeature & {
     write_key: string;
   };
-  segment?: AppConfigurationFeature & {
-    destinations: string;
-  };
   redirects?: AppConfigurationFeature & {
     rules: {
       path: string;
