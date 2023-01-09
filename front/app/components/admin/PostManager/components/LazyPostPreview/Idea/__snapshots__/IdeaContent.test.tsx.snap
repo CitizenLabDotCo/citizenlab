@@ -75,8 +75,6 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         </IdeaContent__BodySectionTitle>
         <IdeaContent__StyledBody
           body="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut.</p>"
-          locale="en"
-          postId="myIdeasiD"
           postType="idea"
         />
         <IdeaContent__StyledMap
