@@ -697,6 +697,7 @@
   "app.containers.IdeaButton.postingDisabled": "Het is momenteel niet mogelijk om hier een idee the plaatsen.",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nieuwe bijdragen kunnen alleen in actieve fasen worden toegevoegd.",
   "app.containers.IdeaButton.postingInactive": "Nieuwe bijdragen plaatsen is momenteel niet mogelijk",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "Je hebt deze enquête al ingevuld. Bedankt voor je reactie!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Om te weten of je hier ideeën kan posten, moet je eerst even {signInLink} op het platform.",
   "app.containers.IdeaButton.postingNoPermission": "Het is momenteel niet mogelijk om hier een idee the plaatsen.",
   "app.containers.IdeaButton.postingNotYetPossible": "Nieuwe bijdragen plaatsen is momenteel niet mogelijk",
