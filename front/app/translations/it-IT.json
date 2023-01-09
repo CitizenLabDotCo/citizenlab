@@ -697,6 +697,7 @@
   "app.containers.IdeaButton.postingDisabled": "Attualmente non si accettano nuove candidature",
   "app.containers.IdeaButton.postingInNonActivePhases": "I nuovi invii possono essere aggiunti solo nelle fasi attive.",
   "app.containers.IdeaButton.postingInactive": "Attualmente non si accettano nuove iscrizioni.",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "You have already completed this survey. Thanks for your response!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Per favore {signInLink} alla piattaforma per vedere quali azioni puoi intraprendere.",
   "app.containers.IdeaButton.postingNoPermission": "Attualmente non si accettano nuove candidature",
   "app.containers.IdeaButton.postingNotYetPossible": "Non si accettano ancora nuovi invii.",
