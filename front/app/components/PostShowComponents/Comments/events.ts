@@ -31,9 +31,6 @@ export const commentReplyButtonClicked$ =
 
 export const commentTranslateButtonClicked = (commentId: string) =>
   eventEmitter.emit<string>(events.commentTranslateButtonClicked, commentId);
-export const commentTranslateButtonClicked$ = eventEmitter.observeEvent<string>(
-  events.commentTranslateButtonClicked
-);
 
 // -----------
 

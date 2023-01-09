@@ -128,14 +128,6 @@ export function trackEventByName(eventName: string, properties = {}) {
   });
 }
 
-/** @deprecated Use `trackEventByName` instead */
-export function trackEvent(event: IEvent) {
-  events$.next({
-    properties: event.properties || {},
-    name: event.name,
-  });
-}
-
 /** @deprecated Directly call trackEventByName instead */
 export const injectTracks =
   <P extends Record<string, any>>(events: { [key: string]: IEvent }) =>
