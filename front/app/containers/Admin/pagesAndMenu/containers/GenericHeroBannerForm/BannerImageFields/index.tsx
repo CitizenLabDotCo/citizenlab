@@ -75,17 +75,6 @@ const BannerImageField = ({
     // to a format that can be displayed. this is done locally
     // when the image is changed but needs to be done manually
     // to process the initial API response
-    const convertHeaderToUploadFile = async (
-      fileInfo: string | null | undefined
-    ) => {
-      if (fileInfo) {
-        const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
-        setHeaderLocalDisplayImage(
-          !isNilOrError(tenantHeaderBg) ? [tenantHeaderBg] : []
-        );
-        setBannerError(null);
-      }
-    };
     const headerFileInfo = headerBg?.large;
     convertHeaderToUploadFile(headerFileInfo);
 
@@ -103,6 +92,18 @@ const BannerImageField = ({
 
     setBannerError(null);
   }, [headerBg, formatMessage, setFormStatus]);
+
+  const convertHeaderToUploadFile = async (
+    fileInfo: string | null | undefined
+  ) => {
+    if (fileInfo) {
+      const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
+      setHeaderLocalDisplayImage(
+        !isNilOrError(tenantHeaderBg) ? [tenantHeaderBg] : []
+      );
+      setBannerError(null);
+    }
+  };
 
   const handleOnAddImageToUploader = (newImage: UploadFile[]) => {
     // this base64 value is sent to the API
