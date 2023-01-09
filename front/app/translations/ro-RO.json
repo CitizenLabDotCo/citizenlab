@@ -697,6 +697,7 @@
   "app.containers.IdeaButton.postingDisabled": "Pentru moment nu este posibilă publicarea unei idei aici.",
   "app.containers.IdeaButton.postingInNonActivePhases": "Înscrierile noi pot fi adăugate numai când fazele sunt active.",
   "app.containers.IdeaButton.postingInactive": "Înscrierile noi nu sunt acceptate momentan.",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "You have already completed this survey. Thanks for your response!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Pentru a ști dacă puteți posta idei aici, vă rugăm să vă logați {signInLink} pe platformă mai întâi.",
   "app.containers.IdeaButton.postingNoPermission": "Pentru moment nu este posibilă publicarea unei idei aici.",
   "app.containers.IdeaButton.postingNotYetPossible": "Înscrierile noi nu sunt acceptate momentan.",
