@@ -55,8 +55,9 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     window.addEventListener(
       'scroll',
       () => {
-        const actionButtonElement =
-          document.getElementById('project-ideabutton');
+        const actionButtonElement = document.getElementById(
+          'participation-detail'
+        );
         const actionButtonYOffset = actionButtonElement
           ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
           : undefined;

@@ -50,7 +50,6 @@ export const IdeationCTABar = ({ phases, project }: CTAProps) => {
   const CTAButton = (
     <Box display="flex" justifyContent="flex-end">
       <IdeaButton
-        id="project-ideabutton-p"
         projectId={project.id}
         participationContextType={isPhaseIdeation ? 'phase' : 'project'}
         phaseId={isPhaseIdeation ? currentPhase.id : ''}

@@ -203,16 +203,18 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
         <ProjectCTABar projectId={projectId} />
-        {processType === 'continuous' ? (
-          <>
-            <ContinuousIdeas projectId={projectId} />
-            <ContinuousSurvey projectId={projectId} />
-            <ContinuousPoll projectId={projectId} />
-            <ContinuousVolunteering projectId={projectId} />
-          </>
-        ) : (
-          <TimelineContainer projectId={projectId} />
-        )}
+        <div id="participation-detail">
+          {processType === 'continuous' ? (
+            <>
+              <ContinuousIdeas projectId={projectId} />
+              <ContinuousSurvey projectId={projectId} />
+              <ContinuousPoll projectId={projectId} />
+              <ContinuousVolunteering projectId={projectId} />
+            </>
+          ) : (
+            <TimelineContainer projectId={projectId} />
+          )}
+        </div>
         <Box
           display="flex"
           flexDirection="column"
