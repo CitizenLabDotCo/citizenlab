@@ -16,7 +16,7 @@ import { UploadFile } from 'typings';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNil, isNilOrError } from 'utils/helperUtils';
 
 import { ICustomPageAttributes } from 'services/customPages';
@@ -49,7 +49,7 @@ export interface Props {
 }
 
 export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
-export type TLocalHeaderImage = UploadFile[] | null;
+export type TLocalHeaderImage = UploadFile | null;
 export type TBannerError = string | null;
 
 const BannerImageField = ({
@@ -68,6 +68,7 @@ const BannerImageField = ({
     useState<TLocalHeaderImage>(null);
   const [bannerError, setBannerError] = useState<TBannerError>(null);
 
+  const stringifiedHeaderBg = JSON.stringify(headerBg);
   useEffect(() => {
     // https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
     const ac = new AbortController();
@@ -75,12 +76,29 @@ const BannerImageField = ({
     // to a format that can be displayed. this is done locally
     // when the image is changed but needs to be done manually
     // to process the initial API response
+    if (typeof headerBg === 'string') return;
     const headerFileInfo = headerBg?.large;
-    convertHeaderToUploadFile(headerFileInfo);
+    console.log('headerBg');
+    console.log(headerBg);
+    console.log(headerBg?.large);
+
+    (async () => {
+      // console.log('headerFileInfo');
+      // console.log(headerFileInfo);
+
+      const tenantHeaderBg = await convertHeaderToUploadFile(headerFileInfo);
+      // console.log('tenantHeaderBg');
+      // console.log(tenantHeaderBg);
+
+      setHeaderLocalDisplayImage(
+        !isNilOrError(tenantHeaderBg) ? tenantHeaderBg : null
+      );
+      setBannerError(null);
+    })();
 
     // https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
     return () => ac.abort();
-  }, [headerBg]);
+  }, [stringifiedHeaderBg]);
 
   // set error and disable save button if header is removed,
   // the form cannot be saved without an image
@@ -98,18 +116,18 @@ const BannerImageField = ({
   ) => {
     if (fileInfo) {
       const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
-      setHeaderLocalDisplayImage(
-        !isNilOrError(tenantHeaderBg) ? [tenantHeaderBg] : []
-      );
-      setBannerError(null);
+
+      return tenantHeaderBg;
     }
+
+    return null;
   };
 
-  const handleOnAddImageToUploader = (newImage: UploadFile[]) => {
+  const handleOnAddImageToUploader = (newImages: UploadFile[]) => {
     // this base64 value is sent to the API
-    onAddImage(newImage[0].base64);
+    onAddImage(newImages[0].base64);
     // this value is used for local display
-    setHeaderLocalDisplayImage([newImage[0]]);
+    setHeaderLocalDisplayImage(newImages[0]);
   };
 
   const handleOnRemoveImageFromUploader = () => {
@@ -117,7 +135,9 @@ const BannerImageField = ({
     setHeaderLocalDisplayImage(null);
   };
 
-  const imageIsSaved = headerLocalDisplayImage?.[0].remote || false;
+  const imageIsSaved = headerLocalDisplayImage?.[0]
+    ? isUploadFile(headerLocalDisplayImage[0])
+    : false;
   const hasLocalHeaderImage = !isNilOrError(headerLocalDisplayImage);
 
   const displayImageCropper =
