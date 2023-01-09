@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 // Components
 import { Box } from '@citizenlab/cl2-component-library';
 import IdeaButton from 'components/IdeaButton';
-import { ParticipationCTAContent } from 'components/ParticipationCTAButtons/ParticipationCTAContent';
+import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -21,7 +21,7 @@ type CTAProps = {
   phases: Error | IPhaseData[] | null | undefined;
 };
 
-export const NativeSurveyCTAButton = ({ phases, project }: CTAProps) => {
+export const NativeSurveyCTABar = ({ phases, project }: CTAProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const hasProjectEnded = currentPhase

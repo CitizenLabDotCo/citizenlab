@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, FormEvent } from 'react';
 
 // Components
 import { Box, Button } from '@citizenlab/cl2-component-library';
-import { ParticipationCTAContent } from 'components/ParticipationCTAButtons/ParticipationCTAContent';
+import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -34,7 +34,7 @@ type CTAProps = {
   phases: Error | IPhaseData[] | null | undefined;
 };
 
-export const EmbeddedSurveyCTAButton = ({ phases, project }: CTAProps) => {
+export const EmbeddedSurveyCTABar = ({ phases, project }: CTAProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);

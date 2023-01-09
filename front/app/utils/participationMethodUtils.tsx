@@ -14,9 +14,9 @@ import { IProjectData } from 'services/projects';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-import { IdeationCTAButton } from 'components/ParticipationCTAButtons/IdeationCTAButton';
-import { NativeSurveyCTAButton } from 'components/ParticipationCTAButtons/NativeSurveyCTAButton';
-import { EmbeddedSurveyCTAButton } from 'components/ParticipationCTAButtons/EmbeddedSurveyCTAButton';
+import { IdeationCTABar } from 'components/ParticipationCTABars/IdeationCTABar';
+import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurveyCTABar';
+import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
 
 // utils
 import { isNilOrError } from './helperUtils';
@@ -119,7 +119,7 @@ const ideationConfig: ParticipationMethodConfig = {
   showInputManager: true,
   isMethodLocked: false,
   renderCTABar: (props: CTAProps) => {
-    return <IdeationCTAButton project={props.project} phases={props.phases} />;
+    return <IdeationCTABar project={props.project} phases={props.phases} />;
   },
 };
 
@@ -154,9 +154,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   showInputManager: false,
   isMethodLocked: true,
   renderCTABar: (props: CTAProps) => {
-    return (
-      <NativeSurveyCTAButton project={props.project} phases={props.phases} />
-    );
+    return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
   },
 };
 
@@ -195,7 +193,7 @@ const surveyConfig: ParticipationMethodConfig = {
   isMethodLocked: false,
   renderCTABar: (props: CTAProps) => {
     return (
-      <EmbeddedSurveyCTAButton project={props.project} phases={props.phases} />
+      <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
     );
   },
 };
