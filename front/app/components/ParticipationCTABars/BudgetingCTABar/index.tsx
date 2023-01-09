@@ -6,6 +6,7 @@ import { ParticipationCTAContent } from 'components/ParticipationCTABars/Partici
 
 // hooks
 import { useTheme } from 'styled-components';
+import useBasket from 'hooks/useBasket';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
@@ -34,13 +35,22 @@ export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
       ]) === 'past'
     : false;
 
+  let basketId: string | null = null;
+  if (currentPhase) {
+    basketId = !isNilOrError(currentPhase)
+      ? currentPhase.relationships.user_basket?.data?.id || null
+      : null;
+  } else {
+    basketId = !isNilOrError(project)
+      ? project.relationships.user_basket?.data?.id || null
+      : null;
+  }
+  const basket = useBasket(basketId);
+  const hasUserParticipated = !!basket?.attributes.total_budget;
+
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
-
-  if (isNilOrError(project)) {
-    return null;
-  }
 
   const { publication_status } = project.attributes;
 
@@ -48,7 +58,7 @@ export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
     return null;
   }
 
-  const CTAButton = (
+  const CTAButton = hasUserParticipated ? null : (
     <Button
       buttonStyle="primary"
       onClick={() => {
@@ -63,5 +73,11 @@ export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
     </Button>
   );
 
-  return <ParticipationCTAContent phases={phases} CTAButton={CTAButton} />;
+  return (
+    <ParticipationCTAContent
+      phases={phases}
+      CTAButton={CTAButton}
+      hasUserParticipated={hasUserParticipated}
+    />
+  );
 };
