@@ -69,6 +69,8 @@ const BannerImageField = ({
   const [bannerError, setBannerError] = useState<TBannerError>(null);
 
   useEffect(() => {
+    // https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
+    const ac = new AbortController();
     // the image file sent from the API needs to be converted
     // to a format that can be displayed. this is done locally
     // when the image is changed but needs to be done manually
@@ -86,6 +88,9 @@ const BannerImageField = ({
     };
     const headerFileInfo = headerBg?.large;
     convertHeaderToUploadFile(headerFileInfo);
+
+    // https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
+    return () => ac.abort();
   }, [headerBg]);
 
   // set error and disable save button if header is removed,
