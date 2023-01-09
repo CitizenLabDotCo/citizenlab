@@ -36,7 +36,7 @@ interface Props {
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: string | null;
-  header_bg: UploadFile[] | null;
+  header_bg: UploadFile | null;
   previewDevice: TPreviewDevice;
   layout: THomepageBannerLayout;
 }
@@ -111,7 +111,7 @@ const HeaderImageDropzone = ({
       acceptedFileTypes={{
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
       }}
-      images={header_bg}
+      images={header_bg ? [header_bg] : null}
       imagePreviewRatio={getImagePreviewRatio()}
       onAdd={onAdd}
       onRemove={onRemove}

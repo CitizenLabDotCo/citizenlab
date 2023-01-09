@@ -5,7 +5,7 @@ import { UploadFile } from 'typings';
 import getCroppedImage from './getCroppedImage';
 
 type ImageCropperProps = {
-  image: UploadFile[] | null;
+  image: UploadFile | null;
   onComplete: (image: string) => void;
 };
 
@@ -17,7 +17,7 @@ const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
       if (image) {
         try {
           const croppedImage = await getCroppedImage(
-            image[0].base64,
+            image.base64,
             croppedAreaPixels
           );
 
@@ -39,7 +39,7 @@ const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
     >
       {image && (
         <Cropper
-          image={image[0].base64}
+          image={image.base64}
           crop={crop}
           zoom={1}
           aspect={3}
