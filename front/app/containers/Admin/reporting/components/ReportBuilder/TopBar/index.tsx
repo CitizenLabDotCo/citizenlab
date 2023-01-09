@@ -14,6 +14,7 @@ import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitche
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import QuitWithoutSavingModal from './QuitWithoutSavingModal';
 
 // i18n
 import messages from './messages';
@@ -52,13 +53,19 @@ const ContentBuilderTopBar = ({
   reportId,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const closeShareModal = () => setShareModalOpen(false);
   const { query } = useEditor();
   const report = useReport(reportId);
 
   const disableSave = localesWithError.length > 0;
 
   const goBack = () => {
-    clHistory.push('/admin/reporting/report-builder');
+    if (draftEditorData === undefined) {
+      clHistory.push('/admin/reporting/report-builder');
+    } else {
+      setShareModalOpen(true);
+    }
   };
 
   const handleSave = async () => {
@@ -87,6 +94,11 @@ const ContentBuilderTopBar = ({
 
   return (
     <Container>
+      <QuitWithoutSavingModal
+        open={shareModalOpen}
+        onClose={closeShareModal}
+        setShareModalOpen={setShareModalOpen}
+      />
       <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
