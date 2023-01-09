@@ -12,7 +12,6 @@ import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { IProjectData } from 'services/projects';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
@@ -38,10 +37,6 @@ export const VolunteeringCTABar = ({ phases, project }: CTAProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  if (isNilOrError(project)) {
-    return null;
-  }
-
   const { publication_status } = project.attributes;
 
   if (hasProjectEnded || publication_status === 'archived') {
@@ -63,5 +58,10 @@ export const VolunteeringCTABar = ({ phases, project }: CTAProps) => {
     </Button>
   );
 
-  return <ParticipationCTAContent phases={phases} CTAButton={CTAButton} />;
+  return (
+    <ParticipationCTAContent
+      currentPhase={currentPhase}
+      CTAButton={CTAButton}
+    />
+  );
 };

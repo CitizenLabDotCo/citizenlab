@@ -7,7 +7,7 @@ import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 // services
-import { IPhaseData, getCurrentPhase } from 'services/phases';
+import { IPhaseData } from 'services/phases';
 
 // utils
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
@@ -17,19 +17,18 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 type Props = {
-  phases: Error | IPhaseData[] | null | undefined;
   timeLeft?: string;
   hasUserParticipated?: boolean;
   CTAButton?: React.ReactNode;
+  currentPhase: IPhaseData | null;
 };
 
 export const ParticipationCTAContent = ({
-  phases,
+  currentPhase,
   CTAButton,
   hasUserParticipated = false,
 }: Props) => {
   const theme = useTheme();
-  const currentPhase = getCurrentPhase(phases);
   const timeLeft = currentPhase
     ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
     : '';

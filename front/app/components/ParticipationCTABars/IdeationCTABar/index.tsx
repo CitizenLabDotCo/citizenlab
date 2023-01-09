@@ -13,7 +13,6 @@ import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { IProjectData } from 'services/projects';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 type CTAProps = {
@@ -34,10 +33,6 @@ export const IdeationCTABar = ({ phases, project }: CTAProps) => {
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
-
-  if (isNilOrError(project)) {
-    return null;
-  }
 
   const { publication_status } = project.attributes;
   const isPhaseIdeation =
@@ -60,5 +55,10 @@ export const IdeationCTABar = ({ phases, project }: CTAProps) => {
     </Box>
   );
 
-  return <ParticipationCTAContent phases={phases} CTAButton={CTAButton} />;
+  return (
+    <ParticipationCTAContent
+      currentPhase={currentPhase}
+      CTAButton={CTAButton}
+    />
+  );
 };

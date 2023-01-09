@@ -41,9 +41,7 @@ export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
       ? currentPhase.relationships.user_basket?.data?.id || null
       : null;
   } else {
-    basketId = !isNilOrError(project)
-      ? project.relationships.user_basket?.data?.id || null
-      : null;
+    basketId = project.relationships.user_basket?.data?.id || null;
   }
   const basket = useBasket(basketId);
   const hasUserParticipated = !!basket?.attributes.total_budget;
@@ -75,7 +73,7 @@ export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
 
   return (
     <ParticipationCTAContent
-      phases={phases}
+      currentPhase={currentPhase}
       CTAButton={CTAButton}
       hasUserParticipated={hasUserParticipated}
     />

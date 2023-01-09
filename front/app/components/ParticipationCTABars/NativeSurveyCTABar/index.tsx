@@ -37,10 +37,6 @@ export const NativeSurveyCTABar = ({ phases, project }: CTAProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  if (isNilOrError(project)) {
-    return null;
-  }
-
   const { publication_status } = project.attributes;
   const isPhaseNativeSurvey =
     currentPhase?.attributes.participation_method === 'native_survey';
@@ -73,7 +69,7 @@ export const NativeSurveyCTABar = ({ phases, project }: CTAProps) => {
 
   return (
     <ParticipationCTAContent
-      phases={phases}
+      currentPhase={currentPhase}
       CTAButton={CTAButton}
       hasUserParticipated={hasUserParticipated}
     />

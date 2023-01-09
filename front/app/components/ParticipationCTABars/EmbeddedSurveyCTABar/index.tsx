@@ -50,10 +50,6 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTAProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  if (isNilOrError(project)) {
-    return null;
-  }
-
   useEffect(() => {
     const element = document.getElementById(divId);
     if (element) {
@@ -65,19 +61,16 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTAProps) => {
     (id: string, shouldSelectCurrentPhase = true) =>
       (event: FormEvent) => {
         event.preventDefault();
+        const isOnProjectPage = pathname.endsWith(
+          `/projects/${project.attributes.slug}`
+        );
 
-        if (!isNilOrError(project)) {
-          const isOnProjectPage = pathname.endsWith(
-            `/projects/${project.attributes.slug}`
-          );
+        currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
-          currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
-
-          if (isOnProjectPage) {
-            scrollToElement({ id, shouldFocus: true });
-          } else {
-            clHistory.push(`/projects/${project.attributes.slug}#${id}`);
-          }
+        if (isOnProjectPage) {
+          scrollToElement({ id, shouldFocus: true });
+        } else {
+          clHistory.push(`/projects/${project.attributes.slug}#${id}`);
         }
       },
     [currentPhase, project, pathname]
@@ -133,5 +126,10 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTAProps) => {
     </Button>
   );
 
-  return <ParticipationCTAContent phases={phases} CTAButton={CTAButton} />;
+  return (
+    <ParticipationCTAContent
+      currentPhase={currentPhase}
+      CTAButton={CTAButton}
+    />
+  );
 };
