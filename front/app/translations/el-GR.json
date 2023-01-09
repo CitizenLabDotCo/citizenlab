@@ -697,6 +697,7 @@
   "app.containers.IdeaButton.postingDisabled": "Προς το παρόν δεν γίνονται δεκτές νέες υποβολές",
   "app.containers.IdeaButton.postingInNonActivePhases": "Νέες υποβολές μπορούν να προστεθούν μόνο σε ενεργές φάσεις.",
   "app.containers.IdeaButton.postingInactive": "Προς το παρόν δεν γίνονται δεκτές νέες υποβολές.",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "You have already completed this survey. Thanks for your response!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Παρακαλούμε {signInLink} στην πλατφόρμα για να δείτε τι ενέργειες μπορείτε να κάνετε.",
   "app.containers.IdeaButton.postingNoPermission": "Προς το παρόν δεν γίνονται δεκτές νέες υποβολές",
   "app.containers.IdeaButton.postingNotYetPossible": "Νέες υποβολές δεν γίνονται ακόμη δεκτές.",
