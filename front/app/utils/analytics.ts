@@ -1,21 +1,10 @@
 import React from 'react';
-import { Subject, Observable, concat, combineLatest } from 'rxjs';
-import {
-  buffer,
-  filter,
-  pairwise,
-  mergeAll,
-  take,
-  distinctUntilChanged,
-  map,
-} from 'rxjs/operators';
+import { Subject, combineLatest } from 'rxjs';
+import { filter, distinctUntilChanged } from 'rxjs/operators';
 import { isEqual, mapValues } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 
-import {
-  IAppConfigurationData,
-  currentAppConfigurationStream,
-} from 'services/appConfiguration';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 
 import {
   getDestinationConfig,
@@ -66,52 +55,6 @@ export const initializeFor = (destination: IDestination) => {
     })
   );
 };
-
-/** Returns buffered version of the given stream, that only starts emiting
- * buffered values one by one when the given destination is initialized */
-export const bufferUntilInitialized = <T>(
-  destination: IDestination,
-  o$: Observable<T>
-): Observable<T> => {
-  return concat(
-    o$.pipe(buffer(initializeFor(destination)), take(1), mergeAll()),
-    o$
-  );
-};
-
-/** Returns stream that emits when the given destination should shut itself down.
- */
-export const shutdownFor = (destination: IDestination) => {
-  return combineLatest([
-    destinationConsentChanged$,
-    currentAppConfigurationStream().observable,
-    authUserStream().observable,
-  ]).pipe(
-    map(([consent, tenant, user]) => {
-      const config = getDestinationConfig(destination);
-      return (
-        consent.eventValue[destination] &&
-        (!config || isDestinationActive(config, tenant.data, user?.data))
-      );
-    }),
-    pairwise(),
-    filter(([previousActive, currentActive]) => {
-      return previousActive && !currentActive;
-    })
-  );
-};
-
-export function tenantInfo(tenant: IAppConfigurationData) {
-  return {
-    tenantId: tenant && tenant.id,
-    tenantName: tenant && tenant.attributes.name,
-    tenantHost: tenant && tenant.attributes.host,
-    tenantOrganizationType:
-      tenant && tenant.attributes.settings.core.organization_type,
-    tenantLifecycleStage:
-      tenant && tenant.attributes.settings.core.lifecycle_stage,
-  };
-}
 
 export function trackPage(path: string, properties = {}) {
   pageChanges$.next({
