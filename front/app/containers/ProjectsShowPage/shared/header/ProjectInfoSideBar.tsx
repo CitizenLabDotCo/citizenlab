@@ -24,7 +24,6 @@ import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import ProjectSharingModal from './ProjectSharingModal';
-import ProjectActionBar from './ProjectActionBar';
 import ProjectActionButtons from './ProjectActionButtons';
 
 // utils
@@ -195,7 +194,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
-        <ProjectActionBar projectId={projectId} />
         <About>
           <Title>
             <FormattedMessage {...messages.about} />
