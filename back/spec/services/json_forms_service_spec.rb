@@ -290,7 +290,8 @@ describe JsonFormsService do
                         label: build_in_required_field.title_multiloc['en'],
                         options: {
                           description: build_in_required_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
@@ -306,7 +307,8 @@ describe JsonFormsService do
                         label: build_in_optional_field.title_multiloc['en'],
                         options: {
                           description: build_in_optional_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
@@ -322,7 +324,8 @@ describe JsonFormsService do
                         label: required_field.title_multiloc['en'],
                         options: {
                           description: required_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       },
                       {
@@ -331,7 +334,8 @@ describe JsonFormsService do
                         label: optional_field.title_multiloc['en'],
                         options: {
                           description: optional_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
