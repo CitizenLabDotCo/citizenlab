@@ -697,6 +697,7 @@
   "app.containers.IdeaButton.postingDisabled": "Przesłanie pomysłu w tym miejscu jest obecnie niemożliwe.",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nowe zgłoszenia mogą być dodawane tylko w aktywnych etapach.",
   "app.containers.IdeaButton.postingInactive": "Nowe zgłoszenia nie są obecnie przyjmowane.",
+  "app.containers.IdeaButton.postingLimitedMaxReached": "Wypełniłeś już ankietę. Dziękujemy za odpowiedź!",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Aby dowiedzieć się, czy możesz zamieścić tu swoje pomysły, proszę najpierw {signInLink} na platformę.",
   "app.containers.IdeaButton.postingNoPermission": "Przesłanie pomysłu w tym miejscu jest obecnie niemożliwe.",
   "app.containers.IdeaButton.postingNotYetPossible": "Nowe zgłoszenia nie są jeszcze przyjmowane.",
