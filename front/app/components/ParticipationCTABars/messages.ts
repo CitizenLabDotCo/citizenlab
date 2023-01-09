@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.Projects.allocateYourBudget',
     defaultMessage: 'Allocate your budget.',
   },
+  volunteer: {
+    id: 'app.containers.Projects.volunteer',
+    defaultMessage: 'Volunteer',
+  },
 });
