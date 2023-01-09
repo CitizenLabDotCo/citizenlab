@@ -50,8 +50,8 @@ export const ParticipationCTAContent = ({
       <Box display="flex" justifyContent="center" alignItems="center">
         <Icon
           name={hasUserParticipated ? 'check-circle' : 'dot'}
-          width="12px"
-          height="12px"
+          width="16px"
+          height="16px"
           fill={colors.white}
           mr="6px"
         />
