@@ -144,7 +144,7 @@ export class ConsentManager extends PureComponent<Props, State> {
 
     if (isNilOrError(tenant)) return;
 
-    const newChoices: ISavedDestinations = {};
+    const newChoices: Record<string, boolean | undefined> = {};
     this.getActiveDestinations().forEach((config) => {
       newChoices[config.key] = preferences[this.getCategory(tenant, config)];
     });
