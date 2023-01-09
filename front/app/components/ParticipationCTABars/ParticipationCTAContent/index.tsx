@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 // Components
 import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
-import IdeaButton from 'components/IdeaButton';
 
 // hooks
 import { useTheme } from 'styled-components';
 
 // services
-import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { IProjectData } from 'services/projects';
+import { IPhaseData, getCurrentPhase } from 'services/phases';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 // i18n
@@ -21,7 +17,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 type Props = {
-  project: IProjectData;
   phases: Error | IPhaseData[] | null | undefined;
   timeLeft?: string;
   hasUserParticipated?: boolean;
@@ -30,7 +25,6 @@ type Props = {
 
 export const ParticipationCTAContent = ({
   phases,
-  project,
   CTAButton,
   hasUserParticipated = false,
 }: Props) => {

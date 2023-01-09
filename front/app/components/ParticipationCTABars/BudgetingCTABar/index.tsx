@@ -63,11 +63,5 @@ export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
     </Button>
   );
 
-  return (
-    <ParticipationCTAContent
-      project={project}
-      phases={phases}
-      CTAButton={CTAButton}
-    />
-  );
+  return <ParticipationCTAContent phases={phases} CTAButton={CTAButton} />;
 };

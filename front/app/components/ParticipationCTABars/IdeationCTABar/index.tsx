@@ -61,11 +61,5 @@ export const IdeationCTABar = ({ phases, project }: CTAProps) => {
     </Box>
   );
 
-  return (
-    <ParticipationCTAContent
-      project={project}
-      phases={phases}
-      CTAButton={CTAButton}
-    />
-  );
+  return <ParticipationCTAContent phases={phases} CTAButton={CTAButton} />;
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, FormEvent } from 'react';
 
 // Components
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
@@ -133,11 +133,5 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTAProps) => {
     </Button>
   );
 
-  return (
-    <ParticipationCTAContent
-      project={project}
-      phases={phases}
-      CTAButton={CTAButton}
-    />
-  );
+  return <ParticipationCTAContent phases={phases} CTAButton={CTAButton} />;
 };
