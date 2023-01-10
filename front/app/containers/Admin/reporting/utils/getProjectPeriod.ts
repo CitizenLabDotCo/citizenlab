@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
@@ -11,13 +9,8 @@ const getProjectPeriod = (phases: IPhaseData[] | NilOrError) => {
     return { startAt: undefined, endAt: undefined };
   }
 
-  const startMoment = moment(phases[0]?.attributes.start_at, 'YYYY-MM-DD');
-  const endMoment = moment(
-    phases[phases.length - 1]?.attributes.end_at,
-    'YYYY-MM-DD'
-  );
-  const startAt = startMoment.format('LL');
-  const endAt = endMoment.format('LL');
+  const startAt = phases[0].attributes.start_at;
+  const endAt = phases[phases.length - 1].attributes.end_at;
 
   return { startAt, endAt };
 };
