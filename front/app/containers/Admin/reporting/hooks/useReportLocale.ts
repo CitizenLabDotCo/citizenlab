@@ -1,17 +1,17 @@
-import { useEffect } from 'react';
-
-// services
-import { updateLocale } from '../../../../services/locale';
+import { useEffect, useState } from 'react';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import useLocale from '../../../../hooks/useLocale';
-import { ReportLayout } from '../../../../services/reports';
+import useLocale from 'hooks/useLocale';
+import { ReportLayout } from 'services/reports';
 
+// Extracts the locale of the report from the multiloc
+// Note: Returns a string not a Locale as that's what IntlProvider requires
 export default function useReportLocale(
   reportLayout: ReportLayout | NilOrError
 ) {
-  const locale = useLocale();
+  const platformLocale = useLocale();
+  const [locale, setLocale] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     // Switch platform to match language of the report
@@ -19,10 +19,13 @@ export default function useReportLocale(
       const reportLocales = Object.keys(
         reportLayout.attributes.craftjs_jsonmultiloc
       );
-      if (reportLocales.length > 0) {
-        console.log('GOT REPORT LOCALE OF: ', reportLocales[0]);
-        updateLocale(reportLocales[0]); // Update the locale of the site to match the report
+      if (reportLocales.length > 0 && platformLocale !== reportLocales[0]) {
+        console.log('GOT DIFFERENT REPORT LOCALE OF: ', reportLocales[0]);
+        setLocale(reportLocales[0]);
+      } else {
+        setLocale(platformLocale ? platformLocale.toString() : undefined);
       }
     }
-  }, [locale, reportLayout]);
+  }, [reportLayout]);
+  return locale;
 }

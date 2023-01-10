@@ -10,7 +10,6 @@ import { A4_WIDTH, A4_MARGIN_Y } from '../../constants';
 
 // typings
 import { SerializedNodes } from '@craftjs/core';
-import { LocaleContext } from './index';
 
 interface Props {
   editorData?: SerializedNodes;
@@ -20,11 +19,6 @@ const Content = ({ editorData }: Props) => {
   /* Printing adds some arbitrary left margin- picked
      these padding values through trial and error to make it
      look nice and centered */
-
-  const localeContext = LocaleContext;
-
-  console.log(localeContext);
-
   return (
     <Box
       width={A4_WIDTH}

@@ -44,7 +44,6 @@ const ContentBuilderTopBar = ({
   previewEnabled,
   setPreviewEnabled,
   selectedLocale,
-  onSelectLocale,
   draftEditorData,
   localesWithError,
   hasPendingState,

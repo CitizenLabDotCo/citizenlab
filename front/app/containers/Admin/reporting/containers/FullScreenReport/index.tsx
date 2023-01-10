@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 // hooks
 import useReportLayout from 'hooks/useReportLayout';
-import useLocale from 'hooks/useLocale';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useReportLocale from '../../hooks/useReportLocale';
+import ReportLanguageProvider from '../ReportLanguageProvider';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
@@ -15,8 +16,6 @@ import Content from './Content';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
-import useReportLocale from '../../hooks/useReportLocale';
 
 const Centerer = styled.div`
   display: flex;
@@ -37,33 +36,28 @@ interface Props {
   reportId: string;
 }
 
-export const LocaleContext = React.createContext('en');
-
 const FullScreenReport = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
-  const platformLocale = useLocale();
   const reportLayout = useReportLayout(reportId);
-  useReportLocale(reportLayout);
+  const reportLocale = useReportLocale(reportLayout);
 
-  if (isNilOrError(platformLocale)) {
+  if (isNilOrError(reportLocale)) {
     return null;
   }
 
-  const locale = selectedLocale || platformLocale;
   const isLoadingLayout = reportLayout === undefined;
 
   const savedEditorData = !isNilOrError(reportLayout)
-    ? reportLayout.attributes.craftjs_jsonmultiloc[locale]
+    ? reportLayout.attributes.craftjs_jsonmultiloc[reportLocale]
     : undefined;
 
   const editorData = draftData || savedEditorData;
 
   return (
-    <LocaleContext.Provider value="en">
+    <ReportLanguageProvider locale={reportLocale}>
       <FullScreenWrapper
         onUpdateDraftData={setDraftData}
-        onUpdateLocale={setSelectedLocale}
+        onUpdateLocale={() => {}}
       >
         {isLoadingLayout && <Spinner />}
         {!isLoadingLayout && (
@@ -72,7 +66,7 @@ const FullScreenReport = ({ reportId }: Props) => {
           </Centerer>
         )}
       </FullScreenWrapper>
-    </LocaleContext.Provider>
+    </ReportLanguageProvider>
   );
 };
 
