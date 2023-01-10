@@ -61,9 +61,6 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def create
     project_params = permitted_attributes(Project)
-    puts '============================'
-    puts project_params.inspect
-    puts '============================'
     @project = Project.new(project_params)
     sidefx.before_create(@project, current_user)
 
@@ -108,8 +105,8 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     @project = Project.create(
       source_project.attributes
-      .except('id', 'slug', 'title_multiloc')
-      .merge(title_multiloc: title_of_copy)
+      .except('id', 'slug', 'title_multiloc', 'admin_publication_attributes')
+      .merge(title_multiloc: title_of_copy, admin_publication_attributes: { publication_status: 'draft' })
     )
 
     authorize @project
