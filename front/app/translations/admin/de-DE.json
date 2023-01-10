@@ -1181,7 +1181,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.surveyDescription": "Erstellen und bearbeiten Sie die Fragen der Umfrage dieses Projekts.",
   "app.containers.AdminPage.ProjectEdit.survey.surveyEnd": "Ende der Umfrage",
   "app.containers.AdminPage.ProjectEdit.survey.surveyResults": "Umfrageergebnisse",
-  "app.containers.AdminPage.ProjectEdit.survey.surveySupportArticle": "https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey",
+  "app.containers.AdminPage.ProjectEdit.survey.surveySupportArticle": "https://support.citizenlab.co/de/articles/6673873-erstellen-einer-plattforminternen-umfrage",
   "app.containers.AdminPage.ProjectEdit.survey.surveySupportArticleLinkText": "diese Seite",
   "app.containers.AdminPage.ProjectEdit.survey.surveyText": "Umfrage",
   "app.containers.AdminPage.ProjectEdit.survey.surveyTitle": "Umfrage",
