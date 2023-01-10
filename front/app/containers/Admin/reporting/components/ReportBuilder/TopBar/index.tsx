@@ -12,7 +12,7 @@ import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import { Badge, Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
@@ -90,7 +90,9 @@ const ContentBuilderTopBar = ({
             {isNilOrError(report) ? <></> : report.attributes.name}
           </Title>
         </Box>
-
+        <Box mx="24px">
+          <Badge className="inverse">{selectedLocale}</Badge>
+        </Box>
         <Box mx="24px">
           <PreviewToggle
             checked={previewEnabled}

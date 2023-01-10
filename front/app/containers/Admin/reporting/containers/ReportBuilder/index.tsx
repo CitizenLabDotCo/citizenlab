@@ -3,7 +3,6 @@ import { useLocation, useParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 import useReportLayout from 'hooks/useReportLayout';
 import useReportLocale from '../../hooks/useReportLocale';
 
@@ -35,6 +34,7 @@ import { A4_WIDTH, A4_MARGIN_X, A4_MARGIN_Y } from '../../constants';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
+import ReportLanguageProvider from '../ReportLanguageProvider';
 
 interface Props {
   reportId: string;
@@ -47,16 +47,16 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
-  const locale = useLocale();
+  // const locale = useLocale();
   const reportLayout = useReportLayout(reportId);
+  const reportLocale = useReportLocale(reportLayout);
+  console.log('Report Locale:', reportLocale);
 
   useEffect(() => {
-    if (!isNilOrError(locale)) {
-      setSelectedLocale(locale);
+    if (!isNilOrError(reportLocale)) {
+      setSelectedLocale(reportLocale);
     }
-  }, [locale]);
-
-  useReportLocale(reportLayout);
+  }, [reportLocale]);
 
   const localesWithError = useMemo(() => {
     return Object.values(contentBuilderErrors)
@@ -90,6 +90,7 @@ const ReportBuilder = ({ reportId }: Props) => {
     [selectedLocale]
   );
 
+  // Note: Currently unused - probably needs removing
   const handleSelectedLocaleChange = useCallback(
     ({
       locale,
@@ -159,7 +160,9 @@ const ReportBuilder = ({ reportId }: Props) => {
                 width="100%"
                 height="100%"
               >
-                <Frame editorData={initialData} />
+                <ReportLanguageProvider locale={reportLocale}>
+                  <Frame editorData={initialData} />
+                </ReportLanguageProvider>
               </Box>
             </Box>
           </StyledRightColumn>
@@ -178,7 +181,9 @@ const ReportBuilder = ({ reportId }: Props) => {
           <StyledRightColumn>
             <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
               <Editor isPreview={true}>
-                <Frame editorData={previewData} />
+                <ReportLanguageProvider locale={reportLocale}>
+                  <Frame editorData={previewData} />
+                </ReportLanguageProvider>
               </Editor>
             </Box>
           </StyledRightColumn>

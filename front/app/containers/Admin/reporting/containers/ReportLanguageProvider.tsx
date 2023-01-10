@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
+import { isNilOrError, NilOrError } from '../../../../utils/helperUtils';
+import { Locale } from '../../../../typings';
 
 type props = {
-  locale: string;
+  locale: Locale | NilOrError;
   children: React.ReactNode;
 };
 
@@ -16,6 +18,10 @@ const ReportLanguageProvider = ({ locale, children }: props) => {
       setMessages(translationMessages.default);
     });
   }, [locale]);
+
+  if (isNilOrError(locale)) {
+    return null;
+  }
 
   return (
     <IntlProvider locale={locale} key={locale} messages={messages}>
