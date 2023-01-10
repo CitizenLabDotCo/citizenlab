@@ -104,8 +104,9 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def copy
     source_project = Project.find(params[:id])
+    title_of_copy = source_project.title_multiloc.transform_values { |v| "#{v} - Copy" }
 
-    @project = Project.create(source_project.attributes.except(:id, :slug))
+    @project = Project.create(source_project.attributes.except('id', 'slug', 'title_multiloc').merge(title_multiloc: title_of_copy))
     authorize @project
 
     show
