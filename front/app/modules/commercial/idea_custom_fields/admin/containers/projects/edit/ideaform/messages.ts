@@ -5,6 +5,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.inputForm',
     defaultMessage: 'Input form',
   },
+  inputFormDescription: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.inputFormDescription',
+    defaultMessage:
+      'Specify what information should be provided, add short descriptions or instructions to guide participant responses and specify whether each field is optional or required.',
+  },
+  editInputForm: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.editInputForm',
+    defaultMessage: 'Edit input form',
+  },
   postDescription: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.postDescription',
     defaultMessage:

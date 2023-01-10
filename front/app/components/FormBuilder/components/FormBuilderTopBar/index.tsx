@@ -22,7 +22,7 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getIsPostingEnabled } from 'containers/Admin/formBuilder/utils';
+import { getIsPostingEnabled } from 'components/FormBuilder/utils';
 
 // i18n
 import messages from '../messages';

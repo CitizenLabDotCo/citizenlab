@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
@@ -13,13 +13,13 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 // components
 import { RightColumn } from 'containers/Admin';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import FormBuilderTopBar from 'containers/Admin/formBuilder/components/FormBuilderTopBar';
-import FormBuilderToolbox from 'containers/Admin/formBuilder/components/FormBuilderToolbox';
-import FormBuilderSettings from 'containers/Admin/formBuilder/components/FormBuilderSettings';
-import FormFields from 'containers/Admin/formBuilder/components/FormFields';
+import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
+import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
+import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
+import FormFields from 'components/FormBuilder/components/FormFields';
 import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
-import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
+import DeleteFormResultsNotice from 'components/FormBuilder/components/DeleteFormResultsNotice';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -27,7 +27,12 @@ import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMulti
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { PageStructure, getReorderedFields, DragAndDropResult } from './utils';
+import {
+  PageStructure,
+  getReorderedFields,
+  DragAndDropResult,
+  getBuilderConfig,
+} from './utils';
 
 // services
 import {
@@ -43,9 +48,10 @@ import useFormCustomFields from 'hooks/useFormCustomFields';
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 
 // intl
-import { WrappedComponentProps } from 'react-intl';
+import { IntlShape, WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import { FormBuilderConfig } from '../configurations';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -68,6 +74,7 @@ type FormEditProps = {
   projectId: string;
   phaseId?: string;
   totalSubmissions: number;
+  builderConfig: FormBuilderConfig;
 } & WrappedComponentProps;
 
 export const FormEdit = ({
@@ -76,6 +83,7 @@ export const FormEdit = ({
   phaseId,
   projectId,
   totalSubmissions,
+  builderConfig,
 }: FormEditProps) => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
@@ -291,6 +299,44 @@ export const FormEdit = ({
   );
 };
 
+type FormBuilderModalProps = {
+  intl: IntlShape;
+  customFields: IFlatCustomField[];
+  phaseId?: string;
+  projectId: string;
+  totalSubmissions: number;
+  builderConfig: FormBuilderConfig;
+  setisFormBuilderVisible: Dispatch<SetStateAction<boolean>>;
+};
+
+export const FormBuilderModal = ({
+  intl,
+  customFields,
+  phaseId,
+  projectId,
+  totalSubmissions,
+  builderConfig,
+  setisFormBuilderVisible,
+}: FormBuilderModalProps) => {
+  const modalPortalElement = document.getElementById('modal-portal');
+  if (!isNilOrError(customFields)) {
+    return modalPortalElement
+      ? createPortal(
+          <FormEdit
+            intl={intl}
+            defaultValues={{ customFields }}
+            phaseId={phaseId}
+            projectId={projectId}
+            totalSubmissions={totalSubmissions}
+            builderConfig={builderConfig}
+          />,
+          modalPortalElement
+        )
+      : null;
+  }
+  return null;
+};
+
 const FormBuilderPage = ({ intl }) => {
   const modalPortalElement = document.getElementById('modal-portal');
   const { projectId, phaseId } = useParams() as {
@@ -318,6 +364,7 @@ const FormBuilderPage = ({ intl }) => {
           phaseId={phaseId}
           projectId={projectId}
           totalSubmissions={submissionCount.totalSubmissions}
+          builderConfig={getBuilderConfig('ideation')}
         />,
         modalPortalElement
       )

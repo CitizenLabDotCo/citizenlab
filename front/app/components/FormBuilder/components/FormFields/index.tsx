@@ -21,10 +21,7 @@ import {
 } from 'services/formCustomFields';
 
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
-import {
-  DragAndDropResult,
-  PageStructure,
-} from '../../containers/projects/forms/edit/utils';
+import { DragAndDropResult, PageStructure } from '../../edit/utils';
 
 // Assign field badge text
 const getTranslatedFieldType = (field) => {

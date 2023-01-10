@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyText',
     defaultMessage: 'Survey',
   },
+  inputForm: {
+    id: 'app.containers.AdminPage.ProjectEdit.form.inputForm',
+    defaultMessage: 'Input form',
+  },
   surveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyDescription',
     defaultMessage: "Create and edit the questions in this projects's survey.",

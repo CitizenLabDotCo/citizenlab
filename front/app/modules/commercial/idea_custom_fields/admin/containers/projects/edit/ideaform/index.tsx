@@ -1,297 +1,452 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { isEmpty } from 'lodash-es';
-
-// module specific
-import useIdeaCustomFields from 'modules/commercial/idea_custom_fields/hooks/useIdeaCustomFields';
-import {
-  updateIdeaCustomField,
-  IUpdatedIdeaCustomFieldProperties,
-  refetchCustomFields,
-} from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
-
-import IdeaCustomField from '../../../../../admin/containers/projects/edit/ideaform/IdeaCustomField';
+import { Button, Box } from '@citizenlab/cl2-component-library';
+import React, { useState } from 'react';
 
 // components
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import { Success } from '@citizenlab/cl2-component-library';
-
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-  SubSectionTitle,
-} from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// styling
-import styled from 'styled-components';
+import { FormBuilderModal } from 'components/FormBuilder/edit/index';
+import { getBuilderConfig } from 'components/FormBuilder/edit/utils';
+import { useParams } from 'react-router-dom';
+// import useFormCustomFields from 'hooks/useFormCustomFields';
+// import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+import { ICustomFieldInputType } from 'services/formCustomFields';
 
-// typings
-import { Multiloc } from 'typings';
+const IdeaForm = () => {
+  const [isFormBuilderVisible, setisFormBuilderVisible] = useState(false);
+  const intl = useIntl();
 
-import { IIdeaCustomFieldData } from '../../../../../services/ideaCustomFields';
+  // TODO: Replace hardcoded formCustomFields after BE work / migration
+  // const formCustomFields = useFormCustomFields({
+  //   projectId
+  // });
 
-const Container = styled.div``;
+  // const submissionCount = useFormSubmissionCount({
+  //   projectId
+  // });
 
-const Header = styled.div`
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 40px;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-`;
-
-const StyledSectionTitle = styled(SectionTitle)`
-  padding: 0;
-  margin: 0;
-`;
-
-const StyledSubSectionTitle = styled(SubSectionTitle)`
-  font-weight: 500;
-  margin-bottom: 20px;
-`;
-
-const CollapseExpandAllButton = styled(Button)``;
-
-const Content = styled.div`
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 30px;
-`;
-
-const Footer = styled.div`
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-`;
-
-const ErrorWrapper = styled.div`
-  flex-grow: 1;
-`;
-
-interface Props {
-  className?: string;
-}
-
-interface IChanges {
-  [key: string]: {
-    description_multiloc?: Multiloc;
-    enabled?: boolean;
+  const { projectId } = useParams() as {
+    projectId: string;
   };
-}
 
-const IdeaForm = memo<Props & WithRouterProps & WrappedComponentProps>(
-  ({ params, className, intl: { formatMessage } }) => {
-    const projectId = params.projectId;
-
-    const [changes, setChanges] = useState<IChanges>({});
-    const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
-    const [processing, setProcessing] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
-
-    const ideaCustomFields = useIdeaCustomFields({ projectId });
-
-    const allExpanded = Object.getOwnPropertyNames(collapsed).every(
-      (key) => collapsed[key] === false
-    );
-
-    // We are using a custom created id because the ids on the backend change on initial update
-    const getCustomFieldId = (ideaCustomField: IIdeaCustomFieldData) =>
-      `${ideaCustomField.type}_${ideaCustomField.attributes.key}`;
-
-    useEffect(() => {
-      if (!isNilOrError(ideaCustomFields) && isEmpty(collapsed)) {
-        const newCollapsed = {};
-        ideaCustomFields.data.forEach((ideaCustomField) => {
-          newCollapsed[getCustomFieldId(ideaCustomField)] = true;
-        });
-        setCollapsed(newCollapsed);
-      }
-    }, [ideaCustomFields, collapsed]);
-
-    const handleIdeaCustomFieldOnCollapseExpand = useCallback(
-      (ideaCustomFieldId: string) => {
-        setSuccess(false);
-        setError(false);
-        setCollapsed((collapsed) => ({
-          ...collapsed,
-          [ideaCustomFieldId]: !collapsed[ideaCustomFieldId],
-        }));
+  // formCustomFields with changed input_types + additional first page
+  const formCustomFields = [
+    {
+      id: 'f5f4d0bb-3059-4cc2-aadf-fc5eb828399d',
+      type: 'custom_field',
+      key: 'page_1',
+      input_type: 'page' as ICustomFieldInputType,
+      title_multiloc: {},
+      required: false,
+      ordering: 9,
+      enabled: true,
+      code: null,
+      created_at: '2023-01-10T08:10:09.783Z',
+      updated_at: '2023-01-10T08:10:09.783Z',
+      logic: {},
+      description_multiloc: {},
+      relationships: {
+        options: {
+          data: [],
+        },
       },
-      []
-    );
-
-    const handleCollapseExpandAll = useCallback(() => {
-      const newCollapsed = {};
-
-      if (!allExpanded) {
-        Object.keys(collapsed).forEach((key) => (newCollapsed[key] = false));
-      } else {
-        Object.keys(collapsed).forEach((key) => (newCollapsed[key] = true));
-      }
-
-      setCollapsed(newCollapsed);
-    }, [collapsed, allExpanded]);
-
-    const handleIdeaCustomFieldOnChange = useCallback(
-      (
-        ideaCustomFieldId: string,
-        updatedProperties: IUpdatedIdeaCustomFieldProperties
-      ) => {
-        setSuccess(false);
-        setError(false);
-        setChanges((changes) => {
-          const fieldChanges = changes[ideaCustomFieldId]
-            ? {
-                ...changes[ideaCustomFieldId],
-                ...updatedProperties,
-              }
-            : {
-                ...updatedProperties,
-              };
-
-          return {
-            ...changes,
-            [ideaCustomFieldId]: {
-              ...fieldChanges,
-            },
-          };
-        });
+    },
+    {
+      id: '5fa13807-86b8-4a62-904e-a0de5419d6ae',
+      type: 'custom_field',
+      key: 'title_multiloc',
+      input_type: 'text' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'Title',
+        'ar-MA': 'العنوان',
+        'ar-SA': 'العنوان',
+        'ca-ES': 'Títol',
+        'da-DK': 'Titel',
+        'de-DE': 'Titel',
+        'el-GR': 'Τίτλος',
+        'en-CA': 'Title',
+        'en-GB': 'Title',
+        'es-CL': 'Título',
+        'es-ES': 'Título',
+        'fr-BE': 'Titre',
+        'fr-FR': 'Titre',
+        'hr-HR': 'Naslov',
+        'hu-HU': 'Title',
+        'it-IT': 'Titolo',
+        'kl-GL': 'Atorfiup taaguutaa',
+        'lb-LU': 'Titel',
+        'lv-LV': 'Nosaukums',
+        mi: 'Title',
+        'nb-NO': 'Tittel',
+        'nl-BE': 'Titel',
+        'nl-NL': 'Titel',
+        'pl-PL': 'Tytuł',
+        'pt-BR': 'Assunto',
+        'ro-RO': 'Titlu',
+        'sr-Latn': 'Naslov',
+        'sr-SP': 'Наслов',
+        'sv-SE': 'Titel',
+        'tr-TR': 'Başlık',
       },
-      []
-    );
+      required: true,
+      ordering: 0,
+      enabled: true,
+      code: 'title_multiloc',
+      created_at: null,
+      updated_at: null,
+      logic: {},
+      description_multiloc: {},
+      relationships: {
+        options: {
+          data: [],
+        },
+      },
+    },
+    {
+      id: '5b9940a4-ba83-40da-9a2d-51287f38411a',
+      type: 'custom_field',
+      key: 'body_multiloc',
+      input_type: 'text' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'Description',
+        'ar-MA': 'الوصف',
+        'ar-SA': 'الوصف',
+        'ca-ES': 'Descripció',
+        'da-DK': 'Beskrivelse',
+        'de-DE': 'Beschreibung',
+        'el-GR': 'Περιγραφή',
+        'en-CA': 'Description',
+        'en-GB': 'Description',
+        'es-CL': 'Descripción',
+        'es-ES': 'Descripción',
+        'fr-BE': 'Description complète',
+        'fr-FR': 'Description',
+        'hr-HR': 'Opis',
+        'hu-HU': 'Description',
+        'it-IT': 'Descrizione',
+        'kl-GL': 'Nassuiaat',
+        'lb-LU': 'Beschreiwung',
+        'lv-LV': 'Apraksts',
+        mi: 'Description',
+        'nb-NO': 'Beskrivelse',
+        'nl-BE': 'Beschrijving',
+        'nl-NL': 'Beschrijving',
+        'pl-PL': 'Opis',
+        'pt-BR': 'Descrição',
+        'ro-RO': 'Descriere',
+        'sr-Latn': 'Opis',
+        'sr-SP': 'Опис',
+        'sv-SE': 'Beskrivning',
+        'tr-TR': 'Açıklama',
+      },
+      required: true,
+      ordering: 1,
+      enabled: true,
+      code: 'body_multiloc',
+      created_at: null,
+      updated_at: null,
+      logic: {},
+      description_multiloc: {},
+      relationships: {
+        options: {
+          data: [],
+        },
+      },
+    },
+    {
+      id: 'f7959714-bf96-4537-8d51-e7686e2dc699',
+      type: 'custom_field',
+      key: 'proposed_budget',
+      input_type: 'number' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'Proposed Budget',
+        'ar-MA': 'الميزانية المُقترحة',
+        'ar-SA': 'الميزانية المُقترحة',
+        'ca-ES': 'Proposed Budget',
+        'da-DK': 'Estimeret Budget',
+        'de-DE': 'Vorgeschlagenes Budget',
+        'el-GR': 'Proposed Budget',
+        'en-CA': 'Proposed Budget',
+        'en-GB': 'Proposed Budget',
+        'es-CL': 'Proyecto de presupuesto',
+        'es-ES': 'Proyecto de presupuesto',
+        'fr-BE': 'Proposition de budget',
+        'fr-FR': 'Proposition de budget',
+        'hr-HR': 'Predloženi proračun',
+        'hu-HU': 'Proposed Budget',
+        'it-IT': 'Bilancio proposto',
+        'kl-GL': 'Proposed Budget',
+        'lb-LU': 'Proposéierte Budget',
+        'lv-LV': 'Ierosinātais budžets',
+        mi: 'Proposed Budget',
+        'nb-NO': 'Proposed Budget',
+        'nl-BE': 'Voorgesteld budget',
+        'nl-NL': 'Voorgesteld budget',
+        'pl-PL': 'Proponowany budżet',
+        'pt-BR': 'Orçamento proposto',
+        'ro-RO': 'Buget propus',
+        'sr-Latn': 'Predloženi budžet',
+        'sr-SP': 'Предложени буџет',
+        'sv-SE': 'Budgetförslag',
+        'tr-TR': 'Öngörülen Bütçe',
+      },
+      required: false,
+      ordering: 4,
+      enabled: false,
+      code: 'proposed_budget',
+      created_at: null,
+      updated_at: null,
+      logic: {},
+      description_multiloc: {},
+      relationships: {
+        options: {
+          data: [],
+        },
+      },
+    },
+    {
+      id: 'f805c9cf-f47a-4da8-ba14-faf57610fff0',
+      type: 'custom_field',
+      key: 'topic_ids',
+      input_type: 'select' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'Tags',
+        'ar-MA': 'الموضوعات',
+        'ar-SA': 'الموضوعات',
+        'ca-ES': 'Etiquetes',
+        'da-DK': 'Emner',
+        'de-DE': 'Themen',
+        'el-GR': 'Ετικέτες',
+        'en-CA': 'Tags',
+        'en-GB': 'Tags',
+        'es-CL': 'Temas',
+        'es-ES': 'Temas',
+        'fr-BE': 'Étiquettes',
+        'fr-FR': 'Étiquettes',
+        'hr-HR': 'Oznake',
+        'hu-HU': 'Topics',
+        'it-IT': 'Argomenti',
+        'kl-GL': 'Pineqartut',
+        'lb-LU': 'Sujeten',
+        'lv-LV': 'Tagi',
+        mi: 'Topics',
+        'nb-NO': 'Emner',
+        'nl-BE': 'Tags',
+        'nl-NL': 'Tags',
+        'pl-PL': 'Tematy',
+        'pt-BR': 'Tópicos',
+        'ro-RO': 'Subiecte',
+        'sr-Latn': 'Tema',
+        'sr-SP': 'Теме',
+        'sv-SE': 'Topics',
+        'tr-TR': 'Etiketler',
+      },
+      required: false,
+      ordering: 5,
+      enabled: true,
+      code: 'topic_ids',
+      created_at: null,
+      updated_at: null,
+      logic: {},
+      description_multiloc: {},
+      relationships: {
+        options: {
+          data: [],
+        },
+      },
+    },
+    {
+      id: 'b860287f-d9e9-4684-bcfb-e70f53045493',
+      type: 'custom_field',
+      key: 'location_description',
+      input_type: 'text' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'Location',
+        'ar-MA': 'الموقع',
+        'ar-SA': 'الموقع',
+        'ca-ES': 'Ubicació',
+        'da-DK': 'Beliggenhed',
+        'de-DE': 'Standort',
+        'el-GR': 'Τοποθεσία',
+        'en-CA': 'Location',
+        'en-GB': 'Location',
+        'es-CL': 'Ubicación',
+        'es-ES': 'Ubicación',
+        'fr-BE': 'Adresse',
+        'fr-FR': 'Adresse',
+        'hr-HR': 'Lokacija',
+        'hu-HU': 'Location',
+        'it-IT': 'Posizione',
+        'kl-GL': 'Sumi',
+        'lb-LU': 'Standuert',
+        'lv-LV': 'Atrašanās vieta',
+        mi: 'Location',
+        'nb-NO': 'Lokalitet',
+        'nl-BE': 'Locatie',
+        'nl-NL': 'Locatie',
+        'pl-PL': 'Lokalizacja',
+        'pt-BR': 'Localização',
+        'ro-RO': 'Locație',
+        'sr-Latn': 'Lokacija',
+        'sr-SP': 'Локација',
+        'sv-SE': 'Plats',
+        'tr-TR': 'Konum',
+      },
+      required: false,
+      ordering: 6,
+      enabled: true,
+      code: 'location_description',
+      created_at: null,
+      updated_at: null,
+      logic: {},
+      description_multiloc: {},
+      relationships: {
+        options: {
+          data: [],
+        },
+      },
+    },
+    {
+      id: '66136efe-5e07-4050-9b75-452ef9e79e10',
+      type: 'custom_field',
+      key: 'idea_images_attributes',
+      input_type: 'text' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'Images',
+        'ar-MA': 'الصور',
+        'ar-SA': 'الصور',
+        'ca-ES': 'Images',
+        'da-DK': 'Billeder',
+        'de-DE': 'Bilder',
+        'el-GR': 'Images',
+        'en-CA': 'Images',
+        'en-GB': 'Images',
+        'es-CL': 'Imágenes',
+        'es-ES': 'Imágenes',
+        'fr-BE': 'Images',
+        'fr-FR': 'Images',
+        'hr-HR': 'Slike',
+        'hu-HU': 'Images',
+        'it-IT': 'Immagini',
+        'kl-GL': 'Assit',
+        'lb-LU': 'Biller',
+        'lv-LV': 'Attēli',
+        mi: 'Images',
+        'nb-NO': 'Bilder',
+        'nl-BE': 'Afbeeldingen',
+        'nl-NL': 'Afbeeldingen',
+        'pl-PL': 'Zdjęcia',
+        'pt-BR': 'Imagens',
+        'ro-RO': 'Imagini',
+        'sr-Latn': 'Slike',
+        'sr-SP': 'Слике',
+        'sv-SE': 'Bilder',
+        'tr-TR': 'Görseller',
+      },
+      required: false,
+      ordering: 7,
+      enabled: true,
+      code: 'idea_images_attributes',
+      created_at: null,
+      updated_at: null,
+      logic: {},
+      description_multiloc: {},
+      relationships: {
+        options: {
+          data: [],
+        },
+      },
+    },
+    {
+      id: '3f202dcf-288a-4fd4-8f3f-e9c63ffde804',
+      type: 'custom_field',
+      key: 'idea_files_attributes',
+      input_type: 'text' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'Attachments',
+        'ar-MA': 'المُرفقات',
+        'ar-SA': 'المُرفقات',
+        'ca-ES': 'Adjunts',
+        'da-DK': 'Vedhæftede filer',
+        'de-DE': 'Anhänge',
+        'el-GR': 'Συνημμένα αρχεία',
+        'en-CA': 'Other files',
+        'en-GB': 'Other files',
+        'es-CL': 'Archivos adjuntos',
+        'es-ES': 'Archivos adjuntos',
+        'fr-BE': 'Pièces jointes',
+        'fr-FR': 'Pièces jointes',
+        'hr-HR': 'Privici',
+        'hu-HU': 'Other files',
+        'it-IT': 'Allegati',
+        'kl-GL': 'Filit ilanngussat',
+        'lb-LU': 'Annexen',
+        'lv-LV': 'Pielikumi',
+        mi: 'Attachments',
+        'nb-NO': 'Vedlegg',
+        'nl-BE': 'Bijlagen',
+        'nl-NL': 'Bijlagen',
+        'pl-PL': 'Załączniki',
+        'pt-BR': 'Anexos',
+        'ro-RO': 'Fișiere atașate',
+        'sr-Latn': 'Prilozi',
+        'sr-SP': 'Прилози',
+        'sv-SE': 'Bilagor',
+        'tr-TR': 'Ekler',
+      },
+      required: false,
+      ordering: 8,
+      enabled: true,
+      code: 'idea_files_attributes',
+      created_at: null,
+      updated_at: null,
+      logic: {},
+      description_multiloc: {},
+      relationships: {
+        options: {
+          data: [],
+        },
+      },
+    },
+  ];
 
-    const handleOnSubmit = useCallback(async () => {
-      if (!isNilOrError(ideaCustomFields)) {
-        setProcessing(true);
-
-        try {
-          const promises: Promise<any>[] = Object.keys(changes).map(
-            (ideaCustomFieldId) => {
-              const ideaCustomFieldCode = ideaCustomFields.data.find(
-                (item) => item.id === ideaCustomFieldId
-              )?.attributes?.code;
-              return updateIdeaCustomField(
-                projectId,
-                ideaCustomFieldId,
-                ideaCustomFieldCode,
-                changes[ideaCustomFieldId]
-              );
-            }
-          );
-
-          await Promise.all(promises);
-          refetchCustomFields(projectId);
-          setChanges({});
-          setProcessing(false);
-          setSuccess(true);
-          setError(false);
-        } catch (error) {
-          setProcessing(false);
-          setSuccess(false);
-          setError(true);
-        }
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [changes, ideaCustomFields]);
-
-    if (!isNilOrError(ideaCustomFields)) {
-      return (
-        <Container className={className || ''}>
-          <Header>
-            <TitleContainer>
-              <StyledSectionTitle>
-                <FormattedMessage {...messages.inputForm} />
-              </StyledSectionTitle>
-            </TitleContainer>
-            <SectionDescription>
-              <FormattedMessage {...messages.postDescription} />
-            </SectionDescription>
-          </Header>
-
-          <Content>
-            <Section>
-              <StyledSubSectionTitle>
-                <CollapseExpandAllButton
-                  buttonStyle="secondary"
-                  padding="7px 10px"
-                  onClick={handleCollapseExpandAll}
-                  text={
-                    !allExpanded
-                      ? formatMessage(messages.expandAll)
-                      : formatMessage(messages.collapseAll)
-                  }
-                />
-              </StyledSubSectionTitle>
-              {ideaCustomFields.data.map((ideaCustomField, index) => {
-                const id = getCustomFieldId(ideaCustomField);
-                return (
-                  <IdeaCustomField
-                    key={id}
-                    collapsed={collapsed[id]}
-                    first={index === 0}
-                    ideaCustomField={ideaCustomField}
-                    onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
-                    onChange={handleIdeaCustomFieldOnChange}
-                    id={id}
-                  />
-                );
-              })}
-            </Section>
-          </Content>
-
-          <Footer>
-            <Button
-              buttonStyle="admin-dark"
-              onClick={handleOnSubmit}
-              processing={processing}
-              disabled={isEmpty(changes)}
-              id="e2e-ideaform-settings-submit"
-            >
-              {success ? (
-                <FormattedMessage {...messages.saved} />
-              ) : (
-                <FormattedMessage {...messages.save} />
-              )}
-            </Button>
-
-            {success && (
-              <Success
-                text={formatMessage(messages.saveSuccessMessage)}
-                showBackground={false}
-                showIcon={false}
-              />
-            )}
-
-            {error && (
-              <ErrorWrapper>
-                <Error
-                  text={formatMessage(messages.errorMessage)}
-                  showBackground={false}
-                  showIcon={false}
-                />
-              </ErrorWrapper>
-            )}
-          </Footer>
-        </Container>
-      );
-    }
-
-    return null;
+  if (isFormBuilderVisible) {
+    return FormBuilderModal({
+      intl,
+      totalSubmissions: 0,
+      customFields: formCustomFields,
+      phaseId: undefined,
+      projectId,
+      builderConfig: getBuilderConfig('ideation'),
+      setisFormBuilderVisible,
+    });
   }
-);
+  return (
+    <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
+      <Box width="100%">
+        <SectionTitle>
+          <FormattedMessage {...messages.inputForm} />
+        </SectionTitle>
+        <SectionDescription style={{ marginRight: '600px' }}>
+          <FormattedMessage {...messages.inputFormDescription} />
+        </SectionDescription>
+      </Box>
+      <Box>
+        <Button
+          onClick={() => {
+            setisFormBuilderVisible(true);
+          }}
+          width="auto"
+          icon="edit"
+        >
+          <FormattedMessage {...messages.editInputForm} />
+        </Button>
+      </Box>
+    </Box>
+  );
+};
 
-export default withRouter(injectIntl(IdeaForm));
+export default IdeaForm;

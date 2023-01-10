@@ -15,11 +15,9 @@ const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(() => import('./project/permissions'));
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
-const AdminProjectsSurvey = lazy(
-  () => import('../formBuilder/containers/projects/forms')
-);
+const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 const AdminProjectsSurveyEdit = lazy(
-  () => import('../formBuilder/containers/projects/forms/edit')
+  () => import('../../../components/FormBuilder/edit')
 );
 const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));

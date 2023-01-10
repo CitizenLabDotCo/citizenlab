@@ -10,7 +10,7 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import { getIndexForTitle } from '../../components/FormFields/utils';
+import { getIndexForTitle } from '../FormFields/utils';
 import { LogicSettings } from './LogicSettings';
 import { ContentSettings } from './ContentSettings';
 import Modal from 'components/UI/Modal';

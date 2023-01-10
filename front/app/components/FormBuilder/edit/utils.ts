@@ -1,5 +1,7 @@
-import { questionDNDType } from 'containers/Admin/formBuilder/components/FormFields';
+import { questionDNDType } from 'components/FormBuilder/components/FormFields';
 import { IFlatCustomField } from 'services/formCustomFields';
+import { ParticipationMethod } from 'services/participationContexts';
+import { ideationConfig, nativeSurveyConfig } from '../configurations';
 
 const reorder = <ListType>(
   list: ListType[],
@@ -31,6 +33,13 @@ export type DragAndDropResult = {
   reason: string;
   mode: string;
   destination: DragOrDroValues | null;
+};
+
+export const getBuilderConfig = (participationMethod: ParticipationMethod) => {
+  if (participationMethod === 'ideation') {
+    return ideationConfig;
+  }
+  return nativeSurveyConfig;
 };
 
 const getFlatPageStructure = (

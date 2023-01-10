@@ -16,7 +16,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import CompletionBar from 'containers/Admin/formBuilder/components/FormResults/CompletionBar';
+import CompletionBar from 'components/FormBuilder/components/FormResults/CompletionBar';
 import T from 'components/T';
 
 // i18n

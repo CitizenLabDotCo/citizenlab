@@ -5,12 +5,12 @@ import { useParams, useLocation } from 'react-router-dom';
 
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import FormActions from 'containers/Admin/formBuilder/components/FormActions';
-import FormResults from 'containers/Admin/formBuilder/components/FormResults';
+import FormActions from 'components/FormBuilder/components/FormActions';
+import FormResults from 'components/FormBuilder/components/FormResults';
 import Button from 'components/UI/Button';
 
 // i18n
-import messages from './messages';
+import messages from '../../../../../components/FormBuilder/messages';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -19,7 +19,7 @@ import useLocale from 'hooks/useLocale';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getFormActionsConfig } from 'containers/Admin/formBuilder/utils';
+import { getFormActionsConfig } from 'components/FormBuilder/utils';
 
 // Styles
 import { colors } from 'utils/styleUtils';
