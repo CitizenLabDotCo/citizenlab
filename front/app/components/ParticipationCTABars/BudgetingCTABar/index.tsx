@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, FormEvent } from 'react';
 
 // Components
 import { Button } from '@citizenlab/cl2-component-library';
@@ -15,10 +15,14 @@ import { IProjectData } from 'services/projects';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { scrollToElement } from 'utils/scroll';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+
+// router
+import { useLocation } from 'react-router-dom';
 
 type CTAProps = {
   project: IProjectData;
@@ -27,6 +31,7 @@ type CTAProps = {
 
 export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
   const theme = useTheme();
+  const { pathname } = useLocation();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const hasProjectEnded = currentPhase
     ? pastPresentOrFuture([
@@ -56,12 +61,23 @@ export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
     return null;
   }
 
+  const scrollTo = useCallback(
+    (id: string) => (event: FormEvent) => {
+      event.preventDefault();
+
+      scrollToElement({ id, shouldFocus: true });
+    },
+    [currentPhase, project, pathname]
+  );
+
+  const handleAllocateBudgetClick = (event: FormEvent) => {
+    scrollTo('pb-expenses')(event);
+  };
+
   const CTAButton = hasUserParticipated ? null : (
     <Button
       buttonStyle="primary"
-      onClick={() => {
-        // TODO: Handle scroll to budget
-      }}
+      onClick={handleAllocateBudgetClick}
       fontWeight="500"
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}

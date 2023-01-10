@@ -393,7 +393,10 @@ const PBExpenses = ({
       />
     );
     return (
-      <Container className={`e2e-pb-expenses-box ${className || ''}`}>
+      <Container
+        className={`e2e-pb-expenses-box ${className || ''}`}
+        id="pb-expenses"
+      >
         <InnerContainer>
           <Header>
             <Title className={validationStatus}>
