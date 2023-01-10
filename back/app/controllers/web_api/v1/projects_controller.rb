@@ -61,6 +61,9 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def create
     project_params = permitted_attributes(Project)
+    puts '============================'
+    puts project_params.inspect
+    puts '============================'
     @project = Project.new(project_params)
     sidefx.before_create(@project, current_user)
 
@@ -100,11 +103,12 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def copy
-    @project = Project.find(params[:id])
+    source_project = Project.find(params[:id])
+
+    @project = Project.create(source_project.attributes.except(:id, :slug))
     authorize @project
-    puts '==============================='
-    puts @project.id
-    puts '==============================='
+
+    show
   end
 
   def destroy
