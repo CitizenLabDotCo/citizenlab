@@ -1,30 +1,50 @@
 import React, { useEffect, useState } from 'react';
+
+// Utils
 import { IntlProvider } from 'react-intl';
-import { isNilOrError, NilOrError } from '../../../../utils/helperUtils';
-import { Locale } from '../../../../typings';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import moment from 'moment';
+
+// Typings
+import { Locale } from 'typings';
 
 type props = {
-  locale: Locale | NilOrError;
+  reportLocale: Locale | NilOrError;
+  platformLocale: Locale | NilOrError;
   children: React.ReactNode;
 };
 
-// Loads correct messages for the report locale
-const ReportLanguageProvider = ({ locale, children }: props) => {
-  const [messages, setMessages] = useState(undefined);
+// Loads correct messages for the report locale & change moment locale
+const ReportLanguageProvider = ({
+  reportLocale,
+  platformLocale,
+  children,
+}: props) => {
+  const [messages, setMessages] = useState();
 
   useEffect(() => {
-    // Note: seems inefficient when we have already loaded all these in the main LanguageProvider
-    import(`i18n/${locale}`).then((translationMessages) => {
-      setMessages(translationMessages.default);
-    });
-  }, [locale]);
+    if (!isNilOrError(reportLocale)) {
+      // Note: seems inefficient when we have already loaded all these in the main LanguageProvider
+      import(`i18n/${reportLocale}`).then((translationMessages) => {
+        setMessages(translationMessages.default);
+      });
+      moment.locale(reportLocale);
+    }
 
-  if (isNilOrError(locale)) {
+    return () => {
+      // Set the moment locale back to the platform locale on cleanup
+      if (!isNilOrError(platformLocale)) {
+        moment.locale(platformLocale);
+      }
+    };
+  }, [reportLocale, platformLocale]);
+
+  if (isNilOrError(reportLocale)) {
     return null;
   }
 
   return (
-    <IntlProvider locale={locale} key={locale} messages={messages}>
+    <IntlProvider locale={reportLocale} key={reportLocale} messages={messages}>
       {children}
     </IntlProvider>
   );

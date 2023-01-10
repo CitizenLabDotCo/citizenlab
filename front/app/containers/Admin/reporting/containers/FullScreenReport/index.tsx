@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import useReportLayout from 'hooks/useReportLayout';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from '../../../../../hooks/useLocale';
 import useReportLocale from '../../hooks/useReportLocale';
 import ReportLanguageProvider from '../ReportLanguageProvider';
 
@@ -40,6 +41,7 @@ const FullScreenReport = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const reportLayout = useReportLayout(reportId);
   const reportLocale = useReportLocale(reportLayout);
+  const platformLocale = useLocale();
 
   if (isNilOrError(reportLocale)) {
     return null;
@@ -54,7 +56,10 @@ const FullScreenReport = ({ reportId }: Props) => {
   const editorData = draftData || savedEditorData;
 
   return (
-    <ReportLanguageProvider locale={reportLocale}>
+    <ReportLanguageProvider
+      reportLocale={reportLocale}
+      platformLocale={platformLocale}
+    >
       <FullScreenWrapper
         onUpdateDraftData={setDraftData}
         onUpdateLocale={() => {}}

@@ -35,6 +35,7 @@ import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import ReportLanguageProvider from '../ReportLanguageProvider';
+import useLocale from '../../../../../hooks/useLocale';
 
 interface Props {
   reportId: string;
@@ -49,6 +50,7 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const reportLayout = useReportLayout(reportId);
   const reportLocale = useReportLocale(reportLayout);
+  const platformLocale = useLocale();
 
   useEffect(() => {
     if (!isNilOrError(reportLocale)) {
@@ -158,7 +160,10 @@ const ReportBuilder = ({ reportId }: Props) => {
                 width="100%"
                 height="100%"
               >
-                <ReportLanguageProvider locale={reportLocale}>
+                <ReportLanguageProvider
+                  reportLocale={reportLocale}
+                  platformLocale={platformLocale}
+                >
                   <Frame editorData={initialData} />
                 </ReportLanguageProvider>
               </Box>
@@ -179,7 +184,10 @@ const ReportBuilder = ({ reportId }: Props) => {
           <StyledRightColumn>
             <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
               <Editor isPreview={true}>
-                <ReportLanguageProvider locale={reportLocale}>
+                <ReportLanguageProvider
+                  reportLocale={reportLocale}
+                  platformLocale={platformLocale}
+                >
                   <Frame editorData={previewData} />
                 </ReportLanguageProvider>
               </Editor>
