@@ -15,7 +15,8 @@
 #
 class Topic < ApplicationRecord
   DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
-  CODES = DEFAULT_CODES + ['custom']
+  CUSTOM_CODE = 'custom'
+  CODES = DEFAULT_CODES + [CUSTOM_CODE]
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
 
