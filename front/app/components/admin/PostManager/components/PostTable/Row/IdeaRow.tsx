@@ -22,7 +22,6 @@ import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
 
 // utils
-import localize, { InjectedLocalized } from 'utils/localize';
 import { timeAgo } from 'utils/dateUtils';
 
 // i18n
@@ -81,7 +80,7 @@ const IdeaRow = ({
   idea,
   selection,
   locale,
-}: Props & WrappedComponentProps & InjectedLocalized) => {
+}: Props & WrappedComponentProps) => {
   const [cells, setCells] = useState<
     CellConfiguration<IdeaCellComponentProps>[]
   >([
@@ -291,7 +290,7 @@ const ideaSource = {
       id: props.idea.id,
     };
   },
-  endDrag(props: Props & WrappedComponentProps & InjectedLocalized, monitor) {
+  endDrag(props: Props & WrappedComponentProps, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
     const { selection } = props;
@@ -359,12 +358,8 @@ const ideaSource = {
               const hasPhases = !isEmpty(idea.data.relationships.phases.data);
 
               if (hasPhases) {
-                const ideaTitle = props.localize(
-                  idea.data.attributes.title_multiloc
-                );
                 const message = props.intl.formatMessage(
-                  messages.losePhaseInfoConfirmation,
-                  { ideaTitle }
+                  messages.loseIdeaPhaseInfoConfirmation
                 );
 
                 if (window.confirm(message)) {
@@ -393,6 +388,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default injectIntl(
-  localize(DragSource('IDEA', ideaSource, collect)(IdeaRow))
-);
+export default injectIntl(DragSource('IDEA', ideaSource, collect)(IdeaRow));
