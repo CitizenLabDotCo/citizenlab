@@ -110,10 +110,15 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project = Project.create(
       source_project.attributes
       .except('id', 'slug', 'title_multiloc', 'admin_publication_attributes')
-      .merge(title_multiloc: title_of_copy, admin_publication_attributes: { publication_status: 'draft' })
+      .merge(
+        title_multiloc: title_of_copy,
+        admin_publication_attributes: { publication_status: 'draft' },
+        header_bg: source_project.header_bg
+      )
     )
 
     source_project.topics.each { |topic| ProjectsTopic.create(project_id: @project.id, topic_id: topic.id) }
+    source_project.project_images.each { |image| ProjectImage.create(project_id: @project.id, image: image.image) }
 
     authorize @project
     show
