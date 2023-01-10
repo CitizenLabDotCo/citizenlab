@@ -83,7 +83,7 @@ class AdminProjectEventEdit extends PureComponent<
 > {
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       locale: null,

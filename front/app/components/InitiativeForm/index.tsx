@@ -103,7 +103,7 @@ class InitiativeForm extends React.Component<
   descriptionElement: HTMLDivElement | null;
   topicElement: HTMLButtonElement | null;
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       touched: {} as State['touched'],

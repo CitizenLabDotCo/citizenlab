@@ -59,7 +59,7 @@ interface State {
 
 export class InitiativesEditPage extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as Props);
+    super(props);
     this.state = {
       selectedLocale: props.locale,
     };

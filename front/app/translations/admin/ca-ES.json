@@ -105,7 +105,6 @@
   "app.components.admin.PostManager.inputsExportFileName": "entrada",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Mostrar només les publicacions que necessiten comentaris",
   "app.components.admin.PostManager.latestFeedbackMode": "Utilitzeu la darrera actualització oficial existent com a explicació",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Si allunyeu \"{ideaTitle}\" del seu projecte actual, es perdrà la informació sobre les fases assignades. Vols continuar?",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} propostes",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} publicacions",
   "app.components.admin.PostManager.newFeedbackMode": "Escriviu una nova actualització per explicar aquest canvi",
