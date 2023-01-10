@@ -25,12 +25,12 @@ export interface InputProps {
   id?: string;
 }
 
-type RenderProps = {
+export interface RenderProps {
   lockedItemsList?: Item[];
   itemsList: Item[];
   handleDragRow: (fromIndex: number, toIndex: number) => void;
   handleDropRow: (itemId: string, toIndex: number) => void;
-};
+}
 
 export interface SortableListState {
   itemsWhileDragging: Item[] | null;
