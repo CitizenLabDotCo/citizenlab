@@ -8,7 +8,7 @@ import moment from 'moment';
 // Typings
 import { Locale } from 'typings';
 
-type props = {
+type Props = {
   reportLocale: Locale | NilOrError;
   platformLocale: Locale | NilOrError;
   children: React.ReactNode;
@@ -19,7 +19,7 @@ const ReportLanguageProvider = ({
   reportLocale,
   platformLocale,
   children,
-}: props) => {
+}: Props) => {
   const [messages, setMessages] = useState();
 
   useEffect(() => {
