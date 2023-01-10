@@ -1379,7 +1379,6 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "Mer information om rekommenderade bildupplösningar finns i {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Anpassa startsidans bannerbild och -text.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "besök vårt supportcenter",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/articles/1346397",
   "app.containers.AdminPage.SettingsPage.header_bg": "Bannerbild",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Sida för administratörsinställningar",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Sida för administratörsinställningar",

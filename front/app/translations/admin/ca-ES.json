@@ -1358,7 +1358,6 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "Per obtenir més informació sobre les resolucions d'imatge recomanades, {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Personalitzeu la imatge i el text del bàner de la pàgina d'inici.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "visiteu el nostre centre de suport",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/articles/1346397",
   "app.containers.AdminPage.SettingsPage.header_bg": "Imatge de pancarta",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Pàgina de configuració d'administrador",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Pàgina de configuració d'administrador",

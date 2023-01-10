@@ -1379,7 +1379,6 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "Du kan få flere information om anbefalede billedopløsninger på {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Tilpas hjemmesidebanneret billede og tekst.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "besøg vores støtte center",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/articles/1346397",
   "app.containers.AdminPage.SettingsPage.header_bg": "Bannerbillede",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Side med administratorindstillinger",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Side med administratorindstillinger",

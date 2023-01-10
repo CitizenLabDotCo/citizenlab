@@ -1379,7 +1379,6 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "Önerilen görsel çözünürlükleri hakkında daha fazla bilgi için {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Ana sayfa bandı görselini ve metnini özelleştirin.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "destek merkezimizi ziyaret edin",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/articles/1346397",
   "app.containers.AdminPage.SettingsPage.header_bg": "Bant görseli",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Yönetici ayarları sayfası",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Yönetici ayarları sayfası",
