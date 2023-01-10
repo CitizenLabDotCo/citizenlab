@@ -28,7 +28,7 @@ import useLocalize from 'hooks/useLocalize';
 // typings
 import { IPhaseData } from 'services/phases';
 
-type AboutReportWidgetProps = {
+type Props = {
   reportId: string;
   projectId?: string;
 };
@@ -53,7 +53,7 @@ const toPeriodString = ({
   endDate: string;
 }) => `${startDate} - ${endDate}`;
 
-const AboutReportWidget = ({ reportId, projectId }: AboutReportWidgetProps) => {
+const AboutReportWidget = ({ reportId, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
