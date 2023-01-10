@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // Components
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import MainHeader from 'containers/MainHeader';
 
 // hooks
@@ -50,6 +50,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const portalElement = document?.getElementById('topbar-portal');
   const phases = usePhases(projectId);
+  const isSmallerThanXlPhone = useBreakpoint('phone');
 
   useEffect(() => {
     window.addEventListener(
@@ -92,9 +93,11 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return createPortal(
       <>
         <Container>
-          <Box height="78px">
-            <MainHeader />
-          </Box>
+          {!isSmallerThanXlPhone && (
+            <Box height="78px">
+              <MainHeader />
+            </Box>
+          )}
           {BarContents}
         </Container>
       </>,
