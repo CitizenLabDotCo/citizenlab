@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 // hooks
 import useVisitorReferrers from '../../hooks/useVisitorReferrers';
@@ -30,7 +30,11 @@ import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { ProjectId, Dates } from '../../typings';
 
-const Percentage = ({ children }) => (
+interface PercentageProps {
+  children: ReactNode;
+}
+
+const Percentage = ({ children }: PercentageProps) => (
   <Text
     mb="0px"
     mt="0px"

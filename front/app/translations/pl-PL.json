@@ -1256,7 +1256,7 @@
   "app.containers.SignUp.viennaConsentEmail": "Adres e-mail",
   "app.containers.SignUp.viennaConsentFirstName": "Imię",
   "app.containers.SignUp.viennaConsentFooter": "Po zalogowaniu możesz zmienić informacje o swoim profilu. Jeśli masz już konto z tym samym adresem e-mail na mitgestalten.wien.gv.at, zostanie ono połączone z Twoim obecnym kontem.",
-  "app.containers.SignUp.viennaConsentHeader": "The following data will be transmitted:",
+  "app.containers.SignUp.viennaConsentHeader": "Następujące dane zostaną przesłane:",
   "app.containers.SignUp.viennaConsentLastName": "Nazwisko",
   "app.containers.SignUp.viennaConsentUserName": "Nazwa użytkownika",
   "app.containers.SignUp.viennaDataProtection": "polityka prywatności vienna",
