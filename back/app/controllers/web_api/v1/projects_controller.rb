@@ -101,7 +101,9 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def copy
     source_project = Project.find(params[:id])
-    title_of_copy = source_project.title_multiloc.transform_values { |v| "#{v} - Copy" }
+    source_title = source_project.title_multiloc
+    title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
+    title_of_copy = source_title.each { |k, v| source_title[k] = "#{v} - #{title_suffix_multiloc[k]}" }
 
     @project = Project.create(
       source_project.attributes
