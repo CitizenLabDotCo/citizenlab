@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, MouseEvent } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, isEmpty, get } from 'lodash-es';
@@ -55,8 +55,7 @@ type InputProps = {
   activeFilterMenu: TFilterMenu;
   className?: string;
   onClickCheckbox: (event) => void;
-  onClickTitle: (event) => void;
-  nothingHappens: (event) => void;
+  onClickTitle: (event: MouseEvent) => void;
   locale: Locale;
 };
 

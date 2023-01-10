@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 
 type Props = {
   children?: any;
-  onClick?: (event) => void;
-  onClickOutside: (event) => void;
-  onMouseEnter?: (event) => void;
-  onMouseLeave?: (event) => void;
-  onMouseDown?: (event) => void;
+  onClick?: (event: MouseEvent) => void;
+  onClickOutside: (event: MouseEvent) => void;
+  onMouseEnter?: (event: MouseEvent) => void;
+  onMouseLeave?: (event: MouseEvent) => void;
+  onMouseDown?: (even: MouseEvent) => void;
   className?: string;
   id?: string;
   setRef?: (arg: HTMLElement) => void;
@@ -97,15 +97,15 @@ export default class ClickOutside extends PureComponent<Props, State> {
     this.props.setRef && this.props.setRef(element);
   };
 
-  handleOnMouseEnter = (event) => {
+  handleOnMouseEnter = (event: MouseEvent) => {
     this.props.onMouseEnter && this.props.onMouseEnter(event);
   };
 
-  handleOnMouseLeave = (event) => {
+  handleOnMouseLeave = (event: MouseEvent) => {
     this.props.onMouseLeave && this.props.onMouseLeave(event);
   };
 
-  handleOnMouseDown = (event) => {
+  handleOnMouseDown = (event: MouseEvent) => {
     this.props.onMouseDown && this.props.onMouseDown(event);
   };
 
