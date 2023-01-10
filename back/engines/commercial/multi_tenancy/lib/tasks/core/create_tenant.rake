@@ -267,6 +267,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        custom_topics: {
+          enabled: true,
+          allowed: true
+        },
         smart_groups: {
           enabled: true,
           allowed: true

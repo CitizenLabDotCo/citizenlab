@@ -89,6 +89,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            custom_topics: {
+              enabled: true,
+              allowed: true
+            },
             custom_accessibility_statement_link: {
               enabled: false,
               allowed: false
