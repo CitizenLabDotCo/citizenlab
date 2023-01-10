@@ -4,7 +4,6 @@ import { createPortal } from 'react-dom';
 // Components
 import {
   Box,
-  colors,
   useBreakpoint,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
@@ -14,10 +13,8 @@ import MainHeader from 'containers/MainHeader';
 import usePhases from 'hooks/usePhases';
 import useProject from 'hooks/useProject';
 
-// style
-import styled from 'styled-components';
-import { lighten } from 'polished';
-import { media, viewportWidths } from 'utils/styleUtils';
+// styles
+import { viewportWidths } from 'utils/styleUtils';
 
 // utils
 import {
@@ -25,26 +22,6 @@ import {
   getParticipationMethod,
 } from 'utils/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-const Container = styled.div`
-  width: 100vw;
-  position: fixed;
-  top: 0px;
-  z-index: 1004;
-  background: #fff;
-  border-bottom: solid 1px #ddd;
-  opacity: 0;
-  pointer-events: none;
-  will-change: opacity;
-
-  opacity: 100;
-  pointer-events: auto;
-
-  ${media.tablet`
-    top: 0px;
-    border-bottom: solid 1px ${lighten(0.4, colors.textSecondary)};
-  `}
-`;
 
 type ProjectCTABarProps = {
   projectId: string;
@@ -97,16 +74,21 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
 
   if (portalElement && isVisible) {
     return createPortal(
-      <>
-        <Container>
-          {!isSmallerThanXlPhone && (
-            <Box height="78px">
-              <MainHeader />
-            </Box>
-          )}
-          {BarContents}
-        </Container>
-      </>,
+      <Box
+        width="100vw"
+        position="fixed"
+        top="0px"
+        zIndex="1004"
+        background="#fff"
+        borderBottom="solid 1px #ddd"
+      >
+        {!isSmallerThanXlPhone && (
+          <Box height="78px">
+            <MainHeader />
+          </Box>
+        )}
+        {BarContents}
+      </Box>,
       portalElement
     );
   }
