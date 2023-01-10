@@ -24,7 +24,6 @@ const ReportLanguageProvider = ({
 
   useEffect(() => {
     if (!isNilOrError(reportLocale)) {
-      // Note: seems inefficient when we have already loaded all these in the main LanguageProvider
       import(`i18n/${reportLocale}`).then((translationMessages) => {
         setMessages(translationMessages.default);
       });

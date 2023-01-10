@@ -26,7 +26,7 @@ import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 const LocaleBadge = styled.div`
   display: inline-block;
@@ -36,9 +36,7 @@ const LocaleBadge = styled.div`
   font-size: 12px;
   padding: 0px 6px;
   margin-left: 15px;
-  transform: translateY(-2px);
-  border-radius: 3px;
-  text-transform: uppercase;
+  border-radius: ${stylingConsts.borderRadius};
 `;
 
 type ContentBuilderTopBarProps = {
@@ -49,10 +47,6 @@ type ContentBuilderTopBarProps = {
   selectedLocale: Locale | undefined;
   draftEditorData?: Record<string, SerializedNodes>;
   reportId: string;
-  onSelectLocale: (args: {
-    locale: Locale;
-    editorData: SerializedNodes;
-  }) => void;
 };
 
 const ContentBuilderTopBar = ({
@@ -103,7 +97,7 @@ const ContentBuilderTopBar = ({
           </Text>
           <Title variant="h4" as="h1" color="primary">
             {isNilOrError(report) ? <></> : report.attributes.name}
-            <LocaleBadge>{selectedLocale}</LocaleBadge>
+            <LocaleBadge>{selectedLocale?.toUpperCase()}</LocaleBadge>
           </Title>
         </Box>
         <Box mx="24px">

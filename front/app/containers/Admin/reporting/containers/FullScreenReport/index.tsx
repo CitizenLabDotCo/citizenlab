@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import useReportLayout from 'hooks/useReportLayout';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from '../../../../../hooks/useLocale';
+import useLocale from 'hooks/useLocale';
 import useReportLocale from '../../hooks/useReportLocale';
 import ReportLanguageProvider from '../ReportLanguageProvider';
 
@@ -60,10 +60,7 @@ const FullScreenReport = ({ reportId }: Props) => {
       reportLocale={reportLocale}
       platformLocale={platformLocale}
     >
-      <FullScreenWrapper
-        onUpdateDraftData={setDraftData}
-        onUpdateLocale={() => {}}
-      >
+      <FullScreenWrapper onUpdateDraftData={setDraftData}>
         {isLoadingLayout && <Spinner />}
         {!isLoadingLayout && (
           <Centerer>

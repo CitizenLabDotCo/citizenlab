@@ -52,6 +52,8 @@ const ReportBuilder = ({ reportId }: Props) => {
   const reportLocale = useReportLocale(reportLayout);
   const platformLocale = useLocale();
 
+  // Note: selectedLocale is kept to keep compatibility with content builder
+  // although there is currently only one locale allowed per report
   useEffect(() => {
     if (!isNilOrError(reportLocale)) {
       setSelectedLocale(reportLocale);
@@ -90,27 +92,6 @@ const ReportBuilder = ({ reportId }: Props) => {
     [selectedLocale]
   );
 
-  // Note: Currently unused - probably needs removing
-  const handleSelectedLocaleChange = useCallback(
-    ({
-      locale,
-      editorData,
-    }: {
-      locale: Locale;
-      editorData: SerializedNodes;
-    }) => {
-      if (selectedLocale && selectedLocale !== locale) {
-        setDraftData((draftData) => ({
-          ...draftData,
-          [selectedLocale]: editorData,
-        }));
-      }
-
-      setSelectedLocale(locale);
-    },
-    [selectedLocale]
-  );
-
   const previewData = useMemo(() => {
     if (!selectedLocale) return;
 
@@ -141,7 +122,6 @@ const ReportBuilder = ({ reportId }: Props) => {
           previewEnabled={previewEnabled}
           setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
-          onSelectLocale={handleSelectedLocaleChange}
           draftEditorData={draftData}
           reportId={reportId}
         />
