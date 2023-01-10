@@ -5,7 +5,6 @@ namespace :cl2_back do
   task :create_tenant, %i[host template] => [:environment] do |_t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
-
     Tenant.find_by(host: host)&.destroy!
 
     settings = SettingsService.new.minimal_required_settings(
@@ -311,32 +310,29 @@ namespace :cl2_back do
         }
       }
     )
-    tenant = Tenant.create!(
-      name: host,
-      host: host,
+
+    tenant_attrs = { name: host, host: host }
+    config_attrs = {
       logo: Rails.root.join('spec/fixtures/logo.png').open,
       settings: settings
+    }.with_indifferent_access
+
+    _success, tenant, _app_config = MultiTenancy::TenantService.new.initialize_with_template(
+      tenant_attrs, config_attrs, tenant_template
     )
 
-    side_fx_tenant = MultiTenancy::SideFxTenantService.new
-
-    side_fx_tenant.before_apply_template tenant, tenant_template
-    Apartment::Tenant.switch tenant.schema_name do
-      side_fx_tenant.around_apply_template(tenant, tenant_template) do
-        MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template,
-          external_subfolder: 'release'
-      end
+    tenant.switch do
       User.create!(
         roles: [{ type: 'admin' }],
         first_name: 'Citizen',
         last_name: 'Lab',
         email: 'hello@citizenlab.co',
         password: 'democrazy',
-        locale: tenant.settings.dig('core', 'locales')&.first || 'en',
+        locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
       )
     end
 
-    MultiTenancy::TenantService.new.finalize_creation tenant
+    MultiTenancy::TenantService.new.finalize_creation(tenant)
   end
 end

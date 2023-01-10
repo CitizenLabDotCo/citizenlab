@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { Popup } from 'semantic-ui-react';
 import { IInitiativeAllowedTransitions } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -29,18 +29,18 @@ type Props = {
 };
 
 class InitiativesStatusSelector extends React.PureComponent<Props> {
-  isActive = (statusId) => {
+  isActive = (statusId: string) => {
     return this.props.selectedStatus === statusId;
   };
 
-  isAllowed = (statusId) => {
+  isAllowed = (statusId: string) => {
     return (
       this.props.allowedTransitions &&
       this.props.allowedTransitions[statusId] !== undefined
     );
   };
 
-  handleStatusClick = (statusId) => (event) => {
+  handleStatusClick = (statusId: string) => (event: MouseEvent) => {
     event.stopPropagation();
     if (this.isAllowed(statusId)) {
       this.props.onUpdateStatus(statusId);

@@ -105,7 +105,6 @@
   "app.components.admin.PostManager.inputsExportFileName": "contributions",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Afficher uniquement les contributions nécessitant un retour",
   "app.components.admin.PostManager.latestFeedbackMode": "Utiliser la dernière mise à jour comme explication",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Déplacer l'idée \" {ideaTitle} \" hors du projet actuel lui fera perdre les informations liées au étapes du projet. Voulez-vous la déplacer ? ",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} propositions",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} contributions",
   "app.components.admin.PostManager.newFeedbackMode": "Écrivez une nouvelle mise à jour pour expliquer ce changement",

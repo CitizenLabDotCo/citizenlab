@@ -105,7 +105,6 @@
   "app.components.admin.PostManager.inputsExportFileName": "unos",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Prikaži samo unose za koje su potrebne povratne informacije",
   "app.components.admin.PostManager.latestFeedbackMode": "Iskoristite poslednje zvanično obaveštenje",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Premeštanje '{ideaTitle}' iz trenutnog projekta će uzrokovati gubitak svih informacija vezanih za pripadajuće faze. Da li ste sigurni da želite da nastavite? ",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} predloga",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} unosa",
   "app.components.admin.PostManager.newFeedbackMode": "Napišite obaveštenje kako biste objasnili ovu promenu",

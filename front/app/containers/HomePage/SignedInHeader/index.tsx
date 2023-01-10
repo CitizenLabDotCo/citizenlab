@@ -171,7 +171,10 @@ const SignedInHeader = () => {
             currentOnboardingCampaignName={onboardingCampaignName}
             onSkip={handleSkip('complete_profile')}
           />
-          {/* Do we even use this step? */}
+          {/*
+            This step is configured via AdminHQ.
+            See https://citizenlab.atlassian.net/browse/CL-2289
+          */}
           <CustomCTAStep
             currentOnboardingCampaignName={onboardingCampaignName}
             onSkip={handleSkip('custom_cta')}

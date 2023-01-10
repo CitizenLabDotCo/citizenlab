@@ -434,7 +434,6 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Odabrani {numberOfSelectedTopics, plural, =0 {nula oznaka} one {jedna oznaka} other {# oznaka}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Prevedi",
-  "app.components.Upload.a11y_removeImage": "Ukloni",
   "app.components.Upload.errorImageMaxSizeExceeded": "Slika koju ste odabrali veća je od {maxFileSize} MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Jedna ili više slika koje ste odabrali veće su od {maxFileSize} MB",
   "app.components.Upload.onlyOneImage": "Možete prenijeti samo 1 sliku",

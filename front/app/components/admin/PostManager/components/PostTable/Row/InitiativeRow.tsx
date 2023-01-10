@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, get } from 'lodash-es';
@@ -24,9 +24,6 @@ import Checkbox from 'components/UI/Checkbox';
 import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
 import SubRow from './SubRow';
 import AssigneeSelect from '../AssigneeSelect';
-
-// utils
-import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -71,7 +68,7 @@ interface InputProps {
   activeFilterMenu: TFilterMenu;
   className?: string;
   onClickCheckbox: (event) => void;
-  onClickTitle: (event) => void;
+  onClickTitle: (event: MouseEvent) => void;
   nothingHappens: (event) => void;
 }
 
@@ -90,9 +87,7 @@ interface Props extends InputProps, DataProps {
   connectDragSource: any;
 }
 
-class InitiativeRow extends React.PureComponent<
-  Props & WrappedComponentProps & InjectedLocalized
-> {
+class InitiativeRow extends React.PureComponent<Props & WrappedComponentProps> {
   onUpdateInitiativePhases = (selectedPhases) => {
     updateInitiative(this.props.initiative.id, {
       phase_ids: selectedPhases,
@@ -258,7 +253,7 @@ const initiativeSource = {
       id: props.initiative.id,
     };
   },
-  endDrag(props: Props & WrappedComponentProps & InjectedLocalized, monitor) {
+  endDrag(props: Props & WrappedComponentProps, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
     const { selection } = props;
@@ -294,7 +289,7 @@ function collect(connect, monitor) {
 }
 
 const InitiativesRowWithHocs = injectIntl(
-  localize(DragSource('IDEA', initiativeSource, collect)(InitiativeRow))
+  DragSource('IDEA', initiativeSource, collect)(InitiativeRow)
 );
 
 const Data = adopt<DataProps, InputProps>({

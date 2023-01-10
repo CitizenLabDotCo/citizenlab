@@ -50,6 +50,7 @@ const ImageUploader = ({
             image={headerLocalDisplayImage}
             onComplete={onAddImage}
             aspect={3 / 1}
+            onRemove={onRemoveImageFromUploader}
           />
         </Box>
       ) : (

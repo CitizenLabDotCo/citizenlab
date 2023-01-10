@@ -105,7 +105,6 @@
   "app.components.admin.PostManager.inputsExportFileName": "input",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Ilanngussat utertitsiffigineqartussat kisiisa takutikkit",
   "app.components.admin.PostManager.latestFeedbackMode": "Opdatering kingulleq pisortatigoortoq nassuiaatitut atoruk",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Una '{ideaTitle}' maannakkut pilersaarummit nuutikkukku, immikkoortuinut paasissutissat annaassavatit. Ingerlaqqissavit?",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} siunnersuut",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} isumassarsiat",
   "app.components.admin.PostManager.newFeedbackMode": "Nutaamik opdaterinngiliorit allannguut nassuiaaserniarlugu",
