@@ -31,6 +31,7 @@ import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getLocationGeojson } from '../utils';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -100,9 +101,13 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   const onSubmit = async (data) => {
     let location_point_geojson;
+
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
     }
+
+    location_point_geojson = await getLocationGeojson(initialFormData, data);
+
     const idea = await addIdea({
       ...data,
       location_point_geojson,

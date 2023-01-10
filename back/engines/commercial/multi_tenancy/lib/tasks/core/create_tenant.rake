@@ -286,10 +286,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        project_visibility: {
-          enabled: true,
-          allowed: true
-        },
         disable_downvoting: {
           enabled: true,
           allowed: true

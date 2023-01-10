@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // resources
-import { deleteTopic } from '../../../../services/topics';
+import { deleteTopic } from 'services/topics';
 
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -19,8 +19,8 @@ import {
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import TopicTermConfig from '../../../components/TopicTermConfig';
-import TopicsList from '../../../components/TopicsList';
+import TopicTermConfig from './TopicTermConfig';
+import TopicsList from './TopicsList';
 import Modal, {
   ModalContentContainer,
   ButtonsWrapper,
@@ -32,7 +32,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 const AllTopics = () => {
   const topics = useTopics({ includeStaticPages: true });
-
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
   const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
