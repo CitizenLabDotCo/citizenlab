@@ -5,13 +5,20 @@ export default defineMessages({
     id: 'app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder',
     defaultMessage: 'Report builder',
   },
-
-  shareAsWebLinkDesc: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLinkDesc',
-    defaultMessage: 'This web link is only accessible to admin users.',
+  quitReportConfirmationQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReport',
+    defaultMessage: 'Are you sure you want to leave?',
   },
-  printToPdf: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf',
-    defaultMessage: 'Print to PDF',
+  quitReportInfo: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReport',
+    defaultMessage: 'Current change won’t be saved',
+  },
+  confirmQuitButtonText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReport',
+    defaultMessage: 'Yes, i want to leave',
+  },
+  cancelQuitButtonText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReport',
+    defaultMessage: 'Cancel',
   },
 });

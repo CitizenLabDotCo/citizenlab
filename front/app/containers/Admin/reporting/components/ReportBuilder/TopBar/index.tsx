@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // services
 import { updateReportLayout } from 'services/reports';
@@ -14,7 +14,8 @@ import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitche
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
-import QuitWithoutSavingModal from './QuitWithoutSavingModal';
+import Modal from 'components/UI/Modal';
+import Button from 'components/UI/Button';
 
 // i18n
 import messages from './messages';
@@ -53,21 +54,28 @@ const ContentBuilderTopBar = ({
   reportId,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
-  const [shareModalOpen, setShareModalOpen] = useState(false);
-  const closeShareModal = () => setShareModalOpen(false);
+  const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
   const report = useReport(reportId);
 
   const disableSave = localesWithError.length > 0;
 
+  const closeModal = () => {
+    setShowQuitModal(false);
+  };
+  const openModal = () => {
+    setShowQuitModal(true);
+  };
   const goBack = () => {
     if (draftEditorData === undefined) {
-      clHistory.push('/admin/reporting/report-builder');
+      doGoBack();
     } else {
-      setShareModalOpen(true);
+      openModal();
     }
   };
-
+  const doGoBack = () => {
+    clHistory.push('/admin/reporting/report-builder');
+  };
   const handleSave = async () => {
     if (selectedLocale) {
       try {
@@ -83,6 +91,15 @@ const ContentBuilderTopBar = ({
     }
   };
 
+  useEffect(() => {
+    if (draftEditorData !== undefined) {
+      window.onbeforeunload = () => true;
+    }
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, [draftEditorData]);
+
   const handleSelectLocale = (locale: Locale) => {
     const editorData = query.getSerializedNodes();
     onSelectLocale({ locale, editorData });
@@ -94,11 +111,38 @@ const ContentBuilderTopBar = ({
 
   return (
     <Container>
-      <QuitWithoutSavingModal
-        open={shareModalOpen}
-        onClose={closeShareModal}
-        setShareModalOpen={setShareModalOpen}
-      />
+      <Modal opened={showQuitModal} close={closeModal}>
+        <Box display="flex" flexDirection="column" width="100%" p="20px">
+          <Box mb="40px">
+            <Title variant="h3" color="primary">
+              <FormattedMessage {...messages.quitReportConfirmationQuestion} />
+            </Title>
+            <Text color="primary" fontSize="l">
+              <FormattedMessage {...messages.quitReportInfo} />
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+          >
+            <Button
+              icon="delete"
+              data-cy="e2e-confirm-delete-survey-results"
+              buttonStyle="delete"
+              width="auto"
+              mr="20px"
+              onClick={doGoBack}
+            >
+              <FormattedMessage {...messages.confirmQuitButtonText} />
+            </Button>
+            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+              <FormattedMessage {...messages.cancelQuitButtonText} />
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
       <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
