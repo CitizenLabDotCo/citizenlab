@@ -10,13 +10,13 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { IProjectData } from 'services/projects';
 import { getSurveyTakingRules } from 'services/actionTakingRules';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,12 +29,7 @@ import { useLocation } from 'react-router-dom';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
-type CTAProps = {
-  project: IProjectData;
-  phases: Error | IPhaseData[] | null | undefined;
-};
-
-export const EmbeddedSurveyCTABar = ({ phases, project }: CTAProps) => {
+export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);

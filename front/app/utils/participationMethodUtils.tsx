@@ -20,6 +20,8 @@ import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSu
 import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
 import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
 
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
+
 // utils
 import { isNilOrError } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
@@ -44,11 +46,6 @@ type FormTitleMethodProps = {
   phaseFromUrl?: IPhaseData;
 };
 
-type CTAProps = {
-  project: IProjectData;
-  phases: Error | IPhaseData[] | null | undefined;
-};
-
 export type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
@@ -62,7 +59,7 @@ export type ParticipationMethodConfig = {
   showInputManager: boolean;
   isMethodLocked: boolean;
   postType: 'defaultInput' | 'nativeSurvey';
-  renderCTABar: (props: CTAProps) => ReactNode | JSX.Element | null;
+  renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -120,7 +117,7 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   isMethodLocked: false,
-  renderCTABar: (props: CTAProps) => {
+  renderCTABar: (props: CTABarProps) => {
     return <IdeationCTABar project={props.project} phases={props.phases} />;
   },
 };
@@ -155,7 +152,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   },
   showInputManager: false,
   isMethodLocked: true,
-  renderCTABar: (props: CTAProps) => {
+  renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
   },
 };
@@ -193,7 +190,7 @@ const surveyConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: (props: CTAProps) => {
+  renderCTABar: (props: CTABarProps) => {
     return (
       <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
     );
@@ -245,7 +242,7 @@ const budgetingConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   isMethodLocked: false,
-  renderCTABar: (props: CTAProps) => {
+  renderCTABar: (props: CTABarProps) => {
     return <BudgetingCTABar project={props.project} phases={props.phases} />;
   },
 };
@@ -283,7 +280,7 @@ const volunteeringConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: (props: CTAProps) => {
+  renderCTABar: (props: CTABarProps) => {
     return <VolunteeringCTABar project={props.project} phases={props.phases} />;
   },
 };

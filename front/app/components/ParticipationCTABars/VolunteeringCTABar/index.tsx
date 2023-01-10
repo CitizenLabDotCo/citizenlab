@@ -9,7 +9,7 @@ import { useTheme } from 'styled-components';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { IProjectData } from 'services/projects';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -19,12 +19,7 @@ import { scrollToElement } from 'utils/scroll';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-type CTAProps = {
-  project: IProjectData;
-  phases: Error | IPhaseData[] | null | undefined;
-};
-
-export const VolunteeringCTABar = ({ phases, project }: CTAProps) => {
+export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const hasProjectEnded = currentPhase

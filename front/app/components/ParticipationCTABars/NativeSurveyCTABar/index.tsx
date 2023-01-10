@@ -10,19 +10,14 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { IProjectData } from 'services/projects';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
-type CTAProps = {
-  project: IProjectData;
-  phases: Error | IPhaseData[] | null | undefined;
-};
-
-export const NativeSurveyCTABar = ({ phases, project }: CTAProps) => {
+export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);

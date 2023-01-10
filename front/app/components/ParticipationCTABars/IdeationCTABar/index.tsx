@@ -11,23 +11,18 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { IProjectData } from 'services/projects';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-type CTAProps = {
-  project: IProjectData;
-  phases: Error | IPhaseData[] | null | undefined;
-};
-
-export const IdeationCTABar = ({ phases, project }: CTAProps) => {
+export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
