@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-// import useProject from
+import usePhases from 'hooks/usePhases';
 
 // craft
 import { Element } from '@craftjs/core';
@@ -22,6 +22,11 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
+import moment from 'moment';
+
 interface Props {
   reportId: string;
   projectId: string;
@@ -29,10 +34,23 @@ interface Props {
 
 const ProjectTemplate = ({ reportId, projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const phases = usePhases(projectId);
+
+  if (isNilOrError(phases)) return null;
+
+  const hasPhases = phases.length > 0;
+
+  const projectPeriod = hasPhases
+    ? getProjectPeriod(phases)
+    : { startAt: undefined, endAt: moment().format('YYYY-MM-DD') };
 
   return (
     <Element id="project-report-template" is={Box} canvas>
-      <AboutReportWidget reportId={reportId} projectId={projectId} />
+      <AboutReportWidget
+        reportId={reportId}
+        projectId={projectId}
+        {...projectPeriod}
+      />
       <Title text={formatMessage(messages.reportSummary)} />
       <Text text={formatMessage(messages.reportSummaryDescription)} />
       <WhiteSpace />
@@ -42,18 +60,16 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       <TwoColumn columnLayout="1-1">
         <Element id="left" is={Container} canvas>
           <GenderWidget
-            startAt={undefined}
-            endAt={null}
             projectId={projectId}
             title={formatMessage(GenderWidget.craft.custom.title)}
+            {...projectPeriod}
           />
         </Element>
         <Element id="right" is={Container} canvas>
           <AgeWidget
-            startAt={undefined}
-            endAt={null}
             projectId={projectId}
             title={formatMessage(AgeWidget.craft.custom.title)}
+            {...projectPeriod}
           />
         </Element>
       </TwoColumn>
@@ -61,10 +77,9 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       <Text text={formatMessage(messages.descriptionPlaceHolder)} />
       <WhiteSpace />
       <VisitorsWidget
-        startAt={undefined}
-        endAt={null}
         projectId={projectId}
         title={formatMessage(VisitorsWidget.craft.custom.title)}
+        {...projectPeriod}
       />
     </Element>
   );

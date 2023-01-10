@@ -17,16 +17,16 @@ import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidg
 import useReport from 'hooks/useReport';
 import useUser from 'hooks/useUser';
 import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
 
 type Props = {
+  startAt?: string;
+  endAt?: string;
   reportId: string;
   projectId?: string;
 };
@@ -39,7 +39,7 @@ const toPeriodString = ({
   endAt: string;
 }) => `${moment(startAt).format('LL')} - ${moment(endAt).format('LL')}`;
 
-const AboutReportWidget = ({ reportId, projectId }: Props) => {
+const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -58,15 +58,14 @@ const AboutReportWidget = ({ reportId, projectId }: Props) => {
 
   // Project name & time period
   const project = useProject({ projectId });
-  const phases = usePhases(projectId);
   const projectName = isNilOrError(project)
     ? ''
     : localize(project.attributes.title_multiloc);
 
-  const projectPeriod = getProjectPeriod(phases);
-  const projectPeriodString = projectPeriod.startAt
-    ? toPeriodString(projectPeriod)
-    : formatMessage(messages.continuousProject);
+  const projectPeriodString =
+    startAt && endAt
+      ? toPeriodString({ startAt, endAt })
+      : formatMessage(messages.continuousProject);
 
   return (
     <Box>
