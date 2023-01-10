@@ -1379,7 +1379,6 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Customise the homepage banner image and text.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "visit our support center",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/articles/1346397",
   "app.containers.AdminPage.SettingsPage.header_bg": "Banner image",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin settings page",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Admin settings page",

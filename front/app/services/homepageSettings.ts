@@ -19,6 +19,9 @@ export type TSectionSetting = Exclude<
 
 export interface THomepageBannerLayoutMap {
   full_width_banner_layout: 'full_width_banner_layout';
+  two_column_layout: 'two_column_layout';
+  two_row_layout: 'two_row_layout';
+  fixed_ratio_layout: 'fixed_ratio_layout';
 }
 export type THomepageBannerLayout =
   THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
@@ -57,6 +60,30 @@ export interface IHomepageEnabledSettings {
   bottom_info_section_enabled: boolean;
   banner_avatars_enabled: boolean;
   projects_enabled: boolean;
+}
+
+interface CTASignedInTypeMap {
+  customized_button: 'customized_button';
+  no_button: 'no_button';
+}
+
+export type CTASignedInType = CTASignedInTypeMap[keyof CTASignedInTypeMap];
+
+interface CTASignedOutTypeMap {
+  sign_up_button: 'sign_up_button';
+  customized_button: 'customized_button';
+  no_button: 'no_button';
+}
+export type CTASignedOutType = CTASignedOutTypeMap[keyof CTASignedOutTypeMap];
+
+export interface IHomepageSettingsAttributes {
+  banner_cta_signed_in_text_multiloc: Multiloc;
+  banner_cta_signed_in_type: CTASignedInType;
+  banner_cta_signed_in_url: string | null;
+  // cta_signed_out
+  banner_cta_signed_out_text_multiloc: Multiloc;
+  banner_cta_signed_out_type: CTASignedOutType;
+  banner_cta_signed_out_url: string | null;
 }
 
 // streams

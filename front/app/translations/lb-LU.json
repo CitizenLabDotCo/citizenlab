@@ -434,7 +434,6 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewielt {numberOfSelectedTopics, plural, =0 {null Sujeten} one {ee Sujet} other {# Sujet'en}}. {selectedTopicNames}",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Iwwersetzen",
-  "app.components.Upload.a11y_removeImage": "Ewechhuelen",
   "app.components.Upload.errorImageMaxSizeExceeded": "D'ausgewielte Bild ass méi grouss wéi {maxFileSize}MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Eent oder méi vun den ausgewieltene Biller ass/ si méi grouss wéi {maxFileSize}MB",
   "app.components.Upload.onlyOneImage": "Dir kënnt nëmmen 1 Bild eroplueden",

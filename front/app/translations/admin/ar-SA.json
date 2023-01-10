@@ -1379,7 +1379,6 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "أضف طابعك الشخصي على صورة ونص بانر الصفحة الرئيسية.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "زيارة مركز الدعم التابع لنا",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/articles/1346397",
   "app.containers.AdminPage.SettingsPage.header_bg": "صورة اللافتة",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "صفحة إعدادات المسؤول",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "صفحة إعدادات المسؤول",

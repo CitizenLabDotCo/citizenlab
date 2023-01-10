@@ -1358,7 +1358,6 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "Για περισσότερες πληροφορίες σχετικά με τις συνιστώμενες αναλύσεις εικόνων, {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Προσαρμόστε την εικόνα και το κείμενο του μπάνερ της αρχικής σελίδας.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "επισκεφθείτε το κέντρο υποστήριξής μας",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/articles/1346397",
   "app.containers.AdminPage.SettingsPage.header_bg": "Εικόνα μπάνερ",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Σελίδα ρυθμίσεων διαχειριστή",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Σελίδα ρυθμίσεων διαχειριστή",
