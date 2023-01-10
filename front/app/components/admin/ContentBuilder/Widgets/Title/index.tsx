@@ -1,7 +1,7 @@
 import React from 'react';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 // craft
 import { useNode } from '@craftjs/core';
@@ -16,9 +16,6 @@ import {
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-
-// hooks
-import { useTheme } from 'styled-components';
 
 const H3 = styled.h3<{ color: string }>`
   color: ${({ color }) => color};

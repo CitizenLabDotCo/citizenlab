@@ -103,7 +103,14 @@ const ContentBuilderTopBar = ({
     }
 
     setInitialized(true);
-  }, [projectId, query]);
+  }, [
+    projectId,
+    query,
+    draftEditorData,
+    initialized,
+    reportId,
+    selectedLocale,
+  ]);
 
   const handleSelectLocale = (locale: Locale) => {
     const editorData = query.getSerializedNodes();
