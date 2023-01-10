@@ -6,16 +6,21 @@ import {
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import React from 'react';
 import { IHomepageSettingsData } from 'services/homepageSettings';
+import styled from 'styled-components';
 
 interface Props {
   homepageSettings: IHomepageSettingsData;
 }
 
+const TwoRowLayoutContainer = styled.div`
+  width: 100%;
+`;
+
 const TwoRowLayout = ({ homepageSettings }: Props) => {
   const headerImage = homepageSettings.attributes.header_bg?.large;
 
   return (
-    <div data-testid="two-row-layout">
+    <TwoRowLayoutContainer data-testid="two-row-layout">
       {headerImage && (
         <HeaderImage
           src={headerImage}
@@ -31,7 +36,7 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
           <HeaderContent fontColors="dark" />
         </Container>
       </ContentContainer>
-    </div>
+    </TwoRowLayoutContainer>
   );
 };
 
