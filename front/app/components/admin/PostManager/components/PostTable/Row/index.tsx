@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, MouseEvent } from 'react';
 import { ManagerType, TFilterMenu } from '../../..';
 
 // services
@@ -78,7 +78,7 @@ const Row = ({
     onToggleSelect();
   };
 
-  const onClickTitle = (event) => {
+  const onClickTitle = (event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -102,7 +102,6 @@ const Row = ({
           className={className}
           onClickCheckbox={onClickCheckbox}
           onClickTitle={onClickTitle}
-          nothingHappens={nothingHappens}
           locale={locale}
         />
       </Suspense>

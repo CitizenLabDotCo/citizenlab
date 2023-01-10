@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, get } from 'lodash-es';
@@ -68,7 +68,7 @@ interface InputProps {
   activeFilterMenu: TFilterMenu;
   className?: string;
   onClickCheckbox: (event) => void;
-  onClickTitle: (event) => void;
+  onClickTitle: (event: MouseEvent) => void;
   nothingHappens: (event) => void;
 }
 
