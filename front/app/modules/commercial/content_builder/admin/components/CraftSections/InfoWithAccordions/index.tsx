@@ -42,17 +42,14 @@ const InfoWithAccordions: UserComponent = ({
           <Accordion
             title={formatMessage(accordionMessages.accordionTitleValue)}
             text={formatMessage(accordionMessages.accordionTextValue)}
-            openByDefault={false}
           />
           <Accordion
             title={formatMessage(accordionMessages.accordionTitleValue)}
             text={formatMessage(accordionMessages.accordionTextValue)}
-            openByDefault={false}
           />
           <Accordion
             title={formatMessage(accordionMessages.accordionTitleValue)}
             text={formatMessage(accordionMessages.accordionTextValue)}
-            openByDefault={false}
           />
         </Element>
         <Element id="right" is={Container} canvas />
