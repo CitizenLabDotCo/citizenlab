@@ -105,7 +105,7 @@
   "app.components.admin.PostManager.inputsExportFileName": "bijdragen",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Toon alleen bijdragen die feedback nodig hebben",
   "app.components.admin.PostManager.latestFeedbackMode": "Gebruik de laatste officiële update",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Door '{ideaTitle}' te verplaatsen, verliest het de informatie die specifiek gelinkt was aan de tijdslijn uit het vorige project. Wil je doorgaan?",
+  "app.components.admin.PostManager.loseIdeaPhaseInfoConfirmation": "Moving this input away from its current project will lose the information about its assigned phases. Do you want to proceed?",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} voorstellen",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} bijdragen",
   "app.components.admin.PostManager.newFeedbackMode": "Schrijf een nieuwe update om deze wijziging te verklaren",
