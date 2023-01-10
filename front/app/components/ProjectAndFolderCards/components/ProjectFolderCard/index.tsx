@@ -105,11 +105,8 @@ const Container = styled(Link)`
 
 const FolderImageContainer = styled.div`
   width: 100%;
-  height: 254px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 254px;
   display: flex;
+  aspect-ratio: 1 / 1;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
@@ -117,15 +114,13 @@ const FolderImageContainer = styled.div`
   &.large {
     width: 50%;
     height: 100%;
-    flex-basis: 50%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
 
-  &.small {
-    height: 224px;
-    flex-basis: 224px;
-  }
+  ${media.phone`
+    aspect-ratio: 2 / 1;
+  `}
 `;
 
 const FolderImagePlaceholder = styled.div`
