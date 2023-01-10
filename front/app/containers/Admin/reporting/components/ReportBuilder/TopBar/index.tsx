@@ -26,7 +26,7 @@ import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
 import styled from 'styled-components';
-import { colors } from '../../../../../../utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 const LocaleBadge = styled.div`
   display: inline-block;
