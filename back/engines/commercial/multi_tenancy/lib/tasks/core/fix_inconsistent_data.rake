@@ -48,8 +48,8 @@ namespace :inconsistent_data do
   task fix_users_with_invalid_locales: :environment do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        User.where.not(locale: tenant.settings.dig('core', 'locales'))
-          .update_all(locale: tenant.settings.dig('core', 'locales').first)
+        locales = tenant.configuration.settings('core', 'locales')
+        User.where.not(locale: locales).update_all(locale: locales.first)
       end
     end
   end
