@@ -47,10 +47,8 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
-  // const locale = useLocale();
   const reportLayout = useReportLayout(reportId);
   const reportLocale = useReportLocale(reportLayout);
-  console.log('Report Locale:', reportLocale);
 
   useEffect(() => {
     if (!isNilOrError(reportLocale)) {

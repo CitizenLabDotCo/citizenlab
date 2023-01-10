@@ -19,12 +19,11 @@ export default function useReportLocale(
     if (!isNilOrError(reportLayout)) {
       const reportLocales = keys(reportLayout.attributes.craftjs_jsonmultiloc);
       if (reportLocales.length > 0 && platformLocale !== reportLocales[0]) {
-        console.log('GOT DIFFERENT REPORT LOCALE OF: ', reportLocales[0]);
         setLocale(reportLocales[0]);
       } else {
         setLocale(platformLocale ? platformLocale : undefined);
       }
     }
-  }, [reportLayout]);
+  }, [reportLayout, platformLocale]);
   return locale;
 }
