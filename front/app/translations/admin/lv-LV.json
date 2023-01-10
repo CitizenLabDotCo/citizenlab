@@ -105,7 +105,7 @@
   "app.components.admin.PostManager.inputsExportFileName": "ievade",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Rādīt tikai tos ierakstus, kuriem jāsniedz atgriezeniskā saite",
   "app.components.admin.PostManager.latestFeedbackMode": "Skaidrojumam izmantojiet jaunāko oficiālo atjauninājumu",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Pārvietojot '{ideaTitle}' no tā pašreizējā projekta, zudīs informācija par tam piešķirtajām fāzēm. Vai vēlaties turpināt?",
+  "app.components.admin.PostManager.loseIdeaPhaseInfoConfirmation": "Moving this input away from its current project will lose the information about its assigned phases. Do you want to proceed?",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} priekšlikumi",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} ieraksti",
   "app.components.admin.PostManager.newFeedbackMode": "Uzrakstiet jaunu atjauninājumu, paskaidrojot šīs izmaiņas",
