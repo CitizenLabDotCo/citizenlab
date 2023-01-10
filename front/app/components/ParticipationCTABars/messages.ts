@@ -2,35 +2,35 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   takeTheSurvey: {
-    id: 'app.components.ParticipationCTAButtons.takeTheSurvey',
+    id: 'app.components.ParticipationCTABars.takeTheSurvey',
     defaultMessage: 'Take the survey',
   },
   projectOpenForSubmission: {
-    id: 'app.containers.Projects.projectOpenForSubmission',
+    id: 'app.components.ParticipationCTABars.projectOpenForSubmission',
     defaultMessage: 'This project is currently open for participation.',
   },
   mobileProjectOpenForSubmission: {
-    id: 'app.containers.Projects.mobileProjectOpenForSubmission',
+    id: 'app.components.ParticipationCTABars.mobileProjectOpenForSubmission',
     defaultMessage: 'Open for participation',
   },
   userHasParticipated: {
-    id: 'app.containers.Projects.userHasParticipated',
+    id: 'app.components.ParticipationCTABars.userHasParticipated',
     defaultMessage: 'You have participated in this project.',
   },
   participationTimeLeft: {
-    id: 'app.containers.Projects.participationTimeLeft',
+    id: 'app.components.ParticipationCTABars.participationTimeLeft',
     defaultMessage: '{timeLeft}  weeks left',
   },
   allocateYourBudget: {
-    id: 'app.containers.Projects.allocateYourBudget',
+    id: 'app.components.ParticipationCTABars.allocateYourBudget',
     defaultMessage: 'Allocate your budget.',
   },
   volunteer: {
-    id: 'app.containers.Projects.volunteer',
+    id: 'app.components.ParticipationCTABars.volunteer',
     defaultMessage: 'Volunteer',
   },
   seeIdeas: {
-    id: 'app.containers.Projects.seeIdeas',
+    id: 'app.components.ParticipationCTABars.seeIdeas',
     defaultMessage: 'See ideas',
   },
 });
