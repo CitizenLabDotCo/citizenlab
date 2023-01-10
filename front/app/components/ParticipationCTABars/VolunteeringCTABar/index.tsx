@@ -29,13 +29,9 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  const scrollTo = (id: string) => (event: FormEvent) => {
-    event.preventDefault();
-    scrollToElement({ id, shouldFocus: true });
-  };
-
   const handleVolunteerClick = (event: FormEvent) => {
-    scrollTo('volunteering')(event);
+    event.preventDefault();
+    scrollToElement({ id: 'volunteering', shouldFocus: true });
   };
 
   if (hasRrojectEndedOrIsArchived(project, currentPhase)) {

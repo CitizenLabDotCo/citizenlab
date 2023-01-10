@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 
 // Components
 import { Box, Button } from '@citizenlab/cl2-component-library';
@@ -15,6 +15,7 @@ import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { scrollToElement } from 'utils/scroll';
 import {
   CTABarProps,
   hasRrojectEndedOrIsArchived,
@@ -47,9 +48,17 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
+  const scrollToIdeas = (event: FormEvent) => {
+    event.preventDefault();
+
+    scrollToElement({ id: 'project-ideas', shouldFocus: true });
+  };
+
   let CTAButton: React.ReactNode = null;
 
-  if (!hasUserParticipated) {
+  if (hasUserParticipated) {
+    CTAButton = null;
+  } else {
     CTAButton = enabled ? (
       <Box display="flex" justifyContent="flex-end">
         <IdeaButton
@@ -64,9 +73,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     ) : (
       <Button
         buttonStyle="secondary"
-        onClick={() => {
-          // Scroll to ideas
-        }}
+        onClick={scrollToIdeas}
         fontWeight="500"
         bgColor={theme.colors.white}
         textColor={theme.colors.tenantText}
@@ -75,8 +82,6 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
         <FormattedMessage {...messages.seeIdeas} />
       </Button>
     );
-  } else {
-    CTAButton = null;
   }
 
   return (

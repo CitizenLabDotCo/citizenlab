@@ -42,14 +42,10 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const scrollTo = (id: string) => (event: FormEvent) => {
+  const handleAllocateBudgetClick = (event: FormEvent) => {
     event.preventDefault();
 
-    scrollToElement({ id, shouldFocus: true });
-  };
-
-  const handleAllocateBudgetClick = (event: FormEvent) => {
-    scrollTo('pb-expenses')(event);
+    scrollToElement({ id: 'pb-expenses', shouldFocus: true });
   };
 
   const CTAButton = hasUserParticipated ? null : (
