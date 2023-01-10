@@ -12,7 +12,7 @@ import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import { Badge, Box, Text, Title } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
@@ -25,6 +25,21 @@ import clHistory from 'utils/cl-router/history';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
+import styled from 'styled-components';
+import { colors } from '../../../../../../utils/styleUtils';
+
+const LocaleBadge = styled.div`
+  display: inline-block;
+  color: ${colors.textSecondary};
+  background-color: ${colors.grey200};
+  font-weight: bold;
+  font-size: 12px;
+  padding: 0px 6px;
+  margin-left: 15px;
+  transform: translateY(-2px);
+  border-radius: 3px;
+  text-transform: uppercase;
+`;
 
 type ContentBuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -88,10 +103,8 @@ const ContentBuilderTopBar = ({
           </Text>
           <Title variant="h4" as="h1" color="primary">
             {isNilOrError(report) ? <></> : report.attributes.name}
+            <LocaleBadge>{selectedLocale}</LocaleBadge>
           </Title>
-        </Box>
-        <Box mx="24px">
-          <Badge className="inverse">{selectedLocale}</Badge>
         </Box>
         <Box mx="24px">
           <PreviewToggle
