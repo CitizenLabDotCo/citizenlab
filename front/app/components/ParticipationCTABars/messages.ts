@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Projects.projectOpenForSubmission',
     defaultMessage: 'This project is currently open for participation.',
   },
+  mobileProjectOpenForSubmission: {
+    id: 'app.containers.Projects.mobileProjectOpenForSubmission',
+    defaultMessage: 'Open for participation',
+  },
   userHasParticipated: {
     id: 'app.containers.Projects.userHasParticipated',
     defaultMessage: 'You have participated in this project.',
