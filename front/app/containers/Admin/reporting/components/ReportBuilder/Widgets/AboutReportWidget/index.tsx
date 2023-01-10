@@ -13,47 +13,33 @@ import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TenantLogo from 'containers/MobileNavbar/TenantLogo';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
 
+// hooks
+import useReport from 'hooks/useReport';
+import useUser from 'hooks/useUser';
+import useProject from 'hooks/useProject';
+import useLocalize from 'hooks/useLocalize';
+
 // utils
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 
-// hooks
-import useReport from 'hooks/useReport';
-import useUser from 'hooks/useUser';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import useLocalize from 'hooks/useLocalize';
-
-// typings
-import { IPhaseData } from 'services/phases';
-
-type AboutReportWidgetProps = {
+type Props = {
+  startAt?: string;
+  endAt?: string;
   reportId: string;
   projectId?: string;
 };
 
-// Return localised start & dates for project from phases
-const getPhaseDates = (phases: IPhaseData[]) => {
-  const startMoment = moment(phases[0]?.attributes.start_at, 'YYYY-MM-DD');
-  const endMoment = moment(
-    phases[phases.length - 1]?.attributes.end_at,
-    'YYYY-MM-DD'
-  );
-  const startDate = startMoment.format('LL');
-  const endDate = endMoment.format('LL');
-  return { startDate, endDate };
-};
-
 const toPeriodString = ({
-  startDate,
-  endDate,
+  startAt,
+  endAt,
 }: {
-  startDate: string;
-  endDate: string;
-}) => `${startDate} - ${endDate}`;
+  startAt: string;
+  endAt: string;
+}) => `${moment(startAt).format('LL')} - ${moment(endAt).format('LL')}`;
 
-const AboutReportWidget = ({ reportId, projectId }: AboutReportWidgetProps) => {
+const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -72,14 +58,14 @@ const AboutReportWidget = ({ reportId, projectId }: AboutReportWidgetProps) => {
 
   // Project name & time period
   const project = useProject({ projectId });
-  const phases = usePhases(projectId);
   const projectName = isNilOrError(project)
     ? ''
     : localize(project.attributes.title_multiloc);
-  const hasPhases = !isNilOrError(phases) && phases.length !== 0;
-  const projectPeriod = hasPhases
-    ? toPeriodString(getPhaseDates(phases))
-    : formatMessage(messages.continuousProject);
+
+  const projectPeriodString =
+    startAt && endAt
+      ? toPeriodString({ startAt, endAt })
+      : formatMessage(messages.continuousProject);
 
   return (
     <Box>
@@ -115,7 +101,7 @@ const AboutReportWidget = ({ reportId, projectId }: AboutReportWidgetProps) => {
                 projectsList: projectName,
               })}</li>
               <li>${formatMessage(messages.periodLabel, {
-                startEndDates: projectPeriod,
+                startEndDates: projectPeriodString,
               })}</li>
               <li>${formatMessage(messages.managerLabel, {
                 managerName: projectManager,

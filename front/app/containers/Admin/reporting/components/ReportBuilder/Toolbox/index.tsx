@@ -87,10 +87,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           <DraggableElement
             id="e2e-draggable-about-report"
             component={
-              <AboutReportWidget
-                reportId={reportId}
-                projectId={undefined} // TODO: Plug in project when available
-              />
+              <AboutReportWidget reportId={reportId} projectId={undefined} />
             }
             icon="section-image-text"
             label={formatMessage(AboutReportWidget.craft.custom.title)}
